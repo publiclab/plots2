@@ -1,0 +1,199 @@
+html {
+	
+}
+body {
+	width:980px;
+        font-family: lucida grande,lucida sans console,sans-serif;
+        margin:10px auto;
+	font-size:12px;
+}
+
+img { border:0; }
+a { color:#30f; }
+a:hover { color:#a00; }
+
+h1,h2 {
+        font-weight:normal;
+        font-family:Junction, lucida grande,lucida sans console,sans-serif;
+}
+
+.button {
+        font-size:14px;
+        text-decoration:none;
+        color:white;
+        padding:10px;
+        background:#4C6ACB;
+        -moz-border-radius-topleft:7px;
+        -webkit-border-top-left-radius:7px;
+        -moz-border-radius-bottomleft:7px;
+        -webkit-border-bottom-left-radius:7px;
+        -moz-border-radius-topright:7px;
+        -webkit-border-top-right-radius:7px;
+        -moz-border-radius-bottomright:7px;
+        -webkit-border-bottom-right-radius:7px;
+}
+a:hover.button {
+        background:#35b;
+        color:#ccc;
+}
+
+hr {
+	border:0;
+	border-bottom:1px solid #ccc;
+}
+
+#header {
+	padding-bottom:10px;
+	margin-bottom:10px;
+}
+
+#header .buttons {
+	margin-top:40px;
+	float:right;
+	clear:both;
+}
+#header .buttons .button {
+	font-size:18px;
+        background:#4C6ACB;
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4C6ACB), to(#2C4AAB))
+}
+#header .buttons .button:hover {
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3C5ABB), to(#2C4AAB))
+}
+
+#header h1 {
+	padding-top:30px;
+	margin-bottom:10px;
+	clear:left;
+	font-size:48px;
+}
+
+#links {
+        font-family:Junction, lucida grande,lucida sans console,sans-serif;
+        font-size:1.4em;
+        display:block;
+        padding:0;
+}
+#links li {
+        list-style:none;
+        position:relative;
+        float:left;
+}
+#links li {
+        background:black;
+        margin-right:8px;
+        margin-bottom:8px;
+        padding:0;
+        color:white;
+}
+#links li a {
+        text-decoration:none;
+        display:block;
+        padding:12px;
+        padding-top:14px;
+        color:white;
+}
+#links li:hover {
+        background:#333;
+        color:#ccc;
+}
+
+#links li ul {
+        padding:0;
+        background:black;
+        position:absolute;
+        top:42px;left:0;
+        z-index:99;
+        float:left;
+        clear:both;
+        font-size:12px;
+}
+#links li ul.sublinks li {
+        width:200px;
+        float:left;
+        display:block;
+        clear:both;
+        list-style:none;
+        margin:0;
+}
+#links li ul.sublinks li a {
+        margin:0;
+}
+
+.right {
+        float:right;
+}
+#links li.right {
+        margin-left:8px;
+        margin-right:0;
+}
+
+#navbar {
+	padding:8px;
+	border-top:2px solid #dc5;
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#eea), to(#ed9));
+	color:#dc5;
+}
+#navbar a {
+	color:#964;
+}
+#navbar .right {
+	float:right;
+}
+
+h2.divider {
+	padding-top:10px;
+	border-top:1px solid #ccc;
+	margin-bottom:18px;
+}
+h2.divider small {
+	margin-left:10px;
+	font-size:12px;
+        font-family: lucida grande,lucida sans console,sans-serif;
+}
+
+.info {
+	float:left;
+	background:#ded;
+	font-style:italic;
+	color:#447;
+	width:180px;
+	font-size:15px;
+	padding:0 10px;
+	margin-right:20px;
+	line-height:20px;
+}
+.info ul {
+	padding-left:16px;
+	font-size:13px;
+}
+
+.items {
+	padding-bottom:30px;
+}
+.items h3 a {
+	color:#444;
+}
+.items div {
+	float:left;
+	border-top:3px solid #666;
+	background:#eee;
+        background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#eee), to(#ddd));
+	width:160px;
+	padding:10px;
+	margin-right:10px;
+	margin-bottom:10px;
+}
+
+#footer {
+	padding-bottom:30px;
+}
+#footer .col {
+	width:200px;
+	margin-right:20px;
+	float:left;
+}
+#footer ul {
+	padding-left:20px;
+}
+
