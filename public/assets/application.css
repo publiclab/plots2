@@ -26,3 +26,9 @@ h1,h2,h3,h4 {
   border-color:#bbb;
 }
 
+#preview {
+  margin:0;
+  margin-bottom:10px;
+  background:white;
+}
+
