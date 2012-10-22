@@ -1,0 +1,30 @@
+<div class="span8 comments">
+  <h3>Comments</h3>
+
+  <form class="well">
+    <h4>Post comment</h4>
+
+    <textarea class="span12" id="text-input" oninput="this.editor.update()"
+              rows="4" cols="40" placeholder="Type **Markdown** here."></textarea>
+    <div class="well span12" id="preview" style="display:none;"> </div>
+    <br style="clear:both;"/>
+
+    <script src="/assets/js/markdown.js"></script>
+    <script>
+      function Editor(input, preview)
+      {
+        this.update = function () {
+          preview.innerHTML = markdown.toHTML(input.value);
+        }
+        input.editor = this;
+        this.update();
+      }
+      var $M = function (id) { return document.getElementById(id); };
+      new Editor($M("text-input"), $M("preview"));
+    </script>
+
+    <button type="submit" class="btn btn-primary">Publish</button>
+    <a class="btn" onClick="$('#preview').toggle();$('#text-input').toggle()">Preview</a>
+
+  </form>
+</div>

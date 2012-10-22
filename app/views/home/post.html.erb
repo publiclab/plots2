@@ -1,3 +1,4 @@
+<%= render :partial => "home/sidebar" %>
 <script src="/assets/js/dragdrop.js"></script>
 <div class="span9">
   <form class="well post">
@@ -28,8 +29,8 @@
       </div>
     </div>
 
-    <textarea rows="10" class="span9" id="text-input" oninput="this.editor.update()"
-              rows="6" cols="60">Type **Markdown** here.</textarea>
+    <textarea class="span9" id="text-input" oninput="this.editor.update()"
+              rows="8" cols="60" placeholder="Type **Markdown** here."></textarea>
     <div class="well span9" id="preview" style="display:none;"> </div>
     <br style="clear:both;"/>
 
@@ -49,11 +50,11 @@
 
     <div class="input-prepend">
       <span class="add-on"><i class="icon-tags"></i></span>
-      <input type="text" class="span6" placeholder="balloon mapping" data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
+      <input type="text" class="span6" <% if params[:tags] %>value="<%= params[:tags] %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
     </div>
 
     <br />
     <button type="submit" class="btn btn-primary btn-large">Publish</button>
-    <a href="#" class="btn btn-large" onClick="$('#preview').toggle();$('#text-input').toggle()">Preview</a>
+    <a class="btn btn-large" onClick="$('#preview').toggle();$('#text-input').toggle()">Preview</a>
   </form>
 </div>

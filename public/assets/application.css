@@ -11,6 +11,9 @@ h1,h2,h3,h4 {
 }
 #header .brand {
   color:white;
+  padding-top:13px;
+  padding-bottom:2px;
+  font-family:Junction, lucida grande,lucida sans console,sans-serif;
 }
 
 .dropzone {

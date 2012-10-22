@@ -43,11 +43,22 @@
           <div class="nav-collapse collapse">
             <form class="navbar-form pull-right" style="margin-left:10px;">
               <input type="text" class="input-small search-query" data-provide="typeahead" data-source="['Balloon mapping','Thermal photography','Spectrometry']">
-              <button type="submit" class="btn btn-primary">Search</button>
+              <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i></button>
             </form>
-            <p class="navbar-text pull-right">
-              Logged in as <a href="#" class="navbar-link">Username</a> 
-            </p>
+            <ul class="nav pull-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="icon-user icon-white"></i>
+                  Username <b class="caret"></b>
+                </a> 
+                <ul class="dropdown-menu">
+                  <li><a href="">Profile</a></li>
+                  <li><a href="">Settings</a></li>
+                  <li class="divider"></li>
+                  <li><a href="">Log out</a></li>
+                </ul>
+              </li>
+            </ul>
             <ul class="nav">
               <li><a href="/dashboard">Dash</a></li>
               <li><a href="/about">About</a></li>
@@ -70,26 +81,6 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span3">
-            <a style="margin-bottom:6px;" href="/post" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post research &raquo;</a>
-            <a href="/post" class="btn btn-block"><i class="icon-file"></i> Create wiki page &raquo;</a>
-          <hr />
-          <div class="sidebar-nav hidden-phone">
-            <ul class="nav nav-list">
-              <li class="nav-header">Tools</li>
-              <li><a href="#">Balloon mapping</a></li>
-              <li><a href="#">Near-infrared photography</a></li>
-              <li><a href="#">Thermal flashlight</a></li>
-              <li><a href="#">Spectrometry</a></li>
-              <li class="nav-header">Places</li>
-              <li><a href="#">Gulf Coast</a></li>
-              <li><a href="#">New York</a></li>
-              <li><a href="#">Norcal</a></li>
-              <li><a href="#">Boston</a></li>
-            </ul>
-          <hr />
-          </div><!--/.well -->
-        </div><!--/span-->
 
         <%= yield %>
 
@@ -113,6 +104,8 @@
             <li><a href="/wiki/licenses">Licenses</a></li>
             <li><a href="/wiki/mailing-lists">Mailing lists</a></li>
             <li><a href="/wiki/working-groups">Working groups</a></li>
+            <li class="divider"></li>
+            <li><a href="/rss">RSS</a></li>
           </ul>
         </div>
       </footer>
