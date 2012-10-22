@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Public Lab | Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Public Laboratory for Open Technology and Science (PLOTS) collaboratively develops and publicizes accessible technologies for investigating and reporting on local environmental health and justice issues. PLOTS provides an online research space for citizens, linking them to scientists, social scientists, and technologists. PLOTS is an expansion of Grassroots Mapping, where citizens use helium-filled balloons and digital cameras to generate high resolution “satellite” maps.">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/bootstraptp://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/bootstrap/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/bootstrap/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/bootstrap/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/bootstrap/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/bootstrap/ico/apple-touch-icon-57-precomposed.png">
+
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+
+  </head>
+
+  <body>
+
+    <div id="header" class="navbar navbar-inverse navbar-static-top" style="margin-bottom:20px;">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">Public Lab</a>
+          <div class="nav-collapse collapse">
+            <form class="navbar-form pull-right" style="margin-left:10px;">
+              <input type="text" class="input-small search-query" data-provide="typeahead" data-source="['Balloon mapping','Thermal photography','Spectrometry']">
+              <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+            <p class="navbar-text pull-right">
+              Logged in as <a href="#" class="navbar-link">Username</a> 
+            </p>
+            <ul class="nav">
+              <li><a href="/dashboard">Dash</a></li>
+              <li><a href="/about">About</a></li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="/notes">
+                  Research <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="">Balloon/kite mapping</a></li>
+                  <li><a href="">Near-IR photography</a></li>
+                </ul>
+              </li>
+              <li><a href="/places">Places</a></li>
+              <li><a href="/archive">Maps</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+            <a style="margin-bottom:6px;" href="/post" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post research &raquo;</a>
+            <a href="/post" class="btn btn-block"><i class="icon-file"></i> Create wiki page &raquo;</a>
+          <hr />
+          <div class="sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Tools</li>
+              <li><a href="#">Balloon mapping</a></li>
+              <li><a href="#">Near-infrared photography</a></li>
+              <li><a href="#">Thermal flashlight</a></li>
+              <li><a href="#">Spectrometry</a></li>
+              <li class="nav-header">Places</li>
+              <li><a href="#">Gulf Coast</a></li>
+              <li><a href="#">New York</a></li>
+              <li><a href="#">Norcal</a></li>
+              <li><a href="#">Boston</a></li>
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+
+        <%= yield %>
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <div class="span3">
+          <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0;float:left;margin-right:10px;" src="/images/cc-by-sa-88x31.png" /></a></p>
+          <p>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>. Hardware designs on this site are released under the <a href="http://www.ohwr.org/cernohl">CERN Open Hardware License 1.1</a>. Read more about Public Laboratory's <a href="/licenses">open source licensing here</a>.</p>
+        </div>
+        <div class="span3">
+          <p>Specific works on this site may be released or dedicated under different licenses, but only if such alternatives are clearly indicated by their authors.</p>
+        </div>
+        <div class="span3">
+          <h4>Links</h4>
+          <ul>
+            <li><a href="/about">About</a></li>
+            <li><a href="/wiki/getting-started">Getting Started</a></li>
+            <li><a href="/wiki/licenses">Licenses</a></li>
+            <li><a href="/wiki/mailing-lists">Mailing lists</a></li>
+            <li><a href="/wiki/working-groups">Working groups</a></li>
+          </ul>
+        </div>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>
