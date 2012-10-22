@@ -7,6 +7,7 @@ h1,h2,h3,h4 {
 }
 
 #header {
+  margin-bottom:20px;
 }
 #header .brand {
   color:white;
