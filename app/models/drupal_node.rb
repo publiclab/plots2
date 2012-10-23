@@ -2,6 +2,7 @@ class DrupalNode < ActiveRecord::Base
   # attr_accessible :title, :body
   set_table_name :node
   has_one :drupal_node_revision, :foreign_key => 'nid'
+  has_one :drupal_main_image, :foreign_key => 'nid'
 
   self.primary_key = 'nid'
   class << self
@@ -18,6 +19,14 @@ class DrupalNode < ActiveRecord::Base
 
   def created_at
     Time.at(self.drupal_node_revision.timestamp)
+  end
+
+  def body
+    self.drupal_node_revision.body
+  end
+
+  def main_image
+    self.drupal_main_image.drupal_file
   end
 
 end

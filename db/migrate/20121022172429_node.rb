@@ -41,6 +41,7 @@ class Node < ActiveRecord::Migration
       t.string :key
       t.string :value
       t.integer :node_id
+      t.boolean :blessed
       t.timestamps
     end
 

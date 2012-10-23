@@ -7,7 +7,13 @@
     <li><a href="/notes/author">Author</a></li>
   </ul>
 
-  <h2 style="margin-top:0;"><%= @node.title %></h2>
+  <% if @node.main_image %>
+    <a href="http://publiclaboratory.org/sites/default/files/<%= @node.main_image.filename %>"><img class="img-rounded span9" src="http://publiclaboratory.org/sites/default/files/<%= @node.main_image.filename %>" /></a>
+    <br />
+    <br style="clear:both;" />
+  <% end %>
+
+  <h2 style="clear:left;"><%= @node.title %></h2>
 
   <div class="">
     by <a href="">Author</a> |
@@ -17,7 +23,7 @@
   <hr />
 
   <p>
-  <%= raw RDiscount.new(@node.drupal_node_revision.body).to_html %>
+  <%= raw RDiscount.new(@node.body).to_html %>
   </p>
 
   <hr />
