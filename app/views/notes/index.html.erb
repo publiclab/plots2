@@ -1,0 +1,46 @@
+<%= render :partial => "home/sidebar" %>
+<div class="span9">
+  <div class="alert">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>Welcome!</strong> You haven't posted a research note yet -- consider <a href="/post">sharing your work and interests</a>!
+  </div>
+
+  <h2 style="margin-top:0;">Research notes <small>ideas & documentation from contributors like you</small></h2>
+  <div class="navbar">
+    <div class="navbar-inner">
+      <form class="navbar-form pull-right" style="margin-left:10px;">
+        <input type="text" class="input-small search-query" data-provide="typeahead" data-source="['Balloon mapping','Thermal photography','Spectrometry']">
+        <button type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i></button>
+      </form>
+      <ul class="nav">
+        <li class="active"><a href="#">All</a></li>
+        <li><a href="#">By place</a></li>
+        <li><a href="#">By tool</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="row">
+      <% @nodes.each_with_index do |node,i| %>
+        <div class="span3 clearfix">
+          <h4><a href="/notes/id/<%= node.nid %>"><%= node.title %></a></h4>
+          <p style="color:#888;"><small>by <a href="/notes/author">Author</a> | <%= time_ago_in_words(node.created_at) %> ago</small></p>
+          <p><%= raw RDiscount.new(node.drupal_node_revision.body).to_html.truncate(100) %></p>
+          <p><a href="notes/id/<%= node.nid %>">Read more &raquo;</a></p>
+        </div>
+      <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
+      </div>
+      <hr />
+      <div class="row">
+      <% end %>
+      <% end %>
+      </div>
+    </div>
+    <%= will_paginate @nodes, :renderer => BootstrapPagination::Rails %>
+  </div>
+
+  <hr />
+  
+</div><!--/span-->

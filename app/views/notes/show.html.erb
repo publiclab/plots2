@@ -1,0 +1,38 @@
+<%= render :partial => "wiki/related_sidebar" %>
+<div class="span9">
+
+  <ul class="breadcrumb">
+    <li><a href="/">Home</a> <span class="divider">/</span></li>
+    <li><a href="/research">Research</a> <span class="divider">/</span></li>
+    <li><a href="/notes/author">Author</a></li>
+  </ul>
+
+  <h2 style="margin-top:0;"><%= @node.title %></h2>
+
+  <div class="">
+    by <a href="">Author</a> |
+    <%= @node.created_at.to_s(:long) %>
+  </div>
+  <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
+  <hr />
+
+  <p>
+  <%= raw RDiscount.new(@node.drupal_node_revision.body).to_html %>
+  </p>
+
+  <hr />
+  <p>
+    <b>Tags:</b>
+    <% @tags.each do |tag| %><a class="label" href="/tags/<%= tag %>"><%= tag %></a> <% end %>
+  </p>
+  
+  <div class="input-prepend">
+    <span class="add-on"><i class="icon-tags"></i></span>
+    <input type="text" class="span6" placeholder="balloon mapping" data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
+  </div>
+
+  <div>
+    <%= render :partial => "notes/comments" %>
+  </div>
+
+</div><!--/span-->

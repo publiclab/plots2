@@ -1,6 +1,6 @@
 class WikiController < ApplicationController
 
-  def index
+  def show
     @tags = ['balloon-mapping','somerville']
   end
 

@@ -13,4 +13,219 @@
 
 ActiveRecord::Schema.define(:version => 0) do
 
+  create_table "comments", :primary_key => "cid", :force => true do |t|
+    t.integer "pid",                             :default => 0,  :null => false
+    t.integer "nid",                             :default => 0,  :null => false
+    t.integer "uid",                             :default => 0,  :null => false
+    t.string  "subject",   :limit => 64,         :default => "", :null => false
+    t.text    "comment",   :limit => 2147483647,                 :null => false
+    t.string  "hostname",  :limit => 128,        :default => "", :null => false
+    t.integer "timestamp",                       :default => 0,  :null => false
+    t.integer "status",    :limit => 1,          :default => 0,  :null => false
+    t.integer "format",    :limit => 2,          :default => 0,  :null => false
+    t.string  "thread",                                          :null => false
+    t.string  "name",      :limit => 60
+    t.string  "mail",      :limit => 64
+    t.string  "homepage"
+  end
+
+  add_index "comments", ["nid"], :name => "nid"
+  add_index "comments", ["pid"], :name => "pid"
+  add_index "comments", ["status"], :name => "status"
+
+  create_table "community_tags", :id => false, :force => true do |t|
+    t.integer "tid",  :default => 0, :null => false
+    t.integer "nid",  :default => 0, :null => false
+    t.integer "uid",  :default => 0, :null => false
+    t.integer "date", :default => 0, :null => false
+  end
+
+  add_index "community_tags", ["nid"], :name => "nid"
+  add_index "community_tags", ["tid", "nid"], :name => "tid_nid"
+  add_index "community_tags", ["tid"], :name => "tid"
+  add_index "community_tags", ["uid"], :name => "uid"
+
+# Could not dump table "content_field_bbox" because of following StandardError
+#   Unknown type 'geometry' for column 'field_bbox_geo'
+
+  create_table "content_field_image_gallery", :id => false, :force => true do |t|
+    t.integer "vid",                                   :default => 0, :null => false
+    t.integer "nid",                                   :default => 0, :null => false
+    t.integer "delta",                                 :default => 0, :null => false
+    t.integer "field_image_gallery_fid"
+    t.integer "field_image_gallery_list", :limit => 1
+    t.text    "field_image_gallery_data"
+  end
+
+  add_index "content_field_image_gallery", ["nid"], :name => "nid"
+
+  create_table "content_field_main_image", :primary_key => "vid", :force => true do |t|
+    t.integer "nid",                                :default => 0, :null => false
+    t.integer "field_main_image_fid"
+    t.integer "field_main_image_list", :limit => 1
+    t.text    "field_main_image_data"
+  end
+
+  create_table "files", :primary_key => "fid", :force => true do |t|
+    t.integer "uid",       :default => 0,  :null => false
+    t.string  "filename",  :default => "", :null => false
+    t.string  "filepath",  :default => "", :null => false
+    t.string  "filemime",  :default => "", :null => false
+    t.integer "filesize",  :default => 0,  :null => false
+    t.integer "status",    :default => 0,  :null => false
+    t.integer "timestamp", :default => 0,  :null => false
+  end
+
+  add_index "files", ["status"], :name => "status"
+  add_index "files", ["timestamp"], :name => "timestamp"
+  add_index "files", ["uid"], :name => "uid"
+
+  create_table "node", :primary_key => "nid", :force => true do |t|
+    t.integer "vid",                     :default => 0,  :null => false
+    t.string  "type",      :limit => 32, :default => "", :null => false
+    t.string  "language",  :limit => 12, :default => "", :null => false
+    t.string  "title",                   :default => "", :null => false
+    t.integer "uid",                     :default => 0,  :null => false
+    t.integer "status",                  :default => 1,  :null => false
+    t.integer "created",                 :default => 0,  :null => false
+#    t.integer "changed",                 :default => 0,  :null => false
+    t.integer "comment",                 :default => 0,  :null => false
+    t.integer "promote",                 :default => 0,  :null => false
+    t.integer "moderate",                :default => 0,  :null => false
+    t.integer "sticky",                  :default => 0,  :null => false
+    t.integer "tnid",                    :default => 0,  :null => false
+    t.integer "translate",               :default => 0,  :null => false
+  end
+
+  create_table "node_images", :force => true do |t|
+    t.integer "nid",                      :default => 0,  :null => false
+    t.integer "uid",                      :default => 0,  :null => false
+    t.string  "filename",                 :default => "", :null => false
+    t.string  "filepath",                 :default => "", :null => false
+    t.string  "filemime",                 :default => "", :null => false
+    t.integer "filesize",                 :default => 0,  :null => false
+    t.string  "thumbpath",                :default => "", :null => false
+    t.integer "thumbsize",                :default => 0,  :null => false
+    t.integer "status",      :limit => 2, :default => 1,  :null => false
+    t.integer "weight",      :limit => 2, :default => 0,  :null => false
+    t.string  "description",              :default => "", :null => false
+    t.integer "timestamp",                :default => 0
+    t.integer "list",        :limit => 1, :default => 1,  :null => false
+  end
+
+  create_table "node_revisions", :primary_key => "vid", :force => true do |t|
+    t.integer "nid",                             :default => 0,  :null => false
+    t.integer "uid",                             :default => 0,  :null => false
+    t.string  "title",                           :default => "", :null => false
+    t.text    "body",      :limit => 2147483647,                 :null => false
+    t.text    "teaser",    :limit => 2147483647,                 :null => false
+    t.text    "log",       :limit => 2147483647,                 :null => false
+    t.integer "timestamp",                       :default => 0,  :null => false
+    t.integer "format",                          :default => 0,  :null => false
+  end
+
+  create_table "node_type", :primary_key => "type", :force => true do |t|
+    t.string  "name",                               :default => "", :null => false
+    t.string  "module",                                             :null => false
+    t.text    "description",    :limit => 16777215,                 :null => false
+    t.text    "help",           :limit => 16777215,                 :null => false
+    t.integer "has_title",      :limit => 1,                        :null => false
+    t.string  "title_label",                        :default => "", :null => false
+    t.integer "has_body",       :limit => 1,                        :null => false
+    t.string  "body_label",                         :default => "", :null => false
+    t.integer "min_word_count", :limit => 2,                        :null => false
+    t.integer "custom",         :limit => 1,        :default => 0,  :null => false
+    t.integer "modified",       :limit => 1,        :default => 0,  :null => false
+    t.integer "locked",         :limit => 1,        :default => 0,  :null => false
+    t.string  "orig_type",                          :default => "", :null => false
+  end
+
+  create_table "openid_association", :primary_key => "assoc_handle", :force => true do |t|
+    t.string  "idp_endpoint_uri"
+    t.string  "assoc_type",       :limit => 32
+    t.string  "session_type",     :limit => 32
+    t.string  "mac_key"
+    t.integer "created",                        :default => 0, :null => false
+    t.integer "expires_in",                     :default => 0, :null => false
+  end
+
+  create_table "openid_nonce", :id => false, :force => true do |t|
+    t.string  "idp_endpoint_uri"
+    t.string  "nonce"
+    t.integer "expires",          :default => 0, :null => false
+  end
+
+  add_index "openid_nonce", ["expires"], :name => "expires"
+  add_index "openid_nonce", ["nonce"], :name => "nonce"
+
+  create_table "openid_provider_association", :primary_key => "assoc_handle", :force => true do |t|
+    t.string  "assoc_type",   :limit => 32, :default => "", :null => false
+    t.string  "session_type", :limit => 32, :default => "", :null => false
+    t.string  "mac_key",                    :default => "", :null => false
+    t.integer "created",                    :default => 0,  :null => false
+    t.integer "expires_in",                 :default => 0,  :null => false
+  end
+
+  create_table "openid_provider_relying_party", :primary_key => "rpid", :force => true do |t|
+    t.integer "uid",                          :null => false
+    t.string  "realm",        :default => "", :null => false
+    t.integer "first_time",   :default => 0,  :null => false
+    t.integer "last_time",    :default => 0,  :null => false
+    t.integer "auto_release", :default => 0,  :null => false
+  end
+
+  add_index "openid_provider_relying_party", ["uid"], :name => "uid"
+
+  create_table "protected_nodes", :primary_key => "nid", :force => true do |t|
+    t.string "passwd", :limit => 40, :default => "", :null => false
+  end
+
+  create_table "term_node", :id => false, :force => true do |t|
+    t.integer "nid", :default => 0, :null => false
+    t.integer "vid", :default => 0, :null => false
+    t.integer "tid", :default => 0, :null => false
+  end
+
+  create_table "term_relation", :primary_key => "trid", :force => true do |t|
+    t.integer "tid1", :default => 0, :null => false
+    t.integer "tid2", :default => 0, :null => false
+  end
+
+  add_index "term_relation", ["tid1", "tid2"], :name => "tid1_tid2", :unique => true
+  add_index "term_relation", ["tid2"], :name => "tid2"
+
+  create_table "url_alias", :primary_key => "pid", :force => true do |t|
+    t.string "src",      :limit => 128, :default => "", :null => false
+    t.string "dst",      :limit => 128, :default => "", :null => false
+    t.string "language", :limit => 12,  :default => "", :null => false
+  end
+
+  create_table "users", :primary_key => "uid", :force => true do |t|
+    t.string  "name",             :limit => 60,         :default => "", :null => false
+    t.string  "pass",             :limit => 32,         :default => "", :null => false
+    t.string  "mail",             :limit => 64,         :default => ""
+    t.integer "mode",             :limit => 1,          :default => 0,  :null => false
+    t.integer "sort",             :limit => 1,          :default => 0
+    t.integer "threshold",        :limit => 1,          :default => 0
+    t.string  "theme",                                  :default => "", :null => false
+    t.string  "signature",                              :default => "", :null => false
+    t.integer "signature_format", :limit => 2,          :default => 0,  :null => false
+    t.integer "created",                                :default => 0,  :null => false
+    t.integer "access",                                 :default => 0,  :null => false
+    t.integer "login",                                  :default => 0,  :null => false
+    t.integer "status",           :limit => 1,          :default => 0,  :null => false
+    t.string  "timezone",         :limit => 8
+    t.string  "language",         :limit => 12,         :default => "", :null => false
+    t.string  "picture",                                :default => "", :null => false
+    t.string  "init",             :limit => 64,         :default => ""
+    t.text    "data",             :limit => 2147483647
+    t.integer "timezone_id",                            :default => 0,  :null => false
+    t.string  "timezone_name",    :limit => 50,         :default => "", :null => false
+  end
+
+  create_table "users_roles", :id => false, :force => true do |t|
+    t.integer "uid", :default => 0, :null => false
+    t.integer "rid", :default => 0, :null => false
+  end
+
 end

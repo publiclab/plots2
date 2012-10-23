@@ -8,6 +8,8 @@ Plots2::Application.routes.draw do
 
   match 'wiki/:id' => 'wiki#show'
   match 'wiki' => 'wiki#index'
+  match 'research' => 'notes#index'
+  match 'notes/id/:id' => 'notes#show'
   
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase

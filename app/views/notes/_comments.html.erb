@@ -2,7 +2,7 @@
   <h3>Comments</h3>
 
   <form class="well">
-    <h4>Post comment</h4>
+    <h4 style="margin-top:0;">Post comment</h4>
 
     <textarea class="span12" id="text-input" oninput="this.editor.update()"
               rows="4" cols="40" placeholder="Type **Markdown** here."></textarea>
@@ -25,6 +25,6 @@
 
     <button type="submit" class="btn btn-primary">Publish</button>
     <a class="btn" onClick="$('#preview').toggle();$('#text-input').toggle()">Preview</a>
-
+    <span>(logged in as <a href="">Username</a>)</span>
   </form>
 </div>
