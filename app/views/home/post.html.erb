@@ -1,4 +1,25 @@
-<%= render :partial => "home/sidebar" %>
+<div class="span3">
+  <h3><i class="icon-certificate"></i> What's a <br />research note?</h3>
+  <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work.</p>
+  <p><b>Research notes can be:</b></p>
+  <ul>
+    <li>photos of what you've made</li>
+    <li>requests for troubleshooting</li>
+    <li>proposals for new projects</li>
+    <li>announcements of events</li>
+    <li>reports from a field test or meetup</li>
+    <li>etc!</li>
+  </ul>
+  <hr />
+  <div class="sidebar-nav hidden-phone">
+    <ul class="nav nav-list">
+      <li class="nav-header">More</li>
+      <li><a href="/wiki/getting-started">Getting started with Public Lab</a></li>
+      <li><a href="#">Advanced note posting</a></li>
+    </ul>
+  </div>
+</div>
+
 <script src="/assets/js/dragdrop.js"></script>
 <div class="span9">
   <div class="alert">
@@ -9,7 +30,7 @@
     <h3 style="margin-top:0;">Share your work:</h3>
 
     <div class="sidebar-nav pull-right span3">
-      <a class="btn btn-large btn-block"><i class="icon-upload"></i> Choose files to upload</a>
+      <a class="btn btn-large btn-block"><i class="icon-upload"></i> Choose files</a>
       <br />
       <div class="dropzone hidden-phone hidden-tablet" id="dropzone">
         Drag files here to attach
