@@ -13,6 +13,7 @@ Plots2::Application.routes.draw do
   match 'research' => 'notes#index'
   match 'notes/id/:id' => 'notes#show'
   match 'notes/author/:id' => 'notes#author'
+  match 'search/:id' => 'search#index'
   
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
