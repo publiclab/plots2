@@ -16,7 +16,7 @@
   <div class="navbar">
     <div class="navbar-inner">
       <form class="navbar-form pull-right" style="margin-left:10px;">
-        <input placeholder="Search within" type="text" class="input-small search-query" data-provide="typeahead" data-source="['Balloon mapping','Thermal photography','Spectrometry']">
+        <input type="text" class="input-small search-query" data-provide="typeahead" data-source='["Balloon mapping","Thermal photography","Spectrometry"]'>
         <button type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i></button>
       </form>
       <ul class="nav">
@@ -33,7 +33,7 @@
       <% @nodes.each_with_index do |node,i| %>
         <div class="span3 clearfix">
           <% if node.main_image %>
-            <a class="thumbnail" href="/notes/id/<%= node.nid %>"><img src="http://publiclaboratory.org/sites/default/files/<%= node.main_image.filename %>" /></a>
+            <a class="thumbnail" href="/notes/id/<%= node.nid %>"><img src="http://publiclaboratory.org/sites/default/files/imagecache/thumb/<%= node.main_image.filename %>" /></a>
           <% end %>
           <h4><a href="/notes/id/<%= node.nid %>"><%= node.title %></a></h4>
           <p style="color:#888;"><small>by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> | <%= time_ago_in_words(node.created_at) %> ago</small></p>

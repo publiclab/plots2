@@ -41,10 +41,31 @@
           </a>
           <a class="brand" href="/">Public Lab</a>
           <div class="nav-collapse collapse">
-            <form class="navbar-form pull-right" style="margin-left:10px;">
-              <input type="text" class="input-small search-query" data-provide="typeahead" data-source="['Balloon mapping','Thermal photography','Spectrometry']">
+
+            <form id="searchform" class="navbar-form pull-right" style="margin-left:10px;" autocomplete="off">
+              <input id="searchform_input" type="text" class="input-small search-query .typeahead" data-provide="typeahead">
+              <script>
+                jQuery(document).ready(function() {
+                $('#searchform').submit(function(e){ 
+                  e.preventDefault()
+                  window.location = '/search/'+$('#searchform_input').val()
+                })
+                // working off of http://stackoverflow.com/questions/9232748/twitter-bootstrap-typeahead-ajax-example
+                $('#searchform_input').typeahead({
+                  source: function (typeahead, query) {
+                    return $.post('/search/typeahead/'+query, {}, function (data) {
+                      return typeahead.process(data)
+                    })
+                  },
+                  // Autoselect is disabled so that users can enter new tags
+                  autoselect: false,
+                  autowidth: false
+                })
+                })
+              </script>
               <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i></button>
             </form>
+
             <ul class="nav pull-right">
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -59,6 +80,7 @@
                 </ul>
               </li>
             </ul>
+
             <ul class="nav">
               <li><a href="/dashboard">Dash</a></li>
               <li><a href="/about">About</a></li>
@@ -76,6 +98,7 @@
               <li><a href="/places">Places</a></li>
               <li><a href="/archive">Maps</a></li>
             </ul>
+
           </div><!--/.nav-collapse -->
         </div>
       </div>
@@ -118,5 +141,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.typeahead.js"></script>
   </body>
 </html>
