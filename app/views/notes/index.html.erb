@@ -5,11 +5,16 @@
     <strong>Welcome!</strong> You haven't posted a research note yet -- consider <a href="/post">sharing your work and interests</a>!
   </div>
 
-  <h2 style="margin-top:0;">Research notes <small>ideas & documentation from contributors like you</small></h2>
+  <% if params[:action] == "author" %>
+    <h3 style="margin-top:0;">Research by <a href="/people/<%= @user.name %>"><%= @user.name %></a> <small><%= @user.notes.length %> research notes and wiki edits starting <%= time_ago_in_words(@user.notes.first.created_at) %> ago</small></h3>
+  <% else %>
+    <h2 style="margin-top:0;">Research notes <small>ideas & documentation from contributors like you</small></h2>
+  <% end %>
+
   <div class="navbar">
     <div class="navbar-inner">
       <form class="navbar-form pull-right" style="margin-left:10px;">
-        <input type="text" class="input-small search-query" data-provide="typeahead" data-source="['Balloon mapping','Thermal photography','Spectrometry']">
+        <input placeholder="Search within" type="text" class="input-small search-query" data-provide="typeahead" data-source="['Balloon mapping','Thermal photography','Spectrometry']">
         <button type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i></button>
       </form>
       <ul class="nav">
@@ -29,7 +34,7 @@
             <a class="thumbnail" href="/notes/id/<%= node.nid %>"><img src="http://publiclaboratory.org/sites/default/files/<%= node.main_image.filename %>" /></a>
           <% end %>
           <h4><a href="/notes/id/<%= node.nid %>"><%= node.title %></a></h4>
-          <p style="color:#888;"><small>by <a href="/notes/author">Author</a> | <%= time_ago_in_words(node.created_at) %> ago</small></p>
+          <p style="color:#888;"><small>by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> | <%= time_ago_in_words(node.created_at) %> ago</small></p>
           <p><%= raw RDiscount.new(node.body).to_html.truncate(100) %></p>
           <p><a href="notes/id/<%= node.nid %>">Read more &raquo;</a></p>
         </div>

@@ -7,9 +7,12 @@ Plots2::Application.routes.draw do
   # Keep in mind you can assign values other than :controller and :action
 
   match 'wiki/:id' => 'wiki#show'
+  match 'wiki/revisions/:id' => 'wiki#revisions'
+  match 'wiki/revisions/:id/:vid' => 'wiki#revision'
   match 'wiki' => 'wiki#index'
   match 'research' => 'notes#index'
   match 'notes/id/:id' => 'notes#show'
+  match 'notes/author/:id' => 'notes#author'
   
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase

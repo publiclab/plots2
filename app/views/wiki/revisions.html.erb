@@ -1,0 +1,29 @@
+<%= render :partial => "wiki/related_sidebar" %>
+<div class="span9">
+
+  <h3 style="margin-top:0;">Revisions for <%= @node.title %></h3>
+  <ul class="nav nav-tabs">
+    <li><a href="#">View</a></li>
+    <li class="disabled"><a href="/wiki/edit/<%= @node.id %>">Edit</a></li>
+    <li class="active"><a href="/wiki/revisions/<%= @node.slug %>">Revisions (<%= @node.revisions.length %>)</a></li>
+    <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
+  </ul>
+
+  <table class="table">
+    <tr>
+      <th>User</th>
+      <th>Created</th>
+    </tr>
+  <% @node.revisions.each do |revision| %>
+    <tr>
+      <td><a href="/people/<%= revision.author.name %>"><%= revision.author.name %></a></td>
+      <td><a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a>
+        | <%= time_ago_in_words(revision.created_at) %> ago
+      </td>
+    </tr>
+  <% end %>
+  </table>
+
+  <hr />
+  
+</div><!--/span-->

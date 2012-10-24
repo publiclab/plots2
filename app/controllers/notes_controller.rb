@@ -10,7 +10,9 @@ class NotesController < ApplicationController
   end
 
   def author
-    @nodes = DrupalNode.find :all, :limit => 20, :order => "nid DESC", :conditions => {:type => 'note', :status => 1, :author => params[:id]}
+    @user = DrupalUsers.find_by_name params[:id]
+    @nodes = DrupalNode.paginate(:limit => 20, :order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => @user.uid}, :page => params[:page])
+    render :template => 'notes/index'
   end
 
 end

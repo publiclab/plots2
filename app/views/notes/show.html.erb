@@ -4,7 +4,7 @@
   <ul class="breadcrumb">
     <li><a href="/">Home</a> <span class="divider">/</span></li>
     <li><a href="/research">Research</a> <span class="divider">/</span></li>
-    <li><a href="/notes/author">Author</a></li>
+    <li><a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a></li>
   </ul>
 
   <% if @node.main_image %>
