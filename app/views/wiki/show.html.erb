@@ -1,6 +1,13 @@
 <%= render :partial => "wiki/related_sidebar" %>
 <div class="span9">
 
+  <div class="btn-toolbar pull-right">
+    <div class="btn-group">
+      <a class="btn btn-small" href="#"><i class="icon-star-empty"></i> Like</a>
+      <a class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
+    </div>
+  </div>
+
   <h2 style="margin-top:0;"><%= @revision.title %></h2>
   <ul class="nav nav-tabs">
     <li class="active"><a href="#">View</a></li>

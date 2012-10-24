@@ -13,11 +13,20 @@
     <br style="clear:both;" />
   <% end %>
 
+  <div class="btn-toolbar pull-right">
+    <div class="btn-group">
+      <a class="btn btn-small" href="#"><i class="icon-star-empty"></i> Like</a>
+      <a class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
+    </div>
+  </div>
+
   <h2 style="clear:left;"><%= @node.title %></h2>
 
   <div class="">
-    by <a href="">Author</a> |
-    <%= @node.created_at.to_s(:long) %>
+    <span>
+      by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
+      <%= @node.created_at.to_s(:long) %> | 
+    </span>
   </div>
   <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
   <hr />

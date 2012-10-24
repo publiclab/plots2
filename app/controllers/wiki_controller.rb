@@ -3,7 +3,7 @@ class WikiController < ApplicationController
   def show
     @tags = ['balloon-mapping','somerville']
     @node = DrupalNode.find_by_slug(params[:id])
-    @revision = @node.revision
+    @revision = @node.latest
   end
 
   def revisions
