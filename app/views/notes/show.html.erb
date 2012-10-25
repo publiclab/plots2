@@ -13,10 +13,11 @@
     <br style="clear:both;" />
   <% end %>
 
-  <div class="btn-toolbar pull-right">
+  <div class="btn-toolbar pull-right" style="margin-left:10px;">
     <div class="btn-group">
-      <a class="btn btn-small" href="#"><i class="icon-star-empty"></i> Like</a>
+      <a class="btn btn-small" href="#"><i class="icon-star"></i> Like (16)</a>
       <a class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
+      <a class="btn btn-small" href="#"><b class="caret"></b></a>
     </div>
   </div>
 
@@ -38,7 +39,7 @@
   <hr />
   <p>
     <b>Tags:</b>
-    <% @tags.each do |tag| %><a class="label" href="/tags/<%= tag %>"><%= tag %></a> <% end %>
+    <% @node.tags.each do |tag| %><a class="label" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %>
   </p>
   
   <div class="input-prepend">

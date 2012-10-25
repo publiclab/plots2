@@ -2,6 +2,8 @@ class DrupalNode < ActiveRecord::Base
   # attr_accessible :title, :body
   has_many :drupal_node_revision, :foreign_key => 'nid'
   has_one :drupal_main_image, :foreign_key => 'nid'
+  has_many :drupal_node_tag, :foreign_key => 'nid'
+  has_many :drupal_tag, :through => :drupal_node_tag
 
   self.table_name = 'node'
   self.primary_key = 'nid'
@@ -30,11 +32,15 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def main_image
-    self.drupal_main_image.drupal_file
+    self.drupal_main_image.drupal_file if self.drupal_main_image
   end
 
   def id
     self.nid
+  end
+
+  def tags
+    self.drupal_tag.uniq
   end
 
   def slug

@@ -1,19 +1,22 @@
 class WikiController < ApplicationController
 
   def show
-    @tags = ['balloon-mapping','somerville']
     @node = DrupalNode.find_by_slug(params[:id])
+    @tags = @node.tags
+    @tagnames = @tags.collect(&:name)
     @revision = @node.latest
+    @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
+    @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
   end
 
   def revisions
-    @tags = ['balloon-mapping','somerville']
     @node = DrupalNode.find_by_slug(params[:id])
+    @tags = @node.tags
   end
 
   def revision
-    @tags = ['balloon-mapping','somerville']
     @node = DrupalNode.find_by_slug(params[:id])
+    @tags = @node.tags
     @revision = DrupalNodeRevision.find_by_vid(params[:vid])
     render :template => "wiki/show"
   end

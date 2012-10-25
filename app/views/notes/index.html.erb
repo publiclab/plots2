@@ -1,4 +1,8 @@
-<%= render :partial => "home/sidebar" %>
+<% if params[:controller] == "tag" %>
+  <%= render :partial => "wiki/related_sidebar" %>
+<% else %>
+  <%= render :partial => "home/sidebar" %>
+<% end %>
 <div class="span9">
   <div class="alert">
     <button type="button" class="close" data-dismiss="alert">×</button>
@@ -7,25 +11,26 @@
 
   <% if params[:controller] == "search" %>
     <h3 style="margin-top:0;">Search results for <i style="color:#aaa;"><%= params[:id] %></i></h3>
+  <% elsif params[:controller] == "tag" %>
+    <h3 style="margin-top:0;">Notes tagged with <i style="color:#aaa;"><%= params[:id] %></i></h3>
   <% elsif params[:action] == "author" %>
     <h3 style="margin-top:0;">Research by <a href="/people/<%= @user.name %>"><%= @user.name %></a> <small><%= @user.notes.length %> research notes and wiki edits starting <%= time_ago_in_words(@user.notes.first.created_at) %> ago</small></h3>
   <% else %>
     <h2 style="margin-top:0;">Research notes <small>ideas & documentation from contributors like you</small></h2>
-  <% end %>
-
-  <div class="navbar">
-    <div class="navbar-inner">
-      <form class="navbar-form pull-right" style="margin-left:10px;">
-        <input type="text" class="input-small search-query" data-provide="typeahead" data-source='["Balloon mapping","Thermal photography","Spectrometry"]'>
-        <button type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i></button>
-      </form>
-      <ul class="nav">
-        <li class="active"><a href="#">All</a></li>
-        <li><a href="#">By place</a></li>
-        <li><a href="#">By tool</a></li>
-      </ul>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <form class="navbar-form pull-right" style="margin-left:10px;">
+          <input type="text" class="input-small search-query" data-provide="typeahead" data-source='["Balloon mapping","Thermal photography","Spectrometry"]'>
+          <button type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i></button>
+        </form>
+        <ul class="nav">
+          <li class="active"><a href="#">All</a></li>
+          <li><a href="#">By place</a></li>
+          <li><a href="#">By tool</a></li>
+        </ul>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="container-fluid">
     <div class="row-fluid">
@@ -48,7 +53,7 @@
       <% end %>
       </div>
     </div>
-    <%= will_paginate @nodes, :renderer => BootstrapPagination::Rails %>
+    <%= will_paginate @nodes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
   </div>
 
   <hr />
