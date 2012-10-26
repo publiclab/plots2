@@ -24,7 +24,7 @@ class DrupalTag < ActiveRecord::Base
         node_ids << node.nid
       end
     end
-    DrupalNode.find node_ids.uniq, :order => "nid DESC", :limit => 10
+    DrupalNode.find node_ids.uniq, :order => "nid DESC", :limit => limit
   end
 
 end

@@ -4,4 +4,17 @@ class HomeController < ApplicationController
     @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :page => params[:page])
   end
 
+  def dashboard
+    @user = DrupalUsers.find_by_name "warren" 
+    @tags = []
+    ['balloon-mapping','leaffest','spectrometer'].each do |tagname|
+      @tags << DrupalTag.find_by_name(tagname)
+    end
+    users = ['donblair','cfastie','liz']
+
+    @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
+    @nodes = DrupalTag.find_nodes_by_type(@tags,'note',8)
+    @unpaginated = true
+  end
+
 end

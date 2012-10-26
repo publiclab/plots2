@@ -1,5 +1,16 @@
 class WikiController < ApplicationController
 
+  def tags
+    @tags = []
+    params[:tags].split('+').each do |tagname|
+      @tags << DrupalTag.find_by_name(tagname)
+    end
+    @tagnames = @tags.collect(&:name)
+    @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
+    @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
+    render :template => 'wiki/index'
+  end
+
   def show
     @node = DrupalNode.find_by_slug(params[:id])
     @tags = @node.tags

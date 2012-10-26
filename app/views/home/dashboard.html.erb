@@ -1,0 +1,34 @@
+<!-- SIDEBAR -->
+<div class="span3">
+  <a style="margin-bottom:6px;" href="/post" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post research &raquo;</a>
+  <a href="/post" class="btn btn-block"><i class="icon-file"></i> Create wiki page &raquo;</a>
+  <hr />
+
+  <% if @wikis && @wikis.length > 0 %>
+  <h4>Related wiki pages</h4>
+  <ul class="nav wikis">
+    <% @wikis.each do |wiki| %>
+      <li><a href="/wiki/<%= wiki.slug %>"><i class="icon-file"></i> <%= wiki.title %></a></li>
+    <% end %>
+  </ul>
+  <% end %>
+
+</div>
+
+<div class="span9">
+  <h3>Dashboard: <small>Welcome, <%= @user.name %>!</small></h3>
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#">Recent Activity</a></li>
+    <li><a href="#">Following (14)</a></li>
+    <li><a href="#">Followers (6)</a></li>
+    <li><a href="#">Your work (<%= DrupalNode.count(:all,:conditions => {:uid => @user.uid}) %>)</a></li>
+    <li><a href="#">Messages <span class="badge badge-info">2</span></a></li>
+    <li><a href="#"><i class="icon-cog"></i> Settings</a></li>
+  </ul>
+
+  <%= render :partial => "notes/notes" %>
+
+  <a class="btn" href="/tags/<%= @tags.collect(&:name).join('+') %>">More notes &raquo;</a>
+
+</div>

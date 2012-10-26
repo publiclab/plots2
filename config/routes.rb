@@ -10,12 +10,15 @@ Plots2::Application.routes.draw do
   match 'wiki/revisions/:id' => 'wiki#revisions'
   match 'wiki/revisions/:id/:vid' => 'wiki#revision'
   match 'wiki' => 'wiki#index'
+  match 'wiki/tags/:tags' => 'wiki#tags'
   match 'research' => 'notes#index'
   match 'notes/author/:id' => 'notes#author'
+  match 'notes/:author/:topic' => 'notes#author_topic'
   match 'notes/:author/:date/:id' => 'notes#show'
   match 'search/:id' => 'search#index'
   match 'search/typeahead/:id' => 'search#typeahead'
   match 'tag/:id' => 'tag#tag'
+  match 'dashboard' => 'home#dashboard'
   
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
