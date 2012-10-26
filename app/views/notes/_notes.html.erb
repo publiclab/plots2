@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="row">
+    <% @nodes.each_with_index do |node,i| %>
+      <div class="span3 clearfix">
+        <% if node.main_image %>
+          <a class="thumbnail" href="/<%= node.slug %>"><img src="http://publiclaboratory.org/sites/default/files/imagecache/thumb/<%= node.main_image.filename %>" /></a>
+        <% end %>
+        <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
+        <p style="color:#888;"><small>by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> | <%= time_ago_in_words(node.created_at) %> ago</small></p>
+        <p><%= raw sanitize(RDiscount.new(node.body).to_html).truncate(100) %></p>
+        <p><a href="notes/id/<%= node.nid %>">Read more &raquo;</a></p>
+      </div>
+    <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
+    </div>
+    <hr />
+    <div class="row">
+    <% end %>
+    <% end %>
+    </div>
+  </div>
+  <%= will_paginate @nodes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+</div>

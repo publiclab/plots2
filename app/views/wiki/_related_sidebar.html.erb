@@ -1,5 +1,5 @@
 <div class="span3">
-  <a style="margin-bottom:6px;" href="/post?tags=<%= @tagnames.join(',') %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
+  <a style="margin-bottom:6px;" href="/post<%= '?tags='+@tagnames.join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
   <hr />
 
   <% if @wikis && @wikis.length > 0 %>
@@ -15,7 +15,7 @@
   <h4>Related research notes</h4>
   <ul class="nav">
     <% @notes.each do |note| %>
-      <li><a href="/notes/<%= note.author %>/<%= note.slug %>"><i class="icon-certificate"></i> <%= note.title %></a></li>
+      <li><a href="/<%= note.slug %>"><i class="icon-certificate"></i> <%= note.title %></a></li>
     <% end %>
   </ul>
   <% end %>

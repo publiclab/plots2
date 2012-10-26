@@ -15,7 +15,7 @@
 
   <div class="btn-toolbar pull-right" style="margin-left:10px;">
     <div class="btn-group">
-      <a class="btn btn-small" href="#"><i class="icon-star"></i> Like (16)</a>
+      <a class="btn btn-small" href="#"><i class="icon-star"></i> Like <span class="badge badge-info">8</span></a>
       <a class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
       <a class="btn btn-small" href="#"><b class="caret"></b></a>
     </div>
@@ -26,7 +26,7 @@
   <div class="">
     <span>
       by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
-      <%= @node.created_at.to_s(:long) %> | 
+      <%= @node.created_at.to_s(:long) %> 
     </span>
   </div>
   <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->

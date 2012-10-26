@@ -44,11 +44,17 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def slug
-    DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/')[1]
+    slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if self.type == "page"
+    slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst if self.type == "note"
+    slug
   end
 
   def self.find_by_slug(title)
     DrupalUrlAlias.find_by_dst('wiki/'+title).node
+  end
+
+  def self.find_root_by_slug(title)
+    DrupalUrlAlias.find_by_dst(title).node
   end
 
   def latest

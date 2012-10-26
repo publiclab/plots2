@@ -5,7 +5,7 @@
     <div class="btn-group">
       <a class="btn btn-small" href="#"><i class="icon-star"></i> Like (16)</a>
       <a class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
-      <a href="#" rel="popover" id="follow" class="btn btn-small" data-content="<% @tagnames.each do |t| %><a href=''>Follow '<%= t %>'</a><% end %>'</a>"><b class="caret"></b></a>
+      <a href="#" rel="popover" id="follow" class="btn btn-small" data-content="<% if @tagnames %><% @tagnames.each do |t| %><a href=''>Follow '<%= t %>'</a><% end %>'</a><% end %>"><b class="caret"></b></a>
     </div>
   </div>
 

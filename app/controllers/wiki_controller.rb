@@ -9,6 +9,12 @@ class WikiController < ApplicationController
     @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
   end
 
+  def root
+    @node = DrupalNode.find_root_by_slug(params[:id])
+    @revision = @node.latest
+    render :template => "wiki/show"
+  end
+
   def revisions
     @node = DrupalNode.find_by_slug(params[:id])
     @tags = @node.tags

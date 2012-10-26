@@ -11,8 +11,8 @@ Plots2::Application.routes.draw do
   match 'wiki/revisions/:id/:vid' => 'wiki#revision'
   match 'wiki' => 'wiki#index'
   match 'research' => 'notes#index'
-  match 'notes/id/:id' => 'notes#show'
   match 'notes/author/:id' => 'notes#author'
+  match 'notes/:author/:date/:id' => 'notes#show'
   match 'search/:id' => 'search#index'
   match 'search/typeahead/:id' => 'search#typeahead'
   match 'tag/:id' => 'tag#tag'
@@ -68,4 +68,8 @@ Plots2::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
+
+  match ':id' => 'wiki#root'
+
+
 end
