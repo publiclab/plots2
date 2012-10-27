@@ -9,6 +9,9 @@ class WikiController < ApplicationController
     else
       @tags = @node.tags
     end
+    # attempt to add the page name itself as a tag:
+      tag = DrupalTag.find_by_name(params[:id])
+      @tags << tag if tag
     @tagnames = @tags.collect(&:name)
     @revision = @node.latest
     @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
@@ -42,6 +45,14 @@ class WikiController < ApplicationController
     @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
     @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
     render :template => 'wiki/index'
+  end
+
+  def place
+    redirect_to "/wiki/"+params[:id]
+  end
+
+  def tool
+    redirect_to "/wiki/"+params[:id]
   end
 
 end

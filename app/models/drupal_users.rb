@@ -4,6 +4,8 @@ class DrupalUsers < ActiveRecord::Base
   self.primary_key = 'fid'
 
   has_many :drupal_node, :foreign_key => 'uid'
+  has_many :drupal_profile_values, :foreign_key => 'uid'
+  has_many :drupal_profile_, :through => :drupal_node_tag
 
   def notes
     DrupalNode.find_all_by_uid self.uid
@@ -21,6 +23,14 @@ class DrupalUsers < ActiveRecord::Base
       end
     end
     DrupalNode.find(node_ids.uniq, :order => "nid DESC")
+  end
+
+  def created_at
+    Time.at(self.created)
+  end
+
+  def profile_values
+    self.drupal_profile_values
   end
 
 end

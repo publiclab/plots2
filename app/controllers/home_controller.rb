@@ -17,4 +17,12 @@ class HomeController < ApplicationController
     @unpaginated = true
   end
 
+  def people
+    redirect_to "/profile/"+params[:id]
+  end
+
+  def profile
+    @user = DrupalUsers.find_by_name(params[:id])
+  end
+
 end

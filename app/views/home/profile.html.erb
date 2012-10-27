@@ -1,0 +1,13 @@
+<div class="span3">
+  <a style="margin-bottom:6px;" href="/post" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post research &raquo;</a>
+  <a href="/post" class="btn btn-block"><i class="icon-file"></i> Create wiki page &raquo;</a>
+  <hr />
+
+</div>
+
+<div class="span9">
+  <h3><%= @user.name %> <small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small></h3>
+
+  <%= @user.profile_values.inspect %>
+
+</div>
