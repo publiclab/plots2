@@ -47,10 +47,10 @@ h1,h2,h3,h4 {
   background:white;
 }
 
-.nav.notes li, .nav.wikis li {
+.nav.bullet li {
   padding-left:20px;
 }
-.nav.notes li i, .nav.wikis li i {
+.nav.bullet li i {
   margin-left:-19px;
 }
 

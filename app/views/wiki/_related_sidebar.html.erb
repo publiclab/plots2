@@ -16,7 +16,7 @@
   <hr />
 
   <h4>Recent discussion topics</h4>
-  <ul class="nav">
+  <ul class="nav bullet">
     <li><a href="#"><i class="icon-comment"></i> Using infrared cameras</a></li>
     <li><a href="#"><i class="icon-comment"></i> Question about water levels</a></li>
     <li><a href="#"><i class="icon-comment"></i> New to the list</a></li>
@@ -24,7 +24,7 @@
   </ul>
 
   <h4>Local events</h4>
-  <ul class="nav">
+  <ul class="nav bullet">
     <li><a href="#"><i class="icon-calendar"></i> LEAFFEST</a></li>
     <li><a href="#"><i class="icon-calendar"></i> Tidmarsh Farms meetup</a></li>
   </ul>
@@ -45,7 +45,7 @@
 
   <% if @wikis && @wikis.length > 0 %>
   <h4>Related wiki pages</h4>
-  <ul class="nav wikis">
+  <ul class="nav bullet">
     <% @wikis.each do |wiki| %>
       <li><a href="/wiki/<%= wiki.slug %>"><i class="icon-file"></i> <%= wiki.title %></a></li>
     <% end %>
@@ -54,7 +54,7 @@
 
   <% if @notes && @notes.length > 0 %>
   <h4>Related research notes</h4>
-  <ul class="nav notes">
+  <ul class="nav bullet">
     <% @notes.each do |note| %>
       <li><a href="/<%= note.slug %>"><i class="icon-certificate"></i> <%= note.title %></a></li>
     <% end %>

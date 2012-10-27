@@ -21,7 +21,7 @@ class NotesController < ApplicationController
   def author_topic
     @user = DrupalUsers.find_by_name params[:author]
     @tagnames = params[:topic].split('+')
-    @notes = @user.notes_for_tags(@tagnames)
+    @nodes = @user.notes_for_tags(@tagnames)
     @unpaginated = true
     render :template => 'notes/index'
   end

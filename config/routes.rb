@@ -13,7 +13,7 @@ Plots2::Application.routes.draw do
   match 'wiki/tags/:tags' => 'wiki#tags'
   match 'research' => 'notes#index'
   match 'notes/author/:id' => 'notes#author'
-  match 'notes/:author/:topic' => 'notes#author_topic'
+  match 'notes/author/:author/:topic' => 'notes#author_topic'
   match 'notes/:author/:date/:id' => 'notes#show'
   match 'search/:id' => 'search#index'
   match 'search/typeahead/:id' => 'search#typeahead'
