@@ -50,7 +50,8 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_by_slug(title)
-    DrupalUrlAlias.find_by_dst('wiki/'+title).node
+    urlalias = DrupalUrlAlias.find_by_dst('wiki/'+title)
+    urlalias.node if urlalias
   end
 
   def self.find_root_by_slug(title)

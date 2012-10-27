@@ -1,19 +1,14 @@
 class WikiController < ApplicationController
 
-  def tags
-    @tags = []
-    params[:tags].split('+').each do |tagname|
-      @tags << DrupalTag.find_by_name(tagname)
-    end
-    @tagnames = @tags.collect(&:name)
-    @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
-    @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
-    render :template => 'wiki/index'
-  end
-
   def show
     @node = DrupalNode.find_by_slug(params[:id])
-    @tags = @node.tags
+    if @node.nil?
+      @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
+      @place = true
+      @tags = [DrupalTag.find_by_name(params[:id])]
+    else
+      @tags = @node.tags
+    end
     @tagnames = @tags.collect(&:name)
     @revision = @node.latest
     @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
@@ -36,6 +31,17 @@ class WikiController < ApplicationController
     @tags = @node.tags
     @revision = DrupalNodeRevision.find_by_vid(params[:vid])
     render :template => "wiki/show"
+  end
+
+  def tags
+    @tags = []
+    params[:tags].split('+').each do |tagname|
+      @tags << DrupalTag.find_by_name(tagname)
+    end
+    @tagnames = @tags.collect(&:name)
+    @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
+    @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
+    render :template => 'wiki/index'
   end
 
 end

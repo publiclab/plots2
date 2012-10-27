@@ -1,9 +1,41 @@
 <div class="span3">
   <a style="margin-bottom:6px;" href="/post<%= '?tags='+@tagnames.join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
+
+  <% unless @place.nil? %>
+  <br />
+  <div class='well'>
+  <form>
+    <label>Join the local mailing list:</label>
+    <div class="input-prepend">
+      <span class="add-on"><i class="icon-email"></i></span>
+      <input class="span11" type="text" />
+    </div>
+    <button type="submit" class="btn btn-primary btn-small">Subscribe</button>
+  </form>
+
+  <hr />
+
+  <h4>Recent discussion topics</h4>
+  <ul class="nav">
+    <li><a href="#"><i class="icon-comment"></i> Using infrared cameras</a></li>
+    <li><a href="#"><i class="icon-comment"></i> Question about water levels</a></li>
+    <li><a href="#"><i class="icon-comment"></i> New to the list</a></li>
+    <li><a href="#"><i class="icon-comment"></i> help with camera</a></li>
+  </ul>
+
+  <h4>Local events</h4>
+  <ul class="nav">
+    <li><a href="#"><i class="icon-calendar"></i> LEAFFEST</a></li>
+    <li><a href="#"><i class="icon-calendar"></i> Tidmarsh Farms meetup</a></li>
+  </ul>
+
+  </div>
+  <% end %>
+
   <hr />
 
   <% if @notes && @notes.length > 0 %>
-  <h4>Recent contributors for this topic</h4>
+  <h4>Recent contributors on this topic</h4>
   <ul class="nav">
     <% @notes.collect(&:author).collect(&:name).uniq.each do |author| %>
       <li><a href="/notes/author/<%= @tagnames.join('+') %>/<%= author %>"><i class="icon-user"></i> <%= author %></a></li>
