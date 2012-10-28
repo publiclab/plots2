@@ -1,4 +1,4 @@
-<% if params[:controller] == "tag" %>
+<% if params[:controller] == "tag" || params[:controller] == "search" %>
   <%= render :partial => "wiki/related_sidebar" %>
 <% else %>
   <%= render :partial => "home/sidebar" %>
@@ -7,6 +7,13 @@
   <div class="alert">
     <button type="button" class="close" data-dismiss="alert">×</button>
     <strong>Welcome!</strong> You haven't posted a research note yet -- consider <a href="/post">sharing your work and interests</a>!
+  </div>
+
+  <div class="btn-toolbar pull-right" style="margin-left:5px;margin-top:0;">
+    <div class="btn-group">
+      <a class="btn btn-small" href="#"><i class="icon-th-list"></i> </a>
+      <a class="btn btn-small" href="#"><i class="icon-th"></i></a>
+    </div>
   </div>
 
   <% if params[:controller] == "search" %>
