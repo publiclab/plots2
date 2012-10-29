@@ -27,4 +27,13 @@ class DrupalTag < ActiveRecord::Base
     DrupalNode.find node_ids.uniq, :order => "nid DESC", :limit => limit
   end
 
+  def self.find_nodes_by_type_with_all_tags(tags,type,limit)
+    node_ids = []
+    tags.each do |tag|
+      tag.drupal_node.filter_by_type(type).each do |node|
+        node_ids << node.nid if (node.tags & tags).length == tags.length
+      end
+    end
+    DrupalNode.find node_ids.uniq, :order => "nid DESC", :limit => limit
+  end
 end

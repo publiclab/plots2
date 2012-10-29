@@ -16,6 +16,7 @@ class WikiController < ApplicationController
     @revision = @node.latest
     @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
     @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
+    @videos = DrupalTag.find_nodes_by_type_with_all_tags([DrupalTag.find_by_name('video')]+@tags,'note',8)
   end
 
   def root
