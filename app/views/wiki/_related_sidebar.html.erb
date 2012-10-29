@@ -30,7 +30,7 @@
   <h4>Related wiki pages</h4>
   <ul class="nav bullet">
     <% @wikis.each do |wiki| %>
-      <li><a href="/wiki/<%= wiki.slug %>"><i class="icon-file"></i> <%= wiki.title %></a></li>
+      <li><a href="/wiki/<%= wiki.slug %>"><i class="icon-book"></i> <%= wiki.title %></a></li>
     <% end %>
     <% if params[:controller] == "search" %>
       <li><a href="/tag/<%= params[:id] %>">More...</a></li>
@@ -42,7 +42,7 @@
   <h4>Related research notes</h4>
   <ul class="nav bullet">
     <% @notes.each do |note| %>
-      <li><a href="/<%= note.slug %>"><i class="icon-certificate"></i> <%= note.title %></a></li>
+      <li><a href="/<%= note.slug %>"><i class="icon-file"></i> <%= note.title %></a></li>
     <% end %>
     <% if params[:controller] == "search" %>
       <li><a href="/tag/<%= params[:id] %>">More...</a></li>
