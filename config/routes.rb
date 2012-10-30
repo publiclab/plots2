@@ -8,6 +8,7 @@ Plots2::Application.routes.draw do
 
   match 'wiki/:id' => 'wiki#show'
   match 'wiki/revisions/:id' => 'wiki#revisions'
+  match 'wiki/edit/:id' => 'wiki#edit'
   match 'wiki/revisions/:id/:vid' => 'wiki#revision'
   match 'wiki' => 'wiki#index'
   match 'place/:id' => 'wiki#place'
@@ -23,6 +24,7 @@ Plots2::Application.routes.draw do
   match 'dashboard' => 'home#dashboard'
   match 'profile/:id' => 'home#profile'
   match 'people/:id' => 'home#people'
+  match 'register' => 'home#register'
   
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
