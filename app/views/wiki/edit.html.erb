@@ -1,13 +1,12 @@
 <div class="span3">
-  <h3><i class="icon-file"></i> What's a <br />research note?</h3>
-  <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work.</p>
-  <p><b>Research notes can be:</b></p>
+  <h3><i class="icon-book"></i> What's a <br />a wiki page?</h3>
+  <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Wiki pages</b> are web pages that anyone can create or edit -- we use them to collect information, documentation, and instructions on projects.</p>
+  <p><b>Wiki pages can be:</b></p>
   <ul>
-    <li>photos of what you've made</li>
-    <li>requests for troubleshooting</li>
-    <li>proposals for new projects</li>
-    <li>announcements of events</li>
-    <li>reports from a field test or meetup</li>
+    <li>a tutorial on how to make something</li>
+    <li>documentation of a project</li>
+    <li>an event planning page</li>
+    <li>a place to collect lists of research notes</li>
     <li>etc!</li>
   </ul>
   <hr />
@@ -15,6 +14,7 @@
     <ul class="nav nav-list">
       <li class="nav-header">More</li>
       <li><a href="/wiki/getting-started">Getting started with Public Lab</a></li>
+      <li><a href="/wiki/revisions/<%= @node.slug %>">Revisions for this page</a></li>
       <li><a href="#">Advanced note posting</a></li>
     </ul>
   </div>
@@ -24,10 +24,14 @@
 <div class="span9">
   <div class="alert">
     <button type="button" class="close" data-dismiss="alert">×</button>
-    <strong>Note:</strong> This is an example note posting form; it is not functional.
+    <strong>Note:</strong> This is an example wiki posting form; it is not functional.
   </div>
   <form class="well post">
-    <h3 style="margin-top:0;">Share your work:</h3>
+    <% if @node %>
+      <h3 style="margin-top:0;">Editing page: <i><%= @node.title %></i></h3>
+    <% else %>
+      <h3 style="margin-top:0;">Create page: <i><%= @node.title %></i></h3>
+    <% end %>
 
     <div class="sidebar-nav pull-right span3">
       <a class="btn btn-large btn-block"><i class="icon-upload"></i> Choose files</a>
@@ -37,7 +41,7 @@
       </div>
     </div>
 
-    <input type="text" class="span9" placeholder="Title"><br />
+    <input type="text" class="span9" id="title" value="<%= @node.title %>"><br />
 
     <script>
       function wrap(a,b) {
@@ -67,7 +71,7 @@
     </div>
 
     <textarea class="span9" id="text-input" oninput="this.editor.update()"
-              rows="8" cols="60" placeholder="Type **Markdown** here."></textarea>
+              rows="30" cols="60"><%= @node.body %></textarea>
     <div class="well span9" id="preview" style="display:none;"> </div>
     <br style="clear:both;"/>
 
@@ -87,7 +91,7 @@
 
     <div class="input-prepend">
       <span class="add-on"><i class="icon-tags"></i></span>
-      <input type="text" class="span6" <% if params[:tags] %>value="<%= params[:tags] %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
+      <input type="text" class="span6" <% if @tags %>value="<%= @tags.collect(&:name).join(',') %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
     </div>
 
     <br />

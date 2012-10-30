@@ -19,6 +19,15 @@ class WikiController < ApplicationController
     @videos = DrupalTag.find_nodes_by_type_with_all_tags([DrupalTag.find_by_name('video')]+@tags,'note',8)
   end
 
+  def edit
+    @node = DrupalNode.find_by_slug(params[:id])
+    if @node.nil?
+      @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
+      @place = true
+    end
+    @tags = @node.tags
+  end
+
   def root
     @node = DrupalNode.find_root_by_slug(params[:id])
     @revision = @node.latest

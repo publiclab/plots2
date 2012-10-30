@@ -18,7 +18,7 @@
   <h2><%= @revision.title %></h2>
   <ul class="nav nav-tabs">
     <li class="active"><a href="#">View</a></li>
-    <li><a href="/wiki/edit/<%= @node.id %>">Edit</a></li>
+    <li><a href="/wiki/edit/<%= @node.slug %>">Edit</a></li>
     <li><a href="/wiki/revisions/<%= @node.slug %>">Revisions (<%= @node.revisions.length %>)</a></li>
     <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
   </ul>
