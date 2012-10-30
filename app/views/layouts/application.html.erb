@@ -41,6 +41,8 @@
           </a>
           <a class="brand" href="/">Public Lab</a>
 
+          <a style="margin-left:6px;" href="/register" class="btn pull-right">Join</a>
+
           <div class="nav-collapse collapse">
 
           <form id="searchform" class="navbar-form pull-right" style="margin-left:10px;" autocomplete="off">
@@ -66,7 +68,7 @@
               </script>
               <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i></button>
             </form>
-
+            <% unless params[:action] == "register" %>
             <ul class="nav pull-right">
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -81,6 +83,7 @@
                 </ul>
               </li>
             </ul>
+            <% end %>
 
             <ul class="nav">
               <li><a href="/dashboard"><i class="icon-home icon-white"></i></a></li>

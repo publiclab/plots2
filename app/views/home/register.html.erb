@@ -23,13 +23,16 @@
 
   <h3>Join Public Lab <small>Contribute to our growing body of open environmental science research</small></h3>
 
-  <form class="well">
+  <form class="well form-horizontal">
+    <div class="control-group">
+      <input id="username" type="text" placeholder="username">
+      <span class="help-inline"><i>No spaces or punctuation, please.</i></span>
+    </div>
+    <div class="control-group">
+      <input id="email" type="text" placeholder="you@email.com"><br />
+    </div>
 
-    <input id="username" type="text" placeholder="username">
-    <span class="help-block"><i>No spaces or punctuation, please.</i></span>
-    <input id="email" type="text" placeholder="you@email.com"><br />
-
-    <br />
+    <div class="control-group">
     <p><b>Join mailing lists on different topics and for different regions</b></p>
 
     <label class="checkbox">
@@ -38,34 +41,57 @@
     </label>
     <label class="checkbox">
       <input id="lists[grassrootsmapping]" type="checkbox" checked="true" value="grassrootsmapping">
-      Grassroots Mapping mailing list (balloon and kite mapping)
+      Grassroots Mapping - balloon and kite mapping
     </label>
     <label class="checkbox">
       <input id="lists[plots-spectrometry]" type="checkbox" checked="true" value="plots-spectrometry">
-      plots-spectrometry - for spectrometry and spectral analysis discussion
+      plots-spectrometry - spectrometry and spectral analysis
     </label>
+    </div>
 
-    <hr />
-    <p><b>Local mailing lists (for event coordination, meetups)</b></p>
+    <div class="control-group" style="width:500px;">
+    <p><b>Local mailing lists (for nearby events &amp; meetups)</b></p>
 
-    <label class="checkbox">
+    <label class="checkbox inline">
       <input id="lists[plots-gulfcoast]" type="checkbox" value="plots-gulfcoast">
       plots-gulfcoast
     </label>
-    <label class="checkbox">
+    <label class="checkbox inline">
       <input id="lists[plots-nyc]" type="checkbox" value="plots-nyc">
       plots-nyc
     </label>
-    <label class="checkbox">
+    <label class="checkbox inline">
       <input id="lists[plots-boston]" type="checkbox" value="plots-boston">
       plots-boston
     </label>
-    <label class="checkbox">
-      <input id="lists[plots-norcal]" type="checkbox" value="plots-norcal">
-      plots-norcal
+    <label class="checkbox inline">
+      <input id="lists[plots-providence]" type="checkbox" value="plots-providence">
+      plots-providence
     </label>
 
     <br />
+
+    <label class="checkbox inline">
+      <input id="lists[plots-norcal]" type="checkbox" value="plots-norcal">
+      plots-norcal (North California)
+    </label>
+    <label class="checkbox inline">
+      <input id="lists[plots-skane]" type="checkbox" value="plots-skane">
+      plots-skane (Sweden)
+    </label>
+
+    <br />
+
+    <label class="checkbox inline">
+      <input id="lists[plots-amsterdam]" type="checkbox" value="plots-amsterdam">
+      plots-amsterdam
+    </label>
+    <label class="checkbox inline">
+      <input id="lists[plots-southeast]" type="checkbox" value="plots-southeast">
+      plots-southeast
+    </label>
+    </div>
+
     <script type="text/javascript">
       <!--//--><![CDATA[//><!--
       $(function() { Recaptcha.create('6Lff6sESAAAAAK9cp9A2ajSGESoHnd3EZI4XaLQe', 'recaptcha_ajax_api_container', {theme: 'white'});});
