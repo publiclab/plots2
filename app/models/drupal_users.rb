@@ -33,4 +33,12 @@ class DrupalUsers < ActiveRecord::Base
     self.drupal_profile_values
   end
 
+  def tags
+    tags = []
+    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => 20).each do |node|
+      tags += node.tags
+    end
+    tags.uniq
+  end
+
 end
