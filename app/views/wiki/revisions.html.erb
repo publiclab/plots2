@@ -18,6 +18,7 @@
       <td><a href="/people/<%= revision.author.name %>"><%= revision.author.name %></a></td>
       <td><a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a>
         | <%= time_ago_in_words(revision.created_at) %> ago
+        <div style="display:none;" id="body_<%= revision.vid %>"><%= raw RDiscount.new(revision.body).to_html %></div>
       </td>
     </tr>
   <% end %>
@@ -28,4 +29,16 @@
 </div>
 <div class="span7">
   <h2>Most recent changes</h2>
+
+  <script src="/assets/js/jsdiff.js"></script>
+
+  <div class="well" id="diff"></div>
+  <style>
+    del { background:#faa; }
+    ins { background:#afa; }
+  </style>
+  <script>
+    $('#diff').html(diffString($('#body_<%= @node.revisions[1].vid %>').html(),$('#body_<%= @node.latest.vid %>').html()))
+  </script>
+
 </div>

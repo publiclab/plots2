@@ -11,22 +11,27 @@ Plots2::Application.routes.draw do
   match 'wiki/edit/:id' => 'wiki#edit'
   match 'wiki/revisions/:id/:vid' => 'wiki#revision'
   match 'wiki' => 'wiki#index'
+  match 'wiki/tags/:tags' => 'wiki#tags'
+
   match 'place/:id' => 'wiki#place'
   match 'tool/:id' => 'wiki#tool'
-  match 'wiki/tags/:tags' => 'wiki#tags'
+
   match 'research' => 'notes#index'
   match 'notes/author/:id' => 'notes#author'
   match 'notes/author/:author/:topic' => 'notes#author_topic'
   match 'notes/:author/:date/:id' => 'notes#show'
+
   match 'search/:id' => 'search#index'
   match 'search/typeahead/:id' => 'search#typeahead'
   match 'tag/:id' => 'tag#tag'
+
   match 'dashboard' => 'home#dashboard'
   match 'subscriptions' => 'home#subscriptions'
   match 'profile/:id' => 'home#profile'
   match 'people/:id' => 'home#people'
   match 'register' => 'home#register'
   match 'maps' => 'map#index'
+  match 'archive' => 'map#index'
   match 'stats' => 'notes#stats'
   
   # Sample of named route:
