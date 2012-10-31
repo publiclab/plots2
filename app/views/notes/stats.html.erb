@@ -1,0 +1,27 @@
+<div class="span3">
+
+</div>
+
+<div class="span9">
+
+  <h2>Contributor statistics</h2>
+
+  <% 
+    users = []
+    nids = []
+    DrupalNode.find(:all, :conditions => {:type => 'note', :status => 1}).each do |note|
+      unless note.uid == 674 || note.uid == 671
+        users << note.uid
+        nids << note.nid
+      end
+    end
+  %>
+
+  <h4><%= nids.uniq.length %> research notes have been posted by <%= users.uniq.length %> contributors since <%= time_ago_in_words(DrupalNode.find(:first, :conditions => {:type => 'note', :status => 1}).created_at) %> ago</h4>
+
+  <h4><%= DrupalNode.count(:all, :conditions => {:type => 'page', :status => 1}) %> wiki pages have been posted</h4>
+
+  <h4><%= DrupalNodeRevision.count(:all) %> wiki page and research note edits have been made</h4>
+
+</div>
+

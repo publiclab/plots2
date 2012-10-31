@@ -25,6 +25,8 @@ Plots2::Application.routes.draw do
   match 'profile/:id' => 'home#profile'
   match 'people/:id' => 'home#people'
   match 'register' => 'home#register'
+  match 'maps' => 'map#index'
+  match 'stats' => 'notes#stats'
   
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase

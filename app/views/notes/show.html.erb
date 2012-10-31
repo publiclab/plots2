@@ -30,6 +30,7 @@
   <h2 style="clear:left;"><%= @node.title %></h2>
 
   <div class="">
+
     <span>
       by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
       <%= @node.created_at.to_s(:long) %> 
@@ -47,7 +48,11 @@
     <b>Tags:</b>
     <% @node.tags.each do |tag| %><a class="label" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %>
   </p>
-  
+
+  <hr />
+    <%= render :partial => "home/social" %>
+  <hr />
+
   <div class="input-prepend">
     <span class="add-on"><i class="icon-tags"></i></span>
     <input type="text" class="span6" placeholder="balloon mapping" data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
