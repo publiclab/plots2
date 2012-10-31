@@ -1,0 +1,38 @@
+<div class="span3">
+
+  <p><b>Subscriptions</b> let you keep up to date with topics on Public Lab. You can choose to receive them by email or in digest form.</p>
+
+  <hr />
+
+</div>
+
+<div class="span9">
+
+  <h3>Manage subscriptions (4)</h3>
+
+  <div class="navbar">
+    <div class="navbar-inner">
+      <form class="navbar-form">
+          <input type="text" class="input search-query" placeholder="search for tags" data-provide="typeahead" data-source='["balloon-mapping","thermal-flashlight","spectrometer"]'>
+        <button type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <table class="table">
+  <tr><th>Tag</th><th>Options</th></tr>
+  <% ['balloon-mapping','spectrometer','boston','vermont'].each do |tagname| %>
+  <tr>
+    <td><a href="/tag/<%= tagname %>"><%= tagname %></a></td>
+    <td><div class="btn-toolbar" style="margin:0;">
+      <div class="btn-group">
+        <a class="btn btn-small" href="javascript:void(0)"><i class="icon-envelope"></i> Email</a>
+        <a class="btn btn-small" href="javascript:void(0)"><i class="icon-list"></i> Digest</a>
+        <a class="btn btn-small" href="javascript:void(0)"><i class="icon-remove-sign"></i> Unsubscribe</a>
+      </div>
+    </div></td>
+  </tr>
+  <% end %>
+  </table>
+
+</div>

@@ -25,4 +25,8 @@ class HomeController < ApplicationController
     @user = DrupalUsers.find_by_name(params[:id])
   end
 
+  def subscriptions
+    @user = DrupalUsers.find_by_name(params[:id])
+  end
+
 end
