@@ -41,4 +41,18 @@ class DrupalUsers < ActiveRecord::Base
     tags.uniq
   end
 
+  def tag_counts
+    tags = {}
+    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => 20).each do |node|
+      node.tags.each do |tag|
+        if tags[tag.name]
+          tags[tag.name] += 1
+        else
+          tags[tag.name] = 1
+        end
+      end
+    end
+    tags
+  end
+
 end

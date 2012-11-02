@@ -11,4 +11,8 @@ class TagController < ApplicationController
     render :template => "notes/index"
   end
 
+  def author
+    render :json => DrupalUsers.find_by_name(params[:id]).tag_counts
+  end
+
 end

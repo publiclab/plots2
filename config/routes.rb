@@ -24,6 +24,7 @@ Plots2::Application.routes.draw do
   match 'search/:id' => 'search#index'
   match 'search/typeahead/:id' => 'search#typeahead'
   match 'tag/:id' => 'tag#tag'
+  match 'tag/author/:id.json' => 'tag#author'
 
   match 'dashboard' => 'home#dashboard'
   match 'subscriptions' => 'home#subscriptions'
