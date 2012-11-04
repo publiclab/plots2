@@ -1,0 +1,40 @@
+<div class="span3">
+
+  <p><b>Spam moderation:</b> </p> 
+
+  <hr />
+
+</div>
+
+<div class="span9">
+
+  <h3>Moderate potential spam</h3>
+
+  <div class="navbar">
+    <div class="navbar-inner">
+      <form class="navbar-form">
+          <input type="text" class="input search-query" placeholder="search for tags" data-provide="typeahead" data-source='["balloon-mapping","thermal-flashlight","spectrometer"]'>
+        <button type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <table class="table">
+  <tr><th>Title</th><th>Author</th><th>Action</th></tr>
+  <% @nodes.each do |node| %>
+  <tr>
+    <td><i class="icon-file"></i> <a href="#"><%= node.title %></a></td>
+    <td><a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a></td>
+    <td><div class="btn-toolbar" style="margin:0;">
+      <div class="btn-group">
+        <a class="btn btn-success" href="javascript:void(0)"><i class="icon-ok-circle"></i> Approve</a>
+        <a class="btn btn-danger" href="javascript:void(0)"><i class="icon-ban-circle icon-white"></i> Spam</a>
+        <a class="btn btn-warning" href="javascript:void(0)"><i class="icon-ban-circle icon-white"></i> Spam author</a>
+        <a class="btn" href="javascript:void(0)"><i class="icon-trash"></i> Delete</a>
+      </div>
+    </div></td>
+  </tr>
+  <% end %>
+  </table>
+
+</div>

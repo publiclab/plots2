@@ -34,6 +34,8 @@ Plots2::Application.routes.draw do
   match 'maps' => 'map#index'
   match 'archive' => 'map#index'
   match 'stats' => 'notes#stats'
+
+  match 'spam' => 'admin#spam'
   
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase

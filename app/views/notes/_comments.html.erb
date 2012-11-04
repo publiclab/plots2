@@ -1,5 +1,13 @@
-<div class="span8 comments">
-  <h3>Comments</h3>
+<div class="span10 comments">
+  <h3>Comments (<%= @node.comments.length %>)</h3>
+
+  <% @node.comments.each do |comment| %>
+     <div>
+       <h5><i class="icon-comment"></i> On <%= comment.created_at.to_s(:long) %>, <a href="/notes/author/<%= comment.author.name %>"><%= comment.author.name %></a> said:</h5>
+       <p><small><%= comment.comment %></small></p>
+     </div>
+     <hr />
+  <% end %>
 
   <form class="well">
     <h4 style="margin-top:0;">Post comment</h4>
