@@ -1,12 +1,23 @@
 <%= render :partial => "home/sidebar" %>
 <div class="span9">
-  <div class="hero-unit" style="background-image: url('/images/plots-header.jpg')">
-    <h1>The Public Laboratory</h1>
-    <h2>for Open Technology and Science</h2>
+
+  <div id="myCarousel" class="carousel slide">
+    <!-- Carousel items -->
+    <div class="carousel-inner">
+      <div class="active item"><img src="/images/plots-header.jpg" />
+        <div class="carousel-caption" style="padding:4px 16px 0 16px;">
+          <h2 style="color:white;">The Public Laboratory <small class="hidden-phone">for Open Technology and Science</small></h2>
+        </div>
+      </div>
+    </div>
+    <!-- Carousel nav -->
+    <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+    <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+  </div>
+
+  <div>
     <p>Public Lab is a community where you can learn how to investigate environmental concerns. Using inexpensive DIY techniques, we seek to change how people see the world in environmental, social, and political terms.</p>
     <p><a class="btn btn-primary btn-large">Join now &raquo;</a></p>
-  </div>
-  <div>
     <p>Community members develop tools and write open source instructions as <a href="/notes">research notes</a>, wiki pages, <a href="/guides">printable guides</a>, and <a href="/videos">videos</a>, so others know how to use these tools, and many have <a href="/wiki/creating-local-mailing-lists">started local groups</a> in their area. We also provide support through our <a href="/wiki/mailing-lists">mailing lists</a>. This works because everyone <b>both learns from and helps each other out</b>, and we all contribute to the growing body of documentation as we go.</p>
 
   <div id="share">

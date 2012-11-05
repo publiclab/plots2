@@ -1,34 +1,62 @@
-<div class="span10 comments">
-  <h3>Comments (<%= @node.comments.length %>)</h3>
+<script src="/assets/js/markdown.js"></script>
+<script>
+  function Editor(input, preview) {
+    this.update = function () {
+      preview.innerHTML = markdown.toHTML(input.value);
+    }
+    input.editor = this;
+    this.update();
+  }
+</script>
+
+<div id="comments" class="span10 comments">
+  <h3><%= @node.comments.length %> Comments</h3>
 
   <% @node.comments.each do |comment| %>
-     <div>
-       <h5><i class="icon-comment"></i> On <%= comment.created_at.to_s(:long) %>, <a href="/notes/author/<%= comment.author.name %>"><%= comment.author.name %></a> said:</h5>
-       <p><small><%= comment.comment %></small></p>
-     </div>
-     <hr />
+    <div class="navbar" id="c<%= comment.cid %>">
+      <div class="navbar-inner">
+        <div class="span9" style="padding-top:10px;">
+          <i class="icon-comment"></i>
+          <a href="/notes/author/<%= comment.author.name %>"><%= comment.author.name %></a>
+          <a style="color:#aaa;" href="#c<%= comment.cid %>">commented</a>
+          <%= time_ago_in_words(comment.created_at) %> ago
+        </div>
+        <a style="margin-top:6px;" class="btn btn-small pull-right" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()"><i class="icon-pencil"></i></a>
+      </div>
+    </div>
+    <div id="c<%= comment.cid %>show">
+      <p><%= raw RDiscount.new(comment.comment).to_html %></p>
+    </div>
+    <form class="well" id="c<%= comment.cid %>edit" style="display:none;">
+      <h4 style="margin-top:0;">Edit comment</h4>
+
+      <textarea class="span12" id="c<%= comment.cid %>text-input" oninput="this.editor.update()"
+              rows="8" cols="40"><%= comment.comment %></textarea>
+      <div class="well span11" id="c<%= comment.cid %>preview" style="background:white;display:none;"> </div>
+      <br style="clear:both;"/>
+
+      <script>
+        new Editor($("#c<%= comment.cid %>text-input")[0], $("#c<%= comment.cid %>preview")[0]);
+      </script>
+
+      <button type="submit" class="btn btn-primary">Publish</button>
+      <a class="btn" onClick="$('#c<%= comment.cid %>preview').toggle();$('#c<%= comment.cid %>text-input').toggle()">Preview</a>
+      <a class="btn" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()">Cancel</a>
+      <span>(logged in as <a href="">Username</a>)</span>
+    </form>
+  <br />
   <% end %>
 
   <form class="well">
     <h4 style="margin-top:0;">Post comment</h4>
 
     <textarea class="span12" id="text-input" oninput="this.editor.update()"
-              rows="4" cols="40" placeholder="Type **Markdown** here."></textarea>
+              rows="6" cols="40" placeholder="Type **Markdown** here."></textarea>
     <div class="well span12" id="preview" style="display:none;"> </div>
     <br style="clear:both;"/>
 
-    <script src="/assets/js/markdown.js"></script>
     <script>
-      function Editor(input, preview)
-      {
-        this.update = function () {
-          preview.innerHTML = markdown.toHTML(input.value);
-        }
-        input.editor = this;
-        this.update();
-      }
-      var $M = function (id) { return document.getElementById(id); };
-      new Editor($M("text-input"), $M("preview"));
+      new Editor($("#text-input")[0], $("#preview")[0]);
     </script>
 
     <button type="submit" class="btn btn-primary">Publish</button>
