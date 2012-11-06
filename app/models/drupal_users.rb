@@ -1,11 +1,22 @@
 class DrupalUsers < ActiveRecord::Base
   # attr_accessible :title, :body
   self.table_name = 'users'
-  self.primary_key = 'fid'
+  self.primary_key = 'uid'
 
   has_many :drupal_node, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
-  has_many :drupal_profile_, :through => :drupal_node_tag
+
+  def created_at
+    Time.at(self.created)
+  end
+
+  def profile_values
+    self.drupal_profile_values
+  end
+
+  def bio
+    DrupalProfileValue.find_by_uid(self.uid, :conditions => {:fid => 7}).value
+  end
 
   def notes
     DrupalNode.find_all_by_uid self.uid
@@ -23,14 +34,6 @@ class DrupalUsers < ActiveRecord::Base
       end
     end
     DrupalNode.find(node_ids.uniq, :order => "nid DESC")
-  end
-
-  def created_at
-    Time.at(self.created)
-  end
-
-  def profile_values
-    self.drupal_profile_values
   end
 
   def tags

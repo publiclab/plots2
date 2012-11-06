@@ -9,8 +9,8 @@
 
   <div class="btn-toolbar pull-right" style="margin-left:10px;">
     <div class="btn-group">
-      <a class="btn btn-small" href="#"><i class="icon-star"></i> Like (8)</a>
-      <a class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
+      <a rel="tooltip" title="Hi!" class="btn btn-small" href="#"><i class="icon-star"></i> Like (8)</a>
+      <a id="follow" class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
       <a class="btn btn-small" href="#"><b class="caret"></b></a>
       <ul class="popover">
         <li>List followers</li>
@@ -20,6 +20,9 @@
       </ul>
     </div>
   </div>
+  <script>
+    $('#follow').tooltip({title: "hello"})
+  </script>
 
   <h2 style="clear:left;"><%= @node.title %></h2>
 
@@ -40,7 +43,7 @@
   <hr />
   <p>
     <b>Tags:</b>
-    <% @node.tags.each do |tag| %><a class="label" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %>
+    <% @node.tags.each do |tag| %><a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %>
   </p>
 
   <hr />

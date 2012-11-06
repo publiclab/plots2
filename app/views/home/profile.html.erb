@@ -8,6 +8,8 @@
 <div class="span9">
   <h3><%= @user.name %> <small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small></h3>
 
+  <p><%= raw RDiscount.new(@user.bio).to_html %></p>
+
   <div id="donut"></div>
 
   <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -62,5 +64,4 @@ var svg = d3.select("#donut").append("svg")
 
 </script>
 
-  <%= @user.profile_values.inspect %>
 </div>

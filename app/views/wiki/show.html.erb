@@ -30,7 +30,7 @@
   <hr />
   <p>
     <b>Tags:</b>
-    <% @node.tags.each do |tag| %><a class="label" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %>
+    <% @node.tags.each do |tag| %><a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %>
   </p>
   
   <div class="input-prepend">
