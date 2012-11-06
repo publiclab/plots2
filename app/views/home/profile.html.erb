@@ -1,12 +1,12 @@
 <div class="span3">
-  <a style="margin-bottom:6px;" href="/post" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post research &raquo;</a>
-  <a href="/post" class="btn btn-block"><i class="icon-file"></i> Create wiki page &raquo;</a>
+  <a href="#" class="btn btn-block"><i class="icon-envelope"></i> Send message</a>
+  <a href="#" class="btn btn-block"><i class="icon-eye-open"></i> Follow <%= @user.name %></a>
   <hr />
 
 </div>
 
 <div class="span9">
-  <h3><%= @user.name %> <small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small></h3>
+  <h3 style="margin-top:0;"><%= @user.name %> <small><%= @user.notes.length %> research notes and wiki edits - Joined <%= time_ago_in_words(@user.created_at) %> ago</small></h3>
 
   <p><%= raw RDiscount.new(@user.bio).to_html %></p>
 
