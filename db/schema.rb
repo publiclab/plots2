@@ -88,7 +88,7 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer "uid",                     :default => 0,  :null => false
     t.integer "status",                  :default => 1,  :null => false
     t.integer "created",                 :default => 0,  :null => false
-#    t.integer "changed",                 :default => 0,  :null => false
+    t.integer "changed",                 :default => 0,  :null => false
     t.integer "comment",                 :default => 0,  :null => false
     t.integer "promote",                 :default => 0,  :null => false
     t.integer "moderate",                :default => 0,  :null => false
@@ -176,8 +176,36 @@ ActiveRecord::Schema.define(:version => 0) do
 
   add_index "openid_provider_relying_party", ["uid"], :name => "uid"
 
+  create_table "profile_fields", :primary_key => "fid", :force => true do |t|
+    t.string  "title"
+    t.string  "name",         :limit => 128, :default => "", :null => false
+    t.text    "explanation"
+    t.string  "category"
+    t.string  "page"
+    t.string  "type",         :limit => 128
+    t.integer "weight",       :limit => 1,   :default => 0,  :null => false
+    t.integer "required",     :limit => 1,   :default => 0,  :null => false
+    t.integer "register",     :limit => 1,   :default => 0,  :null => false
+    t.integer "visibility",   :limit => 1,   :default => 0,  :null => false
+    t.integer "autocomplete", :limit => 1,   :default => 0,  :null => false
+    t.text    "options"
+  end
+
+  create_table "profile_values", :id => false, :force => true do |t|
+    t.integer "fid",   :default => 0, :null => false
+    t.integer "uid",   :default => 0, :null => false
+    t.text    "value"
+  end
+
   create_table "protected_nodes", :primary_key => "nid", :force => true do |t|
     t.string "passwd", :limit => 40, :default => "", :null => false
+  end
+
+  create_table "term_data", :primary_key => "tid", :force => true do |t|
+    t.integer "vid",                               :default => 0,  :null => false
+    t.string  "name",                              :default => "", :null => false
+    t.text    "description", :limit => 2147483647
+    t.integer "weight",      :limit => 1,          :default => 0,  :null => false
   end
 
   create_table "term_node", :id => false, :force => true do |t|
