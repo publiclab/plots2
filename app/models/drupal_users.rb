@@ -15,7 +15,12 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def bio
-    DrupalProfileValue.find_by_uid(self.uid, :conditions => {:fid => 7}).value
+    bio = DrupalProfileValue.find_by_uid(self.uid, :conditions => {:fid => 7})
+    if bio
+      bio.value 
+    else
+      ""
+    end
   end
 
   def notes
