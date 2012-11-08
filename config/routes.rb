@@ -21,6 +21,9 @@ Plots2::Application.routes.draw do
   match 'notes/author/:author/:topic' => 'notes#author_topic'
   match 'notes/:author/:date/:id' => 'notes#show'
 
+  match 'search' => 'search#advanced'
+  match 'search/advanced' => 'search#advanced'
+  match 'search/advanced/:id' => 'search#advanced'
   match 'search/:id' => 'search#index'
   match 'search/typeahead/:id' => 'search#typeahead'
   match 'tag/:id' => 'tag#tag'

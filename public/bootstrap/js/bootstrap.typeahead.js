@@ -155,7 +155,9 @@
     }
 
   , highlighter: function (item) {
-      return item.replace(new RegExp('(' + this.query + ')', 'ig'), function ($1, match) {
+      var prefix = item.split('</i>')[0]+'</i>'
+      item = item.split('</i>')[1]
+      return prefix+item.replace(new RegExp('(' + this.query + ')', 'ig'), function ($1, match) {
         return '<strong>' + match + '</strong>'
       })
     }

@@ -5,12 +5,24 @@ class DrupalComment < ActiveRecord::Base
   self.table_name = 'comments'
   self.primary_key = 'cid'
 
+  def self.inheritance_column
+    "rails_type"
+  end
+
   def created_at
     Time.at(self.timestamp)
   end
 
   def author
     DrupalUsers.find_by_uid self.uid
+  end
+
+  def icon
+    "<i class='icon-comment'></i>"
+  end
+
+  def type
+    "comment"
   end
 
 end

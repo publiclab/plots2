@@ -36,6 +36,13 @@ class DrupalNode < ActiveRecord::Base
     self.drupal_main_image.drupal_file if self.drupal_main_image
   end
 
+   def icon
+    icon = "<i class='icon-file'></i>" if self.type == "note"
+    icon = "<i class='icon-book'></i>" if self.type == "page"
+    icon = "<i class='icon-map-marker'></i>" if self.type == "map"
+    icon
+   end
+
   def id
     self.nid
   end

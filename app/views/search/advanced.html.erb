@@ -1,0 +1,48 @@
+<%= render :partial => "home/sidebar" %>
+<div class="span9">
+    <h3 style="margin-top:0;">Advanced search</h3>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <form class="navbar-form" style="margin-left:10px;" action="/search/advanced">
+          <input name="id" type="text" class="input-small search-query" data-provide="typeahead" data-source='["Balloon mapping","Thermal photography","Spectrometry"]' value="<%= params[:id] %>">
+          <button type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i></button>
+
+          <div class="pull-right" style="margin-top:5px;">           
+            <label class="checkbox pull-right" style="margin-right:20px;">
+              <input type="checkbox" checked="false" name="comments" onClick="$('.comment').toggle()" />
+              <i class="icon-comment"></i> Comments
+            </label>
+            <label class="checkbox pull-right" style="margin-right:20px;">
+              <input type="checkbox" checked="true" name="maps" onClick="$('.map').toggle()" />
+              <i class="icon-map-marker"></i> Maps
+            </label>
+            <label class="checkbox pull-right" style="margin-right:20px;">
+              <input type="checkbox" checked="true" name="wikis" onClick="$('.page').toggle()"/>
+              <i class="icon-book"></i> Wiki pages
+            </label>
+            <label class="checkbox pull-right" style="margin-right:20px;">
+              <input type="checkbox" checked="true" name="notes" onClick="$('.note').toggle()"/>
+              <i class="icon-file"></i> Research notes
+            </label>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  <hr />
+
+  <table class="table">
+  <% @nodes.each do |node| %>
+    <tr class="<%= node.type %>">
+      <% if node.type == "comment" %>
+        <td><%= raw node.icon %> Comment by <a href="<%= node.author.name %>"><%= node.author.name %></a></td>
+      <% else %>
+        <td><%= raw node.icon %> <a href="/<%= node.slug %>"><%= node.title %></a></td>
+      <% end %>
+      <td><% if node.type != "page" %><a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a><% end %></td>
+      <td><% node.tags.each do |tag| %><a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %></td>
+    </tr>
+  <% end %>
+  </table>
+  
+</div>

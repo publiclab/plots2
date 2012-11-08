@@ -12,7 +12,7 @@
   </div>
 
   <% if params[:controller] == "search" %>
-    <h3 style="margin-top:0;">Search results for <i style="color:#aaa;"><%= params[:id] %></i></h3>
+    <h3 style="margin-top:0;">Search results for <i style="color:#aaa;"><%= params[:id] %></i> <small>(<a href="/search/advanced/<%= params[:id] %>">advanced search</a>)</h3>
   <% elsif params[:controller] == "tag" %>
     <h3 style="margin-top:0;">Notes tagged with <i style="color:#aaa;"><%= params[:id] %></i></h3>
   <% elsif params[:action] == "author_topic" %>

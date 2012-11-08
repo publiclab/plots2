@@ -9,11 +9,25 @@ class SearchController < ApplicationController
     render :template => 'notes/index'
   end
 
+  def advanced
+    @nodes = []
+    @nodes += DrupalNode.find(:all, :limit => 25, :order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"]) if params[:notes]
+    @nodes += DrupalNode.find(:all, :limit => 25, :order => "nid DESC", :conditions => ['type = "page" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"]) if params[:wikis]
+    @nodes += DrupalNode.find(:all, :limit => 25, :order => "nid DESC", :conditions => ['type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"]) if params[:maps]
+    @nodes += DrupalComment.find(:all, :limit => 25, :order => "nid DESC", :conditions => ['status = 1 AND comment LIKE ?', "%"+params[:id]+"%"]) if params[:comments]
+  end
+
   # utility response to fill out search autocomplete
   def typeahead
     matches = []
-    DrupalNode.find(:all, :limit => 10, :order => "nid DESC", :conditions => ['(type = "note" OR type = "wiki") AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title").each do |match|
-      matches << match.title
+    DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title").each do |match|
+      matches << "<i class='icon-file'></i> "+match.title
+    end
+    DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "page" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title").each do |match|
+      matches << "<i class='icon-book'></i> "+match.title
+    end
+    DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title").each do |match|
+      matches << "<i class='icon-map-marker'></i> "+match.title
     end
     render :json => '["'+matches.join('","')+'"]'
   end
