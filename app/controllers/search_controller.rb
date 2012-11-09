@@ -2,8 +2,8 @@ class SearchController < ApplicationController
 
   def index
     @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :page => params[:page])
-    @tags = [DrupalTag.find_by_name(params[:id])]
-    @tagnames = @tags.collect(&:name)
+    @tags = DrupalTag.find_all_by_name(params[:id]) || []
+    @tagnames = @tags.collect(&:name) || []
     @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
     @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
     render :template => 'notes/index'
@@ -23,16 +23,16 @@ class SearchController < ApplicationController
   # utility response to fill out search autocomplete
   def typeahead
     matches = []
-    DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title").each do |match|
-      matches << "<i class='icon-file'></i> "+match.title
+    DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
+      matches << {:string => "<i class='icon-file'></i> "+match.title, :url => "/"+match.slug}
     end
-    DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "page" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title").each do |match|
-      matches << "<i class='icon-book'></i> "+match.title
+    DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "page" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
+      matches << {:string => "<i class='icon-book'></i> "+match.title, :url => "/wiki/"+match.slug}
     end
-    DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title").each do |match|
-      matches << "<i class='icon-map-marker'></i> "+match.title
+    DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
+      matches << {:string => "<i class='icon-map-marker'></i> "+match.title, :url => match.slug}
     end
-    render :json => '["'+matches.join('","')+'"]'
+    render :json => matches
   end
 
 end

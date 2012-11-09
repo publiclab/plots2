@@ -56,8 +56,11 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def slug
-    slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if self.type == "page"
-    slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst if self.type == "note"
+    if self.type == "page"
+      slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last 
+    else
+      slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst
+    end
     slug
   end
 

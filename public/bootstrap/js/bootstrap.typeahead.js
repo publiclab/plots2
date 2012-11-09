@@ -50,11 +50,13 @@
         var val = this.$element.val();
       }
       else {
-        var val = JSON.parse(this.$menu.find('.active').attr('data-value'));
+        window.location = JSON.parse(this.$menu.find('.active').attr('data-value')).url;
       }
 
-      if (!this.strings) text = val[this.options.property]
-      else text = val
+      if (this.$menu.find('.active').length > 0) {
+        if (!this.strings) text = val[this.options.property]
+        else text = val.split('</i> ')[1]
+      } else text = val
 
       original_text = this.$element.val();
       this.$element.val(text)
@@ -62,7 +64,7 @@
       if (typeof this.onselect == "function")
           this.onselect(text, original_text)
 
-      return this.hide()
+      return this.submit()
     }
 
   , show: function () {
@@ -78,6 +80,11 @@
       this.$menu.show()
       this.shown = true
       return this
+    }
+
+  , submit: function() {
+      this.hide()
+      $('#'+this.$element.context.form.id).submit()
     }
 
   , hide: function () {
@@ -109,6 +116,7 @@
 
       if (results.length && typeof results[0] != "string")
           this.strings = false
+      this.objects = (results.length && typeof results[0] == "object")
 
       this.query = this.$element.val()
 
@@ -117,7 +125,9 @@
       }
 
       items = $.grep(results, function (item) {
-        if (!that.strings)
+        if (that.objects)
+          item = item.string.split('</i> ')[1]
+        else if (!that.strings)
           item = item[that.options.property]
         if (that.matcher(item)) return item
       })
@@ -142,8 +152,9 @@
         , item
         , sortby
 
-      while (item = items.shift()) {
+      while (item = items.shift()) { 
         if (this.strings) sortby = item
+        else if (this.objects) sortby = item.string.split('</i> ')[1]
         else sortby = item[this.options.property]
 
         if (!sortby.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(item)
@@ -167,7 +178,9 @@
 
       items = $(items).map(function (i, item) {
         i = $(that.options.item).attr('data-value', JSON.stringify(item))
-        if (!that.strings)
+        if (that.objects)
+            item = item.string
+        else if (!that.strings)
             item = item[that.options.property]
         i.find('a').html(that.highlighter(item))
         return i[0]
