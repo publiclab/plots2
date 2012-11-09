@@ -30,7 +30,7 @@ class SearchController < ApplicationController
       matches << {:string => "<i class='icon-book'></i> "+match.title, :url => "/wiki/"+match.slug}
     end
     DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
-      matches << {:string => "<i class='icon-map-marker'></i> "+match.title, :url => match.slug}
+      matches << {:string => "<i class='icon-map-marker'></i> "+match.title, :url => "/"+match.slug}
     end
     render :json => matches
   end
