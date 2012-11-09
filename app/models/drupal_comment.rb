@@ -25,4 +25,8 @@ class DrupalComment < ActiveRecord::Base
     "comment"
   end
 
+  def tags
+    []
+  end
+
 end
