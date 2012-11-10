@@ -1,0 +1,61 @@
+<div class="span3">
+  <h4>Related maps</h4>
+</div>
+<div class="span9">
+
+  <iframe class="span12" style="border:none;background:#ddd;" height="375" src="http://archive.publiclaboratory.org/leaflet/?tms=<%= @node.map.tms %>&lon=-73.991386&lat=40.6755585&zoom=17"></iframe>
+  <br style="clear:both" />
+
+  <div class="btn-toolbar pull-right" style="margin-left:10px;">
+    <div class="btn-group">
+      <a class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.length == 0 %><% @tagnames.each do |tag| %><a class='label label-inverse'><%= tag %></a> <% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></a>
+      <a rel="tooltip" title="Helpful? Awesome?" class="btn btn-small" href="#"><i class="icon-star"></i> Like (8)</a>
+      <a rel="tooltip" title="Follow updates/comments" id="follow" class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
+    </div>
+  </div>
+  <h2 style="clear:left;"><%= @node.title %></h2>
+
+  <div class="">
+
+    <span>
+      by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
+      <%= @node.created_at.to_s(:long) %> 
+    </span>
+  </div>
+
+  <div class="btn-toolbar">
+    <div class="btn-group">
+      <a class="btn btn-small btn-danger" rel="popover" data-content="" title="">Web viewer</a>
+      <a class="btn btn-small btn-success" rel="popover" data-content="" title="">JPG</a>
+      <a class="btn btn-small btn-info" rel="popover" data-content="" title="">GeoTiff</a>
+      <a class="btn btn-small btn-warning" rel="popover" data-content="" title="Tiled Map Service (for developers)">TMS</a>
+    </div>
+  </div>
+
+  <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
+  <hr />
+
+  <p>
+  <%= raw RDiscount.new(@node.body).to_html %>
+  </p>
+
+  <hr />
+  <p>
+    <b>Tags:</b>
+    <% @node.tags.each do |tag| %><a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %>
+  </p>
+
+  <hr />
+    <%= render :partial => "home/social" %>
+  <hr />
+
+  <div class="input-prepend">
+    <span class="add-on"><i class="icon-tags"></i></span>
+    <input type="text" class="span6" placeholder="balloon mapping" data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
+  </div>
+
+  <div>
+    <%= render :partial => "notes/comments" %>
+  </div>
+
+</div><!--/span-->

@@ -35,6 +35,7 @@ Plots2::Application.routes.draw do
   match 'people/:id' => 'home#people'
   match 'register' => 'home#register'
   match 'maps' => 'map#index'
+  match 'map/:name/:date' => 'map#show'
   match 'archive' => 'map#index'
   match 'stats' => 'notes#stats'
 

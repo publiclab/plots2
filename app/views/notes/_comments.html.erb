@@ -12,7 +12,7 @@
 <div id="comments" class="span10 comments">
   <h3><%= @node.comments.length %> Comments</h3>
 
-  <% @node.comments.each do |comment| %>
+  <% @node.comments.reverse.each do |comment| %>
     <div class="navbar" id="c<%= comment.cid %>">
       <div class="navbar-inner">
         <div class="span9" style="padding-top:10px;">

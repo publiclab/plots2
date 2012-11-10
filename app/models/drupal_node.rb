@@ -5,6 +5,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_node_tag, :foreign_key => 'nid'
   has_many :drupal_tag, :through => :drupal_node_tag
   has_many :drupal_comments, :foreign_key => 'nid'
+  has_one :drupal_content_type_map, :foreign_key => 'nid'
 
   self.table_name = 'node'
   self.primary_key = 'nid'
@@ -78,6 +79,11 @@ class DrupalNode < ActiveRecord::Base
     DrupalUrlAlias.find_by_dst(title).node
   end
 
+  def self.find_map_by_slug(title)
+    urlalias = DrupalUrlAlias.find_by_dst('map/'+title,:order => "pid DESC")
+    urlalias.node if urlalias
+  end
+
   def latest
     self.drupal_node_revision.last
   end
@@ -88,6 +94,10 @@ class DrupalNode < ActiveRecord::Base
 
   def revision_count
     DrupalNodeRevision.count_by_nid(self.nid)
+  end
+
+  def map
+    self.drupal_content_type_map
   end
 
 end

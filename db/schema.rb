@@ -66,6 +66,31 @@ ActiveRecord::Schema.define(:version => 0) do
     t.text    "field_main_image_data"
   end
 
+  create_table "content_type_map", :primary_key => "vid", :force => true do |t|
+    t.integer "nid",                                                                                  :default => 0, :null => false
+    t.string  "field_publication_date_value",    :limit => 20
+    t.string  "field_capture_date_value",        :limit => 20
+    t.text    "field_geotiff_url_value",         :limit => 2147483647
+    t.text    "field_google_maps_url_value",     :limit => 2147483647
+    t.text    "field_openlayers_url_value",      :limit => 2147483647
+    t.text    "field_tms_url_value",             :limit => 2147483647
+    t.text    "field_jpg_url_value",             :limit => 2147483647
+    t.text    "field_license_value",             :limit => 2147483647
+    t.text    "field_raw_images_value",          :limit => 2147483647
+    t.text    "field_cartographer_notes_value",  :limit => 2147483647
+    t.integer "field_cartographer_notes_format"
+    t.text    "field_notes_value",               :limit => 2147483647
+    t.integer "field_notes_format"
+    t.text    "field_mbtiles_url_value",         :limit => 2147483647
+    t.integer "field_zoom_min_value"
+    t.decimal "field_ground_resolution_value",                         :precision => 10, :scale => 2
+    t.decimal "field_geotiff_filesize_value",                          :precision => 10, :scale => 1
+    t.decimal "field_jpg_filesize_value",                              :precision => 10, :scale => 1
+    t.decimal "field_raw_images_filesize_value",                       :precision => 10, :scale => 1
+    t.text    "field_tms_tile_type_value",       :limit => 2147483647
+    t.integer "field_zoom_max_value"
+  end
+
   create_table "files", :primary_key => "fid", :force => true do |t|
     t.integer "uid",       :default => 0,  :null => false
     t.string  "filename",  :default => "", :null => false
