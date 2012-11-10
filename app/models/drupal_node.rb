@@ -24,6 +24,11 @@ class DrupalNode < ActiveRecord::Base
     self.latest.author
   end
 
+  # for wikis:
+  def authors
+    self.revisions.collect(&:author).uniq
+  end
+
   def created_at
     Time.at(self.drupal_node_revision.last.timestamp)
   end

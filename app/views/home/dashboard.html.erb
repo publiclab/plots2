@@ -1,7 +1,7 @@
 <!-- SIDEBAR -->
 <div class="span3">
-  <a style="margin-bottom:6px;" href="/post" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post research &raquo;</a>
-  <a href="/post" class="btn btn-block"><i class="icon-book"></i> Create wiki page &raquo;</a>
+  <a  rel="tooltip" title="Share your work with others" data-placement="bottom" style="margin-bottom:6px;" href="/post" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post research &raquo;</a>
+  <a rel="tooltip" title="Collaborative pages others can edit" data-placement="bottom" href="/post" class="btn btn-block"><i class="icon-book"></i> Create wiki page &raquo;</a>
   <hr />
 
   <% if @wikis && @wikis.length > 0 %>
@@ -20,7 +20,7 @@
 
   <ul class="nav nav-tabs">
     <li class="active"><a href="#">Recent Activity</a></li>
-    <li><a href="#">Subscriptions (14)</a></li>
+    <li><a href="/subscriptions">Subscriptions (14)</a></li>
     <li><a href="#">Your work (<%= DrupalNode.count(:all,:conditions => {:uid => @user.uid}) %>)</a></li>
     <li><a href="#"><i class="icon-cog"></i> Settings</a></li>
   </ul>

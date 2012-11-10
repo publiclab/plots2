@@ -49,7 +49,7 @@
           </a>
           <a class="brand" href="/">Public Lab</a>
 
-          <a style="margin-left:6px;" href="/register" class="btn pull-right">Join</a>
+          <a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:6px;" href="/register" class="btn pull-right">Join</a>
 
           <div class="nav-collapse collapse">
 
@@ -100,7 +100,7 @@
             <% end %>
 
             <ul class="nav">
-              <li><a href="/dashboard"><i class="icon-home icon-white"></i></a></li>
+              <li><a rel="tooltip" title="Your dashboard" data-placement="bottom" href="/dashboard"><i class="icon-home icon-white"></i></a></li>
               <li><a href="/about">About</a></li>
               <li><a href="/research">Research</a></li>
               <li class="dropdown">
@@ -175,5 +175,11 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/bootstrap/js/bootstrap.min.js"></script>
     <script src="/bootstrap/js/bootstrap.typeahead.js"></script>
+    <script>
+      (function() {
+        $("[rel=tooltip]").tooltip()
+        $("[rel=popover]").popover()
+      })()
+    </script>
   </body>
 </html>

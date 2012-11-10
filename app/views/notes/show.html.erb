@@ -9,21 +9,11 @@
 
   <div class="btn-toolbar pull-right" style="margin-left:10px;">
     <div class="btn-group">
-      <a rel="tooltip" title="Hi!" class="btn btn-small" href="#"><i class="icon-star"></i> Like (8)</a>
-      <a id="follow" class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
-      <a class="btn btn-small" href="#"><b class="caret"></b></a>
-      <ul class="popover">
-        <li>List followers</li>
-        <% @node.tags.each do |tag| %>
-          <li>Subscribe to "<%= tag.name %>"</li>
-        <% end %>
-      </ul>
+      <a class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.length == 0 %><% @tagnames.each do |tag| %><a class='label label-inverse'><%= tag %></a> <% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></a>
+      <a rel="tooltip" title="Helpful? Awesome?" class="btn btn-small" href="#"><i class="icon-star"></i> Like (8)</a>
+      <a rel="tooltip" title="Follow updates/comments" id="follow" class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
     </div>
   </div>
-  <script>
-    $('#follow').tooltip({title: "hello"})
-  </script>
-
   <h2 style="clear:left;"><%= @node.title %></h2>
 
   <div class="">

@@ -9,9 +9,9 @@
 
   <div class="btn-toolbar pull-right" style="margin-left:10px;">
     <div class="btn-group">
-      <a class="btn btn-small" href="#"><i class="icon-star"></i> Like (16)</a>
-      <a class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
-      <a href="#" rel="popover" id="follow" class="btn btn-small" data-content="<% if @tagnames %><% @tagnames.each do |t| %><a href=''>Follow '<%= t %>'</a><% end %>'</a><% end %>"><b class="caret"></b></a>
+      <a class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.length == 0 %><% @tagnames.each do |tag| %><a class='label label-inverse'><%= tag %></a> <% end %><hr /><% @node.authors.each do |author| %><a class='btn btn-small'><i class='icon-user'></i> <%= author.name %></a> <% end %>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></a>
+      <a rel="tooltip" title="Helpful? Awesome?" class="btn btn-small" href="#"><i class="icon-star"></i> Like (8)</a>
+      <a rel="tooltip" title="Follow updates/comments" id="follow" class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
     </div>
   </div>
 

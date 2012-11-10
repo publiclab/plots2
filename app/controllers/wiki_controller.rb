@@ -31,6 +31,8 @@ class WikiController < ApplicationController
   def root
     @node = DrupalNode.find_root_by_slug(params[:id])
     @revision = @node.latest
+    @tags = @node.tags
+    @tagnames = @tags.collect(&:name)
     render :template => "wiki/show"
   end
 

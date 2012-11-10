@@ -1,5 +1,5 @@
 <div class="span3">
-  <a style="margin-bottom:6px;" href="/post<%= '?tags='+@tagnames.join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
+  <a rel="tooltip" title="Post about <%= @tagnames.join(', ') %>" data-placement="bottom" style="margin-bottom:6px;" href="/post<%= '?tags='+@tagnames.join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
 
   <%= render :partial => "wiki/place_sidebar" %>
 

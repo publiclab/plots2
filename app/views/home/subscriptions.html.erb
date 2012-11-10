@@ -15,6 +15,7 @@
       <form class="navbar-form">
           <input type="text" class="input search-query" placeholder="search for tags" data-provide="typeahead" data-source='["balloon-mapping","thermal-flashlight","spectrometer"]'>
         <button type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i></button>
+        <button type="submit" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add</button>
       </form>
     </div>
   </div>
@@ -26,8 +27,8 @@
     <td><a href="/tag/<%= tagname %>"><%= tagname %></a></td>
     <td><div class="btn-toolbar" style="margin:0;">
       <div class="btn-group">
-        <a class="btn btn-small" href="javascript:void(0)"><i class="icon-envelope"></i> Email</a>
-        <a class="btn btn-small" href="javascript:void(0)"><i class="icon-list"></i> Digest</a>
+        <a rel="tooltip" title="As it happens" class="btn btn-small" href="javascript:void(0)"><i class="icon-envelope"></i> Email</a>
+        <a rel="tooltip" title="Once per day" class="btn btn-small" href="javascript:void(0)"><i class="icon-list"></i> Digest</a>
         <a class="btn btn-small" href="javascript:void(0)"><i class="icon-remove-sign"></i> Unsubscribe</a>
       </div>
     </div></td>
