@@ -6,6 +6,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_tag, :through => :drupal_node_tag
   has_many :drupal_comments, :foreign_key => 'nid'
   has_one :drupal_content_type_map, :foreign_key => 'nid'
+  has_one :drupal_content_field_bbox, :foreign_key => 'nid'
 
   self.table_name = 'node'
   self.primary_key = 'nid'
@@ -99,5 +100,9 @@ class DrupalNode < ActiveRecord::Base
   def map
     self.drupal_content_type_map
   end
+
+  def location
+    self.drupal_content_field_bbox
+  end 
 
 end

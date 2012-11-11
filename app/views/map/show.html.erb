@@ -19,7 +19,8 @@
 
     <span>
       by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
-      <%= @node.created_at.to_s(:long) %> 
+      <%= @node.created_at.to_s(:long) %> |  
+      <%= @node.location.inspect %>
     </span>
   </div>
 

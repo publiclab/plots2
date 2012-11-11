@@ -47,6 +47,12 @@ ActiveRecord::Schema.define(:version => 0) do
 
 # Could not dump table "content_field_bbox" because of following StandardError
 #   Unknown type 'geometry' for column 'field_bbox_geo'
+  create_table "content_field_bbox", :id => false, :force => true do |t|
+    t.integer "vid",                                   :default => 0, :null => false
+    t.integer "nid",                                   :default => 0, :null => false
+    t.integer "delta",                                 :default => 0, :null => false
+    t.text "geometry",                              :null => true
+  end
 
   create_table "content_field_image_gallery", :id => false, :force => true do |t|
     t.integer "vid",                                   :default => 0, :null => false
@@ -64,6 +70,13 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer "field_main_image_fid"
     t.integer "field_main_image_list", :limit => 1
     t.text    "field_main_image_data"
+  end
+
+  create_table "content_field_map", :id => false, :force => true do |t|
+    t.integer "vid",                                            :default => 0, :null => false
+    t.integer "nid",                                            :default => 0, :null => false
+    t.text    "field_map_openlayers_wkt", :limit => 2147483647
+    t.integer "delta",                                          :default => 0, :null => false
   end
 
   create_table "content_type_map", :primary_key => "vid", :force => true do |t|
