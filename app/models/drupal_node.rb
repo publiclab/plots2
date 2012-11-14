@@ -23,7 +23,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def author
-    self.latest.author
+    DrupalUsers.find self.uid
   end
 
   # for wikis:

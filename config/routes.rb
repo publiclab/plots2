@@ -17,6 +17,7 @@ Plots2::Application.routes.draw do
   match 'tool/:id' => 'wiki#tool'
 
   match 'research' => 'notes#index'
+  match 'notes' => 'notes#index'
   match 'notes/author/:id' => 'notes#author'
   match 'notes/author/:author/:topic' => 'notes#author_topic'
   match 'notes/:author/:date/:id' => 'notes#show'
@@ -46,6 +47,7 @@ Plots2::Application.routes.draw do
   # This route can be invoked with purchase_url(:id => product.id)
 
   match 'post' => 'home#post'
+  match 'note/add' => 'home#post'
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
