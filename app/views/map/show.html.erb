@@ -3,7 +3,7 @@
 </div>
 <div class="span9">
 
-  <iframe class="span12" style="border:none;background:#ddd;" height="375" src="http://archive.publiclaboratory.org/leaflet/?tms=<%= @node.map.tms %>&lon=-73.991386&lat=40.6755585&zoom=17"></iframe>
+  <iframe class="span12" style="border:none;background:#ddd;" height="375" src="http://archive.publiclaboratory.org/leaflet/?tms=<%= @node.map.tms %>&lon=<%= @node.location[:x] %>&lat=<%= @node.location[:y] %>&zoom=17"></iframe>
   <br style="clear:both" />
 
   <div class="btn-toolbar pull-right" style="margin-left:10px;">
@@ -20,7 +20,7 @@
     <span>
       by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
       <%= @node.created_at.to_s(:long) %> |  
-      <%= @node.location.inspect %>
+      <%= @node.location[:y] %> N, <%= @node.location[:x] %> E
     </span>
   </div>
 

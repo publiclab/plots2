@@ -6,7 +6,7 @@ gem 'rails', '3.2.8'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
-gem 'mysql'
+gem 'mysql2'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -28,6 +28,8 @@ gem 'secondbase', '0.5.0'
 gem 'rdiscount'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
+gem 'georuby', '2.0'
+gem 'spatial_adapter'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

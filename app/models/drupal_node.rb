@@ -6,7 +6,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_tag, :through => :drupal_node_tag
   has_many :drupal_comments, :foreign_key => 'nid'
   has_one :drupal_content_type_map, :foreign_key => 'nid'
-  has_one :drupal_content_field_bbox, :foreign_key => 'nid'
+  has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
 
   self.table_name = 'node'
   self.primary_key = 'nid'
@@ -102,7 +102,11 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def location
-    self.drupal_content_field_bbox
+    {:x => self.locations.collect(&:x).sum/self.locations.length,:y => self.locations.collect(&:y).sum/self.locations.length}
+  end 
+
+  def locations
+    self.drupal_content_field_bboxes.collect(&:field_bbox_geo)
   end 
 
 end

@@ -32,6 +32,9 @@ class SearchController < ApplicationController
     DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
       matches << {:string => "<i class='icon-map-marker'></i> "+match.title, :url => "/"+match.slug}
     end
+    DrupalUsers.find(:all, :limit => 10, :order => "uid", :conditions => ['name LIKE ? AND access != 0', "%"+params[:id]+"%"]).each do |match|
+      matches << {:string => "<i class='icon-user'></i> "+match.name, :url => "/notes/author/"+match.name}
+    end
     render :json => matches
   end
 

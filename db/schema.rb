@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer "vid",                                   :default => 0, :null => false
     t.integer "nid",                                   :default => 0, :null => false
     t.integer "delta",                                 :default => 0, :null => false
-    t.text "geometry",                              :null => true
+    t.point "geometry",                                 :null => true, , :srid => 123, :with_z => true
   end
 
   create_table "content_field_image_gallery", :id => false, :force => true do |t|
