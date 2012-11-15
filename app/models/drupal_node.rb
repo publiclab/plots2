@@ -5,7 +5,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_node_tag, :foreign_key => 'nid'
   has_many :drupal_tag, :through => :drupal_node_tag
   has_many :drupal_comments, :foreign_key => 'nid'
-  has_one :drupal_content_type_map, :foreign_key => 'nid'
+  has_many :drupal_content_type_map, :foreign_key => 'nid'
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
 
   self.table_name = 'node'
@@ -98,7 +98,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def map
-    self.drupal_content_type_map
+    DrupalContentTypeMap.find_by_nid(self.nid,:order => "vid DESC")
   end
 
   def location

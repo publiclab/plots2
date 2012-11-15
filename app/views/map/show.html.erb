@@ -27,8 +27,8 @@
   <div class="btn-toolbar">
     <div class="btn-group">
       <a class="btn btn-small btn-danger" rel="popover" data-content="" title="">Web viewer</a>
-      <a class="btn btn-small btn-success" rel="popover" data-content="" title="">JPG</a>
-      <a class="btn btn-small btn-info" rel="popover" data-content="" title="">GeoTiff</a>
+      <a class="btn btn-small btn-success" rel="popover" data-content="" title="" href="<%= @node.map.field_jpg_url_value %>">JPG (<%= @node.map.field_jpg_filesize_value.to_i %> MB)</a>
+      <a class="btn btn-small btn-info" rel="popover" data-content="" title="" href="<%= @node.map.field_geotiff_url_value %>">GeoTiff (<%= @node.map.field_geotiff_filesize_value.to_i %> MB)</a>
       <a class="btn btn-small btn-warning" rel="popover" data-content="" title="Tiled Map Service (for developers)">TMS</a>
     </div>
   </div>
