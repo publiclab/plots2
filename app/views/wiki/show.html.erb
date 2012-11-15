@@ -17,13 +17,15 @@
 
   <h2><%= @revision.title %></h2>
 
-  <div class="pull-right" style="padding-top:8px;">Last edited by <a href="/notes/author/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a> <%= time_ago_in_words(@node.latest.created_at) %> ago</div>
-  <ul class="nav nav-tabs">
-    <li class="active"><a href="#">View</a></li>
-    <li><a href="/wiki/edit/<%= @node.slug %>">Edit</a></li>
-    <li><a href="/wiki/revisions/<%= @node.slug %>">Revisions (<%= @node.revisions.length %>)</a></li>
-    <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
-  </ul>
+  <div class="pull-right" style="padding-top:8px;">
+    <%= @node.totalcount %> views | 
+    Last edited by <a href="/notes/author/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a> <%= time_ago_in_words(@node.latest.created_at) %> ago</div>
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#">View</a></li>
+      <li><a href="/wiki/edit/<%= @node.slug %>">Edit</a></li>
+      <li><a href="/wiki/revisions/<%= @node.slug %>">Revisions (<%= @node.revisions.length %>)</a></li>
+      <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
+    </ul>
 
   <p>
   <%= raw RDiscount.new(auto_link(@revision.body)).to_html %>

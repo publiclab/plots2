@@ -20,7 +20,8 @@
     <span>
       posted by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
       <%= @node.created_at.to_s(:long) %> |  
-      <a href="https://maps.google.com/maps?t=h&ll=<%= @node.location[:y] %>,<%= @node.location[:x] %>"><%= @node.location[:y] %> N, <%= @node.location[:x] %> E</a>
+      <a href="https://maps.google.com/maps?t=h&ll=<%= @node.location[:y] %>,<%= @node.location[:x] %>"><%= @node.location[:y] %> N, <%= @node.location[:x] %> E</a> | 
+      <%= @node.totalcount %> views
     </span>
   </div>
 
