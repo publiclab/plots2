@@ -30,6 +30,7 @@ gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'georuby', '2.0'
 gem 'spatial_adapter'
+gem 'rails_autolink'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
