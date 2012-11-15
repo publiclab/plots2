@@ -17,7 +17,7 @@
 
   <h2><%= @revision.title %></h2>
 
-  <div class="pull-right" style="padding-top:8px;">Last edited <%= time_ago_in_words(@node.latest.created_at) %> ago</div>
+  <div class="pull-right" style="padding-top:8px;">Last edited by <a href="/notes/author/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a> <%= time_ago_in_words(@node.latest.created_at) %> ago</div>
   <ul class="nav nav-tabs">
     <li class="active"><a href="#">View</a></li>
     <li><a href="/wiki/edit/<%= @node.slug %>">Edit</a></li>
