@@ -2,6 +2,7 @@ class DrupalNode < ActiveRecord::Base
   # attr_accessible :title, :body
   has_many :drupal_node_revision, :foreign_key => 'nid'
   has_one :drupal_main_image, :foreign_key => 'nid'
+  has_one :drupal_node_counter, :foreign_key => 'nid'
   has_many :drupal_node_tag, :foreign_key => 'nid'
   has_many :drupal_tag, :through => :drupal_node_tag
   has_many :drupal_comments, :foreign_key => 'nid'
@@ -56,6 +57,10 @@ class DrupalNode < ActiveRecord::Base
 
   def tags
     self.drupal_tag.uniq
+  end
+
+  def totalcount
+    self.drupal_node_counter.totalcount
   end
 
   def comments

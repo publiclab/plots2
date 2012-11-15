@@ -18,9 +18,9 @@
   <div class="">
 
     <span>
-      by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
+      posted by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
       <%= @node.created_at.to_s(:long) %> |  
-      <%= @node.location[:y] %> N, <%= @node.location[:x] %> E
+      <a href="https://maps.google.com/maps?t=h&ll=<%= @node.location[:y] %>,<%= @node.location[:x] %>"><%= @node.location[:y] %> N, <%= @node.location[:x] %> E</a>
     </span>
   </div>
 
@@ -37,7 +37,7 @@
   <hr />
 
   <p>
-  <%= raw RDiscount.new(@node.body).to_html %>
+  <%= raw RDiscount.new(auto_link(@node.body)).to_html %>
   </p>
 
   <hr />
