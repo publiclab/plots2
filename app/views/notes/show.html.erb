@@ -27,7 +27,7 @@
   <hr />
 
   <p>
-  <%= raw RDiscount.new(@node.body).to_html %>
+  <%= raw RDiscount.new(auto_link(@node.body)).to_html %>
   </p>
 
   <hr />
