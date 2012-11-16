@@ -15,8 +15,7 @@
   </div>
   <h2 style="clear:left;"><%= @node.title %></h2>
 
-  <div class="">
-
+  <div>
     <span>
       posted by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
       <%= @node.created_at.to_s(:long) %> |  
@@ -38,7 +37,7 @@
   <hr />
 
   <p>
-  <%= raw RDiscount.new(auto_link(@node.body)).to_html %>
+  <%= raw RDiscount.new(auto_link(@node.body, :sanitize => false)).to_html %>
   </p>
 
   <hr />
