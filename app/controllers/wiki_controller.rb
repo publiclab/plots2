@@ -21,8 +21,8 @@ class WikiController < ApplicationController
   end
 
   def edit
-    @title = "Editing '"+@node.title+"'"
     @node = DrupalNode.find_by_slug(params[:id])
+    @title = "Editing '"+@node.title+"'"
     if @node.nil?
       @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
       @place = true
