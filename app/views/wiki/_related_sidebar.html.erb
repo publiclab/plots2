@@ -3,7 +3,24 @@
 
   <%= render :partial => "wiki/place_sidebar" %>
 
-  <hr />
+  <br />
+
+  <div class="accordion" id="accordion2">
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+          <h4 style="color:#444;">Recent contributors</h4>
+        </a>
+      </div>
+      <div id="collapseOne" class="accordion-body collapse in">
+      <% if @notes && @notes.length > 0 %>
+        <% @notes.collect(&:author).collect(&:name).uniq.each do |author| %>
+          <div class="accordion-inner"><a href="/notes/author/<%= author %>/<%= @tagnames.join('+') %>"><i class="icon-user"></i> <%= author %></a></div>
+        <% end %>
+      <% end %>
+      </div>
+    </div>
+  </div>
 
   <% if @notes && @notes.length > 0 %>
   <h4>Recent topic contributors</h4>
