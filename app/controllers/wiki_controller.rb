@@ -2,6 +2,7 @@ class WikiController < ApplicationController
 
   def show
     @node = DrupalNode.find_by_slug(params[:id])
+    @title = @node.title
     if @node.nil?
       @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
       @place = true
@@ -20,6 +21,7 @@ class WikiController < ApplicationController
   end
 
   def edit
+    @title = "Editing '"+@node.title+"'"
     @node = DrupalNode.find_by_slug(params[:id])
     if @node.nil?
       @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
@@ -38,11 +40,13 @@ class WikiController < ApplicationController
 
   def revisions
     @node = DrupalNode.find_by_slug(params[:id])
+    @title = "Revisions for '"+@node.title+"'"
     @tags = @node.tags
   end
 
   def revision
     @node = DrupalNode.find_by_slug(params[:id])
+    @title = "Revision for '"+@node.title+"'"
     @tags = @node.tags
     @revision = DrupalNodeRevision.find_by_vid(params[:vid])
     render :template => "wiki/show"

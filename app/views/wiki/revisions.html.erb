@@ -10,15 +10,17 @@
 
   <table class="table">
     <tr>
+      <th>#</th>
       <th>User</th>
       <th>Created</th>
     </tr>
-  <% @node.revisions.each do |revision| %>
-    <tr>
+  <% @node.revisions.each_with_index do |revision,index| %>
+    <tr id="row<%= @node.revisions.length-1-index %>"<% if index < 2 %> class="warning"<% end %>>
+      <td><b><a href="javascript:void(0)" onClick="goto(<%= @node.revisions.length-1-index %>,<%= @node.revisions.length-2-index %>)"><%= @node.revisions.length-1-index %></b></td>
       <td><a href="/people/<%= revision.author.name %>"><%= revision.author.name %></a></td>
       <td><a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a>
         | <%= time_ago_in_words(revision.created_at) %> ago
-        <div style="display:none;" id="body_<%= revision.vid %>"><%= raw RDiscount.new(revision.body).to_html %></div>
+        <div style="display:none;" id="body_<%= @node.revisions.length-1-index %>"><%= raw RDiscount.new(revision.body).to_html %></div>
       </td>
     </tr>
   <% end %>
@@ -28,7 +30,11 @@
   
 </div>
 <div class="span7">
-  <h2>Most recent changes</h2>
+  <div class="btn-group pull-right">
+    <a class="btn btn-link" href="javascript:void(0)" onClick="prev()">&laquo;</a>
+    <a class="btn btn-link" href="javascript:void(0)" onClick="next()">&raquo;</a>
+  </div>
+  <h3 style="margin-top:0;">Comparing revision <span id="older"><%= @node.revisions.length-1 %></span> with revision <span id="newer"><%= @node.revisions.length-2 %></span></h3>
 
   <script src="/assets/js/jsdiff.js"></script>
 
@@ -38,7 +44,28 @@
     ins { background:#afa; }
   </style>
   <script>
-    $('#diff').html(diffString($('#body_<%= @node.revisions[1].vid %>').html(),$('#body_<%= @node.latest.vid %>').html()))
+    var newer = <%= @node.revisions.length-1 %>; older = <%= @node.revisions.length-2 %>;
+    $('#diff').html(diffString($('#body_'+older).html(),$('#body_'+newer).html()))
+    $(document).keydown(function(e){ if (e.keyCode == 39) { next() }})
+    $(document).keydown(function(e){ if (e.keyCode == 37) { prev() }})
+    function prev() {
+      if (older > 0) {
+        goto(newer-1,older-1)
+    }}
+    function next() {
+      if (newer < <%= @node.revisions.length-1 %>) {
+        goto(newer+1,older+1)
+    }}
+    function goto(newr,old) {
+      newer = newr
+      older = old
+      $('#newer').html(newer)
+      $('#older').html(older)
+      $('#diff').html(diffString($('#body_'+newer).html(),$('#body_'+older).html()))
+      $('tr').removeClass('warning')
+      $('#row'+older).addClass('warning')
+      $('#row'+newer).addClass('warning')
+    }
   </script>
 
 </div>

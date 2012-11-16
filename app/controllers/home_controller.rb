@@ -1,10 +1,12 @@
 class HomeController < ApplicationController
 
   def index
+    @title = "Home"
     @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :page => params[:page])
   end
 
   def dashboard
+    @title = "Dashboard"
     @user = DrupalUsers.find_by_name "warren" 
     @tags = []
     ['balloon-mapping','leaffest','spectrometer'].each do |tagname|
@@ -23,9 +25,11 @@ class HomeController < ApplicationController
 
   def profile
     @user = DrupalUsers.find_by_name(params[:id])
+    @title = @user.name
   end
 
   def subscriptions
+    @title = "Subscriptions"
     @user = DrupalUsers.find_by_name(params[:id])
   end
 

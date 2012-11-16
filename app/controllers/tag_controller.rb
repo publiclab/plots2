@@ -7,6 +7,7 @@ class TagController < ApplicationController
       @tagnames = @tags.collect(&:name)
       @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
     end
+    @title = @tagnames.join(', ')
     @unpaginated = true
     render :template => "notes/index"
   end

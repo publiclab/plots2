@@ -1,6 +1,7 @@
 class SearchController < ApplicationController
 
   def index
+    @title = "Search"
     @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :page => params[:page])
     @tags = DrupalTag.find_all_by_name(params[:id]) || []
     @tagnames = @tags.collect(&:name) || []
@@ -10,6 +11,7 @@ class SearchController < ApplicationController
   end
 
   def advanced
+    @title = "Advanced search"
     all = !params[:notes] && !params[:wikis] && !params[:maps] && !params[:comments]
     @nodes = []
     unless params[:id].nil?
