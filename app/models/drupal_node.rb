@@ -124,11 +124,11 @@ class DrupalNode < ActiveRecord::Base
   end 
 
   def next_by_author
-    DrupalNode.find :first, :conditions => ['uid = ? AND nid > ?', self.author.uid, self.nid]
+    DrupalNode.find :first, :conditions => ['uid = ? AND nid > ? AND type = "note"', self.author.uid, self.nid], :order => 'nid'
   end
 
   def prev_by_author
-    DrupalNode.find :first, :conditions => ['uid = ? AND nid < ?', self.author.uid, self.nid]
+    DrupalNode.find :first, :conditions => ['uid = ? AND nid < ? AND type = "note"', self.author.uid, self.nid], :order => 'nid DESC'
   end
 
 end

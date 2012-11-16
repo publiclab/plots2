@@ -11,15 +11,15 @@
     <div class="btn-group">
       <a class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.length == 0 %><% @tagnames.each do |tag| %><a class='label label-inverse'><%= tag %></a> <% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></a>
       <a rel="tooltip" title="Helpful? Awesome?" class="btn btn-small" href="#"><i class="icon-star"></i> Like (8)</a>
-      <a rel="tooltip" title="Follow updates/comments" id="follow" class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
+      <a rel="tooltip" title="Updates/comments" id="follow" class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
     </div>
   </div>
   <h2 style="clear:left;"><%= @node.title %></h2>
 
   <div>
     <div class="btn-group pull-right">
-      <% if @node.prev_by_author %><a class="btn btn-link" href="/<%= @node.prev_by_author.slug %>">&laquo;</a><% end %>
-      <% if @node.next_by_author %><a class="btn btn-link" href="/<%= @node.next_by_author.slug %>">&raquo;</a><% end %>
+      <% if @node.prev_by_author %><a class="btn btn-link" href="/<%= @node.prev_by_author.slug %>">&laquo;</a><script>$(document).keydown(function(e){ if (e.keyCode == 37) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.prev_by_author.slug %>" }})</script><% end %>
+      <% if @node.next_by_author %><a class="btn btn-link" href="/<%= @node.next_by_author.slug %>">&raquo;</a><script>$(document).keydown(function(e){ if (e.keyCode == 39) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.next_by_author.slug %>" }})</script><% end %>
     </div>
     <span>
       by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
