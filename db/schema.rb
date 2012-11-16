@@ -135,6 +135,12 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer "translate",               :default => 0,  :null => false
   end
 
+  create_table "node_counter", :primary_key => "nid", :force => true do |t|
+    t.integer "totalcount", :limit => 8, :default => 0, :null => false
+    t.integer "daycount",   :limit => 3, :default => 0, :null => false
+    t.integer "timestamp",               :default => 0, :null => false
+  end
+
   create_table "node_images", :force => true do |t|
     t.integer "nid",                      :default => 0,  :null => false
     t.integer "uid",                      :default => 0,  :null => false

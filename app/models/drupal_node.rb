@@ -8,6 +8,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_comments, :foreign_key => 'nid'
   has_many :drupal_content_type_map, :foreign_key => 'nid'
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
+  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
 
   self.table_name = 'node'
   self.primary_key = 'nid'
@@ -106,6 +107,14 @@ class DrupalNode < ActiveRecord::Base
     DrupalContentTypeMap.find_by_nid(self.nid,:order => "vid DESC")
   end
 
+  def gallery
+    if self.drupal_content_field_image_gallery.first.field_image_gallery_fid 
+      return self.drupal_content_field_image_gallery 
+    else
+      return []
+    end
+  end
+
   def location
     {:x => self.locations.collect(&:x).sum/self.locations.length,:y => self.locations.collect(&:y).sum/self.locations.length}
   end 
@@ -113,5 +122,13 @@ class DrupalNode < ActiveRecord::Base
   def locations
     self.drupal_content_field_bboxes.collect(&:field_bbox_geo)
   end 
+
+  def next_by_author
+    DrupalNode.find :first, :conditions => ['uid = ? AND nid > ?', self.author.uid, self.nid]
+  end
+
+  def prev_by_author
+    DrupalNode.find :first, :conditions => ['uid = ? AND nid < ?', self.author.uid, self.nid]
+  end
 
 end

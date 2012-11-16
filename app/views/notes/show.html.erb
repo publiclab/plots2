@@ -2,7 +2,7 @@
 <div class="span9">
 
   <% if @node.main_image %>
-    <a href="http://publiclaboratory.org/sites/default/files/<%= @node.main_image.filename %>"><img class="img-rounded span9" src="http://publiclaboratory.org/sites/default/files/imagecache/default/<%= @node.main_image.filename %>" /></a>
+    <a href="<%= @node.main_image.path(:original) %>"><img class="img-rounded span9" src="<%= @node.main_image.path(:default) %>" /></a>
     <br />
     <br style="clear:both;" />
   <% end %>
@@ -16,8 +16,11 @@
   </div>
   <h2 style="clear:left;"><%= @node.title %></h2>
 
-  <div class="">
-
+  <div>
+    <div class="btn-group pull-right">
+      <% if @node.prev_by_author %><a class="btn btn-link" href="/<%= @node.prev_by_author.slug %>">&laquo;</a><% end %>
+      <% if @node.next_by_author %><a class="btn btn-link" href="/<%= @node.next_by_author.slug %>">&raquo;</a><% end %>
+    </div>
     <span>
       by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
       <%= @node.created_at.to_s(:long) %> |
@@ -26,6 +29,10 @@
   </div>
   <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
   <hr />
+
+  <% @node.gallery.each do |image| %>
+    <a href="<%= image.image.path(:original) %>"><img style="margin-bottom:4px;" class="img-rounded" src="<%= image.image.path(:thumb) %>" /></a>
+  <% end %>
 
   <p>
   <%= raw RDiscount.new(auto_link(@node.body)).to_html %>

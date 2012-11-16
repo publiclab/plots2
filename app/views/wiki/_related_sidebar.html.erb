@@ -6,7 +6,7 @@
   <hr />
 
   <% if @notes && @notes.length > 0 %>
-  <h4>Recent contributors on this topic </h4>
+  <h4>Recent topic contributors</h4>
   <ul class="nav">
     <% @notes.collect(&:author).collect(&:name).uniq.each do |author| %>
       <li><a href="/notes/author/<%= author %>/<%= @tagnames.join('+') %>"><i class="icon-user"></i> <%= author %></a></li>
