@@ -18,8 +18,17 @@
 
   <div>
     <div class="btn-group pull-right">
-      <% if @node.prev_by_author %><a class="btn btn-link" href="/<%= @node.prev_by_author.slug %>">&laquo;</a><script>$(document).keydown(function(e){ if (e.keyCode == 37) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.prev_by_author.slug %>" }})</script><% end %>
-      <% if @node.next_by_author %><a class="btn btn-link" href="/<%= @node.next_by_author.slug %>">&raquo;</a><script>$(document).keydown(function(e){ if (e.keyCode == 39) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.next_by_author.slug %>" }})</script><% end %>
+      <% if @node.prev_by_author %><a class="btn btn-link btn-small" href="/<%= @node.prev_by_author.slug %>">&laquo;</a><script>$(document).keydown(function(e){ if (e.keyCode == 37) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.prev_by_author.slug %>" }})</script><% end %>
+        <a class="btn btn-small btn-link dropdown-toggle" data-toggle="dropdown">
+          <i class="icon icon-cog"></i> 
+        </a>
+        <ul class="dropdown-menu">
+          <li class="disabled"><a href="javascript:void(0)">by author</a></li>
+          <% @node.tags.each do |tag| %>
+          <li><a href="javascript:void(0)">by tag <b><%= tag.name %></b></a></li>
+          <% end %>
+        </ul>
+      <% if @node.next_by_author %><a class="btn btn-small btn-link" href="/<%= @node.next_by_author.slug %>">&raquo;</a><script>$(document).keydown(function(e){ if (e.keyCode == 39) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.next_by_author.slug %>" }})</script><% end %>
     </div>
     <span>
       by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
