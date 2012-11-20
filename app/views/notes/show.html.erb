@@ -2,7 +2,7 @@
 <div class="span9">
 
   <% if @node.main_image %>
-    <a href="<%= @node.main_image.path(:original) %>"><img class="img-rounded span9" src="<%= @node.main_image.path(:default) %>" /></a>
+    <a href="<%= @node.main_image.path(:original) %>"><img class="img-rounded" src="<%= @node.main_image.path(:default) %>" /></a>
     <br />
     <br style="clear:both;" />
   <% end %>
