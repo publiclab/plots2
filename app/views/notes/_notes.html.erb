@@ -8,7 +8,7 @@
         <% end %>
         <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
         <p style="color:#888;"><small>by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> | <%= time_ago_in_words(node.created_at) %> ago</small></p>
-        <p><%= raw sanitize(RDiscount.new(node.body).to_html).truncate(100) %></p>
+        <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) %></p>
         <p><a href="notes/id/<%= node.nid %>">Read more &raquo;</a></p>
         <% if params[:mod] %>
         <a class="btn btn-mini" href="#"><i class="icon-ban-circle"></i> Spam</a>
