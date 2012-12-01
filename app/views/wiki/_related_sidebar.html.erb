@@ -1,26 +1,22 @@
 <div class="span3">
-  <a rel="tooltip" title="Post about <%= @tagnames.join(', ') %>" data-placement="bottom" style="margin-bottom:6px;" href="/post<%= '?tags='+@tagnames.join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
+
+  <script>
+    function toggle_sidebar() { 
+      if ($('#sidebar').hasClass('hidden-phone')) { 
+        $('#sidebar').removeClass('hidden-phone') 
+      } else { 
+        $('#sidebar').addClass('hidden-phone') 
+      } 
+    } 
+  </script>
+
+  <a style="margin-bottom:10px;" class="btn btn-mini btn-block btn-link visible-phone" href="javascript:void()" onClick="toggle_sidebar()"><i class="icon icon-chevron-down"></i></a>
+
+  <div id="sidebar" class="hidden-phone">
+
+  <a rel="tooltip" title="Post about <%= @tagnames.join(', ') %>" data-placement="bottom" href="/post<%= '?tags='+@tagnames.join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
 
   <%= render :partial => "wiki/place_sidebar" %>
-
-  <br />
-
-  <div class="accordion" id="accordion2">
-    <div class="accordion-group">
-      <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-          <h4 style="color:#444;">Recent contributors</h4>
-        </a>
-      </div>
-      <div id="collapseOne" class="accordion-body collapse in">
-      <% if @notes && @notes.length > 0 %>
-        <% @notes.collect(&:author).collect(&:name).uniq.each do |author| %>
-          <div class="accordion-inner"><a href="/notes/author/<%= author %>/<%= @tagnames.join('+') %>"><i class="icon-user"></i> <%= author %></a></div>
-        <% end %>
-      <% end %>
-      </div>
-    </div>
-  </div>
 
   <% if @notes && @notes.length > 0 %>
   <h4>Recent topic contributors</h4>
@@ -70,4 +66,5 @@
   <hr style="margin-bottom:6px;" />
   <p><small><a href="#"><i class="icon-cog"></i> Options</a></small></p>
 
+  </div>
 </div>

@@ -9,6 +9,9 @@
     font-style: normal;
 }
 
+html {
+}
+
 body {
   padding-bottom: 40px;
 }
@@ -54,3 +57,9 @@ h1,h2,h3,h4 {
   margin-left:-19px;
 }
 
+.footer {
+  padding: 20px;
+  margin: 70px -25px 0 -25px;
+  border-top: 1px solid #E5E5E5;
+  background-color: #f8f8f8;
+}
