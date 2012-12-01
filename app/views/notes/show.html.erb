@@ -14,7 +14,7 @@
   </div>
   <h2 style="clear:left;"><%= @node.title %></h2>
 
-  <div><small>
+  <div>
     <div class="btn-group pull-right">
       <% if @node.prev_by_author %><a class="btn btn-link btn-small" href="/<%= @node.prev_by_author.slug %>">&laquo;</a><script>$(document).keydown(function(e){ if (e.keyCode == 37) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.prev_by_author.slug %>" }})</script><% end %>
         <a class="btn btn-small btn-link dropdown-toggle" data-toggle="dropdown">
@@ -38,8 +38,8 @@
         <%= @node.created_at.to_s(:short) %>
       </span>
     </span>
-  </small></div>
-  <hr />
+  </div>
+  <hr style="margin-top:10px;" />
 
   <% @node.gallery.each do |image| %>
     <a href="<%= image.image.path(:original) %>"><img style="margin-bottom:4px;" class="img-rounded" src="<%= image.image.path(:thumb) %>" /></a>
