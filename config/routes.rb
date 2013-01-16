@@ -23,6 +23,7 @@ Plots2::Application.routes.draw do
   match 'notes/:author/:date/:id' => 'notes#show'
 
   match 'search' => 'search#advanced'
+  match 'map' => 'search#map'
   match 'search/advanced' => 'search#advanced'
   match 'search/advanced/:id' => 'search#advanced'
   match 'search/:id' => 'search#index'
@@ -31,6 +32,7 @@ Plots2::Application.routes.draw do
   match 'tag/author/:id.json' => 'tag#author'
 
   match 'dashboard' => 'home#dashboard'
+  match 'nearby' => 'home#nearby'
   match 'subscriptions' => 'home#subscriptions'
   match 'profile/:id' => 'home#profile'
   match 'people/:id' => 'home#people'
@@ -91,11 +93,11 @@ Plots2::Application.routes.draw do
 
   # See how all your routes lay out with "rake routes"
 
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id))(.:format)'
-
   match ':id' => 'wiki#root'
 
+  # This is a legacy wild controller route that's not recommended for RESTful applications.
+  # Note: This route will make all actions in every controller accessible via GET requests.
+
+  match ':controller(/:action(/:id))(.:format)'
 
 end
