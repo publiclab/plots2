@@ -30,7 +30,13 @@
     <h3 style="margin-top:0;">Share your work</h3>
 
     <div class="sidebar-nav pull-right span3">
-      <a class="btn btn-large btn-block"><i class="icon-upload"></i> Choose files</a>
+      <div id="images">
+        <img onClick="$E.image(this.src)" id="img1" style="margin-right:3px;" class="img-rounded span6" src="http://publiclaboratory.org/sites/default/files/imagecache/thumb/_IGP4548.jpg" /></a>
+        <img id="img2" style="margin-right:3px;" class="img-rounded span6" src="/images/plots-header.jpg" />
+      </div>
+
+      <br style="clear:both;" />
+      <a style="margin-top:12px;" class="btn btn-large btn-block"><i class="icon-upload"></i> Choose files</a>
       <br />
       <div class="dropzone hidden-phone hidden-tablet" id="dropzone">
         Drag files here to attach
@@ -39,51 +45,7 @@
 
     <input type="text" class="span9" placeholder="Title"><br />
 
-    <script>
-      function wrap(a,b) {
-        var textarea = $('#text-input')
-        var len = textarea.val().length;
-        var start = textarea[0].selectionStart;
-        var end = textarea[0].selectionEnd;
-        var sel = textarea.val().substring(start, end);
-        var replace = a + sel + b;
-        textarea.val(textarea.val().substring(0,start) + replace + textarea.val().substring(end,len));
-      }
-    </script>
-
-    <div class="btn-toolbar">
-      <div class="btn-group">
-        <a class="btn btn-small" href="javascript:void(0)" onClick="wrap('**','**')"><i class="icon-bold"></i></a>
-        <a class="btn btn-small" href="javascript:void(0)" onClick="wrap('__','__')"><i class="icon-italic"></i></a>
-        <a class="btn btn-small" href="javascript:void(0)" onClick="wrap('##','')">Header</a>
-      </div>
-      <div class="btn-group">
-        <a class="btn btn-small" href="javascript:void(0)" onClick="wrap('[',']('+prompt('Enter a URL')+')')"><i class="icon-globe"></i></a>
-        <a class="btn btn-small" href="javascript:void(0)" onClick="wrap('![',']('+prompt('Enter an image URL')+')')" data-><i class="icon-picture"></i></a>
-      </div>
-      <div class="btn-group">
-        <a class="btn btn-small btn-info" href="#"><i class="icon-question-sign icon-white"></i> Help</a>
-      </div>
-    </div>
-
-    <textarea class="span9" id="text-input" oninput="this.editor.update()"
-              rows="8" cols="60" placeholder="Type **Markdown** here."></textarea>
-    <div class="well span9" id="preview" style="display:none;"> </div>
-    <br style="clear:both;"/>
-
-    <script src="/assets/js/markdown.js"></script>
-    <script>
-      function Editor(input, preview)
-      {
-        this.update = function () {
-          preview.innerHTML = markdown.toHTML(input.value);
-        }
-        input.editor = this;
-        this.update();
-      }
-      var $M = function (id) { return document.getElementById(id); };
-      new Editor($M("text-input"), $M("preview"));
-    </script>
+    <%= render :partial => 'editor' %>
 
     <div class="input-prepend">
       <span class="add-on"><i class="icon-tags"></i></span>

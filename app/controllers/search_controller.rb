@@ -40,4 +40,8 @@ class SearchController < ApplicationController
     render :json => matches
   end
 
+  def map
+    @users = DrupalUsers.find(:all, :conditions => ["lat != 0.0 AND lon != 0.0"])
+  end
+
 end

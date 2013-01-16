@@ -24,11 +24,12 @@ gem 'jquery-rails'
 
 gem 'execjs'
 gem 'therubyracer'
-gem 'secondbase', '0.5.0'
+#gem 'secondbase', '0.5.0'
 gem 'rdiscount'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'georuby', '2.0'
+gem 'geokit-rails3'
 gem 'spatial_adapter'
 gem 'rails_autolink'
 

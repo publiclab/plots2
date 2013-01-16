@@ -1,0 +1,24 @@
+<%= render :partial => "home/sidebar" %>
+<div class="span9">
+
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+  <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
+  <![endif]-->
+  <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
+
+  <h3 style="margin-top:0;">User map</h3>
+
+  <div class="span12" style="height:400px;" id="map"></div>
+
+  <script>
+    var map = L.map('map').setView([0,0], 2);
+    L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+
+    <% @users.each do |user| %>
+      L.marker([<%= user.lat %>, <%= user.lon %>]).addTo(map).bindPopup("<%= user.name %>");
+    <% end %>
+  </script>
+
+</div>
+

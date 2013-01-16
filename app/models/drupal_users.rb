@@ -14,6 +14,10 @@ class DrupalUsers < ActiveRecord::Base
     self.drupal_profile_values
   end
 
+  def location
+    DrupalProfileValue.find_by_uid(self.uid, :conditions => {:fid => 2}).value
+  end
+
   def bio
     bio = DrupalProfileValue.find_by_uid(self.uid, :conditions => {:fid => 7})
     if bio
@@ -61,6 +65,22 @@ class DrupalUsers < ActiveRecord::Base
       end
     end
     tags
+  end
+
+  def self.locations
+    DrupalUsers.find(:all, :conditions => ["profile_values.fid = 2 AND profile_values.value != ''"], :include => :drupal_profile_values)
+  end
+
+  def geocode
+
+    location = Geokit::Geocoders::MultiGeocoder.geocode(self.location)
+    if location
+      self.lon =  location.lng
+      self.lat =  location.lat
+      self.save!
+    else
+      return false
+    end
   end
 
 end

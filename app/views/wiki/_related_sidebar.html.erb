@@ -16,6 +16,8 @@
 
   <a rel="tooltip" title="Post about <%= @tagnames.join(', ') %>" data-placement="bottom" href="/post<%= '?tags='+@tagnames.join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
 
+  <hr />
+
   <%= render :partial => "wiki/place_sidebar" %>
 
   <% if @notes && @notes.length > 0 %>

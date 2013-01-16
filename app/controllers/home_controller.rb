@@ -19,6 +19,9 @@ class HomeController < ApplicationController
     @unpaginated = true
   end
 
+  def nearby
+  end
+
   def people
     redirect_to "/profile/"+params[:id]
   end
