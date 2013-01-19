@@ -1,0 +1,31 @@
+<%= render :partial => "home/sidebar" %>
+<div class="span9">
+
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+  <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
+  <![endif]-->
+  <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
+
+  <h3 style="margin-top:0;">Public Lab contributors near <% if params[:login] %>you<% else %><%= params[:q] %><% end %></h3>
+
+  <form action="" class="form">
+    <input class="input search-query" type="text" name="q" placeholder="Search for a place"/>
+    <button class="btn btn-primary" type="submit">Search</button>
+  </form>
+
+  <div class="span12" style="margin-left:0;height:400px;" id="map"></div>
+
+  <script>
+    var map = L.map('map').setView([<%= @current_user.lat %>,<%= @current_user.lon %>], 8);
+    L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+
+    <% if @users %>
+    <% @users.each do |user| %>
+      L.marker([<%= user.lat %>, <%= user.lon %>]).addTo(map).bindPopup("<a href='/profile/<%= user.name %>'><%= user.name %></a>");
+    <% end %>
+    <% end %>
+  </script>
+
+</div>
+

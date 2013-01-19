@@ -32,6 +32,7 @@ Plots2::Application.routes.draw do
   match 'tag/author/:id.json' => 'tag#author'
 
   match 'dashboard' => 'home#dashboard'
+  match 'nearby/:login' => 'home#nearby'
   match 'nearby' => 'home#nearby'
   match 'subscriptions' => 'home#subscriptions'
   match 'profile/:id' => 'home#profile'

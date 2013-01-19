@@ -7,7 +7,14 @@ class AdminController < ApplicationController
   def geocode
     succeeded = 0
     failed = 0
-    @users = DrupalUsers.locations.each do |user|
+    if params[:all]
+      @users = DrupalUsers.locations
+    elsif params[:name]
+      @users = DrupalUsers.find_all_by_name params[:name]
+    else
+      @users = DrupalUsers.find(:all, :conditions => ["lat = 0.0 AND profile_values.fid = 2 AND profile_values.value != ''"], :include => :drupal_profile_values)
+    end
+    @users.each do |user|
       if user.geocode
         succeeded += 1
       else
