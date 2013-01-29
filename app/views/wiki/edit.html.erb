@@ -34,7 +34,7 @@
 <script src="/assets/js/dragdrop.js"></script>
 <div class="span9">
   <%= render :partial => "layouts/alerts" %>
-  <form class="well post">
+  <form class="well post" action="http://publiclaboratory.org/wiki/<%=h params[:id] %>">
     <% if @node %>
       <h3 style="margin-top:0;">Editing page: <i><%= @node.title %></i></h3>
     <% else %>
@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <input type="text" class="span9" id="title" value="<%= @node.title if @node %><%=h params[:id] unless @node %>"><br />
+    <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= @node.title if @node %><%=h params[:id] unless @node %>"><br />
 
     <script>
       function wrap(a,b) {
@@ -79,7 +79,7 @@
       </div>
     </div>
 
-    <textarea class="span9" id="text-input" oninput="this.editor.update()"
+    <textarea name="body" tabindex="2" class="span9" id="text-input" oninput="this.editor.update()"
               rows="30" cols="60"><%= @node.body if @node %></textarea>
     <div class="well span9" id="preview" style="display:none;"> </div>
     <br style="clear:both;"/>
@@ -100,7 +100,7 @@
 
     <div class="input-prepend">
       <span class="add-on"><i class="icon-tags"></i></span>
-      <input type="text" class="span6" <% if @tags %>value="<%= @tags.collect(&:name).join(',') %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
+      <input name="tags" type="text" class="span6" <% if @tags %>value="<%= @tags.collect(&:name).join(',') %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
     </div>
 
     <br />
