@@ -1,7 +1,7 @@
 class DrupalNode < ActiveRecord::Base
   # attr_accessible :title, :body
   has_many :drupal_node_revision, :foreign_key => 'nid'
-  has_one :drupal_main_image, :foreign_key => 'nid'
+  has_many :drupal_main_image, :foreign_key => 'nid'
   has_one :drupal_node_counter, :foreign_key => 'nid'
   has_many :drupal_node_tag, :foreign_key => 'nid'
   has_many :drupal_tag, :through => :drupal_node_tag
@@ -42,7 +42,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def main_image
-    self.drupal_main_image.drupal_file if self.drupal_main_image
+    self.drupal_main_image.last.drupal_file if self.drupal_main_image
   end
 
    def icon
@@ -116,7 +116,11 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def location
-    {:x => self.locations.collect(&:x).sum/self.locations.length,:y => self.locations.collect(&:y).sum/self.locations.length}
+    locations = []
+    self.locations.each do |l|
+      locations << l if l && l.x && l.y
+    end
+    {:x => locations.collect(&:x).sum/locations.length,:y => locations.collect(&:y).sum/locations.length}
   end 
 
   def locations

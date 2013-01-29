@@ -8,19 +8,19 @@
           <button type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i></button>
 
           <div class="pull-right" style="margin-top:5px;">           
-            <label class="checkbox pull-right" style="margin-right:20px;">
-              <input type="checkbox" checked="false" name="comments" onClick="$('.comment').toggle()" />
+            <label class="checkbox pull-right" style="width:100px;margin-right:10px;">
+              <input type="checkbox" checked="<%= !params[:comments] %>" name="comments" onClick="$('.comment').toggle()" />
               <i class="icon-comment"></i> Comments
             </label>
-            <label class="checkbox pull-right" style="margin-right:20px;">
-              <input type="checkbox" checked="true" name="maps" onClick="$('.map').toggle()" />
+            <label class="checkbox pull-right" style="width:60px;margin-right:10px;">
+              <input type="checkbox" checked="<%= !(params[:maps].nil?) %>" name="maps" onClick="$('.map').toggle()" />
               <i class="icon-map-marker"></i> Maps
             </label>
-            <label class="checkbox pull-right" style="margin-right:20px;">
+            <label class="checkbox pull-right" style="width:55px;margin-right:10px;">
               <input type="checkbox" checked="true" name="wikis" onClick="$('.page').toggle()"/>
-              <i class="icon-book"></i> Wiki pages
+              <i class="icon-book"></i> Wiki
             </label>
-            <label class="checkbox pull-right" style="margin-right:20px;">
+            <label class="checkbox pull-right" style="width:130px;margin-right:10px;">
               <input type="checkbox" checked="true" name="notes" onClick="$('.note').toggle()"/>
               <i class="icon-file"></i> Research notes
             </label>

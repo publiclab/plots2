@@ -2,7 +2,7 @@ class MapController < ApplicationController
   def index
     @title = "Maps"
     @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'map', :status => 1}, :page => params[:page])
-    render :template => "notes/index"
+    @maps = DrupalNode.find(:all, :order => "nid DESC", :conditions => {:type => 'map', :status => 1})
   end
 
   def show
