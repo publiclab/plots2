@@ -34,7 +34,8 @@
 <script src="/assets/js/dragdrop.js"></script>
 <div class="span9">
   <%= render :partial => "layouts/alerts" %>
-  <form class="well post" action="http://publiclaboratory.org/wiki/<%=h params[:id] %>">
+  <% if @node %><form class="well post" action="http://publiclaboratory.org/node/<%= @node.id %>/edit">
+  <% else %><form class="well post" action="http://publiclaboratory.org/wiki/<%=h params[:id] %>"><% end %>
     <% if @node %>
       <h3 style="margin-top:0;">Editing page: <i><%= @node.title %></i></h3>
     <% else %>
