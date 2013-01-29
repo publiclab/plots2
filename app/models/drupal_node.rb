@@ -42,7 +42,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def main_image
-    self.drupal_main_image.last.drupal_file if self.drupal_main_image
+    self.drupal_main_image.last.drupal_file if self.drupal_main_image && self.drupal_main_image.last
   end
 
    def icon
