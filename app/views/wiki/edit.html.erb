@@ -1,5 +1,5 @@
 <div class="span3">
-  <% if @related.length > 0 %>
+  <% if @related && @related.length > 0 %>
     <h3>Did you mean:</h3>
     <ul class="nav bullet">
     <% @related[0..5].each do |wiki| %>
