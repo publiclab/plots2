@@ -22,6 +22,16 @@ class WikiController < ApplicationController
     #elsif !logged_in?
       #render :template => 'notloggedin'
     else
+      title = params[:id].gsub('-',' ')
+      @related = DrupalNode.find(:all, :limit => 10, :order => "node.nid DESC", :conditions => ['type = "page" AND status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', "%"+title+"%","%"+title+"%"], :include => :drupal_node_revision)
+      @tags = []
+      tag = DrupalTag.find_by_name(params[:id])
+      @tags << tag if tag
+      title.split(' ').each do |t|
+        tag = DrupalTag.find_by_name(t)
+        @tags << tag if tag
+      end
+      @related += DrupalTag.find_nodes_by_type(@tags,'page',10)
       flash[:notice] = "This page does not exist yet, but you can create it now:"
       render :template => 'wiki/edit'
     end
@@ -32,7 +42,7 @@ class WikiController < ApplicationController
     @title = "Editing '"+@node.title+"'"
     if @node.nil?
       @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
-      @place = true
+      @place = true if @node.nil?
     end
     @tags = @node.tags
   end

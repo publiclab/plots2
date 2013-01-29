@@ -1,4 +1,15 @@
 <div class="span3">
+  <% if @related.length > 0 %>
+    <h3>Did you mean:</h3>
+    <ul class="nav bullet">
+    <% @related[0..5].each do |wiki| %>
+      <li><a href="/wiki/<%= wiki.slug %>"><i class="icon-book"></i> <%= wiki.title %></a></li>
+    <% end %>
+    </ul>
+    <p><i class="icon icon-search"></i> Try <a href="/search/<%=h params[:id] %>">searching for '<%=h params[:id] %>' &raquo;</a></p>
+  <hr />
+  <% end %>
+
   <h3><i class="icon-book"></i> What's a <br />a wiki page?</h3>
   <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Wiki pages</b> are web pages that anyone can create or edit -- we use them to collect information, documentation, and instructions on projects.</p>
   <p><b>Wiki pages can be:</b></p>
@@ -22,16 +33,12 @@
 
 <script src="/assets/js/dragdrop.js"></script>
 <div class="span9">
-  <div class="alert">
-    <button type="button" class="close" data-dismiss="alert">×</button>
-    <strong>Note:</strong> This is an example wiki posting form; it is not functional.
-  </div>
   <%= render :partial => "layouts/alerts" %>
   <form class="well post">
     <% if @node %>
       <h3 style="margin-top:0;">Editing page: <i><%= @node.title %></i></h3>
     <% else %>
-      <h3 style="margin-top:0;">Create page: <i><%= params[:id] %></i></h3>
+      <h3 style="margin-top:0;">Create page: <i><%=h params[:id] %></i></h3>
     <% end %>
 
     <div class="sidebar-nav pull-right span3">
@@ -42,7 +49,7 @@
       </div>
     </div>
 
-    <input type="text" class="span9" id="title" value="<%= @node.title if @node %>"><br />
+    <input type="text" class="span9" id="title" value="<%= @node.title if @node %><%=h params[:id] unless @node %>"><br />
 
     <script>
       function wrap(a,b) {
