@@ -2,22 +2,29 @@ class WikiController < ApplicationController
 
   def show
     @node = DrupalNode.find_by_slug(params[:id])
-    @title = @node.title
-    if @node.nil?
-      @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
-      @place = true
-      @tags = [DrupalTag.find_by_name(params[:id])]
+    if @node
+      @title = @node.title
+       if @node.nil?
+         @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
+         @place = true
+         @tags = [DrupalTag.find_by_name(params[:id])]
+       else
+         @tags = @node.tags
+       end
+       # attempt to add the page name itself as a tag:
+         tag = DrupalTag.find_by_name(params[:id])
+         @tags << tag if tag
+       @tagnames = @tags.collect(&:name)
+       @revision = @node.latest
+       @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
+       @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
+       @videos = DrupalTag.find_nodes_by_type_with_all_tags([DrupalTag.find_by_name('video')]+@tags,'note',8)
+    #elsif !logged_in?
+      #render :template => 'notloggedin'
     else
-      @tags = @node.tags
+      flash[:notice] = "This page does not exist yet, but you can create it now:"
+      render :template => 'wiki/edit'
     end
-    # attempt to add the page name itself as a tag:
-      tag = DrupalTag.find_by_name(params[:id])
-      @tags << tag if tag
-    @tagnames = @tags.collect(&:name)
-    @revision = @node.latest
-    @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
-    @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
-    @videos = DrupalTag.find_nodes_by_type_with_all_tags([DrupalTag.find_by_name('video')]+@tags,'note',8)
   end
 
   def edit

@@ -1,0 +1,17 @@
+<%= render :partial => "wiki/related_sidebar" %>
+<div class="span9">
+    <h3 style="margin-top:0;">Search results for <i style="color:#aaa;"><%= params[:id] %></i> <small>(<a href="/search/advanced/<%= params[:id] %>">advanced search</a>)</h3>
+
+  <% if @nodes.length == 0 %>
+    <p>No results found; try looking for <a href="/tag/<%= params[:id] %>">items tagged with '<b><%= params[:id] %></b>'</a> or broadening your search:</p>
+
+    <%= render :partial => "search/search" %>
+
+    <p>Or try an <a href="/search/advanced/">advanced search</a></p>
+  <% else %>
+    <%= render :partial => "notes/notes" %>
+  <% end %>
+
+  <hr />
+  
+</div>

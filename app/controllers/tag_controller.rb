@@ -7,9 +7,10 @@ class TagController < ApplicationController
       @tagnames = @tags.collect(&:name)
       @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
     end
+    @tagnames ||= []
     @title = @tagnames.join(', ')
     @unpaginated = true
-    render :template => "notes/index"
+    render :template => "tag/tag"
   end
 
   def author

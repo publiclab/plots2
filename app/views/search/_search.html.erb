@@ -1,0 +1,26 @@
+<form id="inline_searchform" class="form" autocomplete="off">
+  <input tabindex="1" id="inline_searchform_input" type="text" class="input search-query typeahead" data-provide="typeahead" value="<%= params[:id] %>">
+  <script>
+    jQuery(document).ready(function() {
+      $('#inline_searchform').submit(function(e){ 
+        e.preventDefault()
+        window.location = '/search/'+$('#inline_searchform_input').val()
+      })
+      // working off of http://stackoverflow.com/questions/9232748/twitter-bootstrap-typeahead-ajax-example
+      $('#inline_searchform_input').typeahead({
+        source: function (typeahead, query) {
+          return $.post('/search/typeahead/'+query, {}, function (data) {
+            return typeahead.process(data)
+          })
+        },
+          minLength: 3,
+        items: 15,
+          highlighter: function(a) {a},
+        // Autoselect is disabled so that users can enter new tags
+        autoselect: false,
+        autowidth: false
+      })
+    })
+  </script>
+  <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i></button>
+</form>

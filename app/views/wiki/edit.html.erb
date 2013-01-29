@@ -14,7 +14,7 @@
     <ul class="nav nav-list">
       <li class="nav-header">More</li>
       <li><a href="/wiki/getting-started">Getting started with Public Lab</a></li>
-      <li><a href="/wiki/revisions/<%= @node.slug %>">Revisions for this page</a></li>
+      <% if @node %><li><a href="/wiki/revisions/<%= @node.slug %>">Revisions for this page</a></li><% end %>
       <li><a href="#">Advanced note posting</a></li>
     </ul>
   </div>
@@ -26,11 +26,12 @@
     <button type="button" class="close" data-dismiss="alert">×</button>
     <strong>Note:</strong> This is an example wiki posting form; it is not functional.
   </div>
+  <%= render :partial => "layouts/alerts" %>
   <form class="well post">
     <% if @node %>
       <h3 style="margin-top:0;">Editing page: <i><%= @node.title %></i></h3>
     <% else %>
-      <h3 style="margin-top:0;">Create page: <i><%= @node.title %></i></h3>
+      <h3 style="margin-top:0;">Create page: <i><%= params[:id] %></i></h3>
     <% end %>
 
     <div class="sidebar-nav pull-right span3">
@@ -41,7 +42,7 @@
       </div>
     </div>
 
-    <input type="text" class="span9" id="title" value="<%= @node.title %>"><br />
+    <input type="text" class="span9" id="title" value="<%= @node.title if @node %>"><br />
 
     <script>
       function wrap(a,b) {
@@ -72,7 +73,7 @@
     </div>
 
     <textarea class="span9" id="text-input" oninput="this.editor.update()"
-              rows="30" cols="60"><%= @node.body %></textarea>
+              rows="30" cols="60"><%= @node.body if @node %></textarea>
     <div class="well span9" id="preview" style="display:none;"> </div>
     <br style="clear:both;"/>
 

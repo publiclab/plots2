@@ -1,0 +1,17 @@
+<div class="span6">
+
+<h1>Log In</h1>
+
+<p><i>Use your existing <a href="http://publiclaboratory.org">PublicLaboratory.org</a> username (from the old site) to log in. If you do not yet have one, <a href="http://publiclaboratory.org/user/register">sign up there first!</a></i></p>
+
+<form action="/session" class="form">
+
+<input class="input" type="text" placeholder="username" />
+<input type="hidden" name="return_to" value="<%= params[:return_to] %>" />
+
+<br />
+<button type="submit" class="btn btn-large btn-primary">Log in</button>
+
+</form>
+
+</div>
