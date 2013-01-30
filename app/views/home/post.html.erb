@@ -24,7 +24,7 @@
 <div class="span9">
   <div class="alert">
     <button type="button" class="close" data-dismiss="alert">×</button>
-    <strong>Note:</strong> This is an example note posting form; it is not functional.
+    <strong>Note:</strong> This is a beta; you must be <a href="http://publiclaboratory.org/">logged into PublicLaboratory.org</a> for this to work.
   </div>
   <form class="well post" action="http://publiclaboratory.org/note/add">
     <h3 style="margin-top:0;">Share your work</h3>
@@ -43,17 +43,17 @@
       </div>
     </div>
 
-    <input name="title" type="text" class="span9" placeholder="Title"><br />
+    <input tabindex="1" name="title" type="text" class="span9" placeholder="Title"><br />
 
     <%= render :partial => 'editor' %>
 
     <div class="input-prepend">
       <span class="add-on"><i class="icon-tags"></i></span>
-      <input name="tags" type="text" class="span6" <% if params[:tags] %>value="<%= params[:tags] %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
+      <input tabindex="3" name="tags" type="text" class="span6" <% if params[:tags] %>value="<%= params[:tags] %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
     </div>
 
     <br />
-    <button type="submit" class="btn btn-primary btn-large">Publish</button>
+    <button tabindex="4" type="submit" class="btn btn-primary btn-large">Publish</button>
     <a class="btn btn-large" onClick="$('#preview').toggle();$('#text-input').toggle()">Preview</a>
   </form>
 </div>
