@@ -9,6 +9,13 @@ class DrupalTag < ActiveRecord::Base
     end
   end
 
+  has_many :drupal_node_community_tag, :foreign_key => 'tid'
+  has_many :drupal_node, :through => :drupal_node_community_tag do
+    def filter_by_type(type)
+      find(:all, :conditions => {:status => 1, :type => type})
+    end
+  end
+
   def nodes
     ids = []
     self.drupal_node_tag.each do |node_tag|
@@ -24,7 +31,7 @@ class DrupalTag < ActiveRecord::Base
         node_ids << node.nid
       end
     end
-    DrupalNode.find node_ids.uniq, :order => "nid DESC", :limit => limit
+    DrupalNode.find node_ids.uniq, :order => "created DESC", :limit => limit
   end
 
   def self.find_nodes_by_type_with_all_tags(tags,type,limit)

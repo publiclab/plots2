@@ -9,7 +9,7 @@ class HomeController < ApplicationController
     @title = "Dashboard"
     @user = DrupalUsers.find_by_name "warren" 
     @tags = []
-    ['balloon-mapping','leaffest','spectrometer'].each do |tagname|
+    ['near-infrared-camera', 'troubleshooting','balloon-mapping','leaffest','spectrometer'].each do |tagname|
       @tags << DrupalTag.find_by_name(tagname)
     end
     users = ['donblair','cfastie','liz']
