@@ -15,13 +15,13 @@
       </div>
     </div>
 
-    <input tabindex="1" name="title" type="text" class="span9" placeholder="Title"><br />
+    <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title"><br />
 
     <%= render :partial => 'home/editor' %>
 
     <div class="input-prepend">
       <span class="add-on"><i class="icon-tags"></i></span>
-      <input tabindex="3" name="tags" type="text" class="span6" <% if params[:tags] %>value="<%= params[:tags] %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
+      <input id="tags" tabindex="3" name="tags" type="text" class="span6" <% if params[:tags] %>value="<%= params[:tags] %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
     </div>
 
   </div>
@@ -31,3 +31,23 @@
   </div>
   </form>
 </div>
+
+<script>
+  function urlParam(name) {
+    return decodeURIComponent(urlParams()[name].replace(/\+/g,' ')) 
+  }
+  function urlParams() {
+    params = {}
+    $.each(location.toString().split('?')[1].split('&'),function(i,p) {
+      params[p.split('=')[0]] = p.split('=')[1]
+    })
+    return params
+  }
+  (function(){
+  if (location.toString().split('/')[location.toString().split('/').length-1]) {
+    if (urlParam('title')!='null') $('input#title').val(urlParam('title'))
+    if (urlParam('body')!='null') $('textarea#text-input').val(urlParam('body'))
+    if (urlParam('tags')!='null') $('input#tags').val(urlParam('tags'))
+  } 
+  })()
+</script>
