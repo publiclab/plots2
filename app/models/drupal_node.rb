@@ -34,6 +34,10 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def created_at
+    Time.at(self.drupal_node_revision.first.timestamp)
+  end
+
+  def updated_on
     Time.at(self.drupal_node_revision.last.timestamp)
   end
 
