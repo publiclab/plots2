@@ -48,6 +48,7 @@ Plots2::Application.routes.draw do
   match 'nearby' => 'home#nearby'
   match 'subscriptions' => 'home#subscriptions'
   match 'profile/:id' => 'home#profile'
+  match 'feed/:author' => 'user#rss'
   match 'people/:id' => 'home#people'
   match 'register' => 'home#register'
   match 'maps' => 'map#index'

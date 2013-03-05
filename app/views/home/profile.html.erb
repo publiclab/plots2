@@ -6,7 +6,7 @@
 </div>
 
 <div class="span9">
-  <h3 style="margin-top:0;"><%= @user.name %> <small><%= @user.notes.length %> research notes and wiki edits - Joined <%= time_ago_in_words(@user.created_at) %> ago</small></h3>
+  <h3 style="margin-top:0;"><%= @user.name %> <small><a href="/feed/<%= @user.name %>.rss">RSS</a> | <%= @user.notes.length %> research notes and wiki edits - Joined <%= time_ago_in_words(@user.created_at) %> ago</small></h3>
 
   <p><%= raw RDiscount.new(@user.bio).to_html %></p>
 

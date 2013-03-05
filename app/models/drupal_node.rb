@@ -34,6 +34,10 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def created_at
+    Time.at(self.drupal_node_revision.first.timestamp)
+  end
+
+  def updated_on
     Time.at(self.drupal_node_revision.last.timestamp)
   end
 
@@ -70,9 +74,9 @@ class DrupalNode < ActiveRecord::Base
 
   def slug
     if self.type == "page"
-      slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last 
+      slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
     else
-      slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst
+      slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
     end
     slug
   end
