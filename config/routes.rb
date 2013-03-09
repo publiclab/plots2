@@ -1,4 +1,6 @@
 Plots2::Application.routes.draw do
+  resources :rusers
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -7,16 +9,14 @@ Plots2::Application.routes.draw do
   # Keep in mind you can assign values other than :controller and :action
 
   match 'local/:login' => 'sessions#local'
-  match 'logout' => 'sessions#destroy'
-  match 'login' => 'sessions#new'
+  match 'login' => "user_sessions#new",      :as => :login
+  match 'logout' => "user_sessions#destroy", :as => :logout
   match 'register' => 'users#create'
   match 'signup' => 'users#new'
   match 'tag/create' => 'tag#create'
   match 'tag/:id' => 'tag#tag'
   resources :users
-
-  match 'session' => 'session#create' #, :conditions => { :method => :get }
-  resources :sessions
+  resources :user_sessions
 
   match 'wiki/:id' => 'wiki#show'
   match 'wiki/revisions/:id' => 'wiki#revisions'

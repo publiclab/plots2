@@ -117,19 +117,33 @@
             <% unless params[:action] == "register" %>
             <ul class="nav pull-right">
               <li class="dropdown">
+                <% if current_user %>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="icon-user icon-white"></i>
-                  User <b class="caret"></b>
+                  <%= current_user.username %> <b class="caret"></b>
                 </a> 
                 <ul class="dropdown-menu">
                   <li><a href="/dashboard">Dashboard</a></li>
                   <li><a href="/profile">Profile</a></li>
+                  <li><%= link_to "Edit Profile", edit_user_path(:current) %></li> 
                   <li class="divider"></li>
                   <li><a href="/subscriptions">Subscriptions</a></li>
                   <li><a href="">Settings</a></li>
                   <li class="divider"></li>
-                  <li><a href="">Log out</a></li>
+<div id="user_nav">
+
+		  <li><%= link_to "Logout", logout_path %></li>
                 </ul>
+                <% else %>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="icon-user icon-white"></i>
+                   Log in<b class="caret"></b>
+                </a> 
+                <ul class="dropdown-menu">
+                  <li><a href="<%= login_path %>">Log in</a></li>
+                  <li><a href="<%= new_user_path %>">Register</a></li>
+                </ul>
+                <% end %>
               </li>
             </ul>
             <% end %>

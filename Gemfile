@@ -33,6 +33,11 @@ gem 'geokit-rails3'
 gem 'spatial_adapter'
 gem 'rails_autolink'
 
+gem "nifty-generators", :group => :development
+gem "authlogic"
+gem "authlogic-oid"#, :lib => "authlogic_openid"
+gem "ruby-openid"#, :lib => "openid"
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -47,3 +52,5 @@ gem 'rails_autolink'
 
 # To use debugger
 # gem 'debugger'
+
+gem "mocha", :group => :test

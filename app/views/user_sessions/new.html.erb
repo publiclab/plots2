@@ -1,0 +1,13 @@
+<h1>Log in</h1>
+
+<%= form_for @user_session, :as => :user_session, :url => { :action => "create" } do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.text_field :username, {:placeholder => "username"} %>
+  </p>
+  <p>
+    <%= f.password_field :password, {:placeholder => "password"} %>
+  </p>
+  <p><button class="btn-large btn-primary" type="submit">Register</button></p>
+<% end %>
+
