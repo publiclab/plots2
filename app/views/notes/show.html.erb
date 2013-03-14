@@ -46,7 +46,7 @@
   <% end %>
 
   <p>
-  <%= raw RDiscount.new(auto_link(@node.body, :sanitize => false)).to_html %>
+  <%= raw RDiscount.new(@node.body).to_html %>
   </p>
 
   <hr />
