@@ -63,3 +63,12 @@ h1,h2,h3,h4 {
   border-top: 1px solid #E5E5E5;
   background-color: #f8f8f8;
 }
+
+/* embeds the openid image in the text field */
+input#user_openid_identifier, input#user_session_openid_identifier {
+  background: url(http://openid.net/images/login-bg.gif) no-repeat;
+  background-color: #fff;
+  background-position: 0 50%;
+  color: #000;
+  padding-left: 18px;
+}

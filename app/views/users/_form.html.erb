@@ -1,16 +1,20 @@
 <%= form_for @user do |f| %>
   <%= f.error_messages %>
-  <p>
-    <%= f.text_field :username, {:placeholder => "username"} %>
-  </p>
-  <p>
-    <%= f.text_field :email, {:placeholder => "you@email.com"} %>
-  </p>
-  <p>
-    <%= f.password_field :password, {:placeholder => "password"}%>
-  </p>
-  <p>
-    <%= f.password_field :password_confirmation, {:placeholder => "confirm your password"}%>
-  </p>
+
+<!--
+
+  <p><%= f.text_field :username, {:placeholder => "username"} %></p>
+  <p><%= f.text_field :email, {:placeholder => "you@email.com"} %></p>
+
+  <% if @user.openid_identifier.blank? %>
+    <p><%= f.password_field :password, {:placeholder => "password"}%></p>
+    <p><%= f.password_field :password_confirmation, {:placeholder => "confirm your password"}%></p>
+  <% end %>
+
+-->
+
+  <p>Register with your <a href="http://publiclaboratory.org">PublicLaboratory.org</a> username:</p>
+  <p><%= f.text_field :openid_identifier %></p>
+
   <p><button class="btn-large btn-primary" type="submit">Register</button></p>
 <% end %>

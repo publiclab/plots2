@@ -34,9 +34,10 @@ gem 'spatial_adapter'
 gem 'rails_autolink'
 
 gem "nifty-generators", :group => :development
+gem "ruby-openid", :require => "openid"
+gem "rack-openid"
 gem "authlogic"
-gem "authlogic-oid"#, :lib => "authlogic_openid"
-gem "ruby-openid"#, :lib => "openid"
+#gem "authlogic-oid", :require => "authlogic_openid"
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

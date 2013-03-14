@@ -1,19 +1,33 @@
 class UsersController < ApplicationController
+
   def new
     @user = User.new
   end
 
   def create
-    @user = User.new({
-      :username => params[:user][:username],
-      :email => params[:user][:email],
-      :password => params[:user][:password],
-      :password_confirmation => params[:user][:password_confirmation]
-    })
-    if @user.save
-      redirect_to root_url, :notice => "Successfully created user."
-    else
-      render :action => 'new'
+    # craft a publiclaboratory OpenID URI around the PL username given:
+    params[:user][:openid_identifier] = "http://publiclaboratory.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user]
+    @user = User.new(params[:user])
+    @user.save({}) do |result| # <<<<< THIS LINE WAS THE PROBLEM FOR "Undefined [] for True" error...
+      if result
+        flash[:notice] = "Registration successful."
+        redirect_to root_url
+      else
+        render :action => 'new'
+      end
+    end
+  end
+
+  def update
+    @user = current_user
+    @user.attributes = params[:user]
+    @user.save do |result|
+      if result
+        flash[:notice] = "Successfully updated profile."
+        redirect_to root_url
+      else
+        render :action => 'edit'
+      end
     end
   end
 
@@ -21,12 +35,4 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  def update
-    @user = User.find(params[:id])
-    if @user.update_attributes(params[:user])
-      redirect_to root_url, :notice  => "Successfully updated user."
-    else
-      render :action => 'edit'
-    end
-  end
 end
