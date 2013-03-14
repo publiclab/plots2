@@ -1,0 +1,13 @@
+<h2>Users</h2>
+
+<table class="table">
+  <tr>
+    <th>Username</th>
+    <th>Joined new site</th>
+  </tr>
+  <% @users.each do |user| %>
+  <tr>
+    <td><a href="/profile/<%= user.username %>"><%= user.username %></a></td>
+    <td><%= time_ago_in_words(@users.created_at) %></td>
+  <% end %>
+</table>
