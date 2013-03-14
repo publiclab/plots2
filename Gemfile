@@ -32,6 +32,7 @@ gem 'georuby', '2.0'
 gem 'geokit-rails3'
 gem 'spatial_adapter'
 gem 'rails_autolink'
+gem 'rb-readline'
 
 gem "nifty-generators", :group => :development
 gem "ruby-openid", :require => "openid"
