@@ -1,6 +1,7 @@
 class UserSessionsController < ApplicationController
 
   def create
+    params[:user_session][:openid_identifier] = "http://publiclaboratory.org/people/"+params[:user_session][:openid_identifier]+"/identity" if params[:user_session]
     @user_session = UserSession.new(params[:user_session])
     @user_session.save do |result|
       if result
