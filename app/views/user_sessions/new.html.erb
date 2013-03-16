@@ -1,16 +1,30 @@
 <h1>Log in</h1>
 
-<%= form_for @user_session, :as => :user_session, :url => { :action => "create" } do |f| %>
+<%= form_for @user_session, :as => :user_session, :url => { :action => "create" }, :html => {:class => "form"} do |f| %>
   <%= f.error_messages %>
 
+  <div style="width:50%;">
+
+    <p>Use your <a href="http://publiclaboratory.org">PublicLaboratory.org</a> username to log in. If you do not have one, <a href="http://publiclaboratory.org/user/register">click here to register &raquo;</a></p>
+
+    <p>This is an "alpha" website; the full Public Lab website is <a href="http://publiclaboratory.org">PublicLaboratory.org</a>. If this is your first time logging in here, you must first <a href="/join">create an account on the new site &raquo;</a>.</p>
+
+  </div>
+
+  <br style="clear:both;"/>
+
+<!--
   <p><%= f.text_field :username, {:placeholder => "username"} %></p>
   <p><%= f.password_field :password, {:placeholder => "password"} %></p>
 
   <h2>Or use OpenID</h2>
-
+-->
   <p><%= f.text_field :openid_identifier, {:placecholder => "OpenID"} %></p>
 
-  <%= f.check_box :remember_me %><%= f.label :remember_me %><br />
+  <p><label class="checkbox">
+    <%= f.check_box :remember_me %> Remember me
+  </label></p>
+
   <p><button class="btn-large btn-primary" type="submit">Log in</button></p>
 <% end %>
 

@@ -6,17 +6,21 @@ class HomeController < ApplicationController
   end
 
   def dashboard
-    @title = "Dashboard"
-    @user = DrupalUsers.find_by_name "warren" 
-    @tags = []
-    ['near-infrared-camera', 'troubleshooting','balloon-mapping','leaffest','spectrometer'].each do |tagname|
-      @tags << DrupalTag.find_by_name(tagname)
-    end
-    users = ['donblair','cfastie','liz']
+    if current_user
+      @title = "Dashboard"
+      @user = DrupalUsers.find_by_name "warren" 
+      @tags = []
+      ['near-infrared-camera', 'troubleshooting','balloon-mapping','leaffest','spectrometer'].each do |tagname|
+        @tags << DrupalTag.find_by_name(tagname)
+      end
+      users = ['donblair','cfastie','liz']
 
-    @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
-    @nodes = DrupalTag.find_nodes_by_type(@tags,'note',8)
-    @unpaginated = true
+      @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
+      @nodes = DrupalTag.find_nodes_by_type(@tags,'note',8)
+      @unpaginated = true
+    else
+      prompt_login "You must be logged in to see the dashboard."
+    end
   end
 
   def nearby

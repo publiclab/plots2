@@ -8,13 +8,17 @@ class UsersController < ApplicationController
     # craft a publiclaboratory OpenID URI around the PL username given:
     params[:user][:openid_identifier] = "http://publiclaboratory.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user]
     @user = User.new(params[:user])
-    @user.save({}) do |result| # <<<<< THIS LINE WAS THE PROBLEM FOR "Undefined [] for True" error...
-      if result
-        flash[:notice] = "Registration successful."
-        redirect_to root_url
-      else
-        render :action => 'new'
+    if params[:user]
+      @user.save({}) do |result| # <<<<< THIS LINE WAS THE PROBLEM FOR "Undefined [] for True" error...
+        if result
+          flash[:notice] = "Registration successful."
+          redirect_to root_url
+        else
+          render :action => 'new'
+        end
       end
+    else
+      render :action => 'new'
     end
   end
 

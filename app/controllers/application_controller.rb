@@ -2,9 +2,15 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   layout 'application'
 
-  helper_method :current_user_session, :current_user
+  helper_method :current_user_session, :current_user, :prompt_login
 
   private
+
+    def prompt_login(message = "You must be logged in to do that.")
+      flash[:warning] = message
+      redirect_to "/login"
+    end
+
     def current_user_session
       return @current_user_session if defined?(@current_user_session)
       @current_user_session = UserSession.find

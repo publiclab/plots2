@@ -155,6 +155,8 @@
     <div class="container-fluid">
       <div class="hidden-phone" style="padding-top:60px;"></div>
 
+      <%= render :partial => "layouts/alerts" %>
+
         <% if params[:logged_out] %>
           <div class="well">
             <h3 style="display:inline;">What is Public Lab?</h3> <span style="padding-left:20px;">Learn more about our community and how we work, and consider joining: </span><a style="margin-left:10px;" class="btn btn-primary btn-large">Learn more &raquo;</a>

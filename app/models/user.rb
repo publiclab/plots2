@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
                                 :email] 
   end
 
+  def uid
+    DrupalUsers.find_by_login(self.username).uid
+  end
+
   private
 
   def map_openid_registration(registration)

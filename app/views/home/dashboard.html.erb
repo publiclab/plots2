@@ -16,13 +16,13 @@
 </div>
 
 <div class="span9">
-  <h3>Dashboard: <small>Welcome, <%= @user.name %>!</small></h3>
+  <h3>Dashboard: <small>Welcome, <%= current_user.username %>!</small></h3>
 
   <ul class="nav nav-tabs">
     <li class="active"><a href="#">Recent Activity</a></li>
     <li><a href="/nearby"><i class="icon icon-globe"></i> Near you</a></li>
     <li><a href="/subscriptions"><i class="icon icon-list"></i> Subscriptions (14)</a></li>
-    <li><a href="#"><i class="icon icon-book"></i> Your work (<%= DrupalNode.count(:all,:conditions => {:uid => @user.uid}) %>)</a></li>
+    <li><a href="/notes/author/<%= current_user.username %>"><i class="icon icon-book"></i> Your work (<%= DrupalNode.count(:all,:conditions => {:uid => current_user.uid}) %>)</a></li>
     <li><a href="#"><i class="icon-cog"></i> Settings</a></li>
   </ul>
 
