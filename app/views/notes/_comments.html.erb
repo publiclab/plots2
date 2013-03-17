@@ -33,7 +33,7 @@
     <form class="well" id="c<%= comment.id %>edit" style="display:none;" action="/comment/update/<%= comment.id %>">
       <h4 style="margin-top:0;">Edit comment</h4>
 
-      <textarea name="body" class="span12" id="c<%= comment.id %>text-input" oninput="this.editor.update()"
+      <textarea onFocus="editing=true" name="body" class="span12" id="c<%= comment.id %>text-input" oninput="this.editor.update()"
               rows="8" cols="40"><%= comment.comment %></textarea>
       <div class="well span11" id="c<%= comment.id %>preview" style="background:white;display:none;"> </div>
       <br style="clear:both;"/>
@@ -54,7 +54,7 @@
   <form class="well" action="/comment/create/<%= @node.nid %>">
     <h4 style="margin-top:0;">Post comment</h4>
 
-    <textarea name="body" class="span12" id="text-input" oninput="this.editor.update()"
+    <textarea onFocus="editing=true;" name="body" class="span12" id="text-input" oninput="this.editor.update()"
               rows="6" cols="40" placeholder="Type **Markdown** here."></textarea>
     <div class="well span12" id="preview" style="display:none;"> </div>
     <br style="clear:both;"/>
