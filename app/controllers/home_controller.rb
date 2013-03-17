@@ -9,11 +9,7 @@ class HomeController < ApplicationController
     if current_user
       @title = "Dashboard"
       @user = DrupalUsers.find_by_name "warren" 
-      @tags = []
-      ['near-infrared-camera', 'troubleshooting','balloon-mapping','leaffest','spectrometer'].each do |tagname|
-        @tags << DrupalTag.find_by_name(tagname)
-      end
-      users = ['donblair','cfastie','liz']
+      @tags = @user.tags
 
       @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
       @nodes = DrupalTag.find_nodes_by_type(@tags,'note',8)
