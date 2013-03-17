@@ -69,7 +69,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def comments
-    self.drupal_comments
+    DrupalComment.find_all_by_nid self.nid, :order => "timestamp"
   end
 
   def slug
@@ -137,6 +137,26 @@ class DrupalNode < ActiveRecord::Base
 
   def prev_by_author
     DrupalNode.find :first, :conditions => ['uid = ? AND nid < ? AND type = "note"', self.author.uid, self.nid], :order => 'nid DESC'
+  end
+
+  def comment(args)
+    if self.comments.length > 0
+      thread = self.comments.last.next_thread
+    else
+      thread = "01/"
+    end
+    c = DrupalComment.new({})
+    c.pid = 0
+    c.nid = self.nid
+    c.uid = args[:uid]
+    c.subject = ""
+    c.hostname = ""
+    c.comment = args[:body]
+    c.status = 0
+    c.format = 1
+    c.thread = thread
+    c.timestamp = DateTime.now.to_i
+    c.save!
   end
 
 end

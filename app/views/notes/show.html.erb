@@ -33,6 +33,7 @@
       <span class="hidden-phone">
         <%= @node.created_at.to_s(:long) %> |
         <%= @node.totalcount %> views
+        <% if @node.comments %>| <i class="icon icon-comment"></i> <a href="#comments"><%= @node.comments.length %> comments</a><% end %>
       </span>
       <span class="hidden-desktop">
         <%= @node.created_at.to_s(:short) %>
@@ -46,7 +47,7 @@
   <% end %>
 
   <p>
-  <%= raw RDiscount.new(@node.body).to_html %>
+  <%= raw auto_link(RDiscount.new(@node.body).to_html) %>
   </p>
 
   <hr />

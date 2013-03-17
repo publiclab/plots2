@@ -13,6 +13,7 @@
   <h3><%= @node.comments.length %> Comments</h3>
 
   <% @node.comments.each do |comment| %>
+    <% if comment.cid == @node.comments.last.cid %><a id="last" name="last"></a><% end %>
     <div class="navbar" id="c<%= comment.cid %>">
       <div class="navbar-inner">
         <div class="span9" style="padding-top:10px;">
@@ -22,18 +23,19 @@
           <a class="visible-phone" style="color:#aaa;" href="#c<%= comment.cid %>">sez</a>
           <%= time_ago_in_words(comment.created_at) %> ago
         </div>
-        <a style="margin-top:6px;" class="btn btn-small pull-right" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()"><i class="icon-pencil"></i></a>
+        <% if current_user && current_user.username == "warren" && comment.uid == current_user.uid %><a style="margin-left:4px;margin-top:6px;" class="btn btn-small pull-right" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()"><i class="icon-pencil"></i></a><% end %>
+        <% if current_user && current_user.username == "warren" && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %><%= link_to "/comment/delete/"+comment.id.to_s, :confirm => 'Are you sure?', :class => "btn btn-small pull-right" do %><i class='icon icon-trash'></i><% end %><% end %>
       </div>
     </div>
     <div id="c<%= comment.cid %>show">
-      <p><%= raw RDiscount.new(comment.comment).to_html %></p>
+      <p><%= raw auto_link(RDiscount.new(comment.comment).to_html) %></p>
     </div>
-    <form class="well" id="c<%= comment.cid %>edit" style="display:none;">
+    <form class="well" id="c<%= comment.id %>edit" style="display:none;" action="/comment/update/<%= comment.id %>">
       <h4 style="margin-top:0;">Edit comment</h4>
 
-      <textarea class="span12" id="c<%= comment.cid %>text-input" oninput="this.editor.update()"
+      <textarea name="body" class="span12" id="c<%= comment.id %>text-input" oninput="this.editor.update()"
               rows="8" cols="40"><%= comment.comment %></textarea>
-      <div class="well span11" id="c<%= comment.cid %>preview" style="background:white;display:none;"> </div>
+      <div class="well span11" id="c<%= comment.id %>preview" style="background:white;display:none;"> </div>
       <br style="clear:both;"/>
 
       <script>
@@ -43,15 +45,16 @@
       <button type="submit" class="btn btn-primary">Publish</button>
       <a class="btn" onClick="$('#c<%= comment.cid %>preview').toggle();$('#c<%= comment.cid %>text-input').toggle()">Preview</a>
       <a class="btn" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()">Cancel</a>
-      <span>(logged in as <a href="">Username</a>)</span>
+      <span>(logged in as <b><%= current_user.username %></b>)</span>
     </form>
   <br />
   <% end %>
 
-  <form class="well">
+  <% if current_user %>
+  <form class="well" action="/comment/create/<%= @node.nid %>">
     <h4 style="margin-top:0;">Post comment</h4>
 
-    <textarea class="span12" id="text-input" oninput="this.editor.update()"
+    <textarea name="body" class="span12" id="text-input" oninput="this.editor.update()"
               rows="6" cols="40" placeholder="Type **Markdown** here."></textarea>
     <div class="well span12" id="preview" style="display:none;"> </div>
     <br style="clear:both;"/>
@@ -62,6 +65,9 @@
 
     <button type="submit" class="btn btn-primary">Publish</button>
     <a class="btn" onClick="$('#preview').toggle();$('#text-input').toggle()">Preview</a>
-    <span>(logged in as <a href="">Username</a>)</span>
+    <span>(logged in as <b><%= current_user.username %></b>)</span>
   </form>
+  <% else %>
+  <p>You must be <a href="/login">logged in</a> to comment.</p>
+  <% end %>
 </div>

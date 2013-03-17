@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   end
 
   def uid
-    DrupalUsers.find_by_login(self.username).uid
+    DrupalUsers.find_by_name(self.username).uid
   end
 
   private
