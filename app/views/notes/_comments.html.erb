@@ -30,6 +30,7 @@
     <div id="c<%= comment.cid %>show">
       <p><%= raw auto_link(RDiscount.new(comment.comment).to_html) %></p>
     </div>
+    <% if current_user %>
     <form class="well" id="c<%= comment.id %>edit" style="display:none;" action="/comment/update/<%= comment.id %>">
       <h4 style="margin-top:0;">Edit comment</h4>
 
@@ -47,6 +48,7 @@
       <a class="btn" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()">Cancel</a>
       <span>(logged in as <b><%= current_user.username %></b>)</span>
     </form>
+    <% end %>
   <br />
   <% end %>
 
