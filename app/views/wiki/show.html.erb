@@ -34,7 +34,7 @@
     </ul>
 
   <p>
-  <%= raw auto_link(RDiscount.new(@revision.body).to_html) %>
+  <%= raw auto_link(RDiscount.new(@revision.body).to_html, :sanitize => false) %>
   </p>
 
   <hr />
