@@ -79,7 +79,7 @@
   <ul class="nav nav-tabs">
     <li class="active"><a href="#balloon-mapping" data-toggle="tab">Balloon mapping</a></li>
     <li><a href="#kite-mapping" data-toggle="tab">Kite mapping</a></li>
-    <li><a href="#spectrometry" data-toggle="tab">Spectrometry</a></li>
+    <li><a href="#spectrometer" data-toggle="tab">Spectrometry</a></li>
     <li><a href="#near-infrared-camera" data-toggle="tab">Infrared photography</a></li>
     <li><a href="#thermal-photography" data-toggle="tab">Thermal photography</a></li>
   </ul> 
@@ -87,7 +87,7 @@
   <div class="tab-content">
     <% ['balloon-mapping',
         'kite-mapping',
-        'spectrometry',
+        'spectrometer',
         'near-infrared-camera',
         'thermal-photography'].each_with_index do |tagname,index| %>
     <div class="tab-pane<%= ' active' if index == 0 %>" id="<%= tagname %>">
