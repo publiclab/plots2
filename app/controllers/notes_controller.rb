@@ -7,6 +7,7 @@ class NotesController < ApplicationController
 
   def show
     @node = DrupalUrlAlias.find_by_dst('notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).node
+    @node.view
     @title = @node.title
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)

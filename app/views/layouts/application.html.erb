@@ -52,7 +52,7 @@
           <script>
             function alpha() { window.location = 'http://'+(window.location+'').split('://alpha.')[1] } 
           </script>
-          <a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:6px;" href="/register" class="btn pull-right">Join</a>
+          <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:6px;" href="/register" class="btn pull-right">Join</a><% end %>
 
           <div class="nav-collapse collapse">
 
@@ -124,7 +124,7 @@
                 </a> 
                 <ul class="dropdown-menu">
                   <li><a href="/dashboard">Dashboard</a></li>
-                  <li><a href="/profile">Profile</a></li>
+                  <li><a href="/profile/<%= current_user.username %>">Profile</a></li>
                   <li><%= link_to "Edit Profile", edit_user_path(:current) %></li> 
                   <li class="divider"></li>
                   <li><a href="/subscriptions">Subscriptions</a></li>

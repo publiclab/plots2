@@ -26,11 +26,6 @@ class HomeController < ApplicationController
     redirect_to "/profile/"+params[:id]
   end
 
-  def profile
-    @user = DrupalUsers.find_by_name(params[:id])
-    @title = @user.name
-  end
-
   def subscriptions
     @title = "Subscriptions"
     @user = DrupalUsers.find_by_name(params[:id])
@@ -39,24 +34,13 @@ class HomeController < ApplicationController
   # trashy... clean this up!
   def nearby
     dist = 1.5
-    @current_user = DrupalUsers.find_by_name(params[:login])
-    if @current_user && @current_user.lat
-      minlat = @current_user.lat - dist
-      maxlat = @current_user.lat + dist
-      minlon = @current_user.lon - dist
-      maxlon = @current_user.lon + dist
+    current_user = current_user
+    if current_user && current_user.lat
+      minlat = current_user.lat - dist
+      maxlat = current_user.lat + dist
+      minlon = current_user.lon - dist
+      maxlon = current_user.lon + dist
       @users = DrupalUsers.find(:all, :conditions => ["lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?",minlat,maxlat,minlon,maxlon])
-    elsif params[:q]
-      result = Geokit::Geocoders::MultiGeocoder.geocode(params[:q])
-      minlat = result.lat - dist
-      maxlat = result.lat + dist
-      minlon = result.lng - dist
-      maxlon = result.lng + dist
-      @current_user = DrupalUsers.new()
-      @current_user.lat = result.lat
-      @current_user.lon = result.lng
-      @users = DrupalUsers.find(:all, :conditions => ["lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?",minlat,maxlat,minlon,maxlon])
-    else
     end
   end
 

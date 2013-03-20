@@ -45,6 +45,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def profile
+    @user = DrupalUsers.find_by_name(params[:id])
+    @title = @user.name
+  end
+
   def rss
     if params[:author]
       @author = DrupalUsers.find_by_name params[:author]

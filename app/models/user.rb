@@ -11,6 +11,14 @@ class User < ActiveRecord::Base
     DrupalUsers.find_by_name(self.username).uid
   end
 
+  def lat
+    DrupalUsers.find_by_name(self.username).lat
+  end
+
+  def lon
+    DrupalUsers.find_by_name(self.username).lon
+  end
+
   private
 
   def map_openid_registration(registration)

@@ -14,6 +14,7 @@ class WikiController < ApplicationController
        # attempt to add the page name itself as a tag:
          tag = DrupalTag.find_by_name(params[:id])
          @tags << tag if tag
+       @node.view
        @tagnames = @tags.collect(&:name)
        @revision = @node.latest
        @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
@@ -39,12 +40,35 @@ class WikiController < ApplicationController
 
   def edit
     @node = DrupalNode.find_by_slug(params[:id])
+    # we could do this...
+    #@node.locked = true
+    #@node.save
     @title = "Editing '"+@node.title+"'"
     if @node.nil?
       @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
       @place = true if @node.nil?
     end
     @tags = @node.tags
+  end
+
+  def update
+    if current_user && current_user.username == "warren"
+      @node = DrupalNode.find_by_slug(params[:id])
+      @revision = @node.new_revision({
+        :nid => @node.id,
+        :uid => current_user.uid,
+        :title => params[:title],
+        :body => params[:body]
+      })
+      if @revision.save
+        flash[:notice] = "Edits saved."
+        redirect_to "/wiki/"+@node.slug
+      else
+        flash[:error] = "Your edit could not be saved."
+      end
+    else
+      prompt_login "You must be logged in to edit."
+    end
   end
 
   def root

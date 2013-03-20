@@ -1,5 +1,5 @@
 class DrupalNode < ActiveRecord::Base
-  # attr_accessible :title, :body
+  #attr_accessible :title, :body
   has_many :drupal_node_revision, :foreign_key => 'nid'
   has_many :drupal_main_image, :foreign_key => 'nid'
   has_one :drupal_node_counter, :foreign_key => 'nid'
@@ -64,6 +64,13 @@ class DrupalNode < ActiveRecord::Base
     self.drupal_tag.uniq
   end
 
+  # increment view count
+  def view
+    self.drupal_node_counter.totalcount += 1
+    self.drupal_node_counter.save
+  end
+
+  # view count
   def totalcount
     self.drupal_node_counter.totalcount
   end
@@ -139,7 +146,7 @@ class DrupalNode < ActiveRecord::Base
     DrupalNode.find :first, :conditions => ['uid = ? AND nid < ? AND type = "note"', self.author.uid, self.nid], :order => 'nid DESC'
   end
 
-  def comment(args)
+  def comment(params)
     if self.comments.length > 0
       thread = self.comments.last.next_thread
     else
@@ -148,15 +155,28 @@ class DrupalNode < ActiveRecord::Base
     c = DrupalComment.new({})
     c.pid = 0
     c.nid = self.nid
-    c.uid = args[:uid]
+    c.uid = params[:uid]
     c.subject = ""
     c.hostname = ""
-    c.comment = args[:body]
+    c.comment = params[:body]
     c.status = 0
     c.format = 1
     c.thread = thread
     c.timestamp = DateTime.now.to_i
     c.save!
+  end
+
+  def new_revision(params)
+    DrupalNodeRevision.new({
+      :nid => params[:nid],
+      :uid => params[:uid],
+      :title => params[:title],
+      :body => params[:body],
+      :teaser => "",
+      :log => "",
+      :timestamp => DateTime.now.to_i,
+      :format => 1
+    })
   end
 
 end

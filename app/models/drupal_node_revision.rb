@@ -1,5 +1,5 @@
 class DrupalNodeRevision < ActiveRecord::Base
-  # attr_accessible :title, :body
+  attr_accessible :title, :body, :nid, :uid, :teaser, :log, :timestamp, :format
   belongs_to :drupal_node, :foreign_key => 'nid'
   has_one :drupal_users, :foreign_key => 'uid'
 
