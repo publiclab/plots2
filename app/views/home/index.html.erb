@@ -18,11 +18,11 @@
     <p>Community members develop tools and write open source instructions as <a href="/notes">research notes</a>, wiki pages, <a href="/guides">printable guides</a>, and <a href="/videos">videos</a>, so others know how to use these tools, and many have <a href="/wiki/creating-local-mailing-lists">started local groups</a> in their area. We also provide support through our <a href="/wiki/mailing-lists">mailing lists</a>. This works because everyone <b>both learns from and helps each other out</b>, and we all contribute to the growing body of documentation as we go.</p>
 
   <div id="share">
-	<g:plusone></g:plusone>
-	<script src="https://apis.google.com/js/plusone.js"></script>
-	<a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
-	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-	<div class="fb-like" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false" style="vertical-align:top;zoom:1;*display:inline"></div>
+    <div class="fb-like" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false" style="vertical-align:top;zoom:1;*display:inline"></div>
+    &nbsp; <a href="https://twitter.com/PublicLab" class="twitter-follow-button" data-show-count="false">Follow @PublicLab</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    &nbsp; <a href="https://twitter.com/share" class="twitter-share-button" data-text="DIY, open source environmental science community: @PublicLab">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script> 
   </div>
 
   <hr />
@@ -76,7 +76,32 @@
 
   <h2>Open source research <small>by people like you</small></h2>
 
-  <%= render :partial => 'notes/notes' %>
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#balloon-mapping" data-toggle="tab">Balloon mapping</a></li>
+    <li><a href="#kite-mapping" data-toggle="tab">Kite mapping</a></li>
+    <li><a href="#spectrometry" data-toggle="tab">Spectrometry</a></li>
+    <li><a href="#near-infrared-camera" data-toggle="tab">Infrared photography</a></li>
+    <li><a href="#thermal-photography" data-toggle="tab">Thermal photography</a></li>
+  </ul> 
+
+  <div class="tab-content">
+    <% ['balloon-mapping',
+        'kite-mapping',
+        'spectrometry',
+        'near-infrared-camera',
+        'thermal-photography'].each_with_index do |tagname,index| %>
+    <div class="tab-pane<%= ' active' if index == 0 %>" id="<%= tagname %>">
+      <%= render :partial => "notes/tagged_notes", :locals => {:nodes => DrupalTag.find_popular_notes(tagname,4)} %>
+      <p><a href="http://publiclaboratory.org/notes/<%= tagname %>">More "<%= tagname %>" research &raquo;</a></p>
+    </div>
+    <% end %>
+  </div>
+
+  <script>
+    $(function () {
+      $('#myTab a:first').tab('show');
+    })
+  </script>
 
   </div>
 </div><!--/span-->

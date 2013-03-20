@@ -1,7 +1,7 @@
 <h1>Log in</h1>
 
 <%= form_for @user_session, :as => :user_session, :url => { :action => "create" }, :html => {:class => "form"} do |f| %>
-  <%= f.error_messages %>
+  <div class="alert alert-error"><%= f.error_messages %></div>
 
   <div style="width:50%;">
 

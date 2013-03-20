@@ -17,4 +17,5 @@ class User < ActiveRecord::Base
     self.email = registration["email"] if email.blank?
     self.username = registration["nickname"] if username.blank?
   end
+
 end

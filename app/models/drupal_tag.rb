@@ -1,5 +1,5 @@
 class DrupalTag < ActiveRecord::Base
-  # attr_accessible :title, :body
+  attr_accessible :vid, :name, :description, :weight
   self.table_name = 'term_data'
   self.primary_key = 'tid'
   has_many :drupal_node_tag, :foreign_key => 'tid'
@@ -43,4 +43,14 @@ class DrupalTag < ActiveRecord::Base
     end
     DrupalNode.find node_ids.uniq, :order => "nid DESC", :limit => limit
   end
+
+  def self.find_popular_notes(tag,limit)
+    tag = self.find_by_name tag
+    node_ids = []
+    tag.drupal_node.filter_by_type('note').each do |node|
+      node_ids << node.nid if node.totalcount > 10
+    end
+    DrupalNode.find node_ids.uniq, :order => "created DESC", :limit => limit
+  end
+
 end

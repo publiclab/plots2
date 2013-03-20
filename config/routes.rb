@@ -14,8 +14,6 @@ Plots2::Application.routes.draw do
   match 'register' => 'users#create'
   match 'users/list' => 'users#list'
   match 'signup' => 'users#new'
-  match 'tag/create' => 'tag#create'
-  match 'tag/:id' => 'tag#tag'
   resources :users
   resources :user_sessions
 
@@ -43,6 +41,8 @@ Plots2::Application.routes.draw do
   match 'search/typeahead/:id' => 'search#typeahead'
   match 'tag/:id' => 'tag#tag'
   match 'tag/author/:id.json' => 'tag#author'
+  match 'tag/create/:nid' => 'tag#create'
+  match 'tag/delete/:nid' => 'tag#delete'
 
   match 'dashboard' => 'home#dashboard'
   match 'nearby/:login' => 'home#nearby'
