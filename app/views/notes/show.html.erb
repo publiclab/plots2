@@ -60,10 +60,24 @@
     <% @node.tags.each do |tag| %><a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %>
   </p>
 
+  <form class="_form" action="/tag/create/<%= @node.nid %>">
   <div class="input-prepend">
     <span class="add-on"><i class="icon-tags"></i></span>
-    <input type="text" class="span6" placeholder="balloon mapping" data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
+    <input id="taginput" name="name" type="text" class="span6" placeholder="balloon mapping">
+<!--    <script>
+      $('#taginput').typeahead({
+        source: [
+          {id:1, name: "balloon-mapping"},
+          {id:2, name: "kite-mapping"},
+          {id:3, name: "near-infrared-photography"},
+          {id:4, name: "spectrometer"}
+        ],
+        ajax: '/path/to/mySource'
+      });
+    </script>
+-->
   </div>
+  </form>
 
   <div>
     <%= render :partial => "notes/comments" %>
