@@ -8,6 +8,6 @@
   <% @users.each do |user| %>
   <tr>
     <td><a href="/profile/<%= user.username %>"><%= user.username %></a></td>
-    <td><%= time_ago_in_words(@users.created_at) %></td>
+    <td><%= time_ago_in_words(user.created_at) %></td>
   <% end %>
 </table>

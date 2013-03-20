@@ -7,7 +7,7 @@
 
   <div class="btn-toolbar pull-right" style="margin-left:10px;margin-top:0;">
     <div class="btn-group">
-      <a class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.length == 0 %><% @tagnames.each do |tag| %><a class='label label-inverse'><%= tag %></a> <% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></a>
+      <a class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.length == 0 %><% if @tagnames %><% @tagnames.each do |tag| %><a class='label label-inverse'><%= tag %></a> <% end %><% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></a>
       <a rel="tooltip" title="Helpful? Awesome?" class="btn btn-small" href="#"><i class="icon-star"></i><span class="hidden-phone"> Like (8)</span></a>
       <a rel="tooltip" title="Updates/comments" id="follow" class="btn btn-small" href="#"><i class="icon-eye-open"></i><span class="hidden-phone"> Follow</span></a>
     </div>
@@ -48,7 +48,7 @@
   <% end %>
 
   <p>
-  <%= raw auto_link(RDiscount.new(@node.body).to_html) %>
+  <%= raw auto_link(RDiscount.new(@node.body).to_html, :sanitize => false) %>
   </p>
 
   <hr />
