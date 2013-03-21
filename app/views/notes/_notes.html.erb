@@ -15,6 +15,11 @@
         </small></p>
         <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) %></p>
         <p><a href="notes/id/<%= node.nid %>">Read more &raquo;</a></p>
+        <p>
+          <% node.tags[0..3].each do |tag| %>
+            <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
+          <% end %>
+        </p>
         <% if params[:mod] %>
         <a class="btn btn-mini" href="#"><i class="icon-ban-circle"></i> Spam</a>
         <% end %>

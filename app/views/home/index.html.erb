@@ -92,7 +92,7 @@
         'thermal-photography'].each_with_index do |tagname,index| %>
     <div class="tab-pane<%= ' active' if index == 0 %>" id="<%= tagname %>">
       <%= render :partial => "notes/tagged_notes", :locals => {:nodes => DrupalTag.find_popular_notes(tagname,4)} %>
-      <p><a href="http://publiclaboratory.org/notes/<%= tagname %>">More "<%= tagname %>" research &raquo;</a></p>
+      <p><a href="/tag/<%= tagname %>">More "<%= tagname %>" research &raquo;</a></p>
     </div>
     <% end %>
   </div>
