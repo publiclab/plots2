@@ -24,6 +24,7 @@ class DrupalTag < ActiveRecord::Base
     DrupalNode.find :all, :conditions => ['status = 1 AND nid IN ('+ids.uniq.join(',')+')'], :order => "nid DESC"
   end
 
+  # results in time-unordered list... rework!
   def self.find_nodes_by_type(tags,type,limit)
     node_ids = []
     tags.each do |tag|
@@ -31,7 +32,7 @@ class DrupalTag < ActiveRecord::Base
         node_ids << node.nid
       end
     end
-    DrupalNode.find node_ids.uniq, :order => "created DESC", :limit => limit
+    DrupalNode.find node_ids.uniq, :order => "changed DESC", :limit => limit
   end
 
   def self.find_nodes_by_type_with_all_tags(tags,type,limit)
