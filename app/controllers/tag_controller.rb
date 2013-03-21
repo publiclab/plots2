@@ -19,7 +19,7 @@ class TagController < ApplicationController
 
   # this is all silly and should be tucked into the model once we migrate away from Drupal
   def create
-    if current_user
+    if current_user && current_user.username == "warren"
       @node = DrupalNode.find params[:nid]
       tag = DrupalTag.new({
         :vid => 1, # vocabulary id; 1

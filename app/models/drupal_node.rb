@@ -37,6 +37,10 @@ class DrupalNode < ActiveRecord::Base
     Time.at(self.drupal_node_revision.first.timestamp)
   end
 
+  def updated_at
+    self.updated_on
+  end
+
   def updated_on
     Time.at(self.drupal_node_revision.last.timestamp)
   end
@@ -73,6 +77,10 @@ class DrupalNode < ActiveRecord::Base
   # view count
   def totalcount
     self.drupal_node_counter.totalcount
+  end
+
+  def comment_count
+    DrupalComment.count :all, :conditions => {:nid => self.nid}
   end
 
   def comments
