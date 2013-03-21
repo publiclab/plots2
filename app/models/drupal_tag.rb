@@ -38,7 +38,7 @@ class DrupalTag < ActiveRecord::Base
         node_ids << node.nid
       end
     end
-    DrupalNode.find node_ids.uniq, :order => "changed DESC", :limit => limit
+    DrupalNode.find node_ids.uniq, :conditions => {:type => "note"}, :order => "node_revisions.timestamp DESC", :limit => limit, :include => :drupal_node_revision
   end
 
   def self.find_nodes_by_type_with_all_tags(tags,type,limit)
