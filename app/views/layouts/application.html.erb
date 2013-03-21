@@ -54,6 +54,12 @@
           </script>
           <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:6px;" href="/register" class="btn pull-right">Join</a><% end %>
 
+          <ul class="nav">
+            <li><a rel="tooltip" title="Your dashboard" data-placement="bottom" href="/dashboard"><i class="icon-home icon-white"></i></a></li>
+            <li><a href="/research">Research</a></li>
+          </ul>
+
+
           <div class="nav-collapse collapse">
 
             <form id="searchform" class="navbar-form pull-left" style="margin-left:10px;" autocomplete="off">
@@ -84,12 +90,7 @@
             </form>
 
             <ul class="nav">
-              <li><a rel="tooltip" title="Your dashboard" data-placement="bottom" href="/dashboard"><i class="icon-home icon-white"></i></a></li>
-            </ul>
-
-            <ul class="nav">
               <li><a href="/about">About</a></li>
-              <li><a href="/research">Research</a></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown">
                   Tools/Places <b class="caret"></b>
