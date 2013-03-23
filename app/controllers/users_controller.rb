@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       @user.save({}) do |result| # <<<<< THIS LINE WAS THE PROBLEM FOR "Undefined [] for True" error...
         if result
           flash[:notice] = "Registration successful."
-          redirect_to root_url
+          redirect_to "/dashboard"
         else
           render :action => 'new'
         end

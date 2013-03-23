@@ -52,7 +52,7 @@
           <script>
             function alpha() { window.location = 'http://'+(window.location+'').split('://alpha.')[1] } 
           </script>
-          <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:6px;" href="/register" class="btn pull-right">Join</a><% end %>
+          <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:6px;" href="/signup" class="btn pull-right">Join</a><% end %>
 
           <ul class="nav">
             <li><a rel="tooltip" title="Your dashboard" data-placement="bottom" href="/dashboard"><i class="icon-home icon-white"></i></a></li>
@@ -115,7 +115,7 @@
               <li><a href="/archive">Maps</a></li>
             </ul>
 
-            <% unless params[:action] == "register" %>
+            <% unless params[:action] == "register" || params[:action] == "signup" %>
             <ul class="nav pull-right">
               <li class="dropdown">
                 <% if current_user %>
