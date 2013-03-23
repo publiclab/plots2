@@ -5,9 +5,11 @@
 
   <div style="width:50%;">
 
-    <p>Use your <a href="http://publiclaboratory.org">PublicLaboratory.org</a> username to log in. If you do not have one, <a href="http://publiclaboratory.org/user/register">click here to register &raquo;</a></p>
+    <p>Use your <a href="http://publiclaboratory.org">PublicLaboratory.org</a> username to log in.</p> 
 
-    <p>This is an "alpha" website; the full Public Lab website is <a href="http://publiclaboratory.org">PublicLaboratory.org</a>. If this is your first time logging in here, you must first <a href="/join">create an account on the new site &raquo;</a>.</p>
+    <p>This is an "alpha" website; the full Public Lab website is <a href="http://publiclaboratory.org">PublicLaboratory.org</a>.</p>
+
+    <p>If this is your first time logging in here, you must first <a href="/join">create an account on the new site</a>, then <a href="/register">register on this site</a>.</p>
 
   </div>
 
@@ -19,12 +21,14 @@
 
   <h2>Or use OpenID</h2>
 -->
-  <p><%= f.text_field :openid_identifier, {:placecholder => "OpenID"} %></p>
+  <p><%= f.text_field :openid_identifier, {:placecholder => "username", :tabindex => 2} %></p>
 
   <p><label class="checkbox">
     <%= f.check_box :remember_me %> Remember me
-  </label></p>
+  </p></label>
 
-  <p><button class="btn-large btn-primary" type="submit">Log in</button></p>
+  <p>
+    <button class="btn-large btn-primary" type="submit">Log in</button>
+  </p>
 <% end %>
 

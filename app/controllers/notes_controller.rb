@@ -2,7 +2,7 @@ class NotesController < ApplicationController
 
   def index
     @title = "Research notes"
-    @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :page => params[:page])
+    @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :page => params[:page], :limit => 40)
   end
 
   def show

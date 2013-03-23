@@ -2,7 +2,7 @@
   <div class="row-fluid">
     <div class="row">
     <% @nodes.each_with_index do |node,i| %>
-      <div class="span3 clearfix">
+      <div class="span3 clearfix" style="overflow:hidden;">
         <% if node.main_image %>
           <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;" href="/<%= node.slug %>"><img src="http://publiclaboratory.org/sites/default/files/imagecache/default/<%= node.main_image.filename %>" /></a>
           <a class="hidden-phone thumbnail" href="/<%= node.slug %>"><img src="http://publiclaboratory.org/sites/default/files/imagecache/default/<%= node.main_image.filename %>" /></a>

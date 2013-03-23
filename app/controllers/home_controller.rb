@@ -1,18 +1,21 @@
 class HomeController < ApplicationController
 
+  before_filter :local
+
+  def local
+    
+  end
+
   def index
     @title = "Home"
-    @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :page => params[:page])
   end
 
   def dashboard
     if current_user
       @title = "Dashboard"
-      @user = DrupalUsers.find_by_name "warren" 
-      @tags = @user.tags
-
-      @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
-      @nodes = DrupalTag.find_nodes_by_type(@tags,'note',8)
+      @user = DrupalUsers.find_by_name current_user.username
+      @wikis = DrupalTag.find_nodes_by_type(@user.tagnames,'page',10)
+      @nodes = DrupalTag.find_nodes_by_type(@user.tagnames,'note',8)
       @unpaginated = true
     else
       prompt_login "You must be logged in to see the dashboard."

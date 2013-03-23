@@ -27,8 +27,8 @@ class DrupalUsers < ActiveRecord::Base
     end
   end
 
-  def notes
-    DrupalNode.find_all_by_uid self.uid
+  def notes(limit = 10)
+    DrupalNode.find_all_by_uid(self.uid, :limit => limit, :order => "created DESC")
   end
 
   # accepts array of tag names (strings)
@@ -45,12 +45,16 @@ class DrupalUsers < ActiveRecord::Base
     DrupalNode.find(node_ids.uniq, :order => "nid DESC")
   end
 
-  def tags
-    tags = []
-    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => 20).each do |node|
-      tags += node.tags
+  def tags(limit = 10)
+    DrupalTag.find :all, :conditions => ['name in (?)',self.tagnames]
+  end
+
+  def tagnames(limit = 20)
+    tagnames = []
+    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :joins =>:drupal_node_tag, :limit => limit).each do |node|
+      tagnames += node.drupal_tag.collect(&:name)
     end
-    tags.uniq
+    tagnames.uniq
   end
 
   def tag_counts

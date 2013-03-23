@@ -1,12 +1,10 @@
 class TagController < ApplicationController
 
   def tag
-    if (@tag = DrupalTag.find_by_name(params[:id]))
-      @nodes = DrupalTag.find_nodes_by_type([@tag],'note',8)
-      @tags = [@tag]
-      @tagnames = @tags.collect(&:name)
-      @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
-    end
+    @nodes = DrupalTag.find_nodes_by_type([params[:id]],'note',8)
+    @tags = DrupalTag.find_all_by_name params[:id]
+    @tagnames = @tags.collect(&:name)
+    @wikis = DrupalTag.find_nodes_by_type([params[:id]],'page',10)
     @tagnames ||= []
     @title = @tagnames.join(', ')
     @unpaginated = true

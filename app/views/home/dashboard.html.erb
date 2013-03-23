@@ -19,7 +19,7 @@
   <h3>Dashboard: <small>Welcome, <%= current_user.username %>!</small></h3>
 
   <ul class="nav nav-tabs">
-    <li class="active"><a href="#">Recent Activity</a></li>
+    <li class="active"><a rel="tooltip" title="Research notes for: <%= @user.tagnames.join(', ') %>" data-placement="bottom" href="#">Recent Activity</a></li>
     <li><a href="/nearby"><i class="icon icon-globe"></i> Near you</a></li>
     <li><a href="/notes/author/<%= current_user.username %>"><i class="icon icon-book"></i> Your work (<%= DrupalNode.count(:all,:conditions => {:uid => current_user.uid}) %>)</a></li>
     <li><a href="#"><i class="icon-cog"></i></a></li>
@@ -27,6 +27,6 @@
 
   <%= render :partial => "notes/notes" %>
 
-  <a class="btn" href="/tags/<%= @tags.collect(&:name).join('+') %>">More notes &raquo;</a>
+  <a class="btn" href="/tags/<%= @user.tagnames.join('+') %>">More notes &raquo;</a>
 
 </div>

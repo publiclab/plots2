@@ -8,7 +8,6 @@ Plots2::Application.routes.draw do
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
 
-  match 'local/:id' => 'user_sessions#local'
   match 'login' => "user_sessions#new",      :as => :login
   match 'logout' => "user_sessions#destroy", :as => :logout
   match 'register' => 'users#create'
@@ -49,9 +48,8 @@ Plots2::Application.routes.draw do
   match 'nearby' => 'home#nearby'
   match 'subscriptions' => 'home#subscriptions'
   match 'profile/:id' => 'users#profile'
-  match 'feed/:author' => 'user#rss'
+  match 'feed/:author' => 'users#rss'
   match 'people/:id' => 'home#people'
-  match 'register' => 'home#register'
   match 'maps' => 'map#index'
   match 'map/:name/:date' => 'map#show'
   match 'archive' => 'map#index'
