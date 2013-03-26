@@ -50,13 +50,13 @@
 
     <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
 
-    <% if @node && @node.title %>
+    <% if @node && @node.latest && @node.latest.title %>
       <h3 style="margin-top:0;">Editing page: <i><%= @node.latest.title %></i></h3>
     <% else %>
       <h3 style="margin-top:0;">Create page: <i><%=h params[:id] %></i></h3>
     <% end %>
 
-    <div class="sidebar-nav pull-right span3">
+    <div class="sidebar-nav pull-right span3" style="display:none;">
       <a class="btn btn-large btn-block"><i class="icon-upload"></i> Choose files</a>
       <br />
       <div class="dropzone hidden-phone hidden-tablet" id="dropzone">
@@ -64,7 +64,12 @@
       </div>
     </div>
 
-    <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= @node.latest.title if @node %><%=h params[:id] unless @node %>"><br />
+    <% if @node && @node.latest %>
+      <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= @node.latest.title %>"><br />
+    <% else %>
+      <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= params[:id] %>"><br />
+      <input name="url" type="text" class="span9" id="url" value="" placeholder="page-url"><br />
+    <% end %>
 
     <script>
       function wrap(a,b) {
@@ -95,7 +100,7 @@
     </div>
 
     <textarea name="body" tabindex="2" class="span9" id="text-input" oninput="this.editor.update()"
-              rows="30" cols="60"><% if @node && @node.body %><%= @node.body %><% else %><%= params[:body] %><% end %></textarea>
+              rows="30" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
     <div class="well span9" id="preview" style="display:none;"> </div>
     <br style="clear:both;"/>
 

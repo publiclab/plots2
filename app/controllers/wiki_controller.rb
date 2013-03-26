@@ -66,13 +66,14 @@ class WikiController < ApplicationController
   def create
     if current_user
       title = params[:id].downcase.gsub(' ','-').gsub("'",'').gsub('"','')
+      title = params[:url].downcase.gsub(' ','-').gsub("'",'').gsub('"','') if params[:url] != ""
       @node = DrupalNode.new({
         :uid => current_user.uid,
         :title => title,
         :type => "page"
       })
       if @node.valid?
-        @node.save!
+        @node.save! 
         @revision = @node.new_revision({
           :nid => @node.id,
           :uid => current_user.uid,
@@ -81,9 +82,12 @@ class WikiController < ApplicationController
         })
         if @revision.valid?
           @revision.save!
+          @node.vid = @revision.vid
+          @node.save!
           flash[:notice] = "Wiki page created."
           redirect_to @node.path
         else
+          @node.destroy # clean up. But do this in the model!
           render :action => :edit
         end
       else

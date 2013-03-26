@@ -1,5 +1,5 @@
 class DrupalNode < ActiveRecord::Base
-  attr_accessible :title, :uid, :status, :type
+  attr_accessible :title, :uid, :status, :type, :vid
   self.table_name = 'node'
   self.primary_key = 'nid'
 
@@ -32,6 +32,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   after_create :slug_and_counter
+  before_destroy :delete_url_alias
 
   def slug_and_counter
     slug = self.title.downcase.gsub(' ','-').gsub("'",'').gsub('"','').gsub('/','-')
@@ -40,6 +41,10 @@ class DrupalNode < ActiveRecord::Base
       :src => "node/"+self.id.to_s
     }).save
     counter = DrupalNodeCounter.new({:nid => self.id}).save
+  end
+
+  def delete_url_alias
+    DrupalUrlAlias.find_by_src("node/"+self.nid.to_s).delete
   end
 
   def author
