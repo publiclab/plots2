@@ -38,10 +38,11 @@ Plots2::Application.routes.draw do
   match 'search/advanced/:id' => 'search#advanced'
   match 'search/:id' => 'search#index'
   match 'search/typeahead/:id' => 'search#typeahead'
-  match 'tag/:id' => 'tag#tag'
+  match 'tag/:id' => 'tag#show'
+  match 'tag/suggested/:id' => 'tag#suggested'
   match 'tag/author/:id.json' => 'tag#author'
   match 'tag/create/:nid' => 'tag#create'
-  match 'tag/delete/:nid' => 'tag#delete'
+  match 'tag/delete/:nid/:tid' => 'tag#delete'
 
   match 'dashboard' => 'home#dashboard'
   match 'nearby/:login' => 'home#nearby'

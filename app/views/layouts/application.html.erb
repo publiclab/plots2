@@ -73,16 +73,17 @@
                   // working off of http://stackoverflow.com/questions/9232748/twitter-bootstrap-typeahead-ajax-example
                   $('#searchform_input').typeahead({
                     source: function (typeahead, query) {
-                      return $.post('/search/typeahead/'+query, {}, function (data) {
-                        return typeahead.process(data)
-                      })
+                      if (query.length > 2) {
+                        return $.post('/search/typeahead/'+query, {}, function (data) {
+                          return typeahead.process(data)
+                        })
+                      }
                     },
-//                    minLength: 3,
                     items: 15,
-//                    highlighter: function(a) {a},
-                    // Autoselect is disabled so that users can enter new tags
-                    autoselect: false,
-                    autowidth: false
+                    //highlighter: function(a) {a},
+                    autoselect: true,
+                    autowidth: false,
+                    menu: '<ul id="searchtypeahead" class="typeahead dropdown-menu"></ul>'
                   })
                 })
               </script>

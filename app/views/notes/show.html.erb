@@ -1,4 +1,4 @@
-<%= render :partial => "wiki/related_sidebar" %>
+<%= render :partial => "sidebar/related" %>
 <div class="span9">
 
   <% if @node.main_image %>
@@ -55,29 +55,7 @@
     <%= render :partial => "home/social" %>
   <hr />
 
-  <p>
-    <b>Tags:</b>
-    <% @node.tags.each do |tag| %><a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %>
-  </p>
-
-  <form class="_form" action="/tag/create/<%= @node.nid %>">
-  <div class="input-prepend">
-    <span class="add-on"><i class="icon-tags"></i></span>
-    <input id="taginput" name="name" type="text" class="span6" placeholder="balloon mapping">
-<!--    <script>
-      $('#taginput').typeahead({
-        source: [
-          {id:1, name: "balloon-mapping"},
-          {id:2, name: "kite-mapping"},
-          {id:3, name: "near-infrared-photography"},
-          {id:4, name: "spectrometer"}
-        ],
-        ajax: '/path/to/mySource'
-      });
-    </script>
--->
-  </div>
-  </form>
+  <%= render :partial => "tag/tagging" %>
 
   <div>
     <%= render :partial => "notes/comments" %>

@@ -11,8 +11,8 @@ class NotesController < ApplicationController
     @title = @node.title
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)
-    @wikis = DrupalTag.find_nodes_by_type(@tags,'page',6)
-    @notes = DrupalTag.find_nodes_by_type(@tags,'note',6)
+    @wikis = DrupalTag.find_nodes_by_type(@tagnames,'page',6)
+    @notes = DrupalTag.find_nodes_by_type(@tagnames,'note',6)
   end
 
   def author

@@ -1,9 +1,9 @@
 <% if params[:controller] == "tag" || params[:controller] == "search" %>
-  <%= render :partial => "wiki/related_sidebar" %>
+  <%= render :partial => "sidebar/related" %>
 <% elsif params[:action] == "author" %>
-  <%= render :partial => "home/author_sidebar" %>
+  <%= render :partial => "sidebar/author" %>
 <% else %>
-  <%= render :partial => "home/sidebar" %>
+  <%= render :partial => "sidebar/user" %>
 <% end %>
 <div class="span9">
   <div class="alert hidden-phone">

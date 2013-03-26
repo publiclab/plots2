@@ -17,6 +17,13 @@ class DrupalTag < ActiveRecord::Base
     end
   end
 
+  validates :name, :presence => :true
+  validates :name, :format => {:with => /^[\w-]*$/, :message => "can only include letters, numbers, and dashes"}
+
+  def id
+    self.tid
+  end
+
   def nodes
     ids = []
     self.drupal_node_tag.each do |node_tag|
@@ -25,12 +32,21 @@ class DrupalTag < ActiveRecord::Base
     DrupalNode.find :all, :conditions => ['status = 1 AND nid IN ('+ids.uniq.join(',')+')'], :order => "nid DESC"
   end 
 
+  def is_community_tag(nid)
+    !self.drupal_node_community_tag.find_by_nid(nid).nil?
+  end
+
+  def belongs_to(current_user,nid)
+    node_tag = self.drupal_node_community_tag.find_by_nid(nid)
+    node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
+  end
+
   # clean up params to be a hash with defaults
   def self.find_nodes_by_type(tagnames,type,limit)
     tids = DrupalTag.find(:all, :conditions => ['name IN (?)',tagnames]).collect(&:tid)
     nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
     nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
-    DrupalNode.find nids.uniq, :conditions => {:type => "note"}, :order => "node_revisions.timestamp DESC", :limit => limit, :include => :drupal_node_revision
+    DrupalNode.find_all_by_type type, :conditions => ["node.nid in (?)",nids.uniq], :order => "node_revisions.timestamp DESC", :limit => limit, :include => :drupal_node_revision
   end
 
   def self.find_nodes_by_type_with_all_tags(tags,type,limit)

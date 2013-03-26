@@ -4,4 +4,12 @@ class DrupalNodeTag < ActiveRecord::Base
   belongs_to :drupal_node, :foreign_key => 'nid'
   belongs_to :drupal_tag, :foreign_key => 'tid'
 
+  def node
+    self.drupal_node
+  end
+
+  def tag
+    self.drupal_tag
+  end
+
 end

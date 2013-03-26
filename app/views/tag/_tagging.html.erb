@@ -1,0 +1,71 @@
+<p>
+  <b>Tags:</b>
+  <span id="tags">
+  <% @node.tags.each do |tag| %>
+    <span id="tag_<%= tag.id %>" class="label label-info">
+      <a href="/tag/<%= tag.name %>"><%= tag.name %></a><% if current_user && tag.is_community_tag(@node.id) && tag.belongs_to(current_user,@node.id) %>
+      <a class="tagdelete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.id %>">x</a><% end %></span><% end %>
+  </span>
+</p>
+
+<form id="tagform" class="form" data-remote="true" action="/tag/create/<%= @node.id %>">
+<div class="control-group">
+<div class="input-prepend">
+  <span class="add-on"><i class="icon-tags"></i></span>
+  <input name="remote" type="hidden" value="true" />
+  <input autocomplete="off" id="taginput" name="name" type="text" class="span6" placeholder="enter tags" data-provide="typeahead" />
+  <script>
+    jQuery(document).ready(function() {
+      $('#tagform').bind('ajax:beforeSend', function(){
+        $("#taginput").prop('disabled',true)
+      });
+      $('#tagform').bind('ajax:success', function(e,response){
+        if (response.match('Error') == null) {
+          var tag_name = response.split(',')[0]
+          var tag_id = response.split(',')[1]
+          $('#tags').append("<span id='tag_"+tag_id+"' class='label label-info'><a href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tagdelete' data-remote='true' href='/tag/delete/<%= @node.id %>/"+tag_id+"'>x</a></span> ")
+          $('#taginput').val("")
+          $('#tagform .control-group').removeClass('error')
+          $('#tagform .control-group .help-inline').remove()
+          $('#tag_'+tag_id).bind('ajax:success', function(e,tagid){
+            $('#tag_'+tagid).remove()
+          });
+        } else {
+          $('#tagform .control-group').addClass('error')
+          $('#tagform .control-group .help-inline').remove()
+          $('#tagform .control-group').append('<span class="help-inline">Error: there was a problem.</span>')
+        }
+        $('#taginput').prop('disabled',false)
+      });
+      $('#tagform').bind('ajax:error', function(e,response){
+        $('#tagform .control-group').addClass('error')
+        $('#taginput').prop('disabled',false)
+        $('#tagform .control-group .help-inline').remove()
+        $('#tagform .control-group').append('<span class="help-inline">'+response.responseText+'</span>')
+      });
+
+      $('.tagdelete').bind('ajax:success', function(e,tagid){
+        $('#tag_'+tagid).remove()
+      });
+
+      $('#taginput').typeahead({
+        source: function (typeahead, query) {
+          if (query.length > 2) {
+            return $.post('/tag/suggested/'+query, {}, function (data) {
+              return typeahead.process(data)
+            })
+          }
+        },
+        menu: '<ul id="tagtypeahead" class="typeahead dropdown-menu"></ul>',
+        autoselect: false,
+        onselect: function(text,original_text) { 
+          $('#taginput').val(text)
+          $('#tagform').submit()
+        }
+      });
+
+    });
+  </script>
+</div>
+</div>
+</form>

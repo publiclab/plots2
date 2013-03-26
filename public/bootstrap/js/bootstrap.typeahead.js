@@ -47,24 +47,21 @@
   , select: function () {
       var text, original_text;
       if (this.$menu.find('.active').length == 0) {
-        var val = this.$element.val();
+        var val = {'string':this.$element.val()};
       }
       else {
-        window.location = JSON.parse(this.$menu.find('.active').attr('data-value')).url;
+        var val = JSON.parse(this.$menu.find('.active').attr('data-value'));
+        if (JSON.parse(this.$menu.find('.active').attr('data-value')).url) window.location = JSON.parse(this.$menu.find('.active').attr('data-value')).url;
       }
-
-      if (this.$menu.find('.active').length > 0) {
-        if (!this.strings) text = val[this.options.property]
-        else text = val.split('</i> ')[1]
-      } else text = val
+      if (!this.strings) text = val.string
+      else text = val
 
       original_text = this.$element.val();
       this.$element.val(text)
-
       if (typeof this.onselect == "function")
           this.onselect(text, original_text)
 
-      return this.submit()
+      return this.hide()
     }
 
   , show: function () {
@@ -126,7 +123,8 @@
 
       items = $.grep(results, function (item) {
         if (that.objects)
-          item = item.string.split('</i> ')[1]
+          if (item.string.search('<i') != -1) item = item.string.split('</i> ')[1]
+          else item = item.string
         else if (!that.strings)
           item = item[that.options.property]
         if (that.matcher(item)) return item
@@ -154,8 +152,10 @@
 
       while (item = items.shift()) { 
         if (this.strings) sortby = item
-        else if (this.objects) sortby = item.string.split('</i> ')[1]
-        else sortby = item[this.options.property]
+        else if (this.objects) {
+          if (item.string.search('<i') != -1) sortby = item.string.split('</i> ')[1]
+          else sortby = item.string
+        } else sortby = item[this.options.property]
 
         if (!sortby.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(item)
         else if (~sortby.indexOf(this.query)) caseSensitive.push(item)
@@ -166,8 +166,11 @@
     }
 
   , highlighter: function (item) {
-      var prefix = item.split('</i>')[0]+'</i>'
-      item = item.split('</i>')[1]
+      var prefix = ""
+      if (item.search('<i') != -1) {
+        prefix = item.split('</i>')[0]+'</i>'
+        item = item.split('</i>')[1]
+      }
       return prefix+item.replace(new RegExp('(' + this.query + ')', 'ig'), function ($1, match) {
         return '<strong>' + match + '</strong>'
       })

@@ -1,4 +1,4 @@
-<%= render :partial => "wiki/related_sidebar" %>
+<%= render :partial => "sidebar/related" %>
 <div class="span9">
 
   <% if @node.main_image %>
@@ -9,13 +9,13 @@
 
   <div class="btn-toolbar pull-right" style="margin-left:10px;margin-top:0;">
     <div class="btn-group">
-      <a class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.length == 0 %><% if @tagnames %><% @tagnames.each do |tag| %><a class='label label-inverse'><%= tag %></a> <% end %><% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></a>
+      <a class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tags.length == 0 %><% if @tags %><% @tags.each do |tag| %><a class='label label-inverse'><%= tag.name %></a> <% end %><% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></a>
       <a rel="tooltip" title="Helpful? Awesome?" class="btn btn-small" href="#"><i class="icon-star"></i><span class="hidden-phone"> Like (8)</span></a>
       <a rel="tooltip" title="Updates/comments" id="follow" class="btn btn-small" href="#"><i class="icon-eye-open"></i><span class="hidden-phone"> Follow</span></a>
     </div>
   </div>
 
-  <h2><%= @revision.title %></h2>
+  <h2><%= @node.latest.title %></h2>
 
   <div class="pull-right" style="padding-top:8px;">
     <span class="hidden-desktop">
@@ -34,18 +34,11 @@
     </ul>
 
   <p>
-  <%= raw auto_link(RDiscount.new(@revision.body).to_html, :sanitize => false) %>
+  <%= raw auto_link(RDiscount.new(@node.latest.body).to_html, :sanitize => false) %>
   </p>
 
   <hr />
-  <p>
-    <b>Tags:</b>
-    <% @node.tags.each do |tag| %><a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %>
-  </p>
-  
-  <div class="input-prepend">
-    <span class="add-on"><i class="icon-tags"></i></span>
-    <input type="text" class="span6" placeholder="balloon mapping" data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
-  </div>
+
+  <%= render :partial => "tag/tagging" %>
 
 </div><!--/span-->

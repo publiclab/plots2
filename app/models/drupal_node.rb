@@ -5,6 +5,9 @@ class DrupalNode < ActiveRecord::Base
   has_one :drupal_node_counter, :foreign_key => 'nid'
   has_many :drupal_node_tag, :foreign_key => 'nid'
   has_many :drupal_tag, :through => :drupal_node_tag
+# these override the above... have to do it manually:
+#  has_many :drupal_node_community_tag, :foreign_key => 'nid'
+#  has_many :drupal_tag, :through => :drupal_node_community_tag
   has_many :drupal_comments, :foreign_key => 'nid'
   has_many :drupal_content_type_map, :foreign_key => 'nid'
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
@@ -65,7 +68,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def tags
-    self.drupal_tag.uniq
+    (self.drupal_tag + DrupalTag.find(:all, :conditions => ["tid IN (?)",DrupalNodeCommunityTag.find_all_by_nid(self.nid).collect(&:tid)])).uniq
   end
 
   # increment view count
@@ -84,7 +87,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def comments
-    DrupalComment.find_all_by_nid self.nid, :order => "timestamp"
+    DrupalComment.find_all_by_nid self.nid, :order => "timestamp", :conditions => {:status => 0}
   end
 
   def slug
@@ -94,6 +97,10 @@ class DrupalNode < ActiveRecord::Base
       slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
     end
     slug
+  end
+
+  def path
+    path = "/"+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst
   end
 
   def self.find_by_slug(title)

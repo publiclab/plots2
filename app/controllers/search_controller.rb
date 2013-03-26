@@ -25,16 +25,16 @@ class SearchController < ApplicationController
   # utility response to fill out search autocomplete
   def typeahead
     matches = []
-    DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
+    DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
       matches << {:string => "<i class='icon-file'></i> "+match.title, :url => "/"+match.slug}
     end
-    DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "page" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
+    DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['type = "page" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
       matches << {:string => "<i class='icon-book'></i> "+match.title, :url => "/wiki/"+match.slug}
     end
-    DrupalNode.find(:all, :limit => 15, :order => "nid DESC", :conditions => ['type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
+    DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
       matches << {:string => "<i class='icon-map-marker'></i> "+match.title, :url => "/"+match.slug}
     end
-    DrupalUsers.find(:all, :limit => 10, :order => "uid", :conditions => ['name LIKE ? AND access != 0', "%"+params[:id]+"%"]).each do |match|
+    DrupalUsers.find(:all, :limit => 5, :order => "uid", :conditions => ['name LIKE ? AND access != 0', "%"+params[:id]+"%"]).each do |match|
       matches << {:string => "<i class='icon-user'></i> "+match.name, :url => "/notes/author/"+match.name}
     end
     render :json => matches
