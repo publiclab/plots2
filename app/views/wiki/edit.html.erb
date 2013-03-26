@@ -33,12 +33,25 @@
 
 <script src="/assets/js/dragdrop.js"></script>
 <div class="span9">
-  <%= render :partial => "layouts/alerts" %>
-  <% if @node %><form class="form well post" action="/wiki/update/<%= @node.slug %>">
 
-  <% else %><form class="well post" action="http://publiclaboratory.org/wiki/<%=h params[:id] %>"><% end %>
-    <% if @node %>
-      <h3 style="margin-top:0;">Editing page: <i><%= @node.title %></i></h3>
+  <% 
+  if @node && params[:action] != "create"
+    url = { :controller => "wiki", :action => "update", :id => @node.slug }
+  else 
+    url = { :controller => "wiki", :action => "create", :id => params[:id] }
+   end 
+  %>
+
+  <%= form_for @node, :as => :drupal_node, :url => url do |f| %>
+    <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
+  <% end %>
+
+  <%= form_for @revision, :as => :drupal_node_revision, :url => url, :html => {:class => "form well"} do |f| %>
+
+    <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
+
+    <% if @node && @node.title %>
+      <h3 style="margin-top:0;">Editing page: <i><%= @node.latest.title %></i></h3>
     <% else %>
       <h3 style="margin-top:0;">Create page: <i><%=h params[:id] %></i></h3>
     <% end %>
@@ -51,7 +64,7 @@
       </div>
     </div>
 
-    <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= @node.title if @node %><%=h params[:id] unless @node %>"><br />
+    <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= @node.latest.title if @node %><%=h params[:id] unless @node %>"><br />
 
     <script>
       function wrap(a,b) {
@@ -82,7 +95,7 @@
     </div>
 
     <textarea name="body" tabindex="2" class="span9" id="text-input" oninput="this.editor.update()"
-              rows="30" cols="60"><%= @node.body if @node %></textarea>
+              rows="30" cols="60"><% if @node && @node.body %><%= @node.body %><% else %><%= params[:body] %><% end %></textarea>
     <div class="well span9" id="preview" style="display:none;"> </div>
     <br style="clear:both;"/>
 
@@ -108,5 +121,5 @@
     <br />
     <button tabindex="4" type="submit" class="btn btn-primary btn-large">Publish</button>
     <a class="btn btn-large" onClick="$('#preview').toggle();$('#text-input').toggle()">Preview</a>
-  </form>
+  <% end %>
 </div>

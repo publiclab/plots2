@@ -1,5 +1,7 @@
 class WikiController < ApplicationController
 
+  # clean the crap out of this action!
+  # separate places, tools, and wiki pages?
   def show
     @node = DrupalNode.find_by_slug(params[:id])
     if @node # it's a wiki page
@@ -45,20 +47,55 @@ class WikiController < ApplicationController
   end
 
   def edit
-    @node = DrupalNode.find_by_slug(params[:id])
-    # we could do this...
-    #@node.locked = true
-    #@node.save
-    @title = "Editing '"+@node.title+"'"
-    if @node.nil?
-      @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
-      @place = true if @node.nil?
+    if current_user
+      @node = DrupalNode.find_by_slug(params[:id])
+      # we could do this...
+      #@node.locked = true
+      #@node.save
+      @title = "Editing '"+@node.title+"'"
+      if @node.nil?
+        @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
+        @place = true if @node.nil?
+      end
+      @tags = @node.tags
+    else
+      prompt_login "You must be logged in to edit the wiki."
     end
-    @tags = @node.tags
+  end
+
+  def create
+    if current_user
+      title = params[:id].downcase.gsub(' ','-').gsub("'",'').gsub('"','')
+      @node = DrupalNode.new({
+        :uid => current_user.uid,
+        :title => title,
+        :type => "page"
+      })
+      if @node.valid?
+        @node.save!
+        @revision = @node.new_revision({
+          :nid => @node.id,
+          :uid => current_user.uid,
+          :title => params[:title],
+          :body => params[:body]
+        })
+        if @revision.valid?
+          @revision.save!
+          flash[:notice] = "Wiki page created."
+          redirect_to @node.path
+        else
+          render :action => :edit
+        end
+      else
+        render :action => :edit
+      end
+    else
+      prompt_login "You must be logged in to edit the wiki."
+    end
   end
 
   def update
-    if current_user && current_user.username == "warren"
+    if current_user
       @node = DrupalNode.find_by_slug(params[:id])
       @revision = @node.new_revision({
         :nid => @node.id,
@@ -66,11 +103,16 @@ class WikiController < ApplicationController
         :title => params[:title],
         :body => params[:body]
       })
-      if @revision.save
+      if @revision.valid?
+        @revision.save
+        @node.vid = @revision.vid
+        @node.save
         flash[:notice] = "Edits saved."
         redirect_to "/wiki/"+@node.slug
       else
         flash[:error] = "Your edit could not be saved."
+        render :action => :edit
+        #redirect_to "/wiki/edit/"+@node.slug
       end
     else
       prompt_login "You must be logged in to edit."

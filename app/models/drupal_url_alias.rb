@@ -1,5 +1,5 @@
 class DrupalUrlAlias < ActiveRecord::Base
-  # attr_accessible :title, :body
+  attr_accessible :dst, :src
   self.table_name = 'url_alias'
   self.primary_key = 'pid'
 

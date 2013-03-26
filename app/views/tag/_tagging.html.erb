@@ -8,6 +8,7 @@
   </span>
 </p>
 
+<% if current_user %>
 <form id="tagform" class="form" data-remote="true" action="/tag/create/<%= @node.id %>">
 <div class="control-group">
 <div class="input-prepend">
@@ -69,3 +70,4 @@
 </div>
 </div>
 </form>
+<% end %>

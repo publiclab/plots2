@@ -1,0 +1,5 @@
+<% @feed.each do |item| %>
+  <h3><a href=""><%= item.title.gsub('Re: ','').gsub('[grassrootsmapping]','').gsub('[plots-boston]','') %></a></h3>
+  <p><%= item.author %> | <%= item.pubDate %></p>
+  <p><a href="<%= item.guid %>">Read more &raquo;</a></p>
+<% end %>

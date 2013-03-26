@@ -24,6 +24,7 @@ Plots2::Application.routes.draw do
   match 'wiki/tags/:tags' => 'wiki#tags'
 
   match 'place/:id' => 'wiki#place'
+  match 'place/:id/feed' => 'place#feed'
   match 'tool/:id' => 'wiki#tool'
 
   match 'research' => 'notes#index'

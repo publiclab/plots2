@@ -1,20 +1,24 @@
 class DrupalNode < ActiveRecord::Base
-  #attr_accessible :title, :body
-  has_many :drupal_node_revision, :foreign_key => 'nid'
-  has_many :drupal_main_image, :foreign_key => 'nid'
-  has_one :drupal_node_counter, :foreign_key => 'nid'
-  has_many :drupal_node_tag, :foreign_key => 'nid'
+  attr_accessible :title, :uid, :status, :type
+  self.table_name = 'node'
+  self.primary_key = 'nid'
+
+  has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
+  has_many :drupal_main_image, :foreign_key => 'nid', :dependent => :destroy
+  has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
+  has_many :drupal_node_tag, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_tag, :through => :drupal_node_tag
 # these override the above... have to do it manually:
 #  has_many :drupal_node_community_tag, :foreign_key => 'nid'
 #  has_many :drupal_tag, :through => :drupal_node_community_tag
-  has_many :drupal_comments, :foreign_key => 'nid'
+  has_many :drupal_comments, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_type_map, :foreign_key => 'nid'
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
   has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
 
-  self.table_name = 'node'
-  self.primary_key = 'nid'
+  validates :title, :presence => :true
+  #validates :name, :format => {:with => /^[\w-]*$/, :message => "can only include letters, numbers, and dashes"}
+
   class << self
     def instance_method_already_implemented?(method_name)
       return true if method_name == 'changed'
@@ -25,6 +29,17 @@ class DrupalNode < ActiveRecord::Base
 
   def self.inheritance_column
     "rails_type"
+  end
+
+  after_create :slug_and_counter
+
+  def slug_and_counter
+    slug = self.title.downcase.gsub(' ','-').gsub("'",'').gsub('"','').gsub('/','-')
+    slug = DrupalUrlAlias.new({
+      :dst => "wiki/"+slug,
+      :src => "node/"+self.id.to_s
+    }).save
+    counter = DrupalNodeCounter.new({:nid => self.id}).save
   end
 
   def author
@@ -49,7 +64,11 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def body
-    self.drupal_node_revision.last.body
+    if self.drupal_node_revision.length > 0
+      self.drupal_node_revision.last.body
+    else
+      nil
+    end
   end
 
   def main_image
@@ -109,7 +128,8 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_root_by_slug(title)
-    DrupalUrlAlias.find_by_dst(title).node
+    slug = DrupalUrlAlias.find_by_dst(title)
+    slug.node if slug
   end
 
   def self.find_map_by_slug(title)
