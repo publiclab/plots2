@@ -1,3 +1,5 @@
+require 'rss'
+
 class WikiController < ApplicationController
 
   # clean the crap out of this action!
@@ -39,7 +41,6 @@ class WikiController < ApplicationController
   end
 
   def place
-
   end
 
   def tool

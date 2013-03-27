@@ -1,8 +1,9 @@
 class DrupalFile < ActiveRecord::Base
   # attr_accessible :title, :body
-  set_table_name :files
-  belongs_to :drupal_node, :foreign_key => 'nid'
+  self.table_name = 'files'
   self.primary_key = 'fid'
+
+  belongs_to :drupal_node, :foreign_key => 'nid'
 
   def path(size)
     size = size || :default

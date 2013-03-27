@@ -16,9 +16,12 @@
 
   <a rel="tooltip" title="Post <% if @tagnames %>about <%= @tagnames.join(', ') %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?tags='+@tagnames.join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
 
-  <hr />
-
-  <%= render :partial => "sidebar/place" %>
+  <% if @node && @node.is_place? %>
+    <br />
+    <%= render :partial => "sidebar/place" %>
+  <% else %>
+    <hr />
+  <% end %>
 
   <% if @notes && @notes.length > 0 %>
   <h4>Recent topic contributors</h4>
@@ -44,7 +47,11 @@
   <% end %>
 
   <% if @wikis && @wikis.length > 0 %>
-  <h4>Related wiki pages</h4>
+  <% if params[:controller] == "notes" && params[:action] == "index" %>
+    <h4>Recent wiki edits</h4>
+  <% else %>
+    <h4>Related wiki pages</h4>
+  <% end %>
   <ul class="nav bullet">
     <% @wikis.each do |wiki| %>
       <% unless @node && wiki.nid == @node.nid %>

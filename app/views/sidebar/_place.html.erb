@@ -1,30 +1,44 @@
-<% unless @place.nil? %>
-  <br />
-  <div class='well'>
-  <form>
-    <label>Join the local mailing list:</label>
+<div class='well'>
+
+<% if @node.has_power_tag('events') %>
+<h4>Local events</h4>
+<ul class="nav bullet">
+  <% events = @node.power_tags('events') %>
+  <% events.each do |power_tag| %>
+    <% DrupalTag.find_nodes_by_type_with_all_tags(["event",power_tag]).each do |node| %>
+      <li><a href="<%= node.path %>"><i class="icon-calendar"></i> <%= node.title %></a></li>
+    <% end %>
+  <% end %>
+  <% if events.length == 0 %><li>No events</li><% end %>
+</ul>
+<p><a class="btn" href="/post?template=event&tags=event,<%= events.first %>">Post an event</a></p>
+<% end %>
+
+<hr />
+
+<% if @node.has_mailing_list? %>
+  <% mailing_list = @node.power_tag("list") %>
+
+  <form action="http://groups.google.com/group/<%= mailing_list %>/boxsubscribe">
+    <label>Join the <b><%= mailing_list %></b> mailing list:</label>
     <div class="input-prepend">
-      <span class="add-on"><i class="icon-envelope"></i></span>
-      <input class="span11" type="text" />
+      <span class="add-on"><i class="icon-envelope"></i></span><input name="email" class="span11" type="text" placeholder="you@email.com"/>
     </div>
-    <button type="submit" class="btn btn-primary btn-small">Subscribe</button>
+    <button name="sub" type="submit" class="btn btn-primary">Subscribe</button>
   </form>
 
   <hr />
-
   <h4>Recent discussion topics</h4>
-  <ul class="nav bullet">
-    <li><a href="#"><i class="icon-comment"></i> Using infrared cameras</a></li>
-    <li><a href="#"><i class="icon-comment"></i> Question about water levels</a></li>
-    <li><a href="#"><i class="icon-comment"></i> New to the list</a></li>
-    <li><a href="#"><i class="icon-comment"></i> help with camera</a></li>
-  </ul>
 
-  <h4>Local events</h4>
   <ul class="nav bullet">
-    <li><a href="#"><i class="icon-calendar"></i> LEAFFEST</a></li>
-    <li><a href="#"><i class="icon-calendar"></i> Tidmarsh Farms meetup</a></li>
+  <% @node.mailing_list[0..4].each do |item| %>
+    <li>
+      <a href="<%= item.link %>"><i class="icon-comment"></i> <%= item.title.gsub('Re: ','').gsub('['+mailing_list+']','') %></a>
+      <p><small><i><%= time_ago_in_words(item.pubDate) %> ago</i></small></p>
+    </li>
+  <% end %>
   </ul>
-
-  </div>
+  <p><a href="http://groups.google.com/group/<%= mailing_list %>">All topics</a></p>
 <% end %>
+
+</div>

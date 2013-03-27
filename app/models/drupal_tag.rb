@@ -18,7 +18,7 @@ class DrupalTag < ActiveRecord::Base
   end
 
   validates :name, :presence => :true
-  validates :name, :format => {:with => /^[\w-]*$/, :message => "can only include letters, numbers, and dashes"}
+  validates :name, :format => {:with => /^[\w:-]*$/, :message => "can only include letters, numbers, and dashes"}
 
   def id
     self.tid
@@ -41,22 +41,23 @@ class DrupalTag < ActiveRecord::Base
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
-  # clean up params to be a hash with defaults
-  def self.find_nodes_by_type(tagnames,type,limit)
+  def self.find_nodes_by_type(tagnames,type = "note",limit = 10)
     tids = DrupalTag.find(:all, :conditions => ['name IN (?)',tagnames]).collect(&:tid)
     nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
     nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
     DrupalNode.find_all_by_type type, :conditions => ["node.nid in (?)",nids.uniq], :order => "node_revisions.timestamp DESC", :limit => limit, :include => :drupal_node_revision
   end
 
-  def self.find_nodes_by_type_with_all_tags(tags,type,limit)
-    node_ids = []
-    tags.each do |tag|
-      tag.drupal_node.filter_by_type(type).each do |node|
-        node_ids << node.nid if (node.tags & tags).length == tags.length
-      end
+  def self.find_nodes_by_type_with_all_tags(tagnames,type = "note",limit = 10)
+    nids = false
+    tagnames.each do |tn|
+      tids = DrupalTag.find(:all, :conditions => {:name => tn}).collect(&:tid)
+      tag_nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
+      tag_nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
+      nids = tag_nids if nids == false
+      nids = nids & tag_nids
     end
-    DrupalNode.find node_ids.uniq, :order => "nid DESC", :limit => limit
+    DrupalNode.find nids, :order => "nid DESC", :limit => limit
   end
 
   def self.find_popular_notes(tag,limit = 8)

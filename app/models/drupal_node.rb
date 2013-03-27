@@ -1,3 +1,5 @@
+require 'rss'
+
 class DrupalNode < ActiveRecord::Base
   attr_accessible :title, :uid, :status, :type, :vid
   self.table_name = 'node'
@@ -31,8 +33,13 @@ class DrupalNode < ActiveRecord::Base
     "rails_type"
   end
 
+  before_save :set_changed
   after_create :slug_and_counter
   before_destroy :delete_url_alias
+
+  def set_changed
+    self.changed = DateTime.now.to_i
+  end
 
   def slug_and_counter
     slug = self.title.downcase.gsub(' ','-').gsub("'",'').gsub('"','').gsub('/','-')
@@ -80,12 +87,54 @@ class DrupalNode < ActiveRecord::Base
     self.drupal_main_image.last.drupal_file if self.drupal_main_image && self.drupal_main_image.last
   end
 
-   def icon
-    icon = "<i class='icon-file'></i>" if self.type == "note"
-    icon = "<i class='icon-book'></i>" if self.type == "page"
-    icon = "<i class='icon-map-marker'></i>" if self.type == "map"
-    icon
-   end
+  # base this on a tag!
+  def is_place?
+    self.slug[0..5] == 'place/'
+  end
+
+  def has_mailing_list?
+    self.has_power_tag("list")
+  end
+
+  # power tags have "key:value" format, and should be searched with a "key:*" wildcard
+  def has_power_tag(tag)
+    DrupalNodeCommunityTag.find(:all,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)]).length > 0
+  end
+
+  # returns the value for the most recent power tag of form key:value
+  def power_tag(tag)
+    node_tag = DrupalNodeCommunityTag.find(:last,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)])
+    if node_tag
+      node_tag.name.gsub(tag+':','')
+    else
+      ''
+    end
+  end
+
+  # returns all results
+  def power_tags(tag)
+    node_tags = DrupalNodeCommunityTag.find(:all,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)])
+    tags = []
+    node_tags.each do |nt|
+      tags << nt.name.gsub(tag+':','')
+    end
+    tags
+  end
+
+  def has_tag(tag)
+    DrupalNodeTag.find(:all,:conditions => ['tid IN (?)',DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
+  end
+
+  def mailing_list
+    RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
+  end
+
+  def icon
+   icon = "<i class='icon-file'></i>" if self.type == "note"
+   icon = "<i class='icon-book'></i>" if self.type == "page"
+   icon = "<i class='icon-map-marker'></i>" if self.type == "map"
+   icon
+  end
 
   def id
     self.nid
