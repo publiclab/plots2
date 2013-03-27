@@ -5,7 +5,7 @@
 <ul class="nav bullet">
   <% events = @node.power_tags('events') %>
   <% events.each do |power_tag| %>
-    <% DrupalTag.find_nodes_by_type_with_all_tags(["event",power_tag]).each do |node| %>
+    <% DrupalTag.find_nodes_by_type_with_all_tags(["event",power_tag]).sort_by{|a| a.changed}.each do |node| %>
       <li><a href="<%= node.path %>"><i class="icon-calendar"></i> <%= node.title %></a></li>
     <% end %>
   <% end %>
