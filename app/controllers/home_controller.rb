@@ -1,10 +1,11 @@
 class HomeController < ApplicationController
 
-  before_filter :local
+  #caches_action :index, :cache_path => proc { |c|
+  #  node = DrupalNode.find :last #c.params[:id]
+  #  { :n => node.updated_at.to_i }
+  #end
 
-  def local
-    
-  end
+  #caches_action :index, :cache_path => { :last => DrupalNode.find(:last).updated_at.to_i }
 
   def index
     @title = "Home"

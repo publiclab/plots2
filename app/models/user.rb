@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
                                 :email] 
   end
 
+  has_many :images, :foreign_key => :uid
+
   def uid
     DrupalUsers.find_by_name(self.username).uid
   end

@@ -1,5 +1,8 @@
 Plots2::Application.routes.draw do
   resources :rusers
+  resources :users
+  resources :user_sessions
+  resources :images
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -13,8 +16,6 @@ Plots2::Application.routes.draw do
   match 'register' => 'users#create'
   match 'users/list' => 'users#list'
   match 'signup' => 'users#new'
-  resources :users
-  resources :user_sessions
 
   match 'wiki/:id' => 'wiki#show'
   match 'wiki/revisions/:id' => 'wiki#revisions'

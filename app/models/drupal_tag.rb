@@ -60,12 +60,11 @@ class DrupalTag < ActiveRecord::Base
     DrupalNode.find nids, :order => "nid DESC", :limit => limit
   end
 
-  def self.find_popular_notes(tag,limit = 8)
-    nodes = []
-    self.find_by_name(tag).drupal_node.filter_by_type('note',limit).each do |node|
-      nodes << node if node.totalcount > 20
-    end
-    nodes.uniq.sort{|a,b| b.created <=> a.created}
+  def self.find_popular_notes(tag,views = 20,limit = 10)
+    tids = DrupalTag.find(:all, :conditions => {:name => tag}).collect(&:tid)
+    nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
+    nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
+    DrupalNode.find_all_by_type "note", :conditions => ["node.nid in (?) AND node_counter.totalcount > (?)",nids.uniq,views], :order => "changed DESC", :limit => limit, :include => :drupal_node_counter
   end
 
 end

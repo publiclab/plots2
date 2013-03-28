@@ -17,6 +17,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_content_type_map, :foreign_key => 'nid'
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
   has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
+  has_many :images, :foreign_key => :nid
 
   validates :title, :presence => :true
   #validates :name, :format => {:with => /^[\w-]*$/, :message => "can only include letters, numbers, and dashes"}
@@ -126,7 +127,9 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def mailing_list
-    RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
+    Rails.cache.fetch("feed-"+self.id.to_s+"-"+(self.updated_at.to_i/300).to_i.to_s) do
+      RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
+    end
   end
 
   def icon
