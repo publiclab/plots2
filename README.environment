@@ -5,21 +5,19 @@ rvm install 1.9.3 -n plots2
 rvm 1.9.3-plots2
 
 
-2. Install prereqs (assumes typical Debian-based distro)
+3. Setup Database adapters
 ---
+MySQL support on Debian:
 sudo apt-get install libmysqlclient-dev
 
+PostgreSQL support on Debian:
+sudo apt-get install postgresql-server-dev-X.Y
 
-3. Install Gems
----
-cd $ROOT/plots2
-bundle update
-?bundle install
+SQLite support:
+(nothing?)
 
-
-4. Setup Database
----
 create config/database.yml with test, development headings (maybe production)
+e.g.
 -
 test:
   adapter: sqlite3
@@ -32,13 +30,26 @@ development:
   password:
   encoding: ascii
   database: publiclaboratory
+production:
+  adapter: activerecord-postgresql-adapter
+  username:
+  password:
+  encoding: ascii
+  database: publiclaboratory
 -
+
+
+4. Install Gems
+---
+cd $ROOT/plots2
+# uncomment desired databases from Gemfile
+bundle update
+bundle install (maybe unnecessary)
 
 
 5. Install environmental dependencies
 ---
 gem install passenger
-gem install sqlite3
 
 
 6. Run the Rails app
