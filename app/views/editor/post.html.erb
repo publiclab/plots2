@@ -24,22 +24,50 @@
   <form class="well post" action="http://publiclaboratory.org/note/add">
 
     <div class="sidebar-nav pull-right span3">
-      <h3 style="margin-top:0;">Recent images</h3>
-      <div id="images">
 
-      <% if current_user %>
-        <% current_user.images.each do |image| %>
-          <p><%= image_tag image.photo.url(:thumb), :class => "img-rounded span8" %></p>
-        <% end %>
-      <% end %>
+      <h3 style="margin-top:0;">Images</h3>
+
+      <style>
+.dropzone {
+  border:4px dashed #ccc;
+  color: #aaa;
+  font-size:16px;
+  padding:20%;
+  text-align:center;
+  margin-bottom:10px;
+}
+.dropzone.hover {
+  background:#ddd;
+  color:#bbb;
+  border-color:#bbb;
+}
+.bar {
+  height: 18px;
+  background: green;
+}
+      </style>
+
+      <img class="img-rounded" id="leadImage" style="display:none;" />
+      <div class="dropzone" id="dropzone">
+        <p>Drag &amp; drop to add an image, or <span class="fileinput-button"><a>choose an image</a><input type="file" name="image[photo]" style="height:4em;"></span></p>
+        <br style="clear:both;"/>
+      </div>
+      <div id="progress" style="display:none;">
+        <div class="bar" style="width: 0%;"></div>
       </div>
 
-      <hr style="clear:both;padding-top:10px;" />
-      <a href="/images/new" class="btn btn-large btn-block"><i class="icon-upload"></i> Upload images</a>
-      <br />
-      <div class="dropzone hidden-phone hidden-tablet" id="dropzone">
-        Drag files here to attach
-      </div>
+      <a href="#images_modal" data-dismiss="modal" data-toggle="modal" class="btn">Choose a recent image</a>
+      <%= render :partial => "editor/images" %>
+
+      <script>
+        uid = <%= current_user.uid %>
+      </script>
+      <link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
+      <script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+      <script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+      <script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
+      <script src="/assets/js/dragdrop.js"></script>
+
     </div>
 
     <h3 style="margin-top:0;">Share your work <small><a href="#" class="btn btn-link">Use a template</a></small></h3>
@@ -59,22 +87,3 @@
   </form>
 </div>
 
-<script>
-  function urlParam(name) {
-    return decodeURIComponent(urlParams()[name].replace(/\+/g,' ')) 
-  }
-  function urlParams() {
-    params = {}
-    $.each(location.toString().split('?')[1].split('&'),function(i,p) {
-      params[p.split('=')[0]] = p.split('=')[1]
-    })
-    return params
-  }
-  (function(){
-  if (location.toString().split('/')[location.toString().split('/').length-1]) {
-    if (urlParam('title')!='null') $('input#title').val(urlParam('title'))
-    if (urlParam('body')!='null') $('textarea#text-input').val(urlParam('body'))
-    if (urlParam('tags')!='null') $('input#tags').val(urlParam('tags'))
-  } 
-  })()
-</script>

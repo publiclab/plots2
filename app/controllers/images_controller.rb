@@ -1,7 +1,9 @@
 class ImagesController < ApplicationController
+  respond_to :html, :xml, :json
 
   def create
     if current_user && current_user.username == "warren"
+      params[:image][:title] = "Untitled" if params[:image][:title].nil?
       @image = Image.new({
         :uid => current_user.uid,
         :photo => params[:image][:photo],
@@ -10,11 +12,17 @@ class ImagesController < ApplicationController
       })
       @image.nid = DrupalNode.find params[:nid] if params[:nid]
       if @image.save!
-        flash[:notice] = "Image saved."
+        #@image = Image.find @image.id
+        if request.xhr?
+          render :json => {:url => @image.photo.url(:thumb),:id => @image.id}
+        else
+          flash[:notice] = "Image saved."
+          redirect_to @node.path
+        end
       else
         flash[:error] = "The image could not be saved."
+        redirect_to "/images/new"
       end
-      redirect_to "/post"
     else
       prompt_login "You must be logged in to upload."
     end

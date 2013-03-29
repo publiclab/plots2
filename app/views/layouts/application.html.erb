@@ -159,7 +159,7 @@
 
       <%= render :partial => "layouts/alerts" %>
 
-        <% unless current_user || params[:controller] == "user_sessions" || params[:controller] == "home" && params[:action] == "index" %>
+        <% unless current_user || params[:controller] == "user_sessions" || params[:controller] == "home" && params[:action] == "front" %>
           <div class="well">
             <h3 style="display:inline;">What is Public Lab?</h3> <span style="padding-left:20px;">Learn more about our community and how we work, and consider joining: </span><a href="/about" style="margin-left:10px;" class="btn btn-primary btn-large">Learn more &raquo;</a>
           </div>

@@ -33,20 +33,6 @@ h1,h2,h3,h4,h5,h6 {
   font-family:junctionregular, lucida grande,lucida sans console,sans-serif;
 }
 
-.dropzone {
-  border:4px dashed #ccc;
-  color: #aaa;
-  font-size:16px;
-  padding:20%;
-  text-align:center;
-  margin-bottom:10px;
-}
-.dropzone.hover {
-  background:#ddd;
-  color:#bbb;
-  border-color:#bbb;
-}
-
 #preview {
   margin:0;
   margin-bottom:10px;
