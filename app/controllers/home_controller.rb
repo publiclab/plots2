@@ -7,7 +7,7 @@ class HomeController < ApplicationController
 
   #caches_action :index, :cache_path => { :last => DrupalNode.find(:last).updated_at.to_i }
 
-  def index
+  def front
     @title = "Home"
   end
 

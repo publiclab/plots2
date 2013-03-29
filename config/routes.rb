@@ -24,9 +24,12 @@ Plots2::Application.routes.draw do
   match 'wiki' => 'wiki#index'
   match 'wiki/tags/:tags' => 'wiki#tags'
 
-  match 'place/:id' => 'wiki#place'
   match 'place/:id/feed' => 'place#feed'
-  match 'tool/:id' => 'wiki#tool'
+
+  match 'place/:id' => 'legacy#place'
+  match 'tool/:id' => 'legacy#tool'
+  match 'people/:id' => 'legacy#people'
+  match 'notes/:id' => 'legacy#notes'
 
   match 'research' => 'notes#index'
   match 'notes' => 'notes#index'
@@ -34,12 +37,13 @@ Plots2::Application.routes.draw do
   match 'notes/author/:author/:topic' => 'notes#author_topic'
   match 'notes/:author/:date/:id' => 'notes#show'
 
-  match 'search' => 'search#advanced'
   match 'map' => 'search#map'
+  match 'search' => 'search#advanced'
   match 'search/advanced' => 'search#advanced'
   match 'search/advanced/:id' => 'search#advanced'
   match 'search/:id' => 'search#index'
   match 'search/typeahead/:id' => 'search#typeahead'
+
   match 'tag/:id' => 'tag#show'
   match 'tag/suggested/:id' => 'tag#suggested'
   match 'tag/author/:id.json' => 'tag#author'
@@ -47,12 +51,11 @@ Plots2::Application.routes.draw do
   match 'tag/delete/:nid/:tid' => 'tag#delete'
 
   match 'dashboard' => 'home#dashboard'
-  match 'nearby/:login' => 'home#nearby'
   match 'nearby' => 'home#nearby'
   match 'subscriptions' => 'home#subscriptions'
   match 'profile/:id' => 'users#profile'
   match 'feed/:author' => 'users#rss'
-  match 'people/:id' => 'home#people'
+
   match 'maps' => 'map#index'
   match 'map/:name/:date' => 'map#show'
   match 'archive' => 'map#index'
@@ -64,8 +67,8 @@ Plots2::Application.routes.draw do
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
 
-  match 'post' => 'home#post'
-  match 'note/add' => 'home#post'
+  match 'post' => 'editor#post'
+  match 'note/add' => 'legacy#note_add'
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
@@ -105,7 +108,7 @@ Plots2::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'home#index'
+  root :to => 'home#front'
 
   # See how all your routes lay out with "rake routes"
 

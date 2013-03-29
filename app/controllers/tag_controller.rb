@@ -4,9 +4,8 @@ class TagController < ApplicationController
   def show
     @nodes = DrupalTag.find_nodes_by_type([params[:id]],'note',8)
     @tags = DrupalTag.find_all_by_name params[:id]
-    @tagnames = @tags.collect(&:name)
+    @tagnames = @tags.collect(&:name).uniq!
     @wikis = DrupalTag.find_nodes_by_type([params[:id]],'page',10)
-    @tagnames ||= []
     @title = @tagnames.join(', ')
     @unpaginated = true
   end

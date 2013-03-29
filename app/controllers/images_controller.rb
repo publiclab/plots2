@@ -14,7 +14,7 @@ class ImagesController < ApplicationController
       else
         flash[:error] = "The image could not be saved."
       end
-      redirect_to "/profile/"+current_user.username
+      redirect_to "/post"
     else
       prompt_login "You must be logged in to upload."
     end
@@ -33,7 +33,7 @@ class ImagesController < ApplicationController
       else
         flash[:error] = "The image could not be updated."
       end
-      redirect_to "/profile/"+@image.user.username
+      redirect_to "/post"
     else
       prompt_login "You must be logged in to edit images."
     end
@@ -48,7 +48,7 @@ class ImagesController < ApplicationController
         else
           flash[:error] = "The image could not be deleted."
         end
-        redirect_to "/profile/"+@image.user.username
+        redirect_to "/post"
       else
         prompt_login "Only the owner can delete this image."
       end

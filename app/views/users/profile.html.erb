@@ -11,16 +11,6 @@
 
   <p><%= raw RDiscount.new(@user.bio).to_html %></p>
 
-  <h3>Recent images</h3>
-
-  <p>Temporary display of images as part of the file upload feature.</p>
-
-  <% if current_user %>
-  <% current_user.images.each do |image| %>
-    <%= image_tag image.photo.url(:thumb) %>
-  <% end %>
-  <% end %>
-
   <hr />
 
   <div id="donut"></div>
