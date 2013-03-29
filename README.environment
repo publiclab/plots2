@@ -1,0 +1,47 @@
+1. Install RVM
+---
+
+rvm install 1.9.3 -n plots2
+rvm 1.9.3-plots2
+
+
+2. Install prereqs (assumes typical Debian-based distro)
+---
+sudo apt-get install libmysqlclient-dev
+
+
+3. Install Gems
+---
+cd $ROOT/plots2
+bundle update
+?bundle install
+
+
+4. Setup Database
+---
+create config/database.yml with test, development headings (maybe production)
+-
+test:
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
+development:
+  adapter: mysql2
+  username:
+  password:
+  encoding: ascii
+  database: publiclaboratory
+-
+
+
+5. Install environmental dependencies
+---
+gem install passenger
+gem install sqlite3
+
+
+6. Run the Rails app
+---
+rake test
+passenger start (development by default)
