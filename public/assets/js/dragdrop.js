@@ -18,17 +18,19 @@ $('#dropzone').fileupload({
   paramName: "image[photo]",
   dropZone: $('#dropzone'),
   dataType: 'json',
-  formData: {'uid':uid},
+  formData: {'uid':$D.uid},
   done: function (e, data) {
-    $('#dropzone').hide()
     $('#progress').hide()
-    $('#leadImage')[0].src = data.result.url
-    $('#leadImage').show()
-
+    if ($D.type == "note") {
+      $('#dropzone').hide()
+      $('#leadImage')[0].src = data.result.url
+      $('#leadImage').show()
+    } else { // it's a wiki!
+      $E.wrap('\n\n![',']('+data.result.url+')\n\n')
+    }
     // here, get the data.result.id and append it to the post form as the lead image
 
-    // do separate drag & drop for inline images
-
+    // eventual handling of multiple files; must add "multiple" to file input and handle on server side:
     //$.each(data.result.files, function (index, file) {
     //    $('<p/>').text(file.name).appendTo(document.body);
     //});

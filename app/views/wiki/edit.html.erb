@@ -31,7 +31,6 @@
   </div>
 </div>
 
-<script src="/assets/js/dragdrop.js"></script>
 <div class="span9">
 
   <% 
@@ -55,14 +54,6 @@
     <% else %>
       <h3 style="margin-top:0;">Create page: <i><%=h params[:id] %></i></h3>
     <% end %>
-
-    <div class="sidebar-nav pull-right span3" style="display:none;">
-      <a class="btn btn-large btn-block"><i class="icon-upload"></i> Choose files</a>
-      <br />
-      <div class="dropzone hidden-phone hidden-tablet" id="dropzone">
-        Drag files here to attach
-      </div>
-    </div>
 
     <% if @node && @node.latest %>
       <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= @node.latest.title %>"><br />
@@ -99,10 +90,51 @@
       </div>
     </div>
 
-    <textarea name="body" tabindex="2" class="span9" id="text-input" oninput="this.editor.update()"
-              rows="30" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
-    <div class="well span9" id="preview" style="display:none;"> </div>
-    <br style="clear:both;"/>
+    <div class="well span9" id="preview" style="display:none;"></div>
+    <div id="dropzone">
+      <textarea name="body" tabindex="2" class="span9" id="text-input" oninput="this.editor.update()"
+                rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+      <div id="imagebar">
+        <div id="progress" class="pull-right" style="display:none;">
+          <div class="bar" style="width: 0%;"></div>
+        </div>
+        <p>Drag &amp; drop to add an image, or <a>choose an image</a></p>
+      </div>
+      </div>
+    <br style="clear:both;" />
+
+    <style>
+textarea {
+  border-bottom:none;
+  margin-bottom:0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+#imagebar {
+  width:74%;
+  color: #aaa;
+  border:1px solid #bbb;
+  border-top:none;
+  background:#f8f8f8;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+#imagebar p {
+  border-top:2px dotted #ddd;
+  padding:8px 12px 0px;
+}
+
+    </style>
+
+    <script>
+      $D = {
+        uid: <%= current_user.uid %>,
+        type: 'wiki'
+      }
+      $E.initialize()
+    </script>
 
     <script src="/assets/js/markdown.js"></script>
     <script>
@@ -116,14 +148,14 @@
       }
       var $M = function (id) { return document.getElementById(id); };
       new Editor($M("text-input"), $M("preview"));
+
     </script>
+    <link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
+    <script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+    <script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+    <script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
+    <script src="/assets/js/dragdrop.js"></script>
 
-    <div class="input-prepend">
-      <span class="add-on"><i class="icon-tags"></i></span>
-      <input tabindex="3" name="tags" type="text" class="span6" <% if @tags %>value="<%= @tags.collect(&:name).join(',') %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
-    </div>
-
-    <br />
     <button tabindex="4" type="submit" class="btn btn-primary btn-large">Publish</button>
     <a class="btn btn-large" onClick="$('#preview').toggle();$('#text-input').toggle()">Preview</a>
   <% end %>

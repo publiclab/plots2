@@ -60,7 +60,10 @@
       <%= render :partial => "editor/images" %>
 
       <script>
-        uid = <%= current_user.uid %>
+        $D = {
+          uid: <%= current_user.uid %>,
+          type: 'note'
+        }
       </script>
       <link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
       <script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
