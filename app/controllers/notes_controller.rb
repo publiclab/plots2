@@ -20,6 +20,17 @@ class NotesController < ApplicationController
     @notes = DrupalTag.find_nodes_by_type(@tagnames,'note',6)
   end
 
+  def create
+
+    # save main image
+    if params[:node_images]
+      params[:node_images].split(',').each do |id|
+        img = Image.find id
+        img.nid = @node.id
+      end
+    end
+  end
+
   def author
     @user = DrupalUsers.find_by_name params[:id]
     @title = @user.name

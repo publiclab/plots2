@@ -14,7 +14,10 @@ class ImagesController < ApplicationController
       if @image.save!
         #@image = Image.find @image.id
         if request.xhr?
-          render :json => {:url => @image.photo.url(:thumb),:id => @image.id}
+          render :json => { :filename => @image.photo_file_name,
+                            :url => APP_CONFIG['image_server']+@image.photo.url(:thumb),
+                            :id => @image.id
+                          }
         else
           flash[:notice] = "Image saved."
           redirect_to @node.path

@@ -25,10 +25,14 @@ $('#dropzone').fileupload({
       $('#dropzone').hide()
       $('#leadImage')[0].src = data.result.url
       $('#leadImage').show()
+      // here append the image id to the note as the lead image
+      $('#main_image').val(data.result.id)
     } else { // it's a wiki!
-      $E.wrap('\n\n![',']('+data.result.url+')\n\n')
+      $E.wrap('![',']('+data.result.url.split('?')[0]+')', {'newline': true, 'fallback': data.result.filename}) // on its own line; see /app/assets/js/editor.js
+      // here append the image id to the wiki edit form:
+      if ($('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id)].join(','))
+      else $('#node_images').val(data.result.id)
     }
-    // here, get the data.result.id and append it to the post form as the lead image
 
     // eventual handling of multiple files; must add "multiple" to file input and handle on server side:
     //$.each(data.result.files, function (index, file) {
