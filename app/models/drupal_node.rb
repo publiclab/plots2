@@ -86,7 +86,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def drupal_main_image
-    DrupalMainImage.find self.vid
+    DrupalMainImage.find_by_vid self.vid
   end
 
   def main_image
