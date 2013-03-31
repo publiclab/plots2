@@ -6,7 +6,9 @@ class DrupalNode < ActiveRecord::Base
   self.primary_key = 'nid'
 
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_main_image, :foreign_key => 'nid', :dependent => :destroy
+# wasn't working to tie it to .vid, manually defining below
+#  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
+#  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
   has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_node_tag, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_tag, :through => :drupal_node_tag
@@ -16,7 +18,6 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_comments, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_type_map, :foreign_key => 'nid'
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
-  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
   has_many :images, :foreign_key => :nid
 
   validates :title, :presence => :true
@@ -84,8 +85,24 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
+  def drupal_main_image
+    DrupalMainImage.find self.vid
+  end
+
   def main_image
-    self.drupal_main_image.last.drupal_file if self.drupal_main_image && self.drupal_main_image.last
+    self.drupal_main_image.drupal_file if self.drupal_main_image
+  end
+
+  def drupal_content_field_image_gallery
+    DrupalContentFieldImageGallery.find_all_by_vid self.vid
+  end
+
+  def gallery
+    if self.drupal_content_field_image_gallery.first.field_image_gallery_fid 
+      return self.drupal_content_field_image_gallery 
+    else
+      return []
+    end
   end
 
   # base this on a tag!
@@ -208,14 +225,6 @@ class DrupalNode < ActiveRecord::Base
 
   def map
     DrupalContentTypeMap.find_by_nid(self.nid,:order => "vid DESC")
-  end
-
-  def gallery
-    if self.drupal_content_field_image_gallery.first.field_image_gallery_fid 
-      return self.drupal_content_field_image_gallery 
-    else
-      return []
-    end
   end
 
   def location

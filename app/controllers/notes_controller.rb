@@ -7,8 +7,11 @@ class NotesController < ApplicationController
   end
 
   def show
-    @node = DrupalUrlAlias.find_by_dst('notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).node if params[:author] && params[:date]
-    @node = DrupalNode.find params[:id] if params[:id]
+    if params[:author] && params[:date]
+      @node = DrupalUrlAlias.find_by_dst('notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).node 
+    else
+      @node = DrupalNode.find params[:id]
+    end
     @node.view
     @title = @node.title
     @tags = @node.tags
