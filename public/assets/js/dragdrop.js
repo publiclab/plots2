@@ -10,6 +10,8 @@ $('#dropzone').bind('dragout',function(e) {
 })
 $('#dropzone').bind('drop',function(e) {
   e.preventDefault();
+  $('#progress').show()
+  $('#imagebar .prompt').hide()
   $('#dropzone').removeClass('hover');
 },false)
 
@@ -21,8 +23,9 @@ $('#dropzone').fileupload({
   formData: {'uid':$D.uid},
   done: function (e, data) {
     $('#progress').hide()
+    $('#imagebar .prompt').hide()
     if ($D.type == "note") {
-      $('#dropzone').hide()
+      $('#dropzone').show()
       $('#leadImage')[0].src = data.result.url
       $('#leadImage').show()
       // here append the image id to the note as the lead image
@@ -30,7 +33,7 @@ $('#dropzone').fileupload({
     } else { // it's a wiki!
       $E.wrap('![',']('+data.result.url.split('?')[0]+')', {'newline': true, 'fallback': data.result.filename}) // on its own line; see /app/assets/js/editor.js
       // here append the image id to the wiki edit form:
-      if ($('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id].join(','))
+      if ($('#node_images').val() && $('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id].join(','))
       else $('#node_images').val(data.result.id)
     }
 
