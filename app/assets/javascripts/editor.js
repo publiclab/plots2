@@ -1,5 +1,6 @@
 $E = {
   initialize: function(args) {
+    args = args || {}
     args['textarea'] = args['textarea'] || 'text-input'
     $E.textarea = $('#'+args['textarea'])
     console.log($E.textarea)
@@ -28,7 +29,7 @@ $E = {
   },
   image: function(src) {
     src = src || prompt('Enter an image URL')
-    $E.wrap('![',']('+src+')')
+    $E.wrap('\n![',']('+src+')\n')
   },
 
   h1: function() {

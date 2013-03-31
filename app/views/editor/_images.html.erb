@@ -1,0 +1,21 @@
+<div class="modal hide fade" id="images_modal" style="display:none;">
+  <div class="modal-header">
+    <b>Choose a recently uploade image</b>
+  </div>
+  <div class="modal-body">
+
+    <div id="images">
+    <% if current_user %>
+      <% current_user.images.reverse[0..3].each do |image| %>
+        <p><%= image_tag image.photo.url(:thumb), :class => "img-rounded span8" %></p>
+      <% end %>
+    <% end %>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button tabindex="4" type="submit" class="btn btn-primary btn-large">Add image</button>
+
+  </div>
+</div>
+
