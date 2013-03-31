@@ -6,7 +6,7 @@ class TagController < ApplicationController
     @tags = DrupalTag.find_all_by_name params[:id]
     @tagnames = @tags.collect(&:name).uniq!
     @wikis = DrupalTag.find_nodes_by_type([params[:id]],'page',10)
-    @title = @tagnames.join(', ')
+    @title = @tagnames.join(', ') if @tagnames
     @unpaginated = true
   end
 
