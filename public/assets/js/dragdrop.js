@@ -30,7 +30,7 @@ $('#dropzone').fileupload({
     } else { // it's a wiki!
       $E.wrap('![',']('+data.result.url.split('?')[0]+')', {'newline': true, 'fallback': data.result.filename}) // on its own line; see /app/assets/js/editor.js
       // here append the image id to the wiki edit form:
-      if ($('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id)].join(','))
+      if ($('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id].join(','))
       else $('#node_images').val(data.result.id)
     }
 
