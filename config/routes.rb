@@ -34,6 +34,7 @@ Plots2::Application.routes.draw do
   match 'research' => 'notes#index'
   match 'notes' => 'notes#index'
   match 'notes/author/:id' => 'notes#author'
+  match 'notes/show/:id' => 'notes#show'
   match 'notes/author/:author/:topic' => 'notes#author_topic'
   match 'notes/:author/:date/:id' => 'notes#show'
 
