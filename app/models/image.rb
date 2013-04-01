@@ -7,7 +7,7 @@ class Image < ActiveRecord::Base
   has_one :user, :foreign_key => :uid
   has_one :node, :foreign_key => :nid
   
-  has_attached_file :photo, :styles => { :small => "150x150>", :medium => "500x375>", :large => "800x600>" },
+  has_attached_file :photo, :styles => { :small => "150x150!", :medium => "500x375!", :large => "800x600!" },
                   :url  => "/assets/products/:id/:style/:basename.:extension",
                   :path => ":rails_root/public/assets/products/:id/:style/:basename.:extension"
 
