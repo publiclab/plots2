@@ -10,10 +10,11 @@ $('#dropzone').bind('dragout',function(e) {
 })
 $('#dropzone').bind('drop',function(e) {
   e.preventDefault();
+console.log('progress hide')
   $('#progress').show()
   $('#imagebar .prompt').hide()
   $('#dropzone').removeClass('hover');
-},false)
+})
 
 $('#dropzone').fileupload({
   url: "/images",
@@ -42,7 +43,10 @@ $('#dropzone').fileupload({
     //    $('<p/>').text(file.name).appendTo(document.body);
     //});
   },
-  // This does not yet work. Check out: https://github.com/blueimp/jQuery-File-Upload/wiki/Options
+  // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
+  fileuploadfail: function(e,data) {
+    
+  },
   progressall: function (e, data) {
     var progress = parseInt(data.loaded / data.total * 100, 10);
     $('#progress .bar').css(

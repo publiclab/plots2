@@ -3,7 +3,6 @@ $E = {
     args = args || {}
     args['textarea'] = args['textarea'] || 'text-input'
     $E.textarea = $('#'+args['textarea'])
-    console.log($E.textarea)
   },
   is_editing: function() {
     return ($E.textarea[0].selectionStart == 0 && $E.textarea[0].selectionEnd == 0)

@@ -162,7 +162,7 @@ textarea {
     <script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
     <script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
     <script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
-    <script src="/assets/js/dragdrop.js?1"></script>
+    <script src="/assets/js/dragdrop.js?<%= rand(10**8).to_i %>"></script>
 
     <button tabindex="4" type="submit" class="btn btn-primary btn-large">Publish</button>
     <a class="btn btn-large" onClick="$('#preview').toggle();$('#text-input').toggle()">Preview</a>
