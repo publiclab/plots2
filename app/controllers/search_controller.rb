@@ -3,10 +3,9 @@ class SearchController < ApplicationController
   def index
     @title = "Search"
     @nodes = DrupalNode.paginate(:order => "node.nid DESC", :conditions => ['type = "note" AND status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', "%"+params[:id]+"%","%"+params[:id]+"%"], :page => params[:page], :include => :drupal_node_revision)
-    @tags = DrupalTag.find_all_by_name(params[:id]) || []
-    @tagnames = @tags.collect(&:name) || []
-    @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
-    @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
+    @tagnames = params[:id].split(',')
+    @wikis = DrupalTag.find_nodes_by_type(params[:id],'page',10)
+    @notes = DrupalTag.find_nodes_by_type(params[:id],'note',10)
     render :template => 'search/index'
   end
 

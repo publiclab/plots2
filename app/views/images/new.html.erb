@@ -1,0 +1,16 @@
+
+<%= form_for @image, :html => { :multipart => true, :class => "span6" } do |f| %>
+
+  <h2>Upload an image</h2>
+
+  <%= f.error_messages %>
+
+  <p><%= f.file_field :photo %></p>
+
+  <p><%= f.text_field :title, {:placeholder => "Image title", :tabindex => 2} %></p>
+  <p><%= f.text_field :notes, {:placeholder => "a short description"} %></p>
+
+  <p><button class="btn-large btn-primary" type="submit">Upload</button></p>
+
+<% end %>
+

@@ -15,4 +15,8 @@ class DrupalNodeCommunityTag < ActiveRecord::Base
     self.drupal_tag
   end
 
+  def name
+    self.drupal_tag.name
+  end
+
 end

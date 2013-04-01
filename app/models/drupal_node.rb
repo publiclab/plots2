@@ -1,10 +1,14 @@
+require 'rss'
+
 class DrupalNode < ActiveRecord::Base
   attr_accessible :title, :uid, :status, :type, :vid
   self.table_name = 'node'
   self.primary_key = 'nid'
 
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_main_image, :foreign_key => 'nid', :dependent => :destroy
+# wasn't working to tie it to .vid, manually defining below
+#  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
+#  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
   has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_node_tag, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_tag, :through => :drupal_node_tag
@@ -14,7 +18,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_comments, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_type_map, :foreign_key => 'nid'
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
-  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
+  has_many :images, :foreign_key => :nid
 
   validates :title, :presence => :true
   #validates :name, :format => {:with => /^[\w-]*$/, :message => "can only include letters, numbers, and dashes"}
@@ -31,8 +35,13 @@ class DrupalNode < ActiveRecord::Base
     "rails_type"
   end
 
+  before_save :set_changed
   after_create :slug_and_counter
   before_destroy :delete_url_alias
+
+  def set_changed
+    self.changed = DateTime.now.to_i
+  end
 
   def slug_and_counter
     slug = self.title.downcase.gsub(' ','-').gsub("'",'').gsub('"','').gsub('/','-')
@@ -76,16 +85,76 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
-  def main_image
-    self.drupal_main_image.last.drupal_file if self.drupal_main_image && self.drupal_main_image.last
+  def drupal_main_image
+    DrupalMainImage.find_by_vid self.vid
   end
 
-   def icon
-    icon = "<i class='icon-file'></i>" if self.type == "note"
-    icon = "<i class='icon-book'></i>" if self.type == "page"
-    icon = "<i class='icon-map-marker'></i>" if self.type == "map"
-    icon
-   end
+  def main_image
+    self.drupal_main_image.drupal_file if self.drupal_main_image
+  end
+
+  def drupal_content_field_image_gallery
+    DrupalContentFieldImageGallery.find_all_by_vid self.vid
+  end
+
+  def gallery
+    if self.drupal_content_field_image_gallery.first.field_image_gallery_fid 
+      return self.drupal_content_field_image_gallery 
+    else
+      return []
+    end
+  end
+
+  # base this on a tag!
+  def is_place?
+    self.slug[0..5] == 'place/'
+  end
+
+  def has_mailing_list?
+    self.has_power_tag("list")
+  end
+
+  # power tags have "key:value" format, and should be searched with a "key:*" wildcard
+  def has_power_tag(tag)
+    DrupalNodeCommunityTag.find(:all,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)]).length > 0
+  end
+
+  # returns the value for the most recent power tag of form key:value
+  def power_tag(tag)
+    node_tag = DrupalNodeCommunityTag.find(:last,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)])
+    if node_tag
+      node_tag.name.gsub(tag+':','')
+    else
+      ''
+    end
+  end
+
+  # returns all results
+  def power_tags(tag)
+    node_tags = DrupalNodeCommunityTag.find(:all,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)])
+    tags = []
+    node_tags.each do |nt|
+      tags << nt.name.gsub(tag+':','')
+    end
+    tags
+  end
+
+  def has_tag(tag)
+    DrupalNodeTag.find(:all,:conditions => ['tid IN (?)',DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
+  end
+
+  def mailing_list
+    Rails.cache.fetch("feed-"+self.id.to_s+"-"+(self.updated_at.to_i/300).to_i.to_s) do
+      RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
+    end
+  end
+
+  def icon
+   icon = "<i class='icon-file'></i>" if self.type == "note"
+   icon = "<i class='icon-book'></i>" if self.type == "page"
+   icon = "<i class='icon-map-marker'></i>" if self.type == "map"
+   icon
+  end
 
   def id
     self.nid
@@ -156,14 +225,6 @@ class DrupalNode < ActiveRecord::Base
 
   def map
     DrupalContentTypeMap.find_by_nid(self.nid,:order => "vid DESC")
-  end
-
-  def gallery
-    if self.drupal_content_field_image_gallery.first.field_image_gallery_fid 
-      return self.drupal_content_field_image_gallery 
-    else
-      return []
-    end
   end
 
   def location

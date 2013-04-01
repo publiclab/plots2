@@ -1,19 +1,26 @@
 $E = {
   initialize: function(args) {
+    args = args || {}
     args['textarea'] = args['textarea'] || 'text-input'
     $E.textarea = $('#'+args['textarea'])
-    console.log($E.textarea)
   },
   is_editing: function() {
     return ($E.textarea[0].selectionStart == 0 && $E.textarea[0].selectionEnd == 0)
   },
   // wraps currently selected text in textarea with strings a and b
-  wrap: function(a,b) {
+  wrap: function(a,b,args) {
     var len = $E.textarea.val().length;
     var start = $E.textarea[0].selectionStart;
     var end = $E.textarea[0].selectionEnd;
     var sel = $E.textarea.val().substring(start, end);
+    if (args['fallback']) { // an alternative if nothing has been selected, but we're simply dealing with an insertion point
+      sel = args['fallback']
+    }
     var replace = a + sel + b;
+    if (args['newline']) {
+      if ($E.textarea[0].selectionStart > 0) replace = "\n\n"+replace
+      replace = replace+"\n\n"
+    }
     $E.textarea.val($E.textarea.val().substring(0,start) + replace + $E.textarea.val().substring(end,len));
   },
   bold: function() {
@@ -28,7 +35,7 @@ $E = {
   },
   image: function(src) {
     src = src || prompt('Enter an image URL')
-    $E.wrap('![',']('+src+')')
+    $E.wrap('\n![',']('+src+')\n')
   },
 
   h1: function() {

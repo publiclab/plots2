@@ -2,17 +2,33 @@ class NotesController < ApplicationController
 
   def index
     @title = "Research notes"
-    @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :page => params[:page], :limit => 40)
+    @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :page => params[:page], :limit => 20)
+    @wikis = DrupalNode.find(:all, :order => "changed DESC", :conditions => {:status => 1, :type => 'page'}, :limit => 10)
   end
 
   def show
-    @node = DrupalUrlAlias.find_by_dst('notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).node
+    if params[:author] && params[:date]
+      @node = DrupalUrlAlias.find_by_dst('notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).node 
+    else
+      @node = DrupalNode.find params[:id]
+    end
     @node.view
     @title = @node.title
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)
     @wikis = DrupalTag.find_nodes_by_type(@tagnames,'page',6)
     @notes = DrupalTag.find_nodes_by_type(@tagnames,'note',6)
+  end
+
+  def create
+
+    # save main image
+    if params[:node_images]
+      params[:node_images].split(',').each do |id|
+        img = Image.find id
+        img.nid = @node.id
+      end
+    end
   end
 
   def author

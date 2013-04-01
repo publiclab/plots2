@@ -4,8 +4,8 @@
     <% @nodes.each_with_index do |node,i| %>
       <div class="span3 clearfix" style="overflow:hidden;">
         <% if node.main_image %>
-          <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;" href="/<%= node.slug %>"><img src="http://publiclaboratory.org/sites/default/files/imagecache/default/<%= node.main_image.filename %>" /></a>
-          <a class="hidden-phone thumbnail" href="/<%= node.slug %>"><img src="http://publiclaboratory.org/sites/default/files/imagecache/default/<%= node.main_image.filename %>" /></a>
+          <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <a class="hidden-phone thumbnail" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>
         <% end %>
         <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
         <p style="color:#888;"><small>
@@ -14,7 +14,7 @@
           | <a href="/<%= node.slug %>#comments"><i class="icon icon-comment"></i> <%= node.comment_count %></a>
         </small></p>
         <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) %></p>
-        <p><a href="notes/id/<%= node.nid %>">Read more &raquo;</a></p>
+        <p><a href="/<%= node.slug %>">Read more &raquo;</a></p>
         <p>
           <% node.tags[0..3].each do |tag| %>
             <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 

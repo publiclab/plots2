@@ -1,0 +1,9 @@
+development:
+  local: true
+
+test:
+  local: true
+
+production:
+  local: false
+

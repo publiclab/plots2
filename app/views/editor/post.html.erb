@@ -20,30 +20,68 @@
   </div>
 </div>
 
-<script src="/assets/js/dragdrop.js"></script>
 <div class="span9">
-  <div class="alert">
-    <button type="button" class="close" data-dismiss="alert">×</button>
-    <strong>Note:</strong> This is a beta; you must be <a href="http://publiclaboratory.org/">logged into PublicLaboratory.org</a> for this to work.
-  </div>
   <form class="well post" action="http://publiclaboratory.org/note/add">
-    <h3 style="margin-top:0;">Share your work</h3>
 
     <div class="sidebar-nav pull-right span3">
-      <div id="images">
-        <img onClick="$E.image(this.src)" id="img1" style="margin-right:3px;" class="img-rounded span6" src="http://publiclaboratory.org/sites/default/files/imagecache/thumb/_IGP4548.jpg" /></a>
-        <img id="img2" style="margin-right:3px;" class="img-rounded span6" src="/images/plots-header.jpg" />
+
+      <h3 style="margin-top:0;">Images</h3>
+
+      <style>
+.dropzone {
+  border:4px dashed #ccc;
+  color: #aaa;
+  font-size:16px;
+  padding:20%;
+  text-align:center;
+  margin-bottom:10px;
+}
+.dropzone.hover {
+  background:#ddd;
+  color:#bbb;
+  border-color:#bbb;
+}
+.bar {
+  height: 18px;
+  background: green;
+}
+      </style>
+
+      <img class="img-rounded" id="leadImage" style="display:none;" />
+      <div class="dropzone" id="dropzone">
+        <p>Drag &amp; drop to add an image, or <span class="fileinput-button"><a>choose an image</a><input type="file" name="image[photo]" style="height:4em;"></span></p>
+        <br style="clear:both;"/>
+      </div>
+      <div id="progress" style="display:none;" class="progress progress-striped active">
+        <div class="bar" style="width: 0%;"></div>
       </div>
 
-      <br style="clear:both;" />
-      <a style="margin-top:12px;" class="btn btn-large btn-block"><i class="icon-upload"></i> Choose files</a>
-      <br />
-      <div class="dropzone hidden-phone hidden-tablet" id="dropzone">
-        Drag files here to attach
-      </div>
+      <a href="#images_modal" data-dismiss="modal" data-toggle="modal" class="btn">Choose a recent image</a>
+      <%= render :partial => "editor/images" %>
+
+      <script src="/assets/js/editor.js"></script>
+      <script>
+        (function(){
+          $D = {
+            uid: <%= current_user.uid %>,
+            type: 'note'
+          }
+          $E.initialize()
+        })()
+      </script>
+      <link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
+      <script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+      <script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+      <script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
+      <script src="/assets/js/dragdrop.js?1"></script>
+
     </div>
 
+    <h3 style="margin-top:0;">Share your work <small><a href="#" class="btn btn-link">Use a template</a></small></h3>
+
     <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title"><br />
+    <input id="main_image" type="hidden" name="main_image" value="" />
+    <input id="node_images" type="hidden" name="node_images" value="" />
 
     <%= render :partial => 'editor' %>
 
@@ -58,22 +96,3 @@
   </form>
 </div>
 
-<script>
-  function urlParam(name) {
-    return decodeURIComponent(urlParams()[name].replace(/\+/g,' ')) 
-  }
-  function urlParams() {
-    params = {}
-    $.each(location.toString().split('?')[1].split('&'),function(i,p) {
-      params[p.split('=')[0]] = p.split('=')[1]
-    })
-    return params
-  }
-  (function(){
-  if (location.toString().split('/')[location.toString().split('/').length-1]) {
-    if (urlParam('title')!='null') $('input#title').val(urlParam('title'))
-    if (urlParam('body')!='null') $('textarea#text-input').val(urlParam('body'))
-    if (urlParam('tags')!='null') $('input#tags').val(urlParam('tags'))
-  } 
-  })()
-</script>

@@ -16,9 +16,12 @@
 
   <a rel="tooltip" title="Post <% if @tagnames %>about <%= @tagnames.join(', ') %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?tags='+@tagnames.join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
 
-  <hr />
-
-  <%= render :partial => "sidebar/place" %>
+  <% if @node && @node.is_place? %>
+    <br />
+    <%= render :partial => "sidebar/place" %>
+  <% else %>
+    <hr />
+  <% end %>
 
   <% if @notes && @notes.length > 0 %>
   <h4>Recent topic contributors</h4>
@@ -33,7 +36,7 @@
   <h4>Related videos</h4>
   <ul class="nav bullet">
     <% @videos.each do |note| %>
-      <% unless note.nid == @node.nid %>
+      <% unless (!@node.nil? && note.nid == @node.nid) %>
       <li><a href="/<%= note.slug %>"><i class="icon-film"></i> <%= note.title %></a></li>
       <% end %>
     <% end %>
@@ -44,10 +47,14 @@
   <% end %>
 
   <% if @wikis && @wikis.length > 0 %>
-  <h4>Related wiki pages</h4>
+  <% if params[:controller] == "notes" && params[:action] == "index" %>
+    <h4>Recent wiki edits</h4>
+  <% else %>
+    <h4>Related wiki pages</h4>
+  <% end %>
   <ul class="nav bullet">
     <% @wikis.each do |wiki| %>
-      <% unless @node && wiki.nid == @node.nid %>
+      <% unless (!@node.nil? && wiki.nid == @node.nid) %>
         <li><a href="/wiki/<%= wiki.slug %>"><i class="icon-book"></i> <%= wiki.title %></a> <small style="color:#888;">(updated <%= time_ago_in_words(wiki.updated_at) %> ago)</small></li>
       <% end %>
     <% end %>
@@ -57,11 +64,11 @@
   </ul>
   <% end %>
 
-  <% if @notes && @notes.length > 0 %>
+  <% if @notes && @notes.length > 0 && params[:controller] != "search" %>
   <h4>Related research notes</h4>
   <ul class="nav bullet">
     <% @notes.each do |note| %>
-      <% unless note.nid == @node.nid %>
+      <% unless (!@node.nil? && note.nid == @node.nid) %>
       <li><a href="/<%= note.slug %>"><i class="icon-file"></i> <%= note.title %></a></li>
       <% end %>
     <% end %>

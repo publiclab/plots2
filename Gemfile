@@ -42,6 +42,7 @@ gem 'geokit-rails3'
 gem 'spatial_adapter', :git => 'git://github.com/descentintomael/spatial_adapter.git'
 gem 'rails_autolink'
 gem 'rb-readline'
+gem "paperclip"
 
 gem "nifty-generators", :group => :development
 gem "ruby-openid", :require => "openid"
