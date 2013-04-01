@@ -2,7 +2,7 @@ class ImagesController < ApplicationController
   respond_to :html, :xml, :json
 
   def create
-    if current_user && current_user.username == "warren"
+    if current_user
       params[:image][:title] = "Untitled" if params[:image][:title].nil?
       @image = Image.new({
         :uid => current_user.uid,
@@ -36,7 +36,7 @@ class ImagesController < ApplicationController
   end
 
   def update
-    if current_user && current_user.username == "warren"
+    if current_user
       @image = Image.find params[:id]
       # make changes
       if @image.save
@@ -51,7 +51,7 @@ class ImagesController < ApplicationController
   end
 
   def delete
-    if current_user && current_user.username == "warren"
+    if current_user
       @image = Image.find params[:id]
       if @image.uid == current_user.uid # or current_user.role == "admin" 
         if @image.delete
