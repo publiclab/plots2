@@ -5,10 +5,17 @@ gem 'rails', '3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-# Uncomment the desired databases
-#gem 'sqlite3'
-#gem 'mysql2'
-#gem "activerecord-postgresql-adapter"
+# Database handling
+group :test, :sqlite do
+  gem 'sqlite3'
+end
+group :mysql do
+  gem 'mysql2'
+end
+# TODO support postgresql
+#group :postgresql do
+#  gem "activerecord-postgresql-adapter"
+#end
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -32,7 +39,7 @@ gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'georuby', '2.0'
 gem 'geokit-rails3'
-gem 'spatial_adapter'
+gem 'spatial_adapter', :git => 'git://github.com/descentintomael/spatial_adapter.git'
 gem 'rails_autolink'
 gem 'rb-readline'
 
