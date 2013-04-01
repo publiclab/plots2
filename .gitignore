@@ -15,6 +15,7 @@
 /tmp
 *.swp
 .DS_Store
+Gemfile.lock
 coverage*
 config/database.yml
 config/amazon_s3.yml
