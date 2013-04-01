@@ -100,7 +100,7 @@
         <div id="progress" style="display:none;" class="progress progress-striped active pull-right">
           <div class="bar" style="width: 0%;"></div>
         </div>
-        <p>Drag &amp; drop to add an image, or <a>choose an image</a></p>
+        <p><span class="uploading" style="display:none;">Uploading...</span><span class="prompt">Drag &amp; drop to add an image, or <a>choose an image</a></span></p>
       </div>
       </div>
     <br style="clear:both;" />
@@ -122,10 +122,17 @@ textarea {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
+  height:3em;
 }
 #imagebar p {
   border-top:2px dotted #ddd;
   padding:8px 12px 0px;
+}
+#dropzone.hover #imagebar {
+  background:#eee;
+}
+#dropzone.hover textarea {
+  background:#f8f8f8;
 }
 #progress {
   margin:10px;

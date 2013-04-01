@@ -10,8 +10,8 @@ $('#dropzone').bind('dragout',function(e) {
 })
 $('#dropzone').bind('drop',function(e) {
   e.preventDefault();
-console.log('progress hide')
   $('#progress').show()
+  $('#imagebar .uploading').show()
   $('#imagebar .prompt').hide()
   $('#dropzone').removeClass('hover');
 })
@@ -24,7 +24,8 @@ $('#dropzone').fileupload({
   formData: {'uid':$D.uid},
   done: function (e, data) {
     $('#progress').hide()
-    $('#imagebar .prompt').hide()
+    $('#imagebar .uploading').hide()
+    $('#imagebar .prompt').show()
     if ($D.type == "note") {
       $('#dropzone').show()
       $('#leadImage')[0].src = data.result.url
