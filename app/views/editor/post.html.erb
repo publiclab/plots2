@@ -42,7 +42,7 @@
 
       <img class="img-rounded" id="leadImage" <% unless @node && @node.main_image || params[:main_image] %>style="display:none;" <% end %>src="<% if @node && @node.main_image %><%= @node.main_image.path(:default) %><% elsif params[:main_image] %><%= Image.find_by_id(params[:main_image]).path %><% end %>" />
       <div class="side-dropzone" id="side-dropzone">
-        <p class="prompt">Drag &amp; drop to add an image, or <span class="fileinput-button"><a>choose an image</a><input type="file" name="image[photo]" style="height:4em;"></span></p>
+        <p class="prompt">Drag &amp; drop to add an image, or <span class="fileinput-button"><a>choose an image</a><input id="side-fileinput" type="file" name="image[photo]" style="height:4em;"></span></p>
       </div>
       <div id="side-progress" style="display:none;" class="progress progress-striped active">
         <div class="bar" style="width: 0%;"></div>
@@ -70,6 +70,7 @@
     </div>
     <br />
     -->
+    <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
 
     <a id="publish" tabindex="4" class="btn btn-primary btn-large">Publish</a>
     <a id="preview-btn" class="btn btn-large" onClick="$('#preview-btn').button('toggle');$('#preview').toggle();$('#dropzone').toggle()">Preview</a>

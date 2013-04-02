@@ -22,17 +22,9 @@ $('#side-dropzone').bind('dragout',function(e) {
 })
 $('#dropzone').bind('drop',function(e) {
   e.preventDefault();
-  $('#progress').show()
-  $('#imagebar .uploading').show()
-  $('#imagebar .prompt').hide()
-  $('#dropzone').removeClass('hover');
 })
 $('#side-dropzone').bind('drop',function(e) {
-  $('.side-dropzone').css('border-color','#ccc')
-  $('.side-dropzone').css('background','none')
   e.preventDefault();
-  $('#side-progress').show()
-  $('#side-dropzone').removeClass('hover');
 })
 
 $('#dropzone').fileupload({
@@ -41,6 +33,12 @@ $('#dropzone').fileupload({
   dropZone: $('#dropzone'),
   dataType: 'json',
   formData: {'uid':$D.uid},
+  start: function(e) {
+    $('#progress').show()
+    $('#imagebar .uploading').show()
+    $('#imagebar .prompt').hide()
+    $('#dropzone').removeClass('hover');
+  },
   done: function (e, data) {
     $('#progress').hide()
     $('#imagebar .uploading').hide()
@@ -74,6 +72,12 @@ $('#side-dropzone').fileupload({
   dropZone: $('#side-dropzone'),
   dataType: 'json',
   formData: {'uid':$D.uid},
+  start: function(e) {
+    $('.side-dropzone').css('border-color','#ccc')
+    $('.side-dropzone').css('background','none')
+    $('#side-progress').show()
+    $('#side-dropzone').removeClass('hover');
+  },
   done: function (e, data) {
     $('#side-progress').hide()
     $('#side-dropzone').show()
