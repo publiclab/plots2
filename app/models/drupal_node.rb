@@ -47,7 +47,8 @@ class DrupalNode < ActiveRecord::Base
   def setup
     self.created = DateTime.now.to_i
     current_user = User.find_by_username(DrupalUsers.find_by_uid(self.uid).name)
-    slug = self.title.downcase.gsub(' ','-').gsub("'",'').gsub('"','').gsub('/','-')
+    #slug = self.title.downcase.gsub(' ','-').gsub("'",'').gsub('"','').gsub('/','-')
+    slug = self.title.parameterize
     if self.type = "note"
       slug = DrupalUrlAlias.new({
         :dst => "notes/"+current_user.username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+slug,

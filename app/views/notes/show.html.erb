@@ -6,6 +6,12 @@
   <% end %>
 
   <%= render :partial => "like/like" %>
+  <% if current_user && current_user.uid == @node.uid %>
+    <div style="padding-right:6px;padding-left:8px;" class="btn-group pull-right">
+      <a class="btn btn-small" href="/notes/edit/<%= @node.id %>"><i class="icon icon-pencil"></i> Edit</a>
+      <a class="btn btn-small" href="/notes/delete/<%= @node.id %>"><i class="icon icon-trash"></i> Delete</a>
+    </div> 
+  <% end %>
 
   <h2 style="clear:left;"><%= @node.title %></h2>
 
@@ -34,7 +40,6 @@
       <span class="hidden-desktop">
         <%= @node.created_at.to_s(:short) %>
       </span>
-      <% if current_user && current_user.uid == @node.uid %>| <a href="/notes/edit/<%= @node.id %>"><i class="icon icon-pencil"></i> Edit</a><% end %>
     </span>
   </div>
   <hr style="margin-top:10px;" />

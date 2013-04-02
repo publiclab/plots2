@@ -40,7 +40,7 @@
 
       <h3 style="margin-top:0;">Main image</h3>
 
-      <img class="img-rounded" id="leadImage" <% unless @node && @node.main_image %>style="display:none;" <% end %>src="<%= @node.main_image.path(:default) if @node && @node.main_image %>" />
+      <img class="img-rounded" id="leadImage" <% unless @node && @node.main_image || params[:main_image] %>style="display:none;" <% end %>src="<% if @node && @node.main_image %><%= @node.main_image.path(:default) %><% elsif params[:main_image] %><%= Image.find_by_id(params[:main_image]).path %><% end %>" />
       <div class="side-dropzone" id="side-dropzone">
         <p class="prompt">Drag &amp; drop to add an image, or <span class="fileinput-button"><a>choose an image</a><input type="file" name="image[photo]" style="height:4em;"></span></p>
       </div>
@@ -58,19 +58,22 @@
     <h3 style="margin-top:0;">Share your work</h3>
 
     <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title" value="<%= @node.title if @node %>"><br />
-    <input id="main_image" type="hidden" name="main_image" value="<%= @node.main_image(:rails).id if @node && @node.main_image(:rails) %>" />
+    <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
     <input id="node_images" type="hidden" name="node_images" value="" />
 
     <%= render :partial => 'editor/editor' %>
 
+    <!--
     <div class="input-prepend">
       <span class="add-on"><i class="icon-tags"></i></span>
       <input id="tags" tabindex="3" name="tags" type="text" class="span6" <% if params[:tags] %>value="<%= params[:tags] %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
     </div>
-
     <br />
+    -->
+
     <a id="publish" tabindex="4" class="btn btn-primary btn-large">Publish</a>
     <a id="preview-btn" class="btn btn-large" onClick="$('#preview-btn').button('toggle');$('#preview').toggle();$('#dropzone').toggle()">Preview</a>
+    <span> &nbsp; By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</span>
   <% end %>
 </div>
 <script>
@@ -90,6 +93,7 @@
         $('#new_drupal_node_revision').submit()
       }
     })
+    $E.apply_template("<%= params[:template] || 'default'%>")
   })()
 </script>
 <link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">

@@ -28,6 +28,8 @@ $('#dropzone').bind('drop',function(e) {
   $('#dropzone').removeClass('hover');
 })
 $('#side-dropzone').bind('drop',function(e) {
+  $('.side-dropzone').css('border-color','#ccc')
+  $('.side-dropzone').css('background','none')
   e.preventDefault();
   $('#side-progress').show()
   $('#side-dropzone').removeClass('hover');

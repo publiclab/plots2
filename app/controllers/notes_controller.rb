@@ -50,10 +50,10 @@ class NotesController < ApplicationController
           redirect_to @node.path
         else
           @node.destroy # clean up. But do this in the model!
-          render :action => :edit
+          render :template => "editor/post"
         end
       else
-        render :action => :edit
+        render :template => "editor/post"
       end
     else
       prompt_login "You must be logged in to edit the wiki."
@@ -75,8 +75,8 @@ class NotesController < ApplicationController
 
   # at /notes/update/:id
   def update
-    if current_user 
-      @node = DrupalNode.find(params[:id])
+    @node = DrupalNode.find(params[:id])
+    if current_user && current_user.uid == @node.uid # || current_user.role == "admin" 
       @revision = @node.new_revision({
         :nid => @node.id,
         :uid => current_user.uid,
@@ -102,6 +102,19 @@ class NotesController < ApplicationController
       end
     else
       prompt_login "You must be logged in to edit."
+    end
+  end
+
+  # at /notes/delete/:id
+  # only for notes
+  def delete
+    @node = DrupalNode.find(params[:id])
+    if current_user && current_user.uid == @node.uid && @node.type == "note" # || current_user.role == "admin" 
+      @node.delete
+      flash[:notice] = "Content deleted."
+      redirect_to "/dashboard"
+    else
+      prompt_login
     end
   end
 
