@@ -13,11 +13,11 @@ $E = {
     var start = $E.textarea[0].selectionStart;
     var end = $E.textarea[0].selectionEnd;
     var sel = $E.textarea.val().substring(start, end);
-    if (args['fallback']) { // an alternative if nothing has been selected, but we're simply dealing with an insertion point
+    if (args && args['fallback']) { // an alternative if nothing has been selected, but we're simply dealing with an insertion point
       sel = args['fallback']
     }
     var replace = a + sel + b;
-    if (args['newline']) {
+    if (args && args['newline']) {
       if ($E.textarea[0].selectionStart > 0) replace = "\n\n"+replace
       replace = replace+"\n\n"
     }
@@ -59,4 +59,12 @@ $E = {
   h7: function() {
     $E.wrap('#######','')
   },
+  apply_template: function(template) {
+    $E.textarea.val($E.templates[template])
+  },
+  templates: {
+    default: "##What I want to do\n\n##My attempt and results\n\n##Questions and next steps",
+    support: "##Details about the problem\n\n",
+    event: "##Event details\n\nWhen, where, what\n\n##Background\n\nWho, why"
+  }
 }

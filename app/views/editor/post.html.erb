@@ -21,68 +21,47 @@
 </div>
 
 <div class="span9">
-  <form class="well post" action="http://publiclaboratory.org/note/add">
+  <% 
+  if @node && params[:action] != "create"
+    url = { :controller => "notes", :action => "update", :id => params[:id] }
+  else 
+    url = { :controller => "notes", :action => "create", :id => params[:id] }
+  end 
+  %>
+  <%= form_for @node, :as => :drupal_node, :url => url do |f| %>
+    <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
+  <% end %>
+
+  <%= form_for @revision, :as => :drupal_node_revision, :url => url, :html => {:class => "form well"} do |f| %>
+
+    <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
 
     <div class="sidebar-nav pull-right span3">
 
-      <h3 style="margin-top:0;">Images</h3>
+      <h3 style="margin-top:0;">Main image</h3>
 
-      <style>
-.dropzone {
-  border:4px dashed #ccc;
-  color: #aaa;
-  font-size:16px;
-  padding:20%;
-  text-align:center;
-  margin-bottom:10px;
-}
-.dropzone.hover {
-  background:#ddd;
-  color:#bbb;
-  border-color:#bbb;
-}
-.bar {
-  height: 18px;
-  background: green;
-}
-      </style>
-
-      <img class="img-rounded" id="leadImage" style="display:none;" />
-      <div class="dropzone" id="dropzone">
+      <img class="img-rounded" id="leadImage" <% unless @node && @node.main_image %>style="display:none;" <% end %>src="<%= @node.main_image.path(:default) if @node && @node.main_image %>" />
+      <div class="side-dropzone" id="side-dropzone">
         <p class="prompt">Drag &amp; drop to add an image, or <span class="fileinput-button"><a>choose an image</a><input type="file" name="image[photo]" style="height:4em;"></span></p>
       </div>
-      <div id="progress" style="display:none;" class="progress progress-striped active">
+      <div id="side-progress" style="display:none;" class="progress progress-striped active">
         <div class="bar" style="width: 0%;"></div>
       </div>
 
-      <a href="#images_modal" data-dismiss="modal" data-toggle="modal" class="btn">Choose a recent image</a>
-      <%= render :partial => "editor/images" %>
+      <!--<a href="#images_modal" data-dismiss="modal" data-toggle="modal" class="btn"><i class="icon icon-picture"></i> Recent images</a>-->
+      <%# render :partial => "editor/images" %>
 
       <script src="/assets/js/editor.js"></script>
-      <script>
-        (function(){
-          $D = {
-            uid: <%= current_user.uid %>,
-            type: 'note'
-          }
-          $E.initialize()
-        })()
-      </script>
-      <link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
-      <script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
-      <script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
-      <script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
-      <script src="/assets/js/dragdrop.js?1"></script>
 
     </div>
 
-    <h3 style="margin-top:0;">Share your work <small><a href="#" class="btn btn-link">Use a template</a></small></h3>
+    <h3 style="margin-top:0;">Share your work</h3>
 
-    <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title"><br />
-    <input id="main_image" type="hidden" name="main_image" value="" />
+    <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title" value="<%= @node.title if @node %>"><br />
+    <input id="main_image" type="hidden" name="main_image" value="<%= @node.main_image(:rails).id if @node && @node.main_image(:rails) %>" />
     <input id="node_images" type="hidden" name="node_images" value="" />
 
-    <%= render :partial => 'editor' %>
+    <%= render :partial => 'editor/editor' %>
 
     <div class="input-prepend">
       <span class="add-on"><i class="icon-tags"></i></span>
@@ -90,8 +69,31 @@
     </div>
 
     <br />
-    <button tabindex="4" type="submit" class="btn btn-primary btn-large">Publish</button>
-    <a class="btn btn-large" onClick="$('#preview').toggle();$('#text-input').toggle()">Preview</a>
-  </form>
+    <a id="publish" tabindex="4" class="btn btn-primary btn-large">Publish</a>
+    <a id="preview-btn" class="btn btn-large" onClick="$('#preview-btn').button('toggle');$('#preview').toggle();$('#dropzone').toggle()">Preview</a>
+  <% end %>
 </div>
-
+<script>
+  (function(){
+    $D = {
+      uid: <%= current_user.uid %>,
+      type: 'note'
+    }
+    $E.initialize()
+    $("#publish").bind("click",function(e) {
+      if ($('#main_image').val() == "") {
+        // prompt to choose a lead image
+        $('.side-dropzone').css('border-color','#d99')
+        $('.side-dropzone').css('background','#fcc')
+      } else {
+        // prompt to choose a lead image
+        $('#new_drupal_node_revision').submit()
+      }
+    })
+  })()
+</script>
+<link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
+<script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
+<script src="/assets/js/dragdrop.js?2"></script>

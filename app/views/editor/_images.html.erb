@@ -4,13 +4,29 @@
   </div>
   <div class="modal-body">
 
-    <div id="images">
+    <table class="table" id="images">
+    <tr>
+      <th>Image</th>
+      <th>Filename</th>
+      <th>Uploaded</th>
+      <th style="width:150px;">Actions</th>
+    </tr>
     <% if current_user %>
       <% current_user.images.reverse[0..3].each do |image| %>
-        <p><%= image_tag image.photo.url(:thumb), :class => "img-rounded span8" %></p>
+        <tr>
+          <td><%= image_tag image.photo.url(:thumb), :class => "img-rounded" %></td>
+          <td><%= image.photo_file_name %></td>
+          <td><%= time_ago_in_words(image.created_at) %> ago</td>
+          <td><a class="btn" id="img_<%= image.id %>">Use as main</a></td>
+          <script>
+            $('#img_<%= image.id %>').bind('click',function(e) {
+              alert('Not yet implemented.')
+            })
+          </script>
+        </tr>
       <% end %>
     <% end %>
-    </div>
+    </table>
 
   </div>
   <div class="modal-footer">

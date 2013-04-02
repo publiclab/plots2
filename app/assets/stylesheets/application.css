@@ -39,6 +39,57 @@ h1,h2,h3,h4,h5,h6 {
   background:white;
 }
 
+.side-dropzone {
+  border:4px dashed #ccc;
+  color: #aaa;
+  font-size:16px;
+  padding:20%;
+  padding-bottom:30%;
+  text-align:center;
+  margin-bottom:10px;
+}
+.side-dropzone.hover {
+  background:#ddd;
+  color:#bbb;
+  border-color:#bbb;
+}
+#leadImage {
+  margin-bottom:10px;
+}
+
+#dropzone textarea {
+  border-bottom:none;
+  margin-bottom:0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+#imagebar {
+  width:74%;
+  color: #aaa;
+  border:1px solid #bbb;
+  border-top:none;
+  background:#f8f8f8;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  height:3em;
+}
+#imagebar p {
+  border-top:2px dotted #ddd;
+  padding:8px 12px 0px;
+}
+#dropzone.hover #imagebar {
+  background:#eee;
+}
+#dropzone.hover textarea {
+  background:#f8f8f8;
+}
+#progress {
+  margin:10px;
+  width:30%;
+}
+
 .nav.bullet li {
   padding-left:20px;
 }

@@ -21,13 +21,87 @@ class NotesController < ApplicationController
   end
 
   def create
-
-    # save main image
-    if params[:node_images]
-      params[:node_images].split(',').each do |id|
-        img = Image.find id
-        img.nid = @node.id
+    if current_user
+      @node = DrupalNode.new({
+        :uid => current_user.uid,
+        :title => params[:title],
+        :type => "note"
+      })
+      if @node.valid?
+        @node.save! 
+        @revision = @node.new_revision({
+          :nid => @node.id,
+          :uid => current_user.uid,
+          :title => params[:title],
+          :body => params[:body]
+        })
+        if @revision.valid?
+          @revision.save!
+          @node.vid = @revision.vid
+          # save main image
+          if params[:main_image]
+            img = Image.find params[:main_image]
+            img.nid = @node.id
+            img.save
+          end
+          @node.save!
+          # opportunity for moderation
+          flash[:notice] = "Research note published."
+          redirect_to @node.path
+        else
+          @node.destroy # clean up. But do this in the model!
+          render :action => :edit
+        end
+      else
+        render :action => :edit
       end
+    else
+      prompt_login "You must be logged in to edit the wiki."
+    end
+  end
+
+  def edit
+    if current_user 
+      @node = DrupalNode.find(params[:id],:conditions => {:type => "note"})
+      if current_user.uid == @node.uid # || current_user.role == "admin" 
+        render :template => "editor/post"
+      else
+        prompt_login "Only the author can edit a research note."
+      end
+    else
+      prompt_login "You must be logged in to edit."
+    end
+  end
+
+  # at /notes/update/:id
+  def update
+    if current_user 
+      @node = DrupalNode.find(params[:id])
+      @revision = @node.new_revision({
+        :nid => @node.id,
+        :uid => current_user.uid,
+        :title => params[:title],
+        :body => params[:body]
+      })
+      if @revision.valid?
+        @revision.save
+        @node.vid = @revision.vid
+        # save main image
+        if params[:main_image]
+          img = Image.find params[:main_image]
+          img.nid = @node.id
+          img.save
+        end
+        @node.save!
+        flash[:notice] = "Edits saved."
+        redirect_to @node.path
+      else
+        flash[:error] = "Your edit could not be saved."
+        render :action => :edit
+        #redirect_to "/wiki/edit/"+@node.slug
+      end
+    else
+      prompt_login "You must be logged in to edit."
     end
   end
 

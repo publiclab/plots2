@@ -15,4 +15,13 @@ class Image < ActiveRecord::Base
   validates :photo, :presence => :true
   validates :title, :presence => :true, :format => {:with => /\A[a-zA-Z0-9\ -_]+\z/, :message => "Only letters, numbers, and spaces allowed"}, :length => { :maximum => 60 }
 
+  def path(size = :medium)
+    size = :medium if size == :default
+    if Rails.env == "development"
+      self.photo.url(size).gsub('http://i.publiclab.org','')
+    else
+      self.photo.url(size)
+    end
+  end
+
 end

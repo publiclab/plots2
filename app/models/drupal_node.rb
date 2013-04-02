@@ -36,19 +36,29 @@ class DrupalNode < ActiveRecord::Base
   end
 
   before_save :set_changed
-  after_create :slug_and_counter
+  after_create :setup
   before_destroy :delete_url_alias
 
   def set_changed
     self.changed = DateTime.now.to_i
   end
 
-  def slug_and_counter
+  # determines URL ("slug"), initializes the view counter, and sets up a created timestamp
+  def setup
+    self.created = DateTime.now.to_i
+    current_user = User.find_by_username(DrupalUsers.find_by_uid(self.uid).name)
     slug = self.title.downcase.gsub(' ','-').gsub("'",'').gsub('"','').gsub('/','-')
-    slug = DrupalUrlAlias.new({
-      :dst => "wiki/"+slug,
-      :src => "node/"+self.id.to_s
-    }).save
+    if self.type = "note"
+      slug = DrupalUrlAlias.new({
+        :dst => "notes/"+current_user.username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+slug,
+        :src => "node/"+self.id.to_s
+      }).save
+    else
+      slug = DrupalUrlAlias.new({
+        :dst => "wiki/"+slug,
+        :src => "node/"+self.id.to_s
+      }).save
+    end
     counter = DrupalNodeCounter.new({:nid => self.id}).save
   end
 
@@ -89,8 +99,14 @@ class DrupalNode < ActiveRecord::Base
     DrupalMainImage.find_by_vid self.vid
   end
 
-  def main_image
-    self.drupal_main_image.drupal_file if self.drupal_main_image
+  def main_image(type = :all)
+    if self.drupal_main_image && type != :rails
+      self.drupal_main_image.drupal_file 
+    elsif type != :drupal
+      self.images.last if self.images
+    else
+      false
+    end
   end
 
   def drupal_content_field_image_gallery
@@ -98,7 +114,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def gallery
-    if self.drupal_content_field_image_gallery.first.field_image_gallery_fid 
+    if self.drupal_content_field_image_gallery.length > 0 && self.drupal_content_field_image_gallery.first.field_image_gallery_fid 
       return self.drupal_content_field_image_gallery 
     else
       return []

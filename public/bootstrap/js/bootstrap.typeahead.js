@@ -44,6 +44,17 @@
 
     constructor: Typeahead
 
+  , eventSupported: function(eventName) {         
+        var isSupported = (eventName in this.$element);
+
+        if (!isSupported) {
+          this.$element.setAttribute(eventName, 'return;');
+          isSupported = typeof this.$element[eventName] === 'function';
+        }
+
+        return isSupported;
+    }
+
   , select: function () {
       var text, original_text;
       if (this.$menu.find('.active').length == 0) {
@@ -223,7 +234,7 @@
         .on('keypress', $.proxy(this.keypress, this))
         .on('keyup',    $.proxy(this.keyup, this))
 
-      if ($.browser.webkit || $.browser.msie) {
+      if (this.eventSupported('keydown')) {
         this.$element.on('keydown', $.proxy(this.keypress, this))
       }
 

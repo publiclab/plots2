@@ -2,23 +2,43 @@
   <div class="btn-group">
     <a class="btn btn-small" onClick="$E.bold()"><i class="icon-bold"></i></a>
     <a class="btn btn-small" onClick="$E.italic()"><i class="icon-italic"></i></a>
-    <a class="btn btn-small" onClick="$E.h2()">Header</a>
+    <a class="btn btn-small" onClick="$E.h2()"><b>Header</b></a>
   </div>
+
   <div class="btn-group">
     <a rel="tooltip" title="Make a link" class="btn btn-small" href="javascript:void(0)" onClick="$E.link()"><i class="icon-globe"></i></a>
-    <a rel="tooltip" title="Place an image" class="btn btn-small" href="javascript:void(0)" onClick="$E.image()" data-><i class="icon-picture"></i></a>
+    <!--<a rel="tooltip" title="Place an image" class="btn btn-small" href="javascript:void(0)" onClick="$E.image()" data-><i class="icon-picture"></i></a>-->
   </div>
+
   <div class="btn-group">
-    <a class="btn btn-small btn-info" href="#"><i class="icon-question-sign icon-white"></i> Help</a>
+    <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+      Templates
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a onClick="$E.apply_template('default')">Default</a></li>
+      <li><a onClick="$E.apply_template('support')">Request help</a></li>
+      <li><a onClick="$E.apply_template('event')">Post an event</a></li>
+    </ul>
+  </div>
+
+  <div class="btn-group">
+    <a class="btn btn-link" href="#"><i class="icon-question-sign"></i> Help</a>
+  </div>
+
+</div>
+
+<div id="dropzone">
+  <textarea name="body" tabindex="2" class="span9" id="text-input" oninput="this.editor.update()"
+            rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+  <div id="imagebar">
+    <div id="progress" style="display:none;" class="progress progress-striped active pull-right">
+      <div class="bar" style="width: 0%;"></div>
+    </div>
+    <p><span class="uploading" style="display:none;">Uploading...</span><span class="prompt">Drag &amp; drop to add an image, or <a>choose an image</a></span></p>
   </div>
 </div>
 
-<textarea tabindex="2" name="body" class="span9" id="text-input" oninput="this.editor.update()"
-          rows="8" cols="60">##What I want to do
-
-##My attempt and results
-
-##Questions and next steps</textarea>
 <div class="well span9" id="preview" style="display:none;"> </div>
 <br style="clear:both;"/>
 
