@@ -60,5 +60,19 @@ module Plots2
     config.assets.version = '1.0'
 
     ActiveRecord::SessionStore::Session.table_name = 'rsessions'
+
+    # open_id_authentication stuff:
+    if Rails.version < '3'
+      config.gem 'rack-openid', :lib => 'rack/openid', :version => '>=0.2.1'
+    end
+
+    require Rails.root + 'lib/open_id_authentication/open_id_authentication.rb'
+
+    config.middleware.use OpenIdAuthentication
+
+    config.after_initialize do
+      OpenID::Util.logger = Rails.logger
+      ActionController::Base.send :include, OpenIdAuthentication
+    end
   end
 end

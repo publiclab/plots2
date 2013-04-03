@@ -32,9 +32,12 @@ h1,h2,h3,h4,h5,h6 {
   color:white;
 }
 
-#header {
-  margin-bottom:20px;
+@media (max-width: 768px) {
+  #header {
+    margin-bottom:20px;
+  }
 }
+
 #header .brand {
   color:white;
   padding-top:13px;
@@ -56,12 +59,24 @@ h1,h2,h3,h4,h5,h6 {
   padding-bottom:30%;
   text-align:center;
   margin-bottom:10px;
-  text-shadow: 0 -1px 0 #333;
+  text-shadow: 0 -1px 0 #aaa;
 }
 .side-dropzone.hover {
   background:#ddd;
   color:#bbb;
   border-color:#bbb;
+}
+.side-dropzone {
+  color:#ccc;
+  text-shadow: 0 -1px 0 #aaa;
+}
+.side-dropzone .fileinput-button {
+  text-shadow: none;
+  text-decoration:underline;
+}
+@media (max-width: 480px) {
+  .side-dropzone { padding:0; }
+  .side-dropzone p { padding:15px; }
 }
 #leadImage {
   margin-bottom:10px;
@@ -85,6 +100,13 @@ h1,h2,h3,h4,h5,h6 {
   border-radius: 4px;
   height:3em;
 }
+
+@media (max-width: 768px) {
+  #imagebar {
+    width:100%;
+  }
+}
+
 #imagebar p {
   border-top:2px dotted #ddd;
   padding:8px 12px 0px;
@@ -96,6 +118,10 @@ h1,h2,h3,h4,h5,h6 {
   background:#f8f8f8;
 }
 #progress {
+  margin:10px;
+  width:30%;
+}
+#side-progress {
   margin:10px;
   width:30%;
 }

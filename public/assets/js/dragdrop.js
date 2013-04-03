@@ -77,10 +77,12 @@ $('#side-dropzone').fileupload({
     $('.side-dropzone').css('background','none')
     $('#side-progress').show()
     $('#side-dropzone').removeClass('hover');
+    $('.side-uploading').show()
   },
   done: function (e, data) {
     $('#side-progress').hide()
     $('#side-dropzone').show()
+    $('.side-uploading').hide()
     $('#leadImage')[0].src = data.result.url
     $('#leadImage').show()
     // here append the image id to the note as the lead image
