@@ -16,15 +16,45 @@
     <% if comment.cid == @node.comments.last.cid %><a id="last" name="last"></a><% end %>
     <div class="navbar" id="c<%= comment.cid %>">
       <div class="navbar-inner">
-        <div class="span9" style="padding-top:10px;">
-          <i class="icon-comment"></i>
-          <a href="/notes/author/<%= comment.author.name %>"><%= comment.author.name %></a>
-          <a class="hidden-phone" style="color:#aaa;" href="#c<%= comment.cid %>">commented</a>
-          <a class="visible-phone" style="color:#aaa;" href="#c<%= comment.cid %>">sez</a>
-          <%= time_ago_in_words(comment.created_at) %> ago
+
+        <div class="hidden-phone" style="padding-top:2px;">
+
+          <% if current_user && current_user.username == "warren" && comment.uid == current_user.uid %>
+            <a style="margin-left:4px;" class="btn btn-small pull-right" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()">
+              <i class="icon-pencil"></i>
+            </a><% end %>
+          <% if current_user && current_user.username == "warren" && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
+            <%= link_to "/comment/delete/"+comment.id.to_s, :confirm => 'Are you sure?', :class => "btn btn-small pull-right" do %>
+              <i class='icon icon-trash'></i>
+            <% end %><% end %>
+
+          <div style="margin-top:9px;">
+            <i class="icon-comment"></i>
+            <a href="/notes/author/<%= comment.author.name %>"><%= comment.author.name %></a>
+            <a style="color:#aaa;" href="#c<%= comment.cid %>">commented</a>
+            <%= time_ago_in_words(comment.created_at) %> ago
+          </div>
         </div>
-        <% if current_user && current_user.username == "warren" && comment.uid == current_user.uid %><a style="margin-left:4px;margin-top:6px;" class="btn btn-small pull-right" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()"><i class="icon-pencil"></i></a><% end %>
-        <% if current_user && current_user.username == "warren" && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %><%= link_to "/comment/delete/"+comment.id.to_s, :confirm => 'Are you sure?', :class => "btn btn-small pull-right" do %><i class='icon icon-trash'></i><% end %><% end %>
+
+        <div class="visible-phone" style="padding-top:7px;">
+
+          <% if current_user && current_user.username == "warren" && comment.uid == current_user.uid %>
+            <a style="margin-left:4px;margin-top:0;" class="btn btn-small pull-right" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()">
+              <i class="icon-pencil"></i>
+            </a><% end %>
+          <% if current_user && current_user.username == "warren" && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
+            <%= link_to "/comment/delete/"+comment.id.to_s, :confirm => 'Are you sure?', :class => "btn btn-small pull-right", :style => "margin-top:0;" do %>
+              <i class='icon icon-trash'></i>
+            <% end %><% end %>
+
+          <div style="margin-top:3px;">
+            <i class="icon-comment"></i>
+            <a href="/notes/author/<%= comment.author.name %>"><%= comment.author.name %></a>
+            <a style="color:#aaa;" href="#c<%= comment.cid %>">said</a>
+            <%= time_ago_in_words(comment.created_at) %> ago
+          </div>
+        </div>
+
       </div>
     </div>
     <div id="c<%= comment.cid %>show">

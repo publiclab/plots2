@@ -24,4 +24,8 @@ class Image < ActiveRecord::Base
     end
   end
 
+  def filename
+    self.photo_file_name
+  end
+
 end

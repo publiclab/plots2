@@ -7,7 +7,7 @@
 
   <%= render :partial => "like/like" %>
   <% if current_user && current_user.uid == @node.uid %>
-    <div style="padding-right:6px;padding-left:8px;" class="btn-group pull-right">
+    <div style="padding:0 8px 8px;" class="btn-group pull-right">
       <a class="btn btn-small" href="/notes/edit/<%= @node.id %>"><i class="icon icon-pencil"></i> Edit</a>
       <a class="btn btn-small" href="/notes/delete/<%= @node.id %>"><i class="icon icon-trash"></i> Delete</a>
     </div> 
@@ -48,7 +48,7 @@
     <a href="<%= image.image.path(:original) %>"><img style="margin-bottom:4px;" class="img-rounded" src="<%= image.image.path(:thumb) %>" /></a>
   <% end %>
 
-  <p>
+  <p style="overflow:hidden;">
   <%= raw auto_link(RDiscount.new(@node.body).to_html, :sanitize => false) %>
   </p>
 

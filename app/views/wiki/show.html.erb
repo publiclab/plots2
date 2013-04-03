@@ -27,8 +27,8 @@
       <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
     </ul>
 
-  <p>
-  <%= raw auto_link(RDiscount.new(@node.latest.body).to_html, :sanitize => false) %>
+  <p style="overflow:hidden;">
+  <%= raw auto_link(RDiscount.new(@node.latest.body).to_html) %>
   </p>
 
   <hr />
