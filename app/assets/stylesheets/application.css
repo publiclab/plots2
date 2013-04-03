@@ -9,6 +9,15 @@
     font-style: normal;
 }
 
+@media (max-width: 340px) {
+  #brand { display:none; }
+  #brand-compact { display:inline; }
+}
+@media (min-width: 340px) {
+  #brand-compact { display:none; }
+  #brand { display:inline; }
+}
+
 html {
 }
 
