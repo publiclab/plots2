@@ -53,7 +53,7 @@ class DrupalNode < ActiveRecord::Base
     current_user = User.find_by_username(DrupalUsers.find_by_uid(self.uid).name)
     #slug = self.title.downcase.gsub(' ','-').gsub("'",'').gsub('"','').gsub('/','-')
     slug = self.title.parameterize
-    if self.type = "note"
+    if self.type == "note"
       slug = DrupalUrlAlias.new({
         :dst => "notes/"+current_user.username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+slug,
         :src => "node/"+self.id.to_s
@@ -377,9 +377,32 @@ class DrupalNode < ActiveRecord::Base
     return [saved,node,revision]
   end
 
-  def self.update_note(params)
+  def self.new_wiki(params)
     saved = false
-    
+    node = DrupalNode.new({
+      :uid => params[:uid],
+      :title => params[:title],
+      :type => "page"
+    })
+    if node.valid?
+      saved = true
+      node.save! 
+      revision = node.new_revision({
+        :nid => node.id,
+        :uid => params[:uid],
+        :title => params[:title],
+        :body => params[:body]
+      })
+      if revision.valid?
+        revision.save!
+        node.vid = revision.vid
+        node.save!
+      else
+        saved = false
+        node.destroy # clean up. But do this in the model!
+      end
+    end
+    return [saved,node,revision]
   end
 
 end

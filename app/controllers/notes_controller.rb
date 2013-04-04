@@ -26,7 +26,6 @@ class NotesController < ApplicationController
       :uid => current_user.uid,
       :title => params[:title],
       :body => params[:body],
-      :type => "note",
       :main_image => params[:main_image]
     })
     if saved

@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
       if type == :tags # accepts data of array of tag names as strings
         @wikis = DrupalTag.find_nodes_by_type(data,'page',8)
         @notes = DrupalTag.find_nodes_by_type(data,'note',8)
-        @videos = DrupalTag.find_nodes_by_type_with_all_tags(['video']+data,'note',8) if args[:videos]
+        @videos = DrupalTag.find_nodes_by_type_with_all_tags(['video']+data,'note',8) if args[:videos] && data.length > 1
       else # type is generic
         @notes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :page => params[:page], :limit => 20)
         @wikis = DrupalNode.find(:all, :order => "changed DESC", :conditions => {:status => 1, :type => 'page'}, :limit => 10)

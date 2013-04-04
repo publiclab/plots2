@@ -13,14 +13,17 @@ class WikiController < ApplicationController
     elsif !(@node = DrupalNode.find_by_slug(params[:id])).nil? # it's a wiki page
       @tags = @node.tags
     else # it's a new wiki page!
+      @title = "New wiki page"
       new
     end
 
-    @tagnames = @tags.collect(&:name)
-    set_sidebar :tags, @tagnames, {:videos => true} if place.nil?
+    unless @title # the page exists
+      @tagnames = @tags.collect(&:name)
+      set_sidebar :tags, @tagnames, {:videos => true} if place.nil?
 
-    @node.view
-    @title = @node.title
+      @node.view
+      @title = @node.title
+    end
   end
 
   def edit
@@ -51,29 +54,14 @@ class WikiController < ApplicationController
   def create
     title = params[:id].downcase.gsub(' ','-').gsub("'",'').gsub('"','')
     title = params[:url].downcase.gsub(' ','-').gsub("'",'').gsub('"','') if params[:url] != ""
-    @node = DrupalNode.new({
+    saved,@node,@revision = DrupalNode.new_wiki({
       :uid => current_user.uid,
       :title => title,
-      :type => "page"
+      :body => params[:body]
     })
-    if @node.valid?
-      @node.save! 
-      @revision = @node.new_revision({
-        :nid => @node.id,
-        :uid => current_user.uid,
-        :title => params[:title],
-        :body => params[:body]
-      })
-      if @revision.valid?
-        @revision.save!
-        @node.vid = @revision.vid
-        @node.save!
-        flash[:notice] = "Wiki page created."
-        redirect_to @node.path
-      else
-        @node.destroy # clean up. But do this in the model!
-        render :action => :edit
-      end
+    if saved
+      flash[:notice] = "Wiki page created."
+      redirect_to @node.path
     else
       render :action => :edit
     end

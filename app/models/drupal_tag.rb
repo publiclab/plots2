@@ -54,8 +54,8 @@ class DrupalTag < ActiveRecord::Base
 
   def self.find_nodes_by_type_with_all_tags(tagnames,type = "note",limit = 10)
     nids = false
-    tagnames.each do |tn|
-      tids = DrupalTag.find(:all, :conditions => {:name => tn}).collect(&:tid)
+    tagnames.each do |tagname|
+      tids = DrupalTag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
       tag_nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
       tag_nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
       nids = tag_nids if nids == false
