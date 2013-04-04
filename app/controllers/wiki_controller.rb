@@ -5,30 +5,20 @@ class WikiController < ApplicationController
   before_filter :require_user, :only => [:new, :create, :edit, :update]
 
   def show
-    
     if !(@node = DrupalNode.find_root_by_slug('place/'+params[:id])).nil? # it's a place page!
       place = true
       @tags = [DrupalTag.find_by_name(params[:id])]
-
     elsif !(@node = DrupalNode.find_root_by_slug('tool/'+params[:id])).nil? # it's a tool page!
       @tags = [DrupalTag.find_by_name(params[:id])]
-
     elsif !(@node = DrupalNode.find_by_slug(params[:id])).nil? # it's a wiki page
       @tags = @node.tags
-      # attempt to add the page name itself as a tag: (not needed, i think)
-      #tag = DrupalTag.find_by_name(params[:id])
-      #@tags << tag if tag
-
     else # it's a new wiki page!
       new
     end
 
     @tagnames = @tags.collect(&:name)
-    if place.nil?
-      @wikis = DrupalTag.find_nodes_by_type(@tagnames,'page',10)
-      @notes = DrupalTag.find_nodes_by_type(@tagnames,'note',10)
-      @videos = DrupalTag.find_nodes_by_type_with_all_tags([DrupalTag.find_by_name('video')]+@tags,'note',8)
-    end
+    set_sidebar :tags, @tagnames, {:videos => true} if place.nil?
+
     @node.view
     @title = @node.title
   end
@@ -110,8 +100,10 @@ class WikiController < ApplicationController
     end
   end
 
+  # wiki pages which have a root URL, like http://publiclab.org/about
   def root
     @node = DrupalNode.find_root_by_slug(params[:id])
+    @title = @node.title
     @revision = @node.latest
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)

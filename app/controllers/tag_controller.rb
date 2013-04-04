@@ -4,11 +4,12 @@ class TagController < ApplicationController
   before_filter :require_user, :only => [:create, :delete]
 
   def show
-    @nodes = DrupalTag.find_nodes_by_type([params[:id]],'note',8)
+    set_sidebar :tags, [params[:id]]
+
     @tags = DrupalTag.find_all_by_name params[:id]
-    @tagnames = @tags.collect(&:name).uniq!
-    @wikis = DrupalTag.find_nodes_by_type([params[:id]],'page',10)
+    @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(', ') if @tagnames
+
     @unpaginated = true
   end
 

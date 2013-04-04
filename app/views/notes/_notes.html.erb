@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="row">
-    <% @nodes.each_with_index do |node,i| %>
+    <% @notes.each_with_index do |node,i| %>
       <div class="span3 clearfix" style="overflow:hidden;">
         <% if node.main_image %>
           <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>

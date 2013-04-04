@@ -12,8 +12,7 @@ class HomeController < ApplicationController
   def dashboard
     @title = "Dashboard"
     @user = DrupalUsers.find_by_name current_user.username
-    @wikis = DrupalTag.find_nodes_by_type(@user.tagnames,'page',10)
-    @nodes = DrupalTag.find_nodes_by_type(@user.tagnames,'note',8)
+    set_sidebar :tags, @user.tagnames
     @unpaginated = true
   end
 
@@ -25,8 +24,8 @@ class HomeController < ApplicationController
   # trashy... clean this up!
   # this will eventually be based on the profile_tags data where people can mark their location with "location:lat,lon"
   def nearby
-    dist = 1.5
-    if current_user && current_user.lat
+    if current_user.lat
+      dist = 1.5
       minlat = current_user.lat - dist
       maxlat = current_user.lat + dist
       minlon = current_user.lon - dist

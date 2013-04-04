@@ -244,6 +244,20 @@ class DrupalNode < ActiveRecord::Base
     DrupalContentTypeMap.find_by_nid(self.nid,:order => "vid DESC")
   end
 
+  def nearby_maps(dist = 1.5)
+    minlat = self.lat - dist
+    maxlat = self.lat + dist
+    minlon = self.lon - dist
+    maxlon = self.lon + dist
+    # we have to read the GeoRuby docs to formulate a spatial query: 
+    #DrupalContentFieldBbox.find :all, :limit => 20, :conditions => []
+    []
+  end
+
+  def locations
+    self.drupal_content_field_bboxes.collect(&:field_bbox_geo)
+  end 
+
   def location
     locations = []
     self.locations.each do |l|
@@ -252,16 +266,20 @@ class DrupalNode < ActiveRecord::Base
     {:x => locations.collect(&:x).sum/locations.length,:y => locations.collect(&:y).sum/locations.length}
   end 
 
-  def locations
-    self.drupal_content_field_bboxes.collect(&:field_bbox_geo)
-  end 
+  def lat
+    self.location[:y]
+  end
+
+  def lon
+    self.location[:x]
+  end
 
   def next_by_author
-    DrupalNode.find :first, :conditions => ['uid = ? AND nid > ? AND type = "note"', self.author.uid, self.nid], :order => 'nid'
+    drupalnode.find :first, :conditions => ['uid = ? and nid > ? and type = "note"', self.author.uid, self.nid], :order => 'nid'
   end
 
   def prev_by_author
-    DrupalNode.find :first, :conditions => ['uid = ? AND nid < ? AND type = "note"', self.author.uid, self.nid], :order => 'nid DESC'
+    drupalnode.find :first, :conditions => ['uid = ? and nid < ? and type = "note"', self.author.uid, self.nid], :order => 'nid desc'
   end
 
   def comment(params)

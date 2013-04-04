@@ -20,6 +20,10 @@ h1,h2,h3,h4,h5,h6 {
   font-weight:normal;
 }
 
+/* fontawesome default color */
+a i { color:#222; }
+a i.icon-white { color:white; }
+
 .label a {
   color:white;
 }

@@ -4,8 +4,7 @@ class NotesController < ApplicationController
 
   def index
     @title = "Research notes"
-    @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :page => params[:page], :limit => 20)
-    @wikis = DrupalNode.find(:all, :order => "changed DESC", :conditions => {:status => 1, :type => 'page'}, :limit => 10)
+    set_sidebar
   end
 
   def show
@@ -18,8 +17,8 @@ class NotesController < ApplicationController
     @title = @node.title
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)
-    @wikis = DrupalTag.find_nodes_by_type(@tagnames,'page',6)
-    @notes = DrupalTag.find_nodes_by_type(@tagnames,'note',6)
+
+    set_sidebar :tags, @tagnames
   end
 
   def create
@@ -94,6 +93,7 @@ class NotesController < ApplicationController
         render :action => :edit
         #redirect_to "/wiki/edit/"+@node.slug
       end
+    end
   end
 
   # at /notes/delete/:id
@@ -120,7 +120,7 @@ class NotesController < ApplicationController
   def author_topic
     @user = DrupalUsers.find_by_name params[:author]
     @tagnames = params[:topic].split('+')
-    @title = @user.name+" on '"+@tagnames.join(',')+"'"
+    @title = @user.name+" on '"+@tagnames.join(', ')+"'"
     @nodes = @user.notes_for_tags(@tagnames)
     @unpaginated = true
     render :template => 'notes/index'
