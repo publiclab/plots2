@@ -21,14 +21,14 @@
     </span>
     <ul class="nav nav-tabs">
       <li class="active"><a href="#">View</a></li>
-      <li><a href="/wiki/edit/<%= @node.slug %>">Edit</a></li>
-      <li><a href="http://publiclaboratory.org/node/<%= @node.nid %>/edit">Edit on old site</a></li>
-      <li><a href="/wiki/revisions/<%= @node.slug %>">Revisions (<%= @node.revisions.length %>)</a></li>
+      <li><a href="/wiki/edit/<%= @node.slug %>"><i class="icon icon-pencil"></i> Edit</a></li>
+      <li><a href="http://pad.publiclaboratory.org/p/<%= @node.slug %>"><i class="icon icon-comments-alt"></i> Talk page</a></li>
+      <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i> Revisions (<%= @node.revisions.length %>)</a></li>
       <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
     </ul>
 
-  <p>
-  <%= raw auto_link(RDiscount.new(@node.latest.body).to_html, :sanitize => false) %>
+  <p style="overflow:hidden;">
+  <%= raw auto_link(RDiscount.new(@node.latest.body).to_html) %>
   </p>
 
   <hr />

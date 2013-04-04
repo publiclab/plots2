@@ -4,8 +4,10 @@ class SearchController < ApplicationController
     @title = "Search"
     @nodes = DrupalNode.paginate(:order => "node.nid DESC", :conditions => ['type = "note" AND status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', "%"+params[:id]+"%","%"+params[:id]+"%"], :page => params[:page], :include => :drupal_node_revision)
     @tagnames = params[:id].split(',')
-    @wikis = DrupalTag.find_nodes_by_type(params[:id],'page',10)
-    @notes = DrupalTag.find_nodes_by_type(params[:id],'note',10)
+
+    # content based on tags
+    set_sidebar :tags, [params[:id]]
+
     render :template => 'search/index'
   end
 
@@ -22,6 +24,7 @@ class SearchController < ApplicationController
   end
 
   # utility response to fill out search autocomplete
+  # needs *dramatic* optimization
   def typeahead
     matches = []
     DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|

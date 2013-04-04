@@ -59,15 +59,21 @@
       var text, original_text;
       if (this.$menu.find('.active').length == 0) {
         var val = {'string':this.$element.val()};
+        this.submit()
       }
       else {
         var val = JSON.parse(this.$menu.find('.active').attr('data-value'));
         if (JSON.parse(this.$menu.find('.active').attr('data-value')).url) window.location = JSON.parse(this.$menu.find('.active').attr('data-value')).url;
       }
+
+      // in theory everything after this point is unimportant
+
       if (!this.strings) text = val.string
       else text = val
 
       original_text = this.$element.val();
+      // remove leading icons
+      if (text.search('<i') != -1) text  = text.split('</i> ')[1]
       this.$element.val(text)
       if (typeof this.onselect == "function")
           this.onselect(text, original_text)

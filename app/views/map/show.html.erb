@@ -1,18 +1,25 @@
 <div class="span3">
-  <h4>Related maps</h4>
+  <% if @node.nearby_maps.length > 0 %>
+    <h4>Nearby maps</h4>
+  <% end %>
+
+  <% @node.nearby_maps.each do |map| %>
+    <div>
+    <% if map.main_image %>
+      <a class="thumbnail" href="/<%= node.slug %>"><img src="http://publiclaboratory.org/sites/default/files/imagecache/default/<%= node.main_image.filename %>" /></a>
+    <% end %>
+    <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
+    <p style="color:#888;"><small>by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> | <%= time_ago_in_words(node.created_at) %> ago</small></p>
+    </div>
+  <% end %>
+
 </div>
 <div class="span9">
 
   <iframe class="span12" style="border:none;background:#ddd;" height="375" src="http://archive.publiclaboratory.org/leaflet/?tms=<%= @node.map.tms %>&lon=<%= @node.location[:x] %>&lat=<%= @node.location[:y] %>&zoom=17"></iframe>
   <br style="clear:both" />
 
-  <div class="btn-toolbar pull-right" style="margin-left:10px;">
-    <div class="btn-group">
-      <a class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.length == 0 %><% @tagnames.each do |tag| %><a class='label label-inverse'><%= tag %></a> <% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></a>
-      <a rel="tooltip" title="Helpful? Awesome?" class="btn btn-small" href="#"><i class="icon-star"></i> Like (8)</a>
-      <a rel="tooltip" title="Follow updates/comments" id="follow" class="btn btn-small" href="#"><i class="icon-eye-open"></i> Follow</a>
-    </div>
-  </div>
+  <%= render :partial => "like/like" %>
   <h2 style="clear:left;"><%= @node.title %></h2>
 
   <div>
@@ -41,13 +48,7 @@
   </p>
 
   <hr />
-  <p>
-    <b>Tags:</b>
-    <% @node.tags.each do |tag| %><a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %>
-  </p>
-
-  <hr />
-    <%= render :partial => "home/social" %>
+  <%= render :partial => "home/social" %>
   <hr />
 
   <div class="input-prepend">

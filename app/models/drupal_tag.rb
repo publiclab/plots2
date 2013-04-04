@@ -3,6 +3,8 @@ class DrupalTag < ActiveRecord::Base
   self.table_name = 'term_data'
   self.primary_key = 'tid'
   has_many :drupal_node_tag, :foreign_key => 'tid'
+
+  # we're not really using the filter_by_type stuff here:
   has_many :drupal_node, :through => :drupal_node_tag do
     def filter_by_type(type,limit = 10)
       find(:all, :conditions => {:status => 1, :type => type}, :limit => limit, :order => "created DESC")
@@ -10,7 +12,9 @@ class DrupalTag < ActiveRecord::Base
   end
 
   has_many :drupal_node_community_tag, :foreign_key => 'tid'
-  # this probably never gets used; tag.drupal_node will use the above definition.
+
+  # the following probably never gets used; tag.drupal_node will use the above definition.
+  # also, we're not really using the filter_by_type stuff here:
   has_many :drupal_node, :through => :drupal_node_community_tag do
     def filter_by_type(type,limit = 10)
       find(:all, :conditions => {:status => 1, :type => type}, :limit => limit, :order => "created DESC")
@@ -50,8 +54,8 @@ class DrupalTag < ActiveRecord::Base
 
   def self.find_nodes_by_type_with_all_tags(tagnames,type = "note",limit = 10)
     nids = false
-    tagnames.each do |tn|
-      tids = DrupalTag.find(:all, :conditions => {:name => tn}).collect(&:tid)
+    tagnames.each do |tagname|
+      tids = DrupalTag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
       tag_nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
       tag_nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
       nids = tag_nids if nids == false

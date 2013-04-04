@@ -14,24 +14,67 @@ html {
 
 body {
 }
+
 h1,h2,h3,h4,h5,h6 {
   font-family:junctionregular, lucida grande,lucida sans console,sans-serif;
   font-weight:normal;
 }
 
+/* fontawesome default color */
+a i { color:#222; }
+a i.icon-white { color:white; }
+
 .label a {
   color:white;
 }
 
-#header {
-  margin-bottom:20px;
+@media (max-width: 768px) {
+  #header {
+    margin-bottom:20px;
+  }
 }
+
 #header .brand {
   color:white;
   padding-top:13px;
   padding-bottom:2px;
   font-family:junctionregular, lucida grande,lucida sans console,sans-serif;
 }
+
+@media (max-width: 340px) {
+  #brand { display:none; }
+  #brand-compact { display:inline; }
+}
+@media (min-width: 340px) {
+  #brand-compact { display:none; }
+  #brand { display:inline; }
+}
+
+.nav.bullet li {
+  padding-left:20px;
+}
+.nav.bullet li i {
+  margin-left:-19px;
+}
+
+.footer {
+  margin: 20px -20px 0;
+  padding: 20px;
+  border-top: 1px solid #E5E5E5;
+  background-color: #f8f8f8;
+}
+
+@media (min-width: 768px) {
+  .footer { margin:0; }
+}
+
+@media (max-with: 786px) {
+  .footer {
+    margin: 20px -20px 20px;
+  }
+}
+
+/* BEGIN EDITOR STYLES */
 
 #preview {
   margin:0;
@@ -47,11 +90,35 @@ h1,h2,h3,h4,h5,h6 {
   padding-bottom:30%;
   text-align:center;
   margin-bottom:10px;
+  text-shadow: 0 -1px 0 #aaa;
 }
 .side-dropzone.hover {
   background:#ddd;
   color:#bbb;
   border-color:#bbb;
+}
+.side-dropzone {
+  color:#ccc;
+  text-shadow: 0 -1px 0 #aaa;
+}
+.side-dropzone .fileinput-button {
+  text-shadow: none;
+  text-decoration:underline;
+}
+@media (max-width: 480px) {
+  .side-dropzone { padding:0; }
+  .side-dropzone p { padding:15px; }
+}
+@media (max-width: 768px) {
+  .side-dropzone { padding:0; }
+  .side-dropzone p {
+    padding:20px 20px 30px;
+  }
+}
+@media (max-width: 480px) {
+  #dropzone textarea {
+    height:300px;
+  }
 }
 #leadImage {
   margin-bottom:10px;
@@ -75,6 +142,13 @@ h1,h2,h3,h4,h5,h6 {
   border-radius: 4px;
   height:3em;
 }
+
+@media (max-width: 768px) {
+  #imagebar {
+    width:100%;
+  }
+}
+
 #imagebar p {
   border-top:2px dotted #ddd;
   padding:8px 12px 0px;
@@ -89,18 +163,9 @@ h1,h2,h3,h4,h5,h6 {
   margin:10px;
   width:30%;
 }
-
-.nav.bullet li {
-  padding-left:20px;
-}
-.nav.bullet li i {
-  margin-left:-19px;
+#side-progress {
+  margin:10px;
+  width:30%;
 }
 
-.footer {
-  margin-top: 20px;
-  padding: 20px;
-  border-top: 1px solid #E5E5E5;
-  background-color: #f8f8f8;
-}
-
+/* END EDITOR STYLES */

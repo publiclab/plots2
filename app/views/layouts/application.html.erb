@@ -2,13 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Public Lab<%= ": "+@title unless @title.nil? %></title>
+    <title>Public Lab<%= ": "+(@title || params[:action].capitalize) %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The Public Laboratory for Open Technology and Science (PLOTS) collaboratively develops and publicizes accessible technologies for investigating and reporting on local environmental health and justice issues. PLOTS provides an online research space for citizens, linking them to scientists, social scientists, and technologists. PLOTS is an expansion of Grassroots Mapping, where citizens use helium-filled balloons and digital cameras to generate high resolution “satellite” maps.">
     <meta name="author" content="">
 
     <!-- Le styles -->
     <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/fontawesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     <%= stylesheet_link_tag    "application", :media => "all" %>
 
@@ -46,9 +47,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/">Public Lab</a>
+          <a class="brand" id="brand" href="/">Public Lab</a>
+          <a class="brand" id="brand-compact" href="/">PL</a>
 
-          <a rel="tooltip" title="Switch to old site" data-placement="bottom" style="margin-left:6px;" href="#" onClick="alpha()" class="btn btn-primary pull-right">&alpha;</a>
+          <a rel="tooltip" title="Switch to old site" data-placement="bottom" style="margin-left:6px;" href="#" onClick="alpha()" class="btn btn-primary pull-right hidden-phone">&alpha;</a>
           <script>
             function alpha() { window.location = 'http://'+(window.location+'').split('://alpha.')[1] } 
           </script>
@@ -81,7 +83,7 @@
                     },
                     items: 15,
                     //highlighter: function(a) {a},
-                    autoselect: true,
+                    autoselect: false,
                     autowidth: false,
                     menu: '<ul id="searchtypeahead" class="typeahead dropdown-menu"></ul>'
                   })
@@ -174,6 +176,7 @@
     </div><!--/.fluid-container-->
 
     <footer class="footer">
+
       <div class="span3">
         <h4>Getting help</h4>
         <ul>
@@ -202,12 +205,11 @@
       </div>
       <br style="clear:both;" />
     </footer>
-
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.typeahead.js?2"></script>
+    <script src="/bootstrap/js/bootstrap.typeahead.js?3"></script>
     <script>
       (function() {
         $("[rel=tooltip]").tooltip()

@@ -2,7 +2,7 @@
 <div class="span9">
     <h3 style="margin-top:0;">Notes tagged with <i style="color:#aaa;"><%= params[:id] %></i></h3>
 
-  <% if @nodes.nil? %>
+  <% if @notes.nil? || @notes.length == 0 %>
     <p>No results found; try searching for '<b><%= params[:id] %></b>':</p>
 
     <%= render :partial => "search/search" %>

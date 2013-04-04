@@ -10,7 +10,7 @@
     <!--<a rel="tooltip" title="Place an image" class="btn btn-small" href="javascript:void(0)" onClick="$E.image()" data-><i class="icon-picture"></i></a>-->
   </div>
 
-  <div class="btn-group">
+  <div class="btn-group hidden-phone">
     <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
       Templates
       <span class="caret"></span>
@@ -23,7 +23,8 @@
   </div>
 
   <div class="btn-group">
-    <a class="btn btn-link" href="#"><i class="icon-question-sign"></i> Help</a>
+    <a class="btn btn-link hidden-phone" href="#"><i class="icon-question-sign"></i> Help</a>
+    <a class="btn btn-small display-phone" href="#"><i class="icon-question-sign"></i></a>
   </div>
 
 </div>
@@ -35,7 +36,7 @@
     <div id="progress" style="display:none;" class="progress progress-striped active pull-right">
       <div class="bar" style="width: 0%;"></div>
     </div>
-    <p><span class="uploading" style="display:none;">Uploading...</span><span class="prompt"><span style="padding-right:4px;float:left;">Drag &amp; drop to add an image, or </span><span class="fileinput-button"><a>choose an image</a><input id="fileinput" type="file" name="image[photo]" style="height:4em;"></span></p>
+    <p><span class="uploading" style="display:none;">Uploading...</span><span class="prompt"><span style="padding-right:4px;float:left;" class="hidden-phone">Drag &amp; drop to add an image, or </span><span class="fileinput-button"><a>choose an image</a><input id="fileinput" type="file" name="image[photo]" style="height:4em;"></span></p>
   </div>
 </div>
 

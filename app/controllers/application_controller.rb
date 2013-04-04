@@ -2,10 +2,24 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   layout 'application'
 
-  helper_method :current_user_session, :current_user, :prompt_login
+  helper_method :current_user_session, :current_user, :prompt_login, :sidebar
 
   private
 
+    # eventually videos could be a power tag
+    def set_sidebar(type = :generic, data = :all, args = {})
+      if type == :tags # accepts data of array of tag names as strings
+        @wikis = DrupalTag.find_nodes_by_type(data,'page',8)
+        @notes = DrupalTag.find_nodes_by_type(data,'note',8)
+        @videos = DrupalTag.find_nodes_by_type_with_all_tags(['video']+data,'note',8) if args[:videos] && data.length > 1
+      else # type is generic
+        @notes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :page => params[:page], :limit => 20)
+        @wikis = DrupalNode.find(:all, :order => "changed DESC", :conditions => {:status => 1, :type => 'page'}, :limit => 10)
+        
+      end
+    end
+    
+    # non-Authlogic... homebrew
     def prompt_login(message = "You must be logged in to do that.")
       flash[:warning] = message
       redirect_to "/login"
@@ -47,4 +61,5 @@ class ApplicationController < ActionController::Base
       redirect_to(session[:return_to] || default)
       session[:return_to] = nil
     end
+
 end
