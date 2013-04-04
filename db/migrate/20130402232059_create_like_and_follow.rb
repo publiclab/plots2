@@ -12,7 +12,7 @@ class CreateLikeAndFollow < ActiveRecord::Migration
     add_index :tagselections, [:user_id, :tid], :unique => true
 
     # track user follow user
-    create_table :userselection, :id => false do |t|
+    create_table :userselections, :id => false do |t|
       t.integer :self_id
       t.integer :other_id
       t.boolean :following
