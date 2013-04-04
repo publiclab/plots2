@@ -101,7 +101,7 @@
         $('#new_drupal_node_revision').submit()
       }
     })
-    $E.apply_template("<%= params[:template] || 'default'%>")
+    if ($E.textarea.val() == "") $E.apply_template("<%= params[:template] || 'default'%>")
   })()
 </script>
 <link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">

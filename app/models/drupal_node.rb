@@ -23,6 +23,7 @@ class DrupalNode < ActiveRecord::Base
   validates :title, :presence => :true
   #validates :name, :format => {:with => /^[\w-]*$/, :message => "can only include letters, numbers, and dashes"}
 
+  # making drupal and rails database conventions play nice
   class << self
     def instance_method_already_implemented?(method_name)
       return true if method_name == 'changed'
@@ -31,6 +32,7 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
+  # making drupal and rails database conventions play nice
   def self.inheritance_column
     "rails_type"
   end
@@ -38,6 +40,8 @@ class DrupalNode < ActiveRecord::Base
   before_save :set_changed
   after_create :setup
   before_destroy :delete_url_alias
+
+  private
 
   def set_changed
     self.changed = DateTime.now.to_i
@@ -67,6 +71,31 @@ class DrupalNode < ActiveRecord::Base
     DrupalUrlAlias.find_by_src("node/"+self.nid.to_s).delete
   end
 
+  public
+
+  # ============================================
+  # Manual associations: 
+
+  def latest
+    self.drupal_node_revision.last
+  end
+
+  def revisions
+    DrupalNodeRevision.find_all_by_nid(self.nid,:order => "timestamp DESC")
+  end
+
+  def revision_count
+    DrupalNodeRevision.count_by_nid(self.nid)
+  end
+
+  def comment_count
+    DrupalComment.count :all, :conditions => {:nid => self.nid}
+  end
+
+  def comments
+    DrupalComment.find_all_by_nid self.nid, :order => "timestamp", :conditions => {:status => 0}
+  end
+
   def author
     DrupalUsers.find self.uid
   end
@@ -76,14 +105,18 @@ class DrupalNode < ActiveRecord::Base
     self.revisions.collect(&:author).uniq
   end
 
+  # view adaptors for typical rails db conventions so we can migrate someday
+  def id
+    self.nid
+  end
   def created_at
     Time.at(self.drupal_node_revision.first.timestamp)
   end
-
   def updated_at
     self.updated_on
   end
 
+  # lets deprecate this
   def updated_on
     Time.at(self.drupal_node_revision.last.timestamp)
   end
@@ -96,10 +129,12 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
+  # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_main_image
     DrupalMainImage.find_by_vid self.vid
   end
 
+  # provide either a Drupally main_iamge or a Railsy one 
   def main_image(type = :all)
     if self.drupal_main_image && type != :rails
       self.drupal_main_image.drupal_file 
@@ -110,6 +145,7 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
+  # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_content_field_image_gallery
     DrupalContentFieldImageGallery.find_all_by_vid self.vid
   end
@@ -126,6 +162,9 @@ class DrupalNode < ActiveRecord::Base
   def is_place?
     self.slug[0..5] == 'place/'
   end
+
+  # ============================================
+  # Tag-related methods
 
   def has_mailing_list?
     self.has_power_tag("list")
@@ -160,21 +199,21 @@ class DrupalNode < ActiveRecord::Base
     DrupalNodeTag.find(:all,:conditions => ['tid IN (?)',DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
   end
 
+  # has it been tagged with "list:foo" where "foo" is the name of a Google Group?
   def mailing_list
     Rails.cache.fetch("feed-"+self.id.to_s+"-"+(self.updated_at.to_i/300).to_i.to_s) do
       RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
     end
   end
 
+  # End of tag-related methods
+
+  # used in typeahead autocomplete search results
   def icon
    icon = "<i class='icon-file'></i>" if self.type == "note"
    icon = "<i class='icon-book'></i>" if self.type == "page"
    icon = "<i class='icon-map-marker'></i>" if self.type == "map"
    icon
-  end
-
-  def id
-    self.nid
   end
 
   def tags
@@ -192,13 +231,8 @@ class DrupalNode < ActiveRecord::Base
     self.drupal_node_counter.totalcount
   end
 
-  def comment_count
-    DrupalComment.count :all, :conditions => {:nid => self.nid}
-  end
-
-  def comments
-    DrupalComment.find_all_by_nid self.nid, :order => "timestamp", :conditions => {:status => 0}
-  end
+  # ============================================
+  # URL-related methods:
 
   def slug
     if self.type == "page"
@@ -226,18 +260,6 @@ class DrupalNode < ActiveRecord::Base
   def self.find_map_by_slug(title)
     urlalias = DrupalUrlAlias.find_by_dst('map/'+title,:order => "pid DESC")
     urlalias.node if urlalias
-  end
-
-  def latest
-    self.drupal_node_revision.last
-  end
-
-  def revisions
-    DrupalNodeRevision.find_all_by_nid(self.nid,:order => "timestamp DESC")
-  end
-
-  def revision_count
-    DrupalNodeRevision.count_by_nid(self.nid)
   end
 
   def map
@@ -275,12 +297,15 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def next_by_author
-    drupalnode.find :first, :conditions => ['uid = ? and nid > ? and type = "note"', self.author.uid, self.nid], :order => 'nid'
+    DrupalNode.find :first, :conditions => ['uid = ? and nid > ? and type = "note"', self.author.uid, self.nid], :order => 'nid'
   end
 
   def prev_by_author
-    drupalnode.find :first, :conditions => ['uid = ? and nid < ? and type = "note"', self.author.uid, self.nid], :order => 'nid desc'
+    DrupalNode.find :first, :conditions => ['uid = ? and nid < ? and type = "note"', self.author.uid, self.nid], :order => 'nid desc'
   end
+
+  # ============================================
+  # Automated constructors for associated models
 
   def comment(params)
     if self.comments.length > 0
@@ -313,6 +338,48 @@ class DrupalNode < ActiveRecord::Base
       :timestamp => DateTime.now.to_i,
       :format => 1
     })
+  end
+
+  # handle creating a new note with attached revision and main image
+  # this is kind of egregiously bad... must revise after 
+  # researching simultaneous creation of associated records
+  def self.new_note(params)
+    saved = false
+    node = DrupalNode.new({
+      :uid => params[:uid],
+      :title => params[:title],
+      :type => "note"
+    })
+    if node.valid?
+      saved = true
+      node.save! 
+      revision = node.new_revision({
+        :nid => node.id,
+        :uid => params[:uid],
+        :title => params[:title],
+        :body => params[:body]
+      })
+      if revision.valid?
+        revision.save!
+        node.vid = revision.vid
+        # save main image
+        if params[:main_image]
+          img = Image.find params[:main_image]
+          img.nid = node.id
+          img.save
+        end
+        node.save!
+      else
+        saved = false
+        node.destroy # clean up. But do this in the model!
+      end
+    end
+    return [saved,node,revision]
+  end
+
+  def self.update_note(params)
+    saved = false
+    
   end
 
 end

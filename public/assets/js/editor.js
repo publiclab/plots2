@@ -60,7 +60,7 @@ $E = {
     $E.wrap('#######','')
   },
   apply_template: function(template) {
-    $E.textarea.val($E.templates[template])
+    $E.textarea.val($E.textarea.val()+'\n\n'+$E.templates[template])
   },
   templates: {
     default: "##What I want to do\n\n##My attempt and results\n\n##Questions and next steps",

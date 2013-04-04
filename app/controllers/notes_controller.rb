@@ -22,36 +22,17 @@ class NotesController < ApplicationController
   end
 
   def create
-    @node = DrupalNode.new({
+    saved,@node,@revision = DrupalNode.new_note({
       :uid => current_user.uid,
       :title => params[:title],
-      :type => "note"
+      :body => params[:body],
+      :type => "note",
+      :main_image => params[:main_image]
     })
-    if @node.valid?
-      @node.save! 
-      @revision = @node.new_revision({
-        :nid => @node.id,
-        :uid => current_user.uid,
-        :title => params[:title],
-        :body => params[:body]
-      })
-      if @revision.valid?
-        @revision.save!
-        @node.vid = @revision.vid
-        # save main image
-        if params[:main_image]
-          img = Image.find params[:main_image]
-          img.nid = @node.id
-          img.save
-        end
-        @node.save!
-        # opportunity for moderation
-        flash[:notice] = "Research note published."
-        redirect_to @node.path
-      else
-        @node.destroy # clean up. But do this in the model!
-        render :template => "editor/post"
-      end
+    if saved
+      # opportunity for moderation
+      flash[:notice] = "Research note published."
+      redirect_to @node.path
     else
       render :template => "editor/post"
     end

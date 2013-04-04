@@ -9,7 +9,9 @@
   <% if current_user && current_user.uid == @node.uid %>
     <div style="padding:0 8px 8px;" class="btn-group pull-right">
       <a class="btn btn-small" href="/notes/edit/<%= @node.id %>"><i class="icon icon-pencil"></i> Edit</a>
-      <a class="btn btn-small" href="/notes/delete/<%= @node.id %>"><i class="icon icon-trash"></i> Delete</a>
+      <%= link_to "/notes/delete/"+@node.id.to_s, :confirm => 'Are you sure?', :class => "btn btn-small" do %>
+        <i class="icon icon-trash"></i> Delete
+      <% end %>
     </div> 
   <% end %>
 
