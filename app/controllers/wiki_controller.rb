@@ -2,8 +2,8 @@ require 'rss'
 
 class WikiController < ApplicationController
 
-  # clean the crap out of this action!
-  # separate places, tools, and wiki pages?
+  before_filter :require_user, :only => [:new, :create, :edit, :update]
+
   def show
     
     if !(@node = DrupalNode.find_root_by_slug('place/'+params[:id])).nil? # it's a place page!
@@ -34,20 +34,16 @@ class WikiController < ApplicationController
   end
 
   def edit
-    if current_user
-      @node = DrupalNode.find_by_slug(params[:id])
-      # we could do this...
-      #@node.locked = true
-      #@node.save
-      @title = "Editing '"+@node.title+"'"
-      if @node.nil?
-        @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
-        @place = true if @node.nil?
-      end
-      @tags = @node.tags
-    else
-      prompt_login "You must be logged in to edit the wiki."
+    @node = DrupalNode.find_by_slug(params[:id])
+    # we could do this...
+    #@node.locked = true
+    #@node.save
+    @title = "Editing '"+@node.title+"'"
+    if @node.nil?
+      @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
+      @place = true if @node.nil?
     end
+    @tags = @node.tags
   end
 
   def new
@@ -63,43 +59,15 @@ class WikiController < ApplicationController
   end
 
   def create
-    if current_user
-      title = params[:id].downcase.gsub(' ','-').gsub("'",'').gsub('"','')
-      title = params[:url].downcase.gsub(' ','-').gsub("'",'').gsub('"','') if params[:url] != ""
-      @node = DrupalNode.new({
-        :uid => current_user.uid,
-        :title => title,
-        :type => "page"
-      })
-      if @node.valid?
-        @node.save! 
-        @revision = @node.new_revision({
-          :nid => @node.id,
-          :uid => current_user.uid,
-          :title => params[:title],
-          :body => params[:body]
-        })
-        if @revision.valid?
-          @revision.save!
-          @node.vid = @revision.vid
-          @node.save!
-          flash[:notice] = "Wiki page created."
-          redirect_to @node.path
-        else
-          @node.destroy # clean up. But do this in the model!
-          render :action => :edit
-        end
-      else
-        render :action => :edit
-      end
-    else
-      prompt_login "You must be logged in to edit the wiki."
-    end
-  end
-
-  def update
-    if current_user
-      @node = DrupalNode.find_by_slug(params[:id])
+    title = params[:id].downcase.gsub(' ','-').gsub("'",'').gsub('"','')
+    title = params[:url].downcase.gsub(' ','-').gsub("'",'').gsub('"','') if params[:url] != ""
+    @node = DrupalNode.new({
+      :uid => current_user.uid,
+      :title => title,
+      :type => "page"
+    })
+    if @node.valid?
+      @node.save! 
       @revision = @node.new_revision({
         :nid => @node.id,
         :uid => current_user.uid,
@@ -107,18 +75,38 @@ class WikiController < ApplicationController
         :body => params[:body]
       })
       if @revision.valid?
-        @revision.save
+        @revision.save!
         @node.vid = @revision.vid
-        @node.save
-        flash[:notice] = "Edits saved."
-        redirect_to "/wiki/"+@node.slug
+        @node.save!
+        flash[:notice] = "Wiki page created."
+        redirect_to @node.path
       else
-        flash[:error] = "Your edit could not be saved."
+        @node.destroy # clean up. But do this in the model!
         render :action => :edit
-        #redirect_to "/wiki/edit/"+@node.slug
       end
     else
-      prompt_login "You must be logged in to edit."
+      render :action => :edit
+    end
+  end
+
+  def update
+    @node = DrupalNode.find_by_slug(params[:id])
+    @revision = @node.new_revision({
+      :nid => @node.id,
+      :uid => current_user.uid,
+      :title => params[:title],
+      :body => params[:body]
+    })
+    if @revision.valid?
+      @revision.save
+      @node.vid = @revision.vid
+      @node.save
+      flash[:notice] = "Edits saved."
+      redirect_to "/wiki/"+@node.slug
+    else
+      flash[:error] = "Your edit could not be saved."
+      render :action => :edit
+      #redirect_to "/wiki/edit/"+@node.slug
     end
   end
 

@@ -1,10 +1,5 @@
 class EditorController < ApplicationController
 
-  def post
-    if current_user
-    else
-      prompt_login "You must be logged in to upload."
-    end
-  end
+  before_filter :require_user, :only => [:post]
 
 end
