@@ -2,9 +2,11 @@ class CommentController < ApplicationController
 
   before_filter :require_user, :only => [:create, :update, :delete]
 
+  # handle some errors!!!!!!
   def create
     @node = DrupalNode.find params[:id]
     @comment = @node.comment({:uid => current_user.uid,:body => params[:body]})
+    @comment.notify(current_user)
     flash[:notice] = "Comment posted."
     # should implement ajax too
     redirect_to "/"+@node.slug+"#last" # to last comment
@@ -15,7 +17,7 @@ class CommentController < ApplicationController
     # should abstract ".comment" to ".body" for future migration to native db
     @comment.comment = params[:body] 
     if @comment.save
-      @comment.notify
+      @comment.notify(current_user)
       flash[:notice] = "Comment updated."
     else
       flash[:error] = "The comment could not be updated."

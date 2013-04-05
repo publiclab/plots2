@@ -6,9 +6,17 @@ class DrupalUsers < ActiveRecord::Base
   has_many :drupal_node, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
 
+  # Rails-style adaptors:
+
   def created_at
     Time.at(self.created)
   end
+
+  def email
+    self.mail
+  end
+
+  # End rails-style adaptors
 
   def profile_values
     self.drupal_profile_values

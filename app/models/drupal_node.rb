@@ -324,7 +324,7 @@ class DrupalNode < ActiveRecord::Base
     c.format = 1
     c.thread = thread
     c.timestamp = DateTime.now.to_i
-    c.save!
+    c if c.save!
   end
 
   def new_revision(params)

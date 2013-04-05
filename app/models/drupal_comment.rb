@@ -7,8 +7,6 @@ class DrupalComment < ActiveRecord::Base
   self.table_name = 'comments'
   self.primary_key = 'cid'
 
-  before_save :notify
-
   def self.inheritance_column
     "rails_type"
   end
@@ -45,9 +43,21 @@ class DrupalComment < ActiveRecord::Base
     self.drupal_node
   end
 
-  # run email/other notifications
-  def notify
-    # email all users in this thread 
+  def node
+    self.drupal_node
+  end
+
+  # users who are involved in this comment thread
+  def thread_participants
+    
+  end
+
+  # email all users in this thread 
+  def notify(current_user)
+    uids = (self.parent.comments.collect(&:uid) + [self.parent.uid]).uniq!
+    DrupalUsers.find(:all, :conditions => ['uid IN (?)',uids]).each do |user|
+      CommentMailer.notify_of_comment(user,self).deliver if user.uid != current_user.uid && user.uid != self.uid
+    end 
   end
 
 end
