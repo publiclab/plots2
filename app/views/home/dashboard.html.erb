@@ -1,5 +1,13 @@
 <%= render :partial => "sidebar/user" %>
 <div class="span9">
+
+  <% if @user.note_count == 0 %>
+    <div class="alert hidden-phone">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <strong>Welcome!</strong> You haven't posted a research note yet -- consider <a href="/post">sharing your work and interests</a>!
+    </div>
+  <% end %>
+
   <h3>Dashboard: <small>Welcome, <%= current_user.username %>!</small></h3>
 
   <ul class="nav nav-tabs">
@@ -15,7 +23,5 @@
   </ul>
 
   <%= render :partial => "notes/notes" %>
-
-  <a class="btn" href="/tags/<%= @user.tagnames.join('+') %>">More notes &raquo;</a>
 
 </div>

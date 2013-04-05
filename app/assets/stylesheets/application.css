@@ -28,9 +28,9 @@ a i.icon-white { color:white; }
   color:white;
 }
 
-@media (max-width: 768px) {
-  #header {
-    margin-bottom:20px;
+@media (min-width: 979px) {
+  .header-spacer {
+    padding-top:60px;
   }
 }
 

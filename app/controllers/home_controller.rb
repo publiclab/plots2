@@ -9,6 +9,15 @@ class HomeController < ApplicationController
 
   #caches_action :index, :cache_path => { :last => DrupalNode.find(:last).updated_at.to_i }
 
+  def home
+    redirect_to "/dashboard" if current_user
+  end
+
+  # route for seeing the front page even if you are logged in
+  def front
+    render :template => "home/home"
+  end
+
   def dashboard
     @title = "Dashboard"
     @user = DrupalUsers.find_by_name current_user.username

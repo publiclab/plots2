@@ -20,7 +20,8 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
   has_many :images, :foreign_key => :nid
 
-  validates :title, :presence => :true
+  validates :title, :presence => :true,
+    :unless => Proc.new { |a| DrupalUrlAlias.find_by_dst(self.generate_path) }
   #validates :name, :format => {:with => /^[\w-]*$/, :message => "can only include letters, numbers, and dashes"}
 
   # making drupal and rails database conventions play nice
@@ -51,16 +52,14 @@ class DrupalNode < ActiveRecord::Base
   def setup
     self.created = DateTime.now.to_i
     current_user = User.find_by_username(DrupalUsers.find_by_uid(self.uid).name)
-    #slug = self.title.downcase.gsub(' ','-').gsub("'",'').gsub('"','').gsub('/','-')
-    slug = self.title.parameterize
     if self.type == "note"
       slug = DrupalUrlAlias.new({
-        :dst => "notes/"+current_user.username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+slug,
+        :dst => self.generate_path,
         :src => "node/"+self.id.to_s
       }).save
     else
       slug = DrupalUrlAlias.new({
-        :dst => "wiki/"+slug,
+        :dst => self.generate_path,
         :src => "node/"+self.id.to_s
       }).save
     end
@@ -72,6 +71,17 @@ class DrupalNode < ActiveRecord::Base
   end
 
   public
+
+  def generate_path
+    current_user = User.find_by_username(DrupalUsers.find_by_uid(self.uid).name)
+    if self.type == 'note'
+      "notes/"+current_user.username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+self.title.parameterize
+    elsif self.type == 'wiki'
+      "wiki/"+self.title.parameterize
+    elsif self.type == 'map'
+      #...
+    end
+  end
 
   # ============================================
   # Manual associations: 

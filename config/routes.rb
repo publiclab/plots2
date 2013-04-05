@@ -15,6 +15,7 @@ Plots2::Application.routes.draw do
   match 'register' => 'users#create'
   match 'users/list' => 'users#list'
   match 'signup' => 'users#new'
+  match 'home' => 'home#front'
 
   resources :users
 

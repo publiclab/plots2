@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Public Lab<%= ": "+(@title || params[:action].capitalize) %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The Public Laboratory for Open Technology and Science (PLOTS) collaboratively develops and publicizes accessible technologies for investigating and reporting on local environmental health and justice issues. PLOTS provides an online research space for citizens, linking them to scientists, social scientists, and technologists. PLOTS is an expansion of Grassroots Mapping, where citizens use helium-filled balloons and digital cameras to generate high resolution “satellite” maps.">
+    <meta name="description" content="The Public Laboratory for Open Technology and Science collaboratively develops and publicizes accessible technologies for investigating and reporting on local environmental health and justice issues. Public Lab provides an online research space for citizens, linking them to scientists, social scientists, and technologists. Public Lab is an expansion of Grassroots Mapping, where citizens use helium-filled balloons and digital cameras to generate high resolution “satellite” maps.">
     <meta name="author" content="">
 
     <!-- Le styles -->
@@ -47,8 +47,8 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" id="brand" href="/">Public Lab</a>
-          <a class="brand" id="brand-compact" href="/">PL</a>
+          <a class="brand" id="brand" href="/<%= "home" if current_user %>">Public Lab</a>
+          <a class="brand" id="brand-compact" href="/<%= "home" if current_user %>">PL</a>
 
           <a rel="tooltip" title="Switch to old site" data-placement="bottom" style="margin-left:6px;" href="#" onClick="alpha()" class="btn btn-primary pull-right hidden-phone">&alpha;</a>
           <script>
@@ -157,7 +157,7 @@
     </div>
 
     <div class="container-fluid">
-      <div class="hidden-phone" style="padding-top:60px;"></div>
+      <div class="header-spacer hidden-phone"></div>
 
       <%= render :partial => "layouts/alerts" %>
 
