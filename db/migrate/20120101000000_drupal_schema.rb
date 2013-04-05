@@ -1,7 +1,7 @@
 class DrupalSchema < ActiveRecord::Migration
   def up
 
-  create_table "comments", :primary_key => "cid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "comments", :primary_key => "cid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "pid",                             :default => 0,  :null => false
     t.integer "nid",                             :default => 0,  :null => false
     t.integer "uid",                             :default => 0,  :null => false
@@ -21,7 +21,7 @@ class DrupalSchema < ActiveRecord::Migration
   add_index "comments", ["pid"], :name => "pid"
   add_index "comments", ["status"], :name => "status"
 
-  create_table "community_tags", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "community_tags", :id => false, :options=>'ENGINE=MyISAM' do |t|
     t.integer "tid",  :default => 0, :null => false
     t.integer "nid",  :default => 0, :null => false
     t.integer "uid",  :default => 0, :null => false
@@ -33,7 +33,7 @@ class DrupalSchema < ActiveRecord::Migration
   add_index "community_tags", ["tid"], :name => "tid"
   add_index "community_tags", ["uid"], :name => "uid"
 
-  create_table "content_field_bbox", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_field_bbox", :id => false, :options=>'ENGINE=MyISAM' do |t|
     t.integer  "vid",                           :default => 0, :null => false
     t.integer  "nid",                           :default => 0, :null => false
     t.integer  "delta",                         :default => 0, :null => false
@@ -42,7 +42,7 @@ class DrupalSchema < ActiveRecord::Migration
 
   add_index "content_field_bbox", ["nid"], :name => "nid"
 
-  create_table "content_field_image_gallery", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_field_image_gallery", :id => false, :options=>'ENGINE=MyISAM' do |t|
     t.integer "vid",                                   :default => 0, :null => false
     t.integer "nid",                                   :default => 0, :null => false
     t.integer "delta",                                 :default => 0, :null => false
@@ -53,7 +53,7 @@ class DrupalSchema < ActiveRecord::Migration
 
   add_index "content_field_image_gallery", ["nid"], :name => "nid"
 
-  create_table "content_field_main_image", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_field_main_image", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "nid",                                :default => 0, :null => false
     t.integer "field_main_image_fid"
     t.integer "field_main_image_list", :limit => 1
@@ -62,7 +62,7 @@ class DrupalSchema < ActiveRecord::Migration
 
   add_index "content_field_main_image", ["nid"], :name => "nid"
 
-  create_table "content_field_map", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_field_map", :id => false, :options=>'ENGINE=MyISAM' do |t|
     t.integer "vid",                                            :default => 0, :null => false
     t.integer "nid",                                            :default => 0, :null => false
     t.text    "field_map_openlayers_wkt", :limit => 2147483647
@@ -71,7 +71,7 @@ class DrupalSchema < ActiveRecord::Migration
 
   add_index "content_field_map", ["nid"], :name => "nid"
 
-  create_table "content_field_map_editor", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_field_map_editor", :id => false, :options=>'ENGINE=MyISAM' do |t|
     t.integer "vid",                                          :default => 0, :null => false
     t.integer "nid",                                          :default => 0, :null => false
     t.integer "delta",                                        :default => 0, :null => false
@@ -80,7 +80,7 @@ class DrupalSchema < ActiveRecord::Migration
 
   add_index "content_field_map_editor", ["nid"], :name => "nid"
 
-  create_table "content_field_mappers", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_field_mappers", :id => false, :options=>'ENGINE=MyISAM' do |t|
     t.integer "vid",                                       :default => 0, :null => false
     t.integer "nid",                                       :default => 0, :null => false
     t.integer "delta",                                     :default => 0, :null => false
@@ -89,7 +89,7 @@ class DrupalSchema < ActiveRecord::Migration
 
   add_index "content_field_mappers", ["nid"], :name => "nid"
 
-  create_table "content_group", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_group", :id => false, :options=>'ENGINE=MyISAM' do |t|
     t.string  "group_type", :limit => 32,       :default => "standard", :null => false
     t.string  "type_name",  :limit => 32,       :default => "",         :null => false
     t.string  "group_name", :limit => 32,       :default => "",         :null => false
@@ -98,13 +98,13 @@ class DrupalSchema < ActiveRecord::Migration
     t.integer "weight",                         :default => 0,          :null => false
   end
 
-  create_table "content_group_fields", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_group_fields", :id => false, :options=>'ENGINE=MyISAM' do |t|
     t.string "type_name",  :limit => 32, :default => "", :null => false
     t.string "group_name", :limit => 32, :default => "", :null => false
     t.string "field_name", :limit => 32, :default => "", :null => false
   end
 
-  create_table "content_node_field", :primary_key => "field_name", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_node_field", :primary_key => "field_name", :options=>'ENGINE=MyISAM' do |t|
     t.string  "type",            :limit => 127,      :default => "", :null => false
     t.text    "global_settings", :limit => 16777215,                 :null => false
     t.integer "required",        :limit => 1,        :default => 0,  :null => false
@@ -116,7 +116,7 @@ class DrupalSchema < ActiveRecord::Migration
     t.integer "locked",          :limit => 1,        :default => 0,  :null => false
   end
 
-  create_table "content_node_field_instance", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_node_field_instance", :id => false, :options=>'ENGINE=MyISAM' do |t|
     t.string  "field_name",       :limit => 32,       :default => "", :null => false
     t.string  "type_name",        :limit => 32,       :default => "", :null => false
     t.integer "weight",                               :default => 0,  :null => false
@@ -129,7 +129,7 @@ class DrupalSchema < ActiveRecord::Migration
     t.integer "widget_active",    :limit => 1,        :default => 0,  :null => false
   end
 
-  create_table "content_type_map", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_type_map", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "nid",                                                                                  :default => 0, :null => false
     t.string  "field_publication_date_value",    :limit => 20
     t.string  "field_capture_date_value",        :limit => 20
@@ -156,20 +156,20 @@ class DrupalSchema < ActiveRecord::Migration
 
   add_index "content_type_map", ["nid"], :name => "nid"
 
-  create_table "content_type_note", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_type_note", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "nid", :default => 0, :null => false
   end
 
   add_index "content_type_note", ["nid"], :name => "nid"
 
-  create_table "content_type_page", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_type_page", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "nid",             :default => 0, :null => false
     t.integer "field_toc_value"
   end
 
   add_index "content_type_page", ["nid"], :name => "nid"
 
-  create_table "content_type_place", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_type_place", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "nid",                                          :default => 0, :null => false
     t.integer "field_host_logo_fid"
     t.integer "field_host_logo_list",   :limit => 1
@@ -180,19 +180,19 @@ class DrupalSchema < ActiveRecord::Migration
 
   add_index "content_type_place", ["nid"], :name => "nid"
 
-  create_table "content_type_report", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_type_report", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "nid", :default => 0, :null => false
   end
 
   add_index "content_type_report", ["nid"], :name => "nid"
 
-  create_table "content_type_tool", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_type_tool", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "nid", :default => 0, :null => false
   end
 
   add_index "content_type_tool", ["nid"], :name => "nid"
 
-  create_table "context", :primary_key => "name", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "context", :primary_key => "name", :options=>'ENGINE=MyISAM' do |t|
     t.string  "description",    :default => "", :null => false
     t.string  "tag",            :default => "", :null => false
     t.text    "conditions"
@@ -200,7 +200,7 @@ class DrupalSchema < ActiveRecord::Migration
     t.integer "condition_mode", :default => 0
   end
 
-  create_table "files", :primary_key => "fid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "files", :primary_key => "fid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "uid",       :default => 0,  :null => false
     t.string  "filename",  :default => "", :null => false
     t.string  "filepath",  :default => "", :null => false
@@ -214,7 +214,7 @@ class DrupalSchema < ActiveRecord::Migration
   add_index "files", ["timestamp"], :name => "timestamp"
   add_index "files", ["uid"], :name => "uid"
 
-  create_table "node", :primary_key => "nid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "node", :primary_key => "nid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "vid",                     :default => 0,  :null => false
     t.string  "type",      :limit => 32, :default => "", :null => false
     t.string  "language",  :limit => 12, :default => "", :null => false
@@ -243,13 +243,13 @@ class DrupalSchema < ActiveRecord::Migration
   add_index "node", ["uid"], :name => "uid"
   add_index "node", ["vid"], :name => "vid"
 
-  create_table "node_counter", :primary_key => "nid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "node_counter", :primary_key => "nid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "totalcount", :limit => 8, :default => 0, :null => false
     t.integer "daycount",   :limit => 3, :default => 0, :null => false
     t.integer "timestamp",               :default => 0, :null => false
   end
 
-  create_table "node_images", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "node_images", :options=>'ENGINE=MyISAM' do |t|
     t.integer "nid",                      :default => 0,  :null => false
     t.integer "uid",                      :default => 0,  :null => false
     t.string  "filename",                 :default => "", :null => false
@@ -268,7 +268,7 @@ class DrupalSchema < ActiveRecord::Migration
   add_index "node_images", ["nid", "status"], :name => "nid_status"
   add_index "node_images", ["uid"], :name => "uid"
 
-  create_table "node_revisions", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "node_revisions", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "nid",                             :default => 0,  :null => false
     t.integer "uid",                             :default => 0,  :null => false
     t.string  "title",                           :default => "", :null => false
@@ -283,7 +283,7 @@ class DrupalSchema < ActiveRecord::Migration
   add_index "node_revisions", ["uid"], :name => "uid"
 
 
-  create_table "term_data", :primary_key => "tid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "term_data", :primary_key => "tid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "vid",                               :default => 0,  :null => false
     t.string  "name",                              :default => "", :null => false
     t.text    "description", :limit => 2147483647
@@ -293,7 +293,7 @@ class DrupalSchema < ActiveRecord::Migration
   add_index "term_data", ["vid", "name"], :name => "vid_name"
   add_index "term_data", ["vid", "weight", "name"], :name => "taxonomy_tree"
 
-  create_table "term_node", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "term_node", :id => false, :options=>'ENGINE=MyISAM' do |t|
     t.integer "nid", :default => 0, :null => false
     t.integer "vid", :default => 0, :null => false
     t.integer "tid", :default => 0, :null => false
@@ -302,7 +302,7 @@ class DrupalSchema < ActiveRecord::Migration
   add_index "term_node", ["nid"], :name => "nid"
   add_index "term_node", ["vid"], :name => "vid"
 
-  create_table "url_alias", :primary_key => "pid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "url_alias", :primary_key => "pid", :options=>'ENGINE=MyISAM' do |t|
     t.string "src",      :limit => 128, :default => "", :null => false
     t.string "dst",      :limit => 128, :default => "", :null => false
     t.string "language", :limit => 12,  :default => "", :null => false
@@ -311,7 +311,7 @@ class DrupalSchema < ActiveRecord::Migration
   add_index "url_alias", ["dst", "language", "pid"], :name => "dst_language_pid"
   add_index "url_alias", ["src", "language", "pid"], :name => "src_language_pid"
 
-  create_table "users", :primary_key => "uid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "users", :primary_key => "uid", :options=>'ENGINE=MyISAM' do |t|
     t.string  "name",             :limit => 60,                                         :default => "",  :null => false
     t.string  "pass",             :limit => 32,                                         :default => "",  :null => false
     t.string  "mail",             :limit => 64,                                         :default => ""
