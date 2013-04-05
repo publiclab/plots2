@@ -3,12 +3,9 @@ class LikeController < ApplicationController
   respond_to :html, :xml, :json
   before_filter :require_user, :only => [:create, :delete]
 
-  # return a count of likes for a given object
-  def show
-    # TODO Render as JSON or something? Directly injected into element.
-    if params[:node]
-      DrupalNode.find(params[:node]).cached_likes
-    end
+  # return a count of likes for a given node
+  def shownode
+    render :json => DrupalNode.find(params[:id]).cached_likes
   end
 
   # for the current user, return whether is presently liked or not

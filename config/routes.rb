@@ -39,6 +39,9 @@ Plots2::Application.routes.draw do
   match 'notes/show/:id' => 'notes#show'
   match 'notes/:author/:date/:id' => 'notes#show'
 
+  # :id will be the node's id (like has no id)
+  match 'likes/node/:id' => 'like#shownode', :as => :like
+
   match 'map' => 'search#map'
   match 'search' => 'search#advanced'
   match 'search/advanced' => 'search#advanced'
