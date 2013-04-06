@@ -3,7 +3,7 @@ class DrupalFile < ActiveRecord::Base
   self.table_name = 'files'
   self.primary_key = 'fid'
 
-  belongs_to :drupal_node, :foreign_key => 'nid'
+  belongs_to :drupal_node, :foreign_key => 'nid', :dependent => :destroy
 
   def path(size)
     size = size || :default

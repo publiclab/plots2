@@ -1,5 +1,5 @@
 class DrupalComment < ActiveRecord::Base
-  belongs_to :drupal_node, :foreign_key => 'nid', :touch => true
+  belongs_to :drupal_node, :foreign_key => 'nid', :touch => true, :dependent => :destroy
   has_one :drupal_users, :foreign_key => 'uid'
 
   validates :comment,  :presence => true

@@ -2,9 +2,9 @@ require 'test_helper'
 
 class DrupalCommentTest < ActiveSupport::TestCase
 
-  test 'new_comment_should_be_valid' do
-    assert DrupalComment.new.valid?
-  end
+  #test 'new_comment_should_be_valid' do
+  #  assert DrupalComment.new.valid?
+  #end
 
   #test "should not save comment without body" do
   #  note = DrupalNode.new

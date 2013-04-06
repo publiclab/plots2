@@ -3,7 +3,7 @@ class DrupalNodeRevision < ActiveRecord::Base
   self.table_name = 'node_revisions'
   self.primary_key = 'vid'
 
-  belongs_to :drupal_node, :foreign_key => 'nid'
+  belongs_to :drupal_node, :foreign_key => 'nid', :dependent => :destroy
   has_one :drupal_users, :foreign_key => 'uid'
 
   validates :title, 

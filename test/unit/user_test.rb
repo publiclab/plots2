@@ -2,8 +2,9 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
 
-  def test_should_be_valid
-    assert User.new.valid?
+  test "user creation" do
+    user =  FactoryGirl.create(:user)#, :username => "frank", :password => "secret")
+    User.authenticate("warren", "secret").should == user
   end
 
 end

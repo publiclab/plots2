@@ -45,7 +45,7 @@ class DrupalNode < ActiveRecord::Base
     "rails_type"
   end
 
-  before_save :set_changed
+  before_save :set_changed_and_created
   after_create :setup
   before_destroy :delete_url_alias
 
@@ -58,6 +58,7 @@ class DrupalNode < ActiveRecord::Base
   # determines URL ("slug"), initializes the view counter, and sets up a created timestamp
   def setup
     self.created = DateTime.now.to_i
+    self.save
     current_user = User.find_by_username(DrupalUsers.find_by_uid(self.uid).name)
     if self.type == "note"
       slug = DrupalUrlAlias.new({
@@ -74,7 +75,8 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def delete_url_alias
-    DrupalUrlAlias.find_by_src("node/"+self.nid.to_s).delete
+    url_alias = DrupalUrlAlias.find_by_src("node/"+self.nid.to_s)
+    url_alias.delete if url_alias
   end
 
   public
@@ -123,19 +125,17 @@ class DrupalNode < ActiveRecord::Base
   end
 
   # view adaptors for typical rails db conventions so we can migrate someday
+  def changed
+    self['changed']
+  end
   def id
     self.nid
   end
   def created_at
-    Time.at(self.drupal_node_revision.first.timestamp)
+    Time.at(self.created)
   end
   def updated_at
-    self.updated_on
-  end
-
-  # lets deprecate this
-  def updated_on
-    Time.at(self.drupal_node_revision.last.timestamp)
+    Time.at(self.changed)
   end
 
   def body
@@ -239,12 +239,14 @@ class DrupalNode < ActiveRecord::Base
 
   # increment view count
   def view
+    DrupalNodeCounter.new({:nid => self.id}).save! if self.drupal_node_counter.nil? 
     self.drupal_node_counter.totalcount += 1
     self.drupal_node_counter.save
   end
 
   # view count
   def totalcount
+    DrupalNodeCounter.new({:nid => self.id}).save! if self.drupal_node_counter.nil? 
     self.drupal_node_counter.totalcount
   end
 
@@ -266,7 +268,11 @@ class DrupalNode < ActiveRecord::Base
 
   def self.find_by_slug(title)
     urlalias = DrupalUrlAlias.find_by_dst('wiki/'+title)
-    urlalias.node if urlalias
+    if urlalias
+      urlalias.node
+    else
+      nil
+    end
   end
 
   def self.find_root_by_slug(title)
