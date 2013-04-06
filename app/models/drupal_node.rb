@@ -1,5 +1,13 @@
 require 'rss'
 
+class UniqueUrlValidator < ActiveModel::Validator
+  def validate(record)
+    if !DrupalUrlAlias.find_by_dst(record.generate_path).nil? && record.type == "note"
+      record.errors[:base] << "You have already used this title today."
+    end
+  end
+end
+
 class DrupalNode < ActiveRecord::Base
   attr_accessible :title, :uid, :status, :type, :vid
   self.table_name = 'node'
@@ -20,9 +28,8 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
   has_many :images, :foreign_key => :nid
 
-  validates :title, :presence => :true,
-    :unless => Proc.new { |a| DrupalUrlAlias.find_by_dst(self.generate_path) }
-  #validates :name, :format => {:with => /^[\w-]*$/, :message => "can only include letters, numbers, and dashes"}
+  validates :title, :presence => :true
+  validates_with UniqueUrlValidator
 
   # making drupal and rails database conventions play nice
   class << self
@@ -362,26 +369,29 @@ class DrupalNode < ActiveRecord::Base
     })
     if node.valid?
       saved = true
-      node.save! 
-      revision = node.new_revision({
-        :nid => node.id,
-        :uid => params[:uid],
-        :title => params[:title],
-        :body => params[:body]
-      })
-      if revision.valid?
-        revision.save!
-        node.vid = revision.vid
-        # save main image
-        if params[:main_image]
-          img = Image.find params[:main_image]
-          img.nid = node.id
-          img.save
+      revision = false
+      ActiveRecord::Base.transaction do
+        node.save! 
+        revision = node.new_revision({
+          :nid => node.id,
+          :uid => params[:uid],
+          :title => params[:title],
+          :body => params[:body]
+        })
+        if revision.valid?
+          revision.save!
+          node.vid = revision.vid
+          # save main image
+          if params[:main_image]
+            img = Image.find params[:main_image]
+            img.nid = node.id
+            img.save
+          end
+          node.save!
+        else
+          saved = false
+          node.destroy # clean up. But do this in the model!
         end
-        node.save!
-      else
-        saved = false
-        node.destroy # clean up. But do this in the model!
       end
     end
     return [saved,node,revision]
@@ -395,21 +405,24 @@ class DrupalNode < ActiveRecord::Base
       :type => "page"
     })
     if node.valid?
+      revision = false
       saved = true
-      node.save! 
-      revision = node.new_revision({
-        :nid => node.id,
-        :uid => params[:uid],
-        :title => params[:title],
-        :body => params[:body]
-      })
-      if revision.valid?
-        revision.save!
-        node.vid = revision.vid
-        node.save!
-      else
-        saved = false
-        node.destroy # clean up. But do this in the model!
+      ActiveRecord::Base.transaction do
+        node.save! 
+        revision = node.new_revision({
+          :nid => node.id,
+          :uid => params[:uid],
+          :title => params[:title],
+          :body => params[:body]
+        })
+        if revision.valid?
+          revision.save!
+          node.vid = revision.vid
+          node.save!
+        else
+          saved = false
+          node.destroy # clean up. But do this in the model!
+        end
       end
     end
     return [saved,node,revision]

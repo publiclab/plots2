@@ -28,6 +28,10 @@ a i.icon-white { color:white; }
   color:white;
 }
 
+.alert h2 {
+  font-size:1.2em;
+}
+
 @media (min-width: 979px) {
   .header-spacer {
     padding-top:60px;
@@ -164,7 +168,7 @@ a i.icon-white { color:white; }
   width:30%;
 }
 #side-progress {
-  margin:10px;
+  margin:3px 10px 10px;
   width:30%;
 }
 
