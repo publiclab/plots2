@@ -57,8 +57,8 @@ class DrupalNode < ActiveRecord::Base
 
   # determines URL ("slug"), initializes the view counter, and sets up a created timestamp
   def setup
-    #self['created'] = DateTime.now.to_i
-    #self.save
+    self['created'] = DateTime.now.to_i
+    self.save
     current_user = User.find_by_username(DrupalUsers.find_by_uid(self.uid).name)
     if self.type == "note"
       slug = DrupalUrlAlias.new({

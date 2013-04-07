@@ -12,7 +12,7 @@ class DrupalNodeTest < ActiveSupport::TestCase
 
     node =  FactoryGirl.create(:drupal_node, :uid => user.uid)
     node_revision = FactoryGirl.create(:drupal_node_revision)
-    #assert node.save!
+    assert node.save!
   end
 
   #test "should not save node without title, or anything else" do
