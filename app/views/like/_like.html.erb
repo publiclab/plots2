@@ -4,10 +4,12 @@
     jQuery.ajaxSetup({
       cache: false
     });
+
     // grab the like count for this node
-    var likes=jQuery.get("<%= like_path(@node) %>");
-    // push like count into the Like button placeholder 
-    $('.like-count')[0].textContent = "(" + likes.responsetext + ")";
+    jQuery.getJSON("<%= like_count_path(@node) %>", function (json) {
+      // push like count into the Like button placeholder 
+      $('.like-count')[0].textContent = "(" + json + ")";
+    });
   </script>
   <div class="btn-group">
     <a class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.nil? || @tagnames.length == 0 %><% if @tagnames %><% @tagnames.each do |tag| %><a class='label label-inverse'><%= tag %></a> <% end %><% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></a>
