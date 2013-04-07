@@ -20,6 +20,8 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  # add: /tag/something, /search/something, /wiki/something, /profile/warren
+
   #test "browse /about" do
   #  get "/about"
   #  assert_response :success

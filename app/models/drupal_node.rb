@@ -96,7 +96,7 @@ class DrupalNode < ActiveRecord::Base
   # Manual associations: 
 
   def latest
-    self.drupal_node_revision.last
+    DrupalNodeRevision.find_by_nid(self.nid,:order => "timestamp DESC")
   end
 
   def revisions
@@ -136,8 +136,8 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def body
-    if self.drupal_node_revision.length > 0
-      self.drupal_node_revision.last.body
+    if self.latest
+      self.latest.body
     else
       nil
     end
