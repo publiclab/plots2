@@ -29,7 +29,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :images, :foreign_key => :nid
 
   validates :title, :presence => :true
-  validates_with UniqueUrlValidator
+  validates_with UniqueUrlValidator, :on => :create
 
   # making drupal and rails database conventions play nice
   class << self
@@ -51,14 +51,14 @@ class DrupalNode < ActiveRecord::Base
 
   private
 
-  def set_changed
-    self.changed = DateTime.now.to_i
+  def set_changed_and_created
+    self['changed'] = DateTime.now.to_i
   end
 
   # determines URL ("slug"), initializes the view counter, and sets up a created timestamp
   def setup
-    self.created = DateTime.now.to_i
-    self.save
+    #self['created'] = DateTime.now.to_i
+    #self.save
     current_user = User.find_by_username(DrupalUsers.find_by_uid(self.uid).name)
     if self.type == "note"
       slug = DrupalUrlAlias.new({
@@ -82,9 +82,9 @@ class DrupalNode < ActiveRecord::Base
   public
 
   def generate_path
-    current_user = User.find_by_username(DrupalUsers.find_by_uid(self.uid).name)
+    username = DrupalUsers.find_by_uid(self.uid).name
     if self.type == 'note'
-      "notes/"+current_user.username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+self.title.parameterize
+      "notes/"+username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+self.title.parameterize
     elsif self.type == 'wiki'
       "wiki/"+self.title.parameterize
     elsif self.type == 'map'
@@ -125,9 +125,6 @@ class DrupalNode < ActiveRecord::Base
   end
 
   # view adaptors for typical rails db conventions so we can migrate someday
-  def changed
-    self['changed']
-  end
   def id
     self.nid
   end
@@ -135,7 +132,7 @@ class DrupalNode < ActiveRecord::Base
     Time.at(self.created)
   end
   def updated_at
-    Time.at(self.changed)
+    Time.at(self['changed'])
   end
 
   def body
