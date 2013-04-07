@@ -12,7 +12,7 @@ FactoryGirl.define do
   end
 
   factory :drupal_users do
-    uid 1
+#    uid 1
     name "warren"
     mail "jeff@unterbahn.com"
   end

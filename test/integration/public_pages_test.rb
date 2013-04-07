@@ -4,7 +4,7 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   # we need some fixtures yo!
 
   test "browse front page" do
-    drupal_user = FactoryGirl.create(:drupal_users, :uid => 2, :name => "frank", :mail => "frank@pxlshp.com") # currently dependent on drupal users, though we should drop that
+    drupal_user = FactoryGirl.create(:drupal_users, :name => "billy", :mail => "billy@pxlshp.com") # currently dependent on drupal users, though we should drop that
     user =  FactoryGirl.create(:user, :username => drupal_user.name, :email => drupal_user.mail)
 
     node =  FactoryGirl.create(:drupal_node, :uid => user.uid)

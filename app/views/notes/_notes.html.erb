@@ -13,7 +13,7 @@
           | <%= time_ago_in_words(node.created_at) %> ago
           | <a href="/<%= node.slug %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
         </small></p>
-        <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) %></p>
+        <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
         <p><a href="/<%= node.slug %>">Read more &raquo;</a></p>
         <p>
           <% node.tags[0..3].each do |tag| %>
