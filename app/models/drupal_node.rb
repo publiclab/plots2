@@ -85,7 +85,7 @@ class DrupalNode < ActiveRecord::Base
     username = DrupalUsers.find_by_uid(self.uid).name
     if self.type == 'note'
       "notes/"+username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+self.title.parameterize
-    elsif self.type == 'wiki'
+    elsif self.type == 'page'
       "wiki/"+self.title.parameterize
     elsif self.type == 'map'
       #...
