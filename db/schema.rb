@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130402232059) do
+ActiveRecord::Schema.define(:version => 20130408183908) do
 
   create_table "access", :primary_key => "aid", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "mask",                :default => "", :null => false
@@ -1317,6 +1317,15 @@ ActiveRecord::Schema.define(:version => 20130402232059) do
   add_index "node_revisions", ["nid"], :name => "nid"
   add_index "node_revisions", ["uid"], :name => "uid"
 
+  create_table "node_selections", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "nid"
+    t.boolean "following"
+    t.boolean "liking"
+  end
+
+  add_index "node_selections", ["user_id", "nid"], :name => "index_node_selections_on_user_id_and_nid"
+
   create_table "node_type", :primary_key => "type", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "name",                               :default => "", :null => false
     t.string  "module",                                             :null => false
@@ -1332,15 +1341,6 @@ ActiveRecord::Schema.define(:version => 20130402232059) do
     t.integer "locked",         :limit => 1,        :default => 0,  :null => false
     t.string  "orig_type",                          :default => "", :null => false
   end
-
-  create_table "nodeselections", :id => false, :force => true do |t|
-    t.integer "user_id"
-    t.integer "nid"
-    t.boolean "following"
-    t.boolean "liking"
-  end
-
-  add_index "nodeselections", ["user_id", "nid"], :name => "index_nodeselections_on_user_id_and_nid"
 
   create_table "notifications", :primary_key => "sid", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.integer "uid",                                       :null => false
@@ -1735,6 +1735,14 @@ ActiveRecord::Schema.define(:version => 20130402232059) do
     t.integer "toc_automatic"
   end
 
+  create_table "tag_selections", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "tid"
+    t.boolean "following"
+  end
+
+  add_index "tag_selections", ["user_id", "tid"], :name => "index_tag_selections_on_user_id_and_tid"
+
   create_table "tags", :force => true do |t|
     t.string   "key"
     t.string   "value"
@@ -1744,14 +1752,6 @@ ActiveRecord::Schema.define(:version => 20130402232059) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
-
-  create_table "tagselections", :id => false, :force => true do |t|
-    t.integer "user_id"
-    t.integer "tid"
-    t.boolean "following"
-  end
-
-  add_index "tagselections", ["user_id", "tid"], :name => "index_tagselections_on_user_id_and_tid"
 
   create_table "taxonomy_manager_merge", :primary_key => "merged_tid", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.integer "main_tid", :default => 0, :null => false
@@ -1861,6 +1861,14 @@ ActiveRecord::Schema.define(:version => 20130402232059) do
   add_index "url_alias", ["dst", "language", "pid"], :name => "dst_language_pid"
   add_index "url_alias", ["src", "language", "pid"], :name => "src_language_pid"
 
+  create_table "user_selections", :id => false, :force => true do |t|
+    t.integer "self_id"
+    t.integer "other_id"
+    t.boolean "following"
+  end
+
+  add_index "user_selections", ["self_id", "other_id"], :name => "index_user_selections_on_self_id_and_other_id"
+
   create_table "users", :primary_key => "uid", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "name",             :limit => 60,                                         :default => "",  :null => false
     t.string  "pass",             :limit => 32,                                         :default => "",  :null => false
@@ -1897,14 +1905,6 @@ ActiveRecord::Schema.define(:version => 20130402232059) do
   end
 
   add_index "users_roles", ["rid"], :name => "rid"
-
-  create_table "userselections", :id => false, :force => true do |t|
-    t.integer "self_id"
-    t.integer "other_id"
-    t.boolean "following"
-  end
-
-  add_index "userselections", ["self_id", "other_id"], :name => "index_userselections_on_self_id_and_other_id"
 
   create_table "variable", :primary_key => "name", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.text "value", :limit => 2147483647, :null => false

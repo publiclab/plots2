@@ -36,10 +36,12 @@ class CreateLikeAndFollow < ActiveRecord::Migration
   end
 
   def down
-    drop_view :selections
     remove_column :node, :cached_likes
+    remove_index :nodeselections, [:user_id, :nid]
     drop_table :nodeselections
+    remove_index :userselections, [:self_id, :other_id]
     drop_table :userselections
+    remove_index :tagselections, [:user_id, :tid]
     drop_table :tagselections
   end
 end
