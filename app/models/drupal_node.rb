@@ -13,7 +13,7 @@ class UniqueUrlValidator < ActiveModel::Validator
 end
 
 class DrupalNode < ActiveRecord::Base
-  attr_accessible :title, :uid, :status, :type, :vid
+  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes
   self.table_name = 'node'
   self.primary_key = 'nid'
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130327222827) do
+ActiveRecord::Schema.define(:version => 20130408183908) do
 
   create_table "access", :primary_key => "aid", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "mask",                :default => "", :null => false
@@ -882,10 +882,10 @@ ActiveRecord::Schema.define(:version => 20130327222827) do
   end
 
   add_index "feeds_node_item", ["feed_nid"], :name => "feed_nid"
-  #add_index "feeds_node_item", ["guid"], :name => "guid"
+  add_index "feeds_node_item", ["guid"], :name => "guid"
   add_index "feeds_node_item", ["id"], :name => "id"
   add_index "feeds_node_item", ["imported"], :name => "imported"
-  #add_index "feeds_node_item", ["url"], :name => "url"
+  add_index "feeds_node_item", ["url"], :name => "url"
 
   create_table "feeds_push_subscriptions", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "domain",        :limit => 128, :default => "", :null => false
@@ -909,7 +909,7 @@ ActiveRecord::Schema.define(:version => 20130327222827) do
   end
 
   add_index "feeds_source", ["feed_nid"], :name => "feed_nid"
-  #add_index "feeds_source", ["id", "source"], :name => "id_source"
+  add_index "feeds_source", ["id", "source"], :name => "id_source"
   add_index "feeds_source", ["id"], :name => "id"
 
   create_table "feeds_term_item", :primary_key => "tid", :options=>'ENGINE=MyISAM', :force => true do |t|
@@ -1075,7 +1075,7 @@ ActiveRecord::Schema.define(:version => 20130327222827) do
     t.string "version",   :limit => 20, :default => "none",    :null => false
   end
 
-  #add_index "locales_source", ["source"], :name => "source"
+  add_index "locales_source", ["source"], :name => "source"
 
   create_table "locales_target", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.integer "lid",                       :default => 0,  :null => false
@@ -1174,7 +1174,7 @@ ActiveRecord::Schema.define(:version => 20130327222827) do
 
   add_index "menu_router", ["fit"], :name => "fit"
   add_index "menu_router", ["tab_parent"], :name => "tab_parent"
-  #add_index "menu_router", ["tab_root", "weight", "title"], :name => "tab_root_weight_title"
+  add_index "menu_router", ["tab_root", "weight", "title"], :name => "tab_root_weight_title"
 
   create_table "messaging_message_parts", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string "type",    :limit => 100,        :default => "", :null => false
@@ -1231,20 +1231,21 @@ ActiveRecord::Schema.define(:version => 20130327222827) do
   end
 
   create_table "node", :primary_key => "nid", :options=>'ENGINE=MyISAM', :force => true do |t|
-    t.integer "vid",                     :default => 0,  :null => false
-    t.string  "type",      :limit => 32, :default => "", :null => false
-    t.string  "language",  :limit => 12, :default => "", :null => false
-    t.string  "title",                   :default => "", :null => false
-    t.integer "uid",                     :default => 0,  :null => false
-    t.integer "status",                  :default => 1,  :null => false
-    t.integer "created",                 :default => 0,  :null => false
-    t.integer "changed",                 :default => 0,  :null => false
-    t.integer "comment",                 :default => 0,  :null => false
-    t.integer "promote",                 :default => 0,  :null => false
-    t.integer "moderate",                :default => 0,  :null => false
-    t.integer "sticky",                  :default => 0,  :null => false
-    t.integer "tnid",                    :default => 0,  :null => false
-    t.integer "translate",               :default => 0,  :null => false
+    t.integer "vid",                        :default => 0,  :null => false
+    t.string  "type",         :limit => 32, :default => "", :null => false
+    t.string  "language",     :limit => 12, :default => "", :null => false
+    t.string  "title",                      :default => "", :null => false
+    t.integer "uid",                        :default => 0,  :null => false
+    t.integer "status",                     :default => 1,  :null => false
+    t.integer "created",                    :default => 0,  :null => false
+    t.integer "changed",                    :default => 0,  :null => false
+    t.integer "comment",                    :default => 0,  :null => false
+    t.integer "promote",                    :default => 0,  :null => false
+    t.integer "moderate",                   :default => 0,  :null => false
+    t.integer "sticky",                     :default => 0,  :null => false
+    t.integer "tnid",                       :default => 0,  :null => false
+    t.integer "translate",                  :default => 0,  :null => false
+    t.integer "cached_likes",               :default => 0
   end
 
   add_index "node", ["changed"], :name => "node_changed"
@@ -1315,6 +1316,15 @@ ActiveRecord::Schema.define(:version => 20130327222827) do
 
   add_index "node_revisions", ["nid"], :name => "nid"
   add_index "node_revisions", ["uid"], :name => "uid"
+
+  create_table "node_selections", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "nid"
+    t.boolean "following", :default => false
+    t.boolean "liking",    :default => false
+  end
+
+  add_index "node_selections", ["user_id", "nid"], :name => "index_node_selections_on_user_id_and_nid"
 
   create_table "node_type", :primary_key => "type", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "name",                               :default => "", :null => false
@@ -1716,7 +1726,7 @@ ActiveRecord::Schema.define(:version => 20130327222827) do
     t.text    "info"
   end
 
-  #add_index "system", ["type", "name"], :name => "type_name"
+  add_index "system", ["type", "name"], :name => "type_name"
   add_index "system", ["type", "status", "bootstrap", "weight", "filename"], :name => "bootstrap"
   add_index "system", ["type", "status", "weight", "filename"], :name => "modules"
 
@@ -1724,6 +1734,14 @@ ActiveRecord::Schema.define(:version => 20130327222827) do
     t.integer "nid",           :null => false
     t.integer "toc_automatic"
   end
+
+  create_table "tag_selections", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "tid"
+    t.boolean "following", :default => false
+  end
+
+  add_index "tag_selections", ["user_id", "tid"], :name => "index_tag_selections_on_user_id_and_tid"
 
   create_table "tags", :force => true do |t|
     t.string   "key"
@@ -1842,6 +1860,14 @@ ActiveRecord::Schema.define(:version => 20130327222827) do
 
   add_index "url_alias", ["dst", "language", "pid"], :name => "dst_language_pid"
   add_index "url_alias", ["src", "language", "pid"], :name => "src_language_pid"
+
+  create_table "user_selections", :id => false, :force => true do |t|
+    t.integer "self_id"
+    t.integer "other_id"
+    t.boolean "following", :default => false
+  end
+
+  add_index "user_selections", ["self_id", "other_id"], :name => "index_user_selections_on_self_id_and_other_id"
 
   create_table "users", :primary_key => "uid", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "name",             :limit => 60,                                         :default => "",  :null => false
