@@ -85,6 +85,10 @@ class DrupalNode < ActiveRecord::Base
 
   public
 
+  def likes
+    self.cached_likes
+  end
+
   def generate_path
     username = DrupalUsers.find_by_uid(self.uid).name
     if self.type == 'note'
