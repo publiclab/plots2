@@ -11,22 +11,22 @@ class RenameLikeAndFollow < ActiveRecord::Migration
     create_table :tag_selections, :id => false do |t|
       t.integer :user_id
       t.integer :tid
-      t.boolean :following
+      t.boolean :following, :default => false
     end
     add_index :tag_selections, [:user_id, :tid], :unique => true
 
     create_table :user_selections, :id => false do |t|
       t.integer :self_id
       t.integer :other_id
-      t.boolean :following
+      t.boolean :following, :default => false
     end
     add_index :user_selections, [:self_id, :other_id], :unique => true
 
     create_table :node_selections, :id => false do |t|
       t.integer :user_id
       t.integer :nid
-      t.boolean :following
-      t.boolean :liking
+      t.boolean :following, :default => false
+      t.boolean :liking, :default => false
     end
     add_index :node_selections, [:user_id, :nid], :unique => true
   end
