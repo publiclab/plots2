@@ -17,6 +17,9 @@ end
 #  gem "activerecord-postgresql-adapter"
 #end
 
+# Support composite primary keys
+gem 'composite_primary_keys'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
