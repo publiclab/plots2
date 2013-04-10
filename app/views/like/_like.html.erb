@@ -1,4 +1,9 @@
 <div class="btn-toolbar pull-right" style="margin-left:10px;margin-top:0;">
+  <ul class="btn-group">
+    <li class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.nil? || @tagnames.length == 0 %><% if @tagnames %><% @tagnames.each do |tag| %><a class='label label-inverse'><%= tag %></a> <% end %><% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></li>
+    <li rel="tooltip" title="Helpful? Awesome?" class="btn btn-small" id="like-button"><span id="like-star" class="icon-star-empty"></span><span class="hidden-phone"> Like <span id="like-count"/></span></li>
+    <li rel="tooltip" title="Updates/comments" id="follow" class="btn btn-small"><i class="icon-eye-open"></i><span class="hidden-phone"> Follow</span></li>
+  </ul>
   <script>
     // 304 cached response yields no data to insert, which is not useful
     jQuery.ajaxSetup({
@@ -8,12 +13,59 @@
     // grab the like count for this node
     jQuery.getJSON("<%= like_count_path(@node) %>", function (json) {
       // push like count into the Like button placeholder 
-      $('.like-count')[0].textContent = "(" + json + ")";
+      document.getElementById('like-count').textContent = "(" + json + ")";
     });
+
+    <% if current_user %>
+    var star = document.getElementById('like-star');
+    var button = document.getElementById('like-button');
+
+    // functionalize appearance changes
+    function changelikecount(value) {
+      var count = document.getElementById('like-count').textContent
+      // strip parens and convert to number
+      count = parseInt(count.substr(1, count.length-2));
+      count += value;
+      // push value back out
+      document.getElementById('like-count').textContent = "(" + count + ")";
+    }
+    function shownotliked() {
+      star.className = "icon-star-empty";
+    }
+    function showliked() {
+      star.className = "icon-star";
+    }
+
+    // support AJAX button clicking
+    function clickliked() {
+      // toggle liked to not liked.
+      jQuery.getJSON("<%= drop_like_path(@node) %>", function () {
+        shownotliked();
+        changelikecount(-1);
+        button.onclick = clicknotliked
+      });
+    }
+    function clicknotliked() {
+      // toggle not liked to liked.
+      jQuery.getJSON("<%= add_like_path(@node) %>", function () {
+        showliked();
+        changelikecount(1);
+        button.onclick = clickliked
+      });
+    }
+
+    // grab initial indicator of whether the user likes the node
+    jQuery.getJSON("<%= is_liked_path(@node) %>", function (json) {
+      if (json) {
+        // if it is already liked, it is as if it one is clicking not liked
+        clicknotliked();
+        changelikecount(-1);
+      } else {
+        // if it is already liked, it is as if it one is clicking not liked
+        clickliked();
+        changelikecount(1);
+      }
+    });
+    <% end %>
   </script>
-  <div class="btn-group">
-    <a class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.nil? || @tagnames.length == 0 %><% if @tagnames %><% @tagnames.each do |tag| %><a class='label label-inverse'><%= tag %></a> <% end %><% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></a>
-    <a rel="tooltip" title="Helpful? Awesome?" class="btn btn-small" href="#"><i class="icon-star"></i><span class="hidden-phone"> Like <span class="like-count"></span></span></a>
-    <a rel="tooltip" title="Updates/comments" id="follow" class="btn btn-small" href="#"><i class="icon-eye-open"></i><span class="hidden-phone"> Follow</span></a>
-  </div>
 </div>
