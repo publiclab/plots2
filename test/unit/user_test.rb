@@ -4,13 +4,17 @@ class UserTest < ActiveSupport::TestCase
 
   def setup
     activate_authlogic
+    @user =  FactoryGirl.create(:user)
+    @drupal_user =  FactoryGirl.create(:drupal_users, :name => @user.username, :mail => @user.email)
+  end
+
+  def teardown
+    @user.destroy
+    @drupal_user.destroy
   end
 
   test "user creation" do
-    drupal_user = FactoryGirl.create(:drupal_users)
-    user =  FactoryGirl.create(:user)#, :username => "frank", :password => "secret")
-    UserSession.new(user)
-    #User.authenticate("warren", "secret").should == user
+    UserSession.new(@user)
   end
 
 end

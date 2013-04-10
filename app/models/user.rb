@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
                                 :email] 
   end
 
+  # this doesn't work... we should have a uid field on User
+  #has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
   has_many :images, :foreign_key => :uid
 
   def uid
