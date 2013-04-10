@@ -1,0 +1,20 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  title: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON"
+  created: 1362353067
+  changed: 1362354920
+  status: 1
+  type: "note"
+  uid: 2
+  nid: 1
+ # this needs a drupal_node_revision and other crap
+
+two: 
+  title: "about"
+  created: 1362353067
+  changed: 1362354920
+  status: 1
+  type: "page"
+  uid: 1
+  nid: 2

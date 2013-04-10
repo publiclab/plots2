@@ -6,9 +6,17 @@ class DrupalUsers < ActiveRecord::Base
   has_many :drupal_node, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
 
+  # Rails-style adaptors:
+
   def created_at
     Time.at(self.created)
   end
+
+  def email
+    self.mail
+  end
+
+  # End rails-style adaptors
 
   def profile_values
     self.drupal_profile_values
@@ -29,6 +37,10 @@ class DrupalUsers < ActiveRecord::Base
 
   def notes(limit = 10)
     DrupalNode.find_all_by_uid(self.uid, :limit => limit, :order => "created DESC")
+  end
+
+  def note_count
+    DrupalNode.count(:all,:conditions => {:status => 1, :uid => self.uid})
   end
 
   # accepts array of tag names (strings)

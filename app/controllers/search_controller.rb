@@ -4,10 +4,7 @@ class SearchController < ApplicationController
     @title = "Search"
     @nodes = DrupalNode.paginate(:order => "node.nid DESC", :conditions => ['type = "note" AND status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', "%"+params[:id]+"%","%"+params[:id]+"%"], :page => params[:page], :include => :drupal_node_revision)
     @tagnames = params[:id].split(',')
-
-    # content based on tags
     set_sidebar :tags, [params[:id]]
-
     render :template => 'search/index'
   end
 

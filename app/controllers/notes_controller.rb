@@ -92,7 +92,7 @@ class NotesController < ApplicationController
   def author
     @user = DrupalUsers.find_by_name params[:id]
     @title = @user.name
-    @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => @user.uid}, :page => params[:page])
+    @notes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => @user.uid}, :page => params[:page])
     render :template => 'notes/index'
   end
 
@@ -101,7 +101,7 @@ class NotesController < ApplicationController
     @user = DrupalUsers.find_by_name params[:author]
     @tagnames = params[:topic].split('+')
     @title = @user.name+" on '"+@tagnames.join(', ')+"'"
-    @nodes = @user.notes_for_tags(@tagnames)
+    @notes = @user.notes_for_tags(@tagnames)
     @unpaginated = true
     render :template => 'notes/index'
   end

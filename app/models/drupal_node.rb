@@ -1,5 +1,13 @@
 require 'rss'
 
+class UniqueUrlValidator < ActiveModel::Validator
+  def validate(record)
+    if !DrupalUrlAlias.find_by_dst(record.generate_path).nil? && record.type == "note"
+      record.errors[:base] << "You have already used this title today."
+    end
+  end
+end
+
 class DrupalNode < ActiveRecord::Base
   attr_accessible :title, :uid, :status, :type, :vid, :cached_likes
   self.table_name = 'node'
@@ -21,7 +29,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :images, :foreign_key => :nid
 
   validates :title, :presence => :true
-  #validates :name, :format => {:with => /^[\w-]*$/, :message => "can only include letters, numbers, and dashes"}
+  validates_with UniqueUrlValidator, :on => :create
 
   # making drupal and rails database conventions play nice
   class << self
@@ -37,30 +45,29 @@ class DrupalNode < ActiveRecord::Base
     "rails_type"
   end
 
-  before_save :set_changed
+  before_save :set_changed_and_created
   after_create :setup
   before_destroy :delete_url_alias
 
   private
 
-  def set_changed
-    self.changed = DateTime.now.to_i
+  def set_changed_and_created
+    self['changed'] = DateTime.now.to_i
   end
 
   # determines URL ("slug"), initializes the view counter, and sets up a created timestamp
   def setup
-    self.created = DateTime.now.to_i
+    self['created'] = DateTime.now.to_i
+    self.save
     current_user = User.find_by_username(DrupalUsers.find_by_uid(self.uid).name)
-    #slug = self.title.downcase.gsub(' ','-').gsub("'",'').gsub('"','').gsub('/','-')
-    slug = self.title.parameterize
     if self.type == "note"
       slug = DrupalUrlAlias.new({
-        :dst => "notes/"+current_user.username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+slug,
+        :dst => self.generate_path,
         :src => "node/"+self.id.to_s
       }).save
     else
       slug = DrupalUrlAlias.new({
-        :dst => "wiki/"+slug,
+        :dst => self.generate_path,
         :src => "node/"+self.id.to_s
       }).save
     end
@@ -68,16 +75,28 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def delete_url_alias
-    DrupalUrlAlias.find_by_src("node/"+self.nid.to_s).delete
+    url_alias = DrupalUrlAlias.find_by_src("node/"+self.nid.to_s)
+    url_alias.delete if url_alias
   end
 
   public
+
+  def generate_path
+    username = DrupalUsers.find_by_uid(self.uid).name
+    if self.type == 'note'
+      "notes/"+username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+self.title.parameterize
+    elsif self.type == 'page'
+      "wiki/"+self.title.parameterize
+    elsif self.type == 'map'
+      #...
+    end
+  end
 
   # ============================================
   # Manual associations: 
 
   def latest
-    self.drupal_node_revision.last
+    DrupalNodeRevision.find_by_nid(self.nid,:order => "timestamp DESC")
   end
 
   def revisions
@@ -110,20 +129,15 @@ class DrupalNode < ActiveRecord::Base
     self.nid
   end
   def created_at
-    Time.at(self.drupal_node_revision.first.timestamp)
+    Time.at(self.created)
   end
   def updated_at
-    self.updated_on
-  end
-
-  # lets deprecate this
-  def updated_on
-    Time.at(self.drupal_node_revision.last.timestamp)
+    Time.at(self['changed'])
   end
 
   def body
-    if self.drupal_node_revision.length > 0
-      self.drupal_node_revision.last.body
+    if self.latest
+      self.latest.body
     else
       nil
     end
@@ -222,12 +236,14 @@ class DrupalNode < ActiveRecord::Base
 
   # increment view count
   def view
+    DrupalNodeCounter.new({:nid => self.id}).save! if self.drupal_node_counter.nil? 
     self.drupal_node_counter.totalcount += 1
     self.drupal_node_counter.save
   end
 
   # view count
   def totalcount
+    DrupalNodeCounter.new({:nid => self.id}).save! if self.drupal_node_counter.nil? 
     self.drupal_node_counter.totalcount
   end
 
@@ -249,7 +265,11 @@ class DrupalNode < ActiveRecord::Base
 
   def self.find_by_slug(title)
     urlalias = DrupalUrlAlias.find_by_dst('wiki/'+title)
-    urlalias.node if urlalias
+    if urlalias
+      urlalias.node
+    else
+      nil
+    end
   end
 
   def self.find_root_by_slug(title)
@@ -324,7 +344,7 @@ class DrupalNode < ActiveRecord::Base
     c.format = 1
     c.thread = thread
     c.timestamp = DateTime.now.to_i
-    c.save!
+    c if c.save!
   end
 
   def new_revision(params)
@@ -352,26 +372,29 @@ class DrupalNode < ActiveRecord::Base
     })
     if node.valid?
       saved = true
-      node.save! 
-      revision = node.new_revision({
-        :nid => node.id,
-        :uid => params[:uid],
-        :title => params[:title],
-        :body => params[:body]
-      })
-      if revision.valid?
-        revision.save!
-        node.vid = revision.vid
-        # save main image
-        if params[:main_image]
-          img = Image.find params[:main_image]
-          img.nid = node.id
-          img.save
+      revision = false
+      ActiveRecord::Base.transaction do
+        node.save! 
+        revision = node.new_revision({
+          :nid => node.id,
+          :uid => params[:uid],
+          :title => params[:title],
+          :body => params[:body]
+        })
+        if revision.valid?
+          revision.save!
+          node.vid = revision.vid
+          # save main image
+          if params[:main_image]
+            img = Image.find params[:main_image]
+            img.nid = node.id
+            img.save
+          end
+          node.save!
+        else
+          saved = false
+          node.destroy # clean up. But do this in the model!
         end
-        node.save!
-      else
-        saved = false
-        node.destroy # clean up. But do this in the model!
       end
     end
     return [saved,node,revision]
@@ -385,21 +408,24 @@ class DrupalNode < ActiveRecord::Base
       :type => "page"
     })
     if node.valid?
+      revision = false
       saved = true
-      node.save! 
-      revision = node.new_revision({
-        :nid => node.id,
-        :uid => params[:uid],
-        :title => params[:title],
-        :body => params[:body]
-      })
-      if revision.valid?
-        revision.save!
-        node.vid = revision.vid
-        node.save!
-      else
-        saved = false
-        node.destroy # clean up. But do this in the model!
+      ActiveRecord::Base.transaction do
+        node.save! 
+        revision = node.new_revision({
+          :nid => node.id,
+          :uid => params[:uid],
+          :title => params[:title],
+          :body => params[:body]
+        })
+        if revision.valid?
+          revision.save!
+          node.vid = revision.vid
+          node.save!
+        else
+          saved = false
+          node.destroy # clean up. But do this in the model!
+        end
       end
     end
     return [saved,node,revision]

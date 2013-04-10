@@ -2,7 +2,7 @@ require 'rss'
 
 class WikiController < ApplicationController
 
-  before_filter :require_user, :only => [:new, :create, :edit, :update]
+  before_filter :require_user, :only => [:new, :create, :edit, :update, :delete]
 
   def show
     if !(@node = DrupalNode.find_root_by_slug('place/'+params[:id])).nil? # it's a place page!
@@ -88,6 +88,20 @@ class WikiController < ApplicationController
     end
   end
 
+  def delete
+    @node = DrupalNode.find(params[:id])
+    if current_user.username == "warren"
+      @node.transaction do
+        @node.destroy
+      end
+      flash[:notice] = "Wiki page deleted."
+      redirect_to "/dashboard"
+    else
+      flash[:error] = "Only admins can delete wiki pages."
+      redirect_to @node.path
+    end
+  end
+
   # wiki pages which have a root URL, like http://publiclab.org/about
   def root
     @node = DrupalNode.find_root_by_slug(params[:id])
@@ -121,6 +135,10 @@ class WikiController < ApplicationController
     @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
     @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
     render :template => 'wiki/index'
+  end
+
+  def index
+    @wikis = DrupalNode.find_all_by_type('page',10,:limit => 20,:order => "changed DESC", :conditions => {:status => 1})
   end
 
 end

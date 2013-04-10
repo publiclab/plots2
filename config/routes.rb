@@ -1,6 +1,5 @@
 Plots2::Application.routes.draw do
   resources :rusers
-  resources :users
   resources :user_sessions
   resources :images
 
@@ -16,10 +15,14 @@ Plots2::Application.routes.draw do
   match 'register' => 'users#create'
   match 'users/list' => 'users#list'
   match 'signup' => 'users#new'
+  match 'home' => 'home#front'
+
+  resources :users
 
   match 'wiki/:id' => 'wiki#show'
   match 'wiki/revisions/:id' => 'wiki#revisions'
   match 'wiki/edit/:id' => 'wiki#edit'
+  match 'wiki/delete/:id' => 'wiki#delete'
   match 'wiki/revisions/:id/:vid' => 'wiki#revision'
   match 'wiki' => 'wiki#index'
   match 'wiki/tags/:tags' => 'wiki#tags'
