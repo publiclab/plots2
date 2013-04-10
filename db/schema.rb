@@ -1320,8 +1320,8 @@ ActiveRecord::Schema.define(:version => 20130408183908) do
   create_table "node_selections", :id => false, :force => true do |t|
     t.integer "user_id"
     t.integer "nid"
-    t.boolean "following"
-    t.boolean "liking"
+    t.boolean "following", :default => false
+    t.boolean "liking",    :default => false
   end
 
   add_index "node_selections", ["user_id", "nid"], :name => "index_node_selections_on_user_id_and_nid"
@@ -1738,7 +1738,7 @@ ActiveRecord::Schema.define(:version => 20130408183908) do
   create_table "tag_selections", :id => false, :force => true do |t|
     t.integer "user_id"
     t.integer "tid"
-    t.boolean "following"
+    t.boolean "following", :default => false
   end
 
   add_index "tag_selections", ["user_id", "tid"], :name => "index_tag_selections_on_user_id_and_tid"
@@ -1864,7 +1864,7 @@ ActiveRecord::Schema.define(:version => 20130408183908) do
   create_table "user_selections", :id => false, :force => true do |t|
     t.integer "self_id"
     t.integer "other_id"
-    t.boolean "following"
+    t.boolean "following", :default => false
   end
 
   add_index "user_selections", ["self_id", "other_id"], :name => "index_user_selections_on_self_id_and_other_id"
