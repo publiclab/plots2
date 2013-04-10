@@ -5,7 +5,7 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   def setup
     activate_authlogic
     @user =  FactoryGirl.create(:user)
-    @drupal_user =  FactoryGirl.create(:drupal_users, :name => @user.username, :mail => @user.email)
+    @drupal_user =  FactoryGirl.create(:drupal_users, :name => @user.username, :mail => @user.email, :uid => 1)
   end
 
   def teardown
@@ -14,8 +14,10 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   end
 
   test "browse front page" do
-    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid)
-    node_revision = FactoryGirl.create(:drupal_node_revision, :nid => node.id)
+    title = "Test node for front page test"
+    # was failing title uniquness and unique primary key due to nonfunctioning factory_girl sequencer
+    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => title, :nid => 10)
+    node_revision = FactoryGirl.create(:drupal_node_revision, :nid => node.id, :title => title)
     node.drupal_node_counter.totalcount = 30
     node.drupal_node_counter.save
     get "/"
@@ -24,8 +26,10 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   end
 
   test "view notes for an author" do
-    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid)
-    node_revision = FactoryGirl.create(:drupal_node_revision, :nid => node.id)
+    title = "New title for author notes test"
+    # was failing title uniquness and unique primary key due to nonfunctioning factory_girl sequencer
+    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => title, :nid => 11)
+    node_revision = FactoryGirl.create(:drupal_node_revision, :nid => node.id, :title => title)
     node.drupal_node_counter.totalcount = 30
     node.drupal_node_counter.save
     get "/notes/author/"+@user.username
@@ -33,8 +37,14 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     node.destroy
   end
 
+  # must destroy all old nodes
   test "browse /research" do
-    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid)
+    DrupalNode.find(:all).each do |n|
+      n.destroy
+    end
+    title = "New title for research test"
+    # was failing title uniquness and unique primary key due to nonfunctioning factory_girl sequencer
+    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => title, :nid => 12) 
     node_revision = FactoryGirl.create(:drupal_node_revision, :nid => node.id)
     get "/research"
     assert_response :success
@@ -52,7 +62,8 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   end
 
   test "browse /about" do
-    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => "About", :type => "page")
+    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => "About", :type => "page", :nid => 13) 
+    # was failing title uniquness and unique primary key due to nonfunctioning factory_girl sequencer
     node_revision = FactoryGirl.create(:drupal_node_revision, :body => "About Public Lab", :nid => node.id)
     get "/wiki/about"
     assert_response :success
