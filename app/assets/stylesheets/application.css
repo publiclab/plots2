@@ -173,3 +173,23 @@ a i.icon-white { color:white; }
 }
 
 /* END EDITOR STYLES */
+
+.caption {
+  padding:12px;
+  font-size:10px;
+  font-style:italic;
+}
+.caption.left {
+  padding-left:0;
+  width:312px;
+  float:left;
+}
+.caption.right {
+  padding-right:0;
+  width:312px;
+  float:right;
+}
+.caption img {
+  padding-bottom:4px;
+}
+

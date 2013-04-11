@@ -138,6 +138,7 @@ class WikiController < ApplicationController
   end
 
   def index
+    @title = "Wiki index"
     @wikis = DrupalNode.find_all_by_type('page',10,:limit => 20,:order => "changed DESC", :conditions => {:status => 1})
   end
 
