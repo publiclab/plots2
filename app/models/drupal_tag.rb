@@ -71,4 +71,8 @@ class DrupalTag < ActiveRecord::Base
     DrupalNode.find_all_by_type "note", :conditions => ["node.nid in (?) AND node_counter.totalcount > (?)",nids.uniq,views], :order => "changed DESC", :limit => limit, :include => :drupal_node_counter
   end
 
+  def self.exists?(tagname,nid)
+    DrupalNodeCommunityTag.find(:all, :conditions => ['nid = ? AND term_data.name = ?',nid,tagname], :joins => :drupal_tag).length != 0
+  end
+
 end

@@ -29,7 +29,7 @@
     </ul>
 
   <p style="overflow:hidden;">
-  <%= raw auto_link(RDiscount.new(@node.latest.body).to_html) %>
+  <%= raw auto_link(RDiscount.new(@node.latest.body).to_html, :sanitize => false) %>
   </p>
 
   <hr />

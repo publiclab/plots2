@@ -29,7 +29,9 @@ class NotesController < ApplicationController
       :main_image => params[:main_image]
     })
     if saved
-      # tag here
+      params[:tags].split(',').each do |tagname|
+        @node.add_tag(tagname,current_user)
+      end
       # opportunity for moderation
       flash[:notice] = "Research note published."
       redirect_to @node.path

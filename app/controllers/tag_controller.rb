@@ -21,37 +21,21 @@ class TagController < ApplicationController
   # look for uniqueness!
   # handle failures!
   def create
-    if DrupalNodeCommunityTag.find(:all, :conditions => ['nid = ? AND term_data.name = ?',params[:nid],params[:name]], :joins => :drupal_tag).length != 0
+    if DrupalTag.exists?(params[:tagname],params[:nid])
       render :text => "Error: that tag already exists."
     else 
       @node = DrupalNode.find params[:nid]
-      tag = DrupalTag.new({
-        :vid => 3, # vocabulary id; 1
-        :name => params[:name],
-        :description => "",
-        :weight => 0
-      })
-      if tag.valid?
-        tag.save!
-        node_tag = DrupalNodeCommunityTag.new({
-          :tid => tag.id,
-          :uid => current_user.uid,
-          :date => DateTime.now.to_i,
-          :nid => params[:nid]
-        })
-        if node_tag.save
-          respond_with do |format|
-            format.html do
-              if request.xhr?
-                render :text => tag.name+','+tag.id.to_s
-              else
-                flash[:notice] = "Tag created."
-                redirect_to @node.path
-              end
+      saved,tag = @node.add_tag(params[:name],current_user)
+      if saved
+        respond_with do |format|
+          format.html do
+            if request.xhr?
+              render :text => tag.name+','+tag.id.to_s
+            else
+              flash[:notice] = "Tag created."
+              redirect_to @node.path
             end
           end
-        else
-          render :text => "Error: that tag already exists."
         end
       else
         render :text => "Error: Tags "+tag.errors[:name].first

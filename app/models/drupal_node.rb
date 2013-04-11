@@ -13,7 +13,7 @@ class UniqueUrlValidator < ActiveModel::Validator
 end
 
 class DrupalNode < ActiveRecord::Base
-  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes
+  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment
   self.table_name = 'node'
   self.primary_key = 'nid'
 
@@ -438,6 +438,34 @@ class DrupalNode < ActiveRecord::Base
       end
     end
     return [saved,node,revision]
+  end
+
+  def add_tag(tagname,user)
+    saved = false
+    tag = DrupalTag.new({
+      :vid => 3, # vocabulary id; 1
+      :name => tagname,
+      :description => "",
+      :weight => 0
+    })
+    ActiveRecord::Base.transaction do
+      if tag.valid?
+        tag.save!
+        node_tag = DrupalNodeCommunityTag.new({
+          :tid => tag.id,
+          :uid => user.uid,
+          :date => DateTime.now.to_i,
+          :nid => self.id
+        })
+        if node_tag.save
+          saved = true
+        else
+          saved = false
+          tag.destroy
+        end
+      end
+    end
+    return [saved,tag]
   end
 
 end
