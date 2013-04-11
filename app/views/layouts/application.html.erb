@@ -162,9 +162,12 @@
       <%= render :partial => "layouts/alerts" %>
 
         <%# unless current_user || params[:controller] == "user_sessions" || params[:controller] == "home" && params[:action] == "front" %>
-          <div class="well" style="padding:12px 20px 8px;">
-            <h4 style="display:inline;">Did you know that Public Lab is an open community supported by a nonprofit?</h4> 
-            <a href="/donate" style="margin-left:10px;" class="btn btn-primary btn-large">Donate &raquo;</a>
+          <div class="well visible-desktop" style="padding:12px 20px 8px;">
+            <h4  style="display:inline;">Did you know that Public Lab is an open community supported by a nonprofit?</h4> 
+            <a href="/donate" style="margin-left:10px;" class="btn btn-primary btn-large hidden-phone">Donate &raquo;</a>
+          </div>
+          <div class="visible-phone" style="height:4.5em;">
+            <a href="/donate" style="margin-bottom:6px;" class="btn btn-success btn-large btn-block">Donate to the Public Lab non-profit &raquo;</a>
           </div>
         <%# end %>
 
