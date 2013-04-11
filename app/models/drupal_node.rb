@@ -335,7 +335,7 @@ class DrupalNode < ActiveRecord::Base
   # ============================================
   # Automated constructors for associated models
 
-  def comment(params)
+  def add_comment(params = {})
     if self.comments.length > 0
       thread = self.comments.last.next_thread
     else
@@ -376,6 +376,7 @@ class DrupalNode < ActiveRecord::Base
     node = DrupalNode.new({
       :uid => params[:uid],
       :title => params[:title],
+      :comment => 2,
       :type => "note"
     })
     if node.valid?

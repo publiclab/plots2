@@ -5,7 +5,7 @@ class CommentController < ApplicationController
   # handle some errors!!!!!!
   def create
     @node = DrupalNode.find params[:id]
-    @comment = @node.comment({:uid => current_user.uid,:body => params[:body]})
+    @comment = @node.add_comment({:uid => current_user.uid,:body => params[:body]})
     @comment.notify(current_user)
     flash[:notice] = "Comment posted."
     # should implement ajax too

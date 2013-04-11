@@ -29,6 +29,7 @@ class NotesController < ApplicationController
       :main_image => params[:main_image]
     })
     if saved
+      # tag here
       # opportunity for moderation
       flash[:notice] = "Research note published."
       redirect_to @node.path
