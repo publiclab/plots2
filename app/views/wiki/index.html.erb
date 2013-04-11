@@ -17,7 +17,7 @@
       </tr>
       <% @wikis.each do |wiki| %>
         <tr>
-          <td><i class="icon-file"></i> <a href="/wiki/<%= wiki.slug %>"><%= wiki.title %></a></td>
+          <td><i class="icon-file"></i> <a href="<%= wiki.path %>"><%= wiki.title %></a></td>
           <td><%= time_ago_in_words(wiki.updated_at) %> ago by 
           <a href="/notes/author/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></td>
           <td><%= wiki.revisions.length %></td>

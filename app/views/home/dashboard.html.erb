@@ -10,6 +10,12 @@
 
   <h3>Dashboard: <small>Welcome, <%= current_user.username %>!</small></h3>
 
+  <div id="share" class="hidden-phone" style="width:350px;float:right;margin-top:5px;text-align:right;height:30px;">
+    <div style="float:right;margin-left:6px;"><a href="https://twitter.com/PublicLab" class="twitter-follow-button" data-show-count="false">Follow @PublicLab</a></div>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <div class="fb-follow" style="" data-href="https://www.facebook.com/publiclab" data-layout="button_count" data-show-faces="false" data-width="50"></div>
+  </div>
+
   <ul class="nav nav-tabs">
     <li class="active"><a rel="tooltip" title="Research notes for: <%= @user.tagnames.join(', ') %>" data-placement="bottom" href="#"><span class="hidden-phone">Recent </span>Activity</a></li>
     <li><a href="/nearby"><i class="icon icon-globe"></i> Nearby</a></li>
