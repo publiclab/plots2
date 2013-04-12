@@ -38,20 +38,22 @@ class WikiController < ApplicationController
   end
 
   def new
-    flash.now[:notice] = "This page does not exist yet, but you can create it now:"
-    title = params[:id].gsub('-',' ')
-    @related = DrupalNode.find(:all, :limit => 10, :order => "node.nid DESC", :conditions => ['type = "page" AND status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', "%"+title+"%","%"+title+"%"], :include => :drupal_node_revision)
     @tags = []
-    tag = DrupalTag.find_by_name(params[:id]) # add page name as a tag, too
-    @tags << tag if tag
-
-    @related += DrupalTag.find_nodes_by_type(@tags.collect(&:name),'page',10)
+    if params[:id]
+      flash.now[:notice] = "This page does not exist yet, but you can create it now:" 
+      title = params[:id].gsub('-',' ')
+      @related = DrupalNode.find(:all, :limit => 10, :order => "node.nid DESC", :conditions => ['type = "page" AND status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', "%"+title+"%","%"+title+"%"], :include => :drupal_node_revision)
+      tag = DrupalTag.find_by_name(params[:id]) # add page name as a tag, too
+      @tags << tag if tag
+      @related += DrupalTag.find_nodes_by_type(@tags.collect(&:name),'page',10)
+    end
     render :template => 'wiki/edit'
   end
 
   def create
-    title = params[:id].downcase.gsub(' ','-').gsub("'",'').gsub('"','')
-    title = params[:url].downcase.gsub(' ','-').gsub("'",'').gsub('"','') if params[:url] != ""
+    title = params[:title].parameterize if params[:title]
+    title = params[:id].parameterize if params[:id] != "" && !params[:id].nil?
+    title = params[:url].parameterize if params[:url] != "" && !params[:url].nil?
     saved,@node,@revision = DrupalNode.new_wiki({
       :uid => current_user.uid,
       :title => title,

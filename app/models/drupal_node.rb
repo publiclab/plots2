@@ -3,7 +3,10 @@ require 'rss'
 class UniqueUrlValidator < ActiveModel::Validator
   def validate(record)
     if record.title == "" || record.title.nil?
-      record.errors[:base] << "You must provide a title." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
+      #record.errors[:base] << "You must provide a title." 
+      # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
+    elsif record.title == "new" && (record.type == "page" || record.type == "place" || record.type == "tool")
+      record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     else
       if !DrupalUrlAlias.find_by_dst(record.generate_path).nil? && record.type == "note"
       record.errors[:base] << "You have already used this title today."

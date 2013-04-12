@@ -1,4 +1,9 @@
+<% if (@wikis.nil? && @notes.nil?) %>
+<%= render :partial => "sidebar/featured" %>
+<% else %>
 <%= render :partial => "sidebar/related" %>
+<% end %>
+
 <div class="span9">
 
   <% if @node.main_image %>
