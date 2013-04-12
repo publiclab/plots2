@@ -1,3 +1,5 @@
+<script src="/assets/js/editor.js"></script>
+
 <div class="btn-toolbar">
   <div class="btn-group">
     <a class="btn btn-small" onClick="$E.bold()"><i class="icon-bold"></i></a>
@@ -23,8 +25,8 @@
   </div>
 
   <div class="btn-group">
-    <a class="btn btn-link hidden-phone" href="#"><i class="icon-question-sign"></i> Help</a>
-    <a class="btn btn-small visible-phone" href="#"><i class="icon-question-sign"></i></a>
+    <a class="btn btn-link hidden-phone" target="_blank" href="/wiki/authoring-help"><i class="icon-question-sign"></i> Help</a>
+    <a class="btn btn-small visible-phone" target="_blank" href="/wiki/authoring-help"><i class="icon-question-sign"></i></a>
   </div>
 
 </div>
@@ -43,21 +45,14 @@
 <div class="well span9" id="preview" style="display:none;"> </div>
 <br style="clear:both;"/>
 
-<script src="/assets/js/markdown.js"></script>
+<script src="/assets/js/marked.js"></script>
 <script>
   (function() { 
-    $E.initialize({
-    })
+    $E.initialize({})
   })()
-
-  function Editor(input, preview)
-  {
-    this.update = function () {
-      preview.innerHTML = markdown.toHTML(input.value);
-    }
-    input.editor = this;
-    this.update();
-  }
-  var $M = function (id) { return document.getElementById(id); };
-  new Editor($M("text-input"), $M("preview"));
 </script>
+<link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
+<script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
+<script src="/assets/js/dragdrop.js?2"></script>

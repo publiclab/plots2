@@ -21,10 +21,10 @@
     </span>
     <ul class="nav nav-tabs">
       <li class="active"><a href="#">View</a></li>
-      <li><a href="/wiki/edit/<%= @node.slug %>"><i class="icon icon-pencil"></i> Edit</a></li>
-      <% if current_user && current_user.username == "warren" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you sure? You cannot undo this action." do %><i class="icon icon-trash"></i> Delete<% end %></li><% end %>
-      <li><a href="http://pad.publiclaboratory.org/p/<%= @node.slug %>"><i class="icon icon-comments-alt"></i> Talk</a></li>
-      <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i> Revisions (<%= @node.revisions.length %>)</a></li>
+      <li><a href="/wiki/edit/<%= @node.slug %>"><i class="icon icon-pencil"></i><span class="hidden-phone"> Edit</span></a></li>
+      <% if current_user && current_user.username == "warren" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you sure? You cannot undo this action." do %><i class="icon icon-trash"></i><span class="hidden-phone"> Delete</span><% end %></li><% end %>
+      <li><a href="http://pad.publiclaboratory.org/p/<%= @node.slug %>"><i class="icon icon-comments-alt"></i><span class="hidden-phone"> Talk</span></a></li>
+      <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i><span class="hidden-phone"> Revisions </span>(<%= @node.revisions.length %>)</a></li>
       <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
     </ul>
 

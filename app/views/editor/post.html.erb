@@ -54,11 +54,6 @@
       </div>
       <p class="side-uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
 
-      <!--<a href="#images_modal" data-dismiss="modal" data-toggle="modal" class="btn"><i class="icon icon-picture"></i> Recent images</a>-->
-      <%# render :partial => "editor/images" %>
-
-      <script src="/assets/js/editor.js"></script>
-
     </div>
 
     <h3 style="margin-top:0;">Share your work</h3>
@@ -79,7 +74,7 @@
 
     <p>
       <a id="publish" tabindex="4" class="btn btn-primary btn-large">Publish</a>
-      <a id="preview-btn" class="btn btn-large" onClick="$('#preview-btn').button('toggle');$('#preview').toggle();$('#dropzone').toggle()">Preview</a></p>
+      <a id="preview-btn" class="btn btn-large" onClick="$E.toggle_preview()">Preview</a></p>
     <p>By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
   <% end %>
 </div>
@@ -103,8 +98,3 @@
     if ($E.textarea.val() == "") $E.apply_template("<%= params[:template] || 'default'%>")
   })()
 </script>
-<link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
-<script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
-<script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
-<script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
-<script src="/assets/js/dragdrop.js?2"></script>

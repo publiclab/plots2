@@ -3,6 +3,25 @@ $E = {
     args = args || {}
     args['textarea'] = args['textarea'] || 'text-input'
     $E.textarea = $('#'+args['textarea'])
+    args['preview'] = args['preview'] || 'preview'
+    $E.preview = $('#'+args['preview'])
+
+    marked.setOptions({
+      gfm: true,
+      tables: true,
+      breaks: true,
+      pedantic: false,
+      sanitize: false,
+      smartLists: true,
+      langPrefix: 'language-',
+      highlight: function(code, lang) {
+        if (lang === 'js') {
+          return highlighter.javascript(code);
+        }
+        return code;
+      }
+    });
+
   },
   is_editing: function() {
     return ($E.textarea[0].selectionStart == 0 && $E.textarea[0].selectionEnd == 0)
@@ -67,5 +86,11 @@ $E = {
     default: "##What I want to do\n\n##My attempt and results\n\n##Questions and next steps",
     support: "##Details about the problem\n\n",
     event: "##Event details\n\nWhen, where, what\n\n##Background\n\nWho, why"
+  },
+  toggle_preview: function() {
+    $E.preview[0].innerHTML = marked($E.textarea.val());
+    $('#preview-btn').button('toggle');
+    $('#dropzone').toggle()
+    $E.preview.toggle();
   }
 }
