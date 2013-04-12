@@ -1,12 +1,14 @@
-<script src="/assets/js/markdown.js"></script>
+<script src="/assets/js/marked.js"></script>
 <script>
-  function Editor(input, preview) {
-    this.update = function () {
-      preview.innerHTML = markdown.toHTML(input.value);
+(function(){
+
+  $E = {
+    preview: function(id,text) {
+      $('#'+id)[0].innerHTML = marked(text)
     }
-    input.editor = this;
-    this.update();
   }
+
+})()
 </script>
 
 <div id="comments" class="span10 comments">
@@ -74,7 +76,7 @@
       </script>
 
       <button type="submit" class="btn btn-primary">Publish</button>
-      <a class="btn" onClick="$('#c<%= comment.cid %>preview').toggle();$('#c<%= comment.cid %>text-input').toggle()">Preview</a>
+      <a class="btn preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();$('#c<%= comment.cid %>text-input').toggle();$('#c<%= comment.cid %>edit .preview-btn').button('toggle');$E.preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">Preview</a>
       <a class="btn" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()">Cancel</a>
       <span>(logged in as <b><%= current_user.username %></b>)</span>
     </form>
@@ -96,7 +98,7 @@
     </script>
 
     <button type="submit" class="btn btn-primary">Publish</button>
-    <a class="btn" onClick="$('#preview').toggle();$('#text-input').toggle()">Preview</a>
+    <a id="preview-btn" class="btn" onClick="$('#preview').toggle();$('#text-input').toggle();$('#preview-btn').button('toggle');$E.preview('preview',$('#text-input').val())">Preview</a>
     <span>(logged in as <b><%= current_user.username %></b>)</span>
   </form>
   <% else %>
