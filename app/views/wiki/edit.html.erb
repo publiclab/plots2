@@ -64,8 +64,6 @@
       <input name="url" type="text" class="span9" id="url" value="" placeholder="page-url"><br />
     <% end %>
 
-    <%= render :partial => 'editor/editor' %>
-
     <script>
       (function(){
         $D = {
@@ -74,6 +72,8 @@
         }
       })()
     </script>
+
+    <%= render :partial => 'editor/editor' %>
 
     <button tabindex="4" type="submit" class="btn btn-primary btn-large">Publish</button>
     <a id="preview-btn" class="btn btn-large" onClick="$E.toggle_preview()">Preview</a>
