@@ -99,7 +99,7 @@ class DrupalNode < ActiveRecord::Base
     elsif self.type == 'page'
       "wiki/"+self.title.parameterize
     elsif self.type == 'map'
-      #...
+      "map/"+self.title.parameterize+"/"+Time.now.strftime("%m-%d-%Y")
     end
   end
 
@@ -306,7 +306,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def map
-    DrupalContentTypeMap.find_by_nid(self.nid,:order => "created DESC")
+    DrupalContentTypeMap.find_by_nid(self.nid,:order => "vid DESC")
   end
 
   def nearby_maps(dist = 1.5)
