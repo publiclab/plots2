@@ -61,11 +61,11 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "browse /about" do
-    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => "About", :type => "page", :nid => 13) 
+  test "browse /wiki/foo" do
+    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => "Foo", :type => "page", :nid => 13) 
     # was failing title uniquness and unique primary key due to nonfunctioning factory_girl sequencer
-    node_revision = FactoryGirl.create(:drupal_node_revision, :body => "About Public Lab", :nid => node.id)
-    get "/wiki/about"
+    node_revision = FactoryGirl.create(:drupal_node_revision, :body => "Foo Public Lab", :nid => node.id)
+    get "/wiki/foo"
     assert_response :success
     node.destroy
   end

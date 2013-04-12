@@ -5,15 +5,23 @@ class UserSessionsController < ApplicationController
   end
 
   def create
-    params[:user_session][:openid_identifier] = "http://publiclaboratory.org/people/"+params[:user_session][:openid_identifier]+"/identity" if params[:user_session]
-    @user_session = UserSession.new(params[:user_session])
-    @user_session.save do |result|
-      if result
-        flash[:notice] = "Successfully logged in."
-        redirect_to "/dashboard"
-      else
-        render :action => 'new'
+    openid = params[:user_session][:openid_identifier] if params[:user_session]
+    params[:user_session][:openid_identifier] = "http://publiclaboratory.org/people/"+openid+"/identity" if params[:user_session]
+puts openid
+    if params[:user_session].nil? || !User.find_by_username(openid).nil?
+      @user_session = UserSession.new(params[:user_session])
+      @user_session.save do |result|
+        if result
+          flash[:notice] = "Successfully logged in."
+          redirect_to "/dashboard"
+        else
+          render :action => 'new'
+        end
       end
+    else
+      # this is a user from the old site who hasn't registered on the new site
+      redirect_to :controller => :users, :action => :create, :user => {:openid_identifier => "http://publiclaboratory.org/people/"+openid+"/identity"}
+
     end
   end
 

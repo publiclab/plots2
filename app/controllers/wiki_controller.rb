@@ -14,7 +14,12 @@ class WikiController < ApplicationController
       @tags = @node.tags
     else # it's a new wiki page!
       @title = "New wiki page"
-      new
+      if current_user
+        new
+      else
+        flash[:warning] = "That page does not yet exist. You must be logged in to create a new wiki page."
+        redirect_to "/login"
+      end
     end
 
     unless @title # the page exists

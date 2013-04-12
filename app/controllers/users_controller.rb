@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    redirect_to "/wiki/registration"
   end
 
   def create
