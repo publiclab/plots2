@@ -5,13 +5,9 @@ class WikiController < ApplicationController
   before_filter :require_user, :only => [:new, :create, :edit, :update, :delete]
 
   def show
-    if !(@node = DrupalNode.find_root_by_slug('place/'+params[:id])).nil? # it's a place page!
-      place = true
-      @tags = [DrupalTag.find_by_name(params[:id])]
-    elsif !(@node = DrupalNode.find_root_by_slug('tool/'+params[:id])).nil? # it's a tool page!
-      @tags = [DrupalTag.find_by_name(params[:id])]
-    elsif !(@node = DrupalNode.find_by_slug(params[:id])).nil? # it's a wiki page
+    if !(@node = DrupalNode.find_by_slug(params[:id])).nil? # it's a place page!
       @tags = @node.tags
+      @tags += [DrupalTag.find_by_name(params[:id])] if DrupalTag.find_by_name(params[:id])
     else # it's a new wiki page!
       @title = "New wiki page"
       if current_user
@@ -24,7 +20,7 @@ class WikiController < ApplicationController
 
     unless @title # the page exists
       @tagnames = @tags.collect(&:name)
-      set_sidebar :tags, @tagnames, {:videos => true} if place.nil?
+      set_sidebar :tags, @tagnames, {:videos => true}
 
       @node.view
       @title = @node.title
@@ -37,10 +33,7 @@ class WikiController < ApplicationController
     #@node.locked = true
     #@node.save
     @title = "Editing '"+@node.title+"'"
-    if @node.nil?
-      @node = DrupalNode.find_root_by_slug('place/'+params[:id]) 
-      @place = true if @node.nil?
-    end
+
     @tags = @node.tags
   end
 
@@ -81,9 +74,11 @@ class WikiController < ApplicationController
       :body => params[:body]
     })
     if @revision.valid?
-      @revision.save
-      @node.vid = @revision.vid
-      @node.save
+      ActiveRecord::Base.transaction do
+        @revision.save
+        @node.vid = @revision.vid
+        @node.save
+      end
       flash[:notice] = "Edits saved."
       redirect_to "/wiki/"+@node.slug
     else
