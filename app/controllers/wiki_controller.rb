@@ -141,7 +141,13 @@ class WikiController < ApplicationController
 
   def index
     @title = "Wiki index"
-    @wikis = DrupalNode.find_all_by_type('page',10,:limit => 20,:order => "changed DESC", :conditions => {:status => 1})
+    @wikis = DrupalNode.find_all_by_type('page',10,:limit => 40,:order => "changed DESC", :conditions => ["status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')"])
+  end
+
+  def popular
+    @title = "Popular Wiki pages"
+    @wikis = DrupalNode.find(:all, :limit => 40,:order => "node_counter.totalcount DESC", :conditions => ["status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')"], :include => :drupal_node_counter)
+    render :template => "wiki/index"
   end
 
 end

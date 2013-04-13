@@ -20,6 +20,7 @@ Plots2::Application.routes.draw do
   resources :users
 
   match 'wiki/new' => 'wiki#new'
+  match 'wiki/popular' => 'wiki#popular'
   match 'wiki/create' => 'wiki#create'
   match 'wiki/:id' => 'wiki#show'
   match 'wiki/revisions/:id' => 'wiki#revisions'

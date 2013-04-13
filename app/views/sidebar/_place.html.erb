@@ -1,3 +1,5 @@
+<br />
+<% if @node.has_power_tag('events') || @node.has_mailing_list? %>
 <div class='well'>
 
 <% if @node.has_power_tag('events') %>
@@ -12,9 +14,9 @@
   <% if events.length == 0 %><li>No events</li><% end %>
 </ul>
 <p><a class="btn" href="/post?template=event&tags=event,<%= events.first %>">Post an event</a></p>
-<% end %>
 
 <hr />
+<% end %>
 
 <% if @node.has_mailing_list? %>
   <% mailing_list = @node.power_tag("list") %>
@@ -38,7 +40,8 @@
     </li>
   <% end %>
   </ul>
-  <p><a href="http://groups.google.com/group/<%= mailing_list %>">All topics</a></p>
+  <p><a href="http://groups.google.com/group/<%= mailing_list %>">All topics &raquo;</a></p>
 <% end %>
 
 </div>
+<% end %>

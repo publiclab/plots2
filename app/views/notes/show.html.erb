@@ -36,7 +36,7 @@
       by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
       <span class="hidden-phone">
         <%= @node.created_at.to_s(:long) %> |
-        <%= @node.totalcount %> views
+        <%= number_with_delimiter(@node.totalcount) %> views 
         <% if @node.comments %>| <i class="icon icon-comment"></i> <a href="#comments"><%= @node.comments.length %> comments</a><% end %>
       </span>
       <span class="hidden-desktop">
