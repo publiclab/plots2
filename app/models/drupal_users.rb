@@ -62,13 +62,13 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def tags(limit = 10)
-    DrupalTag.find :all, :conditions => ['name in (?)',self.tagnames]
+    DrupalTag.find :all, :conditions => ['name in (?)',self.tagnames], :limit => limit
   end
 
   def tagnames(limit = 20,defaults = true)
     tagnames = []
-    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :joins =>:drupal_node_tag, :limit => limit).each do |node|
-      tagnames += node.drupal_tag.collect(&:name)
+    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => limit).each do |node|
+      tagnames += node.tags.collect(&:name)
     end
     tagnames += ["balloon-mapping","spectrometer","near-infrared-camera","thermal-photography","newsletter"] if tagnames.length == 0 && defaults
     tagnames.uniq
