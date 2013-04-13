@@ -29,21 +29,16 @@
             <i class="icon-pencil"></i>
           </a><% end %>
         <% if current_user && current_user.username == "warren" && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
-          <form id="c<%= comment.cid %>delete-form" data-remote="true" action="/comment/delete/<%= comment.cid %>">
-            <button type="submit" data-confirm="Are you sure?" class="btn btn-small pull-right" style="margin-top:0;" id="c<%= comment.cid %>delete-btn">
-              <i class='icon icon-trash'></i>
-            </button>
-          </form>
-          <a data-remote="true" data-confirm="Are you sure?" id="c<%= comment.cid %>delete-btn-2" href="/comment/delete/<%= comment.cid %>">
+          <a style="margin-top:0;" data-remote="true" data-confirm="Are you sure?" href="/comment/delete/<%= comment.cid %>" class="btn btn-small pull-right" id="c<%= comment.cid %>delete-btn-2">
               <i class='icon icon-trash'></i>
           </a>
           <script>
             // deletion button code:
-            $("#c<%= comment.cid %>delete-btn").bind('ajax:beforeSend', function(){
-              $("#c<%= comment.cid %>delete-btn").prop('disabled',true)
-            });
             $("#c<%= comment.cid %>delete-btn").bind('ajax:success', function(e,response){
-              $("#c<%= comment.cid %>delete-btn").prop('disabled',false)
+              $("#c<%= comment.cid %>").remove()
+              $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)-1
+            })
+            $("#c<%= comment.cid %>delete-btn-2").bind('ajax:success', function(e,response){
               $("#c<%= comment.cid %>").remove()
               $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)-1
             })
