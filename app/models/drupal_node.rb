@@ -3,7 +3,10 @@ require 'rss'
 class UniqueUrlValidator < ActiveModel::Validator
   def validate(record)
     if record.title == "" || record.title.nil?
-      record.errors[:base] << "You must provide a title." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
+      #record.errors[:base] << "You must provide a title." 
+      # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
+    elsif record.title == "new" && (record.type == "page" || record.type == "place" || record.type == "tool")
+      record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     else
       if !DrupalUrlAlias.find_by_dst(record.generate_path).nil? && record.type == "note"
       record.errors[:base] << "You have already used this title today."
@@ -96,7 +99,7 @@ class DrupalNode < ActiveRecord::Base
     elsif self.type == 'page'
       "wiki/"+self.title.parameterize
     elsif self.type == 'map'
-      #...
+      "map/"+self.title.parameterize+"/"+Time.now.strftime("%m-%d-%Y")
     end
   end
 
@@ -153,17 +156,17 @@ class DrupalNode < ActiveRecord::Base
 
   # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_main_image
-    DrupalMainImage.find_by_vid self.vid
+    DrupalMainImage.find :last, :conditions => {:nid => self.nid}
   end
 
   # provide either a Drupally main_iamge or a Railsy one 
-  def main_image(type = :all)
-    if self.drupal_main_image && type != :rails
+  def main_image(node_type = :all)
+    if self.drupal_main_image && node_type != :rails
       self.drupal_main_image.drupal_file 
-    elsif type != :drupal
-      self.images.last if self.images
+    elsif node_type != :drupal && self.images
+      self.images.last 
     else
-      false
+      nil
     end
   end
 
@@ -259,7 +262,7 @@ class DrupalNode < ActiveRecord::Base
   # URL-related methods:
 
   def slug
-    if self.type == "page"
+    if self.type == "page" || self.type == "tool" || self.type == "place"
       slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
     else
       slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
@@ -271,8 +274,20 @@ class DrupalNode < ActiveRecord::Base
     path = "/"+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst
   end
 
+  def edit_path
+    if self.type == "page" || self.type == "tool" || self.type == "place"
+      path = "/wiki/edit/"+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+    else
+      path = "/notes/edit/"+self.id.to_s
+    end
+    path
+  end
+
   def self.find_by_slug(title)
-    urlalias = DrupalUrlAlias.find_by_dst('wiki/'+title)
+    urlalias = DrupalUrlAlias.find_by_dst('place/'+title)
+    urlalias = urlalias || DrupalUrlAlias.find_by_dst('tool/'+title)
+    urlalias = urlalias || DrupalUrlAlias.find_by_dst('wiki/'+title)
+    urlalias = urlalias || DrupalUrlAlias.find_by_dst(title)
     if urlalias
       urlalias.node
     else
@@ -341,18 +356,20 @@ class DrupalNode < ActiveRecord::Base
     else
       thread = "01/"
     end
-    c = DrupalComment.new({})
-    c.pid = 0
-    c.nid = self.nid
-    c.uid = params[:uid]
-    c.subject = ""
-    c.hostname = ""
-    c.comment = params[:body]
-    c.status = 0
-    c.format = 1
-    c.thread = thread
-    c.timestamp = DateTime.now.to_i
-    c if c.save!
+    c = DrupalComment.new({
+      :pid => 0,
+      :nid => self.nid,
+      :uid => params[:uid],
+      :subject => "",
+      :hostname => "",
+      :comment => params[:body],
+      :status => 0,
+      :format => 1,
+      :thread => thread,
+      :timestamp => DateTime.now.to_i
+    })
+    c.save
+    c
   end
 
   def new_revision(params)

@@ -1,0 +1,82 @@
+<div id="c<%= comment.cid %>">
+  <div class="navbar">
+    <div class="navbar-inner">
+ 
+      <div class="hidden-phone" style="padding-top:2px;">
+ 
+        <% if current_user && current_user.username == "warren" && comment.uid == current_user.uid %>
+          <a style="margin-left:4px;" class="btn btn-small pull-right" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()">
+            <i class="icon-pencil"></i>
+          </a><% end %>
+        <% if current_user && current_user.username == "warren" && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
+          <a data-remote="true" data-confirm="Are you sure?" href="/comment/delete/<%= comment.cid %>" class="btn btn-small pull-right" id="c<%= comment.cid %>delete-btn">
+              <i class='icon icon-trash'></i>
+          </a>
+        <% end %>
+ 
+        <div style="margin-top:9px;">
+          <i class="icon-comment"></i>
+          <a href="/notes/author/<%= comment.author.name %>"><%= comment.author.name %></a>
+          <a style="color:#aaa;" href="#c<%= comment.cid %>">commented</a>
+          <%= time_ago_in_words(comment.created_at) %> ago
+        </div>
+      </div>
+ 
+      <div class="visible-phone" style="padding-top:7px;">
+ 
+        <% if current_user && current_user.username == "warren" && comment.uid == current_user.uid %>
+          <a style="margin-left:4px;margin-top:0;" class="btn btn-small pull-right" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()">
+            <i class="icon-pencil"></i>
+          </a><% end %>
+        <% if current_user && current_user.username == "warren" && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
+          <form id="c<%= comment.cid %>delete-form" data-remote="true" action="/comment/delete/<%= comment.cid %>">
+            <button type="submit" data-confirm="Are you sure?" class="btn btn-small pull-right" style="margin-top:0;" id="c<%= comment.cid %>delete-btn">
+              <i class='icon icon-trash'></i>
+            </button>
+          </form>
+          <a data-remote="true" data-confirm="Are you sure?" id="c<%= comment.cid %>delete-btn-2" href="/comment/delete/<%= comment.cid %>">
+              <i class='icon icon-trash'></i>
+          </a>
+          <script>
+            // deletion button code:
+            $("#c<%= comment.cid %>delete-btn").bind('ajax:beforeSend', function(){
+              $("#c<%= comment.cid %>delete-btn").prop('disabled',true)
+            });
+            $("#c<%= comment.cid %>delete-btn").bind('ajax:success', function(e,response){
+              $("#c<%= comment.cid %>delete-btn").prop('disabled',false)
+              $("#c<%= comment.cid %>").remove()
+              $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)-1
+            })
+          </script>
+        <% end %>
+ 
+        <div style="margin-top:3px;">
+          <i class="icon-comment"></i>
+          <a href="/notes/author/<%= comment.author.name %>"><%= comment.author.name %></a>
+          <a style="color:#aaa;" href="#c<%= comment.cid %>">said</a>
+          <%= time_ago_in_words(comment.created_at) %> ago
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+  <div id="c<%= comment.cid %>show">
+    <p><%= raw auto_link(RDiscount.new(comment.comment).to_html) %></p>
+  </div>
+  <% if current_user %>
+  <form class="well" id="c<%= comment.id %>edit" style="display:none;" action="/comment/update/<%= comment.id %>">
+    <h4 style="margin-top:0;">Edit comment</h4>
+
+    <textarea onFocus="editing=true" name="body" class="span12" id="c<%= comment.id %>text-input" oninput="this.editor.update()"
+          rows="8" cols="40"><%= comment.comment %></textarea>
+    <div class="well span11" id="c<%= comment.id %>preview" style="background:white;display:none;"> </div>
+    <br style="clear:both;"/>
+
+    <button type="submit" class="btn btn-primary">Publish</button>
+    <a class="btn preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();$('#c<%= comment.cid %>text-input').toggle();$('#c<%= comment.cid %>edit .preview-btn').button('toggle');$E.preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">Preview</a>
+    <a class="btn" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()">Cancel</a>
+    <span>(logged in as <b><%= current_user.username %></b>)</span>
+  </form>
+  <% end %>
+  <br />
+</div>

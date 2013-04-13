@@ -32,6 +32,23 @@ a i.icon-white { color:white; }
   font-size:1.2em;
 }
 
+@media (max-width:400px) {
+  .hidden-tiny {
+    display:none;
+  }
+  .visible-tiny {
+    display:inline;
+  }
+}
+@media (min-width:400px) {
+  .hidden-tiny {
+    display:inline;
+  }
+  .visible-tiny {
+    display:none;
+  }
+}
+
 @media (min-width: 979px) {
   .header-spacer {
     padding-top:60px;

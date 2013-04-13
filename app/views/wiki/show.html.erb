@@ -1,4 +1,9 @@
+<% if (@wikis.nil? && @notes.nil?) %>
+<%= render :partial => "sidebar/featured" %>
+<% else %>
 <%= render :partial => "sidebar/related" %>
+<% end %>
+
 <div class="span9">
 
   <% if @node.main_image %>
@@ -17,16 +22,18 @@
     </span>
     <span class="hidden-phone">
       <%= @node.totalcount %> views | 
-      Last edited by <a href="/notes/author/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a> <%= time_ago_in_words(@node.latest.created_at) %> ago</div>
+      Last edited by <a href="/notes/author/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a> <%= time_ago_in_words(@node.latest.created_at) %> ago
     </span>
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#">View</a></li>
-      <li><a href="/wiki/edit/<%= @node.slug %>"><i class="icon icon-pencil"></i><span class="hidden-phone"> Edit</span></a></li>
-      <% if current_user && current_user.username == "warren" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you sure? You cannot undo this action." do %><i class="icon icon-trash"></i><span class="hidden-phone"> Delete</span><% end %></li><% end %>
-      <li><a href="http://pad.publiclaboratory.org/p/<%= @node.slug %>"><i class="icon icon-comments-alt"></i><span class="hidden-phone"> Talk</span></a></li>
-      <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i><span class="hidden-phone"> Revisions </span>(<%= @node.revisions.length %>)</a></li>
-      <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
-    </ul>
+  </div>
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#"><span class="hidden-tiny">View</span><span class="visible-tiny"><i class="icon icon-file-alt"></i></span></a></li>
+    <li><a href="<%= @node.edit_path %>"><i class="icon icon-pencil"></i><span class="hidden-phone"> Edit</span></a></li>
+    <% if current_user && current_user.username == "warren" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you sure? You cannot undo this action." do %><i class="icon icon-trash"></i><span class="hidden-phone"> Delete</span><% end %></li><% end %>
+    <li><a href="http://pad.publiclaboratory.org/p/<%= @node.slug %>"><i class="icon icon-comments-alt"></i><span class="hidden-phone"> Talk</span></a></li>
+    <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i><span class="hidden-phone"> Revisions </span><span class="hidden-tiny">(<%= @node.revisions.length %>)</span></a></li>
+    <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
+  </ul>
 
   <p style="overflow:hidden;">
   <%= raw auto_link(RDiscount.new(@node.latest.body).to_html, :sanitize => false) %>
