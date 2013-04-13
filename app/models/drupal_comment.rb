@@ -1,4 +1,6 @@
 class DrupalComment < ActiveRecord::Base
+  attr_accessible :pid, :nid, :uid, :subject, :hostname, :comment, :status, :format, :thread, :timestamp 
+
   belongs_to :drupal_node, :foreign_key => 'nid', :touch => true, :dependent => :destroy
   has_one :drupal_users, :foreign_key => 'uid'
 

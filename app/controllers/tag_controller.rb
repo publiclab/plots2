@@ -17,9 +17,6 @@ class TagController < ApplicationController
     render :json => DrupalUsers.find_by_name(params[:id]).tag_counts
   end
 
-  # this is all silly and should be tucked into the model once we migrate away from Drupal
-  # look for uniqueness!
-  # handle failures!
   def create
     if DrupalTag.exists?(params[:tagname],params[:nid])
       render :text => "Error: that tag already exists."

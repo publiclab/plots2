@@ -356,18 +356,20 @@ class DrupalNode < ActiveRecord::Base
     else
       thread = "01/"
     end
-    c = DrupalComment.new({})
-    c.pid = 0
-    c.nid = self.nid
-    c.uid = params[:uid]
-    c.subject = ""
-    c.hostname = ""
-    c.comment = params[:body]
-    c.status = 0
-    c.format = 1
-    c.thread = thread
-    c.timestamp = DateTime.now.to_i
-    c if c.save!
+    c = DrupalComment.new({
+      :pid => 0,
+      :nid => self.nid,
+      :uid => params[:uid],
+      :subject => "",
+      :hostname => "",
+      :comment => params[:body],
+      :status => 0,
+      :format => 1,
+      :thread => thread,
+      :timestamp => DateTime.now.to_i
+    })
+    c.save
+    c
   end
 
   def new_revision(params)
