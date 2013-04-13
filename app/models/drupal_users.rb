@@ -43,6 +43,10 @@ class DrupalUsers < ActiveRecord::Base
     DrupalNode.count(:all,:conditions => {:status => 1, :uid => self.uid})
   end
 
+  def node_count
+    DrupalNode.count(:all,:conditions => {:status => 1, :uid => self.uid}) + DrupalNodeRevision.count(:all, :conditions => {:uid => self.uid})
+  end
+
   # accepts array of tag names (strings)
   def notes_for_tags(tagnames)
     all_nodes = DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid})
