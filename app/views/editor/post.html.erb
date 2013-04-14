@@ -62,6 +62,13 @@
     <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
     <input id="node_images" type="hidden" name="node_images" value="" />
 
+    <script>
+      $D = {
+        uid: <%= current_user.uid %>,
+        type: 'note'
+      }
+    </script>
+
     <%= render :partial => 'editor/editor' %>
 
     <div class="input-prepend">
@@ -80,10 +87,6 @@
 </div>
 <script>
   (function(){
-    $D = {
-      uid: <%= current_user.uid %>,
-      type: 'note'
-    }
     $E.initialize()
     $("#publish").bind("click",function(e) {
       if ($('#main_image').val() == "") {
