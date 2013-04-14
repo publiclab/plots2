@@ -5,6 +5,8 @@ class DrupalUsers < ActiveRecord::Base
 
   has_many :drupal_node, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
+  has_many :drupal_profile_values, :foreign_key => 'uid'
+  has_many :node_selections, :foreign_key => :user_id
 
   # Rails-style adaptors:
 
@@ -17,6 +19,22 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   # End rails-style adaptors
+
+  def likes
+    NodeSelection.find(:all, :conditions => {:user_id => self.uid, :liking => true})
+  end
+
+  def like_count
+    NodeSelection.count(:all, :conditions => {:user_id => self.uid, :liking => true})
+  end
+
+  def liked_notes
+    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = true AND node.type = 'note'",self.uid], :include => :drupal_node).collect(&:node)
+  end
+
+  def liked_pages
+    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = true AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')",self.uid], :include => :drupal_node).collect(&:node)
+  end
 
   def profile_values
     self.drupal_profile_values

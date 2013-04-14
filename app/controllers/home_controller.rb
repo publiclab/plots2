@@ -15,6 +15,7 @@ class HomeController < ApplicationController
 
   # route for seeing the front page even if you are logged in
   def front
+    @title = "a community for DIY environmental investigation"
     render :template => "home/home"
   end
 

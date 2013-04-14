@@ -51,6 +51,15 @@ class UsersController < ApplicationController
     @title = @user.name
   end
 
+  def likes
+    @user = DrupalUsers.find_by_name(params[:id])
+    @title = "Liked by "+@user.name
+    @notes = @user.liked_notes
+    @wikis = @user.liked_pages
+    @tagnames = []
+    @unpaginated = true
+  end
+
   def rss
     if params[:author]
       @author = DrupalUsers.find_by_name params[:author]

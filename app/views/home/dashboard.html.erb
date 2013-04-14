@@ -18,14 +18,15 @@
 
   <ul class="nav nav-tabs">
     <li class="active"><a rel="tooltip" title="Research notes for: <%= @user.tagnames.join(', ') %>" data-placement="bottom" href="#"><span class="hidden-phone">Recent </span>Activity</a></li>
-    <li><a href="/nearby"><i class="icon icon-globe"></i> Nearby</a></li>
     <li><a href="/notes/author/<%= current_user.username %>">
-      <i class="icon icon-folder-open"></i>
-        Your work 
+      <i class="icon icon-folder-open"></i><span class="hidden-phone">
+        Your work</span> 
         <span class="hidden-phone">
           (<%= DrupalNode.count(:all,:conditions => {:type => "note", :status => 1, :uid => current_user.uid}) %>)
         </span>
       </a></li>
+    <li><a href="/profile/<%= current_user.username %>/likes"><i class="icon icon-star"></i><span class="hidden-phone"> Liked</span></a></li>
+    <li><a href="/nearby"><i class="icon icon-globe"></i><span class="hidden-phone"> Nearby</span></a></li>
   </ul>
 
   <%= render :partial => "notes/notes" %>

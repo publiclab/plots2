@@ -6,7 +6,13 @@
 </div>
 
 <div class="span9">
-  <h3 style="margin-top:0;"><%= @user.name %> <small><a href="/feed/<%= @user.name %>.rss">RSS</a> | <a href="/notes/author/<%= @user.name %>"><%= @user.node_count %> research notes</a> and wiki edits</small></h3>
+  <h3 style="margin-top:0;"><%= @user.name %> 
+    <small><a href="/feed/<%= @user.name %>.rss">RSS</a> 
+      | <a href="/notes/author/<%= @user.name %>"><%= @user.node_count %> research notes</a> and wiki edits
+      | <a href="/profile/<%= @user.name %>/likes"><i class="icon icon-star-empty"></i> <%= @user.like_count %> likes</a>
+    </small>
+  </h3>
+
   <p><small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small></p>
 
   <p><%= raw RDiscount.new(@user.bio).to_html %></p>
