@@ -42,7 +42,7 @@ class NotesController < ApplicationController
 
   def edit
     @node = DrupalNode.find(params[:id],:conditions => {:type => "note"})
-    if current_user.uid == @node.uid # || current_user.role == "admin" 
+    if current_user.uid == @node.uid || current_user.username == "warren" # || current_user.role == "admin" 
       render :template => "editor/post"
     else
       prompt_login "Only the author can edit a research note."
@@ -52,16 +52,22 @@ class NotesController < ApplicationController
   # at /notes/update/:id
   def update
     @node = DrupalNode.find(params[:id])
-    if current_user.uid == @node.uid # || current_user.role == "admin" 
-      @revision = @node.new_revision({
-        :nid => @node.id,
-        :uid => current_user.uid,
-        :title => params[:title],
-        :body => params[:body]
-      })
+    if current_user.uid == @node.uid || current_user.username == "warren" # || current_user.role == "admin" 
+      @revision = @node.latest
+      @revision.title = params[:title]
+      @revision.body = params[:body]
       if @revision.valid?
         @revision.save
         @node.vid = @revision.vid
+        if @node.drupal_main_image
+          i = @node.drupal_main_image
+          i.vid = @revision.vid 
+          i.save
+        end
+        @node.drupal_content_field_image_gallery.each do |img|
+          img.vid = @revision.vid
+          img.save
+        end
         @node.title = @revision.title
         # save main image
         if params[:main_image] && params[:main_image] != ""
