@@ -29,11 +29,11 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def liked_notes
-    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = true AND node.type = 'note'",self.uid], :include => :drupal_node).collect(&:node)
+    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = true AND node.type = 'note'",self.uid], :include => :drupal_node).collect(&:node).reverse
   end
 
   def liked_pages
-    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = true AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')",self.uid], :include => :drupal_node).collect(&:node)
+    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = true AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')",self.uid], :include => :drupal_node).collect(&:node).reverse
   end
 
   def profile_values
