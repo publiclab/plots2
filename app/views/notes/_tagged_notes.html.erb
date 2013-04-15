@@ -2,14 +2,15 @@
   <% nodes.each_with_index do |node,i| %>
     <div class="span3 clearfix" style="overflow:hidden;">
       <% if node.main_image %>
-        <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;" href="/<%= node.slug %>"><img src="http://publiclaboratory.org/sites/default/files/imagecache/default/<%= node.main_image.filename %>" /></a>
-        <a class="hidden-phone thumbnail" href="/<%= node.slug %>"><img src="http://publiclaboratory.org/sites/default/files/imagecache/default/<%= node.main_image.filename %>" /></a>
+        <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+        <a class="hidden-phone thumbnail" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>
       <% end %>
       <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
       <p style="color:#888;"><small>
         by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> 
         | <%= time_ago_in_words(node.created_at) %> ago
-        | <a href="/<%= node.slug %>#comments"><i class="icon icon-comment"></i> <%= node.comment_count %></a>
+        | <a href="/<%= node.slug %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
+        | <i style="color:#888;" class="icon icon-star-empty"></i> <%= node.likes %>
       </small></p>
       <p class="hidden-desktop"><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150) %></p>
       <p class="visible-desktop"><small><%= raw (strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150)) %></small></p>
