@@ -1,6 +1,4 @@
-<div class="container-fluid">
-<div class="row-fluid">
-  <div class="row">
+  <div class="row-fluid">
   <% nodes.each_with_index do |node,i| %>
     <div class="span3 clearfix" style="overflow:hidden;">
       <% if node.main_image %>
@@ -29,9 +27,7 @@
   <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
   </div>
   <hr class="hidden-phone" />
-  <div class="row">
+  <div class="row-fluid">
   <% end %>
   <% end %>
   </div>
-</div>
-</div>

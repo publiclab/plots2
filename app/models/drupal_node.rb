@@ -161,10 +161,10 @@ class DrupalNode < ActiveRecord::Base
 
   # provide either a Drupally main_iamge or a Railsy one 
   def main_image(node_type = :all)
-    if self.drupal_main_image && node_type != :rails
-      self.drupal_main_image.drupal_file 
-    elsif node_type != :drupal && self.images
+    if self.images && node_type != :drupal
       self.images.last 
+    elsif self.drupal_main_image && node_type != :rails
+      self.drupal_main_image.drupal_file 
     else
       nil
     end
@@ -243,6 +243,10 @@ class DrupalNode < ActiveRecord::Base
 
   def tags
     (self.drupal_tag + DrupalTag.find(:all, :conditions => ["tid IN (?)",DrupalNodeCommunityTag.find_all_by_nid(self.nid).collect(&:tid)])).uniq
+  end
+
+  def tagnames
+    self.tags.collect(&:name)
   end
 
   # increment view count
