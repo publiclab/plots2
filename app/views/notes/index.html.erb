@@ -1,6 +1,6 @@
 <% if params[:controller] == "tag" || params[:controller] == "search" %>
   <%= render :partial => "sidebar/related" %>
-<% elsif params[:action] == "author" %>
+<% elsif params[:action] == "author" || params[:action] == "author_topic" %>
   <%= render :partial => "sidebar/author" %>
 <% else %>
   <%= render :partial => "sidebar/user" %>
@@ -35,4 +35,4 @@
 
   <hr />
   
-</div><!--/span-->
+</div>

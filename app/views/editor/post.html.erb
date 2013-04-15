@@ -59,6 +59,7 @@
     <h3 style="margin-top:0;">Share your work</h3>
 
     <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title" value="<%= @node.title if @node %>"><br />
+    <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
     <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
     <input id="node_images" type="hidden" name="node_images" value="" />
 
@@ -73,7 +74,7 @@
 
     <div class="input-prepend">
       <span class="add-on"><i class="icon-tags"></i></span>
-      <input id="tags" tabindex="3" name="tags" type="text" class="span6" <% if params[:tags] %>value="<%= params[:tags] %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
+      <input id="tags" tabindex="3" name="tags" type="text" class="span6" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
     </div>
     <br />
 
@@ -89,7 +90,7 @@
   (function(){
     $E.initialize()
     $("#publish").bind("click",function(e) {
-      if ($('#main_image').val() == "") {
+      if ($('#main_image').val() == "" && $('#has_main_image').val() != "true") {
         // prompt to choose a lead image
         $('.side-dropzone').css('border-color','#d99')
         $('.side-dropzone').css('background','#fcc')

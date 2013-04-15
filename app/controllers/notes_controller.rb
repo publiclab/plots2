@@ -62,8 +62,9 @@ class NotesController < ApplicationController
       if @revision.valid?
         @revision.save
         @node.vid = @revision.vid
+        @node.title = @revision.title
         # save main image
-        if params[:main_image]
+        if params[:main_image] && params[:main_image] != ""
           img = Image.find params[:main_image]
           img.nid = @node.id
           img.save
@@ -74,7 +75,6 @@ class NotesController < ApplicationController
       else
         flash[:error] = "Your edit could not be saved."
         render :action => :edit
-        #redirect_to "/wiki/edit/"+@node.slug
       end
     end
   end

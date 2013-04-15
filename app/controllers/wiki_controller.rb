@@ -51,12 +51,13 @@ class WikiController < ApplicationController
   end
 
   def create
-    title = params[:title].parameterize if params[:title]
-    title = params[:id].parameterize if params[:id] != "" && !params[:id].nil?
-    title = params[:url].parameterize if params[:url] != "" && !params[:url].nil?
+    # we no longer allow custom urls, just titles which are parameterized automatically into urls
+    #slug = params[:title].parameterize
+    #slug = params[:id].parameterize if params[:id] != "" && !params[:id].nil?
+    #slug = params[:url].parameterize if params[:url] != "" && !params[:url].nil?
     saved,@node,@revision = DrupalNode.new_wiki({
       :uid => current_user.uid,
-      :title => title,
+      :title => params[:title],
       :body => params[:body]
     })
     if saved
@@ -79,6 +80,8 @@ class WikiController < ApplicationController
       ActiveRecord::Base.transaction do
         @revision.save
         @node.vid = @revision.vid
+        # can't do this because it changes the URL:
+        #@node.title = @revision.title
         @node.save
       end
       flash[:notice] = "Edits saved."
