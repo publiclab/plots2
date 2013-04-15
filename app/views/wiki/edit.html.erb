@@ -76,7 +76,7 @@
     <%= render :partial => 'editor/editor' %>
 
     <button tabindex="4" type="submit" class="btn btn-primary btn-large">Publish</button>
-    <a id="preview-btn" class="btn btn-large" onClick="$E.toggle_preview()">Preview</a>
+    <a id="preview-btn" data-previewing-text="Previewing (click to edit)" class="btn btn-large" onClick="$E.toggle_preview()">Preview</a></p>
     <span> &nbsp; By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</span>
   <% end %>
 </div>

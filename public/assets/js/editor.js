@@ -46,7 +46,7 @@ $E = {
     $E.wrap('**','**')
   },
   italic: function() {
-    $E.wrap('__','__')
+    $E.wrap('_','_')
   },
   link: function(uri) {
     uri = uri || prompt('Enter a URL')
@@ -87,9 +87,13 @@ $E = {
     'support': "##Details about the problem\n\n",
     'event': "##Event details\n\nWhen, where, what\n\n##Background\n\nWho, why"
   },
+  previewing: false,
   toggle_preview: function() {
     $E.preview[0].innerHTML = marked($E.textarea.val());
     $('#preview-btn').button('toggle');
+    $E.previewing = !$E.previewing
+    if ($E.previewing) $('#preview-btn').button('previewing');
+    else $('#preview-btn').button('reset');
     $('#dropzone').toggle()
     $E.preview.toggle();
   }
