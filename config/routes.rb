@@ -51,6 +51,12 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
+  match 'following/:type/:name' => 'subscription#following'
+  match 'unsubscribe/:type/:name' => 'subscription#remove'
+  match 'subscribe/:type' => 'subscription#add'
+  match 'subscribe/:type/:name' => 'subscription#add'
+  match 'subscriptions' => 'subscription#index'
+
   match 'map' => 'search#map'
   match 'search' => 'search#advanced'
   match 'search/advanced' => 'search#advanced'
@@ -66,7 +72,6 @@ Plots2::Application.routes.draw do
 
   match 'dashboard' => 'home#dashboard'
   match 'nearby' => 'home#nearby'
-  match 'subscriptions' => 'home#subscriptions'
   match 'profile/:id' => 'users#profile'
   match 'profile/:id/likes' => 'users#likes'
   match 'feed/:author' => 'users#rss'

@@ -26,11 +26,6 @@ class HomeController < ApplicationController
     @unpaginated = true
   end
 
-  def subscriptions
-    @title = "Subscriptions"
-    @user = DrupalUsers.find_by_name(params[:id])
-  end
-
   # trashy... clean this up!
   # this will eventually be based on the profile_tags data where people can mark their location with "location:lat,lon"
   def nearby
