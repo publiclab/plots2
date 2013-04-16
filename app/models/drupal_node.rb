@@ -79,6 +79,8 @@ class DrupalNode < ActiveRecord::Base
       }).save
     end
     counter = DrupalNodeCounter.new({:nid => self.id}).save
+    # trigger subscription notifications:
+    SubscriptionMailer.notify_node_creation(self)
   end
 
   def delete_url_alias
