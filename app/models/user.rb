@@ -11,16 +11,27 @@ class User < ActiveRecord::Base
   #has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
   has_many :images, :foreign_key => :uid
 
+  # this is ridiculous. We need to store uid in this model.
+  def drupal_user
+    DrupalUsers.find_by_name(self.username)
+  end
+
   def uid
-    DrupalUsers.find_by_name(self.username).uid
+    self.drupal_user.uid
   end
 
   def lat
-    DrupalUsers.find_by_name(self.username).lat
+    self.drupal_user.lat
   end
 
   def lon
-    DrupalUsers.find_by_name(self.username).lon
+    self.drupal_user.lon
+  end
+
+  def subscriptions(type = :tag)
+    if type == :tag
+      TagSelection.find_all_by_user_id self.drupal_user.uid
+    end
   end
 
   private

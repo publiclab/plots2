@@ -8,4 +8,8 @@ class TagSelection < ActiveRecord::Base
     self.drupal_tag
   end
 
+  def tagname
+    self.drupal_tag.name
+  end
+
 end
