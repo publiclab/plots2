@@ -59,7 +59,7 @@
     <p><%= raw auto_link(RDiscount.new(comment.comment).to_html) %></p>
   </div>
   <% if current_user %>
-  <form class="well" id="c<%= comment.id %>edit" style="display:none;" action="/comment/update/<%= comment.id %>">
+  <form onFocus="editing=true" class="well" id="c<%= comment.id %>edit" style="display:none;" action="/comment/update/<%= comment.id %>">
     <h4 style="margin-top:0;">Edit comment</h4>
 
     <textarea onFocus="editing=true" name="body" class="span12" id="c<%= comment.id %>text-input" rows="8" cols="40"><%= comment.comment %></textarea>

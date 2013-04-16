@@ -24,7 +24,7 @@
   </div>
 
   <% if current_user %>
-  <form id="comment-form" data-remote="true" class="well" action="/comment/create/<%= @node.nid %>">
+  <form onFocus="editing=true" id="comment-form" data-remote="true" class="well" action="/comment/create/<%= @node.nid %>">
     <h4 style="margin-top:0;">Post comment</h4>
 
     <textarea name="body" class="span12" id="text-input" rows="6" cols="40" placeholder="Type **Markdown** here."></textarea>

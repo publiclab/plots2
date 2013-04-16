@@ -1,13 +1,21 @@
+0. Prerequisites:
+---
+
+Ruby, MySQL, Rails 3.2.x
+
 1. Install RVM
 ---
 
+Read about and install RVM here: https://rvm.io/ (preferred over apt-get version)
+
+Then configure it:
 rvm install 1.9.3 -n plots2
 rvm 1.9.3-plots2
 
 
 2. Setup Database adapters
 ---
-MySQL support on Debian:
+MySQL support on Debian/Ubuntu:
 sudo apt-get install libmysqlclient-dev
 
 PostgreSQL support on Debian:
