@@ -4,9 +4,8 @@ class SubscriptionMailer < ActionMailer::Base
   # SubscriptionMailer.notify(user,self).deliver 
   def notify_node_creation(node)
     # figure out who needs to get an email, no dupes
-    subject = "[PublicLab] new post '" + node.title + "'"
+    subject = "[PublicLab] " + node.title
     get_tag_subscribers(node).each do |user, tags|
-      # This might not work because it expects a single call to mail?
       @user = user
       @node = node
       @tags = tags
@@ -30,22 +29,28 @@ class SubscriptionMailer < ActionMailer::Base
   # Fetch all the tag ids associated with a node.
   def get_node_tags(node)
     # find all tags for the node
-    DrupalTag.find_by_drupal_node(node.nid).map do |tag|
-      # map the list of tag objects into a list of tids
-      tag.tid
+    # Currently tag names and tids aren't 1:1 even though they are supposed to be; there are duplicates. 
+    # Rewrite tag creation code and migrate to eliminate this,
+    # but in the meantime, search tags by tagname, not tid
+    tids = []
+    node.tagnames.each do |tagname|
+      # sadly, Drupal has 2 different tag tables. 
+      # We are only using "community_tags" but have to include the other for legacy support
+      tids += DrupalTag.find_all_by_name(tagname).collect(&:tid)
     end
+    tids
   end
 
   # Given a node, find all tags for that node and then all users following
   # that tag. Return a dictionary of tags indexed by user.
   def get_tag_subscribers(node)
-    tags = get_node_tags(node)
-    usertags = TagSelection.where(:tid => tags, :following => true)
+    tids = get_node_tags(node)
+    usertags = TagSelection.find(:all, :conditions => ["tid IN (?) AND following = true",tids])
     d = {}
     d.default = Set.new
     usertags.each do |usertag|
       # For each row of (user,tag), build a user's tag subscriptions 
-      d[usertag.user] = d[usertag.user].add(usertag.tag)
+      d[usertag.user].add(usertag.tag)
     end
     return d
   end

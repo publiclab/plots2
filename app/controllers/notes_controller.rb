@@ -32,6 +32,8 @@ class NotesController < ApplicationController
       params[:tags].split(',').each do |tagname|
         @node.add_tag(tagname,current_user)
       end
+      # trigger subscription notifications:
+      SubscriptionMailer.notify_node_creation(@node)
       # opportunity for moderation
       flash[:notice] = "Research note published."
       redirect_to @node.path

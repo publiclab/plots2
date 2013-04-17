@@ -79,8 +79,6 @@ class DrupalNode < ActiveRecord::Base
       }).save
     end
     counter = DrupalNodeCounter.new({:nid => self.id}).save
-    # trigger subscription notifications:
-    SubscriptionMailer.notify_node_creation(self)
   end
 
   def delete_url_alias
@@ -402,7 +400,7 @@ class DrupalNode < ActiveRecord::Base
       :comment => 2,
       :type => "note"
     })
-    if node.valid?
+    if node.valid? # is this not triggering title uniqueness validation?
       saved = true
       revision = false
       ActiveRecord::Base.transaction do
@@ -425,7 +423,7 @@ class DrupalNode < ActiveRecord::Base
           node.save!
         else
           saved = false
-          node.destroy # clean up. But do this in the model!
+          node.destroy
         end
       end
     end

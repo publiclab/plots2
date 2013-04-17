@@ -2,6 +2,6 @@ Dear <%= @user.username %>,
 
 A new post called '<%= @node.title %>' was created. Just thought you should know!
 
-You received this email because you are subscribed to <%= @tags.to_s.join(",") %>.
+You received this email because you are subscribed to the following tags: <%= @tags.join(",") %>.
 
-To change your preferences, please visit PublicLab.org and modify your subscriptions.
+To change your preferences, please visit http://publiclab.org/subscriptions.
