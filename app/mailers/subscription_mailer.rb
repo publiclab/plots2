@@ -5,11 +5,11 @@ class SubscriptionMailer < ActionMailer::Base
   def notify_node_creation(node)
     # figure out who needs to get an email, no dupes
     subject = "[PublicLab] " + node.title
-    get_tag_subscribers(node).each do |user, tags|
-      @user = user
+    get_tag_subscribers(node).each do |key,val|
+      @user = val[:user]
       @node = node
-      @tags = tags
-      mail(:to => user.email, :subject => subject)
+      @tags = val[:tags]
+      mail(:to => val[:user].email, :subject => subject)
     end
   end
 
@@ -47,10 +47,11 @@ class SubscriptionMailer < ActionMailer::Base
     tids = get_node_tags(node)
     usertags = TagSelection.find(:all, :conditions => ["tid IN (?) AND following = true",tids])
     d = {}
-    d.default = Set.new
     usertags.each do |usertag|
       # For each row of (user,tag), build a user's tag subscriptions 
-      d[usertag.user].add(usertag.tag)
+      d[usertag.user.name] = {:user => usertag.user}
+      d[usertag.user.name][:tags] = Set.new if d[usertag.user.name][:tags].nil?
+      d[usertag.user.name][:tags].add(usertag.tag)
     end
     return d
   end
