@@ -1,7 +1,14 @@
 Dear <%= @user.name %>,
 
-A new post called '<%= @node.title %>' was created. Just thought you should know!
+Public Lab contributor <%= @node.author.name %> just posted a new research note entitled '<%= @node.title %>':
 
-You received this email because you are subscribed to the following tags: <%= @tags.to_a.join(",") %>.
+-------------------------
+
+<%= @node.body %>
+
+=========================
+
+You received this email because you are subscribed to the following tags: <%= @tags.to_a.collect(&:name).join(",") %>.
 
 To change your preferences, please visit http://publiclab.org/subscriptions.
+

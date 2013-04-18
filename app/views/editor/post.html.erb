@@ -82,7 +82,8 @@
 
     <p>
       <a id="publish" tabindex="4" class="btn btn-primary btn-large">Publish</a>
-      <a id="preview-btn" data-previewing-text="Previewing (click to edit)" class="btn btn-large" onClick="$E.toggle_preview()">Preview</a></p>
+      <a id="preview-btn" data-previewing-text="Previewing (click to edit)" class="btn btn-large hidden-phone" onClick="$E.toggle_preview()">Preview</a></p>
+      <a id="preview-btn" data-previewing-text="Edit" class="btn btn-large visible-phone" onClick="$E.toggle_preview()">Preview</a></p>
     <p>By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
   <% end %>
 </div>
