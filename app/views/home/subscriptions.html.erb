@@ -26,9 +26,11 @@
     <td><a href="/tag/<%= subscription.tagname %>"><%= subscription.tagname %></a></td>
     <td><div class="btn-toolbar" style="margin:0;">
       <div class="btn-group">
+        <!--
         <a rel="tooltip" title="As it happens" class="btn btn-small" href="javascript:void(0)"><i class="icon-envelope"></i> Email</a>
         <a rel="tooltip" title="Once per day" class="btn btn-small" href="javascript:void(0)"><i class="icon-list"></i> Digest</a>
-        <a class="btn btn-small" href="javascript:void(0)"><i class="icon-remove-sign"></i> Unsubscribe</a>
+        -->
+        <a class="btn btn-small" href="/unsubscribe/tag/<%= subscription.tagname %>"><i class="icon-remove-sign"></i> Unsubscribe</a>
       </div>
     </div></td>
   </tr>

@@ -36,19 +36,27 @@ class SubscriptionController < ApplicationController
       id = DrupalTag.find_by_name(params[:name]).tid
     end
     # test for uniqueness, handle it as a validation error if you like
-    if set_following(true,params[:type],id)
-      respond_with do |format|
-        format.html do
-          if request.xhr?
-            render :json => true
-          else
-            flash[:notice] = "You are now following '#{params[:name]}'."
-            redirect_to "/subscriptions"
+    if id.nil?
+      flash[:error] = "The tag '#{params[:name]}' does not exist; there must be content tagged with it first."
+      redirect_to "/subscriptions"
+    elsif TagSelection.find(:all, :conditions => {:user_id => current_user.uid, :tid => id}).length > 0
+      flash[:error] = "You are already subscribed to '#{params[:name]}'"
+      redirect_to "/subscriptions"
+    else
+      if set_following(true,params[:type],id)
+        respond_with do |format|
+          format.html do
+            if request.xhr?
+              render :json => true
+            else
+              flash[:notice] = "You are now following '#{params[:name]}'."
+              redirect_to "/subscriptions"
+            end
           end
         end
+      else
+        flash[:error] = "Something went wrong!" # silly 
       end
-    else
-      flash[:error] = "Something went wrong!" # silly 
     end
   end
 
@@ -58,7 +66,25 @@ class SubscriptionController < ApplicationController
     if params[:type] == "tag"
       id = DrupalTag.find_by_name(params[:name]).tid
     end
-    render :json => set_following(false,params[:type],params[:name])
+    if id.nil?
+      flash[:error] = "You are not subscribed to '#{params[:name]}'"
+      redirect_to "/subscriptions"
+    else
+      if set_following(false,params[:type],id)
+        respond_with do |format|
+          format.html do
+            if request.xhr?
+              render :json => true
+            else
+              flash[:notice] = "You have stopped following '#{params[:name]}'."
+              redirect_to "/subscriptions"
+            end
+          end
+        end
+      else
+        flash[:error] = "Something went wrong!" # silly 
+      end
+    end
   end
 
   private

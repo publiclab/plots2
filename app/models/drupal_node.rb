@@ -92,6 +92,10 @@ class DrupalNode < ActiveRecord::Base
     self.cached_likes
   end
 
+  def follows
+    NodeSelection.count(:all, :conditions => {:nid => self.nid})
+  end
+
   def generate_path
     username = DrupalUsers.find_by_uid(self.uid).name
     if self.type == 'note'
