@@ -52,7 +52,7 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
   match 'following/:type/:name' => 'subscription#following'
-  match 'unsubscribe/:type/:name' => 'subscription#remove'
+  match 'unsubscribe/:type/:name' => 'subscription#delete'
   match 'subscribe/:type' => 'subscription#add'
   match 'subscribe/:type/:name' => 'subscription#add'
   match 'subscriptions' => 'subscription#index'

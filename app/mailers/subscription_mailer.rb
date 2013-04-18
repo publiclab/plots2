@@ -9,7 +9,7 @@ class SubscriptionMailer < ActionMailer::Base
       @user = val[:user]
       @node = node
       @tags = val[:tags]
-      mail(:to => val[:user].email, :subject => subject)
+      mail(:to => val[:user].email, :subject => subject).deliver
     end
   end
 
@@ -27,6 +27,7 @@ class SubscriptionMailer < ActionMailer::Base
   end
 
   # Fetch all the tag ids associated with a node.
+  # we can do this in the model. i think we already have a method like this.
   def get_node_tags(node)
     # find all tags for the node
     # Currently tag names and tids aren't 1:1 even though they are supposed to be; there are duplicates. 

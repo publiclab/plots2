@@ -46,7 +46,7 @@
 
       <img class="img-rounded" id="leadImage" <% unless @node && @node.main_image || params[:main_image] %>style="display:none;" <% end %>src="<% if @node && @node.main_image %><%= @node.main_image.path(:default) %><% elsif params[:main_image] %><%= Image.find_by_id(params[:main_image]).path %><% end %>" />
       <div class="side-dropzone" id="side-dropzone">
-        <p class="prompt"><span class="hidden-phone">Drag &amp; drop to add an image, or </span><span class="fileinput-button"><a><i class="icon icon-upload visible-phone pull-left" style="padding-right:6px;"></i> choose an image</a><input id="side-fileinput" type="file" name="image[photo]" style="height:4em;"></span></p>
+        <p class="prompt"><span class="hidden-phone">Drag &amp; drop to add an image, or </span><span class="fileinput-button"><a><i class="icon icon-upload visible-phone pull-left" style="padding-right:6px;"></i> choose an image</a><input tabindex="3" id="side-fileinput" type="file" name="image[photo]" style="height:4em;"></span></p>
         <br class="hidden-phone" />
       </div>
       <div id="side-progress" style="display:none;" class="progress progress-striped active pull-right">
@@ -74,14 +74,14 @@
 
     <div class="input-prepend">
       <span class="add-on"><i class="icon-tags"></i></span>
-      <input id="tags" tabindex="3" name="tags" type="text" class="span6" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
+      <input id="tags" tabindex="4" name="tags" type="text" class="span6" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
     </div>
     <br />
 
     <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
 
     <p>
-      <a id="publish" tabindex="4" class="btn btn-primary btn-large">Publish</a>
+      <a id="publish" tabindex="5" class="btn btn-primary btn-large">Publish</a>
       <a id="preview-btn" data-previewing-text="Previewing (click to edit)" class="btn btn-large hidden-phone" onClick="$E.toggle_preview()">Preview</a></p>
       <a id="preview-btn" data-previewing-text="Edit" class="btn btn-large visible-phone" onClick="$E.toggle_preview()">Preview</a></p>
     <p>By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
@@ -90,7 +90,9 @@
 <script>
   (function(){
     $E.initialize()
-    $("#publish").bind("click",function(e) {
+    $('#side-fileinput').bind('focus',function(e) { $('#side-dropzone').css('border-color','#4ac') })
+    $('#side-fileinput').bind('focusout',function(e) { $('#side-dropzone').css('border-color','#ccc') })
+    publish = function(e) {
       if ($('#main_image').val() == "" && $('#has_main_image').val() != "true") {
         // prompt to choose a lead image
         $('.side-dropzone').css('border-color','#d99')
@@ -98,6 +100,10 @@
       } else {
         $('#new_drupal_node_revision').submit()
       }
+    }
+    $("#publish").bind("click",publish)
+    $("#publish").bind("keydown",function(e) {
+      if (e.which == 32 || e.which == 13) publish()
     })
     if ($E.textarea.val() == "") $E.apply_template("<%= params[:template] || 'default'%>")
   })()

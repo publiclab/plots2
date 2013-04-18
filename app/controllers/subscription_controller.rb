@@ -33,7 +33,7 @@ class SubscriptionController < ApplicationController
   def add
     # assume tag, for now
     if params[:type] == "tag"
-      id = DrupalTag.find_by_name(params[:id]).tid
+      id = DrupalTag.find_by_name(params[:name]).tid
     end
     # test for uniqueness, handle it as a validation error if you like
     if set_following(true,params[:type],id)
@@ -42,7 +42,7 @@ class SubscriptionController < ApplicationController
           if request.xhr?
             render :json => true
           else
-            flash[:notice] = "You are now following '#{params[:id]}'."
+            flash[:notice] = "You are now following '#{params[:name]}'."
             redirect_to "/subscriptions"
           end
         end
@@ -56,9 +56,9 @@ class SubscriptionController < ApplicationController
   def delete
     # assume tag, for now
     if params[:type] == "tag"
-      id = DrupalTag.find_by_name(params[:id]).tid
+      id = DrupalTag.find_by_name(params[:name]).tid
     end
-    render :json => set_following(false,params[:type],params[:id])
+    render :json => set_following(false,params[:type],params[:name])
   end
 
   private

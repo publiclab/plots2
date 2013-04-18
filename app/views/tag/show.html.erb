@@ -1,6 +1,20 @@
 <%= render :partial => "sidebar/related" %>
 <div class="span9">
-    <h3 style="margin-top:0;">Notes tagged with <i style="color:#aaa;"><%= params[:id] %></i></h3>
+  <h3 style="margin-top:0;">Notes tagged with <i style="color:#aaa;"><%= params[:id] %></i></h3>
+
+  <% if current_user %>
+  <!-- AJAXify -->
+  <div class="btn-group">
+    <% if current_user.following(params[:id]) %>
+    <a rel="tooltip" title="Click to unfollow" class="btn btn-small active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="icon icon-eye-open"></i> Following <b><%= params[:id] %></b></a>
+    <% else %>
+    <a class="btn btn-small" href="/subscribe/tag/<%= params[:id] %>"><i class="icon icon-eye-open"></i> Follow <b><%= params[:id] %></b></a>
+    <% end %>
+  </div>
+  <!-- AJAXify -->
+  <% end %>
+
+  <hr />
 
   <% if @notes.nil? || @notes.length == 0 %>
     <p>No results found; try searching for '<b><%= params[:id] %></b>':</p>

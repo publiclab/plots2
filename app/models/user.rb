@@ -34,6 +34,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def following(tagname)
+    tids = DrupalTag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
+    TagSelection.find(:all, :conditions => ["tid IN (?) AND user_id = ?", tids, self.uid]).length > 0
+  end
+
   private
 
   def map_openid_registration(registration)
