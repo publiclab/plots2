@@ -172,7 +172,7 @@ class DrupalNode < ActiveRecord::Base
 
   # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_content_field_image_gallery
-    DrupalContentFieldImageGallery.find_all_by_nid self.nid
+    DrupalContentFieldImageGallery.find :all, :conditions => {:nid => self.nid}, :order => "field_image_gallery_fid"
   end
 
   def gallery

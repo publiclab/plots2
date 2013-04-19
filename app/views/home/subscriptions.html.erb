@@ -30,6 +30,8 @@
         <a rel="tooltip" title="As it happens" class="btn btn-small" href="javascript:void(0)"><i class="icon-envelope"></i> Email</a>
         <a rel="tooltip" title="Once per day" class="btn btn-small" href="javascript:void(0)"><i class="icon-list"></i> Digest</a>
         -->
+        <script> input_<%= subscription.tid %> = '#share-<%= subscription.tid %>'</script>
+        <a class="btn btn-small" rel="popover" data-placement="left" title="Share this subscription link" data-html="true" data-content="<input id='share-<%= subscription.tid %>' onClick='$(input_<%= subscription.tid %>).select()' type='text' value='http://publiclab.org/subscribe/tag/<%= subscription.tagname %>'/>"><i class="icon-share"></i> Share</a>
         <a class="btn btn-small" href="/unsubscribe/tag/<%= subscription.tagname %>"><i class="icon-remove-sign"></i> Unsubscribe</a>
       </div>
     </div></td>

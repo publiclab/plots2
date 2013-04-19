@@ -52,6 +52,7 @@ gem "ruby-openid", :require => "openid"
 gem "rack-openid"
 gem "authlogic"
 #gem "authlogic-oid", :require => "authlogic_openid"
+gem "php-serialize", :require => "php_serialize"
 
 group :development, :test do
   #gem 'rspec-rails'
