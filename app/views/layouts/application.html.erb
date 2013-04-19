@@ -223,6 +223,7 @@
       (function() {
         $("[rel=tooltip]").tooltip()
         $("[rel=popover]").popover()
+        $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {return " <small><a href='#"+this.innerHTML.replace(/ /g,'+')+"'><i style='color:#aaa;' class='icon icon-link'></i></a></small>"})
       })()
     </script>
     <script type="text/javascript">
