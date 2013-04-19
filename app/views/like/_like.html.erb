@@ -1,6 +1,6 @@
 <div class="btn-toolbar pull-right" style="margin-left:10px;margin-top:0;">
   <ul class="btn-group">
-    <li class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.nil? || @tagnames.length == 0 %><% if @tagnames %><% @tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-mini'><%= tagname %></a></p><% end %><% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="left"><i class="icon-eye-open"></i><span class="hidden-phone"> Follow (<%= @node.follows %>)</span></li>
+    <li class="btn btn-small" data-html="true" rel="popover" data-content="<%= "No tags" if @tagnames.nil? || @tagnames.length == 0 %><% if @tagnames %><% @tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-mini'><%= tagname %></a></p><% end %><% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="left"><i class="icon-eye-open"></i><span class="hidden-phone"> Follow</span></li>
     <li rel="tooltip" title="Helpful? Awesome?" class="btn btn-small" id="like-button"><span id="like-star" class="icon-star-empty"></span><span class="hidden-phone"> Like <span id="like-count"/></span></li>
   </ul>
   <script>

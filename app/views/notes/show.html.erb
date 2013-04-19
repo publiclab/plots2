@@ -47,7 +47,14 @@
   <hr style="margin-top:10px;" />
 
   <% @node.gallery.each do |image| %>
-    <a href="<%= image.image.path(:original) %>"><img style="margin-bottom:4px;" class="img-rounded" src="<%= image.image.path(:thumb) %>" /></a>
+   <div id="lightbox-<%= image.fid %>" class="lightbox hide fade"  tabindex="-1" role="dialog" aria-hidden="true">
+	<div class='lightbox-content'>
+		<img src="<%= image.image.path(:original) %>">
+		<div class="lightbox-caption"><p><%= image.description %></p></div>
+	</div>
+    </div> 
+
+    <a data-toggle="lightbox" data-show="true" data-target="#lightbox-<%= image.fid %>"><img rel="tooltip" data-title="<%= image.description %>" style="margin-bottom:4px;" class="img-rounded" src="<%= image.image.path(:thumb) %>" /></a>
   <% end %>
 
   <p style="overflow:hidden;">

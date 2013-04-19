@@ -11,6 +11,7 @@
     <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="/fontawesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap-lightbox.min.css" rel="stylesheet">
     <%= stylesheet_link_tag    "application", :media => "all" %>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -52,7 +53,7 @@
 
           <a rel="tooltip" title="Switch to old site" data-placement="bottom" style="margin-left:6px;" href="#" onClick="alpha()" class="btn btn-primary pull-right hidden-phone">&alpha;</a>
           <script>
-            function alpha() { window.location = 'http://'+(window.location+'').split('://alpha.')[1] } 
+            function alpha() { window.location = 'http://publiclaboratory'+(window.location+'').split('://publiclab.')[1] } 
           </script>
           <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:6px;" href="/signup" class="btn pull-right">Join</a><% end %>
 
@@ -215,7 +216,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.typeahead.js?3"></script>
+    <script src="/bootstrap/js/bootstrap.typeahead.js?4"></script>
+    <script src="/bootstrap/js/bootstrap-lightbox.js"></script>
+
     <script>
       (function() {
         $("[rel=tooltip]").tooltip()
