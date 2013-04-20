@@ -25,6 +25,7 @@ class DrupalNode < ActiveRecord::Base
 #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
 #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
   has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
+  has_one :drupal_node_access, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_node_tag, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_tag, :through => :drupal_node_tag
 # these override the above... have to do it manually:
@@ -79,7 +80,8 @@ class DrupalNode < ActiveRecord::Base
         :src => "node/"+self.id.to_s
       }).save
     end
-    counter = DrupalNodeCounter.new({:nid => self.id}).save
+    DrupalNodeCounter.new({:nid => self.id}).save
+    self.create_access
   end
 
   def delete_url_alias
@@ -88,6 +90,14 @@ class DrupalNode < ActiveRecord::Base
   end
 
   public
+
+  def create_access
+    DrupalNodeAccess.new({:nid => self.id, :gid => 0, :realm => 'all', :grant_view => 1, :grant_update => 0, :grant_delete => 0}).save
+  end
+
+  def has_access?
+    DrupalNodeAccess.find(:all, :conditions => {:nid => self.id}).length > 0
+  end
 
   def likes
     self.cached_likes
