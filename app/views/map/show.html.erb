@@ -14,7 +14,7 @@
     <span>
       mapped by <%= @node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ') %> | 
       posted by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
-      <%= @node.map.captured_at.to_s(:long) %> |  
+      <%= @node.map.captured_on.to_s %> |  
       <a href="https://maps.google.com/maps?t=h&ll=<%= @node.location[:y] %>,<%= @node.location[:x] %>"><%= @node.location[:y] %> N, <%= @node.location[:x] %> E</a> | 
       <%= @node.totalcount %> views
     </span>
