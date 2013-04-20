@@ -1,29 +1,18 @@
+</div>
+<iframe style="width:100%;border:none;background:#ddd;margin-bottom:8px;" height="375" src="http://archive.publiclaboratory.org/leaflet/?tms=<%= @node.map.tms %>&lon=<%= @node.location[:x] %>&lat=<%= @node.location[:y] %>&zoom=17"></iframe>
+
+<div class="row-fluid">
+  <%= render :partial => "map/nearby" %>
 <div class="span3">
-  <% if @node.nearby_maps.length > 0 %>
-    <h4>Nearby maps</h4>
-  <% end %>
-
-  <% @node.nearby_maps.each do |map| %>
-    <div>
-    <% if map.main_image %>
-      <a class="thumbnail" href="/<%= node.slug %>"><img src="http://publiclaboratory.org/sites/default/files/imagecache/default/<%= node.main_image.filename %>" /></a>
-    <% end %>
-    <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
-    <p style="color:#888;"><small>by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> | <%= time_ago_in_words(node.created_at) %> ago</small></p>
-    </div>
-  <% end %>
-
 </div>
 <div class="span9">
-
-  <iframe class="span12" style="border:none;background:#ddd;" height="375" src="http://archive.publiclaboratory.org/leaflet/?tms=<%= @node.map.tms %>&lon=<%= @node.location[:x] %>&lat=<%= @node.location[:y] %>&zoom=17"></iframe>
-  <br style="clear:both" />
 
   <%= render :partial => "like/like" %>
   <h2 style="clear:left;"><%= @node.title %></h2>
 
   <div>
     <span>
+      mapped by <%= node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ') %> | 
       posted by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
       <%= @node.created_at.to_s(:long) %> |  
       <a href="https://maps.google.com/maps?t=h&ll=<%= @node.location[:y] %>,<%= @node.location[:x] %>"><%= @node.location[:y] %> N, <%= @node.location[:x] %> E</a> | 
@@ -42,6 +31,16 @@
 
   <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
   <hr />
+
+  <h3>Notes</h3>
+
+  <p><%= raw RDiscount.new(auto_link(@node.map.notes, :sanitize => false)).to_html %></p>
+
+  <hr />
+
+  <h3>Cartographer notes</h3>
+
+  <p><%= raw RDiscount.new(auto_link(@node.map.notes, :sanitize => false)).to_html %></p>
 
   <p>
   <%= raw RDiscount.new(auto_link(@node.body, :sanitize => false)).to_html %>
