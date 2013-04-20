@@ -58,7 +58,7 @@ class DrupalComment < ActiveRecord::Base
   def notify(current_user)
     uids = (self.parent.comments.collect(&:uid) + [self.parent.uid]).uniq!
     DrupalUsers.find(:all, :conditions => ['uid IN (?)',uids]).each do |user|
-      CommentMailer.notify_of_comment(user,self).deliver if user.uid != current_user.uid && user.uid != self.uid
+      CommentMailer.notify(user,self).deliver if user.uid != current_user.uid && user.uid != self.uid
     end 
   end
 
