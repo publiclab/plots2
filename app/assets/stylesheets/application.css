@@ -214,3 +214,18 @@ a i.icon-white { color:white; }
   padding-bottom:4px;
 }
 
+#content h1 i.icon-link,
+#content h2 i.icon-link,
+#content h3 i.icon-link,
+#content h4 i.icon-link,
+#content h5 i.icon-link {
+  color:#aaa;
+}
+#content h1 a:hover i.icon-link,
+#content h2 a:hover i.icon-link,
+#content h3 a:hover i.icon-link,
+#content h4 a:hover i.icon-link,
+#content h5 a:hover i.icon-link {
+  color:#888;
+  text-decoration:none;
+}
