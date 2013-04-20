@@ -33,6 +33,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_comments, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_type_map, :foreign_key => 'nid'
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
+  has_many :drupal_content_field_mappers, :foreign_key => 'nid'
   has_many :images, :foreign_key => :nid
 
   validates :title, :presence => :true
@@ -322,8 +323,9 @@ class DrupalNode < ActiveRecord::Base
     maxlat = self.lat + dist
     minlon = self.lon - dist
     maxlon = self.lon + dist
-    # we have to read the GeoRuby docs to formulate a spatial query: 
-    #DrupalContentFieldBbox.find :all, :limit => 20, :conditions => []
+    # GeoRuby 
+    # field_bbox_geo is the geom column
+    #DrupalContentFieldBbox.find_by_geom([[minlon,minlat],[maxlon,maxlat]]).collect(&:drupal_node)
     []
   end
 
