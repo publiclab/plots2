@@ -57,9 +57,9 @@
     <a data-toggle="lightbox" data-show="true" data-target="#lightbox-<%= image.fid %>"><img rel="tooltip" data-title="<%= image.description %>" style="margin-bottom:4px;" class="img-rounded" src="<%= image.image.path(:thumb) %>" /></a>
   <% end %>
 
-  <p style="overflow:hidden;">
-  <%= raw auto_link(RDiscount.new(@node.body).to_html, :sanitize => false) %>
-  </p>
+  <div style="overflow:hidden;" id="content">
+  <%= raw auto_link(@node.render_body, :sanitize => false) %>
+  </div>
 
   <hr />
     <%= render :partial => "home/social" %>

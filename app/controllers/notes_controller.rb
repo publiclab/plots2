@@ -117,4 +117,12 @@ class NotesController < ApplicationController
     render :template => 'notes/index'
   end
 
+  def popular
+    @title = "Popular research notes"
+    @wikis = DrupalNode.find(:all, :limit => 10, :conditions => {:type => 'page', :status => 1}, :order => "nid DESC")
+    @notes = DrupalNode.find(:all, :limit => 20, :order => "cached_likes DESC", :conditions => {:type => 'note', :status => 1})
+    @unpaginated = true
+    render :template => 'notes/index'
+  end
+
 end
