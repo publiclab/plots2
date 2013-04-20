@@ -10,7 +10,7 @@
         <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
         <p style="color:#888;"><small>by 
           <%= node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ') %>
-          | <%= time_ago_in_words(node.created_at) %> ago</small></p>
+          | <%= time_ago_in_words(node.map.captured_on) %> ago</small></p>
         <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) %></p>
       </div>
     <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
