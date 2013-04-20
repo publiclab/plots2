@@ -160,7 +160,7 @@ class DrupalNode < ActiveRecord::Base
 
   # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_main_image
-    DrupalMainImage.find :last, :conditions => {:nid => self.nid}
+    DrupalMainImage.find :last, :conditions => ['nid = ? AND field_main_image_fid IS NOT NULL',self.nid]
   end
 
   # provide either a Drupally main_iamge or a Railsy one 
