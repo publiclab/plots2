@@ -4,7 +4,7 @@
     <% @nodes.each_with_index do |node,i| %>
       <div class="span3 clearfix">
         <% if node.main_image %>
-          <a class="thumbnail" href="/<%= node.slug %>"><img src="http://publiclaboratory.org/sites/default/files/imagecache/default/<%= node.main_image.filename %>" /></a>
+          <a class="thumbnail" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>
         <% end %>
         <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
         <p style="color:#888;"><small>by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> | <%= time_ago_in_words(node.created_at) %> ago</small></p>
