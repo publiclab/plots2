@@ -4,7 +4,7 @@
     <% @notes.each_with_index do |node,i| %>
       <div class="span3 clearfix" style="overflow:hidden;">
         <% if node.main_image %>
-          <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>
           <a class="hidden-phone thumbnail" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>
         <% end %>
         <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
