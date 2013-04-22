@@ -25,16 +25,22 @@ class UsersController < ApplicationController
   end
 
   def update
+    if current_user
     @user = current_user
-    @user.attributes = params[:user]
-    @user.drupal_user.set_bio(params[:drupal_user][:bio])
-    @user.save({}) do |result|
-      if result
-        flash[:notice] = "Successfully updated profile."
-        redirect_to "/profile/"+@user.username
-      else
-        render :template => 'users/edit'
+      #if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
+      @user.attributes = params[:user]
+      @user.drupal_user.set_bio(params[:drupal_user][:bio])
+      @user.save({}) do |result|
+        if result
+          flash[:notice] = "Successfully updated profile."
+          redirect_to "/profile/"+@user.username
+        else
+          render :template => 'users/edit'
+        end
       end
+    else
+      flash[:error] = "Only <b>"+@user.name+"</b> can edit their profile."
+      redirect_to "/profile/"+@user.name
     end
   end
 
