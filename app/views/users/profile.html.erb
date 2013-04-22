@@ -23,7 +23,7 @@
     &nbsp; <small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small>
   </p>
 
-  <p><%= raw RDiscount.new(@user.bio).to_html %></p>
+  <p><%= raw auto_link(RDiscount.new(@user.bio).to_html, :sanitize => false) %></p>
 
   <hr />
 
