@@ -16,6 +16,10 @@ class User < ActiveRecord::Base
     DrupalUsers.find_by_name(self.username)
   end
 
+  def bio
+    self.drupal_user.bio
+  end
+
   def uid
     self.drupal_user.uid
   end

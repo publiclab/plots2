@@ -78,4 +78,14 @@ class TagController < ApplicationController
     render :json => suggestions
   end
 
+  def rss
+    @notes = DrupalTag.find_nodes_by_type([params[:tagname]],'note',20)
+    respond_to do |format|
+      format.rss {
+        render :layout => false
+        response.headers["Content-Type"] = "application/xml; charset=utf-8"
+      } 
+    end
+  end
+
 end

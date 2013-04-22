@@ -1,19 +1,14 @@
-<%= form_for @user do |f| %>
+<%= form_for @user, :url => {:controller => 'users', :action => 'update'} do |f| %>
   <%= f.error_messages %>
 
-<!--
+  <label><b>Email:</b></label>
+  <%= f.text_field :email, {:placeholder => "you@email.com"} %>
 
-  <p><%= f.text_field :username, {:placeholder => "username"} %></p>
-  <p><%= f.text_field :email, {:placeholder => "you@email.com"} %></p>
+  <label><b>Create a password:</b></label>
+  <p><%= f.password_field :password, {:placeholder => "password"}%></p>
+  <p><%= f.password_field :password_confirmation, {:placeholder => "confirm your password"}%></p>
 
-  <% if @user.openid_identifier.blank? %>
-    <p><%= f.password_field :password, {:placeholder => "password"}%></p>
-    <p><%= f.password_field :password_confirmation, {:placeholder => "confirm your password"}%></p>
-  <% end %>
+  <p><%= text_area :drupal_user, :bio, {:placeholder => "Add a short bio to appear on your profile page", :class => "span9", :rows => 8} %></p>
 
--->
-
-  <p><%= f.text_field :openid_identifier, :tabindex => 2 %></p>
-
-  <p><button class="btn-large btn-primary" type="submit">Register</button></p>
+  <p><button class="btn-large btn-primary" type="submit">Save</button></p>
 <% end %>

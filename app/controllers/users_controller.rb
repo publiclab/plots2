@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_filter :require_user, :only => [:update]
 
   def new
     @user = User.new
@@ -26,18 +27,26 @@ class UsersController < ApplicationController
   def update
     @user = current_user
     @user.attributes = params[:user]
-    @user.save do |result|
+    @user.drupal_user.set_bio(params[:drupal_user][:bio])
+    @user.save({}) do |result|
       if result
         flash[:notice] = "Successfully updated profile."
-        redirect_to root_url
+        redirect_to "/profile/"+@user.username
       else
-        render :action => 'edit'
+        render :template => 'users/edit'
       end
     end
   end
 
   def edit
-    @user = User.find(params[:id])
+    @drupal_user = DrupalUsers.find_by_name(params[:id])
+    @user = @drupal_user.user
+    if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
+      render :template => "users/edit.html.erb"
+    else
+      flash[:error] = "Only <b>"+@user.name+"</b> can edit their profile."
+      redirect_to "/profile/"+@user.name
+    end
   end
 
   def list

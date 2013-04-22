@@ -14,10 +14,11 @@ Plots2::Application.routes.draw do
   match 'logout' => "user_sessions#destroy", :as => :logout
   match 'register' => 'users#create'
   match 'users/list' => 'users#list'
+  match 'users/update' => 'users#update'
   match 'signup' => 'users#new'
   match 'home' => 'home#front'
 
-  resources :users
+  #resources :users
 
   match 'wiki/new' => 'wiki#new'
   match 'wiki/popular' => 'wiki#popular'
@@ -70,10 +71,12 @@ Plots2::Application.routes.draw do
   match 'tag/author/:id.json' => 'tag#author'
   match 'tag/create/:nid' => 'tag#create'
   match 'tag/delete/:nid/:tid' => 'tag#delete'
+  match 'feed/tag/:tagname' => 'tag#rss'
 
   match 'dashboard' => 'home#dashboard'
   match 'nearby' => 'home#nearby'
   match 'profile/:id' => 'users#profile'
+  match 'profile/:id/edit' => 'users#edit'
   match 'profile/:id/likes' => 'users#likes'
   match 'feed/:author' => 'users#rss'
 

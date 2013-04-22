@@ -131,7 +131,7 @@
                 <ul class="dropdown-menu">
                   <li><a href="/dashboard">Dashboard</a></li>
                   <li><a href="/profile/<%= current_user.username %>">Profile</a></li>
-                  <li><%= link_to "Edit Profile", edit_user_path(:current) %></li> 
+                  <li><a href="/profile/<%= current_user.username %>/edit">Edit profile</a></li> 
                   <li class="divider"></li>
                   <li><a href="/subscriptions">Subscriptions</a></li>
                   <li><a href="">Settings</a></li>

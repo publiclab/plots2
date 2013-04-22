@@ -48,10 +48,16 @@ class DrupalUsers < ActiveRecord::Base
     DrupalProfileValue.find_by_uid(self.uid, :conditions => {:fid => 2}).value
   end
 
+  def set_bio(text)
+    bio = DrupalProfileValue.find_by_uid(self.uid, :conditions => {:fid => 7})
+    bio.value = text
+    bio.save!
+  end
+
   def bio
     bio = DrupalProfileValue.find_by_uid(self.uid, :conditions => {:fid => 7})
     if bio
-      bio.value 
+      bio.value || ""
     else
       ""
     end

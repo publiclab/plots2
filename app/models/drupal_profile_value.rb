@@ -1,5 +1,5 @@
 class DrupalProfileValue < ActiveRecord::Base
-  # attr_accessible :title, :body
+  attr_accessible :bio
   self.table_name = 'profile_values'
   self.primary_key = 'fid'
 

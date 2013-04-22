@@ -1,5 +1,5 @@
 <div class="span3">
-  <a href="#" class="btn btn-block"><i class="icon-envelope"></i> Send message</a>
+  <!--<a href="#" class="btn btn-block"><i class="icon-envelope"></i> Send message</a>-->
   <a href="#" class="btn btn-block"><i class="icon-eye-open"></i> Follow <%= @user.name %></a>
   <hr />
 
@@ -7,13 +7,21 @@
 
 <div class="span9">
   <h3 style="margin-top:0;"><%= @user.name %> 
-    <small><a href="/feed/<%= @user.name %>.rss">RSS</a> 
-      | <a href="/notes/author/<%= @user.name %>"><%= @user.node_count %> research notes</a> and wiki edits
+    <small> 
+      <a href="/notes/author/<%= @user.name %>"><%= @user.node_count %> research notes</a> and wiki edits
       | <a href="/profile/<%= @user.name %>/likes"><i class="icon icon-star-empty"></i> <%= @user.like_count %> likes</a>
     </small>
   </h3>
 
-  <p><small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small></p>
+  <p>
+    <div class="btn-group">
+    <a class="btn btn-small" href="/feed/<%= @user.name %>.rss"><i class="icon icon-rss"></i> RSS</a>
+    <% if current_user && current_user.uid == @user.uid %>
+      <a href="/profile/<%= @user.name %>/edit" class="btn btn-small"><i class="icon-pencil"></i> Edit profile</a>
+    <% end %>
+    </div>
+    &nbsp; <small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small>
+  </p>
 
   <p><%= raw RDiscount.new(@user.bio).to_html %></p>
 
