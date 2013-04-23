@@ -8,9 +8,12 @@ class MapController < ApplicationController
 
   def show
     @node = DrupalNode.find_map_by_slug(params[:name]+'/'+params[:date])
+    @node.view
     @title = @node.title
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)
+
+    set_sidebar :tags, @tagnames
   end
 
 end

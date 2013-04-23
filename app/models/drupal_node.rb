@@ -35,6 +35,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_content_type_map, :foreign_key => 'nid'
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
   has_many :drupal_content_field_mappers, :foreign_key => 'nid'
+  has_many :drupal_content_field_map_editor, :foreign_key => 'nid'
   has_many :images, :foreign_key => :nid
 
   validates :title, :presence => :true

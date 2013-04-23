@@ -12,10 +12,10 @@ class ApplicationController < ActionController::Base
         @wikis = DrupalTag.find_nodes_by_type(data,'page',8)
         @notes = DrupalTag.find_nodes_by_type(data,'note',8)
         @videos = DrupalTag.find_nodes_by_type_with_all_tags(['video']+data,'note',8) if args[:videos] && data.length > 1
+        @maps = DrupalTag.find_nodes_by_type(data,'map',8)
       else # type is generic
-        @notes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :page => params[:page], :limit => 20)
+        @notes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :limit => 10, :page => params[:page])
         @wikis = DrupalNode.find(:all, :order => "changed DESC", :conditions => {:status => 1, :type => 'page'}, :limit => 10)
-        
       end
     end
     

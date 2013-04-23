@@ -35,6 +35,10 @@ class DrupalContentTypeMap < ActiveRecord::Base
     self.field_tms_url_value
   end
 
+  def min_zoom
+    self.field_zoom_min_value
+  end
+
   def max_zoom
     self.field_zoom_max_value
   end
@@ -44,7 +48,10 @@ class DrupalContentTypeMap < ActiveRecord::Base
   end
 
   def license
-    self.field_license_value
+    l = "<a href='http://creativecommons.org/publicdomain/zero/1.0/'>Public Domain</a>" if self.field_license_value == "publicdomain"
+    l = "<a href='http://creativecommons.org/licenses/by/3.0/'>CC-BY</a>" if self.field_license_value == "cc-by"
+    l = "<a href='http://creativecommons.org/licenses/by-sa/3.0/'>CC-BY-SA</a>" if self.field_license_value == "cc-by-sa"
+    l
   end
 
   def notes
