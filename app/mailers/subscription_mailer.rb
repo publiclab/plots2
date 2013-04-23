@@ -16,7 +16,7 @@ class SubscriptionMailer < ActionMailer::Base
   # SubscriptionMailer.notify(user,self).deliver 
   def notify_note_liked(node,user)
     # figure out who needs to get an email, no dupes
-    subject = "[PublicLab] #{user.name} liked your research note"
+    subject = "[PublicLab] #{user.username} liked your research note"
     mail(:to => node.author.email, :subject => subject)
   end
 
