@@ -1,14 +1,45 @@
-<%= form_for @user, :url => {:controller => 'users', :action => 'update'} do |f| %>
+<%= form_for @user, :url => {:controller => 'users', :action => 'update'}, :html => {:class => "form-horizontal"} do |f| %>
   <%= f.error_messages %>
 
-  <label><b>Email:</b></label>
-  <%= f.text_field :email, {:placeholder => "you@email.com"} %>
+  <% if params[:controller] == "users" && params[:action] == "new" %>
+  <div class="control-group">
+    <label class="control-label" for="user_username"><b>Username</b></label>
+    <div class="controls">
+      <%= f.text_field :username, {:placeholder => "username"} %>
+    </div>
+  </div>
+  <% end %>
 
-  <label><b>Create a password:</b></label>
-  <p><%= f.password_field :password, {:placeholder => "password"}%></p>
-  <p><%= f.password_field :password_confirmation, {:placeholder => "confirm your password"}%></p>
+  <div class="control-group">
+    <label class="control-label" for="user_email"><b>Email</b></label>
+    <div class="controls">
+      <%= f.text_field :email, {:placeholder => "you@email.com"} %>
+    </div>
+  </div>
 
-  <p><%= text_area :drupal_user, :bio, {:placeholder => "Add a short bio to appear on your profile page", :class => "span9", :rows => 8} %></p>
+  <div class="control-group">
+    <% if @user.password.nil? %>
+      <label class="control-label" for="user_password"><b>Create a password</b></label>
+    <% else %>
+      <label class="control-label" for="user_password"><b>Change your password</b></label>
+    <% end %>
+    <div class="controls">
+    <%= f.password_field :password, {:placeholder => "password"}%>
+    <%= f.password_field :password_confirmation, {:placeholder => "confirm your password"}%>
+    </div>
+  </div>
 
-  <p><button class="btn-large btn-primary" type="submit">Save</button></p>
+  <div class="control-group">
+    <div class="controls">
+      <%= text_area :drupal_user, :bio, {:placeholder => "Add a short bio to appear on your profile page", :class => "span6", :rows => 8} %>
+    </div>
+  </div>
+
+  <% if params[:controller] == "users" && params[:action] == "new" %>
+    <!-- email lists here -->
+  <% end %>
+
+  <div class="controls">
+    <button class="btn-large btn-primary" type="submit">Save</button>
+  </div>
 <% end %>

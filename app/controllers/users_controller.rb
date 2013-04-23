@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    redirect_to "/wiki/registration"
+    redirect_to "/wiki/registration" unless params[:test] == "true"
   end
 
   def create

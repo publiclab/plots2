@@ -3,22 +3,13 @@
 <%= form_for @user_session, :as => :user_session, :url => { :action => "create" }, :html => {:class => "form"} do |f| %>
   <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
 
-  <div style="width:50%;">
-
-    <p>Use your <a href="http://publiclaboratory.org">PublicLaboratory.org</a> username to log in.</p> 
-
-    <p>This is an "alpha" website; the full Public Lab website is <a href="http://publiclaboratory.org">PublicLaboratory.org</a>.</p>
-
-  </div>
-
   <br style="clear:both;"/>
 
-<!--
   <p><%= f.text_field :username, {:placeholder => "username"} %></p>
   <p><%= f.password_field :password, {:placeholder => "password"} %></p>
 
-  <h2>Or use OpenID</h2>
--->
+  <p style="width:30%;"><b>Or enter your username from the old PublicLaboratory.org website if you originally registered there:</b></p>
+
   <p><%= f.text_field :openid_identifier, {:placecholder => "username", :tabindex => 2} %></p>
 
   <p><label class="checkbox">

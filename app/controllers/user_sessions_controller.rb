@@ -5,10 +5,10 @@ class UserSessionsController < ApplicationController
   end
 
   def create
-    openid = params[:user_session][:openid_identifier] if params[:user_session]
-    params[:user_session][:openid_identifier] = "http://publiclaboratory.org/people/"+openid+"/identity" if params[:user_session]
-puts openid
-    if params[:user_session].nil? || !User.find_by_username(openid).nil?
+    openid = params[:user_session][:openid_identifier] if params[:user_session] && params[:user_session][:openid_identifier] != ""
+    params[:user_session][:openid_identifier] = "http://publiclaboratory.org/people/"+openid+"/identity" if params[:user_session] && params[:user_session][:openid_identifier] != ""
+
+    if params[:user_session].nil? || !User.find_by_username(openid).nil? || !User.find_by_username(params[:user_session][:username]).nil?
       @user_session = UserSession.new(params[:user_session])
       @user_session.save do |result|
         if result
