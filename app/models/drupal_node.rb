@@ -37,6 +37,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_content_field_mappers, :foreign_key => 'nid'
   has_many :drupal_content_field_map_editor, :foreign_key => 'nid'
   has_many :images, :foreign_key => :nid
+  has_many :node_selections, :foreign_key => :nid
 
   validates :title, :presence => :true
   validates_with UniqueUrlValidator, :on => :create
@@ -102,6 +103,11 @@ class DrupalNode < ActiveRecord::Base
 
   def likes
     self.cached_likes
+  end
+
+  # users who like this node
+  def likers
+    self.node_selections.collect(&:user)
   end
 
   def generate_path

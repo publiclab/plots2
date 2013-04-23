@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <title>Public Lab<%= ": "+(@title || params[:action].capitalize) %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The Public Laboratory for Open Technology and Science collaboratively develops and publicizes accessible technologies for investigating and reporting on local environmental health and justice issues. Public Lab provides an online research space for citizens, linking them to scientists, social scientists, and technologists. Public Lab is an expansion of Grassroots Mapping, where citizens use helium-filled balloons and digital cameras to generate high resolution “satellite” maps.">
-    <meta name="author" content="">
+    <meta name="description" content="Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues.">
+    <meta name="author" content="Public Lab contributors">
+    <link href="http://publiclab.org/feed.rss" rel="alternate" type="application/rss+xml" title="Public Lab research" />
 
     <!-- Le styles -->
     <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -100,21 +101,20 @@
                   Tools/Places <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="/wiki/balloon-mapping">Balloon mapping</a></li>
-                  <li><a href="/wiki/near-infrared-camera">Near-infrared photography</a></li>
-                  <li><a href="/wiki/thermal-flashlight">Thermal flashlight</a></li>
-                  <li><a href="/wiki/spectrometer">Spectrometry</a></li>
-                  <li><a href="/wiki/hydrogen-sulfide-detection">Hydrogen sulfide detection</a></li>
-                  <li><a href="/wiki/air-column-monitor">Air column monitor</a></li>
+                <% cache "tool-place-menu-"+(DateTime.now.to_i/300).to_i.to_s do %>
+                  <% DrupalNode.find_all_by_type('tool',:limit => 6, :order => 'node_counter.totalcount DESC', :joins => :drupal_node_counter).each do |node| %>
+                  <li><a href="<%= node.path %>"><%= node.title %></a></li>
+                  <% end %>
+                  <li><a href="/tools">More...</a></li>
                   <li class="divider"></li>
-                  <li><a href="/wiki/gulf-coast">Gulf Coast</a></li>
-                  <li><a href="/wiki/new-york-city">New York City</a></li>
-                  <li><a href="/wiki/norcal">Northern California</a></li>
-                  <li><a href="/wiki/somerville-massachusetts">Somerville MA</a></li>
-                  <li><a href="/wiki/vermont">Vermont</a></li>
+                  <% DrupalNode.find_all_by_type('place',:limit => 6, :order => 'node_counter.totalcount DESC', :joins => :drupal_node_counter).each do |node| %>
+                  <li><a href="<%= node.path %>"><%= node.title %></a></li>
+                  <% end %>
+                  <li><a href="/places">More...</a></li>
                   <li class="divider"></li>
                   <li><a href="/wiki/">Recent wiki pages</a></li>
                   <li><a href="/wiki/popular/">Popular wiki pages</a></li>
+                <% end %>
                 </ul>
               </li>
               <li><a href="/archive">Maps</a></li>
@@ -196,8 +196,9 @@
           <li><a href="/wiki/getting-started">Getting Started</a></li>
           <li><a href="/wiki/licenses">Licenses</a></li>
           <li><a href="/wiki/mailing-lists">Mailing lists</a></li>
+          <li><a href="/stats">Site statistics</a></li>
           <li><a href="/wiki/working-groups">Working groups</a></li>
-          <li><a href="/rss">RSS</a></li>
+          <li><a href="/feed.rss">RSS</a></li>
         </ul>
       </div>
       <div class="span3">

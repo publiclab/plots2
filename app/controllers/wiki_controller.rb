@@ -148,8 +148,14 @@ class WikiController < ApplicationController
   end
 
   def popular
-    @title = "Popular Wiki pages"
+    @title = "Popular wiki pages"
     @wikis = DrupalNode.find(:all, :limit => 40,:order => "node_counter.totalcount DESC", :conditions => ["status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')"], :include => :drupal_node_counter)
+    render :template => "wiki/index"
+  end
+
+  def liked
+    @title = "Well-liked wiki pages"
+    @wikis = DrupalNode.find(:all, :limit => 40,:order => "node.cached_likes DESC", :conditions => ["status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes > 0"])
     render :template => "wiki/index"
   end
 

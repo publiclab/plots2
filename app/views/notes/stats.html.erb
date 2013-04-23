@@ -1,8 +1,12 @@
 <div class="span3">
 
+  <h4>About this page</h4>
+
+  <p>Public Lab is built on the contributions of community members, and this website represents our collective open source work.</p>
+
 </div>
 
-<div class="span9">
+<div class="span9" style="margin-bottom:20px;">
 
   <h2>Contributor statistics</h2>
 
@@ -21,7 +25,6 @@
 
   <h4><%= DrupalNode.count(:all, :conditions => {:type => 'page', :status => 1}) %> wiki pages have been posted</h4>
 
-  <h4><%= DrupalNodeRevision.count(:all) %> wiki page and research note edits have been made</h4>
+  <h4><%= DrupalNodeRevision.count(:all) %> wiki page edits have been made</h4>
 
 </div>
-

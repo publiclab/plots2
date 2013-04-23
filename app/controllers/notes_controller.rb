@@ -100,6 +100,7 @@ class NotesController < ApplicationController
     end
   end
 
+  # notes for a given author
   def author
     @user = DrupalUsers.find_by_name params[:id]
     @title = @user.name
@@ -117,12 +118,23 @@ class NotesController < ApplicationController
     render :template => 'notes/index'
   end
 
+  # notes with high # of likes
   def popular
     @title = "Popular research notes"
     @wikis = DrupalNode.find(:all, :limit => 10, :conditions => {:type => 'page', :status => 1}, :order => "nid DESC")
     @notes = DrupalNode.find(:all, :limit => 20, :order => "cached_likes DESC", :conditions => {:type => 'note', :status => 1})
     @unpaginated = true
     render :template => 'notes/index'
+  end
+
+  def rss
+    @notes = DrupalNode.find(:all, :limit => 20, :order => "nid DESC", :conditions => {:type => 'note', :status => 1})
+    respond_to do |format|
+      format.rss {
+        render :layout => false
+        response.headers["Content-Type"] = "application/xml; charset=utf-8"
+      } 
+    end
   end
 
 end

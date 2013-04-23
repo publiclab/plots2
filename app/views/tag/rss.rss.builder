@@ -3,7 +3,7 @@ xml.rss :version => "2.0" do
   xml.channel do
     xml.title "Research tagged '#{params[:tagname]}'"
     xml.description "Open source environmental science research at Public Lab"
-    xml.link "/feed/tag/"+params[:tagname]
+    xml.link "/feed/tag/"+params[:tagname]+".rss"
 
    @notes.each do |node|
 

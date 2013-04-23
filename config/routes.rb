@@ -22,6 +22,7 @@ Plots2::Application.routes.draw do
 
   match 'wiki/new' => 'wiki#new'
   match 'wiki/popular' => 'wiki#popular'
+  match 'wiki/liked' => 'wiki#liked'
   match 'wiki/create' => 'wiki#create'
   match 'wiki/:id' => 'wiki#show'
   match 'wiki/revisions/:id' => 'wiki#revisions'
@@ -84,6 +85,7 @@ Plots2::Application.routes.draw do
   match 'map/:name/:date' => 'map#show'
   match 'archive' => 'map#index'
   match 'stats' => 'notes#stats'
+  match 'feed' => 'notes#rss'
 
   match 'spam' => 'admin#spam'
   

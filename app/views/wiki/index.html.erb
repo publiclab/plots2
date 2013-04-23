@@ -4,12 +4,15 @@
     <h3 style="margin-top:0;">Wiki pages tagged with <i style="color:#aaa;"><%= params[:id] %></i></h3>
   <% elsif params[:action] == "author" %>
     <h3 style="margin-top:0;">Wiki pages by <a href="/people/<%= @user.name %>"><%= @user.name %></a> <small><%= @user.notes.length %> research notes and wiki edits starting <%= time_ago_in_words(@user.notes.first.created_at) %> ago</small></h3>
+  <% elsif params[:action] == "liked" %>
+    <h2>Highly liked wiki pages <small>collaborative documentation by contributors like you</small></h2>
+    <p><a href="/wiki/">By recency</a> | <a href="/wiki/popular">By popularity</a> | <span style="color:#aaa">By # of likes</span></p>
   <% elsif params[:action] == "popular" %>
     <h2>Popular wiki pages <small>collaborative documentation by contributors like you</small></h2>
-    <p><a href="/wiki/">By recency</a> | <span style="color:#aaa">By popularity</span></p>
+    <p><a href="/wiki/">By recency</a> | <span style="color:#aaa">By popularity</span> | <a href="/wiki/liked">By # of likes</a></p>
   <% else %>
     <h2>Recently edited wiki pages <small>collaborative documentation by contributors like you</small></h2>
-    <p><span style="color:#aaa">By recency</span> | <a href="/wiki/popular/">By popularity</a></p>
+    <p><span style="color:#aaa">By recency</span> | <a href="/wiki/popular/">By popularity</a> | <a href="/wiki/liked">By # of likes</a></p>
   <% end %>
 
     <table class="table">
@@ -18,6 +21,7 @@
         <th>Last edited</th>
         <th>Edits</th>
         <th>Pageviews</th>
+        <th><i class="icon icon-star-empty"></i> Likes</th>
       </tr>
       <% @wikis.each do |wiki| %>
         <tr>
@@ -26,6 +30,7 @@
           <a href="/notes/author/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></td>
           <td><%= wiki.revisions.length %></td>
           <td><%= number_with_delimiter(wiki.totalcount) %>
+          <td><%= number_with_delimiter(wiki.cached_likes) %>
         </tr>
       <% end %>
     </table>
