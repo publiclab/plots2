@@ -107,7 +107,7 @@ class DrupalNode < ActiveRecord::Base
 
   # users who like this node
   def likers
-    self.node_selections.collect(&:user)
+    self.node_selections.where(:liking => true).collect(&:user)
   end
 
   def generate_path
