@@ -42,7 +42,7 @@ class LikeController < ApplicationController
     if like.liking_changed?
       node = DrupalNode.find(params[:id])
       if like.liking
-        SubscriptionMailer.notify_note_liked(node,like.user).deliver
+        SubscriptionMailer.notify_note_liked(node,like.user)
         node.cached_likes = node.cached_likes + 1
       else
         node.cached_likes = node.cached_likes - 1
