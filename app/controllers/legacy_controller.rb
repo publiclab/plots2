@@ -1,7 +1,11 @@
 class LegacyController < ApplicationController
 
   def notes
-    redirect_to "/tag/"+params[:id]
+    if params[:id]
+      redirect_to "/tag/"+params[:id]
+    else
+      redirect_to "/research"
+    end
   end
 
   def note_add 

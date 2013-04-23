@@ -119,10 +119,19 @@ class NotesController < ApplicationController
   end
 
   # notes with high # of likes
+  def liked
+    @title = "Highly liked research notes"
+    @wikis = DrupalNode.find(:all, :limit => 10, :conditions => {:type => 'page', :status => 1}, :order => "nid DESC")
+    @notes = DrupalNode.find(:all, :limit => 20, :order => "cached_likes DESC", :conditions => {:type => 'note', :status => 1})
+    @unpaginated = true
+    render :template => 'notes/index'
+  end
+
+  # notes with high # of views
   def popular
     @title = "Popular research notes"
     @wikis = DrupalNode.find(:all, :limit => 10, :conditions => {:type => 'page', :status => 1}, :order => "nid DESC")
-    @notes = DrupalNode.find(:all, :limit => 20, :order => "cached_likes DESC", :conditions => {:type => 'note', :status => 1})
+    @notes = DrupalNode.find(:all, :limit => 20, :order => "node_counter.totalcount DESC", :conditions => {:type => 'note', :status => 1}, :include => :drupal_node_counter)
     @unpaginated = true
     render :template => 'notes/index'
   end

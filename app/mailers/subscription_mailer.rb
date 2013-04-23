@@ -1,7 +1,7 @@
 class SubscriptionMailer < ActionMailer::Base
   default from: "do-not-reply@publiclab.org"
 
-  # SubscriptionMailer.notify(user,self).deliver 
+  # SubscriptionMailer.notify(node).deliver 
   def notify_node_creation(node)
     # figure out who needs to get an email, no dupes
     subject = "[PublicLab] " + node.title
@@ -11,6 +11,13 @@ class SubscriptionMailer < ActionMailer::Base
       @tags = val[:tags]
       mail(:to => val[:user].email, :subject => subject).deliver
     end
+  end
+
+  # SubscriptionMailer.notify(user,self).deliver 
+  def notify_note_liked(node,user)
+    # figure out who needs to get an email, no dupes
+    subject = "[PublicLab] #{user.name} liked your research note"
+    mail(:to => node.author.email, :subject => subject)
   end
 
   private

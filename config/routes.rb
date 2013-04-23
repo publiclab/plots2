@@ -34,6 +34,7 @@ Plots2::Application.routes.draw do
 
   match 'place/:id/feed' => 'place#feed'
   match 'notes/popular' => 'notes#popular'
+  match 'notes/liked' => 'notes#liked'
   match 'notes/create' => 'notes#create'
 
   match 'place/:id' => 'legacy#place'
@@ -42,7 +43,7 @@ Plots2::Application.routes.draw do
   match 'notes/:id' => 'legacy#notes'
 
   match 'research' => 'notes#index'
-  match 'notes' => 'notes#index'
+  match 'notes' => 'legacy#notes'
   match 'notes/author/:id' => 'notes#author'
   match 'notes/author/:author/:topic' => 'notes#author_topic'
   match 'notes/show/:id' => 'notes#show'

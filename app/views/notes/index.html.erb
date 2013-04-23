@@ -19,12 +19,13 @@
   <% else %>
     <h2 style="margin-top:0;">Research notes <small>ideas & documentation from contributors like you</small></h2>
   <% end %>
-  <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index") %>
+  <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked") %>
     <div class="navbar">
       <div class="navbar-inner">
         <ul class="nav">
           <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/notes/">Recent</a></li>
           <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/notes/popular/">Popular</a></li>
+          <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="icon icon-star-empty"></i> Liked</a></li>
   
           <li><a href="/wiki/">Wiki pages</a></li>
           <!--<li><a href="#">By place</a></li>
