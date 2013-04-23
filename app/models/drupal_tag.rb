@@ -68,7 +68,7 @@ class DrupalTag < ActiveRecord::Base
     tids = DrupalTag.find(:all, :conditions => {:name => tag}).collect(&:tid)
     nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
     nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
-    DrupalNode.find_all_by_type "note", :conditions => ["node.nid in (?) AND node_counter.totalcount > (?)",nids.uniq,views], :order => "changed DESC", :limit => limit, :include => :drupal_node_counter
+    DrupalNode.find_all_by_type "note", :conditions => ["node.nid in (?) AND node_counter.totalcount > (?)",nids.uniq,views], :order => "node.nid DESC", :limit => limit, :include => :drupal_node_counter
   end
 
   def self.exists?(tagname,nid)
