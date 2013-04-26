@@ -3,12 +3,16 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    redirect_to "/wiki/registration" unless params[:test] == "true"
+    if params[:test] == "true"
+      @action = "create" # sets the form url
+    else
+      redirect_to "/wiki/registration"
+    end
   end
 
   def create
     # craft a publiclaboratory OpenID URI around the PL username given:
-    params[:user][:openid_identifier] = "http://publiclaboratory.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user]
+    params[:user][:openid_identifier] = "http://publiclaboratory.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
     @user = User.new(params[:user])
 #    if params[:user]
       @user.save({}) do |result| # <<<<< THIS LINE WAS THE PROBLEM FOR "Undefined [] for True" error...
@@ -47,6 +51,7 @@ class UsersController < ApplicationController
   def edit
     @drupal_user = DrupalUsers.find_by_name(params[:id])
     @user = @drupal_user.user
+    @action = "update" # sets the form url
     if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
       render :template => "users/edit.html.erb"
     else

@@ -1,11 +1,12 @@
-<%= form_for @user, :url => {:controller => 'users', :action => 'update'}, :html => {:class => "form-horizontal"} do |f| %>
+<%= form_for @user, :url => {:controller => 'users', :action => @action}, :html => {:class => "form-horizontal"} do |f| %>
+
   <%= f.error_messages %>
 
   <% if params[:controller] == "users" && params[:action] == "new" %>
   <div class="control-group">
     <label class="control-label" for="user_username"><b>Username</b></label>
     <div class="controls">
-      <%= f.text_field :username, {:placeholder => "username"} %>
+      <%= f.text_field :username, {:placeholder => "username", :tabindex => 2} %>
     </div>
   </div>
   <% end %>
@@ -13,7 +14,7 @@
   <div class="control-group">
     <label class="control-label" for="user_email"><b>Email</b></label>
     <div class="controls">
-      <%= f.text_field :email, {:placeholder => "you@email.com"} %>
+      <%= f.text_field :email, {:placeholder => "you@email.com", :tabindex => 3} %>
     </div>
   </div>
 
@@ -24,14 +25,14 @@
       <label class="control-label" for="user_password"><b>Change your password</b></label>
     <% end %>
     <div class="controls">
-    <%= f.password_field :password, {:placeholder => "password"}%>
-    <%= f.password_field :password_confirmation, {:placeholder => "confirm your password"}%>
+    <%= f.password_field :password, {:placeholder => "password", :tabindex => 4}%>
+    <%= f.password_field :password_confirmation, {:placeholder => "confirm your password", :tabindex => 5}%>
     </div>
   </div>
 
   <div class="control-group">
     <div class="controls">
-      <%= text_area :drupal_user, :bio, {:placeholder => "Add a short bio to appear on your profile page", :class => "span6", :rows => 8} %>
+      <%= text_area :drupal_user, :bio, {:placeholder => "Add a short bio to appear on your profile page", :class => "span6", :rows => 8, :tabindex => 6} %>
     </div>
   </div>
 
@@ -40,6 +41,6 @@
   <% end %>
 
   <div class="controls">
-    <button class="btn-large btn-primary" type="submit">Save</button>
+    <button class="btn-large btn-primary" type="submit" tabindex="7">Save</button>
   </div>
 <% end %>

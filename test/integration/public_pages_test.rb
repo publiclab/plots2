@@ -5,12 +5,11 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   def setup
     activate_authlogic
     @user =  FactoryGirl.create(:user)
-    @drupal_user =  FactoryGirl.create(:drupal_users, :name => @user.username, :mail => @user.email, :uid => 1)
+    @user.save({})
   end
 
   def teardown
     @user.destroy
-    @drupal_user.destroy
   end
 
   test "browse front page" do
@@ -75,7 +74,7 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   test "browse /wiki/foo" do
     node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => "Foo", :type => "page", :nid => 13) 
     # was failing title uniquness and unique primary key due to nonfunctioning factory_girl sequencer
-    node_revision = FactoryGirl.create(:drupal_node_revision, :body => "Foo Public Lab", :nid => node.id)
+    node_revision = FactoryGirl.create(:drupal_node_revision, :body => "Foo Public Lab", :nid => node.id, :uid => @user.uid)
     get "/wiki/foo"
     assert_response :success
     node.destroy

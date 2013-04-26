@@ -5,12 +5,10 @@ class NotesControllerTest < ActionController::TestCase
   def setup
     activate_authlogic
     @user =  FactoryGirl.create(:user)
-    @drupal_user =  FactoryGirl.create(:drupal_users, :name => @user.username, :mail => @user.email)
   end
 
   def teardown
     @user.destroy
-    @drupal_user.destroy
   end
 
   def test_post_note_no_login

@@ -14,7 +14,7 @@ class SearchController < ApplicationController
     @nodes = []
     unless params[:id].nil?
       @nodes += DrupalNode.find(:all, :limit => 25, :order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"]) if params[:notes] || all
-      @nodes += DrupalNode.find(:all, :limit => 25, :order => "nid DESC", :conditions => ['type = "page" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"]) if params[:wikis] || all
+      @nodes += DrupalNode.find(:all, :limit => 25, :order => "nid DESC", :conditions => ['(type = "page" OR type = "place" OR type = "tool") AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"]) if params[:wikis] || all
       @nodes += DrupalNode.find(:all, :limit => 25, :order => "nid DESC", :conditions => ['type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"]) if params[:maps] || all
       @nodes += DrupalComment.find(:all, :limit => 25, :order => "nid DESC", :conditions => ['status = 1 AND comment LIKE ?', "%"+params[:id]+"%"]) if params[:comments] || all
     end
@@ -27,8 +27,8 @@ class SearchController < ApplicationController
     DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
       matches << {:string => "<i class='icon-file'></i> "+match.title, :url => "/"+match.slug}
     end
-    DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['type = "page" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
-      matches << {:string => "<i class='icon-book'></i> "+match.title, :url => "/wiki/"+match.slug}
+    DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['(type = "page" OR type = "place" OR type = "tool") AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
+      matches << {:string => match.icon+" "+match.title, :url => "/wiki/"+match.slug}
     end
     DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
       matches << {:string => "<i class='icon-map-marker'></i> "+match.title, :url => "/"+match.slug}

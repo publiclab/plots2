@@ -11,6 +11,40 @@ class User < ActiveRecord::Base
   #has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
   has_many :images, :foreign_key => :uid
 
+  before_create :create_drupal_user
+  after_destroy :destroy_drupal_user
+
+  def create_drupal_user
+    drupal_user = DrupalUsers.new({
+      :name => self.username,
+      :pass => rand(100000000000000000000),
+      :mail => self.email,
+      :mode => 0,
+      :sort => 0,
+      :threshold => 0,
+      :theme => "",
+      :signature => "",
+      :signature_format => 0,
+      :created => DateTime.now.to_i,
+      :access => DateTime.now.to_i,
+      :login => DateTime.now.to_i,
+      :status => 0,
+      :timezone => nil,
+      :language => "",
+      :picture => "",
+      :init => "",
+      :data => nil,
+      :timezone_id => 0,
+      :timezone_name => ""
+    })
+    drupal_user.save!
+    self.id = drupal_user.uid
+  end
+
+  def destroy_drupal_user
+    self.drupal_user.destroy
+  end
+ 
   # this is ridiculous. We need to store uid in this model.
   def drupal_user
     DrupalUsers.find_by_name(self.username)
