@@ -1,8 +1,8 @@
 <%= form_for @user, :url => {:controller => 'users', :action => @action}, :html => {:class => "form-horizontal"} do |f| %>
 
-  <%= f.error_messages %>
+  <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
 
-  <% if params[:controller] == "users" && params[:action] == "new" %>
+  <% if params[:controller] == "users" && @action == "create" %>
   <div class="control-group">
     <label class="control-label" for="user_username"><b>Username</b></label>
     <div class="controls">
@@ -25,8 +25,8 @@
       <label class="control-label" for="user_password"><b>Change your password</b></label>
     <% end %>
     <div class="controls">
-    <%= f.password_field :password, {:placeholder => "password", :tabindex => 4}%>
-    <%= f.password_field :password_confirmation, {:placeholder => "confirm your password", :tabindex => 5}%>
+    <%= f.password_field :password, {:placeholder => "password", :tabindex => 4} %>
+    <%= f.password_field :password_confirmation, {:placeholder => "confirm your password", :tabindex => 5} %>
     </div>
   </div>
 

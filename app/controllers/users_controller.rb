@@ -21,6 +21,7 @@ class UsersController < ApplicationController
           redirect_to "/dashboard"
         else
           # didn't create a new user!
+          @action = "create"
           render :action => 'new'
         end
       end

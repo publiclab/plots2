@@ -1,3 +1,11 @@
+class UniqueUsernameValidator < ActiveModel::Validator
+  def validate(record)
+    if DrupalUsers.find_by_name record.username
+      record.errors[:base] << "That username is already taken. If this is your username, you can simply log in to this site."  
+    end
+  end
+end
+
 class User < ActiveRecord::Base
   self.table_name = 'rusers'
   attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier
@@ -10,6 +18,7 @@ class User < ActiveRecord::Base
   # this doesn't work... we should have a uid field on User
   #has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
   has_many :images, :foreign_key => :uid
+  validates_with UniqueUsernameValidator, :on => :create
 
   before_create :create_drupal_user
   after_destroy :destroy_drupal_user
