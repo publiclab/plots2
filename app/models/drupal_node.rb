@@ -145,7 +145,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def author
-    DrupalUsers.find self.uid
+    DrupalUsers.find_by_uid self.uid
   end
 
   # for wikis:

@@ -77,6 +77,7 @@ Plots2::Application.routes.draw do
 
   match 'dashboard' => 'home#dashboard'
   match 'nearby' => 'home#nearby'
+  match 'profile/edit' => 'users#edit'
   match 'profile/:id' => 'users#profile'
   match 'profile/:id/edit' => 'users#edit'
   match 'profile/:id/likes' => 'users#likes'

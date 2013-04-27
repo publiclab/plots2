@@ -20,6 +20,7 @@ class UsersController < ApplicationController
           flash[:notice] = "Registration successful."
           redirect_to "/dashboard"
         else
+          # didn't create a new user!
           render :action => 'new'
         end
       end
@@ -49,9 +50,14 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @drupal_user = DrupalUsers.find_by_name(params[:id])
-    @user = @drupal_user.user
     @action = "update" # sets the form url
+    if params[:id] # admin only
+      @drupal_user = DrupalUsers.find_by_name(params[:id])
+      @user = @drupal_user.user
+    else
+      @user = current_user
+      @drupal_user = current_user.drupal_user
+    end
     if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
       render :template => "users/edit.html.erb"
     else

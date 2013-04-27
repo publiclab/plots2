@@ -6,6 +6,11 @@
       <button type="button" class="close" data-dismiss="alert">×</button>
       <strong>Welcome!</strong> You haven't posted a research note yet -- consider <a href="/post">sharing your work and interests</a>!
     </div>
+  <% elsif !current_user.crypted_password.nil? %>
+    <div class="alert hidden-phone">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      Please <a href="/profile/edit">create a password for the new PublicLab.org website</a>; the older PublicLaboratory.org will soon be retired. 
+    </div>
   <% end %>
 
   <h3>Dashboard: <small>Welcome, <%= current_user.username %>!</small></h3>

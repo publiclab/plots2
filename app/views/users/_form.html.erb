@@ -19,7 +19,7 @@
   </div>
 
   <div class="control-group">
-    <% if @user.password.nil? %>
+    <% if @user.crypted_password.nil? %>
       <label class="control-label" for="user_password"><b>Create a password</b></label>
     <% else %>
       <label class="control-label" for="user_password"><b>Change your password</b></label>
