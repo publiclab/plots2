@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130408183908) do
+ActiveRecord::Schema.define(:version => 20130424190648) do
 
   create_table "access", :primary_key => "aid", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "mask",                :default => "", :null => false
@@ -561,7 +561,7 @@ ActiveRecord::Schema.define(:version => 20130408183908) do
     t.integer  "vid",                           :default => 0, :null => false
     t.integer  "nid",                           :default => 0, :null => false
     t.integer  "delta",                         :default => 0, :null => false
-    t.geometry "field_bbox_geo", :limit => nil
+    t.geometry "field_bbox_geo", :limit => nil,                :null => false
   end
 
   add_index "content_field_bbox", ["nid"], :name => "nid"
@@ -882,10 +882,10 @@ ActiveRecord::Schema.define(:version => 20130408183908) do
   end
 
   add_index "feeds_node_item", ["feed_nid"], :name => "feed_nid"
-#  add_index "feeds_node_item", ["guid"], :name => "guid"
+  add_index "feeds_node_item", ["guid"], :name => "guid"
   add_index "feeds_node_item", ["id"], :name => "id"
   add_index "feeds_node_item", ["imported"], :name => "imported"
-#  add_index "feeds_node_item", ["url"], :name => "url"
+  add_index "feeds_node_item", ["url"], :name => "url"
 
   create_table "feeds_push_subscriptions", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "domain",        :limit => 128, :default => "", :null => false
@@ -909,7 +909,7 @@ ActiveRecord::Schema.define(:version => 20130408183908) do
   end
 
   add_index "feeds_source", ["feed_nid"], :name => "feed_nid"
-#  add_index "feeds_source", ["id", "source"], :name => "id_source"
+  add_index "feeds_source", ["id", "source"], :name => "id_source"
   add_index "feeds_source", ["id"], :name => "id"
 
   create_table "feeds_term_item", :primary_key => "tid", :options=>'ENGINE=MyISAM', :force => true do |t|
@@ -1075,7 +1075,7 @@ ActiveRecord::Schema.define(:version => 20130408183908) do
     t.string "version",   :limit => 20, :default => "none",    :null => false
   end
 
-#  add_index "locales_source", ["source"], :name => "source"
+  add_index "locales_source", ["source"], :name => "source"
 
   create_table "locales_target", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.integer "lid",                       :default => 0,  :null => false
@@ -1174,7 +1174,7 @@ ActiveRecord::Schema.define(:version => 20130408183908) do
 
   add_index "menu_router", ["fit"], :name => "fit"
   add_index "menu_router", ["tab_parent"], :name => "tab_parent"
-#  add_index "menu_router", ["tab_root", "weight", "title"], :name => "tab_root_weight_title"
+  add_index "menu_router", ["tab_root", "weight", "title"], :name => "tab_root_weight_title"
 
   create_table "messaging_message_parts", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string "type",    :limit => 100,        :default => "", :null => false
@@ -1726,7 +1726,7 @@ ActiveRecord::Schema.define(:version => 20130408183908) do
     t.text    "info"
   end
 
-#  add_index "system", ["type", "name"], :name => "type_name"
+  add_index "system", ["type", "name"], :name => "type_name"
   add_index "system", ["type", "status", "bootstrap", "weight", "filename"], :name => "bootstrap"
   add_index "system", ["type", "status", "weight", "filename"], :name => "modules"
 
