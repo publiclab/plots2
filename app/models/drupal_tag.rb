@@ -83,4 +83,9 @@ class DrupalTag < ActiveRecord::Base
     DrupalNodeCommunityTag.find(:all, :conditions => ['nid = ? AND term_data.name = ?',nid,tagname], :joins => :drupal_tag).length != 0
   end
 
+  def self.follower_count(tagname)
+    tids = DrupalTag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
+    TagSelection.count(:all, :conditions => ['tid in (?)',tids])
+  end
+
 end
