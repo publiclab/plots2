@@ -533,6 +533,7 @@ ActiveRecord::Schema.define(:version => 20130424190648) do
   add_index "comments", ["nid"], :name => "nid"
   add_index "comments", ["pid"], :name => "pid"
   add_index "comments", ["status"], :name => "status"
+  add_index "comments", ["timestamp"], :name => "timestamp"
 
   create_table "community_tags", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.integer "tid",  :default => 0, :null => false
@@ -561,7 +562,7 @@ ActiveRecord::Schema.define(:version => 20130424190648) do
     t.integer  "vid",                           :default => 0, :null => false
     t.integer  "nid",                           :default => 0, :null => false
     t.integer  "delta",                         :default => 0, :null => false
-    t.geometry "field_bbox_geo", :limit => nil,                :null => false
+    t.geometry "field_bbox_geo", :limit => nil
   end
 
   add_index "content_field_bbox", ["nid"], :name => "nid"
@@ -1315,6 +1316,7 @@ ActiveRecord::Schema.define(:version => 20130424190648) do
   end
 
   add_index "node_revisions", ["nid"], :name => "nid"
+  add_index "node_revisions", ["timestamp"], :name => "timestamp"
   add_index "node_revisions", ["uid"], :name => "uid"
 
   create_table "node_selections", :id => false, :force => true do |t|

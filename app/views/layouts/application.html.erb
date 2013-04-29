@@ -54,7 +54,7 @@
 
           <a rel="tooltip" title="Switch to old site" data-placement="bottom" style="margin-left:6px;" href="#" onClick="alpha()" class="btn btn-primary pull-right hidden-phone">&alpha;</a>
           <script>
-            function alpha() { window.location = 'http://publiclaboratory'+(window.location+'').split('://publiclab.')[1] } 
+            function alpha() { window.location = 'http://publiclaboratory.'+(window.location+'').split('://publiclab.')[1] } 
           </script>
           <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:6px;" href="/signup" class="btn pull-right">Join</a><% end %>
 
