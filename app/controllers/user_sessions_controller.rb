@@ -21,7 +21,7 @@ class UserSessionsController < ApplicationController
     else
       if !DrupalUsers.find_by_name(openid).nil?
         # this is a user from the old site who hasn't registered on the new site
-        redirect_to :controller => :users, :action => :create, :user => {:openid_identifier => "http://publiclaboratory.org/people/"+openid+"/identity"}
+        redirect_to :controller => :users, :action => :create, :user => {:openid_identifier => openid}
       else
         redirect_to "/signup"
       end
