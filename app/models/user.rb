@@ -91,6 +91,12 @@ class User < ActiveRecord::Base
     TagSelection.find(:all, :conditions => ["tid IN (?) AND user_id = ?", tids, self.uid]).length > 0
   end
 
+  def mapknitter_maps
+    # http://mapknitter.org/feeds/author/hagitkeysar
+    
+    RSS::Parser.parse(open('http://mapknitter.org/feeds/author/'+self.username).read, false).items
+  end
+
   private
 
   def map_openid_registration(registration)
