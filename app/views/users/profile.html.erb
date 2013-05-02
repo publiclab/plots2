@@ -27,7 +27,7 @@
 
   <hr />
 
-  <% if @user.user.mapknitter_maps %>
+  <% if @user.using_new_site? && @user.user.mapknitter_maps %>
 
   <h4>Maps at <a href="http://mapknitter.org">MapKnitter.org</a></h4>
 
