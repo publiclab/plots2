@@ -7,9 +7,7 @@
 <div class="span9">
 
   <% if @node.main_image %>
-    <a href="http://publiclaboratory.org/sites/default/files/<%= @node.main_image.filename %>"><img style="height:300px;" class="img-rounded" src="http://publiclaboratory.org/sites/default/files/imagecache/default/<%= @node.main_image.filename %>" /></a>
-    <br />
-    <br style="clear:both;" />
+    <a style="display:block;margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img class="img-rounded" src="<%= @node.main_image.path(:default) %>" /></a>
   <% end %>
 
   <%= render :partial => "like/like" %>

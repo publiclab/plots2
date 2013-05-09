@@ -183,12 +183,16 @@ class DrupalNode < ActiveRecord::Base
 
   # provide either a Drupally main_iamge or a Railsy one 
   def main_image(node_type = :all)
-    if self.images && self.images.length > 0 && node_type != :drupal
-      self.images.last 
-    elsif self.drupal_main_image && node_type != :rails
-      self.drupal_main_image.drupal_file 
+    if self.type == "place" || self.type == "tool" # special handling... oddly needed:
+      DrupalMainImage.find(:last, :conditions => {:nid => self.id}, :order => "field_main_image_fid").drupal_file
     else
-      nil
+      if self.images && self.images.length > 0 && node_type != :drupal
+        self.images.last 
+      elsif self.drupal_main_image && node_type != :rails
+        self.drupal_main_image.drupal_file 
+      else
+        nil
+      end
     end
   end
 
@@ -300,6 +304,9 @@ class DrupalNode < ActiveRecord::Base
 
   def path
     path = "/"+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst
+    path.gsub!('/place','/wiki') if self.type == "place"
+    path.gsub!('/tool','/wiki') if self.type == "tool"
+    path
   end
 
   def edit_path
