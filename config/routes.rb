@@ -37,6 +37,8 @@ Plots2::Application.routes.draw do
   match 'notes/liked' => 'notes#liked'
   match 'notes/create' => 'notes#create'
 
+  match 'places' => 'notes#places'
+  match 'tools' => 'notes#tools'
   match 'place/:id' => 'legacy#place'
   match 'tool/:id' => 'legacy#tool'
   match 'people/:id' => 'legacy#people'

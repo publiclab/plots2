@@ -27,6 +27,15 @@
   </ul>
   <% end %>
 
+  <% if @users && @users.length > 0 %>
+  <h4>Contributors</h4>
+  <ul class="nav">
+    <% @users.each do |author| %>
+      <li><a href="/notes/author/<%= author.name %>"><i class="icon-user"></i> <%= author.name %></a></li>
+    <% end %>
+  </ul>
+  <% end %>
+
   <% if @videos && @videos.length > 0 %>
   <h4>Related videos</h4>
   <ul class="nav bullet">
@@ -59,7 +68,7 @@
   </ul>
   <% end %>
 
-  <% if @notes && @notes.length > 0 && params[:controller] != "search" %>
+  <% if @notes && @notes.length > 0 && params[:controller] != "tag" %>
   <h4>Related research notes</h4>
   <ul class="nav bullet">
     <% @notes.each do |note| %>

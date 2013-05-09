@@ -4,7 +4,7 @@ class TagController < ApplicationController
   before_filter :require_user, :only => [:create, :delete]
 
   def show
-    set_sidebar :tags, [params[:id]]
+    set_sidebar :tags, [params[:id]], {:note_count => 20}
 
     @tags = DrupalTag.find_all_by_name params[:id]
     @tagnames = @tags.collect(&:name).uniq! || []

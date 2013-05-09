@@ -1,0 +1,45 @@
+<% if false %>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
+<![endif]-->
+<script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
+
+<div style="width:100%;margin-left:0;height:300px;" id="map"></div>
+
+<script>
+  var map = L.map('map').setView([15,0], 2);
+  L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+
+  <% @maps.each do |map| %>
+    L.marker([<%= map.location[:y] %>, <%= map.location[:x] %>]).addTo(map).bindPopup("<a href='<%= map.slug %>'><%= map.title %></a>");
+  <% end %>
+</script>
+
+<br style="clear:both;" />
+<% end %>
+
+<%= render :partial => "sidebar/featured" %>
+<div class="span9">
+  <% if params[:action] == 'tools' %>
+  <h2 style="margin-top:0;">Tools &amp; techniques <small>developed by Public Lab contributors</small></h2>
+  <% else %>
+  <h2>Public Lab chapters <small>local groups and gatherings around the world</small></h2>
+  <% end %>
+  <hr />
+  <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked") %>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <ul class="nav">
+          <li<% if params[:action] == "tools" %> class="active"<% end %>><a href="/tools/"><i class="icon icon-wrench"></i> Tools</a></li>
+          <li<% if params[:action] == "places" %> class="active"<% end %>><a href="/places/"><i class="icon icon-flag"></i> Places</a></li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <%= render :partial => "notes/notes" %>
+
+  <hr />
+  
+</div>

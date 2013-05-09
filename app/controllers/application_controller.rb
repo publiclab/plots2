@@ -8,9 +8,10 @@ class ApplicationController < ActionController::Base
 
     # eventually videos could be a power tag
     def set_sidebar(type = :generic, data = :all, args = {})
+      args[:note_count] ||= 8
       if type == :tags # accepts data of array of tag names as strings
         @wikis = DrupalTag.find_pages(data,10)
-        @notes = DrupalTag.find_nodes_by_type(data,'note',8)
+        @notes = DrupalTag.find_nodes_by_type(data,'note',args[:note_count])
         @videos = DrupalTag.find_nodes_by_type_with_all_tags(['video']+data,'note',8) if args[:videos] && data.length > 1
         @maps = DrupalTag.find_nodes_by_type(data,'map',8)
       else # type is generic

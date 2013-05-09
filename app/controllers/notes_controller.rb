@@ -7,6 +7,18 @@ class NotesController < ApplicationController
     set_sidebar
   end
 
+  def tools
+    @title = "Tools"
+    @notes = DrupalNode.paginate(:conditions => {:status => 1, :type => 'tool'}, :order => "node_counter.totalcount DESC", :include => :drupal_node_counter, :page => params[:page])
+    render :template => "notes/tools_places"
+  end
+
+  def places
+    @title = "Places"
+    @notes = DrupalNode.paginate(:conditions => {:status => 1, :type => 'place'}, :order => "node_counter.totalcount DESC", :include => :drupal_node_counter, :page => params[:page])
+    render :template => "notes/tools_places"
+  end
+
   def show
     if params[:author] && params[:date]
       @node = DrupalUrlAlias.find_by_dst('notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).node 
