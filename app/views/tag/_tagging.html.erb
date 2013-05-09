@@ -21,9 +21,10 @@
         $("#taginput").prop('disabled',true)
       });
       $('#tagform').bind('ajax:success', function(e,response){
-        if (response.match('Error') == null) {
-          var tag_name = response.split(',')[0]
-          var tag_id = response.split(',')[1]
+        response = JSON.parse(response)
+        $.each(response['saved'],function(i,tag) {
+          var tag_name = tag[0]
+          var tag_id = tag[1]
           $('#tags').append("<span id='tag_"+tag_id+"' class='label label-info'><a href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tagdelete' data-remote='true' href='/tag/delete/<%= @node.id %>/"+tag_id+"'>x</a></span> ")
           $('#taginput').val("")
           $('#tagform .control-group').removeClass('error')
@@ -31,10 +32,11 @@
           $('#tag_'+tag_id).bind('ajax:success', function(e,tagid){
             $('#tag_'+tagid).remove()
           });
-        } else {
+        })
+        if (response['errors'].length > 0) {
           $('#tagform .control-group').addClass('error')
           $('#tagform .control-group .help-inline').remove()
-          $('#tagform .control-group').append('<span class="help-inline">Error: there was a problem.</span>')
+          $('#tagform .control-group').append('<span class="help-inline">Error: tags '+response['errors']+'</span>')
         }
         $('#taginput').prop('disabled',false)
       });

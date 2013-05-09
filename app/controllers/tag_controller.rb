@@ -18,24 +18,33 @@ class TagController < ApplicationController
   end
 
   def create
-    if DrupalTag.exists?(params[:tagname],params[:nid])
-      render :text => "Error: that tag already exists."
-    else 
-      @node = DrupalNode.find params[:nid]
-      saved,tag = @node.add_tag(params[:name],current_user)
-      if saved
-        respond_with do |format|
-          format.html do
-            if request.xhr?
-              render :text => tag.name+','+tag.id.to_s
-            else
-              flash[:notice] = "Tag created."
-              redirect_to @node.path
-            end
-          end
+    tagnames = params[:name].split(',')
+    response = {
+      :errors => [],
+      :saved => [],
+    }
+
+    node = DrupalNode.find params[:nid]
+    tagnames.each do |tagname|
+      if DrupalTag.exists?(tagname,params[:nid])
+        errors << "Error: that tag already exists."
+      else 
+        saved,tag = node.add_tag(tagname,current_user)
+        if saved
+          response[:saved] << [tag.name,tag.id]
+        else
+          response[:errors] << tag.errors[:name].first
         end
-      else
-        render :text => "Error: Tags "+tag.errors[:name].first
+      end
+    end
+    respond_with do |format|
+      format.html do
+        if request.xhr?
+          render :json => response
+        else
+          flash[:notice] = "#{response[:saved].length} tags created, #{response[:errors].length} errors."
+          redirect_to node.path
+        end
       end
     end
   end
