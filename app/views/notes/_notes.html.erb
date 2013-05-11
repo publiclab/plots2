@@ -4,14 +4,14 @@
     <% @notes.each_with_index do |node,i| %>
       <div class="span3 clearfix" style="overflow:hidden;">
         <% if node.main_image %>
-          <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>
-          <a class="hidden-phone thumbnail" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <a class="hidden-phone thumbnail" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
         <% end %>
-        <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
+        <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
         <p style="color:#888;"><small>
           by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> 
           | <%= time_ago_in_words(node.created_at) %> ago
-          | <a href="/<%= node.slug %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
+          | <a href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
           <% if params[:controller] == "notes" && params[:action] == "popular" %>
           | <%= number_with_delimiter(node.totalcount) %> views
           <% else %>
@@ -19,7 +19,7 @@
           <% end %>
         </small></p>
         <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
-        <p><a href="/<%= node.slug %>">Read more &raquo;</a></p>
+        <p><a href="<%= node.path %>">Read more &raquo;</a></p>
         <p>
           <% node.tags[0..3].each do |tag| %>
             <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 

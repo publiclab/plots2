@@ -73,7 +73,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def note_count
-    DrupalNode.count(:all,:conditions => {:status => 1, :uid => self.uid})
+    DrupalNode.count(:all,:conditions => {:status => 1, :uid => self.uid, :type => "note"})
   end
 
   def node_count
