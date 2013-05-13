@@ -1,0 +1,67 @@
+<%= render :partial => "sidebar/related" %>
+<div class="span9">
+  <h3 style="margin-top:0;"><%= params[:id] %> Blog</h3>
+
+  <% if current_user %>
+  <!-- AJAXify -->
+  <div class="btn-group">
+    <a class="btn btn-small" href="/feed/tag/<%= params[:id] %>.rss"><i class="icon icon-rss"></i> RSS</a>
+    <% if current_user.following(params[:id]) %>
+    <a rel="tooltip" title="Click to unfollow" class="btn btn-small active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="icon icon-eye-open"></i> Following <b><%= params[:id] %></b></a>
+    <% else %>
+    <a class="btn btn-small" href="/subscribe/tag/<%= params[:id] %>"><i class="icon icon-eye-open"></i> Follow <b><%= params[:id] %></b></a>
+    <% end %>
+  </div>
+  <!-- AJAXify -->
+  &nbsp; <%= DrupalTag.follower_count(params[:id]) %> people are watching this tag
+  <% end %>
+
+  <hr />
+
+  <% if @notes.nil? || @notes.length == 0 %>
+    <p>No results found; try searching for '<b><%= params[:id] %></b>':</p>
+
+    <%= render :partial => "search/search" %>
+
+    <p>Or try an <a href="/search/advanced/">advanced search</a></p>
+  <% else %>
+
+
+      <% @notes.each_with_index do |node,i| %>
+        <div class="clearfix">
+          <% if node.main_image %>
+            <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+            <a class="hidden-phone thumbnail" style="width:60%" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <% end %>
+          <h3 style="clear:left;padding-top:10px;"><a href="<%= node.path %>"><%= node.title %></a></h3>
+          <p style="color:#888;"><small>
+            by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> 
+            | <%= time_ago_in_words(node.created_at) %> ago
+            | <a href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
+            <% if params[:controller] == "notes" && params[:action] == "popular" %>
+            | <%= number_with_delimiter(node.totalcount) %> views
+            <% else %>
+            | <i style="color:#888;" class="icon icon-star-empty"></i> <%= node.likes %>
+            <% end %>
+          </small></p>
+          <p><%= raw auto_link(node.render_body.truncate(800), :sanitize => false) %></p>
+          <p><a href="<%= node.path %>">Read more &raquo;</a></p>
+          <p>
+            <% node.tags[0..3].each do |tag| %>
+              <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
+            <% end %>
+          </p>
+          <% if params[:mod] %>
+          <a class="btn btn-mini" href="#"><i class="icon-ban-circle"></i> Spam</a>
+          <% end %>
+        </div>
+        <hr />
+      <% end %>
+
+    <%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+
+  <% end %>
+
+  <hr />
+  
+</div>

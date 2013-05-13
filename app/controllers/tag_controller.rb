@@ -13,6 +13,15 @@ class TagController < ApplicationController
     @unpaginated = true
   end
 
+  def blog
+    @wikis = DrupalTag.find_pages(params[:id],10)
+    nids = DrupalTag.find_nodes_by_type(params[:id],'note',40).collect(&:nid)
+    @notes = DrupalNode.paginate(:conditions => ['nid in (?)', nids], :order => "nid DESC", :page => params[:page])
+    @tags = DrupalTag.find_all_by_name params[:id]
+    @tagnames = @tags.collect(&:name).uniq! || []
+    @title = @tagnames.join(',') + " Blog" if @tagnames
+  end
+
   def author
     render :json => DrupalUsers.find_by_name(params[:id]).tag_counts
   end
