@@ -71,6 +71,7 @@ Plots2::Application.routes.draw do
   match 'search/typeahead/:id' => 'search#typeahead'
 
   match 'tag/:id' => 'tag#show'
+  match 'blog' => 'tag#blog', :id => "blog"
   match 'blog/:id' => 'tag#blog'
   match 'tag/suggested/:id' => 'tag#suggested'
   match 'tag/author/:id.json' => 'tag#author'
