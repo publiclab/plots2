@@ -30,6 +30,8 @@ Plots2::Application.routes.draw do
   match 'openid/decision' => 'openid#decision'
   match 'openid/:username' => 'openid#user_page'
   match 'openid/:username/xrds' => 'openid#user_xrds'
+  match '/people/:username/identity' => 'legacy#openid_username'
+  match '/user/:id/identity' => 'legacy#openid'
 
   # Allow downloading Web Service WSDL as a file with an extension
   # instead of a file named 'wsdl'

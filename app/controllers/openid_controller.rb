@@ -15,66 +15,74 @@ class OpenidController < ApplicationController
 
   def index
     
-    begin
-      #oidreq = server.decode_request(params)
-      oidreq = server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
-      puts Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]).inspect
-    rescue ProtocolError => e
-      # invalid openid request, so just display a page with an error message
-      puts e.to_s
-      render :text => e.to_s, :status => 500
-      return
-    end
+  # check if user is logged in! If not, prompt to create an account, but try to keep a redirect_to?
+    if current_user
 
-    # no openid.mode was given
-    unless oidreq
-      render :text => "This is an OpenID server endpoint."
-      return
-    end
-
-    oidresp = nil
-
-    if oidreq.kind_of?(CheckIDRequest)
-
-      identity = oidreq.identity
-
-      if oidreq.id_select
-        if oidreq.immediate
-          oidresp = oidreq.answer(false)
-        elsif current_user.nil? && session[:username]
-          # The user hasn't logged in.
-          show_decision_page(oidreq)
-          return
-        else
-          # Else, set the identity to the one the user is using.
-          identity = url_for_user
-        end
-      end
-
-      if oidresp
-        nil
-      elsif self.is_authorized(identity, oidreq.trust_root)
-        oidresp = oidreq.answer(true, nil, identity)
-
-        # add the sreg response if requested
-        add_sreg(oidreq, oidresp)
-        # ditto pape
-        add_pape(oidreq, oidresp)
-
-      elsif oidreq.immediate
-        server_url = url_for :action => 'index'
-        oidresp = oidreq.answer(false, server_url)
-
-      else
-        show_decision_page(oidreq)
+      begin
+        #oidreq = server.decode_request(params)
+        oidreq = server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
+        puts Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]).inspect
+      rescue ProtocolError => e
+        # invalid openid request, so just display a page with an error message
+        puts e.to_s
+        render :text => e.to_s, :status => 500
         return
       end
-
+ 
+      # no openid.mode was given
+      unless oidreq
+        render :text => "This is an OpenID server endpoint."
+        return
+      end
+ 
+      oidresp = nil
+ 
+      if oidreq.kind_of?(CheckIDRequest)
+ 
+        identity = oidreq.identity
+ 
+        if oidreq.id_select
+          if oidreq.immediate
+            oidresp = oidreq.answer(false)
+          elsif current_user.nil? && session[:username]
+            # The user hasn't logged in.
+            show_decision_page(oidreq)
+            return
+          else
+            # Else, set the identity to the one the user is using.
+            identity = url_for_user
+          end
+        end
+ 
+        if oidresp
+          nil
+        elsif self.is_authorized(identity, oidreq.trust_root)
+          oidresp = oidreq.answer(true, nil, identity)
+ 
+          # add the sreg response if requested
+          add_sreg(oidreq, oidresp)
+          # ditto pape
+          add_pape(oidreq, oidresp)
+ 
+        elsif oidreq.immediate
+          server_url = url_for :action => 'index'
+          oidresp = oidreq.answer(false, server_url)
+ 
+        else
+          show_decision_page(oidreq)
+          return
+        end
+ 
+      else
+        oidresp = server.handle_request(oidreq)
+      end
+ 
+      self.render_response(oidresp)
     else
-      oidresp = server.handle_request(oidreq)
+      session[:return_to] = request.env['ORIGINAL_FULLPATH']
+      redirect_to "/login"
     end
 
-    self.render_response(oidresp)
   end
 
   def show_decision_page(oidreq, message="Do you trust this site with your identity?")

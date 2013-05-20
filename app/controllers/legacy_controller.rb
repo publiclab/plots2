@@ -24,4 +24,13 @@ class LegacyController < ApplicationController
     redirect_to "/wiki/"+params[:id]
   end
 
+  def openid
+    user = User.find params[:id]
+    redirect_to "/openid/"+user.username
+  end
+
+  def openid_username
+    redirect_to "/openid/"+params[:username]
+  end
+
 end

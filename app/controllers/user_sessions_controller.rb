@@ -13,7 +13,14 @@ class UserSessionsController < ApplicationController
       @user_session.save do |result|
         if result
           flash[:notice] = "Successfully logged in."
-          redirect_to "/dashboard"
+          if session[:return_to] # for openid login, redirects back to openid auth process
+puts session[:return_to]
+            redirect_to session[:return_to]
+          elsif params[:return_to]
+            redirect_to params[:return_to]
+          else
+            redirect_to "/dashboard"
+          end
         else
           render :action => 'new'
         end
