@@ -159,8 +159,6 @@
     <div class="container-fluid">
       <div class="header-spacer hidden-phone"></div>
 
-      <%= render :partial => "layouts/alerts" %>
-
         <%# unless current_user || params[:controller] == "user_sessions" || params[:controller] == "home" && params[:action] == "front" %>
           <div class="well visible-desktop" style="padding:12px 20px 10px;">
             <h4  style="display:inline;">Did you know that Public Lab is an open community supported by a nonprofit?</h4> 
@@ -170,6 +168,8 @@
             <a href="/donate" style="margin-bottom:6px;" class="btn btn-success btn-large btn-block">Donate to <span class="hidden-tiny">the</span> Public Lab <span class="hidden-tiny">non-profit</span> &raquo;</a>
           </div>
         <%# end %>
+
+      <%= render :partial => "layouts/alerts" %>
 
       <div class="row-fluid">
 

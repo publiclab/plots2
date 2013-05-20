@@ -20,6 +20,21 @@ Plots2::Application.routes.draw do
 
   #resources :users
 
+  match 'openid' => 'openid#index'
+  # Try to get rails to accept params with periods in the keyname? 
+  # The following isn't right and it may be about param parsing rather than routing?
+  # match 'openid' => 'openid#index', :constraints => { 'openid.mode' => /.*/ }
+# try this; http://jystewart.net/2007/10/24/a-ruby-on-rails-openid-server/
+
+  match 'openid/xrds' => 'openid#idp_xrds'
+  match 'openid/decision' => 'openid#decision'
+  match 'openid/:username' => 'openid#user_page'
+  match 'openid/:username/xrds' => 'openid#user_xrds'
+
+  # Allow downloading Web Service WSDL as a file with an extension
+  # instead of a file named 'wsdl'
+  match 'openid/service.wsdl' => 'openid#wsdl'
+
   match 'wiki/new' => 'wiki#new'
   match 'wiki/popular' => 'wiki#popular'
   match 'wiki/liked' => 'wiki#liked'
