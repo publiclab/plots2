@@ -14,7 +14,6 @@ class UserSessionsController < ApplicationController
         if result
           flash[:notice] = "Successfully logged in."
           if session[:return_to] # for openid login, redirects back to openid auth process
-puts session[:return_to]
             redirect_to session[:return_to]
           elsif params[:return_to]
             redirect_to params[:return_to]
@@ -26,10 +25,11 @@ puts session[:return_to]
         end
       end
     else
-      if !DrupalUsers.find_by_name(openid).nil?
+      if !DrupalUsers.find_by_name(openid).nil? || !DrupalUsers.find_by_name(params[:user_session][:username]).nil? 
         # this is a user from the old site who hasn't registered on the new site
         redirect_to :controller => :users, :action => :create, :user => {:openid_identifier => openid}
       else
+        flash[:warning] = "It looks like you're new here! Sign up below to join."
         redirect_to "/signup"
       end
     end

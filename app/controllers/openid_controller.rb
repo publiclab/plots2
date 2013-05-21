@@ -21,10 +21,8 @@ class OpenidController < ApplicationController
       begin
         #oidreq = server.decode_request(params)
         oidreq = server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
-        puts Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]).inspect
       rescue ProtocolError => e
         # invalid openid request, so just display a page with an error message
-        puts e.to_s
         render :text => e.to_s, :status => 500
         return
       end

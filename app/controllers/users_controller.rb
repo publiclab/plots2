@@ -3,11 +3,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    if params[:test] == "true"
-      @action = "create" # sets the form url
-    else
-      redirect_to "/wiki/registration"
-    end
+    @action = "create" # sets the form url
   end
 
   def create
@@ -18,6 +14,8 @@ class UsersController < ApplicationController
       @user.save({}) do |result| # <<<<< THIS LINE WAS THE PROBLEM FOR "Undefined [] for True" error...
         if result
           flash[:notice] = "Registration successful."
+          flash[:warning] = "<i class='icon icon-exclamation-sign'></i> If you registered in order to use <b>SpectralWorkbench.org</b> or <b>MapKnitter.org</b>, <a href='#{session[:return_to]}'>click here to continue &raquo;</a>" if session[:return_to]
+          session[:return_to] = nil 
           redirect_to "/dashboard"
         else
           # didn't create a new user!
