@@ -8,15 +8,23 @@ class UsersController < ApplicationController
 
   def create
     # craft a publiclaboratory OpenID URI around the PL username given:
+    #params[:user][:openid_identifier] = "http://old.publiclab.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
     params[:user][:openid_identifier] = "http://publiclaboratory.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
     @user = User.new(params[:user])
 #    if params[:user]
       @user.save({}) do |result| # <<<<< THIS LINE WAS THE PROBLEM FOR "Undefined [] for True" error...
+puts "user create save"
         if result
-          flash[:notice] = "Registration successful."
-          flash[:warning] = "<i class='icon icon-exclamation-sign'></i> If you registered in order to use <b>SpectralWorkbench.org</b> or <b>MapKnitter.org</b>, <a href='#{session[:return_to]}'>click here to continue &raquo;</a>" if session[:return_to]
-          session[:return_to] = nil 
-          redirect_to "/dashboard"
+          if current_user.crypted_password.nil? # the user has not created a pwd in the new site
+puts "no password, user create"
+            flash[:warning] = "Your account has been migrated from the old PublicLaboratory.org website; please create a password for the new site."
+            redirect_to "/profile/edit"
+          else
+            flash[:notice] = "Registration successful."
+            flash[:warning] = "<i class='icon icon-exclamation-sign'></i> If you registered in order to use <b>SpectralWorkbench.org</b> or <b>MapKnitter.org</b>, <a href='#{session[:openid_return_to]}'>click here to continue &raquo;</a>" if session[:openid_return_to]
+            session[:openid_return_to] = nil 
+            redirect_to "/dashboard"
+          end
         else
           # didn't create a new user!
           @action = "create"
@@ -36,8 +44,16 @@ class UsersController < ApplicationController
       @user.drupal_user.set_bio(params[:drupal_user][:bio])
       @user.save({}) do |result|
         if result
-          flash[:notice] = "Successfully updated profile."
-          redirect_to "/profile/"+@user.username
+puts session.inspect
+          if session[:openid_return_to] # for openid login, redirects back to openid auth process
+puts 'return_to session'
+            return_to = session[:openid_return_to]
+            session[:openid_return_to] = nil
+            redirect_to return_to
+          else
+            flash[:notice] = "Successfully updated profile. <a href='/dashboard'>Return to your dashboard &raquo;</a>"
+            redirect_to "/profile/"+@user.username
+          end
         else
           render :template => 'users/edit'
         end

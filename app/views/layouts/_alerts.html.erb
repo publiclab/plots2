@@ -1,3 +1,6 @@
 <% if flash[:notice] %><div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button><%= raw flash[:notice] %></div><% end %>
 <% if flash[:error] %><div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button><%= raw flash[:error] %></div><% end %>
-<% if flash[:warning] %><div class="alert alert"><button type="button" class="close" data-dismiss="alert">×</button><%= raw flash[:warning] %></div><% end %>
+<% if flash[:warning] %><div class="alert alert"><button type="button" class="close" data-dismiss="alert">×</button><i class="icon icon-exclamation-mark"></i> <%= raw flash[:warning] %></div><% end %>
+<% if current_user && session[:openid_return_to] # for openid login, redirects back to openid auth process %>
+  <div class="alert alert"><button type="button" class="close" data-dismiss="alert">×</button><i class="icon icon-exclamation-mark"></i> A website has requested access to your account. <a href="/openid/resume">Approve or deny the request &raquo;</a></div>
+<% end %>

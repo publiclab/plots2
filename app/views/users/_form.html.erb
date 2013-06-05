@@ -41,7 +41,11 @@
   <% end %>
 
   <div class="controls">
+  <% if params[:controller] == "users" && params[:action] == "new" %>
     <button class="btn-large btn-primary" type="submit" tabindex="7">Sign up</button>
     <a class="btn-large btn" href="/login">Log in</a>
+  <% elsif params[:controller] == "users" && params[:action] == "edit" %>
+    <button class="btn-large btn-primary" type="submit" tabindex="7">Save</button>
+  <% end %>
   </div>
 <% end %>
