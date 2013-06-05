@@ -6,6 +6,7 @@ test:
   username: 
   password: 
   database: publiclaboratory_test
+  encoding: utf8
   pool: 5
   timeout: 5000
 
@@ -17,12 +18,12 @@ development:
   adapter: mysql2
   username: 
   password: 
-  encoding: ascii
+  encoding: utf8
   database: publiclaboratory
 
 production:
   adapter: mysql2
   username: 
   password: 
-  encoding: ascii
+  encoding: utf8
   database: publiclaboratory

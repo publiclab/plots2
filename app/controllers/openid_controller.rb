@@ -14,67 +14,88 @@ class OpenidController < ApplicationController
   layout nil
 
   def index
-    
+
     begin
-      #oidreq = server.decode_request(params)
-      oidreq = server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
-      puts Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]).inspect
+      if params['openid.mode']
+        oidreq = server.decode_request(params)
+      else
+        oidreq = server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
+      end
     rescue ProtocolError => e
       # invalid openid request, so just display a page with an error message
-      puts e.to_s
       render :text => e.to_s, :status => 500
       return
     end
 
-    # no openid.mode was given
-    unless oidreq
-      render :text => "This is an OpenID server endpoint."
-      return
-    end
+    if current_user
 
-    oidresp = nil
-
-    if oidreq.kind_of?(CheckIDRequest)
-
-      identity = oidreq.identity
-
-      if oidreq.id_select
-        if oidreq.immediate
-          oidresp = oidreq.answer(false)
-        elsif current_user.nil? && session[:username]
-          # The user hasn't logged in.
-          show_decision_page(oidreq)
-          return
-        else
-          # Else, set the identity to the one the user is using.
-          identity = url_for_user
-        end
-      end
-
-      if oidresp
-        nil
-      elsif self.is_authorized(identity, oidreq.trust_root)
-        oidresp = oidreq.answer(true, nil, identity)
-
-        # add the sreg response if requested
-        add_sreg(oidreq, oidresp)
-        # ditto pape
-        add_pape(oidreq, oidresp)
-
-      elsif oidreq.immediate
-        server_url = url_for :action => 'index'
-        oidresp = oidreq.answer(false, server_url)
-
-      else
-        show_decision_page(oidreq)
+      # no openid.mode was given
+      unless oidreq
+        render :text => "This is an OpenID server endpoint."
         return
       end
-
+ 
+      oidresp = nil
+ 
+      if oidreq.kind_of?(CheckIDRequest)
+ 
+        identity = oidreq.identity
+ 
+        if oidreq.id_select
+          if oidreq.immediate
+            oidresp = oidreq.answer(false)
+          elsif current_user.nil? && session[:username]
+            # The user hasn't logged in.
+            # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
+puts "saving return_to as not logged in"
+            session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
+            redirect_to "/login"
+          else
+            # Else, set the identity to the one the user is using.
+            identity = url_for_user
+          end
+ 
+        end
+ 
+        if oidresp
+          nil
+        elsif self.is_authorized(identity, oidreq.trust_root)
+          oidresp = oidreq.answer(true, nil, identity)
+       
+          # add the sreg response if requested
+          add_sreg(oidreq, oidresp)
+          # ditto pape
+          add_pape(oidreq, oidresp)
+       
+        elsif oidreq.immediate
+          server_url = url_for :action => 'index'
+          oidresp = oidreq.answer(false, server_url)
+       
+        else
+          show_decision_page(oidreq)
+          return
+        end
+ 
+      else
+        oidresp = server.handle_request(oidreq)
+      end
+ 
+      self.render_response(oidresp)
     else
-      oidresp = server.handle_request(oidreq)
+puts "saving return_to as not logged in 2"
+      session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
+puts session.inspect
+      redirect_to "/login"
     end
+  end
 
-    self.render_response(oidresp)
+  def resume
+    if session[:openid_return_to] # for openid login, redirects back to openid auth process
+      return_to = session[:openid_return_to]
+      session[:openid_return_to] = nil
+      session[:openid_requester] = nil
+      redirect_to return_to
+    end
   end
 
   def show_decision_page(oidreq, message="Do you trust this site with your identity?")
