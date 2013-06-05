@@ -3,7 +3,7 @@ require 'test_helper'
 class UsersControllerTest < ActionController::TestCase
   def test_new
     get :new
-    assert_redirected_to "/wiki/registration"
+    assert_response :success
   end
 
 #  def test_create_invalid
