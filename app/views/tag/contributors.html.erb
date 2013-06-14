@@ -1,0 +1,40 @@
+<%= render :partial => "sidebar/related" %>
+<div class="span9">
+  <h3 style="margin-top:0;">Contributors for <i style="color:#aaa;"><%= params[:id] %></i></h3>
+
+  <% if current_user %>
+  <!-- AJAXify -->
+  <div class="btn-group">
+    <a class="btn btn-small" href="/feed/tag/<%= params[:id] %>.rss"><i class="icon icon-rss"></i> RSS</a>
+    <% if current_user.following(params[:id]) %>
+    <a rel="tooltip" title="Click to unfollow" class="btn btn-small active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="icon icon-eye-open"></i> Following <b><%= params[:id] %></b></a>
+    <% else %>
+    <a class="btn btn-small" href="/subscribe/tag/<%= params[:id] %>"><i class="icon icon-eye-open"></i> Follow <b><%= params[:id] %></b></a>
+    <% end %>
+  </div>
+  <!-- AJAXify -->
+  &nbsp; <%= DrupalTag.follower_count(params[:id]) %> people are watching this tag
+  <% end %>
+
+  <hr />
+
+  <% if @notes.nil? || @notes.length == 0 %>
+    <p>No contributors for that tag; try searching for '<b><%= params[:id] %></b>':</p>
+  <% else %>
+    <table class="table">
+      <tr>
+        <th style="width:25%;">Contributor</th>
+        <th>Notes</th>
+      </tr>
+      <% @users.each do |user| %>
+      <tr>
+        <td><a href='/profile/<%= user.name %>'><i class="icon icon-user"></i> <%= user.name %></a></td>
+        <td><a href='/notes/author/<%= user.name %>/<%= params[:id] %>'>Notes &raquo;</a></td>
+      </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+  <hr />
+  
+</div>

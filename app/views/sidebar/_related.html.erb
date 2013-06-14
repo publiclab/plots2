@@ -26,6 +26,7 @@
     <% @notes.collect(&:author).collect(&:name).uniq.each do |author| %>
       <li><a href="/notes/author/<%= author %>/<%= @tagnames.join('+') %>"><i class="icon-user"></i> <%= author %></a></li>
     <% end %>
+    <li><a href="/contributors/<%= params[:id] %>"><i class="icon icon-list"></i> View all &raquo;</a></li>
   </ul>
   <% end %>
 
@@ -35,6 +36,7 @@
     <% @users.each do |author| %>
       <li><a href="/notes/author/<%= author.name %>"><i class="icon-user"></i> <%= author.name %></a></li>
     <% end %>
+    <li><a href="/contributors/<%= params[:id] %>"><i class="icon icon-list"></i> View all &raquo;</a></li>
   </ul>
   <% end %>
 

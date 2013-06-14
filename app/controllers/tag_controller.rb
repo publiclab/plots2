@@ -106,4 +106,16 @@ class TagController < ApplicationController
     end
   end
 
+  def contributors
+    set_sidebar :tags, [params[:id]], {:note_count => 20}
+    @tagnames = [params[:id]]
+ 
+    t = DrupalTag.find :all, :conditions => {:name => params[:id]}
+    nt = DrupalNodeTag.find :all, :conditions => ['tid in (?)',t.collect(&:tid)]
+    nct = DrupalNodeCommunityTag.find :all, :conditions => ['tid in (?)',t.collect(&:tid)]
+    @users = DrupalUsers.find :all, :conditions => ['uid IN (?)',(nt+nct).collect(&:uid)]
+    @wikis = DrupalNode.find :all, :conditions => ["nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", (nt+nct).collect(&:nid)]
+    @notes = DrupalNode.find :all, :conditions => ["nid IN (?) AND type = 'note'", (nt+nct).collect(&:nid)]
+  end
+
 end
