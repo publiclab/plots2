@@ -16,4 +16,16 @@ class MapController < ApplicationController
     set_sidebar :tags, @tagnames
   end
 
+  def tag
+    set_sidebar :tags, [params[:id]], {:note_count => 20}
+
+    @tagnames = params[:id].split(',')
+    nids = DrupalTag.find_nodes_by_type(params[:id],'map',20).collect(&:nid)
+    @notes = DrupalNode.paginate(:conditions => ['nid in (?)', nids], :order => "nid DESC", :page => params[:page])
+
+    @title = @tagnames.join(', ') if @tagnames
+    @unpaginated = true
+    render :template => 'tag/show'
+  end
+
 end
