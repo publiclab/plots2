@@ -10,6 +10,7 @@
         by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> 
         | <%= time_ago_in_words(node.created_at) %> ago
         | <a href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
+        | <%= number_with_delimiter(node.totalcount) %> views
         | <i style="color:#888;" class="icon icon-star-empty"></i> <%= node.likes %>
       </small></p>
       <p class="hidden-desktop"><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150) %></p>

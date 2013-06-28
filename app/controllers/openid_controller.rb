@@ -14,7 +14,6 @@ class OpenidController < ApplicationController
   layout nil
 
   def index
-
     begin
       if params['openid.mode']
         oidreq = server.decode_request(params)
@@ -27,13 +26,20 @@ class OpenidController < ApplicationController
       return
     end
 
-    if current_user
+    # no openid.mode was given
+    unless oidreq
+      render :text => "This is an OpenID server endpoint."
+      return
+    end
 
-      # no openid.mode was given
-      unless oidreq
-        render :text => "This is an OpenID server endpoint."
-        return
-      end
+    if current_user.nil?
+      session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
+      flash[:warning] = "Please log in first."
+      redirect_to "/login"
+      return
+    end
+
+    if oidreq
  
       oidresp = nil
  
@@ -44,10 +50,9 @@ class OpenidController < ApplicationController
         if oidreq.id_select
           if oidreq.immediate
             oidresp = oidreq.answer(false)
-          elsif current_user.nil? && session[:username]
+          elsif session[:username]
             # The user hasn't logged in.
             # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
-puts "saving return_to as not logged in"
             session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
             redirect_to "/login"
           else
@@ -82,9 +87,8 @@ puts "saving return_to as not logged in"
  
       self.render_response(oidresp)
     else
-puts "saving return_to as not logged in 2"
+puts "saving return_to as not logged in 2 uniq"
       session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-puts session.inspect
       redirect_to "/login"
     end
   end
@@ -248,7 +252,7 @@ EOS
     # and the user should be asked for permission to release
     # it.
     sreg_data = {
-      'nickname' => session[:username],
+      'nickname' => current_user.username, #session[:username],
       'email' => current_user.email
     }
 
