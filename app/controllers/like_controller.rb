@@ -33,25 +33,30 @@ class LikeController < ApplicationController
   private
 
   def set_liking(value)
-    # Create the entry if it isn't already created.
-    like = NodeSelection.where(:user_id => current_user.uid,
-                               :nid => params[:id]).first_or_create
-    like.liking = value
-
-    # Check if the value changed.
-    if like.liking_changed?
-      node = DrupalNode.find(params[:id])
-      if like.liking
-        if node.type == "note"
-            SubscriptionMailer.notify_note_liked(node,like.user)
+    # scope like variable outside the transaction
+    like = nil
+    # Check like status and update like and cache in an atomic transaction
+    ActiveRecord::Base.transaction do
+      # Create the entry if it isn't already created.
+      like = NodeSelection.where(:user_id => current_user.uid,
+                                 :nid => params[:id]).first_or_create
+      like.liking = value
+  
+      # Check if the value changed.
+      if like.liking_changed?
+        node = DrupalNode.find(params[:id])
+        if like.liking
+          # it might be good to pull this out of the transaction to reduce
+          # locking time, but all these vars will have to be rescoped
+          if node.type == "note"
+              SubscriptionMailer.notify_note_liked(node,like.user)
+          end
+          node.cached_likes = node.cached_likes + 1
+        else
+          node.cached_likes = node.cached_likes - 1
         end
-        node.cached_likes = node.cached_likes + 1
-      else
-        node.cached_likes = node.cached_likes - 1
-      end
-      
-      # Save the changes.
-      ActiveRecord::Base.transaction do
+        
+        # Save the changes.
         node.save!
         like.save!
       end
