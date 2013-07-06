@@ -10,6 +10,7 @@ class HomeController < ApplicationController
   #caches_action :index, :cache_path => { :last => DrupalNode.find(:last).updated_at.to_i }
 
   def home
+    @title = "a DIY environmental science community"
     redirect_to "/dashboard" if current_user
   end
 
