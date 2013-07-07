@@ -20,10 +20,10 @@
     dom_alert.append(new_alert);
   }
 
-<% if flash[:notice] %>  alert_notice("<%= raw flash[:notice] %>");<% end %>
-<% if flash[:error] %>  alert_error("<%= raw flash[:error] %>");<% end %>
-<% if flash[:warning] %>  alert_warning("<%= raw flash[:warning] %>");<% end %>
 <% if current_user && session[:openid_return_to] # for openid login, redirects back to openid auth process %>
   alert_warning('A website has requested access to your account. <a href="/openid/resume">Approve or deny the request &raquo;</a>');
+<% end %>
+<% flash.each do |type, msg| %>
+  alert_<%= type %>("<%= msg %>");
 <% end %>
 </script>
