@@ -18,6 +18,10 @@
     }
     new_alert.append(msg);
     dom_alert.append(new_alert);
+
+    // Scroll page to the alerts
+    location.href = '#'; // some kind of Chrome bug fix
+    location.href = '#alert-placeholder';
   }
 
 <% if current_user && session[:openid_return_to] # for openid login, redirects back to openid auth process %>
