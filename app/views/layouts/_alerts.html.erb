@@ -12,9 +12,9 @@
     // Adds an alert DIV using the alert class aclass and content from msg.
     var new_alert = $(document.createElement("DIV"));
     new_alert.addClass(aclass);
-    new_alert.append('<a class="close" data-hide="alert">×</a>');
+    new_alert.append('<a class="close" data-dismiss="alert">×</a>');
     if (aclass == "alert alert") {
-      new_alert.append('<i class="icon icon-exclamation-mark"></i>');
+      new_alert.append('<i class="icon-exclamation-sign"></i>');
     }
     new_alert.append(msg);
     dom_alert.append(new_alert);
