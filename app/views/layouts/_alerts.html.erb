@@ -5,6 +5,6 @@
   alert_warning('A website has requested access to your account. <a href="/openid/resume">Approve or deny the request &raquo;</a>');
 <% end %>
 <% flash.each do |type, msg| %>
-  alert_<%= type %>("<%= msg %>");
+  alert_<%= type %>("<%= raw msg %>");
 <% end %>
 </script>

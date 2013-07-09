@@ -32,64 +32,69 @@ class OpenidController < ApplicationController
       return
     end
 
-    if current_user.nil?
+    if current_user.nil? && !params['openid.mode']
       session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
       flash[:warning] = "Please log in first."
       redirect_to "/login"
       return
-    end
-
-    if oidreq
- 
-      oidresp = nil
- 
-      if oidreq.kind_of?(CheckIDRequest)
- 
-        identity = oidreq.identity
- 
-        if oidreq.id_select
-          if oidreq.immediate
-            oidresp = oidreq.answer(false)
-          elsif session[:username]
-            # The user hasn't logged in.
-            # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
-            session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-            redirect_to "/login"
-          else
-            # Else, set the identity to the one the user is using.
-            identity = url_for_user
-          end
- 
-        end
- 
-        if oidresp
-          nil
-        elsif self.is_authorized(identity, oidreq.trust_root)
-          oidresp = oidreq.answer(true, nil, identity)
-       
-          # add the sreg response if requested
-          add_sreg(oidreq, oidresp)
-          # ditto pape
-          add_pape(oidreq, oidresp)
-       
-        elsif oidreq.immediate
-          server_url = url_for :action => 'index'
-          oidresp = oidreq.answer(false, server_url)
-       
-        else
-          show_decision_page(oidreq)
-          return
-        end
- 
-      else
-        oidresp = server.handle_request(oidreq)
-      end
- 
-      self.render_response(oidresp)
     else
-puts "saving return_to as not logged in 2 uniq"
-      session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-      redirect_to "/login"
+
+      if oidreq
+  
+        if oidreq.identity.split('/').last != current_user.username
+            flash[:error] = "You are requesting access to an account that's not yours. Please <a href='/logout'>log out</a> and use the correct account, or <a href='"+oidreq.trust_root+"'>try to login with the correct username</a>"
+            redirect_to "/dashboard"
+        else
+          oidresp = nil
+  
+          if oidreq.kind_of?(CheckIDRequest)
+  
+            identity = oidreq.identity
+  
+            if oidreq.id_select
+              if oidreq.immediate
+                oidresp = oidreq.answer(false)
+              elsif session[:username]
+                # The user hasn't logged in.
+                # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
+                session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
+                redirect_to "/login"
+              else
+                # Else, set the identity to the one the user is using.
+                identity = url_for_user
+              end
+    
+            end
+  
+            if oidresp
+              nil
+            elsif self.is_authorized(identity, oidreq.trust_root)
+              oidresp = oidreq.answer(true, nil, identity)
+           
+              # add the sreg response if requested
+              add_sreg(oidreq, oidresp)
+              # ditto pape
+              add_pape(oidreq, oidresp)
+           
+            elsif oidreq.immediate
+              server_url = url_for :action => 'index'
+              oidresp = oidreq.answer(false, server_url)
+           
+            else
+              show_decision_page(oidreq)
+              return
+            end
+  
+          else
+            oidresp = server.handle_request(oidreq)
+          end
+    
+          self.render_response(oidresp)
+        end
+      else
+        session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
+        redirect_to "/login"
+      end
     end
   end
 
