@@ -24,16 +24,12 @@ class UserSessionsController < ApplicationController
         if result
           # replace this with temporarily saving pwd in session,
           # and automatically saving it in the user record after login is completed
-puts "current_user"
-puts current_user.inspect
           if current_user.crypted_password.nil? # the user has not created a pwd in the new site
-puts "no password"
             flash[:warning] = "Your account has been migrated from the old PublicLaboratory.org website; please create a password for the new site."
             redirect_to "/profile/edit"
           else
             flash[:notice] = "Successfully logged in."
             if session[:openid_return_to] # for openid login, redirects back to openid auth process
-puts 'return_to via session'
               return_to = session[:openid_return_to]
               session[:openid_return_to] = nil
               redirect_to return_to

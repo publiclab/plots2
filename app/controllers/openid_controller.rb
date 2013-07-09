@@ -14,6 +14,8 @@ class OpenidController < ApplicationController
   layout nil
 
   def index
+puts "index >>>>>>>>>>>>>>>>>>>>>>>>>"
+puts params['openid.mode']
     begin
       if params['openid.mode']
         oidreq = server.decode_request(params)
@@ -21,6 +23,7 @@ class OpenidController < ApplicationController
         oidreq = server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
       end
     rescue ProtocolError => e
+puts e.to_s
       # invalid openid request, so just display a page with an error message
       render :text => e.to_s, :status => 500
       return
@@ -32,7 +35,10 @@ class OpenidController < ApplicationController
       return
     end
 
-    if current_user.nil?
+puts 'openid mode:'
+puts params['openid.mode']
+    if current_user.nil? && !params['openid.mode']
+puts "not logged in!"
       session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
       flash[:warning] = "Please log in first."
       redirect_to "/login"
@@ -54,6 +60,7 @@ class OpenidController < ApplicationController
             # The user hasn't logged in.
             # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
             session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
+puts "redirects to login for some reason"
             redirect_to "/login"
           else
             # Else, set the identity to the one the user is using.
@@ -62,9 +69,11 @@ class OpenidController < ApplicationController
  
         end
  
+puts "checks for oidresp"
         if oidresp
           nil
         elsif self.is_authorized(identity, oidreq.trust_root)
+puts "is_authorized!"
           oidresp = oidreq.answer(true, nil, identity)
        
           # add the sreg response if requested
@@ -73,10 +82,12 @@ class OpenidController < ApplicationController
           add_pape(oidreq, oidresp)
        
         elsif oidreq.immediate
+puts "oidreq.immediate"
           server_url = url_for :action => 'index'
           oidresp = oidreq.answer(false, server_url)
        
         else
+puts "decision page"
           show_decision_page(oidreq)
           return
         end
