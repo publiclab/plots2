@@ -180,10 +180,10 @@
             (function(){
               setTimeout(function(){
                 $('#legacy').fadeOut()
-              },3500)
+              },2500)
               setTimeout(function(){
                 $('#donate').fadeIn()
-              },4000)
+              },3000)
             })()
           </script>
         <%# end %>
