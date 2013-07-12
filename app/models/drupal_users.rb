@@ -55,7 +55,7 @@ class DrupalUsers < ActiveRecord::Base
 
   def set_bio(text)
     bio = DrupalProfileValue.find_by_uid(self.uid, :conditions => {:fid => 7})
-    bio = DrupalProfileValue.create({:fid => 7, :uid => self.uid}) if bio.nil?
+    bio = DrupalProfileValue.new({:fid => 7, :uid => self.uid}) if bio.nil?
     bio.value = text
     bio.save!
   end
