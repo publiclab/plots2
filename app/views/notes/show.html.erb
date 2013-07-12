@@ -6,11 +6,14 @@
   <% end %>
 
   <%= render :partial => "like/like" %>
-  <% if current_user && (current_user.uid == @node.uid || current_user.username == "warren") %>
+  <% if current_user && (current_user.uid == @node.uid || current_user.role == "moderator" || current_user.role == "admin") %>
     <div style="padding:0 8px 8px;" class="btn-group pull-right">
       <a class="btn btn-small" href="/notes/edit/<%= @node.id %>"><i class="icon icon-pencil"></i> Edit</a>
       <%= link_to "/notes/delete/"+@node.id.to_s, :confirm => 'Are you sure?', :class => "btn btn-small" do %>
         <i class="icon icon-trash"></i> Delete
+      <% end %>
+      <% if current_user.role == "moderator" || current_user.role == "admin" %>
+        <a class="btn btn-small" href="/moderate/spam/<%= @node.id %>"><i class="icon icon-ban-circle"></i> Spam</a>
       <% end %>
     </div> 
   <% end %>

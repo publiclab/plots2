@@ -1,6 +1,8 @@
 <div class="span3">
 
-  <p><b>Spam moderation:</b> </p> 
+  <h3>Spam moderation:</h3> 
+
+  <p>Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email <a href="mailto:organizers@publiclab.org">organizers@publiclab.org</a>. If we all work together, we can keep spam to a minimum; thanks for helping out!</p>
 
   <hr />
 
@@ -10,33 +12,38 @@
 
   <h3>Moderate potential spam</h3>
 
-  <div class="navbar">
-    <div class="navbar-inner">
-      <ul class="nav">
-        <li class="active"><a href="#">Queue</a></li>
-        <li><a href="#">Spam</a></li>
-        <li><a href="#">Approved</a></li>
-      </ul>
-    </div>
-  </div>
-
   <table class="table">
   <tr><th>Title</th><th>Author</th><th>Action</th></tr>
   <% @nodes.each do |node| %>
-  <tr>
-    <td><i class="icon-file"></i> <a href="javascript:void(0);" onClick="$('#n<%= node.nid %>').toggle()"><%= node.title.truncate(40) %></a></td>
+  <tr id="n<%= node.id %>">
+    <td><i class="icon-file"></i> <a href="javascript:void(0);" onClick="$('#ninfo<%= node.nid %>').toggle()"><%= node.title.truncate(40) %></a></td>
     <td><a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a></td>
     <td><div class="btn-toolbar" style="margin:0;">
       <div class="btn-group">
-        <a class="btn btn-large btn-success" href="javascript:void(0)"><i class="icon-ok-circle icon-white"></i></a>
-        <a class="btn btn-large btn-danger" href="javascript:void(0)"><i class="icon-ban-circle icon-white"></i> Spam</a>
-        <a class="btn btn-large btn-warning" href="javascript:void(0)"><i class="icon-user icon-white"></i> Ban</a>
-        <a class="btn btn-large" href="javascript:void(0)"><i class="icon-trash"></i></a>
+        <a class="btn btn-large btn-success publish" data-remote="true" href="/moderate/publish/<%= node.id %>"><i class="icon-ok-circle icon-white"></i> Publish</a>
+        <a class="btn btn-large disabled" href="javascript:void(0)"><i class="icon-circle-ban"></i> Ban</a>
+        <%= link_to "/notes/delete/"+node.id.to_s, :confirm => 'Are you sure?', :remote => true, :class => "btn btn-large delete" do %>
+          <i class="icon-trash"></i>
+        <% end %>
       </div>
+      <script>
+        $('#n<%= node.id %> .delete').bind('ajax:success', function(e){
+          $('#n<%= node.id %>').fadeOut()
+        });
+        $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
+          $('#n<%= node.id %>').hide()
+          $('#ndel<%= node.id %>').fadeIn()
+        });
+      </script>
     </div></td>
   </tr>
-  <tr style="display:none;background:#ddd;" id="n<%= node.nid %>">
-    <td><%= node.title %></td>
+  <tr style="display:none;" id="ndel<%= node.id %>">
+    <td>Content <a href='<%= node.path %>'>published</a>.</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr style="display:none;background:#ddd;" id="ninfo<%= node.id %>">
+    <td><a href="<%= node.path %>"><%= node.title %></a></td>
     <td><%= time_ago_in_words(node.created_at) %> ago</td>
     <td><%= node.body %></td>
   </tr>

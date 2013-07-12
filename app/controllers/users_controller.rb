@@ -9,14 +9,12 @@ class UsersController < ApplicationController
   def create
     # craft a publiclaboratory OpenID URI around the PL username given:
     #params[:user][:openid_identifier] = "http://old.publiclab.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
-    params[:user][:openid_identifier] = "http://publiclaboratory.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
+    params[:user][:openid_identifier] = "http://old.publiclab.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
     @user = User.new(params[:user])
 #    if params[:user]
       @user.save({}) do |result| # <<<<< THIS LINE WAS THE PROBLEM FOR "Undefined [] for True" error...
-puts "user create save"
         if result
           if current_user.crypted_password.nil? # the user has not created a pwd in the new site
-puts "no password, user create"
             flash[:warning] = "Your account has been migrated from the old PublicLaboratory.org website; please create a password for the new site."
             redirect_to "/profile/edit"
           else

@@ -1,5 +1,6 @@
 class NotesController < ApplicationController
 
+  respond_to :html
   before_filter :require_user, :only => [:create, :edit, :update]
 
   def index
@@ -25,6 +26,9 @@ class NotesController < ApplicationController
     else
       @node = DrupalNode.find params[:id]
     end
+
+    redirect_to "/" if @node.status != 1 # if it's spam or a draft -- we may later allow viewing based on ownership or role
+
     @node.view
     @title = @node.title
     @tags = @node.tags
@@ -103,10 +107,18 @@ class NotesController < ApplicationController
   # only for notes
   def delete
     @node = DrupalNode.find(params[:id])
-    if current_user.uid == @node.uid && @node.type == "note" # || current_user.role == "admin" 
+    if current_user.uid == @node.uid && @node.type == "note" || current_user.role == "admin" || current_user.role == "moderator"
       @node.delete
-      flash[:notice] = "Content deleted."
-      redirect_to "/dashboard"
+      respond_with do |format|
+        format.html do
+          if request.xhr?
+            render :text => "Content deleted."
+          else
+            flash[:notice] = "Content deleted."
+            redirect_to "/dashboard"
+          end
+        end
+      end
     else
       prompt_login
     end

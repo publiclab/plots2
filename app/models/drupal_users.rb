@@ -23,11 +23,15 @@ class DrupalUsers < ActiveRecord::Base
     Time.at(self.created)
   end
 
+  # End rails-style adaptors
+
+  def role
+    self.user.role if self.user
+  end
+
   def email
     self.mail
   end
-
-  # End rails-style adaptors
 
   def likes
     NodeSelection.find(:all, :conditions => {:user_id => self.uid, :liking => true})

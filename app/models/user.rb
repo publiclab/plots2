@@ -80,6 +80,11 @@ class User < ActiveRecord::Base
     self.drupal_user.lon
   end
 
+  # we can revise/improve this for m2m later... 
+  def has_role(r)
+    self.role == r
+  end
+
   def subscriptions(type = :tag)
     if type == :tag
       TagSelection.find_all_by_user_id self.drupal_user.uid

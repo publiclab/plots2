@@ -114,6 +114,11 @@ Plots2::Application.routes.draw do
   match 'feed' => 'notes#rss'
 
   match 'spam' => 'admin#spam'
+  match 'moderate/spam/:id' => 'admin#mark_spam'
+  match 'moderate/publish/:id' => 'admin#publish'
+  match 'admin/promote/moderator/:id' => 'admin#promote_moderator'
+  match 'admin/demote/basic/:id' => 'admin#demote_basic'
+  match 'admin/promote/admin/:id' => 'admin#promote_admin'
   
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130424190648) do
+ActiveRecord::Schema.define(:version => 20130408183908) do
 
   create_table "access", :primary_key => "aid", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "mask",                :default => "", :null => false
@@ -1611,6 +1611,7 @@ ActiveRecord::Schema.define(:version => 20130424190648) do
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
     t.string   "openid_identifier"
+    t.string   "role",               :default => "basic"
   end
 
   create_table "search_autocomplete_forms", :primary_key => "fid", :options=>'ENGINE=MyISAM', :force => true do |t|

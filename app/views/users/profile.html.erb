@@ -1,6 +1,15 @@
 <div class="span3">
   <!--<a href="#" class="btn btn-block"><i class="icon-envelope"></i> Send message</a>-->
-  <a href="#" class="btn btn-block"><i class="icon-eye-open"></i> Follow <%= @user.name %></a>
+  <a href="#" class="btn btn-block disabled"><i class="icon-eye-open"></i> Follow <%= @user.name %></a>
+  <% if current_user && current_user.role == "moderator" %>
+    <a href="/admin/promote/admin/<%= @user.user.id %>" class="btn btn-block"><i class="icon-certificate"></i> Make admin</a>
+  <% end %>
+  <% if current_user && current_user.role == "admin" && @user.role == "moderator" %>
+    <a href="/admin/demote/basic/<%= @user.user.id %>" class="btn btn-block"><i class="icon-ban-circle"></i> Revert to basic user</a>
+  <% end %>
+  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.role == "basic" %>
+    <a href="/admin/promote/moderator/<%= @user.user.id %>" class="btn btn-block"><i class="icon-certificate"></i> Make moderator</a>
+  <% end %>
   <hr />
 
 </div>
@@ -10,6 +19,8 @@
     <small> 
       <a href="/notes/author/<%= @user.name %>"><%= @user.node_count %> research notes</a> and wiki edits
       | <a href="/profile/<%= @user.name %>/likes"><i class="icon icon-star-empty"></i> <%= @user.like_count %> likes</a>
+      <% if @user.role == "moderator" %> | <i class="icon icon-certificate"></i> Moderator<% end %>
+      <% if @user.role == "admin" %> | <i class="icon icon-certificate"></i> Admin<% end %>
     </small>
   </h3>
 
