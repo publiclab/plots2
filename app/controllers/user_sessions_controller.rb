@@ -13,8 +13,8 @@ class UserSessionsController < ApplicationController
     if params[:user_session].nil? || @user
       if @user && @user.crypted_password.nil? # the user has not created a pwd in the new site
         #params[:user_session][:openid_identifier] = "http://localhost/people/"+username+"/identity"
-        params[:user_session][:openid_identifier] = "http://publiclaboratory.org/people/"+username+"/identity"
-        #params[:user_session][:openid_identifier] = "http://old.publiclab.org/people/"+username+"/identity" if username
+        #params[:user_session][:openid_identifier] = "http://publiclaboratory.org/people/"+username+"/identity"
+        params[:user_session][:openid_identifier] = "http://old.publiclab.org/people/"+username+"/identity" if username
         params[:user_session].delete(:password)
         params[:user_session].delete(:username)
         params[:openid] = username # pack up username for second runthrough
