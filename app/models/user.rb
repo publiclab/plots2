@@ -8,7 +8,7 @@ end
 
 class User < ActiveRecord::Base
   self.table_name = 'rusers'
-  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier
+  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key
 
   acts_as_authentic do |c|
     c.openid_required_fields = [:nickname, 

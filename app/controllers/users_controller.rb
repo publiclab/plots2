@@ -118,4 +118,42 @@ puts 'return_to session'
     end
   end
 
+  def reset
+    if params[:key] && params[:key] != nil
+      user = User.find_by_reset_key(params[:key])
+      if user
+        if params[:user] && params[:user][:password]
+          if user.username == params[:user][:username]
+            user.attributes = params[:user]
+            user.reset_key = nil
+            user.save({})
+            flash[:notice] = "Your password was successfully changed."
+            redirect_to "/dashboard"
+          else
+            flash[:error] = "Password change failed; key does not correspond to username."
+          end
+        else
+
+        end
+      else
+        flash[:error] = "Password reset failed. Please <a href='/wiki/issues'>contact the web team</a> if you are having trouble."
+        redirect_to "/"
+      end
+      
+    elsif params[:email]
+      user = User.find_by_email params[:email]
+      # invent a key and save it
+      key = ""
+      20.times do
+        key += [*'a'..'z'].sample
+      end
+      user.reset_key = key
+      user.save({})
+      # send key to user email
+      PasswordResetMailer.reset_notify(user,key).deliver unless user.nil? # respond the same to both successes and failures; security
+      flash[:notice] = "You should receive an email with instructions on how to reset your password."
+      redirect_to "/reset/"
+    end
+  end
+
 end

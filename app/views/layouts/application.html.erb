@@ -54,10 +54,6 @@
           <a class="brand" id="brand" href="/<%= "home" if current_user %>">Public Lab</a>
           <a class="brand" id="brand-compact" href="/<%= "home" if current_user %>">PL</a>
 
-          <a rel="tooltip" title="Switch to old site" data-placement="bottom" style="margin-left:6px;" href="#" onClick="alpha()" class="btn btn-primary pull-right hidden-phone">&alpha;</a>
-          <script>
-            function alpha() { window.location = 'http://old.publiclab.'+(window.location+'').split('://publiclab.')[1] } 
-          </script>
           <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:6px;" href="/signup" class="btn pull-right">Join</a><% end %>
 
           <ul class="nav">

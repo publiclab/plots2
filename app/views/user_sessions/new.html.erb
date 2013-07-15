@@ -5,8 +5,8 @@
 
   <br style="clear:both;"/>
 
-  <p><%= f.text_field :username, {:placeholder => "username"} %></p>
-  <p><%= f.password_field :password, {:placeholder => "password"} %></p>
+  <p><%= f.text_field :username, {:placeholder => "username", :tabindex => 1} %></p>
+  <p><%= f.password_field :password, {:placeholder => "password", :tabindex => 2} %></p>
   <input type="hidden" name="return_to" value="<%= params[:return_to] %>" />
 
   <p style="width:30%;"><i class="icon icon-exclamation-sign"></i> If you are migrating from the old PublicLaboratory.org website, you will be asked to connect your old account when you log in.</p>
@@ -16,7 +16,9 @@
   </p></label>
 
   <p>
-    <button class="btn-large btn-primary" type="submit">Log in</button>
-    <a class="btn btn-large" href="/signup">Sign up</a>
+    <button class="btn-large btn-primary" type="submit" tabindex="3">Log in</button>
+    <a class="btn btn-large" href="/signup" tabindex="4">Sign up</a>
   </p>
+
+  <p>Forgotten or lost your password? Reset it by <a href="/reset/">clicking here</a></p>
 <% end %>
