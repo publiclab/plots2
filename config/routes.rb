@@ -128,6 +128,7 @@ Plots2::Application.routes.draw do
 
   match 'post' => 'editor#post'
   match 'note/add' => 'legacy#note_add'
+  match 'page/add' => 'legacy#page_add'
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products

@@ -12,6 +12,10 @@ class LegacyController < ApplicationController
     redirect_to "/post"
   end
 
+  def page_add 
+    redirect_to "/wiki/new"
+  end
+
   def people
     redirect_to '/profile/'+params[:id]
   end
