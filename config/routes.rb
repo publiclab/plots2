@@ -61,6 +61,8 @@ Plots2::Application.routes.draw do
   match 'tool/:id' => 'legacy#tool'
   match 'people/:id' => 'legacy#people'
   match 'notes/:id' => 'legacy#notes'
+  match 'sites/default/files/:filename.:format' => 'legacy#file'
+  match 'sites/default/files/imagecache/:size/:filename.:format' => 'legacy#image'
 
   match 'research' => 'notes#index'
   match 'notes' => 'legacy#notes'
