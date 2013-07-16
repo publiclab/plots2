@@ -102,9 +102,15 @@ class AdminController < ApplicationController
       user = DrupalUsers.find params[:id]
       user.status = 0
       user.save({})
+      #user.notes.each do |note|
+      #  note.status = 0
+      #  note.save
+      #end
+      flash[:notice] = "The user has been banned."
     else
       flash[:error] = "Only moderators can ban other users."
     end
+    redirect_to "/profile/"+user.name
   end
 
   def unban
@@ -112,9 +118,11 @@ class AdminController < ApplicationController
       user = DrupalUsers.find params[:id]
       user.status = 1
       user.save({})
+      flash[:notice] = "The user has been unbanned."
     else
       flash[:error] = "Only moderators can unban other users."
     end
+    redirect_to "/profile/"+user.name
   end
 
 end
