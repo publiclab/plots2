@@ -9,6 +9,7 @@ FactoryGirl.define do
     password "secret"
     password_confirmation { |u| u.password }
     sequence(:email) {|n| "person#{n}@example.com" }
+    role "basic" #this is the default; needed here?
 
     # this doesn't work; we need a uid field on User; see user.rb
     #drupal_users do |u|

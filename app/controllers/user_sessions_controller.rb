@@ -9,8 +9,8 @@ class UserSessionsController < ApplicationController
     username = params[:user_session][:username] if params[:user_session]
 
     @user = User.find_by_username(username)
+    if params[:user_session].nil? || @user && @user.drupal_user.status == 1
     # an existing native user
-    if @user.drupal_user.status == 1
       if params[:user_session].nil? || @user
         if @user && @user.crypted_password.nil? # the user has not created a pwd in the new site
           #params[:user_session][:openid_identifier] = "http://localhost/people/"+username+"/identity"

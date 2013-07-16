@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
         :created => DateTime.now.to_i,
         :access => DateTime.now.to_i,
         :login => DateTime.now.to_i,
-        :status => 0,
+        :status => 1,
         :timezone => nil,
         :language => "",
         :picture => "",
