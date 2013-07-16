@@ -1,0 +1,32 @@
+<h2>Reset your password</h2>
+
+<hr />
+
+<% if params[:key] && User.find_by_reset_key(params[:key]) %>
+
+<p>Enter your username and a new password:</p>
+
+<form class='form'>
+
+  <input name="key" type="hidden" value="<%= params[:key] %>" /> 
+  <input name="user[username]" placeholder="username" tabindex='2' type="text" /> <br />
+  <input name="user[password]" placeholder="enter a new password" tabindex='3' type="password" /> <br />
+
+  <button class="btn-large btn-primary" type="submit" tabindex="4">Save</button>
+
+</form>
+
+<% else %>
+
+<p>Enter your email address to reset your password:</p>
+
+<form action="/reset/" class='form'>
+
+  <input name="email" placeholder="you@example.com" tabindex='2' type="text" /> <br />
+
+  <button class="btn-large btn-primary" type="submit" tabindex="3">Reset</button>
+
+</form>
+
+<% end %>
+
