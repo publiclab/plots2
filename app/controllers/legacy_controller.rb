@@ -12,6 +12,10 @@ class LegacyController < ApplicationController
     redirect_to "/post"
   end
 
+  def page_add 
+    redirect_to "/wiki/new"
+  end
+
   def people
     redirect_to '/profile/'+params[:id]
   end
@@ -31,6 +35,20 @@ class LegacyController < ApplicationController
 
   def openid_username
     redirect_to "/openid/"+params[:username]
+  end
+
+  def file
+    # http://publiclab.org/sites/default/files/Public%20Lab.pdf
+    redirect_to "http://old.publiclab.org/sites/default/files/"+params[:filename]+"."+params[:format]
+  end
+
+  def image
+    # sites/default/files/imagecache/thumb/san-martin-spectro.jpg
+    redirect_to "http://old.publiclab.org/sites/default/files/imagecache/"+params[:size]+"/"+params[:filename]+"."+params[:format]
+  end
+
+  def register
+    redirect_to "/signup"
   end
 
 end

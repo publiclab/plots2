@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
+ActiveRecord::Schema.define(:version => 20130710183418) do
+=======
 ActiveRecord::Schema.define(:version => 20130715011322) do
+>>>>>>> b0d927521e96c854294543088627afd0b7ab9eab
 
   create_table "access", :primary_key => "aid", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "mask",                :default => "", :null => false
@@ -533,6 +537,7 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
   add_index "comments", ["nid"], :name => "nid"
   add_index "comments", ["pid"], :name => "pid"
   add_index "comments", ["status"], :name => "status"
+  add_index "comments", ["timestamp"], :name => "timestamp"
 
   create_table "community_tags", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.integer "tid",  :default => 0, :null => false
@@ -1315,6 +1320,7 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
   end
 
   add_index "node_revisions", ["nid"], :name => "nid"
+  add_index "node_revisions", ["timestamp"], :name => "timestamp"
   add_index "node_revisions", ["uid"], :name => "uid"
 
   create_table "node_selections", :id => false, :force => true do |t|
@@ -1910,6 +1916,13 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
 
   create_table "variable", :primary_key => "name", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.text "value", :limit => 2147483647, :null => false
+  end
+
+  create_table "view_node_like_count", :id => false, :options=>'ENGINE=', :force => true do |t|
+    t.integer "nid"
+    t.decimal "num_likes",    :precision => 25, :scale => 0
+    t.integer "cached_likes",                                :default => 0
+    t.string  "title",                                       :default => "", :null => false
   end
 
   create_table "views_display", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
