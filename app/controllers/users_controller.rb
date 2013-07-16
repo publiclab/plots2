@@ -8,7 +8,6 @@ class UsersController < ApplicationController
 
   def create
     # craft a publiclaboratory OpenID URI around the PL username given:
-    #params[:user][:openid_identifier] = "http://old.publiclab.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
     params[:user][:openid_identifier] = "http://old.publiclab.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
     @user = User.new(params[:user])
 #    if params[:user]
@@ -88,6 +87,10 @@ puts 'return_to session'
   def profile
     @user = DrupalUsers.find_by_name(params[:id])
     @title = @user.name
+    if @user.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
+      flash[:error] = "That user has been banned."
+      redirect_to "/"
+    end 
   end
 
   def likes

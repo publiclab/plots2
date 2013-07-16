@@ -533,7 +533,6 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
   add_index "comments", ["nid"], :name => "nid"
   add_index "comments", ["pid"], :name => "pid"
   add_index "comments", ["status"], :name => "status"
-  add_index "comments", ["timestamp"], :name => "timestamp"
 
   create_table "community_tags", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.integer "tid",  :default => 0, :null => false
@@ -883,10 +882,10 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
   end
 
   add_index "feeds_node_item", ["feed_nid"], :name => "feed_nid"
-  add_index "feeds_node_item", ["guid"], :name => "guid"
+#  add_index "feeds_node_item", ["guid"], :name => "guid"
   add_index "feeds_node_item", ["id"], :name => "id"
   add_index "feeds_node_item", ["imported"], :name => "imported"
-  add_index "feeds_node_item", ["url"], :name => "url"
+#  add_index "feeds_node_item", ["url"], :name => "url"
 
   create_table "feeds_push_subscriptions", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "domain",        :limit => 128, :default => "", :null => false
@@ -910,7 +909,7 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
   end
 
   add_index "feeds_source", ["feed_nid"], :name => "feed_nid"
-  add_index "feeds_source", ["id", "source"], :name => "id_source"
+#  add_index "feeds_source", ["id", "source"], :name => "id_source"
   add_index "feeds_source", ["id"], :name => "id"
 
   create_table "feeds_term_item", :primary_key => "tid", :options=>'ENGINE=MyISAM', :force => true do |t|
@@ -1076,7 +1075,7 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
     t.string "version",   :limit => 20, :default => "none",    :null => false
   end
 
-  add_index "locales_source", ["source"], :name => "source"
+#  add_index "locales_source", ["source"], :name => "source"
 
   create_table "locales_target", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.integer "lid",                       :default => 0,  :null => false
@@ -1175,7 +1174,7 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
 
   add_index "menu_router", ["fit"], :name => "fit"
   add_index "menu_router", ["tab_parent"], :name => "tab_parent"
-  add_index "menu_router", ["tab_root", "weight", "title"], :name => "tab_root_weight_title"
+#  add_index "menu_router", ["tab_root", "weight", "title"], :name => "tab_root_weight_title"
 
   create_table "messaging_message_parts", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string "type",    :limit => 100,        :default => "", :null => false
@@ -1316,7 +1315,6 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
   end
 
   add_index "node_revisions", ["nid"], :name => "nid"
-  add_index "node_revisions", ["timestamp"], :name => "timestamp"
   add_index "node_revisions", ["uid"], :name => "uid"
 
   create_table "node_selections", :id => false, :force => true do |t|
@@ -1602,16 +1600,16 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
     t.string   "email"
     t.string   "crypted_password"
     t.string   "password_salt"
-    t.string   "persistence_token",                       :null => false
-    t.integer  "login_count",        :default => 0,       :null => false
-    t.integer  "failed_login_count", :default => 0,       :null => false
+    t.string   "persistence_token",                 :null => false
+    t.integer  "login_count",        :default => 0, :null => false
+    t.integer  "failed_login_count", :default => 0, :null => false
     t.datetime "last_request_at"
     t.datetime "current_login_at"
     t.datetime "last_login_at"
     t.string   "current_login_ip"
     t.string   "last_login_ip"
-    t.datetime "created_at",                              :null => false
-    t.datetime "updated_at",                              :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.string   "openid_identifier"
     t.string   "role",               :default => "basic"
     t.string   "reset_key"
@@ -1730,7 +1728,7 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
     t.text    "info"
   end
 
-  add_index "system", ["type", "name"], :name => "type_name"
+#  add_index "system", ["type", "name"], :name => "type_name"
   add_index "system", ["type", "status", "bootstrap", "weight", "filename"], :name => "bootstrap"
   add_index "system", ["type", "status", "weight", "filename"], :name => "modules"
 
@@ -1912,13 +1910,6 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
 
   create_table "variable", :primary_key => "name", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.text "value", :limit => 2147483647, :null => false
-  end
-
-  create_table "view_node_like_count", :id => false, :options=>'ENGINE=', :force => true do |t|
-    t.integer "nid"
-    t.decimal "num_likes",    :precision => 25, :scale => 0
-    t.integer "cached_likes",                                :default => 0
-    t.string  "title",                                       :default => "", :null => false
   end
 
   create_table "views_display", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|

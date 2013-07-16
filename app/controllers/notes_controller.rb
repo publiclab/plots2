@@ -26,9 +26,17 @@ class NotesController < ApplicationController
     else
       @node = DrupalNode.find params[:id]
     end
+    if @node.author.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
+      flash[:error] = "The author of that note has been banned."
+      redirect_to "/"
+    end 
 
-    redirect_to "/" if @node.status != 1 # if it's spam or a draft -- we may later allow viewing based on ownership or role
-
+    # if it's spam or a draft
+    if @node.status != 1 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
+      # no notification; don't let people easily fish for existing draft titles; we should try to 404 it
+      redirect_to "/"
+    end
+ 
     @node.view
     @title = @node.title
     @tags = @node.tags

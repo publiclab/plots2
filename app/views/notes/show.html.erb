@@ -8,7 +8,7 @@
   <%= render :partial => "like/like" %>
   <% if current_user && (current_user.uid == @node.uid || current_user.role == "moderator" || current_user.role == "admin") %>
     <div style="padding:0 8px 8px;" class="btn-group pull-right">
-      <a class="btn btn-small" href="/notes/edit/<%= @node.id %>"><i class="icon icon-pencil"></i> Edit</a>
+      <a <% if current_user && current_user.uid != @node.uid %>data-confirm="Please be aware that you are editing someone else's post, a privilege you have only because you are a moderator or admin." <% end %>class="btn btn-small" href="/notes/edit/<%= @node.id %>"><i class="icon icon-pencil"></i> Edit</a>
       <%= link_to "/notes/delete/"+@node.id.to_s, :confirm => 'Are you sure?', :class => "btn btn-small" do %>
         <i class="icon icon-trash"></i> Delete
       <% end %>
@@ -36,6 +36,7 @@
       <% if @node.next_by_author %><a class="btn btn-small btn-link" href="/<%= @node.next_by_author.slug %>">&raquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 39) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.next_by_author.slug %>" }})</script><% end %>
     </div>
     <span>
+      <% if @node.status == 0 %><span class="label label-important">UNPUBLISHED</span> | <% end %>
       by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
       <span class="hidden-phone">
         <%= @node.created_at.to_s(:long) %> |
