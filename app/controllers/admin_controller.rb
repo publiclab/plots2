@@ -97,4 +97,24 @@ class AdminController < ApplicationController
     end
   end
 
+  def ban
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+      user = DrupalUsers.find params[:id]
+      user.status = 0
+      user.save({})
+    else
+      flash[:error] = "Only moderators can ban other users."
+    end
+  end
+
+  def unban
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+      user = DrupalUsers.find params[:id]
+      user.status = 1
+      user.save({})
+    else
+      flash[:error] = "Only moderators can unban other users."
+    end
+  end
+
 end

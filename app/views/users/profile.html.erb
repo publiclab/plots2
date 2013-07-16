@@ -10,6 +10,12 @@
   <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.role == "basic" %>
     <a href="/admin/promote/moderator/<%= @user.user.id %>" class="btn btn-block"><i class="icon-certificate"></i> Make moderator</a>
   <% end %>
+
+  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.status == 0 %>
+    <a href="/unban/<%= @user.user.id %>" class="btn btn-block"><i class="icon-thumbs-up"></i> Unban user</a>
+  <% elsif current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.status == 1 %>
+    <a href="/ban/<%= @user.user.id %>" class="btn btn-block"><i class="icon-ban-circle"></i> Ban user</a>
+  <% end %>
   <hr />
 
 </div>
