@@ -11,11 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20130710183418) do
-=======
 ActiveRecord::Schema.define(:version => 20130715011322) do
->>>>>>> b0d927521e96c854294543088627afd0b7ab9eab
 
   create_table "access", :primary_key => "aid", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.string  "mask",                :default => "", :null => false
@@ -566,7 +562,7 @@ ActiveRecord::Schema.define(:version => 20130715011322) do
     t.integer  "vid",                           :default => 0, :null => false
     t.integer  "nid",                           :default => 0, :null => false
     t.integer  "delta",                         :default => 0, :null => false
-    t.geometry "field_bbox_geo", :limit => nil,                :null => false
+    t.geometry "field_bbox_geo", :limit => nil
   end
 
   add_index "content_field_bbox", ["nid"], :name => "nid"
