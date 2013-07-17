@@ -28,6 +28,8 @@ class DrupalNode < ActiveRecord::Base
   has_one :drupal_node_access, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_node_tag, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_tag, :through => :drupal_node_tag
+  has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
+  has_many :drupal_files, :through => :drupal_upload
 # these override the above... have to do it manually:
 #  has_many :drupal_node_community_tag, :foreign_key => 'nid'
 #  has_many :drupal_tag, :through => :drupal_node_community_tag
@@ -109,6 +111,10 @@ class DrupalNode < ActiveRecord::Base
 
   def has_access?
     DrupalNodeAccess.find(:all, :conditions => {:nid => self.id}).length > 0
+  end
+
+  def files
+    self.drupal_files
   end
 
   def likes

@@ -60,6 +60,8 @@ Plots2::Application.routes.draw do
 
   match 'places' => 'notes#places'
   match 'tools' => 'notes#tools'
+
+  match 'node/:id' => 'legacy#node'
   match 'place/:id' => 'legacy#place'
   match 'tool/:id' => 'legacy#tool'
   match 'people/:id' => 'legacy#people'

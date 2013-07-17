@@ -65,8 +65,25 @@
   <%= raw auto_link(@node.render_body, :sanitize => false) %>
   </div>
 
+  <% if @node.files %>
+    <table id="files" class="table">
+      <tr>
+        <th>Files</th>
+        <th>Size</th>
+        <th>Uploaded</th>
+      </td>
+      <% @node.files.each do |file| %>
+        <tr>
+          <td><a href="<%= file.path %>"><i style="text-decoration:none;" class="icon icon-file"></i><span style="text-decoration:none;"> </span><%= file.filename %></a></td>
+          <td><%= number_to_human_size(file.filesize) %></td>
+          <td><%= Time.at(file.timestamp).to_s %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
   <hr />
-    <%= render :partial => "home/social" %>
+  <%= render :partial => "home/social" %>
   <hr />
 
   <%= render :partial => "tag/tagging" %>
