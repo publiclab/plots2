@@ -28,15 +28,14 @@ class TagController < ApplicationController
 
   def create
     tagnames = params[:name].split(',')
-    response = {
-      :errors => [],
+    response = { :errors => [],
       :saved => [],
     }
 
     node = DrupalNode.find params[:nid]
     tagnames.each do |tagname|
       if DrupalTag.exists?(tagname,params[:nid])
-        errors << "Error: that tag already exists."
+        response[:errors] << "Error: that tag already exists."
       else 
         saved,tag = node.add_tag(tagname,current_user)
         if saved
@@ -81,19 +80,11 @@ class TagController < ApplicationController
   end
 
   def suggested
-    #params[:id]
     suggestions = []
-    [
-     'balloon-mapping',
-     'kite-mapping',
-     'near-infrared-camera',
-     'thermal-photography',
-     'spectrometer',
-     'troubleshooting'
-    ].each do |tagname|
-      suggestions << {:string => tagname}
+    DrupalTag.find(:all, :conditions => ['name LIKE ?', "%"+params[:id]+"%"], :limit => 10).each do |tag|
+      suggestions << {:string => tag.name.downcase}
     end
-    render :json => suggestions
+    render :json => suggestions.uniq
   end
 
   def rss
