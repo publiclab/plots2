@@ -93,6 +93,16 @@ class DrupalNode < ActiveRecord::Base
 
   public
 
+  def current_revision
+    # Grab the most recent revision for this node.
+    DrupalNodeRevision.where(nid: nid).order("timestamp DESC").limit(1)[0]
+  end
+
+  def current_title
+    # Grab the title from the most recent revision for this node.
+    current_revision.title
+  end
+
   def create_access
     DrupalNodeAccess.new({:nid => self.id, :gid => 0, :realm => 'all', :grant_view => 1, :grant_update => 0, :grant_delete => 0}).save
   end
