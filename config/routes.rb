@@ -119,6 +119,7 @@ Plots2::Application.routes.draw do
   match 'feed' => 'notes#rss'
 
   match 'spam' => 'admin#spam'
+  match 'admin/users' => 'admin#users'
   match 'ban/:id' => 'admin#ban'
   match 'unban/:id' => 'admin#unban'
   match 'moderate/spam/:id' => 'admin#mark_spam'

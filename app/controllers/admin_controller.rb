@@ -125,4 +125,13 @@ class AdminController < ApplicationController
     redirect_to "/profile/"+user.name
   end
 
+  def users
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+      @users = DrupalUsers.find :all, :order => "uid DESC", :limit => 200
+    else
+      flash[:error] = "Only moderators can moderate other users."
+      redirect_to "/dashboard"
+    end
+  end
+
 end

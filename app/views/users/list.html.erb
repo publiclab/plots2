@@ -9,5 +9,10 @@
   <tr>
     <td><a href="/profile/<%= user.username %>"><%= user.username %></a></td>
     <td><%= time_ago_in_words(user.created_at) %></td>
+    <td>
+      <% if user.drupal_user.status == 0 %>
+        <i class='icon icon-ban-circle' style="color:#a00;"></i> Banned
+      <% end %>
+    </td>
   <% end %>
 </table>
