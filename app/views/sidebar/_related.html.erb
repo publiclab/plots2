@@ -75,7 +75,7 @@
   <ul class="nav bullet">
     <% @notes.each do |note| %>
       <% unless (!@node.nil? && note.nid == @node.nid) %>
-      <li><a href="/<%= note.slug %>"><i class="icon-file"></i> <%= note.title %></a></li>
+      <li><a href="/<%= note.slug %>"><i class="icon-file"></i> <%= note.current_title %></a></li>
       <% end %>
     <% end %>
     <% if params[:controller] == "search" %>

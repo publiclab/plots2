@@ -28,6 +28,8 @@ class DrupalNode < ActiveRecord::Base
   has_one :drupal_node_access, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_node_tag, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_tag, :through => :drupal_node_tag
+  has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
+  has_many :drupal_files, :through => :drupal_upload
 # these override the above... have to do it manually:
 #  has_many :drupal_node_community_tag, :foreign_key => 'nid'
 #  has_many :drupal_tag, :through => :drupal_node_community_tag
@@ -93,12 +95,26 @@ class DrupalNode < ActiveRecord::Base
 
   public
 
+  def current_revision
+    # Grab the most recent revision for this node.
+    DrupalNodeRevision.where(nid: nid).order("timestamp DESC").limit(1)[0]
+  end
+
+  def current_title
+    # Grab the title from the most recent revision for this node.
+    current_revision.title
+  end
+
   def create_access
     DrupalNodeAccess.new({:nid => self.id, :gid => 0, :realm => 'all', :grant_view => 1, :grant_update => 0, :grant_delete => 0}).save
   end
 
   def has_access?
     DrupalNodeAccess.find(:all, :conditions => {:nid => self.id}).length > 0
+  end
+
+  def files
+    self.drupal_files
   end
 
   def likes
