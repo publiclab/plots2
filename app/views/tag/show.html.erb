@@ -11,9 +11,9 @@
     <% else %>
     <a class="btn btn-small" href="/subscribe/tag/<%= params[:id] %>"><i class="icon icon-eye-open"></i> Follow <b><%= params[:id] %></b></a>
     <% end %>
+    <a class="btn btn-small" rel="popover" data-placement="bottom" data-html="true" data-title="Users following this tag" data-content="<% DrupalTag.followers(params[:id]).each do |user| %><i class='icon icon-star-empty'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if DrupalTag.follower_count(params[:id]) == 0 %><i>None</i><% end %>"><%= DrupalTag.follower_count(params[:id]) %> <i class="icon icon-user"></i> <span class="caret"></span></a>
   </div>
   <!-- AJAXify -->
-  &nbsp; <%= DrupalTag.follower_count(params[:id]) %> people are watching this tag
   <% end %>
 
   <hr />

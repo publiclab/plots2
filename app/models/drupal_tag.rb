@@ -3,6 +3,7 @@ class DrupalTag < ActiveRecord::Base
   self.table_name = 'term_data'
   self.primary_key = 'tid'
   has_many :drupal_node_tag, :foreign_key => 'tid'
+  #has_many :drupal_users, :through => :drupal_node_tag, :foreign_key => 'uid'
 
   # we're not really using the filter_by_type stuff here:
   has_many :drupal_node, :through => :drupal_node_tag do
@@ -86,6 +87,13 @@ class DrupalTag < ActiveRecord::Base
   def self.follower_count(tagname)
     tids = DrupalTag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
     TagSelection.count(:all, :conditions => ['tid in (?)',tids])
+  end
+
+  # tihs and the above should be simplified once we create a no-duplicate-tag rule and migrate to consolidate tag users
+  def self.followers(tagname)
+    tids = DrupalTag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
+    uids = TagSelection.find(:all, :conditions => ['tid in (?)',tids]).collect(&:user_id)
+    DrupalUsers.find(:all, :conditions => ['uid in (?)',uids]).collect(&:user)
   end
 
 end
