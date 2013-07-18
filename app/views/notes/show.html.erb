@@ -65,7 +65,7 @@
   <%= raw auto_link(@node.render_body, :sanitize => false) %>
   </div>
 
-  <% if @node.files %>
+  <% if @node.files && @node.files.length > 0 %>
     <table id="files" class="table">
       <tr>
         <th>Files</th>

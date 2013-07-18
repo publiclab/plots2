@@ -22,7 +22,9 @@ class NotesController < ApplicationController
 
   def show
     if params[:author] && params[:date]
-      @node = DrupalUrlAlias.find_by_dst('notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).node 
+      @node = DrupalUrlAlias.find_by_dst('notes/'+params[:author]+'/'+params[:date]+'/'+params[:id])
+      @node = DrupalUrlAlias.find_by_dst('report/'+ params[:id]) if @node.nil?
+      @node = @node.node 
     else
       @node = DrupalNode.find params[:id]
     end
