@@ -20,7 +20,11 @@ class DrupalContentFieldImageGallery < ActiveRecord::Base
   end
 
   def description
-    PHP.unserialize(self.field_image_gallery_data)['description']
+    begin
+      PHP.unserialize(self.field_image_gallery_data)['description']
+    rescue
+      ""
+    end
   end
 
 end
