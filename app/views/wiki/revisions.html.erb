@@ -61,7 +61,7 @@
       older = old
       $('#newer').html(newer)
       $('#older').html(older)
-      $('#diff').html(diffString($('#body_'+newer).html(),$('#body_'+older).html()))
+      $('#diff').html(diffString($('#body_'+older).html(),$('#body_'+newer).html()))
       $('tr').removeClass('warning')
       $('#row'+older).addClass('warning')
       $('#row'+newer).addClass('warning')
