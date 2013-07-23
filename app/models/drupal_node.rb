@@ -319,10 +319,13 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def path
-    path = "/"+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst
-    path.gsub!('/place','/wiki') if self.type == "place"
-    path.gsub!('/tool','/wiki') if self.type == "tool"
-    path
+    url_alias = DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+    if url_alias
+      path = "/"+url_alias.dst
+      path.gsub!('/place','/wiki') if self.type == "place"
+      path.gsub!('/tool','/wiki') if self.type == "tool"
+      path
+    end
   end
 
   def edit_path
