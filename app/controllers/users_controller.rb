@@ -155,7 +155,7 @@ class UsersController < ApplicationController
       # send key to user email
       PasswordResetMailer.reset_notify(user,key).deliver unless user.nil? # respond the same to both successes and failures; security
       flash[:notice] = "You should receive an email with instructions on how to reset your password."
-      redirect_to "/reset/"
+      redirect_to "/login"
     end
   end
 
