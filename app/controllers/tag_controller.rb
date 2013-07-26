@@ -104,7 +104,7 @@ class TagController < ApplicationController
     t = DrupalTag.find :all, :conditions => {:name => params[:id]}
     nt = DrupalNodeTag.find :all, :conditions => ['tid in (?)',t.collect(&:tid)]
     nct = DrupalNodeCommunityTag.find :all, :conditions => ['tid in (?)',t.collect(&:tid)]
-    @users = DrupalUsers.find :all, :conditions => ['uid IN (?)',(nt+nct).collect(&:uid)]
+    @users = DrupalNode.find(:all, :conditions => ['nid IN (?)',(nt+nct).collect(&:nid)]).collect(&:author).uniq!
     @wikis = DrupalNode.find :all, :conditions => ["nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", (nt+nct).collect(&:nid)]
     @notes = DrupalNode.find :all, :conditions => ["nid IN (?) AND type = 'note'", (nt+nct).collect(&:nid)]
   end

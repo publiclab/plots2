@@ -1,6 +1,6 @@
 <%= render :partial => "sidebar/related" %>
 <div class="span9">
-  <h3 style="margin-top:0;">Contributors for <i style="color:#aaa;"><%= params[:id] %></i></h3>
+  <h3 style="margin-top:0;">Contributors for <i style="color:#aaa;"><%= params[:id] %></i> (<%= @users.length %>)</h3>
 
   <% if current_user %>
   <!-- AJAXify -->
