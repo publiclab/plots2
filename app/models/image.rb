@@ -15,6 +15,8 @@ class Image < ActiveRecord::Base
   validates :photo, :presence => :true
   validates :title, :presence => :true, :format => {:with => /\A[a-zA-Z0-9\ -_]+\z/, :message => "Only letters, numbers, and spaces allowed"}, :length => { :maximum => 60 }
 
+  before_post_process :is_image?
+
   def is_image?
     (self.filetype == "jpg" || self.filetype == "jpeg" || self.filetype == "gif" || self.filetype == "png") 
   end
