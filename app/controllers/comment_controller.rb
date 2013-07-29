@@ -7,7 +7,7 @@ class CommentController < ApplicationController
   def create
     @node = DrupalNode.find params[:id]
     @comment = @node.add_comment({:uid => current_user.uid,:body => params[:body]})
-    if @comment.save!
+    if current_user && @comment.save!
       @comment.notify(current_user)
       respond_with do |format|
         format.html do
@@ -20,13 +20,13 @@ class CommentController < ApplicationController
         end
       end
     else
-      flash[:error] = "The comment could not be updated."
+      flash[:error] = "The comment could not be saved."
     end
   end
      
   def update
+    @comment = DrupalComment.find params[:id]
     if @comment.uid == current_user.uid
-      @comment = DrupalComment.find params[:id]
       # should abstract ".comment" to ".body" for future migration to native db
       @comment.comment = params[:body] 
       if @comment.save
