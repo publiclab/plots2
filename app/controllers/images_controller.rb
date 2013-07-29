@@ -16,7 +16,7 @@ class ImagesController < ApplicationController
       #@image = Image.find @image.id
       if request.xhr?
         render :json => { :filename => @image.photo_file_name,
-                          :url => "http://i.publiclab.org"+@image.photo.url(:medium),
+                          :url => @image.path,
                           :id => @image.id
                         }
       else
