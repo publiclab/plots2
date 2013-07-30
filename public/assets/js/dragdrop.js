@@ -44,18 +44,18 @@ $('#dropzone').fileupload({
     $('#imagebar .uploading').hide()
     $('#imagebar .prompt').show()
     var is_image = false
-    if (data.result.filename.substr(-3,0) == "jpg") is_image = true
-    if (data.result.filename.substr(-4,0) == "jpeg") is_image = true
-    if (data.result.filename.substr(-3,0) == "png") is_image = true
-    if (data.result.filename.substr(-3,0) == "gif") is_image = true
-    if (data.result.filename.substr(-3,0) == "JPG") is_image = true
-    if (data.result.filename.substr(-4,0) == "JPEG") is_image = true
-    if (data.result.filename.substr(-3,0) == "PNG") is_image = true
-    if (data.result.filename.substr(-3,0) == "GIF") is_image = true
+    if (data.result['filename'].substr(-3,3) == "jpg") is_image = true
+    if (data.result['filename'].substr(-4,4) == "jpeg") is_image = true
+    if (data.result['filename'].substr(-3,3) == "png") is_image = true
+    if (data.result['filename'].substr(-3,3) == "gif") is_image = true
+    if (data.result['filename'].substr(-3,3) == "JPG") is_image = true
+    if (data.result['filename'].substr(-4,4) == "JPEG") is_image = true
+    if (data.result['filename'].substr(-3,3) == "PNG") is_image = true
+    if (data.result['filename'].substr(-3,3) == "GIF") is_image = true
     if (is_image) {
-      $E.wrap('![',']('+data.result.url.split('?')[0]+')', {'newline': true, 'fallback': data.result.filename}) // on its own line; see /app/assets/js/editor.js
+      $E.wrap('![',']('+data.result.url.split('?')[0]+')', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
     } else {
-      $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="icon icon-file"></i> ','</a>', {'newline': true, 'fallback': data.result.filename}) // on its own line; see /app/assets/js/editor.js
+      $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="icon icon-file"></i> ','</a>', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
     }
     // here append the image id to the wiki edit form:
     if ($('#node_images').val() && $('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id].join(','))
