@@ -27,6 +27,7 @@ class TagController < ApplicationController
   end
 
   def create
+    params[:name] ||= ""
     tagnames = params[:name].split(',')
     response = { :errors => [],
       :saved => [],
@@ -41,7 +42,7 @@ class TagController < ApplicationController
         if saved
           response[:saved] << [tag.name,tag.id]
         else
-          response[:errors] << tag.errors[:name].first
+          response[:errors] << "Error: tags "+tag.errors[:name].first
         end
       end
     end

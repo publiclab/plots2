@@ -36,7 +36,7 @@
         if (response['errors'].length > 0) {
           $('#tagform .control-group').addClass('error')
           $('#tagform .control-group .help-inline').remove()
-          $('#tagform .control-group').append('<span class="help-inline">Error: tags '+response['errors']+'</span>')
+          $('#tagform .control-group').append('<span class="help-inline">'+response['errors']+'</span>')
         }
         $('#taginput').prop('disabled',false)
       });
