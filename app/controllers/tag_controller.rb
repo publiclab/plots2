@@ -62,7 +62,8 @@ class TagController < ApplicationController
   def delete
     node_tag = DrupalNodeCommunityTag.find(:first,:conditions => {:nid => params[:nid], :tid => params[:tid]})
     # check for community tag too...
-    if node_tag.uid == current_user.uid #|| current_user.role == "admin"
+    if node_tag.uid == current_user.uid || current_user.role == "admin" || current_user.role == "moderator"
+
       node_tag.delete
       respond_with do |format|
         format.html do

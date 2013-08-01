@@ -47,6 +47,7 @@ Plots2::Application.routes.draw do
   match 'wiki/create' => 'wiki#create'
   match 'wiki/:id' => 'wiki#show'
   match 'wiki/revisions/:id' => 'wiki#revisions'
+  match 'wiki/revert/:id' => 'wiki#revert'
   match 'wiki/edit/:id' => 'wiki#edit'
   match 'wiki/delete/:id' => 'wiki#delete'
   match 'wiki/revisions/:id/:vid' => 'wiki#revision'

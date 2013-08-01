@@ -95,7 +95,7 @@ class WikiController < ApplicationController
 
   def delete
     @node = DrupalNode.find(params[:id])
-    if current_user.username == "warren"
+    if current_user && current_user.role == "admin"
       @node.transaction do
         @node.destroy
       end
@@ -105,6 +105,23 @@ class WikiController < ApplicationController
       flash[:error] = "Only admins can delete wiki pages."
       redirect_to @node.path
     end
+  end
+
+  def revert
+    revision = DrupalNodeRevision.find params[:id]
+    node = revision.parent
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+      new_rev = revision.dup
+      new_rev.timestamp = DateTime.now.to_i
+      if new_rev.save!
+        flash[:notice] = "The wiki page was reverted."
+      else
+        flash[:error] = "There was a problem reverting."
+      end
+    else
+      flash[:error] = "Only moderators and admins can delete wiki pages."
+    end
+    redirect_to node.path
   end
 
   # wiki pages which have a root URL, like http://publiclab.org/about
