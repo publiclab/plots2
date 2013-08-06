@@ -2,7 +2,7 @@
 <div class="span9">
 
   <% if @node.main_image %>
-    <a style="display:block;margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img class="img-rounded" src="<%= @node.main_image.path(:default) %>" /></a>
+    <a style="display:block;margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img class="img-rounded" src="<%= @node.main_image.path(:large) %>" /></a>
   <% end %>
 
   <%= render :partial => "like/like" %>

@@ -87,6 +87,7 @@ class UsersController < ApplicationController
   def profile
     @user = DrupalUsers.find_by_name(params[:id])
     @title = @user.name
+    @notes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => @user.uid}, :page => params[:page])
     if @user.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
       flash[:error] = "That user has been banned."
       redirect_to "/"
