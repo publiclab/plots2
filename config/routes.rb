@@ -122,6 +122,7 @@ Plots2::Application.routes.draw do
   match 'archive' => 'map#index'
   match 'stats' => 'notes#stats'
   match 'feed' => 'notes#rss'
+  match 'rss.xml' => 'legacy#rss'
 
   match 'spam' => 'admin#spam'
   match 'admin/users' => 'admin#users'
