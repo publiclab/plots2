@@ -39,7 +39,7 @@
     </div>
     <span>
       <% if @node.status == 0 %><span class="label label-important">UNPUBLISHED</span> | <% end %>
-      by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
+      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> |
       <span class="hidden-phone">
         <%= @node.created_at.to_s(:long) %> 
       </span>

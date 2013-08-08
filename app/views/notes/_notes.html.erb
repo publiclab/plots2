@@ -9,7 +9,7 @@
         <% end %>
         <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
         <p style="color:#888;"><small>
-          by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> 
+          by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
           | <%= time_ago_in_words(node.created_at) %> ago
           | <a href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
           | <%= number_with_delimiter(node.totalcount) %> views
