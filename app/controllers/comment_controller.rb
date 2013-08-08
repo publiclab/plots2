@@ -43,7 +43,7 @@ class CommentController < ApplicationController
 
   def delete
     @comment = DrupalComment.find params[:id]
-    if @comment.parent.uid == current_user.uid || @comment.uid == current_user.uid
+    if current_user.uid == @comment.parent.uid || @comment.uid == current_user.uid || current_user.role == "admin" || current_user.role == "moderator"
       if @comment.delete
         respond_with do |format|
           format.html do

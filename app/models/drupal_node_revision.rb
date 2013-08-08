@@ -22,4 +22,8 @@ class DrupalNodeRevision < ActiveRecord::Base
     DrupalUsers.find_by_uid self.uid
   end
 
+  def parent
+    self.drupal_node
+  end
+
 end

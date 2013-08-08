@@ -62,4 +62,9 @@ class LegacyController < ApplicationController
     redirect_to "/notes/"+@node.author.name.downcase+'/'+Time.at(@node.created_at).strftime("%m-%d-%Y")+'/'+params[:id], :status => 301
   end
 
+  def rss
+    redirect_to "/feed.rss", :status => 301
+  end
+
+
 end
