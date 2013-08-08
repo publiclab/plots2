@@ -36,6 +36,10 @@ a i.icon-white { color:white; }
   font-size:1.2em;
 }
 
+.visible-print {
+  display:none;
+}
+
 @media (max-width:400px) {
   .hidden-tiny {
     display:none;

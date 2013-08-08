@@ -1,0 +1,7 @@
+.hidden-print {
+  display:none;
+}
+
+.visible-print {
+  display:auto;
+}

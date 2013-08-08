@@ -5,6 +5,7 @@
     <a style="display:block;margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img class="img-rounded" src="<%= @node.main_image.path(:default) %>" /></a>
   <% end %>
 
+  <div class="hidden-print">
   <%= render :partial => "like/like" %>
   <% if current_user && (current_user.uid == @node.uid || current_user.role == "moderator" || current_user.role == "admin") %>
     <div style="padding:0 8px 8px;" class="btn-group pull-right">
@@ -17,11 +18,12 @@
       <% end %>
     </div> 
   <% end %>
+  </div>
 
   <h2 style="clear:left;"><%= @node.title %></h2>
 
   <div>
-    <div class="btn-group pull-right">
+    <div class="btn-group pull-right hidden-print">
       <script>var editing = false;</script>
       <% if @node.prev_by_author %><a class="btn btn-link btn-small" href="/<%= @node.prev_by_author.slug %>">&laquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 37) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.prev_by_author.slug %>" }})</script><% end %>
         <a class="btn btn-small btn-link dropdown-toggle" data-toggle="dropdown">
@@ -39,8 +41,10 @@
       <% if @node.status == 0 %><span class="label label-important">UNPUBLISHED</span> | <% end %>
       by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
       <span class="hidden-phone">
-        <%= @node.created_at.to_s(:long) %> |
-        <%= number_with_delimiter(@node.totalcount) %> views 
+        <%= @node.created_at.to_s(:long) %> 
+      </span>
+      <span class="hidden-phone hidden-print">
+        | <%= number_with_delimiter(@node.totalcount) %> views 
         <% if @node.comments %>| <i class="icon icon-comment"></i> <a href="#comments"><%= @node.comments.length %> comments</a><% end %>
       </span>
       <span class="hidden-desktop">
@@ -82,14 +86,16 @@
     </table>
   <% end %>
 
-  <hr />
-  <%= render :partial => "home/social" %>
-  <hr />
-
-  <%= render :partial => "tag/tagging" %>
-
-  <div>
-    <%= render :partial => "notes/comments" %>
+  <div class="hidden-print">
+    <hr />
+    <%= render :partial => "home/social" %>
+    <hr />
+ 
+    <%= render :partial => "tag/tagging" %>
+ 
+    <div>
+      <%= render :partial => "notes/comments" %>
+    </div>
   </div>
 
 </div><!--/span-->
