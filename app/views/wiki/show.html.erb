@@ -10,28 +10,32 @@
     <a style="display:block;margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img class="img-rounded" src="<%= @node.main_image.path(:default) %>" /></a>
   <% end %>
 
-  <%= render :partial => "like/like" %>
+  <div class="hidden-print">
+    <%= render :partial => "like/like" %>
+  </div>
 
   <h2><%= @node.latest.title %></h2>
 
-  <div class="pull-right" style="padding-top:8px;">
-    <span class="hidden-desktop">
-      <%= @node.created_at.to_s(:short) %>
-    </span>
-    <span class="hidden-phone">
-      <%= number_with_delimiter(@node.totalcount) %> views | 
-      Last edited by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a> <%= time_ago_in_words(@node.latest.created_at) %> ago
-    </span>
+  <div class="hidden-print">
+    <div class="pull-right" style="padding-top:8px;">
+      <span class="hidden-desktop">
+        <%= @node.created_at.to_s(:short) %>
+      </span>
+      <span class="hidden-phone">
+        <%= number_with_delimiter(@node.totalcount) %> views | 
+        Last edited by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a> <%= time_ago_in_words(@node.latest.created_at) %> ago
+      </span>
+    </div>
+ 
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#"><span class="hidden-tiny">View</span><span class="visible-tiny"><i class="icon icon-file-alt"></i></span></a></li>
+      <li><a href="<%= @node.edit_path %>"><i class="icon icon-pencil"></i><span class="hidden-phone"> Edit</span></a></li>
+      <% if current_user && current_user.username == "warren" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you sure? You cannot undo this action." do %><i class="icon icon-trash"></i><span class="hidden-phone"> Delete</span><% end %></li><% end %>
+      <li><a href="http://pad.publiclab.org/p/<%= @node.slug %>"><i class="icon icon-comments-alt"></i><span class="hidden-phone"> Talk</span></a></li>
+      <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i><span class="hidden-phone"> Revisions </span><span class="hidden-tiny">(<%= @node.revisions.length %>)</span></a></li>
+      <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
+    </ul>
   </div>
-
-  <ul class="nav nav-tabs">
-    <li class="active"><a href="#"><span class="hidden-tiny">View</span><span class="visible-tiny"><i class="icon icon-file-alt"></i></span></a></li>
-    <li><a href="<%= @node.edit_path %>"><i class="icon icon-pencil"></i><span class="hidden-phone"> Edit</span></a></li>
-    <% if current_user && current_user.username == "warren" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you sure? You cannot undo this action." do %><i class="icon icon-trash"></i><span class="hidden-phone"> Delete</span><% end %></li><% end %>
-    <li><a href="http://pad.publiclab.org/p/<%= @node.slug %>"><i class="icon icon-comments-alt"></i><span class="hidden-phone"> Talk</span></a></li>
-    <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i><span class="hidden-phone"> Revisions </span><span class="hidden-tiny">(<%= @node.revisions.length %>)</span></a></li>
-    <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
-  </ul>
 
   <div style="overflow:hidden;" id="content">
   <%= raw auto_link(@node.render_body, :sanitize => false) %>
@@ -39,6 +43,8 @@
 
   <hr />
 
-  <%= render :partial => "tag/tagging" %>
+  <div class="hidden-print">
+    <%= render :partial => "tag/tagging" %>
+  </div>
 
 </div><!--/span-->
