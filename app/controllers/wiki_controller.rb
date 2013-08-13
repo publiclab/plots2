@@ -60,11 +60,16 @@ class WikiController < ApplicationController
       :title => params[:title],
       :body => params[:body]
     })
-    if saved
-      flash[:notice] = "Wiki page created."
-      redirect_to @node.path
+    if current_user.status == 0
+      if saved
+        flash[:notice] = "Wiki page created."
+        redirect_to @node.path
+      else
+        render :action => :edit
+      end
     else
-      render :action => :edit
+      flash[:error] = "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
+      redirect_to "/"
     end
   end
 
@@ -110,7 +115,7 @@ class WikiController < ApplicationController
   def revert
     revision = DrupalNodeRevision.find params[:id]
     node = revision.parent
-    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+    if current_user && current_user.status == 0 && (current_user.role == "moderator" || current_user.role == "admin")
       new_rev = revision.dup
       new_rev.timestamp = DateTime.now.to_i
       if new_rev.save!

@@ -54,17 +54,22 @@ class NotesController < ApplicationController
       :body => params[:body],
       :main_image => params[:main_image]
     })
-    if saved
-      params[:tags].split(',').each do |tagname|
-        @node.add_tag(tagname,current_user)
+    if current_user.status == 0
+      if saved
+        params[:tags].split(',').each do |tagname|
+          @node.add_tag(tagname,current_user)
+        end
+        # trigger subscription notifications:
+        SubscriptionMailer.notify_node_creation(@node)
+        # opportunity for moderation
+        flash[:notice] = "Research note published."
+        redirect_to @node.path
+      else
+        render :template => "editor/post"
       end
-      # trigger subscription notifications:
-      SubscriptionMailer.notify_node_creation(@node)
-      # opportunity for moderation
-      flash[:notice] = "Research note published."
-      redirect_to @node.path
     else
-      render :template => "editor/post"
+      flash[:error] = "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
+      redirect_to "/"
     end
   end
 
