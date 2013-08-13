@@ -48,13 +48,13 @@ class NotesController < ApplicationController
   end
 
   def create
-    saved,@node,@revision = DrupalNode.new_note({
-      :uid => current_user.uid,
-      :title => params[:title],
-      :body => params[:body],
-      :main_image => params[:main_image]
-    })
-    if current_user.status == 0
+    if current_user.drupal_user.status == 1
+      saved,@node,@revision = DrupalNode.new_note({
+        :uid => current_user.uid,
+        :title => params[:title],
+        :body => params[:body],
+        :main_image => params[:main_image]
+      })
       if saved
         params[:tags].split(',').each do |tagname|
           @node.add_tag(tagname,current_user)
@@ -68,8 +68,8 @@ class NotesController < ApplicationController
         render :template => "editor/post"
       end
     else
-      flash[:error] = "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
-      redirect_to "/"
+      flash.keep[:error] = "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
+      redirect_to "/logout"
     end
   end
 

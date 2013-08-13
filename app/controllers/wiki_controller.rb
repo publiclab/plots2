@@ -51,16 +51,16 @@ class WikiController < ApplicationController
   end
 
   def create
-    # we no longer allow custom urls, just titles which are parameterized automatically into urls
-    #slug = params[:title].parameterize
-    #slug = params[:id].parameterize if params[:id] != "" && !params[:id].nil?
-    #slug = params[:url].parameterize if params[:url] != "" && !params[:url].nil?
-    saved,@node,@revision = DrupalNode.new_wiki({
-      :uid => current_user.uid,
-      :title => params[:title],
-      :body => params[:body]
-    })
-    if current_user.status == 0
+    if current_user.drupal_user.status == 1
+      # we no longer allow custom urls, just titles which are parameterized automatically into urls
+      #slug = params[:title].parameterize
+      #slug = params[:id].parameterize if params[:id] != "" && !params[:id].nil?
+      #slug = params[:url].parameterize if params[:url] != "" && !params[:url].nil?
+      saved,@node,@revision = DrupalNode.new_wiki({
+        :uid => current_user.uid,
+        :title => params[:title],
+        :body => params[:body]
+      })
       if saved
         flash[:notice] = "Wiki page created."
         redirect_to @node.path
@@ -68,8 +68,8 @@ class WikiController < ApplicationController
         render :action => :edit
       end
     else
-      flash[:error] = "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
-      redirect_to "/"
+      flash.keep[:error] = "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
+      redirect_to "/logout"
     end
   end
 
@@ -115,7 +115,7 @@ class WikiController < ApplicationController
   def revert
     revision = DrupalNodeRevision.find params[:id]
     node = revision.parent
-    if current_user && current_user.status == 0 && (current_user.role == "moderator" || current_user.role == "admin")
+    if current_user && current_user.drupal_user.status == 1 && (current_user.role == "moderator" || current_user.role == "admin")
       new_rev = revision.dup
       new_rev.timestamp = DateTime.now.to_i
       if new_rev.save!
