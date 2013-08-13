@@ -142,9 +142,28 @@
                   <i class="icon-user icon-white"></i>
                    Log in<b class="caret"></b>
                 </a> 
-                <ul class="dropdown-menu">
-                  <li><a href="<%= login_path %>">Log in</a></li>
-                  <li><a href="/signup">Sign up</a></li>
+                <ul class="dropdown-menu" style="width:240px;">
+                  <li style="padding:6px;">
+                    <%= form_for @user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
+         
+                      <p><b>Log in</b></p>
+         
+                      <p><%= f.text_field :username, {:placeholder => "username", :tabindex => 1} %></p>
+                      <p><%= f.password_field :password, {:placeholder => "password", :tabindex => 2} %></p>
+                      <input type="hidden" name="return_to" value="<%= params[:return_to] || request.path %>" />
+         
+                      <p><label class="checkbox">
+                        <%= f.check_box :remember_me %> Remember me
+                      </p></label>
+         
+                      <p>
+                        <button class="btn btn-primary" type="submit" tabindex="3">Log in</button>
+                        <a class="btn btn" href="/signup" tabindex="4">Sign up</a>
+                      </p>
+         
+                      <p><a href="/reset/">Reset your password</a></p>
+                    <% end %>
+                  </li>
                 </ul>
                 <% end %>
               </li>
@@ -158,7 +177,8 @@
     <div class="container-fluid">
 
       <div class="visible-print">
-        <h1>Public Lab <small>| Research note</small></h1>
+        <% if params[:controller] == "notes" %><h1>Public Lab <small>| Research note</small></h1><% end %>
+        <% if params[:controller] == "wiki" %><h1>Public Lab <small>| Wiki documentation</small></h1><% end %>
         <hr />
       </div>
 

@@ -1,3 +1,7 @@
+body {
+  padding:40pt;
+}
+
 .hidden-print {
   display:none;
 }
@@ -43,3 +47,9 @@ a[href]:after, abbr[title]:after {
 #content h6 {
   margin-top:20pt;
 }
+
+h2 {
+  margin-top:20pt;
+}
+
+
