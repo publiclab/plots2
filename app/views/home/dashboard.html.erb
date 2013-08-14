@@ -27,19 +27,35 @@
   </div>
 
   <ul class="nav nav-tabs">
-    <li class="active"><a href="#"><span class="hidden-phone">Recent </span>Activity</a></li>
-    <li><a href="/notes/author/<%= current_user.username %>">
-      <i class="icon icon-folder-open"></i><span class="hidden-phone">
-        Your work</span> 
-        <span class="hidden-phone">
-          (<%= DrupalNode.count(:all,:conditions => {:type => "note", :status => 1, :uid => current_user.uid}) %>)
-        </span>
-      </a></li>
+    <li class="active"><a href="#research" data-toggle="tab"><span class="hidden-phone">Recent </span>Activity</a></li>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="icon icon-comment"></i><span class="hidden-phone"> Comments</span></a></li>
     <li><a href="/profile/<%= current_user.username %>/likes"><i class="icon icon-star"></i><span class="hidden-phone"> Liked</span></a></li>
     <!--<li><a href="/nearby"><i class="icon icon-globe"></i><span class="hidden-phone"> Nearby</span></a></li>-->
     <li><a href="/subscriptions"><i class="icon icon-eye-open"></i><span class="hidden-phone"> Subscriptions</span></a></li>
   </ul>
 
-  <%= render :partial => "notes/notes" %>
+  <div class="tab-content">
 
+    <div class="tab-pane active" id="research">
+      <%= render :partial => "notes/notes" %>
+    </div>
+ 
+    <div class="tab-pane" id="comments">
+      <h2 style="text-align:center;"><i class="icon-spinner icon-spin"></i></h2>
+    </div>
+    <script>
+      (function(){
+        $('a#comments-tab').on('shown',function (e) {
+          $.ajax({
+            url : '/dashboard/comments',
+            type: 'GET',
+            success: function(response){
+              $('#comments').html(response);
+            }
+          })
+        })
+      })()
+    </script>
+
+  </div>
 </div>

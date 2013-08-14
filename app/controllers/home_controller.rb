@@ -27,6 +27,11 @@ class HomeController < ApplicationController
     @unpaginated = true
   end
 
+  def comments
+    @comments = DrupalComment.find :all, :limit => 20, :order => "timestamp DESC", :conditions => {:status => 0}
+    render :partial => "home/comments"
+  end
+
   # trashy... clean this up!
   # this will eventually be based on the profile_tags data where people can mark their location with "location:lat,lon"
   def nearby
