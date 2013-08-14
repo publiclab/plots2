@@ -25,9 +25,9 @@
         <ul class="nav">
           <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/notes/">Recent</a></li>
           <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/notes/popular/">Popular</a></li>
-          <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="icon icon-star-empty"></i> Liked</a></li>
+          <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="icon icon-star-empty"></i><span class="hidden-phone"> Liked</span></a></li>
   
-          <li><a href="/wiki/">Wiki pages</a></li>
+          <li><a href="/wiki/">Wiki<span class="hidden-phone"> pages</span></a></li>
           <!--<li><a href="#">By place</a></li>
           <li><a href="#">By tool</a></li>-->
         </ul>
