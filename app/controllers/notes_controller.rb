@@ -63,15 +63,11 @@ class NotesController < ApplicationController
         SubscriptionMailer.notify_node_creation(@node)
         # opportunity for moderation
         flash[:notice] = "Research note published."
+        flash[:notice] = "Research note published. Get the word out on <a href='/wiki/mailing-lists'>the discussion lists</a>."
         redirect_to @node.path
       else
         render :template => "editor/post"
       end
-      # trigger subscription notifications:
-      SubscriptionMailer.notify_node_creation(@node)
-      # opportunity for moderation
-      flash[:notice] = "Research note published. Get the word out on <a href='/wiki/mailing-lists'>the discussion lists</a>."
-      redirect_to @node.path
     else
       flash.keep[:error] = "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
       redirect_to "/logout"
