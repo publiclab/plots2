@@ -32,8 +32,20 @@ class ApplicationController < ActionController::Base
     end
 
     def current_user
-      return @current_user if defined?(@current_user)
-      @current_user = current_user_session && current_user_session.record
+      if not defined?(@current_user)
+        @current_user = current_user_session && current_user_session.record
+      end
+      if @current_user && @current_user.drupal_user.status == 0
+        # Tell the user they are banned. Fails b/c redirect to require below.
+        #flash[:notice] = "The user '"+@current_user.username+"' has been banned; please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
+        # If user is banned, kiss their session goodbye.
+        # Same effect as if the user clicked logout:
+        current_user_session.destroy
+        # Ensures no code will use old @current_user info. Treat the user
+        # as anonymous (until the login process sets @current_user again):
+        @current_user = nil
+      end
+      @current_user
     end
 
     def require_user
