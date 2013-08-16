@@ -18,19 +18,6 @@
   <% end %>
   <hr />
 
-</div>
-
-<div class="span9">
-  <h3 style="margin-top:0;"><%= @user.name %> 
-    <small> 
-      <a href="/notes/author/<%= @user.name %>"><%= @user.node_count %> research notes</a> and wiki edits
-      | <a href="/profile/<%= @user.name %>/likes"><i class="icon icon-star-empty"></i> <%= @user.like_count %> likes</a>
-      <% if @user.role == "moderator" %> | <i class="icon icon-certificate"></i> Moderator<% end %>
-      <% if @user.role == "admin" %> | <i class="icon icon-certificate"></i> Admin<% end %>
-      <% if @user.status == 0 %> | <i class="icon icon-ban-circle" style="color:#a00;"></i> Banned<% end %>
-    </small>
-  </h3>
-
   <p>
     <div class="btn-group">
     <a class="btn btn-small" href="/feed/<%= @user.name %>.rss"><i class="icon icon-rss"></i> RSS</a>
@@ -38,39 +25,80 @@
       <a href="/profile/<%= @user.name %>/edit" class="btn btn-small"><i class="icon-pencil"></i> Edit profile</a>
     <% end %>
     </div>
-    &nbsp; <small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small>
   </p>
 
-  <p><%= raw auto_link(RDiscount.new(@user.bio).to_html, :sanitize => false) %></p>
+</div>
 
-  <hr />
+<div class="span9">
+  <h3 style="margin-top:0;"><%= @user.name %> 
+    <small> 
+      <a href="/notes/author/<%= @user.name %>"><%= @user.node_count %> research notes</a> and wiki edits
+      <% if @user.role == "moderator" %> | <i class="icon icon-certificate"></i> Moderator<% end %>
+      <% if @user.role == "admin" %> | <i class="icon icon-certificate"></i> Admin<% end %>
+      <% if @user.status == 0 %> | <i class="icon icon-ban-circle" style="color:#a00;"></i> Banned<% end %>
+    </small>
+  </h3>
 
-  <% if @user.using_new_site? && @user.user.mapknitter_maps %>
+  <p><small><%= raw auto_link(RDiscount.new(@user.bio).to_html, :sanitize => false) %></small></p>
 
-  <h4>Maps at <a href="http://mapknitter.org">MapKnitter.org</a></h4>
+  <br />
 
-  <p><i>View these maps <a href="http://mapknitter.org/profile/<%= @user.name %>">at MapKnitter.org &raquo;</a></i></a>
+  <ul class="nav nav-tabs">
+    <span style="float:right;"><small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small></span>
+    <li class="active"><a href="#research" data-toggle="tab">Research</a></li>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="icon icon-comment"></i><span class="hidden-phone"> Comments</span></a></li>
+    <li><a href="/profile/<%= @user.username %>/likes"><i class="icon icon-star"></i><span class="hidden-phone"> Liked</span>(<%= @user.like_count %>)</a></li>
+    <li><a href="#maps" data-toggle="tab"><i class="icon-map-marker"></i> MapKnitter maps</a></a>
+  </ul>
 
-  <table class="table">
-    <tr>
-      <th>Title</th>
-      <th>Creation date</th>
-      <th>Description</th>
-    </tr>
-    <% @user.user.mapknitter_maps.each_with_index do |map, i| %>
-    <tr>
-      <td><a href="<%= map.link %>"><i class="icon icon-map-marker"></i> <%= map.title %></a></td>
-      <td><%= time_ago_in_words(map.pubDate) %> ago</td>
-      <td><%= raw map.description.truncate(100) %></td>
-    </tr>
-    <% end %>
-  </table>
 
-  <% end %>
+  <div class="tab-content">
 
-  <h3>Research notes by <%= @user.name %></h3> 
+    <div class="tab-pane active" id="research">
+      <%= render :partial => "notes/notes" %>
+    </div>
 
-  <%= render :partial => "notes/notes" %>
+    <div class="tab-pane" id="maps">
+      <% if @user.using_new_site? && @user.user.mapknitter_maps && @user.user.mapknitter_maps.length > 0 %>
+  
+      <p><i>View these maps <a href="http://mapknitter.org/profile/<%= @user.name %>">at MapKnitter.org &raquo;</a></i></a>
+  
+      <table class="table">
+        <tr>
+          <th>Title</th>
+          <th style="width:100px;">Creation date</th>
+          <th>Description</th>
+        </tr>
+        <% @user.user.mapknitter_maps.each_with_index do |map, i| %>
+        <tr>
+          <td><a href="<%= map.link %>"><i class="icon icon-map-marker"></i> <%= map.title %></a></td>
+          <td><%= time_ago_in_words(map.pubDate) %> ago</td>
+          <td><%= raw map.description.truncate(100) %></td>
+        </tr>
+        <% end %>
+      </table>
+  
+      <% else %>
+        <p>No <a href="http://mapknitter.org">MapKnitter maps</a></p>
+      <% end %>
+    </div>
+
+    <div class="tab-pane" id="comments">
+      <h2 style="text-align:center;"><i class="icon-spinner icon-spin"></i></h2>
+    </div>
+    <script>
+      (function(){
+        $('a#comments-tab').on('shown',function (e) {
+          $.ajax({
+            url : '/profile/comments/<%= @user.id %>',
+            type: 'GET',
+            success: function(response){
+              $('#comments').html(response);
+            }
+          })
+        })
+      })()
+    </script>
 
   <hr />
 </div>

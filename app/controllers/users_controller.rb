@@ -160,4 +160,9 @@ class UsersController < ApplicationController
     end
   end
 
+  def comments
+    @comments = DrupalComment.find :all, :limit => 20, :order => "timestamp DESC", :conditions => {:status => 0, :uid => params[:id]}
+    render :partial => "home/comments"
+  end
+
 end
