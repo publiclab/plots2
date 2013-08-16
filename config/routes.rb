@@ -111,6 +111,7 @@ Plots2::Application.routes.draw do
 
   match 'dashboard' => 'home#dashboard'
   match 'dashboard/comments' => 'home#comments'
+  match 'profile/comments/:id' => 'users#comments'
   match 'nearby' => 'home#nearby'
   match 'profile/edit' => 'users#edit'
   match 'profile/:id' => 'users#profile'

@@ -13,6 +13,10 @@ class DrupalUsers < ActiveRecord::Base
     User.find_by_username self.name
   end
 
+  def username
+    self.name
+  end
+
   def using_new_site?
     !User.find_by_username(self.name).nil?
   end
