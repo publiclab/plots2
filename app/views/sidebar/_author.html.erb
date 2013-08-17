@@ -1,6 +1,6 @@
 <div class="span3">
-  <a style="margin-bottom:6px;" href="/post" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post research &raquo;</a>
-  <a href="/wiki/new" class="btn btn-block"><i class="icon-book"></i> Create wiki page &raquo;</a>
+  <%= render :partial => "sidebar/post_button" %>
+
   <hr />
 
   <% if tagnames = @user.tagnames(20,false) %>
