@@ -1,14 +1,6 @@
 <div class="span3">
-  <div class="btn-group" style="margin-bottom:6px;">
-    <a rel="tooltip" title="Share your work with others" data-placement="bottom" href="/post" class="btn btn-primary btn-large" data-toggle="modal"><i class="icon-pencil icon-white"></i> Post research</a>
-    <a class="btn btn-primary btn-large dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-    <ul class="dropdown-menu">
-      <li><a href="/post"><i class="icon icon-pencil"></i> <b>Post a research note</b></a></li>
-      <li class="divider"></li>
-      <li><a href="/wiki/about-posting"><i class="icon icon-question-mark"></i> About posting</a></li>
-    </ul>
-  </div>
-  <a rel="tooltip" title="Collaborative pages others can edit" data-placement="bottom" href="/wiki/new" class="btn hidden-phone"><i class="icon-book"></i> Create wiki page</a>
+  <%= render :partial => "sidebar/post_button" %>
+
   <hr />
   <div class="sidebar-nav hidden-phone">
 
