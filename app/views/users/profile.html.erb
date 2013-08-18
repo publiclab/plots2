@@ -19,12 +19,10 @@
   <hr />
 
   <p>
-    <div class="btn-group">
-    <a class="btn btn-small" href="/feed/<%= @user.name %>.rss"><i class="icon icon-rss"></i> RSS</a>
+    <a class="btn btn-small btn-block" href="/feed/<%= @user.name %>.rss"><i class="icon icon-rss" style="color:orange;"></i> RSS feed for <%= @user.name %></a> 
     <% if current_user && current_user.uid == @user.uid %>
-      <a href="/profile/<%= @user.name %>/edit" class="btn btn-small"><i class="icon-pencil"></i> Edit profile</a>
+      <a href="/profile/<%= @user.name %>/edit" class="btn btn-small btn-block"><i class="icon-pencil"></i> Edit profile</a>
     <% end %>
-    </div>
   </p>
 
 </div>
@@ -47,14 +45,14 @@
     <span style="float:right;"><small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small></span>
     <li class="active"><a href="#research" data-toggle="tab">Research</a></li>
     <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="icon icon-comment"></i><span class="hidden-phone"> Comments</span></a></li>
-    <li><a href="/profile/<%= @user.username %>/likes"><i class="icon icon-star"></i><span class="hidden-phone"> Liked</span>(<%= @user.like_count %>)</a></li>
+    <li><a href="/profile/<%= @user.username %>/likes"><i class="icon icon-star"></i><span class="hidden-phone"> Liked</span> (<%= @user.like_count %>)</a></li>
     <li><a href="#maps" data-toggle="tab"><i class="icon-map-marker"></i> MapKnitter maps</a></a>
   </ul>
 
 
   <div class="tab-content">
 
-    <div class="tab-pane active" id="research">
+    <div class="tab-pane active" id="research" style="padding-left:12px;">
       <%= render :partial => "notes/notes" %>
     </div>
 
