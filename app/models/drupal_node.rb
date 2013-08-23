@@ -394,6 +394,15 @@ class DrupalNode < ActiveRecord::Base
     self.location[:x]
   end
 
+  # these should eventually displace the above means of finding locations
+  def tagged_lat
+    self.power_tags('lat')[0]
+  end
+
+  def tagged_lon
+    self.power_tags('lon')[0]
+  end
+
   def next_by_author
     DrupalNode.find :first, :conditions => ['uid = ? and nid > ? and type = "note"', self.author.uid, self.nid], :order => 'nid'
   end

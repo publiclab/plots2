@@ -1,4 +1,6 @@
-<% if false %>
+<% if params[:action] == "places" %>
+</div>
+
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
 <!--[if lte IE 8]>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
@@ -11,12 +13,13 @@
   var map = L.map('map').setView([15,0], 2);
   L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
 
-  <% @maps.each do |map| %>
-    L.marker([<%= map.location[:y] %>, <%= map.location[:x] %>]).addTo(map).bindPopup("<a href='<%= map.slug %>'><%= map.title %></a>");
+  <% @notes.each do |place| %>
+    <% if place.tagged_lat %>L.marker([<%= place.tagged_lat %>, <%= place.tagged_lon %>]).addTo(map).bindPopup("<a href='<%= place.path %>'><%= place.title %></a>");<% end %>
   <% end %>
 </script>
 
-<br style="clear:both;" />
+<br />
+<div class="row-fluid">
 <% end %>
 
 <%= render :partial => "sidebar/featured" %>

@@ -16,6 +16,7 @@ class NotesController < ApplicationController
 
   def places
     @title = "Places"
+    # currently re-using the notes grid template, so we use the "@notes" instance variable:
     @notes = DrupalNode.paginate(:conditions => {:status => 1, :type => 'place'}, :order => "node_counter.totalcount DESC", :include => :drupal_node_counter, :page => params[:page])
     render :template => "notes/tools_places"
   end
