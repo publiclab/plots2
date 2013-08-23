@@ -23,7 +23,7 @@ class HomeController < ApplicationController
   def dashboard
     @title = "Dashboard"
     @user = DrupalUsers.find_by_name current_user.username
-    set_sidebar :tags, @user.tagnames
+    set_sidebar
     @unpaginated = true
   end
 
