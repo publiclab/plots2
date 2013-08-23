@@ -92,11 +92,14 @@
     $E.initialize()
     $('#side-fileinput').bind('focus',function(e) { $('#side-dropzone').css('border-color','#4ac') })
     $('#side-fileinput').bind('focusout',function(e) { $('#side-dropzone').css('border-color','#ccc') })
+    var warn_image = false;
     publish = function(e) {
-      if ($('#main_image').val() == "" && $('#has_main_image').val() != "true") {
+      if ($('#main_image').val() == "" && $('#has_main_image').val() != "true" && !warn_image) {
         // prompt to choose a lead image
+        warn_image = true;
         $('.side-dropzone').css('border-color','#d99')
         $('.side-dropzone').css('background','#fcc')
+        alert_notice('Click Publish again to publish without an image, but it is recommended you add one.', {'scroll': true})
       } else {
         $('#new_drupal_node_revision').submit()
       }

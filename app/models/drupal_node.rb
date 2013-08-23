@@ -466,7 +466,7 @@ class DrupalNode < ActiveRecord::Base
           revision.save!
           node.vid = revision.vid
           # save main image
-          if params[:main_image]
+          if params[:main_image] and params[:main_image] != ''
             img = Image.find params[:main_image]
             img.nid = node.id
             img.save
