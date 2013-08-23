@@ -14,7 +14,7 @@
   L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
 
   <% @notes.each do |place| %>
-    <% if place.tagged_lat %>L.marker([<%= place.tagged_lat %>, <%= place.tagged_lon %>]).addTo(map).bindPopup("<a href='<%= place.path %>'><%= place.title %></a>");<% end %>
+    <% if place.tagged_lat && place.tagged_lon %>L.marker([<%= place.tagged_lat %>, <%= place.tagged_lon %>]).addTo(map).bindPopup("<a href='<%= place.path %>'><%= place.title %></a>");<% end %>
   <% end %>
 </script>
 
