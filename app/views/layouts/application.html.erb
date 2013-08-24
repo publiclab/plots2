@@ -185,28 +185,21 @@
       <div class="header-spacer hidden-phone"></div>
 
         <%# unless current_user || params[:controller] == "user_sessions" || params[:controller] == "home" && params[:action] == "front" %>
-          <div class="well visible-desktop hidden-print" style="padding:12px 20px 10px;">
-            <div id="donate" style="display:none;">
+          <div id="donate">
+            <div class="well visible-desktop hidden-print" style="padding:12px 20px 10px;">
               <h4 style="display:inline;">Did you know that Public Lab is an open community supported by a nonprofit?</h4> 
               <a href="/donate" style="margin-left:10px;" class="btn btn-primary hidden-phone">Donate &raquo;</a>
             </div>
-            <div id="legacy">
-              <h4 style="display:inline;">This is the <a href="/wiki/plots2">new Public Lab website</a>! If you're having trouble, try the legacy site: </h4> 
-              <a href="http://old.publiclab.org" style="margin-left:10px;" class="btn btn-primary hidden-phone">old.publiclab.org</a>
+            <div class="visible-phone hidden-print" style="height:4.5em;">
+              <a href="/donate" style="margin-bottom:6px;" class="btn btn-success btn-large btn-block">Donate to <span class="hidden-tiny">the</span> Public Lab <span class="hidden-tiny">non-profit</span> &raquo;</a>
             </div>
-          </div>
-          <div class="visible-phone hidden-print" style="height:4.5em;">
-            <a href="/donate" style="margin-bottom:6px;" class="btn btn-success btn-large btn-block">Donate to <span class="hidden-tiny">the</span> Public Lab <span class="hidden-tiny">non-profit</span> &raquo;</a>
           </div>
 
           <script>
             (function(){
-              setTimeout(function(){
-                $('#legacy').fadeOut()
-              },3500)
-              setTimeout(function(){
-                $('#donate').fadeIn()
-              },4000)
+              //setTimeout(function(){
+               // $('#donate').fadeOut()
+              //},3500)
             })()
           </script>
         <%# end %>
