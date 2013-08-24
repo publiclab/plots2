@@ -30,7 +30,7 @@
     <ul class="nav nav-tabs">
       <li class="active"><a href="#"><span class="hidden-tiny">View</span><span class="visible-tiny"><i class="icon icon-file-alt"></i></span></a></li>
       <li><a href="<%= @node.edit_path %>"><i class="icon icon-pencil"></i><span class="hidden-phone"> Edit</span></a></li>
-      <% if current_user && current_user.username == "warren" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you sure? You cannot undo this action." do %><i class="icon icon-trash"></i><span class="hidden-phone"> Delete</span><% end %></li><% end %>
+      <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you absolutely sure? All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page." do %><i class="icon icon-trash"></i><span class="hidden-phone"> Delete</span><% end %></li><% end %>
       <li><a href="http://pad.publiclab.org/p/<%= @node.slug %>"><i class="icon icon-comments-alt"></i><span class="hidden-phone"> Talk</span></a></li>
       <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i><span class="hidden-phone"> Revisions </span><span class="hidden-tiny">(<%= @node.revisions.length %>)</span></a></li>
       <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
