@@ -11,7 +11,9 @@
 
 <script>
   var map = L.map('map').setView([22,0], 2);
-  L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+  L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+    attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
+  }).addTo(map)
 
   <% @notes.each do |place| %>
     <% if place.tagged_lat && place.tagged_lon %>L.marker([<%= place.tagged_lat %>, <%= place.tagged_lon %>]).addTo(map).bindPopup("<a href='<%= place.path %>'><%= place.latest.title %></a>");<% end %>
@@ -27,7 +29,7 @@
   <% if params[:action] == 'tools' %>
   <h2 style="margin-top:0;">Tools &amp; techniques <small>developed by Public Lab contributors</small></h2>
   <% else %>
-  <h2>Public Lab chapters <small>local groups and gatherings around the world</small></h2>
+  <h2>Public Lab chapters <small>local groups and gatherings around the world | <a href="/wiki/start-a-chapter">Start a chapter &raquo;</a></small></h2>
   <% end %>
   <hr />
   <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked") %>

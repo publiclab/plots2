@@ -98,11 +98,12 @@ class User < ActiveRecord::Base
 
   def mapknitter_maps
     # http://mapknitter.org/feeds/author/hagitkeysar
-    begin
-      RSS::Parser.parse(open('http://mapknitter.org/feeds/author/'+self.username).read, false).items
-    rescue
-      []
-    end
+    #begin
+    #  RSS::Parser.parse(open('http://mapknitter.org/feeds/author/'+self.username).read, false).items
+    #rescue
+    #  []
+    #end
+    []
   end
 
   private
