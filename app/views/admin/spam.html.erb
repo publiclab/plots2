@@ -12,16 +12,52 @@
 
   <h3>Moderate potential spam</h3>
 
+  <ul class="nav nav-tabs">
+    <li <% unless params[:type] %>class="active"<% end %>><a href="/spam">Filtered</a></li>
+    <li <% if params[:type] == "wiki" %>class="active"<% end %>><a href="/spam/wiki"><i class="icon icon-book"></i><span class="hidden-phone"> Wiki</span></a></li>
+  </ul>
+
+
+  <div class="btn-toolbar" style="margin:0;">
+    <div class="btn-group">
+      <a class="btn" id="batch-delete" href="javascript:void();"><i class="icon-ban-circle"></i> Spam all checked and ban authors</a>
+    </div>
+  </div>
+  <br />
+
   <table class="table">
-  <tr><th>Title</th><th>Author</th><th>Action</th></tr>
+  <tr><th><input id="batch-checkbox" type="checkbox" /></th><th>Title</th><th>Author</th><th>Action</th></tr>
+
+  <script>
+    (function(){
+      $('input[type=checkbox]#batch-checkbox').bind('click',function(e) {
+        if ($('#batch-checkbox')[0].checked) $('.batch-checkbox').attr('checked','checked')
+        else $('.batch-checkbox').attr('checked',false)
+      })
+      $('#batch-delete').bind('click',function(e) {
+        vals = []
+        $('.batch-checkbox').each(function(i,a) { if (a.checked) vals.push(a.value) })
+        window.location = "/spam/batch/"+vals.join(',')
+      })
+    })()
+  </script>
+
   <% @nodes.each do |node| %>
   <tr id="n<%= node.id %>">
-    <td><i class="icon-file"></i> <a href="javascript:void(0);" onClick="$('#ninfo<%= node.nid %>').toggle()"><%= node.title.truncate(40) %></a></td>
-    <td><a href="/profile/<%= node.author.name %>"><%= node.author.name %></a></td>
+    <td><input class="batch-checkbox" value="<%= node.nid %>" type="checkbox" /></td>
+    <td>
+      <i class="icon-file"></i> <a href="javascript:void(0);" onClick="$('#ninfo<%= node.nid %>').toggle()"><%= node.title.truncate(40) %></a><br />
+      <span style="color:grey;"><%= node.type.capitalize %> | <%= time_ago_in_words(node.updated_at) %> ago</span>
+    </td>
+    <td style="width:200px;">
+      <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
+    </td>
     <td><div class="btn-toolbar" style="margin:0;">
       <div class="btn-group">
-        <a class="btn btn-large btn-success publish" data-remote="true" href="/moderate/publish/<%= node.id %>"><i class="icon-ok-circle icon-white"></i> Publish</a>
-        <a class="btn btn-large disabled" href="javascript:void(0)"><i class="icon-circle-ban"></i> Ban</a>
+        <a class="btn btn-large <% if node.status == 0 %>btn-success<% else %>disabled<% end %> publish" data-remote="true" href="/moderate/publish/<%= node.id %>"><i class="icon-ok-circle icon-white"></i> Publish</a>
+        
+        <a class="btn btn-large ban a<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban</a>
+        <a class="btn btn-large unban a-unban<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban</a>
         <%= link_to "/notes/delete/"+node.id.to_s, :confirm => 'Are you sure?', :remote => true, :class => "btn btn-large delete" do %>
           <i class="icon-trash"></i>
         <% end %>
@@ -33,6 +69,16 @@
         $('#n<%= node.id %> .publish').bind('ajax:success', function(e){
           $('#n<%= node.id %>').hide()
           $('#ndel<%= node.id %>').fadeIn()
+        });
+
+        // authors:
+        $('.a<%= node.author.id %>.ban').bind('ajax:success', function(e){
+          $('.a<%= node.author.id %>').hide()
+          $('.a-unban<%= node.author.id %>').show()
+        });
+        $('.a-unban<%= node.author.id %>.unban').bind('ajax:success', function(e){
+          $('.a-unban<%= node.author.id %>').hide()
+          $('.a<%= node.author.id %>').show()
         });
       </script>
     </div></td>

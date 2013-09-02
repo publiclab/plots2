@@ -40,7 +40,11 @@ class AdminController < ApplicationController
 
   def spam
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 0}, :page => params[:page])
+      if params[:type] == "wiki"
+        @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => "page", :status => 1}, :page => params[:page])
+      else 
+        @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:status => 0}, :page => params[:page])
+      end
     else
       flash[:error] = "Only moderators can moderate posts."
       redirect_to "/dashboard"
@@ -130,6 +134,28 @@ class AdminController < ApplicationController
       @users = DrupalUsers.find :all, :order => "uid DESC", :limit => 200
     else
       flash[:error] = "Only moderators can moderate other users."
+      redirect_to "/dashboard"
+    end
+  end
+
+  def batch
+    if current_user && (current_user.role == "admin")
+      nodes = 0
+      users = []
+      params[:ids].split(',').uniq.each do |nid|
+        node = DrupalNode.find nid
+        node.status = 0
+        node.save
+        nodes += 1
+        user = node.author
+        user.status = 0
+        user.save({})
+        users << user.id
+      end
+      flash[:notice] = nodes.to_s+" nodes spammed and "+users.length.to_s+" users banned."
+      redirect_to "/spam/wiki"
+    else
+      flash[:error] = "Only admins can batch moderate."
       redirect_to "/dashboard"
     end
   end

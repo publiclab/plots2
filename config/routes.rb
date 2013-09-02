@@ -127,6 +127,8 @@ Plots2::Application.routes.draw do
   match 'rss.xml' => 'legacy#rss'
 
   match 'spam' => 'admin#spam'
+  match 'spam/:type' => 'admin#spam'
+  match 'spam/batch/:ids' => 'admin#batch'
   match 'admin/users' => 'admin#users'
   match 'ban/:id' => 'admin#ban'
   match 'unban/:id' => 'admin#unban'
