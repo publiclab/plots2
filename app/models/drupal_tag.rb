@@ -23,7 +23,7 @@ class DrupalTag < ActiveRecord::Base
   end
 
   validates :name, :presence => :true
-  validates :name, :format => {:with => /^[\w:-]*$/, :message => "can only include letters, numbers, and dashes"}
+  validates :name, :format => {:with => /^[\w\.:-]*$/, :message => "can only include letters, numbers, and dashes"}
 
   def id
     self.tid

@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   #has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
   has_many :images, :foreign_key => :uid
   validates_with UniqueUsernameValidator, :on => :create
+  validates_format_of :username, :with => /^[A-Za-z\d_]+$/
 
   before_create :create_drupal_user
   after_destroy :destroy_drupal_user
@@ -98,8 +99,12 @@ class User < ActiveRecord::Base
 
   def mapknitter_maps
     # http://mapknitter.org/feeds/author/hagitkeysar
-    
-    RSS::Parser.parse(open('http://mapknitter.org/feeds/author/'+self.username).read, false).items
+    #begin
+    #  RSS::Parser.parse(open('http://mapknitter.org/feeds/author/'+self.username).read, false).items
+    #rescue
+    #  []
+    #end
+    []
   end
 
   def add_to_lists(lists)

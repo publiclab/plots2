@@ -8,4 +8,10 @@ class CommentMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "New comment on '"+comment.node.title+"'")
   end
 
+  def notify_note_author(user,comment)
+    @user = user
+    @comment = comment
+    mail(:to => user.email, :subject => "New comment on '"+comment.node.title+"'")
+  end
+
 end

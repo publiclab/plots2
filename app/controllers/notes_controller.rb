@@ -16,7 +16,12 @@ class NotesController < ApplicationController
 
   def places
     @title = "Places"
-    @notes = DrupalNode.paginate(:conditions => {:status => 1, :type => 'place'}, :order => "node_counter.totalcount DESC", :include => :drupal_node_counter, :page => params[:page])
+    # currently re-using the notes grid template, so we use the "@notes" instance variable:
+    tids = DrupalTag.find(:all, :conditions => {:name => 'chapter'}).collect(&:tid)
+    nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
+    nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
+    @notes = DrupalNode.find :all, :conditions => ["node.nid in (?) AND (node.type = 'place' OR node.type = 'page')",nids.uniq], :order => "node_counter.totalcount DESC", :include => :drupal_node_counter
+    @unpaginated = true
     render :template => "notes/tools_places"
   end
 
@@ -63,15 +68,11 @@ class NotesController < ApplicationController
         SubscriptionMailer.notify_node_creation(@node)
         # opportunity for moderation
         flash[:notice] = "Research note published."
+        flash[:notice] = "Research note published. Get the word out on <a href='/wiki/mailing-lists'>the discussion lists</a>."
         redirect_to @node.path
       else
         render :template => "editor/post"
       end
-      # trigger subscription notifications:
-      SubscriptionMailer.notify_node_creation(@node)
-      # opportunity for moderation
-      flash[:notice] = "Research note published. Get the word out on <a href='/wiki/mailing-lists'>the discussion lists</a>."
-      redirect_to @node.path
     else
       flash.keep[:error] = "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
       redirect_to "/logout"

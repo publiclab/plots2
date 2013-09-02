@@ -142,13 +142,13 @@
                   <i class="icon-user icon-white"></i>
                    Log in<b class="caret"></b>
                 </a> 
-                <ul class="dropdown-menu" style="width:240px;">
+                <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
                   <li style="padding:6px;">
                     <%= form_for @user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
          
                       <p><b>Log in</b></p>
          
-                      <p><%= f.text_field :username, {:placeholder => "username", :tabindex => 1} %></p>
+                      <p><%= f.text_field :username, {:placeholder => "username", :tabindex => 1, :id => "login-username-input"} %></p>
                       <p><%= f.password_field :password, {:placeholder => "password", :tabindex => 2} %></p>
                       <input type="hidden" name="return_to" value="<%= params[:return_to] || request.path %>" />
          
@@ -185,28 +185,21 @@
       <div class="header-spacer hidden-phone"></div>
 
         <%# unless current_user || params[:controller] == "user_sessions" || params[:controller] == "home" && params[:action] == "front" %>
-          <div class="well visible-desktop hidden-print" style="padding:12px 20px 10px;">
-            <div id="donate" style="display:none;">
+          <div id="donate">
+            <div class="well visible-desktop hidden-print" style="padding:12px 20px 10px;">
               <h4 style="display:inline;">Did you know that Public Lab is an open community supported by a nonprofit?</h4> 
               <a href="/donate" style="margin-left:10px;" class="btn btn-primary hidden-phone">Donate &raquo;</a>
             </div>
-            <div id="legacy">
-              <h4 style="display:inline;">This is the <a href="/wiki/plots2">new Public Lab website</a>! If you're having trouble, try the legacy site: </h4> 
-              <a href="http://old.publiclab.org" style="margin-left:10px;" class="btn btn-primary hidden-phone">old.publiclab.org</a>
+            <div class="visible-phone hidden-print" style="height:4.5em;">
+              <a href="/donate" style="margin-bottom:6px;" class="btn btn-success btn-large btn-block">Donate to <span class="hidden-tiny">the</span> Public Lab <span class="hidden-tiny">non-profit</span> &raquo;</a>
             </div>
-          </div>
-          <div class="visible-phone hidden-print" style="height:4.5em;">
-            <a href="/donate" style="margin-bottom:6px;" class="btn btn-success btn-large btn-block">Donate to <span class="hidden-tiny">the</span> Public Lab <span class="hidden-tiny">non-profit</span> &raquo;</a>
           </div>
 
           <script>
             (function(){
-              setTimeout(function(){
-                $('#legacy').fadeOut()
-              },3500)
-              setTimeout(function(){
-                $('#donate').fadeIn()
-              },4000)
+              //setTimeout(function(){
+               // $('#donate').fadeOut()
+              //},3500)
             })()
           </script>
         <%# end %>
@@ -267,6 +260,10 @@
         $('table').addClass('table')
         $('iframe').css('border','none')
         $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {return " <small><a href='#"+this.innerHTML.replace(/ /g,'+')+"'><i class='icon icon-link'></i></a></small>"})
+        login = function() {
+          $('#login-dropdown').toggle()
+          $('#login-username-input').focus()
+        }
       })()
     </script>
     <script type="text/javascript">

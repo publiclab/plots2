@@ -4,7 +4,7 @@
  
       <div class="hidden-phone" style="padding-top:2px;">
  
-        <% if current_user && current_user.username == "warren" && comment.uid == current_user.uid %>
+        <% if current_user && comment.uid == current_user.uid %>
           <a style="margin-left:4px;" class="btn btn-small pull-right" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()">
             <i class="icon-pencil"></i>
           </a><% end %>

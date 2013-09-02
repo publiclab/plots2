@@ -1,0 +1,19 @@
+Hi! There's been a response to your research note "<a href="<%= @comment.parent.path %>"><%= @comment.parent.title %></a>". Do NOT reply to this email; click this link to respond:
+
+<p>http://publiclab.org<%= @comment.node.path %>#c<%= @comment.cid %></p>
+
+<p><b><a href="http://publiclab.org/profile/<%= @comment.author.name %>"><%= @comment.author.name %> wrote:</b></p>
+
+<hr /> 
+
+<p><%= raw auto_link(RDiscount.new(@comment.comment).to_html) %></p>
+
+<hr />
+
+<div style="color:#aaa;">
+
+<p>Reply at: http://publiclab.org<%= @comment.node.path %>#c<%= @comment.cid %></p>
+
+<p>Report abuse to: web@publiclab.org</p>
+
+</div>

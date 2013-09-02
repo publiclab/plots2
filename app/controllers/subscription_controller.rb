@@ -31,32 +31,37 @@ class SubscriptionController < ApplicationController
 
   # for the current user, register as liking the given tag
   def add
-    # assume tag, for now
-    if params[:type] == "tag"
-      id = DrupalTag.find_by_name(params[:name]).tid
-    end
-    # test for uniqueness, handle it as a validation error if you like
-    if id.nil?
-      flash[:error] = "The tag '#{params[:name]}' does not exist; there must be content tagged with it first."
-      redirect_to "/subscriptions"
-    elsif TagSelection.find(:all, :conditions => {:user_id => current_user.uid, :tid => id}).length > 0
-      flash[:error] = "You are already subscribed to '#{params[:name]}'"
-      redirect_to "/subscriptions"
-    else
-      if set_following(true,params[:type],id)
-        respond_with do |format|
-          format.html do
-            if request.xhr?
-              render :json => true
-            else
-              flash[:notice] = "You are now following '#{params[:name]}'."
-              redirect_to "/subscriptions"
+    if current_user
+      # assume tag, for now
+      if params[:type] == "tag"
+        id = DrupalTag.find_by_name(params[:name]).tid
+      end
+      # test for uniqueness, handle it as a validation error if you like
+      if id.nil?
+        flash[:error] = "The tag '#{params[:name]}' does not exist; there must be content tagged with it first."
+        redirect_to "/subscriptions"
+      elsif TagSelection.find(:all, :conditions => {:user_id => current_user.uid, :tid => id}).length > 0
+        flash[:error] = "You are already subscribed to '#{params[:name]}'"
+        redirect_to "/subscriptions"
+      else
+        if set_following(true,params[:type],id)
+          respond_with do |format|
+            format.html do
+              if request.xhr?
+                render :json => true
+              else
+                flash[:notice] = "You are now following '#{params[:name]}'."
+                redirect_to "/subscriptions"
+              end
             end
           end
+        else
+          flash[:error] = "Something went wrong!" # silly 
         end
-      else
-        flash[:error] = "Something went wrong!" # silly 
       end
+    else
+      flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
+      redirect_to "/tag/"+params[:name]
     end
   end
 

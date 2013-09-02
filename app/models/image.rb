@@ -31,11 +31,11 @@ class Image < ActiveRecord::Base
     else
       size = :original
     end
-    if Rails.env == "production"
-      self.photo.url(size).gsub('http://i.publiclab.org','')
-    else
-      self.photo.url(size)
-    end
+    #if Rails.env == "production"
+    #  self.photo.url(size).gsub('http://i.publiclab.org','')
+    #else
+    'http://i.publiclab.org'+self.photo.url(size)
+    #end
   end
 
   def filename
