@@ -4,7 +4,7 @@
   <% if @user.note_count == 0 && (-1 * (@user.created_at - DateTime.now) < 3600*48) # created in last 48 hours %>
     <div class="alert hidden-phone">
       <button type="button" class="close" data-dismiss="alert">×</button>
-      <strong>Welcome!</strong> Need help, want to float an idea, or find collaborators? <a href="/wiki/mailing-lists">Join one of the Public Lab mailing lists &raquo;</a> 
+      <strong>Welcome!</strong> Need help, want to float an idea, or find collaborators? <a href="/wiki/mailing-lists">Join a topical or local Public Lab mailing list &raquo;</a> 
     </div>
   <% elsif @user.note_count == 0 %>
     <div class="alert hidden-phone">
