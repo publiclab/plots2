@@ -37,7 +37,7 @@ $E = {
     }
     var replace = a + sel + b;
     if (args && args['newline']) {
-      if ($E.textarea[0].selectionStart > 0) replace = "\n\n"+replace
+      if ($E.textarea[0].selectionStart > 0) replace = "\n"+replace
       replace = replace+"\n\n"
     }
     $E.textarea.val($E.textarea.val().substring(0,start) + replace + $E.textarea.val().substring(end,len));

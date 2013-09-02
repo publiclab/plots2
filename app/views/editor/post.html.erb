@@ -72,11 +72,40 @@
 
     <%= render :partial => 'editor/editor' %>
 
+    <div class="control-group">
     <div class="input-prepend">
       <span class="add-on"><i class="icon-tags"></i></span>
-      <input id="tags" tabindex="4" name="tags" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
+      <input name="remote" type="hidden" value="true" />
+  
+      <input autocomplete="off" id="taginput" name="name" type="text" placeholder="balloon-mapping,gulf-coast" data-provide="typeahead" />
+      <script>
+        jQuery(document).ready(function() {
+  
+          $('#taginput').typeahead({
+            source: function (typeahead, input) {
+              query = input.split(',')[input.split(',').length-1]
+              if (query.length > 2) {
+                return $.post('/tag/suggested/'+query, {}, function (data) {
+                  return typeahead.process(data)
+                })
+              }
+            },
+            menu: '<ul id="tagtypeahead" class="typeahead dropdown-menu"></ul>',
+            autoselect: false,
+            matcher: function() { return true; },
+            onselect: function(text,original_text) { 
+              original_text = original_text.split(',')
+              original_text.pop()
+              original_text = original_text.join(',')
+              if (original_text == '') $('#taginput').val(text)
+              else $('#taginput').val(original_text+','+text)
+            }
+          });
+  
+        });
+      </script>
     </div>
-    <br />
+    </div>
 
     <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
 
@@ -108,3 +137,4 @@
     if ($E.textarea.val() == "") $E.apply_template("<%= params[:template] || 'default'%>")
   })()
 </script>
+

@@ -102,6 +102,12 @@ class User < ActiveRecord::Base
     RSS::Parser.parse(open('http://mapknitter.org/feeds/author/'+self.username).read, false).items
   end
 
+  def add_to_lists(lists)
+    lists.each do |list|
+      WelcomeMailer.add_to_list(self,list).deliver
+    end
+  end
+
   private
 
   def map_openid_registration(registration)

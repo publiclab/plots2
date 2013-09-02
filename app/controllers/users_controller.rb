@@ -17,7 +17,8 @@ class UsersController < ApplicationController
             flash[:warning] = "Your account has been migrated from the old PublicLaboratory.org website; please create a password for the new site."
             redirect_to "/profile/edit"
           else
-            flash[:notice] = "Registration successful."
+            @user.add_to_lists(['publiclaboratory','grassrootsmapping']
+            flash[:notice] = "Registration successful. You've been added to the <b>publiclaboratory</b> mailing list. <a href='/wiki/mailing-lists'>Sign up for regional and topical discussion lists here &raquo;</a>"
             flash[:warning] = "<i class='icon icon-exclamation-sign'></i> If you registered in order to use <b>SpectralWorkbench.org</b> or <b>MapKnitter.org</b>, <a href='#{session[:openid_return_to]}'>click here to continue &raquo;</a>" if session[:openid_return_to]
             session[:openid_return_to] = nil 
             redirect_to "/dashboard"

@@ -53,7 +53,9 @@ $('#dropzone').fileupload({
     if (data.result['filename'].substr(-3,3) == "PNG") is_image = true
     if (data.result['filename'].substr(-3,3) == "GIF") is_image = true
     if (is_image) {
-      $E.wrap('![',']('+data.result.url.split('?')[0]+')', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
+      image_url = data.result.url.split('?')[0]
+      orig_image_url = image_url.replace('medium','original') // not really portable, should parse response and look for "original_filename" or something
+      $E.wrap('[![',']('+image_url+')]('+orig_image_url+')', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
     } else {
       $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="icon icon-file"></i> ','</a>', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
     }
