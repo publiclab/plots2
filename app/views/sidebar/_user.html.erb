@@ -11,7 +11,7 @@
   <h4>Recent wiki edits</h4>
   <ul class="nav wikis bullet">
     <% @wikis.each do |wiki| %>
-      <li><a href="<%= wiki.path %>"><i class="icon-book"></i> <%= wiki.title %></a> <small style="color:#888;">(updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %>)</small></li>
+      <li><a href="<%= wiki.path %>"><i class="icon-book"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
     <% end %>
   </ul>
   <% end %>
