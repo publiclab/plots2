@@ -263,7 +263,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def has_tag(tag)
-    DrupalNodeTag.find(:all,:conditions => ['tid IN (?)',DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
+    DrupalNodeTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0 || DrupalNodeCommunityTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
   end
 
   # has it been tagged with "list:foo" where "foo" is the name of a Google Group?
@@ -522,31 +522,33 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def add_tag(tagname,user)
-    saved = false
-    tag = DrupalTag.new({
-      :vid => 3, # vocabulary id; 1
-      :name => tagname,
-      :description => "",
-      :weight => 0
-    })
-    ActiveRecord::Base.transaction do
-      if tag.valid?
-        tag.save!
-        node_tag = DrupalNodeCommunityTag.new({
-          :tid => tag.id,
-          :uid => user.uid,
-          :date => DateTime.now.to_i,
-          :nid => self.id
-        })
-        if node_tag.save
-          saved = true
-        else
-          saved = false
-          tag.destroy
+    unless self.has_tag(tagname)
+      saved = false
+      tag = DrupalTag.new({
+        :vid => 3, # vocabulary id; 1
+        :name => tagname,
+        :description => "",
+        :weight => 0
+      })
+      ActiveRecord::Base.transaction do
+        if tag.valid?
+          tag.save!
+          node_tag = DrupalNodeCommunityTag.new({
+            :tid => tag.id,
+            :uid => user.uid,
+            :date => DateTime.now.to_i,
+            :nid => self.id
+          })
+          if node_tag.save
+            saved = true
+          else
+            saved = false
+            tag.destroy
+          end
         end
       end
+      return [saved,tag]
     end
-    return [saved,tag]
   end
 
 end

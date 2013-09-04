@@ -61,8 +61,10 @@ class NotesController < ApplicationController
         :main_image => params[:main_image]
       })
       if saved
-        params[:tags].split(',').each do |tagname|
-          @node.add_tag(tagname,current_user)
+        if params[:tags]
+          params[:tags].split(',').each do |tagname|
+            @node.add_tag(tagname,current_user)
+          end
         end
         # trigger subscription notifications:
         SubscriptionMailer.notify_node_creation(@node)
@@ -95,6 +97,11 @@ class NotesController < ApplicationController
       @revision = @node.latest
       @revision.title = params[:title]
       @revision.body = params[:body]
+      if params[:tags]
+        params[:tags].split(',').each do |tagname|
+          @node.add_tag(tagname,current_user)
+        end
+      end
       if @revision.valid?
         @revision.save
         @node.vid = @revision.vid
