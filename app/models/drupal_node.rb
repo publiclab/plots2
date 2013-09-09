@@ -189,7 +189,9 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def render_body
-    RDiscount.new(self.body, :generate_toc).to_html
+    body = self.body || ""
+    body = RDiscount.new(body, :generate_toc)
+    body.to_html
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations

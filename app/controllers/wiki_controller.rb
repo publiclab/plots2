@@ -19,6 +19,10 @@ class WikiController < ApplicationController
     end
 
     unless @title # the page exists
+      if @node.status == 0
+        flash[:warning] = "That page has been moderated as spam. Please contact web@publiclab.org if you believe there is a problem."
+        redirect_to "/wiki"
+      end
       @tagnames = @tags.collect(&:name)
       set_sidebar :tags, @tagnames, {:videos => true}
 

@@ -139,7 +139,7 @@ class AdminController < ApplicationController
   end
 
   def batch
-    if current_user && (current_user.role == "admin")
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
       nodes = 0
       users = []
       params[:ids].split(',').uniq.each do |nid|
