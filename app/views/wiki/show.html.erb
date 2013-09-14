@@ -54,8 +54,7 @@
       <% if @node.power_tags('tabbed').include?("notes") %>
         <div class="tab-pane" id="tab-notes" style="padding-left:12px;">
           <%= render :partial => "notes/notes" %>
-          <hr />
-          <p><a href="/research">Read more research notes &raquo;</a></p>
+          <p><a href="/tag/<%= @node.slug %>">More research on "<%= @node.slug %>" &raquo;</a></p>
           <br />
         </div>
       <% end %>
