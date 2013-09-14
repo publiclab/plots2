@@ -37,9 +37,42 @@
     </ul>
   </div>
 
-  <div style="overflow:hidden;max-width:800px;" id="content">
-  <%= raw auto_link(@node.render_body, :sanitize => false) %>
+  <% if @node.has_power_tag('tabbed') %>
+  <div class="navbar">
+    <div class="navbar-inner">
+      <ul class="nav">
+        <li class="active"><a data-toggle="tab" href="#tab-overview">Overview</a></li>
+        <% if @node.power_tags('tabbed').include?("notes") %><li><a data-toggle="tab" href="#tab-notes">Research</a></li><% end %>
+        <% if @node.power_tags('tabbed').include?("wikis") %><li><a data-toggle="tab" href="#tab-wikis">Wiki pages</a></li><% end %>
+      </ul>
+    </div>
   </div>
+  <% end %>
+
+  <div class="tab-content">
+    <% if @node.has_power_tag('tabbed') %>
+      <% if @node.power_tags('tabbed').include?("notes") %>
+        <div class="tab-pane" id="tab-notes" style="padding-left:12px;">
+          <%= render :partial => "notes/notes" %>
+          <hr />
+          <p><a href="/research">Read more research notes &raquo;</a></p>
+          <br />
+        </div>
+      <% end %>
+      <% if @node.power_tags('tabbed').include?("notes") %>
+        <div class="tab-pane" id="tab-wikis">
+          <%= render :partial => "wiki/wikis" %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <div class="tab-pane active" id="tab-overview">
+      <div style="overflow:hidden;max-width:800px;" id="content">
+      <%= raw auto_link(@node.render_body, :sanitize => false) %>
+      </div>
+    </div>
+
+  </div> 
 
   <hr />
 

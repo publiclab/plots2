@@ -16,25 +16,7 @@
     <p><span style="color:#aaa">By recency</span> | <a href="/wiki/popular/">By popularity</a> | <a href="/wiki/liked">By # of likes</a></p>
   <% end %>
 
-    <table class="table">
-      <tr>
-        <th>Title</th>
-        <th>Last edited</th>
-        <th>Edits</th>
-        <th>Pageviews</th>
-        <th><i class="icon icon-star-empty"></i> Likes</th>
-      </tr>
-      <% @wikis.each do |wiki| %>
-        <tr>
-          <td><i class="icon-file"></i> <a href="<%= wiki.path %>"><%= wiki.title %></a></td>
-          <td><%= time_ago_in_words(wiki.updated_at) %> ago by 
-          <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></td>
-          <td><%= wiki.revisions.length %></td>
-          <td><%= number_with_delimiter(wiki.totalcount) %>
-          <td><%= number_with_delimiter(wiki.cached_likes) %>
-        </tr>
-      <% end %>
-    </table>
+  <%= render :partial => "wiki/wikis" %>
 
   <hr />
   

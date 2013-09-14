@@ -25,10 +25,12 @@ class WikiController < ApplicationController
       end
       @tagnames = @tags.collect(&:name)
       set_sidebar :tags, @tagnames, {:videos => true}
+      @wikis = DrupalTag.find_pages(@node.slug,20) if @node.has_tag('chapter')
 
       @node.view
       @title = @node.title
     end
+    @unpaginated = true
   end
 
   def edit

@@ -229,6 +229,7 @@ class DrupalNode < ActiveRecord::Base
 
   # base this on a tag!
   def is_place?
+    # self.has_tag('chapter')
     self.slug[0..5] == 'place/'
   end
 
