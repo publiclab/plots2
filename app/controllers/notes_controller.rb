@@ -45,7 +45,7 @@ class NotesController < ApplicationController
     end
  
     @node.view
-    @title = @node.title
+    @title = @node.latest.title
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)
 

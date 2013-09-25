@@ -28,7 +28,7 @@ class WikiController < ApplicationController
       @wikis = DrupalTag.find_pages(@node.slug,20) if @node.has_tag('chapter')
 
       @node.view
-      @title = @node.title
+      @title = @node.latest.title
     end
     @unpaginated = true
   end
