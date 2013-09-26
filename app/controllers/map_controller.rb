@@ -34,6 +34,12 @@ class MapController < ApplicationController
       @revision.title = params[:title]
       @revision.body = params[:body]
 
+      if params[:tags]
+        params[:tags].split(',').each do |tagname|
+          @node.add_tag(tagname,current_user)
+        end
+      end
+
       # save main image
       if params[:main_image] && params[:main_image] != ""
         img = Image.find params[:main_image]
@@ -63,6 +69,10 @@ class MapController < ApplicationController
       map.field_raw_images_filesize_value = params[:map][:field_raw_images_filesize_value]
       map.field_tms_tile_type_value       = params[:map][:field_tms_tile_type_value]
       map.field_zoom_max_value            = params[:map][:field_zoom_max_value]
+
+      # need to create/delete these. Maybe best just make a new field, no need to store individual records
+      #@node.drupal_content_field_map_editor
+      #@node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ')
 
       if @node.save && @revision.save && map.save
         flash[:notice] = "Edits saved."

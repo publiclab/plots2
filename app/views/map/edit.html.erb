@@ -31,6 +31,9 @@
 
     <h4>Map metadata</h4>
 
+    <label>Mapped by    </label><input id="map_field_publication_date_value"    tabindex="5"  name="map[field_publication_date_value]"    type="text" class="span9" placeholder="publication_date"     value="<%= @node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ') %>" disabled /><br />
+    <label>Cartographer </label><input id="map_field_capture_date_value"        tabindex="6"  name="map[field_capture_date_value]"        type="text" class="span9" placeholder="Capture Date"         value="<%= @node.drupal_content_field_map_editor.collect(&:field_map_editor_value).uniq.join(', ') %>" disabled /><br />
+
     <label>Field notes               </label><textarea id="map_field_notes_value"               tabindex="3" name="map[field_notes_value]"               type="text" class="span9" placeholder="A brief report from the field"><%= @node.map.notes if @node %></textarea><br />
     <label>Cartographer notes  </label><textarea id="map_field_cartographer_notes_value"  tabindex="4" name="map[field_cartographer_notes_value]"  type="text" class="span9" placeholder="Comments on the production of the map"><%= @node.map.cartographer_notes if @node %></textarea><br />
 
@@ -98,8 +101,7 @@
 
     <p>
       <a id="publish" tabindex="23" class="btn btn-primary btn-large">Publish</a>
-      <a id="preview-btn" tabindex="24" data-previewing-text="Previewing (click to edit)" class="btn btn-large hidden-phone" onClick="$E.toggle_preview()">Preview</a></p>
-      <a id="preview-btn" data-previewing-text="Edit" class="btn btn-large visible-phone" onClick="$E.toggle_preview()">Preview</a></p>
+    </p>
     <p>By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
   <% end %>
 </div>
