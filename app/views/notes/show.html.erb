@@ -5,7 +5,7 @@
     <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img class="img-rounded" src="<%= @node.main_image.path(:large) %>" /></a>
   <% end %>
 
-  <div class="hidden-print">
+  <div style="margin-top:10px;" class="hidden-print">
   <%= render :partial => "like/like" %>
   <% if current_user && (current_user.uid == @node.uid || current_user.role == "moderator" || current_user.role == "admin") %>
     <div style="padding:0 8px 8px;" class="btn-group pull-right">
