@@ -83,7 +83,7 @@ class NotesController < ApplicationController
 
   def edit
     @node = DrupalNode.find(params[:id],:conditions => {:type => "note"})
-    if current_user.uid == @node.uid || current_user.username == "warren" # || current_user.role == "admin" 
+    if current_user.uid == @node.uid || current_user.role == "admin" 
       render :template => "editor/post"
     else
       prompt_login "Only the author can edit a research note."

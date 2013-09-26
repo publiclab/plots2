@@ -1,0 +1,134 @@
+<div class="span3">
+
+  <h4>Use good metadata!</h4>
+  <p>Remember to tag maps with useful terms like "ndvi", "gulf-coast", etc.</p>
+
+</div>
+
+<div class="span9">
+  <% 
+  if @node && params[:action] != "create"
+    url = { :controller => "map", :action => "update", :id => params[:id] }
+  else 
+    url = { :controller => "map", :action => "create", :id => params[:id] }
+  end 
+  %>
+
+  <%= form_for @node, :as => :drupal_node, :url => url, :html => {:class => "form well"} do |f| %>
+
+    <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
+
+    <%= render :partial => "editor/main_image" %>
+
+    <h3 style="margin-top:0;">Publish a map to the Archive</h3>
+
+    <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title" value="<%= @node.title if @node %>"><br />
+    <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
+    <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
+    <input id="node_images" type="hidden" name="node_images" value="" />
+
+    <textarea name="body" tabindex="2" class="span9" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+
+    <h4>Map metadata</h4>
+
+    <label>publication_date    </label><input id="map_field_publication_date_value"    tabindex="3"  name="map[field_publication_date_value]"    type="text" class="span9" placeholder="field_publication_date_value"     value="<%= @node.map.field_publication_date_value if @node %>"><br />
+    <label>capture_date        </label><input id="map_field_capture_date_value"        tabindex="4"  name="map[field_capture_date_value]"        type="text" class="span9" placeholder="field_capture_date_value"         value="<%= @node.map.field_capture_date_value if @node %>"><br />
+    <label>geotiff_url         </label><input id="map_field_geotiff_url_value"         tabindex="5"  name="map[field_geotiff_url_value]"         type="text" class="span9" placeholder="field_geotiff_url_value"          value="<%= @node.map.field_geotiff_url_value if @node %>"><br />
+    <label>google_maps_url     </label><input id="map_field_google_maps_url_value"     tabindex="6"  name="map[field_google_maps_url_value]"     type="text" class="span9" placeholder="field_google_maps_url_value"      value="<%= @node.map.field_google_maps_url_value if @node %>"><br />
+    <label>openlayers_url      </label><input id="map_field_openlayers_url_value"      tabindex="7"  name="map[field_openlayers_url_value]"      type="text" class="span9" placeholder="field_openlayers_url_value"       value="<%= @node.map.field_openlayers_url_value if @node %>"><br />
+    <label>tms_url             </label><input id="map_field_tms_url_value"             tabindex="8"  name="map[field_tms_url_value]"             type="text" class="span9" placeholder="field_tms_url_value"              value="<%= @node.map.field_tms_url_value if @node %>"><br />
+    <label>jpg_url             </label><input id="map_field_jpg_url_value"             tabindex="9"  name="map[field_jpg_url_value]"             type="text" class="span9" placeholder="field_jpg_url_value"              value="<%= @node.map.field_jpg_url_value if @node %>"><br />
+    <label>license             </label><input id="map_field_license_value"             tabindex="10" name="map[field_license_value]"             type="text" class="span9" placeholder="field_license_value"              value="<%= @node.map.field_license_value if @node %>"><br />
+    <label>raw_images          </label><input id="map_field_raw_images_value"          tabindex="11" name="map[field_raw_images_value]"          type="text" class="span9" placeholder="field_raw_images_value"           value="<%= @node.map.field_raw_images_value if @node %>"><br />
+
+    <label>cartographer_notes  </label><textarea id="map_field_cartographer_notes_value"  tabindex="12" name="map[field_cartographer_notes_value]"  type="text" class="span9" placeholder="field_cartographer_notes_value"><%= @node.map.cartographer_notes if @node %></textarea><br />
+    <label>field_notes               </label><textarea id="map_field_notes_value"               tabindex="13" name="map[field_notes_value]"               type="text" class="span9" placeholder="field_notes_value"><%= @node.map.field_notes_value if @node %></textarea><br />
+
+    <label>mbtiles_url         </label><input id="map_field_mbtiles_url_value"         tabindex="14" name="map[field_mbtiles_url_value]"         type="text" class="span9" placeholder="field_mbtiles_url_value"          value="<%= @node.map.field_mbtiles_url_value if @node %>"><br />
+    <label>zoom_min            </label><input id="map_field_zoom_min_value"            tabindex="15" name="map[field_zoom_min_value]"            type="text" class="span9" placeholder="field_zoom_min_value"             value="<%= @node.map.field_zoom_min_value if @node %>"><br />
+    <label>ground_resolution   </label><input id="map_field_ground_resolution_value"   tabindex="16" name="map[field_ground_resolution_value]"   type="text" class="span9" placeholder="field_ground_resolution_value"    value="<%= @node.map.field_ground_resolution_value if @node %>"><br />
+    <label>geotiff_filesize    </label><input id="map_field_geotiff_filesize_value"    tabindex="17" name="map[field_geotiff_filesize_value]"    type="text" class="span9" placeholder="field_geotiff_filesize_value"     value="<%= @node.map.field_geotiff_filesize_value if @node %>"><br />
+    <label>jpg_filesize        </label><input id="map_field_jpg_filesize_value"        tabindex="18" name="map[field_jpg_filesize_value]"        type="text" class="span9" placeholder="field_jpg_filesize_value"         value="<%= @node.map.field_jpg_filesize_value if @node %>"><br />
+    <label>raw_images_filesize </label><input id="map_field_raw_images_filesize_value" tabindex="19" name="map[field_raw_images_filesize_value]" type="text" class="span9" placeholder="field_raw_images_filesize_value"  value="<%= @node.map.field_raw_images_filesize_value if @node %>"><br />
+    <label>tms_tile_type       </label><input id="map_field_tms_tile_type_value"       tabindex="20" name="map[field_tms_tile_type_value]"       type="text" class="span9" placeholder="field_tms_tile_type_value"        value="<%= @node.map.field_tms_tile_type_value if @node %>"><br />
+    <label>zoom_max            </label><input id="map_field_zoom_max_value"            tabindex="21" name="map[field_zoom_max_value]"            type="text" class="span9" placeholder="field_zoom_max_value"             value="<%= @node.map.field_zoom_max_value if @node %>"><br />
+
+    <div class="control-group">
+    <div class="input-prepend">
+      <span class="add-on"><i class="icon-tags"></i></span>
+      <input name="remote" type="hidden" value="true" />
+  
+      <input autocomplete="off" id="taginput" tabindex="22" name="tags" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
+      <script>
+        jQuery(document).ready(function() {
+  
+          $('#taginput').typeahead({
+            source: function (typeahead, input) {
+              query = input.split(',')[input.split(',').length-1]
+              if (query.length > 2) {
+                return $.post('/tag/suggested/'+query, {}, function (data) {
+                  return typeahead.process(data)
+                })
+              }
+            },
+            menu: '<ul id="tagtypeahead" class="typeahead dropdown-menu"></ul>',
+            autoselect: false,
+            matcher: function() { return true; },
+            onselect: function(text,original_text) { 
+              original_text = original_text.split(',')
+              original_text.pop()
+              original_text = original_text.join(',')
+              if (original_text == '') $('#taginput').val(text)
+              else $('#taginput').val(original_text+','+text)
+            }
+          });
+  
+        });
+      </script>
+    </div>
+    </div>
+
+    <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
+
+    <p>
+      <a id="publish" tabindex="23" class="btn btn-primary btn-large">Publish</a>
+      <a id="preview-btn" tabindex="24" data-previewing-text="Previewing (click to edit)" class="btn btn-large hidden-phone" onClick="$E.toggle_preview()">Preview</a></p>
+      <a id="preview-btn" data-previewing-text="Edit" class="btn btn-large visible-phone" onClick="$E.toggle_preview()">Preview</a></p>
+    <p>By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+  <% end %>
+</div>
+
+<script>
+  $D = {
+    uid: <%= current_user.uid %>,
+    type: 'note'
+  }
+</script>
+
+<script>
+  (function(){
+    $('#side-fileinput').bind('focus',function(e) { $('#side-dropzone').css('border-color','#4ac') })
+    $('#side-fileinput').bind('focusout',function(e) { $('#side-dropzone').css('border-color','#ccc') })
+    var warn_image = false;
+    publish = function(e) {
+      if ($('#main_image').val() == "" && $('#has_main_image').val() != "true" && !warn_image) {
+        // prompt to choose a lead image
+        warn_image = true;
+        $('.side-dropzone').css('border-color','#d99')
+        $('.side-dropzone').css('background','#fcc')
+        alert_notice('Click <b>Publish</b> again to publish without a main image, but it is recommended that you add one.', {'scroll': true})
+      } else {
+        $('#edit_drupal_node').submit()
+      }
+    }
+    $("#publish").bind("click",publish)
+    $("#publish").bind("keydown",function(e) {
+      if (e.which == 32 || e.which == 13) publish()
+    })
+  })()
+</script>
+<link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
+<script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
+<script src="/assets/js/dragdrop.js?5"></script>

@@ -8,6 +8,15 @@
 <div class="span9">
 
   <%= render :partial => "like/like" %>
+  <% if current_user && (current_user.uid == @node.uid || current_user.role == "admin") %>
+    <div style="padding:0 8px 8px;" class="btn-group pull-right">
+      <a class="btn btn-small" href="/map/edit/<%= @node.id %>"><i class="icon icon-pencil"></i> Edit</a>
+      <%= link_to "/map/delete/"+@node.id.to_s, :confirm => 'Are you sure?', :class => "btn btn-small" do %>
+        <i class="icon icon-trash"></i> Delete
+      <% end %>
+    </div> 
+  <% end %>
+
   <h2 style="clear:left;"><%= @node.title %></h2>
 
   <div class="pull-right"><%= render :partial => "home/social" %></div>

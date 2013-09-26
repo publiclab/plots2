@@ -91,7 +91,6 @@ Plots2::Application.routes.draw do
   match 'subscribe/:type/:name' => 'subscription#add'
   match 'subscriptions' => 'subscription#index'
 
-  match 'map' => 'search#map'
   match 'search' => 'search#advanced'
   match 'search/advanced' => 'search#advanced'
   match 'search/advanced/:id' => 'search#advanced'
@@ -99,7 +98,6 @@ Plots2::Application.routes.draw do
   match 'search/typeahead/:id' => 'search#typeahead'
 
   match 'tag/:id' => 'tag#show'
-  match 'maps/:id' => 'map#tag'
   match 'blog' => 'tag#blog', :id => "blog"
   match 'blog/:id' => 'tag#blog'
   match 'contributors/:id' => 'tag#contributors'
@@ -120,6 +118,10 @@ Plots2::Application.routes.draw do
   match 'feed/:author' => 'users#rss'
 
   match 'maps' => 'map#index'
+  match 'map' => 'search#map'
+  match 'maps/:id' => 'map#tag'
+  match 'map/edit/:id' => 'map#edit'
+  match 'map/update/:id' => 'map#update'
   match 'map/:name/:date' => 'map#show'
   match 'archive' => 'map#index'
   match 'stats' => 'notes#stats'
