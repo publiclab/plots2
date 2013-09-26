@@ -14,7 +14,7 @@
   <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Wiki pages</b> are web pages that anyone can create or edit -- we use them to collect information, documentation, and instructions on projects.</p>
   <p><b>Wiki pages can be:</b></p>
   <ul>
-    <li>a tutorial on how to make something</li>
+    <li>a <a href="/tag/tutorial">tutorial</a> on how to make something</li>
     <li>documentation of a project</li>
     <li>an event planning page</li>
     <li>a place to collect lists of research notes</li>
@@ -33,13 +33,11 @@
 
 <div class="span9">
 
-  <% 
-  if @node && params[:action] != "create"
+  <% if @node && params[:action] != "create"
     url = { :controller => "wiki", :action => "update", :id => @node.slug }
   else 
     url = { :controller => "wiki", :action => "create", :id => params[:id] }
-   end 
-  %>
+   end %>
 
   <%= form_for @node, :as => :drupal_node, :url => url do |f| %>
     <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
@@ -48,6 +46,8 @@
   <%= form_for @revision, :as => :drupal_node_revision, :url => url, :html => {:class => "form well"} do |f| %>
 
     <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
+  
+    <%= render :partial => "editor/main_image" %>
 
     <% if @node && @node.latest && @node.latest.title %>
       <h3 style="margin-top:0;">Editing page: <i><%= @node.latest.title %></i></h3>
@@ -55,6 +55,8 @@
       <h3 style="margin-top:0;">Create page: <i><%=h params[:id] %></i></h3>
     <% end %>
 
+    <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
+    <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
     <input id="images_input" type="hidden" name="images" value="" />
 
     <% if @node && @node.latest %>

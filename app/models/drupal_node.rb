@@ -201,7 +201,7 @@ class DrupalNode < ActiveRecord::Base
 
   # provide either a Drupally main_iamge or a Railsy one 
   def main_image(node_type = :all)
-    if self.type == "place" || self.type == "tool" # special handling... oddly needed:
+    if (self.type == "place" || self.type == "tool") && self.images.length == 0 # special handling... oddly needed:
       DrupalMainImage.find(:last, :conditions => {:nid => self.id}, :order => "field_main_image_fid").drupal_file
     else
       if self.images && self.images.length > 0 && node_type != :drupal
@@ -270,8 +270,12 @@ class DrupalNode < ActiveRecord::Base
 
   # has it been tagged with "list:foo" where "foo" is the name of a Google Group?
   def mailing_list
-    Rails.cache.fetch("feed-"+self.id.to_s+"-"+(self.updated_at.to_i/300).to_i.to_s) do
-      RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
+    if Rails.env == "production"
+      Rails.cache.fetch("feed-"+self.id.to_s+"-"+(self.updated_at.to_i/300).to_i.to_s) do
+        RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
+      end
+    else
+      return []
     end
   end
 
