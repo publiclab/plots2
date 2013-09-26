@@ -35,7 +35,7 @@ class SearchController < ApplicationController
       matches << {:string => "<i class='icon-map-marker'></i> "+match.title, :url => "/"+match.slug}
     end
     DrupalUsers.find(:all, :limit => 5, :order => "uid", :conditions => ['name LIKE ? AND access != 0', "%"+params[:id]+"%"]).each do |match|
-      matches << {:string => "<i class='icon-user'></i> "+match.name, :url => "/notes/author/"+match.name}
+      matches << {:string => "<i class='icon-user'></i> "+match.name, :url => "/profile/"+match.name}
     end
     render :json => matches
   end

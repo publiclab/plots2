@@ -14,7 +14,7 @@
 
   <div id="sidebar" class="hidden-phone">
 
-  <a rel="tooltip" title="Post <% if @tagnames %>about <%= @tagnames.join(', ') %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?tags='+@tagnames.join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
+  <a rel="tooltip" title="Post <% if @tagnames %>about <%= (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?tags='+(@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
 
   <%= render :partial => "sidebar/place" if @node %>
 
