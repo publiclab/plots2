@@ -34,6 +34,15 @@ class MapController < ApplicationController
       @revision.title = params[:title]
       @revision.body = params[:body]
 
+      # save main image
+      if params[:main_image] && params[:main_image] != ""
+        img = Image.find params[:main_image]
+        unless img.nil?
+          img.nid = @node.id
+          img.save
+        end
+      end
+
       map = @node.map
       map.field_publication_date_value    = params[:map][:field_publication_date_value]
       map.field_capture_date_value        = params[:map][:field_capture_date_value]

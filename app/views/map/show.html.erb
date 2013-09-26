@@ -48,9 +48,14 @@
 
   <hr />
 
+  <p>
+  <%= raw RDiscount.new(auto_link(@node.body, :sanitize => false)).to_html %>
+  </p>
+
+  <hr />
+
   <% if @node.map.notes %>
   <h3>Notes</h3>
-
   <p><%= raw RDiscount.new(auto_link(@node.map.notes, :sanitize => false)).to_html %></p>
 
   <hr />
@@ -58,13 +63,8 @@
 
   <% if @node.map.notes %>
   <h3>Cartographer notes</h3>
-
   <p><%= raw RDiscount.new(auto_link(@node.map.cartographer_notes, :sanitize => false)).to_html %></p>
   <% end %>
-
-  <p>
-  <%= raw RDiscount.new(auto_link(@node.body, :sanitize => false)).to_html %>
-  </p>
 
   <hr />
   <%= render :partial => "home/social" %>
