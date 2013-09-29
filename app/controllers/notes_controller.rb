@@ -69,7 +69,6 @@ class NotesController < ApplicationController
         # trigger subscription notifications:
         SubscriptionMailer.notify_node_creation(@node)
         # opportunity for moderation
-        flash[:notice] = "Research note published."
         flash[:notice] = "Research note published. Get the word out on <a href='/wiki/mailing-lists'>the discussion lists</a>."
         redirect_to @node.path
       else
@@ -83,7 +82,7 @@ class NotesController < ApplicationController
 
   def edit
     @node = DrupalNode.find(params[:id],:conditions => {:type => "note"})
-    if current_user.uid == @node.uid || current_user.username == "warren" # || current_user.role == "admin" 
+    if current_user.uid == @node.uid || current_user.role == "admin" 
       render :template => "editor/post"
     else
       prompt_login "Only the author can edit a research note."
@@ -93,7 +92,7 @@ class NotesController < ApplicationController
   # at /notes/update/:id
   def update
     @node = DrupalNode.find(params[:id])
-    if current_user.uid == @node.uid || current_user.username == "warren" # || current_user.role == "admin" 
+    if current_user.uid == @node.uid || current_user.role == "admin" 
       @revision = @node.latest
       @revision.title = params[:title]
       @revision.body = params[:body]
@@ -105,6 +104,7 @@ class NotesController < ApplicationController
       if @revision.valid?
         @revision.save
         @node.vid = @revision.vid
+        # update vid (version id) of main image
         if @node.drupal_main_image
           i = @node.drupal_main_image
           i.vid = @revision.vid 
@@ -118,8 +118,10 @@ class NotesController < ApplicationController
         # save main image
         if params[:main_image] && params[:main_image] != ""
           img = Image.find params[:main_image]
-          img.nid = @node.id
-          img.save
+          unless img.nil?
+            img.nid = @node.id
+            img.save
+          end
         end
         @node.save!
         flash[:notice] = "Edits saved."

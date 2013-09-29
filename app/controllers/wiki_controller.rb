@@ -91,8 +91,22 @@ class WikiController < ApplicationController
       ActiveRecord::Base.transaction do
         @revision.save
         @node.vid = @revision.vid
+        # update vid (version id) of main image
+        if @node.drupal_main_image && params[:main_image].nil?
+          i = @node.drupal_main_image
+          i.vid = @revision.vid 
+          i.save
+        end
         # can't do this because it changes the URL:
         #@node.title = @revision.title
+        # save main image
+        if params[:main_image] && params[:main_image] != ""
+          img = Image.find params[:main_image]
+          unless img.nil?
+            img.nid = @node.id
+            img.save
+          end
+        end
         @node.save
       end
       flash[:notice] = "Edits saved."
