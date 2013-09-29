@@ -113,6 +113,22 @@ class User < ActiveRecord::Base
     end
   end
 
+  def weekly_note_tally(span = 52)
+    weeks = {}
+    (0..span).each do |week|
+      weeks[span-week] = DrupalNode.count :all, :select => :created, :conditions => {:uid => self.drupal_user.uid, :type => 'note', :status => 1, :created => Time.now.to_i-week.weeks.to_i..Time.now.to_i-(week-1).weeks.to_i}
+    end
+    weeks
+  end
+
+  def weekly_comment_tally(span = 52)
+    weeks = {}
+    (0..span).each do |week|
+      weeks[span-week] = DrupalComment.count :all, :select => :timestamp, :conditions => {:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.to_i-week.weeks.to_i..Time.now.to_i-(week-1).weeks.to_i}
+    end
+    weeks
+  end
+
   private
 
   def map_openid_registration(registration)
