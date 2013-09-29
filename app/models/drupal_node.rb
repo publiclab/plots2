@@ -34,10 +34,11 @@ class DrupalNode < ActiveRecord::Base
 #  has_many :drupal_node_community_tag, :foreign_key => 'nid'
 #  has_many :drupal_tag, :through => :drupal_node_community_tag
   has_many :drupal_comments, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_content_type_map, :foreign_key => 'nid'
+  has_many :drupal_content_type_map, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
-  has_many :drupal_content_field_mappers, :foreign_key => 'nid'
-  has_many :drupal_content_field_map_editor, :foreign_key => 'nid'
+  has_many :drupal_content_field_mappers, :foreign_key => 'nid', :dependent => :destroy
+  has_many :drupal_content_field_map_editor, :foreign_key => 'nid', :dependent => :destroy
+
   has_many :images, :foreign_key => :nid
   has_many :node_selections, :foreign_key => :nid
 
@@ -94,6 +95,14 @@ class DrupalNode < ActiveRecord::Base
   end
 
   public
+
+  def self.weekly_tallies(type = "note",span = 52)
+    weeks = {}
+    (0..span).each do |week|
+      weeks[span-week] = DrupalNode.count :all, :select => :created, :conditions => {:type => type, :status => 1, :created => Time.now.to_i-week.weeks.to_i..Time.now.to_i-(week-1).weeks.to_i}
+    end
+    weeks
+  end
 
   def current_revision
     # Grab the most recent revision for this node.
@@ -390,15 +399,24 @@ class DrupalNode < ActiveRecord::Base
     self.locations.each do |l|
       locations << l if l && l.x && l.y
     end
-    {:x => locations.collect(&:x).sum/locations.length,:y => locations.collect(&:y).sum/locations.length}
+    # cheap divide by zero hack
+    {:x => locations.collect(&:x).sum/(locations.length+0.000001),:y => locations.collect(&:y).sum/(locations.length+0.000001)}
   end 
 
   def lat
-    self.location[:y]
+    if self.has_power_tag("lat")
+      self.power_tag("lat").to_i 
+    else
+      self.location[:y]
+    end
   end
 
   def lon
-    self.location[:x]
+    if self.has_power_tag("lon")
+      self.power_tag("lon").to_i 
+    else
+      self.location[:x]
+    end
   end
 
   # these should eventually displace the above means of finding locations
@@ -521,7 +539,39 @@ class DrupalNode < ActiveRecord::Base
           node.save!
         else
           saved = false
-          node.destroy # clean up. But do this in the model!
+          node.destroy # clean up
+        end
+      end
+    end
+    return [saved,node,revision]
+  end
+
+  # same as new_note or new_wiki but with arbitrary type -- use for maps, DRY out new_note and new_wiki
+  def self.new_node(params)
+    saved = false
+    node = DrupalNode.new({
+      :uid => params[:uid],
+      :title => params[:title],
+      :type => params[:type]
+    })
+    if node.valid?
+      revision = false
+      saved = true
+      ActiveRecord::Base.transaction do
+        node.save! 
+        revision = node.new_revision({
+          :nid => node.id,
+          :uid => params[:uid],
+          :title => params[:title],
+          :body => params[:body]
+        })
+        if revision.valid?
+          revision.save!
+          node.vid = revision.vid
+          node.save!
+        else
+          saved = false
+          node.destroy # clean up
         end
       end
     end

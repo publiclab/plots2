@@ -1,4 +1,7 @@
 <div class="span3">
+<script language="javascript" type="text/javascript" src="/flot/jquery.flot.js"></script> 
+<script language="javascript" type="text/javascript" src="/flot/jquery.flot.crosshair.js"></script>
+
 
   <h4>About this page</h4>
 
@@ -23,8 +26,61 @@
 
   <h4><%= nids.uniq.length %> research notes have been posted by <%= users.uniq.length %> contributors since <%= time_ago_in_words(DrupalNode.find(:first, :conditions => {:type => 'note', :status => 1}).created_at) %> ago</h4>
 
+  <p><i>Note posting for the past 52 weeks:</i></p>
+
+  <div id="notes" style="height:100px;"></div>
+
   <h4><%= DrupalNode.count(:all, :conditions => {:type => 'page', :status => 1}) %> wiki pages have been posted</h4>
+
+  <p><i>Wiki page posting for the past 52 weeks:</i></p>
+
+  <div id="wikis" style="height:100px;"></div>
 
   <h4><%= DrupalNodeRevision.count(:all) %> wiki page edits have been made</h4>
 
 </div>
+
+<script type="text/javascript">
+  (function () {
+
+    flotoptions_minimal = {
+      yaxis: { show: false },
+      xaxis: { show: true },
+      grid: {
+        borderWidth: 0,
+        //backgroundColor: "#222",
+        //color: "#444",
+        markers: []
+      }
+      // Palette "i eat the rainbow" by svartedauden on Colourlovers: http://www.colourlovers.com/palette/1630898/i_eat_the_rainbow, CC-BY-NC
+      //colors: [ "#E02130", "#FAB243", "#429867", "#2B5166" ]//, "#482344" ]
+    }
+
+    var notes = <%= DrupalNode.weekly_tallies.to_a.sort.to_json %>
+    var wikis = <%= DrupalNode.weekly_tallies('page').to_a.sort.to_json %>
+
+    $.plot($("#notes"), [
+      {
+          data: notes,
+          bars: { show: true, 
+                  lineWidth: 0,
+                  fillColor: "#08f",
+                  barWidth: 0.5
+                }
+      }
+    ],flotoptions_minimal)
+
+    $.plot($("#wikis"), [
+      {
+          data: wikis,
+          bars: { show: true, 
+                  lineWidth: 0,
+                  fillColor: "#80f",
+                  barWidth: 0.5
+                }
+      }
+    ],flotoptions_minimal)
+
+  })()
+</script>
+

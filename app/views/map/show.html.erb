@@ -1,5 +1,5 @@
 </div>
-<iframe style="width:100%;border:none;background:#ddd;margin-bottom:8px;" height="375" src="http://archive.publiclaboratory.org/leaflet/?tms=<%= @node.map.tms %>&lon=<%= @node.location[:x] %>&lat=<%= @node.location[:y] %>&zoom=<%= @node.map.min_zoom+1 %>"></iframe>
+<iframe style="width:100%;border:none;background:#ddd;margin-bottom:8px;" height="375" src="http://archive.publiclaboratory.org/leaflet/?tms=<%= @node.map.tms %>&lon=<%= @node.lon %>&lat=<%= @node.lat %>&zoom=<%= @node.map.min_zoom+1 %>"></iframe>
 
 <div class="row-fluid">
   <%= render :partial => "map/nearby" %>
@@ -34,7 +34,7 @@
       <p><b>Mapped by</b> <%= @node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ') %></p> 
       <p><b>Cartographer:</b> <%= @node.drupal_content_field_map_editor.collect(&:field_map_editor_value).uniq.join(', ') %></p>
       <p><b>Published by</b> <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a></p>
-      <p><a href="https://maps.google.com/maps?t=h&ll=<%= @node.location[:y] %>,<%= @node.location[:x] %>"><%= @node.location[:y] %> N, <%= @node.location[:x] %> E</a></p>
+      <p><a href="https://maps.google.com/maps?t=h&ll=<%= @node.lat %>,<%= @node.lon %>"><%= @node.lat %> N, <%= @node.lon %> E</a></p>
       <p><%= @node.totalcount %> views</p>
       <% if @node.map.field_ground_resolution_value %><p><b>Ground resolution: </b><%= @node.map.field_ground_resolution_value %> cm/px</p><% end %>
       <p><b>Capture date:</b> <%= @node.map.captured_on.to_s %></p> 

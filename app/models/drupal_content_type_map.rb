@@ -1,29 +1,10 @@
-# string  "field_publication_date_value",    
-# string  "field_capture_date_value",        
-# text    "field_geotiff_url_value",         
-# text    "field_google_maps_url_value",     
-# text    "field_openlayers_url_value",      
-# text    "field_tms_url_value",             
-# text    "field_jpg_url_value",             
-# text    "field_license_value",             
-# text    "field_raw_images_value",          
-# text    "field_cartographer_notes_value",  
-# integer "field_cartographer_notes_format"
-# text    "field_notes_value",               
-# integer "field_notes_format"
-# text    "field_mbtiles_url_value",         
-# integer "field_zoom_min_value"
-# decimal "field_ground_resolution_value",   
-# decimal "field_geotiff_filesize_value",    
-# decimal "field_jpg_filesize_value",        
-# decimal "field_raw_images_filesize_value", 
-# text    "field_tms_tile_type_value",      
-# integer "field_zoom_max_value"
-
 class DrupalContentTypeMap < ActiveRecord::Base
   self.table_name = 'content_type_map'
+  self.primary_key = 'vid'
 
   belongs_to :drupal_node, :foreign_key => 'nid', :dependent => :destroy
+
+  validates :field_zoom_min_value, :presence => :true
 
   acts_as_mappable :default_units => :miles,
                    :default_formula => :sphere,
