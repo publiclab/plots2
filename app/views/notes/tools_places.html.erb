@@ -26,6 +26,9 @@
 
 <%= render :partial => "sidebar/featured" %>
 <div class="span9">
+
+  <%= render :partial => "notes/format_toggle" %>
+
   <% if params[:action] == 'tools' %>
   <h2 style="margin-top:0;">Tools &amp; techniques <small>developed by Public Lab contributors</small></h2>
   <% else %>

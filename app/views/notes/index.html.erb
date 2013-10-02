@@ -29,37 +29,8 @@
   
           <li><a href="/wiki/">Wiki<span class="hidden-phone"> pages</span></a></li>
         </ul>
-        <div class="btn-group visible-desktop" style="float:right;" id="#note-format" data-toggle="buttons-radio">
-          <a onClick="toggle_format('grid')" id="grid-format" class="btn btn-small active" href="#"><i style="font-size:14px;" class="icon icon-th-large"></i></a>
-          <a onClick="toggle_format('list')" id="list-format" class="btn btn-small" href="#"><i style="font-size:14px;" class="icon icon-list"></i></a>
-        </div>
 
-        <script>
-          (function(){
-            toggle_format = function(format) {
-              if (format == "grid") {
-                $('.note').addClass('span3')
-                $('.note .thumbnail').css('width','100%')
-                $('.note hr.bottom').hide()
-                $('#notes hr.hidden-phone').show()
-                $('#notes ._row').addClass('row')
-                $('#notes ._row').removeClass('_row')
-                $('#notes._container-fluid').addClass('container-fluid')
-                $('#notes._container-fluid').removeClass('_container-fluid')
-              } else {
-                $('.note').removeClass('span3')
-                $('.note .thumbnail').css('width','30%')
-                $('.note hr.bottom').show()
-                $('#notes hr.hidden-phone').hide()
-                $('#notes .row').addClass('_row')
-                $('#notes .row').removeClass('row')
-                $('#notes.container-fluid').addClass('_container-fluid')
-                $('#notes.container-fluid').removeClass('container-fluid')
-                $('#notes .note').removeClass('row-fluid')
-              }
-            }
-          })()
-        </script>
+        <%= render :partial => "notes/format_toggle" %>
 
       </div>
     </div>
