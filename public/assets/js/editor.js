@@ -83,9 +83,10 @@ $E = {
     else $E.textarea.val($E.templates[template])
   },
   templates: {
-    'default': "##What I want to do\n\n##My attempt and results\n\n##Questions and next steps",
-    'support': "##Details about the problem\n\n",
-    'event': "##Event details\n\nWhen, where, what\n\n##Background\n\nWho, why"
+    'default': "###What I want to do\n\n###My attempt and results\n\n###Questions and next steps",
+    'support': "###Details about the problem\n\n",
+    'event': "###Event details\n\nWhen, where, what\n\n###Background\n\nWho, why",
+    'request': "###What I want to do\n\n###What I need help with\n\nDetails about issues and challenges you face"
   },
   previewing: false,
   toggle_preview: function() {
