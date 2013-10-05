@@ -28,9 +28,10 @@
           <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="icon icon-star-empty"></i><span class="hidden-phone"> Liked</span></a></li>
   
           <li><a href="/wiki/">Wiki<span class="hidden-phone"> pages</span></a></li>
-          <!--<li><a href="#">By place</a></li>
-          <li><a href="#">By tool</a></li>-->
         </ul>
+
+        <%= render :partial => "notes/format_toggle" %>
+
       </div>
     </div>
   <% end %>

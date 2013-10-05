@@ -2,6 +2,8 @@
 <div class="span9">
   <h3 style="margin-top:0;">Notes tagged with <i style="color:#aaa;"><%= params[:id] %></i></h3>
 
+  <%= render :partial => "notes/format_toggle" %>
+
   <% if current_user %>
   <!-- AJAXify -->
   <div class="btn-group">

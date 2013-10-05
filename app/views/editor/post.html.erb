@@ -1,29 +1,44 @@
 <div class="span3">
-  <h3 class="hidden-phone"><i class="icon-file"></i> What's a <br />research note?</h3>
-  <h4 class="visible-phone"><i class="icon-file"></i> What's a research note?</h4>
-  <p class="visible-phone"><a onClick="$('#research-note-detail').removeClass('hidden-phone')">Read more &raquo;</a></p>
-  <div id="research-note-detail" class="hidden-phone">
-    <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work.</p>
-    <p><b>Research notes can be:</b></p>
-    <ul>
-      <li>photos of what you've made</li>
-      <li>requests for troubleshooting</li>
-      <li>proposals for new projects</li>
-      <li>announcements of events</li>
-      <li>reports from a field test or meetup</li>
-      <li>etc!</li>
-    </ul>
-    <hr />
-    <p><b><a href="http://www.youtube.com/watch?v=rsy__zTTh8c" target="_blank"><i class="icon icon-film"></i> Watch a 30 second video on posting research notes &raquo;</a></b></p>
-    <hr />
-    <div class="sidebar-nav">
-      <ul class="nav nav-list">
-        <li class="nav-header">More</li>
-        <li><a href="/wiki/getting-started">Getting started with Public Lab</a></li>
-        <li><a href="#">Advanced note posting</a></li>
+  <% if params[:template] == "request" %>
+    <h4 class="visible-phone">Ask for help!</h4>
+    <div id="research-note-detail" class="hidden-phone">
+      <p></p>
+      <p><b>Lalala:</b></p>
+      <ul>
+        <li>La</li>
+        <li>La</li>
+        <li>La</li>
       </ul>
+      <hr />
     </div>
-  </div>
+
+  <% else %>
+    <h3 class="hidden-phone"><i class="icon-file"></i> What's a <br />research note?</h3>
+    <h4 class="visible-phone"><i class="icon-file"></i> What's a research note?</h4>
+    <p class="visible-phone"><a onClick="$('#research-note-detail').removeClass('hidden-phone')">Read more &raquo;</a></p>
+    <div id="research-note-detail" class="hidden-phone">
+      <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work.</p>
+      <p><b>Research notes can be:</b></p>
+      <ul>
+        <li>photos of what you've made</li>
+        <li>requests for troubleshooting</li>
+        <li>proposals for new projects</li>
+        <li>announcements of events</li>
+        <li>reports from a field test or meetup</li>
+        <li>etc!</li>
+      </ul>
+      <hr />
+      <p><b><a href="http://www.youtube.com/watch?v=rsy__zTTh8c" target="_blank"><i class="icon icon-film"></i> Watch a 30 second video on posting research notes &raquo;</a></b></p>
+      <hr />
+      <div class="sidebar-nav">
+        <ul class="nav nav-list">
+          <li class="nav-header">More</li>
+          <li><a href="/wiki/getting-started">Getting started with Public Lab</a></li>
+          <li><a href="#">Advanced note posting</a></li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
 </div>
 
 <div class="span9">
@@ -44,7 +59,11 @@
 
     <%= render :partial => "editor/main_image" %>
 
-    <h3 style="margin-top:0;">Share your work</h3>
+    <% if params[:template] == "request" %>
+      <h3 style="margin-top:0;">Request help from the community</h3>
+    <% else %>
+      <h3 style="margin-top:0;">Share your work</h3>
+    <% end %>
 
     <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title" value="<%= @node.title if @node %>"><br />
     <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />

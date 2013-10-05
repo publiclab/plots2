@@ -14,6 +14,7 @@ class OpenidController < ApplicationController
   layout nil
 
   def index
+
     begin
       if params['openid.mode']
         oidreq = server.decode_request(params)
@@ -40,8 +41,13 @@ class OpenidController < ApplicationController
     else
 
       if oidreq
-  
-        if params['oidreq.identity'] && params['oidreq.identity'].split('/').last.downcase != current_user.username.downcase
+
+        requested_username = ''
+        request.env['ORIGINAL_FULLPATH'].split('?')[1].split('&').each do |param|
+          requested_username = param.split('=')[1].split('%2F').last if param.split('=')[0] == "openid.claimed_id"
+        end
+
+        if requested_username != current_user.username.downcase
             flash[:error] = "You are requesting access to an account that's not yours. Please <a href='/logout'>log out</a> and use the correct account, or <a href='"+oidreq.trust_root+"'>try to login with the correct username</a>"
             redirect_to "/dashboard"
         else

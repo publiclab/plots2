@@ -1,7 +1,7 @@
-<div class="container-fluid">
+<div class="container-fluid" id="notes">
     <div class="row">
     <% @notes.each_with_index do |node,i| %>
-      <div class="span3 clearfix" style="overflow:hidden;">
+      <div class="span3 clearfix note" style="overflow:hidden;">
         <% if node.main_image %>
           <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
           <a class="hidden-phone thumbnail" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
@@ -24,11 +24,12 @@
         <% if params[:mod] %>
         <a class="btn btn-mini" href="#"><i class="icon-ban-circle"></i> Spam</a>
         <% end %>
+        <hr style="display:none;" class="bottom" />
       </div>
       <hr class="visible-phone" />
     <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
     </div>
-    <hr class="hidden-phone" />
+    <hr class="hidden-phone grid" />
     <div class="row">
     <% end %>
     <% end %>
