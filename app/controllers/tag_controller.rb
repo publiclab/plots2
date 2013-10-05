@@ -102,6 +102,7 @@ class TagController < ApplicationController
   def contributors
     set_sidebar :tags, [params[:id]], {:note_count => 20}
     @tagnames = [params[:id]]
+    @tag = DrupalTag.find_by_name params[:id]
  
     t = DrupalTag.find :all, :conditions => {:name => params[:id]}
     nt = DrupalNodeTag.find :all, :conditions => ['tid in (?)',t.collect(&:tid)]

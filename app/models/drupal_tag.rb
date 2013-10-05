@@ -96,4 +96,15 @@ class DrupalTag < ActiveRecord::Base
     DrupalUsers.find(:all, :conditions => ['uid in (?)',uids]).collect(&:user)
   end
 
+  def weekly_tallies(type = "note",span = 52)
+    weeks = {}
+    tids = DrupalTag.find(:all, :conditions => ['name IN (?)',[self.name]]).collect(&:tid)
+    nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
+    nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
+    (0..span).each do |week|
+      weeks[span-week] = DrupalNode.count :all, :select => :created, :conditions => ['type = "'+type+'" AND status = 1 AND nid IN ('+nids.uniq.join(',')+') AND created > '+(Time.now.to_i-week.weeks.to_i).to_s+' AND created < '+(Time.now.to_i-(week-1).weeks.to_i).to_s]
+    end
+    weeks
+  end
+
 end
