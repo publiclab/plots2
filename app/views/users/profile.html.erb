@@ -4,13 +4,13 @@
 
   <!--<a href="#" class="btn btn-block"><i class="icon-envelope"></i> Send message</a>-->
   <a href="#" class="btn btn-block disabled"><i class="icon-eye-open"></i> Follow <%= @user.name %></a>
-  <% if current_user && current_user.role == "moderator" %>
+  <% if @user.user && current_user && current_user.role == "moderator" %>
     <a href="/admin/promote/admin/<%= @user.user.id %>" class="btn btn-block"><i class="icon-certificate"></i> Make admin</a>
   <% end %>
-  <% if current_user && current_user.role == "admin" && @user.role == "moderator" %>
+  <% if @user.user && current_user && current_user.role == "admin" && @user.role == "moderator" %>
     <a href="/admin/demote/basic/<%= @user.user.id %>" class="btn btn-block"><i class="icon-ban-circle"></i> Revert to basic user</a>
   <% end %>
-  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.role == "basic" %>
+  <% if @user.user && current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.role == "basic" %>
     <a href="/admin/promote/moderator/<%= @user.user.id %>" class="btn btn-block"><i class="icon-certificate"></i> Make moderator</a>
   <% end %>
 
@@ -120,8 +120,10 @@
       colors: [ "#08f", "#80f" ]
     }
 
+    <% if @user && @user.user %>
     var notes = <%= @user.user.weekly_note_tally.to_a.sort.to_json %>
     var comments = <%= @user.user.weekly_comment_tally.to_a.sort.to_json %>
+    <% end %>
 
     $.plot($("#note-graph"), [
       {
