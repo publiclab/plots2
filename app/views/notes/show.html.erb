@@ -2,7 +2,7 @@
 <div class="span9">
 
   <% if @node.main_image %>
-    <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img class="img-rounded" src="<%= @node.main_image.path(:large) %>" /></a>
+    <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img class="img-rounded" src="<%= @node.main_image.path(:default) %>" /></a>
   <% end %>
 
   <div style="margin-top:10px;" class="hidden-print">
