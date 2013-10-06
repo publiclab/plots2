@@ -32,7 +32,7 @@
 
 <div class="span9">
 
-  <div id="note-graph" style="height:100px;"></div>
+  <div id="note-graph" style="height:100px;display:none;"></div>
 
   <h3 style="margin-top:0;"><%= @user.name %> 
     <small> 
@@ -123,6 +123,7 @@
     <% if @user && @user.user %>
     var notes = <%= @user.user.weekly_note_tally.to_a.sort.to_json %>
     var comments = <%= @user.user.weekly_comment_tally.to_a.sort.to_json %>
+    $('#note-graph').show()
     <% end %>
 
     $.plot($("#note-graph"), [
