@@ -28,6 +28,23 @@
     <% end %>
   </p>
 
+  <hr />
+
+  <% if @wikis && @wikis.length > 0 %>
+  <h4>Wiki pages contributed to</h4>
+  <ul class="nav bullet">
+    <% @wikis.each do |wiki| %>
+      <% unless (!@node.nil? && wiki.nid == @node.nid) %>
+        <li><a href="<%= wiki.path %>"><%= raw wiki.icon %> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+      <% end %>
+    <% end %>
+    <% if params[:controller] == "search" %>
+      <li><a href="/tag/<%= params[:id] %>">More...</a></li>
+    <% end %>
+  </ul>
+  <% end %>
+
+
 </div>
 
 <div class="span9">
