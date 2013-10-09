@@ -4,7 +4,7 @@
 
   <!--<a href="#" class="btn btn-block"><i class="icon-envelope"></i> Send message</a>-->
   <a href="#" class="btn btn-block disabled"><i class="icon-eye-open"></i> Follow <%= @user.name %></a>
-  <% if @user.user && current_user && current_user.role == "moderator" %>
+  <% if @user.user && current_user && current_user.role == "admin" && @user.user.role != "admin" %>
     <a href="/admin/promote/admin/<%= @user.user.id %>" class="btn btn-block"><i class="icon-certificate"></i> Make admin</a>
   <% end %>
   <% if @user.user && current_user && current_user.role == "admin" && @user.role == "moderator" %>
