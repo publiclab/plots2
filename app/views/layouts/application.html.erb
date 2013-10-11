@@ -83,7 +83,6 @@
             </li>
           </ul>
 
-
           <div class="nav-collapse collapse">
 
             <form id="searchform" class="navbar-form pull-left" style="margin-left:10px;" autocomplete="off">
@@ -126,18 +125,33 @@
                   <li><a href="/wiki/board">Non-profit board</a></li>
                   <li><a href="/wiki/how-public-lab-funded">How we're funded</a></li>
                   <li><a href="/media">Press and Media</a></li>
+                  <li><a href="/wiki/contact">Contact the staff</a></li>
                 </ul>
               </li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown">
-                  Web tools <b class="caret"></b>
+                  Data <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
+                  <li><a href="/archive">Public Lab Archive</a></li>
+                  <li class="nav-header">Web tools</li>
                   <li><a href="http://mapknitter.org">MapKnitter</a></li>
                   <li><a href="http://spectralworkbench.org">Spectral Workbench</a></li>
                   <li><a href="http://infragram.org">Infragram.org</a></li>
                 </ul>
               </li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                  Participate <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/getting-started">Getting started</a></li>
+                  <li><a href="/signup">Join the website</a></li>
+                  <li><a href="/wiki/new-projects">Starting new projects</a></li>
+                  <li><a href="/wiki/mailing-lists">Join one of our mailing lists</a></li>
+                </ul>
+              </li>
+              <li><a href="/blog">Blog</a></li>
             </ul>
 
             <% unless params[:action] == "register" || params[:action] == "signup" %>

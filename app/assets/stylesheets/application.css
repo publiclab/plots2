@@ -79,6 +79,10 @@ a i.icon-white { color:white; }
   #brand { display:inline; }
 }
 
+.nav-tabs li {
+  border-color:#eee;
+}
+
 .nav.bullet li {
   padding-left:20px;
 }
