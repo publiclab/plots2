@@ -59,7 +59,28 @@
 
           <ul class="nav">
             <% if current_user %><li><a rel="tooltip" title="Your dashboard" data-placement="bottom" href="/dashboard"><i class="icon-home icon-white"></i></a></li><% end %>
-            <li><a href="/research">Research</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown">
+                Research <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+              <% cache "tool-place-menu-"+(DateTime.now.to_i/300).to_i.to_s do %>
+                <li><a href="/research/">Recent research notes</a></li>
+                <li><a href="/wiki/">Recent wiki pages</a></li>
+                <li><a href="/wiki/popular/">Popular wiki pages</a></li>
+                <li class="nav-header">Tools</li>
+                <% DrupalNode.find_all_by_type('tool',:limit => 6, :order => 'node_counter.totalcount DESC', :joins => :drupal_node_counter).each do |node| %>
+                <li><a href="<%= node.path %>"><%= node.title %></a></li>
+                <% end %>
+                <li><a href="/tools">More...</a></li>
+                <li class="nav-header">Places</li>
+                <% DrupalNode.find_all_by_type('place',:limit => 6, :order => 'node_counter.totalcount DESC', :joins => :drupal_node_counter).each do |node| %>
+                <li><a href="<%= node.path %>"><%= node.title %></a></li>
+                <% end %>
+                <li><a href="/places">More...</a></li>
+              <% end %>
+              </ul>
+            </li>
           </ul>
 
 
@@ -94,29 +115,29 @@
             </form>
 
             <ul class="nav">
-              <li><a href="/about">About</a></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown">
-                  Tools/Places <b class="caret"></b>
+                  About <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                <% cache "tool-place-menu-"+(DateTime.now.to_i/300).to_i.to_s do %>
-                  <% DrupalNode.find_all_by_type('tool',:limit => 6, :order => 'node_counter.totalcount DESC', :joins => :drupal_node_counter).each do |node| %>
-                  <li><a href="<%= node.path %>"><%= node.title %></a></li>
-                  <% end %>
-                  <li><a href="/tools">More...</a></li>
-                  <li class="divider"></li>
-                  <% DrupalNode.find_all_by_type('place',:limit => 6, :order => 'node_counter.totalcount DESC', :joins => :drupal_node_counter).each do |node| %>
-                  <li><a href="<%= node.path %>"><%= node.title %></a></li>
-                  <% end %>
-                  <li><a href="/places">More...</a></li>
-                  <li class="divider"></li>
-                  <li><a href="/wiki/">Recent wiki pages</a></li>
-                  <li><a href="/wiki/popular/">Popular wiki pages</a></li>
-                <% end %>
+                  <li><a href="/about">About Public Lab</a></li>
+                  <li><a href="/wiki/plots-staff">Non-profit staff</a></li>
+                  <li><a href="/wiki/organizers">Organizers</a></li>
+                  <li><a href="/wiki/board">Non-profit board</a></li>
+                  <li><a href="/wiki/how-public-lab-funded">How we're funded</a></li>
+                  <li><a href="/media">Press and Media</a></li>
                 </ul>
               </li>
-              <li><a href="/archive">Maps</a></li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                  Web tools <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="http://mapknitter.org">MapKnitter</a></li>
+                  <li><a href="http://spectralworkbench.org">Spectral Workbench</a></li>
+                  <li><a href="http://infragram.org">Infragram.org</a></li>
+                </ul>
+              </li>
             </ul>
 
             <% unless params[:action] == "register" || params[:action] == "signup" %>
