@@ -101,10 +101,13 @@ class WikiController < ApplicationController
         #@node.title = @revision.title
         # save main image
         if params[:main_image] && params[:main_image] != ""
-          img = Image.find params[:main_image]
-          unless img.nil?
-            img.nid = @node.id
-            img.save
+          begin
+            img = Image.find params[:main_image]
+            unless img.nil?
+              img.nid = @node.id
+              img.save
+            end
+          rescue
           end
         end
         @node.save

@@ -43,7 +43,7 @@
       <ul class="nav">
         <li class="active"><a data-toggle="tab" href="#tab-overview">Overview</a></li>
         <% if @node.power_tags('tabbed').include?("notes") %><li><a data-toggle="tab" href="#tab-notes">Research</a></li><% end %>
-        <% if @node.power_tags('tabbed').include?("wikis") %><li><a data-toggle="tab" href="#tab-wikis">Wiki pages</a></li><% end %>
+        <% if @node.power_tags('tabbed').include?("wikis") %><li><a data-toggle="tab" href="#tab-wikis">Wiki<span class="hidden-phone"> pages</span></a></li><% end %>
       </ul>
     </div>
   </div>

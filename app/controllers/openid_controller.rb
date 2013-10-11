@@ -47,7 +47,7 @@ class OpenidController < ApplicationController
           requested_username = param.split('=')[1].split('%2F').last if param.split('=')[0] == "openid.claimed_id"
         end
 
-        if requested_username != current_user.username.downcase
+        if requested_username.downcase != current_user.username.downcase
             flash[:error] = "You are requesting access to an account that's not yours. Please <a href='/logout'>log out</a> and use the correct account, or <a href='"+oidreq.trust_root+"'>try to login with the correct username</a>"
             redirect_to "/dashboard"
         else
