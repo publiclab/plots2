@@ -26,4 +26,10 @@ class DrupalNodeRevision < ActiveRecord::Base
     self.drupal_node
   end
 
+  def render_body
+    body = self.body || ""
+    body = RDiscount.new(body, :generate_toc)
+    body.to_html
+  end
+
 end

@@ -14,12 +14,12 @@
     <%= render :partial => "like/like" %>
   </div>
 
-  <h2><%= @node.latest.title %></h2>
+  <h2><%= @revision.title %></h2>
 
   <div class="hidden-print">
     <div class="pull-right" style="padding-top:8px;">
       <span class="hidden-desktop">
-        <%= @node.created_at.to_s(:short) %>
+        <%= @revision.created_at.to_s(:short) %>
       </span>
       <span class="hidden-phone">
         <%= number_with_delimiter(@node.totalcount) %> views | 
@@ -67,7 +67,7 @@
 
     <div class="tab-pane active" id="tab-overview">
       <div style="overflow:hidden;max-width:800px;" id="content">
-      <%= raw auto_link(@node.render_body, :sanitize => false) %>
+      <%= raw auto_link(@revision.render_body, :sanitize => false) %>
       </div>
     </div>
 
