@@ -58,7 +58,7 @@
           <br />
         </div>
       <% end %>
-      <% if @node.power_tags('tabbed').include?("notes") %>
+      <% if @node.power_tags('tabbed').include?("wikis") %>
         <div class="tab-pane" id="tab-wikis">
           <%= render :partial => "wiki/wikis" %>
         </div>
