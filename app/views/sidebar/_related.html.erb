@@ -27,24 +27,26 @@
   </ul>
   <% end %>
 
-  <% if @notes && @notes.length > 0 %>
-  <h4>Recent topic contributors</h4>
-  <ul class="nav">
-    <% @notes.collect(&:author).collect(&:name).uniq.each do |author| %>
-      <li><a href="/profile/<%= author %>"><i class="icon-user"></i> <%= author %></a></li>
+  <% if params[:action] != "contributors" %>
+    <% if @notes && @notes.length > 0 %>
+    <h4>Recent topic contributors</h4>
+    <ul class="nav">
+      <% @notes.collect(&:author).collect(&:name).uniq.each do |author| %>
+        <li><a href="/profile/<%= author %>"><i class="icon-user"></i> <%= author %></a></li>
+      <% end %>
+      <li><a href="/contributors/<%= params[:id] %>"><i class="icon icon-list"></i> View all &raquo;</a></li>
+    </ul>
     <% end %>
-    <li><a href="/contributors/<%= params[:id] %>"><i class="icon icon-list"></i> View all &raquo;</a></li>
-  </ul>
-  <% end %>
-
-  <% if @users && @users.length > 0 %>
-  <h4>Contributors</h4>
-  <ul class="nav">
-    <% @users.each do |author| %>
-      <li><a href="/profile/<%= author.name %>"><i class="icon-user"></i> <%= author.name %></a></li>
+ 
+    <% if @users && @users.length > 0 %>
+    <h4>Contributors</h4>
+    <ul class="nav">
+      <% @users.each do |author| %>
+        <li><a href="/profile/<%= author.name %>"><i class="icon-user"></i> <%= author.name %></a></li>
+      <% end %>
+      <li><a href="/contributors/<%= params[:id] %>"><i class="icon icon-list"></i> View all &raquo;</a></li>
+    </ul>
     <% end %>
-    <li><a href="/contributors/<%= params[:id] %>"><i class="icon icon-list"></i> View all &raquo;</a></li>
-  </ul>
   <% end %>
 
   <% if @videos && @videos.length > 0 %>
