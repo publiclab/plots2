@@ -46,6 +46,15 @@ class DrupalTag < ActiveRecord::Base
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
+  # finds highest viewcount nodes
+  def self.find_top_nodes_by_type(tagnames,type = "wiki",limit = 10)
+    tids = DrupalTag.find(:all, :conditions => ['name IN (?)',tagnames]).collect(&:tid)
+    nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
+    nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
+    DrupalNode.find_all_by_type type, :conditions => ["node.nid in (?)",nids.uniq], :order => "node_counter.totalcount DESC", :limit => limit, :include => :drupal_node_counter
+  end
+
+  # finds recent nodes
   def self.find_nodes_by_type(tagnames,type = "note",limit = 10)
     tids = DrupalTag.find(:all, :conditions => ['name IN (?)',tagnames]).collect(&:tid)
     nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)

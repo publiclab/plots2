@@ -69,7 +69,7 @@
                 <li><a href="/wiki/">Recent wiki pages</a></li>
                 <li><a href="/wiki/popular/">Popular wiki pages</a></li>
                 <li class="nav-header">Tools</li>
-                <% DrupalNode.find_all_by_type('tool',:limit => 6, :order => 'node_counter.totalcount DESC', :joins => :drupal_node_counter).each do |node| %>
+                <% DrupalTag.find_top_nodes_by_type('tool',['page','tool'],6).each do |node| %>
                 <li><a href="<%= node.path %>"><%= node.title %></a></li>
                 <% end %>
                 <li><a href="/tools">More...</a></li>
@@ -153,6 +153,7 @@
                 </ul>
               </li>
               <li><a href="/blog">Blog</a></li>
+              <li><a href="/donate">Donate</a></li>
             </ul>
 
             <% unless params[:action] == "register" || params[:action] == "signup" %>

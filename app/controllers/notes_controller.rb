@@ -10,7 +10,9 @@ class NotesController < ApplicationController
 
   def tools
     @title = "Tools"
-    @notes = DrupalNode.paginate(:conditions => {:status => 1, :type => 'tool'}, :order => "node_counter.totalcount DESC", :include => :drupal_node_counter, :page => params[:page])
+    @notes = DrupalTag.find_top_nodes_by_type('tool',['page','tool'],20)
+    #@notes = DrupalNode.paginate(:conditions => {:status => 1, :type => 'tool'}, :order => "node_counter.totalcount DESC", :include => :drupal_node_counter, :page => params[:page])
+    @unpaginated = true
     render :template => "notes/tools_places"
   end
 
