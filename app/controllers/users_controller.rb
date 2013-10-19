@@ -37,7 +37,6 @@ class UsersController < ApplicationController
   def update
     if current_user
     @user = current_user
-      #if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
       @user.attributes = params[:user]
       @user.drupal_user.set_bio(params[:drupal_user][:bio])
       @user.save({}) do |result|
@@ -127,23 +126,27 @@ class UsersController < ApplicationController
 
   def reset
     if params[:key] && params[:key] != nil
-      user = User.find_by_reset_key(params[:key])
-      if user
+      @user = User.find_by_reset_key(params[:key])
+      if @user
         if params[:user] && params[:user][:password]
-          if user.username == params[:user][:username]
-            user.attributes = params[:user]
-            user.reset_key = nil
-            user.save({})
+          if @user.username.downcase == params[:user][:username].downcase
+            @user.attributes = params[:user]
+            @user.reset_key = nil
+            if @user.save({})
             flash[:notice] = "Your password was successfully changed."
             redirect_to "/dashboard"
+            else
+              flash[:error] = "Password reset failed. Please <a href='/wiki/issues'>contact the web team</a> if you are having trouble."
+              redirect_to "/"
+            end
           else
             flash[:error] = "Password change failed; key does not correspond to username."
           end
         else
-
+          # Just display page prompting username & pwd
         end
       else
-        flash[:error] = "Password reset failed. Please <a href='/wiki/issues'>contact the web team</a> if you are having trouble."
+        flash[:error] = "Password reset failed. Please <a href='/wiki/issues'>contact the web team</a> if you are having trouble. (Error: no user with that key)"
         redirect_to "/"
       end
       

@@ -44,7 +44,7 @@
             | <i style="color:#888;" class="icon icon-star-empty"></i> <%= node.likes %>
             <% end %>
           </small></p>
-          <p><%= raw auto_link(node.render_body.truncate(1200), :sanitize => false) %></p>
+          <p><%= raw auto_link(node.latest.render_body.truncate(1200), :sanitize => false) %></p>
           <p><a href="<%= node.path %>">Read more &raquo;</a></p>
           <p>
             <% node.tags[0..3].each do |tag| %>

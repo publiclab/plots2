@@ -25,10 +25,11 @@ class WikiController < ApplicationController
       end
       @tagnames = @tags.collect(&:name)
       set_sidebar :tags, @tagnames, {:videos => true}
-      @wikis = DrupalTag.find_pages(@node.slug,20) if @node.has_tag('chapter')
+      @wikis = DrupalTag.find_pages(@node.slug,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
 
       @node.view
-      @title = @node.latest.title
+      @revision = @node.latest
+      @title = @revision.title
     end
     @unpaginated = true
   end
@@ -155,8 +156,8 @@ class WikiController < ApplicationController
   # wiki pages which have a root URL, like http://publiclab.org/about
   def root
     @node = DrupalNode.find_root_by_slug(params[:id])
-    @title = @node.title
     @revision = @node.latest
+    @title = @revision.title
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)
     render :template => "wiki/show"
@@ -170,10 +171,16 @@ class WikiController < ApplicationController
 
   def revision
     @node = DrupalNode.find_by_slug(params[:id])
-    @title = "Revision for '"+@node.title+"'"
     @tags = @node.tags
-    @revision = DrupalNodeRevision.find_by_vid(params[:vid])
-    render :template => "wiki/show"
+    @revision = DrupalNodeRevision.find_by_nid_and_vid(@node.id, params[:vid])
+    if @revision.nil?
+      # revision not found, forward to revision list
+      flash[:error] = "invalid revision " + params[:vid]
+      redirect_to action: 'revisions'
+    else
+      @title = "Revision for '"+@revision.title+"'"
+      render :template => "wiki/show"
+    end
   end
 
   def tags

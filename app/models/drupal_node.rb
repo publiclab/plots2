@@ -197,12 +197,6 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
-  def render_body
-    body = self.body || ""
-    body = RDiscount.new(body, :generate_toc)
-    body.to_html
-  end
-
   # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_main_image
     DrupalMainImage.find :last, :conditions => ['nid = ? AND field_main_image_fid IS NOT NULL',self.nid]

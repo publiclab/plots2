@@ -38,6 +38,19 @@ class AdminController < ApplicationController
     redirect_to "/profile/"+@user.username
   end
 
+  def useremail
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+      if params[:address]
+        # address was submitted. find the username(s) and return.
+        @address = params[:address]
+        @users = User.find_all_by_email(params[:address])
+      end
+    else
+      # unauthorized. instead of return ugly 403, just send somewhere else
+      redirect_to '/dashboard'
+    end
+  end
+
   def spam
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
       if params[:type] == "wiki"
