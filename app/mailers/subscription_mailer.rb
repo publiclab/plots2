@@ -56,21 +56,19 @@ class SubscriptionMailer < ActionMailer::Base
   def get_tag_subscribers(node)
     tids = get_node_tags(node)
     # include special tid for indiscriminant subscribers who want it all!
-    tids += [-1,]
+    all_tag = 0
+    tids += [all_tag,]
     usertags = TagSelection.find(:all, :conditions => ["tid IN (?) AND following = true",tids])
     d = {}
     usertags.each do |usertag|
       # For each row of (user,tag), build a user's tag subscriptions 
+      if (usertag.tid == all_tag) and (usertag.tag.nil?)
+        puts "WARNING: all_tag tid " + String(all_tag) + " not found for DrupalTag! Please correct this!"
+        next
+      end
       d[usertag.user.name] = {:user => usertag.user}
       d[usertag.user.name][:tags] = Set.new if d[usertag.user.name][:tags].nil?
-      if usertag.tag.nil?
-        # name the magic tag appropriately so emails make sense.
-        # this is because the magic tag does not exist in the database
-        # NB this wouldn't be possible if foreign key constraints existed b/c
-        # an actual tag would have to be added into the database -btb
-        d[usertag.user.name][:tags].add('all notes EVAR!1!')
-      else
-        d[usertag.user.name][:tags].add(usertag.tag)
+      d[usertag.user.name][:tags].add(usertag.tag)
       end
     end
     return d
