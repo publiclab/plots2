@@ -69,7 +69,6 @@ class SubscriptionMailer < ActionMailer::Base
       d[usertag.user.name] = {:user => usertag.user}
       d[usertag.user.name][:tags] = Set.new if d[usertag.user.name][:tags].nil?
       d[usertag.user.name][:tags].add(usertag.tag)
-      end
     end
     return d
   end
