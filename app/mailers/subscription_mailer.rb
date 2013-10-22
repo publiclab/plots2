@@ -55,13 +55,23 @@ class SubscriptionMailer < ActionMailer::Base
   # that tag. Return a dictionary of tags indexed by user.
   def get_tag_subscribers(node)
     tids = get_node_tags(node)
+    # include special tid for indiscriminant subscribers who want it all!
+    tids += [-1,]
     usertags = TagSelection.find(:all, :conditions => ["tid IN (?) AND following = true",tids])
     d = {}
     usertags.each do |usertag|
       # For each row of (user,tag), build a user's tag subscriptions 
       d[usertag.user.name] = {:user => usertag.user}
       d[usertag.user.name][:tags] = Set.new if d[usertag.user.name][:tags].nil?
-      d[usertag.user.name][:tags].add(usertag.tag)
+      if usertag.tag.nil?
+        # name the magic tag appropriately so emails make sense.
+        # this is because the magic tag does not exist in the database
+        # NB this wouldn't be possible if foreign key constraints existed b/c
+        # an actual tag would have to be added into the database -btb
+        d[usertag.user.name][:tags].add('all notes EVAR!1!')
+      else
+        d[usertag.user.name][:tags].add(usertag.tag)
+      end
     end
     return d
   end
