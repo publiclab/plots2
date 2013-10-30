@@ -55,10 +55,17 @@ class SubscriptionMailer < ActionMailer::Base
   # that tag. Return a dictionary of tags indexed by user.
   def get_tag_subscribers(node)
     tids = get_node_tags(node)
+    # include special tid for indiscriminant subscribers who want it all!
+    all_tag = 0
+    tids += [all_tag,]
     usertags = TagSelection.find(:all, :conditions => ["tid IN (?) AND following = true",tids])
     d = {}
     usertags.each do |usertag|
       # For each row of (user,tag), build a user's tag subscriptions 
+      if (usertag.tid == all_tag) and (usertag.tag.nil?)
+        puts "WARNING: all_tag tid " + String(all_tag) + " not found for DrupalTag! Please correct this!"
+        next
+      end
       d[usertag.user.name] = {:user => usertag.user}
       d[usertag.user.name][:tags] = Set.new if d[usertag.user.name][:tags].nil?
       d[usertag.user.name][:tags].add(usertag.tag)
