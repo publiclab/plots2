@@ -59,7 +59,7 @@
         
         <a class="btn btn-large ban a<%= node.author.id %>" <% if node.author.status == 0 %>style="display:none;"<% end %> data-remote="true" href="/ban/<%= node.author.id %>">Ban</a>
         <a class="btn btn-large unban a-unban<%= node.author.id %>" <% if node.author.status == 1 %>style="display:none;"<% end %> data-remote="true" href="/unban/<%= node.author.id %>">Unban</a>
-        <%= link_to "/notes/delete/"+node.id.to_s, :confirm => 'Are you sure?', :remote => true, :class => "btn btn-large delete" do %>
+        <%= link_to "/notes/delete/"+node.id.to_s, :confirm => 'Are you sure you want to delete "'+node.path+' ?"', :remote => true, :class => "btn btn-large delete" do %>
           <i class="icon-trash"></i>
         <% end %>
       </div>
