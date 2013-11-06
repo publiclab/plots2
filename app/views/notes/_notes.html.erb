@@ -13,6 +13,7 @@
           | <a href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
           | <%= number_with_delimiter(node.totalcount) %> views
           | <i style="color:#888;" class="icon icon-star-empty"></i> <%= node.likes %>
+          <% if logged_in_as(['admin','moderator']) %>| <a class="btn btn-small" href="/moderate/spam/<%= node.id %>"><i class="icon icon-ban-circle"></i> Spam</a><% end %>
         </small></p>
         <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
         <p><a href="<%= node.path %>">Read more &raquo;</a></p>

@@ -10,6 +10,8 @@ Dear <%= @user.name %>,
 
 <hr /> 
 
+<% if @user.role == "admin" || @user.role == "moderator" %>Does this look like spam? <a class="btn btn-small" href="http://publiclab.org/moderate/spam/<%= @node.id %>">Spam</a><% end %>
+
 <div style="color:#aaa;">
 
 <p>You received this email because you are subscribed to the following tags: <%= @tags.to_a.collect(&:name).join(",") %>.</p>

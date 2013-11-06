@@ -69,7 +69,10 @@ class AdminController < ApplicationController
       @node = DrupalNode.find params[:id]
       @node.status = 0
       @node.save
-      flash[:notice] = "Item marked as spam. You can undo this on the <a href='/spam'>spam moderation page</a>."
+      # ban the user too
+      @node.author.user.status = 0
+      @node.author.user.save({})
+      flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
       redirect_to "/dashboard"
     else
       flash[:error] = "Only moderators can publish posts."
