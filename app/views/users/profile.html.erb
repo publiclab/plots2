@@ -54,6 +54,7 @@
   <h3 style="margin-top:0;"><%= @user.name %> 
     <small> 
       <%= @user.node_count %> <a href="/notes/author/<%= @user.name %>">research notes</a> and wiki edits
+      <% if current_user && current_user.role == "admin" %> | <%= @user.email %><% end %>
       <% if @user.role == "moderator" %> | <i class="icon icon-certificate"></i> Moderator<% end %>
       <% if @user.role == "admin" %> | <i class="icon icon-certificate"></i> Admin<% end %>
       <% if @user.status == 0 %> | <i class="icon icon-ban-circle" style="color:#a00;"></i> Banned<% end %>
