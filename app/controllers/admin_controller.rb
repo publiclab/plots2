@@ -67,13 +67,19 @@ class AdminController < ApplicationController
   def mark_spam
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
       @node = DrupalNode.find params[:id]
-      @node.status = 0
-      @node.save
-      # ban the user too
-      @node.author.user.status = 0
-      @node.author.user.save({})
-      flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
-      redirect_to "/dashboard"
+      if @node.status == 1
+        @node.status = 0
+        @node.save
+        # ban the user too
+        author = @node.author
+        author.status = 0
+        author.save
+        flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
+        redirect_to "/dashboard"
+      else
+        flash[:notice] = "Item already marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
+        redirect_to "/dashboard"
+      end
     else
       flash[:error] = "Only moderators can publish posts."
       redirect_to @node.path
