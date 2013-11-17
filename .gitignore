@@ -12,6 +12,7 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
+/log/*
 /tmp
 *.swp
 .DS_Store
@@ -24,3 +25,4 @@ config/config.yml
 config/initializers/site_keys.rb
 Gemfile.lock
 /public/system*
+/db/openid-store/
