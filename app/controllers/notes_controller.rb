@@ -193,7 +193,7 @@ class NotesController < ApplicationController
   end
 
   def rss
-    @notes = DrupalNode.find(:all, :limit => 20, :order => "nid DESC", :conditions => {:type => 'note', :status => 1})
+    @notes = DrupalNode.find(:all, :limit => 20, :order => "nid DESC", :conditions => ["type = ? AND status = 1 AND created < ?",'note',(Time.now.to_i-30.minutes.to_i)])
     respond_to do |format|
       format.rss {
         render :layout => false
