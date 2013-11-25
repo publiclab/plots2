@@ -21,28 +21,35 @@ class Spamaway < Tableless
               'I have a heart.',
               'I eat food.',
               'I live on Earth.',
-              'I am an organism',
-              'I drink water' ]
+              'I am an organism.',
+              'I drink water.' ]
 
   @@robot = [ 'I am a robot.',
               'I am a central processing unit.',
               'I am a computer.',
               'I am an algorithm.',
-              'I live in a computer.',
+              'I live inside a computer.',
               'I am here to write advertisements.' ]
 
-  def get_pairs(how_many)
-    # return how_many pairs of human/robot statements.
-    if (how_many <= 0) or (how_many > @@human.size) or (how_many > @@robot.size)
+  def self.get_pairs(how_many)
+    # static method to return how_many pairs of human/robot statements.
+    if (how_many <= 0) or (how_many > @@human.length) or (how_many > @@robot.length)
       raise ArgumentError, "Cannot return " + how_many + " statements."
     end
 
+    # randomly select how_many statements from each list
     human_perms = @@human.permutation(how_many).to_a
     robot_perms = @@robot.permutation(how_many).to_a
-    human_index = rand(human_perms.size)
-    robot_index = rand(robot_perms.size)
+    human_index = rand(human_perms.length)
+    robot_index = rand(robot_perms.length)
 
-    human_perms[human_index].zip(robot_perms[robot_index])
+    # slap pairs together
+    pairs = human_perms[human_index].zip(robot_perms[robot_index])
+    # randomly flip human/robot order for each statement pair
+    pairs.each_index {
+      |i| pairs[i] = pairs[i].permutation.to_a[rand()*2]
+    }
+    return pairs
   end
 
   def human_response?(response)

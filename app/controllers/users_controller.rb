@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_filter :require_user, :only => [:update]
 
   def new
+    @spamaway = Spamaway.new
     @user = User.new
     @action = "create" # sets the form url
   end
@@ -9,7 +10,9 @@ class UsersController < ApplicationController
   def create
     # craft a publiclaboratory OpenID URI around the PL username given:
     params[:user][:openid_identifier] = "http://old.publiclab.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
+    @spamaway = Spamaway.new(params[:spamaway])
     @user = User.new(params[:user])
+    if @spamaway.valid?
 #    if params[:user]
       @user.save({}) do |result| # <<<<< THIS LINE WAS THE PROBLEM FOR "Undefined [] for True" error...
         if result
@@ -29,9 +32,10 @@ class UsersController < ApplicationController
           render :action => 'new'
         end
       end
-#    else
-#      render :action => 'new'
-#    end
+    else
+      @action = "create"
+      render :action => 'new'
+    end
   end
 
   def update
