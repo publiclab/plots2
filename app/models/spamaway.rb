@@ -3,19 +3,33 @@ class Spamaway < Tableless
   # them alongside random strings.
   # There is no actual data in the database.
 
+  column :follow_instructions, :string
+  column :statement1, :string
+  column :statement2, :string
+  column :statement3, :string
+  column :statement4, :string
+
+  attr_accessible :follow_instructions,
+                  :statement1,
+                  :statement2,
+                  :statement3,
+                  :statement4
+
+  validate :clean_honeypot, :human_responses
+
   @@human = [ 'I am a person.',
-            'I have a heart.',
-            'I eat food.',
-            'I live on Earth.',
-            'I am an organism',
-            'I drink water' ]
+              'I have a heart.',
+              'I eat food.',
+              'I live on Earth.',
+              'I am an organism',
+              'I drink water' ]
 
   @@robot = [ 'I am a robot.',
-            'I am a central processing unit.',
-            'I am a computer.',
-            'I am an algorithm.',
-            'I live in a computer.',
-            'I am here to write advertisements.' ]
+              'I am a central processing unit.',
+              'I am a computer.',
+              'I am an algorithm.',
+              'I live in a computer.',
+              'I am here to write advertisements.' ]
 
   def get_pairs(how_many)
     # return how_many pairs of human/robot statements.
@@ -29,6 +43,31 @@ class Spamaway < Tableless
     robot_index = rand(robot_perms.size)
 
     human_perms[human_index].zip(robot_perms[robot_index])
+  end
+
+  def human_response?(response)
+    # return True if response is a human response, False otherwise.
+    return @@human.member? response
+  end
+
+  private
+
+  def clean_honeypot
+    # errors if the honeypot (follow_instructions) is not clean.
+    if not (follow_instructions.blank? or follow_instructions == "")
+      errors.add(:follow_instructions, "You didn't follow directions.")
+    end
+  end
+
+  def human_responses
+    # confirms all statements are human responses.
+    statements = [statement1, statement2, statement3, statement4]
+    # turn statements into T/F array and keep only the Trues
+    not_robot = statements.map { |a| human_response? a } .select { |a| a } 
+    # make sure the number of Trues matches the number of original statements
+    if (statements.length != not_robot.length)
+      errors.add(:statement1, "Beep!Boop!Beep! Turing Test Fail!")
+    end
   end
 
 end
