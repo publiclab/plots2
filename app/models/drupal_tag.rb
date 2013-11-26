@@ -59,7 +59,7 @@ class DrupalTag < ActiveRecord::Base
     tids = DrupalTag.find(:all, :conditions => ['name IN (?)',tagnames]).collect(&:tid)
     nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
     nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
-    DrupalNode.find_all_by_type type, :conditions => ["node.nid in (?)",nids.uniq], :order => "node_revisions.timestamp DESC", :limit => limit, :include => :drupal_node_revision
+    DrupalNode.find_all_by_type type, :conditions => ["node.status = 1 AND node.nid in (?)",nids.uniq], :order => "node_revisions.timestamp DESC", :limit => limit, :include => :drupal_node_revision
   end
 
   # just like find_nodes_by_type, but searches wiki pages, places, and tools
