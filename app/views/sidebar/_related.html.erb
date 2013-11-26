@@ -63,7 +63,7 @@
   </ul>
   <% end %>
 
-  <% if @wikis && @wikis.length > 0 && (@ndoe && !@node.has_tag('tabbed:wikis')) %>
+  <% if @wikis && @wikis.length > 0 && (@node && !@node.has_tag('tabbed:wikis')) %>
   <% if params[:controller] == "notes" && params[:action] == "index" %>
     <h4>Recent wiki edits</h4>
   <% else %>
