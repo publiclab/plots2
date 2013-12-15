@@ -33,6 +33,13 @@ class UsersController < ApplicationController
         end
       end
     else
+      # register any user errors
+      @user.valid?
+      # pipe all spamaway errors into the user error display
+      @spamaway.errors.full_messages.each do |message|
+          @user.errors.add(:spam_detection, message)
+      end
+      # send all errors to the page so the user can try again
       @action = "create"
       render :action => 'new'
     end
