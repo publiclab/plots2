@@ -64,7 +64,7 @@
   </ul>
   <% end %>
 
-  <% if @wikis && @wikis.length > 0 && (@node && !@node.has_tag('tabbed:wikis')) %>
+  <% if @wikis && @wikis.length > 0 || (@node && !@node.has_tag('tabbed:wikis') && @wikis && @wikis.length > 0) %>
   <% if params[:controller] == "notes" && params[:action] == "index" %>
     <h4>Recent wiki edits</h4>
   <% else %>
@@ -82,7 +82,7 @@
   </ul>
   <% end %>
 
-  <% if @notes && @notes.length > 0 && params[:controller] != "tag" %>
+  <% if @notes && @notes.length > 0 && params[:controller] != "tag" && params[:controller] != "search" %>
   <h4>Related research notes</h4>
   <ul class="nav bullet">
     <% @notes.each do |note| %>
