@@ -237,3 +237,11 @@ a i.icon-white { color:white; }
   color:#888;
   text-decoration:none;
 }
+
+#carousel h1, #carousel h2, #carousel h3, #carousel h4, #carousel h5 {
+  color:white;
+}
+#carousel i { /* hide the permalink anchors */
+  display:none;
+}
+

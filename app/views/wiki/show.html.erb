@@ -1,4 +1,4 @@
-<% if (@wikis.nil? && @notes.nil?) %>
+<% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
 <%= render :partial => "sidebar/featured" %>
 <% else %>
 <%= render :partial => "sidebar/related" %>
@@ -66,7 +66,7 @@
     <% end %>
 
     <div class="tab-pane active" id="tab-overview">
-      <div style="overflow:hidden;max-width:800px;" id="content">
+      <div<% unless @node.has_tag('style:wide') %> style="overflow:hidden;max-width:800px;"<% end %> id="content">
       <%= raw auto_link(@revision.render_body, :sanitize => false) %>
       </div>
     </div>
