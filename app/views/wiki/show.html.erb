@@ -1,3 +1,4 @@
+<% @presentation = @node.has_tag('style:presentation') %>
 <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
 <%= render :partial => "sidebar/featured" %>
 <% else %>
@@ -14,27 +15,28 @@
     <%= render :partial => "like/like" %>
   </div>
 
-  <h2><%= @revision.title %></h2>
+  <h2><%= @revision.title %> <a href="javascript:$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a></h2>
 
-  <div class="hidden-print">
-    <div class="pull-right" style="padding-top:8px;">
-      <span class="hidden-desktop">
-        <%= @revision.created_at.to_s(:short) %>
-      </span>
-      <span class="hidden-phone">
-        <%= number_with_delimiter(@node.totalcount) %> views | 
-        Last edited by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a> <%= time_ago_in_words(@node.latest.created_at) %> ago
-      </span>
-    </div>
+  <div <% if @presentation %>style="display:none" <% end %>id="wiki-toolbar">
+    <div class="hidden-print">
+      <div class="pull-right" style="padding-top:8px;">
+        <span class="hidden-desktop">
+          <%= @revision.created_at.to_s(:short) %>
+        </span>
+        <span class="hidden-phone">
+          <%= number_with_delimiter(@node.totalcount) %> views | 
+          Last edited by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a> <%= time_ago_in_words(@node.latest.created_at) %> ago
+        </span>
+      </div>
  
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#"><span class="hidden-tiny">View</span><span class="visible-tiny"><i class="icon icon-file-alt"></i></span></a></li>
-      <li><a href="<%= @node.edit_path %>"><i class="icon icon-pencil"></i><span class="hidden-phone"> Edit</span></a></li>
-      <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you absolutely sure you want to delete '"+@node.path+"'? All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page." do %><i class="icon icon-trash"></i><span class="hidden-phone"> Delete</span><% end %></li><% end %>
-      <li><a href="http://pad.publiclab.org/p/<%= @node.slug %>"><i class="icon icon-comments-alt"></i><span class="hidden-phone"> Talk</span></a></li>
-      <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i><span class="hidden-phone"> Revisions </span><span class="hidden-tiny">(<%= @node.revisions.length %>)</span></a></li>
-      <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
-    </ul>
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#"><span class="hidden-tiny">View</span><span class="visible-tiny"><i class="icon icon-file-alt"></i></span></a></li>
+        <li><a href="<%= @node.edit_path %>"><i class="icon icon-pencil"></i><span class="hidden-phone"> Edit</span></a></li>
+        <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you absolutely sure you want to delete '"+@node.path+"'? All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page." do %><i class="icon icon-trash"></i><span class="hidden-phone"> Delete</span><% end %></li><% end %>
+        <li><a href="http://pad.publiclab.org/p/<%= @node.slug %>"><i class="icon icon-comments-alt"></i><span class="hidden-phone"> Talk</span></a></li>
+        <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i><span class="hidden-phone"> Revisions </span><span class="hidden-tiny">(<%= @node.revisions.length %>)</span></a></li>
+      </ul>
+    </div>
   </div>
 
   <% if @node.has_power_tag('tabbed') %>
@@ -77,6 +79,8 @@
 
   <div class="hidden-print">
     <%= render :partial => "tag/tagging" %>
+    <hr />
+    <%= render :partial => "home/social" %>
   </div>
 
 </div><!--/span-->
