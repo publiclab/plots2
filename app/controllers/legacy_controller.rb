@@ -1,5 +1,9 @@
 class LegacyController < ApplicationController
 
+  def ioby
+    redirect_to "http://ioby.org/campaign/community-science-public-lab", :status => 301
+  end
+
   def notes
     if params[:id]
       redirect_to "/tag/"+params[:id], :status => 301
