@@ -225,7 +225,7 @@
 
       <div class="header-spacer hidden-phone"></div>
 
-        <% unless @node.has_tag('style:nobanner') %>
+        <% if @node && !@node.has_tag('style:nobanner') %>
           <div id="donate">
             <div class="well visible-desktop hidden-print" style="padding:12px 20px 10px;">
               <h4 style="display:inline;">Did you know that Public Lab is an open community supported by a nonprofit?</h4> 
