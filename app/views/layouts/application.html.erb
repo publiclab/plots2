@@ -225,7 +225,7 @@
 
       <div class="header-spacer hidden-phone"></div>
 
-        <%# unless current_user || params[:controller] == "user_sessions" || params[:controller] == "home" && params[:action] == "front" %>
+        <% unless @node.has_tag('style:nobanner') %>
           <div id="donate">
             <div class="well visible-desktop hidden-print" style="padding:12px 20px 10px;">
               <h4 style="display:inline;">Did you know that Public Lab is an open community supported by a nonprofit?</h4> 
@@ -235,15 +235,7 @@
               <a href="/donate" style="margin-bottom:6px;" class="btn btn-success btn-large btn-block">Donate to <span class="hidden-tiny">the</span> Public Lab <span class="hidden-tiny">non-profit</span> &raquo;</a>
             </div>
           </div>
-
-          <script>
-            (function(){
-              //setTimeout(function(){
-               // $('#donate').fadeOut()
-              //},3500)
-            })()
-          </script>
-        <%# end %>
+        <% end %>
 
       <%= render :partial => "layouts/alerts" %>
 
