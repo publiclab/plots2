@@ -76,6 +76,8 @@ class MapController < ApplicationController
       # need to create/delete these. Maybe best just make a new field, no need to store individual records
       #@node.drupal_content_field_map_editor
       #@node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ')
+      # combined record as string: 
+      map.authorship                      = params[:map][:authorship]
 
       if @node.save && @revision.save && map.save
         flash[:notice] = "Edits saved."
