@@ -37,7 +37,9 @@
   })()
   </script>
 
-  <h3 style="margin-top:0;">Contributors for <i style="color:#aaa;"><%= params[:id] %></i> (<%= @users.length || 0 %>)</h3>
+  <h3 style="margin-top:0;">Contributors for <i style="color:#aaa;"><%= params[:id] %></i></h3>
+  <p><i>Above: contributions over the past year.</p>
+  <p><%= @users.length || 0 %> people have contributed <%= @notes.length %> research notes and <%= @wikis.length %> wiki pages tagged with "<%= params[:id] %>"</i></p>
 
   <% if current_user %>
   <!-- AJAXify -->

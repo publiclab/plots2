@@ -10,7 +10,7 @@
         <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
         <p style="color:#888;"><small>by 
           <%= node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ') %>
-          | <%= time_ago_in_words(node.map.captured_on) %> ago
+          <% unless node.map.captured_on == "" %>| <%= time_ago_in_words(node.map.captured_on) %> ago<% end %>
           | <a href="/<%= node.slug %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
           | <i style="color:#888;" class="icon icon-star-empty"></i> <%= node.likes %>
        </small></p>
