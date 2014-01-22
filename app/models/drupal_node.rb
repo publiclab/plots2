@@ -403,7 +403,7 @@ class DrupalNode < ActiveRecord::Base
 
   def lat
     if self.has_power_tag("lat")
-      self.power_tag("lat").to_i 
+      self.power_tag("lat").to_f 
     else
       self.location[:y]
     end
@@ -411,7 +411,7 @@ class DrupalNode < ActiveRecord::Base
 
   def lon
     if self.has_power_tag("lon")
-      self.power_tag("lon").to_i 
+      self.power_tag("lon").to_f 
     else
       self.location[:x]
     end
