@@ -6,6 +6,9 @@ class TagController < ApplicationController
   def show
     set_sidebar :tags, [params[:id]], {:note_count => 100}
 
+puts ">>>>>>>>>>>>>>>>"
+puts params[:id]
+puts @wikis.collect(&:title)
     @tags = DrupalTag.find_all_by_name params[:id]
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(', ') if @tagnames

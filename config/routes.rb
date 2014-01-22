@@ -10,6 +10,8 @@ Plots2::Application.routes.draw do
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
 
+  match 'ioby' => "legacy#ioby"
+
   match 'login' => "user_sessions#new",      :as => :login
   match 'logout' => "user_sessions#destroy", :as => :logout
   match 'register' => 'users#create'

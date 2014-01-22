@@ -67,7 +67,7 @@ class DrupalTag < ActiveRecord::Base
     tids = DrupalTag.find(:all, :conditions => ['name IN (?)',tagnames]).collect(&:tid)
     nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
     nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
-    DrupalNode.find :all, :conditions => ["node.nid in (?) AND (node.type = 'place' OR node.type = 'tool' OR node.type = 'page')",nids.uniq], :order => "node_revisions.timestamp DESC", :limit => limit, :include => :drupal_node_revision
+    DrupalNode.find :all, :conditions => ["node.status = 1 AND node.nid in (?) AND (node.type = 'place' OR node.type = 'tool' OR node.type = 'page')",nids.uniq], :order => "node_revisions.timestamp DESC", :limit => limit, :include => :drupal_node_revision
   end
 
   def self.find_nodes_by_type_with_all_tags(tagnames,type = "note",limit = 10)

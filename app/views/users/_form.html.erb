@@ -36,6 +36,33 @@
     </div>
   </div>
 
+  <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
+  <%= fields_for @spamaway do |spam| %>
+    <div class="control-group">
+      <label class="control-label" for="spamaway_follow_instructions"><b>Are you human?</b></label>
+      <% vars = [:statement1, :statement2, :statement3, :statement4] %>
+      <% turingtest = Spamaway.get_pairs vars.length %>
+      <% turingtest.each_index do |i| %>
+      <div class="controls">
+        <p><fieldset>
+        <% [0,1].each do |s| %><% statement = turingtest[i][s] %>
+          <label class="radio-inline">
+          <%= spam.radio_button vars[i], statement %> <%= statement %>
+          </label>
+        <% end %>
+        </fieldset></p>
+      </div>
+      <% end %>
+
+      <label class="control-label" for="spamaway_follow_instructions"><b>Do not write anything here</b></label>
+      <div class="controls">
+        <%= spam.text_area :follow_instructions, {:class => "span6", :rows => 8, :tabindex => 7} %>
+      </div>
+
+    </div>
+  <% end %>
+  <% end %>
+
   <% if params[:controller] == "users" && params[:action] == "new" %>
     <!-- email lists here -->
   <% end %>
