@@ -43,7 +43,7 @@
     <label>TMS URL (required)       </label><input id="map_field_tms_url_value"             tabindex="6" name="map[field_tms_url_value]"             type="text" class="span9" placeholder="TMS URL"              value="<%= @node.map.field_tms_url_value if @node.map %>"><br />
     <label>TMS tile type            </label><input id="map_field_tms_tile_type_value"       tabindex="7" name="map[field_tms_tile_type_value]"       type="text" class="span9" placeholder="TMS tile type"        value="<%= @node.map.field_tms_tile_type_value if @node.map %>"><br />
 
-    <label>By (cartographer and mappers)    </label><input id="map_authorship"    tabindex="8"  name="map[authorship]" type="text" class="span9" placeholder="authorship" value="<%= @node.map.authorship %>" /><br />
+    <label>By (cartographer and mappers)    </label><input id="map_authorship"    tabindex="8"  name="map[authorship]" type="text" class="span9" placeholder="authorship" value="<%= @node.map.authorship if @node.map %>" /><br />
 
     <label>Mapped by    </label><input id="map_field_publication_date_value"    tabindex="9"  name="map[field_publication_date_value]"    type="text" class="span9" placeholder=""     value="<%= @node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ') %>" disabled /><br />
     <label>Cartographer </label><input id="map_field_capture_date_value" tabindex="10" type="text" class="span9" value="<%= @node.drupal_content_field_map_editor.collect(&:field_map_editor_value).uniq.join(', ') %>" disabled /><br />
