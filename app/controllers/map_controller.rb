@@ -159,6 +159,7 @@ class MapController < ApplicationController
         # need to create/delete these. Maybe best just make a new field, no need to store individual records
         #@node.drupal_content_field_map_editor
         #@node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ')
+        map.authorship                      = params[:map][:authorship]
  
         ActiveRecord::Base.transaction do # in case only part of this completes
           if @node.save && @revision.save && map.save
