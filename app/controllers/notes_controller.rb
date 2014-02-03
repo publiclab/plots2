@@ -71,7 +71,7 @@ class NotesController < ApplicationController
         # trigger subscription notifications:
         SubscriptionMailer.notify_node_creation(@node)
         # opportunity for moderation
-        flash[:notice] = "Research note published. Get the word out on <a href='/wiki/mailing-lists'>the discussion lists</a>."
+        flash[:notice] = "Research note published. Get the word out on <a href='/wiki/mailing-lists'>the discussion lists</a>. For a 5% discount on <a href='http://store.publiclab.org'>Public Lab kits</a>, use discount code <b>RESEARCHNOTEFEBRUARY</b>."
         redirect_to @node.path
       else
         render :template => "editor/post"
