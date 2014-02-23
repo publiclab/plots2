@@ -3,8 +3,10 @@ $E = {
     args = args || {}
     args['textarea'] = args['textarea'] || 'text-input'
     $E.textarea = $('#'+args['textarea'])
+    $E.title = $('#title')
     args['preview'] = args['preview'] || 'preview'
     $E.preview = $('#'+args['preview'])
+    $E.textarea.bind('input propertychange',$E.save)
 
     marked.setOptions({
       gfm: true,
@@ -77,6 +79,15 @@ $E = {
   },
   h7: function() {
     $E.wrap('#######','')
+  },
+  // this function is dedicated to Don Blair https://github.com/donblair
+  save: function() {
+    localStorage.setItem('plots:lastpost',$E.textarea.val())
+    localStorage.setItem('plots:lasttitle',$E.title.val())
+  },
+  recover: function() {
+    $E.textarea.val(localStorage.getItem('plots:lastpost'))
+    $E.title.val(localStorage.getItem('plots:lasttitle'))
   },
   apply_template: function(template) {
     if ($E.textarea.val() != "") $E.textarea.val($E.textarea.val()+'\n\n'+$E.templates[template])
