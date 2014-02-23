@@ -36,6 +36,7 @@
   </head>
 
   <body>
+
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
@@ -162,8 +163,19 @@
               <li><a href="/donate">Donate</a></li>
             </ul>
 
+            <div id="chat" class="chat-popover" data-placement="bottom" style="display:none;">
+              <a style="margin-right:4px;" class="pull-right btn btn-small" href="http://chat.treehouse.su/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>" target="_blank">pop out</a>
+              <p class="popover-title">Public Lab chatroom</p>
+              <iframe width="400px" height="300px" src="http://chat.treehouse.su/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>"></iframe>
+            </div>
+
             <% unless params[:action] == "register" || params[:action] == "signup" %>
             <ul class="nav pull-right">
+              <li class="dropdown">
+                <a onClick="$('#chat').toggle()">
+                  <i class="icon-white icon-comments"></i>
+                </a> 
+              </li>
               <li class="dropdown">
                 <% if current_user %>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
