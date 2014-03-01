@@ -10,9 +10,12 @@
         <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
         <p style="color:#888;"><small>by 
           <%= node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ') %>
-          <% unless node.map.captured_on == "" %>| <%= time_ago_in_words(node.map.captured_on) %> ago<% end %>
+          <% unless !node.map || node.map.captured_on == "" %>| <%= time_ago_in_words(node.map.captured_on) %> ago<% end %>
           | <a href="/<%= node.slug %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
           | <i style="color:#888;" class="icon icon-star-empty"></i> <%= node.likes %>
+          <% if current_user && current_user.role == "admin" %>| <%= link_to "/map/delete/"+node.id.to_s, :confirm => 'Are you sure?' do %>
+              <i class="icon icon-trash"></i>
+            <% end %><% end %>
        </small></p>
        <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) %></p>
       </div>
