@@ -243,6 +243,24 @@ class DrupalSchema < ActiveRecord::Migration
   add_index "node", ["uid"], :name => "uid"
   add_index "node", ["vid"], :name => "vid"
 
+  create_table "node_access", :id => false, :force => true do |t|
+    t.integer "nid",                       :default => 0,  :null => false
+    t.integer "gid",                       :default => 0,  :null => false
+    t.string  "realm",                     :default => "", :null => false
+    t.integer "grant_view",   :limit => 1, :default => 0,  :null => false
+    t.integer "grant_update", :limit => 1, :default => 0,  :null => false
+    t.integer "grant_delete", :limit => 1, :default => 0,  :null => false
+  end
+
+  create_table "node_comment_statistics", :primary_key => "nid", :force => true do |t|
+    t.integer "last_comment_timestamp",               :default => 0, :null => false
+    t.string  "last_comment_name",      :limit => 60
+    t.integer "last_comment_uid",                     :default => 0, :null => false
+    t.integer "comment_count",                        :default => 0, :null => false
+  end
+
+  add_index "node_comment_statistics", ["last_comment_timestamp"], :name => "node_comment_timestamp"
+
   create_table "node_counter", :primary_key => "nid", :options=>'ENGINE=MyISAM' do |t|
     t.integer "totalcount", :limit => 8, :default => 0, :null => false
     t.integer "daycount",   :limit => 3, :default => 0, :null => false
