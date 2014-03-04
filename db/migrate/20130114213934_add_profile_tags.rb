@@ -8,8 +8,6 @@ class AddProfileTags < ActiveRecord::Migration
       t.text :body
       t.timestamps
     end
-    add_column :users, :lat, :decimal, :precision => 20, :scale => 10, :default => 0.0
-    add_column :users, :lon, :decimal, :precision => 20, :scale => 10, :default => 0.0
   end
 
   def down
