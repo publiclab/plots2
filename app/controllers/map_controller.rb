@@ -25,6 +25,17 @@ class MapController < ApplicationController
     end
   end
 
+  def delete
+    @node = DrupalNode.find(params[:id],:conditions => {:type => "map"})
+    if current_user.uid == @node.uid || current_user.role == "admin" 
+      @node.delete
+      flash[:notice] = "Content deleted."
+      redirect_to "/archive"
+    else
+      prompt_login "Only admins can edit maps at this time."
+    end
+  end
+
   def update
     @node = DrupalNode.find(params[:id],:conditions => {:type => "map"})
     if current_user.uid == @node.uid || current_user.role == "admin" 

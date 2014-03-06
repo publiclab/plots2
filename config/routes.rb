@@ -124,6 +124,7 @@ Plots2::Application.routes.draw do
   match 'maps/:id' => 'map#tag'
   match 'map/edit/:id' => 'map#edit'
   match 'map/update/:id' => 'map#update'
+  match 'map/delete/:id' => 'map#delete'
   match 'map/:name/:date' => 'map#show'
   match 'archive' => 'map#index'
   match 'stats' => 'notes#stats'
