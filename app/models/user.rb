@@ -65,6 +65,16 @@ class User < ActiveRecord::Base
     DrupalUsers.find_by_name(self.username)
   end
 
+  def generate_reset_key
+    # invent a key and save it
+    key = ""
+    20.times do
+      key += [*'a'..'z'].sample
+    end
+    self.reset_key = key
+    key
+  end
+
   def bio
     self.drupal_user.bio
   end

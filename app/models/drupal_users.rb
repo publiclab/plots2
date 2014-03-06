@@ -146,4 +146,21 @@ class DrupalUsers < ActiveRecord::Base
     end
   end
 
+  def migrate
+    u = User.new({
+      :username => self.name,
+      :id => self.uid,
+      :email => self.mail,
+      :openid_identifier => "http://old.publiclab.org/user/"+self.uid.to_s+"/identity"
+    })
+    u.persistence_token = rand(100000000)
+    if u.save(:validate => false) # <= because validations checks for conflict with existing drupal_user.name
+      key = u.generate_reset_key
+      PasswordResetMailer.reset_notify(u,key)
+      return true
+    else
+      return false
+    end
+  end
+
 end

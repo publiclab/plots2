@@ -164,12 +164,7 @@ class UsersController < ApplicationController
     elsif params[:email]
       user = User.find_by_email params[:email]
       if user
-        # invent a key and save it
-        key = ""
-        20.times do
-          key += [*'a'..'z'].sample
-        end
-        user.reset_key = key
+        key = user.generate_reset_key
         user.save({})
         # send key to user email
         PasswordResetMailer.reset_notify(user,key) unless user.nil? # respond the same to both successes and failures; security

@@ -127,6 +127,7 @@ Plots2::Application.routes.draw do
   match 'map/:name/:date' => 'map#show'
   match 'archive' => 'map#index'
   match 'stats' => 'notes#stats'
+  match 'stats/subscriptions' => 'subscription#stats'
   match 'feed' => 'notes#rss'
   match 'rss.xml' => 'legacy#rss'
 
@@ -142,6 +143,7 @@ Plots2::Application.routes.draw do
   match 'admin/promote/moderator/:id' => 'admin#promote_moderator'
   match 'admin/demote/basic/:id' => 'admin#demote_basic'
   match 'admin/promote/admin/:id' => 'admin#promote_admin'
+  match 'admin/migrate/:id' => 'admin#migrate'
   
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase

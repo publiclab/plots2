@@ -182,4 +182,22 @@ class AdminController < ApplicationController
     end
   end
 
+  def migrate
+    if current_user && current_user.role == "admin"
+      du = DrupalUsers.find params[:id]
+      if du.user
+        flash[:error] = "The user has already been migrated."
+      else 
+        if du.migrate
+          flash[:notice] = "The user was migrated! Enthusiasm!"
+        else
+          flash[:error] = "The user could not be migrated."
+        end
+      end
+    else
+      flash[:error] = "Only admins can migrate users."
+    end
+    redirect_to "/profile/"+du.name
+  end
+
 end
