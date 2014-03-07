@@ -32,6 +32,10 @@ a i.icon-white { color:white; }
   color:white;
 }
 
+.label {
+  margin-bottom:3px;
+}
+
 .alert h2 {
   font-size:1.2em;
 }

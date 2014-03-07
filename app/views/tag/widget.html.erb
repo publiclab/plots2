@@ -1,0 +1,17 @@
+<link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+<link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="/bootstrap/css/bootstrap-lightbox.min.css" rel="stylesheet">
+<%= stylesheet_link_tag    "application", :media => "all" %>
+<link href="/assets/print.css" media="print" rel="stylesheet" type="text/css" />
+
+<% if @notes.nil? || @notes.length == 0 %>
+  <p>No results found; try searching for '<b><%= params[:id] %></b>':</p>
+
+  <%= render :partial => "search/search" %>
+
+  <p>Or try an <a href="/search/advanced/">advanced search</a></p>
+<% else %>
+  <%= render :partial => "notes/notes" %>
+<% end %>
+

@@ -6,14 +6,18 @@ class TagController < ApplicationController
   def show
     set_sidebar :tags, [params[:id]], {:note_count => 100}
 
-puts ">>>>>>>>>>>>>>>>"
-puts params[:id]
-puts @wikis.collect(&:title)
     @tags = DrupalTag.find_all_by_name params[:id]
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(', ') if @tagnames
 
     @unpaginated = true
+  end
+
+  def widget
+    num = params[:n] || 4
+    nids = DrupalTag.find_nodes_by_type(params[:id],'note',num).collect(&:nid)
+    @notes = DrupalNode.paginate(:conditions => ['status = 1 AND nid in (?)', nids], :order => "nid DESC", :page => params[:page])
+    render :layout => false
   end
 
   def blog
