@@ -18,6 +18,7 @@
 
   <p>Or try an <a href="/search/advanced/">advanced search</a></p>
 <% else %>
+  <% @compact = true %>
   <%= render :partial => "notes/notes" %>
 <% end %>
 
