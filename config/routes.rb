@@ -109,6 +109,7 @@ Plots2::Application.routes.draw do
   match 'tag/create/:nid' => 'tag#create'
   match 'tag/delete/:nid/:tid' => 'tag#delete'
   match 'feed/tag/:tagname' => 'tag#rss'
+  match 'feed/liked' => 'notes#liked_rss'
 
   match 'dashboard' => 'home#dashboard'
   match 'dashboard/comments' => 'home#comments'
