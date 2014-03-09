@@ -3,14 +3,14 @@
     <% @notes.each_with_index do |node,i| %>
       <div class="span3 clearfix note" style="overflow:hidden;">
         <% if node.main_image %>
-          <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
-          <a class="hidden-phone thumbnail" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <a class="visible-phone thumbnail" <% if @widget %>target="_blank"<% end %> style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <a class="hidden-phone thumbnail" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
         <% end %>
-        <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
+        <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= node.title %></a></h4>
         <p style="color:#888;"><small>
-          by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
+          by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
           | <%= time_ago_in_words(node.created_at) %> ago
-          | <a href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
+          | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
           | <%= number_with_delimiter(node.totalcount) %> views
           | <i style="color:#888;" class="icon icon-star-empty"></i> <%= node.likes %>
           <% if logged_in_as(['admin','moderator']) %>| <a class="btn btn-small" href="/moderate/spam/<%= node.id %>"><i class="icon icon-ban-circle"></i> Spam</a><% end %>
