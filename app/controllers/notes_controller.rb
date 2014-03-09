@@ -202,4 +202,14 @@ class NotesController < ApplicationController
     end
   end
 
+  def liked_rss
+    @notes = DrupalNode.find(:all, :limit => 20, :order => "created DESC", :conditions => ['type = ? AND status = 1 AND cached_likes > 0', 'note'])
+    respond_to do |format|
+      format.rss {
+        render :layout => false, :template => "notes/rss"
+        response.headers["Content-Type"] = "application/xml; charset=utf-8"
+      } 
+    end
+  end
+
 end
