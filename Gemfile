@@ -54,6 +54,8 @@ gem "authlogic"
 #gem "authlogic-oid", :require => "authlogic_openid"
 gem "php-serialize", :require => "php_serialize"
 
+gem "scrypt", "~> 1.2.1"
+
 group :development, :test do
   #gem 'rspec-rails'
   gem 'factory_girl_rails'
