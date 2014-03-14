@@ -45,7 +45,7 @@ class TagController < ApplicationController
       if DrupalTag.exists?(tagname,params[:nid])
         response[:errors] << "Error: that tag already exists."
       else 
-        saved,tag = node.add_tag(tagname.chomp,current_user)
+        saved,tag = node.add_tag(tagname.strip,current_user)
         if saved
           response[:saved] << [tag.name,tag.id]
         else
