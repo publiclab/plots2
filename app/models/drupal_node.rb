@@ -247,6 +247,10 @@ class DrupalNode < ActiveRecord::Base
     DrupalNode.find self.power_tags("response")
   end
 
+  def responses
+    DrupalTag.find_nodes_by_type(["response:"+self.id.to_s])
+  end
+
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(tag)
     DrupalNodeCommunityTag.find(:all,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)]).length > 0
