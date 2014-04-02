@@ -28,7 +28,7 @@
   </ul>
   <% end %>
 
-  <% responses = @node.responses %>
+  <% responses = @node.responses if @node %>
   <% if @node && responses %>
   <h4>Responses to this note</h4>
   <ul class="nav bullet">
