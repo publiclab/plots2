@@ -64,7 +64,7 @@ class NotesController < ApplicationController
       })
       if saved
         if params[:tags]
-          params[:tags].split(',').each do |tagname|
+          params[:tags].gsub(' ',',').split(',').each do |tagname|
             @node.add_tag(tagname.strip,current_user)
           end
         end
@@ -99,7 +99,7 @@ class NotesController < ApplicationController
       @revision.title = params[:title]
       @revision.body = params[:body]
       if params[:tags]
-        params[:tags].split(',').each do |tagname|
+        params[:tags].gsub(' ',',').split(',').each do |tagname|
           @node.add_tag(tagname,current_user)
         end
       end
