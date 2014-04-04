@@ -18,6 +18,13 @@
 
 <a style="margin-bottom:6px;" rel="tooltip" title="Collaborative pages others can edit" data-placement="bottom" href="/wiki/new" class="btn btn-block hidden-phone"><i class="icon-book"></i> Create wiki page</a>
 <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
-  <a style="clear:left;" rel="tooltip" title="You have permission to moderate spam messages" data-placement="bottom" href="/spam" class="btn btn-block hidden-phone"><i class="icon-ban-circle"></i> Moderate spam</a>
-  <a style="clear:left;" rel="tooltip" title="Search for a user by his or her email address" data-placement="bottom" href="/useremail" class="btn btn-block hidden-phone"><i class="icon-search"></i> Email address search</a>
+  <div class="btn-group hidden-phone">
+    <a href="#" data-toggle="dropdown" class="btn dropdown-toggle"><i class="icon icon-wrench"></i> Tools <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
+        <li><a href="/spam"><i class="icon-ban-circle"></i> Moderate spam</a></li>
+        <li><a href="/useremail"><i class="icon-search"></i> Email address search</a></li>
+      <% end %>
+    </ul>
+  </div>
 <% end %>

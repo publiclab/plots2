@@ -14,11 +14,11 @@
 
   <% else %>
     <h3 class="hidden-phone"><i class="icon-file"></i> What's a <br />research note?</h3>
-    <h4 class="visible-phone"><i class="icon-file"></i> What's a research note?</h4>
-    <p class="visible-phone"><a onClick="$('#research-note-detail').removeClass('hidden-phone')">Read more &raquo;</a></p>
+    <h4 class="visible-phone"><i class="icon-file"></i> What's a research note? <a onClick="$('#research-note-detail').toggleClass('hidden-phone')">Learn more &raquo;</a></h4>
+    
     <div id="research-note-detail" class="hidden-phone">
       <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work.</p>
-      <p><b>Research notes can be:</b></p>
+      <p><b>Research notes can include:</b></p>
       <ul>
         <li>photos of what you've made</li>
         <li>requests for troubleshooting</li>
@@ -117,10 +117,15 @@
 
     <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
 
-    <p>
+    <div class="hidden-phone">
       <a id="publish" tabindex="5" class="btn btn-primary btn-large">Publish</a>
-      <a id="preview-btn" tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-large hidden-phone" onClick="$E.toggle_preview()">Preview</a></p>
-      <a id="preview-btn" data-previewing-text="Edit" class="btn btn-large visible-phone" onClick="$E.toggle_preview()">Preview</a></p>
+      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
+    </div>
+    <div class="visible-phone btn-group">
+      <a id="publish" class="btn btn-primary btn-large">Publish</a>
+      <a data-previewing-text="Edit" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
+    </div>
+    <br />
     <p>By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
   <% end %>
 </div>

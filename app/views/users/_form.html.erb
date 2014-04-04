@@ -39,7 +39,7 @@
   <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
   <%= fields_for @spamaway do |spam| %>
     <div class="control-group">
-      <label class="control-label" for="spamaway_follow_instructions"><b>Are you human?</b></label>
+      <label class="control-label" for="spamaway_follow_instructions"><b>Are you human? (sorry: spam filtering!)</b></label>
       <% vars = [:statement1, :statement2, :statement3, :statement4] %>
       <% turingtest = Spamaway.get_pairs vars.length %>
       <% turingtest.each_index do |i| %>
@@ -54,7 +54,9 @@
       </div>
       <% end %>
 
-      <label class="control-label" for="spamaway_follow_instructions"><b>Do not write anything here</b></label>
+      <br />
+
+      <label class="control-label" for="spamaway_follow_instructions"><b>Don't write anything here if you're a real person.</b></label>
       <div class="controls">
         <%= spam.text_area :follow_instructions, {:class => "span6", :rows => 8, :tabindex => 7} %>
       </div>

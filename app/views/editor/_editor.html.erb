@@ -4,7 +4,7 @@
   <div class="btn-group">
     <a class="btn btn-small" onClick="$E.bold()"><i class="icon-bold"></i></a>
     <a class="btn btn-small" onClick="$E.italic()"><i class="icon-italic"></i></a>
-    <a class="btn btn-small" onClick="$E.h2()"><b>Header</b></a>
+    <a class="btn btn-small" onClick="$E.h2()"><b><span class="hidden-phone">Header</span><span class="visible-phone">H</span></b></a>
   </div>
 
   <div class="btn-group">
@@ -42,7 +42,7 @@
     <div id="progress" style="display:none;" class="progress progress-striped active pull-right">
       <div class="bar" style="width: 0%;"></div>
     </div>
-    <p><span class="uploading" style="display:none;">Uploading...</span><span class="prompt"><span style="padding-right:4px;float:left;" class="hidden-phone">Drag &amp; drop to add an image or file, or </span><span class="fileinput-button"><a>choose one</a><input id="fileinput" type="file" name="image[photo]" style="height:4em;"></span></p>
+    <p><span class="uploading" style="display:none;">Uploading...</span><span class="prompt"><span style="padding-right:4px;float:left;" class="hidden-phone">Drag &amp; drop to add an image or file, or </span><span class="fileinput-button"><a class="hidden-phone">choose one</a><a class="visible-phone"><i class="icon icon-upload"></i> Upload image</a><input id="fileinput" type="file" name="image[photo]" style="height:4em;"></span></p>
   </div>
 </div>
 

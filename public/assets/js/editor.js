@@ -102,10 +102,10 @@ $E = {
   previewing: false,
   toggle_preview: function() {
     $E.preview[0].innerHTML = marked($E.textarea.val());
-    $('#preview-btn').button('toggle');
+    $('.preview-btn').button('toggle');
     $E.previewing = !$E.previewing
-    if ($E.previewing) $('#preview-btn').button('previewing');
-    else $('#preview-btn').button('reset');
+    if ($E.previewing) $('.preview-btn').button('previewing');
+    else $('.preview-btn').button('reset');
     $('#dropzone').toggle()
     $E.preview.toggle();
   }

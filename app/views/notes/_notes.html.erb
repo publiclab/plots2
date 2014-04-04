@@ -11,14 +11,14 @@
           by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
           | <%= time_ago_in_words(node.created_at) %> ago
           | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
-          | <%= number_with_delimiter(node.totalcount) %> views
+          | <i class="visible-phone icon icon-eye-open"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-phone">views</span>
           | <i style="color:#888;" class="icon icon-star-empty"></i> <%= node.likes %>
-          <% if logged_in_as(['admin','moderator']) %>| <a class="btn btn-small" href="/moderate/spam/<%= node.id %>"><i class="icon icon-ban-circle"></i> Spam</a><% end %>
         </small></p>
         <% if @compact.nil? %>
         <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
         <p><a href="<%= node.path %>">Read more &raquo;</a></p>
         <p>
+          <% if logged_in_as(['admin','moderator']) %><a class="btn btn-mini" href="/moderate/spam/<%= node.id %>"><i class="icon icon-ban-circle"></i> Spam</a><% end %>
           <% node.tags[0..3].each do |tag| %>
             <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
           <% end %>
