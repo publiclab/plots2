@@ -19,6 +19,17 @@
 
   <%= render :partial => "sidebar/place" if @node %>
 
+  <% if @node && (@node.has_power_tag('iso') || @node.has_power_tag('lang')) %>
+    <h4>Translation</h4>
+    <p>
+    <div id="google_translate_element"></div><script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false, multilanguagePage: true}, 'google_translate_element');
+      }
+    </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </p>
+  <% end %>
+
   <% if @node && @node.has_power_tag('response') %>
   <h4>This is a response to</h4>
   <ul class="nav bullet">
@@ -29,7 +40,7 @@
   <% end %>
 
   <% responses = @node.responses if @node %>
-  <% if @node && responses %>
+  <% if @node && responses.length > 0 %>
   <h4>Responses to this note</h4>
   <ul class="nav bullet">
     <% responses.each do |note| %>
@@ -107,6 +118,26 @@
   <% end %>
 
   <% if @maps && @maps.length > 0 && params[:controller] != "search" %>
+
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+  <!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
+  <![endif]-->
+  <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
+
+  <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
+ 
+  <script>
+    var map = L.map('map').setView([<%= @node.lat %>,<%= @node.lon %>], 10);
+    L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+ 
+    <% @maps.each do |map| %>
+      L.marker([<%= map.location[:y] %>, <%= map.location[:x] %>]).addTo(map).bindPopup("<a href='<%= map.slug %>'><%= map.title %></a>");
+    <% end %>
+  </script>
+
+<br style="clear:both;" />
+
   <h4>Related maps</h4>
   <ul class="nav bullet">
     <% @maps.each do |note| %>
