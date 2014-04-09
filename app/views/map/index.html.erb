@@ -13,7 +13,7 @@
   L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
 
   <% @maps.each do |map| %>
-    L.marker([<%= map.location[:y] %>, <%= map.location[:x] %>]).addTo(map).bindPopup("<a href='<%= map.slug %>'><%= map.title %></a>");
+    L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='<%= map.slug %>'><%= map.title %></a>");
   <% end %>
 </script>
 
