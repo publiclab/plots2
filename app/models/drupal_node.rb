@@ -408,16 +408,20 @@ class DrupalNode < ActiveRecord::Base
   def lat
     if self.has_power_tag("lat")
       self.power_tag("lat").to_f 
-    else
+    elsif self.location[:y] != 0
       self.location[:y]
+    else
+      false
     end
   end
 
   def lon
     if self.has_power_tag("lon")
       self.power_tag("lon").to_f 
-    else
+    elsif self.location[:x] != 0
       self.location[:x]
+    else
+      false
     end
   end
 
