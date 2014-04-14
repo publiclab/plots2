@@ -83,12 +83,12 @@
                 <li><a href="/wiki/popular/">Popular wiki pages</a></li>
                 <li class="nav-header">Tools</li>
                 <% DrupalTag.find_top_nodes_by_type('tool',['page','tool'],6).each do |node| %>
-                <li><a href="<%= node.path %>"><%= node.title %></a></li>
+                <li><a href="<%= node.path %>"><%= node.latest.title %></a></li>
                 <% end %>
                 <li><a href="/tools">More...</a></li>
                 <li class="nav-header">Places</li>
                 <% DrupalNode.find_all_by_type('place',:limit => 6, :order => 'node_counter.totalcount DESC', :joins => :drupal_node_counter).each do |node| %>
-                <li><a href="<%= node.path %>"><%= node.title %></a></li>
+                <li><a href="<%= node.path %>"><%= node.latest.title %></a></li>
                 <% end %>
                 <li><a href="/places">More...</a></li>
               <% end %>

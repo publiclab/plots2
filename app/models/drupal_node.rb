@@ -329,15 +329,15 @@ class DrupalNode < ActiveRecord::Base
 
   def slug
     if self.type == "page" || self.type == "tool" || self.type == "place"
-      slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+      slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s, :order => "pid DESC").dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
     else
-      slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+      slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s, :order => "pid DESC").dst if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
     end
     slug
   end
 
   def path
-    url_alias = DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+    url_alias = DrupalUrlAlias.find_by_src('node/'+self.id.to_s, :order => "pid DESC")
     if url_alias
       path = "/"+url_alias.dst
       path.gsub!('/place','/wiki') if self.type == "place"
