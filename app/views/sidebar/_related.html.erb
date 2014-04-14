@@ -128,11 +128,16 @@
   <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
  
   <script>
-    var map = L.map('map').setView([<%= @node.lat %>,<%= @node.lon %>], 10);
+    <% if @node.lat %>
+      var lat = <%= @node.lat %>, lon = <%= @node.lon %>
+    <% else %>
+      var lat = <%= @maps.first.lat %>, lon = <%= @maps.first.lon %>
+    <% end %>
+    var map = L.map('map').setView([<%= lat %>,<%= lon %>], 10);
     L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
  
     <% @maps.each do |map| %>
-      L.marker([<%= map.location[:y] %>, <%= map.location[:x] %>]).addTo(map).bindPopup("<a href='<%= map.slug %>'><%= map.title %></a>");
+      L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='<%= map.slug %>'><%= map.title %></a>");
     <% end %>
   </script>
 
