@@ -1,18 +1,20 @@
 class CreateImages < ActiveRecord::Migration
   def up
-    create_table :images do |t|
-      t.string :title
-      t.integer :uid
-      t.integer :nid
-      t.string :notes
-      t.integer :version, :default => 0
+    unless table_exists? "images"
+      create_table :images do |t|
+        t.string :title
+        t.integer :uid
+        t.integer :nid
+        t.string :notes
+        t.integer :version, :default => 0
 
-      # attachment (paperclip)
-      t.string :photo_file_name
-      t.string :photo_content_type
-      t.string :photo_file_size
+        # attachment (paperclip)
+        t.string :photo_file_name
+        t.string :photo_content_type
+        t.string :photo_file_size
 
-      t.timestamps
+        t.timestamps
+      end
     end
   end
 

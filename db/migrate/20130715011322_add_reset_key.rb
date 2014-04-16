@@ -1,6 +1,8 @@
 class AddResetKey < ActiveRecord::Migration
   def up
-    add_column :rusers, :reset_key, :string, :default => nil
+    unless column_exists? "rusers", :reset_key
+      add_column :rusers, :reset_key, :string, :default => nil
+    end
   end
 
   def down

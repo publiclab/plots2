@@ -4,34 +4,51 @@ class CreateLikeAndFollow < ActiveRecord::Migration
     # no need for wasteful primary key when the unique index recreates a
     # composite PK using (user.id, drupal_tag.id).
     # In English: track user follow tag
-    create_table :tagselections, :id => false do |t|
-      t.integer :user_id
-      t.integer :tid
-      t.boolean :following
+    unless table_exists? "tagselections"
+      create_table :tagselections, :id => false do |t|
+        t.integer :user_id
+        t.integer :tid
+        t.boolean :following
+      end
     end
-    add_index :tagselections, [:user_id, :tid], :unique => true
+
+    unless index_exists? "tagselections", [:user_id, :tid], unique: true
+      add_index :tagselections, [:user_id, :tid], :unique => true
+    end
 
     # track user follow user
-    create_table :userselections, :id => false do |t|
-      t.integer :self_id
-      t.integer :other_id
-      t.boolean :following
+    unless table_exists? "userselections"
+      create_table :userselections, :id => false do |t|
+        t.integer :self_id
+        t.integer :other_id
+        t.boolean :following
+      end
     end
-    add_index :userselections, [:self_id, :other_id], :unique => true
+
+    unless index_exists? "userselections", [:self_id, :other_id], unique: true
+      add_index :userselections, [:self_id, :other_id], :unique => true
+    end
 
     # track user follow node
     # track user like node
-    create_table :nodeselections, :id => false do |t|
-      t.integer :user_id
-      t.integer :nid
-      t.boolean :following
-      t.boolean :liking
+    unless table_exists? "nodeselections"
+      create_table :nodeselections, :id => false do |t|
+        t.integer :user_id
+        t.integer :nid
+        t.boolean :following
+        t.boolean :liking
+      end
     end
-    add_index :nodeselections, [:user_id, :nid], :unique => true
+    
+    #unless index_exists? "nodeselections", [:user_id, :nid], unique: true
+      add_index :nodeselections, [:user_id, :nid], :unique => true
+    #end
 
     # cache the like count on nodes to save time on calling count()
-    change_table :node do |t|
-      t.integer :cached_likes, :default => 0
+    unless column_exists? "node", "cached_likes"
+      change_table :node do |t|
+        t.integer :cached_likes, :default => 0
+      end
     end
   end
 

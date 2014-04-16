@@ -1,6 +1,8 @@
 class AddMapAuthorship < ActiveRecord::Migration
   def up
-    add_column :content_type_map, :authorship, :string, :default => nil
+    unless column_exists? "content_type_map", :authorship
+      add_column :content_type_map, :authorship, :string, :default => nil
+    end
   end
 
   def down
