@@ -118,11 +118,11 @@
     <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
 
     <div class="hidden-phone">
-      <a id="publish" tabindex="5" class="btn btn-primary btn-large">Publish</a>
+      <a id="publish" tabindex="5" class="publish btn btn-primary btn-large">Publish</a>
       <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
     </div>
     <div class="visible-phone btn-group">
-      <a id="publish" class="btn btn-primary btn-large">Publish</a>
+      <a id="publish" class="publish btn btn-primary btn-large">Publish</a>
       <a data-previewing-text="Edit" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
     </div>
     <br />
@@ -146,8 +146,8 @@
         $('#new_drupal_node_revision').submit()
       }
     }
-    $("#publish").bind("click",publish)
-    $("#publish").bind("keydown",function(e) {
+    $(".publish").bind("click",publish)
+    $(".publish").bind("keydown",function(e) {
       if (e.which == 32 || e.which == 13) publish()
     })
     if ($E.textarea.val() == "") $E.apply_template("<%= params[:template] || 'default'%>")
