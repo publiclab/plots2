@@ -16,16 +16,21 @@ class DrupalFile < ActiveRecord::Base
   def path(size = :default)
     if self.is_image?
       if size == :thumb
-        return 'http://old.publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')
+        #return 'http://old.publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')
+        return 'http://publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')
       elsif size == :default
-        return 'http://old.publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
+        #return 'http://publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
+        return 'http://publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
       elsif size == :large
-        return 'http://old.publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/big_but_downloadable/')
+        #return 'http://old.publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/big_but_downloadable/')
+        return 'http://publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/big_but_downloadable/')
       elsif size == :original
-        return 'http://old.publiclab.org/'+self.filepath
+        #return 'http://old.publiclab.org/'+self.filepath
+        return 'http://publiclab.org/'+self.filepath
       end
     else
-      "http://old.publiclab.org/"+self.filepath
+      #"http://old.publiclab.org/"+self.filepath
+      "http://publiclab.org/"+self.filepath
     end
   end
 

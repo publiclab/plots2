@@ -37,6 +37,7 @@
     <script src="/assets/js/banner.js"></script>
     <%= csrf_meta_tags %>
 
+    <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d"></meta>
   </head>
 
   <body>
@@ -82,12 +83,12 @@
                 <li><a href="/wiki/popular/">Popular wiki pages</a></li>
                 <li class="nav-header">Tools</li>
                 <% DrupalTag.find_top_nodes_by_type('tool',['page','tool'],6).each do |node| %>
-                <li><a href="<%= node.path %>"><%= node.title %></a></li>
+                <li><a href="<%= node.path %>"><%= node.latest.title %></a></li>
                 <% end %>
                 <li><a href="/tools">More...</a></li>
                 <li class="nav-header">Places</li>
                 <% DrupalNode.find_all_by_type('place',:limit => 6, :order => 'node_counter.totalcount DESC', :joins => :drupal_node_counter).each do |node| %>
-                <li><a href="<%= node.path %>"><%= node.title %></a></li>
+                <li><a href="<%= node.path %>"><%= node.latest.title %></a></li>
                 <% end %>
                 <li><a href="/places">More...</a></li>
               <% end %>
@@ -132,7 +133,7 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li><a href="/about">About Public Lab</a></li>
-                  <li><a href="/wiki/plots-staff">Non-profit staff</a></li>
+                  <li><a href="/wiki/plots-staff">Non-profit team</a></li>
                   <li><a href="/wiki/organizers">Organizers</a></li>
                   <li><a href="/wiki/board">Non-profit board</a></li>
                   <li><a href="/wiki/how-public-lab-funded">How we're funded</a></li>
@@ -279,7 +280,7 @@
         <ul>
           <li><a href="/wiki/issues">Report a bug or issue</a></li>
           <li><a href="mailto:web@publiclab.org">Email the Web working group</a></li>
-          <li>PublicLaboratory.org is <a href="https://github.com/jywarren/plots2">open source software</a> - and looking for contributors</li>
+          <li>PublicLab.org is <a href="https://github.com/publiclab/plots2">open source software</a> - and <a href="/wiki/developers">looking for contributors</a></li>
         </ul>
       </div>
       <div class="span3 hidden-print">

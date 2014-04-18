@@ -43,7 +43,8 @@ class LegacyController < ApplicationController
 
   def file
     # http://publiclab.org/sites/default/files/Public%20Lab.pdf
-    redirect_to "http://old.publiclab.org/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
+    #redirect_to "http://old.publiclab.org/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
+    redirect_to "http://publiclab.org/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
   end
 
   def image
