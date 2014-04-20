@@ -8,27 +8,42 @@ class RenameLikeAndFollow < ActiveRecord::Migration
     drop_table :tagselections
 
     # See 20130402 migration for details, this is copypasta
-    create_table :tag_selections, :id => false do |t|
-      t.integer :user_id
-      t.integer :tid
-      t.boolean :following, :default => false
+    unless table_exists? "tag_selections"
+      create_table :tag_selections, :id => false do |t|
+        t.integer :user_id
+        t.integer :tid
+        t.boolean :following, :default => false
+      end
     end
-    add_index :tag_selections, [:user_id, :tid], :unique => true
 
-    create_table :user_selections, :id => false do |t|
-      t.integer :self_id
-      t.integer :other_id
-      t.boolean :following, :default => false
+    unless index_exists? :tag_selections, [:user_id, :tid] 
+      add_index :tag_selections, [:user_id, :tid], :unique => true
     end
-    add_index :user_selections, [:self_id, :other_id], :unique => true
 
-    create_table :node_selections, :id => false do |t|
-      t.integer :user_id
-      t.integer :nid
-      t.boolean :following, :default => false
-      t.boolean :liking, :default => false
+    unless table_exists? "user_selections"
+      create_table :user_selections, :id => false do |t|
+        t.integer :self_id
+        t.integer :other_id
+        t.boolean :following, :default => false
+      end
     end
-    add_index :node_selections, [:user_id, :nid], :unique => true
+
+    unless index_exists? "user_selections", [:self_id, :other_id]
+      add_index :user_selections, [:self_id, :other_id], :unique => true
+    end
+
+    unless table_exists? "node_selections"
+      create_table :node_selections, :id => false do |t|
+        t.integer :user_id
+        t.integer :nid
+        t.boolean :following, :default => false
+        t.boolean :liking, :default => false
+      end
+    end
+
+    unless index_exists? "node_selections", [:user_id, :nid]
+      add_index :node_selections, [:user_id, :nid], :unique => true
+    end
   end
 
   def down

@@ -1,12 +1,14 @@
 class AddProfileTags < ActiveRecord::Migration
   def up
-    create_table :tags do |t|
-      t.string :key
-      t.string :value
-      t.string :user_id
-      t.string :type # note, wiki, profile, admin
-      t.text :body
-      t.timestamps
+    unless table_exists? "tags"
+      create_table :tags do |t|
+        t.string :key
+        t.string :value
+        t.string :user_id
+        t.string :type # note, wiki, profile, admin
+        t.text :body
+        t.timestamps
+      end
     end
     #add_column :users, :lat, :decimal, :precision => 20, :scale => 10, :default => 0.0
     #add_column :users, :lon, :decimal, :precision => 20, :scale => 10, :default => 0.0
