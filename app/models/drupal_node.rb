@@ -276,6 +276,11 @@ class DrupalNode < ActiveRecord::Base
     tags
   end
 
+  # returns all results as whole tag (node) objects
+  def power_tag_objects(tag)
+    DrupalNodeCommunityTag.find(:all,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)])
+  end
+
   def has_tag(tag)
     DrupalNodeTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0 || DrupalNodeCommunityTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
   end

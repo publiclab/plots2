@@ -33,6 +33,19 @@ class TagController < ApplicationController
     render :json => DrupalUsers.find_by_name(params[:id]).tag_counts
   end
 
+  def barnstar
+    node = DrupalNode.find params[:nid]
+    tagname = "barnstar:"+params[:star]
+    if DrupalTag.exists?(tagname,params[:nid])
+      flash[:error] = "Error: that tag already exists."
+    elsif !node.add_tag(tagname.strip,current_user)
+      flash[:error] = "The barnstar could not be created."
+    else
+      flash[:notice] = "You awarded the <a href='/wiki/barnstars#"+params[:star].split('-').each{|w| w.capitalize!}.join('+')+"+Barnstar'>"+params[:star]+" barnstar</a> to <a href='/profile/"+node.author.name+"'>"+node.author.name+"</a>"
+    end
+    redirect_to node.path
+  end
+
   def create
     params[:name] ||= ""
     tagnames = params[:name].split(',')

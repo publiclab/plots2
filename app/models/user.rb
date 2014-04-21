@@ -139,6 +139,14 @@ class User < ActiveRecord::Base
     weeks
   end
 
+  def barnstars
+    nids = DrupalNode.find_all_by_uid(self.uid, :conditions => {:type => "note"}, :order => "created DESC", :select => :nid).collect(&:nid)
+    # this needs outer join, or
+    # tags = DrupalTag.find(:all, :conditions => ['name LIKE ? AND nid IN (?)','barnstar:%',nids], :joins => :drupal_node_community_tag)
+    # DrupalNodeCommunityTag.find :all, :conditions => ["name LIKE ? AND nid IN (?) OUTER JOIN term_node ON term_node.tid = community_tags.tid",'barnstar:%',nids.join(',')]#, :joins => :drupal_tag
+    DrupalNodeCommunityTag.find :all, :conditions => ["name LIKE ? AND nid IN (?)",'barnstar:%',nids.join(',')], :joins => :drupal_tag
+  end
+
   private
 
   def map_openid_registration(registration)

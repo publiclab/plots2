@@ -10,18 +10,18 @@
 <% if @node.likers.length == 0 %><i>None</i><% end %>
 <% if @node.type == 'note' %>
 <hr style='margin-bottom:3px;' />
-<p><b>Award a <a _target='blank' href='/wiki/barnstars'>barnstar</a>:</b></p>
+<p><b>Award a Barnstar:</b></p>
 <form class='form' action='/barnstar/give'>
-<select>
-    <option value='default'>The basic barnstar</option>
-    <option value='photo'>The photo documentation barnstar</option>
-    <option value='video'>The video documentation barnstar</option>
+<select name='star'>
+    <option value='basic'>The basic barnstar</option>
+    <option value='photo-documentation'>The photo documentation barnstar</option>
+    <option value='video-documentation'>The video documentation barnstar</option>
     <option value='watchdog'>The watchdog barnstar</option>
     <option value='empiricism'>The empiricism barnstar</option>
-    <option value='enthusiasm'>The enthusiasm barnstar</option>
+    <option value='excessive-enthusiasm'>The enthusiasm barnstar</option>
 </select><br />
 <input type='hidden' name='nid' value='<%= @node.id %>'/>
-<input class='btn btn-primary' value='Give'/>
+<input type='submit' class='btn btn-primary' value='Give'/> <a _target='blank' href='/wiki/barnstars'>Learn more</a>
 </form>
 <% end %>
 "><span class="caret"></span></li>

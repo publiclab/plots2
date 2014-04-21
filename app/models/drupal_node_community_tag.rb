@@ -15,6 +15,18 @@ class DrupalNodeCommunityTag < ActiveRecord::Base
     self.drupal_tag
   end
 
+  def author
+    self.user
+  end
+
+  def user
+    User.find self.uid
+  end
+
+  def drupal_user
+    DrupalUsers.find self.uid
+  end
+
   def name
     self.drupal_tag.name
   end

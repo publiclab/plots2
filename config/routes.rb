@@ -108,6 +108,8 @@ Plots2::Application.routes.draw do
   match 'tag/author/:id.json' => 'tag#author'
   match 'tag/create/:nid' => 'tag#create'
   match 'tag/delete/:nid/:tid' => 'tag#delete'
+  match 'barnstar/give/:nid/:star' => 'tag#barnstar'
+  match 'barnstar/give' => 'tag#barnstar'
   match 'feed/tag/:tagname' => 'tag#rss'
   match 'feed/liked' => 'notes#liked_rss'
 
