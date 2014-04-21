@@ -3,7 +3,13 @@ class MapController < ApplicationController
   def index
     @title = "Maps"
     @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'map', :status => 1}, :page => params[:page])
-    @maps = DrupalNode.find(:all, :order => "nid DESC", :conditions => {:type => 'map', :status => 1})
+
+    # original, then iterated for 300 separate queries... boo
+    #@maps = DrupalNode.find(:all, :order => "nid DESC", :conditions => {:type => 'map', :status => 1}
+
+    # should be able to double join to get node>community_tags>tags in single query, thus have tag.name available in each record:
+    tids = DrupalTag.find(:all, :select => :tid, :conditions => ['name LIKE ?','lat:%']).collect(&:tid) + DrupalTag.find(:all, :select => :tid, :conditions => ['name LIKE ?','lon:%']).collect(&:tid)
+    @maps = DrupalNode.find(:all, :order => "nid DESC", :conditions => ['type = ? AND status = ? AND tid IN (?)', 'map', 1, tids], :joins => [:drupal_node_community_tag,:drupal_tag])
   end
 
   def show

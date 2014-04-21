@@ -1,5 +1,3 @@
-require 'rss'
-
 class UniqueUrlValidator < ActiveModel::Validator
   def validate(record)
     if record.title == "" || record.title.nil?
@@ -26,13 +24,13 @@ class DrupalNode < ActiveRecord::Base
 #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
   has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
   has_one :drupal_node_access, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_node_tag, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_tag, :through => :drupal_node_tag
   has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_files, :through => :drupal_upload
-# these override the above... have to do it manually:
-#  has_many :drupal_node_community_tag, :foreign_key => 'nid'
-#  has_many :drupal_tag, :through => :drupal_node_community_tag
+    has_many :drupal_node_tag, :foreign_key => 'nid', :dependent => :destroy
+    has_many :drupal_node_community_tag, :foreign_key => 'nid', :dependent => :destroy
+    has_many :drupal_tag, :through => :drupal_node_community_tag
+    # these override the above... have to do it manually:
+    # has_many :drupal_tag, :through => :drupal_node_tag
   has_many :drupal_comments, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_type_map, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
@@ -309,7 +307,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def tags
-    (self.drupal_tag + DrupalTag.find(:all, :conditions => ["tid IN (?)",DrupalNodeCommunityTag.find_all_by_nid(self.nid).collect(&:tid)])).uniq
+    (self.drupal_tag + DrupalTag.find(:all, :conditions => ["tid IN (?)",DrupalNodeTag.find_all_by_nid(self.nid).collect(&:tid)])).uniq
   end
 
   def tagnames
