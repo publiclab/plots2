@@ -18,7 +18,7 @@
     </div>
   <% end %>
 
-  <h3 class="hidden-phone">Dashboard: <small>Welcome, <%= current_user.username %>!<% if @user.role === 'moderator' || @user.role === 'admin'%> (<%= @user.role %>)<% end %></small></h3>
+  <h3 class="hidden-phone">Dashboard: <small>Welcome, <%= current_user.username %>!<% if @user.role === 'moderator' || @user.role === 'admin'%> (<%= @user.role %>)<% end %> &bull; <a href="/research"><%= @note_count %> notes</a> and <a href="/wiki"><%= @wiki_count %> wiki edits</a> were posted in the past week. </small></h3>
   <h4 class="visible-phone">Dashboard: <small>Welcome, <%= current_user.username %>!<% if @user.role === 'moderator' || @user.role === 'admin'%> (<%= @user.role %>)<% end %></small></h4>
 
   <div id="share" class="hidden-phone" style="width:230px;float:right;margin-top:5px;text-align:right;height:30px;">
