@@ -24,7 +24,7 @@ class HomeController < ApplicationController
     @title = "Dashboard"
     @user = DrupalUsers.find_by_name current_user.username
     @note_count = DrupalNode.count :all, :select => :created, :conditions => {:type => 'note', :status => 1, :created => Time.now.to_i-1.weeks.to_i..Time.now.to_i}
-    @wiki_count = DrupalNode.count :all, :select => :created, :conditions => {:type => 'page', :status => 1, :created => Time.now.to_i-1.weeks.to_i..Time.now.to_i}
+    @wiki_count = DrupalNodeRevision.count :all, :select => :created, :conditions => {:timestamp => Time.now.to_i-1.weeks.to_i..Time.now.to_i}
     set_sidebar
     @unpaginated = true
   end
