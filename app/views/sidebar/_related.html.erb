@@ -56,7 +56,7 @@
       <% @notes.collect(&:author).collect(&:name).uniq.each do |author| %>
         <li><a href="/profile/<%= author %>"><i class="icon-user"></i> <%= author %></a></li>
       <% end %>
-      <li><a href="/contributors/<%= params[:id] %>"><i class="icon icon-list"></i> View all &raquo;</a></li>
+      <% if params[:controller] == "tag" || (@node && @node.type == "page") %><li><a href="/contributors/<%= params[:id] %>"><i class="icon icon-list"></i> View all &raquo;</a></li><% end %>
     </ul>
     <% end %>
  
