@@ -26,10 +26,12 @@ class DrupalNodeRevision < ActiveRecord::Base
     self.drupal_node
   end
 
+  # filtered version of node content
   def render_body
     body = self.body || ""
     body = RDiscount.new(body, :generate_toc)
-    body.to_html
+    body = body.to_html
+    body.gsub('[edit]','<p class="well" style="padding:6px;"><a class="btn btn-primary" href="'+self.parent.edit_path+'"><i class="icon icon-white icon-pencil"></i> Edit this page</a> to help complete it!</p>')
   end
 
 end
