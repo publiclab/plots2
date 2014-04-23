@@ -1,0 +1,62 @@
+<%= render :partial => "sidebar/featured" %>
+<div class="span9">
+  <script language="javascript" type="text/javascript" src="/flot/jquery.flot.js"></script> 
+  <script language="javascript" type="text/javascript" src="/flot/jquery.flot.crosshair.js"></script>
+
+  <% @tags.each do |tag| %>
+
+    <div id="note-graph-<%= tag.name %>" style="height:100px;"></div>
+
+    <script type="text/javascript">
+    (function () {
+
+      flotoptions_minimal = {
+        yaxis: { show: true },
+        xaxis: { show: true },
+        grid: {
+          borderWidth: 0,
+          //color: "#444",
+          markers: []
+        },
+        colors: [ "#08f", "#80f" ]
+      }
+
+      var notes = <%= tag.weekly_tallies.to_a.sort.to_json %>
+
+      $.plot($("#note-graph-<%= tag.name %>"), [
+        {
+            data: notes,
+            hoverable: true,
+ //         label: "Research Notes",
+            bars: { show: true, 
+                    lineWidth: 0,
+                    fillColor: "#08f",
+                    barWidth: 0.5
+                  }
+        }
+      ],flotoptions_minimal)
+
+    })()
+    </script>
+
+    <h3 style="margin-top:0;">Contributors for <i style="color:#aaa;"><%= tag.name %></i> over the past 52 weeks <small><a href="/tag/<%= tag.name %>">Read more &raquo;</a></small></h3>
+    <p><%= @tagdata[tag.name][:users] || 0 %> people have contributed <%= @tagdata[tag.name][:notes] %> research notes and <%= @tagdata[tag.name][:wikis] %> wiki pages tagged with "<%= tag.name %>"</i></p>
+
+    <% if current_user %>
+    <!-- AJAXify -->
+    <div class="btn-group">
+      <a class="btn btn-small" href="/feed/tag/<%= tag.name %>.rss"><i class="icon icon-rss"></i> RSS</a>
+      <% if current_user.following(tag.name) %>
+      <a rel="tooltip" title="Click to unfollow" class="btn btn-small active" href="/unsubscribe/tag/<%= tag.name %>"><i class="icon icon-eye-open"></i> Following <b><%= tag.name %></b></a>
+      <% else %>
+      <a class="btn btn-small" href="/subscribe/tag/<%= tag.name %>"><i class="icon icon-eye-open"></i> Follow <b><%= tag.name %></b></a>
+      <% end %>
+    </div>
+    <!-- AJAXify -->
+    &nbsp; <%= DrupalTag.follower_count(tag.name) %> people are watching this tag
+    <% end %>
+
+    <hr />
+  <% end %>
+
+</div>

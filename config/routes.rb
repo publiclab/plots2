@@ -104,6 +104,7 @@ Plots2::Application.routes.draw do
   match 'blog' => 'tag#blog', :id => "blog"
   match 'blog/:id' => 'tag#blog'
   match 'contributors/:id' => 'tag#contributors'
+  match 'contributors' => 'tag#contributors_index'
   match 'tag/suggested/:id' => 'tag#suggested'
   match 'tag/author/:id.json' => 'tag#author'
   match 'tag/create/:nid' => 'tag#create'
