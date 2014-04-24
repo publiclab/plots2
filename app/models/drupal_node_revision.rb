@@ -14,6 +14,15 @@ class DrupalNodeRevision < ActiveRecord::Base
   validates :uid, :presence => :true
   validates :nid, :presence => :true
 
+  before_save :inline_tags
+
+  # search for inline special tags such as [question:foo]
+  def inline_tags
+    self.body.scan(/\[question(:[\w-]+)\]/).each do |match|
+      self.parent.add_tag("prompt"+match.first,self.author)
+    end
+  end
+
   def created_at
     Time.at(self.timestamp)
   end
