@@ -31,7 +31,9 @@ class DrupalNodeRevision < ActiveRecord::Base
     body = self.body || ""
     body = RDiscount.new(body, :generate_toc)
     body = body.to_html
-    body.gsub('[edit]','<p class="well" style="padding:6px;"><a class="btn btn-primary" href="'+self.parent.edit_path+'"><i class="icon icon-white icon-pencil"></i> Edit this page</a> to help complete it!</p>')
+    body = body.gsub('[edit]','<p class="well" style="padding:6px;"><a class="btn btn-primary" href="'+self.parent.edit_path+'"><i class="icon icon-white icon-pencil"></i> Edit this page</a> to help complete it!</p>')
+    body = body.gsub(/\[question:([\w-]+)\]/,'<p class="well" style="padding:6px;"><a class="btn btn-primary" href="/post?tags=question:\\1&template=question"><i class="icon icon-white icon-question-sign"></i> Ask a question about <b>\\1</b></a> or <a class="btn" target="_blank" href="/subscribe/tag/question:\\1">Sign up to answer questions on this topic</a></p>')
+    body
   end
 
 end
