@@ -1,14 +1,11 @@
 <div class="span3">
-  <% if params[:template] == "request" %>
-    <h4 class="visible-phone">Ask for help!</h4>
+  <% if params[:template] == "question" %>
+    <h4 class="visible-phone">Ask a question</h4>
     <div id="research-note-detail" class="hidden-phone">
-      <p></p>
-      <p><b>Lalala:</b></p>
+      <h3>Use this form to ask about <%= params[:tags].split(':').last %></h3>
+      <% if DrupalTag.follower_count(params[:tags]) > 0 %><p><%= DrupalTag.follower_count(params[:tags]) %> people have signed up to answer questions on this topic.</p><% end %>
       <ul>
-        <li>La</li>
-        <li>La</li>
-        <li>La</li>
-      </ul>
+        <li>Need to learn more?</li>
       <hr />
     </div>
 
@@ -60,13 +57,13 @@
 
     <%= render :partial => "editor/main_image" %>
 
-    <% if params[:template] == "request" %>
-      <h3 style="margin-top:0;">Request help from the community</h3>
+    <% if params[:template] == "question" %>
+      <h3 style="margin-top:0;">Ask a question of the community</h3>
     <% else %>
       <h3 style="margin-top:0;">Share your work</h3>
     <% end %>
 
-    <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title" value="<%= @node.title if @node %>"><br />
+    <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title" value="<%= @node.title if @node %><%= "Question: " if params[:template] == "question" %>"><br />
     <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
     <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
     <input id="node_images" type="hidden" name="node_images" value="" />
@@ -134,7 +131,7 @@
     $E.initialize()
     $('#side-fileinput').bind('focus',function(e) { $('#side-dropzone').css('border-color','#4ac') })
     $('#side-fileinput').bind('focusout',function(e) { $('#side-dropzone').css('border-color','#ccc') })
-    var warn_image = false;
+    var warn_image = <%= params[:template] == "question" %>;
     publish = function(e) {
       if ($('#main_image').val() == "" && $('#has_main_image').val() != "true" && !warn_image) {
         // prompt to choose a lead image

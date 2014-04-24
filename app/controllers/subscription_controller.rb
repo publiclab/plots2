@@ -42,18 +42,28 @@ class SubscriptionController < ApplicationController
   def add
     if current_user
       # assume tag, for now
-      if params[:type] == "tag"
-        id = DrupalTag.find_by_name(params[:name]).tid
+      # if params[:type] == "tag"
+        tag = DrupalTag.find_by_name(params[:name])
+      # end
+      if tag.nil?
+        # if the tag doesn't exist, we should create it!
+        # this could fail validations; error out if so... 
+        tag = DrupalTag.new({
+          :vid => 3, # vocabulary id
+          :name => params[:name],
+          :description => "",
+          :weight => 0})
+        unless tag.save! 
+          flash[:error] = "There was an error and your subscription failed. Please contact web@publiclab.org."
+          redirect_to "/subscriptions"
+        end
       end
       # test for uniqueness, handle it as a validation error if you like
-      if id.nil?
-        flash[:error] = "The tag '#{params[:name]}' does not exist; there must be content tagged with it first."
-        redirect_to "/subscriptions"
-      elsif TagSelection.find(:all, :conditions => {:user_id => current_user.uid, :tid => id}).length > 0
+      if TagSelection.find(:all, :conditions => {:user_id => current_user.uid, :tid => tag.tid}).length > 0
         flash[:error] = "You are already subscribed to '#{params[:name]}'"
         redirect_to "/subscriptions"
       else
-        if set_following(true,params[:type],id)
+        if set_following(true,params[:type],tag.tid)
           respond_with do |format|
             format.html do
               if request.xhr?
@@ -97,6 +107,7 @@ class SubscriptionController < ApplicationController
         end
       else
         flash[:error] = "Something went wrong!" # silly 
+        redirect_to "/subscriptions"
       end
     end
   end

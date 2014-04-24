@@ -9,9 +9,9 @@
   <%= render :partial => "like/like" %>
   <% if current_user && (current_user.uid == @node.uid || current_user.role == "moderator" || current_user.role == "admin") %>
     <div style="padding:0 8px 8px;" class="btn-group pull-right">
-      <a <% if current_user && current_user.uid != @node.uid %>data-confirm="Please be aware that you are editing someone else's post, a privilege you have only because you are a moderator or admin." <% end %>class="btn btn-small" href="/notes/edit/<%= @node.id %>"><i class="icon icon-pencil"></i> Edit</a>
+      <a <% if current_user && current_user.uid != @node.uid %>data-confirm="Please be aware that you are editing someone else's post, a privilege you have only because you are a moderator or admin." <% end %>class="btn btn-small" href="/notes/edit/<%= @node.id %>"><i class="icon icon-pencil"></i><span class="hidden-phone"> Edit</span></a>
       <%= link_to "/notes/delete/"+@node.id.to_s, :confirm => 'Are you sure?', :class => "btn btn-small" do %>
-        <i class="icon icon-trash"></i> Delete
+        <i class="icon icon-trash"></i><span class="hidden-phone" Delete</span>
       <% end %>
       <% if current_user.role == "moderator" || current_user.role == "admin" %>
         <a class="btn btn-small" href="/moderate/spam/<%= @node.id %>"><i class="icon icon-ban-circle"></i> Spam</a>
