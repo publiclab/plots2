@@ -47,7 +47,21 @@ bundle install --without mysql
 gem install passenger
 
 
-5. Run the Rails app
+5. Set Up the Database
+---
+Create the tables, schema, and fill the database with example seed data:
+rake db:setup
+
+Create the tables and schema with the example data:
+rake db:create && rake db:migrate
+
+6. Run the Rails app
 ---
 rake test
 passenger start (development by default)
+
+Login credentials:
+login: admin, moderator, or user
+password: password
+
+
