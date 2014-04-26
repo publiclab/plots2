@@ -8,7 +8,7 @@
   <i class='icon icon-star-empty'></i> <a href='/profile/<%= user.username %>/likes'><%= user.username %></a><br />
 <% end %>
 <% if @node.likers.length == 0 %><i>None</i><% end %>
-<% if @node.type == 'note' %>
+<% if @node.type == 'note' && current_user && @node.uid != current_user.uid%>
 <hr style='margin-bottom:3px;' />
 <p><b>Award a Barnstar:</b></p>
 <form class='form' action='/barnstar/give'>
