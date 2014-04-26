@@ -4,12 +4,11 @@ class MapController < ApplicationController
     @title = "Maps"
     @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'map', :status => 1}, :page => params[:page])
 
-    # original, then iterated for 300 separate queries... boo
-    #@maps = DrupalNode.find(:all, :order => "nid DESC", :conditions => {:type => 'map', :status => 1}
+    @maps = DrupalNode.joins(:drupal_tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%')
 
-    # should be able to double join to get node>community_tags>tags in single query, thus have tag.name available in each record:
-    tids = DrupalTag.find(:all, :select => :tid, :conditions => ['name LIKE ?','lat:%']).collect(&:tid) + DrupalTag.find(:all, :select => :tid, :conditions => ['name LIKE ?','lon:%']).collect(&:tid)
-    @maps = DrupalNode.find(:all, :order => "nid DESC", :conditions => ['type = ? AND status = ? AND tid IN (?)', 'map', 1, tids], :joins => [:drupal_node_community_tag,:drupal_tag])
+    # here I try to eager load drupal_url_alias also, but there is not an integer foreign key; just url_alias.src = "node/#" where # is the nid. Attempting to jankily do this, but Rails probably won't even recognize the joined table as a relation :-(
+    # 
+    #@maps = DrupalNode.joins(:drupal_tag).joins('INNER JOIN url_alias').where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?) AND url_alias.src = "node/"+node.nid', 'lat:%', 'lon:%')
   end
 
   def show

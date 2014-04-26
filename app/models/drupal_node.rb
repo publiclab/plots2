@@ -411,8 +411,6 @@ class DrupalNode < ActiveRecord::Base
   def lat
     if self.has_power_tag("lat")
       self.power_tag("lat").to_f 
-    elsif self.location[:y] != 0
-      self.location[:y]
     else
       false
     end
@@ -421,14 +419,13 @@ class DrupalNode < ActiveRecord::Base
   def lon
     if self.has_power_tag("lon")
       self.power_tag("lon").to_f 
-    elsif self.location[:x] != 0
-      self.location[:x]
     else
       false
     end
   end
 
   # these should eventually displace the above means of finding locations
+  # ...they may already be redundant after tagged_map_coord migration 
   def tagged_lat
     self.power_tags('lat')[0]
   end
