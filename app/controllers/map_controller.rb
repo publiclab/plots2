@@ -4,7 +4,7 @@ class MapController < ApplicationController
     @title = "Maps"
     @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'map', :status => 1}, :page => params[:page])
 
-    @maps = DrupalNode.joins(:drupal_tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%')
+    @maps = DrupalNode.joins(:drupal_tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').uniq
 
     # here I try to eager load drupal_url_alias also, but there is not an integer foreign key; just url_alias.src = "node/#" where # is the nid. Attempting to jankily do this, but Rails probably won't even recognize the joined table as a relation :-(
     # 
