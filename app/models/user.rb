@@ -140,11 +140,7 @@ class User < ActiveRecord::Base
   end
 
   def barnstars
-    nids = DrupalNode.find_all_by_uid(self.uid, :conditions => {:type => "note"}, :order => "created DESC", :select => :nid).collect(&:nid)
-    # this needs outer join, or
-    # tags = DrupalTag.find(:all, :conditions => ['name LIKE ? AND nid IN (?)','barnstar:%',nids], :joins => :drupal_node_community_tag)
-    # DrupalNodeCommunityTag.find :all, :conditions => ["name LIKE ? AND nid IN (?) OUTER JOIN term_node ON term_node.tid = community_tags.tid",'barnstar:%',nids.join(',')]#, :joins => :drupal_tag
-    DrupalNodeCommunityTag.find :all, :conditions => ["name LIKE ? AND nid IN (?)",'barnstar:%',nids.join(',')], :joins => :drupal_tag
+    DrupalNodeCommunityTag.includes(:drupal_node,:drupal_tag).where("type = ? AND term_data.name LIKE ? AND node.uid = ?",'note','barnstar:%',self.uid)
   end
 
   private
