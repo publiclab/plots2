@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140416153948) do
+ActiveRecord::Schema.define(:version => 20140426213041) do
 
   create_table "comments", :primary_key => "cid", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.integer "pid",                             :default => 0,  :null => false

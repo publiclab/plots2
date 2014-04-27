@@ -13,7 +13,15 @@
   L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
 
   <% @maps.each do |map| %>
-    L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='<%= map.slug %>'><%= map.title %></a>");
+    <% 
+      lat = false
+      lon = false
+      map.drupal_tag.each do |tag|
+        lat = tag.name.split(':').last if tag.name[0..2] == 'lat'
+        lon = tag.name.split(':').last if tag.name[0..2] == 'lon'
+      end
+    %> 
+    L.marker([<%= lat %>, <%= lon %>]).addTo(map).bindPopup("<a href='<%= map.slug %>'><%= map.title %></a>");
   <% end %>
 </script>
 
