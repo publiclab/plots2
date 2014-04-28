@@ -55,8 +55,10 @@ class DrupalTag < ActiveRecord::Base
   end
 
   # finds recent nodes
-  def self.find_nodes_by_type(tagnames,type = "note",limit = 10)
-    tids = DrupalTag.find(:all, :conditions => ['name IN (?)',tagnames]).collect(&:tid)
+  def self.find_nodes_by_type(tagname,type = "note",limit = 10)
+    # this far more efficient query relies on the deprecation of drupal_node_tag in favor of only drupal_node_community_tag
+    #DrupalNode.where(:status => 1, :type => "note").includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?',tagname).order("node_revisions.timestamp DESC").limit(limit)
+    tids = DrupalTag.find(:all, :conditions => ['name IN (?)',tagname]).collect(&:tid)
     nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
     nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
     DrupalNode.find_all_by_type type, :conditions => ["node.status = 1 AND node.nid in (?)",nids.uniq], :order => "node_revisions.timestamp DESC", :limit => limit, :include => :drupal_node_revision

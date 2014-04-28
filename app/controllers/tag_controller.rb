@@ -4,13 +4,14 @@ class TagController < ApplicationController
   before_filter :require_user, :only => [:create, :delete]
 
   def show
-    set_sidebar :tags, [params[:id]], {:note_count => 100}
+    set_sidebar :tags, [params[:id]]
 
     @tags = DrupalTag.find_all_by_name params[:id]
     @tagnames = @tags.collect(&:name).uniq! || []
-    @title = @tagnames.join(', ') if @tagnames
 
-    @unpaginated = true
+    @notes = DrupalNode.where(:status => 1, :type => "note").includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?',params[:id]).page(params[:page]).order("node_revisions.timestamp DESC")
+
+    @title = @tagnames.join(', ') if @tagnames
   end
 
   def widget
