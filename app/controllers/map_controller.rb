@@ -5,7 +5,7 @@ class MapController < ApplicationController
     @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'map', :status => 1}, :page => params[:page])
 
     # I'm not sure if this is actually eager loading the drupal_tags... 
-    @maps = DrupalNode.joins(:drupal_tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%')
+    @maps = DrupalNode.joins(:drupal_tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').uniq
 
     # This is supposed to eager load the url_aliases, and seems to run, but doesn't actually eager load them...?
     #@maps = DrupalNode.select("node.*,url_alias.dst AS dst").joins(:drupal_tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').joins("INNER JOIN url_alias ON url_alias.src = CONCAT('node/',node.nid)")
