@@ -14,52 +14,72 @@ class RemoveUnusedTablesAndAddUsedOnes < ActiveRecord::Migration
     drop_table :context
     drop_table :node_images
 
-    create_table "node_access", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
-      t.integer "nid",                       :default => 0,  :null => false
-      t.integer "gid",                       :default => 0,  :null => false
-      t.string  "realm",                     :default => "", :null => false
-      t.integer "grant_view",   :limit => 1, :default => 0,  :null => false
-      t.integer "grant_update", :limit => 1, :default => 0,  :null => false
-      t.integer "grant_delete", :limit => 1, :default => 0,  :null => false
+    unless table_exists? "node_access"
+      create_table "node_access", :id => false do |t|
+        t.integer "nid",                       :default => 0,  :null => false
+        t.integer "gid",                       :default => 0,  :null => false
+        t.string  "realm",                     :default => "", :null => false
+        t.integer "grant_view",   :limit => 1, :default => 0,  :null => false
+        t.integer "grant_update", :limit => 1, :default => 0,  :null => false
+        t.integer "grant_delete", :limit => 1, :default => 0,  :null => false
+      end
     end
 
-    create_table "profile_fields", :primary_key => "fid", :options=>'ENGINE=MyISAM', :force => true do |t|
-      t.string  "title"
-      t.string  "name",         :limit => 128, :default => "", :null => false
-      t.text    "explanation"
-      t.string  "category"
-      t.string  "page"
-      t.string  "type",         :limit => 128
-      t.integer "weight",       :limit => 1,   :default => 0,  :null => false
-      t.integer "required",     :limit => 1,   :default => 0,  :null => false
-      t.integer "register",     :limit => 1,   :default => 0,  :null => false
-      t.integer "visibility",   :limit => 1,   :default => 0,  :null => false
-      t.integer "autocomplete", :limit => 1,   :default => 0,  :null => false
-      t.text    "options"
+    unless table_exists? "profile_fields"
+      create_table "profile_fields", :primary_key => "fid" do |t|
+        t.string  "title"
+        t.string  "name",         :limit => 128, :default => "", :null => false
+        t.text    "explanation"
+        t.string  "category"
+        t.string  "page"
+        t.string  "type",         :limit => 128
+        t.integer "weight",       :limit => 1,   :default => 0,  :null => false
+        t.integer "required",     :limit => 1,   :default => 0,  :null => false
+        t.integer "register",     :limit => 1,   :default => 0,  :null => false
+        t.integer "visibility",   :limit => 1,   :default => 0,  :null => false
+        t.integer "autocomplete", :limit => 1,   :default => 0,  :null => false
+        t.text    "options"
+      end
     end
 
-    add_index "profile_fields", ["category"], :name => "category"
-    add_index "profile_fields", ["name"], :name => "name"
-
-    create_table "profile_values", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
-      t.integer "fid",   :default => 0, :null => false
-      t.integer "uid",   :default => 0, :null => false
-      t.text    "value"
+    unless index_exists? "profile_fields", :category, name: "category"
+      add_index "profile_fields", ["category"], :name => "category"
     end
 
-    add_index "profile_values", ["fid"], :name => "fid"
-
-    create_table "upload", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
-      t.integer "fid",                      :default => 0,  :null => false
-      t.integer "nid",                      :default => 0,  :null => false
-      t.integer "vid",                      :default => 0,  :null => false
-      t.string  "description",              :default => "", :null => false
-      t.integer "list",        :limit => 1, :default => 0,  :null => false
-      t.integer "weight",      :limit => 1, :default => 0,  :null => false
+    unless index_exists? "profile_fields", :name, name: "name"
+      add_index "profile_fields", ["name"], :name => "name"
     end
 
-    add_index "upload", ["fid"], :name => "fid"
-    add_index "upload", ["nid"], :name => "nid"
+    unless table_exists? "profile_values"
+      create_table "profile_values", :id => false do |t|
+        t.integer "fid",   :default => 0, :null => false
+        t.integer "uid",   :default => 0, :null => false
+        t.text    "value"
+      end
+    end
+
+    unless index_exists? "profile_values", :fid, name: "fid"
+      add_index "profile_values", ["fid"], :name => "fid"
+    end
+
+    unless table_exists? "upload"
+      create_table "upload", :id => false do |t|
+        t.integer "fid",                      :default => 0,  :null => false
+        t.integer "nid",                      :default => 0,  :null => false
+        t.integer "vid",                      :default => 0,  :null => false
+        t.string  "description",              :default => "", :null => false
+        t.integer "list",        :limit => 1, :default => 0,  :null => false
+        t.integer "weight",      :limit => 1, :default => 0,  :null => false
+      end
+    end
+
+    unless index_exists? "upload", :fid, name: "fid"
+      add_index "upload", ["fid"], :name => "fid"
+    end
+
+    unless index_exists? "upload", :nid, name: "nid"
+      add_index "upload", ["nid"], :name => "nid"
+    end
     #
     # drop old tables
     drop_table :access if table_exists? :access
@@ -225,13 +245,13 @@ class RemoveUnusedTablesAndAddUsedOnes < ActiveRecord::Migration
     drop_table :profile_fields
     drop_table :profile_values
     drop_table :uploads
-    create_table "content_field_map", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+    create_table "content_field_map", :id => false, :options=>'ENGINE=MyISAM' do |t|
       t.integer "vid",                                            :default => 0, :null => false
       t.integer "nid",                                            :default => 0, :null => false
       t.text    "field_map_openlayers_wkt", :limit => 2147483647
       t.integer "delta",                                          :default => 0, :null => false
     end
-    create_table "content_group", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+    create_table "content_group", :id => false, :options=>'ENGINE=MyISAM' do |t|
       t.string  "group_type", :limit => 32,       :default => "standard", :null => false
       t.string  "type_name",  :limit => 32,       :default => "",         :null => false
       t.string  "group_name", :limit => 32,       :default => "",         :null => false
@@ -239,13 +259,13 @@ class RemoveUnusedTablesAndAddUsedOnes < ActiveRecord::Migration
       t.text    "settings",   :limit => 16777215,                         :null => false
       t.integer "weight",                         :default => 0,          :null => false
     end
-    create_table "content_group_fields", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+    create_table "content_group_fields", :id => false, :options=>'ENGINE=MyISAM' do |t|
       t.string "type_name",  :limit => 32, :default => "", :null => false
       t.string "group_name", :limit => 32, :default => "", :null => false
       t.string "field_name", :limit => 32, :default => "", :null => false
     end
 
-    create_table "content_node_field", :primary_key => "field_name", :options=>'ENGINE=MyISAM', :force => true do |t|
+    create_table "content_node_field", :primary_key => "field_name", :options=>'ENGINE=MyISAM' do |t|
       t.string  "type",            :limit => 127,      :default => "", :null => false
       t.text    "global_settings", :limit => 16777215,                 :null => false
       t.integer "required",        :limit => 1,        :default => 0,  :null => false
@@ -257,7 +277,7 @@ class RemoveUnusedTablesAndAddUsedOnes < ActiveRecord::Migration
       t.integer "locked",          :limit => 1,        :default => 0,  :null => false
     end
 
-    create_table "content_node_field_instance", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+    create_table "content_node_field_instance", :id => false, :options=>'ENGINE=MyISAM' do |t|
       t.string  "field_name",       :limit => 32,       :default => "", :null => false
       t.string  "type_name",        :limit => 32,       :default => "", :null => false
       t.integer "weight",                               :default => 0,  :null => false
@@ -269,20 +289,20 @@ class RemoveUnusedTablesAndAddUsedOnes < ActiveRecord::Migration
       t.string  "widget_module",    :limit => 127,      :default => "", :null => false
       t.integer "widget_active",    :limit => 1,        :default => 0,  :null => false
     end
-    create_table "content_type_note", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+    create_table "content_type_note", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
       t.integer "nid", :default => 0, :null => false
     end
 
     add_index "content_type_note", ["nid"], :name => "nid"
 
-    create_table "content_type_page", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+    create_table "content_type_page", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
       t.integer "nid",             :default => 0, :null => false
       t.integer "field_toc_value"
     end
 
     add_index "content_type_page", ["nid"], :name => "nid"
 
-    create_table "content_type_place", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+    create_table "content_type_place", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
       t.integer "nid",                                          :default => 0, :null => false
       t.integer "field_host_logo_fid"
       t.integer "field_host_logo_list",   :limit => 1
@@ -293,26 +313,26 @@ class RemoveUnusedTablesAndAddUsedOnes < ActiveRecord::Migration
 
     add_index "content_type_place", ["nid"], :name => "nid"
 
-    create_table "content_type_report", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+    create_table "content_type_report", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
       t.integer "nid", :default => 0, :null => false
     end
 
     add_index "content_type_report", ["nid"], :name => "nid"
 
-    create_table "content_type_tool", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+    create_table "content_type_tool", :primary_key => "vid", :options=>'ENGINE=MyISAM' do |t|
       t.integer "nid", :default => 0, :null => false
     end
 
     add_index "content_type_tool", ["nid"], :name => "nid"
 
-    create_table "context", :primary_key => "name", :options=>'ENGINE=MyISAM', :force => true do |t|
+    create_table "context", :primary_key => "name", :options=>'ENGINE=MyISAM' do |t|
       t.string  "description",    :default => "", :null => false
       t.string  "tag",            :default => "", :null => false
       t.text    "conditions"
       t.text    "reactions"
       t.integer "condition_mode", :default => 0
     end
-    create_table "node_images", :options=>'ENGINE=MyISAM', :force => true do |t|
+    create_table "node_images", :options=>'ENGINE=MyISAM' do |t|
       t.integer "nid",                      :default => 0,  :null => false
       t.integer "uid",                      :default => 0,  :null => false
       t.string  "filename",                 :default => "", :null => false
