@@ -183,17 +183,6 @@ class WikiController < ApplicationController
     end
   end
 
-  def tags
-    @tags = []
-    params[:tags].split('+').each do |tagname|
-      @tags << DrupalTag.find_by_name(tagname)
-    end
-    @tagnames = @tags.collect(&:name)
-    @notes = DrupalTag.find_nodes_by_type(@tags,'note',10)
-    @wikis = DrupalTag.find_nodes_by_type(@tags,'page',10)
-    render :template => 'wiki/index'
-  end
-
   def index
     @title = "Wiki index"
     @wikis = DrupalNode.find_all_by_type('page',10,:limit => 40,:order => "changed DESC", :conditions => ["status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')"])

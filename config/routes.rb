@@ -54,7 +54,6 @@ Plots2::Application.routes.draw do
   match 'wiki/delete/:id' => 'wiki#delete'
   match 'wiki/revisions/:id/:vid' => 'wiki#revision'
   match 'wiki' => 'wiki#index'
-  match 'wiki/tags/:tags' => 'wiki#tags'
 
   match 'place/:id/feed' => 'place#feed'
   match 'notes/popular' => 'notes#popular'
@@ -100,6 +99,7 @@ Plots2::Application.routes.draw do
   match 'search/typeahead/:id' => 'search#typeahead'
 
   match 'tag/:id' => 'tag#show'
+  match ':node_type/tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'
   match 'blog' => 'tag#blog', :id => "blog"
   match 'blog/:id' => 'tag#blog'

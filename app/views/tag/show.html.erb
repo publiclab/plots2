@@ -2,7 +2,7 @@
 <div class="span9">
   <h3 style="margin-top:0;">Notes tagged with <i style="color:#aaa;"><%= params[:id] %></i></h3>
 
-  <%= render :partial => "notes/format_toggle" %>
+  <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
 
   <% if current_user %>
   <!-- AJAXify -->
@@ -18,17 +18,39 @@
   <!-- AJAXify -->
   <% end %>
 
-  <hr />
+  <ul class="nav nav-tabs" style="margin-top:10px;">
+    <li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="icon icon-file"></i> <span class="hidden-phone">Research </span>Notes</a></li>
+    <li<% if @node_type == "page" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>"><i class="icon icon-book"></i> Wiki<span class="hidden-phone"> pages</span></a></li>
+    <li<% if @node_type == "map" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="icon icon-map-marker"></i> Maps</a></li>
+  </ul>
 
-  <% if @notes.nil? || @notes.length == 0 %>
-    <p>No results found; try searching for '<b><%= params[:id] %></b>':</p>
+  <div class="tab-content">
 
-    <%= render :partial => "search/search" %>
+    <% if @node_type == "note" %> 
+      <div class="tab-pane active" id="notes">
+        <% if @notes.nil? || @notes.length == 0 %>
+          <p>No results found; try searching for '<b><%= params[:id] %></b>':</p>
+   
+          <%= render :partial => "search/search" %>
+   
+          <p>Or try an <a href="/search/advanced/">advanced search</a></p>
+        <% else %>
+          <%= render :partial => "notes/notes" %>
+        <% end %>
+      </div>
+    <% end %>
 
-    <p>Or try an <a href="/search/advanced/">advanced search</a></p>
-  <% else %>
-    <%= render :partial => "notes/notes" %>
-  <% end %>
+    <% if @node_type == "page" %> 
+      <div class="tab-pane active" id="wikis">
+        <%= render :partial => "wiki/wikis" %>
+      </div>
+    <% end %>
+
+    <% if @node_type == "map" %> 
+      <div class="tab-pane active" id="wikis">
+        <%= render :partial => "map/maps" %>
+      </div>
+    <% end %>
 
   <hr />
   

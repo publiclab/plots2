@@ -4,9 +4,15 @@ class TagController < ApplicationController
   before_filter :require_user, :only => [:create, :delete]
 
   def show
+    @node_type = params[:node_type] || "note"
+      @node_type = "page" if @node_type == "wiki"
+      @node_type = "map" if @node_type == "maps"
     @tags = DrupalTag.find_all_by_name params[:id]
     @tagnames = @tags.collect(&:name).uniq! || []
-    @notes = DrupalNode.where(:status => 1, :type => "note").includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?',params[:id]).page(params[:page]).order("node_revisions.timestamp DESC")
+    nodes = DrupalNode.where(:status => 1, :type => @node_type).includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?',params[:id]).page(params[:page]).order("node_revisions.timestamp DESC")
+      @notes = nodes if @node_type == "note"
+      @wikis = nodes if @node_type == "page"
+      @nodes = nodes if @node_type == "map"
     @title = @tagnames.join(', ') if @tagnames
     set_sidebar :tags, [params[:id]]
   end
