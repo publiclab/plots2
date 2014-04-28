@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
   add_index "comments", ["nid"], :name => "nid"
   add_index "comments", ["pid"], :name => "pid"
   add_index "comments", ["status"], :name => "status"
-  add_index "comments", ["timestamp"], :name => "timestamp"
 
   create_table "community_tags", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
     t.integer "tid",  :default => 0, :null => false
@@ -178,7 +177,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
   add_index "node", ["uid"], :name => "uid"
   add_index "node", ["vid"], :name => "vid"
 
-  create_table "node_access", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "node_access", :id => false, :force => true do |t|
     t.integer "nid",                       :default => 0,  :null => false
     t.integer "gid",                       :default => 0,  :null => false
     t.string  "realm",                     :default => "", :null => false
@@ -205,7 +204,6 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
   end
 
   add_index "node_revisions", ["nid"], :name => "nid"
-  add_index "node_revisions", ["timestamp"], :name => "timestamp"
   add_index "node_revisions", ["uid"], :name => "uid"
 
   create_table "node_selections", :id => false, :force => true do |t|
@@ -217,7 +215,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
 
   add_index "node_selections", ["user_id", "nid"], :name => "index_node_selections_on_user_id_and_nid"
 
-  create_table "profile_fields", :primary_key => "fid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "profile_fields", :primary_key => "fid", :force => true do |t|
     t.string  "title"
     t.string  "name",         :limit => 128, :default => "", :null => false
     t.text    "explanation"
@@ -235,7 +233,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
   add_index "profile_fields", ["category"], :name => "category"
   add_index "profile_fields", ["name"], :name => "name"
 
-  create_table "profile_values", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "profile_values", :id => false, :force => true do |t|
     t.integer "fid",   :default => 0, :null => false
     t.integer "uid",   :default => 0, :null => false
     t.text    "value"
@@ -310,7 +308,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
   add_index "term_node", ["nid"], :name => "nid"
   add_index "term_node", ["vid"], :name => "vid"
 
-  create_table "upload", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "upload", :id => false, :force => true do |t|
     t.integer "fid",                      :default => 0,  :null => false
     t.integer "nid",                      :default => 0,  :null => false
     t.integer "vid",                      :default => 0,  :null => false
