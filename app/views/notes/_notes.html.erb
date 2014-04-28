@@ -19,8 +19,10 @@
         <p><a href="<%= node.path %>">Read more &raquo;</a></p>
         <p>
           <% if logged_in_as(['admin','moderator']) %><a class="btn btn-mini" href="/moderate/spam/<%= node.id %>"><i class="icon icon-ban-circle"></i> Spam</a><% end %>
-          <% node.tags[0..3].each do |tag| %>
-            <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
+          <% if node.tags.length > 1 %>
+            <% node.tags[0..3].each do |tag| %>
+              <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
+            <% end %>
           <% end %>
         </p>
         <% end %>
