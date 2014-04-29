@@ -195,7 +195,7 @@ class WikiController < ApplicationController
 
   def index
     @title = "Wiki index"
-    @wikis = DrupalNode.find_all_by_type('page',10,:limit => 40,:order => "changed DESC", :conditions => ["status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')"])
+    @wikis = DrupalNode.find_all_by_type('page',10,:limit => 50, :joins => 'JOIN node_revisions ON node_revisions.nid = node.nid', :order => "node_revisions.timestamp DESC", :conditions => ["status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')"]).uniq
   end
 
   def popular
