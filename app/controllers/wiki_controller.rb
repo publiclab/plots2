@@ -5,7 +5,13 @@ class WikiController < ApplicationController
   before_filter :require_user, :only => [:new, :create, :edit, :update, :delete]
 
   def show
-    if !(@node = DrupalNode.find_by_slug(params[:id])).nil? # it's a place page!
+    if params[:lang]
+      @node = DrupalNode.find_by_slug(params[:lang]+"/"+params[:id])
+    else
+      @node = DrupalNode.find_by_slug(params[:id])
+    end
+
+    if !@node.nil? # it's a place page!
       @tags = @node.tags
       @tags += [DrupalTag.find_by_name(params[:id])] if DrupalTag.find_by_name(params[:id])
     else # it's a new wiki page!

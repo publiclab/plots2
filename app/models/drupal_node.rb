@@ -330,6 +330,7 @@ class DrupalNode < ActiveRecord::Base
   # ============================================
   # URL-related methods:
 
+  # is this used anymore? deprecate?
   def slug
     if self.type == "page" || self.type == "tool" || self.type == "place"
       slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s, :order => "pid DESC").dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
