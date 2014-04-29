@@ -41,7 +41,11 @@ class WikiController < ApplicationController
   end
 
   def edit
-    @node = DrupalNode.find_by_slug(params[:id])
+    if params[:lang]
+      @node = DrupalNode.find_by_slug(params[:lang]+"/"+params[:id])
+    else
+      @node = DrupalNode.find_by_slug(params[:id])
+    end
     # we could do this...
     #@node.locked = true
     #@node.save
@@ -87,7 +91,7 @@ class WikiController < ApplicationController
   end
 
   def update
-    @node = DrupalNode.find_by_slug(params[:id])
+    @node = DrupalNode.find(params[:id])
     @revision = @node.new_revision({
       :nid => @node.id,
       :uid => current_user.uid,
@@ -120,7 +124,7 @@ class WikiController < ApplicationController
         @node.save
       end
       flash[:notice] = "Edits saved."
-      redirect_to "/wiki/"+@node.slug
+      redirect_to @node.path
     else
       flash[:error] = "Your edit could not be saved."
       render :action => :edit
