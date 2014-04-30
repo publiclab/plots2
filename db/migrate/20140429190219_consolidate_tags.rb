@@ -1,0 +1,117 @@
+class ConsolidateTags < ActiveRecord::Migration
+  def up
+
+    # before wrapping the rest in a transaction, we have to make sure the database supports transactions
+    execute "ALTER TABLE comments ENGINE = InnoDB"
+    execute "ALTER TABLE community_tags ENGINE = InnoDB"
+    execute "ALTER TABLE content_field_bbox ENGINE = InnoDB"
+    execute "ALTER TABLE content_field_image_gallery ENGINE = InnoDB"
+    execute "ALTER TABLE content_field_main_image ENGINE = InnoDB"
+    execute "ALTER TABLE content_field_map_editor ENGINE = InnoDB"
+    execute "ALTER TABLE content_field_mappers ENGINE = InnoDB"
+    execute "ALTER TABLE content_type_map ENGINE = InnoDB"
+    execute "ALTER TABLE files ENGINE = InnoDB"
+    execute "ALTER TABLE node ENGINE = InnoDB"
+    execute "ALTER TABLE node_access ENGINE = InnoDB"
+    execute "ALTER TABLE node_counter ENGINE = InnoDB"
+    execute "ALTER TABLE node_revisions ENGINE = InnoDB"
+    execute "ALTER TABLE profile_fields ENGINE = InnoDB"
+    execute "ALTER TABLE profile_values ENGINE = InnoDB"
+    execute "ALTER TABLE term_data ENGINE = InnoDB"
+    execute "ALTER TABLE term_node ENGINE = InnoDB"
+    execute "ALTER TABLE upload ENGINE = InnoDB"
+    execute "ALTER TABLE url_alias ENGINE = InnoDB"
+    execute "ALTER TABLE users ENGINE = InnoDB"
+
+    ActiveRecord::Base.transaction do
+   
+      # delete all orphaned node_tags
+      deleted = []
+      ntags = DrupalNodeTag.find(:all)
+      puts "node_tags:"
+      puts ntags.length
+      ntags.each do |nt|
+        if nt.tag.nil? || nt.node.nil? || nt.node.status == 0
+          deleted << nt.tag.name 
+          nt.delete
+        end
+      end
+      puts "deleted invalids:"
+      puts deleted.join(',')
+ 
+      # convert all DrupalNodeTag into DrupalNodeCommunityTag with uid = 0
+      failed = []
+      deleted = []
+      dupes = 0
+      ntags = DrupalNodeTag.find(:all)
+      puts "node_tags for active pages:"
+      puts ntags.length
+      ntags.each do |ntag|
+        ctag = DrupalNodeCommunityTag.new({
+          :uid => 0, # oh well. Someone can inherit these someday if need be.
+          :tid => ntag.tid,
+          :date => DateTime.now.to_i, # we never saved these before, so we don't know; just use current time
+          :nid => ntag.nid
+        })
+        if DrupalNodeCommunityTag.find_all_by_nid(ntag.nid, :conditions => {:tid => ntag.tid}).length > 0
+          dupes += 1
+        elsif ctag.save
+          deleted << ntag.tag.name unless ntag.tag.nil?
+          ntag.delete 
+        else
+          failed << ctag
+        end
+      end
+      puts "failed:"
+      puts failed.length
+          puts "tags:"
+          puts failed.collect(&:tag).collect(&:name).join(',')
+      puts "dupes:"
+      puts dupes
+      puts "deleted after migrating:"
+      puts deleted.join(',')
+ 
+      # get rid of DrupalTag duplicates, ensure no new dupes are created
+      failed = []
+      dupes = 0
+      uniqtags = DrupalTag.find(:all).collect(&:name).uniq
+      uniqtags.each do |uniqtag|
+        origtag = DrupalTag.find_by_name uniqtag, :order => "tid"
+        DrupalTag.find_all_by_name(uniqtag).each do |tag_clone|
+          # re-assign node_tag to the first instance of tag
+          DrupalNodeCommunityTag.find_all_by_tid(tag_clone.tid).each do |ctag|
+            ctag.tid = origtag.tid
+            if DrupalNodeCommunityTag.find_all_by_nid(ctag.nid, :conditions => {:tid => ctag.tid}).length > 0
+              dupes += 1
+            elsif !ctag.save
+              failed << ctag
+            end
+          end
+        end
+      end
+      puts "failed:"
+      puts failed.length
+          puts "tags:"
+          puts failed.collect(&:name).join(',')
+      puts "dupes:"
+      puts dupes
+ 
+      # now find all orphaned tags and delete them: 
+      deleted = []
+      DrupalTag.find(:all).each do |tag|
+        if tag.drupal_node_tag.length == 0 && tag.drupal_node_community_tag.length == 0
+          deleted << tag.name
+          tag.delete 
+        end
+      end
+      puts "deleted orphans:"
+      puts deleted.join(',')
+
+    end
+
+  end
+
+  # there is no undo
+  def down
+  end
+end

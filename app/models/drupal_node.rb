@@ -587,7 +587,7 @@ class DrupalNode < ActiveRecord::Base
   def add_tag(tagname,user)
     unless self.has_tag(tagname)
       saved = false
-      tag = DrupalTag.new({
+      tag = DrupalTag.find_by_name(tagname) || DrupalTag.new({
         :vid => 3, # vocabulary id; 1
         :name => tagname,
         :description => "",
