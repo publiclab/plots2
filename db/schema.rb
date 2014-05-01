@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140426213041) do
+ActiveRecord::Schema.define(:version => 20140507095348) do
 
   create_table "comments", :primary_key => "cid", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.integer "pid",                             :default => 0,  :null => false
@@ -148,21 +148,24 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
   end
 
   create_table "node", :primary_key => "nid", :options=>'ENGINE=MyISAM', :force => true do |t|
-    t.integer "vid",                        :default => 0,  :null => false
-    t.string  "type",         :limit => 32, :default => "", :null => false
-    t.string  "language",     :limit => 12, :default => "", :null => false
-    t.string  "title",                      :default => "", :null => false
-    t.integer "uid",                        :default => 0,  :null => false
-    t.integer "status",                     :default => 1,  :null => false
-    t.integer "created",                    :default => 0,  :null => false
-    t.integer "changed",                    :default => 0,  :null => false
-    t.integer "comment",                    :default => 0,  :null => false
-    t.integer "promote",                    :default => 0,  :null => false
-    t.integer "moderate",                   :default => 0,  :null => false
-    t.integer "sticky",                     :default => 0,  :null => false
-    t.integer "tnid",                       :default => 0,  :null => false
-    t.integer "translate",                  :default => 0,  :null => false
-    t.integer "cached_likes",               :default => 0
+    t.integer "vid",                                       :default => 0,  :null => false
+    t.string  "type",                        :limit => 32, :default => "", :null => false
+    t.string  "language",                    :limit => 12, :default => "", :null => false
+    t.string  "title",                                     :default => "", :null => false
+    t.integer "uid",                                       :default => 0,  :null => false
+    t.integer "status",                                    :default => 1,  :null => false
+    t.integer "created",                                   :default => 0,  :null => false
+    t.integer "changed",                                   :default => 0,  :null => false
+    t.integer "comment",                                   :default => 0,  :null => false
+    t.integer "promote",                                   :default => 0,  :null => false
+    t.integer "moderate",                                  :default => 0,  :null => false
+    t.integer "sticky",                                    :default => 0,  :null => false
+    t.integer "tnid",                                      :default => 0,  :null => false
+    t.integer "translate",                                 :default => 0,  :null => false
+    t.integer "cached_likes",                              :default => 0
+    t.integer "drupal_comments_count",                     :default => 0
+    t.integer "drupal_node_revisions_count",               :default => 0
+    t.string  "dst"
   end
 
   add_index "node", ["changed"], :name => "node_changed"

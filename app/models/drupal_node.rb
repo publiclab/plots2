@@ -6,8 +6,8 @@ class UniqueUrlValidator < ActiveModel::Validator
     elsif record.title == "new" && (record.type == "page" || record.type == "place" || record.type == "tool")
       record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     else
-      if !DrupalUrlAlias.find_by_dst(record.generate_path).nil? && record.type == "note"
-      record.errors[:base] << "You have already used this title today."
+      if !DrupalNode.where(dst: record.generate_path).first.nil? && record.type == "note"
+        record.errors[:base] << "You have already used this title today."
       end
     end
   end
@@ -41,6 +41,7 @@ class DrupalNode < ActiveRecord::Base
 
   validates :title, :presence => :true
   validates_with UniqueUrlValidator, :on => :create
+  validates :dst, :uniqueness => { :message => "This title has already been taken" }
 
   # making drupal and rails database conventions play nice
   class << self
@@ -58,9 +59,13 @@ class DrupalNode < ActiveRecord::Base
 
   before_save :set_changed_and_created
   after_create :setup
-  before_destroy :delete_url_alias
+  before_validation :set_dst
 
   private
+
+  def set_dst
+    self.dst = self.generate_path if self.dst.blank? && !self.title.blank?
+  end
 
   def set_changed_and_created
     self['changed'] = DateTime.now.to_i
@@ -69,25 +74,9 @@ class DrupalNode < ActiveRecord::Base
   # determines URL ("slug"), initializes the view counter, and sets up a created timestamp
   def setup
     self['created'] = DateTime.now.to_i
+    self.dst = self.generate_path
     self.save
-    current_user = User.find_by_username(DrupalUsers.find_by_uid(self.uid).name)
-    if self.type == "note"
-      slug = DrupalUrlAlias.new({
-        :dst => self.generate_path,
-        :src => "node/"+self.id.to_s
-      }).save
-    else
-      slug = DrupalUrlAlias.new({
-        :dst => self.generate_path,
-        :src => "node/"+self.id.to_s
-      }).save
-    end
     DrupalNodeCounter.new({:nid => self.id}).save
-  end
-
-  def delete_url_alias
-    url_alias = DrupalUrlAlias.find_by_src("node/"+self.nid.to_s)
-    url_alias.delete if url_alias
   end
 
   public
@@ -102,7 +91,7 @@ class DrupalNode < ActiveRecord::Base
 
   def current_revision
     # Grab the most recent revision for this node.
-    DrupalNodeRevision.where(nid: nid).order("timestamp DESC").limit(1)[0]
+    self.drupal_node_revision#.order(timestamp: "DESC").last
   end
 
   def current_title
@@ -124,8 +113,8 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def generate_path
-    username = DrupalUsers.find_by_uid(self.uid).name
     if self.type == 'note'
+      username = DrupalUsers.find_by_uid(self.uid).name
       "notes/"+username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+self.title.parameterize
     elsif self.type == 'page'
       "wiki/"+self.title.parameterize
@@ -138,23 +127,28 @@ class DrupalNode < ActiveRecord::Base
   # Manual associations: 
 
   def latest
-    DrupalNodeRevision.find_by_nid(self.nid,:order => "timestamp DESC")
+    #self.drupal_node_revision.order(timestamp: "DESC").last
+    self.drupal_node_revision.sort_by { |rev| rev.timestamp }.last
   end
 
   def revisions
-    DrupalNodeRevision.find_all_by_nid(self.nid,:order => "timestamp DESC")
+    #self.drupal_node_revision.order(timestamp: "DESC")
+    self.drupal_node_revision.sort_by { |rev| rev.timestamp }
   end
 
   def revision_count
-    DrupalNodeRevision.count_by_nid(self.nid)
+    self.drupal_node_revision.size
+    #DrupalNodeRevision.count_by_nid(self.nid)
   end
 
   def comment_count
-    DrupalComment.count :all, :conditions => {:nid => self.nid}
+    self.drupal_comments.size
+    #DrupalComment.count :all, :conditions => {:nid => self.nid}
   end
 
   def comments
-    DrupalComment.find_all_by_nid self.nid, :order => "timestamp", :conditions => {:status => 0}
+    self.drupal_comments.order(timestamp: :desc)
+    #DrupalComment.find_all_by_nid self.nid, :order => "timestamp", :conditions => {:status => 0}
   end
 
   def author
@@ -192,10 +186,11 @@ class DrupalNode < ActiveRecord::Base
 
   # provide either a Drupally main_iamge or a Railsy one 
   def main_image(node_type = :all)
+    return nil if self.images.empty?
     if (self.type == "place" || self.type == "tool") && self.images.length == 0 # special handling... oddly needed:
       DrupalMainImage.find(:last, :conditions => {:nid => self.id}, :order => "field_main_image_fid").drupal_file
     else
-      if self.images && self.images.length > 0 && node_type != :drupal
+      if self.images.length > 0 && node_type != :drupal
         self.images.last 
       elsif self.drupal_main_image && node_type != :rails
         self.drupal_main_image.drupal_file 
@@ -327,29 +322,22 @@ class DrupalNode < ActiveRecord::Base
   # is this used anymore? deprecate?
   def slug
     if self.type == "page" || self.type == "tool" || self.type == "place"
-      slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s, :order => "pid DESC").dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+      self.dst.split("/").last
     else
-      slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s, :order => "pid DESC").dst if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+      self.dst
     end
-    slug
   end
 
   def path
-    url_alias = DrupalUrlAlias.find_by_src('node/'+self.id.to_s, :order => "pid DESC")
-    if url_alias
-      path = "/"+url_alias.dst
-      path.gsub!('/place','/wiki') if self.type == "place"
-      path.gsub!('/tool','/wiki') if self.type == "tool"
-      path
-    end
+    "/#{self.dst}"
   end
 
   def edit_path
     if self.type == "page" || self.type == "tool" || self.type == "place"
       if self.language != ""
-        path = "/wiki/edit/"+self.language+'/'+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+        path = "/wiki/edit/" + self.language + "/" + self.dst.split("/").last
       else
-        path = "/wiki/edit/"+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+        path = "/wiki/edit/" + "/" + self.dst.split("/").last
       end
     else
       path = "/notes/edit/"+self.id.to_s
@@ -358,29 +346,21 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_by_slug(title)
-    urlalias = DrupalUrlAlias.find_by_dst('place/'+title)
-    urlalias = urlalias || DrupalUrlAlias.find_by_dst('tool/'+title)
-    urlalias = urlalias || DrupalUrlAlias.find_by_dst('wiki/'+title)
-    urlalias = urlalias || DrupalUrlAlias.find_by_dst(title)
-    if urlalias
-      urlalias.node
-    else
-      nil
-    end
+    DrupalNode.where(dst: [title, "tool/#{title}", "wiki/#{title}", "place/#{title}"]).first
   end
 
   def self.find_root_by_slug(title)
-    slug = DrupalUrlAlias.find_by_dst(title)
-    slug.node if slug
+    DrupalNode.where(dst: [title, "wiki/#{title}"]).first
   end
 
   def self.find_map_by_slug(title)
-    urlalias = DrupalUrlAlias.find_by_dst('map/'+title,:order => "pid DESC")
-    urlalias.node if urlalias
+    DrupalNode.where(dst: "map/#{title}").first
   end
 
   def map
-    DrupalContentTypeMap.find_by_nid(self.nid,:order => "vid DESC")
+    # This fires off a query that orders by vid DESC
+    # and is quicker than doing .order(vid: :DESC) for some reason.
+    self.drupal_content_type_map.last
   end
 
   def nearby_maps(dist = 1.5)
