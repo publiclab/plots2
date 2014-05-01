@@ -34,7 +34,7 @@
 <div class="span9">
 
   <% if @node && params[:action] != "create"
-    url = { :controller => "wiki", :action => "update", :id => @node.slug }
+    url = { :controller => "wiki", :action => "update", :id => @node.id }
   else 
     url = { :controller => "wiki", :action => "create", :id => params[:id] }
    end %>

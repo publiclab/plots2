@@ -5,7 +5,13 @@ class WikiController < ApplicationController
   before_filter :require_user, :only => [:new, :create, :edit, :update, :delete]
 
   def show
-    if !(@node = DrupalNode.find_by_slug(params[:id])).nil? # it's a place page!
+    if params[:lang]
+      @node = DrupalNode.find_by_slug(params[:lang]+"/"+params[:id])
+    else
+      @node = DrupalNode.find_by_slug(params[:id])
+    end
+
+    if !@node.nil? # it's a place page!
       @tags = @node.tags
       @tags += [DrupalTag.find_by_name(params[:id])] if DrupalTag.find_by_name(params[:id])
     else # it's a new wiki page!
@@ -35,7 +41,11 @@ class WikiController < ApplicationController
   end
 
   def edit
-    @node = DrupalNode.find_by_slug(params[:id])
+    if params[:lang]
+      @node = DrupalNode.find_by_slug(params[:lang]+"/"+params[:id])
+    else
+      @node = DrupalNode.find_by_slug(params[:id])
+    end
     # we could do this...
     #@node.locked = true
     #@node.save
@@ -81,7 +91,7 @@ class WikiController < ApplicationController
   end
 
   def update
-    @node = DrupalNode.find_by_slug(params[:id])
+    @node = DrupalNode.find(params[:id])
     @revision = @node.new_revision({
       :nid => @node.id,
       :uid => current_user.uid,
@@ -114,7 +124,7 @@ class WikiController < ApplicationController
         @node.save
       end
       flash[:notice] = "Edits saved."
-      redirect_to "/wiki/"+@node.slug
+      redirect_to @node.path
     else
       flash[:error] = "Your edit could not be saved."
       render :action => :edit
@@ -185,7 +195,7 @@ class WikiController < ApplicationController
 
   def index
     @title = "Wiki index"
-    @wikis = DrupalNode.find_all_by_type('page',10,:limit => 40,:order => "changed DESC", :conditions => ["status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')"])
+    @wikis = DrupalNode.find_all_by_type('page',10,:limit => 50, :joins => 'JOIN node_revisions ON node_revisions.nid = node.nid', :order => "node_revisions.timestamp DESC", :conditions => ["status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')"]).uniq
   end
 
   def popular

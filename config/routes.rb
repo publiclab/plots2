@@ -48,11 +48,16 @@ Plots2::Application.routes.draw do
   match 'wiki/liked' => 'wiki#liked'
   match 'wiki/create' => 'wiki#create'
   match 'wiki/:id' => 'wiki#show'
+    # this needs precedence for tag listings
+    match ':node_type/tag/:id' => 'tag#show'
   match 'wiki/revisions/:id' => 'wiki#revisions'
   match 'wiki/revert/:id' => 'wiki#revert'
   match 'wiki/edit/:id' => 'wiki#edit'
+  match 'wiki/update/:id' => 'wiki#update'
   match 'wiki/delete/:id' => 'wiki#delete'
   match 'wiki/revisions/:id/:vid' => 'wiki#revision'
+  match 'wiki/:lang/:id' => 'wiki#show'
+  match 'wiki/edit/:lang/:id' => 'wiki#edit'
   match 'wiki' => 'wiki#index'
 
   match 'place/:id/feed' => 'place#feed'
@@ -99,7 +104,6 @@ Plots2::Application.routes.draw do
   match 'search/typeahead/:id' => 'search#typeahead'
 
   match 'tag/:id' => 'tag#show'
-  match ':node_type/tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'
   match 'blog' => 'tag#blog', :id => "blog"
   match 'blog/:id' => 'tag#blog'

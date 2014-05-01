@@ -9,7 +9,7 @@
   <% @wikis.each do |wiki| %>
     <tr>
       <td><i class="icon-file"></i> <a href="<%= wiki.path %>"><%= wiki.latest.title %></a></td>
-      <td><%= time_ago_in_words(wiki.updated_at) %> ago by 
+      <td><%= time_ago_in_words(wiki.latest.created_at) %> ago by 
       <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></td>
       <td><%= wiki.revisions.length %></td>
       <td><%= number_with_delimiter(wiki.totalcount) %>

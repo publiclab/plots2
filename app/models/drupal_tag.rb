@@ -81,7 +81,7 @@ class DrupalTag < ActiveRecord::Base
       nids = tag_nids if nids == false
       nids = nids & tag_nids
     end
-    DrupalNode.find nids, :order => "nid DESC", :limit => limit
+    DrupalNode.find :all, :conditions => ["nid IN (?)",nids], :order => "nid DESC", :limit => limit
   end
 
   def self.find_popular_notes(tag,views = 20,limit = 10)

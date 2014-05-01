@@ -330,6 +330,7 @@ class DrupalNode < ActiveRecord::Base
   # ============================================
   # URL-related methods:
 
+  # is this used anymore? deprecate?
   def slug
     if self.type == "page" || self.type == "tool" || self.type == "place"
       slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s, :order => "pid DESC").dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
@@ -351,7 +352,11 @@ class DrupalNode < ActiveRecord::Base
 
   def edit_path
     if self.type == "page" || self.type == "tool" || self.type == "place"
-      path = "/wiki/edit/"+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+      if self.language != ""
+        path = "/wiki/edit/"+self.language+'/'+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+      else
+        path = "/wiki/edit/"+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+      end
     else
       path = "/notes/edit/"+self.id.to_s
     end
