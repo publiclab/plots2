@@ -314,6 +314,16 @@
 
     <script>
       (function() {
+        // iOS fix for dropdowns in menubar: https://github.com/publiclab/plots2/issues/17
+        $('.dropdown-toggle').click(function(e) {
+          e.preventDefault();
+          setTimeout($.proxy(function() {
+            if ('ontouchstart' in document.documentElement) {
+              $(this).siblings('.dropdown-backdrop').off().remove();
+            }
+          }, this), 0);
+        });
+
         $("[rel=tooltip]").tooltip()
         $("[rel=popover]").popover()
         $('table').addClass('table')
