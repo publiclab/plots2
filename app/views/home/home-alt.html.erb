@@ -1,0 +1,192 @@
+<%= render :partial => "sidebar/featured" %>
+<div class="span9">
+
+  <div class="span7">
+    <%= render :partial => "home/carousel" %>
+  </div>
+  <div class="span5">
+    <h1 style="line-height:1.2em;font-size:4.5em;letter-spacing:-0.05em;margin-top:0;margin-bottom:0;padding-top:0.3em;">Public Lab</h1>
+    <h4>is a community where you can learn how to investigate environmental concerns. Using inexpensive DIY techniques, we seek to change how people see the world in environmental, social, and political terms.</h4>
+    <p><a href="/join" class="btn btn-primary btn-large">Join now &raquo;</a></p>
+  </div>
+  <br style="clear:both" />
+
+  <div id="share">
+    <div class="fb-like" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false" style="vertical-align:top;zoom:1;*display:inline"></div>
+    &nbsp; <a href="https://twitter.com/PublicLab" class="twitter-follow-button" data-show-count="false">Follow @PublicLab</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    &nbsp; <a href="https://twitter.com/share" class="twitter-share-button" data-text="DIY, open source environmental science community: @PublicLab">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script> 
+  </div>
+
+</div>
+
+
+<div style="clear:both;" class="below-fold">
+
+<style>
+.below-fold {
+  padding-bottom:20px;
+}
+.mega-tabs {
+  padding-top:15px;
+  padding-bottom:30px;
+}
+.mega-tab {
+  width:33%;
+  float:left;
+  text-align:center;
+}
+.mega-tab-inner {
+  display:block;
+  background:#f8f8f8;
+  color:#111;
+  border:2px solid #e8e8e8;
+  border-bottom:0;
+  padding:8% 15%;
+  margin:6px;
+}
+.mega-tab-inner.active {
+  background:#fff;
+}
+.mega-tab-inner:hover {
+  text-decoration:none;
+  background:#eee;
+  color:#555;
+}
+.mega-tab-content {
+  display:none;
+  padding-top:20px;
+}
+.mega-tab-content.active {
+  display:block;
+}
+</style>
+
+  <div id="mega-tabs" class="mega-tabs">
+    <div class="mega-tab">
+      <a onClick="$('.mega-tab-inner').removeClass('active');$('#tab-who').addClass('active');$('.mega-tab-content').hide();$('#who').show()" class="mega-tab-inner active" id="tab-who" style="margin-left:0">
+        <img style="width:50%" src="/images/icon-collaborators.jpg" class="img img-circle" />
+        <h2>Who we are</h2>
+      </a>
+    </div>
+    <div class="mega-tab">
+      <a onClick="$('.mega-tab-inner').removeClass('active');$('#tab-what').addClass('active');$('.mega-tab-content').hide();$('#what').show()" class="mega-tab-inner" id="tab-what">
+        <img style="width:50%" src="/images/icon-monitor-environment.png" class="img img-circle" />
+        <h2>What we do</h2>
+      </a>
+    </div>
+    <div class="mega-tab">
+      <a onClick="$('.mega-tab-inner').removeClass('active');$('#tab-get-involved').addClass('active');$('.mega-tab-content').hide();$('#get-involved').show()" class="mega-tab-inner" id="tab-get-involved">
+        <img style="width:50%" src="/images/icon-community-investigations.png" class="img img-circle" />
+        <h2>Get involved</h2>
+      </a>
+    </div>
+  </div>
+
+  <br style="clear:both;">
+
+  <div id="who" class="mega-tab-content active">
+    <h1>Public Lab is made up of:</h1>
+ 
+    <style>
+      h4 {
+        line-height: 1.8em;
+        color:#888;
+      }
+      .about .icon {
+        color:#444;
+      }
+    </style>
+ 
+    <div class="row-fluid about">
+ 
+      <div class="span4">
+        <img style="padding-right:10px;width:35%" src="/images/icon-collaborators.jpg" class="img img-rounded pull-left" />
+        <h3>An open community of contributors</h3>
+        <h4>Learn about and <a href="/wiki/posting-research">help to develop cheaper</a>, more open environmental testing. <br /><a href="/signup">Join today &raquo;</a></h4>
+      </div>
+ 
+      <br style="clear:left;" class="visible-phone" />
+      <div class="span4">
+        <img style="padding-right:10px;width:35%" src="/images/icon-store.png" class="img img-rounded pull-left" />
+        <h3>A set of experimental tools</h3>
+        <h4><a href="/tools">Browse and freely download the designs</a>, or <a href="http://store.publiclaboratory.org">purchase a kit</a> to get involved today.</h4>
+      </div>
+ 
+      <br style="clear:left;" class="visible-phone" />
+      <div class="span4">
+        <img style="padding-right:10px;width:35%" src="/images/icon-community-support.png" class="img img-rounded pull-left" />
+        <h3>A network of local groups</h3>
+        <h4><a href="/places">Find a nearby chapter</a> or <a href="/wiki/start-a-chapter">start one yourself</a> to find local collaborators and support.</h4>
+      </div>
+ 
+    </div>
+    <div class="row-fluid about">
+ 
+      <div class="span4">
+        <img style="padding-right:10px;width:35%" src="/images/icon-community-investigations.png" class="img img-rounded pull-left" />
+        <h3>An open data archive</h3>
+        <h4><a href="/maps">A permanent home</a> for environmental data from grassroots groups and individuals.</h4>
+      </div>
+ 
+      <br style="clear:left;" class="visible-phone" />
+      <div class="span4">
+        <img style="padding-right:10px;width:35%" src="/images/icon-software.png" class="img img-rounded pull-left" />
+        <h3>Free and open source software</h3>
+        <h4>From <a href="http://mapknitter.org">map making and publishing</a> to <a href="http://spectralworkbench.org">spectral analysis</a>, with more new tools in development.</h4>
+      </div>
+ 
+      <br style="clear:left;" class="visible-phone" />
+      <div class="span4">
+        <img style="padding-right:10px;width:35%" src="/images/icon-monitor-environment.png" class="img img-rounded pull-left" />
+        <h3>A platform to build collaborations</h3>
+        <h4>Our <a href="/events">online and offline events</a> and systems bring together activists, technologists, scientists, educators, and local residents to solve problems.</h4>
+      </div>
+    </div>
+  </div>
+
+  <div id="what" class="mega-tab-content">
+ 
+    <h1>Open source research <small>by people like you</small></h1>
+ 
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#balloon-mapping" data-toggle="tab">Balloon mapping</a></li>
+      <li><a href="#kite-mapping" data-toggle="tab">Kite mapping</a></li>
+      <li><a href="#spectrometer" data-toggle="tab">Spectrometry</a></li>
+      <li><a href="#near-infrared-camera" data-toggle="tab">Infrared photography</a></li>
+      <li><a href="#thermal-photography" data-toggle="tab">Thermal photography</a></li>
+    </ul> 
+ 
+    <div class="tab-content">
+      <% ['balloon-mapping',
+          'kite-mapping',
+          'spectrometer',
+          'near-infrared-camera',
+          'thermal-photography'].each_with_index do |tagname,index| %>
+      <div class="tab-pane<%= ' active' if index == 0 %>" id="<%= tagname %>">
+        <% @nodes =  DrupalTag.find_popular_notes(tagname,20,4) %>
+        <% if @nodes.length > 0 %>
+        <% cache "front-"+tagname+"-"+@nodes.first.id.to_s+"-"+@nodes.first.updated_at.to_i.to_s do %>
+          <%= render :partial => "notes/tagged_notes", :locals => {:nodes => @nodes} %>
+        <% end %>
+        <% end %>
+        <p><a href="/tag/<%= tagname %>">More "<%= tagname %>" research &raquo;</a></p>
+        <br />
+      </div>
+      <% end %>
+    </div>
+ 
+    <script>
+      $(function () {
+        $('#myTab a:first').tab('show');
+      })
+    </script>
+ 
+    </div>
+  </div>
+
+  <div id="get-involved" class="mega-tab-content">
+
+  </div>
+</div>

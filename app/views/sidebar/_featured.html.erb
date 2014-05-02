@@ -1,31 +1,45 @@
 <div class="span3">
-  <%= render :partial => "sidebar/post_button" %>
 
-  <hr />
+  <% if params[:controller] != "home" && params[:action] != "home" %>
+    <%= render :partial => "sidebar/post_button" %>
+    <hr style="margin-bottom:20px;"/>
+  <% end %>
+
   <div class="sidebar-nav hidden-phone">
 
-    <div style="border:1px solid #ccc;border-width:1px 0;background:#eee;padding:6px 10px;margin:20px 0;background-image: linear-gradient(to bottom, #f6f6f6, #e6e6e6);background-repeat: repeat-x;">
-      <h3>Public Lab is hiring!</h3>
+    <div style="border:1px solid #ccc;border-width:1px 0;background:#eee;padding:6px 10px;margin:0 0 20px 0;background-image: linear-gradient(to bottom, #f6f6f6, #e6e6e6);background-repeat: repeat-x;">
+      <h3 style="margin-bottom:0;">Public Lab is hiring!</h3>
       <p>Join the non-profit team: <a href="/wiki/public-lab-jobs">Learn more &raquo;</a></p>
     </div>
 
-    <p><i class="icon icon-envelope"></i> <a href="/wiki/mailing-lists">Mailing lists &raquo;</a></p>
-    <p>Much of our work happens on our mailing lists, which are organized by region and topic. Join one today to get involved.</p>
-    <hr />
+    <% if params[:controller] != "home" && params[:action] != "home" %>
+      <p><i class="icon icon-envelope"></i> <a href="/wiki/mailing-lists">Mailing lists &raquo;</a></p>
+      <p>Much of our work happens on our mailing lists, which are organized by region and topic. Join one today to get involved.</p>
+      <hr />
+    <% end %>
+
     <!--<p><a href="/wiki/barnraising-2013"><img src="/images/barnraising-2013.png" width="100%" /></a></p>-->
     <!--<p><a href="http://spectralchallenge.org"><img src="/images/spectralchallenge.jpg" width="100%" /></a></p>-->
     <p><a href="/donate"><img src="/images/sidebar-donate.gif" width="100%" /></a></p>
 
-    <hr />
+    <div id="store-carousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+     
+        <div class="item active"><a href="http://store.publiclab.org/products/desktop-spectrometry-kit"><img src="/images/dsk.jpg"/></a></div>
+        <div class="item"><a href="http://store.publiclab.org/products/balloon-mapping-kit"><img src="/images/balloon-kit.jpg"/></a></div>
+        <div class="item"><a href="http://store.publiclab.org/products/smartphone-spectrometer"><img src="/images/smart-spec.jpg"/></a></div>
 
-    <a href="http://store.publiclab.org/products/desktop-spectrometry-kit"><img src="/images/dsk.jpg"/></a>
-    <hr />
-    <a href="http://store.publiclab.org/products/balloon-mapping-kit"><img src="/images/balloon-kit.jpg"/></a>
-    <hr />
-    <a href="http://store.publiclab.org/products/smartphone-spectrometer"><img src="/images/smart-spec.jpg"/></a>
-    <hr />
+      </div>
+    </div>
+    <script>
+      (setTimeout(function() {
+        $('#store-carousel').carousel({
+          interval: 6000
+        })
+      },2000))()
+    </script>
 
     <hr style="margin-bottom:6px;" />
-    <p><small><a href="#"><i class="icon-cog"></i> Options</a></small></p>
+    <p style="display:none;"><small><a href="#"><i class="icon-cog"></i> Options</a></small></p>
   </div>
 </div><!--/span-->
