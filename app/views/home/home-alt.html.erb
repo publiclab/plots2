@@ -43,7 +43,8 @@
   color:#111;
   border:2px solid #e8e8e8;
   border-bottom:0;
-  padding:8% 15%;
+  background-image: linear-gradient(to bottom, #f6f6f6, #e6e6e6);background-repeat: repeat-x;
+  padding:12% 15% 4% 15%;
   margin:6px;
 }
 .mega-tab-inner.active {
@@ -67,19 +68,22 @@
     <div class="mega-tab">
       <a onClick="$('.mega-tab-inner').removeClass('active');$('#tab-who').addClass('active');$('.mega-tab-content').hide();$('#who').show()" class="mega-tab-inner active" id="tab-who" style="margin-left:0">
         <img style="width:50%" src="/images/icon-collaborators.jpg" class="img img-circle" />
-        <h2>Who we are</h2>
+        <h2 class="hidden-phone">Who we are</h2>
+        <h4 class="visible-phone">Who we are</h4>
       </a>
     </div>
     <div class="mega-tab">
       <a onClick="$('.mega-tab-inner').removeClass('active');$('#tab-what').addClass('active');$('.mega-tab-content').hide();$('#what').show()" class="mega-tab-inner" id="tab-what">
         <img style="width:50%" src="/images/icon-monitor-environment.png" class="img img-circle" />
-        <h2>What we do</h2>
+        <h2 class="hidden-phone">What we do</h2>
+        <h4 class="visible-phone">What we do</h4>
       </a>
     </div>
     <div class="mega-tab">
       <a onClick="$('.mega-tab-inner').removeClass('active');$('#tab-get-involved').addClass('active');$('.mega-tab-content').hide();$('#get-involved').show()" class="mega-tab-inner" id="tab-get-involved">
         <img style="width:50%" src="/images/icon-community-investigations.png" class="img img-circle" />
-        <h2>Get involved</h2>
+        <h2 class="hidden-phone">Get involved</h2>
+        <h4 class="visible-phone">Get involved</h4>
       </a>
     </div>
   </div>
