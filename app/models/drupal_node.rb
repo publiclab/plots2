@@ -23,7 +23,6 @@ class DrupalNode < ActiveRecord::Base
 #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
 #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
   has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
-  has_one :drupal_node_access, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_files, :through => :drupal_upload
     has_many :drupal_node_tag, :foreign_key => 'nid', :dependent => :destroy
@@ -84,7 +83,6 @@ class DrupalNode < ActiveRecord::Base
       }).save
     end
     DrupalNodeCounter.new({:nid => self.id}).save
-    self.create_access
   end
 
   def delete_url_alias
@@ -110,14 +108,6 @@ class DrupalNode < ActiveRecord::Base
   def current_title
     # Grab the title from the most recent revision for this node.
     current_revision.title
-  end
-
-  def create_access
-    DrupalNodeAccess.new({:nid => self.id, :gid => 0, :realm => 'all', :grant_view => 1, :grant_update => 0, :grant_delete => 0}).save
-  end
-
-  def has_access?
-    DrupalNodeAccess.find(:all, :conditions => {:nid => self.id}).length > 0
   end
 
   def files
