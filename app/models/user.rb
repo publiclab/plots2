@@ -98,7 +98,7 @@ class User < ActiveRecord::Base
 
   def subscriptions(type = :tag)
     if type == :tag
-      TagSelection.find_all_by_user_id self.uid
+      TagSelection.find_all_by_user_id self.uid, :conditions => {:following => true}
     end
   end
 
