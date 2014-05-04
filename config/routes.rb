@@ -43,6 +43,12 @@ Plots2::Application.routes.draw do
   # instead of a file named 'wsdl'
   match 'openid/service.wsdl' => 'openid#wsdl'
 
+  match 'following/:type/:name' => 'subscription#following'
+  match 'unsubscribe/:type/:name' => 'subscription#delete'
+  match 'subscribe/:type' => 'subscription#add'
+  match 'subscribe/:type/:name' => 'subscription#add'
+  match 'subscriptions' => 'subscription#index'
+
   match 'wiki/new' => 'wiki#new'
   match 'wiki/popular' => 'wiki#popular'
   match 'wiki/liked' => 'wiki#liked'
@@ -90,12 +96,6 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/query' => 'like#liked?', :as => :is_liked
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
-
-  match 'following/:type/:name' => 'subscription#following'
-  match 'unsubscribe/:type/:name' => 'subscription#delete'
-  match 'subscribe/:type' => 'subscription#add'
-  match 'subscribe/:type/:name' => 'subscription#add'
-  match 'subscriptions' => 'subscription#index'
 
   match 'search' => 'search#advanced'
   match 'search/advanced' => 'search#advanced'

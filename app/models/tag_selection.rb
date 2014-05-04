@@ -5,6 +5,7 @@ class TagSelection < ActiveRecord::Base
 
   validates :user_id, :presence => :true
   validates :tid, :presence => :true
+  validates :drupal_tag, :presence => :true
 
   def user
     DrupalUsers.find_by_uid self.user_id
