@@ -285,11 +285,15 @@ class DrupalNode < ActiveRecord::Base
 
   # has it been tagged with "list:foo" where "foo" is the name of a Google Group?
   def mailing_list
-    if Rails.env == "production"
-      Rails.cache.fetch("feed-"+self.id.to_s+"-"+(self.updated_at.to_i/300).to_i.to_s) do
-        RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
+    begin
+      if true#Rails.env == "production"
+        Rails.cache.fetch("feed-"+self.id.to_s+"-"+(self.updated_at.to_i/300).to_i.to_s) do
+          RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
+        end
+      else
+        return []
       end
-    else
+    rescue
       return []
     end
   end
