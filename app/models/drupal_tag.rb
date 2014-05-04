@@ -5,6 +5,8 @@ class DrupalTag < ActiveRecord::Base
   has_many :drupal_node_tag, :foreign_key => 'tid'
   #has_many :drupal_users, :through => :drupal_node_tag, :foreign_key => 'uid'
 
+  has_many :tag_selection, :foreign_key => 'tid'
+
   # we're not really using the filter_by_type stuff here:
   has_many :drupal_node, :through => :drupal_node_tag do
     def filter_by_type(type,limit = 10)
@@ -36,6 +38,10 @@ class DrupalTag < ActiveRecord::Base
     end
     DrupalNode.find :all, :conditions => ['status = 1 AND nid IN ('+ids.uniq.join(',')+')'], :order => "nid DESC"
   end 
+
+  def subscriptions
+    self.tag_selection
+  end
 
   def is_community_tag(nid)
     !self.drupal_node_community_tag.find_by_nid(nid).nil?

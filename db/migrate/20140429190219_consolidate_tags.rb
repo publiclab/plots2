@@ -99,7 +99,7 @@ class ConsolidateTags < ActiveRecord::Migration
       # now find all orphaned tags and delete them: 
       deleted = []
       DrupalTag.find(:all).each do |tag|
-        if tag.drupal_node_tag.length == 0 && tag.drupal_node_community_tag.length == 0
+        if tag.drupal_node_tag.length == 0 && tag.drupal_node_community_tag.length == 0 && tag.subscriptions.length == 0
           deleted << tag.name
           tag.delete 
         end
