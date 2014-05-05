@@ -78,6 +78,11 @@ class ConsolidateTags < ActiveRecord::Migration
       uniqtags.each do |uniqtag|
         origtag = DrupalTag.find_by_name uniqtag, :order => "tid"
         DrupalTag.find_all_by_name(uniqtag).each do |tag_clone|
+          # re-assign all TagSelections to newly consolidated DrupalTag tids
+          TagSelection.find_all_by_tid(tag_clone.tid).each do |tsel|
+            tsel.tid = origtag.tid
+            tsel.save
+          end
           # re-assign node_tag to the first instance of tag
           DrupalNodeCommunityTag.find_all_by_tid(tag_clone.tid).each do |ctag|
             ctag.tid = origtag.tid
