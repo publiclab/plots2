@@ -4,6 +4,17 @@
 
   <hr />
 
+  <p>
+    <% if current_user.following("everything") %>
+      <a rel="tooltip" title="Click to unfollow" class="btn active" href="/unsubscribe/tag/everything"><i class="icon icon-eye-open"></i> Following <b>all research notes</b></a>
+    <% else %>
+      <a href="/subscribe/tag/everything" class="btn"><i class="icon icon-tag"></i> Subscribe to <b>all</b> notes</a>
+    <% end %>
+  </p>
+  <p>
+    <i>Receive emails for all research notes.</i>
+  </p>
+
 </div>
 
 <div class="span9">
@@ -13,7 +24,7 @@
   <div class="navbar">
     <div class="navbar-inner">
       <form class="navbar-form" action="/subscribe/tag">
-          <input type="text" name="name" class="input" placeholder="enter tags" data-provide="typeahead" data-source='["balloon-mapping","thermal-flashlight","spectrometer"]' autocomplete="off">
+          <input type="text" name="name" class="input-small" placeholder="enter tags" data-provide="typeahead" data-source='["balloon-mapping","thermal-flashlight","spectrometer"]' autocomplete="off">
         <button type="submit" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add</button>
       </form>
     </div>
