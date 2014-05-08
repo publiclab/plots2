@@ -91,7 +91,7 @@ class DrupalNode < ActiveRecord::Base
 
   def current_revision
     # Grab the most recent revision for this node.
-    self.drupal_node_revision#.order(timestamp: "DESC").last
+    self.drupal_node_revision.order(timestamp: "DESC").last
   end
 
   def current_title
