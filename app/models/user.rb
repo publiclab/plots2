@@ -104,7 +104,7 @@ class User < ActiveRecord::Base
 
   def following(tagname)
     tids = DrupalTag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
-    TagSelection.find(:all, :conditions => ["tid IN (?) AND user_id = ?", tids, self.uid]).length > 0
+    TagSelection.find(:all, :conditions => {:following => true,:tid => tids, :user_id => self.uid}).length > 0
   end
 
   def mapknitter_maps
