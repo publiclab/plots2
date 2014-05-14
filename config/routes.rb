@@ -54,7 +54,8 @@ Plots2::Application.routes.draw do
   match 'wiki/liked' => 'wiki#liked'
   match 'wiki/create' => 'wiki#create'
   match 'wiki/:id' => 'wiki#show'
-    # this needs precedence for tag listings
+    # these need precedence for tag listings
+    match 'feed/tag/:tagname' => 'tag#rss'
     match ':node_type/tag/:id' => 'tag#show'
   match 'wiki/revisions/:id' => 'wiki#revisions'
   match 'wiki/revert/:id' => 'wiki#revert'
@@ -115,7 +116,6 @@ Plots2::Application.routes.draw do
   match 'tag/delete/:nid/:tid' => 'tag#delete'
   match 'barnstar/give/:nid/:star' => 'tag#barnstar'
   match 'barnstar/give' => 'tag#barnstar'
-  match 'feed/tag/:tagname' => 'tag#rss'
   match 'feed/liked' => 'notes#liked_rss'
 
   match 'dashboard' => 'home#dashboard'

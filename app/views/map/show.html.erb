@@ -2,7 +2,6 @@
 <iframe style="width:100%;border:none;background:#ddd;margin-bottom:8px;" height="375" src="http://archive.publiclaboratory.org/leaflet/?tms=<%= @node.map.tms %>&lon=<%= @node.lon %>&lat=<%= @node.lat %>&zoom=<%= @node.map.min_zoom+1 %>"></iframe>
 
 <div class="row-fluid">
-  <%= render :partial => "map/nearby" %>
   <%= render :partial => "sidebar/related" %>
 
 <div class="span9">

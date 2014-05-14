@@ -128,7 +128,7 @@
 
     <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
   
-    <% if @node && @maps %> 
+    <% if @node && @maps && @node.lat %> 
       <script>
         <% 
         lat = @node.lat

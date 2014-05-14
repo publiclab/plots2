@@ -383,17 +383,6 @@ class DrupalNode < ActiveRecord::Base
     DrupalContentTypeMap.find_by_nid(self.nid,:order => "vid DESC")
   end
 
-  def nearby_maps(dist = 1.5)
-    minlat = self.lat - dist
-    maxlat = self.lat + dist
-    minlon = self.lon - dist
-    maxlon = self.lon + dist
-    # GeoRuby 
-    # field_bbox_geo is the geom column
-    #DrupalContentFieldBbox.find_by_geom([[minlon,minlat],[maxlon,maxlat]]).collect(&:drupal_node)
-    []
-  end
-
   def locations
     self.drupal_content_field_bboxes.collect(&:field_bbox_geo)
   end 
