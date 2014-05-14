@@ -82,18 +82,21 @@
       <a id="publish" tabindex="5" class="publish btn btn-primary btn-large">Publish</a>
       <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
       <span> &nbsp; By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</span>
-      <script>
-        (function(){
-          $(".publish").bind("click",publish)
-        })()
-      </script>
-
     </div>
     <p class="visible-phone btn-group">
       <a id="publish" class="publish btn btn-primary btn-large">Publish</a>
       <a data-previewing-text="Edit" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
     </p>
     <p class="visible-phone">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+
+    <script>
+      (function(){
+        publish = function(e) {
+            $('#new_drupal_node_revision').submit()
+        }
+        $(".publish").bind("click",publish)
+      })()
+    </script>
 
   <% end %>
 </div>
