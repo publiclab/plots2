@@ -20,7 +20,12 @@
   <% end %>
   </div>
 
-  <h2 style="clear:left;"><%= @node.title %></h2>
+  <h2 style="clear:left;"><% if @node.has_power_tag('question') %><span style="color:#aaa;font-style:italic;"><i class="icon icon-question-sign"></i> Question:</span> <% end %><%= @node.title %></h2>
+
+  <% if @node.has_power_tag('question') %>
+  <% pt = @node.power_tag('question') %>
+  <div class="alert"><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> is asking a question about <b><%= pt %></b>: <a class="btn" target="_blank" href="/subscribe/tag/question:<%= pt %>">Sign up to answer questions on this topic</a></div>
+  <% end %>
 
   <div>
     <div class="btn-group pull-right hidden-print">
