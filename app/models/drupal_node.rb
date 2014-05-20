@@ -585,6 +585,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def add_tag(tagname,user)
+    tagname = tagname.downcase
     unless self.has_tag(tagname)
       saved = false
       tag = DrupalTag.find_by_name(tagname) || DrupalTag.new({

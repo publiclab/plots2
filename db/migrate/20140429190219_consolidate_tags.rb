@@ -24,6 +24,21 @@ class ConsolidateTags < ActiveRecord::Migration
     execute "ALTER TABLE users ENGINE = InnoDB"
 
     ActiveRecord::Base.transaction do
+
+      # do some tallies to check success:
+      summ =  "\n======= BEGIN TAG CONSOLIDATION ========"
+      drupaltags = DrupalTag.count(:all)
+      summ += "\nTags:              "+drupaltags.to_s
+      drupalnodetags = DrupalNodeTag.count(:all)
+      summ += "\nNodeTags:          "+drupalnodetags.to_s
+      drupalnodecommunitytags = DrupalNodeCommunityTag.count(:all)
+      summ += "\nCommunityNodeTags: "+drupalnodecommunitytags.to_s
+      summ += "\n========================================"
+      tags = DrupalTag.find(:all,:select => [:name]).length
+      utags = tags.uniq.length
+      summ += "\nDuplicate tags:    "+(tags-utags).to_s
+      summ += "\n========================================"
+      puts summ
    
       # delete all orphaned node_tags
       deleted = []
@@ -92,6 +107,11 @@ class ConsolidateTags < ActiveRecord::Migration
               failed << ctag
             end
           end
+          # re-assign tag_selection to the first instance of tag
+          TagSelection.find_all_by_tid(tag_clone.tid).each do |tsel|
+            tsel.tid = origtag.tid
+            tsel.save
+          end
         end
       end
       puts "failed:"
@@ -100,18 +120,44 @@ class ConsolidateTags < ActiveRecord::Migration
           puts failed.collect(&:name).join(',')
       puts "dupes:"
       puts dupes
- 
+
       # now find all orphaned tags and delete them: 
       deleted = []
       DrupalTag.find(:all).each do |tag|
+        # delete orphans
         if tag.drupal_node_tag.length == 0 && tag.drupal_node_community_tag.length == 0 && tag.subscriptions.length == 0
           deleted << tag.name
           tag.delete 
+        else
+          # remove spaces
+          tag.name = tag.name.downcase.gsub(' ','-')
+          tag.save
         end
       end
       puts "deleted orphans:"
       puts deleted.join(',')
 
+      # do some final tallies to check success:
+      # repeat prev. stats:
+      puts summ
+      # new stats:
+      summ =  "\n=======  END TAG CONSOLIDATION  ========"
+      drupaltags2 = DrupalTag.count(:all)
+      summ += "\nTags:              "+drupaltags.to_s
+      drupalnodetags2 = DrupalNodeTag.count(:all)
+      summ += "\nNodeTags:          "+drupalnodetags.to_s
+      drupalnodecommunitytags2 = DrupalNodeCommunityTag.count(:all)
+      summ += "\nCommunityNodeTags: "+drupalnodecommunitytags.to_s
+      summ += "\n========================================"
+      summ += "\nFewer Tags:             "+(drupaltags-drupaltags2).to_s
+      summ += "\nFewer NodeTags:         "+(drupalnodetags-drupalnodetags2).to_s
+      summ += "\nMore CommunityNodeTags: "+(drupalnodecommunitytags2-drupalnodecommunitytags).to_s
+      summ += "\n========================================"
+      tags = DrupalTag.find(:all,:select => [:name]).length
+      utags = tags.uniq.length
+      summ += "\nDuplicate tags:    "+(tags-utags).to_s
+      summ += "\n========================================"
+      puts summ
     end
 
   end
