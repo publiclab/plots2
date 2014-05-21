@@ -15,7 +15,7 @@
     <%= render :partial => "like/like" %>
   </div>
 
-  <h2><%= @revision.title %> <a href="javascript:$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a></h2>
+  <h2><%= @revision.title %> <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a></h2>
 
 <% if @is_revision %>
   <div class="alert">This is a revision from <%= @revision.created_at.to_s(:long) %>. <a href="/wiki/revisions/<%= @node.slug %>">View all revisions</a></div>
