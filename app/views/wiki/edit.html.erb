@@ -89,6 +89,8 @@
     </p>
     <p class="visible-phone">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
 
+    <p style="padding:10px 0 0 0;"><i>This page was edited <%= ((Time.now.to_i - @node.latest.timestamp)/60).to_i %> minutes ago</i></p> 
+
     <script>
       (function(){
         publish = function(e) {

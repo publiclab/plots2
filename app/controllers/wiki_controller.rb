@@ -46,6 +46,9 @@ class WikiController < ApplicationController
     else
       @node = DrupalNode.find_by_slug(params[:id])
     end
+    if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
+      flash.now[:warning] = "Someone has clicked 'Edit' less than 5 minutes ago; be careful not to overwrite each others' edits!"
+    end
     # we could do this...
     #@node.locked = true
     #@node.save
