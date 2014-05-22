@@ -204,7 +204,7 @@
                   <li><a href="/profile/edit">Edit profile</a></li> 
                   <li class="divider"></li>
                   <li><a href="/subscriptions">Subscriptions</a></li>
-                  <li><a href="">Settings</a></li>
+                  <li><a href="/profile/<%= current_user.username %>/likes">Notes you've liked</a></li> 
                   <li class="divider"></li>
 		  <li><%= link_to "Logout", logout_path %></li>
                 </ul>
