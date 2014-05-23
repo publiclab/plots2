@@ -100,7 +100,7 @@ class UsersController < ApplicationController
     @user = DrupalUsers.find_by_name(params[:id])
     @title = @user.name
     @notes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => @user.uid}, :page => params[:page])
-    wikis = DrupalNodeRevision.find(:all, :order => "nid DESC", :conditions => {'node.type' => 'page', 'node.status' => 1, :uid => @user.uid},:joins => :drupal_node)
+    wikis = DrupalNodeRevision.find(:all, :order => "nid DESC", :conditions => {'node.type' => 'page', 'node.status' => 1, :uid => @user.uid},:joins => :drupal_node, :limit => 20)
     @wikis = wikis.collect(&:parent).uniq
     if @user.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
       flash[:error] = "That user has been banned."

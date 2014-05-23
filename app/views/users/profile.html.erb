@@ -34,7 +34,7 @@
   <hr />
 
   <% if @wikis && @wikis.length > 0 %>
-  <h4>Wiki pages contributed to</h4>
+  <h4>Wiki pages recently contributed to</h4>
   <ul class="nav bullet">
     <% @wikis.each do |wiki| %>
       <% unless (!@node.nil? && wiki.nid == @node.nid) %>
