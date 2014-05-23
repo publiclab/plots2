@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # set up a tag for all_notes subscription
-everything_tag = DrupalTag.create! "name"=>"everything", "description"=>"", "weight"=>0, "tid"=>0
+everything_tag = DrupalTag.create! "name"=>"everything", "description"=>"", "weight"=>0
 
 # set up 3 basic users: admin, mod, and user
 admin = User.create! "username"=>"admin", "email"=>"admin@example.com", 
