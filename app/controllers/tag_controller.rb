@@ -8,12 +8,11 @@ class TagController < ApplicationController
       @node_type = "page" if @node_type == "wiki"
       @node_type = "map" if @node_type == "maps"
     @tags = DrupalTag.find_all_by_name params[:id]
-    @tagnames = @tags.collect(&:name).uniq! || []
     nodes = DrupalNode.where(:status => 1, :type => @node_type).includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?',params[:id]).page(params[:page]).order("node_revisions.timestamp DESC")
       @notes = nodes if @node_type == "note"
       @wikis = nodes if @node_type == "page"
       @nodes = nodes if @node_type == "map"
-    @title = @tagnames.join(', ') if @tagnames
+    @title = params[:id]
     set_sidebar :tags, [params[:id]]
   end
 
@@ -127,13 +126,8 @@ class TagController < ApplicationController
     set_sidebar :tags, [params[:id]], {:note_count => 20}
     @tagnames = [params[:id]]
     @tag = DrupalTag.find_by_name params[:id]
- 
-    t = DrupalTag.find :all, :conditions => {:name => params[:id]}
-    nt = DrupalNodeTag.find :all, :conditions => ['tid in (?)',t.collect(&:tid)]
-    nct = DrupalNodeCommunityTag.find :all, :conditions => ['tid in (?)',t.collect(&:tid)]
-    @users = DrupalNode.find(:all, :conditions => ['nid IN (?)',(nt+nct).collect(&:nid)]).collect(&:author).uniq!
-    @wikis = DrupalNode.find :all, :conditions => ["nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", (nt+nct).collect(&:nid)]
-    @notes = DrupalNode.find :all, :conditions => ["nid IN (?) AND type = 'note'", (nt+nct).collect(&:nid)]
+    @notes = DrupalNode.where(:status => 1, :type => 'note').includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?',params[:id]).order("node_revisions.timestamp DESC")
+    @users = @notes.collect(&:author).uniq
   end
 
   # /contributors
