@@ -232,7 +232,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def responded_to
-    DrupalNode.find self.power_tags("response")
+    DrupalNode.find_all_by_nid(self.power_tags("response")) || []
   end
 
   def responses
