@@ -34,9 +34,9 @@ class ConsolidateTags < ActiveRecord::Migration
       drupalnodecommunitytags = DrupalNodeCommunityTag.count(:all)
       summ += "\nCommunityNodeTags: "+drupalnodecommunitytags.to_s
       summ += "\n========================================"
-      tags = DrupalTag.find(:all,:select => [:name]).length
+      tags = DrupalTag.find(:all,:select => [:name])
       utags = tags.uniq.length
-      summ += "\nDuplicate tags:    "+(tags-utags).to_s
+      summ += "\nDuplicate tags:    "+(tags.length-utags).to_s
       summ += "\n========================================"
       puts summ
    
@@ -101,8 +101,11 @@ class ConsolidateTags < ActiveRecord::Migration
         DrupalTag.find_all_by_name(uniqtag).each do |tag_clone|
           # re-assign all TagSelections to newly consolidated DrupalTag tids
           TagSelection.find_all_by_tid(tag_clone.tid).each do |tsel|
-            tsel.tid = origtag.tid
-            tsel.save
+            # ensure unique
+            unless TagSelection.find(:first, :conditions => {:tid => origtag.tid, :user_id => tsel.user_id})
+              tsel.tid = origtag.tid
+              tsel.save
+            end
           end
           # re-assign node_tag to the first instance of tag
           DrupalNodeCommunityTag.find_all_by_tid(tag_clone.tid).each do |ctag|
@@ -115,8 +118,11 @@ class ConsolidateTags < ActiveRecord::Migration
           end
           # re-assign tag_selection to the first instance of tag
           TagSelection.find_all_by_tid(tag_clone.tid).each do |tsel|
-            tsel.tid = origtag.tid
-            tsel.save
+            # ensure unique
+            unless TagSelection.find(:first, :conditions => {:tid => origtag.tid, :user_id => tsel.user_id})
+              tsel.tid = origtag.tid
+              tsel.save
+            end
           end
         end
       end
@@ -145,19 +151,19 @@ class ConsolidateTags < ActiveRecord::Migration
       # new stats:
       summ =  "\n=======  END TAG CONSOLIDATION  ========"
       drupaltags2 = DrupalTag.count(:all)
-      summ += "\nTags:              "+drupaltags.to_s
+      summ += "\nTags:              "+drupaltags2.to_s
       drupalnodetags2 = DrupalNodeTag.count(:all)
-      summ += "\nNodeTags:          "+drupalnodetags.to_s
+      summ += "\nNodeTags:          "+drupalnodetags2.to_s
       drupalnodecommunitytags2 = DrupalNodeCommunityTag.count(:all)
-      summ += "\nCommunityNodeTags: "+drupalnodecommunitytags.to_s
+      summ += "\nCommunityNodeTags: "+drupalnodecommunitytags2.to_s
       summ += "\n========================================"
       summ += "\nFewer Tags:             "+(drupaltags-drupaltags2).to_s
       summ += "\nFewer NodeTags:         "+(drupalnodetags-drupalnodetags2).to_s
       summ += "\nMore CommunityNodeTags: "+(drupalnodecommunitytags2-drupalnodecommunitytags).to_s
       summ += "\n========================================"
-      tags = DrupalTag.find(:all,:select => [:name]).length
+      tags = DrupalTag.find(:all,:select => [:name])
       utags = tags.uniq.length
-      summ += "\nDuplicate tags:    "+(tags-utags).to_s
+      summ += "\nDuplicate tags:    "+(tags.length-utags).to_s
       summ += "\n========================================"
       puts summ
     end
