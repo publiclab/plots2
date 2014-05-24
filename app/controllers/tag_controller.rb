@@ -7,8 +7,14 @@ class TagController < ApplicationController
     @node_type = params[:node_type] || "note"
       @node_type = "page" if @node_type == "wiki"
       @node_type = "map" if @node_type == "maps"
-    @tags = DrupalTag.find_all_by_name params[:id]
-    nodes = DrupalNode.where(:status => 1, :type => @node_type).includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?',params[:id]).page(params[:page]).order("node_revisions.timestamp DESC")
+    if params[:id][-1..-1] == "*"
+      @wildcard = true
+      @tags = DrupalTag.find :all, :conditions => ['name LIKE (?)',params[:id][0..-2]+'%']
+      nodes = DrupalNode.where(:status => 1, :type => @node_type).includes(:drupal_node_revision,:drupal_tag).where('term_data.name LIKE (?)',params[:id][0..-2]+'%').page(params[:page]).order("node_revisions.timestamp DESC")
+    else
+      @tags = DrupalTag.find_all_by_name params[:id]
+      nodes = DrupalNode.where(:status => 1, :type => @node_type).includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?',params[:id]).page(params[:page]).order("node_revisions.timestamp DESC")
+    end
       @notes = nodes if @node_type == "note"
       @wikis = nodes if @node_type == "page"
       @nodes = nodes if @node_type == "map"
@@ -113,7 +119,11 @@ class TagController < ApplicationController
   end
 
   def rss
-    @notes = DrupalTag.find_nodes_by_type([params[:tagname]],'note',20)
+    if params[:tagname][-1..-1] == "*"
+      @notes = DrupalNode.where(:status => 1, :type => 'note').includes(:drupal_node_revision,:drupal_tag).where('term_data.name LIKE (?)',params[:tagname][0..-2]+'%').limit(20).order("node_revisions.timestamp DESC")
+    else
+      @notes = DrupalTag.find_nodes_by_type([params[:tagname]],'note',20)
+    end
     respond_to do |format|
       format.rss {
         render :layout => false
