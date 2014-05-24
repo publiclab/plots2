@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # set up a tag for all_notes subscription
-everything_tag = DrupalTag.create! "name"=>"everything", "description"=>"", "weight"=>0, "tid"=>0
+everything_tag = DrupalTag.create! "name"=>"everything", "description"=>"", "weight"=>0
 
 # set up 3 basic users: admin, mod, and user
 admin = User.create! "username"=>"admin", "email"=>"admin@example.com", 
@@ -48,8 +48,6 @@ DrupalUsers.create! "name"=>"user",
   web_url_alias = DrupalUrlAlias.create! "dst"=>page, "src"=>"node/#{web_page.nid}"
   #web_node_counter = DrupalNodeCounter.create! "nid"=>web_page.nid, 
     #"totalcount"=>1
-  web_node_access = DrupalNodeAccess.create! "nid"=>web_page.nid, "gid"=>0, 
-    "realm"=>"all", "grant_view"=>1, "grant_update"=>0, "grant_delete"=>0
   web_node_revisions = DrupalNodeRevision.create! "nid"=>web_page.nid,
     "uid"=>admin.uid, "title"=>page.capitalize, "body"=>"#{page} - page", "teaser"=>"", 
     "log"=>"", "format"=>1
@@ -60,8 +58,6 @@ blog_post = DrupalNode.create! "type"=>"note", "title"=>"Blog Post", "uid"=>admi
   "status"=>1, "comment"=>1, "cached_likes"=>1
 #blog_post_alias = DrupalUrlAlias.create! "dst"=>"notes/user/#{Date.today.strftime('%m-%d-%Y')}",
   #"src"=>"node/#{blog_post.nid}"
-blog_post_access = DrupalNodeAccess.create! "nid"=>blog_post.nid, "gid"=>0, 
-    "realm"=>"all", "grant_view"=>1, "grant_update"=>0, "grant_delete"=>0
 blog_post_revisions = DrupalNodeRevision.create! "nid"=>blog_post.nid,
     "uid"=>admin.uid, "title"=>"Blog Post", "body"=>"Blog post body", "teaser"=>"", 
     "log"=>"", "format"=>1
