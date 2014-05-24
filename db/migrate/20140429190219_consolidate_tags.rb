@@ -40,6 +40,12 @@ class ConsolidateTags < ActiveRecord::Migration
       summ += "\n========================================"
       puts summ
    
+      # remove spaces
+      DrupalTag.find(:all).each do |tag|
+        tag.name = tag.name.downcase.gsub(' ','-')
+        tag.save
+      end
+
       # delete all orphaned node_tags
       deleted = []
       ntags = DrupalNodeTag.find(:all)
@@ -128,10 +134,6 @@ class ConsolidateTags < ActiveRecord::Migration
         if tag.drupal_node_tag.length == 0 && tag.drupal_node_community_tag.length == 0 && tag.subscriptions.length == 0
           deleted << tag.name
           tag.delete 
-        else
-          # remove spaces
-          tag.name = tag.name.downcase.gsub(' ','-')
-          tag.save
         end
       end
       puts "deleted orphans:"
