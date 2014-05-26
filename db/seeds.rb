@@ -15,31 +15,16 @@ admin = User.create! "username"=>"admin", "email"=>"admin@example.com",
   "password_confirmation"=>"password"
 admin.role = "admin"
 admin.save({})
-DrupalUsers.create! "name"=>"admin", 
-  "mail"=>"admin@example.com", "mode"=>0, "sort"=>0, "threshold"=>0, 
-  "theme"=>"", "signature"=>"", "signature_format"=>0, "status"=>1, 
-  "timezone"=>nil, "language"=>"", "picture"=>"", "init"=>"", 
-  "data"=>nil, "timezone_id"=>0, "timezone_name"=>"" 
 
 mod = User.create! "username"=>"moderator", "email"=>"moderator@example.com", 
   "password"=>"password", "password_confirmation"=>"password"
 mod.role = "moderator"
 mod.save({})
-DrupalUsers.create! "name"=>"moderator", 
-  "mail"=>"moderator@example.com", "mode"=>0, "sort"=>0, "threshold"=>0, 
-  "theme"=>"", "signature"=>"", "signature_format"=>0, "status"=>1, 
-  "timezone"=>nil, "language"=>"", "picture"=>"", "init"=>"", 
-  "data"=>nil, "timezone_id"=>0, "timezone_name"=>"" 
 
 basic_user = User.create! "username"=>"user", "email"=>"user@example.com", 
   "password"=>"password", "password_confirmation"=>"password"
 basic_user.role = "basic"
 basic_user.save({})
-DrupalUsers.create! "name"=>"user", 
-  "mail"=>"user@example.com", "mode"=>0, "sort"=>0, "threshold"=>0, 
-  "theme"=>"", "signature"=>"", "signature_format"=>0, "status"=>1, 
-  "timezone"=>nil, "language"=>"", "picture"=>"", "init"=>"", 
-  "data"=>nil, "timezone_id"=>0, "timezone_name"=>""
 
 # set up some records, otherwise rails will throw errors on visiting these pages
 %w{about media events getting-started donate stats licenses}.each do |page|
