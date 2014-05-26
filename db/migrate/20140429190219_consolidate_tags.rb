@@ -111,6 +111,7 @@ class ConsolidateTags < ActiveRecord::Migration
           DrupalNodeCommunityTag.find_all_by_tid(tag_clone.tid).each do |ctag|
             ctag.tid = origtag.tid
             if DrupalNodeCommunityTag.find_all_by_nid(ctag.nid, :conditions => {:tid => ctag.tid}).length > 0
+              ctag.delete
               dupes += 1
             elsif !ctag.save
               failed << ctag
