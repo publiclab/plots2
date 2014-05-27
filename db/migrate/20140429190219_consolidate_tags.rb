@@ -97,6 +97,7 @@ class ConsolidateTags < ActiveRecord::Migration
       dupes = 0
       uniqtags = DrupalTag.find(:all).collect(&:name).uniq
       uniqtags.each do |uniqtag|
+        # find the version with the earliest tid
         origtag = DrupalTag.find_by_name uniqtag, :order => "tid"
         DrupalTag.find_all_by_name(uniqtag).each do |tag_clone|
           # re-assign all TagSelections to newly consolidated DrupalTag tids
@@ -110,7 +111,7 @@ class ConsolidateTags < ActiveRecord::Migration
           # re-assign node_tag to the first instance of tag
           DrupalNodeCommunityTag.find_all_by_tid(tag_clone.tid).each do |ctag|
             ctag.tid = origtag.tid
-            if DrupalNodeCommunityTag.find_all_by_nid(ctag.nid, :conditions => {:tid => ctag.tid}).length > 0
+            if DrupalNodeCommunityTag.find_all_by_nid(ctag.nid, :conditions => {:tid => ctag.tid}).length > 1
               ctag.delete
               dupes += 1
             elsif !ctag.save
