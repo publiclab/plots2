@@ -110,12 +110,14 @@ class ConsolidateTags < ActiveRecord::Migration
           end
           # re-assign node_tag to the first instance of tag
           DrupalNodeCommunityTag.find_all_by_tid(tag_clone.tid).each do |ctag|
-            ctag.tid = origtag.tid
-            if DrupalNodeCommunityTag.find_all_by_nid(ctag.nid, :conditions => {:tid => ctag.tid}).length > 1
-              ctag.delete
-              dupes += 1
-            elsif !ctag.save
-              failed << ctag
+            if ctag.tid != origtag.tid
+              ctag.tid = origtag.tid
+              if DrupalNodeCommunityTag.find_all_by_nid(ctag.nid, :conditions => {:tid => ctag.tid}).length > 0
+                ctag.delete
+                dupes += 1
+              elsif !ctag.save
+                failed << ctag
+              end
             end
           end
           # re-assign tag_selection to the first instance of tag
