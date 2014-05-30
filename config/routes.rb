@@ -10,6 +10,11 @@ Plots2::Application.routes.draw do
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
 
+  #match '', to: 'blogs#show', constraints: {subdomain: /.+/}
+  # or to skip www:
+  match "", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" }
+  match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" }
+
   match 'ioby' => "legacy#ioby"
 
   match 'login' => "user_sessions#new",      :as => :login
@@ -211,5 +216,6 @@ Plots2::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
 
   match ':controller(/:action(/:id))(.:format)'
+
 
 end

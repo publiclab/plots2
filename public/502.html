@@ -2,15 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Public Lab: Slow network</title>
+    <title>Public Lab: a DIY environmental science community</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The Public Laboratory for Open Technology and Science (PLOTS) collaboratively develops and publicizes accessible technologies for investigating and reporting on local environmental health and justice issues. PLOTS provides an online research space for citizens, linking them to scientists, social scientists, and technologists. PLOTS is an expansion of Grassroots Mapping, where citizens use helium-filled balloons and digital cameras to generate high resolution “satellite” maps.">
-    <meta name="author" content="">
+      <meta name="description" content="Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues.">
+    <meta name="author" content="Public Lab contributors">
+    <link href="http://publiclab.org/feed.rss" rel="alternate" type="application/rss+xml" title="Public Lab research" />
 
     <!-- Le styles -->
     <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/fontawesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="/assets/application.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/bootstrap/css/bootstrap-lightbox.min.css" rel="stylesheet">
+    <link href="/assets/application-ffe3746838f0321276c7a2387c6849e7.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/assets/print.css" media="print" rel="stylesheet" type="text/css" />
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -24,12 +28,19 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/bootstrap/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="/bootstrap/ico/apple-touch-icon-57-precomposed.png">
 
-    <script src="/assets/application.js" type="text/javascript"></script>
+    <script src="/assets/application-a2b115ea7d0c940e9567ccb8612bd698.js" type="text/javascript"></script>
+    <script src="/assets/js/alerts.js"></script>
+    <script src="/assets/js/banner.js"></script>
     <meta content="authenticity_token" name="csrf-param" />
+<meta content="3ZWreKr21k9CjbGmLWC67o+1aleikNCR5S+3ZNZy4Mc=" name="csrf-token" />
 
+    <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d"></meta>
   </head>
 
   <body>
+
+    <p class="facebook-summary" style="display:none;">Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues.</p>
+
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
@@ -40,25 +51,48 @@
     }(document, 'script', 'facebook-jssdk'));</script>
 
     <div id="header" class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom:20px;">
-      <div class="navbar-inner" style="padding:0 10px;">
+      <div class="navbar-inner hidden-print" style="padding:0 10px;">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/">Public Lab</a>
+          <a class="brand" id="brand" href="/">Public Lab</a>
+          <a class="brand" id="brand-compact" href="/">PL</a>
 
-          <a rel="tooltip" title="Switch to old site" data-placement="bottom" style="margin-left:6px;" href="#" onClick="alpha()" class="btn btn-primary pull-right">&alpha;</a>
-          <script>
-            function alpha() { window.location = 'http://old.publiclab.'+(window.location+'').split('://publiclab.')[1] } 
-          </script>
-          
+          <a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:6px;" href="/signup" class="btn pull-right">Join</a>
 
           <ul class="nav">
-            <li><a rel="tooltip" title="Your dashboard" data-placement="bottom" href="/dashboard"><i class="icon-home icon-white"></i></a></li>
-            <li><a href="/research">Research</a></li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown">
+                Research <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="/research/">Recent research notes</a></li>
+                <li><a href="/wiki/">Recent wiki pages</a></li>
+                <li><a href="/wiki/popular/">Popular wiki pages</a></li>
+                <li class="nav-header">Tools</li>
+                <li><a href="/wiki/indoor-air-quality">Indoor Air Quality Monitoring</a></li>
+                <li><a href="/wiki/spectrometer">Spectrometer</a></li>
+                <li><a href="/wiki/near-infrared-camera">Near-Infrared Camera</a></li>
+                <li><a href="/wiki/balloon-mapping">Balloon &amp; Kite Mapping</a></li>
+                <li><a href="/wiki/thermal-photography">Thermal photography</a></li>
+                <li><a href="/wiki/kite-balloon-hybrid">Kite-Balloon Hybrid</a></li>
+                <li><a href="/tools">More...</a></li>
+                <li class="nav-header">Places</li>
+                <li><a href="/wiki/new-york-city">New York City</a></li>
+                <li><a href="/wiki/gulf-coast">Gulf Coast</a></li>
+                <li><a href="/wiki/providence">Providence</a></li>
+                <li><a href="/wiki/western-north-carolina">Western North Carolina</a></li>
+                <li><a href="/wiki/somerville-massachusetts">Somerville, Massachusetts</a></li>
+                <li><a href="/wiki/santiago-chile">Santiago, Chile</a></li>
+                <li><a href="/places">More...</a></li>
+                <li class="divider"></li>
+                <li><a href="/contributors">Contributors</a></li>
+              </ul>
+            </li>
           </ul>
-
 
           <div class="nav-collapse collapse">
 
@@ -81,7 +115,7 @@
                     },
                     items: 15,
                     //highlighter: function(a) {a},
-                    autoselect: true,
+                    autoselect: false,
                     autowidth: false,
                     menu: '<ul id="searchtypeahead" class="typeahead dropdown-menu"></ul>'
                   })
@@ -91,29 +125,96 @@
             </form>
 
             <ul class="nav">
-              <li><a href="/about">About</a></li>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown">
-                  Tools/Places <b class="caret"></b>
+                  About <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="/tag/balloon-mapping">Balloon mapping</a></li>
-                  <li><a href="/tag/near-infrared-camera">Near-infrared photography</a></li>
-                  <li><a href="/tag/thermal-flashlight">Thermal flashlight</a></li>
-                  <li><a href="/tag/spectrometer">Spectrometry</a></li>
-                  <li><a href="/tag/hydrogen-sulfide-detection">Hydrogen sulfide detection</a></li>
-                  <li><a href="/tag/air-column-monitor">Air column monitor</a></li>
-                  <li><a href="#">more...</a></li>
+                  <li><a href="/blog">Blog</a></li>
+                  <li><a href="/about">About Public Lab</a></li>
                   <li class="divider"></li>
-                  <li><a href="/wiki/gulf-coast">Gulf Coast</a></li>
-                  <li><a href="/wiki/new-york-city">New York City</a></li>
-                  <li><a href="/wiki/norcal">Northern California</a></li>
-                  <li><a href="/wiki/somerville-massachusetts">Somerville MA</a></li>
-                  <li><a href="/wiki/vermont">Vermont</a></li>
-                  <li><a href="#">more...</a></li>
+                  <li><a href="/wiki/plots-staff">Non-profit team</a></li>
+                  <li><a href="/wiki/organizers">Organizers</a></li>
+                  <li><a href="/wiki/board">Non-profit board</a></li>
+                  <li><a href="/wiki/how-public-lab-funded">How we're funded</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/media">Press and Media</a></li>
+                  <li><a href="/wiki/contact">Contact the staff</a></li>
                 </ul>
               </li>
-              <li><a href="/archive">Maps</a></li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                  Data <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/archive">Public Lab Archive</a></li>
+                  <li class="nav-header">Web tools</li>
+                  <li><a href="http://mapknitter.org">MapKnitter</a></li>
+                  <li><a href="http://spectralworkbench.org">Spectral Workbench</a></li>
+                  <li><a href="http://infragram.org">Infragram.org</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown">
+                  Participate <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="/getting-started">Getting started</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/signup">Join the website</a></li>
+                  <li><a href="/lists">Join one of our discussion lists</a></li>
+                  <li><a href="/events">Attend an event</a></li>
+                  <li><a href="/wiki/post-an-event">Post an event</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/wiki/start-a-chapter">Starting new chapters</a></li>
+                  <li><a href="/wiki/new-projects">Starting new projects</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/wiki/organizers">Become an organizer</a></li>
+                </ul>
+              </li>
+              <li><a href="/donate">Donate</a></li>
+            </ul>
+
+            <div id="chat" class="chat-popover" data-placement="bottom" style="display:none;">
+              <a style="margin-right:4px;" class="pull-right btn btn-small" href="http://chat.treehouse.su/?channels=publiclab" target="_blank">pop out</a>
+              <p class="popover-title">Public Lab chatroom</p>
+              <iframe width="400px" height="300px" src="http://chat.treehouse.su/?channels=publiclab"></iframe>
+            </div>
+
+            <ul class="nav pull-right">
+              <li class="dropdown">
+                <a onClick="$('#chat').toggle()">
+                  <i class="icon-white icon-comments"></i>
+                </a> 
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="icon-user icon-white"></i>
+                   Log in<b class="caret"></b>
+                </a> 
+                <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
+                  <li style="padding:6px;">
+                    <form accept-charset="UTF-8" action="/user_sessions" class="form" id="new_user_session" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="3ZWreKr21k9CjbGmLWC67o+1aleikNCR5S+3ZNZy4Mc=" /></div>
+         
+                      <p><b>Log in</b></p>
+         
+                      <p><input id="login-username-input" name="user_session[username]" placeholder="username" size="30" tabindex="1" type="text" /></p>
+                      <p><input id="user_session_password" name="user_session[password]" placeholder="password" size="30" tabindex="2" type="password" /></p>
+                      <input type="hidden" name="return_to" value="/" />
+         
+                      <p><label class="checkbox">
+                        <input name="user_session[remember_me]" type="hidden" value="0" /><input id="user_session_remember_me" name="user_session[remember_me]" type="checkbox" value="1" /> Remember me
+                      </p></label>
+         
+                      <p>
+                        <button class="btn btn-primary" type="submit" tabindex="3">Log in</button>
+                        <a class="btn btn" href="/signup" tabindex="4">Sign up</a>
+                      </p>
+         
+                      <p><a href="/reset/">Reset your password</a></p>
+</form>                  </li>
+                </ul>
+              </li>
             </ul>
 
           </div><!--/.nav-collapse -->
@@ -121,9 +222,20 @@
     </div>
 
     <div class="container-fluid">
-      <div class="hidden-phone" style="padding-top:60px;"></div>
+
+      <div class="visible-print">
+        
+        
+        <hr />
+      </div>
+
+      <div class="header-spacer hidden-phone"></div>
+
+      <div id="alert-placeholder"></div>
 
       <div class="row-fluid">
+
+<!-- ################################################ -->
 
         <div class="span3">
 
@@ -134,31 +246,40 @@
 
   <hr />
  
-  <p>If you think there is a problem with the site, please contact <a href="mailto:web@publiclab.org">web@publiclab.org</a> or <a href="https://github.com/jywarren/plots2/issues/new">file a report on Github</a> (preferred). Thanks!</p>
+  <p>If you think there is a problem with the site, please contact <a href="mailto:web@publiclab.org">web@publiclab.org</a> or <a href="https://github.com/publiclab/plots2/issues/new">file a report on Github</a> (preferred). Thanks!</p>
+
+  <h3>Support</h3>
+
+  <p>The Public Lab chatroom can be a helpful place to ask for support, or to find out if there is an ongoing outage.</p>
+
+  <iframe style="margin-bottom:40px;" src="http://chat.treehouse.su?channels=publiclab&uio=d4" width="66%" height="400px"></iframe>
  
 </div>
 
+<!-- ################################################ -->
 
       </div><!--/row-->
 
     </div><!--/.fluid-container-->
 
     <footer class="footer">
-      <div class="span3">
+
+      <div class="span3 hidden-print">
         <h4>Getting help</h4>
         <ul>
           <li><a href="/wiki/issues">Report a bug or issue</a></li>
-          <li><a href="mailto:web@publiclaboratory.org">Email the Web working group</a></li>
-          <li>PublicLaboratory.org is <a href="https://github.com/jywarren/plots2">open source software</a> - and looking for contributors</li>
+          <li><a href="mailto:web@publiclab.org">Email the Web working group</a></li>
+          <li>PublicLab.org is <a href="https://github.com/publiclab/plots2">open source software</a> - and <a href="/wiki/developers">looking for contributors</a></li>
         </ul>
       </div>
-      <div class="span3">
+      <div class="span3 hidden-print">
         <h4>Links</h4>
         <ul>
           <li><a href="/about">About</a></li>
           <li><a href="/wiki/getting-started">Getting Started</a></li>
           <li><a href="/wiki/licenses">Licenses</a></li>
-          <li><a href="/wiki/mailing-lists">Mailing lists</a></li>
+          <li><a href="/lists">Discussion lists</a></li>
+          <li><a href="/stats">Site statistics</a></li>
           <li><a href="/wiki/working-groups">Working groups</a></li>
           <li><a href="/feed.rss">RSS</a></li>
         </ul>
@@ -167,21 +288,40 @@
         <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0;float:left;margin-right:10px;" src="/images/cc-by-sa-88x31.png" /></a>
         <p>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>. Hardware designs on this site are released under the <a href="http://www.ohwr.org/cernohl">CERN Open Hardware License 1.1</a>. Read more about Public Laboratory's <a href="/licenses">open source licensing here</a>.</p>
       </div>
-      <div class="span3">
+      <div class="span3 hidden-print">
         <p>Specific works on this site may be released or dedicated under different licenses, but only if such alternatives are clearly indicated by their authors.</p>
+        <p>This site makes extensive use of the open source font <a href="http://www.theleagueofmoveabletype.com/junction">Junction</a>.</p>
       </div>
       <br style="clear:both;" />
     </footer>
-
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.typeahead.js?1"></script>
+    <script src="/bootstrap/js/bootstrap.typeahead.js?4"></script>
+    <script src="/bootstrap/js/bootstrap-lightbox.js"></script>
+
     <script>
       (function() {
+        // iOS fix for dropdowns in menubar: https://github.com/publiclab/plots2/issues/17
+        $('.dropdown-toggle').click(function(e) {
+          e.preventDefault();
+          setTimeout($.proxy(function() {
+            if ('ontouchstart' in document.documentElement) {
+              $(this).siblings('.dropdown-backdrop').off().remove();
+            }
+          }, this), 0);
+        });
+
         $("[rel=tooltip]").tooltip()
         $("[rel=popover]").popover()
+        $('table').addClass('table')
+        $('iframe').css('border','none')
+        $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {return " <small><a href='#"+this.innerHTML.replace(/ /g,'+')+"'><i class='icon icon-link'></i></a></small>"})
+        login = function() {
+          $('#login-dropdown').toggle()
+          $('#login-username-input').focus()
+        }
       })()
     </script>
     <script type="text/javascript">
@@ -194,10 +334,14 @@
     
       (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        //ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
     
     </script>
   </body>
 </html>
+
+

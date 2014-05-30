@@ -4,6 +4,21 @@ class WikiController < ApplicationController
 
   before_filter :require_user, :only => [:new, :create, :edit, :update, :delete]
 
+  def subdomain
+    url = "http://publiclab.org/wiki/"
+    case request.subdomain
+    when "new-york-city", 
+         "gulf-coast", 
+         "boston", 
+         "espana" then
+      redirect_to url+request.subdomain
+    when "nyc"
+      redirect_to url+"new-york-city"
+    else
+      redirect_to url
+    end
+  end
+
   def show
     if params[:lang]
       @node = DrupalNode.find_by_slug(params[:lang]+"/"+params[:id])

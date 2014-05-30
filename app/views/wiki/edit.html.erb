@@ -89,7 +89,7 @@
     </p>
     <p class="visible-phone">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
 
-    <% if @node %><p style="padding:10px 0 0 0;"><i>This page was edited <%= ((Time.now.to_i - @node.latest.timestamp)/60).to_i %> minutes ago</i></p><% end %> 
+    <% if @node %><p style="padding:10px 0 0 0;"><i>This page was last edited <%= time_ago_in_words(@node.latest.created_at) %> ago by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a></i></p><% end %> 
 
     <script>
       (function(){
