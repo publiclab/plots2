@@ -12,6 +12,8 @@ class WikiController < ApplicationController
          "boston", 
          "espana" then
       redirect_to url+request.subdomain
+    when "nyc"
+      redirect_to url+"new-york-city"
     else
       redirect_to url
     end
