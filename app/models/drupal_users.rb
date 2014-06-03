@@ -46,7 +46,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def liked_notes
-    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = true AND node.type = 'note'",self.uid], :include => :drupal_node).collect(&:node).reverse
+    DrupalNode.includes(:node_selections).where("type = 'note' AND node_selections.liking = true AND node_selections.user_id = ? AND node.status = 1", self.uid).order('node_selections.nid DESC')
   end
 
   def liked_pages
