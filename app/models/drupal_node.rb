@@ -6,7 +6,7 @@ class UniqueUrlValidator < ActiveModel::Validator
     elsif record.title == "new" && (record.type == "page" || record.type == "place" || record.type == "tool")
       record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     else
-      if !DrupalNode.where(dst: record.generate_path).first.nil? && record.type == "note"
+      if !DrupalNode.where(path: record.generate_path).first.nil? && record.type == "note"
         record.errors[:base] << "You have already used this title today."
       end
     end
@@ -41,7 +41,7 @@ class DrupalNode < ActiveRecord::Base
 
   validates :title, :presence => :true
   validates_with UniqueUrlValidator, :on => :create
-  validates :dst, :uniqueness => { :message => "This title has already been taken" }
+  validates :path, :uniqueness => { :scope => :nid, :message => "This title has already been taken" }
 
   # making drupal and rails database conventions play nice
   class << self
@@ -59,12 +59,12 @@ class DrupalNode < ActiveRecord::Base
 
   before_save :set_changed_and_created
   after_create :setup
-  before_validation :set_dst
+  before_validation :set_path
 
   private
 
-  def set_dst
-    self.dst = self.generate_path if self.dst.blank? && !self.title.blank?
+  def set_path
+    self.path = self.generate_path if self.path.blank? && !self.title.blank?
   end
 
   def set_changed_and_created
@@ -74,7 +74,7 @@ class DrupalNode < ActiveRecord::Base
   # determines URL ("slug"), initializes the view counter, and sets up a created timestamp
   def setup
     self['created'] = DateTime.now.to_i
-    self.dst = self.generate_path
+    self.path = self.generate_path
     self.save
     DrupalNodeCounter.new({:nid => self.id}).save
   end
@@ -115,11 +115,11 @@ class DrupalNode < ActiveRecord::Base
   def generate_path
     if self.type == 'note'
       username = DrupalUsers.find_by_uid(self.uid).name
-      "notes/"+username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+self.title.parameterize
+      "/notes/"+username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+self.title.parameterize
     elsif self.type == 'page'
-      "wiki/"+self.title.parameterize
+      "/wiki/"+self.title.parameterize
     elsif self.type == 'map'
-      "map/"+self.title.parameterize+"/"+Time.now.strftime("%m-%d-%Y")
+      "/map/"+self.title.parameterize+"/"+Time.now.strftime("%m-%d-%Y")
     end
   end
 
@@ -127,28 +127,23 @@ class DrupalNode < ActiveRecord::Base
   # Manual associations: 
 
   def latest
-    #self.drupal_node_revision.order(timestamp: "DESC").last
     self.drupal_node_revision.sort_by { |rev| rev.timestamp }.last
   end
 
   def revisions
-    #self.drupal_node_revision.order(timestamp: "DESC")
     self.drupal_node_revision.sort_by { |rev| rev.timestamp }
   end
 
   def revision_count
     self.drupal_node_revision.size
-    #DrupalNodeRevision.count_by_nid(self.nid)
   end
 
   def comment_count
     self.drupal_comments.size
-    #DrupalComment.count :all, :conditions => {:nid => self.nid}
   end
 
   def comments
     self.drupal_comments.order(timestamp: :desc)
-    #DrupalComment.find_all_by_nid self.nid, :order => "timestamp", :conditions => {:status => 0}
   end
 
   def author
@@ -321,23 +316,15 @@ class DrupalNode < ActiveRecord::Base
 
   # is this used anymore? deprecate?
   def slug
-    if self.type == "page" || self.type == "tool" || self.type == "place"
-      self.dst.split("/").last
-    else
-      self.dst
-    end
-  end
-
-  def path
-    "/#{self.dst}"
+    self.path[1..-1]
   end
 
   def edit_path
     if self.type == "page" || self.type == "tool" || self.type == "place"
       if self.language != ""
-        path = "/wiki/edit/" + self.language + "/" + self.dst.split("/").last
+        path = "/wiki/edit/" + self.language + "/" + self.path.split("/").last
       else
-        path = "/wiki/edit/" + "/" + self.dst.split("/").last
+        path = "/wiki/edit/" + "/" + self.path.split("/").last
       end
     else
       path = "/notes/edit/"+self.id.to_s
@@ -346,15 +333,15 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_by_slug(title)
-    DrupalNode.where(dst: [title, "tool/#{title}", "wiki/#{title}", "place/#{title}"]).first
+    DrupalNode.where(path: [title, "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
   end
 
   def self.find_root_by_slug(title)
-    DrupalNode.where(dst: [title, "wiki/#{title}"]).first
+    DrupalNode.where(path: [title, "/wiki/#{title}"]).first
   end
 
   def self.find_map_by_slug(title)
-    DrupalNode.where(dst: "map/#{title}").first
+    DrupalNode.where(path: "/map/#{title}").first
   end
 
   def map

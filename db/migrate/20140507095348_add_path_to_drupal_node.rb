@@ -1,19 +1,20 @@
-class AddDstToDrupalNode < ActiveRecord::Migration
+class AddPathToDrupalNode < ActiveRecord::Migration
   def up
-    add_column :node, :dst, :string
+    add_column :node, :path, :string
 
-    DrupalUrlAlias.all.each do |url_alias|
-      node = url_alias.node
-      node.dst = url_alias.dst
+    dsts = ActiveRecord::Base.connection.execute('select dst, src from url_alias;')
+    dsts.each do |dst, src|
+      node = DrupalNode.find(src.split('/')[1])
+      node.path = "/#{dst}"
       node.save
     end
 
-     drop_table :url_alias
+    drop_table :url_alias
   end
     
 
   def down
-    remove_column :node, :dst
+    remove_column :node, :path
 
     create_table :url_alias, :primary_key => "pid" do |t|
       t.string :src, :limit => 128, default: "", :null => false

@@ -29,8 +29,8 @@ class NotesController < ApplicationController
 
   def show
     if params[:author] && params[:date]
-      @node = DrupalNode.where(dst: 'notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).first
-      @node = DrupalNode.where(dst: 'report/'+ params[:id]).first if @node.nil?
+      @node = DrupalNode.where(path: '/notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).first
+      @node = DrupalNode.where(path: '/report/'+ params[:id]).first if @node.nil?
     else
       @node = DrupalNode.find params[:id]
     end
