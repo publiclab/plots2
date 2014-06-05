@@ -25,7 +25,6 @@ class DrupalNode < ActiveRecord::Base
   has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_files, :through => :drupal_upload
-    has_many :drupal_node_tag, :foreign_key => 'nid', :dependent => :destroy
     has_many :drupal_node_community_tag, :foreign_key => 'nid', :dependent => :destroy
     has_many :drupal_tag, :through => :drupal_node_community_tag
     # these override the above... have to do it manually:
@@ -222,7 +221,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def responded_to
-    DrupalNode.find self.power_tags("response")
+    DrupalNode.find_all_by_nid(self.power_tags("response")) || []
   end
 
   def responses
@@ -260,7 +259,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def has_tag(tag)
-    DrupalNodeTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0 || DrupalNodeCommunityTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
+    DrupalNodeCommunityTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
   end
 
   # has it been tagged with "list:foo" where "foo" is the name of a Google Group?
@@ -291,7 +290,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def tags
-    (self.drupal_tag + DrupalTag.find(:all, :conditions => ["tid IN (?)",DrupalNodeTag.find_all_by_nid(self.nid).collect(&:tid)])).uniq
+    self.drupal_tag
   end
 
   def tagnames
@@ -348,17 +347,6 @@ class DrupalNode < ActiveRecord::Base
     # This fires off a query that orders by vid DESC
     # and is quicker than doing .order(vid: :DESC) for some reason.
     self.drupal_content_type_map.last
-  end
-
-  def nearby_maps(dist = 1.5)
-    minlat = self.lat - dist
-    maxlat = self.lat + dist
-    minlon = self.lon - dist
-    maxlon = self.lon + dist
-    # GeoRuby 
-    # field_bbox_geo is the geom column
-    #DrupalContentFieldBbox.find_by_geom([[minlon,minlat],[maxlon,maxlat]]).collect(&:drupal_node)
-    []
   end
 
   def locations
@@ -551,9 +539,10 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def add_tag(tagname,user)
+    tagname = tagname.downcase
     unless self.has_tag(tagname)
       saved = false
-      tag = DrupalTag.new({
+      tag = DrupalTag.find_by_name(tagname) || DrupalTag.new({
         :vid => 3, # vocabulary id; 1
         :name => tagname,
         :description => "",

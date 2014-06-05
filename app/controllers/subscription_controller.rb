@@ -58,7 +58,7 @@ class SubscriptionController < ApplicationController
           end
         end
         # test for uniqueness, handle it as a validation error if you like
-        if TagSelection.find(:all, :conditions => {:user_id => current_user.uid, :tid => tag.tid}).length > 0
+        if TagSelection.find(:all, :conditions => {:following => true, :user_id => current_user.uid, :tid => tag.tid}).length > 0
           flash[:error] = "You are already subscribed to '#{params[:name]}'"
           redirect_to "/subscriptions"
         else
@@ -78,12 +78,12 @@ class SubscriptionController < ApplicationController
           end
         end
       else
-        flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
-        redirect_to "/tag/"+params[:name]
+        # user or node subscription
+
       end
     else
-      # user or node subscription
-
+        flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
+        redirect_to "/tag/"+params[:name]
     end
   end
 

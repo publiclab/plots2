@@ -166,7 +166,7 @@
                   <li><a href="/getting-started">Getting started</a></li>
                   <li class="divider"></li>
                   <li><a href="/signup">Join the website</a></li>
-                  <li><a href="/wiki/mailing-lists">Join one of our mailing lists</a></li>
+                  <li><a href="/lists">Join one of our discussion lists</a></li>
                   <li><a href="/events">Attend an event</a></li>
                   <li><a href="/wiki/post-an-event">Post an event</a></li>
                   <li class="divider"></li>
@@ -204,7 +204,7 @@
                   <li><a href="/profile/edit">Edit profile</a></li> 
                   <li class="divider"></li>
                   <li><a href="/subscriptions">Subscriptions</a></li>
-                  <li><a href="">Settings</a></li>
+                  <li><a href="/profile/<%= current_user.username %>/likes">Notes you've liked</a></li> 
                   <li class="divider"></li>
 		  <li><%= link_to "Logout", logout_path %></li>
                 </ul>
@@ -293,7 +293,7 @@
           <li><a href="/about">About</a></li>
           <li><a href="/wiki/getting-started">Getting Started</a></li>
           <li><a href="/wiki/licenses">Licenses</a></li>
-          <li><a href="/wiki/mailing-lists">Mailing lists</a></li>
+          <li><a href="/lists">Discussion lists</a></li>
           <li><a href="/stats">Site statistics</a></li>
           <li><a href="/wiki/working-groups">Working groups</a></li>
           <li><a href="/feed.rss">RSS</a></li>

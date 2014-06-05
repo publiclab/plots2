@@ -4,6 +4,21 @@ class WikiController < ApplicationController
 
   before_filter :require_user, :only => [:new, :create, :edit, :update, :delete]
 
+  def subdomain
+    url = "http://publiclab.org/wiki/"
+    case request.subdomain
+    when "new-york-city", 
+         "gulf-coast", 
+         "boston", 
+         "espana" then
+      redirect_to url+request.subdomain
+    when "nyc"
+      redirect_to url+"new-york-city"
+    else
+      redirect_to url
+    end
+  end
+
   def show
     if params[:lang]
       @node = DrupalNode.find_by_slug(params[:lang]+"/"+params[:id])
@@ -45,6 +60,9 @@ class WikiController < ApplicationController
       @node = DrupalNode.find_by_slug(params[:lang]+"/"+params[:id])
     else
       @node = DrupalNode.find_by_slug(params[:id])
+    end
+    if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
+      flash.now[:warning] = "Someone has clicked 'Edit' less than 5 minutes ago; be careful not to overwrite each others' edits!"
     end
     # we could do this...
     #@node.locked = true
@@ -149,7 +167,7 @@ class WikiController < ApplicationController
   def revert
     revision = DrupalNodeRevision.find params[:id]
     node = revision.parent
-    if current_user && current_user.drupal_user.status == 1 && (current_user.role == "moderator" || current_user.role == "admin")
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
       new_rev = revision.dup
       new_rev.timestamp = DateTime.now.to_i
       if new_rev.save!
@@ -182,6 +200,10 @@ class WikiController < ApplicationController
   def revision
     @node = DrupalNode.find_by_slug(params[:id])
     @tags = @node.tags
+    @tagnames = @tags.collect(&:name)
+    @unpaginated = true
+    @is_revision = true
+    set_sidebar :tags, @tagnames, {:videos => true}
     @revision = DrupalNodeRevision.find_by_nid_and_vid(@node.id, params[:vid])
     if @revision.nil?
       # revision not found, forward to revision list
@@ -194,8 +216,9 @@ class WikiController < ApplicationController
   end
 
   def index
-    @title = "Wiki index"
-    @wikis = DrupalNode.find_all_by_type('page',10,:limit => 50, :joins => 'JOIN node_revisions ON node_revisions.nid = node.nid', :order => "node_revisions.timestamp DESC", :conditions => ["status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')"]).uniq
+    @title = "Wiki"
+    @wikis = DrupalNode.includes(:drupal_node_revision,:drupal_node_counter).where("status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')").order("node_revisions.timestamp DESC").paginate(:page => params[:page])
+    @paginated = true
   end
 
   def popular

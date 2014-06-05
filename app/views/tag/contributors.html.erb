@@ -39,7 +39,7 @@
 
   <h3 style="margin-top:0;">Contributors for <i style="color:#aaa;"><%= params[:id] %></i></h3>
   <p><i>Above: contributions over the past year.</p>
-  <p><%= @users.length || 0 %> people have contributed <%= @notes.length %> research notes and <%= @wikis.length %> wiki pages tagged with "<%= params[:id] %>"</i></p>
+  <% if @users %><p><%= @users.length || 0 %> people have contributed <%= @notes.length %> research notes and <%= @wikis.length %> wiki pages tagged with "<%= params[:id] %>"</i></p><% end %>
 
   <% if current_user %>
   <!-- AJAXify -->
@@ -65,11 +65,13 @@
         <th style="width:25%;">Contributor</th>
         <th>Notes</th>
       </tr>
-      <% @users.each do |user| %>
-      <tr>
-        <td><a href='/profile/<%= user.name %>'><i class="icon icon-user"></i> <%= user.name %></a></td>
-        <td><a href='/notes/author/<%= user.name %>/<%= params[:id] %>'>Notes &raquo;</a></td>
-      </tr>
+      <% if @users %>
+        <% @users.each do |user| %>
+        <tr>
+          <td><a href='/profile/<%= user.name %>'><i class="icon icon-user"></i> <%= user.name %></a></td>
+          <td><a href='/notes/author/<%= user.name %>/<%= params[:id] %>'>Notes &raquo;</a></td>
+        </tr>
+        <% end %>
       <% end %>
     </table>
   <% end %>
