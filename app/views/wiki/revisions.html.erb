@@ -19,7 +19,7 @@
     <tr id="row<%= @node.revisions.length-1-index %>"<% if index < 2 %> class="warning"<% end %>>
       <td><b><a href="javascript:void(0)" onClick="goto(<%= @node.revisions.length-1-index %>,<%= @node.revisions.length-2-index %>)"><%= @node.revisions.length-1-index %></b></td>
       <% if revision.author %><td><a href="/people/<%= revision.author.name %>"><%= revision.author.name %></a></td><% end %>
-      <td><a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a>
+      <td><a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a> <i class="icon icon-external-link"></i>
         | <%= time_ago_in_words(revision.created_at) %> ago
         <div style="display:none;" id="body_<%= @node.revisions.length-1-index %>"><%= raw RDiscount.new(revision.body).to_html %></div>
       </td>
