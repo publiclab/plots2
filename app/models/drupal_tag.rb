@@ -48,8 +48,7 @@ class DrupalTag < ActiveRecord::Base
 
   # finds highest viewcount nodes
   def self.find_top_nodes_by_type(tagname,type = "wiki",limit = 10)
-    tag = DrupalTag.where(:name => tagname).first
-    DrupalNode.find_all_by_type type, :conditions => ['community_tags.tid = ?', tag.tid], :order => "node_counter.totalcount DESC", :limit => limit, :include => [:drupal_node_counter, :drupal_node_community_tag]
+    DrupalNode.find_all_by_type type, :conditions => ['term_data.name = ?', tagname], :order => "node_counter.totalcount DESC", :limit => limit, :include => [:drupal_node_counter, :drupal_node_community_tag, :drupal_tag]
   end
 
   # finds recent nodes
@@ -73,9 +72,8 @@ class DrupalTag < ActiveRecord::Base
     DrupalNode.find :all, :conditions => ["nid IN (?)",nids], :order => "nid DESC", :limit => limit
   end
 
-  def self.find_popular_notes(tag,views = 20,limit = 10)
-    tag = DrupalTag.where(:name => tag).first
-    DrupalNode.find_all_by_type "note", :conditions => ['community_tags.tid = ? AND node_counter.totalcount > (?)', tag.tid, views], :order => "node.nid DESC", :limit => limit, :include => [:drupal_node_counter, :drupal_node_community_tag]
+  def self.find_popular_notes(tagname,views = 20,limit = 10)
+    DrupalNode.find_all_by_type "note", :conditions => ['term_data.name = ? AND node_counter.totalcount > (?)', tagname, views], :order => "node.nid DESC", :limit => limit, :include => [:drupal_node_counter, :drupal_node_community_tag, :drupal_tag]
   end
 
   def self.exists?(tagname,nid)
