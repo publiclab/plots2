@@ -61,8 +61,6 @@ blog_post_comment = DrupalComment.create! "nid"=>blog_post.id, "uid"=>admin.id,
   drupal_tag_lon = DrupalTag.create! name: "lon:#{rand * 80}", description: "Desc #{t}", weight: 5
   drupal_comm_tag_lat = DrupalNodeCommunityTag.create! nid: map_node.nid, tid: drupal_tag_lat.tid, uid: 1
   drupal_comm_tag_lon = DrupalNodeCommunityTag.create! nid: map_node.nid, tid: drupal_tag_lon.tid, uid: 1
-  node_tag = DrupalNodeTag.create! nid: map_node.nid, tid: drupal_tag_lat.tid
-  node_tag = DrupalNodeTag.create! nid: map_node.nid, tid: drupal_tag_lon.tid
   DrupalContentTypeMap.attr_accessible :nid, :vid, :field_publication_date_value, :field_capture_date_value, :field_tms_url_value, :field_license_value, :field_raw_images_value, :field_cartographer_notes_value, :field_notes_value, :field_zoom_min_value, :field_zoom_max_value, :authorship
   content_type_mape = DrupalContentTypeMap.create! "vid"=>map_node.nid,
     "nid"=>map_node.nid, "field_publication_date_value"=>Time.now.to_s,

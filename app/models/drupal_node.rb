@@ -315,7 +315,7 @@ class DrupalNode < ActiveRecord::Base
 
   # is this used anymore? deprecate?
   def slug
-    self.path[1..-1]
+    self.path.split('/').last
   end
 
   def edit_path
