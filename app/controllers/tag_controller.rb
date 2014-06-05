@@ -149,15 +149,12 @@ class TagController < ApplicationController
     @tagnames.each do |tagname|
       @tags << DrupalTag.find_by_name(tagname)
 
-      # optimization:
-      # consolidate: remove drupalNodeTag once that's collapsed, remove DrupalTag.find:all once consolidated
       @tagdata[tagname] = {}
       t = DrupalTag.find :all, :conditions => {:name => tagname}
-      nt = DrupalNodeTag.find :all, :conditions => ['tid in (?)',t.collect(&:tid)]
       nct = DrupalNodeCommunityTag.find :all, :conditions => ['tid in (?)',t.collect(&:tid)]
-      @tagdata[tagname][:users] = DrupalNode.find(:all, :conditions => ['nid IN (?)',(nt+nct).collect(&:nid)]).collect(&:author).uniq!.length
-      @tagdata[tagname][:wikis] = DrupalNode.count :all, :conditions => ["nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", (nt+nct).collect(&:nid)]
-      @tagdata[:notes] = DrupalNode.count :all, :conditions => ["nid IN (?) AND type = 'note'", (nt+nct).collect(&:nid)]
+      @tagdata[tagname][:users] = DrupalNode.find(:all, :conditions => ['nid IN (?)',(nct).collect(&:nid)]).collect(&:author).uniq!.length
+      @tagdata[tagname][:wikis] = DrupalNode.count :all, :conditions => ["nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", (nct).collect(&:nid)]
+      @tagdata[:notes] = DrupalNode.count :all, :conditions => ["nid IN (?) AND type = 'note'", (nct).collect(&:nid)]
     end
     render :template => "tag/contributors-index"
   end

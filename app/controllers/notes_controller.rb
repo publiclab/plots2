@@ -21,7 +21,6 @@ class NotesController < ApplicationController
     # currently re-using the notes grid template, so we use the "@notes" instance variable:
     tids = DrupalTag.find(:all, :conditions => {:name => 'chapter'}).collect(&:tid)
     nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
-    nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
     @notes = DrupalNode.find :all, :conditions => ["node.nid in (?) AND (node.type = 'place' OR node.type = 'page')",nids.uniq], :order => "node_counter.totalcount DESC", :include => :drupal_node_counter
     @unpaginated = true
     render :template => "notes/tools_places"

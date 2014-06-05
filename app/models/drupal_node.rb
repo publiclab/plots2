@@ -25,7 +25,6 @@ class DrupalNode < ActiveRecord::Base
   has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_files, :through => :drupal_upload
-    has_many :drupal_node_tag, :foreign_key => 'nid', :dependent => :destroy
     has_many :drupal_node_community_tag, :foreign_key => 'nid', :dependent => :destroy
     has_many :drupal_tag, :through => :drupal_node_community_tag
     # these override the above... have to do it manually:
@@ -270,7 +269,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def has_tag(tag)
-    DrupalNodeTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0 || DrupalNodeCommunityTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
+    DrupalNodeCommunityTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
   end
 
   # has it been tagged with "list:foo" where "foo" is the name of a Google Group?
@@ -301,7 +300,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def tags
-    (self.drupal_tag + DrupalTag.find(:all, :conditions => ["tid IN (?)",DrupalNodeTag.find_all_by_nid(self.nid).collect(&:tid)])).uniq
+    self.drupal_tag
   end
 
   def tagnames
