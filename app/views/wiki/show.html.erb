@@ -7,6 +7,8 @@
 
 <div class="span9">
 
+  <% if current_user && @node.tags.length == 0 %><div class="alert">This page has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
+
   <% if @node.main_image %>
     <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img style="max-height:50%;" class="img-rounded" src="<%= @node.main_image.path(:default) %>" /></a>
   <% end %>

@@ -1,6 +1,8 @@
 <%= render :partial => "sidebar/related" %>
 <div class="span9">
 
+  <% if current_user && @node.tags.length == 0 %><div class="alert">This note has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
+
   <% if @node.main_image %>
     <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img class="img-rounded" src="<%= @node.main_image.path(:default) %>" /></a>
   <% end %>
