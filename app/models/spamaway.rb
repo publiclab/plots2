@@ -62,7 +62,7 @@ class Spamaway < Tableless
   def clean_honeypot
     # errors if the honeypot (follow_instructions) is not clean.
     if not (follow_instructions.blank? or follow_instructions == "")
-      errors.add(:follow_instructions, "You didn't follow directions.")
+      errors.add(:base, "Please read the instructions in the last box carefully.")
     end
   end
 
