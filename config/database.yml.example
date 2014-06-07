@@ -10,7 +10,8 @@ test:
   pool: 5
   timeout: 5000
 
-# is this comment a random misplaced note?? -btb
+# is this comment a random misplaced note?? -btbonval
+# no, it's a reminder to how to get a schema.rb out of a pre-existing db. it's how we got the Drupal schema.rb out of a Drupal database without reconstructing it manually. -jywarren
 # rake db:schema:dump
 
 # This database will be used by default when running `passenger start`

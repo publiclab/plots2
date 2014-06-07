@@ -59,7 +59,7 @@
   <!-- AJAXify -->
   <% end %>
 
-  <% if @wildcard %><p style="clear:both;padding-top:8px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:<%= params[:id] %>&template=question"><i class="icon icon-white icon-question-sign"></i> Ask a question about <b><%= params[:id] %></b></a> or <a style="margin-bottom:6px;" class="btn" target="_blank" href="/subscribe/tag/question:<%= params[:id] %>">Sign up to answer questions on this topic</a></p><% end %>
+  <% unless @wildcard %><p style="clear:both;padding-top:8px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:<%= params[:id] %>&template=question"><i class="icon icon-white icon-question-sign"></i> Ask a question about <b><%= params[:id] %></b></a> or <a style="margin-bottom:6px;" class="btn" target="_blank" href="/subscribe/tag/question:<%= params[:id] %>">Sign up to answer questions on this topic</a></p><% end %>
 
   <ul class="nav nav-tabs" style="margin-top:10px;">
     <li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="icon icon-file"></i> <span class="hidden-phone">Research </span>Notes</a></li>
