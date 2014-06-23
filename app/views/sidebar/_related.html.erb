@@ -118,39 +118,54 @@
   </ul>
   <% end %>
 
-  <% if @node && @maps && @maps.length > 0 && params[:controller] != "search" %>
+  <% if @maps && @maps.length > 0 && params[:controller] != "search" %>
 
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
-  <!--[if lte IE 8]>
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
-  <![endif]-->
-  <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+    <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
+    <![endif]-->
+    <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
 
-  <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
- 
-  <script>
-    <% 
-    lat = @node.lat || @maps.first.lat
-    lon = @node.lon || @maps.first.lon
-    %>
-    var map = L.map('map').setView([<%= lat %>,<%= lon %>], 10);
-    L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
- 
-    <% @maps.each do |map| %>
-      L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='/<%= map.slug %>'><%= map.title %></a>");
+    <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
+  
+    <% if @node && @maps && @node.lat %> 
+      <script>
+        <% 
+        lat = @node.lat
+        lon = @node.lon
+        %>
+        var map = L.map('map').setView([<%= lat %>,<%= lon %>], 10);
+        L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+    
+        <% @maps.each do |map| %>
+          L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='/<%= map.slug %>'><%= map.title %></a>");
+        <% end %>
+      </script>
+    <% elsif @maps && @maps.first %> 
+      <script>
+        <% 
+        lat = @maps.first.lat
+        lon = @maps.first.lon
+        %>
+        var map = L.map('map').setView([<%= lat %>,<%= lon %>], 10);
+        L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+    
+        <% @maps.each do |map| %>
+          L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='/<%= map.slug %>'><%= map.title %></a>");
+        <% end %>
+      </script>
     <% end %>
-  </script>
 
-<br style="clear:both;" />
+    <br style="clear:both;" />
 
-  <h4>Related maps</h4>
-  <ul class="nav bullet">
-    <% @maps.each do |note| %>
-      <% unless (!@node.nil? && note.nid == @node.nid) %>
-      <li><a href="/<%= note.slug %>"><i class="icon-map-marker"></i> <%= note.title %></a></li>
+    <h4>Related maps</h4>
+    <ul class="nav bullet">
+      <% @maps.each do |note| %>
+        <% unless (!@node.nil? && note.nid == @node.nid) %>
+        <li><a href="/<%= note.slug %>"><i class="icon-map-marker"></i> <%= note.title %></a></li>
+        <% end %>
       <% end %>
-    <% end %>
-  </ul>
+    </ul>
   <% end %>
 
   <hr style="margin-bottom:6px;" />

@@ -34,7 +34,7 @@
   <hr />
 
   <% if @wikis && @wikis.length > 0 %>
-  <h4>Wiki pages contributed to</h4>
+  <h4>Wiki pages recently contributed to</h4>
   <ul class="nav bullet">
     <% @wikis.each do |wiki| %>
       <% unless (!@node.nil? && wiki.nid == @node.nid) %>
@@ -70,7 +70,7 @@
 
   <% if @user.user %>
   <% @user.user.barnstars.each do |tag| %>
-    <p style="color:#aaa;"><i style="color:#db4;" class="icon icon-large icon-star-empty"></i> <i><a href="/profile/<%= tag.node.author.name %>"><%= tag.node.author.name %></a> was awarded <a href="/wiki/barnstar#<%= tag.name.split('-').each{|w| w.capitalize!}.join('+') %>+Barnstar">the <%= tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' ') %> Barnstar</a> by <a href="/profile/<%= tag.author.username %>"><%= tag.author.username %></a> for their work published in <a href="<%= tag.node.path %>"><%= tag.node.title %></a>.</i></p>
+    <p style="color:#aaa;"><i style="color:#db4;" class="icon icon-large icon-star-empty"></i> <i><a href="/profile/<%= tag.node.author.name %>"><%= tag.node.author.name %></a> was awarded <a href="/wiki/barnstars#<%= tag.name.split('-').each{|w| w.capitalize!}.join('+') %>+Barnstar">the <%= tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' ') %> Barnstar</a> by <a href="/profile/<%= tag.author.username %>"><%= tag.author.username %></a> for their work published in <a href="<%= tag.node.path %>"><%= tag.node.title %></a>.</i></p>
     <hr />
   <% end %>
   <% end %>
@@ -86,7 +86,7 @@
 
   <div class="tab-content">
 
-    <div class="tab-pane active" id="research" style="padding-left:12px;">
+    <div class="tab-pane active" id="research">
       <%= render :partial => "notes/notes" %>
     </div>
 

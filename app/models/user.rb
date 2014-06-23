@@ -98,13 +98,13 @@ class User < ActiveRecord::Base
 
   def subscriptions(type = :tag)
     if type == :tag
-      TagSelection.find_all_by_user_id self.drupal_user.uid
+      TagSelection.find_all_by_user_id self.uid, :conditions => {:following => true}
     end
   end
 
   def following(tagname)
     tids = DrupalTag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
-    TagSelection.find(:all, :conditions => ["tid IN (?) AND user_id = ?", tids, self.uid]).length > 0
+    TagSelection.find(:all, :conditions => {:following => true,:tid => tids, :user_id => self.uid}).length > 0
   end
 
   def mapknitter_maps

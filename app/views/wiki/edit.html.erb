@@ -26,7 +26,8 @@
       <li class="nav-header">More</li>
       <li><a href="/wiki/getting-started">Getting started with Public Lab</a></li>
       <% if @node %><li><a href="/wiki/revisions/<%= @node.slug %>">Revisions for this page</a></li><% end %>
-      <li><a href="#">Advanced note posting</a></li>
+      <li><a href="/wiki/posting-research">About posting research</a></li>
+      <li><a href="/wiki/authoring-help#Advanced+formatting">Advanced formatting</a></li>
     </ul>
   </div>
 </div>
@@ -34,7 +35,7 @@
 <div class="span9">
 
   <% if @node && params[:action] != "create"
-    url = { :controller => "wiki", :action => "update", :id => @node.slug }
+    url = { :controller => "wiki", :action => "update", :id => @node.id }
   else 
     url = { :controller => "wiki", :action => "create", :id => params[:id] }
    end %>
@@ -77,8 +78,27 @@
 
     <%= render :partial => 'editor/editor' %>
 
-    <button tabindex="4" type="submit" class="btn btn-primary btn-large">Publish</button>
-    <a id="preview-btn" data-previewing-text="Previewing (click to edit)" class="btn btn-large" onClick="$E.toggle_preview()">Preview</a></p>
-    <span> &nbsp; By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</span>
+    <div class="hidden-phone">
+      <a id="publish" tabindex="5" class="publish btn btn-primary btn-large">Publish</a>
+      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
+      <span> &nbsp; By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</span>
+    </div>
+    <p class="visible-phone btn-group">
+      <a id="publish" class="publish btn btn-primary btn-large">Publish</a>
+      <a data-previewing-text="Edit" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
+    </p>
+    <p class="visible-phone">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+
+    <% if @node %><p style="padding:10px 0 0 0;"><i>This page was last edited <%= time_ago_in_words(@node.latest.created_at) %> ago by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a></i></p><% end %> 
+
+    <script>
+      (function(){
+        publish = function(e) {
+            $('#new_drupal_node_revision').submit()
+        }
+        $(".publish").bind("click",publish)
+      })()
+    </script>
+
   <% end %>
 </div>

@@ -10,6 +10,11 @@ Plots2::Application.routes.draw do
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
 
+  #match '', to: 'blogs#show', constraints: {subdomain: /.+/}
+  # or to skip www:
+  match "", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" }
+  match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" }
+
   match 'ioby' => "legacy#ioby"
 
   match 'login' => "user_sessions#new",      :as => :login
@@ -17,7 +22,7 @@ Plots2::Application.routes.draw do
   match 'register' => 'users#create'
   match 'reset' => 'users#reset'
   match 'reset/key/:key' => 'users#reset'
-  match 'users/list' => 'users#list'
+  match 'profiles' => 'users#list'
   match 'users/update' => 'users#update'
   match 'signup' => 'users#new'
   match 'home' => 'home#front'
@@ -43,16 +48,28 @@ Plots2::Application.routes.draw do
   # instead of a file named 'wsdl'
   match 'openid/service.wsdl' => 'openid#wsdl'
 
+  match 'following/:type/:name' => 'subscription#following'
+  match 'unsubscribe/:type/:name' => 'subscription#delete'
+  match 'subscribe/:type' => 'subscription#add'
+  match 'subscribe/:type/:name' => 'subscription#add'
+  match 'subscriptions' => 'subscription#index'
+
   match 'wiki/new' => 'wiki#new'
   match 'wiki/popular' => 'wiki#popular'
   match 'wiki/liked' => 'wiki#liked'
   match 'wiki/create' => 'wiki#create'
   match 'wiki/:id' => 'wiki#show'
+    # these need precedence for tag listings
+    match 'feed/tag/:tagname' => 'tag#rss'
+    match ':node_type/tag/:id' => 'tag#show'
   match 'wiki/revisions/:id' => 'wiki#revisions'
   match 'wiki/revert/:id' => 'wiki#revert'
   match 'wiki/edit/:id' => 'wiki#edit'
+  match 'wiki/update/:id' => 'wiki#update'
   match 'wiki/delete/:id' => 'wiki#delete'
   match 'wiki/revisions/:id/:vid' => 'wiki#revision'
+  match 'wiki/:lang/:id' => 'wiki#show'
+  match 'wiki/edit/:lang/:id' => 'wiki#edit'
   match 'wiki' => 'wiki#index'
 
   match 'place/:id/feed' => 'place#feed'
@@ -86,12 +103,6 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
-  match 'following/:type/:name' => 'subscription#following'
-  match 'unsubscribe/:type/:name' => 'subscription#delete'
-  match 'subscribe/:type' => 'subscription#add'
-  match 'subscribe/:type/:name' => 'subscription#add'
-  match 'subscriptions' => 'subscription#index'
-
   match 'search' => 'search#advanced'
   match 'search/advanced' => 'search#advanced'
   match 'search/advanced/:id' => 'search#advanced'
@@ -99,7 +110,6 @@ Plots2::Application.routes.draw do
   match 'search/typeahead/:id' => 'search#typeahead'
 
   match 'tag/:id' => 'tag#show'
-  match ':node_type/tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'
   match 'blog' => 'tag#blog', :id => "blog"
   match 'blog/:id' => 'tag#blog'
@@ -111,7 +121,6 @@ Plots2::Application.routes.draw do
   match 'tag/delete/:nid/:tid' => 'tag#delete'
   match 'barnstar/give/:nid/:star' => 'tag#barnstar'
   match 'barnstar/give' => 'tag#barnstar'
-  match 'feed/tag/:tagname' => 'tag#rss'
   match 'feed/liked' => 'notes#liked_rss'
 
   match 'dashboard' => 'home#dashboard'
@@ -207,5 +216,6 @@ Plots2::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
 
   match ':controller(/:action(/:id))(.:format)'
+
 
 end

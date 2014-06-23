@@ -92,6 +92,8 @@
                 <% end %>
                 <li><a href="/places">More...</a></li>
               <% end %>
+                <li class="divider"></li>
+                <li><a href="/contributors">Contributors</a></li>
               </ul>
             </li>
           </ul>
@@ -134,10 +136,12 @@
                 <ul class="dropdown-menu">
                   <li><a href="/blog">Blog</a></li>
                   <li><a href="/about">About Public Lab</a></li>
+                  <li class="divider"></li>
                   <li><a href="/wiki/plots-staff">Non-profit team</a></li>
                   <li><a href="/wiki/organizers">Organizers</a></li>
                   <li><a href="/wiki/board">Non-profit board</a></li>
                   <li><a href="/wiki/how-public-lab-funded">How we're funded</a></li>
+                  <li class="divider"></li>
                   <li><a href="/media">Press and Media</a></li>
                   <li><a href="/wiki/contact">Contact the staff</a></li>
                 </ul>
@@ -162,7 +166,7 @@
                   <li><a href="/getting-started">Getting started</a></li>
                   <li class="divider"></li>
                   <li><a href="/signup">Join the website</a></li>
-                  <li><a href="/wiki/mailing-lists">Join one of our mailing lists</a></li>
+                  <li><a href="/lists">Join one of our discussion lists</a></li>
                   <li><a href="/events">Attend an event</a></li>
                   <li><a href="/wiki/post-an-event">Post an event</a></li>
                   <li class="divider"></li>
@@ -200,7 +204,7 @@
                   <li><a href="/profile/edit">Edit profile</a></li> 
                   <li class="divider"></li>
                   <li><a href="/subscriptions">Subscriptions</a></li>
-                  <li><a href="">Settings</a></li>
+                  <li><a href="/profile/<%= current_user.username %>/likes">Notes you've liked</a></li> 
                   <li class="divider"></li>
 		  <li><%= link_to "Logout", logout_path %></li>
                 </ul>
@@ -289,7 +293,7 @@
           <li><a href="/about">About</a></li>
           <li><a href="/wiki/getting-started">Getting Started</a></li>
           <li><a href="/wiki/licenses">Licenses</a></li>
-          <li><a href="/wiki/mailing-lists">Mailing lists</a></li>
+          <li><a href="/lists">Discussion lists</a></li>
           <li><a href="/stats">Site statistics</a></li>
           <li><a href="/wiki/working-groups">Working groups</a></li>
           <li><a href="/feed.rss">RSS</a></li>
@@ -314,6 +318,16 @@
 
     <script>
       (function() {
+        // iOS fix for dropdowns in menubar: https://github.com/publiclab/plots2/issues/17
+        $('.dropdown-toggle').click(function(e) {
+          e.preventDefault();
+          setTimeout($.proxy(function() {
+            if ('ontouchstart' in document.documentElement) {
+              $(this).siblings('.dropdown-backdrop').off().remove();
+            }
+          }, this), 0);
+        });
+
         $("[rel=tooltip]").tooltip()
         $("[rel=popover]").popover()
         $('table').addClass('table')

@@ -97,6 +97,7 @@ $E = {
     'default': "###What I want to do\n\n###My attempt and results\n\n###Questions and next steps\n\n###Why I'm interested",
     'support': "###Details about the problem\n\n###A photo or screenshot of the setup",
     'event': "###Event details\n\nWhen, where, what\n\n###Background\n\nWho, why",
+    'oiltestkit': "##Reflections on the Alpha Oil Testing Kit\n\n###What was tested\n\nWhen, where, what\n\n###Things that went well\n\n###Challenges encountered\n\n###Suggestions to improve the tool\n\n\n",
     'question': "###What I want to do or know\n\n###Background story"
   },
   previewing: false,

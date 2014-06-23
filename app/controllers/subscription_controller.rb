@@ -42,45 +42,48 @@ class SubscriptionController < ApplicationController
   def add
     if current_user
       # assume tag, for now
-      # if params[:type] == "tag"
+      if params[:type] == "tag"
         tag = DrupalTag.find_by_name(params[:name])
-      # end
-      if tag.nil?
-        # if the tag doesn't exist, we should create it!
-        # this could fail validations; error out if so... 
-        tag = DrupalTag.new({
-          :vid => 3, # vocabulary id
-          :name => params[:name],
-          :description => "",
-          :weight => 0})
-        unless tag.save! 
-          flash[:error] = "There was an error and your subscription failed. Please contact web@publiclab.org."
-          redirect_to "/subscriptions"
+        if tag.nil?
+          # if the tag doesn't exist, we should create it!
+          # this could fail validations; error out if so... 
+          tag = DrupalTag.new({
+            :vid => 3, # vocabulary id
+            :name => params[:name],
+            :description => "",
+            :weight => 0})
+          unless tag.save! 
+            flash[:error] = "There was an error and your subscription failed. Please contact web@publiclab.org."
+            redirect_to "/subscriptions"
+          end
         end
-      end
-      # test for uniqueness, handle it as a validation error if you like
-      if TagSelection.find(:all, :conditions => {:user_id => current_user.uid, :tid => tag.tid}).length > 0
-        flash[:error] = "You are already subscribed to '#{params[:name]}'"
-        redirect_to "/subscriptions"
-      else
-        if set_following(true,params[:type],tag.tid)
-          respond_with do |format|
-            format.html do
-              if request.xhr?
-                render :json => true
-              else
-                flash[:notice] = "You are now following '#{params[:name]}'."
-                redirect_to "/subscriptions"
+        # test for uniqueness, handle it as a validation error if you like
+        if TagSelection.find(:all, :conditions => {:following => true, :user_id => current_user.uid, :tid => tag.tid}).length > 0
+          flash[:error] = "You are already subscribed to '#{params[:name]}'"
+          redirect_to "/subscriptions"
+        else
+          if set_following(true,params[:type],tag.tid)
+            respond_with do |format|
+              format.html do
+                if request.xhr?
+                  render :json => true
+                else
+                  flash[:notice] = "You are now following '#{params[:name]}'."
+                  redirect_to "/subscriptions"
+                end
               end
             end
+          else
+            flash[:error] = "Something went wrong!" # silly 
           end
-        else
-          flash[:error] = "Something went wrong!" # silly 
         end
+      else
+        # user or node subscription
+
       end
     else
-      flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
-      redirect_to "/tag/"+params[:name]
+        flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
+        redirect_to "/tag/"+params[:name]
     end
   end
 
@@ -94,7 +97,7 @@ class SubscriptionController < ApplicationController
       flash[:error] = "You are not subscribed to '#{params[:name]}'"
       redirect_to "/subscriptions"
     else
-      if set_following(false,params[:type],id)
+      if !set_following(false,params[:type],id) #should return false if result is that following == false
         respond_with do |format|
           format.html do
             if request.xhr?
@@ -116,32 +119,35 @@ class SubscriptionController < ApplicationController
 
   def set_following(value,type,id)
     # add swtich statement for different types: tag, node, user
-    # type
-
-    # Create the entry if it isn't already created.
-    # assume tag, for now: 
-    subscription = TagSelection.where(:user_id => current_user.uid,
-                                      :tid => id).first_or_create
-    subscription.following = value
-
-    # Check if the value changed.
-    if subscription.following_changed?
-      tag = DrupalTag.find(id)
-      # we have to implement caching for tags if we want to adapt this code:
-      #if subscription.following
-      #  node.cached_likes = node.cached_likes + 1
-      #else
-      #  node.cached_likes = node.cached_likes - 1
-      #end
-      
-      # Save the changes.
-      ActiveRecord::Base.transaction do
-        tag.save!
-        subscription.save!
+    if type == 'tag' && DrupalTag.find_by_tid(id)
+      # Create the entry if it isn't already created.
+      # assume tag, for now: 
+      subscription = TagSelection.where(:user_id => current_user.uid,
+                                        :tid => id).first_or_create
+      subscription.following = value
+ 
+      # Check if the value changed.
+      if subscription.following_changed?
+        #tag = DrupalTag.find(id)
+        # we have to implement caching for tags if we want to adapt this code:
+        #if subscription.following
+        #  node.cached_likes = node.cached_likes + 1
+        #else
+        #  node.cached_likes = node.cached_likes - 1
+        #end
+        
+        # Save the changes.
+        #ActiveRecord::Base.transaction do
+        #  tag.save!
+          subscription.save!
+        #end
       end
+ 
+      return subscription.following
+    else
+      flash[:error] = "There was an error."
+      return false
     end
-
-    return subscription.following
   end
 
 end

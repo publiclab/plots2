@@ -21,7 +21,6 @@ class NotesController < ApplicationController
     # currently re-using the notes grid template, so we use the "@notes" instance variable:
     tids = DrupalTag.find(:all, :conditions => {:name => 'chapter'}).collect(&:tid)
     nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
-    nids += DrupalNodeTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
     @notes = DrupalNode.find :all, :conditions => ["node.nid in (?) AND (node.type = 'place' OR node.type = 'page')",nids.uniq], :order => "node_counter.totalcount DESC", :include => :drupal_node_counter
     @unpaginated = true
     render :template => "notes/tools_places"
@@ -71,7 +70,7 @@ class NotesController < ApplicationController
         # trigger subscription notifications:
         SubscriptionMailer.notify_node_creation(@node)
         # opportunity for moderation
-        flash[:notice] = "Research note published. Get the word out on <a href='/wiki/mailing-lists'>the discussion lists</a>. For a 10% discount on <a href='http://store.publiclab.org'>Public Lab kits</a>, use discount code <b>RNOTKITS10</b>. Please do not post solely to get a discount; we may revoke a discount if your post seems disingenuous."
+        flash[:notice] = "Research note published. Get the word out on <a href='/lists'>the discussion lists</a>. For a 10% discount on <a href='http://store.publiclab.org'>Public Lab kits</a>, use discount code <b>RNOTKITS10</b>. Please do not post solely to get a discount; we may revoke a discount if your post seems disingenuous."
         redirect_to @node.path
       else
         render :template => "editor/post"

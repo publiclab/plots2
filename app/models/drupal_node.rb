@@ -23,10 +23,8 @@ class DrupalNode < ActiveRecord::Base
 #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
 #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
   has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
-  has_one :drupal_node_access, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_files, :through => :drupal_upload
-    has_many :drupal_node_tag, :foreign_key => 'nid', :dependent => :destroy
     has_many :drupal_node_community_tag, :foreign_key => 'nid', :dependent => :destroy
     has_many :drupal_tag, :through => :drupal_node_community_tag
     # these override the above... have to do it manually:
@@ -84,7 +82,6 @@ class DrupalNode < ActiveRecord::Base
       }).save
     end
     DrupalNodeCounter.new({:nid => self.id}).save
-    self.create_access
   end
 
   def delete_url_alias
@@ -110,14 +107,6 @@ class DrupalNode < ActiveRecord::Base
   def current_title
     # Grab the title from the most recent revision for this node.
     current_revision.title
-  end
-
-  def create_access
-    DrupalNodeAccess.new({:nid => self.id, :gid => 0, :realm => 'all', :grant_view => 1, :grant_update => 0, :grant_delete => 0}).save
-  end
-
-  def has_access?
-    DrupalNodeAccess.find(:all, :conditions => {:nid => self.id}).length > 0
   end
 
   def files
@@ -242,7 +231,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def responded_to
-    DrupalNode.find self.power_tags("response")
+    DrupalNode.find_all_by_nid(self.power_tags("response")) || []
   end
 
   def responses
@@ -280,16 +269,20 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def has_tag(tag)
-    DrupalNodeTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0 || DrupalNodeCommunityTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
+    DrupalNodeCommunityTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
   end
 
   # has it been tagged with "list:foo" where "foo" is the name of a Google Group?
   def mailing_list
-    if Rails.env == "production"
-      Rails.cache.fetch("feed-"+self.id.to_s+"-"+(self.updated_at.to_i/300).to_i.to_s) do
-        RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
+    begin
+      if true#Rails.env == "production"
+        Rails.cache.fetch("feed-"+self.id.to_s+"-"+(self.updated_at.to_i/300).to_i.to_s) do
+          RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
+        end
+      else
+        return []
       end
-    else
+    rescue
       return []
     end
   end
@@ -307,7 +300,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def tags
-    (self.drupal_tag + DrupalTag.find(:all, :conditions => ["tid IN (?)",DrupalNodeTag.find_all_by_nid(self.nid).collect(&:tid)])).uniq
+    self.drupal_tag
   end
 
   def tagnames
@@ -330,6 +323,7 @@ class DrupalNode < ActiveRecord::Base
   # ============================================
   # URL-related methods:
 
+  # is this used anymore? deprecate?
   def slug
     if self.type == "page" || self.type == "tool" || self.type == "place"
       slug = DrupalUrlAlias.find_by_src('node/'+self.id.to_s, :order => "pid DESC").dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
@@ -351,7 +345,11 @@ class DrupalNode < ActiveRecord::Base
 
   def edit_path
     if self.type == "page" || self.type == "tool" || self.type == "place"
-      path = "/wiki/edit/"+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+      if self.language != ""
+        path = "/wiki/edit/"+self.language+'/'+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+      else
+        path = "/wiki/edit/"+DrupalUrlAlias.find_by_src('node/'+self.id.to_s).dst.split('/').last if DrupalUrlAlias.find_by_src('node/'+self.id.to_s)
+      end
     else
       path = "/notes/edit/"+self.id.to_s
     end
@@ -382,17 +380,6 @@ class DrupalNode < ActiveRecord::Base
 
   def map
     DrupalContentTypeMap.find_by_nid(self.nid,:order => "vid DESC")
-  end
-
-  def nearby_maps(dist = 1.5)
-    minlat = self.lat - dist
-    maxlat = self.lat + dist
-    minlon = self.lon - dist
-    maxlon = self.lon + dist
-    # GeoRuby 
-    # field_bbox_geo is the geom column
-    #DrupalContentFieldBbox.find_by_geom([[minlon,minlat],[maxlon,maxlat]]).collect(&:drupal_node)
-    []
   end
 
   def locations
@@ -584,7 +571,14 @@ class DrupalNode < ActiveRecord::Base
     return [saved,node,revision]
   end
 
+  def add_barnstar(tagname,user)
+    self.add_tag(tagname,user)
+    # don't bother checking if it worked
+    CommentMailer.notify_barnstar(user,self)
+  end
+
   def add_tag(tagname,user)
+    tagname = tagname.downcase
     unless self.has_tag(tagname)
       saved = false
       tag = DrupalTag.find_by_name(tagname) || DrupalTag.new({

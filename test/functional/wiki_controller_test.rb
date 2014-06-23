@@ -37,7 +37,8 @@ class WikiControllerTest < ActionController::TestCase
 
     # add a tag, and change the title and body
     newtitle = title + " which I amended"
-    post :update, :id => title.parameterize, :title => newtitle, :body => "This is fascinating documentation about balloon mapping. <span id='teststring'>added content</span>", :tags => "balloon-mapping,event,meetup"
+    nid = DrupalNodeRevision.find_by_title(title).nid
+    post :update, :id => nid, :title => newtitle, :body => "This is fascinating documentation about balloon mapping. <span id='teststring'>added content</span>", :tags => "balloon-mapping,event,meetup"
     assert_redirected_to "/wiki/"+title.parameterize
 
     get(:show, {:id => title.parameterize}) 
