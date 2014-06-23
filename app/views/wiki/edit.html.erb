@@ -71,6 +71,7 @@
       (function(){
         $D = {
           uid: <%= current_user.uid %>,
+          <% if @node %>nid: <%= @node.nid %>,<% end %>
           type: 'wiki'
         }
       })()
