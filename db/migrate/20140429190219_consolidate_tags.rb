@@ -29,8 +29,8 @@ class ConsolidateTags < ActiveRecord::Migration
       summ =  "\n======= BEGIN TAG CONSOLIDATION ========"
       drupaltags = DrupalTag.count(:all)
       summ += "\nTags:              "+drupaltags.to_s
-      drupalnodetags = DrupalNodeTag.count(:all)
-      summ += "\nNodeTags:          "+drupalnodetags.to_s
+      drupalnodetags = ActiveRecord::Base.connection.execute('select COUNT(*) from term_node;')
+      summ += "\nNodeTags:          "+drupalnodetags.first[0].to_s
       drupalnodecommunitytags = DrupalNodeCommunityTag.count(:all)
       summ += "\nCommunityNodeTags: "+drupalnodecommunitytags.to_s
       summ += "\n========================================"
@@ -48,13 +48,16 @@ class ConsolidateTags < ActiveRecord::Migration
 
       # delete all orphaned node_tags
       deleted = []
-      ntags = DrupalNodeTag.find(:all)
+      ntags = ActiveRecord::Base.connection.execute('select * from term_node;')
       puts "node_tags:"
-      puts ntags.length
+      puts ntags.size
       ntags.each do |nt|
-        if nt.tag.nil? || nt.node.nil? || nt.node.status == 0
-          deleted << nt.tag.name 
-          nt.delete
+        node = DrupalNode.find(nt[0])
+        if nt[2].nil? || nt[0].nil? || (node && node.status == 0)
+          # nt - [nid, vid, tid]
+          tag = DrupalTag.find(nt[2])
+          deleted << tag.name 
+          ActiveRecord::Base.connection.execute("delete from term_node where vid = #{nt[1]};")
         end
       end
       puts "deleted invalids:"
@@ -64,21 +67,22 @@ class ConsolidateTags < ActiveRecord::Migration
       failed = []
       deleted = []
       dupes = 0
-      ntags = DrupalNodeTag.find(:all)
+      ntags = ActiveRecord::Base.connection.execute('select * from term_node;')
       puts "node_tags for active pages:"
-      puts ntags.length
+      puts ntags.size
       ntags.each do |ntag|
         ctag = DrupalNodeCommunityTag.new({
           :uid => 0, # oh well. Someone can inherit these someday if need be.
-          :tid => ntag.tid,
+          :tid => ntag[2],
           :date => DateTime.now.to_i, # we never saved these before, so we don't know; just use current time
-          :nid => ntag.nid
+          :nid => ntag[0]
         })
-        if DrupalNodeCommunityTag.find_all_by_nid(ntag.nid, :conditions => {:tid => ntag.tid}).length > 0
+        if DrupalNodeCommunityTag.find_all_by_nid(ntag[0], :conditions => {:tid => ntag[2]}).length > 0
           dupes += 1
         elsif ctag.save
-          deleted << ntag.tag.name unless ntag.tag.nil?
-          ntag.delete 
+          tag = DrupalTag.find(ntag[2])
+          deleted << tag.name unless tag.nil?
+          ActiveRecord::Base.connection.execute("delete from term_node where vid = #{ntag[1]};")
         else
           failed << ctag
         end
@@ -141,7 +145,8 @@ class ConsolidateTags < ActiveRecord::Migration
       deleted = []
       DrupalTag.find(:all).each do |tag|
         # delete orphans
-        if tag.drupal_node_tag.length == 0 && tag.drupal_node_community_tag.length == 0 && tag.subscriptions.length == 0
+        related_drupal_node_tags = ActiveRecord::Base.connection.execute("select * from term_node where tid = #{tag.id};")
+        if related_drupal_node_tags.size == 0 && tag.drupal_node_community_tag.length == 0 && tag.subscriptions.length == 0
           deleted << tag.name
           tag.delete 
         end
@@ -156,13 +161,13 @@ class ConsolidateTags < ActiveRecord::Migration
       summ =  "\n=======  END TAG CONSOLIDATION  ========"
       drupaltags2 = DrupalTag.count(:all)
       summ += "\nTags:              "+drupaltags2.to_s
-      drupalnodetags2 = DrupalNodeTag.count(:all)
-      summ += "\nNodeTags:          "+drupalnodetags2.to_s
+      drupalnodetags2 = ActiveRecord::Base.connection.execute('select COUNT(*) from term_node;')
+      summ += "\nNodeTags:          "+drupalnodetags2.first[0].to_s
       drupalnodecommunitytags2 = DrupalNodeCommunityTag.count(:all)
       summ += "\nCommunityNodeTags: "+drupalnodecommunitytags2.to_s
       summ += "\n========================================"
       summ += "\nFewer Tags:             "+(drupaltags-drupaltags2).to_s
-      summ += "\nFewer NodeTags:         "+(drupalnodetags-drupalnodetags2).to_s
+      summ += "\nFewer NodeTags:         "+(drupalnodetags.first[0]-drupalnodetags2.first[0]).to_s
       summ += "\nMore CommunityNodeTags: "+(drupalnodecommunitytags2-drupalnodecommunitytags).to_s
       summ += "\n========================================"
       tags = DrupalTag.find(:all,:select => [:name])
