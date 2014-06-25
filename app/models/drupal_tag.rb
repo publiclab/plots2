@@ -2,7 +2,6 @@ class DrupalTag < ActiveRecord::Base
   attr_accessible :vid, :name, :description, :weight
   self.table_name = 'term_data'
   self.primary_key = 'tid'
-  has_many :drupal_node_tag, :foreign_key => 'tid'
   #has_many :drupal_users, :through => :drupal_node_tag, :foreign_key => 'uid'
 
   has_many :tag_selection, :foreign_key => 'tid'
