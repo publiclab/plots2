@@ -22,7 +22,7 @@ Plots2::Application.routes.draw do
   match 'register' => 'users#create'
   match 'reset' => 'users#reset'
   match 'reset/key/:key' => 'users#reset'
-  match 'users/list' => 'users#list'
+  match 'profiles' => 'users#list'
   match 'users/update' => 'users#update'
   match 'signup' => 'users#new'
   match 'home' => 'home#front'

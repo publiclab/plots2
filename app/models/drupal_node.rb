@@ -571,6 +571,12 @@ class DrupalNode < ActiveRecord::Base
     return [saved,node,revision]
   end
 
+  def add_barnstar(tagname,user)
+    self.add_tag(tagname,user)
+    # don't bother checking if it worked
+    CommentMailer.notify_barnstar(user,self)
+  end
+
   def add_tag(tagname,user)
     tagname = tagname.downcase
     unless self.has_tag(tagname)

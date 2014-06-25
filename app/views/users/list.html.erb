@@ -1,18 +1,37 @@
-<h2>Users</h2>
+<div class="span3">
 
-<table class="table">
-  <tr>
-    <th>Username</th>
-    <th>Joined new site</th>
-  </tr>
-  <% @users.each do |user| %>
-  <tr>
-    <td><a href="/profile/<%= user.username %>"><%= user.username %></a></td>
-    <td><%= time_ago_in_words(user.created_at) %></td>
-    <td>
-      <% if user.drupal_user.status == 0 %>
-        <i class='icon icon-ban-circle' style="color:#a00;"></i> Banned
-      <% end %>
-    </td>
+  <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
+    <h2>User moderation</h2>
+    <p>Normal users see only a list of recent users here, but moderators and admins can ban "spam" users and view those who have been banned. </p>
   <% end %>
-</table>
+  
+
+</div>
+<div class="span9">
+  <h2>New profiles</h2>
+
+  <table class="table">
+    <tr>
+      <th>Username</th>
+      <th>Joined new site</th>
+      <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
+        <th>Moderation</th>
+      <% end %>
+    </tr>
+    <% @users.each do |user| %>
+    <tr>
+      <td><a href="/profile/<%= user.username %>"><%= user.username %></a></td>
+      <td><%= time_ago_in_words(user.created_at) %></td>
+      <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
+      <td>
+        <% if user.drupal_user.status == 0 %>
+          <i class='icon icon-ban-circle' style="color:#a00;"></i> Banned
+        <% elsif user.drupal_user.status == 1 %>
+          <a class="btn btn-small" data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= user.drupal_user.uid %>" ><i class='icon icon-ban-circle'></i> Ban</a>
+        <% end %>
+      </td>
+      <% end %>
+    <% end %>
+  </table>
+  <%= will_paginate @users, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+</div>

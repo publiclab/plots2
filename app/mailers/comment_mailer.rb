@@ -14,4 +14,11 @@ class CommentMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "New comment on '"+comment.node.title+"'")
   end
 
+  # user is awarder, not awardee
+  def notify_barnstar(user,note)
+    @giver = user.drupal_user
+    @note = note
+    mail(:to => user.email, :subject => "You were awarded a Barnstar!")
+  end
+
 end

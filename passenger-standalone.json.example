@@ -1,0 +1,8 @@
+{
+        "port": 80,
+        "environment": "production",
+        "ssl": true,
+        "ssl_port": 443,
+        "ssl_certificate": "/path-to-cert.crt",
+        "ssl_certificate_key": "/path-to-cert.key"
+}
