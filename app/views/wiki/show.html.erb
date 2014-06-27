@@ -79,6 +79,16 @@
       <% end %>
     <% end %>
 
+    <% if @node.has_power_tag('notes') %>
+      <% tagname = @node.power_tag('notes') %>
+      <% @nodes =  DrupalTag.find_popular_notes(tagname,20,4) %>
+      <% if @nodes.length > 0 %>
+        <%= render :partial => "notes/tagged_notes", :locals => {:nodes => @nodes} %>
+        <p><a href="/tag/<%= tagname %>">More "<%= tagname %>" research &raquo;</a></p>
+        <hr />
+      <% end %>
+    <% end %>
+
     <div class="tab-pane active" id="tab-overview">
       <div<% unless @node.has_tag('style:wide') %> style="overflow:hidden;max-width:800px;"<% end %> id="content">
       <%= raw auto_link(@revision.render_body, :sanitize => false) %>
