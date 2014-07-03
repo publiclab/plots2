@@ -60,7 +60,7 @@ class DrupalComment < ActiveRecord::Base
     CommentMailer.notify_note_author(self.parent.author,self).deliver if self.parent.uid != current_user.uid
     uids = (self.parent.comments.collect(&:uid) + [self.parent.uid]).uniq!
     DrupalUsers.find(:all, :conditions => ['uid IN (?)',uids]).each do |user|
-      CommentMailer.notify(user,self).deliver if user.uid != current_user.uid && user.uid != self.uid && self.parent.uid != user.uid
+      CommentMailer.notify(user.user,self).deliver if user.uid != current_user.uid && user.uid != self.uid && self.parent.uid != user.uid
     end 
   end
 

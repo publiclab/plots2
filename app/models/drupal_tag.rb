@@ -2,7 +2,6 @@ class DrupalTag < ActiveRecord::Base
   attr_accessible :vid, :name, :description, :weight
   self.table_name = 'term_data'
   self.primary_key = 'tid'
-  has_many :drupal_node_tag, :foreign_key => 'tid'
   #has_many :drupal_users, :through => :drupal_node_tag, :foreign_key => 'uid'
 
   has_many :tag_selection, :foreign_key => 'tid'
@@ -39,6 +38,10 @@ class DrupalTag < ActiveRecord::Base
     end
     DrupalNode.find :all, :conditions => ['status = 1 AND nid IN ('+ids.uniq.join(',')+')'], :order => "nid DESC"
   end 
+
+  def author
+    DrupalUsers.find_by_uid self.uid
+  end
 
   def subscriptions
     self.tag_selection

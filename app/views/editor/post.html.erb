@@ -63,7 +63,7 @@
       <h3 style="margin-top:0;">Share your work</h3>
     <% end %>
 
-    <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title" value="<%= @node.title if @node %><%= "Question: " if params[:template] == "question" %>"><br />
+    <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %><%= "Question: " if params[:template] == "question" %>"><br />
     <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
     <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
     <input id="node_images" type="hidden" name="node_images" value="" />

@@ -47,7 +47,7 @@ class TagController < ApplicationController
     tagname = "barnstar:"+params[:star]
     if DrupalTag.exists?(tagname,params[:nid])
       flash[:error] = "Error: that tag already exists."
-    elsif !node.add_tag(tagname.strip,current_user)
+    elsif !node.add_barnstar(tagname.strip,node.author.user)
       flash[:error] = "The barnstar could not be created."
     else
       flash[:notice] = "You awarded the <a href='/wiki/barnstars#"+params[:star].split('-').each{|w| w.capitalize!}.join('+')+"+Barnstar'>"+params[:star]+" barnstar</a> to <a href='/profile/"+node.author.name+"'>"+node.author.name+"</a>"

@@ -6,14 +6,25 @@
 
   <div class="sidebar-nav hidden-phone">
 
-    <!--<div style="display:none;border:1px solid #ccc;border-width:1px 0;background:#eee;padding:6px 10px;margin:0 0 20px 0;background-image: linear-gradient(to bottom, #f6f6f6, #e6e6e6);background-repeat: repeat-x;">
+    <!--
+<div style="display:none;border:1px solid #ccc;border-width:1px 0;background:#eee;padding:6px 10px;margin:0 0 20px 0;background-image: linear-gradient(to bottom, #f6f6f6, #e6e6e6);background-repeat: repeat-x;">
       <h3 style="margin-bottom:0;">Public Lab is hiring!</h3>
       <p>Join the non-profit team: <a href="/wiki/public-lab-jobs">Learn more &raquo;</a></p>
-    </div>-->
+    </div>
 
     
     <p class="hidden-phone"><a href="/wiki/barnraising-northeast-2014"><img src="http://i.publiclab.org/system/images/photos/000/004/452/medium/barnraising-ne-2014.jpg" width="100%" /></a></p>
     <p class="visible-phone" style="margin-bottom:6px;"><a href="/wiki/barnraising-northeast-2014"><img src="http://i.publiclab.org/system/images/photos/000/004/453/medium/barnraising-ne-2014-narrow.jpg" width="100%" /></a></p>
+-->
+
+  <style>
+    .sidebox { background:white;border-color:#eee; }
+  </style>
+  <div class="well sidebox">
+    <a class="hidden-phone" href="/wiki/openhour"><img src="http://i.publiclab.org/system/images/photos/000/004/913/original/icon-openhour.jpg" width="100%" /></a>
+    <h4><a href="/wiki/openhour">Join us for <i>Open Hour</i> &raquo;</a></h4>
+    <p style="margin-bottom:0;">A weekly open call at 8pm ET</p>
+  </div>
 
     <% if params[:controller] != "home" && params[:action] != "home" %>
       <p><i class="icon icon-envelope"></i> <a href="/lists">Discussion lists &raquo;</a></p>

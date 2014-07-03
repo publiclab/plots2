@@ -62,6 +62,7 @@ class NotesController < ApplicationController
         :body => params[:body],
         :main_image => params[:main_image]
       })
+
       if saved
         if params[:tags]
           params[:tags].gsub(' ',',').split(',').each do |tagname|
@@ -71,7 +72,7 @@ class NotesController < ApplicationController
         # trigger subscription notifications:
         SubscriptionMailer.notify_node_creation(@node)
         # opportunity for moderation
-        flash[:notice] = "Research note published. Get the word out on <a href='/lists'>the discussion lists</a>. For a 10% discount on <a href='http://store.publiclab.org'>Public Lab kits</a>, use discount code <b>RNOTKITS10</b>. Please do not post solely to get a discount; we may revoke a discount if your post seems disingenuous."
+        flash[:notice] = "Research note published. Get the word out on <a href='/lists'>the discussion lists</a>!"
         redirect_to @node.path
       else
         render :template => "editor/post"

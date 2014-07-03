@@ -6,6 +6,8 @@ Dear <%= @user.name %>,
 
 <hr /> 
 
+<a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img src="<%= @node.main_image.path(:default) %>" /></a>
+
 <%= raw auto_link(@node.latest.render_body, :sanitize => false) %>
 
 <hr /> 
