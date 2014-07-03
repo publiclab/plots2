@@ -33,7 +33,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem 'passenger'
+#gem 'passenger'
 
 gem 'execjs'
 gem 'therubyracer'
@@ -46,7 +46,7 @@ gem 'geokit-rails'
 gem 'spatial_adapter', :git => 'https://github.com/descentintomael/spatial_adapter.git'
 gem 'rails_autolink'
 gem 'rb-readline'
-gem "paperclip"
+gem "paperclip", ">= 4.1.1"
 
 gem "nifty-generators", :group => :development
 gem "ruby-openid", :require => "openid"
