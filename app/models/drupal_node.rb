@@ -572,9 +572,9 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def add_barnstar(tagname,user)
-    self.add_tag(tagname,user)
+    self.add_tag(tagname,user.drupal_user)
     # don't bother checking if it worked
-    CommentMailer.notify_barnstar(self.author,self)
+    CommentMailer.notify_barnstar(self.author.user,self)
   end
 
   def add_tag(tagname,user)
