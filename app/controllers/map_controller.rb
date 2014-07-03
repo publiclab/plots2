@@ -14,6 +14,7 @@ class MapController < ApplicationController
 
   def show
     @node = DrupalNode.find_map_by_slug(params[:name]+'/'+params[:date])
+    return if check_and_redirect_node(@node)
     @node.view
     @title = @node.title
     @tags = @node.tags

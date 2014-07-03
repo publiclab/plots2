@@ -14,7 +14,7 @@ class UniqueUrlValidator < ActiveModel::Validator
 end
 
 class DrupalNode < ActiveRecord::Base
-  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment
+  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path
   self.table_name = 'node'
   self.primary_key = 'nid'
 
@@ -58,7 +58,7 @@ class DrupalNode < ActiveRecord::Base
 
   before_save :set_changed_and_created
   after_create :setup
-  before_validation :set_path
+  before_validation :set_path, on: :create
 
   private
 
@@ -73,7 +73,7 @@ class DrupalNode < ActiveRecord::Base
   # determines URL ("slug"), initializes the view counter, and sets up a created timestamp
   def setup
     self['created'] = DateTime.now.to_i
-    self.path = self.generate_path
+    #self.path = self.generate_path if self.path.blank?
     self.save
     DrupalNodeCounter.new({:nid => self.id}).save
   end
@@ -332,11 +332,11 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_by_slug(title)
-    DrupalNode.where(path: [title, "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
+    DrupalNode.where(path: ["/#{title}", "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
   end
 
   def self.find_root_by_slug(title)
-    DrupalNode.where(path: [title, "/wiki/#{title}"]).first
+    DrupalNode.where(path: ["/#{title}", "/wiki/#{title}"]).first
   end
 
   def self.find_map_by_slug(title)

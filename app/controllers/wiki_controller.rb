@@ -26,6 +26,8 @@ class WikiController < ApplicationController
       @node = DrupalNode.find_by_slug(params[:id])
     end
 
+
+    return if check_and_redirect_node(@node)
     if !@node.nil? # it's a place page!
       @tags = @node.tags
       @tags += [DrupalTag.find_by_name(params[:id])] if DrupalTag.find_by_name(params[:id])

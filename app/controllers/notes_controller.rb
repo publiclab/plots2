@@ -33,6 +33,8 @@ class NotesController < ApplicationController
     else
       @node = DrupalNode.find params[:id]
     end
+
+    return if check_and_redirect_node(@node)
     if @node.author.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
       flash[:error] = "The author of that note has been banned."
       redirect_to "/"
