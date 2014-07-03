@@ -17,7 +17,7 @@ class AddPathToDrupalNode < ActiveRecord::Migration
     puts "There were #{cleaned_node_ids.size} duplicate node ids in url_alias"
     cleaned_node_ids.each do |redirect_node|
       path = redirect_node[2]
-      if !path[/^(wiki|place|todo|tool|map|)\//].nil?
+      if !path[/^(wiki|place|todo|tool)\//].nil?
         good_path = path.split('/')[1..-1].join('/')
       else
         good_path = path
