@@ -33,7 +33,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem 'passenger'
+#gem 'passenger'
 
 gem 'execjs'
 gem 'therubyracer'
