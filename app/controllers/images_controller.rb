@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class ImagesController < ApplicationController
 
   respond_to :html, :xml, :json
@@ -11,7 +13,7 @@ class ImagesController < ApplicationController
       :title => params[:image][:title],
       :notes => params[:image][:notes]
     })
-    @image.nid = DrupalNode.find params[:nid] if params[:nid]
+    @image.nid = DrupalNode.find(params[:nid].to_i).nid if params[:nid]
     if @image.save!
       #@image = Image.find @image.id
       if request.xhr?

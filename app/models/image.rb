@@ -1,5 +1,7 @@
+require 'open-uri'
+
 class Image < ActiveRecord::Base
-  attr_accessible :uid, :notes, :title, :photo, :nid
+  attr_accessible :uid, :notes, :title, :photo, :nid, :remote_url
 
   #has_many :comments, :dependent => :destroy
   #has_many :likes, :dependent => :destroy
@@ -12,9 +14,13 @@ class Image < ActiveRecord::Base
                   #:path => ":rails_root/public/system/images/photos/:id/:style/:basename.:extension"
 
   validates :uid, :presence => :true
-  validates :photo, :presence => :true
-  validates :title, :presence => :true, :format => {:with => /\A[a-zA-Z0-9\ -_]+\z/, :message => "Only letters, numbers, and spaces allowed"}, :length => { :maximum => 60 }
+  validates :photo, :presence => :true, :unless => :remote_url_provided?
+  do_not_validate_attachment_file_type :photo_file_name
+  #validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
+  #validates :title, :presence => :true, :format => {:with => /\A[a-zA-Z0-9\ -_]+\z/, :message => "Only letters, numbers, and spaces allowed"}, :length => { :maximum => 60 }
 
+  before_validation :download_remote_image, :if => :remote_url_provided?
+  validates :remote_url, :presence => true, :if => :remote_url_provided?#, :message => "is invalid or inaccessible" # this message thing is old-style rails 2.3.x
   before_post_process :is_image?
 
   def is_image?
@@ -40,6 +46,28 @@ class Image < ActiveRecord::Base
 
   def filename
     self.photo_file_name
+  end
+
+private
+  # all subsequent code from http://trevorturk.com/2008/12/11/easy-upload-via-url-with-paperclip/
+
+  def remote_url_provided?
+    !self.remote_url.blank?
+  end
+
+  def download_remote_image
+    self.photo = do_download_remote_image
+    puts remote_url
+    puts "finishes to do_download"
+    self.remote_url = remote_url
+  end
+
+  def do_download_remote_image
+    io = open(URI.parse(remote_url))
+    def io.original_filename; base_uri.path.split('/').last; end
+    io.original_filename.blank? ? nil : io
+  rescue # catch url errors with validations instead of exceptions (Errno:ENOENT, OpenURI:HTTPError, etc...)
+    puts "had to be rescued"
   end
 
 end

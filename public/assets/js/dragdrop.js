@@ -32,7 +32,10 @@ $('#dropzone').fileupload({
   paramName: "image[photo]",
   dropZone: $('#dropzone'),
   dataType: 'json',
-  formData: {'uid':$D.uid},
+  formData: {
+    'uid':$D.uid,
+    'nid':$D.nid
+  },
   start: function(e) {
     $('#progress').show()
     $('#imagebar .uploading').show()
@@ -86,7 +89,10 @@ $('#side-dropzone').fileupload({
   paramName: "image[photo]",
   dropZone: $('#side-dropzone'),
   dataType: 'json',
-  formData: {'uid':$D.uid},
+  formData: {
+    'uid':$D.uid,
+    'nid':$D.nid
+  },
   start: function(e) {
     $('.side-dropzone').css('border-color','#ccc')
     $('.side-dropzone').css('background','none')

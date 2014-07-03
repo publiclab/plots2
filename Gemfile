@@ -33,6 +33,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
+#gem 'passenger'
 
 gem 'execjs'
 gem 'therubyracer'
@@ -42,10 +43,10 @@ gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 gem 'georuby', '2.0'
 gem 'geokit-rails'
-gem 'spatial_adapter', :git => 'git://github.com/descentintomael/spatial_adapter.git'
+gem 'spatial_adapter', :git => 'https://github.com/descentintomael/spatial_adapter.git'
 gem 'rails_autolink'
 gem 'rb-readline'
-gem "paperclip"
+gem "paperclip", ">= 4.1.1"
 
 gem "nifty-generators", :group => :development
 gem "ruby-openid", :require => "openid"
