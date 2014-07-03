@@ -39,6 +39,10 @@ class DrupalTag < ActiveRecord::Base
     DrupalNode.find :all, :conditions => ['status = 1 AND nid IN ('+ids.uniq.join(',')+')'], :order => "nid DESC"
   end 
 
+  def author
+    DrupalUsers.find_by_uid self.uid
+  end
+
   def subscriptions
     self.tag_selection
   end
