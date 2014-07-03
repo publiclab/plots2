@@ -61,6 +61,7 @@ class NotesController < ApplicationController
         :body => params[:body],
         :main_image => params[:main_image]
       })
+
       if saved
         if params[:tags]
           params[:tags].gsub(' ',',').split(',').each do |tagname|

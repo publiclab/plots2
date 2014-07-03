@@ -11,9 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140426213041) do
+ActiveRecord::Schema.define(:version => 20140702023905) do
 
-  create_table "comments", :primary_key => "cid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "comments", :primary_key => "cid", :force => true do |t|
     t.integer "pid",                             :default => 0,  :null => false
     t.integer "nid",                             :default => 0,  :null => false
     t.integer "uid",                             :default => 0,  :null => false
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
   add_index "comments", ["pid"], :name => "pid"
   add_index "comments", ["status"], :name => "status"
 
-  create_table "community_tags", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "community_tags", :id => false, :force => true do |t|
     t.integer "tid",  :default => 0, :null => false
     t.integer "nid",  :default => 0, :null => false
     t.integer "uid",  :default => 0, :null => false
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
   add_index "community_tags", ["tid"], :name => "tid"
   add_index "community_tags", ["uid"], :name => "uid"
 
-  create_table "content_field_bbox", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_field_bbox", :id => false, :force => true do |t|
     t.integer  "vid",                           :default => 0, :null => false
     t.integer  "nid",                           :default => 0, :null => false
     t.integer  "delta",                         :default => 0, :null => false
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
 
   add_index "content_field_bbox", ["nid"], :name => "nid"
 
-  create_table "content_field_image_gallery", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_field_image_gallery", :id => false, :force => true do |t|
     t.integer "vid",                                   :default => 0, :null => false
     t.integer "nid",                                   :default => 0, :null => false
     t.integer "delta",                                 :default => 0, :null => false
@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
 
   add_index "content_field_image_gallery", ["nid"], :name => "nid"
 
-  create_table "content_field_main_image", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_field_main_image", :primary_key => "vid", :force => true do |t|
     t.integer "nid",                                :default => 0, :null => false
     t.integer "field_main_image_fid"
     t.integer "field_main_image_list", :limit => 1
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
 
   add_index "content_field_main_image", ["nid"], :name => "nid"
 
-  create_table "content_field_map_editor", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_field_map_editor", :id => false, :force => true do |t|
     t.integer "vid",                                          :default => 0, :null => false
     t.integer "nid",                                          :default => 0, :null => false
     t.integer "delta",                                        :default => 0, :null => false
@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
 
   add_index "content_field_map_editor", ["nid"], :name => "nid"
 
-  create_table "content_field_mappers", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_field_mappers", :id => false, :force => true do |t|
     t.integer "vid",                                       :default => 0, :null => false
     t.integer "nid",                                       :default => 0, :null => false
     t.integer "delta",                                     :default => 0, :null => false
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
 
   add_index "content_field_mappers", ["nid"], :name => "nid"
 
-  create_table "content_type_map", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "content_type_map", :primary_key => "vid", :force => true do |t|
     t.integer "nid",                                                                                  :default => 0, :null => false
     t.string  "field_publication_date_value",    :limit => 20
     t.string  "field_capture_date_value",        :limit => 20
@@ -120,7 +120,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
 
   add_index "content_type_map", ["nid"], :name => "nid"
 
-  create_table "files", :primary_key => "fid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "files", :primary_key => "fid", :force => true do |t|
     t.integer "uid",       :default => 0,  :null => false
     t.string  "filename",  :default => "", :null => false
     t.string  "filepath",  :default => "", :null => false
@@ -145,9 +145,10 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
     t.string   "photo_file_size"
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
+    t.string   "remote_url"
   end
 
-  create_table "node", :primary_key => "nid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "node", :primary_key => "nid", :force => true do |t|
     t.integer "vid",                        :default => 0,  :null => false
     t.string  "type",         :limit => 32, :default => "", :null => false
     t.string  "language",     :limit => 12, :default => "", :null => false
@@ -186,13 +187,13 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
     t.integer "grant_delete", :limit => 1, :default => 0,  :null => false
   end
 
-  create_table "node_counter", :primary_key => "nid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "node_counter", :primary_key => "nid", :force => true do |t|
     t.integer "totalcount", :limit => 8, :default => 0, :null => false
     t.integer "daycount",   :limit => 3, :default => 0, :null => false
     t.integer "timestamp",               :default => 0, :null => false
   end
 
-  create_table "node_revisions", :primary_key => "vid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "node_revisions", :primary_key => "vid", :force => true do |t|
     t.integer "nid",                             :default => 0,  :null => false
     t.integer "uid",                             :default => 0,  :null => false
     t.string  "title",                           :default => "", :null => false
@@ -289,7 +290,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "term_data", :primary_key => "tid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "term_data", :primary_key => "tid", :force => true do |t|
     t.integer "vid",                               :default => 0,  :null => false
     t.string  "name",                              :default => "", :null => false
     t.text    "description", :limit => 2147483647
@@ -299,7 +300,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
   add_index "term_data", ["vid", "name"], :name => "vid_name"
   add_index "term_data", ["vid", "weight", "name"], :name => "taxonomy_tree"
 
-  create_table "term_node", :id => false, :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "term_node", :id => false, :force => true do |t|
     t.integer "nid", :default => 0, :null => false
     t.integer "vid", :default => 0, :null => false
     t.integer "tid", :default => 0, :null => false
@@ -320,7 +321,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
   add_index "upload", ["fid"], :name => "fid"
   add_index "upload", ["nid"], :name => "nid"
 
-  create_table "url_alias", :primary_key => "pid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "url_alias", :primary_key => "pid", :force => true do |t|
     t.string "src",      :limit => 128, :default => "", :null => false
     t.string "dst",      :limit => 128, :default => "", :null => false
     t.string "language", :limit => 12,  :default => "", :null => false
@@ -337,7 +338,7 @@ ActiveRecord::Schema.define(:version => 20140426213041) do
 
   add_index "user_selections", ["self_id", "other_id"], :name => "index_user_selections_on_self_id_and_other_id"
 
-  create_table "users", :primary_key => "uid", :options=>'ENGINE=MyISAM', :force => true do |t|
+  create_table "users", :primary_key => "uid", :force => true do |t|
     t.string  "name",             :limit => 60,                                         :default => "",  :null => false
     t.string  "pass",             :limit => 32,                                         :default => "",  :null => false
     t.string  "mail",             :limit => 64,                                         :default => ""
