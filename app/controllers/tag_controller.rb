@@ -67,11 +67,21 @@ class TagController < ApplicationController
       if DrupalTag.exists?(tagname,params[:nid])
         response[:errors] << "Error: that tag already exists."
       else 
-        saved,tag = node.add_tag(tagname.strip,current_user)
-        if saved
-          response[:saved] << [tag.name,tag.id]
+        # "with:foo" coauthorship powertag: by author only
+        if tagname[0..4] == "with:" && node.author.uid != current_user.uid
+          response[:errors] << "Error: only the author may use that powertag."
+        # "with:foo" coauthorship powertag: only for real users
+        elsif tagname[0..4] == "with:" && User.find_by_username(tagname.split(':')[1]).nil?
+          response[:errors] << "Error: cannot find that username."
+        elsif tagname[0..4] == "with:" && tagname.split(':')[1] == current_user.username
+          response[:errors] << "Error: you cannot add yourself as coauthor."
         else
-          response[:errors] << "Error: tags "+tag.errors[:name].first
+          saved,tag = node.add_tag(tagname.strip,current_user)
+          if saved
+            response[:saved] << [tag.name,tag.id]
+          else
+            response[:errors] << "Error: tags "+tag.errors[:name].first
+          end
         end
       end
     end

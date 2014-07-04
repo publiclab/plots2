@@ -160,6 +160,10 @@ class DrupalNode < ActiveRecord::Base
     DrupalUsers.find_by_uid self.uid
   end
 
+  def coauthors
+    User.find_all_by_username(self.power_tags('with')) if self.has_power_tag('with')
+  end
+
   # for wikis:
   def authors
     self.revisions.collect(&:author).uniq

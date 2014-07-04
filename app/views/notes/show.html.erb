@@ -44,9 +44,12 @@
         </ul>
       <% if @node.next_by_author %><a class="btn btn-small btn-link" href="/<%= @node.next_by_author.slug %>">&raquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 39) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.next_by_author.slug %>" }})</script><% end %>
     </div>
+
     <span>
       <% if @node.status == 0 %><span class="label label-important">UNPUBLISHED</span> | <% end %>
-      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> |
+      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> 
+      <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %> <a href="/profile/<%= coauthor.username %>"><%= coauthor.username%></a><%= ',' if i < @node.coauthors.length-1 %><% end %><% end %> |
+
       <span class="hidden-phone">
         <%= @node.created_at.to_s(:long) %> 
       </span>
@@ -58,7 +61,9 @@
         <%= @node.created_at.to_s(:short) %>
       </span>
     </span>
+
   </div>
+
   <hr style="margin-top:10px;" />
 
   <% @node.power_tag_objects('barnstar').each do |tag| %>

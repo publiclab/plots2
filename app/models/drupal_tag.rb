@@ -90,6 +90,10 @@ class DrupalTag < ActiveRecord::Base
     DrupalNodeCommunityTag.find(:all, :conditions => ['nid = ? AND term_data.name = ?',nid,tagname], :joins => :drupal_tag).length != 0
   end
 
+  def self.is_powertag?(tagname)
+    !tagname.match(':').nil?
+  end
+
   def self.follower_count(tagname)
     TagSelection.joins(:drupal_tag).where(['term_data.name = ?',tagname]).count
   end
