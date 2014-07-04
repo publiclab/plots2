@@ -75,6 +75,8 @@ class TagController < ApplicationController
           response[:errors] << "Error: cannot find that username."
         elsif tagname[0..4] == "with:" && tagname.split(':')[1] == current_user.username
           response[:errors] << "Error: you cannot add yourself as coauthor."
+        elsif tagname[0..4] == "rsvp:" && current_user.username != tagname.split(':')[1]
+          response[:errors] << "Error: you can only RSVP for yourself."
         else
           saved,tag = node.add_tag(tagname.strip,current_user)
           if saved

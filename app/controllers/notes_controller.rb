@@ -1,7 +1,7 @@
 class NotesController < ApplicationController
 
   respond_to :html
-  before_filter :require_user, :only => [:create, :edit, :update]
+  before_filter :require_user, :only => [:create, :edit, :update, :delete, :rsvp]
 
   def index
     @title = "Research notes"
@@ -67,6 +67,11 @@ class NotesController < ApplicationController
           params[:tags].gsub(' ',',').split(',').each do |tagname|
             @node.add_tag(tagname.strip,current_user)
           end
+        end
+        if params[:event] == "on"
+          @node.add_tag("event",current_user)
+          @node.add_tag("event:rsvp",current_user)
+          @node.add_tag("date:"+params[:date],current_user) if params[:date]
         end
         # trigger subscription notifications:
         SubscriptionMailer.notify_node_creation(@node)
@@ -210,6 +215,17 @@ class NotesController < ApplicationController
         response.headers["Content-Type"] = "application/xml; charset=utf-8"
       } 
     end
+  end
+
+  def rsvp
+    @node = DrupalNode.find params[:id]
+    # leave a comment
+    @comment = @node.add_comment({:subject => 'rsvp', :uid => current_user.uid,:body => 
+      "I will be attending!"
+    })
+    # make a tag
+    @node.add_tag("rsvp:"+current_user.username,current_user)
+    redirect_to @node.path+"#comments"
   end
 
 end

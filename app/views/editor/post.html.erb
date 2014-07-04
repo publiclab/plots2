@@ -122,13 +122,32 @@
       <a id="publish" class="publish btn btn-primary btn-large">Publish</a>
       <a data-previewing-text="Edit" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
     </div>
-    <br />
+
+    <p style="margin-top:4px;"><label class="checkbox inline">
+      <input tabindex="7" onChange="$('#event-info').toggle()" id="event-input" type="checkbox" name="event">
+      This is an event
+    </label></p>
+
+    <script src="/datepicker/js/bootstrap-datepicker.js"></script>
+    <link href="/datepicker/css/datepicker.css" rel="stylesheet">
+    <div id="event-info" style="display:none;">
+      <p><i>An RSVP feature will be added to your note. Please choose a date:</i></p>
+      <span style="padding-right:0;" class="datepicker input-append date" data-date="<%= DateTime.now.strftime("%m-%d-%Y") %>" data-date-format="mm-dd-yyyy">
+        <input id="datepicker-input" onFocus="$('.datepicker').datepicker('show')" class="span8" size="16" type="text" name="date" value="<%= DateTime.now.strftime("%m-%d-%Y") %>" />
+        <span class="add-on"><i class="icon-calendar"></i></span>
+      </span>
+    </div>
+
     <p>By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+
   <% end %>
 </div>
 <script>
   (function(){
+    $('.datepicker').datepicker()
+    
     $E.initialize()
+
     $('#side-fileinput').bind('focus',function(e) { $('#side-dropzone').css('border-color','#4ac') })
     $('#side-fileinput').bind('focusout',function(e) { $('#side-dropzone').css('border-color','#ccc') })
     var warn_image = <%= params[:template] == "question" %>;
@@ -150,4 +169,3 @@
     if ($E.textarea.val() == "") $E.apply_template("<%= params[:template] || 'default'%>")
   })()
 </script>
-

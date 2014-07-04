@@ -121,6 +121,7 @@ Plots2::Application.routes.draw do
   match 'tag/delete/:nid/:tid' => 'tag#delete'
   match 'barnstar/give/:nid/:star' => 'tag#barnstar'
   match 'barnstar/give' => 'tag#barnstar'
+  match 'rsvp/:id' => 'notes#rsvp'
   match 'feed/liked' => 'notes#liked_rss'
 
   match 'dashboard' => 'home#dashboard'
