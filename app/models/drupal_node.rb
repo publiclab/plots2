@@ -73,7 +73,6 @@ class DrupalNode < ActiveRecord::Base
   # determines URL ("slug"), initializes the view counter, and sets up a created timestamp
   def setup
     self['created'] = DateTime.now.to_i
-    #self.path = self.generate_path if self.path.blank?
     self.save
     DrupalNodeCounter.new({:nid => self.id}).save
   end
@@ -336,7 +335,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_root_by_slug(title)
-    DrupalNode.where(path: ["/#{title}", "/wiki/#{title}"]).first
+    DrupalNode.where(path: ["/#{title}"]).first
   end
 
   def self.find_map_by_slug(title)

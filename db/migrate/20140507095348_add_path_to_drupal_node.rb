@@ -17,14 +17,9 @@ class AddPathToDrupalNode < ActiveRecord::Migration
     puts "There were #{cleaned_node_ids.size} duplicate node ids in url_alias"
     cleaned_node_ids.each do |redirect_node|
       path = redirect_node[2]
-      if !path[/^(wiki|place|todo|tool)\//].nil?
-        good_path = path.split('/')[1..-1].join('/')
-      else
-        good_path = path
-      end
       DrupalNode.transaction do
         ActiveRecord::Base.connection.execute(
-          "insert into node (title, type, path) values('REDIRECT-#{redirect_node[2]}-#{Random.rand}', 'redirect|#{redirect_node[1].split('/').last}', '/#{good_path}');")
+          "insert into node (title, type, path) values('REDIRECT-#{redirect_node[2]}-#{Random.rand}', 'redirect|#{redirect_node[1].split('/').last}', '/#{path}');")
         tmp_node = DrupalNode.last
         ActiveRecord::Base.connection.execute(
           "insert into node_revisions (nid, uid) values(#{tmp_node.nid}, 1);")
