@@ -23,20 +23,12 @@ class AddPathToDrupalNode < ActiveRecord::Migration
         tmp_node = DrupalNode.last
         ActiveRecord::Base.connection.execute(
           "insert into node_revisions (nid, uid) values(#{tmp_node.nid}, 1);")
-        #tmp_node.reload
-        #tmp_node.vid = DrupalNodeRevision.last.vid
         ActiveRecord::Base.connection.execute(
           "update node set vid = #{DrupalNodeRevision.last.vid} where nid = #{tmp_node.nid};")
-        #tmp_node.save
       end
-      #DrupalNode.create!({type: "redirect|#{redirect_node[1].split("/").last}",
-                         #title: "REDIRECT-#{redirect_node[2]} - #{Random.rand}",
-                         #path: good_path})
     end
 
     second_filter = @first_filter.to_a.uniq { |item| item[1] }
-    puts "Size after second filter: #{second_filter.size}"
-    puts "Should be #{DrupalNode.count}"
 
     third_filter = []
     second_filter.each do |item|
@@ -45,8 +37,6 @@ class AddPathToDrupalNode < ActiveRecord::Migration
         third_filter << item + [node_id[0]]
       end
     end
-    puts "Size after third filter: #{third_filter.size}"
-    puts "Should be #{DrupalNode.count}"
 
 
     fourth_filter = []
@@ -56,16 +46,12 @@ class AddPathToDrupalNode < ActiveRecord::Migration
       end
     end
 
-    puts "Size after fourth filter: #{fourth_filter.size}"
-    puts "Should be #{DrupalNode.count}"
 
-    #drupal_node_nids = ActiveRecord::Base.connection.execute('select nid from node;')
-    #filtered_node_nids = fourth_filter.map { |i| i[3].to_i }
-    #deleted_ids = (drupal_node_nids.to_a.map { |i| i[0] } - filtered_node_nids).to_a
-
-    ActiveRecord::Base.connection.execute("delete from url_alias where pid not in (#{fourth_filter.map { |i| i[0].to_i }.join(',')});")
-    no_of_aliases = ActiveRecord::Base.connection.execute('select count(pid) from url_alias;')
-    puts no_of_aliases.to_a
+    if fourth_filter.size > 0
+      ActiveRecord::Base.connection.execute("delete from url_alias where pid not in (#{fourth_filter.map { |i| i[0].to_i }.join(',')});")
+      no_of_aliases = ActiveRecord::Base.connection.execute('select count(pid) from url_alias;')
+      puts no_of_aliases.to_a
+    end
 
     dsts = ActiveRecord::Base.connection.execute('select dst, src from url_alias;')
     dsts.each do |dst, src|
