@@ -119,7 +119,7 @@ a i.icon-white { color:white; }
   background:white;
 }
 
-.side-dropzone {
+.side-dropzone, .profile-dropzone {
   border:4px dashed #ccc;
   color: #aaa;
   font-size:16px;
@@ -129,26 +129,26 @@ a i.icon-white { color:white; }
   margin-bottom:10px;
   /* text-shadow: 0 -1px 0 #aaa; */
 }
-.side-dropzone.hover {
+.side-dropzone.hover, .profile-dropzone.hover {
   background:#ddd;
   color:#bbb;
   border-color:#bbb;
 }
-.side-dropzone {
+.side-dropzone, .profile-dropzone {
   color:#ccc;
   text-shadow: 0 -1px 0 #aaa;
 }
-.side-dropzone .fileinput-button {
+.side-dropzone .fileinput-button, .profile-dropzone .fileinput-button {
   text-shadow: none;
   text-decoration:underline;
 }
 @media (max-width: 480px) {
-  .side-dropzone { padding:0; }
-  .side-dropzone p { padding:15px; }
+  .side-dropzone, .profile-dropzone { padding:0; }
+  .side-dropzone p, .profile-dropzone p { padding:15px; }
 }
 @media (max-width: 768px) {
-  .side-dropzone { padding:0; }
-  .side-dropzone p {
+  .side-dropzone, .profile-dropzone { padding:0; }
+  .side-dropzone p, .profile-dropzone p {
     padding:20px 20px 30px;
   }
 }

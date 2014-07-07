@@ -1,80 +1,89 @@
+<div class="row-fluid">
 <%= form_for @user, :url => {:controller => 'users', :action => @action}, :html => {:class => "form-horizontal"} do |f| %>
 
   <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
 
-  <% if params[:controller] == "users" && @action == "create" %>
-  <div class="control-group">
-    <label class="control-label" for="user_username"><b>Username</b></label>
-    <div class="controls">
-      <%= f.text_field :username, {:placeholder => "username", :tabindex => 2} %>
-    </div>
-  </div>
-  <% end %>
-
-  <div class="control-group">
-    <label class="control-label" for="user_email"><b>Email</b></label>
-    <div class="controls">
-      <%= f.text_field :email, {:placeholder => "you@email.com", :tabindex => 3} %>
-    </div>
-  </div>
-
-  <div class="control-group">
-    <% if @user.crypted_password.nil? %>
-      <label class="control-label" for="user_password"><b>Create a password</b></label>
-    <% else %>
-      <label class="control-label" for="user_password"><b>Change your password</b></label>
-    <% end %>
-    <div class="controls">
-    <%= f.password_field :password, {:placeholder => "password", :tabindex => 4} %>
-    <%= f.password_field :password_confirmation, {:placeholder => "confirm your password", :tabindex => 5} %>
-    </div>
-  </div>
-
-  <div class="control-group">
-    <div class="controls">
-      <%= text_area :drupal_user, :bio, {:placeholder => "Add a short bio to appear on your profile page", :class => "span6", :rows => 8, :tabindex => 6} %>
-    </div>
-  </div>
-
-  <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
-  <%= fields_for @spamaway do |spam| %>
+  <div class="span7">
+    <% if params[:controller] == "users" && @action == "create" %>
     <div class="control-group">
-      <label class="control-label" for="spamaway_follow_instructions"><b>Are you human? (sorry: spam filtering!)</b></label>
-      <% vars = [:statement1, :statement2, :statement3, :statement4] %>
-      <% turingtest = Spamaway.get_pairs vars.length %>
-      <% turingtest.each_index do |i| %>
+      <label class="control-label" for="user_username"><b>Username</b></label>
       <div class="controls">
-        <p><fieldset>
-        <% [0,1].each do |s| %><% statement = turingtest[i][s] %>
-          <label class="radio-inline">
-          <%= spam.radio_button vars[i], statement %> <%= statement %>
-          </label>
-        <% end %>
-        </fieldset></p>
+        <%= f.text_field :username, {:placeholder => "username", :tabindex => 2} %>
       </div>
-      <% end %>
-
-      <br />
-
-      <label class="control-label" for="spamaway_follow_instructions"><b>Don't write anything here if you're a real person.</b></label>
-      <div class="controls">
-        <%= spam.text_area :follow_instructions, {:class => "span6", :rows => 8, :tabindex => 7} %>
-      </div>
-
     </div>
-  <% end %>
-  <% end %>
-
-  <% if params[:controller] == "users" && params[:action] == "new" %>
-    <!-- email lists here -->
-  <% end %>
-
-  <div class="controls">
-  <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
-    <button class="btn-large btn-primary" type="submit" tabindex="7">Sign up</button>
-    <a class="btn-large btn" href="/login">Log in</a>
-  <% elsif params[:controller] == "users" && params[:action] == "edit" %>
-    <button class="btn-large btn-primary" type="submit" tabindex="7">Save</button>
-  <% end %>
+    <% end %>
+ 
+    <div class="control-group">
+      <label class="control-label" for="user_email"><b>Email</b></label>
+      <div class="controls">
+        <%= f.text_field :email, {:placeholder => "you@email.com", :tabindex => 3} %>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+      <% if @user.crypted_password.nil? %>
+        <label class="control-label" for="user_password"><b>Create a password</b></label>
+      <% else %>
+        <label class="control-label" for="user_password"><b>Change your password</b></label>
+      <% end %>
+      <div class="controls">
+      <%= f.password_field :password, {:placeholder => "password", :tabindex => 4} %>
+      <%= f.password_field :password_confirmation, {:placeholder => "confirm your password", :tabindex => 5} %>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+      <div class="controls">
+        <%= text_area :drupal_user, :bio, {:placeholder => "Add a short bio to appear on your profile page", :class => "span6", :rows => 8, :tabindex => 6} %>
+      </div>
+    </div>
+ 
+    <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
+    <%= fields_for @spamaway do |spam| %>
+      <div class="control-group">
+        <label class="control-label" for="spamaway_follow_instructions"><b>Are you human? (sorry: spam filtering!)</b></label>
+        <% vars = [:statement1, :statement2, :statement3, :statement4] %>
+        <% turingtest = Spamaway.get_pairs vars.length %>
+        <% turingtest.each_index do |i| %>
+        <div class="controls">
+          <p><fieldset>
+          <% [0,1].each do |s| %><% statement = turingtest[i][s] %>
+            <label class="radio-inline">
+            <%= spam.radio_button vars[i], statement %> <%= statement %>
+            </label>
+          <% end %>
+          </fieldset></p>
+        </div>
+        <% end %>
+ 
+        <br />
+ 
+        <label class="control-label" for="spamaway_follow_instructions"><b>Don't write anything here if you're a real person.</b></label>
+        <div class="controls">
+          <%= spam.text_area :follow_instructions, {:class => "span6", :rows => 8, :tabindex => 7} %>
+        </div>
+ 
+      </div>
+    <% end %>
+    <% end %>
+ 
+    <% if params[:controller] == "users" && params[:action] == "new" %>
+      <!-- email lists here -->
+    <% end %>
+ 
+    <div class="controls">
+    <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
+      <button class="btn-large btn-primary" type="submit" tabindex="7">Sign up</button>
+      <a class="btn-large btn" href="/login">Log in</a>
+    <% elsif params[:controller] == "users" && params[:action] == "edit" %>
+      <button class="btn-large btn-primary" type="submit" tabindex="7">Save</button>
+    <% end %>
+    </div>
   </div>
+
+  <div class="span2">
+    <%= render :partial => 'users/photo' %>
+  </div>
+
 <% end %>
+</div>

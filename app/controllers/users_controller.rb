@@ -182,4 +182,25 @@ class UsersController < ApplicationController
     render :partial => "home/comments"
   end
 
+  def photo
+    @user = DrupalUsers.find_by_uid(params[:uid]).user
+    if current_user.uid == @user.uid || current_user.role == "admin"
+      @user.photo = params[:photo]
+      if @user.save!
+        if request.xhr?
+          render :json => { :url => @user.photo_path } 
+        else
+          flash[:notice] = "Image saved."
+          redirect_to @node.path
+        end
+      else
+        flash[:error] = "The image could not be saved."
+        redirect_to "/images/new"
+      end
+    else
+      flash[:error] = "The image could not be saved."
+      redirect_to "/images/new"
+    end
+  end
+
 end

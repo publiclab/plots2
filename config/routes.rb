@@ -129,6 +129,7 @@ Plots2::Application.routes.draw do
   match 'profile/comments/:id' => 'users#comments'
   match 'nearby' => 'home#nearby'
   match 'profile/edit' => 'users#edit'
+  match 'profile/photo' => 'users#photo'
   match 'profile/:id' => 'users#profile'
   match 'profile/:id/edit' => 'users#edit'
   match 'profile/:id/likes' => 'users#likes'

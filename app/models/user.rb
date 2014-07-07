@@ -8,12 +8,18 @@ end
 
 class User < ActiveRecord::Base
   self.table_name = 'rusers'
-  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key
+  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name
 
   acts_as_authentic do |c|
     c.openid_required_fields = [:nickname, 
                                 :email] 
   end
+
+  has_attached_file :photo, :styles => { :thumb => "200x200>", :medium => "500x500>", :large => "800x800>" },
+                  :url  => "/system/profile/photos/:id/:style/:basename.:extension"
+                  #:path => ":rails_root/public/system/images/photos/:id/:style/:basename.:extension"
+  do_not_validate_attachment_file_type :photo_file_name
+  #validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
 
   # this doesn't work... we should have a uid field on User
   #has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
@@ -141,6 +147,14 @@ class User < ActiveRecord::Base
 
   def barnstars
     DrupalNodeCommunityTag.includes(:drupal_node,:drupal_tag).where("type = ? AND term_data.name LIKE ? AND node.uid = ?",'note','barnstar:%',self.uid)
+  end
+
+  def photo_path(size = :medium)
+    if Rails.env == "production"
+      'http://i.publiclab.org'+self.photo.url(size)
+    else
+      self.photo.url(size).gsub('http://i.publiclab.org','')
+    end
   end
 
   private

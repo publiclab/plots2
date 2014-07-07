@@ -35,6 +35,7 @@ class ImagesController < ApplicationController
     @image = Image.new()
   end
 
+  # Jeff believes this is not used.
   def update
     @image = Image.find params[:id]
     # make changes

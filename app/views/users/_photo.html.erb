@@ -1,0 +1,73 @@
+<script>
+  $D = {
+    uid: <%= current_user.uid %>,
+    type: 'note'
+  }
+</script>
+<link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
+<script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
+<script src="/assets/js/dragdrop.js?5"></script>
+
+<hr class="visible-phone" />
+<h3>Profile photo</h3>
+
+<img class="img-rounded" id="profile-photo" style="<% unless @user.photo %>display:none;<% end %> margin-bottom:10px;" src="<% if @user.photo %><%= @user.photo_path(:thumb) %><% end %>" />
+<div class="profile-dropzone" id="profile-dropzone" style="margin-bottom:20px;">
+  <p class="prompt"><span class="hidden-phone">Drag &amp; drop to add an image, or </span><span class="fileinput-button"><a><i class="icon icon-upload visible-phone pull-left" style="padding-right:6px;"></i> choose an image</a><input tabindex="3" id="profile-fileinput" type="file" name="image[photo]" style="height:4em;"></span></p>
+  <br class="hidden-phone" />
+</div>
+<div id="profile-progress" style="display:none;" class="progress progress-striped active pull-right">
+  <div class="bar" style="width: 0%;"></div>
+</div>
+<p class="profile-uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
+
+<script>
+  $('#profile-fileinput').bind('focus',function(e) { $('#profile-dropzone').css('border-color','#4ac') })
+  $('#profile-fileinput').bind('focusout',function(e) { $('#profile-dropzone').css('border-color','#ccc') })
+  $('#profile-dropzone').bind('dragover',function(e) {
+    e.preventDefault();
+    $('#profile-dropzone').addClass('hover');
+  })
+  $('#profile-dropzone').bind('dragout',function(e) {
+    $('#profile-dropzone').removeClass('hover');
+  })
+  $('#profile-dropzone').bind('drop',function(e) {
+    e.preventDefault();
+  })
+  $('#profile-dropzone').fileupload({
+    url: "/profile/photo",
+    paramName: "photo",
+    dropZone: $('#profile-dropzone'),
+    dataType: 'json',
+    formData: {
+      'uid':$D.uid
+    },
+    start: function(e) {
+      $('.profile-dropzone').css('border-color','#ccc')
+      $('.profile-dropzone').css('background','none')
+      $('#profile-progress').show()
+      $('#profile-dropzone').removeClass('hover');
+      $('.profile-uploading').show()
+    },
+    done: function (e, data) {
+      $('#profile-progress').hide()
+      $('#profile-dropzone').show()
+      $('.profile-uploading').hide()
+      $('#profile-photo')[0].src = data.result.url
+      $('#profile-photo').show()
+    },
+    // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
+    fileuploadfail: function(e,data) {
+      
+    },
+    progressall: function (e, data) {
+      var progress = parseInt(data.loaded / data.total * 100, 10);
+      $('#profile-progress .bar').css(
+        'width',
+        progress + '%'
+      );
+    }
+  });
+</script>
