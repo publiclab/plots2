@@ -1,0 +1,15 @@
+<% if @node.has_power_tag('events') %>
+  <div class='well'>
+    <h4>Local events</h4>
+    <ul class="nav bullet">
+      <% events = @node.power_tags('events') %>
+      <% events.each do |power_tag| %>
+        <% DrupalTag.find_nodes_by_type_with_all_tags(["event",power_tag]).sort_by{|a| a.changed}.each do |node| %>
+          <li><a href="<%= node.path %>"><i class="icon-calendar"></i><% if node.has_power_tag('date') %> <b><%= node.power_tag('date') %></b><% end %> <%= node.title %></a></li>
+        <% end %>
+      <% end %>
+      <% if events.length == 0 %><li>No events</li><% end %>
+    </ul>
+    <p><a class="btn" href="/post?template=event&tags=event,<%= events.first %>">Post an event</a></p>
+  </div>
+<% end %>

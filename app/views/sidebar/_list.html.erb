@@ -1,24 +1,5 @@
-<br />
-<% if @node.has_power_tag('events') || @node.has_mailing_list? %>
-<div class='well'>
-
-<% if @node.has_power_tag('events') %>
-<h4>Local events</h4>
-<ul class="nav bullet">
-  <% events = @node.power_tags('events') %>
-  <% events.each do |power_tag| %>
-    <% DrupalTag.find_nodes_by_type_with_all_tags(["event",power_tag]).sort_by{|a| a.changed}.each do |node| %>
-      <li><a href="<%= node.path %>"><i class="icon-calendar"></i> <%= node.title %></a></li>
-    <% end %>
-  <% end %>
-  <% if events.length == 0 %><li>No events</li><% end %>
-</ul>
-<p><a class="btn" href="/post?template=event&tags=event,<%= events.first %>">Post an event</a></p>
-
-<hr />
-<% end %>
-
 <% if @node.has_mailing_list? %>
+<div class='well'>
   <% mailing_list = @node.power_tag("list") %>
 
   <form action="http://groups.google.com/group/<%= mailing_list %>/boxsubscribe">
@@ -42,7 +23,5 @@
   <% end %>
   </ul>
   <p><a href="http://groups.google.com/group/<%= mailing_list %>">All topics &raquo;</a></p>
-<% end %>
-
 </div>
 <% end %>

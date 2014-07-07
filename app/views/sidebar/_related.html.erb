@@ -18,7 +18,9 @@
   <a rel="tooltip" title="Post <% if @tagnames %>about <%= (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?tags='+(@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
 
   <br />
-  <%= render :partial => "sidebar/place" if @node %>
+  <%= render :partial => "sidebar/list" if @node %>
+  <br />
+  <%= render :partial => "sidebar/events" if @node %>
 
   <% if @node && (@node.has_power_tag('iso') || @node.has_power_tag('lang')) %>
     <h4>Translation</h4>
