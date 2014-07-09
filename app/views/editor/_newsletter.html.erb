@@ -1,0 +1,21 @@
+
+###Events
+
+<% @events.each do |note| %>
+<% tags = note.tags[0..3] %>
+**<% if note.has_power_tag('date') %><%= note.power_tag('date') %>: <% end %><%= note.title %>** by [<%= note.author.username %>](/profile/<%= note.author.username %>) <% if tags.length > 0 %>(<% tags.each_with_index do |tag,i| %>[<%= tag.name %>](/tag/<%= tag.name %>)<%= ',' if i < tags.length-1 %><% end %>)<% end %>
+<% end %>
+
+###Places
+
+###Barnstars this week
+
+[Barnstars](/wiki/barnstars) 
+
+###Recent research
+
+<% @notes.each do |note| %>
+<% tags = note.tags[0..3] %>
+**<%= note.title %>** by [<%= note.author.username %>](/profile/<%= note.author.username %>) <% if tags.length > 0 %>(<% tags.each_with_index do |tag,i| %>[<%= tag.name %>](/tag/<%= tag.name %>)<%= ',' if i < tags.length-1 %><% end %>)<% end %>
+<% end %>
+

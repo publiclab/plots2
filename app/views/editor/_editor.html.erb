@@ -37,7 +37,7 @@
 </div>
 
 <div id="dropzone">
-  <textarea name="body" tabindex="2" class="span9" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+  <textarea name="body" tabindex="2" class="span9" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %><%= render :partial => "editor/newsletter" if params[:newsletter] %></textarea>
   <div id="imagebar">
     <div id="progress" style="display:none;" class="progress progress-striped active pull-right">
       <div class="bar" style="width: 0%;"></div>
