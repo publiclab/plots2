@@ -272,6 +272,16 @@ class DrupalNode < ActiveRecord::Base
     DrupalNodeCommunityTag.find(:all,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)])
   end
 
+  # return whole tag objects but no powertags or "event"
+  def normal_tags
+    node_tags = DrupalNodeCommunityTag.find(:all,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name NOT LIKE ? AND name NOT LIKE ?","%:%","event"]).collect(&:tid)])
+    tags = []
+    node_tags.each do |nt|
+      tags << nt
+    end
+    tags
+  end
+
   def has_tag(tag)
     DrupalNodeCommunityTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
   end
@@ -573,6 +583,14 @@ class DrupalNode < ActiveRecord::Base
       end
     end
     return [saved,node,revision]
+  end
+
+  def barnstar
+    self.power_tag_objects('barnstar').first
+  end
+
+  def barnstars
+    self.power_tag_objects('barnstar')
   end
 
   def add_barnstar(tagname,user)

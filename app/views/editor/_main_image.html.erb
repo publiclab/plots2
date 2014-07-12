@@ -12,4 +12,35 @@
   </div>
   <p class="side-uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
 
+  <% if params[:newsletter] %>
+
+    <script>
+      (function(){
+        upload_main_img = function (i,author) {
+          $.ajax({
+            url: "/images?i=http://<%= request.host+':'+request.port.to_s %>"+i,
+            dataType: "json",
+            type: 'POST',
+            success: function(response){
+              $('#text-input').val($('#text-input').val().replace('<!-- Caption for lead image -->','Above image by ['+author+'](/profile/'+author+')<!-- Caption for lead image -->'))
+              $('#leadImage').show()
+              $('#leadImage')[0].src = response.url
+              $('#main_image').val(response.id)
+              $('#has_main_image').val(true)
+            }
+          })
+        }
+      })()
+    </script>
+
+    <h4 style="margin-top:20px;">Choose a main image:</h4>
+
+    <div class="row-fluid">
+      <% @all.each do |note| %>
+        <% if note.main_image %><a class="span6" onClick="upload_main_img('<%= note.main_image.photo %>','<%= note.author.username %>')"><img class="img-rounded" src="<%= note.main_image.photo %>" /></a><% end %>
+      <% end %>
+    </div>
+ 
+  <% end %>
+
 </div>

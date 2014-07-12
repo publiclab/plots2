@@ -6,13 +6,20 @@ class ImagesController < ApplicationController
   before_filter :require_user, :only => [:create, :new, :update, :delete]
 
   def create
-    params[:image][:title] = "Untitled" if params[:image][:title].nil?
-    @image = Image.new({
-      :uid => current_user.uid,
-      :photo => params[:image][:photo],
-      :title => params[:image][:title],
-      :notes => params[:image][:notes]
-    })
+    if params[:i]
+      @image = Image.new({
+        :remote_url => params[:i],
+        :uid => current_user.uid
+      })
+      flash[:error] = "The image could not be saved." unless @image.save!
+    else
+      @image = Image.new({
+        :uid => current_user.uid,
+        :photo => params[:image][:photo],
+        :title => params[:image][:title],
+        :notes => params[:image][:notes]
+      })
+    end
     @image.nid = DrupalNode.find(params[:nid].to_i).nid if params[:nid]
     if @image.save!
       #@image = Image.find @image.id
