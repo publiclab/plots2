@@ -23,6 +23,8 @@
     <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
       <li><a href="/spam"><i class="icon-ban-circle"></i> Moderate spam</a></li>
       <li><a href="/useremail"><i class="icon-search"></i> Email address search</a></li>
+    <% elsif current_user && (current_user.role == "admin") %>
+      <li><a href="/post?newsletter=true"><i class="icon-bullhorn"></i> Post a newsletter</a></li>
     <% end %>
   </ul>
 </div>
