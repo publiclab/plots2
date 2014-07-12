@@ -21,4 +21,9 @@ class CommentMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "You were awarded a Barnstar!").deliver
   end
 
+  def notify_callout(comment,user)
+    @user = user
+    @comment = comment
+    mail(:to => user.email, :subject => "You were mentioned in a comment.").deliver
+  end
 end
