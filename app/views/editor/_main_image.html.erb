@@ -22,9 +22,11 @@
             dataType: "json",
             type: 'POST',
             success: function(response){
-              $('#text-input').val($('#text-input').val().replace('<!-- Caption for lead image -->','Image by ['+author+'](/profile/'+author+')<!-- Caption for lead image -->'))
+              $('#text-input').val($('#text-input').val().replace('<!-- Caption for lead image -->','Above image by ['+author+'](/profile/'+author+')<!-- Caption for lead image -->'))
               $('#leadImage').show()
-              $('#leadImage')[0].src = response['url']
+              $('#leadImage')[0].src = response.url
+              $('#main_image').val(response.id)
+              $('#has_main_image').val(true)
             }
           })
         }
