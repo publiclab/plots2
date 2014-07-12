@@ -5,13 +5,35 @@ class EditorController < ApplicationController
   # main image via URL passed as GET param
   def post
     if params[:newsletter]
+      params[:tags] = "newsletter"
+      # last newsletter
+      newsletter = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND term_data.name = ?',(Time.now.to_i-1.weeks.to_i).to_s,'newsletter').includes(:drupal_tag).last
+
+      if  newsletter.nil?
+        last = DateTime.new
+      else
+        last = newsletter.created 
+      end
+
       # nids already used
       already = []
+      @all = DrupalNode.where('type = "note" AND status = 1 AND created > ?',last.to_s).includes(:drupal_tag)
+
       # filter just events
-      @events = DrupalNode.find :all, :conditions => ['type = "note" AND status = 1 AND created > '+(Time.now.to_i-1.weeks.to_i).to_s]
+      @events = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND term_data.name = ?',last.to_s,'event').includes(:drupal_tag)
       already += @events.collect(&:nid)
-      # filter just events
-      @notes = DrupalNode.find :all, :conditions => ['type = "note" AND status = 1 AND nid NOT IN (?) AND created > '+(Time.now.to_i-1.weeks.to_i).to_s,already]
+
+      # filter places by whitelist
+      tids = DrupalTag.find(:all, :conditions => {:name => 'chapter'}).collect(&:tid)
+      placenames = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:node).collect(&:slug)
+      @places = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND term_data.name IN (?)',last.to_s,placenames).includes(:drupal_tag)
+      already += @places.collect(&:nid)
+
+      # everything else
+      @notes = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND nid NOT IN (?)',last.to_s, already).includes(:drupal_tag)
+
+      # get barnstars
+      @barnstars = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND term_data.name LIKE (?)',last.to_s,'barnstar:%').includes(:drupal_tag)
     end
     # /post/?i=http://myurl.com/image.jpg
     if params[:i]
