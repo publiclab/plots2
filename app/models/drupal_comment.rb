@@ -21,6 +21,10 @@ class DrupalComment < ActiveRecord::Base
     Time.at(self.timestamp)
   end
 
+  def body
+    comment.gsub(/\@(\w+)/,'[@\1](/profile/\1)')
+  end
+
   def author
     DrupalUsers.find_by_uid self.uid
   end
