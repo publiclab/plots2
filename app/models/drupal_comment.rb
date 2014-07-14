@@ -22,7 +22,7 @@ class DrupalComment < ActiveRecord::Base
   end
 
   def body
-    comment.gsub(/\@(\w+)/,'[@\1](/profile/\1)')
+    comment.gsub(/ \@(\w+)/,'[@\1](/profile/\1)')
   end
 
   def author

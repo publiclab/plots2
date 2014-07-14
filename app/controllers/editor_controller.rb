@@ -7,33 +7,38 @@ class EditorController < ApplicationController
     if params[:newsletter]
       params[:tags] = "newsletter"
       # last newsletter
-      newsletter = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND term_data.name = ?',(Time.now.to_i-1.weeks.to_i).to_s,'newsletter').includes(:drupal_tag).last
+      @newsletter = DrupalNode.where('type = "note" AND status = 1 AND term_data.name = ?','newsletter').includes(:drupal_tag).order('node.nid DESC').limit(1).first
 
-      if  newsletter.nil?
-        last = DateTime.new
+      if  @newsletter.nil?
+        last = DateTime.new.to_s # there's never been a newsletter
       else
-        last = newsletter.created 
+        last = @newsletter.created
       end
 
       # nids already used
-      already = []
-      @all = DrupalNode.where('type = "note" AND status = 1 AND created > ?',last.to_s).includes(:drupal_tag)
+      already = [0]
+      @all = DrupalNode.where('type = "note" AND status = 1 AND created > ?',last).includes(:drupal_tag).limit(20)
+
 
       # filter just events
-      @events = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND term_data.name = ?',last.to_s,'event').includes(:drupal_tag)
+      @events = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND term_data.name = ?',last,'event').includes(:drupal_tag).limit(20)
+
       already += @events.collect(&:nid)
 
       # filter places by whitelist
       tids = DrupalTag.find(:all, :conditions => {:name => 'chapter'}).collect(&:tid)
       placenames = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:node).collect(&:slug)
-      @places = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND term_data.name IN (?)',last.to_s,placenames).includes(:drupal_tag)
+      @places = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND term_data.name IN (?)',last,placenames).includes(:drupal_tag).limit(20)
+
       already += @places.collect(&:nid)
 
       # everything else
-      @notes = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND nid NOT IN (?)',last.to_s, already).includes(:drupal_tag)
+      @notes = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND nid NOT IN (?)',last, already).includes(:drupal_tag).limit(20)
+
 
       # get barnstars
-      @barnstars = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND term_data.name LIKE (?)',last.to_s,'barnstar:%').includes(:drupal_tag)
+      @barnstars = DrupalNode.where('type = "note" AND status = 1 AND created > ? AND term_data.name LIKE (?)',last,'barnstar:%').includes(:drupal_tag).limit(20)
+
     end
     # /post/?i=http://myurl.com/image.jpg
     if params[:i]

@@ -37,9 +37,11 @@
 
     <div class="row-fluid">
       <% @all.each do |note| %>
-        <% if note.main_image %><a class="span6" onClick="upload_main_img('<%= note.main_image.photo %>','<%= note.author.username %>')"><img class="img-rounded" src="<%= note.main_image.photo %>" /></a><% end %>
+        <% if note.main_image %><a class="span6" onClick="upload_main_img('<%= note.main_image.path(:original) %>','<%= note.author.username %>')"><img class="img-rounded" src="<%= note.main_image.path(:default) %>" /></a><% end %>
       <% end %>
     </div>
+
+    <p><i>The last newsletter was published <%= time_ago_in_words(@newsletter.created_at) %> ago.</i></p>
  
   <% end %>
 
