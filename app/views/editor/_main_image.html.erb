@@ -1,6 +1,6 @@
 <div class="sidebar-nav pull-right span3">
 
-  <h3 style="margin-top:0;" class="hidden-phone">Main image</h3>
+  <h3 style="margin-top:0;" class="hidden-phone">Main image <i id="main-image-spinner" class="hidden icon-spinner icon-spin"></i></h3>
 
   <img class="img-rounded" id="leadImage" <% unless (@node && @node.main_image) || params[:main_image] || params[:i] %>style="display:none;" <% end %>src="<% if @node && @node.main_image %><%= @node.main_image.path(:default) %><% elsif params[:main_image] && Image.find_by_id(params[:main_image]) %><%= Image.find_by_id(params[:main_image]).path %><% elsif @image %><%= @image.path(:default) %><% end %>" />
   <div class="side-dropzone" id="side-dropzone">
@@ -17,11 +17,13 @@
     <script>
       (function(){
         upload_main_img = function (i,author) {
+          $('#main-image-spinner').removeClass('hidden')
           $.ajax({
-            url: "/images?i=http://<%= request.host+':'+request.port.to_s %>"+i,
+            url: "/images/create?i="+i,
             dataType: "json",
             type: 'POST',
             success: function(response){
+              $('#main-image-spinner').addClass('hidden')
               $('#text-input').val($('#text-input').val().replace('<!-- Caption for lead image -->','Above image by ['+author+'](/profile/'+author+')<!-- Caption for lead image -->'))
               $('#leadImage').show()
               $('#leadImage')[0].src = response.url

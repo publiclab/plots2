@@ -22,7 +22,7 @@ class DrupalComment < ActiveRecord::Base
   end
 
   def body
-    comment.gsub(/ \@(\w+)/,'[@\1](/profile/\1)')
+    comment.gsub(/(\s?)\@(\w+)/,'\1[@\2](/profile/\2)')
   end
 
   def author
@@ -59,7 +59,7 @@ class DrupalComment < ActiveRecord::Base
   end
 
   def mentioned_users
-    usernames = self.comment.scan(/\@(\w+)/)
+    usernames = self.comment.scan(/\s?\@(\w+)/)
     User.find_all_by_username(usernames.map {|m| m[0] }).uniq
   end
 
