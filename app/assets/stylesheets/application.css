@@ -67,6 +67,10 @@ a i.icon-white { color:white; }
   }
 }
 
+.2col {
+  columns:2;
+}
+
 #header .brand {
   color:white;
   padding-top:13px;
