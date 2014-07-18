@@ -75,4 +75,13 @@ class ApplicationController < ActionController::Base
       session[:return_to] = nil
     end
 
+    def check_and_redirect_node(node)
+      if !node.nil? && node.type[/^redirect\|/]
+        node = DrupalNode.find(node.type[/\|\d+/][1..-1])
+        redirect_to node.path, status: 301
+        return true
+      end
+      false
+    end
+
 end
