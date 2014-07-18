@@ -28,12 +28,13 @@ class NotesController < ApplicationController
 
   def show
     if params[:author] && params[:date]
-      @node = DrupalUrlAlias.find_by_dst('notes/'+params[:author]+'/'+params[:date]+'/'+params[:id])
-      @node = DrupalUrlAlias.find_by_dst('report/'+ params[:id]) if @node.nil?
-      @node = @node.node if @node.node 
+      @node = DrupalNode.where(path: '/notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).first
+      @node = DrupalNode.where(path: '/report/'+ params[:id]).first if @node.nil?
     else
       @node = DrupalNode.find params[:id]
     end
+
+    return if check_and_redirect_node(@node)
     if @node.author.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
       flash[:error] = "The author of that note has been banned."
       redirect_to "/"
