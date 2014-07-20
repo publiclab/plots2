@@ -26,6 +26,8 @@ class WikiController < ApplicationController
       @node = DrupalNode.find_by_slug(params[:id])
     end
 
+
+    return if check_and_redirect_node(@node)
     if !@node.nil? # it's a place page!
       @tags = @node.tags
       @tags += [DrupalTag.find_by_name(params[:id])] if DrupalTag.find_by_name(params[:id])
@@ -184,6 +186,7 @@ class WikiController < ApplicationController
   # wiki pages which have a root URL, like http://publiclab.org/about
   def root
     @node = DrupalNode.find_root_by_slug(params[:id])
+    return if check_and_redirect_node(@node)
     @revision = @node.latest
     @title = @revision.title
     @tags = @node.tags
