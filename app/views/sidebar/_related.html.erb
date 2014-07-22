@@ -37,7 +37,7 @@
   <h4>This is a response to</h4>
   <ul class="nav bullet">
     <% @node.responded_to.each do |note| %>
-      <li><a href="/<%= note.slug %>"><i class="icon-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
+      <li><a href="/<%= note.path %>"><i class="icon-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
     <% end %>
   </ul>
   <% end %>
@@ -47,7 +47,7 @@
   <h4>Responses to this note</h4>
   <ul class="nav bullet">
     <% responses.each do |note| %>
-      <li><a href="/<%= note.slug %>"><i class="icon-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
+      <li><a href="/<%= note.path %>"><i class="icon-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
     <% end %>
   </ul>
   <% end %>
@@ -79,7 +79,7 @@
   <ul class="nav bullet">
     <% @videos.each do |note| %>
       <% unless (!@node.nil? && note.nid == @node.nid) %>
-      <li><a href="<%= note.path %>"><i class="icon-film"></i> <%= note.title %></a></li>
+      <li><a href="/<%= note.path %>"><i class="icon-film"></i> <%= note.title %></a></li>
       <% end %>
     <% end %>
     <% if params[:controller] == "search" %>
@@ -97,7 +97,7 @@
   <ul class="nav bullet">
     <% @wikis.each do |wiki| %>
       <% unless (!@node.nil? && wiki.nid == @node.nid) %>
-        <li><a href="<%= wiki.path %>"><%= raw wiki.icon %> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+        <li><a href="/<%= wiki.path %>"><%= raw wiki.icon %> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
       <% end %>
     <% end %>
     <% if params[:controller] == "search" %>
@@ -111,7 +111,7 @@
   <ul class="nav bullet">
     <% @notes.each do |note| %>
       <% unless (!@node.nil? && note.nid == @node.nid) %>
-      <li><a href="/<%= note.slug %>"><i class="icon-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
+      <li><a href="/<%= note.path %>"><i class="icon-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
       <% end %>
     <% end %>
     <% if params[:controller] == "search" %>
@@ -140,7 +140,7 @@
         L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
     
         <% @maps.each do |map| %>
-          L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='/<%= map.slug %>'><%= map.title %></a>");
+          L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='/<%= map.path %>'><%= map.title %></a>");
         <% end %>
       </script>
     <% elsif @maps && @maps.first %> 
@@ -153,7 +153,7 @@
         L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
     
         <% @maps.each do |map| %>
-          L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='/<%= map.slug %>'><%= map.title %></a>");
+          L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='/<%= map.path %>'><%= map.title %></a>");
         <% end %>
       </script>
     <% end %>
@@ -164,7 +164,7 @@
     <ul class="nav bullet">
       <% @maps.each do |note| %>
         <% unless (!@node.nil? && note.nid == @node.nid) %>
-        <li><a href="/<%= note.slug %>"><i class="icon-map-marker"></i> <%= note.title %></a></li>
+        <li><a href="/<%= note.path %>"><i class="icon-map-marker"></i> <%= note.title %></a></li>
         <% end %>
       <% end %>
     </ul>

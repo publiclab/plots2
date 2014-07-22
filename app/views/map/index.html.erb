@@ -21,7 +21,7 @@
         lon = tag.name.split(':').last if tag.name[0..2] == 'lon'
       end
     %> 
-    L.marker([<%= lat %>, <%= lon %>]).addTo(map).bindPopup("<a href='<%= map.slug %>'><%= map.title %></a>");
+    L.marker([<%= lat %>, <%= lon %>]).addTo(map).bindPopup("<a href='/<%= map.path %>'><%= map.title %></a>");
   <% end %>
 </script>
 

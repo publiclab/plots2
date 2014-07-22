@@ -1,4 +1,13 @@
+</div>
 <% @presentation = @node.has_tag('style:presentation') %>
+<% @fancy = @node.has_tag('style:fancy') %>
+<% if @fancy %>
+<link href="/fancy.css" rel="stylesheet">
+<% end %>
+<% if @presentation %>
+<div id="main-image-presentation" style=""><a href="<%= @node.main_image.path(:original) %>"><img style="width:100%;" class="img-rounded" src="<%= @node.main_image.path(:original) %>" /></a></div>
+<% end %>
+<div class="row-fluid">
 <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
 <%= render :partial => "sidebar/featured" %>
 <% else %>
@@ -9,7 +18,7 @@
 
   <% if current_user && @node.tags.length == 0 %><div class="alert">This page has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
 
-  <% if @node.main_image %>
+  <% if @node.main_image && !@presentation %>
     <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img style="max-height:50%;" class="img-rounded" src="<%= @node.main_image.path(:default) %>" /></a>
   <% end %>
 

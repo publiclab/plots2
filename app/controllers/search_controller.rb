@@ -26,13 +26,13 @@ class SearchController < ApplicationController
   def typeahead
     matches = []
     DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
-      matches << {:string => "<i class='icon-file'></i> "+match.title, :url => "/"+match.slug}
+      matches << {:string => "<i class='icon-file'></i> "+match.title, :url => "/"+match.path}
     end
     DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['(type = "page" OR type = "place" OR type = "tool") AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
-      matches << {:string => match.icon+" "+match.title, :url => "/wiki/"+match.slug}
+      matches << {:string => match.icon+" "+match.title, :url => "/"+match.path}
     end
     DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid").each do |match|
-      matches << {:string => "<i class='icon-map-marker'></i> "+match.title, :url => "/"+match.slug}
+      matches << {:string => "<i class='icon-map-marker'></i> "+match.title, :url => "/"+match.path}
     end
     DrupalUsers.find(:all, :limit => 5, :order => "uid", :conditions => ['name LIKE ? AND access != 0', "%"+params[:id]+"%"]).each do |match|
       matches << {:string => "<i class='icon-user'></i> "+match.name, :url => "/profile/"+match.name}

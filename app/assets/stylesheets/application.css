@@ -67,7 +67,9 @@ a i.icon-white { color:white; }
   }
 }
 
-.2col {
+.col2 {
+  -webkit-columns:2;
+  -moz-columns:2;
   columns:2;
 }
 
