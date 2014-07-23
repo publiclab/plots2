@@ -183,17 +183,12 @@ class DrupalNode < ActiveRecord::Base
 
   # provide either a Drupally main_iamge or a Railsy one 
   def main_image(node_type = :all)
-    return nil if self.images.empty?
-    if (self.type == "place" || self.type == "tool") && self.images.length == 0 # special handling... oddly needed:
-      DrupalMainImage.find(:last, :conditions => {:nid => self.id}, :order => "field_main_image_fid").drupal_file
+    if self.images.length > 0 && node_type != :drupal
+      self.images.last 
+    elsif self.drupal_main_image && node_type != :rails
+      self.drupal_main_image.drupal_file 
     else
-      if self.images.length > 0 && node_type != :drupal
-        self.images.last 
-      elsif self.drupal_main_image && node_type != :rails
-        self.drupal_main_image.drupal_file 
-      else
-        nil
-      end
+      nil
     end
   end
 
