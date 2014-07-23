@@ -35,7 +35,7 @@ class CommentController < ApplicationController
       else
         flash[:error] = "The comment could not be updated."
       end
-      redirect_to "/"+@comment.parent.path
+      redirect_to @comment.parent.path
     else
       flash[:error] = "Only the author of the comment can edit it."
     end
