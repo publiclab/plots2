@@ -1,4 +1,8 @@
 </div>
+<% @fancy = @node.has_tag('style:fancy') %>
+<% if @fancy %>
+<link href="/fancy.css" rel="stylesheet">
+<% end %>
 <% @presentation = @node.has_tag('style:presentation') %>
 <% if @presentation %>
 <div id="main-image-presentation" style=""><a href="<%= @node.main_image.path(:original) %>"><img style="width:100%;" class="img-rounded" src="<%= @node.main_image.path(:original) %>" /></a></div>
@@ -112,7 +116,6 @@
 
 </div><!--/span-->
 <% if @fancy %>
-<link href="/fancy.css" rel="stylesheet">
 <script>
 (function(){ $('#content img').addClass('img-rounded') })()
 </script>
