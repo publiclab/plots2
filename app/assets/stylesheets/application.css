@@ -35,6 +35,17 @@ h1,h2,h3,h4,h5,h6 {
   font-weight:normal;
 }
 
+#content h1, #content h2, #content h3 {
+  font-family:"Junction Light",lucida grande,lucida sans console,sans-serif;
+  padding-top:0.4em;
+}
+#content h4 {
+  padding-top:0.4em;
+}
+#content img {
+  margin-top:8px;
+}
+
 /* fontawesome default color */
 a i { color:#222; }
 a i.icon-white { color:white; }
@@ -88,7 +99,7 @@ a i.icon-white { color:white; }
   color:white;
   padding-top:13px;
   padding-bottom:2px;
-  font-family:junctionregular, lucida grande,lucida sans console,sans-serif;
+  font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
 }
 
 @media (max-width: 340px) {
