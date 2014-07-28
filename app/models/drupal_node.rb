@@ -328,11 +328,7 @@ class DrupalNode < ActiveRecord::Base
 
   def edit_path
     if self.type == "page" || self.type == "tool" || self.type == "place"
-      if self.language != ""
-        path = "/wiki/edit/" + self.language + "/" + self.path.split("/").last
-      else
-        path = "/wiki/edit/" + "/" + self.path.split("/").last
-      end
+      path = "/wiki/edit/" + self.path.split("/").last
     else
       path = "/notes/edit/"+self.id.to_s
     end
