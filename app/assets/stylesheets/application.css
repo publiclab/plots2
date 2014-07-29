@@ -67,7 +67,7 @@ a i.icon-white { color:white; }
   }
 }
 
-.2col {
+.col2 {
   columns:2;
 }
 
@@ -99,6 +99,7 @@ a i.icon-white { color:white; }
 }
 
 .footer {
+  clear:both;
   margin: 20px -20px 0;
   padding: 20px;
   border-top: 1px solid #E5E5E5;
@@ -106,7 +107,7 @@ a i.icon-white { color:white; }
 }
 
 @media (min-width: 768px) {
-  .footer { margin:0; }
+  .footer { margin:20px 0 0 0; }
 }
 
 @media (max-with: 786px) {

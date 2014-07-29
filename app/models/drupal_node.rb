@@ -110,6 +110,10 @@ class DrupalNode < ActiveRecord::Base
     self.node_selections.where(:liking => true).collect(&:user)
   end
 
+  def liked_by(uid)
+    self.likers.collect(&:uid).include?(uid)
+  end
+
   def generate_path
     if self.type == 'note'
       username = DrupalUsers.find_by_uid(self.uid).name

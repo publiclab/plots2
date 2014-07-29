@@ -78,8 +78,8 @@
               </a>
               <ul class="dropdown-menu">
               <% cache "tool-place-menu-"+(DateTime.now.to_i/300).to_i.to_s do %>
-                <li><a href="/research/">Recent research notes</a></li>
-                <li><a href="/wiki/">Recent wiki pages</a></li>
+                <li><a href="/research/">Research notes</a></li>
+                <li><a href="/wiki/">Public Lab Wiki</a></li>
                 <li><a href="/wiki/popular/">Popular wiki pages</a></li>
                 <li class="nav-header">Tools</li>
                 <% DrupalTag.find_top_nodes_by_type('tool',['page','tool'],6).each do |node| %>
