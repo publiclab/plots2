@@ -30,7 +30,6 @@ class CommentController < ApplicationController
       # should abstract ".comment" to ".body" for future migration to native db
       @comment.comment = params[:body] 
       if @comment.save
-        @comment.notify(current_user)
         flash[:notice] = "Comment updated."
       else
         flash[:error] = "The comment could not be updated."
