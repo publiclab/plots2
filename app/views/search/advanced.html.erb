@@ -36,10 +36,8 @@
     <tr class="<%= node.type %>">
       <% if node.type == "comment" %>
         <td><%= raw node.icon %> Comment by <a href="<%= node.author.name %>"><%= node.author.name %></a></td>
-      <% elsif node.type == "page" %>
-        <td><%= raw node.icon %> <a href="/wiki/<%= node.slug %>"><%= node.title %></a></td>
       <% else %>
-        <td><%= raw node.icon %> <a href="/<%= node.slug %>"><%= node.title %></a></td>
+        <td><%= raw node.icon %> <a href="<%= node.path %>"><%= node.title %></a></td>
       <% end %>
       <td><% if node.type != "page" %><a href="/profile/<%= node.author.name %>"><%= node.author.name %></a><% end %></td>
       <td><% node.tags.each do |tag| %><a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %></td>

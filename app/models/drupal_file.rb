@@ -23,7 +23,7 @@ class DrupalFile < ActiveRecord::Base
         return 'http://publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
       elsif size == :large
         #return 'http://old.publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/big_but_downloadable/')
-        return 'http://publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/big_but_downloadable/')
+        return 'http://publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
       elsif size == :original
         #return 'http://old.publiclab.org/'+self.filepath
         return 'http://publiclab.org/'+self.filepath

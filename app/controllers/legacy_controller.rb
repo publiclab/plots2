@@ -47,10 +47,10 @@ class LegacyController < ApplicationController
     redirect_to "http://publiclab.org/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
   end
 
-  def image
-    # sites/default/files/imagecache/thumb/san-martin-spectro.jpg
-    redirect_to "http://old.publiclab.org/sites/default/files/imagecache/"+params[:size]+"/"+params[:filename]+"."+params[:format], :status => 301
-  end
+#  def image
+#    # sites/default/files/imagecache/thumb/san-martin-spectro.jpg
+#    redirect_to "http://i.publiclab.org/sites/default/files/imagecache/"+params[:size]+"/"+params[:filename]+"."+params[:format], :status => 301
+#  end
 
   def register
     redirect_to "/signup", :status => 301

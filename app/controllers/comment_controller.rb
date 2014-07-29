@@ -34,7 +34,7 @@ class CommentController < ApplicationController
       else
         flash[:error] = "The comment could not be updated."
       end
-      redirect_to "/"+@comment.parent.slug
+      redirect_to @comment.parent.path
     else
       flash[:error] = "Only the author of the comment can edit it."
     end
@@ -50,13 +50,13 @@ class CommentController < ApplicationController
               render :text => "success"
             else
               flash[:notice] = "Comment deleted."
-              redirect_to "/"+@comment.parent.slug
+              redirect_to "/"+@comment.parent.path
             end
           end
         end
       else
         flash[:error] = "The comment could not be deleted."
-        redirect_to "/"+@comment.parent.slug
+        redirect_to "/"+@comment.parent.path
       end
     else
       prompt_login "Only the comment or post author can delete this comment"

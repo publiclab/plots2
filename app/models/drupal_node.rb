@@ -182,22 +182,17 @@ class DrupalNode < ActiveRecord::Base
 
   # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_main_image
-    DrupalMainImage.find :last, :conditions => ['nid = ? AND field_main_image_fid IS NOT NULL',self.nid]
+    DrupalMainImage.find :last, :order => 'vid', :conditions => ['nid = ? AND field_main_image_fid IS NOT NULL',self.nid]
   end
 
   # provide either a Drupally main_iamge or a Railsy one 
   def main_image(node_type = :all)
-    return nil if self.images.empty?
-    if (self.type == "place" || self.type == "tool") && self.images.length == 0 # special handling... oddly needed:
-      DrupalMainImage.find(:last, :conditions => {:nid => self.id}, :order => "field_main_image_fid").drupal_file
+    if self.images.length > 0 && node_type != :drupal
+      self.images.last 
+    elsif self.drupal_main_image && node_type != :rails
+      self.drupal_main_image.drupal_file 
     else
-      if self.images.length > 0 && node_type != :drupal
-        self.images.last 
-      elsif self.drupal_main_image && node_type != :rails
-        self.drupal_main_image.drupal_file 
-      else
-        nil
-      end
+      nil
     end
   end
 
@@ -337,11 +332,7 @@ class DrupalNode < ActiveRecord::Base
 
   def edit_path
     if self.type == "page" || self.type == "tool" || self.type == "place"
-      if self.language != ""
-        path = "/wiki/edit/" + self.language + "/" + self.path.split("/").last
-      else
-        path = "/wiki/edit/" + "/" + self.path.split("/").last
-      end
+      path = "/wiki/edit/" + self.path.split("/").last
     else
       path = "/notes/edit/"+self.id.to_s
     end
