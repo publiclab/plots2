@@ -65,6 +65,7 @@ class DrupalComment < ActiveRecord::Base
   end
 
   # email all users in this thread 
+  # plus all who've starred it
   def notify(current_user)
     CommentMailer.notify_note_author(self.parent.author,self).deliver if self.parent.uid != current_user.uid
     # notify_callout_users
@@ -73,7 +74,8 @@ class DrupalComment < ActiveRecord::Base
     end
     already = self.mentioned_users.collect(&:uid)
     uids = []
-    (self.parent.comments.collect(&:uid) + [self.parent.uid]).uniq.each do |u|
+    # notify note author, other commenters, and likers, but not those already @called out
+    (self.parent.comments.collect(&:uid) + [self.parent.uid] + self.parent.likers.collect(&:uid)).uniq.each do |u|
       uids << u unless already.include?(u)
     end
     DrupalUsers.find(:all, :conditions => ['uid IN (?)',uids]).each do |user|
