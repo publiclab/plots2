@@ -26,4 +26,5 @@ config/initializers/site_keys.rb
 Gemfile.lock
 /public/system*
 /db/openid-store/
+/db/schema.rb
 #public/assets/application-*
