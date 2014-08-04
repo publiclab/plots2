@@ -4,7 +4,7 @@
   <% if current_user && @node.tags.length == 0 %><div class="alert">This note has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
 
   <% if @node.main_image %>
-    <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img class="img-rounded" src="<%= @node.main_image.path(:default) %>" /></a>
+    <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img style="max-height:400px;margin-bottom:10px;" class="img-rounded" src="<%= @node.main_image.path(:default) %>" /></a>
   <% end %>
 
   <div style="margin-top:10px;" class="hidden-print">
@@ -22,7 +22,7 @@
   <% end %>
   </div>
 
-  <h2 style="clear:left;"><% if @node.has_power_tag('question') %><span style="color:#aaa;font-style:italic;"><i class="icon icon-question-sign"></i> Question:</span> <% end %><%= @node.title %></h2>
+  <h1 style="font-family: 'Junction Light';clear:left;"><% if @node.has_power_tag('question') %><span style="color:#aaa;font-style:italic;"><i class="icon icon-question-sign"></i> Question:</span> <% end %><%= @node.title %></h1>
 
   <% if @node.has_power_tag('question') %>
   <% pt = @node.power_tag('question') %>
@@ -32,7 +32,7 @@
   <div>
     <div class="btn-group pull-right hidden-print">
       <script>var editing = false;</script>
-      <% if @node.prev_by_author %><a class="btn btn-link btn-small" href="/<%= @node.prev_by_author.path %>">&laquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 37) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.prev_by_author.path %>" }})</script><% end %>
+      <% if @node.prev_by_author %><a class="btn btn-link btn-small" href="<%= @node.prev_by_author.path %>">&laquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 37) { window.location = "http://"+(window.location+'').split('/')[2]+"<%= @node.prev_by_author.path %>" }})</script><% end %>
         <a class="btn btn-small btn-link dropdown-toggle" data-toggle="dropdown">
           <i class="icon icon-cog"></i> 
         </a>
@@ -42,7 +42,7 @@
           <li><a href="javascript:void(0)">by tag <b><%= tag.name %></b></a></li>
           <% end %>
         </ul>
-      <% if @node.next_by_author %><a class="btn btn-small btn-link" href="/<%= @node.next_by_author.path %>">&raquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 39) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.next_by_author.path %>" }})</script><% end %>
+      <% if @node.next_by_author %><a class="btn btn-small btn-link" href="<%= @node.next_by_author.path %>">&raquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 39) { window.location = "http://"+(window.location+'').split('/')[2]+"<%= @node.next_by_author.path %>" }})</script><% end %>
     </div>
 
     <span>
