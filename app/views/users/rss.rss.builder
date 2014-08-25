@@ -7,8 +7,10 @@ xml.rss :version => "2.0" do
 
    @notes.each do |node|
 
+    newline = '&#13;&#10;'
+
      body = node.body
-     body = "<img src='"+node.main_image.path(:default)+"'/><br /> "+node.body if node.main_image
+     body = "<img src='"+node.main_image.path(:default)+"'/><br />"+newline+node.body if node.main_image
 
      xml.item do
        xml.title       node.title
