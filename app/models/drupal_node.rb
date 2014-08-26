@@ -87,6 +87,7 @@ class DrupalNode < ActiveRecord::Base
     weeks
   end
 
+  # this looks backwards... do we use it?
   def current_revision
     # Grab the most recent revision for this node.
     self.drupal_node_revision.order(timestamp: "DESC").last
@@ -133,7 +134,8 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def revisions
-    self.drupal_node_revision.sort_by { |rev| rev.timestamp }
+    r = self.drupal_node_revision.sort_by { |rev| rev.timestamp }
+    r.reverse
   end
 
   def revision_count
