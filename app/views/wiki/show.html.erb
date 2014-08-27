@@ -4,7 +4,7 @@
 <link href="/fancy.css" rel="stylesheet">
 <% end %>
 <% @presentation = @node.has_tag('style:presentation') %>
-<% if @presentation %>
+<% if @presentation && @node.main_image%>
 <div id="main-image-presentation" style=""><a href="<%= @node.main_image.path(:original) %>"><img style="width:100%;" class="img-rounded" src="<%= @node.main_image.path(:original) %>" /></a></div>
 <% end %>
 <div class="row-fluid">
