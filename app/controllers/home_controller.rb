@@ -14,24 +14,14 @@ class HomeController < ApplicationController
     if current_user
       redirect_to "/dashboard"
     else
-      if params[:alt] == "true"
-        render :template => "home/home-alt" 
-      elsif params[:alt] == "2"
-        render :template => "home/home-2"
-      end
+      render :template => "home/home-2"
     end
   end
 
   # route for seeing the front page even if you are logged in
   def front
     @title = "a community for DIY environmental investigation"
-    if params[:alt] == "true"
-      render :template => "home/home-alt"
-    elsif params[:alt] == "2"
-      render :template => "home/home-2"
-    else
-      render :template => "home/home"
-    end
+    render :template => "home/home-2"
   end
 
   def dashboard
