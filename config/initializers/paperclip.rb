@@ -1,1 +1,1 @@
-Paperclip.options[:content_type_mappings] = { lut: 'application/octet-stream' }
+Paperclip.options[:content_type_mappings] = { lut: 'application/octet-stream', stl: 'application/octet-stream' }
