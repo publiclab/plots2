@@ -3,9 +3,42 @@
 </style>
 
 <div style="position:absolute;top:0;left:0;z-index:-1;height:380px;min-height:380px;overflow:hidden;">
-  <img style="width:100%;" class="visible-desktop img img-rounded" src="http://i.publiclab.org/system/images/photos/000/007/008/original/group-contrast-cropped.JPG" />
-  <img style="max-width:none;margin-left:-75%;width:250%;" class="hidden-desktop img img-rounded" src="http://i.publiclab.org/system/images/photos/000/007/008/original/group-contrast-cropped.JPG" />
+
+  <div id="carousel" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+
+    <div class="item active">
+      <img style="width:100%;" class="visible-desktop img img-rounded" src="/images/front/barnraising.jpg" />
+      <img style="max-width:none;margin-left:-75%;width:250%;" class="hidden-desktop img img-rounded" src="/images/front/barnraising.jpg" />
+    </div>
+
+    <div class="item">
+      <img style="width:100%;" class="visible-desktop img img-rounded" src="/images/front/beach.jpg" />
+      <img style="max-width:none;margin-left:-75%;width:250%;" class="hidden-desktop img img-rounded" src="/images/front/beach.jpg" />
+    </div>
+
+    <div class="item">
+      <img style="width:100%;" class="visible-desktop img img-rounded" src="/images/front/barnraising-lp.jpg" />
+      <img style="max-width:none;margin-left:-75%;width:250%;" class="hidden-desktop img img-rounded" src="/images/front/barnraising-lp.jpg" />
+    </div>
+
+    <div class="item">
+      <img style="width:100%;" class="visible-desktop img img-rounded" src="/images/front/gowanus.jpg" />
+      <img style="max-width:none;margin-left:-75%;width:250%;" class="hidden-desktop img img-rounded" src="/images/front/gowanus.jpg" />
+    </div>
+
+  </div>
+  </div>
+
 </div>
+
+<script>
+(setTimeout(function() {
+  $('.carousel').carousel({
+    interval: 6000
+  })
+},2000))()
+</script>
 
 <div class="" style="margin-top:320px;"></div>
 
