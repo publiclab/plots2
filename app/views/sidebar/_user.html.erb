@@ -9,7 +9,29 @@
   <p class="hidden-phone"><a href="/wiki/barnraising-northeast-2014"><img src="http://i.publiclab.org/system/images/photos/000/004/452/medium/barnraising-ne-2014.jpg" width="100%" /></a></p>
   <p class="visible-phone" style="margin-bottom:6px;"><a href="/wiki/barnraising-northeast-2014"><img src="http://i.publiclab.org/system/images/photos/000/004/453/medium/barnraising-ne-2014-narrow.jpg" width="100%" /></a></p>
 -->
-  <p><a href="/wiki/barnraising"><img class="img img-rounded" src="http://i.publiclab.org/system/images/photos/000/006/113/original/barnraising-2014-banner-3.jpg" width="100%" /></a></p>
+    <div id="sidebar-carousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+     
+        <div class="item active">
+          <a href="/wiki/barnraising"><img class="img img-rounded" src="http://i.publiclab.org/system/images/photos/000/006/113/original/barnraising-2014-banner-3.jpg" width="100%" /></a>
+        </div>
+
+        <div class="item" style="border:1px solid #ccc;padding:10px 14px;min-height:125px;margin-bottom:10px;">
+          <h3 style="margin-bottom:4px;"><a style="font-family:Junction Light;color:#444;padding-top:10px;" href="http://publiclab.org/wiki/public-lab-jobs">The Public Lab non-profit is hiring!</a></h3>
+          <p><a href="http://publiclab.org/wiki/public-lab-jobs">Learn more &raquo;</a></p>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      (setTimeout(function() {
+        $('#sidebar-carousel').carousel({
+          interval: 6000
+        })
+      },2000))()
+    </script>
+
   <style>
     .sidebox { background:white;border-color:#eee; }
   </style>
@@ -26,26 +48,6 @@
     <p>Much of our work happens on our regional and topical discussion lists. <a href="/lists">Join one today!</a></p>
     <!--<p><a href="/wiki/barnraising-2013"><img src="/images/barnraising-2013.png" width="100%" /></a></p>-->
     <hr />
-  </div>
-
-
-  <style>
-#ksc {
-position: relative;
-width: 100%;
-height: 0px;
-padding-bottom: 56%;
-padding-top: 200px;
-}
-#ks {
-position: absolute;
-width: 100%;
-height: 100%;
-top: 0;
-}
-  </style>
-  <div id="ksc" class="hidden-phone">
-    <iframe id="ks" frameborder="0" height="420" scrolling="no" src="https://www.kickstarter.com/projects/publiclab/the-homebrew-oil-testing-kit/widget/card.html?v=2" width="100%"></iframe>
   </div>
 
   <% if @wikis && @wikis.length > 0 %>
