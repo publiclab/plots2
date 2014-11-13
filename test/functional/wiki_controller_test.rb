@@ -45,7 +45,7 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
     assert_equal flash[:notice], "Edits saved."
     # This is WRONG! It should be newtitle, not title, right?:
-    assert_select "h2", newtitle # title should change but not URL
+    assert_select "h1", newtitle # title should change but not URL
     # assert_select "span#teststring", "added content" # this test does not work! very frustrating. 
     # assert_select ".label", "meetup" # test for tag addition too, later
   end
