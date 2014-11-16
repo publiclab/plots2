@@ -5,6 +5,7 @@ class DrupalTag < ActiveRecord::Base
   #has_many :drupal_users, :through => :drupal_node_tag, :foreign_key => 'uid'
 
   has_many :tag_selection, :foreign_key => 'tid'
+  has_many :drupal_node_community_tag, :foreign_key => 'tid'
 
   # we're not really using the filter_by_type stuff here:
   has_many :drupal_node, :through => :drupal_node_tag do
@@ -38,6 +39,11 @@ class DrupalTag < ActiveRecord::Base
     end
     DrupalNode.find :all, :conditions => ['status = 1 AND nid IN ('+ids.uniq.join(',')+')'], :order => "nid DESC"
   end 
+
+  def run_count
+    self.count = DrupalNodeCommunityTag.where(:tid => self.tid).count
+    self.save
+  end
 
   def author
     DrupalUsers.find_by_uid self.uid

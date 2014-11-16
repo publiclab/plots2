@@ -7,6 +7,14 @@ class DrupalNodeCommunityTag < ActiveRecord::Base
   belongs_to :drupal_users, :foreign_key => 'uid'
   accepts_nested_attributes_for :drupal_tag
 
+  after_create :increment_count
+
+  def increment_count
+    tag = self.tag
+    tag.count += 1
+    tag.save
+  end
+
   def node
     self.drupal_node
   end
