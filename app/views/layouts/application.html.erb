@@ -81,6 +81,7 @@
                 <li><a href="/research/">Research notes</a></li>
                 <li><a href="/wiki/">Public Lab Wiki</a></li>
                 <li><a href="/wiki/popular/">Popular wiki pages</a></li>
+                <li><a href="/tags/">Popular tags</a></li>
                 <li class="nav-header">Tools</li>
                 <% DrupalTag.find_top_nodes_by_type('tool',['page','tool'],6).each do |node| %>
                 <li><a href="<%= node.path %>"><%= node.latest.title %></a></li>

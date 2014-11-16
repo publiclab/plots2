@@ -4,7 +4,8 @@ class TagController < ApplicationController
   before_filter :require_user, :only => [:create, :delete]
 
   def index
-    @tags = DrupalTag.order('count DESC').page(params[:page])
+    @title = "Tags"
+    @tags = DrupalTag.paginate(:page => params[:page]).order('count DESC')
   end
 
   def show
