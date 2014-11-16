@@ -50,7 +50,7 @@ class NotesControllerTest < ActionController::TestCase
 
     get(:show, {:author => @user.username, :date => Time.now.strftime("%m-%d-%Y"), :id => title.parameterize}) 
     assert_equal flash[:notice], "Edits saved."
-    assert_select "h2", newtitle
+    assert_select "h1", newtitle
     # assert_select "span#teststring", "added content" # this test does not work!! very frustrating. 
     # assert_select ".label", "meetup" # test for tag addition too, later
   end

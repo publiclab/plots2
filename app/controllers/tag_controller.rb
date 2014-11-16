@@ -3,11 +3,15 @@ class TagController < ApplicationController
   respond_to :html, :xml, :json
   before_filter :require_user, :only => [:create, :delete]
 
+  def index
+    @tags = DrupalTag.order('count DESC').page(params[:page])
+  end
+
   def show
     @node_type = params[:node_type] || "note"
       @node_type = "page" if @node_type == "wiki"
       @node_type = "map" if @node_type == "maps"
-    if params[:id][-1..-1] == "*"
+    if params[:id][-1..-1] == "*" # wildcard tags
       @wildcard = true
       @tags = DrupalTag.find :all, :conditions => ['name LIKE (?)',params[:id][0..-2]+'%']
       nodes = DrupalNode.where(:status => 1, :type => @node_type).includes(:drupal_node_revision,:drupal_tag).where('term_data.name LIKE (?)',params[:id][0..-2]+'%').page(params[:page]).order("node_revisions.timestamp DESC")
