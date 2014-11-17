@@ -27,7 +27,7 @@ work on tablets, smartphones, and in recent versions of Internet Explorer
 
 You'll need: 
 
-* ruby (1.9.3 recommended; try using http://rvm.io)
+* ruby (2.1.2 recommended; try using http://rvm.io)
 * mysql (not adverse to others, but this is what we run)
 
 Installation steps:
