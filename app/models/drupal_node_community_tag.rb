@@ -11,6 +11,7 @@ class DrupalNodeCommunityTag < ActiveRecord::Base
 
   def increment_count
     tag = self.tag
+    tag.count = 0 if tag.count.nil?
     tag.count += 1
     tag.save
   end
