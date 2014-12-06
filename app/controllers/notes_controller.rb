@@ -26,6 +26,11 @@ class NotesController < ApplicationController
     render :template => "notes/tools_places"
   end
 
+  def shortlink
+    @node = DrupalNode.find params[:id]
+    redirect_to @node.path
+  end
+
   def show
     if params[:author] && params[:date]
       @node = DrupalNode.where(path: '/notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).first

@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'https://rails-assets.org'
 
 ruby '2.1.2'
 gem 'rails', '3.2.20'
@@ -34,14 +35,14 @@ group :assets do
 end
 
 gem 'jquery-rails'
-#gem 'passenger'
+gem 'passenger'
 
 gem 'execjs'
 gem 'therubyracer'
 #gem 'secondbase', '0.5.0'
 gem 'rdiscount', '1.6.8'
 gem 'will_paginate'
-gem 'will_paginate-bootstrap'
+gem 'will_paginate-bootstrap', '0.2.5'
 gem 'georuby', '2.0'
 gem 'geokit-rails'
 gem 'spatial_adapter', :git => 'https://github.com/descentintomael/spatial_adapter.git'
@@ -52,7 +53,7 @@ gem "paperclip", ">= 4.1.1"
 gem "nifty-generators", :group => :development
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
-gem "authlogic"
+gem "authlogic", "3.2.0"
 #gem "authlogic-oid", :require => "authlogic_openid"
 gem "php-serialize", :require => "php_serialize"
 

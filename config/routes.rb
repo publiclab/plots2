@@ -12,8 +12,8 @@ Plots2::Application.routes.draw do
 
   #match '', to: 'blogs#show', constraints: {subdomain: /.+/}
   # or to skip www:
-  match "", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" }
-  match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" }
+  match "", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new"}
+  match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new"}
 
   match 'ioby' => "legacy#ioby"
 
@@ -73,6 +73,7 @@ Plots2::Application.routes.draw do
   match 'wiki' => 'wiki#index'
 
   match 'place/:id/feed' => 'place#feed'
+  match 'n/:id' => 'notes#shortlink'
   match 'notes/popular' => 'notes#popular'
   match 'notes/liked' => 'notes#liked'
   match 'notes/create' => 'notes#create'
