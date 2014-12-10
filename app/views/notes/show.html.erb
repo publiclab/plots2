@@ -56,6 +56,7 @@
       <span class="hidden-phone hidden-print">
         | <%= number_with_delimiter(@node.totalcount) %> views 
         <% if @node.comments %>| <i class="icon icon-comment"></i> <a href="#comments"><%= @node.comments.length %> comments</a><% end %>
+        | <a href="/n/<%= @node.id %>">shortlink</a>
       </span>
       <span class="hidden-desktop">
         <%= @node.created_at.to_s(:short) %>

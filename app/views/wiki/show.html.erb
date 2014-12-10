@@ -41,6 +41,7 @@
         <span class="hidden-phone">
           <%= number_with_delimiter(@node.totalcount) %> views | 
           Last edited by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a> <%= time_ago_in_words(@node.latest.created_at) %> ago
+          | <a href="/n/<%= @node.id %>">shortlink</a>
         </span>
       </div>
  
