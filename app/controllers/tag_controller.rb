@@ -5,6 +5,7 @@ class TagController < ApplicationController
 
   def index
     @title = "Tags"
+    @paginated = true
     @tags = DrupalTag.paginate(:page => params[:page]).order('count DESC')
   end
 
