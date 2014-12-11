@@ -16,6 +16,8 @@
 /tmp
 *.swp
 .DS_Store
+.idea
+.ruby-version
 Gemfile.lock
 coverage*
 config/database.yml
