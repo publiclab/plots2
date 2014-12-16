@@ -14,14 +14,14 @@ class HomeController < ApplicationController
     if current_user
       redirect_to "/dashboard"
     else
-      render :template => "home/home-2"
+      render :template => "home/home"
     end
   end
 
   # route for seeing the front page even if you are logged in
   def front
     @title = "a community for DIY environmental investigation"
-    render :template => "home/home-2"
+    render :template => "home/home"
   end
 
   def dashboard

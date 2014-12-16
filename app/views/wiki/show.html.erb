@@ -58,7 +58,9 @@
   <% if @node.has_power_tag('parent') %>
     <% slug = @node.power_tag('parent') %>
     <% parent = DrupalNode.find_by_slug(slug) %>
+    <% if parent %>
     <div class="alert" style="border-color:#eee;background:#f8f8f8;color:#aaa;">&laquo; Back to <a href="<%= parent.path %>"><%= parent.latest.title %></a></div>
+    <% end %>
   <% end %>
 
   <% if @node.has_power_tag('tabbed') %>
