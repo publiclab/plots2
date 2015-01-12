@@ -186,9 +186,9 @@
             </ul>
 
             <div id="chat" class="chat-popover" data-placement="bottom" style="display:none;">
-              <a style="margin-right:4px;" class="pull-right btn btn-small" href="http://chat.treehouse.su/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>" target="_blank">pop out</a>
+              <a style="margin-right:4px;" class="pull-right btn btn-small" href="https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>" target="_blank">pop out</a>
               <p class="popover-title">Public Lab chatroom</p>
-              <iframe width="400px" height="300px" src="http://chat.treehouse.su/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>"></iframe>
+              <iframe width="400px" height="300px" src="https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>"></iframe>
             </div>
 
             <% unless params[:action] == "register" || params[:action] == "signup" %>
