@@ -38,7 +38,7 @@ Installation steps:
 * create a database (usually in mysql) and grant permissions to youruser
 * copy config/database.yml.example to config/database.yml and add database login info for development and/or production (a separate database for testing is helpful too)
 * `rake db:migrate` to set up the database
-* `rake db:setup` to populate it with initial data
+* `rake db:seed` to populate it with initial data
 * `passenger start` to start up the app
 * in a browser, navigate to http://localhost:3000
 * wheeeee!
