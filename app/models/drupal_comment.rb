@@ -23,7 +23,7 @@ class DrupalComment < ActiveRecord::Base
   end
 
   def body
-    comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINK))
+    comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
   end
 
   def author
