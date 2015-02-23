@@ -7,7 +7,7 @@ A complete rewrite of the Public Lab website on a new platform, with a whole new
 * simplify and refine common tasks like posting research notes and filtering spam
 * enable faster development (based on Ruby on Rails and Twitter's Bootstrap frameworks)
 * completely revise and streamline "following" other contributors or specific keywords, with email alerts
-work on tablets, smartphones, and in recent versions of Internet Explorer
+* work on tablets, smartphones, and in recent versions of Internet Explorer
 
 ###Key new features:
 
@@ -27,7 +27,7 @@ work on tablets, smartphones, and in recent versions of Internet Explorer
 
 You'll need: 
 
-* ruby (1.9.3 recommended; try using http://rvm.io)
+* ruby (2.1.2 recommended; try using http://rvm.io)
 * mysql (not adverse to others, but this is what we run)
 
 Installation steps:
@@ -42,7 +42,7 @@ Installation steps:
     * run `rake db:migrate`
     * OR
     * in MySQL, `drop database XXX;` for each database in `config/database.yml` and then try `rake db:setup` again
-* `rake db:seed` to populate it with initial data
+* `rake db:seed` to populate it with initial dummy data
 * `passenger start` to start up the app
 * in a browser, navigate to http://localhost:3000
 * wheeeee!
