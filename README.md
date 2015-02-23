@@ -35,10 +35,14 @@ Installation steps:
 * in the console, `git clone https://github.com/publiclab/plot2.git` or `git clone git@github.com:publiclab/plots2.git`
 * `cd` into the new 'plots2' directory
 * `bundle install`
-* create a database (usually in mysql) and grant permissions to youruser
-* copy config/database.yml.example to config/database.yml and add database login info for development and/or production (a separate database for testing is helpful too)
-* `rake db:migrate` to set up the database
-* `rake db:setup` to populate it with initial data
+* grant database creation permissions to your user
+* copy `config/database.yml.example` to `config/database.yml` and add database login info for development and/or production (a separate database for testing is helpful too)
+* `rake db:setup` to set up the database
+  * if there are any errors, try one of these two fixes:
+    * run `rake db:migrate`
+    * OR
+    * in MySQL, `drop database XXX;` for each database in `config/database.yml` and then try `rake db:setup` again
+* `rake db:seed` to populate it with initial data
 * `passenger start` to start up the app
 * in a browser, navigate to http://localhost:3000
 * wheeeee!
