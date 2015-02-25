@@ -13,7 +13,7 @@
 
   <% if current_user %>
   <form id="comment-form" data-remote="true" class="well" action="/comment/create/<%= @node.nid %>">
-    <h4 style="margin-top:0;">Post comment</h4>
+    <h4 style="margin-top:0;">Post comment <small class="hidden-phone" style="color:#888;">author and commenters will receive email notifications</small></h4>
 
     <script src="/assets/js/marked.js"></script>
     <script src="/assets/js/editor.js"></script>
