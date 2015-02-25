@@ -1,10 +1,12 @@
-// Based on the basic plugin from jQuery file upload: 
-// https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
-
-// #dropzone is for inline images for both wiki and research notes, in:
-//     /app/views/editor/_editor.html.erb
-//     /app/views/wiki/edit.html.erb
-// #side-dropzone, is for the main image of research notes, in /app/views/editor/post.html.erb
+/*
+ * Based on the basic plugin from jQuery file upload: 
+ * https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
+ *
+ * #dropzone is for inline images for both wiki and research notes, in:
+ *   /app/views/editor/_editor.html.erb
+ *   /app/views/wiki/edit.html.erb
+ * #side-dropzone, is for the main image of research notes, in /app/views/editor/post.html.erb
+*/
 
 $('#dropzone').bind('dragover',function(e) {
   e.preventDefault();
@@ -121,4 +123,3 @@ $('#side-dropzone').fileupload({
     );
   }
 });
-

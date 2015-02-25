@@ -12,4 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= alerts.js
+//= banner.js
+//= editor.js
+//= ics.deps.min.js
+//= ics.min.js
+//= jsdiff.js
+//= markdown.js
+//= marked.js
