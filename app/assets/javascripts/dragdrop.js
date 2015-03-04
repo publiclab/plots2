@@ -1,3 +1,4 @@
+jQuery(document).ready(function() {
 /*
  * Based on the basic plugin from jQuery file upload: 
  * https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
@@ -127,3 +128,4 @@ $('#side-dropzone').fileupload({
     );
   }
 });
+})

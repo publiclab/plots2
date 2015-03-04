@@ -46,5 +46,3 @@ jQuery(document).ready(function() {
   });
 
 })
-
-//= require dragdrop.js
