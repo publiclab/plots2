@@ -1,10 +1,16 @@
-function alert_clear() { alert_set("hidden",""); }
-
-function alert_notice(msg, options) { alert_set("success", msg, options); }
-
-function alert_error(msg, options) { alert_set("error", msg, options); }
-
-function alert_warning(msg, options) { alert_set("warning", msg, options); }
+/* alert behaviors */
+function alert_clear() {
+  alert_set("hidden",""); 
+}
+function alert_notice(msg, options) {
+  alert_set("success", msg, options);
+}
+function alert_error(msg, options) {
+  alert_set("error", msg, options);
+}
+function alert_warning(msg, options) {
+  alert_set("warning", msg, options);
+}
 
 /* aclass = "error", "warning", or "success" */
 function alert_set(aclass, msg, options) {
@@ -27,7 +33,7 @@ function alert_set(aclass, msg, options) {
   }
 }
 
-/* iOS fix for dropdowns in menubar: 
+/* iOS fix for dropdowns in menubar in Bootstrap v2: 
  * https://github.com/publiclab/plots2/issues/17
  */
 $('.dropdown-toggle').click(function(e) {
@@ -39,15 +45,31 @@ $('.dropdown-toggle').click(function(e) {
   }, this), 0);
 });
 
+/* setup bootstrap behaviors */
 $("[rel=tooltip]").tooltip()
 $("[rel=popover]").popover()
 $('table').addClass('table')
+
 $('iframe').css('border','none')
+
+/* add "link" icon to headers */
 $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {return " <small><a href='#"+this.innerHTML.replace(/ /g,'+')+"'><i class='icon icon-link'></i></a></small>"})
+
 login = function() {
   $('#login-dropdown').toggle()
   $('#login-username-input').focus()
 }
+
+/* window scroll trick for header */
+function adjust_anchor_for_banner() {
+  var banner_offset = 50; // how much to scroll to account for the banner
+  var scroll_pos = $(document).scrollTop()
+  if (scroll_pos > banner_offset) {
+    $(document).scrollTop( scroll_pos - banner_offset );
+  }
+}
+$(document).ready(adjust_anchor_for_banner)
+$(window).on('hashchange', adjust_anchor_for_banner)
 
 /* there may or may not actually be a carousel to activate */
 $('#sidebar-carousel').carousel({
@@ -67,13 +89,15 @@ jQuery(document).ready(function($) {
   ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
 
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-}
+})
 
-/* facebook buttons ugh */
-(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk')););
+jQuery(document).ready(function($) {
+  /* facebook buttons ugh */
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+})

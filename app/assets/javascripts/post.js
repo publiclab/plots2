@@ -22,6 +22,29 @@ jQuery(document).ready(function() {
     if (e.which == 32 || e.which == 13) publish()
   })
   if ($E.textarea.val() == "") $E.apply_template("<%= params[:template] || 'default'%>")
+  
+  /* tag autocomplete */
+  $('#taginput').typeahead({
+    source: function (typeahead, input) {
+      query = input.split(',')[input.split(',').length-1]
+      if (query.length > 2) {
+        return $.post('/tag/suggested/'+query, {}, function (data) {
+          return typeahead.process(data)
+        })
+      }
+    },
+    menu: '<ul id="tagtypeahead" class="typeahead dropdown-menu"></ul>',
+    autoselect: false,
+    matcher: function() { return true; },
+    onselect: function(text,original_text) { 
+      original_text = original_text.split(',')
+      original_text.pop()
+      original_text = original_text.join(',')
+      if (original_text == '') $('#taginput').val(text)
+      else $('#taginput').val(original_text+','+text)
+    }
+  });
+
 })
 
-//= dragdrop.js
+//= require dragdrop.js
