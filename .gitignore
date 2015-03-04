@@ -33,3 +33,4 @@ db/openid-store/
 db/schema.rb
 public/assets/application-*
 todo.txt
+.sass-cache*
