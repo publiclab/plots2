@@ -18,6 +18,8 @@
 //= require jquery-file-upload/js/vendor/jquery.ui.widget.js
 //= require jquery-file-upload/js/jquery.fileupload.js
 //= require jquery-file-upload/js/jquery.iframe-transport.js
+//= require flot/jquery.flot.js
+//= require flot/jquery.flot.crosshair.js
 //= require jsdiff/diff.js
 //= require marked/marked.min.js
 //= require ics/ics.deps.min.js
