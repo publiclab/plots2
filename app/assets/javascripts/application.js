@@ -10,13 +10,23 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= editor.js
 //= require jquery
 //= require jquery_ujs
-//= alerts.js
+//= bootstrap-css/js/bootstrap.min.js
+//= bootstrap-lightbox/js/bootstrap-lightbox.js
+//= bootstrap-datepicker/js/bootstrap-datepicker.js
+//= jquery-file-upload/js/jquery.fileupload.js
+//= jquery-file-upload/js/jquery.iframe-transport.js
+//= jquery-file-upload/js/vendor/jquery.ui.widget.js
+//= jsdiff/diff.js
+//= marked/marked.min.js
+//= ics/ics.deps.min.js
+//= ics/ics.min.js
+// 
+// application scripts:
+// 
 //= banner.js
 //= editor.js
-//= ics.deps.min.js
-//= ics.min.js
-//= jsdiff.js
-//= markdown.js
-//= marked.js
+//= search.js
+//= setup.js
