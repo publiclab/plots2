@@ -57,6 +57,7 @@ $('#dropzone').fileupload({
     if (data.result['filename'].substr(-4,4) == "JPEG") is_image = true
     if (data.result['filename'].substr(-3,3) == "PNG") is_image = true
     if (data.result['filename'].substr(-3,3) == "GIF") is_image = true
+
     if (is_image) {
       image_url = data.result.url.split('?')[0]
       orig_image_url = image_url.replace('medium','original') // not really portable, should parse response and look for "original_filename" or something
@@ -64,6 +65,7 @@ $('#dropzone').fileupload({
     } else {
       $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="icon icon-file"></i> ','</a>', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
     }
+
     // here append the image id to the wiki edit form:
     if ($('#node_images').val() && $('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id].join(','))
     else $('#node_images').val(data.result.id)
@@ -73,6 +75,7 @@ $('#dropzone').fileupload({
     //    $('<p/>').text(file.name).appendTo(document.body);
     //});
   },
+
   // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
   fileuploadfail: function(e,data) {
     
@@ -111,6 +114,7 @@ $('#side-dropzone').fileupload({
     // here append the image id to the note as the lead image
     $('#main_image').val(data.result.id)
   },
+
   // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
   fileuploadfail: function(e,data) {
     

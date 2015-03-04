@@ -9,10 +9,24 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  
- * require bootstrap/dist/css/bootstrap.min.css
+ *= require bootstrap-css/css/bootstrap.min.css
+ *= require bootstrap-css/css/bootstrap-responsive.min.css
+
+ * NOTE: lightbox only has a .less file; we could compile it?
+ * require bootstrap-lightbox/less/...
+ *= bootstrap/css/bootstrap-lightbox.min.css
+
+ *= require fontawesome/css/font-awesome.min.css
+
+ * NOTE: datepicker.js or datepicker3.js -- and check for inline call
+ *= require bootstrap-datepicker/css/datepicker3.css
+
+ *= require jquery-file-upload/css/jquery.fileupload-ui.css
+
 
  *= require_self
  *= require style
  *= require feature
  *= require editor
+ *= require fancy
 */

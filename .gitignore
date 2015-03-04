@@ -27,7 +27,8 @@ config/initializers/recaptcha.rb
 config/config.yml
 config/initializers/site_keys.rb
 Gemfile.lock
-/public/system*
+public/system
+public/lib
 db/openid-store/
 db/schema.rb
 public/assets/application-*
