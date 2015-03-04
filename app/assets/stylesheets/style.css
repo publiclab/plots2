@@ -3,30 +3,30 @@ Junction is provided under the OFL and is available at http://www.theleagueofmov
 It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
 */
 @font-face {
-  font-family: 'junctionregular';
-  src: url('/assets/junction-webfont.eot');
-  src: url('/assets/junction-webfont.eot?#iefix') format('embedded-opentype'),
-       url('/assets/junction-webfont.woff') format('woff'),
-       url('/assets/junction-webfont.ttf') format('truetype'),
-       url('/assets/junction-webfont.svg#junctionregular') format('svg');
+  font-family: 'Junction Regular';
+  src: url('/lib/junction/webfonts/junction-regular.eot');
+  src: url('/lib/junction/webfonts/junction-regular.eot?#iefix') format('embedded-opentype'),
+       url('/lib/junction/webfonts/junction-regular.woff') format('woff'),
+       url('/lib/junction/webfonts/junction-regular.ttf') format('truetype'),
+       url('/lib/junction/webfonts/junction-regular.svg#junctionregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Junction Light';
-  src: url('/assets/junction-light.eot');
-  src: url('/assets/junction-light.eot?#iefix') format('embedded-opentype'),
-       url('/assets/junction-light.woff') format('woff'),
-       url('/assets/junction-light.ttf') format('truetype'),
-       url('/assets/junction-light.svg#junctionlight') format('svg');
+  src: url('/lib/junction/webfonts/junction-light.eot');
+  src: url('/lib/junction/webfonts/junction-light.eot?#iefix') format('embedded-opentype'),
+       url('/lib/junction/webfonts/junction-light.woff') format('woff'),
+       url('/lib/junction/webfonts/junction-light.ttf') format('truetype'),
+       url('/lib/junction/webfonts/junction-light.svg#junctionlight') format('svg');
   font-weight: normal;
   font-style: normal;
 
 }
 
 h1,h2,h3,h4,h5,h6 {
-  font-family:junctionregular, lucida grande,lucida sans console,sans-serif;
+  font-family:"Junction Regular", lucida grande,lucida sans console,sans-serif;
   font-weight:normal;
 }
 

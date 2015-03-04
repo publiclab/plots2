@@ -1,14 +1,15 @@
-<%= javascript_include_tag "post" %>
-
-<script>
-  $D = {
-    uid: <%= current_user.uid %>,
-    type: 'note',
-    warn_image: <%= params[:template] == "question" %>
-  }
-</script>
-
 <div class="span3">
+
+  <script>
+    $D = {
+      uid: <%= current_user.uid %>,
+      type: 'note',
+      warn_image: <%= params[:template] == "question" %>
+    }
+  </script>
+
+  <%= javascript_include_tag "post" %>
+
   <% if params[:template] == "question" %>
     <h4 class="visible-phone">Ask a question</h4>
     <div id="research-note-detail" class="hidden-phone">
@@ -86,32 +87,6 @@
       <input name="remote" type="hidden" value="true" />
   
       <input autocomplete="off" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
-      <script>
-        jQuery(document).ready(function() {
-  
-          $('#taginput').typeahead({
-            source: function (typeahead, input) {
-              query = input.split(',')[input.split(',').length-1]
-              if (query.length > 2) {
-                return $.post('/tag/suggested/'+query, {}, function (data) {
-                  return typeahead.process(data)
-                })
-              }
-            },
-            menu: '<ul id="tagtypeahead" class="typeahead dropdown-menu"></ul>',
-            autoselect: false,
-            matcher: function() { return true; },
-            onselect: function(text,original_text) { 
-              original_text = original_text.split(',')
-              original_text.pop()
-              original_text = original_text.join(',')
-              if (original_text == '') $('#taginput').val(text)
-              else $('#taginput').val(original_text+','+text)
-            }
-          });
-  
-        });
-      </script>
     </div>
     </div>
 
@@ -131,8 +106,6 @@
       This is an event
     </label></p>
 
-    <script src="/datepicker/js/bootstrap-datepicker.js"></script>
-    <link href="/datepicker/css/datepicker.css" rel="stylesheet">
     <div id="event-info" style="display:none;">
       <p><i>An RSVP feature will be added to your note. Please choose a date:</i></p>
       <span style="padding-right:0;" class="datepicker input-append date" data-date="<%= DateTime.now.strftime("%m-%d-%Y") %>" data-date-format="mm-dd-yyyy">

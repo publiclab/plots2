@@ -28,11 +28,13 @@
       </div>
     </div>
     <script>
-      (setTimeout(function() {
-        $('#store-carousel').carousel({
-          interval: 6000
-        })
-      },2000))()
+      jQuery(document).ready(function() {
+        setTimeout(function() {
+          $('#store-carousel').carousel({
+            interval: 6000
+          })
+        },2000)
+      })
     </script>
 
     <hr style="margin-bottom:6px;" />
