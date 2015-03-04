@@ -11,11 +11,11 @@
  
  *= require bootstrap-css/css/bootstrap.min.css
  *= require bootstrap-css/css/bootstrap-responsive.min.css
+ *= require bootstrap-lightbox/build/bootstrap-lightbox.min.css
  *= require bootstrap-datepicker/css/datepicker.css
  *= require jquery-file-upload/css/jquery.fileupload-ui.css
  *= require_self
  *= require style
- *= require lightbox
  *= require feature
  *= require editor
 */
