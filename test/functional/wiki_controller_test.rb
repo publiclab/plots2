@@ -17,7 +17,7 @@ class WikiControllerTest < ActionController::TestCase
     user_session.destroy
     title = "All about balloon mapping"
     post :create, :uid => @user.id, :title => title, :body => "This is fascinating documentation about balloon mapping.", :tags => "balloon-mapping,event"
-    assert_redirected_to('/login')
+    assert_redirected_to('/login?return_to=/wiki/create')
   end
 
   def test_post_wiki

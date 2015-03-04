@@ -17,7 +17,7 @@ class NotesControllerTest < ActionController::TestCase
     user_session.destroy
     title = "My new post about balloon mapping"
     post :create, :id => @user.id, :title => title, :body => "This is a fascinating post about a balloon mapping event.", :tags => "balloon-mapping,event"#, :main_image => "/images/testimage.jpg"
-    assert_redirected_to('/login')
+    assert_redirected_to('/login?return_to=/notes/create')
   end
 
   def test_post_note
