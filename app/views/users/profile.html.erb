@@ -1,7 +1,4 @@
 <div class="span3">
-<script language="javascript" type="text/javascript" src="/flot/jquery.flot.js"></script> 
-<script language="javascript" type="text/javascript" src="/flot/jquery.flot.crosshair.js"></script>
-
  <% if @user.user && @user.user.photo_file_name %><img class="img-rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @user.user.photo_path(:thumb) %>" /><% end %>
 
   <!--<a href="#" class="btn btn-block"><i class="icon-envelope"></i> Send message</a>-->

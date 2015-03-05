@@ -1,8 +1,5 @@
 <%= render :partial => "sidebar/featured" %>
 <div class="span9">
-  <script language="javascript" type="text/javascript" src="/flot/jquery.flot.js"></script> 
-  <script language="javascript" type="text/javascript" src="/flot/jquery.flot.crosshair.js"></script>
-
   <% @tags.each do |tag| %>
 
     <div id="note-graph-<%= tag.name %>" style="height:100px;"></div>

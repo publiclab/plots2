@@ -1,0 +1,53 @@
+body {
+  padding:40pt;
+}
+
+.hidden-print {
+  display:none;
+}
+
+.visible-print {
+  display:auto;
+}
+
+a[href]:after, abbr[title]:after {
+  content:none;
+}
+
+#content a[href]:after {
+  content: " (" attr(href) ")";
+}
+#content abbr[title]:after {
+  content: " (" attr(title) ")";
+}
+
+#content h1 a[href]:after, #content h1 abbr[title]:after,
+#content h2 a[href]:after, #content h2 abbr[title]:after,
+#content h3 a[href]:after, #content h3 abbr[title]:after,
+#content h4 a[href]:after, #content h4 abbr[title]:after,
+#content h5 a[href]:after, #content h5 abbr[title]:after,
+#content h6 a[href]:after, #content h6 abbr[title]:after {
+  content:none;
+}
+
+#content h1 .icon, 
+#content h2 .icon, 
+#content h3 .icon, 
+#content h4 .icon, 
+#content h5 .icon, 
+#content h6 .icon {
+  display:none;
+}
+
+#content h1, 
+#content h2, 
+#content h3, 
+#content h4, 
+#content h5, 
+#content h6 {
+  margin-top:20pt;
+}
+
+h2 {
+  margin-top:20pt;
+}

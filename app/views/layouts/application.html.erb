@@ -12,30 +12,19 @@
     <meta name="author" content="Public Lab contributors">
     <link href="http://publiclab.org/feed.rss" rel="alternate" type="application/rss+xml" title="Public Lab research" />
 
-    <!-- Le styles -->
-    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="/fontawesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="/bootstrap/css/bootstrap-lightbox.min.css" rel="stylesheet">
-    <%= stylesheet_link_tag    "application", :media => "all" %>
-    <link href="/assets/print.css" media="print" rel="stylesheet" type="text/css" />
-    <link href="/feature.css" media="screen" rel="stylesheet" type="text/css" />
+    <%= stylesheet_link_tag "application", :media => "all" %>
+    <link href="/lib/fontawesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
+    <% if @node && @node.has_tag('style:fancy') %>
+      <%= stylesheet_link_tag "fancy", :media => "all" %>
+    <% end %>
+    <%= stylesheet_link_tag "print", :media => "print" %>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="/bootstraptp://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="/bootstrap/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/bootstrap/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/bootstrap/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/bootstrap/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="/bootstrap/ico/apple-touch-icon-57-precomposed.png">
-
     <%= javascript_include_tag "application" %>
-    <script src="/assets/js/alerts.js"></script>
-    <script src="/assets/js/banner.js"></script>
     <%= csrf_meta_tags %>
 
     <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d"></meta>
@@ -47,325 +36,17 @@
 
   <body>
 
-    <% if @node && @node.body %>
-      <p class="facebook-summary" style="display:none;">
-        <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %> 
-      </p>
-    <% end %>
-    <p class="facebook-summary" style="display:none;">Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues.</p>
-
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
-
-    <div id="header" class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom:20px;">
-      <div class="navbar-inner hidden-print" style="padding:0 10px;">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" id="brand" href="/<%= "home" if current_user %>">Public Lab</a>
-          <a class="brand" id="brand-compact" href="/<%= "home" if current_user %>">PL</a>
-
-          <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:6px;" href="/signup" class="btn pull-right">Join</a><% end %>
-
-          <ul class="nav">
-            <% if current_user %><li><a rel="tooltip" title="Your dashboard" data-placement="bottom" href="/dashboard"><i class="icon-home icon-white"></i></a></li><% end %>
-            <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown">
-                Research <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-              <% cache "tool-place-menu-"+(DateTime.now.to_i/300).to_i.to_s do %>
-                <li><a href="/research/">Research notes</a></li>
-                <li><a href="/wiki/">Public Lab Wiki</a></li>
-                <li><a href="/wiki/popular/">Popular wiki pages</a></li>
-                <li><a href="/tags/">Popular tags</a></li>
-                <li class="nav-header">Tools</li>
-                <% DrupalTag.find_top_nodes_by_type('tool',['page','tool'],6).each do |node| %>
-                <li><a href="<%= node.path %>"><%= node.latest.title %></a></li>
-                <% end %>
-                <li><a href="/tools">More...</a></li>
-                <li class="nav-header">Places</li>
-                <% DrupalNode.find_all_by_type('place',:limit => 6, :order => 'node_counter.totalcount DESC', :joins => :drupal_node_counter).each do |node| %>
-                <li><a href="<%= node.path %>"><%= node.latest.title %></a></li>
-                <% end %>
-                <li><a href="/places">More...</a></li>
-              <% end %>
-                <li class="divider"></li>
-                <li><a href="/contributors">Contributors</a></li>
-              </ul>
-            </li>
-          </ul>
-
-          <div class="nav-collapse collapse">
-
-            <form id="searchform" class="navbar-form pull-left" style="margin-left:10px;" autocomplete="off">
-              <input tabindex="1" id="searchform_input" type="text" class="input-small search-query typeahead" data-provide="typeahead">
-              <script>
-                jQuery(document).ready(function() {
-                  $('#searchform').submit(function(e){ 
-                    e.preventDefault()
-                    window.location = '/search/'+$('#searchform_input').val()
-                  })
-                  // working off of http://stackoverflow.com/questions/9232748/twitter-bootstrap-typeahead-ajax-example
-                  $('#searchform_input').typeahead({
-                    source: function (typeahead, query) {
-                      if (query.length > 2) {
-                        return $.post('/search/typeahead/'+query, {}, function (data) {
-                          return typeahead.process(data)
-                        })
-                      }
-                    },
-                    items: 15,
-                    //highlighter: function(a) {a},
-                    autoselect: false,
-                    autowidth: false,
-                    menu: '<ul id="searchtypeahead" class="typeahead dropdown-menu"></ul>'
-                  })
-                })
-              </script>
-              <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i></button>
-            </form>
-
-            <ul class="nav">
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown">
-                  About <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="/wiki/stories">Stories</a></li>
-                  <li><a href="/about">About Public Lab</a></li>
-                  <li class="divider"></li>
-                  <li><a href="/wiki/plots-staff">Non-profit team</a></li>
-                  <li><a href="/wiki/organizers">Organizers</a></li>
-                  <li><a href="/wiki/board">Non-profit board</a></li>
-                  <li><a href="/wiki/how-public-lab-funded">How we're funded</a></li>
-                  <li class="divider"></li>
-                  <li><a href="/media">Press and Media</a></li>
-                  <li><a href="/wiki/contact">Contact the staff</a></li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown">
-                  Participate <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="/getting-started">Getting started</a></li>
-                  <li class="divider"></li>
-                  <li><a href="/signup">Join the website</a></li>
-                  <li><a href="/lists">Join one of our discussion lists</a></li>
-                  <li><a href="/events">Attend an event</a></li>
-                  <li><a href="/wiki/post-an-event">Post an event</a></li>
-                  <li class="divider"></li>
-                  <li><a href="/wiki/start-a-chapter">Starting new chapters</a></li>
-                  <li><a href="/wiki/new-projects">Starting new projects</a></li>
-                  <li class="divider"></li>
-                  <li><a href="/wiki/organizers">Become an organizer</a></li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown">
-                  Data <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="/archive">Public Lab Archive</a></li>
-                  <li class="nav-header">Web tools</li>
-                  <li><a href="http://mapknitter.org">MapKnitter</a></li>
-                  <li><a href="http://spectralworkbench.org">Spectral Workbench</a></li>
-                  <li><a href="http://infragram.org">Infragram</a></li>
-                  <li><a href="http://openwaterproject.io">Open Water</a></li>
-                </ul>
-              </li>
-              <li><a href="/donate">Donate</a></li>
-            </ul>
-
-            <div id="chat" class="chat-popover" data-placement="bottom" style="display:none;">
-              <a style="margin-right:4px;" class="pull-right btn btn-small" href="https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>" target="_blank">pop out</a>
-              <p class="popover-title">Public Lab chatroom</p>
-              <iframe width="400px" height="300px" src="https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>"></iframe>
-            </div>
-
-            <% unless params[:action] == "register" || params[:action] == "signup" %>
-            <ul class="nav pull-right">
-              <li class="dropdown">
-                <a onClick="$('#chat').toggle()">
-                  <i class="icon-white icon-comments"></i>
-                </a> 
-              </li>
-              <li class="dropdown">
-                <% if current_user %>
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="icon-user icon-white"></i>
-                  <%= current_user.username %> <b class="caret"></b>
-                </a> 
-                <ul class="dropdown-menu">
-                  <li class="nav-header">Role: <% if current_user.role === 'moderator' || current_user.role === 'admin'%><%= current_user.role %><% end %>
-</li>
-                  <li><a href="/dashboard">Dashboard</a></li>
-                  <li><a href="/profile/<%= current_user.username %>">Profile</a></li>
-                  <li><a href="/profile/edit">Edit profile</a></li> 
-                  <li class="divider"></li>
-                  <li><a href="/subscriptions">Subscriptions</a></li>
-                  <li><a href="/profile/<%= current_user.username %>/likes">Notes you've liked</a></li> 
-                  <li class="divider"></li>
-		  <li><%= link_to "Logout", logout_path %></li>
-                </ul>
-                <% else %>
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="icon-user icon-white"></i>
-                   Log in<b class="caret"></b>
-                </a> 
-                <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
-                  <li style="padding:6px;">
-                    <%= form_for @user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
-         
-                      <p><b>Log in</b></p>
-         
-                      <p><%= f.text_field :username, {:placeholder => "username", :tabindex => 1, :id => "login-username-input"} %></p>
-                      <p><%= f.password_field :password, {:placeholder => "password", :tabindex => 2} %></p>
-                      <input type="hidden" name="return_to" value="<%= params[:return_to] || request.path %>" />
-         
-                      <p><label class="checkbox">
-                        <%= f.check_box :remember_me %> Remember me
-                      </p></label>
-         
-                      <p>
-                        <button class="btn btn-primary" type="submit" tabindex="3">Log in</button>
-                        <a class="btn btn" href="/signup" tabindex="4">Sign up</a>
-                      </p>
-         
-                      <p><a href="/reset/">Reset your password</a></p>
-                    <% end %>
-                  </li>
-                </ul>
-                <% end %>
-              </li>
-            </ul>
-            <% end %>
-
-          </div><!--/.nav-collapse -->
-      </div>
-    </div>
+    <%= render :partial => 'layouts/header' %>
 
     <div class="container-fluid">
-
-      <div class="visible-print">
-        <% if params[:controller] == "notes" %><h1>Public Lab <small>| Research note</small></h1><% end %>
-        <% if params[:controller] == "wiki" %><h1>Public Lab <small>| Wiki documentation</small></h1><% end %>
-        <hr />
-      </div>
-
-      <div class="header-spacer hidden-phone"></div>
-
-        <% if @node && !@node.has_tag('style:nobanner') %>
-          <div id="donate">
-            <div class="well visible-desktop hidden-print" style="padding:12px 20px 10px;">
-              <h4 style="display:inline;">Did you know that Public Lab is an open community supported by a nonprofit?</h4> 
-              <a href="/signup" style="margin-left:10px;" class="btn hidden-phone">Sign up</a>
-              <a href="/donate" style="margin-left:10px;" class="btn btn-primary hidden-phone">Donate &raquo;</a>
-            </div>
-            <div class="visible-phone hidden-print" style="height:4.5em;">
-              <a href="/donate" style="margin-bottom:6px;" class="btn btn-success btn-large btn-block">Donate to <span class="hidden-tiny">the</span> Public Lab <span class="hidden-tiny">non-profit</span> &raquo;</a>
-            </div>
-          </div>
-        <% end %>
-
-      <%= render :partial => "layouts/alerts" %>
-
       <div class="row-fluid">
 
         <%= yield %>
 
       </div><!--/row-->
-
     </div><!--/.fluid-container-->
 
-    <footer class="footer">
+    <%= render :partial => "layouts/footer" %>
 
-      <div class="span3 hidden-print">
-        <h4>Getting help</h4>
-        <ul>
-          <li><a href="/wiki/issues">Report a bug or issue</a></li>
-          <li><a href="mailto:web@publiclab.org">Email the Web working group</a></li>
-          <li>PublicLab.org is <a href="https://github.com/publiclab/plots2">open source software</a> - and <a href="/wiki/developers">looking for contributors</a></li>
-        </ul>
-      </div>
-      <div class="span3 hidden-print">
-        <h4>Links</h4>
-        <ul>
-          <li><a href="/about">About</a></li>
-          <li><a href="/wiki/getting-started">Getting Started</a></li>
-          <li><a href="/wiki/licenses">Licenses</a></li>
-          <li><a href="/lists">Discussion lists</a></li>
-          <li><a href="/stats">Site statistics</a></li>
-          <li><a href="/wiki/working-groups">Working groups</a></li>
-          <li><a href="/feed.rss">RSS</a></li>
-        </ul>
-      </div>
-      <div class="span3">
-        <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0;float:left;margin-right:10px;" src="/images/cc-by-sa-88x31.png" /></a>
-        <p>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>. Hardware designs on this site are released under the <a href="http://www.ohwr.org/cernohl">CERN Open Hardware License 1.1</a>. Read more about Public Laboratory's <a href="/licenses">open source licensing here</a>.</p>
-      </div>
-      <div class="span3 hidden-print">
-        <p>Specific works on this site may be released or dedicated under different licenses, but only if such alternatives are clearly indicated by their authors.</p>
-        <p>This site makes extensive use of the open source font <a href="http://www.theleagueofmoveabletype.com/junction">Junction</a>.</p>
-        <p>(Rackspace)</p>
-      </div>
-      <br style="clear:both;" />
-    </footer>
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.typeahead.js?4"></script>
-    <script src="/bootstrap/js/bootstrap-lightbox.js"></script>
-
-    <script>
-      (function() {
-        // iOS fix for dropdowns in menubar: https://github.com/publiclab/plots2/issues/17
-        $('.dropdown-toggle').click(function(e) {
-          e.preventDefault();
-          setTimeout($.proxy(function() {
-            if ('ontouchstart' in document.documentElement) {
-              $(this).siblings('.dropdown-backdrop').off().remove();
-            }
-          }, this), 0);
-        });
-
-        $("[rel=tooltip]").tooltip()
-        $("[rel=popover]").popover()
-        $('table').addClass('table')
-        $('iframe').css('border','none')
-        $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {return " <small><a href='#"+this.innerHTML.replace(/ /g,'+')+"'><i class='icon icon-link'></i></a></small>"})
-        login = function() {
-          $('#login-dropdown').toggle()
-          $('#login-username-input').focus()
-        }
-      })()
-    </script>
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-180781-33']);
-      _gaq.push(['_setDomainName', 'publiclab.org']);
-      _gaq.push(['_setAllowLinker', true]);
-      _gaq.push(['_trackPageview']);
-    
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        //ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
-
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    
-    </script>
   </body>
 </html>

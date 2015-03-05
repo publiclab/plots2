@@ -33,7 +33,11 @@ Plots2::Application.configure do
   config.assets.compress = false
 
   # Expands the lines which load the assets
-  #config.assets.debug = true
+  config.assets.debug = true
 
   config.action_mailer.delivery_method = :sendmail
+
+  # force SSL
+  #config.force_ssl = true
+
 end

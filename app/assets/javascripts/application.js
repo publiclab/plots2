@@ -12,4 +12,19 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require bootstrap-css/js/bootstrap.min.js
+//= require bootstrap-lightbox/build/bootstrap-lightbox.min.js
+//= require bootstrap-datepicker/js/bootstrap-datepicker.js
+//= require jquery-file-upload/js/vendor/jquery.ui.widget.js
+//= require jquery-file-upload/js/jquery.fileupload.js
+//= require jquery-file-upload/js/jquery.iframe-transport.js
+//= require flot/jquery.flot.js
+//= require flot/jquery.flot.crosshair.js
+//= require jsdiff/diff.js
+//= require marked/marked.min.js
+//= require ics/ics.deps.min.js
+//= require ics/ics.min.js
+//  APPLICATION SCRIPTS:
+//= require search.js
+//= require setup.js
+//= require editor.js

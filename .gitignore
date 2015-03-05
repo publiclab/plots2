@@ -5,15 +5,16 @@
 #   git config --global core.excludesfile ~/.gitignore_global
 
 # Ignore bundler config
-/.bundle
+.bundle
 
 # Ignore the default SQLite database.
-/db/*.sqlite3
+db/*.sqlite3
 
 # Ignore all logfiles and tempfiles.
-/log/*.log
-/log/*
-/tmp
+log/*.log
+log/*
+tmp
+data
 *.swp
 .DS_Store
 .idea
@@ -26,7 +27,16 @@ config/initializers/recaptcha.rb
 config/config.yml
 config/initializers/site_keys.rb
 Gemfile.lock
-/public/system*
-/db/openid-store/
-/db/schema.rb
-#public/assets/application-*
+public/system
+public/lib
+db/openid-store/
+db/schema.rb
+public/assets/application-*
+todo.txt
+.sass-cache*
+*.pfx
+*.pem
+*.key
+passenger-standalone.json.bkp
+public/pdf.js/
+public/sites/

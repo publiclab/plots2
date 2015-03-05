@@ -1,0 +1,204 @@
+<% if @node && @node.body %>
+  <p class="facebook-summary" style="display:none;">
+    <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %> 
+  </p>
+<% end %>
+<p class="facebook-summary" style="display:none;">Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues.</p>
+
+<!-- facebook needs this apparently -->
+<div id="fb-root"></div>
+
+<div id="header" class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom:20px;">
+
+  <div class="navbar-inner hidden-print" style="padding:0 10px;">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" id="brand" href="/<%= "home" if current_user %>">Public Lab</a>
+      <a class="brand" id="brand-compact" href="/<%= "home" if current_user %>">PL</a>
+
+      <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:6px;" href="/signup" class="btn pull-right">Join</a><% end %>
+
+      <ul class="nav">
+        <% if current_user %><li><a rel="tooltip" title="Your dashboard" data-placement="bottom" href="/dashboard"><i class="icon-home icon-white"></i></a></li><% end %>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown">
+            Research <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+          <% cache "tool-place-menu-"+(DateTime.now.to_i/300).to_i.to_s do %>
+            <li><a href="/research/">Research notes</a></li>
+            <li><a href="/wiki/">Public Lab Wiki</a></li>
+            <li><a href="/wiki/popular/">Popular wiki pages</a></li>
+            <li><a href="/tags/">Popular tags</a></li>
+            <li class="nav-header">Tools</li>
+            <% DrupalTag.find_top_nodes_by_type('tool',['page','tool'],6).each do |node| %>
+            <li><a href="<%= node.path %>"><%= node.latest.title %></a></li>
+            <% end %>
+            <li><a href="/tools">More...</a></li>
+            <li class="nav-header">Places</li>
+            <% DrupalNode.find_all_by_type('place',:limit => 6, :order => 'node_counter.totalcount DESC', :joins => :drupal_node_counter).each do |node| %>
+            <li><a href="<%= node.path %>"><%= node.latest.title %></a></li>
+            <% end %>
+            <li><a href="/places">More...</a></li>
+          <% end %>
+            <li class="divider"></li>
+            <li><a href="/contributors">Contributors</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <div class="nav-collapse collapse">
+
+        <form id="searchform" class="navbar-form pull-left" style="margin-left:10px;" autocomplete="off">
+          <input tabindex="1" id="searchform_input" type="text" class="input-small search-query typeahead" data-provide="typeahead">
+          <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i></button>
+        </form>
+
+        <ul class="nav">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              About <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/wiki/stories">Stories</a></li>
+              <li><a href="/about">About Public Lab</a></li>
+              <li class="divider"></li>
+              <li><a href="/wiki/plots-staff">Non-profit team</a></li>
+              <li><a href="/wiki/organizers">Organizers</a></li>
+              <li><a href="/wiki/board">Non-profit board</a></li>
+              <li><a href="/wiki/how-public-lab-funded">How we're funded</a></li>
+              <li class="divider"></li>
+              <li><a href="/media">Press and Media</a></li>
+              <li><a href="/wiki/contact">Contact the staff</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              Participate <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/getting-started">Getting started</a></li>
+              <li class="divider"></li>
+              <li><a href="/signup">Join the website</a></li>
+              <li><a href="/lists">Join one of our discussion lists</a></li>
+              <li><a href="/events">Attend an event</a></li>
+              <li><a href="/wiki/post-an-event">Post an event</a></li>
+              <li class="divider"></li>
+              <li><a href="/wiki/start-a-chapter">Starting new chapters</a></li>
+              <li><a href="/wiki/new-projects">Starting new projects</a></li>
+              <li class="divider"></li>
+              <li><a href="/wiki/organizers">Become an organizer</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              Data <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/archive">Public Lab Archive</a></li>
+              <li class="nav-header">Web tools</li>
+              <li><a href="http://mapknitter.org">MapKnitter</a></li>
+              <li><a href="http://spectralworkbench.org">Spectral Workbench</a></li>
+              <li><a href="http://infragram.org">Infragram</a></li>
+              <li><a href="http://openwaterproject.io">Open Water</a></li>
+            </ul>
+          </li>
+          <li><a href="/donate">Donate</a></li>
+        </ul>
+
+        <div id="chat" class="chat-popover" data-placement="bottom" style="display:none;">
+          <a style="margin-right:4px;" class="pull-right btn btn-small" href="https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>" target="_blank">pop out</a>
+          <p class="popover-title">Public Lab chatroom</p>
+          <iframe width="400px" height="300px" src="https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>"></iframe>
+        </div>
+
+        <% unless params[:action] == "register" || params[:action] == "signup" %>
+        <ul class="nav pull-right">
+          <li class="dropdown">
+            <a onClick="$('#chat').toggle()">
+              <i class="icon-white icon-comments"></i>
+            </a> 
+          </li>
+          <li class="dropdown">
+            <% if current_user %>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="icon-user icon-white"></i>
+              <%= current_user.username %> <b class="caret"></b>
+            </a> 
+            <ul class="dropdown-menu">
+              <li class="nav-header">Role: <% if current_user.role === 'moderator' || current_user.role === 'admin'%><%= current_user.role %><% end %>
+>
+              <li><a href="/dashboard">Dashboard</a></li>
+              <li><a href="/profile/<%= current_user.username %>">Profile</a></li>
+              <li><a href="/profile/edit">Edit profile</a></li> 
+              <li class="divider"></li>
+              <li><a href="/subscriptions">Subscriptions</a></li>
+              <li><a href="/profile/<%= current_user.username %>/likes">Notes you've liked</a></li> 
+              <li class="divider"></li>
+    	  <li><%= link_to "Logout", logout_path %></li>
+            </ul>
+            <% else %>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="icon-user icon-white"></i>
+               Log in<b class="caret"></b>
+            </a> 
+            <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
+              <li style="padding:6px;">
+                <%= form_for @user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
+     
+                  <p><b>Log in</b></p>
+     
+                  <p><%= f.text_field :username, {:placeholder => "username", :tabindex => 1, :id => "login-username-input"} %></p>
+                  <p><%= f.password_field :password, {:placeholder => "password", :tabindex => 2} %></p>
+                  <input type="hidden" name="return_to" value="<%= params[:return_to] || request.path %>" />
+     
+                  <p><label class="checkbox">
+                    <%= f.check_box :remember_me %> Remember me
+                  </p></label>
+     
+                  <p>
+                    <button class="btn btn-primary" type="submit" tabindex="3">Log in</button>
+                    <a class="btn btn" href="/signup" tabindex="4">Sign up</a>
+                  </p>
+     
+                  <p><a href="/reset/">Reset your password</a></p>
+                <% end %>
+              </li>
+            </ul>
+            <% end %>
+          </li>
+        </ul>
+        <% end %>
+
+      </div><!--/.nav-collapse -->
+  </div>
+</div>
+<div class="container-fluid">
+
+  <div class="visible-print">
+    <% if params[:controller] == "notes" %><h1>Public Lab <small>| Research note</small></h1><% end %>
+    <% if params[:controller] == "wiki" %><h1>Public Lab <small>| Wiki documentation</small></h1><% end %>
+    <hr />
+  </div>
+
+  <div class="header-spacer hidden-phone"></div>
+
+    <% if @node && !@node.has_tag('style:nobanner') %>
+      <div id="donate">
+        <div class="well visible-desktop hidden-print" style="padding:12px 20px 10px;">
+          <h4 style="display:inline;">Did you know that Public Lab is an open community supported by a nonprofit?</h4> 
+          <a href="/signup" style="margin-left:10px;" class="btn hidden-phone">Sign up</a>
+          <a href="/donate" style="margin-left:10px;" class="btn btn-primary hidden-phone">Donate &raquo;</a>
+        </div>
+        <div class="visible-phone hidden-print" style="height:4.5em;">
+          <a href="/donate" style="margin-bottom:6px;" class="btn btn-success btn-large btn-block">Donate to <span class="hidden-tiny">the</span> Public Lab <span class="hidden-tiny">non-profit</span> &raquo;</a>
+        </div>
+      </div>
+    <% end %>
+
+  <%= render :partial => "layouts/alerts" %>
+
+</div>
