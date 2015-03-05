@@ -26,7 +26,6 @@ gem 'composite_primary_keys'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  gem 'less-rails',   '~> 2.6'
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -59,6 +58,8 @@ gem "authlogic", "3.2.0"
 gem "php-serialize", :require => "php_serialize"
 
 gem "scrypt", "~> 1.2.1"
+
+gem 'less-rails',   '~> 2.6'
 
 group :development, :test do
   #gem 'rspec-rails'
