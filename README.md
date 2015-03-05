@@ -33,11 +33,7 @@ Install a database, if necessary. We use mysql -- we're not adverse to others, b
 
 Application-specific dependencies:
 
-`sudo apt-get install bundler libmysqlclient-dev imagemagick ruby-rmagick libfreeimage3 libfreeimage-dev ruby-dev libmagickcore-dev libmagickwand-dev`
-
-(optional) For exporting, you'll need GDAL >=1.7.x (gdal.org), as well as `curl` and `zip`-- but these are not needed for much of development, unless you're working on the exporting features. 
-
-`sudo apt-get install gdal-bin python-gdal curl libcurl4-openssl-dev libssl-dev zip`
+`sudo apt-get install bundler libmysqlclient-dev imagemagick ruby-rmagick`
 
 Install rvm for Ruby management (http://rvm.io)
 
