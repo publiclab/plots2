@@ -34,3 +34,9 @@ db/schema.rb
 public/assets/application-*
 todo.txt
 .sass-cache*
+*.pfx
+*.pem
+*.key
+passenger-standalone.json.bkp
+public/pdf.js/
+public/sites/

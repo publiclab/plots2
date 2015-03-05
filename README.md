@@ -55,6 +55,12 @@ However, on Ubuntu, you may need to also install the `nodejs-legacy` package, as
 
 `sudo apt-get install nodejs-legacy`
 
+On Debian Wheezy, you may need instead to:
+
+* Run `sudo apt-get -t wheezy-backports install nodejs` as the `npm` package may not be available. 
+* Then run `sudo update-alternatives --install /usr/bin/node nodejs /usr/bin/nodejs 100` to make it available under the name `node` -- similarly to what we do for Ubuntu, above. 
+* Finally, run `curl -0 -L https://www.npmjs.org/install.sh | sudo sh` 
+
 Once NPM is installed, you should be able to run:
 
 `sudo npm install -g bower`
