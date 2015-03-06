@@ -45,21 +45,6 @@ $('.dropdown-toggle').click(function(e) {
   }, this), 0);
 });
 
-/* setup bootstrap behaviors */
-$("[rel=tooltip]").tooltip()
-$("[rel=popover]").popover()
-$('table').addClass('table')
-
-$('iframe').css('border','none')
-
-/* add "link" icon to headers */
-$("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {return " <small><a href='#"+this.innerHTML.replace(/ /g,'+')+"'><i class='icon icon-link'></i></a></small>"})
-
-login = function() {
-  $('#login-dropdown').toggle()
-  $('#login-username-input').focus()
-}
-
 /* window scroll trick for header */
 function adjust_anchor_for_banner() {
   var banner_offset = 50; // how much to scroll to account for the banner
@@ -70,11 +55,6 @@ function adjust_anchor_for_banner() {
 }
 $(document).ready(adjust_anchor_for_banner)
 $(window).on('hashchange', adjust_anchor_for_banner)
-
-/* there may or may not actually be a carousel to activate */
-$('#sidebar-carousel').carousel({
-  interval: 6000
-})
 
 /* google analytics */
 var _gaq = _gaq || [];
@@ -100,4 +80,24 @@ jQuery(document).ready(function($) {
     js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
+
+  /* setup bootstrap behaviors */
+  $("[rel=tooltip]").tooltip()
+  $("[rel=popover]").popover()
+  $('table').addClass('table')
+  
+  $('iframe').css('border','none')
+  
+  /* add "link" icon to headers */
+  $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {return " <small><a href='#"+this.innerHTML.replace(/ /g,'+')+"'><i class='icon icon-link'></i></a></small>"})
+  
+  login = function() {
+    $('#login-dropdown').toggle()
+    $('#login-username-input').focus()
+  }
+
+  /* there may or may not actually be a carousel to activate */
+  $('#sidebar-carousel').carousel({
+    interval: 6000
+  })
 })

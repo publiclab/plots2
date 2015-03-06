@@ -27,56 +27,58 @@
 "><span class="caret"></span></li>
   </ul>
   <script>
-    // 304 cached response yields no data to insert, which is not useful
-    jQuery.ajaxSetup({
-      cache: false
-    });
-
-    // grab the like count for this node
-    jQuery.getJSON("<%= like_count_path(@node) %>", function (json) {
-      // push like count into the Like button placeholder 
-      document.getElementById('like-count').textContent = "(" + json + ")";
-    });
-
-    <% if current_user %>
-    var star = document.getElementById('like-star');
-    var button = document.getElementById('like-button');
-    button.onclick = <% if @node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>
-
-    // functionalize appearance changes
-    function changelikecount(value) {
-      var count = document.getElementById('like-count').textContent
-      // strip parens and convert to number
-      count = parseInt(count.substr(1, count.length-2));
-      count += value;
-      // push value back out
-      document.getElementById('like-count').textContent = "(" + count + ")";
-    }
-    function shownotliked() {
-      star.className = "icon-star-empty";
-    }
-    function showliked() {
-      star.className = "icon-star";
-    }
-
-    // support AJAX button clicking
-    function clickliked() {
-      // toggle liked to not liked.
-      jQuery.getJSON("<%= drop_like_path(@node) %>", function () {
-        shownotliked();
-        changelikecount(-1);
-        button.onclick = clicknotliked
+    jQuery(document).ready(function() {
+      // 304 cached response yields no data to insert, which is not useful
+      jQuery.ajaxSetup({
+        cache: false
       });
-    }
-    function clicknotliked() {
-      // toggle not liked to liked.
-      jQuery.getJSON("<%= add_like_path(@node) %>", function () {
-        showliked();
-        changelikecount(1);
-        button.onclick = clickliked
+     
+      // grab the like count for this node
+      jQuery.getJSON("<%= like_count_path(@node) %>", function (json) {
+        // push like count into the Like button placeholder 
+        document.getElementById('like-count').textContent = "(" + json + ")";
       });
-    }
-
-    <% end %>
+     
+      <% if current_user %>
+        var star = document.getElementById('like-star');
+        var button = document.getElementById('like-button');
+        button.onclick = <% if @node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>
+      
+        // functionalize appearance changes
+        function changelikecount(value) {
+          var count = document.getElementById('like-count').textContent
+          // strip parens and convert to number
+          count = parseInt(count.substr(1, count.length-2));
+          count += value;
+          // push value back out
+          document.getElementById('like-count').textContent = "(" + count + ")";
+        }
+        function shownotliked() {
+          star.className = "icon-star-empty";
+        }
+        function showliked() {
+          star.className = "icon-star";
+        }
+      
+        // support AJAX button clicking
+        function clickliked() {
+          // toggle liked to not liked.
+          jQuery.getJSON("<%= drop_like_path(@node) %>", function () {
+            shownotliked();
+            changelikecount(-1);
+            button.onclick = clicknotliked
+          });
+        }
+        function clicknotliked() {
+          // toggle not liked to liked.
+          jQuery.getJSON("<%= add_like_path(@node) %>", function () {
+            showliked();
+            changelikecount(1);
+            button.onclick = clickliked
+          });
+        }
+      
+      <% end %>
+    })
   </script>
 </div>
