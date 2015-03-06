@@ -97,7 +97,9 @@ jQuery(document).ready(function($) {
   }
 
   /* there may or may not actually be a carousel to activate */
-  $('#sidebar-carousel').carousel({
-    interval: 6000
-  })
+  if ($('#sidebar-carousel * *').length > 0) {
+    $('#sidebar-carousel').carousel({
+      interval: 6000
+    })
+  }
 })

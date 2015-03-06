@@ -129,11 +129,16 @@ class TagController < ApplicationController
   end
 
   def suggested
-    suggestions = []
-    DrupalTag.find(:all, :conditions => ['name LIKE ?', "%"+params[:id]+"%"], :limit => 10).each do |tag|
-      suggestions << {:string => tag.name.downcase}
+    if params[:id].length > 2
+      suggestions = []
+      # filtering out tag spam by requiring tags attached to a published node
+      DrupalTag.where('name LIKE ?', "%"+params[:id]+"%").includes(:drupal_node).where('node.status = 1').limit(10).each do |tag|
+        suggestions << tag.name.downcase
+      end
+      render :json => suggestions.uniq
+    else
+      render :json => []
     end
-    render :json => suggestions.uniq
   end
 
   def rss

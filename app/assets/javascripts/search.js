@@ -1,19 +1,22 @@
-$('#searchform').submit(function(e){ 
-  e.preventDefault()
-  window.location = '/search/'+$('#searchform_input').val()
-})
-// working off of http://stackoverflow.com/questions/9232748/twitter-bootstrap-typeahead-ajax-example
-$('#searchform_input').typeahead({
-  source: function (typeahead, query) {
-    if (query.length > 2) {
+jQuery(document).ready(function() {
+
+  $('#searchform').submit(function(e){ 
+    e.preventDefault()
+    window.location = '/search/'+$('#searchform_input').val()
+  })
+
+  $('#searchform_input').typeahead({
+    items: 15,
+    minLength: 3,
+    source: function (query, process) {
       return $.post('/search/typeahead/'+query, {}, function (data) {
-        return typeahead.process(data)
+        return process(data)
       })
+    },
+    updater: function(item) {
+      var url = $(item)[0].attributes['data-url'].value
+      window.location = url
     }
-  },
-  items: 15,
-  //highlighter: function(a) {a},
-  autoselect: false,
-  autowidth: false,
-  menu: '<ul id="searchtypeahead" class="typeahead dropdown-menu"></ul>'
+  })
+
 })

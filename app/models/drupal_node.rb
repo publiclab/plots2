@@ -295,11 +295,11 @@ class DrupalNode < ActiveRecord::Base
 
   # used in typeahead autocomplete search results
   def icon
-   icon = "<i class='icon-file'></i>" if self.type == "note"
-   icon = "<i class='icon-book'></i>" if self.type == "page"
-   icon = "<i class='icon-map-marker'></i>" if self.type == "map"
-   icon = "<i class='icon-flag'></i>" if self.type == "place"
-   icon = "<i class='icon-wrench'></i>" if self.type == "tool"
+   icon = "file" if self.type == "note"
+   icon = "book" if self.type == "page"
+   icon = "map-marker" if self.type == "map"
+   icon = "flag" if self.type == "place"
+   icon = "wrench" if self.type == "tool"
    icon
   end
 

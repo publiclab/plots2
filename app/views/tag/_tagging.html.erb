@@ -17,9 +17,11 @@
   <input autocomplete="off" id="taginput" name="name" type="text" placeholder="enter tags" data-provide="typeahead" />
   <script>
     jQuery(document).ready(function() {
+
       $('#tagform').bind('ajax:beforeSend', function(){
         $("#taginput").prop('disabled',true)
       });
+
       $('#tagform').bind('ajax:success', function(e,response){
         response = JSON.parse(response)
         $.each(response['saved'],function(i,tag) {
@@ -40,6 +42,7 @@
         }
         $('#taginput').prop('disabled',false)
       });
+
       $('#tagform').bind('ajax:error', function(e,response){
         $('#tagform .control-group').addClass('error')
         $('#taginput').prop('disabled',false)
@@ -52,16 +55,14 @@
       });
 
       $('#taginput').typeahead({
-        source: function (typeahead, query) {
-          if (query.length > 2) {
-            return $.post('/tag/suggested/'+query, {}, function (data) {
-              return typeahead.process(data)
-            })
-          }
+        items: 8,
+        minLength: 3,
+        source: function (query, process) {
+          return $.post('/tag/suggested/'+query, {}, function (data) {
+            return process(data)
+          })
         },
-        menu: '<ul id="tagtypeahead" class="typeahead dropdown-menu"></ul>',
-        autoselect: false,
-        onselect: function(text,original_text) { 
+        updater: function(text) { 
           $('#taginput').val(text)
           $('#tagform').submit()
         }

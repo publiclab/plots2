@@ -25,23 +25,25 @@ jQuery(document).ready(function() {
   
   /* tag autocomplete */
   $('#taginput').typeahead({
-    source: function (typeahead, input) {
-      query = input.split(',')[input.split(',').length-1]
-      if (query.length > 2) {
-        return $.post('/tag/suggested/'+query, {}, function (data) {
-          return typeahead.process(data)
+    items: 8,
+    minLength: 3,
+    source: function (query, process) {
+      var term = query.split(',').pop()
+      if (term.length > 2) {
+        return $.post('/tag/suggested/'+term, {}, function (data) {
+          return process(data)
         })
       }
     },
-    menu: '<ul id="tagtypeahead" class="typeahead dropdown-menu"></ul>',
-    autoselect: false,
-    matcher: function() { return true; },
-    onselect: function(text,original_text) { 
-      original_text = original_text.split(',')
+    matcher: function() {
+      return true
+    },
+    updater: function(text) { 
+      original_text = $('#taginput').val().split(',')
       original_text.pop()
       original_text = original_text.join(',')
-      if (original_text == '') $('#taginput').val(text)
-      else $('#taginput').val(original_text+','+text)
+      if (original_text == '') return text
+      else return original_text+','+text
     }
   });
 

@@ -6,19 +6,17 @@
         e.preventDefault()
         window.location = '/search/'+$('#inline_searchform_input').val()
       })
-      // working off of http://stackoverflow.com/questions/9232748/twitter-bootstrap-typeahead-ajax-example
       $('#inline_searchform_input').typeahead({
-        source: function (typeahead, query) {
-          return $.post('/search/typeahead/'+query, {}, function (data) {
-            return typeahead.process(data)
-          })
-        },
-          minLength: 3,
-        items: 15,
-          highlighter: function(a) {a},
-        // Autoselect is disabled so that users can enter new tags
-        autoselect: false,
-        autowidth: false
+        items: 8,
+        minLength: 3,
+        source: function (query, process) {
+          var term = query.split(',').pop()
+          if (term.length > 2) {
+            return $.post('/search/typeahead/'+term, {}, function (data) {
+              return process(data)
+            })
+          }
+        }
       })
     })
   </script>
