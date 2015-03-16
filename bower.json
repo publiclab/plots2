@@ -12,6 +12,7 @@
     "ics":                   "nwcell/ics.js#0.1.3",
     "jsdiff":                "~1.2.2",
     "flot":                  "~0.7",
+    "leaflet":               "0.7.3",
     "junction":              "theleagueof/junction"
   }
 }

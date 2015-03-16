@@ -97,7 +97,7 @@
   <ul class="nav bullet">
     <% @wikis.each do |wiki| %>
       <% unless (!@node.nil? && wiki.nid == @node.nid) %>
-        <li><a href="<%= wiki.path %>"><%= raw wiki.icon %> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+        <li><a href="<%= wiki.path %>"><i class="icon icon-<%= raw wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
       <% end %>
     <% end %>
     <% if params[:controller] == "search" %>
@@ -121,12 +121,6 @@
   <% end %>
 
   <% if @maps && @maps.length > 0 && params[:controller] != "search" %>
-
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
-    <!--[if lte IE 8]>
-      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
-    <![endif]-->
-    <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
 
     <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
   

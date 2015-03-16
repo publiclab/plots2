@@ -14,6 +14,7 @@
  *= require bootstrap-lightbox/build/bootstrap-lightbox.min.css
  *= require bootstrap-datepicker/css/datepicker.css
  *= require jquery-file-upload/css/jquery.fileupload-ui.css
+ *= require leaflet/dist/leaflet.css
  *= require_self
  *= require style
  *= require feature

@@ -24,6 +24,7 @@
 //= require marked/marked.min.js
 //= require ics/ics.deps.min.js
 //= require ics/ics.min.js
+//= require leaflet/dist/leaflet
 //  APPLICATION SCRIPTS:
 //= require search.js
 //= require setup.js
