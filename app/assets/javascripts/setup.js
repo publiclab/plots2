@@ -1,3 +1,6 @@
+/* Leaflet images directory setup */
+L.Icon.Default.imagePath = '/assets/leaflet/dist/images/';
+
 /* alert behaviors */
 function alert_clear() {
   alert_set("hidden",""); 
