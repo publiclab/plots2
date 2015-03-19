@@ -39,3 +39,11 @@
   overflow:hidden;
   margin-bottom:15px;
 }
+
+#content ul li {
+  line-height:1.7em;
+}
+
+#content p {
+  margin-bottom:30px;
+}
