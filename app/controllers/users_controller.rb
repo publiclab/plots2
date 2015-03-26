@@ -95,7 +95,7 @@ class UsersController < ApplicationController
     if current_user && current_user.role == "admin"
       @users = User.paginate(:order => "id DESC", :page => params[:page])
     else
-      @users = User.paginate(:conditions => {:status => 1}, :order => "id DESC", :page => params[:page])
+      @users = DrupalUsers.paginate(:conditions => {:status => 1}, :order => "uid DESC", :page => params[:page])
     end
   end
 
