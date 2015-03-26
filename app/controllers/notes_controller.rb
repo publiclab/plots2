@@ -10,19 +10,13 @@ class NotesController < ApplicationController
 
   def tools
     @title = "Tools"
-    @notes = DrupalTag.find_top_nodes_by_type('tool',['page','tool'],20)
-    #@notes = DrupalNode.paginate(:conditions => {:status => 1, :type => 'tool'}, :order => "node_counter.totalcount DESC", :include => :drupal_node_counter, :page => params[:page])
-    @unpaginated = true
+    @notes = DrupalNode.where(:status => 1, :type => ['page','tool']).includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?','tool').page(params[:page]).order("node_revisions.timestamp DESC")
     render :template => "notes/tools_places"
   end
 
   def places
     @title = "Places"
-    # currently re-using the notes grid template, so we use the "@notes" instance variable:
-    tids = DrupalTag.find(:all, :conditions => {:name => 'chapter'}).collect(&:tid)
-    nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
-    @notes = DrupalNode.find :all, :conditions => ["node.nid in (?) AND (node.type = 'place' OR node.type = 'page')",nids.uniq], :order => "node_counter.totalcount DESC", :include => :drupal_node_counter
-    @unpaginated = true
+    @notes = DrupalNode.where(:status => 1, :type => ['page','place']).includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?','chapter').page(params[:page]).order("node_revisions.timestamp DESC")
     render :template => "notes/tools_places"
   end
 
