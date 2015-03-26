@@ -6,7 +6,7 @@
           <a class="visible-phone thumbnail" <% if @widget %>target="_blank"<% end %> style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
           <a class="hidden-phone thumbnail" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
         <% end %>
-        <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= node.title %></a></h4>
+        <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= node.latest.title %></a></h4>
         <p style="color:#888;"><small>
           by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
           | <%= time_ago_in_words(node.created_at) %> ago
