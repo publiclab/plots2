@@ -18,7 +18,7 @@ class DrupalNode < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
+  has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy, :order => :timestamp
 # wasn't working to tie it to .vid, manually defining below
 #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
 #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
