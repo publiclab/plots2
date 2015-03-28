@@ -37,6 +37,7 @@ todo.txt
 *.pfx
 *.pem
 *.key
+passenger.*
 passenger-standalone.json.bkp
 public/pdf.js/
 public/sites/
