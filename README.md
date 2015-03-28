@@ -39,9 +39,9 @@ Install rvm for Ruby management (http://rvm.io)
 
 `curl -L https://get.rvm.io | bash -s stable`
 
-**Note:** At this point during the process, you may want to log out and log back in, or open a new terminal window; RVM will then properly load in your environment. 
+**Note:** At this point during the process, you may want to log out and log back in, or open a new terminal window; RVM will then properly load in your environment.
 
-**Ubuntu users:** You may need to enable `Run command as a login shell` in Ubuntu's Terminal, under Profile Preferences > Title and Command. Then close the terminal and reopen it.
+**Ubuntu users:** You may need to enable `Run command as a login shell` in Ubuntu's Terminal, under Profile Preferences > Title and Command. Then close the terminal and reopen it. You may also want to run `source ~/.rvm/scripts/rvm` to load RVM.
 
 Then, use RVM to install version 2.1.2 of Ruby. (v1.9.3+ should also work):
 
@@ -70,7 +70,7 @@ Once NPM is installed, you should be able to run:
 
 Installation steps:
 
-1. In the console, download a copy of the source with `git clone https://github.com/publiclab/plot2.git` or `git clone git@github.com:publiclab/plots2.git`.
+1. In the console, download a copy of the source with `git clone https://github.com/publiclab/plots2.git` or `git clone git@github.com:publiclab/plots2.git`.
 2. `cd plots2` to enter the new 'plots2' directory.
 3. Install gems with `bundle install` from the rails root folder. You may need to run `bundle update` if you have older gems in your environment.
 4. Copy and configure config/database.yml from config/database.yml.example, using a new empty databse you've created.
