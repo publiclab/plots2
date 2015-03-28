@@ -82,7 +82,7 @@ Installation steps:
     * in MySQL, `drop database XXX;` for each database in `config/database.yml` and then try `rake db:setup` again
 7. `rake db:seed` to populate it with initial dummy data
 8. Install static assets (like external javascript libraries, fonts) with `bower install` 
-9. Start rails with `bundle exec passenger start` from the Rails root and open http://localhost:3000 in a web browser. (For some, just `passenger start` will work; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler.)
+9. Start rails with `bundle exec passenger start` from the Rails root and open `http://localhost:3000` in a web browser. (For some, just `passenger start` will work; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler.) You may use `passenger start -a 0.0.0.0 -p 3000 -d -e production` to run production version and access it via publicly accessibly IP address.
 10. Wheeeee!
 
 ##Bugs and support
