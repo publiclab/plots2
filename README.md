@@ -73,7 +73,7 @@ Installation steps:
 1. In the console, download a copy of the source with `git clone https://github.com/publiclab/plots2.git` or `git clone git@github.com:publiclab/plots2.git`.
 2. `cd plots2` to enter the new 'plots2' directory.
 3. Install gems with `bundle install` from the rails root folder. You may need to run `bundle update` if you have older gems in your environment.
-4. Copy and configure config/database.yml from config/database.yml.example, using a new empty databse you've created.
+4. Copy and configure `config/database.yml` from `config/database.yml.example`, using a new empty databse you've created. A quick command you could use is: `cp config/database.yml.example config/database.yml`. You can then use your favorite editor to edit the `config/database.yml` file.
 5. Grant database creation permissions to your username.
 6. Initialize database with `bundle exec rake db:setup`
   * if there are any errors, try one of these two fixes:
