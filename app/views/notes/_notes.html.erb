@@ -17,11 +17,11 @@
           <% if node.type == 'note' %>
             by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
             <%= time_ago_in_words(node.created) %> ago
+            | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
           <% else %>
             last edit by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a> 
             <%= time_ago_in_words(node.latest.timestamp) %> ago
           <% end %>
-          | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
           | <i class="visible-phone icon icon-eye-open"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-phone">views</span>
           | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="icon icon-star-empty"></i> <%= node.likes %>
         </small></p>
