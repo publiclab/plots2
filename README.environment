@@ -1,7 +1,7 @@
 0. Prerequisites:
 ---
 
-Ruby, MySQL, Rails 3.2.x
+Ruby, MySQL, Rails 3.2.x, NodeJS, Bower
 
 1. Install RVM
 ---
@@ -9,17 +9,20 @@ Ruby, MySQL, Rails 3.2.x
 Read about and install RVM here: https://rvm.io/ (preferred over apt-get version)
 
 Then configure it:
-rvm install 1.9.3 -n plots2
-rvm 1.9.3-plots2
+
+        rvm install 2.1.2 -n plots2
+        rvm 2.1.2-plots2
 
 
 2. Setup Database adapters
 ---
 MySQL support on Debian/Ubuntu:
-sudo apt-get install libmysqlclient-dev
+
+        sudo apt-get install libmysqlclient-dev
 
 PostgreSQL support on Debian:
-sudo apt-get install postgresql-server-dev-X.Y
+
+        sudo apt-get install postgresql-server-dev-X.Y
 
 SQLite support:
 (nothing?)
@@ -33,35 +36,61 @@ See config/database.yml.example and modify as desired.
 cd $ROOT/
 
 General:
-bundle update # not always required, but handy
-bundle install
+
+        bundle update # not always required, but handy
+        bundle install
 
 Exclude testing and sqlite:
-bundle install --without test sqlite
+
+        bundle install --without test sqlite
 
 Exclude mysql support:
-bundle install --without mysql
+
+        bundle install --without mysql
 
 4. Install environmental dependencies
 ---
-gem install passenger
+this might be covered by bundler above? -btb
+
+        gem install passenger
 
 
 5. Set Up the Database
 ---
 Create the tables, schema, and fill the database with example seed data:
-rake db:setup
+
+        rake db:setup
 
 Create the tables and schema with the example data:
-rake db:create && rake db:migrate
 
-6. Run the Rails app
+        rake db:create && rake db:migrate
+
+6. Prepare static files
 ---
-rake test
-passenger start (development by default)
+Install NodeJS using your favorite method for your operating system.
+
+Install bower.
+
+        npm install bower
+
+Run `bower install` for the first run, `bower update` for later runs.
+
+        bower install
+
+If bower is not found, try this longer path:
+
+        node_modules/bower/bin/bower install
+
+7. Run the Rails app
+---
+Run tests, just to make sure.
+
+        rake test
+
+Run development by default.
+
+        passenger start
 
 Login credentials:
 login: admin, moderator, or user
 password: password
-
-
