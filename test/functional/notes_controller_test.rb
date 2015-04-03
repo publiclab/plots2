@@ -11,6 +11,24 @@ class NotesControllerTest < ActionController::TestCase
     @user.destroy
   end
 
+  test "should get index" do
+    get :index
+    assert_response :success
+    assert_not_nil :notes
+  end
+
+  test "should get tools" do
+    get :tools
+    assert_response :success
+    assert_not_nil :notes
+  end
+
+  test "should get places" do
+    get :places
+    assert_response :success
+    assert_not_nil :notes
+  end
+
   def test_post_note_no_login
     # kind of weird, to successfully log out, we seem to have to first log in to get the UserSession...
     user_session = UserSession.create @user

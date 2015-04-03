@@ -11,6 +11,12 @@ class WikiControllerTest < ActionController::TestCase
     @user.destroy
   end
 
+  test "should get wiki index" do
+    get :index
+    assert_response :success
+    assert_not_nil :wikis
+  end
+
   def test_post_wiki_no_login
     # kind of weird, to successfully log out, we seem to have to first log in to get the UserSession...
     user_session = UserSession.create @user

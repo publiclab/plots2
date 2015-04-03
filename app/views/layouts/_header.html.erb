@@ -1,3 +1,5 @@
+<%= feature('anniversary-banner') %>
+
 <% if @node && @node.body %>
   <p class="facebook-summary" style="display:none;">
     <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %> 
@@ -177,7 +179,8 @@
       </div><!--/.nav-collapse -->
   </div>
 </div>
-<div class="container-fluid">
+
+<div class="body-container container-fluid">
 
   <div class="visible-print">
     <% if params[:controller] == "notes" %><h1>Public Lab <small>| Research note</small></h1><% end %>

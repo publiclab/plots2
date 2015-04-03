@@ -1,0 +1,23 @@
+<%= javascript_include_tag "dragdrop" %>
+
+<% if @node %>
+  <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= @node.title %>"><br />
+<% else %>
+  <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= params[:id] %>" placeholder="Title"><br />
+<% end %>
+
+<script>
+  (function(){
+    $D = {
+      uid: <%= current_user.uid %>,
+      type: 'feature'
+    }
+  })()
+</script>
+
+<%= render :partial => 'editor/editor' %>
+
+<div class="hidden-phone">
+  <input type="submit" id="publish" tabindex="5" class="publish btn btn-primary btn-large" value="Save" />
+  <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
+</div>

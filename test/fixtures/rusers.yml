@@ -1,9 +1,12 @@
-one:
-  username: warren
-  email: jeff@publiclaboratory.org
+bob:
+  username: bob
+  email: bob@publiclab.org
+  id: 1
   #password: lalala
 
-two:
+jeff:
   username: jeff
   email: jeff@pxlshp.com
+  id: 2
+  role: 'admin'
   #password: lalala

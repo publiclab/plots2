@@ -1,0 +1,11 @@
+<% url = { :controller => "features", :action => "update", :id => @node.id } %>
+
+<%= form_for @node, :as => :drupal_node, :url => url do |f| %>
+  <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
+
+<% if @node && @node.title %>
+  <h3>Editing feature: <i><%= @node.title %></i></h3>
+<% end %>
+
+  <%= render :partial => "features/form" %>
+<% end %>

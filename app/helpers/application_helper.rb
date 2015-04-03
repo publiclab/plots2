@@ -13,4 +13,13 @@ module ApplicationHelper
     end
   end
 
+  def feature(title)
+    features = DrupalNode.where(type: 'feature', title: title)
+    if features.length > 0
+      return features.last.body.html_safe
+    else
+      ""
+    end
+  end
+
 end
