@@ -14,7 +14,9 @@ jQuery(document).ready(function() {
       })
     },
     updater: function(item) {
-      var url = $(item)[0].attributes['data-url'].value
+      var url
+      if ($(item)[0] != undefined) url = $(item)[0].attributes['data-url'].value
+      else url = '/search/'+$('#searchform_input').val()
       window.location = url
     }
   })

@@ -25,8 +25,12 @@ It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
 
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1,h2,h3 {
   font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
+  font-weight:normal;
+}
+h4,h5,h6, h1 small, h2 small, h3 small {
+  font-family:"Junction Regular", lucida grande,lucida sans console,sans-serif;
   font-weight:normal;
 }
 

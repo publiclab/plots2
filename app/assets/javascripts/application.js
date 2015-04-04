@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap-css/js/bootstrap.js
+//= require bootstrap.custom.js
 //= require bootstrap-lightbox/build/bootstrap-lightbox.min.js
 //= require bootstrap-datepicker/js/bootstrap-datepicker.js
 //= require jquery-file-upload/js/vendor/jquery.ui.widget.js
