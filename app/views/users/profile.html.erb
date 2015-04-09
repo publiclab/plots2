@@ -21,6 +21,10 @@
   <% elsif current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.status == 1 %>
     <a data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= @user.id %>" class="btn btn-block"><i class="icon-ban-circle"></i> Ban user</a>
   <% end %>
+
+  <% if @user.user && !@user.user.reset_key.nil? && current_user && current_user.role == "admin" %>
+    <a href="/reset/key/<%= @user.user.reset_key %>" class="btn btn-block"><i class="icon-info-sign"></i> Reset Key: <%= @user.user.reset_key %></a>
+  <% end %>
   <hr />
 
   <p>
