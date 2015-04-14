@@ -7,6 +7,12 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  def test_list
+    get :list
+    assert_response :success
+    assert_not_nil :users
+  end
+
 #  def test_create_invalid
 #    User.any_instance.stubs(:valid?).returns(false)
 #    post :create

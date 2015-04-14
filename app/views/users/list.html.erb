@@ -8,12 +8,14 @@
 
 </div>
 <div class="span9">
-  <h2>New profiles</h2>
+  <h2>Public Lab members <small>by last activity</small></h2>
 
   <table class="table">
     <tr>
       <th>Username</th>
-      <th>Joined new site</th>
+      <th>Last activity</th>
+      <th>History</th>
+      <th>Joined</th>
       <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
         <th>Moderation</th>
       <% end %>
@@ -21,13 +23,15 @@
     <% @users.each do |user| %>
     <tr>
       <td><a href="/profile/<%= user.username %>"><%= user.username %></a></td>
-      <td><%= time_ago_in_words(user.created_at) %></td>
+      <td><%= time_ago_in_words(user.last['changed']) %></td>
+      <td><%= user.node_count %> research notes and wiki edits</td>
+      <td><%= time_ago_in_words(user.created_at) %> ago</td>
       <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
       <td>
-        <% if user.drupal_user.status == 0 %>
+        <% if user.status == 0 %>
           <i class='icon icon-ban-circle' style="color:#a00;"></i> Banned
-        <% elsif user.drupal_user.status == 1 %>
-          <a class="btn btn-small" data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= user.drupal_user.uid %>" ><i class='icon icon-ban-circle'></i> Ban</a>
+        <% elsif user.status == 1 %>
+          <a class="btn btn-small" data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= user.uid %>" ><i class='icon icon-ban-circle'></i> Ban</a>
         <% end %>
       </td>
       <% end %>

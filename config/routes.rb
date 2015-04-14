@@ -24,7 +24,8 @@ Plots2::Application.routes.draw do
   match 'register' => 'users#create'
   match 'reset' => 'users#reset'
   match 'reset/key/:key' => 'users#reset'
-  match 'profiles' => 'users#list'
+  get 'profiles', to: redirect('/people')
+  get 'people' => 'users#list'
   match 'users/update' => 'users#update'
   match 'signup' => 'users#new'
   match 'home' => 'home#front'

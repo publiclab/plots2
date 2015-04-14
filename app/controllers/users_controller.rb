@@ -92,10 +92,16 @@ class UsersController < ApplicationController
   end
 
   def list
-    if current_user && current_user.role == "admin"
-      @users = User.paginate(:order => "id DESC", :page => params[:page])
+    # allow admins to view recent users
+    if current_user && current_user.role == "admin" && params[:all] == 'true'
+      @users = DrupalUsers.paginate(:order => "uid DESC", :page => params[:page])
     else
-      @users = DrupalUsers.paginate(:conditions => {:status => 1}, :order => "uid DESC", :page => params[:page])
+      @users = DrupalUsers.select('*, MAX(node.changed) AS last_updated')
+                          .group('users.uid')
+                          .where('users.status = 1 AND node.status = 1')
+                          .joins(:drupal_node)
+                          .order("last_updated DESC")
+                          .paginate(:page => params[:page])
     end
   end
 

@@ -53,6 +53,11 @@ class DrupalUsers < ActiveRecord::Base
     NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = true AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')",self.uid], :include => :drupal_node).collect(&:node).reverse
   end
 
+  # last node
+  def last
+    DrupalNode.limit(1).where(uid:self.uid).order('changed DESC').first
+  end
+
   def profile_values
     self.drupal_profile_values
   end
