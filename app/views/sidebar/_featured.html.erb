@@ -6,38 +6,4 @@
 
   <%= feature('sidebar-feature') %>
 
-  <div class="sidebar-nav hidden-phone">
-
-    <% if params[:controller] != "home" && params[:action] != "home" %>
-      <p><i class="icon icon-envelope"></i> <a href="/lists">Discussion lists &raquo;</a></p>
-      <p>Much of our work happens on our discussion lists, which are organized by region and topic. Join one today to get involved.</p>
-      <hr />
-    <% end %>
-
-    <p><a href="/donate"><img src="/images/sidebar-donate.gif" width="100%" /></a></p>
-
-    <hr />
-
-    <div id="store-carousel" class="carousel slide" data-ride="carousel">
-      <div class="carousel-inner">
-     
-        <div class="item active"><a href="http://store.publiclab.org/products/desktop-spectrometry-kit"><img src="/images/dsk.jpg"/></a></div>
-        <div class="item"><a href="http://store.publiclab.org/products/balloon-mapping-kit"><img src="/images/balloon-kit.jpg"/></a></div>
-        <div class="item"><a href="http://store.publiclab.org/products/smartphone-spectrometer"><img src="/images/smart-spec.jpg"/></a></div>
-
-      </div>
-    </div>
-    <script>
-      jQuery(document).ready(function() {
-        setTimeout(function() {
-          $('#store-carousel').carousel({
-            interval: 6000
-          })
-        },2000)
-      })
-    </script>
-
-    <hr style="margin-bottom:6px;" />
-    <p style="display:none;"><small><a href="#"><i class="icon-cog"></i> Options</a></small></p>
-  </div>
 </div><!--/span-->
