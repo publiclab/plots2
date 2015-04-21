@@ -101,6 +101,9 @@ $E = {
     'question': "###What I want to do or know\n\n###Background story"
   },
   previewing: false,
+  generate_preview: function(id,text) {
+    $('#'+id)[0].innerHTML = marked(text)
+  },
   toggle_preview: function() {
     $E.preview[0].innerHTML = marked($E.textarea.val());
     $('.preview-btn').button('toggle');

@@ -68,7 +68,7 @@
     <br style="clear:both;"/>
 
     <button type="submit" class="btn btn-primary">Publish</button>
-    <a class="btn preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();$('#c<%= comment.cid %>text-input').toggle();$('#c<%= comment.cid %>edit .preview-btn').button('toggle');$E.preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">Preview</a>
+    <a class="btn preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();$('#c<%= comment.cid %>text-input').toggle();$('#c<%= comment.cid %>edit .preview-btn').button('toggle');$E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">Preview</a>
     <a class="btn" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()">Cancel</a>
     <span>(logged in as <b><%= current_user.username %></b>)</span>
   </form>
