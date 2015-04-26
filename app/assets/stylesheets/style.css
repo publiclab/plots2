@@ -195,6 +195,10 @@ a i.icon-white { color:white; }
   border-left: 2px solid #cccccc;
 }
 
+#comment-form small {
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
 .chat-popover {
   width:400px;
   right:5px;

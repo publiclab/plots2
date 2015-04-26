@@ -13,7 +13,7 @@
 
   <% if current_user %>
   <form id="comment-form" data-remote="true" class="well" action="/comment/create/<%= @node.nid %>">
-    <h4 style="margin-top:0;">Post comment <small class="hidden-phone" style="color:#888;">author and commenters will receive email notifications</small></h4>
+    <h4 style="margin-top:0;">Post comment</h4>
 
     <style>
       #imagebar {
@@ -22,7 +22,9 @@
     </style>
 
     <div id="dropzone">
-      <textarea onFocus="editing=true" name="body" class="span12" id="text-input" rows="6" cols="40" placeholder="Type **Markdown** here."></textarea>
+      <textarea onFocus="editing=true" name="body" class="span12" id="text-input" rows="6" cols="40" placeholder="Help the author refine their post, or point them at other helpful information on the site.
+
+Mention users by @username to notify them of this thread by email."></textarea>
       <div id="imagebar">
         <div id="progress" style="display:none;" class="progress progress-striped active pull-right">
           <div class="bar" style="width: 0%;"></div>
@@ -73,8 +75,13 @@
     <div class="control-group">
       <button type="submit" class="btn btn-primary">Publish</button>
       <a id="preview-btn" class="btn" onClick="$E.toggle_preview()">Preview</a>
-      <span>(logged in as <b><%= current_user.username %></b>)</span>
+      <span style="color:#888;"> &nbsp; 
+        Logged in as <b><%= current_user.username %></b> | 
+        <a target="_blank" href="/wiki/authoring-help#Formatting">Formatting</a> | 
+        <a onClick="$('#who-is-notified').toggle()">Notifications</a>
+      </span>
     </div>
+    <p id="who-is-notified" style="display:none;color:#888;">Author, commenters, and those who've "liked" this note will receive email notifications</p>
   </form>
   <% else %>
   <p>You must be <a href="/login">logged in</a> to comment.</p>

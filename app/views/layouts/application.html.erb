@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Public Lab<%= ": "+(@title || params[:action].capitalize) %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <% if @node && @node.body %>
-      <meta name="description" content="<%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>">
+      <meta name="description" content="<%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>" />
     <% else %>
-      <meta name="description" content="Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues.">
+      <meta name="description" content="Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues." />
     <% end %>
-    <meta name="author" content="Public Lab contributors">
+    <meta name="author" content="Public Lab contributors" />
     <link href="http://publiclab.org/feed.rss" rel="alternate" type="application/rss+xml" title="Public Lab research" />
 
     <%= stylesheet_link_tag "application", :media => "all" %>
@@ -27,10 +27,10 @@
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
 
-    <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d"></meta>
+    <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d" />
     <% if @node && @node.main_image %>
       <!-- facebook like button image: -->
-      <meta property="og:image" content="<%= @node.main_image.path(:default) %>"/>
+      <meta property="og:image" content="<%= @node.main_image.path(:default) %>" />
     <% end %>
   </head>
 
