@@ -97,8 +97,9 @@
             </ul>
           </li>
           <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown">
-              Data <b class="caret"></b>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Data 
+              <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
               <li><a href="/archive">Public Lab Archive</a></li>
@@ -132,8 +133,7 @@
               <%= current_user.username %> <b class="caret"></b>
             </a> 
             <ul class="dropdown-menu">
-              <li class="nav-header">Role: <% if current_user.role === 'moderator' || current_user.role === 'admin'%><%= current_user.role %><% end %>
->
+              <li class="nav-header">Role: <% if current_user.role === 'moderator' || current_user.role === 'admin'%><%= current_user.role %><% end %></li>
               <li><a href="/dashboard">Dashboard</a></li>
               <li><a href="/profile/<%= current_user.username %>">Profile</a></li>
               <li><a href="/profile/edit">Edit profile</a></li> 
@@ -141,7 +141,7 @@
               <li><a href="/subscriptions">Subscriptions</a></li>
               <li><a href="/profile/<%= current_user.username %>/likes">Notes you've liked</a></li> 
               <li class="divider"></li>
-    	  <li><%= link_to "Logout", logout_path %></li>
+              <li><%= link_to "Logout", logout_path %></li>
             </ul>
             <% else %>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
