@@ -234,12 +234,14 @@ class DrupalNode < ActiveRecord::Base
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(tag)
-    DrupalNodeCommunityTag.find(:all,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)]).length > 0
+    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
+    DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids).length > 0
   end
 
   # returns the value for the most recent power tag of form key:value
   def power_tag(tag)
-    node_tag = DrupalNodeCommunityTag.find(:last,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)])
+    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
+    node_tag = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids)
     if node_tag
       node_tag.name.gsub(tag+':','')
     else
@@ -249,7 +251,8 @@ class DrupalNode < ActiveRecord::Base
 
   # returns all results
   def power_tags(tag)
-    node_tags = DrupalNodeCommunityTag.find(:all,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)])
+    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
+    node_tags = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids)
     tags = []
     node_tags.each do |nt|
       tags << nt.name.gsub(tag+':','')
@@ -259,12 +262,14 @@ class DrupalNode < ActiveRecord::Base
 
   # returns all results as whole tag (node) objects
   def power_tag_objects(tag)
-    DrupalNodeCommunityTag.find(:all,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name LIKE ?",tag+":%"]).collect(&:tid)])
+    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
+    DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids)
   end
 
   # return whole tag objects but no powertags or "event"
   def normal_tags
-    node_tags = DrupalNodeCommunityTag.find(:all,:conditions => ['nid = ? AND tid IN (?)',self.id,DrupalTag.find(:all, :conditions => ["name NOT LIKE ? AND name NOT LIKE ?","%:%","event"]).collect(&:tid)])
+    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
+    node_tags = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids)
     tags = []
     node_tags.each do |nt|
       tags << nt
@@ -273,7 +278,8 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def has_tag(tag)
-    DrupalNodeCommunityTag.find(:all,:conditions => ['nid IN (?) AND tid IN (?)',self.id,DrupalTag.find_all_by_name(tag).collect(&:tid)]).length > 0
+    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
+    DrupalNodeCommunityTag.where('nid IN (?) AND tid IN (?)',self.id,tids).length > 0
   end
 
   # has it been tagged with "list:foo" where "foo" is the name of a Google Group?
