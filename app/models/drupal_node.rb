@@ -278,7 +278,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def has_tag(tag)
-    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
+    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag).collect(&:tid)
     DrupalNodeCommunityTag.where('nid IN (?) AND tid IN (?)',self.id,tids).length > 0
   end
 

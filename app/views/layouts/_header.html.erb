@@ -190,19 +190,6 @@
 
   <div class="header-spacer hidden-phone"></div>
 
-    <% if @node && !@node.has_tag('style:nobanner') %>
-      <div id="donate">
-        <div class="well visible-desktop hidden-print" style="padding:12px 20px 10px;">
-          <h4 style="display:inline;">Did you know that Public Lab is an open community supported by a nonprofit?</h4> 
-          <a href="/signup" style="margin-left:10px;" class="btn hidden-phone">Sign up</a>
-          <a href="/donate" style="margin-left:10px;" class="btn btn-primary hidden-phone">Donate &raquo;</a>
-        </div>
-        <div class="visible-phone hidden-print" style="height:4.5em;">
-          <a href="/donate" style="margin-bottom:6px;" class="btn btn-success btn-large btn-block">Donate to <span class="hidden-tiny">the</span> Public Lab <span class="hidden-tiny">non-profit</span> &raquo;</a>
-        </div>
-      </div>
-    <% end %>
-
   <%= render :partial => "layouts/alerts" %>
 
 </div>
