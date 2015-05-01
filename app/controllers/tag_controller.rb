@@ -64,31 +64,36 @@ class TagController < ApplicationController
   def create
     params[:name] ||= ""
     tagnames = params[:name].split(',')
-    response = { :errors => [],
+    @output = { :errors => [],
       :saved => [],
     }
+    @tags = [] # not used except in tests for now
 
     node = DrupalNode.find params[:nid]
     tagnames.each do |tagname|
+
+      # this should all be done in the model:
+
       if DrupalTag.exists?(tagname,params[:nid])
-        response[:errors] << "Error: that tag already exists."
+        @output[:errors] << "Error: that tag already exists."
       else 
         # "with:foo" coauthorship powertag: by author only
         if tagname[0..4] == "with:" && node.author.uid != current_user.uid
-          response[:errors] << "Error: only the author may use that powertag."
+          @output[:errors] << "Error: only the author may use that powertag."
         # "with:foo" coauthorship powertag: only for real users
         elsif tagname[0..4] == "with:" && User.find_by_username(tagname.split(':')[1]).nil?
-          response[:errors] << "Error: cannot find that username."
+          @output[:errors] << "Error: cannot find that username."
         elsif tagname[0..4] == "with:" && tagname.split(':')[1] == current_user.username
-          response[:errors] << "Error: you cannot add yourself as coauthor."
+          @output[:errors] << "Error: you cannot add yourself as coauthor."
         elsif tagname[0..4] == "rsvp:" && current_user.username != tagname.split(':')[1]
-          response[:errors] << "Error: you can only RSVP for yourself."
+          @output[:errors] << "Error: you can only RSVP for yourself."
         else
           saved,tag = node.add_tag(tagname.strip,current_user)
           if saved
-            response[:saved] << [tag.name,tag.id]
+            @tags << tag
+            @output[:saved] << [tag.name,tag.id]
           else
-            response[:errors] << "Error: tags "+tag.errors[:name].first
+            @output[:errors] << "Error: tags "+tag.errors[:name].first
           end
         end
       end
@@ -96,9 +101,9 @@ class TagController < ApplicationController
     respond_with do |format|
       format.html do
         if request.xhr?
-          render :json => response
+          render :json => @output
         else
-          flash[:notice] = "#{response[:saved].length} tags created, #{response[:errors].length} errors."
+          flash[:notice] = "#{@output[:saved].length} tags created, #{@output[:errors].length} errors."
           redirect_to node.path
         end
       end
