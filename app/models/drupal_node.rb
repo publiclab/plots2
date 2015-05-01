@@ -241,9 +241,9 @@ class DrupalNode < ActiveRecord::Base
   # returns the value for the most recent power tag of form key:value
   def power_tag(tag)
     tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
-    node_tag = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids)
+    node_tag = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids).order('nid DESC')
     if node_tag
-      node_tag.name.gsub(tag+':','')
+      node_tag.first.tag.name.gsub(tag+':','')
     else
       ''
     end
