@@ -4,6 +4,8 @@
     <%= render :partial => "sidebar/post_button" %>
   <% end %>
 
-  <%= feature('sidebar-feature') %>
+  <% cache('feature_sidebar-feature') do %>
+    <%= feature('sidebar-feature') %>
+  <% end %>
 
 </div><!--/span-->

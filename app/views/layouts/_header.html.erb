@@ -1,4 +1,6 @@
-<%= feature('anniversary-banner') %>
+<% cache('feature_anniversary-banner') do %>
+  <%= feature('anniversary-banner') %>
+<% end %>
 
 <% if @node && @node.body %>
   <p class="facebook-summary" style="display:none;">

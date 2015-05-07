@@ -4,7 +4,9 @@
 
 <div style="position:absolute;top:0;left:0;z-index:-1;height:380px;min-height:380px;overflow:hidden;">
 
-  <%= feature("home-carousel") %>
+  <% cache('feature_home-carousel') do %>
+    <%= feature("home-carousel") %>
+  <% end %>
 
 </div>
 
@@ -34,7 +36,9 @@
 
 <div class="row-fluid">
 
-  <%= feature("home-banners") %>
+  <% cache('feature_home-banners') do %>
+    <%= feature("home-banners") %>
+  <% end %>
 
 </div>
 

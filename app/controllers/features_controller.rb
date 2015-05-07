@@ -80,7 +80,8 @@ class FeaturesController < ApplicationController
           @node.title = @revision.title
           @node.save
         end
-        flash[:notice] = "Edits saved."
+        expire_fragment("feature_#{params[:title]}")
+        flash[:notice] = "Edits saved and cache cleared."
         redirect_to "/features"
       else
         flash[:error] = "Your edit could not be saved."
