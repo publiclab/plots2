@@ -220,7 +220,10 @@ class WikiController < ApplicationController
 
   def index
     @title = "Wiki"
+
     @wikis = DrupalNode.includes(:drupal_node_revision,:drupal_node_counter).find(:all, :order => "node_revisions.timestamp DESC", :conditions => ["status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')"]).paginate(:page => params[:page])
+
+
     @paginated = true
   end
 
