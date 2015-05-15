@@ -12,7 +12,7 @@
     text-align:center;
     margin:10px 0 20px;
   }
-  .blog-header {
+  .blog-header, .blog a.img {
     text-align:center;
   }
   .blog-header p {
@@ -57,8 +57,7 @@
       <% @notes.each_with_index do |node,i| %>
         <div class="clearfix">
           <% if node.main_image %>
-            <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
-            <a class="hidden-phone thumbnail" style="width:60%" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+            <a class="img" style="width:60%" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
           <% end %>
           <h2 style="clear:left;padding-top:20px;"><a href="<%= node.path %>"><%= node.title %></a></h2>
           <p class="meta" style="color:#888;"><small>
