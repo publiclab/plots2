@@ -1,5 +1,5 @@
 <style>
-  .blog h1 {
+  .blog-header h1 {
     font-size:4em;
     margin-top:100px;
     color:#326;
@@ -8,11 +8,21 @@
     text-align:center;
     padding:10px 40px;
   }
+  .blog h1 a {
+   clear:left;
+   color:#444;
+   line-height:1.2em;
+  }
   .blog .meta {
     text-align:center;
     margin:10px 0 20px;
   }
-  .blog-header, .blog a.img {
+  .blog a.img {
+    display:block;
+    text-align:center;
+    margin-bottom:20px;
+  }
+  .blog-header {
     text-align:center;
   }
   .blog-header p {
@@ -20,6 +30,9 @@
   }
   .blog {
     font-size:15px;
+  }
+  .blog p {
+    margin-bottom:20px;
   }
 </style>
 
@@ -57,9 +70,9 @@
       <% @notes.each_with_index do |node,i| %>
         <div class="clearfix">
           <% if node.main_image %>
-            <a class="img" style="width:60%" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+            <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
           <% end %>
-          <h2 style="clear:left;padding-top:20px;"><a href="<%= node.path %>"><%= node.title %></a></h2>
+          <h1><a href="<%= node.path %>"><%= node.title %></a></h1>
           <p class="meta" style="color:#888;"><small>
             by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
             | <%= time_ago_in_words(node.created_at) %> ago
