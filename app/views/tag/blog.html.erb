@@ -3,11 +3,20 @@
     font-size:4em;
     margin-top:100px;
     color:#326;
+    line-height:1.3em;
   }
   .blog h2, .blog h1 {
     text-align:center;
     padding:10px 40px;
   }
+
+  /* this may not be doing anything: */
+  @media (max-width:400px) {
+    .blog h2, .blog h1 {
+      padding:10px 10px;
+    }
+  }
+
   .blog h1 a {
    clear:left;
    color:#444;
@@ -45,6 +54,7 @@
 
     <br />
     <p>stories from the Public Lab community</p>
+    <p><a href="/wiki/blog">About the blog</a></p>
     <br />
  
     <% if current_user %>
