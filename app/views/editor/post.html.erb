@@ -14,7 +14,7 @@
   <% if params[:template] == "question" %>
     <h4 class="visible-phone">Ask a question</h4>
     <div id="research-note-detail" class="hidden-phone">
-      <h3>Use this form to ask about <%= params[:tags].split(':').last %></h3>
+      <h3>Use this form to ask about "<%= params[:tags].split(':').last %>"</h3>
       <% if DrupalTag.follower_count(params[:tags]) > 0 %><p><%= DrupalTag.follower_count(params[:tags]) %> people have signed up to answer questions on this topic.</p><% end %>
       <ul>
         <li>Need to learn more?</li>

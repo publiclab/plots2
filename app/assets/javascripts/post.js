@@ -21,7 +21,8 @@ jQuery(document).ready(function() {
   $(".publish").bind("keydown",function(e) {
     if (e.which == 32 || e.which == 13) publish()
   })
-  if ($E.textarea.val() == "") $E.apply_template("<%= params[:template] || 'default'%>")
+
+  if ($E.textarea.val() == "") $E.apply_template(getUrlParameter('template') || "default")
   
   /* tag autocomplete */
   $('#taginput').typeahead({
