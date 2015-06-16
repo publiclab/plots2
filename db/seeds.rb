@@ -63,8 +63,8 @@ blog_post_comment = DrupalComment.create! "nid"=>blog_post.id, "uid"=>admin.id,
   drupal_comm_tag_lon = DrupalNodeCommunityTag.create! nid: map_node.nid, tid: drupal_tag_lon.tid, uid: 1
   DrupalContentTypeMap.attr_accessible :nid, :vid, :field_publication_date_value, :field_capture_date_value, :field_tms_url_value, :field_license_value, :field_raw_images_value, :field_cartographer_notes_value, :field_notes_value, :field_zoom_min_value, :field_zoom_max_value, :authorship
   content_type_mape = DrupalContentTypeMap.create! "vid"=>map_node.nid,
-    "nid"=>map_node.nid, "field_publication_date_value"=>Time.now.to_s,
-    "field_capture_date_value"=>Time.now.to_s,
+    "nid"=>map_node.nid, "field_publication_date_value"=>Time.now.to_s(:short),
+    "field_capture_date_value"=>Time.now.to_s(:short),
     "field_tms_url_value"=>"http://archive.publiclaboratory.org/leaflet/?\
     tms=http://archive.publiclab.org/2013/2013-04-15-us-massachusetts-plum-\
     island/tms/&lon=-70.80848&lat=42.7952&zoom=16", "field_license_value"=>"publicdomain",
