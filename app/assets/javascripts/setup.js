@@ -105,6 +105,7 @@ jQuery(document).ready(function($) {
       interval: 6000
     })
   }
+
 })
 
 function getUrlParameter(sParam)

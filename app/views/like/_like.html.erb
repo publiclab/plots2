@@ -1,14 +1,14 @@
 <div class="btn-toolbar pull-right" style="margin-left:10px;margin-top:0;">
   <ul class="btn-group">
-    <li class="btn btn-small" data-html="true" rel="popover" data-content="<%= "No tags" if @tagnames.nil? || @tagnames.length == 0 %><% if @tagnames %><% @tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-mini'><%= tagname %></a></p><% end %><% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="left"><i class="icon-eye-open"></i><span class="hidden-phone"> Follow</span></li>
-    <li rel="tooltip" title="Helpful? Follow it!" class="btn btn-small" id="like-button"><span id="like-star" class="icon-star<% if current_user && !@node.liked_by(current_user.uid) %>-empty<% end %>"></span><span class="hidden-phone"> Like <span id="like-count"/>(<%= @node.likers.length %>)</span></li>
+    <li class="btn btn-small" data-html="true" rel="popover" data-content="<%= "No tags" if tagnames.nil? || tagnames.length == 0 %><% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-mini'><%= tagname %></a></p><% end %><% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= node.author.name %></a>" title="Follow by tag or author" data-placement="left"><i class="icon-eye-open"></i><span class="hidden-phone"> Follow</span></li>
+    <li rel="tooltip" title="Helpful? Follow it!" class="btn btn-small" node-id="<%= node.id %>" id="like-button-<%= node.id %>"><span id="like-star-<%= node.id %>" class="icon-star<% if current_user && !node.liked_by(current_user.uid) %>-empty<% end %>"></span><span class="hidden-phone"> Like <span id="like-count-<%= node.id %>"/>(<%= node.likers.length %>)</span></li>
     <li class="btn btn-small" rel="popover" data-placement="left" data-html="true" data-title="Tools" data-content="
 <p><b>Users who liked this</b></p>
-<% @node.likers.each do |user| %>
+<% node.likers.each do |user| %>
   <i class='icon icon-star-empty'></i> <a href='/profile/<%= user.username %>/likes'><%= user.username %></a><br />
 <% end %>
-<% if @node.likers.length == 0 %><i>None</i><% end %>
-<% if @node.type == 'note' && current_user && @node.uid != current_user.uid%>
+<% if node.likers.length == 0 %><i>None</i><% end %>
+<% if node.type == 'note' && current_user && node.uid != current_user.uid%>
 <hr style='margin-bottom:3px;' />
 <p><b>Award a Barnstar:</b></p>
 <form class='form' action='/barnstar/give'>
@@ -20,7 +20,7 @@
     <option value='empiricism'>The empiricism barnstar</option>
     <option value='excessive-enthusiasm'>The enthusiasm barnstar</option>
 </select><br />
-<input type='hidden' name='nid' value='<%= @node.id %>'/>
+<input type='hidden' name='nid' value='<%= node.id %>'/>
 <input type='submit' class='btn btn-primary' value='Give'/> <a _target='blank' href='/wiki/barnstars'>Learn more</a>
 </form>
 <% end %>
@@ -33,51 +33,14 @@
         cache: false
       });
      
-      // grab the like count for this node
-      jQuery.getJSON("<%= like_count_path(@node) %>", function (json) {
+      // grab the like count for this node; "/likes/node/11278/count"
+      jQuery.getJSON("<%= like_count_path(node) %>", function (json) {
         // push like count into the Like button placeholder 
-        document.getElementById('like-count').textContent = "(" + json + ")";
+        $('#like-count-<%= node.id %>').html("(" + json + ")");
       });
      
       <% if current_user %>
-        var star = document.getElementById('like-star');
-        var button = document.getElementById('like-button');
-        button.onclick = <% if @node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>
-      
-        // functionalize appearance changes
-        function changelikecount(value) {
-          var count = document.getElementById('like-count').textContent
-          // strip parens and convert to number
-          count = parseInt(count.substr(1, count.length-2));
-          count += value;
-          // push value back out
-          document.getElementById('like-count').textContent = "(" + count + ")";
-        }
-        function shownotliked() {
-          star.className = "icon-star-empty";
-        }
-        function showliked() {
-          star.className = "icon-star";
-        }
-      
-        // support AJAX button clicking
-        function clickliked() {
-          // toggle liked to not liked.
-          jQuery.getJSON("<%= drop_like_path(@node) %>", function () {
-            shownotliked();
-            changelikecount(-1);
-            button.onclick = clicknotliked
-          });
-        }
-        function clicknotliked() {
-          // toggle not liked to liked.
-          jQuery.getJSON("<%= add_like_path(@node) %>", function () {
-            showliked();
-            changelikecount(1);
-            button.onclick = clickliked
-          });
-        }
-      
+        $('#like-button-<%= node.id %>').on('click',<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>) 
       <% end %>
     })
   </script>

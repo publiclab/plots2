@@ -19,7 +19,7 @@
   <% end %>
 
   <div style="margin-top:10px;" class="hidden-print">
-    <%= render :partial => "like/like" %>
+    <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   </div>
 
   <h1 style="font-family: 'Junction Light';"><i class="icon icon-book"></i> <%= @revision.title %> <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a></h1>

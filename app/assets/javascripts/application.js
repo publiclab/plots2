@@ -30,3 +30,4 @@
 //= require search.js
 //= require setup.js
 //= require editor.js
+//= require like.js

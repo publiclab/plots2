@@ -8,7 +8,7 @@
   <% end %>
 
   <div style="margin-top:10px;" class="hidden-print">
-  <%= render :partial => "like/like" %>
+  <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   <% if current_user && (current_user.uid == @node.uid || current_user.role == "moderator" || current_user.role == "admin") %>
     <div style="padding:0 8px 8px;" class="btn-group pull-right">
       <a <% if current_user && current_user.uid != @node.uid %>data-confirm="Please be aware that you are editing someone else's post, a privilege you have only because you are a moderator or admin." <% end %>class="btn btn-small" href="/notes/edit/<%= @node.id %>"><i class="icon icon-pencil"></i><span class="hidden-phone"> Edit</span></a>

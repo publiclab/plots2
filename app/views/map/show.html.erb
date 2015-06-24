@@ -6,7 +6,7 @@
 
 <div class="span9">
 
-  <%= render :partial => "like/like" %>
+  <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   <% if current_user && (current_user.uid == @node.uid || current_user.role == "admin") %>
     <div style="padding:0 8px 8px;" class="btn-group pull-right">
       <a class="btn btn-small" href="/map/edit/<%= @node.id %>"><i class="icon icon-pencil"></i> Edit</a>
