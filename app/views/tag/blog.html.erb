@@ -50,11 +50,14 @@
 </div>
 <div class="span8 blog">
   <div class="blog-header">
-    <h1><%= params[:id] == "blog" ? "The Public Lab Blog" : params[:id].capitalize %></h1>
+    <h1><%= params[:id] == "blog" ? "The Public Lab Blog" : params[:id].split('-').join(' ').capitalize %> Blog</h1>
 
-    <br />
-    <p>stories from the Public Lab community</p>
-    <p><a href="/wiki/blog">About the blog</a></p>
+    <%= params[:id] == "blog" %>
+      <br />
+      <p>stories from the Public Lab community</p>
+      <p><a href="/wiki/blog">About the blog</a></p>
+    <% end %>
+
     <br />
  
     <% if current_user %>
