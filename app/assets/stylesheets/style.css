@@ -222,3 +222,8 @@ a i.icon-white { color:white; }
   -moz-background-clip: padding;
   background-clip: padding-box;
 }
+
+.foldaway {
+  display:none;
+  padding:0 0 20px;
+}

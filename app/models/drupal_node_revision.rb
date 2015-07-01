@@ -41,8 +41,13 @@ class DrupalNodeRevision < ActiveRecord::Base
     body = RDiscount.new(body, :generate_toc)
     body = body.to_html
     body = body.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKHTML))
+    # inline edit button
     body = body.gsub('[edit]','<p class="well" style="padding:6px;"><a class="btn btn-primary" href="'+self.parent.edit_path+'"><i class="icon icon-white icon-pencil"></i> Edit this page</a> to help complete it!</p>')
+    # inline question button
     body = body.gsub(/\[question:([\w-]+)\]/,'<p class="well" style="padding:6px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:\\1&template=question"><i class="icon icon-white icon-question-sign"></i> Ask a question about <b>\\1</b></a> or <a style="margin-bottom:6px;" class="btn" target="_blank" href="/subscribe/tag/question:\\1">Sign up to answer questions on this topic</a></p>')
+    # inline foldaway
+    body = body.gsub(/\[fold\:(.+)\]/,'<hr /><p class="foldaway-link" data-title="\1"><i style="color:#666;padding-right:3px;" class="icon icon-expand-alt"></i> <a>\1 &raquo;</a></p><hr /><div class="foldaway" data-title="\1">')
+    body = body.gsub('[unfold]','</div>')
     body
   end
 

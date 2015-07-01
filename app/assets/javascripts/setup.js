@@ -106,6 +106,13 @@ jQuery(document).ready(function($) {
     })
   }
 
+  // Foldaway code:
+  $('p.foldaway-link').click(function() {
+    var title = $(this).attr('data-title');
+    $('div[data-title="'+title+'"]').animate({height:'toggle'},'slow')
+  })
+
+
 })
 
 function getUrlParameter(sParam)
