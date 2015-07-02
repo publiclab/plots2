@@ -1,5 +1,7 @@
-body {
-  padding:40pt;
+@page {
+  size: auto;   /* auto is the current printer page size */
+  size: 5.5in 8.5in;
+  margin:40pt 30pt;  /* this affects the margin in the printer settings */
 }
 
 .hidden-print {
@@ -8,6 +10,43 @@ body {
 
 .visible-print {
   display:auto;
+}
+/*
+a, a:after {
+  content: normal !important;
+}
+*/
+#content hr {
+  page-break-after: always;
+}
+
+.alert,
+.navbar
+{
+  display:none;
+}
+
+#content {
+  font-size: 8pt;
+}
+
+h1 { font-size:180%; }
+h2 { font-size:160%; }
+h3 { font-size:140%; }
+h4 { font-size:120%; }
+
+h1, h2, h3, h4 {
+ line-height:120%;
+}
+h1 small {
+  font-family: Junction Light;
+  font-size:75%;
+}
+
+.foldaway {
+  display:block;
+  padding-top:   20px;
+  padding-bottom:20px;
 }
 
 a[href]:after, abbr[title]:after {

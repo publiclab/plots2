@@ -115,8 +115,13 @@ jQuery(document).ready(function($) {
 
 })
 
-function getUrlParameter(sParam)
-{
+function print_linkless() {
+  //$('a, a:after').addClass('linkless')
+  $('body').append('<style> a, a:after { content: normal !important; } </style>');
+  window.print();
+}
+
+function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
     for (var i = 0; i < sURLVariables.length; i++) 
