@@ -1,6 +1,6 @@
 @page {
   size: auto;   /* auto is the current printer page size */
-  size: 5.5in 8.5in;
+  /* size: 5.5in 8.5in; */
   margin:40pt 30pt;  /* this affects the margin in the printer settings */
 }
 
