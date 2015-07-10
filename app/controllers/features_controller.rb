@@ -1,8 +1,13 @@
 class FeaturesController < ApplicationController
-  before_filter :require_user
+  before_filter :require_user, :except => [ :show ]
 
   def index
     @features = DrupalNode.where(:type => 'feature').paginate(:page => params[:page])
+  end
+
+  def embed
+    @node = DrupalNode.find_by_title params[:id]
+    render :layout => false
   end
 
   def new
