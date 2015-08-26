@@ -13,9 +13,13 @@ Plots2::Application.routes.draw do
   # Keep in mind you can assign values other than :controller and :action
 
   #match '', to: 'blogs#show', constraints: {subdomain: /.+/}
+
+  # switch off subdomain matching when in development
+  if Rails.env.test?
   # or to skip www:
-  match "", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
-  match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
+    match "", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
+    match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
+  end
 
   match 'ioby' => "legacy#ioby"
 
