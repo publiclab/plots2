@@ -23,6 +23,19 @@ A complete rewrite of the Public Lab website on a new platform, with a whole new
 * new simplified/improved wiki editing form
 * sorting and prioritization of notes and pages by popularity metric
 
+====
+
+##Simple installation with Cloud9
+
+1. If you have a GitHub account, visit https://c9.io and log in with the GitHub button.
+2. Fork this repository to your own GitHub account, creating a `yourname/plots2` project.
+3. Name your project, then enter `yourname/plots2` in the "Clone from Git or Mercurial URL" field, and press **Create Workspace** 
+4. In the command line prompt at the bottom of the page, type `./install_cloud9.sh` and press enter.
+5. Enter your username when prompted, and click "Run Project" when it's done.
+6. You're done! Go to the URL shown!
+
+====
+
 ##Prerequisites
 
 Recommended; for an Ubuntu/Debian system. Varies slightly for mac/fedora/etc
