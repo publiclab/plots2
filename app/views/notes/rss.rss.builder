@@ -7,8 +7,8 @@ xml.rss :version => "2.0" do
 
    @notes.each do |node|
 
-     body = node.body
-     body = "<img src='"+node.main_image.path(:default)+"'/><br /> "+node.body if node.main_image
+     body = node.latest.render_body
+     body = "<p><img src='"+node.main_image.path(:default)+"'/></p> " + node.body if node.main_image
 
      xml.item do
        xml.title       node.title
@@ -16,8 +16,8 @@ xml.rss :version => "2.0" do
        xml.pubDate     node.created_at.to_s(:rfc822)
        #xml.link        url_for :only_path => false, :controller => 'notes', :action => 'show', :id => node.nid
        xml.link        "http://publiclab.org"+node.path
-       #xml.image "http://publiclaboratory.org/"+node.main_image.path(:default) if node.main_image
-       xml.description auto_link(node.latest.render_body, :sanitize => false)
+       xml.image "http://publiclab.org/"+node.main_image.path(:default) if node.main_image
+       xml.description auto_link(body, :sanitize => false)
        xml.guid        url_for :only_path => false, :controller => 'notes', :action => 'show', :id => node.nid
      end
    end

@@ -23,7 +23,7 @@
 
   <%= form_for @node, :as => :drupal_node, :url => url, :html => {:class => "form well"} do |f| %>
 
-    <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
+    <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages :header_message => "Your map couldn't be saved." %></div><% end %>
 
     <%= render :partial => "editor/main_image" %>
 
