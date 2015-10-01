@@ -283,3 +283,8 @@ a i.icon-white { color:white; }
   border-top:    1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
+
+.blog > p img {
+  display: block;
+  margin: 0 auto
+}
