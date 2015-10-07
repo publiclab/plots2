@@ -39,7 +39,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   def test_post_note
-    UserSession.new(@user)
+    UserSession.create(@user)
     title = "My new post about balloon mapping"
     post :create, :title => title, :body => "This is a fascinating post about a balloon mapping event.", :tags => "balloon-mapping,event"#, :main_image => "/images/testimage.jpg"
     assert_redirected_to "/notes/"+@user.username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
@@ -56,7 +56,7 @@ class NotesControllerTest < ActionController::TestCase
   #end
 
   def test_edit_note
-    UserSession.new(@user)
+    UserSession.create(@user)
     title = "My second post about balloon mapping"
     post :create, :title => title, :body => "This is a fascinating post about a balloon mapping event.", :tags => "balloon-mapping,event"#, :main_image => "/images/testimage.jpg"
     assert_redirected_to "/notes/"+@user.username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize

@@ -26,4 +26,5 @@ class CommentMailer < ActionMailer::Base
     @comment = comment
     mail(:to => user.email, :subject => "You were mentioned in a comment.").deliver
   end
+
 end

@@ -2,17 +2,10 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
 
-  def setup
-    activate_authlogic
-    @user =  FactoryGirl.create(:user)
-  end
+  #test "user creation" do
 
-  def teardown
-    @user.destroy
-  end
+    # create a user
 
-  test "user creation" do
-    UserSession.new(@user)
-  end
+  #end
 
 end

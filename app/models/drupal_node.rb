@@ -598,4 +598,9 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
+  def mentioned_users
+    usernames = self.body.scan(Callouts.const_get(:FINDER))
+    User.find_all_by_username(usernames.map {|m| m[1] }).uniq
+  end
+
 end

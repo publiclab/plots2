@@ -2,9 +2,6 @@ require 'test_helper'
 
 class FeaturesControllerTest < ActionController::TestCase
 
-  fixtures :rusers
-  set_fixture_class :rusers => User
-
   test "should not get features if not admin" do
     session[:user_id] = rusers(:bob).id # log in; this is not actually working
     get :index
