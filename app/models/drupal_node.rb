@@ -562,10 +562,9 @@ class DrupalNode < ActiveRecord::Base
     self.power_tag_objects('barnstar')
   end
 
-  def add_barnstar(tagname,user)
-    self.add_tag(tagname,user.drupal_user)
-    # don't bother checking if it worked
-    CommentMailer.notify_barnstar(self.author.user,self)
+  def add_barnstar(tagname,giver)
+    self.add_tag(tagname,giver.drupal_user)
+    CommentMailer.notify_barnstar(giver,self)
   end
 
   def add_tag(tagname,user)
@@ -597,6 +596,11 @@ class DrupalNode < ActiveRecord::Base
       end
       return [saved,tag]
     end
+  end
+
+  def mentioned_users
+    usernames = self.body.scan(Callouts.const_get(:FINDER))
+    User.find_all_by_username(usernames.map {|m| m[1] }).uniq
   end
 
 end

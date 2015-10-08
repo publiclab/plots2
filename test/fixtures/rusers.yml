@@ -2,11 +2,15 @@ bob:
   username: bob
   email: bob@publiclab.org
   id: 1
-  #password: lalala
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
 
 jeff:
   username: jeff
   email: jeff@pxlshp.com
   id: 2
-  role: 'admin'
-  #password: lalala
+  role: admin
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>

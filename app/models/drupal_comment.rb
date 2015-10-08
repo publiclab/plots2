@@ -61,7 +61,7 @@ class DrupalComment < ActiveRecord::Base
 
   def mentioned_users
     usernames = self.comment.scan(Callouts.const_get(:FINDER))
-    User.find_all_by_username(usernames.map {|m| m[0] }).uniq
+    User.find_all_by_username(usernames.map {|m| m[1] }).uniq
   end
 
   # email all users in this thread 

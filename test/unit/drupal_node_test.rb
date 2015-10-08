@@ -2,19 +2,22 @@ require 'test_helper'
 
 class DrupalNodeTest < ActiveSupport::TestCase
 
-  def setup
-    activate_authlogic
-    @user =  FactoryGirl.create(:user)
-  end
-
-  def teardown
-    @user.destroy
-  end
-
   test "create a node" do
-    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid)
-    node_revision = FactoryGirl.create(:drupal_node_revision, :nid => node.id)
+    # in testing, uid and id should be matched, although this is not yet true in production db
+    node =  DrupalNode.new({:uid => rusers(:bob).id})
+    node.title = "My new node"
     assert node.save!
+  end
+
+  test "create a node_revision" do
+    # in testing, uid and id should be matched, although this is not yet true in production db
+    node_revision =  DrupalNodeRevision.new({
+      :uid => rusers(:bob).id,
+      :nid => node(:one).nid
+    })
+    node_revision.title = "My new node"
+    node_revision.body = "My new node"
+    assert node_revision.save!
   end
 
   #test "should not save node without title, or anything else" do

@@ -5,6 +5,7 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   def setup
     activate_authlogic
     @user =  FactoryGirl.create(:user)
+    # needed?:
     @user.save({})
   end
 
