@@ -16,4 +16,26 @@ class DrupalCommentTest < ActiveSupport::TestCase
     assert_equal comment.mentioned_users.first.id, rusers(:bob).id
   end
 
+  test "should scan multiple callouts out of body" do
+    comment = DrupalComment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = 'Hey, @bob, @jeff, @bob, what do you think?'
+    assert_equal comment.mentioned_users.length, 2 # one duplicate, removed
+    assert_equal comment.mentioned_users.first.id, rusers(:bob).id
+    assert_equal comment.mentioned_users[1].id, rusers(:jeff).id
+  end
+
+  test "should scan multiple space-separated callouts out of body" do
+    comment = DrupalComment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = 'Hey, @bob @jeff @bob, what do you think?'
+    assert_equal comment.mentioned_users.length, 2 # one duplicate, removed
+    assert_equal comment.mentioned_users[0].id, rusers(:bob).id
+    assert_equal comment.mentioned_users[1].id, rusers(:jeff).id
+  end
+
 end
