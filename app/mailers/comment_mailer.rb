@@ -18,7 +18,7 @@ class CommentMailer < ActionMailer::Base
   def notify_barnstar(user,note)
     @giver = user.drupal_user
     @note = note
-    mail(:to => user.email, :subject => "You were awarded a Barnstar!").deliver
+    mail(:to => note.author.email, :subject => "You were awarded a Barnstar!").deliver
   end
 
   def notify_callout(comment,user)
