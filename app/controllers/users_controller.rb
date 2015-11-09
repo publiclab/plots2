@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   def create
     # craft a publiclaboratory OpenID URI around the PL username given:
-    params[:user][:openid_identifier] = "http://old.publiclab.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
+    params[:user][:openid_identifier] = "https://old.publiclab.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
     @spamaway = Spamaway.new(params[:spamaway])
     @user = User.new(params[:user])
     if @spamaway.valid?

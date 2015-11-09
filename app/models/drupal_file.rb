@@ -16,21 +16,21 @@ class DrupalFile < ActiveRecord::Base
   def path(size = :default)
     if self.is_image?
       if size == :thumb
-        #return 'http://old.publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')
-        return 'http://publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')
+        #return '//old.publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')
+        return '//publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')
       elsif size == :default
-        #return 'http://publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
-        return 'http://publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
+        #return '//publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
+        return '//publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
       elsif size == :large
-        #return 'http://old.publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/big_but_downloadable/')
-        return 'http://publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
+        #return '//old.publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/big_but_downloadable/')
+        return '//publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
       elsif size == :original
-        #return 'http://old.publiclab.org/'+self.filepath
-        return 'http://publiclab.org/'+self.filepath
+        #return '//old.publiclab.org/'+self.filepath
+        return '//publiclab.org/'+self.filepath
       end
     else
-      #"http://old.publiclab.org/"+self.filepath
-      "http://publiclab.org/"+self.filepath
+      #"//old.publiclab.org/"+self.filepath
+      "//publiclab.org/"+self.filepath
     end
   end
 
