@@ -1,9 +1,5 @@
 class LegacyController < ApplicationController
 
-  def ioby
-    redirect_to "http://ioby.org/campaign/community-science-public-lab", :status => 301
-  end
-
   def notes
     if params[:id]
       redirect_to "/tag/"+params[:id], :status => 301
@@ -42,14 +38,13 @@ class LegacyController < ApplicationController
   end
 
   def file
-    # http://publiclab.org/sites/default/files/Public%20Lab.pdf
-    #redirect_to "http://old.publiclab.org/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
-    redirect_to "http://publiclab.org/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
+    #redirect_to "//old.publiclab.org/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
+    redirect_to "//publiclab.org/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
   end
 
 #  def image
 #    # sites/default/files/imagecache/thumb/san-martin-spectro.jpg
-#    redirect_to "http://i.publiclab.org/sites/default/files/imagecache/"+params[:size]+"/"+params[:filename]+"."+params[:format], :status => 301
+#    redirect_to "//i.publiclab.org/sites/default/files/imagecache/"+params[:size]+"/"+params[:filename]+"."+params[:format], :status => 301
 #  end
 
   def register

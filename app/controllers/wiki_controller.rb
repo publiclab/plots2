@@ -5,7 +5,7 @@ class WikiController < ApplicationController
   before_filter :require_user, :only => [:new, :create, :edit, :update, :delete]
 
   def subdomain
-    url = "http://publiclab.org/wiki/"
+    url = "//publiclab.org/wiki/"
     case request.subdomain
     when "new-york-city", 
          "gulf-coast", 
@@ -183,7 +183,7 @@ class WikiController < ApplicationController
     redirect_to node.path
   end
 
-  # wiki pages which have a root URL, like http://publiclab.org/about
+  # wiki pages which have a root URL, like //publiclab.org/about
   def root
     @node = DrupalNode.find_root_by_slug(params[:id])
     return if check_and_redirect_node(@node)

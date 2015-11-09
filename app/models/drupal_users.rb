@@ -156,7 +156,7 @@ class DrupalUsers < ActiveRecord::Base
       :username => self.name,
       :id => self.uid,
       :email => self.mail,
-      :openid_identifier => "http://old.publiclab.org/user/"+self.uid.to_s+"/identity"
+      :openid_identifier => "//old.publiclab.org/user/"+self.uid.to_s+"/identity"
     })
     u.persistence_token = rand(100000000)
     if u.save(:validate => false) # <= because validations checks for conflict with existing drupal_user.name

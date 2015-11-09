@@ -73,7 +73,7 @@ class Spamaway < Tableless
     not_robot = statements.map { |a| human_response? a } .select { |a| a } 
     # make sure the number of Trues matches the number of original statements
     if (statements.length != not_robot.length)
-      errors.add(:base, "-- It doesn't seem like you are a real person! If you disagree, read more here: http://publiclab.org/wiki/registration-test")
+      errors.add(:base, "-- It doesn't seem like you are a real person! If you disagree, read more here: https://publiclab.org/wiki/registration-test")
     end
   end
 
