@@ -2,7 +2,7 @@
 <div class='well'>
   <% mailing_list = @node.power_tag("list") %>
 
-  <form action="http://groups.google.com/group/<%= mailing_list %>/boxsubscribe">
+  <form action="https://groups.google.com/group/<%= mailing_list %>/boxsubscribe">
     <label>Join the <a href="https://groups.google.com/group/<%= mailing_list %>"><b><%= mailing_list %></b> mailing list</a>:</label>
     <div class="input-prepend">
       <span class="add-on"><i class="icon-envelope"></i></span><input name="email" class="span11" type="text" placeholder="you@email.com"/>
@@ -22,6 +22,6 @@
     </li>
   <% end %>
   </ul>
-  <p><a href="http://groups.google.com/group/<%= mailing_list %>">All topics &raquo;</a></p>
+  <p><a href="https://groups.google.com/group/<%= mailing_list %>">All topics &raquo;</a></p>
 </div>
 <% end %>
