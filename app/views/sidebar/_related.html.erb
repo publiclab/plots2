@@ -131,7 +131,7 @@
         lon = @node.lon
         %>
         var map = L.map('map').setView([<%= lat %>,<%= lon %>], 10);
-        L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+        L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
     
         <% @maps.each do |map| %>
           L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='/<%= map.path %>'><%= map.title %></a>");
@@ -144,7 +144,7 @@
         lon = @maps.first.lon
         %>
         var map = L.map('map').setView([<%= lat %>,<%= lon %>], 10);
-        L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+        L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
     
         <% @maps.each do |map| %>
           L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='/<%= map.path %>'><%= map.title %></a>");
