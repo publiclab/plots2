@@ -1,0 +1,27 @@
+<div class="span3">
+
+<% if @wikis && @wikis.length > 0 %>
+  <h3 style="margin-top:0;">Wiki pages liked by <a href="/profile/<%= @user.name %>"><%= @user.name %></a></h3>
+
+  <ul class="nav bullet">
+    <% @wikis.each do |wiki| %>
+      <% unless (!@node.nil? && wiki.nid == @node.nid) %>
+        <li><a href="<%= wiki.path %>"><i class="icon-book"></i> <%= wiki.title %></a> <small style="color:#888;">(updated <%= time_ago_in_words(wiki.updated_at) %> ago)</small></li>
+      <% end %>
+    <% end %>
+    <% if params[:controller] == "search" %>
+      <li><a href="/tag/<%= params[:id] %>">More...</a></li>
+    <% end %>
+  </ul>
+<% end %>
+
+</div>
+
+<div class="span9">
+  <h3 style="margin-top:0;"><i class="icon icon-star-empty"></i> Liked by <a href="/profile/<%= @user.name %>"><%= @user.name %></a></h3>
+
+  <hr />
+
+  <%= render :partial => "notes/notes" %>
+
+</div>

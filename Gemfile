@@ -1,14 +1,16 @@
 source 'https://rubygems.org'
+source 'https://rails-assets.org'
 
-gem 'rails', '3.2.11'
+ruby '2.1.2'
+gem 'rails', '3.2.20'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 # Database handling
-group :test, :sqlite do
-  gem 'sqlite3'
-end
+#group :sqlite do
+#  gem 'sqlite3'
+#end
 group :mysql do
   gem 'mysql2'
 end
@@ -16,6 +18,9 @@ end
 #group :postgresql do
 #  gem "activerecord-postgresql-adapter"
 #end
+
+# Support composite primary keys
+gem 'composite_primary_keys'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -30,25 +35,31 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'passenger'
 
 gem 'execjs'
 gem 'therubyracer'
 #gem 'secondbase', '0.5.0'
 gem 'rdiscount', '1.6.8'
 gem 'will_paginate'
-gem 'will_paginate-bootstrap'
+gem 'will_paginate-bootstrap', '0.2.5'
 gem 'georuby', '2.0'
-gem 'geokit-rails3'
-gem 'spatial_adapter', :git => 'git://github.com/descentintomael/spatial_adapter.git'
+gem 'geokit-rails'
+gem 'spatial_adapter', :git => 'https://github.com/descentintomael/spatial_adapter.git'
 gem 'rails_autolink'
 gem 'rb-readline'
-gem "paperclip"
+gem "paperclip", ">= 4.1.1"
 
 gem "nifty-generators", :group => :development
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
-gem "authlogic"
+gem "authlogic", "3.2.0"
 #gem "authlogic-oid", :require => "authlogic_openid"
+gem "php-serialize", :require => "php_serialize"
+
+gem "scrypt", "~> 1.2.1"
+
+gem 'less-rails',   '~> 2.6'
 
 group :development, :test do
   #gem 'rspec-rails'

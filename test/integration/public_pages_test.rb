@@ -1,36 +1,65 @@
 require 'test_helper'
 
 class PublicPagesTest < ActionDispatch::IntegrationTest
-  # we need some fixtures yo!
+
+  def setup
+    activate_authlogic
+    @user =  FactoryGirl.create(:user)
+    # needed?:
+    @user.save({})
+  end
+
+  def teardown
+    @user.destroy
+  end
 
   test "browse front page" do
-    drupal_user = FactoryGirl.create(:drupal_users, :name => "billy", :mail => "billy@pxlshp.com") # currently dependent on drupal users, though we should drop that
-    user =  FactoryGirl.create(:user, :username => drupal_user.name, :email => drupal_user.mail)
-
-    node =  FactoryGirl.create(:drupal_node, :uid => user.uid)
-    node_revision = FactoryGirl.create(:drupal_node_revision)
+    title = "Test node for front page test"
+    # was failing title uniquness and unique primary key due to nonfunctioning factory_girl sequencer
+    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => title, :nid => 10)
+    node_revision = FactoryGirl.create(:drupal_node_revision, :nid => node.id, :title => title)
     node.drupal_node_counter.totalcount = 30
     node.drupal_node_counter.save
     get "/"
     assert_response :success
+    node.destroy
   end
 
-  # dependent on above
-  test "view notes for an author" do
-    drupal_user = FactoryGirl.create(:drupal_users, :name => "jane", :mail => "jane@pxlshp.com") # currently dependent on drupal users, though we should drop that
-    user =  FactoryGirl.create(:user, :username => drupal_user.name, :email => drupal_user.mail)
+  # need to create constructor for maps, with bbox data... GeoRuby research
+ # test "browse /maps" do
+ #   title = "Test map"
+ #   # was failing title uniquness and unique primary key due to nonfunctioning factory_girl sequencer
+ #   node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => title, :nid => 10, :type => 'map')
+ #   node_revision = FactoryGirl.create(:drupal_node_revision, :nid => node.id, :title => title)
+ #   get "/maps"
+ #   assert_response :success
+ #   node.destroy
+ # end
 
-    node =  FactoryGirl.create(:drupal_node, :uid => user.uid)
-    node_revision = FactoryGirl.create(:drupal_node_revision)
+  test "view notes for an author" do
+    title = "New title for author notes test"
+    # was failing title uniquness and unique primary key due to nonfunctioning factory_girl sequencer
+    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => title, :nid => 11)
+    node_revision = FactoryGirl.create(:drupal_node_revision, :nid => node.id, :title => title)
     node.drupal_node_counter.totalcount = 30
     node.drupal_node_counter.save
-    get "/notes/author/"+user.username
+    get "/notes/author/"+@user.username
     assert_response :success
+    node.destroy
   end
 
+  # must destroy all old nodes
   test "browse /research" do
+    DrupalNode.find(:all).each do |n|
+      n.destroy
+    end
+    title = "New title for research test"
+    # was failing title uniquness and unique primary key due to nonfunctioning factory_girl sequencer
+    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => title, :nid => 12) 
+    node_revision = FactoryGirl.create(:drupal_node_revision, :nid => node.id)
     get "/research"
     assert_response :success
+    node.destroy
   end
 
   test "browse /login" do
@@ -38,21 +67,32 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "browse /profile/*" do
-    drupal_user = FactoryGirl.create(:drupal_users, :name => "bobby", :mail => "bobby@pxlshp.com") # currently dependent on drupal users, though we should drop that
-    user =  FactoryGirl.create(:user, :username => drupal_user.name, :email => drupal_user.mail)
-    get "/profile/"+user.username
+  test "browse /blog" do
+    get "/blog"
     assert_response :success
   end
 
-  # add: /tag/something, /search/something, /wiki/something, /login
+  test "browse /profile/*" do
+    get "/profile/"+@user.username
+    assert_response :success
+  end
 
-  test "browse /about" do
-    drupal_user = FactoryGirl.create(:drupal_users, :name => "carla", :mail => "carla@pxlshp.com") # currently dependent on drupal users, though we should drop that
-    user =  FactoryGirl.create(:user, :username => drupal_user.name, :email => drupal_user.mail)
-    node =  FactoryGirl.create(:drupal_node, :uid => user.uid, :title => "About", :type => "page")
-    node_revision = FactoryGirl.create(:drupal_node_revision, :body => "About Public Lab", :nid => node.id)
-    get "/wiki/about"
+  test "browse /wiki/foo" do
+    node =  FactoryGirl.create(:drupal_node, :uid => @user.uid, :title => "Foo", :type => "page", :nid => 13) 
+    # was failing title uniquness and unique primary key due to nonfunctioning factory_girl sequencer 
+    node_revision = FactoryGirl.create(:drupal_node_revision, :body => "Foo Public Lab", :nid => node.id, :uid => @user.uid)
+    get "/wiki/foo"
+    assert_response :success
+    node.destroy
+  end
+
+  test "browse /tag/*" do
+    get "/tag/test"
+    assert_response :success
+  end
+
+  test "browse /search/*" do
+    get "/search/foo"
     assert_response :success
   end
 

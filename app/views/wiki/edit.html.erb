@@ -1,4 +1,5 @@
 <div class="span3">
+  <%= javascript_include_tag "dragdrop" %>
   <% if @related && @related.length > 0 %>
     <h3>Did you mean:</h3>
     <ul class="nav bullet">
@@ -14,7 +15,7 @@
   <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Wiki pages</b> are web pages that anyone can create or edit -- we use them to collect information, documentation, and instructions on projects.</p>
   <p><b>Wiki pages can be:</b></p>
   <ul>
-    <li>a tutorial on how to make something</li>
+    <li>a <a href="/tag/tutorial">tutorial</a> on how to make something</li>
     <li>documentation of a project</li>
     <li>an event planning page</li>
     <li>a place to collect lists of research notes</li>
@@ -26,20 +27,19 @@
       <li class="nav-header">More</li>
       <li><a href="/wiki/getting-started">Getting started with Public Lab</a></li>
       <% if @node %><li><a href="/wiki/revisions/<%= @node.slug %>">Revisions for this page</a></li><% end %>
-      <li><a href="#">Advanced note posting</a></li>
+      <li><a href="/wiki/posting-research">About posting research</a></li>
+      <li><a href="/wiki/authoring-help#Advanced+formatting">Advanced formatting</a></li>
     </ul>
   </div>
 </div>
 
 <div class="span9">
 
-  <% 
-  if @node && params[:action] != "create"
-    url = { :controller => "wiki", :action => "update", :id => @node.slug }
+  <% if @node && params[:action] != "create"
+    url = { :controller => "wiki", :action => "update", :id => @node.id }
   else 
     url = { :controller => "wiki", :action => "create", :id => params[:id] }
-   end 
-  %>
+   end %>
 
   <%= form_for @node, :as => :drupal_node, :url => url do |f| %>
     <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
@@ -48,6 +48,8 @@
   <%= form_for @revision, :as => :drupal_node_revision, :url => url, :html => {:class => "form well"} do |f| %>
 
     <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
+  
+    <%= render :partial => "editor/main_image" %>
 
     <% if @node && @node.latest && @node.latest.title %>
       <h3 style="margin-top:0;">Editing page: <i><%= @node.latest.title %></i></h3>
@@ -55,89 +57,49 @@
       <h3 style="margin-top:0;">Create page: <i><%=h params[:id] %></i></h3>
     <% end %>
 
+    <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
+    <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
     <input id="images_input" type="hidden" name="images" value="" />
 
     <% if @node && @node.latest %>
       <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= @node.latest.title %>"><br />
     <% else %>
       <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= params[:id] %>"><br />
-      <input name="url" type="text" class="span9" id="url" value="" placeholder="page-url"><br />
+      <!--<input name="url" type="text" class="span9" id="url" value="" placeholder="page-url"><br />-->
     <% end %>
 
-    <script>
-      function wrap(a,b) {
-        var textarea = $('#text-input')
-        var len = textarea.val().length;
-        var start = textarea[0].selectionStart;
-        var end = textarea[0].selectionEnd;
-        var sel = textarea.val().substring(start, end);
-        var replace = a + sel + b;
-        textarea.val(textarea.val().substring(0,start) + replace + textarea.val().substring(end,len));
-      }
-    </script>
-
-    <div class="btn-toolbar">
-      <div class="btn-group">
-        <a class="btn btn-small" href="javascript:void(0)" onClick="wrap('**','**')"><i class="icon-bold"></i></a>
-        <a class="btn btn-small" href="javascript:void(0)" onClick="wrap('__','__')"><i class="icon-italic"></i></a>
-        <a class="btn btn-small" href="javascript:void(0)" onClick="wrap('##','')">Header</a>
-      </div>
-      <div class="btn-group">
-        <a class="btn btn-small" href="javascript:void(0)" onClick="wrap('[',']('+prompt('Enter a URL')+')')"><i class="icon-globe"></i></a>
-        <a class="btn btn-small" href="javascript:void(0)" onClick="wrap('![',']('+prompt('Enter an image URL')+')')" data-><i class="icon-picture"></i></a>
-      </div>
-      <a class="btn btn-small" href="javascript:void(0)" onClick="wrap('<em>','</em>')"><i class="icon-comment"></i></a>
-      <div class="btn-group">
-        <a class="btn btn-small btn-info" href="#"><i class="icon-question-sign icon-white"></i> Help</a>
-      </div>
-    </div>
-
-    <div class="well span9" id="preview" style="display:none;"></div>
-    <div id="dropzone">
-      <textarea name="body" tabindex="2" class="span9" id="text-input" oninput="this.editor.update()"
-                rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
-      <div id="imagebar">
-        <div id="progress" style="display:none;" class="progress progress-striped active pull-right">
-          <div class="bar" style="width: 0%;"></div>
-        </div>
-        <p><span class="uploading" style="display:none;">Uploading...</span><span class="prompt">Drag &amp; drop to add an image, or <span class="fileinput-button"><a>choose an image</a><input id="fileinput" type="file" name="image[photo]" style="height:4em;"></span></p>
-      </div>
-      </div>
-    <br style="clear:both;" />
-
-    <script src="/assets/js/editor.js"></script>
     <script>
       (function(){
         $D = {
           uid: <%= current_user.uid %>,
           type: 'wiki'
         }
-        $E.initialize()
       })()
     </script>
 
-    <script src="/assets/js/markdown.js"></script>
+    <%= render :partial => 'editor/editor' %>
+
+    <div class="hidden-phone">
+      <a id="publish" tabindex="5" class="publish btn btn-primary btn-large">Publish</a>
+      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
+      <span> &nbsp; By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</span>
+    </div>
+    <p class="visible-phone btn-group">
+      <a id="publish" class="publish btn btn-primary btn-large">Publish</a>
+      <a data-previewing-text="Edit" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
+    </p>
+    <p class="visible-phone">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+
+    <% if @node && @node.latest %><p style="padding:10px 0 0 0;"><i>This page was last edited <%= time_ago_in_words(@node.latest.created_at) %> ago by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a></i></p><% end %> 
+
     <script>
-      function Editor(input, preview)
-      {
-        this.update = function () {
-          preview.innerHTML = markdown.toHTML(input.value);
+      (function(){
+        publish = function(e) {
+            $('#new_drupal_node_revision').submit()
         }
-        input.editor = this;
-        this.update();
-      }
-      var $M = function (id) { return document.getElementById(id); };
-      new Editor($M("text-input"), $M("preview"));
-
+        $(".publish").bind("click",publish)
+      })()
     </script>
-    <link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
-    <script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
-    <script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
-    <script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
-    <script src="/assets/js/dragdrop.js?<%= rand(10**8).to_i %>"></script>
 
-    <button tabindex="4" type="submit" class="btn btn-primary btn-large">Publish</button>
-    <a id="preview-btn" class="btn btn-large" onClick="$('#preview-btn').button('toggle');$('#preview').toggle();$('#dropzone').toggle()">Preview</a>
-    <span> &nbsp; By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</span>
   <% end %>
 </div>

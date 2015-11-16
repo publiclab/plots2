@@ -1,4 +1,4 @@
-<div class="span3">
+<div class="span3 hidden-print">
 
   <script>
     function toggle_sidebar() { 
@@ -14,22 +14,64 @@
 
   <div id="sidebar" class="hidden-phone">
 
-  <a rel="tooltip" title="Post <% if @tagnames %>about <%= @tagnames.join(', ') %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?tags='+@tagnames.join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
+  <a style="margin-bottom:6px;" rel="tooltip" title="Share your work with others" data-placement="bottom" href="/post" class="btn btn-primary btn-large btn-block hidden-phone"><i class="icon-pencil icon-white"></i> Write a research note</a>
+  <a rel="tooltip" title="Post <% if @tagnames %>about <%= (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?tags='+(@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
 
-  <% if @node && @node.is_place? %>
-    <br />
-    <%= render :partial => "sidebar/place" %>
-  <% else %>
-    <hr />
+  <br />
+  <%= render :partial => "sidebar/list" if @node %>
+  <br />
+  <%= render :partial => "sidebar/events" if @node %>
+
+  <% if @node && (@node.has_power_tag('iso') || @node.has_power_tag('lang')) %>
+    <h4>Translation</h4>
+    <p>
+    <div id="google_translate_element"></div><script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false, multilanguagePage: true}, 'google_translate_element');
+      }
+    </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </p>
   <% end %>
 
-  <% if @notes && @notes.length > 0 %>
-  <h4>Recent topic contributors</h4>
-  <ul class="nav">
-    <% @notes.collect(&:author).collect(&:name).uniq.each do |author| %>
-      <li><a href="/notes/author/<%= author %>/<%= @tagnames.join('+') %>"><i class="icon-user"></i> <%= author %></a></li>
+  <% if @node && @node.has_power_tag('response') %>
+  <h4>This is a response to</h4>
+  <ul class="nav bullet">
+    <% @node.responded_to.each do |note| %>
+      <li><a href="<%= note.path %>"><i class="icon-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
     <% end %>
   </ul>
+  <% end %>
+
+  <% responses = @node.responses if @node %>
+  <% if @node && responses.length > 0 %>
+  <h4>Responses to this note</h4>
+  <ul class="nav bullet">
+    <% responses.each do |note| %>
+      <li><a href="<%= note.path %>"><i class="icon-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
+    <% end %>
+  </ul>
+  <% end %>
+
+  <% if params[:action] != "contributors" %>
+    <% if @notes && @notes.length > 0 %>
+    <h4>Recent topic contributors</h4>
+    <ul class="nav">
+      <% @notes.collect(&:author).collect(&:name).uniq.each do |author| %>
+        <li><a href="/profile/<%= author %>"><i class="icon-user"></i> <%= author %></a></li>
+      <% end %>
+      <% if params[:controller] == "tag" || (@node && @node.type == "page") %><li><a href="/contributors/<%= params[:id] %>"><i class="icon icon-list"></i> View all &raquo;</a></li><% end %>
+    </ul>
+    <% end %>
+ 
+    <% if @users && @users.length > 0 %>
+    <h4>Contributors</h4>
+    <ul class="nav">
+      <% @users.each do |author| %>
+        <li><a href="/profile/<%= author.name %>"><i class="icon-user"></i> <%= author.name %></a></li>
+      <% end %>
+      <li><a href="/contributors/<%= params[:id] %>"><i class="icon icon-list"></i> View all &raquo;</a></li>
+    </ul>
+    <% end %>
   <% end %>
 
   <% if @videos && @videos.length > 0 %>
@@ -37,7 +79,7 @@
   <ul class="nav bullet">
     <% @videos.each do |note| %>
       <% unless (!@node.nil? && note.nid == @node.nid) %>
-      <li><a href="/<%= note.slug %>"><i class="icon-film"></i> <%= note.title %></a></li>
+      <li><a href="<%= note.path %>"><i class="icon-film"></i> <%= note.title %></a></li>
       <% end %>
     <% end %>
     <% if params[:controller] == "search" %>
@@ -46,7 +88,7 @@
   </ul>
   <% end %>
 
-  <% if @wikis && @wikis.length > 0 %>
+  <% if (params[:controller] != "tag") && (@wikis && @wikis.length > 0 || (@node && !@node.has_tag('tabbed:wikis') && @wikis && @wikis.length > 0)) %>
   <% if params[:controller] == "notes" && params[:action] == "index" %>
     <h4>Recent wiki edits</h4>
   <% else %>
@@ -55,7 +97,7 @@
   <ul class="nav bullet">
     <% @wikis.each do |wiki| %>
       <% unless (!@node.nil? && wiki.nid == @node.nid) %>
-        <li><a href="/wiki/<%= wiki.slug %>"><i class="icon-book"></i> <%= wiki.title %></a> <small style="color:#888;">(updated <%= time_ago_in_words(wiki.updated_at) %> ago)</small></li>
+        <li><a href="<%= wiki.path %>"><i class="icon icon-<%= raw wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
       <% end %>
     <% end %>
     <% if params[:controller] == "search" %>
@@ -64,12 +106,12 @@
   </ul>
   <% end %>
 
-  <% if @notes && @notes.length > 0 && params[:controller] != "search" %>
+  <% if @notes && @notes.length > 0 && params[:controller] != "tag" && params[:controller] != "search" %>
   <h4>Related research notes</h4>
   <ul class="nav bullet">
     <% @notes.each do |note| %>
       <% unless (!@node.nil? && note.nid == @node.nid) %>
-      <li><a href="/<%= note.slug %>"><i class="icon-file"></i> <%= note.title %></a></li>
+      <li><a href="<%= note.path %>"><i class="icon-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
       <% end %>
     <% end %>
     <% if params[:controller] == "search" %>
@@ -78,8 +120,51 @@
   </ul>
   <% end %>
 
+  <% if @maps && @maps.length > 0 && params[:controller] != "search" %>
+
+    <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
+  
+    <% if @node && @maps && @node.lat %> 
+      <script>
+        <% 
+        lat = @node.lat
+        lon = @node.lon
+        %>
+        var map = L.map('map').setView([<%= lat %>,<%= lon %>], 10);
+        L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+    
+        <% @maps.each do |map| %>
+          L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='/<%= map.path %>'><%= map.title %></a>");
+        <% end %>
+      </script>
+    <% elsif @maps && @maps.first %> 
+      <script>
+        <% 
+        lat = @maps.first.lat
+        lon = @maps.first.lon
+        %>
+        var map = L.map('map').setView([<%= lat %>,<%= lon %>], 10);
+        L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+    
+        <% @maps.each do |map| %>
+          L.marker([<%= map.lat %>, <%= map.lon %>]).addTo(map).bindPopup("<a href='/<%= map.path %>'><%= map.title %></a>");
+        <% end %>
+      </script>
+    <% end %>
+
+    <br style="clear:both;" />
+
+    <h4>Related maps</h4>
+    <ul class="nav bullet">
+      <% @maps.each do |note| %>
+        <% unless (!@node.nil? && note.nid == @node.nid) %>
+        <li><a href="<%= note.path %>"><i class="icon-map-marker"></i> <%= note.title %></a></li>
+        <% end %>
+      <% end %>
+    </ul>
+  <% end %>
+
   <hr style="margin-bottom:6px;" />
-  <p><small><a href="#"><i class="icon-cog"></i> Options</a></small></p>
 
   </div>
 </div>

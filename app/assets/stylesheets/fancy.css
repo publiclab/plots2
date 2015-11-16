@@ -1,0 +1,49 @@
+@font-face {
+    font-family: 'Junction Light';
+    src: url('/assets/junction-light.eot');
+    src: url('/assets/junction-light.eot?#iefix') format('embedded-opentype'),
+         url('/assets/junction-light.woff') format('woff'),
+         url('/assets/junction-light.ttf') format('truetype'),
+         url('/assets/junction-light.svg#junctionlight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+#content hr {
+  margin:60px 0;
+}
+
+#content {
+  font-size:1.4em;
+  font-family:'Helvetica Neue','Helvetica','Arial',sans-serif;
+  font-weight: 200;
+  line-height:1.4em;
+}
+#content h1, #content h2, #content h3, #content h4 {
+  font-family:'Junction Light';
+  font-size:3em;
+  line-height:1.4em;
+}
+#content h1 {
+  font-size:3em;
+}
+#content h2 {
+  font-size:2.4em;
+}
+#content h3 {
+  font-size:2em;
+}
+#main-image-presentation {
+  max-height:350px;
+  overflow:hidden;
+  margin-bottom:15px;
+}
+
+#content ul li {
+  line-height:1.7em;
+}
+
+#content p {
+  margin-bottom:30px;
+}

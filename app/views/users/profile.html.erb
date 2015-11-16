@@ -1,70 +1,185 @@
 <div class="span3">
-  <a href="#" class="btn btn-block"><i class="icon-envelope"></i> Send message</a>
-  <a href="#" class="btn btn-block"><i class="icon-eye-open"></i> Follow <%= @user.name %></a>
+ <% if @user.user && @user.user.photo_file_name %><img class="img-rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @user.user.photo_path(:thumb) %>" /><% end %>
+
+  <!--<a href="#" class="btn btn-block"><i class="icon-envelope"></i> Send message</a>-->
+  <a href="#" class="btn btn-block disabled"><i class="icon-eye-open"></i> Follow <%= @user.name %></a>
+  <% if @user.user.nil? && current_user && current_user.role == "admin" %>
+    <a href="/admin/migrate/<%= @user.uid %>" class="btn btn-block"><i class="icon-bolt"></i> Migrate to new site</a>
+  <% end %>
+  <% if @user.user && current_user && current_user.role == "admin" && @user.user.role != "admin" %>
+    <a href="/admin/promote/admin/<%= @user.user.id %>" class="btn btn-block"><i class="icon-certificate"></i> Make admin</a>
+  <% end %>
+  <% if @user.user && current_user && current_user.role == "admin" && @user.role == "moderator" %>
+    <a href="/admin/demote/basic/<%= @user.user.id %>" class="btn btn-block"><i class="icon-ban-circle"></i> Revert to basic user</a>
+  <% end %>
+  <% if @user.user && current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.role == "basic" %>
+    <a href="/admin/promote/moderator/<%= @user.user.id %>" class="btn btn-block"><i class="icon-certificate"></i> Make moderator</a>
+  <% end %>
+
+  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.status == 0 %>
+    <a href="/unban/<%= @user.id %>" class="btn btn-block"><i class="icon-thumbs-up"></i> Unban user</a>
+  <% elsif current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.status == 1 %>
+    <a data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= @user.id %>" class="btn btn-block"><i class="icon-ban-circle"></i> Ban user</a>
+  <% end %>
+
+  <% if @user.user && !@user.user.reset_key.nil? && current_user && current_user.role == "admin" %>
+    <a href="/reset/key/<%= @user.user.reset_key %>" class="btn btn-block"><i class="icon-info-sign"></i> Reset Key: <%= @user.user.reset_key %></a>
+  <% end %>
   <hr />
+
+  <p>
+    <a class="btn btn-small btn-block" href="/feed/<%= @user.name %>.rss"><i class="icon icon-rss" style="color:orange;"></i> RSS feed for <%= @user.name %></a> 
+    <% if current_user && current_user.uid == @user.uid %>
+      <a href="/profile/<%= @user.name %>/edit" class="btn btn-small btn-block"><i class="icon-pencil"></i> Edit profile</a>
+    <% end %>
+  </p>
+
+  <hr />
+
+  <% if @wikis && @wikis.length > 0 %>
+  <h4>Wiki pages recently contributed to</h4>
+  <ul class="nav bullet">
+    <% @wikis.each do |wiki| %>
+      <% unless (!@node.nil? && wiki.nid == @node.nid) %>
+        <li><a href="<%= wiki.path %>"><i class="icon icon-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+      <% end %>
+    <% end %>
+    <% if params[:controller] == "search" %>
+      <li><a href="/tag/<%= params[:id] %>">More...</a></li>
+    <% end %>
+  </ul>
+  <% end %>
+
 
 </div>
 
 <div class="span9">
-  <h3 style="margin-top:0;"><%= @user.name %> <small><a href="/feed/<%= @user.name %>.rss">RSS</a> | <a href="/notes/author/<%= @user.name %>"><%= @user.note_count %> research notes</a> and wiki edits</small></h3>
-  <p><small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small></p>
 
-  <p><%= raw RDiscount.new(@user.bio).to_html %></p>
+  <div id="note-graph" style="height:100px;display:none;"></div>
+
+  <h3 style="margin-top:0;"><%= @user.name %> 
+    <small> 
+      <%= @user.node_count %> <a href="/notes/author/<%= @user.name %>">research notes</a> and wiki edits
+      <% if current_user && current_user.role == "admin" %> | <%= @user.email %><% end %>
+      <% if @user.role == "moderator" %> | <i class="icon icon-certificate"></i> Moderator<% end %>
+      <% if @user.role == "admin" %> | <i class="icon icon-certificate"></i> Admin<% end %>
+      <% if @user.status == 0 %> | <i class="icon icon-ban-circle" style="color:#a00;"></i> Banned<% end %>
+    </small>
+  </h3>
+
+  <p><small><%= raw auto_link(RDiscount.new(@user.bio).to_html, :sanitize => false) %></small></p>
+
+  <br />
+
+  <% if @user.user %>
+  <% @user.user.barnstars.each do |tag| %>
+    <p style="color:#aaa;"><i style="color:#db4;" class="icon icon-large icon-star-empty"></i> <i><a href="/profile/<%= tag.node.author.name %>"><%= tag.node.author.name %></a> was awarded <a href="/wiki/barnstars#<%= tag.name.split('-').each{|w| w.capitalize!}.join('+') %>+Barnstar">the <%= tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' ') %> Barnstar</a> by <a href="/profile/<%= tag.author.username %>"><%= tag.author.username %></a> for their work published in <a href="<%= tag.node.path %>"><%= tag.node.title %></a>.</i></p>
+    <hr />
+  <% end %>
+  <% end %>
+
+  <ul class="nav nav-tabs">
+    <span style="float:right;"><small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small></span>
+    <li class="active"><a href="#research" data-toggle="tab">Research</a></li>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="icon icon-comment"></i><span class="hidden-phone"> Comments</span></a></li>
+    <li><a href="/profile/<%= @user.username %>/likes"><i class="icon icon-star"></i><span class="hidden-phone"> Liked</span> (<%= @user.like_count %>)</a></li>
+    <li><a href="#maps" data-toggle="tab"><i class="icon-map-marker"></i> MapKnitter maps</a></a>
+  </ul>
+
+
+  <div class="tab-content">
+
+    <div class="tab-pane active" id="research">
+      <%= render :partial => "notes/notes" %>
+    </div>
+
+    <div class="tab-pane" id="maps">
+      <% if @user.using_new_site? && @user.user.mapknitter_maps && @user.user.mapknitter_maps.length > 0 %>
+  
+      <p><i>View these maps <a href="//mapknitter.org/profile/<%= @user.name %>">at MapKnitter.org &raquo;</a></i></a>
+  
+      <table class="table">
+        <tr>
+          <th>Title</th>
+          <th style="width:100px;">Creation date</th>
+          <th>Description</th>
+        </tr>
+        <% @user.user.mapknitter_maps.each_with_index do |map, i| %>
+        <tr>
+          <td><a href="<%= map.link %>"><i class="icon icon-map-marker"></i> <%= map.title %></a></td>
+          <td><%= time_ago_in_words(map.pubDate) %> ago</td>
+          <td><%= raw map.description.truncate(100) %></td>
+        </tr>
+        <% end %>
+      </table>
+  
+      <% else %>
+        <p>No <a href="//mapknitter.org">MapKnitter maps</a></p>
+      <% end %>
+    </div>
+
+    <div class="tab-pane" id="comments">
+      <h2 style="text-align:center;"><i class="icon-spinner icon-spin"></i></h2>
+    </div>
+    <script>
+      (function(){
+        $('a#comments-tab').on('shown',function (e) {
+          $.ajax({
+            url : '/profile/comments/<%= @user.id %>',
+            type: 'GET',
+            success: function(response){
+              $('#comments').html(response);
+            }
+          })
+        })
+      })()
+    </script>
 
   <hr />
+</div>
+<script type="text/javascript">
+  (function () {
 
-  <div id="donut"></div>
+    flotoptions_minimal = {
+      yaxis: { show: false },
+      xaxis: { show: true },
+      grid: {
+        borderWidth: 0,
+        //color: "#444",
+        markers: []
+      },
+      colors: [ "#08f", "#80f" ]
+    }
 
-  <script src="http://d3js.org/d3.v3.min.js"></script>
+    <% if @user && @user.user %>
+    var notes = <%= @user.user.weekly_note_tally.to_a.sort.to_json %>
+    var comments = <%= @user.user.weekly_comment_tally.to_a.sort.to_json %>
+    $('#note-graph').show()
+    <% end %>
 
-<script>
+    $.plot($("#note-graph"), [
+      {
+          data: notes,
+          hoverable: true,
+ //         label: "Research Notes",
+          bars: { show: true, 
+                  lineWidth: 0,
+                  fillColor: "#08f",
+                  barWidth: 0.5
+                }
+      }//,
+ //     {
+ //         data: comments,
+ //         hoverable: true,
+ //         label: "Comments",
+ //         bars: { show: true, 
+ //                 lineWidth: 0,
+ //                 fillColor: "#80f",
+ //                 barWidth: 0.5
+ //               }
+//      }
+    ],flotoptions_minimal)
 
-var obj = <%= raw @user.tag_counts.to_json %>
-var data = [];
-$.each(obj, function(key, value) { data.push([key,value]) })
-
-var width = 500,
-    height = 500,
-    radius = Math.min(width, height) / 2;
-
-var color = d3.scale.ordinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-var arc = d3.svg.arc()
-    .outerRadius(radius - 10)
-    .innerRadius(radius - 100);
-
-var pie = d3.layout.pie()
-    .sort(null)
-    .value(function(d) { return d[1]; });
-
-var svg = d3.select("#donut").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-  .append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-  pie.sort(d3.descending)
-  pie.value(function(d){
-    return d[1]
-  })
-
-  var g = svg.selectAll(".arc")
-      .data(pie(data))
-    .enter().append("g")
-      .attr("class", "arc");
-
-  g.append("path")
-      .attr("d", arc)
-      .style("fill", function(d) { return color(d.data[0]); });
-
-  g.append("text")
-      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-      .attr("dy", ".15em")
-      .attr("font-size", ".8em")
-      .style("text-anchor", "middle")
-      .text(function(d) { return d.data[0]; });
-
+  })()
 </script>
 
-</div>

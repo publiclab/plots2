@@ -1,0 +1,285 @@
+/* 
+Junction is provided under the OFL and is available at http://www.theleagueofmoveabletype.com/junction or https://github.com/theleagueof/junction 
+It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
+*/
+@font-face {
+  font-family: 'Junction Regular';
+  src: url('/lib/junction/webfonts/junction-regular.eot');
+  src: url('/lib/junction/webfonts/junction-regular.eot?#iefix') format('embedded-opentype'),
+       url('/lib/junction/webfonts/junction-regular.woff') format('woff'),
+       url('/lib/junction/webfonts/junction-regular.ttf') format('truetype'),
+       url('/lib/junction/webfonts/junction-regular.svg#junctionregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Junction Light';
+  src: url('/lib/junction/webfonts/junction-light.eot');
+  src: url('/lib/junction/webfonts/junction-light.eot?#iefix') format('embedded-opentype'),
+       url('/lib/junction/webfonts/junction-light.woff') format('woff'),
+       url('/lib/junction/webfonts/junction-light.ttf') format('truetype'),
+       url('/lib/junction/webfonts/junction-light.svg#junctionlight') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+h1,h2,h3 {
+  font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
+  font-weight:normal;
+}
+h4,h5,h6, h1 small, h2 small, h3 small {
+  font-family:"Junction Regular", lucida grande,lucida sans console,sans-serif;
+  font-weight:normal;
+}
+
+#content h1, #content h2, #content h3 {
+  font-family:"Junction Light",lucida grande,lucida sans console,sans-serif;
+  padding-top:0.4em;
+}
+
+#content h4 {
+  padding-top:0.4em;
+}
+
+#content img {
+  margin-top:8px;
+}
+
+/* fontawesome default color */
+a i { color:#222; }
+a i.icon-white { color:white; }
+
+.label a {
+  color:white;
+}
+
+.label {
+  margin-bottom:3px;
+}
+
+.alert h2 {
+  font-size:1.2em;
+}
+
+.visible-print {
+  display:none;
+}
+
+@media (max-width:400px) {
+  .hidden-tiny {
+    display:none;
+  }
+  .visible-tiny {
+    display:inline;
+  }
+}
+
+@media (min-width:400px) {
+  .hidden-tiny {
+    display:inline;
+  }
+  .visible-tiny {
+    display:none;
+  }
+}
+
+@media (min-width: 979px) {
+  .header-spacer {
+    padding-top:60px;
+  }
+}
+
+@media (max-width: 1024px) {
+  #header .compact {
+    display: none;
+  }
+}
+
+.col2 {
+  -webkit-columns:2;
+  -moz-columns:2;
+  columns:2;
+}
+
+#header .brand {
+  color:white;
+  padding-top:13px;
+  padding-bottom:2px;
+  font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
+}
+
+@media (max-width: 340px) {
+  #brand { display:none; }
+  #brand-compact { display:inline; }
+}
+
+@media (min-width: 340px) {
+  #brand-compact { display:none; }
+  #brand { display:inline; }
+}
+
+.nav-tabs li {
+  border-color:#eee;
+}
+
+.nav.bullet li {
+  padding-left:20px;
+}
+
+.nav.bullet li i {
+  margin-left:-19px;
+}
+
+.footer {
+  clear:both;
+  margin: 20px -20px 0;
+  padding: 20px;
+  border-top: 1px solid #E5E5E5;
+  background-color: #f8f8f8;
+}
+
+@media (min-width: 768px) {
+  .footer { margin:20px 0 0 0; }
+}
+
+@media (max-with: 786px) {
+  .footer {
+    margin: 20px -20px 20px;
+  }
+}
+
+.caption {
+  padding:12px;
+  font-size:10px;
+  font-style:italic;
+}
+
+.caption.left {
+  padding-left:0;
+  width:312px;
+  float:left;
+}
+
+.caption.right {
+  padding-right:0;
+  width:312px;
+  float:right;
+}
+
+.caption img {
+  padding-bottom:4px;
+}
+
+#content h1 i.icon-link,
+#content h2 i.icon-link,
+#content h3 i.icon-link,
+#content h4 i.icon-link,
+#content h5 i.icon-link {
+  color:#aaa;
+}
+#content h1 a:hover i.icon-link,
+#content h2 a:hover i.icon-link,
+#content h3 a:hover i.icon-link,
+#content h4 a:hover i.icon-link,
+#content h5 a:hover i.icon-link {
+  color:#888;
+  text-decoration:none;
+}
+
+/* Styles for specific areas of the site */
+
+.note-show .main-image {
+  margin-bottom: 14px;
+  height: auto;
+  display: block;
+  width: 800px;
+}
+
+.note-show .main-image.compressed {
+  overflow: hidden;
+  max-height: 500px;
+}
+
+.note-show .main-image img {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.note-show .expand {
+  position: absolute;
+  margin: -90px 0 0;
+  padding: 30px 0 10px;
+  width: 71%;
+}
+
+.note-show .expand a:hover {
+  color: #bbb;
+}
+
+.note-show .expand a {
+  text-decoration: none;
+  width: 100%;
+  display: block;
+}
+
+.note-show .expand a i {
+  margin: 0 auto 0;
+  display: block;
+  font-size: 36px;
+  color: white;
+  width: 0;
+}
+
+#carousel h1, #carousel h2, #carousel h3, #carousel h4, #carousel h5 {
+  color:white;
+}
+
+#carousel i { /* hide the permalink anchors */
+  display:none;
+}
+
+.controls fieldset {
+  padding: 5px;
+  border-left: 2px solid #cccccc;
+}
+
+#comment-form small {
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.chat-popover {
+  width:400px;
+  right:5px;
+  top:45px;
+  position: absolute;
+  z-index: 1010;
+  display: none;
+  padding: 1px;
+  text-align: left;
+  white-space: normal;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+}
+
+.foldaway {
+  display:none;
+  padding: 0 20px;
+}
+
+.foldaway-link {
+  padding: 12px 0;
+  border-top:    1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}

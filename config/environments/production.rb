@@ -15,10 +15,13 @@ Plots2::Application.configure do
   config.assets.compress = true
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
-  config.assets.compile = false
+  config.assets.compile = true
 
   # Generate digests for assets URLs
   config.assets.digest = true
+
+  # Add non-concatenated scripts
+  config.assets.precompile += ['dragdrop.js', 'post.js']
 
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
@@ -28,7 +31,8 @@ Plots2::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  #config.force_ssl = true
+  # config.middleware.insert_before ActionDispatch::Static, Rack::SSL, :exclude => proc { |env| env['HTTPS'] != 'on' }
 
   # See everything in the log (default is :info)
   # config.log_level = :debug
@@ -50,6 +54,11 @@ Plots2::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
+  # config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.sendmail_settings = {
+    location: '/usr/sbin/sendmail',
+    arguments: '-i'
+  }
 
   # Enable threaded mode
   # config.threadsafe!

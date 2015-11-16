@@ -1,15 +1,26 @@
 <div class="span3">
-  <a rel="tooltip" title="Share your work with others" data-placement="bottom" style="margin-bottom:6px;" href="/post" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post research &raquo;</a>
-  <a rel="tooltip" title="Collaborative pages others can edit" data-placement="bottom" href="/post" class="btn btn-block"><i class="icon-book"></i> Create wiki page &raquo;</a>
-  <hr />
+  <%= render :partial => "sidebar/post_button" %>
+  <%= feature('sidebar-feature') %>
+
+  <div class="hidden-phone">
+    <p><i class="icon icon-envelope"></i> <a href="/lists">Discussion lists &raquo;</a></p>
+    <p>Much of our work happens on our regional and topical discussion lists. <a href="/lists">Join one today!</a></p>
+    <!--<p><a href="/wiki/barnraising-2013"><img src="/images/barnraising-2013.png" width="100%" /></a></p>-->
+    <hr />
+  </div>
 
   <% if @wikis && @wikis.length > 0 %>
-  <h4>Related wiki pages</h4>
+  <div class="hidden-phone">
+  <h4>Recent wiki edits</h4>
   <ul class="nav wikis bullet">
     <% @wikis.each do |wiki| %>
-      <li><a href="/wiki/<%= wiki.slug %>"><i class="icon-book"></i> <%= wiki.title %></a> <small style="color:#888;">(updated <%= time_ago_in_words(wiki.updated_at) %> ago)</small></li>
+      <% if not wiki.latest.blank? %>
+        <li><a href="<%= wiki.path %>"><i class="icon-book"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+      <% end %>
     <% end %>
   </ul>
   <% end %>
+  <p><a href="/wiki/">More &raquo;</a></p>
+  </div>
 
 </div>

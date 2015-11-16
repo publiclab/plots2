@@ -1,0 +1,8 @@
+<table class="table">
+  <% @comments.each do |comment| %>
+  <tr id="c<%= comment.cid %>">
+    <td style="width:80%;"><i class="icon icon-comment-alt"></i> <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a> <span style="color:#aaa;">commented <% if comment.parent %>on <a href="<%= comment.parent.path %>"><%= comment.parent.title %></a><% end %>:</span> "<%= raw strip_tags(sanitize(RDiscount.new(comment.comment).to_html)).truncate(150) %>" | <% if comment.parent %><a href="<%= comment.parent.path %>#c<%= comment.cid %>">Read more &raquo;</a><% end %></td>
+    <td><%= time_ago_in_words(comment.created_at) %> ago</td>
+  </tr>
+  <% end %>
+</table>

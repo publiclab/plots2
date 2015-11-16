@@ -1,7 +1,69 @@
 <div class="btn-toolbar pull-right" style="margin-left:10px;margin-top:0;">
-  <div class="btn-group">
-    <a class="btn btn-small" rel="popover" data-content="<%= "No tags" if @tagnames.nil? || @tagnames.length == 0 %><% if @tagnames %><% @tagnames.each do |tag| %><a class='label label-inverse'><%= tag %></a> <% end %><% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= @node.author.name %></a>" title="Follow by tag or author" data-placement="bottom"><b class="caret"></b></a>
-    <a rel="tooltip" title="Helpful? Awesome?" class="btn btn-small" href="#"><i class="icon-star"></i><span class="hidden-phone"> Like (8)</span></a>
-    <a rel="tooltip" title="Updates/comments" id="follow" class="btn btn-small" href="#"><i class="icon-eye-open"></i><span class="hidden-phone"> Follow</span></a>
-  </div>
+  <ul class="btn-group">
+    <li class="btn btn-small" data-html="true" rel="popover" data-content="<%= "No tags" if tagnames.nil? || tagnames.length == 0 %><% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-mini'><%= tagname %></a></p><% end %><% end %><hr /><a class='btn btn-small'><i class='icon-user'></i> <%= node.author.name %></a>" title="Follow by tag or author" data-placement="left"><i class="icon-eye-open"></i><span class="hidden-phone"> Follow</span></li>
+    <li rel="tooltip" title="Helpful? Follow it!" class="btn btn-small" node-id="<%= node.id %>" id="like-button-<%= node.id %>"><span id="like-star-<%= node.id %>" class="icon-star<% if current_user && !node.liked_by(current_user.uid) %>-empty<% end %>"></span><span class="hidden-phone"> Like <span id="like-count-<%= node.id %>"/>(<%= node.likers.length %>)</span></li>
+    <li class="btn btn-small" rel="popover" data-placement="left" data-html="true" data-title="Tools" data-content="
+<p><b>Users who liked this</b></p>
+<% node.likers.each do |user| %>
+  <i class='icon icon-star-empty'></i> <a href='/profile/<%= user.username %>/likes'><%= user.username %></a><br />
+<% end %>
+<% if node.likers.length == 0 %><i>None</i><% end %>
+<% if node.type == 'note' && current_user && node.uid != current_user.uid%>
+<hr style='margin-bottom:3px;' />
+<p><b>Award a Barnstar:</b></p>
+<form class='form' action='/barnstar/give'>
+<select name='star'>
+    <option value='basic'>The basic barnstar</option>
+    <option value='photo-documentation'>The photo documentation barnstar</option>
+    <option value='video-documentation'>The video documentation barnstar</option>
+    <option value='watchdog'>The watchdog barnstar</option>
+    <option value='empiricism'>The empiricism barnstar</option>
+    <option value='excessive-enthusiasm'>The enthusiasm barnstar</option>
+</select><br />
+<input type='hidden' name='nid' value='<%= node.id %>'/>
+<input type='submit' class='btn btn-primary' value='Give'/> <a _target='blank' href='/wiki/barnstars'>Learn more</a>
+</form>
+<% end %>
+
+<% if current_user && (current_user.uid == node.uid || current_user.role == "moderator" || current_user.role == "admin") %>
+
+  <hr />
+
+  <div class='btn-group'>
+    <a <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing someone else\'s post, a privilege you have only because you are a moderator or admin.' <% end %>class='btn btn-small' href='/notes/edit/<%= node.id %>'><i class='icon icon-pencil'></i><span class='hidden-phone'> Edit</span></a>
+    <a href='/notes/delete/<%= node.id %>' class='btn btn-small' data-confirm='Are you sure?'>
+      <i class='icon icon-trash'></i><span class='hidden-phone' Delete</span>
+    </a>
+    <% if current_user.role == "moderator" || current_user.role == "admin" %>
+      <a class='btn btn-small' href='/moderate/spam/<%= node.id %>'><i class='icon icon-ban-circle'></i> Spam</a>
+    <% end %>
+  </div> 
+<% end %>
+
+<hr />
+
+<div>
+  <a onClick='print_linkless()'><i class='icon icon-print'></i> Print without page links</a>
+</div>
+
+"><span class="caret"></span></li>
+  </ul>
+  <script>
+    jQuery(document).ready(function() {
+      // 304 cached response yields no data to insert, which is not useful
+      jQuery.ajaxSetup({
+        cache: false
+      });
+     
+      // grab the like count for this node; "/likes/node/11278/count"
+      jQuery.getJSON("<%= like_count_path(node) %>", function (json) {
+        // push like count into the Like button placeholder 
+        $('#like-count-<%= node.id %>').html("(" + json + ")");
+      });
+     
+      <% if current_user %>
+        $('#like-button-<%= node.id %>').on('click',<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>) 
+      <% end %>
+    })
+  </script>
 </div>

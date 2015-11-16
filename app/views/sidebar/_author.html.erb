@@ -1,15 +1,15 @@
 <div class="span3">
-  <a style="margin-bottom:6px;" href="/post" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post research &raquo;</a>
-  <a href="/post" class="btn btn-block"><i class="icon-book"></i> Create wiki page &raquo;</a>
+  <%= render :partial => "sidebar/post_button" %>
+
   <hr />
 
-  <% if tags = @user.tags %>
+  <% if tagnames = @user.tagnames(20,false) %>
   <h4>Recent tags for <a href="/people/<%= @user.name %>"><%= @user.name %></a></h4>
   <ul class="nav">
-    <% tags.each do |tag| %>
-      <li><a href="/tag/<%= tag.name %>"><i class="icon-tag"></i> <%= tag.name %></a></li>
+    <% tagnames.each do |tagname| %>
+      <li><a href="/tag/<%= tagname %>"><i class="icon-tag"></i> <%= tagname %></a></li>
     <% end %>
   </ul>
   <% end %>
 
-</div><!--/span-->
+</div>

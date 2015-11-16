@@ -1,0 +1,56 @@
+.blog-header h1 {
+  font-size:4em;
+  margin-top:100px;
+  color:#326;
+  line-height:1.3em;
+}
+
+.blog h2, .blog h1 {
+  text-align:center;
+  padding:10px 40px;
+}
+
+/* this may not be doing anything: */
+@media (max-width:400px) {
+  .blog h2, .blog h1 {
+    padding:10px 10px;
+  }
+}
+
+.blog h1 a {
+ clear:left;
+ color:#444;
+ line-height:1.2em;
+}
+
+.blog .meta {
+  text-align:center;
+  margin:10px 0 20px;
+}
+
+.blog a.img {
+  display:block;
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.blog-header {
+  text-align:center;
+}
+
+.blog-header p {
+  color:#444;
+}
+
+.blog {
+  font-size:15px;
+}
+
+.blog p {
+  margin-bottom:20px;
+}
+
+.blog p img {
+  display: block;
+  margin: 0 auto
+}

@@ -1,17 +1,16 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
-
 one:
   title: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON"
+  path: "canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon"
   created: 1362353067
   changed: 1362354920
   status: 1
   type: "note"
   uid: 2
   nid: 1
- # this needs a drupal_node_revision and other crap
 
 two: 
   title: "about"
+  path: "about"
   created: 1362353067
   changed: 1362354920
   status: 1

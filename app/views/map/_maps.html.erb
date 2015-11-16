@@ -4,19 +4,25 @@
     <% @nodes.each_with_index do |node,i| %>
       <div class="span3 clearfix">
         <% if node.main_image %>
-          <a class="thumbnail" href="/<%= node.slug %>"><img src="http://publiclaboratory.org/sites/default/files/imagecache/default/<%= node.main_image.filename %>" /></a>
+          <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <a class="hidden-phone thumbnail" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
         <% end %>
-        <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
-        <p style="color:#888;"><small>by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> | <%= time_ago_in_words(node.created_at) %> ago</small></p>
-        <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) %></p>
-        <p><a href="/<%= node.path %>">Read more &raquo;</a></p>
-        <% if params[:mod] %>
-        <a class="btn btn-mini" href="#"><i class="icon-ban-circle"></i> Spam</a>
-        <% end %>
+        <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
+        <p style="color:#888;"><small>by 
+          <%= node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ') %>
+          <% unless !node.map || node.map.captured_on == "" %>| <%= time_ago_in_words(node.map.captured_on) %> ago<% end %>
+          | <a href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
+          | <i style="color:#888;" class="icon icon-star-empty"></i> <%= node.likes %>
+          <% if current_user && current_user.role == "admin" %>| <%= link_to "/map/delete/"+node.id.to_s, :confirm => 'Are you sure?' do %>
+              <i class="icon icon-trash"></i>
+            <% end %><% end %>
+       </small></p>
+       <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) %></p>
       </div>
+      <hr class="visible-phone" />
     <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
     </div>
-    <hr />
+    <hr class="hidden-phone" />
     <div class="row">
     <% end %>
     <% end %>

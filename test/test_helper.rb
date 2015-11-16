@@ -8,7 +8,14 @@ class ActiveSupport::TestCase
   #
   # Note: You'll currently still have to declare fixtures explicitly in integration tests
   # -- they do not yet inherit this setting
-  # fixtures :all
+
+  # yay thanks: http://journal.missiondata.com/post/63405042042/rails-fixtures-with-models-using-settablename
+  set_fixture_class :node => DrupalNode
+  set_fixture_class :rusers => User
+  set_fixture_class :users => DrupalUsers
+  set_fixture_class :node_counter => DrupalNodeCounter
+  
+  fixtures :all
 
   # Add more helper methods to be used by all tests here...
 end

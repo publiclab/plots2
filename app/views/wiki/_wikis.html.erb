@@ -1,0 +1,20 @@
+<table class="table">
+  <tr>
+    <th>Title</th>
+    <th>Last edited</th>
+    <th>Edits</th>
+    <th>Pageviews</th>
+    <th><i class="icon icon-star-empty"></i> Likes</th>
+  </tr>
+  <% @wikis.each do |wiki| %>
+    <tr>
+      <td style="width:50%"><i class="icon-file"></i> <a href="<%= wiki.path %>"><%= wiki.latest.title %></a></td>
+      <td><%= time_ago_in_words(wiki.latest.created_at) %> ago by 
+      <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></td>
+      <td><%= wiki.revisions.length %></td>
+      <td><%= number_with_delimiter(wiki.totalcount) %>
+      <td><%= number_with_delimiter(wiki.cached_likes) %>
+    </tr>
+  <% end %>
+</table>
+<%= will_paginate @wikis, :renderer => BootstrapPagination::Rails if @paginated %>

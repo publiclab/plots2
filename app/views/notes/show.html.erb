@@ -1,26 +1,31 @@
 <%= render :partial => "sidebar/related" %>
-<div class="span9">
+
+<div class="span9 note-show">
+
+  <% if current_user && @node.tags.length == 0 %><div class="alert">This note has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
 
   <% if @node.main_image %>
-    <a style="display:block;margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img class="img-rounded" src="<%= @node.main_image.path(:default) %>" /></a>
+    <a class="main-image" style="width:100%;max-width:800px;" href="<%= @node.main_image.path(:original) %>">
+      <img class="img-rounded" src="<%= @node.main_image.path(:large) %>" />
+    </a>
+    <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="icon icon-angle-down"></i></a></div>-->
   <% end %>
 
-  <%= render :partial => "like/like" %>
-  <% if current_user && current_user.uid == @node.uid %>
-    <div style="padding:0 8px 8px;" class="btn-group pull-right">
-      <a class="btn btn-small" href="/notes/edit/<%= @node.id %>"><i class="icon icon-pencil"></i> Edit</a>
-      <%= link_to "/notes/delete/"+@node.id.to_s, :confirm => 'Are you sure?', :class => "btn btn-small" do %>
-        <i class="icon icon-trash"></i> Delete
-      <% end %>
-    </div> 
-  <% end %>
+  <div style="margin-top:10px;" class="hidden-print">
+    <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
+  </div>
 
-  <h2 style="clear:left;"><%= @node.title %></h2>
+  <h1 style="margin-top: 30px;font-family: 'Junction Light';clear:left;"><% if @node.has_power_tag('question') %><span style="color:#aaa;font-style:italic;"><i class="icon icon-question-sign"></i> Question:</span> <% end %><%= @node.title %></h1>
+
+  <% if @node.has_power_tag('question') %>
+  <% pt = @node.power_tag('question') %>
+  <div class="alert"><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> is asking a question about <b><%= pt %></b>: <a class="btn" target="_blank" href="/subscribe/tag/question:<%= pt %>">Sign up to answer questions on this topic</a></div>
+  <% end %>
 
   <div>
-    <div class="btn-group pull-right">
+    <div class="btn-group pull-right hidden-print">
       <script>var editing = false;</script>
-      <% if @node.prev_by_author %><a class="btn btn-link btn-small" href="/<%= @node.prev_by_author.slug %>">&laquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 37) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.prev_by_author.slug %>" }})</script><% end %>
+      <% if @node.prev_by_author %><a class="btn btn-link btn-small" href="<%= @node.prev_by_author.path %>">&laquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 37) { window.location = "https://"+(window.location+'').split('/')[2]+"<%= @node.prev_by_author.path %>" }})</script><% end %>
         <a class="btn btn-small btn-link dropdown-toggle" data-toggle="dropdown">
           <i class="icon icon-cog"></i> 
         </a>
@@ -30,38 +35,96 @@
           <li><a href="javascript:void(0)">by tag <b><%= tag.name %></b></a></li>
           <% end %>
         </ul>
-      <% if @node.next_by_author %><a class="btn btn-small btn-link" href="/<%= @node.next_by_author.slug %>">&raquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 39) { window.location = "http://"+(window.location+'').split('/')[2]+"/<%= @node.next_by_author.slug %>" }})</script><% end %>
+      <% if @node.next_by_author %><a class="btn btn-small btn-link" href="<%= @node.next_by_author.path %>">&raquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 39) { window.location = "https://"+(window.location+'').split('/')[2]+"<%= @node.next_by_author.path %>" }})</script><% end %>
     </div>
+
     <span>
-      by <a href="/notes/author/<%= @node.author.name %>"><%= @node.author.name %></a> |
+      <% if @node.status == 0 %><span class="label label-important">UNPUBLISHED</span> | <% end %>
+      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> 
+      <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %> <a href="/profile/<%= coauthor.username %>"><%= coauthor.username%></a><%= ',' if i < @node.coauthors.length-1 %><% end %><% end %> |
+
       <span class="hidden-phone">
-        <%= @node.created_at.to_s(:long) %> |
-        <%= @node.totalcount %> views
+        <%= @node.created_at.to_s(:long) %> 
+      </span>
+      <span class="hidden-phone hidden-print">
+        | <%= number_with_delimiter(@node.totalcount) %> views 
         <% if @node.comments %>| <i class="icon icon-comment"></i> <a href="#comments"><%= @node.comments.length %> comments</a><% end %>
+        | <a href="/n/<%= @node.id %>">shortlink</a>
       </span>
       <span class="hidden-desktop">
         <%= @node.created_at.to_s(:short) %>
       </span>
     </span>
+
   </div>
+
   <hr style="margin-top:10px;" />
 
-  <% @node.gallery.each do |image| %>
-    <a href="<%= image.image.path(:original) %>"><img style="margin-bottom:4px;" class="img-rounded" src="<%= image.image.path(:thumb) %>" /></a>
+  <% @node.power_tag_objects('barnstar').each do |tag| %>
+    <p style="color:#aaa;"><i style="color:#db4;" class="icon icon-large icon-star-empty"></i> <i><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> was awarded <a href="/wiki/barnstars#<%= tag.name.split('-').each{|w| w.capitalize!}.join('+') %>+Barnstar">the <%= tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' ') %> Barnstar</a> by <a href="/profile/<%= tag.author.username %>"><%= tag.author.username %></a> for their work in this research note.</i></p>
+    <hr />
   <% end %>
 
-  <p style="overflow:hidden;">
-  <%= raw auto_link(RDiscount.new(@node.body).to_html, :sanitize => false) %>
-  </p>
+  <% @node.gallery.each do |image| %>
+    <div id="lightbox-<%= image.fid %>" class="lightbox hide fade"  tabindex="-1" role="dialog" aria-hidden="true">
+      <div class='lightbox-content'>
+        <img src="<%= image.image.path(:original) %>">
+        <div class="lightbox-caption"><p><%= image.description %></p></div>
+      </div>
+    </div> 
 
-  <hr />
+    <a data-toggle="lightbox" data-show="true" data-target="#lightbox-<%= image.fid %>"><img rel="tooltip" data-title="<%= image.description %>" style="margin-bottom:4px;" class="img-rounded" src="<%= image.image.path(:thumb) %>" /></a>
+  <% end %>
+
+  <div style="overflow:hidden;" id="content">
+  <%= raw auto_link(@node.latest.render_body, :sanitize => false) %>
+  </div>
+
+  <% if @node.files && @node.files.length > 0 %>
+    <table id="files" class="table">
+      <tr>
+        <th>Files</th>
+        <th>Size</th>
+        <th>Uploaded</th>
+      </td>
+      <% @node.files.each do |file| %>
+        <tr>
+          <td><a href="<%= file.path %>"><i style="text-decoration:none;" class="icon icon-file"></i><span style="text-decoration:none;"> </span><%= file.filename %></a></td>
+          <td><%= number_to_human_size(file.filesize) %></td>
+          <td><%= Time.at(file.timestamp).to_s %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+  <div class="hidden-print">
+    <hr />
+
+    <% if @node.has_tag('event:rsvp') %>
+      <p><b><% if @node.has_power_tag('date') %>
+        <script>
+          jQuery(document).ready(function() {
+            cal = ics();
+            cal.addEvent('<%= @node.latest.title %>', false, false, '<%= @node.power_tag('date') %>', '<%= @node.power_tag('date') %>');
+          })
+        </script>
+        <i class="icon-calendar"></i> This event is on <%= @node.power_tag('date') %> <% end %></b>
+        <a class="label" onClick="cal.download()">iCal</a>
+      </p><br />
+      <p><% if !current_user %>Please <a href="/login">log in</a> to <% end %><a class="btn-large btn-primary" href="/rsvp/<%= @node.id %>">RSVP</a> 
+        <% attendees = @node.power_tags('rsvp').length %> 
+        <% if attendees > 1 %> (<%= attendees %> people will attend)<% end %>
+      <hr />
+    <% end %>
+
     <%= render :partial => "home/social" %>
-  <hr />
-
-  <%= render :partial => "tag/tagging" %>
-
-  <div>
-    <%= render :partial => "notes/comments" %>
+    <hr />
+ 
+    <%= render :partial => "tag/tagging" %>
+ 
+    <div>
+      <%= render :partial => "notes/comments" %>
+    </div>
   </div>
 
 </div><!--/span-->

@@ -1,27 +1,66 @@
 <%= render :partial => "sidebar/user" %>
 <div class="span9">
 
-  <% if @user.note_count == 0 %>
+  <% if @user.note_count == 0 && (-1 * (@user.created_at - DateTime.now) < 3600*48) # created in last 48 hours %>
+    <div class="alert hidden-phone">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <strong>Welcome!</strong> Need help, want to float an idea, or find collaborators? <a href="/lists">Join a topical or local Public Lab discussion list &raquo;</a> 
+    </div>
+  <% elsif @user.note_count == 0 %>
     <div class="alert hidden-phone">
       <button type="button" class="close" data-dismiss="alert">×</button>
       <strong>Welcome!</strong> You haven't posted a research note yet -- consider <a href="/post">sharing your work and interests</a>!
     </div>
+  <% elsif current_user.crypted_password.nil? %>
+    <div class="alert hidden-phone">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      Please <a href="/profile/edit">create a password for the new PublicLab.org website</a>; the older PublicLaboratory.org will soon be retired. 
+    </div>
   <% end %>
 
-  <h3>Dashboard: <small>Welcome, <%= current_user.username %>!</small></h3>
+  <h2 style="font-family:Junction Light;" class="hidden-phone">Dashboard: <small>Welcome, <%= current_user.username %>! &bull; <a href="/research"><%= @note_count %> notes</a> and <a href="/wiki"><%= @wiki_count %> wiki edits</a> were posted in the past week. </small></h2>
+  <h4 style="font-family:Junction Light;" class="visible-phone">Dashboard: <small>Welcome, <%= current_user.username %>!<% if @user.role === 'moderator' || @user.role === 'admin'%> (<%= @user.role %>)<% end %></small></h4>
+
+  <div id="share" class="hidden-phone" style="width:230px;float:right;margin-top:5px;text-align:right;height:30px;">
+    <div style="float:right;margin-left:6px;"><a href="https://twitter.com/PublicLab" class="twitter-follow-button" data-show-count="false">Follow @PublicLab</a></div>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <div class="fb-follow" style="" data-href="https://www.facebook.com/publiclab" data-layout="button_count" data-show-faces="false" data-width="50"></div>
+  </div>
 
   <ul class="nav nav-tabs">
-    <li class="active"><a rel="tooltip" title="Research notes for: <%= @user.tagnames.join(', ') %>" data-placement="bottom" href="#"><span class="hidden-phone">Recent </span>Activity</a></li>
-    <li><a href="/nearby"><i class="icon icon-globe"></i> Nearby</a></li>
-    <li><a href="/notes/author/<%= current_user.username %>">
-      <i class="icon icon-folder-open"></i>
-        Your work 
-        <span class="hidden-phone">
-          (<%= DrupalNode.count(:all,:conditions => {:type => "note", :status => 1, :uid => current_user.uid}) %>)
-        </span>
-      </a></li>
+    <li class="active"><a href="#research" data-toggle="tab"><span class="hidden-phone">Recent </span>Activity</a></li>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="icon icon-comment"></i><span class="hidden-phone"> Comments</span></a></li>
+    <li><a href="/profile/<%= current_user.username %>/likes"><i class="icon icon-star"></i><span class="hidden-phone"> Liked</span></a></li>
+    <!--<li><a href="/nearby"><i class="icon icon-globe"></i><span class="hidden-phone"> Nearby</span></a></li>-->
+    <li><a href="/subscriptions"><i class="icon icon-eye-open"></i><span class="hidden-phone"> Subscriptions</span></a></li>
+    <li class="visible-phone"><a href="/lists"><i class="icon icon-envelope"></i></a></li>
   </ul>
 
-  <%= render :partial => "notes/notes" %>
+  <div class="tab-content">
 
+    <div class="tab-pane active" id="research">
+      <%= render :partial => "notes/notes" %>
+      <hr />
+      <p><a href="/research?page=2">Read more research notes &raquo;</a></p>
+      <br />
+    </div>
+ 
+    <div class="tab-pane" id="comments">
+      <h2 style="text-align:center;"><i class="icon-spinner icon-spin"></i></h2>
+    </div>
+    <script>
+      (function(){
+        $('a#comments-tab').on('shown',function (e) {
+          $.ajax({
+            url : '/dashboard/comments',
+            type: 'GET',
+            success: function(response){
+              $('#comments').html(response);
+            }
+          })
+        })
+      })()
+    </script>
+
+  </div>
 </div>

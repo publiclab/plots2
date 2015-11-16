@@ -1,0 +1,25 @@
+Dear <%= @user.name %>,
+
+<p>Public Lab contributor <a href="https://publiclab.org/profile/<%= @node.author.name %>"><%= @node.author.name %></a> just posted a new research note entitled '<b><%= @node.title %></b>':</p>
+
+<p>Read and respond to the post here: https://publiclab.org<%= @node.path %></p> 
+
+<hr /> 
+
+<% if @node.main_image %><a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img src="<%= @node.main_image.path(:default) %>" /></a><% end %>
+
+<%= raw auto_link(@node.latest.render_body, :sanitize => false) %>
+
+<hr /> 
+
+<% if @user.role == "admin" || @user.role == "moderator" %>Does this look like spam? <a class="btn btn-small" href="https://publiclab.org/moderate/spam/<%= @node.id %>">Spam</a><% end %>
+
+<div style="color:#aaa;">
+
+<p>You received this email because you are subscribed to the following tags: <%= @tags.to_a.collect(&:name).join(",") %>.</p>
+
+<p>To change your preferences, please visit https://publiclab.org/subscriptions.</p>
+
+<p>Report spam and abuse to: <a href="mailto:web@publiclab.org">web@publiclab.org</a></p>
+
+</div>

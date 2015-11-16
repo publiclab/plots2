@@ -13,15 +13,17 @@
       <th>#</th>
       <th>User</th>
       <th>Created</th>
+      <th style="width:90px;"></th>
     </tr>
   <% @node.revisions.each_with_index do |revision,index| %>
     <tr id="row<%= @node.revisions.length-1-index %>"<% if index < 2 %> class="warning"<% end %>>
       <td><b><a href="javascript:void(0)" onClick="goto(<%= @node.revisions.length-1-index %>,<%= @node.revisions.length-2-index %>)"><%= @node.revisions.length-1-index %></b></td>
-      <td><a href="/people/<%= revision.author.name %>"><%= revision.author.name %></a></td>
-      <td><a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a>
+      <% if revision.author %><td><a href="/people/<%= revision.author.name %>"><%= revision.author.name %></a></td><% end %>
+      <td><a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a> <i class="icon icon-external-link"></i>
         | <%= time_ago_in_words(revision.created_at) %> ago
         <div style="display:none;" id="body_<%= @node.revisions.length-1-index %>"><%= raw RDiscount.new(revision.body).to_html %></div>
       </td>
+      <td><a class="btn btn-link" href="/wiki/revert/<%= revision.vid %>" data-confirm="Are you sure?"><i class="icon icon-backward"></i> Revert</a>
     </tr>
   <% end %>
   </table>
@@ -61,7 +63,7 @@
       older = old
       $('#newer').html(newer)
       $('#older').html(older)
-      $('#diff').html(diffString($('#body_'+newer).html(),$('#body_'+older).html()))
+      $('#diff').html(diffString($('#body_'+older).html(),$('#body_'+newer).html()))
       $('tr').removeClass('warning')
       $('#row'+older).addClass('warning')
       $('#row'+newer).addClass('warning')

@@ -1,8 +1,12 @@
 <div class="span3">
 
+  <h4>About this page</h4>
+
+  <p>Public Lab is built on the contributions of community members, and this website represents our collective open source work.</p>
+
 </div>
 
-<div class="span9">
+<div class="span9" style="margin-bottom:20px;">
 
   <h2>Contributor statistics</h2>
 
@@ -19,9 +23,61 @@
 
   <h4><%= nids.uniq.length %> research notes have been posted by <%= users.uniq.length %> contributors since <%= time_ago_in_words(DrupalNode.find(:first, :conditions => {:type => 'note', :status => 1}).created_at) %> ago</h4>
 
+  <p><i>Note posting for the past 52 weeks:</i></p>
+
+  <div id="notes" style="height:100px;"></div>
+
   <h4><%= DrupalNode.count(:all, :conditions => {:type => 'page', :status => 1}) %> wiki pages have been posted</h4>
 
-  <h4><%= DrupalNodeRevision.count(:all) %> wiki page and research note edits have been made</h4>
+  <p><i>Wiki page posting for the past 52 weeks:</i></p>
+
+  <div id="wikis" style="height:100px;"></div>
+
+  <h4><%= DrupalNodeRevision.count(:all) %> wiki page edits have been made</h4>
 
 </div>
+
+<script type="text/javascript">
+  (function () {
+
+    flotoptions_minimal = {
+      yaxis: { show: true },
+      xaxis: { show: true },
+      grid: {
+        borderWidth: 0,
+        //backgroundColor: "#222",
+        //color: "#444",
+        markers: []
+      }
+      // Palette "i eat the rainbow" by svartedauden on Colourlovers: http://www.colourlovers.com/palette/1630898/i_eat_the_rainbow, CC-BY-NC
+      //colors: [ "#E02130", "#FAB243", "#429867", "#2B5166" ]//, "#482344" ]
+    }
+
+    var notes = <%= DrupalNode.weekly_tallies.to_a.sort.to_json %>
+    var wikis = <%= DrupalNode.weekly_tallies('page').to_a.sort.to_json %>
+
+    $.plot($("#notes"), [
+      {
+          data: notes,
+          bars: { show: true, 
+                  lineWidth: 0,
+                  fillColor: "#08f",
+                  barWidth: 0.5
+                }
+      }
+    ],flotoptions_minimal)
+
+    $.plot($("#wikis"), [
+      {
+          data: wikis,
+          bars: { show: true, 
+                  lineWidth: 0,
+                  fillColor: "#80f",
+                  barWidth: 0.5
+                }
+      }
+    ],flotoptions_minimal)
+
+  })()
+</script>
 

@@ -1,37 +1,55 @@
-<div class="container-fluid">
-  <div class="row-fluid">
-    <div class="row">
+<div class="" id="notes">
+    <div class="row-fluid">
     <% @notes.each_with_index do |node,i| %>
-      <div class="span3 clearfix" style="overflow:hidden;">
+      <div class="span3 clearfix note" style="overflow:hidden;">
         <% if node.main_image %>
-          <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>
-          <a class="hidden-phone thumbnail" href="/<%= node.slug %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <a class="visible-phone thumbnail" <% if @widget %>target="_blank"<% end %> style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <a class="hidden-phone thumbnail" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
         <% end %>
-        <h4><a href="/<%= node.slug %>"><%= node.title %></a></h4>
+
+        <% if node.type == 'note' %>
+          <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= node.title %></a></h4>
+        <% else %>
+          <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= node.latest.title %></a></h4>
+        <% end %>
+
         <p style="color:#888;"><small>
-          by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> 
-          | <%= time_ago_in_words(node.created_at) %> ago
-          | <a href="/<%= node.slug %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
+          <% if node.type == 'note' %>
+            by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
+            <%= time_ago_in_words(node.created) %> ago
+            | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
+          <% else %>
+            last edit by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a> 
+            <%= time_ago_in_words(node.latest.timestamp) %> ago
+          <% end %>
+          | <i class="visible-phone icon icon-eye-open"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-phone">views</span>
+          | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="icon icon-star-empty"></i> <%= node.likes %>
         </small></p>
+
+        <% if @compact.nil? %>
         <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
-        <p><a href="/<%= node.slug %>">Read more &raquo;</a></p>
+        <p><a href="<%= node.path %>">Read more &raquo;</a></p>
         <p>
-          <% node.tags[0..3].each do |tag| %>
-            <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
+          <% if logged_in_as(['admin','moderator']) %><a class="btn btn-mini" href="/moderate/spam/<%= node.id %>"><i class="icon icon-ban-circle"></i> Spam</a><% end %>
+          <% if node.tags.length > 1 %>
+            <% node.tags[0..3].each do |tag| %>
+              <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
+            <% end %>
           <% end %>
         </p>
+        <% end %>
         <% if params[:mod] %>
         <a class="btn btn-mini" href="#"><i class="icon-ban-circle"></i> Spam</a>
         <% end %>
+        <hr style="display:none;" class="bottom" />
       </div>
       <hr class="visible-phone" />
     <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
     </div>
-    <hr class="hidden-phone" />
-    <div class="row">
+    <hr class="hidden-phone grid" />
+    <div class="row-fluid">
     <% end %>
     <% end %>
     </div>
-  </div>
-  <%= will_paginate @nodes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
 </div>
+<%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>

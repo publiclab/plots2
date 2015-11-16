@@ -1,27 +1,54 @@
 <div class="span3">
-  <h3 class="hidden-phone"><i class="icon-file"></i> What's a <br />research note?</h3>
-  <h4 class="visible-phone"><i class="icon-file"></i> What's a research note?</h4>
-  <p class="visible-phone"><a onClick="$('#research-note-detail').removeClass('hidden-phone')">Read more &raquo;</a></p>
-  <div id="research-note-detail" class="hidden-phone">
-    <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work.</p>
-    <p><b>Research notes can be:</b></p>
-    <ul>
-      <li>photos of what you've made</li>
-      <li>requests for troubleshooting</li>
-      <li>proposals for new projects</li>
-      <li>announcements of events</li>
-      <li>reports from a field test or meetup</li>
-      <li>etc!</li>
-    </ul>
-    <hr />
-    <div class="sidebar-nav">
-      <ul class="nav nav-list">
-        <li class="nav-header">More</li>
-        <li><a href="/wiki/getting-started">Getting started with Public Lab</a></li>
-        <li><a href="#">Advanced note posting</a></li>
-      </ul>
+
+  <script>
+    $D = {
+      uid: <%= current_user.uid %>,
+      type: 'note',
+      warn_image: <%= params[:template] == "question" %>
+    }
+  </script>
+
+  <%= javascript_include_tag "post" %>
+  <%= javascript_include_tag "dragdrop" %>
+
+  <% if params[:template] == "question" %>
+    <h4 class="visible-phone">Ask a question</h4>
+    <div id="research-note-detail" class="hidden-phone">
+      <h3>Use this form to ask about "<%= params[:tags].split(':').last %>"</h3>
+      <% if DrupalTag.follower_count(params[:tags]) > 0 %><p><%= DrupalTag.follower_count(params[:tags]) %> people have signed up to answer questions on this topic.</p><% end %>
+      <ul>
+        <li>Need to learn more?</li>
+      <hr />
     </div>
-  </div>
+
+  <% else %>
+    <h3 class="hidden-phone"><i class="icon-file"></i> What's a <br />research note?</h3>
+    <h4 class="visible-phone"><i class="icon-file"></i> What's a research note? <a onClick="$('#research-note-detail').toggleClass('hidden-phone')">Learn more &raquo;</a></h4>
+    
+    <div id="research-note-detail" class="hidden-phone">
+      <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work.</p>
+      <p><b>Research notes can include:</b></p>
+      <ul>
+        <li>photos of what you've made</li>
+        <li>requests for troubleshooting</li>
+        <li>proposals for new projects</li>
+        <li>announcements of events</li>
+        <li>reports from a field test or meetup</li>
+        <li>etc!</li>
+      </ul>
+      <hr />
+      <p><b><a href="//www.youtube.com/watch?v=rsy__zTTh8c" target="_blank"><i class="icon icon-film"></i> Watch a 30 second video on posting research notes &raquo;</a></b></p>
+      <hr />
+      <div class="sidebar-nav">
+        <ul class="nav nav-list">
+          <li class="nav-header">More</li>
+          <li><a href="/getting-started">Getting started with Public Lab</a></li>
+          <li><a href="/wiki/posting-research">About posting research</a></li>
+          <li><a href="/wiki/authoring-help#Advanced+formatting">Advanced formatting</a></li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
 </div>
 
 <div class="span9">
@@ -40,72 +67,55 @@
 
     <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
 
-    <div class="sidebar-nav pull-right span3">
+    <%= render :partial => "editor/main_image" %>
 
-      <h3 style="margin-top:0;" class="hidden-phone">Main image</h3>
+    <% if params[:template] == "question" %>
+      <h3 style="margin-top:0;">Ask a question of the community</h3>
+    <% else %>
+      <h3 style="margin-top:0;">Share your work</h3>
+    <% end %>
 
-      <img class="img-rounded" id="leadImage" <% unless @node && @node.main_image || params[:main_image] %>style="display:none;" <% end %>src="<% if @node && @node.main_image %><%= @node.main_image.path(:default) %><% elsif params[:main_image] %><%= Image.find_by_id(params[:main_image]).path %><% end %>" />
-      <div class="side-dropzone" id="side-dropzone">
-        <p class="prompt"><span class="hidden-phone">Drag &amp; drop to add an image, or </span><span class="fileinput-button"><a><i class="icon icon-upload visible-phone pull-left" style="padding-right:6px;"></i> choose an image</a><input id="side-fileinput" type="file" name="image[photo]" style="height:4em;"></span></p>
-        <br class="hidden-phone" />
-      </div>
-      <div id="side-progress" style="display:none;" class="progress progress-striped active pull-right">
-        <div class="bar" style="width: 0%;"></div>
-      </div>
-      <p class="side-uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
-
-      <!--<a href="#images_modal" data-dismiss="modal" data-toggle="modal" class="btn"><i class="icon icon-picture"></i> Recent images</a>-->
-      <%# render :partial => "editor/images" %>
-
-      <script src="/assets/js/editor.js"></script>
-
-    </div>
-
-    <h3 style="margin-top:0;">Share your work</h3>
-
-    <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title" value="<%= @node.title if @node %>"><br />
+    <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %><%= "Question: " if params[:template] == "question" %><%= 'Public Lab Community Newsletter '+ DateTime.now.to_date.to_s(:long) if params[:newsletter] %>"><br />
+    <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
     <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
     <input id="node_images" type="hidden" name="node_images" value="" />
 
     <%= render :partial => 'editor/editor' %>
 
-    <!--
+    <div class="control-group">
     <div class="input-prepend">
       <span class="add-on"><i class="icon-tags"></i></span>
-      <input id="tags" tabindex="3" name="tags" type="text" class="span6" <% if params[:tags] %>value="<%= params[:tags] %>"<% else %>placeholder="balloon-mapping, new-york"<% end %> data-provide="typeahead" data-source="['balloon-mapping','kite-mapping','spectrometry','near-infrared-camera','thermal-flashlight']">
+      <input name="remote" type="hidden" value="true" />
+  
+      <input autocomplete="off" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
     </div>
-    <br />
-    -->
+    </div>
+
     <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
 
-    <p>
-      <a id="publish" tabindex="4" class="btn btn-primary btn-large">Publish</a>
-      <a id="preview-btn" class="btn btn-large" onClick="$('#preview-btn').button('toggle');$('#preview').toggle();$('#dropzone').toggle()">Preview</a></p>
+    <div class="hidden-phone">
+      <a id="publish" tabindex="5" class="publish btn btn-primary btn-large">Publish</a>
+      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
+    </div>
+    <div class="visible-phone btn-group">
+      <a id="publish" class="publish btn btn-primary btn-large">Publish</a>
+      <a data-previewing-text="Edit" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
+    </div>
+
+    <p style="margin-top:4px;"><label class="checkbox inline">
+      <input tabindex="7" onChange="$('#event-info').toggle()" id="event-input" type="checkbox" name="event">
+      This is an event
+    </label></p>
+
+    <div id="event-info" style="display:none;">
+      <p><i>An RSVP feature will be added to your note. Please choose a date:</i></p>
+      <span style="padding-right:0;" class="datepicker input-append date" data-date="<%= DateTime.now.strftime("%m-%d-%Y") %>" data-date-format="mm-dd-yyyy">
+        <input id="datepicker-input" onFocus="$('.datepicker').datepicker('show')" class="span8" size="16" type="text" name="date" value="<%= DateTime.now.strftime("%m-%d-%Y") %>" />
+        <span class="add-on"><i class="icon-calendar"></i></span>
+      </span>
+    </div>
+
     <p>By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+
   <% end %>
 </div>
-<script>
-  (function(){
-    $D = {
-      uid: <%= current_user.uid %>,
-      type: 'note'
-    }
-    $E.initialize()
-    $("#publish").bind("click",function(e) {
-      if ($('#main_image').val() == "") {
-        // prompt to choose a lead image
-        $('.side-dropzone').css('border-color','#d99')
-        $('.side-dropzone').css('background','#fcc')
-      } else {
-        // prompt to choose a lead image
-        $('#new_drupal_node_revision').submit()
-      }
-    })
-    if ($E.textarea.val() == "") $E.apply_template("<%= params[:template] || 'default'%>")
-  })()
-</script>
-<link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
-<script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
-<script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
-<script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
-<script src="/assets/js/dragdrop.js?2"></script>

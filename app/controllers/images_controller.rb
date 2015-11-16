@@ -1,22 +1,31 @@
+require 'open-uri'
+
 class ImagesController < ApplicationController
 
   respond_to :html, :xml, :json
   before_filter :require_user, :only => [:create, :new, :update, :delete]
 
   def create
-    params[:image][:title] = "Untitled" if params[:image][:title].nil?
-    @image = Image.new({
-      :uid => current_user.uid,
-      :photo => params[:image][:photo],
-      :title => params[:image][:title],
-      :notes => params[:image][:notes]
-    })
-    @image.nid = DrupalNode.find params[:nid] if params[:nid]
+    if params[:i]
+      @image = Image.new({
+        :remote_url => params[:i],
+        :uid => current_user.uid
+      })
+      flash[:error] = "The image could not be saved." unless @image.save!
+    else
+      @image = Image.new({
+        :uid => current_user.uid,
+        :photo => params[:image][:photo],
+        :title => params[:image][:title],
+        :notes => params[:image][:notes]
+      })
+    end
+    @image.nid = DrupalNode.find(params[:nid].to_i).nid unless params[:nid].nil?
     if @image.save!
       #@image = Image.find @image.id
       if request.xhr?
         render :json => { :filename => @image.photo_file_name,
-                          :url => "http://i.publiclab.org"+@image.photo.url(:medium),
+                          :url => @image.path,
                           :id => @image.id
                         }
       else
@@ -33,6 +42,7 @@ class ImagesController < ApplicationController
     @image = Image.new()
   end
 
+  # Jeff believes this is not used.
   def update
     @image = Image.find params[:id]
     # make changes

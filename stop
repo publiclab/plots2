@@ -1,0 +1,1 @@
+rvmsudo `which passenger` stop -p 80

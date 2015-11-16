@@ -1,0 +1,58 @@
+<div class="sidebar-nav pull-right span3">
+
+  <h3 style="margin-top:0;" class="hidden-phone">Main image <i id="main-image-spinner" class="hidden icon-spinner icon-spin"></i></h3>
+
+  <img class="img-rounded" id="leadImage" <% unless (@node && @node.main_image) || params[:main_image] || params[:i] %>style="display:none;" <% end %>src="<% if @node && @node.main_image %><%= @node.main_image.path(:default) %><% elsif params[:main_image] && Image.find_by_id(params[:main_image]) %><%= Image.find_by_id(params[:main_image]).path %><% elsif @image %><%= @image.path(:default) %><% end %>" />
+  <div class="side-dropzone" id="side-dropzone">
+    <p class="prompt">
+      <span class="hidden-phone">
+        Drag &amp; drop to add an image, or 
+      </span>
+      <span class="fileinput-button">
+        <a><i class="icon icon-upload visible-phone pull-left" style="padding-right:6px;"></i> choose an image</a>
+        <input tabindex="3" id="side-fileinput" type="file" name="image[photo]" style="height:4em;" />
+      </span>
+    </p>
+    <br class="hidden-phone" />
+  </div>
+  <div id="side-progress" style="display:none;" class="progress progress-striped active pull-right">
+    <div class="bar" style="width: 0%;"></div>
+  </div>
+  <p class="side-uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
+
+  <% if params[:newsletter] %>
+
+    <script>
+      (function(){
+        upload_main_img = function (i,author) {
+          $('#main-image-spinner').removeClass('hidden')
+          $.ajax({
+            url: "/images/create?i="+i,
+            dataType: "json",
+            type: 'POST',
+            success: function(response){
+              $('#main-image-spinner').addClass('hidden')
+              $('#text-input').val($('#text-input').val().replace('<!-- Caption for lead image -->','Above image by ['+author+'](/profile/'+author+')<!-- Caption for lead image -->'))
+              $('#leadImage').show()
+              $('#leadImage')[0].src = response.url
+              $('#main_image').val(response.id)
+              $('#has_main_image').val(true)
+            }
+          })
+        }
+      })()
+    </script>
+
+    <h4 style="margin-top:20px;">Choose a main image:</h4>
+
+    <div class="row-fluid">
+      <% @all.each do |note| %>
+        <% if note.main_image %><a class="span6" onClick="upload_main_img('<%= note.main_image.path(:original) %>','<%= note.author.username %>')"><img class="img-rounded" src="<%= note.main_image.path(:default) %>" /></a><% end %>
+      <% end %>
+    </div>
+
+    <p><i>The last newsletter was published <%= time_ago_in_words(@newsletter.created_at) %> ago.</i></p>
+ 
+  <% end %>
+
+</div>

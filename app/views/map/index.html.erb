@@ -1,36 +1,74 @@
-<%= render :partial => "sidebar/featured" %>
+</div>
+
+<div style="width:100%;margin-left:0;height:300px;" id="map"></div>
+
+<script>
+  var map = L.map('map').setView([15,0], 2);
+  L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+
+  <% @maps.each do |map| %>
+    <% 
+      lat = false
+      lon = false
+      map.drupal_tag.each do |tag|
+        lat = tag.name.split(':').last if tag.name[0..2] == 'lat'
+        lon = tag.name.split(':').last if tag.name[0..2] == 'lon'
+      end
+    %> 
+    L.marker([<%= lat %>, <%= lon %>]).addTo(map).bindPopup("<a href='<%= map.path %>'><%= map.title %></a>");
+  <% end %>
+</script>
+
+<br style="clear:both;" />
+<h1 style="margin-top:10px;font-size:4em;">Maps <small>open data from balloon and kite photography (<%= @maps.length %> and counting)</small></h1>
+  
+<hr />
+
+<div class="row-fluid">
+
+<div class="span3">
+
+  <h3 style="margin-top:0;">Do-It-Yourself "satellite" imagery</h3>
+
+  <p>These maps were largely made by <a href="/tool/balloon-mapping">taking photos from balloons and kites</a>, a technique adopted and refined by Public Lab contributors. <a href="//mapknitter.org">Make one yourself</a> and it can be featured here.</p>
+
+  <hr />
+
+  <h3>Popular tags</h3>
+
+  <p>
+    <a href="/maps/tag/oil-spill"><i class="icon icon-tag"></i> oil-spill</a>
+    <a href="/maps/tag/wetlands"><i class="icon icon-tag"></i> wetlands</a>
+    <a href="/maps/tag/landfill"><i class="icon icon-tag"></i> landfill</a>
+    <a href="/maps/tag/garden"><i class="icon icon-tag"></i> garden</a>
+    <a href="/maps/tag/ndvi"><i class="icon icon-tag"></i> NDVI</a>
+    <a href="/maps/tag/gowanus"><i class="icon icon-tag"></i> gowanus</a>
+    <a href="/maps/tag/protest"><i class="icon icon-tag"></i> protest</a>
+  </p>
+
+  <hr />
+
+  <h3><i style="color:#aaa;" class="icon icon-hdd"></i> A grassroots data archive</h3>
+
+  <p>This archive represents the collective work of our community to provide an alternative source for aerial imagery, and to highlight issues of environmental and social concern with Do-It-Yourself tools. The archive provides:</p>
+
+  <ul>
+    <li>A permanent, backed up archive</li>
+    <li>A place to advocate around your data</li>
+    <li>A space to discuss and understand the maps</li>
+  </ul>
+
+  <hr />
+
+  <h3><i style="color:#aaa;" class="icon icon-globe"></i> How to contribute</h3>
+
+  <p>Most of the maps in this archive were made in <a href="//mapknitter.org">MapKnitter</a>, a free and open source tool created by Public Lab contributors to turn aerial photos into maps.</p>
+
+  <p>To add your open source map to the archive, contact <a href="mailto:stewart@publiclaboratory.org">stewart@publiclaboratory.org</a> and be prepared to provide some background and to tell the story of your map. Creative Commons and Public Domain maps are <a href="/licenses">both accepted</a>.</p> 
+
+</div>
+
 <div class="span9">
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
-  <!--[if lte IE 8]>
-      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
-  <![endif]-->
-  <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
-
-  <div class="span12" style="margin-left:0;height:300px;margin-bottom:10px;" id="map"></div>
-
-  <script>
-    var map = L.map('map').setView([15,0], 2);
-    L.tileLayer("http://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
-
-    <% @maps.each do |map| %>
-      L.marker([<%= map.location[:y] %>, <%= map.location[:x] %>]).addTo(map).bindPopup("<a href='<%= map.slug %>'><%= map.title %></a>");
-    <% end %>
-  </script>
-
-  <h2>Maps <small>from the Public Lab Archive</small></h2>
-  <div class="navbar">
-    <div class="navbar-inner">
-      <form class="navbar-form pull-right" style="margin-left:10px;" action="/search/advanced">
-        <input type="hidden" name="maps" value="on" />
-        <input placeholder="search maps" type="text" name="q" class="input search-query" data-provide="typeahead" data-source='["Balloon mapping","Thermal photography","Spectrometry"]'>
-        <button type="submit" class="btn btn-inverse"><i class="icon-search icon-white"></i></button>
-      </form>
-      <ul class="nav">
-        <li class="active"><a href="#">Recent</a></li>
-        <li><a href="#">Popular</a></li>
-      </ul>
-    </div>
-  </div>
 
   <%= render :partial => "map/maps" %>
 

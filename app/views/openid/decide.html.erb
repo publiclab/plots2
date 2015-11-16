@@ -1,0 +1,27 @@
+<form method="post" action="<%= url_for :controller => 'openid', :action => 'decision' %>">
+<input type='hidden' name='authenticity_token' value="<%= form_authenticity_token %>"/>
+
+<table class="table">
+  <tr><th>Site</th><td><%= @oidreq.trust_root %></td></tr>
+
+  <% if @oidreq.id_select %>
+    <tr>
+      <td colspan="2">
+        You entered the server identifier at the relying party.
+        You'll need to send an identifier of your choosing.  Enter a
+        username below.
+      </td>
+    </tr>
+    <tr>
+      <td>Identity to send:</td>
+      <td><input type="text" name="id_to_send" size="25" /></td>
+    </tr>
+  <% else %>
+    <tr><th>Identity</th><td><%= @oidreq.identity %></td></tr>
+  <% end %>
+</table>
+
+<input tabIndex="1" class="btn btn-large btn-primary" type="submit" name="yes" value="Yes" />
+<input class="btn btn-large" type="submit" name="no" value="No" />
+
+</form>
