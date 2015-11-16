@@ -1,5 +1,5 @@
 </div>
-<iframe style="width:100%;border:none;background:#ddd;margin-bottom:8px;" height="375" src="http://archive.publiclab.org/leaflet/?tms=<%= @node.map.tms %>&lon=<%= @node.lon %>&lat=<%= @node.lat %>&zoom=<%= @node.map.min_zoom+1 %>"></iframe>
+<iframe style="width:100%;border:none;background:#ddd;margin-bottom:8px;" height="375" src="//archive.publiclab.org/leaflet/?tms=<%= @node.map.tms %>&lon=<%= @node.lon %>&lat=<%= @node.lat %>&zoom=<%= @node.map.min_zoom+1 %>"></iframe>
 
 <div class="row-fluid">
   <%= render :partial => "sidebar/related" %>
@@ -22,7 +22,7 @@
 
   <div class="btn-toolbar">
     <div class="btn-group">
-      <a class="btn btn-small btn-danger" rel="tooltip" title="View the map in a full-screen web viewer" href="http://archive.publiclab.org/leaflet/?tms=<%= @node.map.tms %>&lon=<%= @node.location[:x] %>&lat=<%= @node.location[:y] %>&zoom=17">Web viewer</a>
+      <a class="btn btn-small btn-danger" rel="tooltip" title="View the map in a full-screen web viewer" href="//archive.publiclab.org/leaflet/?tms=<%= @node.map.tms %>&lon=<%= @node.location[:x] %>&lat=<%= @node.location[:y] %>&zoom=17">Web viewer</a>
       <a class="btn btn-small btn-success" rel="tooltip" title="" href="<%= @node.map.field_jpg_url_value %>">JPG (<%= @node.map.field_jpg_filesize_value.to_i %> MB)</a>
       <a class="btn btn-small btn-info" rel="tooltip" title="" href="<%= @node.map.field_geotiff_url_value %>">GeoTiff (<%= @node.map.field_geotiff_filesize_value.to_i %> MB)</a>
       <a class="btn btn-small btn-warning" rel="tooltip" title="Tiled Map Service (for developers)" href="<%= @node.map.field_tms_url_value %>">TMS</a>

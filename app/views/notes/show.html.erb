@@ -25,7 +25,7 @@
   <div>
     <div class="btn-group pull-right hidden-print">
       <script>var editing = false;</script>
-      <% if @node.prev_by_author %><a class="btn btn-link btn-small" href="<%= @node.prev_by_author.path %>">&laquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 37) { window.location = "http://"+(window.location+'').split('/')[2]+"<%= @node.prev_by_author.path %>" }})</script><% end %>
+      <% if @node.prev_by_author %><a class="btn btn-link btn-small" href="<%= @node.prev_by_author.path %>">&laquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 37) { window.location = "https://"+(window.location+'').split('/')[2]+"<%= @node.prev_by_author.path %>" }})</script><% end %>
         <a class="btn btn-small btn-link dropdown-toggle" data-toggle="dropdown">
           <i class="icon icon-cog"></i> 
         </a>
@@ -35,7 +35,7 @@
           <li><a href="javascript:void(0)">by tag <b><%= tag.name %></b></a></li>
           <% end %>
         </ul>
-      <% if @node.next_by_author %><a class="btn btn-small btn-link" href="<%= @node.next_by_author.path %>">&raquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 39) { window.location = "http://"+(window.location+'').split('/')[2]+"<%= @node.next_by_author.path %>" }})</script><% end %>
+      <% if @node.next_by_author %><a class="btn btn-small btn-link" href="<%= @node.next_by_author.path %>">&raquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 39) { window.location = "https://"+(window.location+'').split('/')[2]+"<%= @node.next_by_author.path %>" }})</script><% end %>
     </div>
 
     <span>
