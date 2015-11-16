@@ -42,6 +42,8 @@ passenger-standalone.json.bkp
 public/pdf.js/
 public/sites/
 public/assets/
+production.db
+test.db
 
 # Ignore NPM
 node_modules
