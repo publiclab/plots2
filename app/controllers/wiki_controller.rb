@@ -57,6 +57,12 @@ class WikiController < ApplicationController
     @unpaginated = true
   end
 
+  # display a revision, raw
+  def raw
+    response.headers["Content-Type"] = "text/plain; charset=utf-8"
+    render :text => DrupalNodeRevision.find(params[:id]).body
+  end
+
   def edit
     if params[:lang]
       @node = DrupalNode.find_by_slug(params[:lang]+"/"+params[:id])

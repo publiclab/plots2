@@ -25,6 +25,12 @@ class NotesController < ApplicationController
     redirect_to @node.path
   end
 
+  # display a revision, raw
+  def raw
+    response.headers["Content-Type"] = "text/plain; charset=utf-8"
+    render :text => DrupalNodeRevision.find(params[:id]).body
+  end
+
   def show
     if params[:author] && params[:date]
       @node = DrupalNode.where(path: '/notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).first

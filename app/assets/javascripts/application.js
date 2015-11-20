@@ -21,7 +21,7 @@
 //= require jquery-file-upload/js/jquery.iframe-transport.js
 //= require flot/jquery.flot.js
 //= require flot/jquery.flot.crosshair.js
-//= require jsdiff/diff.js
+//= require jsdiff.js
 //= require marked/marked.min.js
 //= require ics/ics.deps.min.js
 //= require ics/ics.min.js

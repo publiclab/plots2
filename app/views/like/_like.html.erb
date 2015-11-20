@@ -30,9 +30,12 @@
   <hr />
 
   <div class='btn-group'>
-    <a <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing someone else\'s post, a privilege you have only because you are a moderator or admin.' <% end %>class='btn btn-small' href='/notes/edit/<%= node.id %>'><i class='icon icon-pencil'></i><span class='hidden-phone'> Edit</span></a>
+    <% if node.type == 'note' %><a <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing someone else\'s post, a privilege you have only because you are a moderator or admin.' <% end %>class='btn btn-small' href='/notes/edit/<%= node.id %>'><i class='icon icon-pencil'></i><span class='hidden-phone'> Edit</span></a><% end %>
     <a href='/notes/delete/<%= node.id %>' class='btn btn-small' data-confirm='Are you sure?'>
       <i class='icon icon-trash'></i><span class='hidden-phone' Delete</span>
+    </a>
+    <a href='/notes/raw/<%= node.id %>' class='btn btn-small'>
+      <i class='icon icon-code'></i><span class='hidden-phone' Raw</span>
     </a>
     <% if current_user.role == "moderator" || current_user.role == "admin" %>
       <a class='btn btn-small' href='/moderate/spam/<%= node.id %>'><i class='icon icon-ban-circle'></i> Spam</a>
