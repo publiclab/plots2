@@ -17,6 +17,12 @@ class WikiControllerTest < ActionController::TestCase
     assert_not_nil :wikis
   end
 
+  test "should get raw wiki markup" do
+    id = DrupalNodeRevision.last.id
+    get :raw, id: id
+    assert_response :success
+  end
+
   def test_post_wiki_no_login
     # kind of weird, to successfully log out, we seem to have to first log in to get the UserSession...
     user_session = UserSession.create @user

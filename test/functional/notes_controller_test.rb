@@ -17,6 +17,12 @@ class NotesControllerTest < ActionController::TestCase
     assert_not_nil :notes
   end
 
+  test "should get raw note markup" do
+    id = DrupalNodeRevision.last.id
+    get :raw, id: id
+    assert_response :success
+  end
+
   test "should get tools" do
     get :tools
     assert_response :success
