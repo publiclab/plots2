@@ -18,7 +18,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "should get raw note markup" do
-    id = DrupalNodeRevision.last.id
+    id = DrupalNode.last.id
     get :raw, id: id
     assert_response :success
   end
