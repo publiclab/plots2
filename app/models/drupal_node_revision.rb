@@ -53,7 +53,7 @@ class DrupalNodeRevision < ActiveRecord::Base
 
   # filtered version additionally appending http/https protocol to protocol-relative URLs like "//publiclab.org/foo"
   def render_body_email
-    self.render_body.gsub(/[\s|"|'|\[|\(](\/\/).+\./, 'https://')
+    self.render_body.gsub(/[\s|"|'|\[|\(](\/\/)[\w]?\.?publiclab.org/, 'https://')
   end
 
 end

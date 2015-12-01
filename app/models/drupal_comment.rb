@@ -28,7 +28,7 @@ class DrupalComment < ActiveRecord::Base
 
   # filtered version additionally appending http/https protocol to protocol-relative URLs like "//publiclab.org/foo"
   def body_email
-    self.body.gsub(/[\s|"|'|\[|\(](\/\/).+\./, 'https://')
+    self.body.gsub(/[\s|"|'|\[|\(](\/\/)[\w]?\.?publiclab.org/, 'https://')
   end
 
   def author
