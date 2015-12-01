@@ -6,7 +6,7 @@ Hi! You were mentioned by <%= @comment.author.name %> in a comment on the resear
 
 <hr /> 
 
-<p><%= raw auto_link(RDiscount.new(@comment.comment).to_html) %></p>
+<p><%= raw auto_link(RDiscount.new(@comment.body_email).to_html) %></p>
 
 <hr /> 
 

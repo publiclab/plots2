@@ -6,7 +6,7 @@ Hi! There's been a response to a discussion you're involved in. Do NOT reply to 
 
 <hr /> 
 
-<p><%= raw auto_link(RDiscount.new(@comment.comment).to_html) %></p>
+<p><%= raw auto_link(RDiscount.new(@comment.body_email).to_html) %></p>
 
 <hr />
 
