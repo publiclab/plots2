@@ -8,7 +8,7 @@ Dear <%= @user.name %>,
 
 <% if @node.main_image %><a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img src="<%= @node.main_image.path(:default) %>" /></a><% end %>
 
-<%= raw auto_link(@node.latest.render_body, :sanitize => false) %>
+<%= raw auto_link(@node.latest.render_body_email, :sanitize => false) %>
 
 <hr /> 
 
