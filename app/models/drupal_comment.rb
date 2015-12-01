@@ -23,12 +23,12 @@ class DrupalComment < ActiveRecord::Base
   end
 
   def body
-    comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
+    self.comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
   end
 
   # filtered version additionally appending http/https protocol to protocol-relative URLs like "//publiclab.org/foo"
   def body_email
-    self.body.gsub(/[\s|"|'|\[|\(](\/\/)[\w]?\.?publiclab.org/, 'https://')
+    self.body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?publiclab.org)/, '\1https://\3')
   end
 
   def author
