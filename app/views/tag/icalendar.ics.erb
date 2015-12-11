@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//hacksw/handcal//NONSGML v1.0//EN
+<% @notes.each do |node| %>
+BEGIN:VEVENT
+UID:do-not-reply@publiclab.org
+<% if node.power_tag('date') != '' %>
+DTSTAMP:<%= DateTime.parse(node.power_tag('date')).strftime("%Y%m%dT%H%M%S") %>
+<% end %>
+<%#DTSTART:19970714T170000Z
+DTEND:19970715T040000Z%>
+SUMMARY:<%= node.title %>
+END:VEVENT
+<% end %>
+END:VCALENDAR

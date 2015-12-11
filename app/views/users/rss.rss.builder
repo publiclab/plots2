@@ -3,7 +3,7 @@ xml.rss :version => "2.0" do
   xml.channel do
     xml.title "Research by "+params[:author]
     xml.description "Open source environmental science research at Public Lab"
-    xml.link "/feed/"+params[:author]+".rss"
+    xml.link "https://publiclab.org/feed/"+params[:author]+".rss"
 
    @notes.each do |node|
 
@@ -17,7 +17,7 @@ xml.rss :version => "2.0" do
        xml.author      node.author.name
        xml.pubDate     node.created_at.to_s(:rfc822)
        #xml.link        url_for :only_path => false, :controller => 'notes', :action => 'show', :id => node.nid
-       xml.link        "//publiclab.org/"+node.path
+       xml.link        "https://publiclab.org"+node.path
        #xml.image "http://publiclaboratory.org/"+node.main_image.path(:default) if node.main_image
        xml.description auto_link(node.latest.render_body, :sanitize => false)
        xml.guid        url_for :only_path => false, :controller => 'notes', :action => 'show', :id => node.nid

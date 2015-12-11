@@ -1,6 +1,6 @@
 class TagController < ApplicationController
 
-  respond_to :html, :xml, :json
+  respond_to :html, :xml, :json, :ics
   before_filter :require_user, :only => [:create, :delete]
 
   def index
@@ -153,8 +153,13 @@ class TagController < ApplicationController
     end
     respond_to do |format|
       format.rss {
-        render :layout => false
         response.headers["Content-Type"] = "application/xml; charset=utf-8"
+        render :layout => false
+      } 
+      format.ics {
+        response.headers['Content-Disposition'] = "attachment; filename='public-lab-events.ics'"
+        response.headers["Content-Type"] = "text/calendar; charset=utf-8"
+        render :layout => false, :template => "tag/icalendar.ics", :filename => "public-lab-events.ics"
       } 
     end
   end
