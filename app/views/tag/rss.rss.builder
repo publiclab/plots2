@@ -14,7 +14,11 @@ xml.rss :version => "2.0" do
         xml.title       node.title
         xml.author      node.author.name
         if node.power_tag('date') != ''
-          xml.pubDate     DateTime.parse(node.power_tag('date')).strftime("%Y%m%dT%H%M%S")
+          begin
+            xml.pubDate     DateTime.parse(node.power_tag('date')).strftime("%Y%m%dT%H%M%S")
+          rescue
+            xml.pubDate     node.power_tag('date')
+          end
         else
           xml.pubDate     node.created_at.to_s(:rfc822)
         end

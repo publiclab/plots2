@@ -5,7 +5,10 @@ PRODID:-//hacksw/handcal//NONSGML v1.0//EN
 BEGIN:VEVENT
 UID:do-not-reply@publiclab.org
 <% if node.power_tag('date') != '' %>
+<% begin %>
 DTSTAMP:<%= DateTime.parse(node.power_tag('date')).strftime("%Y%m%dT%H%M%S") %>
+<% rescue %>
+<% end %>
 <% end %>
 <%#DTSTART:19970714T170000Z
 DTEND:19970715T040000Z%>
