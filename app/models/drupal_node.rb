@@ -242,7 +242,7 @@ class DrupalNode < ActiveRecord::Base
   def power_tag(tag)
     tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
     node_tag = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids).order('nid DESC')
-    if node_tag
+    if node_tag && node_tag.first
       node_tag.first.tag.name.gsub(tag+':','')
     else
       ''
