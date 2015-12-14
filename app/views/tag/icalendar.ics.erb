@@ -4,11 +4,12 @@ PRODID:-//publiclab/events//NONSGML v1.0//EN
 <% @notes.each do |node| %>
 <% if node.power_tag('date') != '' %>
 <% begin %>
+<% date = DateTime.parse(node.power_tag('date')) %>
 BEGIN:VEVENT
 UID:do-not-reply@publiclab.org
-DTSTAMP:<%= DateTime.parse(node.power_tag('date')).strftime("%Y%m%dT%H%M%S") %>
-DTSTART;VALUE=DATE:<%= DateTime.parse(node.power_tag('date')).strftime("%Y%m%d") %>
-DTEND;VALUE=DATE:<%= DateTime.parse(node.power_tag('date')).strftime("%Y%m%d")[0..-2] + (DateTime.parse(node.power_tag('date')).strftime("%Y%m%d")[-1].to_i + 1).to_s %>
+DTSTAMP:<%= date.strftime("%Y%m%dT%H%M%S") %>
+DTSTART;VALUE=DATE:<%= date.strftime("%Y%m%d") %>
+DTEND;VALUE=DATE:<%= date.strftime("%Y%m%d")[0..-2] + (date.strftime("%Y%m%d")[-1].to_i + 1).to_s %>
 SUMMARY:<%= node.title %>
 END:VEVENT
 <% rescue %>
