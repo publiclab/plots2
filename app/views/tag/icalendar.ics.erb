@@ -9,7 +9,7 @@ BEGIN:VEVENT
 UID:do-not-reply@publiclab.org
 DTSTAMP:<%= date.strftime("%Y%m%dT%H%M%S") %>
 DTSTART;VALUE=DATE:<%= date.strftime("%Y%m%d") %>
-DTEND;VALUE=DATE:<%= date.strftime("%Y%m%d")[0..-2] + (date.strftime("%Y%m%d")[-1].to_i + 1).to_s %>
+DTEND;VALUE=DATE:<%= (date + 1.day).strftime("%Y%m%d") %>
 SUMMARY:<%= node.title %>
 END:VEVENT
 <% rescue %>
