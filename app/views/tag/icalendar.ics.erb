@@ -11,6 +11,8 @@ DTSTAMP:<%= date.strftime("%Y%m%dT%H%M%S") %>
 DTSTART;VALUE=DATE:<%= date.strftime("%Y%m%d") %>
 DTEND;VALUE=DATE:<%= (date + 1.day).strftime("%Y%m%d") %>
 SUMMARY:<%= node.title %>
+<% if node.has_power_tag('location') %>LOCATION:<%= node.power_tag('location') %><% end %>
+URL:https://publiclab.org<%= node.path %>
 END:VEVENT
 <% rescue %>
 <% end %>
