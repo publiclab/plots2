@@ -41,7 +41,7 @@ h4,h5,h6, h1 small, h2 small, h3 small {
 }
 
 #content h4 {
-  padding-top:0.4em;
+  padding-top:1.2em;
 }
 
 #content img {
@@ -191,6 +191,7 @@ a i.icon-white { color:white; }
 
 #content blockquote {
   padding: 8px 4px;
+  margin-top: 8px;
 }
 
 /* Styles for specific areas of the site */
