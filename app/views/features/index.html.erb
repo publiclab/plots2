@@ -13,7 +13,7 @@
   <% @features.each do |feature| %>
     <tr>
       <td style="width:50%"><a href="/features/<%= feature.id %>"><%= feature.title %></a></td>
-      <td><a href="/features/<%= feature.id %>/edit">edit</a></td>
+      <td><a href="/features/<%= feature.id %>/edit?t=<%= Time.now.to_i %>">edit</a></td>
       <td><%= time_ago_in_words(feature.latest.created_at) %> ago by 
       <a href="/profile/<%= feature.latest.author.name %>"><%= feature.latest.author.name %></td>
     </tr>
