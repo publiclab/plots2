@@ -189,7 +189,7 @@ a i.icon-white { color:white; }
   text-decoration:none;
 }
 
-#content blockquote {
+#content blockquote p {
   padding: 8px 4px;
   margin-top: 8px;
 }
