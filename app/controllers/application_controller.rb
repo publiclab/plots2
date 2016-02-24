@@ -10,12 +10,23 @@ class ApplicationController < ActionController::Base
     def set_sidebar(type = :generic, data = :all, args = {})
       args[:note_count] ||= 8
       if type == :tags # accepts data of array of tag names as strings
-        @notes = @notes || DrupalTag.find_nodes_by_type(data,'note',args[:note_count])
+        @notes = @notes || DrupalTag.find_nodes_by_type(data, 'note', args[:note_count])
         @wikis = DrupalTag.find_pages(data,10)
         @videos = DrupalTag.find_nodes_by_type_with_all_tags(['video']+data,'note',8) if args[:videos] && data.length > 1
         @maps = DrupalTag.find_nodes_by_type(data,'map',20)
       else # type is generic
-        @notes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1}, :limit => 10, :page => params[:page])
+        # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
+        hidden_nids = DrupalNode.joins(:drupal_node_community_tag)
+                                .joins("LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid")
+                                .select('node.*, term_data.*, community_tags.*')
+                                .where(type: 'note', status: 1)
+                                .where('term_data.name = (?)', 'hidden:response')
+                                .collect(&:nid)
+        @notes = DrupalNode.joins(:drupal_node_revision)
+                           .where(type: 'note', status: 1)
+                           .where('node.nid NOT IN (?)', hidden_nids)
+                           .order('node.nid DESC')
+                           .paginate(:page => params[:page])
         @wikis = DrupalNode.find(:all, :order => "changed DESC", :conditions => {:status => 1, :type => 'page'}, :limit => 10)
       end
     end

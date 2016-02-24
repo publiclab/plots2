@@ -1,0 +1,16 @@
+<% if @node.has_tag('seeks:responses') %>
+
+  <% @responses = DrupalTag.find_nodes_by_type("response:#{@node.id}") %>
+  <% @unpaginated = true %>
+
+  <p><a class='btn btn-primary btn-large' href="/post?tags=response:<%= @node.id %>,hidden:response">Post your response</a></p>
+
+  <hr />
+
+  <h3>Responses (<%= @responses.length %>)</h3>
+
+  <%= render :partial => "notes/notes", locals: { notes: @responses } %>
+
+  <hr />
+
+<% end %>
