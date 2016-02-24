@@ -3,7 +3,7 @@
   <% @responses = DrupalTag.find_nodes_by_type("response:#{@node.id}") %>
   <% @unpaginated = true %>
 
-  <p><a class='btn btn-primary btn-large' href="/post?tags=response:<%= @node.id %>,hidden:response">Post your response</a></p>
+  <p><a class='btn btn-primary btn-large' href="/post?tags=response:<%= @node.id %>,hidden:response<%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0%>">Post your response</a></p>
 
   <hr />
 
