@@ -32,6 +32,7 @@ class DrupalTag < ActiveRecord::Base
     self.tid
   end
 
+  # does this work? Better than self.drupal_nodes? 
   def nodes
     ids = []
     self.drupal_node_tag.each do |node_tag|
@@ -63,13 +64,17 @@ class DrupalTag < ActiveRecord::Base
   end
 
   # finds highest viewcount nodes
-  def self.find_top_nodes_by_type(tagname,type = "wiki",limit = 10)
+  def self.find_top_nodes_by_type(tagname, type = "wiki", limit = 10)
     DrupalNode.find_all_by_type type, :conditions => ['term_data.name = ?', tagname], :order => "node_counter.totalcount DESC", :limit => limit, :include => [:drupal_node_counter, :drupal_node_community_tag, :drupal_tag]
   end
 
   # finds recent nodes
-  def self.find_nodes_by_type(tagnames,type = "note",limit = 10)
-    DrupalNode.where(:status => 1, :type => type).includes(:drupal_node_revision,:drupal_tag).where('term_data.name IN (?)',tagnames).order("node_revisions.timestamp DESC").limit(limit)
+  def self.find_nodes_by_type(tagnames, type = "note", limit = 10)
+    DrupalNode.where(status: 1, type: type)
+              .includes(:drupal_node_revision, :drupal_tag)
+              .where('term_data.name IN (?)', tagnames)
+              .order("node_revisions.timestamp DESC")
+              .limit(limit)
   end
 
   # just like find_nodes_by_type, but searches wiki pages, places, and tools

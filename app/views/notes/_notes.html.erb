@@ -1,6 +1,7 @@
+<% notes = notes || @notes # accept local if present, default to instance %>
 <div class="" id="notes">
     <div class="row-fluid">
-    <% @notes.each_with_index do |node,i| %>
+    <% notes.each_with_index do |node,i| %>
       <div class="span3 clearfix note" style="overflow:hidden;">
         <% if node.main_image %>
           <a class="visible-phone thumbnail" <% if @widget %>target="_blank"<% end %> style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
@@ -52,4 +53,4 @@
     <% end %>
     </div>
 </div>
-<%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+<%= will_paginate notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
