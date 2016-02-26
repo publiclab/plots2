@@ -92,10 +92,10 @@ a i.icon-white { color:white; }
   }
 }
 
-@media (max-width: 1024px) {
-  #header .compact {
-    display: none;
-  }
+#header .collapse.in .hidden-xs,
+#header .collapse.in .hidden-sm,
+#header .collapse.in .hidden-md {
+  display: block !important;
 }
 
 .col2 {
@@ -104,11 +104,11 @@ a i.icon-white { color:white; }
   columns:2;
 }
 
-#header .brand {
-  color:white;
-  padding-top:13px;
-  padding-bottom:2px;
-  font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
+#header .navbar-brand {
+  color: white;
+  padding-top: 19px;
+  font-family: "Junction Light", lucida grande,lucida sans console,sans-serif;
+  font-size: 22px;
 }
 
 @media (max-width: 340px) {
@@ -119,6 +119,10 @@ a i.icon-white { color:white; }
 @media (min-width: 340px) {
   #brand-compact { display:none; }
   #brand { display:inline; }
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #aaa;
 }
 
 .nav-tabs li {

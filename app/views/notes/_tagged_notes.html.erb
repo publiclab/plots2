@@ -1,9 +1,8 @@
-  <div class="row-fluid">
+  <div class="row">
   <% nodes.each_with_index do |node,i| %>
-    <div class="span3 clearfix" style="overflow:hidden;">
+    <div class="col-md-3 clearfix" style="overflow:hidden;">
       <% if node.main_image %>
-        <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
-        <a class="hidden-phone thumbnail" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+        <a class="thumbnail" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
       <% end %>
       <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
       <p style="color:#888;"><small>
@@ -13,8 +12,8 @@
         | <%= number_with_delimiter(node.totalcount) %> views
         | <i style="color:#888;" class="icon icon-star-empty"></i> <%= node.likes %>
       </small></p>
-      <p class="hidden-desktop"><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150) %></p>
-      <p class="visible-desktop"><small><%= raw (strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150)) %></small></p>
+      <p class="hidden-lg"><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150) %></p>
+      <p class="visible-lg"><small><%= raw (strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150)) %></small></p>
       <p><a href="<%= node.path %>">Read more &raquo;</a></p>
       <p>
         <% node.tags[0..3].each do |tag| %>
@@ -25,11 +24,11 @@
       <a class="btn btn-mini" href="#"><i class="icon-ban-circle"></i> Spam</a>
       <% end %>
     </div>
-    <hr class="visible-phone" />
+    <hr class="visible-sm" />
   <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
   </div>
-  <hr class="hidden-phone" />
-  <div class="row-fluid">
+  <hr class="visible-sm" />
+  <div class="row">
   <% end %>
   <% end %>
   </div>

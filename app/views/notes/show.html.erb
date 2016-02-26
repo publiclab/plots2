@@ -1,6 +1,6 @@
 <%= render :partial => "sidebar/related" %>
 
-<div class="span9 note-show">
+<div class="col-md-9 note-show">
 
   <% if current_user && @node.tags.length == 0 %><div class="alert">This note has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
 
@@ -25,8 +25,8 @@
   <div>
     <div class="btn-group pull-right hidden-print">
       <script>var editing = false;</script>
-      <% if @node.prev_by_author %><a class="btn btn-link btn-small" href="<%= @node.prev_by_author.path %>">&laquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 37) { window.location = "https://"+(window.location+'').split('/')[2]+"<%= @node.prev_by_author.path %>" }})</script><% end %>
-        <a class="btn btn-small btn-link dropdown-toggle" data-toggle="dropdown">
+      <% if @node.prev_by_author %><a class="btn btn-link btn-sm" href="<%= @node.prev_by_author.path %>">&laquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 37) { window.location = "https://"+(window.location+'').split('/')[2]+"<%= @node.prev_by_author.path %>" }})</script><% end %>
+        <a class="btn btn-sm btn-link dropdown-toggle" data-toggle="dropdown">
           <i class="icon icon-cog"></i> 
         </a>
         <ul class="dropdown-menu">
@@ -35,7 +35,7 @@
           <li><a href="javascript:void(0)">by tag <b><%= tag.name %></b></a></li>
           <% end %>
         </ul>
-      <% if @node.next_by_author %><a class="btn btn-small btn-link" href="<%= @node.next_by_author.path %>">&raquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 39) { window.location = "https://"+(window.location+'').split('/')[2]+"<%= @node.next_by_author.path %>" }})</script><% end %>
+      <% if @node.next_by_author %><a class="btn btn-sm btn-link" href="<%= @node.next_by_author.path %>">&raquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 39) { window.location = "https://"+(window.location+'').split('/')[2]+"<%= @node.next_by_author.path %>" }})</script><% end %>
     </div>
 
     <span>
@@ -43,15 +43,15 @@
       by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> 
       <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %> <a href="/profile/<%= coauthor.username %>"><%= coauthor.username%></a><%= ',' if i < @node.coauthors.length-1 %><% end %><% end %> |
 
-      <span class="hidden-phone">
+      <span class="hidden-sm">
         <%= @node.created_at.to_s(:long) %> 
       </span>
-      <span class="hidden-phone hidden-print">
+      <span class="hidden-sm hidden-print">
         | <%= number_with_delimiter(@node.totalcount) %> views 
         <% if @node.comments %>| <i class="icon icon-comment"></i> <a href="#comments"><%= @node.comments.length %> comments</a><% end %>
         | <a href="/n/<%= @node.id %>">shortlink</a>
       </span>
-      <span class="hidden-desktop">
+      <span class="hidden-lg">
         <%= @node.created_at.to_s(:short) %>
       </span>
     </span>
@@ -111,7 +111,7 @@
         <i class="icon-calendar"></i> This event is on <%= @node.power_tag('date') %> <% end %></b>
         <a class="label" onClick="cal.download()">iCal</a>
       </p><br />
-      <p><% if !current_user %>Please <a href="/login">log in</a> to <% end %><a class="btn-large btn-primary" href="/rsvp/<%= @node.id %>">RSVP</a> 
+      <p><% if !current_user %>Please <a href="/login">log in</a> to <% end %><a class="btn-lg btn-primary" href="/rsvp/<%= @node.id %>">RSVP</a> 
         <% attendees = @node.power_tags('rsvp').length %> 
         <% if attendees > 1 %> (<%= attendees %> people will attend)<% end %>
       <hr />

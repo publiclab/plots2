@@ -1,4 +1,4 @@
-<div class="span3">
+<div class="col-md-3">
 
 <% if @wikis && @wikis.length > 0 %>
   <h3 style="margin-top:0;">Wiki pages liked by <a href="/profile/<%= @user.name %>"><%= @user.name %></a></h3>
@@ -17,7 +17,7 @@
 
 </div>
 
-<div class="span9">
+<div class="col-md-9">
   <h3 style="margin-top:0;"><i class="icon icon-star-empty"></i> Liked by <a href="/profile/<%= @user.name %>"><%= @user.name %></a></h3>
 
   <hr />

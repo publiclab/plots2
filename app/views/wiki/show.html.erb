@@ -3,14 +3,14 @@
 <% if @presentation && @node.main_image%>
 <div id="main-image-presentation" style=""><a href="<%= @node.main_image.path(:original) %>"><img style="width:100%;" class="img-rounded" src="<%= @node.main_image.path(:original) %>" /></a></div>
 <% end %>
-<div class="row-fluid">
+<div class="row">
 <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
 <%= render :partial => "sidebar/featured" %>
 <% else %>
 <%= render :partial => "sidebar/related" %>
 <% end %>
 
-<div class="span9">
+<div class="col-md-9">
 
   <% if current_user && @node.tags.length == 0 %><div class="alert">This page has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
 
@@ -31,10 +31,10 @@
   <div <% if @presentation %>style="display:none" <% end %>id="wiki-toolbar">
     <div class="hidden-print">
       <div class="pull-right" style="padding-top:8px;">
-        <span class="hidden-desktop">
+        <span class="hidden-lg">
           <%= @revision.created_at.to_s(:short) %>
         </span>
-        <span class="hidden-phone">
+        <span class="hidden-sm">
           <%= number_with_delimiter(@node.totalcount) %> views | 
           Last edited by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a> <%= time_ago_in_words(@node.latest.created_at) %> ago
           | <a href="/n/<%= @node.id %>">shortlink</a>
@@ -43,10 +43,10 @@
  
       <ul class="nav nav-tabs">
         <li class="active"><a href="#"><span class="hidden-tiny">View</span><span class="visible-tiny"><i class="icon icon-file-alt"></i></span></a></li>
-        <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="icon icon-pencil"></i><span class="hidden-phone"> Edit</span></a></li>
-        <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you absolutely sure you want to delete '"+@node.path+"'? All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page." do %><i class="icon icon-trash"></i><span class="hidden-phone"> Delete</span><% end %></li><% end %>
-        <li><a href="//pad.publiclab.org/p/<%= @node.slug[0,50] %>"><i class="icon icon-comments-alt"></i><span class="hidden-phone"> Talk</span></a></li>
-        <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i><span class="hidden-phone"> Revisions </span><span class="hidden-tiny">(<%= @node.revisions.length %>)</span></a></li>
+        <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="icon icon-pencil"></i><span class="hidden-sm"> Edit</span></a></li>
+        <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you absolutely sure you want to delete '"+@node.path+"'? All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page." do %><i class="icon icon-trash"></i><span class="hidden-sm"> Delete</span><% end %></li><% end %>
+        <li><a href="//pad.publiclab.org/p/<%= @node.slug[0,50] %>"><i class="icon icon-comments-alt"></i><span class="hidden-sm"> Talk</span></a></li>
+        <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i><span class="hidden-sm"> Revisions </span><span class="hidden-tiny">(<%= @node.revisions.length %>)</span></a></li>
       </ul>
     </div>
   </div>
@@ -65,7 +65,7 @@
       <ul class="nav">
         <li class="active"><a data-toggle="tab" href="#tab-overview">Overview</a></li>
         <% if @node.power_tags('tabbed').include?("notes") %><li><a data-toggle="tab" href="#tab-notes">Research</a></li><% end %>
-        <% if @node.power_tags('tabbed').include?("wikis") %><li><a data-toggle="tab" href="#tab-wikis">Wiki<span class="hidden-phone"> pages</span></a></li><% end %>
+        <% if @node.power_tags('tabbed').include?("wikis") %><li><a data-toggle="tab" href="#tab-wikis">Wiki<span class="hidden-sm"> pages</span></a></li><% end %>
       </ul>
     </div>
   </div>

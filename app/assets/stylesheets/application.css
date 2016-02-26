@@ -9,8 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  
- *= require bootstrap-css/css/bootstrap.min.css
- *= require bootstrap-css/css/bootstrap-responsive.min.css
+ *= require bootstrap/dist/css/bootstrap.min.css
  *= require bootstrap-lightbox/build/bootstrap-lightbox.min.css
  *= require bootstrap-datepicker/css/datepicker.css
  *= require jquery-file-upload/css/jquery.fileupload-ui.css

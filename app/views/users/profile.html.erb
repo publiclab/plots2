@@ -1,4 +1,4 @@
-<div class="span3">
+<div class="col-md-3">
  <% if @user.user && @user.user.photo_file_name %><img class="img-rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @user.user.photo_path(:thumb) %>" /><% end %>
 
   <!--<a href="#" class="btn btn-block"><i class="icon-envelope"></i> Send message</a>-->
@@ -28,9 +28,9 @@
   <hr />
 
   <p>
-    <a class="btn btn-small btn-block" href="/feed/<%= @user.name %>.rss"><i class="icon icon-rss" style="color:orange;"></i> RSS feed for <%= @user.name %></a> 
+    <a class="btn btn-sm btn-block" href="/feed/<%= @user.name %>.rss"><i class="icon icon-rss" style="color:orange;"></i> RSS feed for <%= @user.name %></a> 
     <% if current_user && current_user.uid == @user.uid %>
-      <a href="/profile/<%= @user.name %>/edit" class="btn btn-small btn-block"><i class="icon-pencil"></i> Edit profile</a>
+      <a href="/profile/<%= @user.name %>/edit" class="btn btn-sm btn-block"><i class="icon-pencil"></i> Edit profile</a>
     <% end %>
   </p>
 
@@ -53,7 +53,7 @@
 
 </div>
 
-<div class="span9">
+<div class="col-md-9">
 
   <div id="note-graph" style="height:100px;display:none;"></div>
 
@@ -81,8 +81,8 @@
   <ul class="nav nav-tabs">
     <span style="float:right;"><small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small></span>
     <li class="active"><a href="#research" data-toggle="tab">Research</a></li>
-    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="icon icon-comment"></i><span class="hidden-phone"> Comments</span></a></li>
-    <li><a href="/profile/<%= @user.username %>/likes"><i class="icon icon-star"></i><span class="hidden-phone"> Liked</span> (<%= @user.like_count %>)</a></li>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="icon icon-comment"></i><span class="hidden-sm"> Comments</span></a></li>
+    <li><a href="/profile/<%= @user.username %>/likes"><i class="icon icon-star"></i><span class="hidden-sm"> Liked</span> (<%= @user.like_count %>)</a></li>
     <li><a href="#maps" data-toggle="tab"><i class="icon-map-marker"></i> MapKnitter maps</a></a>
   </ul>
 

@@ -2,7 +2,7 @@
   <div class="navbar">
     <div class="navbar-inner">
  
-      <div class="hidden-phone" style="padding-top:2px;">
+      <div class="hidden-sm" style="padding-top:2px;">
  
         <% if current_user && comment.uid == current_user.uid %>
           <a style="margin-left:4px;" class="btn btn-small pull-right" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()">
@@ -62,7 +62,7 @@
   <form class="well" id="c<%= comment.id %>edit" style="display:none;" action="/comment/update/<%= comment.id %>">
     <h4 style="margin-top:0;">Edit comment</h4>
 
-    <textarea onFocus="editing=true" name="body" class="span12" id="c<%= comment.id %>text-input" rows="8" cols="40"><%= comment.comment %></textarea>
+    <textarea onFocus="editing=true" name="body" class="col-md-12" id="c<%= comment.id %>text-input" rows="8" cols="40"><%= comment.comment %></textarea>
 
     <div class="well span11" id="c<%= comment.id %>preview" style="background:white;display:none;"> </div>
     <br style="clear:both;"/>

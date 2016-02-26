@@ -1,11 +1,10 @@
-<div class="container-fluid">
-  <div class="row-fluid">
+<div class="container">
+  <div class="row">
     <div class="row">
     <% @nodes.each_with_index do |node,i| %>
-      <div class="span3 clearfix">
+      <div class="col-md-3 clearfix">
         <% if node.main_image %>
-          <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
-          <a class="hidden-phone thumbnail" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <a class="thumbnail" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
         <% end %>
         <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
         <p style="color:#888;"><small>by 
@@ -19,10 +18,10 @@
        </small></p>
        <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) %></p>
       </div>
-      <hr class="visible-phone" />
+      <hr class="hidden-sm" />
     <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
     </div>
-    <hr class="hidden-phone" />
+    <hr class="hidden-sm" />
     <div class="row">
     <% end %>
     <% end %>

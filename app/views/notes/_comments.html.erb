@@ -1,4 +1,4 @@
-<div id="comments" class="span10 comments" style="margin-left:0;">
+<div id="comments" class="col-md-10 comments" style="margin-left:0;">
 
   <h3><span id="comment-count"><%= @node.comments.length %></span> Comments</h3>
 
@@ -22,7 +22,7 @@
     </style>
 
     <div id="dropzone">
-      <textarea onFocus="editing=true" name="body" class="span12" id="text-input" rows="6" cols="40" placeholder="Help the author refine their post, or point them at other helpful information on the site.
+      <textarea onFocus="editing=true" name="body" class="col-md-12" id="text-input" rows="6" cols="40" placeholder="Help the author refine their post, or point them at other helpful information on the site.
 
 Mention users by @username to notify them of this thread by email."></textarea>
       <div id="imagebar">
@@ -34,11 +34,11 @@ Mention users by @username to notify them of this thread by email."></textarea>
             Uploading...
           </span>
           <span class="prompt">
-            <span style="padding-right:4px;float:left;" class="hidden-phone">
+            <span style="padding-right:4px;float:left;" class="hidden-sm">
               Drag &amp; drop to add an image or file, or 
             </span>
             <span class="fileinput-button">
-              <a class="hidden-phone">choose one</a>
+              <a class="hidden-sm">choose one</a>
               <a class="visible-phone">
                 <i class="icon icon-upload"></i> 
                 Upload image
@@ -50,7 +50,7 @@ Mention users by @username to notify them of this thread by email."></textarea>
       </div>
     </div>
 
-    <div class="well span12" id="preview" style="display:none;"> </div>
+    <div class="well col-md-12" id="preview" style="display:none;"> </div>
 
     <script>
       (function() { 

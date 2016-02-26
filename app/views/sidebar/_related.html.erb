@@ -1,21 +1,21 @@
-<div class="span3 hidden-print">
+<div class="col-md-3 hidden-print">
 
   <script>
     function toggle_sidebar() { 
-      if ($('#sidebar').hasClass('hidden-phone')) { 
-        $('#sidebar').removeClass('hidden-phone') 
+      if ($('#sidebar').hasClass('hidden-sm')) { 
+        $('#sidebar').removeClass('hidden-sm') 
       } else { 
-        $('#sidebar').addClass('hidden-phone') 
+        $('#sidebar').addClass('hidden-sm') 
       } 
     } 
   </script>
 
-  <a style="margin-top:-20px;margin-bottom:0;" class="btn btn-mini btn-block btn-link visible-phone" href="javascript:void()" onClick="toggle_sidebar()"><i class="icon icon-chevron-down"></i></a>
+  <a style="margin-top:-20px;margin-bottom:0;" class="btn btn-mini btn-block btn-link visible-sm" href="javascript:void()" onClick="toggle_sidebar()"><i class="icon icon-chevron-down"></i></a>
 
-  <div id="sidebar" class="hidden-phone">
+  <div id="sidebar" class="hidden-sm">
 
-  <a style="margin-bottom:6px;" rel="tooltip" title="Share your work with others" data-placement="bottom" href="/post" class="btn btn-primary btn-large btn-block hidden-phone"><i class="icon-pencil icon-white"></i> Write a research note</a>
-  <a rel="tooltip" title="Post <% if @tagnames %>about <%= (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?tags='+(@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-large btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
+  <a style="margin-bottom:6px;" rel="tooltip" title="Share your work with others" data-placement="bottom" href="/post" class="btn btn-primary btn-lg btn-block hidden-sm"><i class="icon-pencil icon-white"></i> Write a research note</a>
+  <a rel="tooltip" title="Post <% if @tagnames %>about <%= (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?tags='+(@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-lg btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
 
   <br />
   <%= render :partial => "sidebar/list" if @node %>

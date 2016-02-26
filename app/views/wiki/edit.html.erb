@@ -1,4 +1,4 @@
-<div class="span3">
+<div class="col-md-3">
   <%= javascript_include_tag "dragdrop" %>
   <% if @related && @related.length > 0 %>
     <h3>Did you mean:</h3>
@@ -22,7 +22,7 @@
     <li>etc!</li>
   </ul>
   <hr />
-  <div class="sidebar-nav hidden-phone">
+  <div class="sidebar-nav hidden-sm">
     <ul class="nav nav-list">
       <li class="nav-header">More</li>
       <li><a href="/wiki/getting-started">Getting started with Public Lab</a></li>
@@ -33,7 +33,7 @@
   </div>
 </div>
 
-<div class="span9">
+<div class="col-md-9">
 
   <% if @node && params[:action] != "create"
     url = { :controller => "wiki", :action => "update", :id => @node.id }
@@ -62,10 +62,10 @@
     <input id="images_input" type="hidden" name="images" value="" />
 
     <% if @node && @node.latest %>
-      <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= @node.latest.title %>"><br />
+      <input tabindex="1" name="title" type="text" class="col-md-9" id="title" value="<%= @node.latest.title %>"><br />
     <% else %>
-      <input tabindex="1" name="title" type="text" class="span9" id="title" value="<%= params[:id] %>"><br />
-      <!--<input name="url" type="text" class="span9" id="url" value="" placeholder="page-url"><br />-->
+      <input tabindex="1" name="title" type="text" class="col-md-9" id="title" value="<%= params[:id] %>"><br />
+      <!--<input name="url" type="text" class="col-md-9" id="url" value="" placeholder="page-url"><br />-->
     <% end %>
 
     <script>
@@ -79,16 +79,16 @@
 
     <%= render :partial => 'editor/editor' %>
 
-    <div class="hidden-phone">
-      <a id="publish" tabindex="5" class="publish btn btn-primary btn-large">Publish</a>
-      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
+    <div class="hidden-sm">
+      <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
+      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
       <span> &nbsp; By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</span>
     </div>
-    <p class="visible-phone btn-group">
-      <a id="publish" class="publish btn btn-primary btn-large">Publish</a>
-      <a data-previewing-text="Edit" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
+    <p class="visible-sm btn-group">
+      <a id="publish" class="publish btn btn-primary btn-lg">Publish</a>
+      <a data-previewing-text="Edit" class="btn btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
     </p>
-    <p class="visible-phone">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+    <p class="visible-sm">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
 
     <% if @node && @node.latest %><p style="padding:10px 0 0 0;"><i>This page was last edited <%= time_ago_in_words(@node.latest.created_at) %> ago by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a></i></p><% end %> 
 

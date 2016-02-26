@@ -7,19 +7,19 @@
   (function(){
     toggle_format = function(format) {
       if (format == "grid") {
-        $('.note').addClass('span3')
+        $('.note').addClass('col-md-3')
         $('.note .thumbnail').css('width','100%')
         $('.note hr.bottom').hide()
-        $('#notes hr.hidden-phone').show()
+        $('#notes hr.hidden-sm').show()
         $('#notes ._row').addClass('row')
         $('#notes ._row').removeClass('_row')
         $('#notes._container-fluid').addClass('container-fluid')
         $('#notes._container-fluid').removeClass('_container-fluid')
       } else {
-        $('.note').removeClass('span3')
+        $('.note').removeClass('col-md-3')
         $('.note .thumbnail').css('width','30%')
         $('.note hr.bottom').show()
-        $('#notes hr.hidden-phone').hide()
+        $('#notes hr.hidden-sm').hide()
         $('#notes .row').addClass('_row')
         $('#notes .row').removeClass('row')
         $('#notes.container-fluid').addClass('_container-fluid')

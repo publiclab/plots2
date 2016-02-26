@@ -1,4 +1,4 @@
-<div class="span3">
+<div class="col-md-3">
 
   <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
     <h2>User moderation</h2>
@@ -7,7 +7,7 @@
   
 
 </div>
-<div class="span9">
+<div class="col-md-9">
   <h2>Public Lab members <small>by last activity</small></h2>
 
   <table class="table">
@@ -31,7 +31,7 @@
         <% if user.status == 0 %>
           <i class='icon icon-ban-circle' style="color:#a00;"></i> Banned
         <% elsif user.status == 1 %>
-          <a class="btn btn-small" data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= user.uid %>" ><i class='icon icon-ban-circle'></i> Ban</a>
+          <a class="btn btn-sm" data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= user.uid %>" ><i class='icon icon-ban-circle'></i> Ban</a>
         <% end %>
       </td>
       <% end %>

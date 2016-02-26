@@ -1,9 +1,9 @@
-<div class="row-fluid">
+<div class="row">
 <%= form_for @user, :url => {:controller => 'users', :action => @action}, :html => {:class => "form-horizontal"} do |f| %>
 
   <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
 
-  <div class="span7">
+  <div class="col-md-7">
     <% if params[:controller] == "users" && @action == "create" %>
     <div class="control-group">
       <label class="control-label" for="user_username"><b>Username</b></label>
@@ -34,7 +34,7 @@
  
     <div class="control-group">
       <div class="controls">
-        <%= text_area :drupal_user, :bio, {:placeholder => "Add a short bio to appear on your profile page", :class => "span6", :rows => 8, :tabindex => 6} %>
+        <%= text_area :drupal_user, :bio, {:placeholder => "Add a short bio to appear on your profile page", :class => "col-md-6", :rows => 8, :tabindex => 6} %>
       </div>
     </div>
  
@@ -60,7 +60,7 @@
  
         <label class="control-label" for="spamaway_follow_instructions"><b>Don't write anything here if you're a real person.</b></label>
         <div class="controls">
-          <%= spam.text_area :follow_instructions, {:class => "span6", :rows => 8, :tabindex => 7} %>
+          <%= spam.text_area :follow_instructions, {:class => "col-md-6", :rows => 8, :tabindex => 7} %>
         </div>
  
       </div>
@@ -73,15 +73,15 @@
  
     <div class="controls">
     <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
-      <button class="btn-large btn-primary" type="submit" tabindex="7">Sign up</button>
-      <a class="btn-large btn" href="/login">Log in</a>
+      <button class="btn-lg btn-primary" type="submit" tabindex="7">Sign up</button>
+      <a class="btn-lg btn" href="/login">Log in</a>
     <% elsif params[:controller] == "users" && params[:action] == "edit" %>
-      <button class="btn-large btn-primary" type="submit" tabindex="7">Save</button>
+      <button class="btn-lg btn-primary" type="submit" tabindex="7">Save</button>
     <% end %>
     </div>
   </div>
 
-  <div class="span2">
+  <div class="col-md-2">
     <%= render :partial => 'users/photo' %>
   </div>
 
