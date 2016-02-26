@@ -24,7 +24,7 @@ function alert_set(aclass, msg, options) {
   new_alert.addClass('alert alert-'+aclass);
   new_alert.append('<a class="close" data-dismiss="alert">×</a>');
   if (aclass == "warning") {
-    new_alert.append('<i class="icon-exclamation-sign"></i> ');
+    new_alert.append('<i class="fa fa-exclamation-sign"></i> ');
   }
   new_alert.append(msg);
   $('#alert-placeholder').append(new_alert);
@@ -92,7 +92,7 @@ jQuery(document).ready(function($) {
   $('iframe').css('border','none')
   
   /* add "link" icon to headers */
-  $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {return " <small><a href='#"+this.innerHTML.replace(/ /g,'+')+"'><i class='icon icon-link'></i></a></small>"})
+  $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {return " <small><a href='#"+this.innerHTML.replace(/ /g,'+')+"'><i class='icon fa fa-link'></i></a></small>"})
   
   login = function() {
     $('#login-dropdown').toggle()

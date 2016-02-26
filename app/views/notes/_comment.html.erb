@@ -6,16 +6,16 @@
  
         <% if current_user && comment.uid == current_user.uid %>
           <a style="margin-left:4px;" class="btn btn-small pull-right" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()">
-            <i class="icon-pencil"></i>
+            <i class="fa fa-pencil"></i>
           </a><% end %>
         <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
           <a data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in deleting/moderating others' comments; this cannot be undone.<% end %>" href="/comment/delete/<%= comment.cid %>" class="btn btn-small pull-right" id="c<%= comment.cid %>delete-btn">
-              <i class='icon icon-trash'></i>
+              <i class='icon fa fa-trash'></i>
           </a>
         <% end %>
  
         <div style="margin-top:9px;">
-          <i class="icon-comment"></i>
+          <i class="fa fa-comment"></i>
           <% if comment.author %><a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a><% end %>
           <a style="color:#aaa;" href="#c<%= comment.cid %>">commented</a>
           <%= time_ago_in_words(comment.created_at) %> ago
@@ -26,11 +26,11 @@
  
         <% if current_user && current_user.username == "warren" && comment.uid == current_user.uid %>
           <a style="margin-left:4px;margin-top:0;" class="btn btn-small pull-right" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()">
-            <i class="icon-pencil"></i>
+            <i class="fa fa-pencil"></i>
           </a><% end %>
         <% if current_user && current_user.username == "warren" && (comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
           <a style="margin-top:0;" data-remote="true" data-confirm="Are you sure?" href="/comment/delete/<%= comment.cid %>" class="btn btn-small pull-right" id="c<%= comment.cid %>delete-btn-2">
-              <i class='icon icon-trash'></i>
+              <i class='icon fa fa-trash'></i>
           </a>
           <script>
             // deletion button code:
@@ -46,7 +46,7 @@
         <% end %>
  
         <div style="margin-top:3px;">
-          <i class="icon-comment"></i>
+          <i class="fa fa-comment"></i>
           <% if comment.author %><a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a><% end %>
           <a style="color:#aaa;" href="#c<%= comment.cid %>">said</a>
           <%= time_ago_in_words(comment.created_at) %> ago

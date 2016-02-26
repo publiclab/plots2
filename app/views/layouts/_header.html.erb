@@ -23,9 +23,9 @@
       <a class="navbar-brand" id="brand-compact" href="/<%= "home" if current_user %>">PL</a>
  
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
+        <span class="fa fa-bar"></span>
+        <span class="fa fa-bar"></span>
+        <span class="fa fa-bar"></span>
       </button>
     </div>
 
@@ -34,7 +34,7 @@
 
       <ul class="nav navbar-nav navbar-left">
  
-        <% if current_user %><li><a rel="tooltip" title="Your dashboard" data-placement="bottom" href="/dashboard"><i class="icon-home icon-white"></i></a></li><% end %>
+        <% if current_user %><li><a rel="tooltip" title="Your dashboard" data-placement="bottom" href="/dashboard"><i class="fa fa-home fa fa-white"></i></a></li><% end %>
  
         <li class="dropdown">
  
@@ -148,13 +148,13 @@
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
             <a onClick="$('#chat').toggle()">
-              <i class="icon-white icon-comments"></i>
+              <i class="fa fa-white fa fa-comments"></i>
             </a> 
           </li>
           <li class="dropdown">
             <% if current_user %>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="icon-user icon-white"></i>
+              <i class="fa fa-user fa fa-white"></i>
               <%= current_user.username %> <b class="caret"></b>
             </a> 
             <ul class="dropdown-menu">
@@ -170,7 +170,7 @@
             </ul>
             <% else %>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="icon-user icon-white"></i>
+              <i class="fa fa-user fa fa-white"></i>
                Log in <b class="caret"></b> 
             </a> 
             <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">

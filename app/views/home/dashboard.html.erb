@@ -28,11 +28,11 @@
 
   <ul class="nav nav-tabs">
     <li class="active"><a href="#research" data-toggle="tab"><span class="hidden-sm">Recent </span>Activity</a></li>
-    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="icon icon-comment"></i><span class="hidden-sm"> Comments</span></a></li>
-    <li><a href="/profile/<%= current_user.username %>/likes"><i class="icon icon-star"></i><span class="hidden-sm"> Liked</span></a></li>
-    <!--<li><a href="/nearby"><i class="icon icon-globe"></i><span class="hidden-sm"> Nearby</span></a></li>-->
-    <li><a href="/subscriptions"><i class="icon icon-eye-open"></i><span class="hidden-sm"> Subscriptions</span></a></li>
-    <li class="hidden-sm"><a href="/lists"><i class="icon icon-envelope"></i></a></li>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm"> Comments</span></a></li>
+    <li><a href="/profile/<%= current_user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm"> Liked</span></a></li>
+    <!--<li><a href="/nearby"><i class="fa fa-globe"></i><span class="hidden-sm"> Nearby</span></a></li>-->
+    <li><a href="/subscriptions"><i class="fa fa-eye-open"></i><span class="hidden-sm"> Subscriptions</span></a></li>
+    <li class="hidden-sm"><a href="/lists"><i class="fa fa-envelope"></i></a></li>
   </ul>
 
   <div class="tab-content">
@@ -45,7 +45,7 @@
     </div>
  
     <div class="tab-pane" id="comments">
-      <h2 style="text-align:center;"><i class="icon-spinner icon-spin"></i></h2>
+      <h2 style="text-align:center;"><i class="fa fa-spinner fa fa-spin"></i></h2>
     </div>
     <script>
       (function(){

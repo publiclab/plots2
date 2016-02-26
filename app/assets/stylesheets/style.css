@@ -54,7 +54,7 @@ h4,h5,h6, h1 small, h3 small {
 
 /* fontawesome default color */
 a i { color:#222; }
-a i.icon-white { color:white; }
+a i.fa-white { color:white; }
 
 .label a {
   color:white;
@@ -177,18 +177,18 @@ body { padding-top: 70px; }
   padding-bottom:4px;
 }
 
-#content h1 i.icon-link,
-#content h2 i.icon-link,
-#content h3 i.icon-link,
-#content h4 i.icon-link,
-#content h5 i.icon-link {
+#content h1 i.fa-link,
+#content h2 i.fa-link,
+#content h3 i.fa-link,
+#content h4 i.fa-link,
+#content h5 i.fa-link {
   color:#aaa;
 }
-#content h1 a:hover i.icon-link,
-#content h2 a:hover i.icon-link,
-#content h3 a:hover i.icon-link,
-#content h4 a:hover i.icon-link,
-#content h5 a:hover i.icon-link {
+#content h1 a:hover i.fa-link,
+#content h2 a:hover i.fa-link,
+#content h3 a:hover i.fa-link,
+#content h4 a:hover i.fa-link,
+#content h5 a:hover i.fa-link {
   color:#888;
   text-decoration:none;
 }

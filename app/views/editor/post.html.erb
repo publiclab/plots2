@@ -22,8 +22,8 @@
     </div>
 
   <% else %>
-    <h3 class="visible-sm"><i class="icon-file"></i> What's a <br />research note?</h3>
-    <h4 class="hidden-sm"><i class="icon-file"></i> What's a research note? <a onClick="$('#research-note-detail').toggleClass('visible-sm')">Learn more &raquo;</a></h4>
+    <h3 class="visible-sm"><i class="fa fa-file"></i> What's a <br />research note?</h3>
+    <h4 class="hidden-sm"><i class="fa fa-file"></i> What's a research note? <a onClick="$('#research-note-detail').toggleClass('visible-sm')">Learn more &raquo;</a></h4>
     
     <div id="research-note-detail" class="hidden-sm">
       <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work.</p>
@@ -37,7 +37,7 @@
         <li>etc!</li>
       </ul>
       <hr />
-      <p><b><a href="//www.youtube.com/watch?v=rsy__zTTh8c" target="_blank"><i class="icon icon-film"></i> Watch a 30 second video on posting research notes &raquo;</a></b></p>
+      <p><b><a href="//www.youtube.com/watch?v=rsy__zTTh8c" target="_blank"><i class="fa fa-film"></i> Watch a 30 second video on posting research notes &raquo;</a></b></p>
       <hr />
       <div class="sidebar-nav">
         <ul class="nav nav-list">
@@ -84,7 +84,7 @@
 
     <div class="control-group">
     <div class="input-group">
-      <span class="add-on"><i class="icon-tags"></i></span>
+      <span class="add-on"><i class="fa fa-tags"></i></span>
       <input name="remote" type="hidden" value="true" />
   
       <input autocomplete="off" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
@@ -111,7 +111,7 @@
       <p><i>An RSVP feature will be added to your note. Please choose a date:</i></p>
       <span style="padding-right:0;" class="datepicker input-group date" data-date="<%= DateTime.now.strftime("%m-%d-%Y") %>" data-date-format="mm-dd-yyyy">
         <input id="datepicker-input" onFocus="$('.datepicker').datepicker('show')" class="col-md-8" size="16" type="text" name="date" value="<%= DateTime.now.strftime("%m-%d-%Y") %>" />
-        <span class="add-on"><i class="icon-calendar"></i></span>
+        <span class="add-on"><i class="fa fa-calendar"></i></span>
       </span>
     </div>
 

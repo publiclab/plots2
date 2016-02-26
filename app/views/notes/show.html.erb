@@ -8,14 +8,14 @@
     <a class="main-image" style="width:100%;max-width:800px;" href="<%= @node.main_image.path(:original) %>">
       <img class="img-rounded" src="<%= @node.main_image.path(:large) %>" />
     </a>
-    <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="icon icon-angle-down"></i></a></div>-->
+    <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% end %>
 
   <div style="margin-top:10px;" class="hidden-print">
     <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   </div>
 
-  <h1 style="margin-top: 30px;font-family: 'Junction Light';clear:left;"><% if @node.has_power_tag('question') %><span style="color:#aaa;font-style:italic;"><i class="icon icon-question-sign"></i> Question:</span> <% end %><%= @node.title %></h1>
+  <h1 style="margin-top: 30px;font-family: 'Junction Light';clear:left;"><% if @node.has_power_tag('question') %><span style="color:#aaa;font-style:italic;"><i class="fa fa-question-sign"></i> Question:</span> <% end %><%= @node.title %></h1>
 
   <% if @node.has_power_tag('question') %>
   <% pt = @node.power_tag('question') %>
@@ -27,7 +27,7 @@
       <script>var editing = false;</script>
       <% if @node.prev_by_author %><a class="btn btn-link btn-sm" href="<%= @node.prev_by_author.path %>">&laquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 37) { window.location = "https://"+(window.location+'').split('/')[2]+"<%= @node.prev_by_author.path %>" }})</script><% end %>
         <a class="btn btn-sm btn-link dropdown-toggle" data-toggle="dropdown">
-          <i class="icon icon-cog"></i> 
+          <i class="fa fa-cog"></i> 
         </a>
         <ul class="dropdown-menu">
           <li class="disabled"><a href="javascript:void(0)">by author</a></li>
@@ -48,7 +48,7 @@
       </span>
       <span class="hidden-sm hidden-print">
         | <%= number_with_delimiter(@node.totalcount) %> views 
-        <% if @node.comments %>| <i class="icon icon-comment"></i> <a href="#comments"><%= @node.comments.length %> comments</a><% end %>
+        <% if @node.comments %>| <i class="fa fa-comment"></i> <a href="#comments"><%= @node.comments.length %> comments</a><% end %>
         | <a href="/n/<%= @node.id %>">shortlink</a>
       </span>
       <span class="hidden-lg">
@@ -61,7 +61,7 @@
   <hr style="margin-top:10px;" />
 
   <% @node.power_tag_objects('barnstar').each do |tag| %>
-    <p style="color:#aaa;"><i style="color:#db4;" class="icon icon-large icon-star-empty"></i> <i><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> was awarded <a href="/wiki/barnstars#<%= tag.name.split('-').each{|w| w.capitalize!}.join('+') %>+Barnstar">the <%= tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' ') %> Barnstar</a> by <a href="/profile/<%= tag.author.username %>"><%= tag.author.username %></a> for their work in this research note.</i></p>
+    <p style="color:#aaa;"><i style="color:#db4;" class="fa fa-large fa fa-star-empty"></i> <i><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> was awarded <a href="/wiki/barnstars#<%= tag.name.split('-').each{|w| w.capitalize!}.join('+') %>+Barnstar">the <%= tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' ') %> Barnstar</a> by <a href="/profile/<%= tag.author.username %>"><%= tag.author.username %></a> for their work in this research note.</i></p>
     <hr />
   <% end %>
 
@@ -89,7 +89,7 @@
       </td>
       <% @node.files.each do |file| %>
         <tr>
-          <td><a href="<%= file.path %>"><i style="text-decoration:none;" class="icon icon-file"></i><span style="text-decoration:none;"> </span><%= file.filename %></a></td>
+          <td><a href="<%= file.path %>"><i style="text-decoration:none;" class="fa fa-file"></i><span style="text-decoration:none;"> </span><%= file.filename %></a></td>
           <td><%= number_to_human_size(file.filesize) %></td>
           <td><%= Time.at(file.timestamp).to_s %></td>
         </tr>
@@ -108,7 +108,7 @@
             cal.addEvent('<%= @node.latest.title %>', false, false, '<%= @node.power_tag('date') %>', '<%= @node.power_tag('date') %>');
           })
         </script>
-        <i class="icon-calendar"></i> This event is on <%= @node.power_tag('date') %> <% end %></b>
+        <i class="fa fa-calendar"></i> This event is on <%= @node.power_tag('date') %> <% end %></b>
         <a class="label" onClick="cal.download()">iCal</a>
       </p><br />
       <p><% if !current_user %>Please <a href="/login">log in</a> to <% end %><a class="btn-lg btn-primary" href="/rsvp/<%= @node.id %>">RSVP</a> 

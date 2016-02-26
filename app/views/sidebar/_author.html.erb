@@ -7,7 +7,7 @@
   <h4>Recent tags for <a href="/people/<%= @user.name %>"><%= @user.name %></a></h4>
   <ul class="nav">
     <% tagnames.each do |tagname| %>
-      <li><a href="/tag/<%= tagname %>"><i class="icon-tag"></i> <%= tagname %></a></li>
+      <li><a href="/tag/<%= tagname %>"><i class="fa fa-tag"></i> <%= tagname %></a></li>
     <% end %>
   </ul>
   <% end %>

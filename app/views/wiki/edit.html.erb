@@ -4,14 +4,14 @@
     <h3>Did you mean:</h3>
     <ul class="nav bullet">
     <% @related[0..5].each do |wiki| %>
-      <li><a href="/wiki/<%= wiki.slug %>"><i class="icon-book"></i> <%= wiki.title %></a></li>
+      <li><a href="/wiki/<%= wiki.slug %>"><i class="fa fa-book"></i> <%= wiki.title %></a></li>
     <% end %>
     </ul>
-    <p><i class="icon icon-search"></i> Try <a href="/search/<%=h params[:id] %>">searching for '<%=h params[:id] %>' &raquo;</a></p>
+    <p><i class="fa fa-search"></i> Try <a href="/search/<%=h params[:id] %>">searching for '<%=h params[:id] %>' &raquo;</a></p>
   <hr />
   <% end %>
 
-  <h3><i class="icon-book"></i> What's a <br />a wiki page?</h3>
+  <h3><i class="fa fa-book"></i> What's a <br />a wiki page?</h3>
   <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Wiki pages</b> are web pages that anyone can create or edit -- we use them to collect information, documentation, and instructions on projects.</p>
   <p><b>Wiki pages can be:</b></p>
   <ul>

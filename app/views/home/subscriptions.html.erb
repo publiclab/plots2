@@ -6,9 +6,9 @@
 
   <p>
     <% if current_user.following("everything") %>
-      <a rel="tooltip" title="Click to unfollow" class="btn active" href="/unsubscribe/tag/everything"><i class="icon icon-eye-open"></i> Following <b>all research notes</b></a>
+      <a rel="tooltip" title="Click to unfollow" class="btn active" href="/unsubscribe/tag/everything"><i class="fa fa-eye-open"></i> Following <b>all research notes</b></a>
     <% else %>
-      <a href="/subscribe/tag/everything" class="btn"><i class="icon icon-tag"></i> Subscribe to <b>all</b> notes</a>
+      <a href="/subscribe/tag/everything" class="btn"><i class="fa fa-tag"></i> Subscribe to <b>all</b> notes</a>
     <% end %>
   </p>
   <p>
@@ -25,7 +25,7 @@
     <div class="navbar-inner">
       <form class="navbar-form" action="/subscribe/tag">
           <input type="text" name="name" class="input-sm" placeholder="enter tags" data-provide="typeahead" data-source='["balloon-mapping","thermal-flashlight","spectrometer"]' autocomplete="off">
-        <button type="submit" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add</button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-plus fa fa-white"></i> Add</button>
       </form>
     </div>
   </div>
@@ -38,12 +38,12 @@
     <td><div class="btn-toolbar" style="margin:0;">
       <div class="btn-group">
         <!--
-        <a rel="tooltip" title="As it happens" class="btn btn-sm" href="javascript:void(0)"><i class="icon-envelope"></i> Email</a>
-        <a rel="tooltip" title="Once per day" class="btn btn-sm" href="javascript:void(0)"><i class="icon-list"></i> Digest</a>
+        <a rel="tooltip" title="As it happens" class="btn btn-sm" href="javascript:void(0)"><i class="fa fa-envelope"></i> Email</a>
+        <a rel="tooltip" title="Once per day" class="btn btn-sm" href="javascript:void(0)"><i class="fa fa-list"></i> Digest</a>
         -->
         <script> input_<%= subscription.tid %> = '#share-<%= subscription.tid %>'</script>
-        <a class="btn btn-sm" rel="popover" data-placement="left" title="Share this subscription link" data-html="true" data-content="<input id='share-<%= subscription.tid %>' onClick='$(input_<%= subscription.tid %>).select()' type='text' value='https://publiclab.org/subscribe/tag/<%= subscription.tagname %>'/>"><i class="icon-share"></i> Share</a>
-        <a class="btn btn-sm" href="/unsubscribe/tag/<%= subscription.tagname %>"><i class="icon-remove-sign"></i> Unsubscribe</a>
+        <a class="btn btn-sm" rel="popover" data-placement="left" title="Share this subscription link" data-html="true" data-content="<input id='share-<%= subscription.tid %>' onClick='$(input_<%= subscription.tid %>).select()' type='text' value='https://publiclab.org/subscribe/tag/<%= subscription.tagname %>'/>"><i class="fa fa-share"></i> Share</a>
+        <a class="btn btn-sm" href="/unsubscribe/tag/<%= subscription.tagname %>"><i class="fa fa-remove-sign"></i> Unsubscribe</a>
       </div>
     </div></td>
   </tr>

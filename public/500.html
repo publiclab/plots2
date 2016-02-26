@@ -44,9 +44,9 @@
     <div id="header" class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom:20px;">
       <div class="navbar-inner hidden-print" style="padding:0 10px;">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+            <span class="fa fa-bar"></span>
+            <span class="fa fa-bar"></span>
+            <span class="fa fa-bar"></span>
           </a>
           <a class="brand" id="brand" href="/">Public Lab</a>
           <a class="brand" id="brand-compact" href="/">PL</a>
@@ -112,7 +112,7 @@
                   })
                 })
               </script>
-              <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i></button>
+              <button type="submit" class="btn btn-primary"><i class="fa fa-search fa fa-white"></i></button>
             </form>
 
             <ul class="nav">
@@ -175,12 +175,12 @@
             <ul class="nav pull-right">
               <li class="dropdown">
                 <a onClick="$('#chat').toggle()">
-                  <i class="icon-white icon-comments"></i>
+                  <i class="fa fa-white fa fa-comments"></i>
                 </a> 
               </li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="icon-user icon-white"></i>
+                  <i class="fa fa-user fa fa-white"></i>
                    Log in<b class="caret"></b>
                 </a> 
                 <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
@@ -242,7 +242,7 @@
   <form id="error_searchform" class="form">
 
     <input id="error_searchinput" class="col-md-4" name="id" type="text" /><br />
-    <button type="submit" class="btn btn-lg btn-primary"><i class="icon icon-white icon-search"></i> Search</button>
+    <button type="submit" class="btn btn-lg btn-primary"><i class="fa fa-white fa fa-search"></i> Search</button>
 
     <script>
       $('#error_searchform').submit(function(e) {
@@ -324,7 +324,7 @@
         $("[rel=popover]").popover()
         $('table').addClass('table')
         $('iframe').css('border','none')
-        $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {return " <small><a href='#"+this.innerHTML.replace(/ /g,'+')+"'><i class='icon icon-link'></i></a></small>"})
+        $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {return " <small><a href='#"+this.innerHTML.replace(/ /g,'+')+"'><i class='fa fa-link'></i></a></small>"})
         login = function() {
           $('#login-dropdown').toggle()
           $('#login-username-input').focus()

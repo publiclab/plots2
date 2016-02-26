@@ -17,20 +17,20 @@
           <% if node.type == 'note' %>
             by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
             <%= time_ago_in_words(node.created) %> ago
-            | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
+            | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-alt"></i> <%= node.comment_count %></a>
           <% else %>
             last edit by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a> 
             <%= time_ago_in_words(node.latest.timestamp) %> ago
           <% end %>
-          | <i class="hidden-sm icon icon-eye-open"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-sm">views</span>
-          | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="icon icon-star-empty"></i> <%= node.likes %>
+          | <i class="hidden-sm fa fa-eye-open"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-sm">views</span>
+          | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-empty"></i> <%= node.likes %>
         </small></p>
 
         <% if @compact.nil? %>
         <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
         <p><a href="<%= node.path %>">Read more &raquo;</a></p>
         <p>
-          <% if logged_in_as(['admin','moderator']) %><a class="btn btn-mini" href="/moderate/spam/<%= node.id %>"><i class="icon icon-ban-circle"></i> Spam</a><% end %>
+          <% if logged_in_as(['admin','moderator']) %><a class="btn btn-mini" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban-circle"></i> Spam</a><% end %>
           <% if node.tags.length > 1 %>
             <% node.tags[0..3].each do |tag| %>
               <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
@@ -39,7 +39,7 @@
         </p>
         <% end %>
         <% if params[:mod] %>
-        <a class="btn btn-mini" href="#"><i class="icon-ban-circle"></i> Spam</a>
+        <a class="btn btn-mini" href="#"><i class="fa fa-ban-circle"></i> Spam</a>
         <% end %>
         <hr style="display:none;" class="bottom" />
       </div>

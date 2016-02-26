@@ -25,13 +25,13 @@
         <ul class="nav">
           <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/notes/">Recent</a></li>
           <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/notes/popular/">Popular</a></li>
-          <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="icon icon-star-empty"></i><span class="hidden-sm"> Liked</span></a></li>
+          <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="fa fa-star-empty"></i><span class="hidden-sm"> Liked</span></a></li>
   
           <li><a href="/wiki/">Wiki<span class="hidden-sm"> pages</span></a></li>
         </ul>
 
         <%= render :partial => "notes/format_toggle" %>
-        <% if params[:action] == "liked" %><a style="margin-right:4px;" class="pull-right btn btn-sm" href="/feed/liked.rss"><i class="icon icon-rss"></i></a><% end %>
+        <% if params[:action] == "liked" %><a style="margin-right:4px;" class="pull-right btn btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
 
       </div>
     </div>

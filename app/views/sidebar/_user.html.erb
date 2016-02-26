@@ -3,7 +3,7 @@
   <%= feature('sidebar-feature') %>
 
   <div class="hidden-sm">
-    <p><i class="icon icon-envelope"></i> <a href="/lists">Discussion lists &raquo;</a></p>
+    <p><i class="fa fa-envelope"></i> <a href="/lists">Discussion lists &raquo;</a></p>
     <p>Much of our work happens on our regional and topical discussion lists. <a href="/lists">Join one today!</a></p>
     <!--<p><a href="/wiki/barnraising-2013"><img src="/images/barnraising-2013.png" width="100%" /></a></p>-->
     <hr />
@@ -15,7 +15,7 @@
   <ul class="nav wikis bullet">
     <% @wikis.each do |wiki| %>
       <% if not wiki.latest.blank? %>
-        <li><a href="<%= wiki.path %>"><i class="icon-book"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+        <li><a href="<%= wiki.path %>"><i class="fa fa-book"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
       <% end %>
     <% end %>
   </ul>

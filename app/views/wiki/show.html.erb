@@ -22,7 +22,7 @@
     <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   </div>
 
-  <h1 style="font-family: 'Junction Light';"><i class="icon icon-book"></i> <%= @revision.title %> <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a></h1>
+  <h1 style="font-family: 'Junction Light';"><i class="fa fa-book"></i> <%= @revision.title %> <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a></h1>
 
 <% if @is_revision %>
   <div class="alert">This is a revision from <%= @revision.created_at.to_s(:long) %>. <a href="/wiki/revisions/<%= @node.slug %>">View all revisions</a></div>
@@ -42,11 +42,11 @@
       </div>
  
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#"><span class="hidden-tiny">View</span><span class="visible-tiny"><i class="icon icon-file-alt"></i></span></a></li>
-        <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="icon icon-pencil"></i><span class="hidden-sm"> Edit</span></a></li>
-        <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you absolutely sure you want to delete '"+@node.path+"'? All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page." do %><i class="icon icon-trash"></i><span class="hidden-sm"> Delete</span><% end %></li><% end %>
-        <li><a href="//pad.publiclab.org/p/<%= @node.slug[0,50] %>"><i class="icon icon-comments-alt"></i><span class="hidden-sm"> Talk</span></a></li>
-        <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="icon icon-list"></i><span class="hidden-sm"> Revisions </span><span class="hidden-tiny">(<%= @node.revisions.length %>)</span></a></li>
+        <li class="active"><a href="#"><span class="hidden-tiny">View</span><span class="visible-tiny"><i class="fa fa-file-alt"></i></span></a></li>
+        <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="fa fa-pencil"></i><span class="hidden-sm"> Edit</span></a></li>
+        <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you absolutely sure you want to delete '"+@node.path+"'? All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page." do %><i class="fa fa-trash"></i><span class="hidden-sm"> Delete</span><% end %></li><% end %>
+        <li><a href="//pad.publiclab.org/p/<%= @node.slug[0,50] %>"><i class="fa fa-comments-alt"></i><span class="hidden-sm"> Talk</span></a></li>
+        <li><a href="/wiki/revisions/<%= @node.slug %>"><i class="fa fa-list"></i><span class="hidden-sm"> Revisions </span><span class="hidden-tiny">(<%= @node.revisions.length %>)</span></a></li>
       </ul>
     </div>
   </div>

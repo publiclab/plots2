@@ -12,7 +12,7 @@
     </tr>
     <% @tags.each do |tag| %>
       <tr>
-        <td><i class="icon-tag"></i> <a href="/tag/<%= tag.name %>"><%= tag.name %></a></td>
+        <td><i class="fa fa-tag"></i> <a href="/tag/<%= tag.name %>"><%= tag.name %></a></td>
         <td><%= tag.count %></td>
       </tr>
     <% end %>

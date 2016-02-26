@@ -10,12 +10,12 @@
     } 
   </script>
 
-  <a style="margin-top:-20px;margin-bottom:0;" class="btn btn-mini btn-block btn-link visible-sm" href="javascript:void()" onClick="toggle_sidebar()"><i class="icon icon-chevron-down"></i></a>
+  <a style="margin-top:-20px;margin-bottom:0;" class="btn btn-mini btn-block btn-link visible-sm" href="javascript:void()" onClick="toggle_sidebar()"><i class="fa fa-chevron-down"></i></a>
 
   <div id="sidebar" class="hidden-sm">
 
-  <a style="margin-bottom:6px;" rel="tooltip" title="Share your work with others" data-placement="bottom" href="/post" class="btn btn-primary btn-lg btn-block hidden-sm"><i class="icon-pencil icon-white"></i> Write a research note</a>
-  <a rel="tooltip" title="Post <% if @tagnames %>about <%= (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?tags='+(@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-lg btn-block"><i class="icon-pencil icon-white"></i> Post related work &raquo;</a>
+  <a style="margin-bottom:6px;" rel="tooltip" title="Share your work with others" data-placement="bottom" href="/post" class="btn btn-primary btn-lg btn-block hidden-sm"><i class="fa fa-pencil fa fa-white"></i> Write a research note</a>
+  <a rel="tooltip" title="Post <% if @tagnames %>about <%= (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?tags='+(@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-lg btn-block"><i class="fa fa-pencil fa fa-white"></i> Post related work &raquo;</a>
 
   <br />
   <%= render :partial => "sidebar/list" if @node %>
@@ -37,7 +37,7 @@
   <h4>This is a response to</h4>
   <ul class="nav bullet">
     <% @node.responded_to.each do |note| %>
-      <li><a href="<%= note.path %>"><i class="icon-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
+      <li><a href="<%= note.path %>"><i class="fa fa-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
     <% end %>
   </ul>
   <% end %>
@@ -47,7 +47,7 @@
   <h4>Responses to this note</h4>
   <ul class="nav bullet">
     <% responses.each do |note| %>
-      <li><a href="<%= note.path %>"><i class="icon-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
+      <li><a href="<%= note.path %>"><i class="fa fa-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
     <% end %>
   </ul>
   <% end %>
@@ -57,9 +57,9 @@
     <h4>Recent topic contributors</h4>
     <ul class="nav">
       <% @notes.collect(&:author).collect(&:name).uniq.each do |author| %>
-        <li><a href="/profile/<%= author %>"><i class="icon-user"></i> <%= author %></a></li>
+        <li><a href="/profile/<%= author %>"><i class="fa fa-user"></i> <%= author %></a></li>
       <% end %>
-      <% if params[:controller] == "tag" || (@node && @node.type == "page") %><li><a href="/contributors/<%= params[:id] %>"><i class="icon icon-list"></i> View all &raquo;</a></li><% end %>
+      <% if params[:controller] == "tag" || (@node && @node.type == "page") %><li><a href="/contributors/<%= params[:id] %>"><i class="fa fa-list"></i> View all &raquo;</a></li><% end %>
     </ul>
     <% end %>
  
@@ -67,9 +67,9 @@
     <h4>Contributors</h4>
     <ul class="nav">
       <% @users.each do |author| %>
-        <li><a href="/profile/<%= author.name %>"><i class="icon-user"></i> <%= author.name %></a></li>
+        <li><a href="/profile/<%= author.name %>"><i class="fa fa-user"></i> <%= author.name %></a></li>
       <% end %>
-      <li><a href="/contributors/<%= params[:id] %>"><i class="icon icon-list"></i> View all &raquo;</a></li>
+      <li><a href="/contributors/<%= params[:id] %>"><i class="fa fa-list"></i> View all &raquo;</a></li>
     </ul>
     <% end %>
   <% end %>
@@ -79,7 +79,7 @@
   <ul class="nav bullet">
     <% @videos.each do |note| %>
       <% unless (!@node.nil? && note.nid == @node.nid) %>
-      <li><a href="<%= note.path %>"><i class="icon-film"></i> <%= note.title %></a></li>
+      <li><a href="<%= note.path %>"><i class="fa fa-film"></i> <%= note.title %></a></li>
       <% end %>
     <% end %>
     <% if params[:controller] == "search" %>
@@ -97,7 +97,7 @@
   <ul class="nav bullet">
     <% @wikis.each do |wiki| %>
       <% unless (!@node.nil? && wiki.nid == @node.nid) %>
-        <li><a href="<%= wiki.path %>"><i class="icon icon-<%= raw wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+        <li><a href="<%= wiki.path %>"><i class="fa fa-<%= raw wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
       <% end %>
     <% end %>
     <% if params[:controller] == "search" %>
@@ -111,7 +111,7 @@
   <ul class="nav bullet">
     <% @notes.each do |note| %>
       <% unless (!@node.nil? && note.nid == @node.nid) %>
-      <li><a href="<%= note.path %>"><i class="icon-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
+      <li><a href="<%= note.path %>"><i class="fa fa-file"></i> <%= note.current_title %></a> <small style="color:#888;">posted <%= time_ago_in_words(note.created_at) %> ago by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a></small></li>
       <% end %>
     <% end %>
     <% if params[:controller] == "search" %>
@@ -158,7 +158,7 @@
     <ul class="nav bullet">
       <% @maps.each do |note| %>
         <% unless (!@node.nil? && note.nid == @node.nid) %>
-        <li><a href="<%= note.path %>"><i class="icon-map-marker"></i> <%= note.title %></a></li>
+        <li><a href="<%= note.path %>"><i class="fa fa-map-marker"></i> <%= note.title %></a></li>
         <% end %>
       <% end %>
     </ul>
