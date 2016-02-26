@@ -11,7 +11,7 @@
 <% if current_user %>
 <form id="tagform" class="form" data-remote="true" action="/tag/create/<%= @node.id %>">
 <div class="control-group">
-<div class="input-prepend">
+<div class="input-group">
   <span class="add-on"><i class="icon-tags"></i></span>
   <input name="remote" type="hidden" value="true" />
   <input autocomplete="off" id="taginput" name="name" type="text" placeholder="enter tags" data-provide="typeahead" />

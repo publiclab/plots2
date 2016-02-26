@@ -4,7 +4,7 @@
     <% notes.each_with_index do |node,i| %>
       <div class="col-md-3 clearfix note" style="overflow:hidden;">
         <% if node.main_image %>
-          <a class="thumbnail" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <a class="img-thumbnail" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
         <% end %>
 
         <% if node.type == 'note' %>

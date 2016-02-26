@@ -30,7 +30,11 @@ h1,h2,h3 {
   font-weight:normal;
 }
 
-h4,h5,h6, h1 small, h2 small, h3 small {
+h2 small {
+  font-size: 60%;
+}
+
+h4,h5,h6, h1 small, h3 small {
   font-family:"Junction Regular", lucida grande,lucida sans console,sans-serif;
   font-weight:normal;
 }
@@ -86,11 +90,7 @@ a i.icon-white { color:white; }
   }
 }
 
-@media (min-width: 979px) {
-  .header-spacer {
-    padding-top:60px;
-  }
-}
+body { padding-top: 70px; }
 
 #header .collapse.in .hidden-xs,
 #header .collapse.in .hidden-sm,

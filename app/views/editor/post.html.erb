@@ -83,7 +83,7 @@
     <%= render :partial => 'editor/editor' %>
 
     <div class="control-group">
-    <div class="input-prepend">
+    <div class="input-group">
       <span class="add-on"><i class="icon-tags"></i></span>
       <input name="remote" type="hidden" value="true" />
   
@@ -109,7 +109,7 @@
 
     <div id="event-info" style="display:none;">
       <p><i>An RSVP feature will be added to your note. Please choose a date:</i></p>
-      <span style="padding-right:0;" class="datepicker input-append date" data-date="<%= DateTime.now.strftime("%m-%d-%Y") %>" data-date-format="mm-dd-yyyy">
+      <span style="padding-right:0;" class="datepicker input-group date" data-date="<%= DateTime.now.strftime("%m-%d-%Y") %>" data-date-format="mm-dd-yyyy">
         <input id="datepicker-input" onFocus="$('.datepicker').datepicker('show')" class="col-md-8" size="16" type="text" name="date" value="<%= DateTime.now.strftime("%m-%d-%Y") %>" />
         <span class="add-on"><i class="icon-calendar"></i></span>
       </span>

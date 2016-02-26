@@ -78,7 +78,7 @@
  
       <ul class="nav navbar-nav">
 
-        <li class="dropdown">
+        <li class="dropdown hidden-xs hidden-sm">
           <a class="dropdown-toggle" data-toggle="dropdown">
             About <b class="caret"></b>
           </a>
@@ -97,7 +97,7 @@
           </ul>
         </li>
 
-        <li class="dropdown hidden-xs hidden-sm">
+        <li class="dropdown hidden-xs hidden-sm<%= ' hidden-md' unless current_user %>">
           <a class="dropdown-toggle" data-toggle="dropdown">
             Get Involved <b class="caret"></b>
           </a>
@@ -116,7 +116,7 @@
           </ul>
         </li>
 
-        <li class="dropdown hidden-xs hidden-sm">
+        <li class="dropdown hidden-xs hidden-sm<%= ' hidden-md' unless current_user %>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             Data 
             <b class="caret"></b>
@@ -136,69 +136,69 @@
 
       </ul>
  
-      <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:10px;" href="/signup" class="btn btn-primary navbar-btn navbar-right hidden-xs">Join</a><% end %>
- 
       <div id="chat" class="chat-popover" data-placement="bottom" style="display:none;">
         <a style="margin-right:4px;" class="pull-right btn btn-sm" href="https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>" target="_blank">pop out</a>
         <p class="popover-title">Public Lab chatroom</p>
         <iframe width="400px" height="300px" src="https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>"></iframe>
       </div>
  
+      <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:10px;" href="/signup" class="btn btn-primary navbar-btn navbar-right hidden-xs">Join</a><% end %>
+ 
       <% unless params[:action] == "register" || params[:action] == "signup" %>
-      <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a onClick="$('#chat').toggle()">
-            <i class="icon-white icon-comments"></i>
-          </a> 
-        </li>
-        <li class="dropdown">
-          <% if current_user %>
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="icon-user icon-white"></i>
-            <%= current_user.username %> <b class="caret"></b>
-          </a> 
-          <ul class="dropdown-menu">
-            <li class="dropdown-header">Role: <% if current_user.role === 'moderator' || current_user.role === 'admin'%><%= current_user.role %><% end %></li>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/profile/<%= current_user.username %>">Profile</a></li>
-            <li><a href="/profile/edit">Edit profile</a></li> 
-            <li class="divider"></li>
-            <li><a href="/subscriptions">Subscriptions</a></li>
-            <li><a href="/profile/<%= current_user.username %>/likes">Notes you've liked</a></li> 
-            <li class="divider"></li>
-            <li><%= link_to "Logout", logout_path %></li>
-          </ul>
-          <% else %>
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="icon-user icon-white"></i>
-             Log in <b class="caret"></b> 
-          </a> 
-          <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
-            <li style="padding:6px;">
-              <%= form_for @user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
-    
-                <p><b>Log in</b></p>
-    
-                <p><%= f.text_field :username, {:placeholder => "username", :tabindex => 1, :id => "login-username-input"} %></p>
-                <p><%= f.password_field :password, {:placeholder => "password", :tabindex => 2} %></p>
-                <input type="hidden" name="return_to" value="<%= params[:return_to] || request.path %>" />
-    
-                <p><label class="checkbox">
-                  <%= f.check_box :remember_me %> Remember me
-                </p></label>
-    
-                <p>
-                  <button class="btn btn-primary" type="submit" tabindex="3">Log in</button>
-                  <a class="btn btn" href="/signup" tabindex="4">Sign up</a>
-                </p>
-    
-                <p><a href="/reset/">Reset your password</a></p>
-              <% end %>
-            </li>
-          </ul>
-          <% end %>
-        </li>
-      </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a onClick="$('#chat').toggle()">
+              <i class="icon-white icon-comments"></i>
+            </a> 
+          </li>
+          <li class="dropdown">
+            <% if current_user %>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="icon-user icon-white"></i>
+              <%= current_user.username %> <b class="caret"></b>
+            </a> 
+            <ul class="dropdown-menu">
+              <li class="dropdown-header">Role: <% if current_user.role === 'moderator' || current_user.role === 'admin'%><%= current_user.role %><% end %></li>
+              <li><a href="/dashboard">Dashboard</a></li>
+              <li><a href="/profile/<%= current_user.username %>">Profile</a></li>
+              <li><a href="/profile/edit">Edit profile</a></li> 
+              <li class="divider"></li>
+              <li><a href="/subscriptions">Subscriptions</a></li>
+              <li><a href="/profile/<%= current_user.username %>/likes">Notes you've liked</a></li> 
+              <li class="divider"></li>
+              <li><%= link_to "Logout", logout_path %></li>
+            </ul>
+            <% else %>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="icon-user icon-white"></i>
+               Log in <b class="caret"></b> 
+            </a> 
+            <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
+              <li style="padding:6px;">
+                <%= form_for @user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
+      
+                  <p><b>Log in</b></p>
+      
+                  <p><%= f.text_field :username, {:placeholder => "username", :tabindex => 1, :id => "login-username-input"} %></p>
+                  <p><%= f.password_field :password, {:placeholder => "password", :tabindex => 2} %></p>
+                  <input type="hidden" name="return_to" value="<%= params[:return_to] || request.path %>" />
+      
+                  <p><label class="checkbox">
+                    <%= f.check_box :remember_me %> Remember me
+                  </p></label>
+      
+                  <p>
+                    <button class="btn btn-primary" type="submit" tabindex="3">Log in</button>
+                    <a class="btn btn" href="/signup" tabindex="4">Sign up</a>
+                  </p>
+      
+                  <p><a href="/reset/">Reset your password</a></p>
+                <% end %>
+              </li>
+            </ul>
+            <% end %>
+          </li>
+        </ul>
       <% end %>
     </div>
  
@@ -212,8 +212,6 @@
     <% if params[:controller] == "wiki" %><h1>Public Lab <small>Wiki documentation</small></h1><% end %>
     <hr />
   </div>
-
-  <div class="header-spacer hidden-sm"></div>
 
   <%= render :partial => "layouts/alerts" %>
 

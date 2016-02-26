@@ -8,7 +8,7 @@
     toggle_format = function(format) {
       if (format == "grid") {
         $('.note').addClass('col-md-3')
-        $('.note .thumbnail').css('width','100%')
+        $('.note .img-thumbnail').css('width','100%')
         $('.note hr.bottom').hide()
         $('#notes hr.hidden-sm').show()
         $('#notes ._row').addClass('row')
@@ -17,7 +17,7 @@
         $('#notes._container-fluid').removeClass('_container-fluid')
       } else {
         $('.note').removeClass('col-md-3')
-        $('.note .thumbnail').css('width','30%')
+        $('.note .img-thumbnail').css('width','30%')
         $('.note hr.bottom').show()
         $('#notes hr.hidden-sm').hide()
         $('#notes .row').addClass('_row')
