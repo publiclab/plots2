@@ -42,12 +42,12 @@
    end %>
 
   <%= form_for @node, :as => :drupal_node, :url => url do |f| %>
-    <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
+    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
   <% end %>
 
   <%= form_for @revision, :as => :drupal_node_revision, :url => url, :html => {:class => "form well"} do |f| %>
 
-    <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
+    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
   
     <%= render :partial => "editor/main_image" %>
 

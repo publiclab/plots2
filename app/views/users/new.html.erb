@@ -18,6 +18,8 @@
 
 <div class="col-md-9">
 
+  <hr class="hidden-md hidden-lg" />
+
   <h2>Sign up to join the Public Lab community</h2>
 
   <% if params[:lang] %>
@@ -30,13 +32,13 @@
   </p>
   <% end %>
 
-  <hr />
+  <br />
 
   <%= render 'form' %>
 
-  <hr />
-
-  <p><b>Licensing agreement:</b> As an open source community, we believe in open licensing of content so that other members of the community can leverage your work legally -- with attribution, of course. By joining the Public Lab site, <b>you agree to release the content you post here under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution Sharealike license</a></b>, and the hardware designs you post under the <b><a href="http://www.ohwr.org/cernohl">CERN Open Hardware License 1.1</a> (<a href="http://www.ohwr.org/attachments/735/CERNOHLv1_1.txt">fulltext</a>)</b>. This has the added benefit that others must share their improvements in turn with you.</p>
+  <div style="clear:both;padding-top:10px;">
+    <p><b>Licensing agreement:</b> As an open source community, we believe in open licensing of content so that other members of the community can leverage your work legally -- with attribution, of course. By joining the Public Lab site, <b>you agree to release the content you post here under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution Sharealike license</a></b>, and the hardware designs you post under the <b><a href="http://www.ohwr.org/cernohl">CERN Open Hardware License 1.1</a> (<a href="http://www.ohwr.org/attachments/735/CERNOHLv1_1.txt">fulltext</a>)</b>. This has the added benefit that others must share their improvements in turn with you.</p>
+  </div>
 
   <br style="margin-bottom:20px;" />
 
