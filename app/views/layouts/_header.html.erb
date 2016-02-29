@@ -142,7 +142,7 @@
         <iframe width="400px" height="300px" src="https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>"></iframe>
       </div>
  
-      <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:10px;" href="/signup" class="btn btn-primary navbar-btn navbar-right hidden-xs">Join</a><% end %>
+      <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:14px;" href="/signup" class="btn btn-primary navbar-btn navbar-right hidden-xs">Join</a><% end %>
  
       <% unless params[:action] == "register" || params[:action] == "signup" %>
         <ul class="nav navbar-nav navbar-right">
@@ -177,22 +177,35 @@
               <li style="padding:6px;">
                 <%= form_for @user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
       
-                  <p><b>Log in</b></p>
-      
-                  <p><%= f.text_field :username, {:placeholder => "username", :tabindex => 1, :id => "login-username-input"} %></p>
-                  <p><%= f.password_field :password, {:placeholder => "password", :tabindex => 2} %></p>
+                  <div class="form-group">
+        
+                    <label for="username">Username</label>
+                    <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username' } %>
+        
+                  </div>
+        
+                  <div class="form-group">
+        
+                    <label for="password">Password</label>
+                    <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password' } %>
+        
+                  </div>
+
                   <input type="hidden" name="return_to" value="<%= params[:return_to] || request.path %>" />
-      
-                  <p><label class="checkbox">
-                    <%= f.check_box :remember_me %> Remember me
-                  </p></label>
+
+                  <div class="checkbox">
+                    <label>
+                      <%= f.check_box :remember_me %> Remember me
+                    </label>
+                  </div>
       
                   <p>
                     <button class="btn btn-primary" type="submit" tabindex="3">Log in</button>
-                    <a class="btn btn" href="/signup" tabindex="4">Sign up</a>
+                    <a class="btn btn-default" href="/signup" tabindex="4">Sign up</a>
                   </p>
       
                   <p><a href="/reset/">Reset your password</a></p>
+
                 <% end %>
               </li>
             </ul>

@@ -17,7 +17,7 @@
       <p><a href="<%= node.path %>">Read more &raquo;</a></p>
       <p>
         <% node.tags[0..3].each do |tag| %>
-          <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
+          <a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
         <% end %>
       </p>
       <% if params[:mod] %>

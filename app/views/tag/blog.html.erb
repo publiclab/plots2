@@ -54,7 +54,7 @@
           <p>
             <%= render :partial => "like/like", :locals => {:node => node, :tagnames => node.tags.collect(&:name) } %>
             <% node.tags[0..3].each do |tag| %>
-              <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
+              <a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
             <% end %>
           </p>
           <% if params[:mod] %>

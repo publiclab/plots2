@@ -2,7 +2,7 @@
   <b>Tags:</b>
   <span id="tags">
   <% @node.tags.each do |tag| %>
-    <span id="tag_<%= tag.id %>" class="label label-info">
+    <span id="tag_<%= tag.id %>" class="label label-primary">
       <a href="<%= "/maps" if @node.type == "map" %>/tag/<%= tag.name %>"><%= tag.name %></a><% if current_user && (tag.is_community_tag(@node.id) && tag.belongs_to(current_user,@node.id) || current_user.role == "admin" || current_user.role == "moderator") %>
       <a class="tagdelete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.id %>">x</a><% end %></span><% end %>
   </span>
@@ -27,7 +27,7 @@
         $.each(response['saved'],function(i,tag) {
           var tag_name = tag[0]
           var tag_id = tag[1]
-          $('#tags').append("<span id='tag_"+tag_id+"' class='label label-info'><a href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tagdelete' data-remote='true' href='/tag/delete/<%= @node.id %>/"+tag_id+"'>x</a></span> ")
+          $('#tags').append("<span id='tag_"+tag_id+"' class='label label-primary'><a href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tagdelete' data-remote='true' href='/tag/delete/<%= @node.id %>/"+tag_id+"'>x</a></span> ")
           $('#taginput').val("")
           $('#tagform .control-group').removeClass('error')
           $('#tagform .control-group .help-inline').remove()
