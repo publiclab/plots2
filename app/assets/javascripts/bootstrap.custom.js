@@ -4,7 +4,6 @@
  * raw value of the input if no item is manually selected.
  */
 
-jQuery(document).ready(function($) {
   $.fn.typeahead.Constructor.prototype.select = function () {
       var val = this.$menu.find('.active').attr('data-value')
       if (val === undefined) val = this.$element.val()
@@ -19,7 +18,7 @@ jQuery(document).ready(function($) {
 
       items = $(items).map(function (i, item) {
         i = $(that.options.item).attr('data-value', item)
-        i.find('a').html(that.highlighter(item))
+        i.find('a').html(item); //that.highlighter(item)) // highlighting was making response escaped string text
         return i[0]
       })
 
@@ -27,4 +26,3 @@ jQuery(document).ready(function($) {
       this.$menu.html(items)
       return this
     }
-})

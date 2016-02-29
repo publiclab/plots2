@@ -1,6 +1,6 @@
-<div class="sidebar-nav pull-right col-md-3">
+<div class="sidebar-nav col-md-3 col-md-push-9">
 
-  <h3 style="margin-top:0;" class="hidden-sm">Main image <i id="main-image-spinner" class="hidden icon-spinner icon-spin"></i></h3>
+  <h3 class="hidden-sm">Main image <i id="main-image-spinner" class="hidden icon-spinner icon-spin"></i></h3>
 
   <img class="img-rounded" id="leadImage" <% unless (@node && @node.main_image) || params[:main_image] || params[:i] %>style="display:none;" <% end %>src="<% if @node && @node.main_image %><%= @node.main_image.path(:default) %><% elsif params[:main_image] && Image.find_by_id(params[:main_image]) %><%= Image.find_by_id(params[:main_image]).path %><% elsif @image %><%= @image.path(:default) %><% end %>" />
   <div class="side-dropzone" id="side-dropzone">
@@ -9,8 +9,8 @@
         Drag &amp; drop to add an image, or 
       </span>
       <span class="fileinput-button">
-        <a><i class="fa fa-upload hidden-sm pull-left" style="padding-right:6px;"></i> choose an image</a>
-        <input tabindex="3" id="side-fileinput" type="file" name="image[photo]" style="height:4em;" />
+        <a>choose an image</a>
+        <input tabindex="3" id="side-fileinput" type="file" name="image[photo]" style="height:4em;width:100%;" />
       </span>
     </p>
     <br class="hidden-sm" />

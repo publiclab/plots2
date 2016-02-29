@@ -1,5 +1,7 @@
 <div class="col-md-3">
+
   <%= render :partial => "sidebar/post_button" %>
+
   <%= feature('sidebar-feature') %>
 
   <div class="hidden-sm">
@@ -9,18 +11,6 @@
     <hr />
   </div>
 
-  <% if @wikis && @wikis.length > 0 %>
-  <div class="hidden-sm hidden-xs">
-  <h4>Recent wiki edits</h4>
-  <ul class="nav wikis bullet">
-    <% @wikis.each do |wiki| %>
-      <% if not wiki.latest.blank? %>
-        <li><a href="<%= wiki.path %>"><i class="fa fa-book"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
-      <% end %>
-    <% end %>
-  </ul>
-  <% end %>
-  <p><a href="/wiki/">More &raquo;</a></p>
-  </div>
+  <%= render partial: 'sidebar/wikis', locals: { wikis: @wikis, title: "Recent wiki edits", node: @node } %>
 
 </div>

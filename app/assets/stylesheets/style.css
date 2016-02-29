@@ -35,13 +35,14 @@ h2 small {
 }
 
 h4,h5,h6, h1 small, h3 small {
-  font-family:"Junction Regular", lucida grande,lucida sans console,sans-serif;
-  font-weight:normal;
+  font-family: "Junction Regular", lucida grande,lucida sans console,sans-serif;
+  font-weight: normal;
+  line-height: 1.4em;
 }
 
 #content h1, #content h2, #content h3 {
-  font-family:"Junction Light",lucida grande,lucida sans console,sans-serif;
-  padding-top:0.4em;
+  font-family: "Junction Light",lucida grande,lucida sans console,sans-serif;
+  padding-top: 0.4em;
 }
 
 #content h4 {
@@ -53,8 +54,11 @@ h4,h5,h6, h1 small, h3 small {
 }
 
 /* fontawesome default color */
-a i { color:#222; }
-a i.fa-white { color:white; }
+a .fa { color:#222; }
+a .fa-white,
+.fa-white { 
+    color: white !important; 
+}
 
 .label a {
   color:white;

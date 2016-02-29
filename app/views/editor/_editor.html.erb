@@ -1,17 +1,18 @@
-<div class="btn-toolbar">
+<div class="btn-toolbar" style="margin-bottom:8px;">
+
   <div class="btn-group">
-    <a class="btn btn-sm" onClick="$E.bold()"><i class="fa fa-bold"></i></a>
-    <a class="btn btn-sm" onClick="$E.italic()"><i class="fa fa-italic"></i></a>
-    <a class="btn btn-sm" onClick="$E.h2()"><b><span class="hidden-sm">Header</span><span class="visible-sm">H</span></b></a>
+    <a class="btn btn-default btn-sm" onClick="$E.bold()"><i class="fa fa-bold"></i></a>
+    <a class="btn btn-default btn-sm" onClick="$E.italic()"><i class="fa fa-italic"></i></a>
+    <a class="btn btn-default btn-sm" onClick="$E.h2()"><b><span class="hidden-sm">Header</span><span class="visible-sm">H</span></b></a>
   </div>
 
   <div class="btn-group">
-    <a rel="tooltip" title="Make a link" class="btn btn-sm" href="javascript:void(0)" onClick="$E.link()"><i class="fa fa-link"></i></a>
+    <a rel="tooltip" title="Make a link" class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$E.link()"><i class="fa fa-link"></i></a>
     <!--<a rel="tooltip" title="Place an image" class="btn btn-sm" href="javascript:void(0)" onClick="$E.image()" data-><i class="fa fa-picture"></i></a>-->
   </div>
 
   <div class="btn-group hidden-sm">
-    <a class="btn btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
+    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
       Templates
       <span class="caret"></span>
     </a>
@@ -23,19 +24,18 @@
   </div>
 
   <div class="btn-group">
-    <a onClick="$E.save()" class="btn btn-sm"><i class="fa fa-save"></i></a>
-    <a onClick="$E.recover()" class="btn btn-sm">Recover</a>
+    <a onClick="$E.save()" class="btn btn-default btn-sm"><i class="fa fa-save"></i></a>
+    <a onClick="$E.recover()" class="btn btn-default btn-sm">Recover</a>
   </div>
 
   <div class="btn-group">
-    <a class="btn btn-link hidden-sm" target="_blank" href="/wiki/authoring-help"><i class="fa fa-question-sign"></i> Help</a>
-    <a class="btn btn-sm visible-sm" target="_blank" href="/wiki/authoring-help"><i class="fa fa-question-sign"></i></a>
+    <a class="btn btn-default btn-sm" target="_blank" href="/wiki/authoring-help"><i class="fa fa-question-circle"></i></a>
   </div>
 
 </div>
 
-<div id="dropzone">
-  <textarea name="body" tabindex="2" class="col-md-9" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %><%= render :partial => "editor/newsletter" if params[:newsletter] %></textarea>
+<div id="dropzone" class="form-group">
+  <textarea name="body" tabindex="2" class="form-control" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %><%= render :partial => "editor/newsletter" if params[:newsletter] %></textarea>
   <div id="imagebar">
     <div id="progress" style="display:none;" class="progress progress-striped active pull-right">
       <div class="bar" style="width: 0%;"></div>
@@ -60,8 +60,7 @@
   </div>
 </div>
 
-<div class="well col-md-9" id="preview" style="display:none;"> </div>
-<br style="clear:both;"/>
+<div class="well" id="preview" style="display:none;"> </div>
 
 <script>
   jQuery(document).ready(function() {

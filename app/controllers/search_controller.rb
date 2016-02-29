@@ -26,19 +26,19 @@ class SearchController < ApplicationController
   def typeahead
     matches = []
     DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid,path").each do |match|
-      matches << "<i data-url='"+match.path+"' class='icon-file'></i> "+match.title
+      matches << "<i data-url='"+match.path+"' class='fa fa-file'></i> "+match.title
     end
     DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['(type = "page" OR type = "place" OR type = "tool") AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid,path").each do |match|
-      matches << "<i data-url='"+match.path+"' class='icon-"+match.icon+"'></i> "+match.title
+      matches << "<i data-url='"+match.path+"' class='fa fa-"+match.icon+"'></i> "+match.title
     end
     DrupalNode.find(:all, :limit => 5, :order => "nid DESC", :conditions => ['type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%"], :select => "title,type,nid,path").each do |match|
-      matches << "<i data-url='"+match.path+"' class='icon-"+match.icon+"'></i> "+match.title
+      matches << "<i data-url='"+match.path+"' class='fa fa-"+match.icon+"'></i> "+match.title
     end
     DrupalUsers.find(:all, :limit => 5, :order => "uid", :conditions => ['name LIKE ? AND access != 0', "%"+params[:id]+"%"]).each do |match|
-      matches << "<i data-url='/profile/"+match.name+"' class='icon-user'></i> "+match.name
+      matches << "<i data-url='/profile/"+match.name+"' class='fa fa-user'></i> "+match.name
     end
     DrupalTag.includes(:drupal_node).where('node.status = 1').limit(5).where('name LIKE ?', "%"+params[:id]+"%").each do |match|
-      matches << "<i data-url='/tag/"+match.name+"' class='icon-tag'></i> "+match.name
+      matches << "<i data-url='/tag/"+match.name+"' class='fa fa-tag'></i> "+match.name
     end
     render :json => matches
   end
