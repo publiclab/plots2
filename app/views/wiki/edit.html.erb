@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-sm-3">
   <%= javascript_include_tag "dragdrop" %>
   <% if @related && @related.length > 0 %>
     <h3>Did you mean:</h3>
@@ -33,7 +33,7 @@
   </div>
 </div>
 
-<div class="col-md-9">
+<div class="col-sm-9">
 
   <% if @node && params[:action] != "create"
     url = { :controller => "wiki", :action => "update", :id => @node.id }
@@ -51,46 +51,44 @@
   
     <%= render :partial => "editor/main_image" %>
 
-    <% if @node && @node.latest && @node.latest.title %>
-      <h3 style="margin-top:0;">Editing page: <i><%= @node.latest.title %></i></h3>
-    <% else %>
-      <h3 style="margin-top:0;">Create page: <i><%=h params[:id] %></i></h3>
-    <% end %>
+    <div class="col-md-9 col-md-pull-3">
 
-    <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
-    <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
-    <input id="images_input" type="hidden" name="images" value="" />
-
-    <% if @node && @node.latest %>
-      <input tabindex="1" name="title" type="text" class="col-md-9" id="title" value="<%= @node.latest.title %>"><br />
-    <% else %>
-      <input tabindex="1" name="title" type="text" class="col-md-9" id="title" value="<%= params[:id] %>"><br />
-      <!--<input name="url" type="text" class="col-md-9" id="url" value="" placeholder="page-url"><br />-->
-    <% end %>
-
-    <script>
-      (function(){
-        $D = {
-          uid: <%= current_user.uid %>,
-          type: 'wiki'
-        }
-      })()
-    </script>
-
-    <%= render :partial => 'editor/editor' %>
-
-    <div class="hidden-sm">
+      <% if @node && @node.latest && @node.latest.title %>
+        <h3>Editing page: <i><%= @node.latest.title %></i></h3>
+      <% else %>
+        <h3>Create page: <i><%=h params[:id] %></i></h3>
+      <% end %>
+ 
+      <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
+      <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
+      <input id="images_input" type="hidden" name="images" value="" />
+ 
+      <div class="form-group">
+        <input tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:id] %><% end %>">
+      </div>
+ 
+      <script>
+        (function(){
+          $D = {
+            uid: <%= current_user.uid %>,
+            type: 'wiki'
+          }
+        })()
+      </script>
+ 
+      <%= render :partial => 'editor/editor' %>
+ 
       <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
-      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
-      <span> &nbsp; By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</span>
-    </div>
-    <p class="visible-sm btn-group">
-      <a id="publish" class="publish btn btn-primary btn-lg">Publish</a>
-      <a data-previewing-text="Edit" class="btn btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
-    </p>
-    <p class="visible-sm">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
 
-    <% if @node && @node.latest %><p style="padding:10px 0 0 0;"><i>This page was last edited <%= time_ago_in_words(@node.latest.created_at) %> ago by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a></i></p><% end %> 
+    </div>
+
+    <div style="clear:both;">
+      <br />
+      <p class="col-md-12">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+      <% if @node && @node.latest %><p style="padding:10px 0 0 0;"><i>This page was last edited <%= time_ago_in_words(@node.latest.created_at) %> ago by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a></i></p><% end %> 
+      <br />
+    </div>
 
     <script>
       (function(){
