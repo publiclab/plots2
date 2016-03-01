@@ -3,50 +3,50 @@ jQuery(document).ready(function() {
  * Based on the basic plugin from jQuery file upload: 
  * https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
  *
- * #dropzone is for inline images for both wiki and research notes, in:
+ * .dropzone is for inline images for both wiki and research notes, in:
  *   /app/views/editor/_editor.html.erb
  *   /app/views/wiki/edit.html.erb
  * #side-dropzone, is for the main image of research notes, in /app/views/editor/post.html.erb
 */
 
-$('#dropzone').bind('dragover',function(e) {
+$('.dropzone').bind('dragover',function(e) {
   e.preventDefault();
-  $('#dropzone').addClass('hover');
+  $('.dropzone').addClass('hover');
 })
 $('#side-dropzone').bind('dragover',function(e) {
   e.preventDefault();
   $('#side-dropzone').addClass('hover');
 })
-$('#dropzone').bind('dragout',function(e) {
-  $('#dropzone').removeClass('hover');
+$('.dropzone').bind('dragout',function(e) {
+  $('.dropzone').removeClass('hover');
 })
 $('#side-dropzone').bind('dragout',function(e) {
   $('#side-dropzone').removeClass('hover');
 })
-$('#dropzone').bind('drop',function(e) {
+$('.dropzone').bind('drop',function(e) {
   e.preventDefault();
 })
 $('#side-dropzone').bind('drop',function(e) {
   e.preventDefault();
 })
 
-$('#dropzone').fileupload({
+$('.dropzone').fileupload({
   url: "/images",
   paramName: "image[photo]",
-  dropZone: $('#dropzone'),
+  dropZone: $('.dropzone'),
   dataType: 'json',
   formData: {
     'uid':$D.uid,
     'nid':$D.nid
   },
   start: function(e) {
-    $('#progress').show()
+    $('.progress').show()
     $('#imagebar .uploading').show()
     $('#imagebar .prompt').hide()
-    $('#dropzone').removeClass('hover');
+    $('.dropzone').removeClass('hover');
   },
   done: function (e, data) {
-    $('#progress').hide()
+    $('.progress').hide()
     $('#imagebar .uploading').hide()
     $('#imagebar .prompt').show()
     var is_image = false
@@ -83,7 +83,7 @@ $('#dropzone').fileupload({
   },
   progressall: function (e, data) {
     var progress = parseInt(data.loaded / data.total * 100, 10);
-    $('#progress .bar').css(
+    $('.progress .progress-bar').css(
       'width',
       progress + '%'
     );
@@ -122,7 +122,7 @@ $('#side-dropzone').fileupload({
   },
   progressall: function (e, data) {
     var progress = parseInt(data.loaded / data.total * 100, 10);
-    $('#side-progress .bar').css(
+    $('#side-progress .progress-bar').css(
       'width',
       progress + '%'
     );

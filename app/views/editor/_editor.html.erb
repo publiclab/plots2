@@ -34,28 +34,34 @@
 
 </div>
 
-<div id="dropzone" class="form-group">
+<div class="form-group dropzone">
   <textarea name="body" tabindex="2" class="form-control" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %><%= render :partial => "editor/newsletter" if params[:newsletter] %></textarea>
   <div id="imagebar">
-    <div id="progress" style="display:none;" class="progress progress-striped active pull-right">
-      <div class="bar" style="width: 0%;"></div>
+    <div style="display:none;" class="progress progress-striped active pull-right">
+      <div class="progress-bar" style="width: 0%;"></div>
     </div>
     <p>
+
       <span class="uploading" style="display:none;">
         Uploading... (<a onClick="$E.cancel_upload()">cancel</a>)
       </span>
+
       <span class="prompt">
         <span style="padding-right:4px;float:left;" class="hidden-sm">
           Drag &amp; drop to add an image or file, or 
         </span>
-        <span class="fileinput-button">
-          <a class="hidden-sm">choose one</a>
-          <a class="visible-sm">
-            <i class="fa fa-upload"></i> Upload image
-          </a>
-          <input id="fileinput" type="file" name="image[photo]" style="height:4em;" />
-        </span>
+
+        <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
+        <label class="" for="fileinput">
+          <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
+          <a class="hidden-xs">choose one</a>
+          <span class="visible-xs">
+            <i class="fa fa-upload"></i> 
+            <a>Upload image</a>
+          </span>
+        </label> 
       </span>
+
     </p>
   </div>
 </div>

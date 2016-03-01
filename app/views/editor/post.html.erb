@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-sm-3">
 
   <script>
     $D = {
@@ -22,8 +22,8 @@
     </div>
 
   <% else %>
-    <h3 class="visible-sm"><i class="fa fa-file"></i> What's a <br />research note?</h3>
-    <h4 class="hidden-sm"><i class="fa fa-file"></i> What's a research note? <a onClick="$('#research-note-detail').toggleClass('visible-sm')">Learn more &raquo;</a><br /></h4>
+    <h3 class="visible-md"><i class="fa fa-file"></i> What's a <br />research note?</h3>
+    <h4 class="hidden-md"><i class="fa fa-file"></i> What's a research note? <a onClick="$('#research-note-detail').toggleClass('visible-sm')">Learn more &raquo;</a><br /></h4>
     
     <div id="research-note-detail" class="hidden-sm hidden-xs">
       <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work.</p>
@@ -51,7 +51,7 @@
   <% end %>
 </div>
 
-<div class="col-md-9">
+<div class="col-sm-9">
   <% 
   if @node && params[:action] != "create"
     url = { :controller => "notes", :action => "update", :id => params[:id] }
@@ -97,23 +97,17 @@
       <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
       <br />
  
-      <div class="hidden-sm">
-        <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
-        <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
-      </div>
-      <div class="visible-sm btn-group">
-        <a id="publish" class="publish btn btn-primary btn-lg">Publish</a>
-        <a data-previewing-text="Edit" class="btn btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
-      </div>
+      <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
+      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
  
-      <div style="margin-top:4px;" class="checkbox">
+      <span style="margin-top:12px;margin-left:8px;" class="checkbox">
         <label for="event-input">
           <input tabindex="7" onChange="$('#event-info').toggle()" id="event-input" type="checkbox" name="event">
           This is an event
         </label>
-      </div>
+      </span>
  
-      <div id="event-info" style="display:none;">
+      <div id="event-info" style="display:none;clear:both;padding-top:4px;">
         <p><i>An RSVP feature will be added to your note. Please choose a date:</i></p>
         <span style="padding-right:0;" class="input-group date">
           <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%m-%d-%Y") %>" data-date-format="mm-dd-yyyy" class="col-md-8 form-control" size="16" type="text" name="date" value="<%= DateTime.now.strftime("%m-%d-%Y") %>" />
@@ -123,7 +117,11 @@
 
     </div>
  
-    <p style="clear:both;">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+    <div style="clear:both;">
+      <br />
+      <p class="col-md-12">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+      <br />
+    </div>
 
   <% end %>
 </div>

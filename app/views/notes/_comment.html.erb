@@ -2,7 +2,9 @@
 
   <div class="navbar navbar-default">
 
-    <div class="navbar-text">
+    <div class="navbar-text pull-left visible-xs">&nbsp;&nbsp;</div>
+
+    <div class="navbar-text pull-left">
       <% if comment.author %>
         <% if comment.author.user.photo_file_name %>
           <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= comment.author.user.photo_path(:thumb) %>" /> 
@@ -13,7 +15,7 @@
       <%= time_ago_in_words(comment.created_at) %> ago
     </div>
 
-    <div class="navbar-text navbar-right" style="padding-right:10px;">
+    <div class="navbar-text navbar-right pull-right" style="padding-right:10px;">
       <% if current_user && comment.uid == current_user.uid %>
         <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle()">
           <i class="fa fa-pencil"></i>

@@ -8,16 +8,16 @@
     }
   </style>
 
-  <div id="dropzone" class="form-group">
+  <div class="form-group dropzone">
 
     <textarea onFocus="editing=true" name="body" class="form-control" id="<% if comment %>c<%= comment.id %><% end %>text-input" rows="6" cols="40" placeholder="Help the author refine their post, or point them at other helpful information on the site.
 
-ion users by @username to notify them of this thread by email."><%= comment.comment if comment %></textarea>
+Mention users by @username to notify them of this thread by email."><%= comment.comment if comment %></textarea>
 
     <div id="imagebar">
 
-      <div id="progress" style="display:none;" class="progress progress-striped active pull-right">
-        <div class="bar" style="width: 0%;"></div>
+      <div style="display:none;" class="progress progress-striped active pull-right">
+        <div class="progress-bar" style="width: 0%;"></div>
       </div>
 
       <p>
@@ -25,17 +25,21 @@ ion users by @username to notify them of this thread by email."><%= comment.comm
           Uploading...
         </span>
         <span class="prompt">
-          <span style="padding-right:4px;float:left;" class="hidden-sm">
+
+          <span style="padding-right:4px;float:left;" class="hidden-xs">
             Drag &amp; drop to add an image or file, or 
           </span>
-          <span class="fileinput-button">
-            <a class="hidden-sm">choose one</a>
-            <a class="visible-sm">
+
+          <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
+          <label class="" for="fileinput">
+            <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
+            <a class="hidden-xs">choose one</a>
+            <span class="visible-xs">
               <i class="fa fa-upload"></i> 
-              Upload image
-            </a>
-            <input id="fileinput" type="file" name="image[photo]" style="height:4em;" />
-          </span>
+              <a>Upload image</a>
+            </span>
+          </label> 
+
         </span>
       </p>
 
@@ -56,8 +60,6 @@ ion users by @username to notify them of this thread by email."><%= comment.comm
   </script>
 
   <%= javascript_include_tag "dragdrop" %>
-
-  <br style="clear:both;"/>
 
   <script>
     $('#comment-form').bind('ajax:beforeSend', function(){
@@ -92,7 +94,7 @@ ion users by @username to notify them of this thread by email."><%= comment.comm
     <% end %>
 
     <span style="color:#888;"> &nbsp; 
-      Logged in as <b><%= current_user.username %></b> | 
+      <br class="visible-xs" />Logged in as <b><%= current_user.username %></b> | 
       <a target="_blank" href="/wiki/authoring-help#Formatting">Formatting</a> | 
       <a onClick="$('#who-is-notified').toggle()">Notifications</a>
     </span>

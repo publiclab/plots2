@@ -92,7 +92,7 @@
   background:#f8f8f8;
 }
 
-#progress {
+#imagebar .progress {
   margin:10px;
   width:30%;
 }
