@@ -1,0 +1,103 @@
+<form id="<% if comment %>c<%= comment.id %>edit<% else %>comment-form<% end %>"<% if comment %> style="display:none;"<% end %> data-remote="true" class="well" action="<% if comment %>/comment/update/<%= comment.id %><% else %>/comment/create/<%= @node.nid %><% end %>">
+
+  <h4 style="margin-top:0;"><%= title %></h4>
+
+  <style>
+    #imagebar {
+      width:100%;
+    }
+  </style>
+
+  <div id="dropzone" class="form-group">
+
+    <textarea onFocus="editing=true" name="body" class="form-control" id="<% if comment %>c<%= comment.id %><% end %>text-input" rows="6" cols="40" placeholder="Help the author refine their post, or point them at other helpful information on the site.
+
+ion users by @username to notify them of this thread by email."><%= comment.comment if comment %></textarea>
+
+    <div id="imagebar">
+
+      <div id="progress" style="display:none;" class="progress progress-striped active pull-right">
+        <div class="bar" style="width: 0%;"></div>
+      </div>
+
+      <p>
+        <span class="uploading" style="display:none;">
+          Uploading...
+        </span>
+        <span class="prompt">
+          <span style="padding-right:4px;float:left;" class="hidden-sm">
+            Drag &amp; drop to add an image or file, or 
+          </span>
+          <span class="fileinput-button">
+            <a class="hidden-sm">choose one</a>
+            <a class="visible-sm">
+              <i class="fa fa-upload"></i> 
+              Upload image
+            </a>
+            <input id="fileinput" type="file" name="image[photo]" style="height:4em;" />
+          </span>
+        </span>
+      </p>
+
+    </div>
+  </div>
+
+  <div class="well col-md-11" id="<% if comment %>c<%= comment.id %><% end %>preview" style="background:white;display:none;"> </div>
+
+  <script>
+    (function() { 
+      $E.initialize({})
+    })()
+
+    $D = {
+      uid: <%= current_user.uid %>,
+      type: 'comment'
+    }
+  </script>
+
+  <%= javascript_include_tag "dragdrop" %>
+
+  <br style="clear:both;"/>
+
+  <script>
+    $('#comment-form').bind('ajax:beforeSend', function(){
+      $("#text-input").prop('disabled',true)
+      $("#comment-form .btn-primary").button('loading',true)
+    });
+    $('#comment-form').bind('ajax:success', function(e,response){
+      $('#text-input').prop('disabled',false)
+      $('#text-input').val('')
+      $('#comments-container').append(response)
+      $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)+1
+      $("#comment-form .btn-primary").button('reset')
+      $('#preview').hide();
+      $('#text-input').show();
+      $('#preview-btn').button('toggle');
+    })
+    $('#comment-form').bind('ajax:error', function(e,response){
+      $('#comment-form .control-group').addClass('error')
+      $('#comment-form .control-group .help-inline').remove()
+      $('#comment-form .control-group').append('<span class="help-inline">Error: there was a problem.</span>')
+    })
+  </script>
+
+  <div class="control-group">
+
+    <button type="submit" class="btn btn-primary">Publish</button>
+    <% if comment %>
+      <a class="btn btn-default preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();$('#c<%= comment.cid %>text-input').toggle();$('#c<%= comment.cid %>edit .preview-btn').button('toggle');$E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">Preview</a>
+      <a class="btn btn-default" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()">Cancel</a>
+    <% else %>
+      <a id="preview-btn" class="btn btn-default" onClick="$E.toggle_preview()">Preview</a>
+    <% end %>
+
+    <span style="color:#888;"> &nbsp; 
+      Logged in as <b><%= current_user.username %></b> | 
+      <a target="_blank" href="/wiki/authoring-help#Formatting">Formatting</a> | 
+      <a onClick="$('#who-is-notified').toggle()">Notifications</a>
+    </span>
+  </div>
+
+  <p id="who-is-notified" style="display:none;color:#888;">Author, commenters, and those who've "liked" this note will receive email notifications</p>
+
+</form>
