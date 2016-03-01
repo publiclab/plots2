@@ -1,4 +1,3 @@
-<%= javascript_include_tag "dragdrop" %>
 <% if current_user %>
 <script>
   $D = {
@@ -6,22 +5,19 @@
     type: 'note'
   }
 </script>
-<link rel="stylesheet" href="/jquery-file-upload/css/jquery.fileupload-ui.css">
-<script src="/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
-<script src="/jquery-file-upload/js/jquery.iframe-transport.js"></script>
-<script src="/jquery-file-upload/js/jquery.fileupload.js"></script>
-<script src="/assets/js/dragdrop.js?5"></script>
+<%= javascript_include_tag "dragdrop" %>
 
 <hr class="visible-sm" />
 <h3>Profile photo</h3>
 
 <div class="profile-dropzone" id="profile-dropzone" style="margin-bottom:20px;">
-  <img class="img-rounded" id="profile-photo" style="<% unless @user.photo_file_name %>display:none;<% end %>margin-bottom:10px;margin-top:5%;;opacity:0.2;filter: alpha(opacity=20);" src="<% if @user.photo %><%= @user.photo_path(:thumb) %><% end %>" />
+  <img class="img-rounded" id="profile-photo" style="<% unless @user.photo_file_name %>display:none;<% end %>width:100%;margin-bottom:10px;margin-top:5%;;opacity:0.2;filter: alpha(opacity=20);" src="<% if @user.photo %><%= @user.photo_path(:thumb) %><% end %>" />
   <p class="prompt"><span class="hidden-sm">Drag &amp; drop to add an image, or </span><span class="fileinput-button"><a><i class="fa fa-upload hidden-sm pull-left" style="padding-right:6px;"></i> choose an image</a><input tabindex="3" id="profile-fileinput" type="file" name="image[photo]" style="height:4em;"></span></p>
   <br class="hidden-sm" />
 </div>
+
 <div id="profile-progress" style="display:none;" class="progress progress-striped active">
-  <div class="bar" style="width: 0%;"></div>
+  <div class="progress-bar" style="width: 0%;"></div>
 </div>
 <p class="profile-uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
 
@@ -66,7 +62,7 @@
     },
     progressall: function (e, data) {
       var progress = parseInt(data.loaded / data.total * 100, 10);
-      $('#profile-progress .bar').css(
+      $('#profile-progress .progress-bar').css(
         'width',
         progress + '%'
       );
