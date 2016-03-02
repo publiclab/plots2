@@ -2,7 +2,9 @@ class MapController < ApplicationController
 
   def index
     @title = "Maps"
-    @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'map', :status => 1}, :page => params[:page])
+    @nodes = DrupalNode.paginate(:page => params[:page])
+                       .order("nid DESC")
+                       .where(type: 'map', status: 1)
 
     # I'm not sure if this is actually eager loading the drupal_tags... 
     @maps = DrupalNode.joins(:drupal_tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').uniq

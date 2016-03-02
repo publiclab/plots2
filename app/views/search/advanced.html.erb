@@ -1,33 +1,36 @@
 <%= render :partial => "sidebar/related" %>
-<div class="col-md-9">
-    <h3 style="margin-top:0;">Advanced search</h3>
-    <div class="navbar">
-      <div class="navbar-inner">
-        <form class="navbar-form" style="margin-left:10px;" action="/search/advanced">
-          <input name="id" type="text" class="input-sm search-query" data-provide="typeahead" data-source='["Balloon mapping","Thermal photography","Spectrometry"]' value="<%= params[:id] %>">
-          <button type="submit" class="btn btn-inverse"><i class="fa fa-search fa fa-white"></i></button>
 
-          <div class="pull-right" style="margin-top:5px;">           
-            <label class="checkbox pull-right" style="width:100px;margin-right:10px;">
-              <input type="checkbox" checked="<%= !params[:comments] %>" name="comments" onClick="$('.comment').toggle()" />
-              <i class="fa fa-comment"></i> Comments
-            </label>
-            <label class="checkbox pull-right" style="width:60px;margin-right:10px;">
-              <input type="checkbox" checked="<%= !(params[:maps].nil?) %>" name="maps" onClick="$('.map').toggle()" />
-              <i class="fa fa-map-marker"></i> Maps
-            </label>
-            <label class="checkbox pull-right" style="width:55px;margin-right:10px;">
-              <input type="checkbox" checked="true" name="wikis" onClick="$('.page').toggle()"/>
-              <i class="fa fa-book"></i> Wiki
-            </label>
-            <label class="checkbox pull-right" style="width:130px;margin-right:10px;">
-              <input type="checkbox" checked="true" name="notes" onClick="$('.note').toggle()"/>
-              <i class="fa fa-file"></i> Research notes
-            </label>
-          </div>
-        </form>
-      </div>
+<div class="col-md-9">
+
+  <h3 style="margin-top:0;">Advanced search</h3>
+
+  <form class="navbar-form" action="/search/advanced">
+
+    <div class="form-group form-inline">
+      <input name="id" type="text" class="search-query form-control" data-provide="typeahead" data-source='["Balloon mapping","Thermal photography","Spectrometry"]' value="<%= params[:id] %>">
+      <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
     </div>
+
+    <div class="pull-right" style="margin-top:5px;">           
+      <label class="checkbox pull-right" style="width:100px;margin-right:10px;">
+        <input type="checkbox" checked="<%= !params[:comments] %>" name="comments" onClick="$('.comment').toggle()" />
+        <i class="fa fa-comment"></i> Comments
+      </label>
+      <label class="checkbox pull-right" style="width:60px;margin-right:10px;">
+        <input type="checkbox" checked="<%= !(params[:maps].nil?) %>" name="maps" onClick="$('.map').toggle()" />
+        <i class="fa fa-map-marker"></i> Maps
+      </label>
+      <label class="checkbox pull-right" style="width:55px;margin-right:10px;">
+        <input type="checkbox" checked="true" name="wikis" onClick="$('.page').toggle()"/>
+        <i class="fa fa-book"></i> Wiki
+      </label>
+      <label class="checkbox pull-right" style="width:130px;margin-right:10px;">
+        <input type="checkbox" checked="true" name="notes" onClick="$('.note').toggle()"/>
+        <i class="fa fa-file"></i> Research notes
+      </label>
+    </div>
+
+  </form>
 
   <hr />
 
