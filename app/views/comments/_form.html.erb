@@ -77,9 +77,9 @@ Mention users by @username to notify them of this thread by email."><%= comment.
       $('#preview-btn').button('toggle');
     })
     $('#comment-form').bind('ajax:error', function(e,response){
-      $('#comment-form .control-group').addClass('error')
-      $('#comment-form .control-group .help-inline').remove()
-      $('#comment-form .control-group').append('<span class="help-inline">Error: there was a problem.</span>')
+      $('#comment-form .control-group').addClass('has-error')
+      $('#comment-form .control-group .help-block ').remove()
+      $('#comment-form .control-group').append('<span class="help-block ">Error: there was a problem.</span>')
     })
   </script>
 

@@ -23,7 +23,7 @@
 //= require flot/jquery.flot.js
 //= require flot/jquery.flot.crosshair.js
 //= require jsdiff.js
-//= require marked/marked.min.js
+//= require marked/lib/marked.js
 //= require ics/ics.deps.min.js
 //= require ics/ics.min.js
 //= require leaflet/dist/leaflet

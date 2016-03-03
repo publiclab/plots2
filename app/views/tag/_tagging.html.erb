@@ -29,25 +29,25 @@
             var tag_id = tag[1]
             $('#tags').append("<span id='tag_"+tag_id+"' class='label label-primary' style='font-size:13px;'><a href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tagdelete' data-remote='true' href='/tag/delete/<%= @node.id %>/"+tag_id+"'>x</a></span> ")
             $('#taginput').val("")
-            $('#tagform .control-group').removeClass('error')
-            $('#tagform .control-group .help-inline').remove()
+            $('#tagform .control-group').removeClass('has-error')
+            $('#tagform .control-group .help-block').remove()
             $('#tag_'+tag_id).bind('ajax:success', function(e,tagid){
               $('#tag_'+tagid).remove()
             });
           })
           if (response['errors'].length > 0) {
-            $('#tagform .control-group').addClass('error')
-            $('#tagform .control-group .help-inline').remove()
-            $('#tagform .control-group').append('<span class="help-inline">'+response['errors']+'</span>')
+            $('#tagform .control-group').addClass('has-error')
+            $('#tagform .control-group .help-block').remove()
+            $('#tagform .control-group').append('<span class="help-block">'+response['errors']+'</span>')
           }
           $('#taginput').prop('disabled',false)
         });
  
         $('#tagform').bind('ajax:error', function(e,response){
-          $('#tagform .control-group').addClass('error')
+          $('#tagform .control-group').addClass('has-error')
           $('#taginput').prop('disabled',false)
-          $('#tagform .control-group .help-inline').remove()
-          $('#tagform .control-group').append('<span class="help-inline">'+response.responseText+'</span>')
+          $('#tagform .control-group .help-block').remove()
+          $('#tagform .control-group').append('<span class="help-block">'+response.responseText+'</span>')
         });
  
         $('.tagdelete').bind('ajax:success', function(e,tagid){
