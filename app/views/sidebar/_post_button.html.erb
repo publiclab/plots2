@@ -17,8 +17,8 @@
 </div>
 
 <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
-<div class="btn-group visible-sm" style="margin-left:0;">
-  <a href="#" data-toggle="dropdown" class="btn dropdown-toggle"><i class="fa fa-wrench"></i> Tools <span class="caret"></span></a>
+<div class="btn-group" style="margin-left:0;">
+  <a href="#" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-wrench"></i> Tools <span class="caret"></span></a>
   <ul class="dropdown-menu">
     <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
       <li><a href="/spam"><i class="fa fa-ban-circle"></i> Moderate spam</a></li>

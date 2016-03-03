@@ -1,3 +1,16 @@
+# def index
+# def show
+# def widget
+# def blog
+# def author
+# def barnstar
+# def create
+# def delete
+# def suggested
+# def rss
+# def contributors
+# def contributors_index
+
 require 'test_helper'
 
 class TagControllerTest < ActionController::TestCase

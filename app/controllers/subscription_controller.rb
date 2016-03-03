@@ -19,7 +19,7 @@ class SubscriptionController < ApplicationController
 
   def stats
     @tags = {}
-    TagSelection.find(:all, :conditions => {:following => true}).each do |tag|
+    TagSelection.where(following: true).each do |tag|
       @tags[tag.name] = @tags[tag.name] || 0
       @tags[tag.name] += 1
     end
@@ -58,7 +58,7 @@ class SubscriptionController < ApplicationController
           end
         end
         # test for uniqueness, handle it as a validation error if you like
-        if TagSelection.find(:all, :conditions => {:following => true, :user_id => current_user.uid, :tid => tag.tid}).length > 0
+        if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length > 0
           flash[:error] = "You are already subscribed to '#{params[:name]}'"
           redirect_to "/subscriptions"
         else

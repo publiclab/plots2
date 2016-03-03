@@ -30,7 +30,9 @@ class ApplicationController < ActionController::Base
                            .order('node.nid DESC')
                            .paginate(:page => params[:page])
         @notes = @notes.where('node.nid != (?)', @node.nid) if @node
-        @wikis = DrupalNode.find(:all, :order => "changed DESC", :conditions => {:status => 1, :type => 'page'}, :limit => 10)
+        @wikis = DrupalNode.order("changed DESC")
+                           .where(status: 1, type: 'page')
+                           .limit(10)
       end
     end
     

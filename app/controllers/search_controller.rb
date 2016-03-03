@@ -19,10 +19,18 @@ class SearchController < ApplicationController
     all = !params[:notes] && !params[:wikis] && !params[:maps] && !params[:comments]
     @nodes = []
     unless params[:id].nil?
-      @nodes += DrupalNode.limit(25).order("nid DESC").where('type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%") if params[:notes] || all
-      @nodes += DrupalNode.limit(25).order("nid DESC").where('(type = "page" OR type = "place" OR type = "tool") AND status = 1 AND title LIKE ?', "%"+params[:id]+"%") if params[:wikis] || all
-      @nodes += DrupalNode.limit(25).order("nid DESC").where('type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%") if params[:maps] || all
-      @nodes += DrupalComment.limit(25).order("nid DESC").where('status = 1 AND comment LIKE ?', "%"+params[:id]+"%") if params[:comments] || all
+      @nodes += DrupalNode.limit(25)
+                          .order("nid DESC")
+                          .where('type = "note" AND status = 1 AND title LIKE ?', "%" + params[:id] + "%") if params[:notes] || all
+      @nodes += DrupalNode.limit(25)
+                          .order("nid DESC")
+                          .where('(type = "page" OR type = "place" OR type = "tool") AND status = 1 AND title LIKE ?', "%" + params[:id] + "%") if params[:wikis] || all
+      @nodes += DrupalNode.limit(25)
+                          .order("nid DESC")
+                          .where('type = "map" AND status = 1 AND title LIKE ?', "%" + params[:id] + "%") if params[:maps] || all
+      @nodes += DrupalComment.limit(25)
+                             .order("nid DESC")
+                             .where('status = 1 AND comment LIKE ?', "%" + params[:id] + "%") if params[:comments] || all
     end
     
     
@@ -32,19 +40,33 @@ class SearchController < ApplicationController
   # needs *dramatic* optimization
   def typeahead
     matches = []
-    DrupalNode.limit(5).order("nid DESC").where('type = "note" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%").select("title,type,nid,path").each do |match|
+    DrupalNode.limit(5)
+              .order("nid DESC")
+              .where('type = "note" AND status = 1 AND title LIKE ?', "%" + params[:id] + "%")
+              .select("title,type,nid,path").each do |match|
       matches << "<i data-url='"+match.path+"' class='fa fa-file'></i> "+match.title
     end
-    DrupalNode.limit(5).order("nid DESC").where('(type = "page" OR type = "place" OR type = "tool") AND status = 1 AND title LIKE ?', "%"+params[:id]+"%").select("title,type,nid,path").each do |match|
+    DrupalNode.limit(5)
+              .order("nid DESC")
+              .where('(type = "page" OR type = "place" OR type = "tool") AND status = 1 AND title LIKE ?', "%" + params[:id] + "%")
+              .select("title,type,nid,path").each do |match|
       matches << "<i data-url='"+match.path+"' class='fa fa-"+match.icon+"'></i> "+match.title
     end
-    DrupalNode.limit(5).order("nid DESC").where('type = "map" AND status = 1 AND title LIKE ?', "%"+params[:id]+"%").select("title,type,nid,path").each do |match|
+    DrupalNode.limit(5)
+              .order("nid DESC")
+              .where('type = "map" AND status = 1 AND title LIKE ?', "%" + params[:id] + "%")
+              .select("title,type,nid,path").each do |match|
       matches << "<i data-url='"+match.path+"' class='fa fa-"+match.icon+"'></i> "+match.title
     end
-    DrupalUsers.limit(5).order("nid DESC").where('name LIKE ? AND access != 0', "%"+params[:id]+"%").each do |match|
+    DrupalUsers.limit(5)
+               .order("nid DESC")
+               .where('name LIKE ? AND access != 0', "%" + params[:id] + "%").each do |match|
       matches << "<i data-url='/profile/"+match.name+"' class='fa fa-user'></i> "+match.name
     end
-    DrupalTag.includes(:drupal_node).where('node.status = 1').limit(5).where('name LIKE ?', "%"+params[:id]+"%").each do |match|
+    DrupalTag.includes(:drupal_node)
+             .where('node.status = 1')
+             .limit(5)
+             .where('name LIKE ?', "%" + params[:id] + "%").each do |match|
       matches << "<i data-url='/tag/"+match.name+"' class='fa fa-tag'></i> "+match.name
     end
     render :json => matches

@@ -14,3 +14,8 @@ jeff:
   password_salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
+
+spammer:
+  username: spammer
+  email: spam@spam.com
+  id: 3

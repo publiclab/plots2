@@ -1,3 +1,10 @@
+# def index
+# def embed
+# def new
+# def edit
+# def create
+# def update
+
 require 'test_helper'
 
 class FeaturesControllerTest < ActionController::TestCase

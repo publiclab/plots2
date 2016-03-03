@@ -7,3 +7,8 @@ two:
   nid: 2
   uid: 2
   title: About
+
+three: 
+  nid: 3
+  uid: 3
+  title: "Hot stuff I'm selling"

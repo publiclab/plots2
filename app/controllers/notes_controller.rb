@@ -10,13 +10,21 @@ class NotesController < ApplicationController
 
   def tools
     @title = "Tools"
-    @notes = DrupalNode.where(:status => 1, :type => ['page','tool']).includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?','tool').page(params[:page]).order("node_revisions.timestamp DESC")
+    @notes = DrupalNode.where(status: 1, type: ['page','tool'])
+                       .includes(:drupal_node_revision, :drupal_tag)
+                       .where('term_data.name = ?','tool')
+                       .page(params[:page])
+                       .order("node_revisions.timestamp DESC")
     render :template => "notes/tools_places"
   end
 
   def places
     @title = "Places"
-    @notes = DrupalNode.where(:status => 1, :type => ['page','place']).includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?','chapter').page(params[:page]).order("node_revisions.timestamp DESC")
+    @notes = DrupalNode.where(status: 1, type: ['page','place'])
+                       .includes(:drupal_node_revision, :drupal_tag)
+                       .where('term_data.name = ?','chapter')
+                       .page(params[:page])
+                       .order("node_revisions.timestamp DESC")
     render :template => "notes/tools_places"
   end
 
@@ -33,8 +41,8 @@ class NotesController < ApplicationController
 
   def show
     if params[:author] && params[:date]
-      @node = DrupalNode.where(path: '/notes/'+params[:author]+'/'+params[:date]+'/'+params[:id]).first
-      @node = DrupalNode.where(path: '/report/'+ params[:id]).first if @node.nil?
+      @node = DrupalNode.where(path: "/notes/#{params[:author]}/#{params[:date]}/#{params[:id]}").first
+      @node = @node || DrupalNode.where(path: "/report/#{params[:id]}").first
     else
       @node = DrupalNode.find params[:id]
     end
@@ -44,10 +52,8 @@ class NotesController < ApplicationController
     if @node.author.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
       flash[:error] = "The author of that note has been banned."
       redirect_to "/"
-    end 
-
-    # if it's spam or a draft
-    if @node.status != 1 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
+    elsif @node.status != 1 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
+      # if it's spam or a draft
       # no notification; don't let people easily fish for existing draft titles; we should try to 404 it
       redirect_to "/"
     end
@@ -172,7 +178,9 @@ class NotesController < ApplicationController
   def author
     @user = DrupalUsers.find_by_name params[:id]
     @title = @user.name
-    @notes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => @user.uid}, :page => params[:page])
+    @notes = DrupalNode.page(params[:page])
+                       .order("nid DESC")
+                       .where(type: 'note', status: 1, uid: @user.uid)
     render :template => 'notes/index'
   end
 
@@ -189,8 +197,12 @@ class NotesController < ApplicationController
   # notes with high # of likes
   def liked
     @title = "Highly liked research notes"
-    @wikis = DrupalNode.find(:all, :limit => 10, :conditions => {:type => 'page', :status => 1}, :order => "nid DESC")
-    @notes = DrupalNode.find(:all, :limit => 20, :order => "cached_likes DESC", :conditions => {:type => 'note', :status => 1})
+    @wikis = DrupalNode.limit(10)
+                       .where(type: 'page', status: 1)
+                       .order("nid DESC")
+    @notes = DrupalNode.limit(20)
+                       .order("cached_likes DESC")
+                       .where(type: 'note', status: 1)
     @unpaginated = true
     render :template => 'notes/index'
   end
@@ -198,14 +210,21 @@ class NotesController < ApplicationController
   # notes with high # of views
   def popular
     @title = "Popular research notes"
-    @wikis = DrupalNode.find(:all, :limit => 10, :conditions => {:type => 'page', :status => 1}, :order => "nid DESC")
-    @notes = DrupalNode.find(:all, :limit => 20, :order => "node_counter.totalcount DESC", :conditions => {:type => 'note', :status => 1}, :include => :drupal_node_counter)
+    @wikis = DrupalNode.limit(10)
+                       .where(type: 'page', status: 1)
+                       .order("nid DESC")
+    @notes = DrupalNode.limit(20)
+                       .order("node_counter.totalcount DESC")
+                       .where(type: 'note', status: 1)
+                       .includes(:drupal_node_counter)
     @unpaginated = true
     render :template => 'notes/index'
   end
 
   def rss
-    @notes = DrupalNode.find(:all, :limit => 20, :order => "nid DESC", :conditions => ["type = ? AND status = 1 AND created < ?",'note',(Time.now.to_i-30.minutes.to_i)])
+    @notes = DrupalNode.limit(20)
+                       .order("nid DESC")
+                       .where("type = ? AND status = 1 AND created < ?", 'note', (Time.now.to_i - 30.minutes.to_i))
     respond_to do |format|
       format.rss {
         render :layout => false
@@ -215,7 +234,9 @@ class NotesController < ApplicationController
   end
 
   def liked_rss
-    @notes = DrupalNode.find(:all, :limit => 20, :order => "created DESC", :conditions => ['type = ? AND status = 1 AND cached_likes > 0', 'note'])
+    @notes = DrupalNode.limit(20)
+                       .order("created DESC")
+                       .where('type = ? AND status = 1 AND cached_likes > 0', 'note')
     respond_to do |format|
       format.rss {
         render :layout => false, :template => "notes/rss"

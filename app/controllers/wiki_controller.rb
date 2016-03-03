@@ -85,7 +85,10 @@ class WikiController < ApplicationController
     if params[:id]
       flash.now[:notice] = "This page does not exist yet, but you can create it now:" 
       title = params[:id].gsub('-',' ')
-      @related = DrupalNode.find(:all, :limit => 10, :order => "node.nid DESC", :conditions => ['type = "page" AND status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', "%"+title+"%","%"+title+"%"], :include => :drupal_node_revision)
+      @related = DrupalNode.limit(10)
+                           .order("node.nid DESC")
+                           .where('type = "page" AND status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', "%" + title + "%","%" + title + "%")
+                           .includes(:drupal_node_revision)
       tag = DrupalTag.find_by_name(params[:id]) # add page name as a tag, too
       @tags << tag if tag
       @related += DrupalTag.find_nodes_by_type(@tags.collect(&:name),'page',10)
@@ -227,21 +230,28 @@ class WikiController < ApplicationController
   def index
     @title = "Wiki"
 
-    @wikis = DrupalNode.includes(:drupal_node_revision,:drupal_node_counter).find(:all, :order => "node_revisions.timestamp DESC", :conditions => ["status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')"]).paginate(:page => params[:page])
-
+    @wikis = DrupalNode.includes(:drupal_node_revision,:drupal_node_counter)
+                       .order("node_revisions.timestamp DESC")
+                       .where("status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
+                       .page(params[:page])
 
     @paginated = true
   end
 
   def popular
     @title = "Popular wiki pages"
-    @wikis = DrupalNode.find(:all, :limit => 40,:order => "node_counter.totalcount DESC", :conditions => ["status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')"], :include => :drupal_node_counter)
+    @wikis = DrupalNode.limit(40)
+                       .order("node_counter.totalcount DESC")
+                       .where("status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
+                       .includes(:drupal_node_counter)
     render :template => "wiki/index"
   end
 
   def liked
     @title = "Well-liked wiki pages"
-    @wikis = DrupalNode.find(:all, :limit => 40,:order => "node.cached_likes DESC", :conditions => ["status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes > 0"])
+    @wikis = DrupalNode.limit(40)
+                       .order("node.cached_likes DESC")
+                       .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes > 0")
     render :template => "wiki/index"
   end
 
