@@ -12,7 +12,7 @@ gem 'rails', '3.2.20'
 #  gem 'sqlite3'
 #end
 group :mysql do
-  gem 'mysql2'
+  gem 'mysql2', '~> 0.3.10'
 end
 # TODO support postgresql
 #group :postgresql do
@@ -41,7 +41,7 @@ gem 'execjs'
 gem 'therubyracer'
 #gem 'secondbase', '0.5.0'
 gem 'rdiscount', '1.6.8'
-gem 'will_paginate'
+gem 'will_paginate', '3.0.6'
 gem 'will_paginate-bootstrap', '0.2.5'
 gem 'georuby', '2.0'
 gem 'geokit-rails'
