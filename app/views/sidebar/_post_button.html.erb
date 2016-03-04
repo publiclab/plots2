@@ -17,7 +17,7 @@
 </div>
 
 <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
-<div class="btn-group" style="margin-left:0;">
+<div class="btn-group" style="margin-left:0;margin-top:6px;">
   <a href="#" data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-wrench"></i> Tools <span class="caret"></span></a>
   <ul class="dropdown-menu">
     <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>

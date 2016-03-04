@@ -115,14 +115,16 @@ body { padding-top: 70px; }
   font-size: 22px;
 }
 
+#header #brand-compact { padding-top: 22px; }
+
 @media (max-width: 340px) {
   #brand { display:none; }
-  #brand-compact { display:inline; }
+  #header .brand-compact { display:inline; }
 }
 
 @media (min-width: 340px) {
-  #brand-compact { display:none; }
   #brand { display:inline; }
+  #header .brand-compact { display:none; }
 }
 
 .navbar-inverse .navbar-nav > li > a {

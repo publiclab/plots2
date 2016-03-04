@@ -43,10 +43,10 @@
       by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> 
       <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %> <a href="/profile/<%= coauthor.username %>"><%= coauthor.username%></a><%= ',' if i < @node.coauthors.length-1 %><% end %><% end %> |
 
-      <span class="hidden-sm">
+      <span class="hidden-xs hidden-sm">
         <%= @node.created_at.to_s(:long) %> 
       </span>
-      <span class="hidden-sm hidden-print">
+      <span class="hidden-xs hidden-sm hidden-print">
         | <%= number_with_delimiter(@node.totalcount) %> views 
         <% if @node.comments %>| <i class="fa fa-comment"></i> <a href="#comments"><%= @node.comments.length %> comments</a><% end %>
         | <a href="/n/<%= @node.id %>">shortlink</a>

@@ -20,7 +20,8 @@
     <!-- ||| menu, displayed for mobile: -->
     <div class="navbar-header">
       <a class="navbar-brand" id="brand" href="/<%= "home" if current_user %>">Public Lab</a>
-      <a class="navbar-brand" id="brand-compact" href="/<%= "home" if current_user %>">PL</a>
+      <a class="navbar-brand brand-compact" id="brand-compact" href="/<%= "home" if current_user %>">PL</a>
+      <% if current_user %><a class="navbar-brand brand-compact" href="/"><i class="fa fa-home fa fa-white"></i></a><% end %>
  
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse">
         <span class="fa fa-white fa-bars"></span>

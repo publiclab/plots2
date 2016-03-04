@@ -4,7 +4,7 @@
     <% notes.each_with_index do |node,i| %>
       <div class="col-md-3 clearfix note" style="overflow:hidden;">
         <% if node.main_image %>
-          <a class="img-thumbnail" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+          <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
         <% end %>
 
         <% if node.type == 'note' %>
@@ -17,19 +17,19 @@
           <% if node.type == 'note' %>
             by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
             <%= time_ago_in_words(node.created) %> ago
-            | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-alt"></i> <%= node.comment_count %></a>
+            | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
           <% else %>
             last edit by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a> 
             <%= time_ago_in_words(Time.new(node.latest.timestamp)) %> ago
           <% end %>
-          | <i class="hidden-sm fa fa-eye-open"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-sm">views</span>
-          | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-empty"></i> <%= node.likes %>
+          | <i class="hidden-xs hidden-sm fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-xs hidden-sm">views</span>
+          | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
         </small></p>
 
         <% if @compact.nil? %>
         <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
         <p>
-          <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban-circle"></i> Spam</a><% end %>
+          <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> Spam</a><% end %>
           <a href="<%= node.path %>">Read more &raquo;</a>
         </p>
         <% end %>
@@ -38,10 +38,10 @@
         <% end %>
         <hr style="display:none;" class="bottom" />
       </div>
-      <hr class="visible-sm" />
+      <hr class="visible-xs visible-sm" />
     <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
     </div>
-    <hr class="visible-sm grid" />
+    <hr class="visible-xs visible-sm grid" />
     <div class="row">
     <% end %>
     <% end %>
