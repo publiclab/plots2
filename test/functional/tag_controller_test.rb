@@ -27,6 +27,13 @@ class TagControllerTest < ActionController::TestCase
     assert_redirected_to(node(:one).path)
   end
 
+  def test_add_invalid_tag
+    UserSession.new(@user)
+    post :create, :name => 'my invalid tag $_', :nid => node(:one).nid, :uid => @user.id
+    assert_redirected_to(node(:one).path)
+    assert_equal "Error: tags can only include letters, numbers, and dashes", assigns['output']['errors'][0]
+  end
+
   # create returns JSON list of errors in response[:errors]
   def test_add_duplicate_tag
     UserSession.new(@user)
