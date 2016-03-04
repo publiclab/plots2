@@ -1,89 +1,126 @@
-<div class="row-fluid">
 <%= form_for @user, :url => {:controller => 'users', :action => @action}, :html => {:class => "form-horizontal"} do |f| %>
 
-  <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
+  <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
-  <div class="span7">
+  <div class="col-lg-8 col-md-10 col-sm-10">
     <% if params[:controller] == "users" && @action == "create" %>
-    <div class="control-group">
-      <label class="control-label" for="user_username"><b>Username</b></label>
-      <div class="controls">
-        <%= f.text_field :username, {:placeholder => "username", :tabindex => 2} %>
+
+      <div class="form-group">
+     
+        <label for="username">Username</label>
+        <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username' } %>
+     
       </div>
-    </div>
+     
     <% end %>
- 
-    <div class="control-group">
-      <label class="control-label" for="user_email"><b>Email</b></label>
-      <div class="controls">
-        <%= f.text_field :email, {:placeholder => "you@email.com", :tabindex => 3} %>
-      </div>
+
+    <div class="form-group">
+   
+      <label for="email">Email</label>
+      <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
+   
     </div>
- 
-    <div class="control-group">
+
+
+    <div class="form-group">
       <% if @user.crypted_password.nil? %>
-        <label class="control-label" for="user_password"><b>Create a password</b></label>
+        <label for="password">Create a password</label>
       <% else %>
-        <label class="control-label" for="user_password"><b>Change your password</b></label>
+        <label for="password">Change your password</label>
       <% end %>
-      <div class="controls">
-      <%= f.password_field :password, {:placeholder => "password", :tabindex => 4} %>
-      <%= f.password_field :password_confirmation, {:placeholder => "confirm your password", :tabindex => 5} %>
-      </div>
+      <%= f.password_field :password, { placeholder: "password", 
+                                        tabindex: 4,
+                                        class: 'form-control',
+                                        id: 'password' }
+      %>
+    </div>
+
+    <div class="form-group">
+      <label for="password_confirmation">Confirm your password</label>
+      <%= f.password_field :password_confirmation, { placeholder: "confirm your password",
+                                                     tabindex: 5,
+                                                     class: 'form-control',
+                                                     id: 'password-confirmation' }
+      %>
+    </div>
+
+
+    <div class="form-group">
+      <label for="drupal_user_bio">Bio</label>
+      <%= text_area :drupal_user, :bio, { placeholder: "Add a short bio to appear on your profile page", 
+                                          rows: 8, 
+                                          class: 'form-control',
+                                          tabindex: 6 } 
+      %>
     </div>
  
-    <div class="control-group">
-      <div class="controls">
-        <%= text_area :drupal_user, :bio, {:placeholder => "Add a short bio to appear on your profile page", :class => "span6", :rows => 8, :tabindex => 6} %>
-      </div>
-    </div>
  
     <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
-    <%= fields_for @spamaway do |spam| %>
-      <div class="control-group">
-        <label class="control-label" for="spamaway_follow_instructions"><b>Are you human? (sorry: spam filtering!)</b></label>
-        <% vars = [:statement1, :statement2, :statement3, :statement4] %>
-        <% turingtest = Spamaway.get_pairs vars.length %>
-        <% turingtest.each_index do |i| %>
-        <div class="controls">
-          <p><fieldset>
-          <% [0,1].each do |s| %><% statement = turingtest[i][s] %>
-            <label class="radio-inline">
-            <%= spam.radio_button vars[i], statement %> <%= statement %>
-            </label>
+      <%= fields_for @spamaway do |spam| %>
+
+        <div class="form-group spamaway">
+
+          <label for="spamaway_follow_instructions">Are you human? <span style="font-weight:normal;">(sorry: spam filtering!)</span></label>
+
+          <% vars = [:statement1, :statement2, :statement3, :statement4] %>
+          <% turingtest = Spamaway.get_pairs vars.length %>
+          <% turingtest.each_index do |i| %>
+
+              <div class="btn-group btn-group-justified" role="group">
+                <% [0,1].each_with_index do |s, j| %><% statement = turingtest[i][s] %>
+                  <div class="btn-group" role="group">
+                    <button type="button" class="col-xs-6 btn btn-default" style="text-align:left;" id="spamaway-<%= i.to_s + j.to_s %>">
+                      <%= spam.radio_button vars[i], statement %> <%= statement %>
+                    </button>
+                  </div>
+                <% end %>
+              </div>
+              <br />
+
           <% end %>
-          </fieldset></p>
+  
         </div>
-        <% end %>
- 
-        <br />
- 
-        <label class="control-label" for="spamaway_follow_instructions"><b>Don't write anything here if you're a real person.</b></label>
-        <div class="controls">
-          <%= spam.text_area :follow_instructions, {:class => "span6", :rows => 8, :tabindex => 7} %>
+
+        <div class="form-group">
+
+          <%= spam.text_area :follow_instructions, { class: "form-control col-md-6",
+                                                     rows: 8,
+                                                     tabindex: 7,
+                                                     placeholder: "Don't write anything here if you're a real person." }
+          %>
+  
         </div>
- 
-      </div>
+
+      <% end %>
     <% end %>
-    <% end %>
+
+    <script>
+      (function() {
+        $('.spamaway button').click(function(e) { 
+          $(this).find('input').prop('checked', true);
+        })
+      })();
+    </script>
  
     <% if params[:controller] == "users" && params[:action] == "new" %>
       <!-- email lists here -->
     <% end %>
  
-    <div class="controls">
-    <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
-      <button class="btn-large btn-primary" type="submit" tabindex="7">Sign up</button>
-      <a class="btn-large btn" href="/login">Log in</a>
-    <% elsif params[:controller] == "users" && params[:action] == "edit" %>
-      <button class="btn-large btn-primary" type="submit" tabindex="7">Save</button>
-    <% end %>
+    <div class="form-group form-inline">
+
+      <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
+        <button class="btn btn-lg btn-primary" type="submit" tabindex="7">Sign up</button>
+        <a class="btn btn-lg btn-default" href="/login">Log in</a>
+      <% elsif params[:controller] == "users" && params[:action] == "edit" %>
+        <button class="btn btn-lg btn-primary" type="submit" tabindex="7">Save</button>
+      <% end %>
+
     </div>
+
   </div>
 
-  <div class="span2">
+  <div class="col-md-2">
     <%= render :partial => 'users/photo' %>
   </div>
 
 <% end %>
-</div>

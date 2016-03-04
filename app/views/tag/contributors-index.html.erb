@@ -1,5 +1,5 @@
 <%= render :partial => "sidebar/featured" %>
-<div class="span9">
+<div class="col-md-9">
   <% @tags.each do |tag| %>
 
     <div id="note-graph-<%= tag.name %>" style="height:100px;"></div>
@@ -42,11 +42,11 @@
     <% if current_user %>
     <!-- AJAXify -->
     <div class="btn-group">
-      <a class="btn btn-small" href="/feed/tag/<%= tag.name %>.rss"><i class="icon icon-rss"></i> RSS</a>
+      <a class="btn btn-sm" href="/feed/tag/<%= tag.name %>.rss"><i class="fa fa-rss"></i> RSS</a>
       <% if current_user.following(tag.name) %>
-      <a rel="tooltip" title="Click to unfollow" class="btn btn-small active" href="/unsubscribe/tag/<%= tag.name %>"><i class="icon icon-eye-open"></i> Following <b><%= tag.name %></b></a>
+      <a rel="tooltip" title="Click to unfollow" class="btn btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-eye-open"></i> Following <b><%= tag.name %></b></a>
       <% else %>
-      <a class="btn btn-small" href="/subscribe/tag/<%= tag.name %>"><i class="icon icon-eye-open"></i> Follow <b><%= tag.name %></b></a>
+      <a class="btn btn-sm" href="/subscribe/tag/<%= tag.name %>"><i class="fa fa-eye-open"></i> Follow <b><%= tag.name %></b></a>
       <% end %>
     </div>
     <!-- AJAXify -->

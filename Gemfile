@@ -12,7 +12,7 @@ gem 'rails', '3.2.20'
 #  gem 'sqlite3'
 #end
 group :mysql do
-  gem 'mysql2', '~> 0.3.10'
+  gem 'mysql2', '~> 0.3.20' # 0.4.3+ causes a version mismatch, apparently, and demands 'activerecord-mysql2-adapter', below
 end
 # TODO support postgresql
 #group :postgresql do
@@ -41,8 +41,8 @@ gem 'execjs'
 gem 'therubyracer'
 #gem 'secondbase', '0.5.0'
 gem 'rdiscount', '1.6.8'
-gem 'will_paginate', '3.0.6'
-gem 'will_paginate-bootstrap', '0.2.5'
+gem 'will_paginate', '>= 3.0.6'
+gem 'will_paginate-bootstrap', '>= 1.0.1'
 gem 'georuby', '2.0'
 gem 'geokit-rails'
 gem 'spatial_adapter', :git => 'https://github.com/descentintomael/spatial_adapter.git'

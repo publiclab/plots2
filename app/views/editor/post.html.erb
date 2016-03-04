@@ -1,4 +1,4 @@
-<div class="span3">
+<div class="col-sm-3">
 
   <script>
     $D = {
@@ -12,8 +12,8 @@
   <%= javascript_include_tag "dragdrop" %>
 
   <% if params[:template] == "question" %>
-    <h4 class="visible-phone">Ask a question</h4>
-    <div id="research-note-detail" class="hidden-phone">
+    <h4 class="visible-sm">Ask a question</h4>
+    <div id="research-note-detail" class="hidden-sm">
       <h3>Use this form to ask about "<%= params[:tags].split(':').last %>"</h3>
       <% if DrupalTag.follower_count(params[:tags]) > 0 %><p><%= DrupalTag.follower_count(params[:tags]) %> people have signed up to answer questions on this topic.</p><% end %>
       <ul>
@@ -22,10 +22,10 @@
     </div>
 
   <% else %>
-    <h3 class="hidden-phone"><i class="icon-file"></i> What's a <br />research note?</h3>
-    <h4 class="visible-phone"><i class="icon-file"></i> What's a research note? <a onClick="$('#research-note-detail').toggleClass('hidden-phone')">Learn more &raquo;</a></h4>
+    <h3 class="visible-md"><i class="fa fa-file"></i> What's a <br />research note?</h3>
+    <h4 class="hidden-md"><i class="fa fa-file"></i> What's a research note? <a onClick="$('#research-note-detail').toggleClass('visible-sm')">Learn more &raquo;</a><br /></h4>
     
-    <div id="research-note-detail" class="hidden-phone">
+    <div id="research-note-detail" class="hidden-sm hidden-xs">
       <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work.</p>
       <p><b>Research notes can include:</b></p>
       <ul>
@@ -37,7 +37,7 @@
         <li>etc!</li>
       </ul>
       <hr />
-      <p><b><a href="//www.youtube.com/watch?v=rsy__zTTh8c" target="_blank"><i class="icon icon-film"></i> Watch a 30 second video on posting research notes &raquo;</a></b></p>
+      <p><b><a href="//www.youtube.com/watch?v=rsy__zTTh8c" target="_blank"><i class="fa fa-film"></i> Watch a 30 second video on posting research notes &raquo;</a></b></p>
       <hr />
       <div class="sidebar-nav">
         <ul class="nav nav-list">
@@ -51,7 +51,7 @@
   <% end %>
 </div>
 
-<div class="span9">
+<div class="col-sm-9">
   <% 
   if @node && params[:action] != "create"
     url = { :controller => "notes", :action => "update", :id => params[:id] }
@@ -60,62 +60,68 @@
   end 
   %>
   <%= form_for @node, :as => :drupal_node, :url => url do |f| %>
-    <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
+    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
   <% end %>
 
   <%= form_for @revision, :as => :drupal_node_revision, :url => url, :html => {:class => "form well"} do |f| %>
 
-    <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
+    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
 
     <%= render :partial => "editor/main_image" %>
 
-    <% if params[:template] == "question" %>
-      <h3 style="margin-top:0;">Ask a question of the community</h3>
-    <% else %>
-      <h3 style="margin-top:0;">Share your work</h3>
-    <% end %>
+    <div class="col-md-9 col-md-pull-3">
 
-    <input id="title" tabindex="1" name="title" type="text" class="span9" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %><%= "Question: " if params[:template] == "question" %><%= 'Public Lab Community Newsletter '+ DateTime.now.to_date.to_s(:long) if params[:newsletter] %>"><br />
-    <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
-    <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
-    <input id="node_images" type="hidden" name="node_images" value="" />
-
-    <%= render :partial => 'editor/editor' %>
-
-    <div class="control-group">
-    <div class="input-prepend">
-      <span class="add-on"><i class="icon-tags"></i></span>
-      <input name="remote" type="hidden" value="true" />
+      <% if params[:template] == "question" %>
+        <h3>Ask a question of the community</h3>
+      <% else %>
+        <h3>Share your work</h3>
+      <% end %>
   
-      <input autocomplete="off" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
-    </div>
-    </div>
-
-    <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
-
-    <div class="hidden-phone">
-      <a id="publish" tabindex="5" class="publish btn btn-primary btn-large">Publish</a>
-      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
-    </div>
-    <div class="visible-phone btn-group">
-      <a id="publish" class="publish btn btn-primary btn-large">Publish</a>
-      <a data-previewing-text="Edit" class="btn btn-large preview-btn" onClick="$E.toggle_preview()">Preview</a>
-    </div>
-
-    <p style="margin-top:4px;"><label class="checkbox inline">
-      <input tabindex="7" onChange="$('#event-info').toggle()" id="event-input" type="checkbox" name="event">
-      This is an event
-    </label></p>
-
-    <div id="event-info" style="display:none;">
-      <p><i>An RSVP feature will be added to your note. Please choose a date:</i></p>
-      <span style="padding-right:0;" class="datepicker input-append date" data-date="<%= DateTime.now.strftime("%m-%d-%Y") %>" data-date-format="mm-dd-yyyy">
-        <input id="datepicker-input" onFocus="$('.datepicker').datepicker('show')" class="span8" size="16" type="text" name="date" value="<%= DateTime.now.strftime("%m-%d-%Y") %>" />
-        <span class="add-on"><i class="icon-calendar"></i></span>
+      <div class="form-group">
+        <input id="title" tabindex="1" name="title" class="form-control" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %><%= "Question: " if params[:template] == "question" %><%= 'Public Lab Community Newsletter '+ DateTime.now.to_date.to_s(:long) if params[:newsletter] %>"/>
+      </div>
+ 
+      <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
+      <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
+      <input id="node_images" type="hidden" name="node_images" value="" />
+ 
+      <%= render :partial => 'editor/editor' %>
+ 
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+    
+        <input autocomplete="off" class="form-control" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
+      </div>
+      <input name="remote" type="hidden" value="true" />
+ 
+      <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
+      <br />
+ 
+      <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
+      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
+ 
+      <span style="margin-top:12px;margin-left:8px;" class="checkbox">
+        <label for="event-input">
+          <input tabindex="7" onChange="$('#event-info').toggle()" id="event-input" type="checkbox" name="event">
+          This is an event
+        </label>
       </span>
-    </div>
+ 
+      <div id="event-info" style="display:none;clear:both;padding-top:4px;">
+        <p><i>An RSVP feature will be added to your note. Please choose a date:</i></p>
+        <span style="padding-right:0;" class="input-group date">
+          <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%m-%d-%Y") %>" data-date-format="mm-dd-yyyy" class="col-md-8 form-control" size="16" type="text" name="date" value="<%= DateTime.now.strftime("%m-%d-%Y") %>" />
+          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        </span>
+      </div>
 
-    <p>By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+    </div>
+ 
+    <div style="clear:both;">
+      <br />
+      <p class="col-md-12">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+      <br />
+    </div>
 
   <% end %>
 </div>

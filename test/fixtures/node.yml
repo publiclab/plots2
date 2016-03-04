@@ -1,6 +1,6 @@
 one:
   title: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON"
-  path: "canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon"
+  path: "/notes/jeff/03-03-2013/canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon"
   created: 1362353067
   changed: 1362354920
   status: 1
@@ -17,3 +17,13 @@ two:
   type: "page"
   uid: 1
   nid: 2
+
+spam:
+  title: "Hot stuff I'm selling"
+  path: "/notes/spammer/03-03-2013/hot-stuff-i-m-selling"
+  created: 1362353067
+  changed: 1362354920
+  status: 0
+  type: "note"
+  uid: 3
+  nid: 3

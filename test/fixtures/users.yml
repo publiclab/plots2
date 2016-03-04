@@ -1,7 +1,14 @@
 bob:
   uid: 1
   name: Bob
+  status: 1
 
 jeff:
   uid: 2
   name: jeff
+  status: 1
+
+spammer:
+  uid: 3
+  name: spammer
+  status: 0 #spam

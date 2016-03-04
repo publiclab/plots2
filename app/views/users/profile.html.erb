@@ -1,36 +1,36 @@
-<div class="span3">
+<div class="col-md-3">
  <% if @user.user && @user.user.photo_file_name %><img class="img-rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @user.user.photo_path(:thumb) %>" /><% end %>
 
-  <!--<a href="#" class="btn btn-block"><i class="icon-envelope"></i> Send message</a>-->
-  <a href="#" class="btn btn-block disabled"><i class="icon-eye-open"></i> Follow <%= @user.name %></a>
+  <!--<a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope"></i> Send message</a>-->
+  <a href="#" class="btn btn-default btn-block disabled"><i class="fa fa-eye-open"></i> Follow <%= @user.name %></a>
   <% if @user.user.nil? && current_user && current_user.role == "admin" %>
-    <a href="/admin/migrate/<%= @user.uid %>" class="btn btn-block"><i class="icon-bolt"></i> Migrate to new site</a>
+    <a href="/admin/migrate/<%= @user.uid %>" class="btn btn-block"><i class="fa fa-bolt"></i> Migrate to new site</a>
   <% end %>
   <% if @user.user && current_user && current_user.role == "admin" && @user.user.role != "admin" %>
-    <a href="/admin/promote/admin/<%= @user.user.id %>" class="btn btn-block"><i class="icon-certificate"></i> Make admin</a>
+    <a href="/admin/promote/admin/<%= @user.user.id %>" class="btn btn-default btn-block"><i class="fa fa-certificate"></i> Make admin</a>
   <% end %>
   <% if @user.user && current_user && current_user.role == "admin" && @user.role == "moderator" %>
-    <a href="/admin/demote/basic/<%= @user.user.id %>" class="btn btn-block"><i class="icon-ban-circle"></i> Revert to basic user</a>
+    <a href="/admin/demote/basic/<%= @user.user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban-circle"></i> Revert to basic user</a>
   <% end %>
   <% if @user.user && current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.role == "basic" %>
-    <a href="/admin/promote/moderator/<%= @user.user.id %>" class="btn btn-block"><i class="icon-certificate"></i> Make moderator</a>
+    <a href="/admin/promote/moderator/<%= @user.user.id %>" class="btn btn-default btn-block"><i class="fa fa-certificate"></i> Make moderator</a>
   <% end %>
 
   <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.status == 0 %>
-    <a href="/unban/<%= @user.id %>" class="btn btn-block"><i class="icon-thumbs-up"></i> Unban user</a>
+    <a href="/unban/<%= @user.id %>" class="btn btn-default btn-block"><i class="fa fa-thumbs-up"></i> Unban user</a>
   <% elsif current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.status == 1 %>
-    <a data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= @user.id %>" class="btn btn-block"><i class="icon-ban-circle"></i> Ban user</a>
+    <a data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= @user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban-circle"></i> Ban user</a>
   <% end %>
 
   <% if @user.user && !@user.user.reset_key.nil? && current_user && current_user.role == "admin" %>
-    <a href="/reset/key/<%= @user.user.reset_key %>" class="btn btn-block"><i class="icon-info-sign"></i> Reset Key: <%= @user.user.reset_key %></a>
+    <a href="/reset/key/<%= @user.user.reset_key %>" class="btn btn-default btn-block"><i class="fa fa-info-sign"></i> Reset Key: <%= @user.user.reset_key %></a>
   <% end %>
   <hr />
 
   <p>
-    <a class="btn btn-small btn-block" href="/feed/<%= @user.name %>.rss"><i class="icon icon-rss" style="color:orange;"></i> RSS feed for <%= @user.name %></a> 
+    <a class="btn btn-default btn-sm btn-block" href="/feed/<%= @user.name %>.rss"><i class="fa fa-rss" style="color:orange;"></i> RSS feed for <%= @user.name %></a> 
     <% if current_user && current_user.uid == @user.uid %>
-      <a href="/profile/<%= @user.name %>/edit" class="btn btn-small btn-block"><i class="icon-pencil"></i> Edit profile</a>
+      <a href="/profile/<%= @user.name %>/edit" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> Edit profile</a>
     <% end %>
   </p>
 
@@ -41,7 +41,7 @@
   <ul class="nav bullet">
     <% @wikis.each do |wiki| %>
       <% unless (!@node.nil? && wiki.nid == @node.nid) %>
-        <li><a href="<%= wiki.path %>"><i class="icon icon-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+        <li><a href="<%= wiki.path %>"><i class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
       <% end %>
     <% end %>
     <% if params[:controller] == "search" %>
@@ -53,17 +53,17 @@
 
 </div>
 
-<div class="span9">
+<div class="col-md-9">
 
-  <div id="note-graph" style="height:100px;display:none;"></div>
+  <div id="note-graph" style="height:100px;display:none;margin-bottom:16px;"></div>
 
   <h3 style="margin-top:0;"><%= @user.name %> 
     <small> 
       <%= @user.node_count %> <a href="/notes/author/<%= @user.name %>">research notes</a> and wiki edits
       <% if current_user && current_user.role == "admin" %> | <%= @user.email %><% end %>
-      <% if @user.role == "moderator" %> | <i class="icon icon-certificate"></i> Moderator<% end %>
-      <% if @user.role == "admin" %> | <i class="icon icon-certificate"></i> Admin<% end %>
-      <% if @user.status == 0 %> | <i class="icon icon-ban-circle" style="color:#a00;"></i> Banned<% end %>
+      <% if @user.role == "moderator" %> | <i class="fa fa-certificate"></i> Moderator<% end %>
+      <% if @user.role == "admin" %> | <i class="fa fa-certificate"></i> Admin<% end %>
+      <% if @user.status == 0 %> | <i class="fa fa-ban-circle" style="color:#a00;"></i> Banned<% end %>
     </small>
   </h3>
 
@@ -73,7 +73,7 @@
 
   <% if @user.user %>
   <% @user.user.barnstars.each do |tag| %>
-    <p style="color:#aaa;"><i style="color:#db4;" class="icon icon-large icon-star-empty"></i> <i><a href="/profile/<%= tag.node.author.name %>"><%= tag.node.author.name %></a> was awarded <a href="/wiki/barnstars#<%= tag.name.split('-').each{|w| w.capitalize!}.join('+') %>+Barnstar">the <%= tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' ') %> Barnstar</a> by <a href="/profile/<%= tag.author.username %>"><%= tag.author.username %></a> for their work published in <a href="<%= tag.node.path %>"><%= tag.node.title %></a>.</i></p>
+    <p style="color:#aaa;"><i style="color:#db4;" class="fa fa-large fa fa-star-empty"></i> <i><a href="/profile/<%= tag.node.author.name %>"><%= tag.node.author.name %></a> was awarded <a href="/wiki/barnstars#<%= tag.name.split('-').each{|w| w.capitalize!}.join('+') %>+Barnstar">the <%= tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' ') %> Barnstar</a> by <a href="/profile/<%= tag.author.username %>"><%= tag.author.username %></a> for their work published in <a href="<%= tag.node.path %>"><%= tag.node.title %></a>.</i></p>
     <hr />
   <% end %>
   <% end %>
@@ -81,11 +81,12 @@
   <ul class="nav nav-tabs">
     <span style="float:right;"><small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small></span>
     <li class="active"><a href="#research" data-toggle="tab">Research</a></li>
-    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="icon icon-comment"></i><span class="hidden-phone"> Comments</span></a></li>
-    <li><a href="/profile/<%= @user.username %>/likes"><i class="icon icon-star"></i><span class="hidden-phone"> Liked</span> (<%= @user.like_count %>)</a></li>
-    <li><a href="#maps" data-toggle="tab"><i class="icon-map-marker"></i> MapKnitter maps</a></a>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm"> Comments</span></a></li>
+    <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm"> Liked</span> (<%= @user.like_count %>)</a></li>
+    <li><a href="#maps" data-toggle="tab"><i class="fa fa-map-marker"></i> MapKnitter maps</a></a>
   </ul>
 
+  <br />
 
   <div class="tab-content">
 
@@ -106,7 +107,7 @@
         </tr>
         <% @user.user.mapknitter_maps.each_with_index do |map, i| %>
         <tr>
-          <td><a href="<%= map.link %>"><i class="icon icon-map-marker"></i> <%= map.title %></a></td>
+          <td><a href="<%= map.link %>"><i class="fa fa-map-marker"></i> <%= map.title %></a></td>
           <td><%= time_ago_in_words(map.pubDate) %> ago</td>
           <td><%= raw map.description.truncate(100) %></td>
         </tr>
@@ -119,7 +120,7 @@
     </div>
 
     <div class="tab-pane" id="comments">
-      <h2 style="text-align:center;"><i class="icon-spinner icon-spin"></i></h2>
+      <h2 style="text-align:center;"><i class="fa fa-spinner fa fa-spin"></i></h2>
     </div>
     <script>
       (function(){

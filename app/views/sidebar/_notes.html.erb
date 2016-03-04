@@ -1,0 +1,28 @@
+<% if notes && notes.length > 0 %>
+  <div class="hidden-sm hidden-xs note-list">
+
+    <h4><%= title %></h4>
+
+    <% notes.each do |note| %>
+      <% unless (!node.nil? && note.nid == node.nid) %>
+        <p style="margin:14px 0 0;">
+          <i class="fa fa-<%= raw note.icon %>"></i> 
+          <a href="<%= note.path %>">
+            <b><%= note.title %></b>
+          </a> 
+        </p>
+        <p>
+          <small style="color:#888;">
+            updated <%= time_ago_in_words(note.created_at) %> ago 
+            by <a href="/profile/<%= note.author.name %>"><%= note.author.name %></a>
+          </small>
+        </p>
+      <% end %>
+    <% end %>
+
+    <% if params[:controller] == "search" %>
+      <p><a href="/tag/<%= params[:id] %>">More...</a></p>
+    <% end %>
+
+  </div>
+<% end %>

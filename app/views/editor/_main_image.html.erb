@@ -1,22 +1,29 @@
-<div class="sidebar-nav pull-right span3">
+<div class="sidebar-nav col-md-3 col-md-push-9">
 
-  <h3 style="margin-top:0;" class="hidden-phone">Main image <i id="main-image-spinner" class="hidden icon-spinner icon-spin"></i></h3>
+  <h3 class="hidden-sm">Main image <i id="main-image-spinner" class="hidden icon-spinner icon-spin"></i></h3>
 
-  <img class="img-rounded" id="leadImage" <% unless (@node && @node.main_image) || params[:main_image] || params[:i] %>style="display:none;" <% end %>src="<% if @node && @node.main_image %><%= @node.main_image.path(:default) %><% elsif params[:main_image] && Image.find_by_id(params[:main_image]) %><%= Image.find_by_id(params[:main_image]).path %><% elsif @image %><%= @image.path(:default) %><% end %>" />
+  <img style="width:100%;" class="img-rounded" id="leadImage" <% unless (@node && @node.main_image) || params[:main_image] || params[:i] %>style="display:none;" <% end %>src="<% if @node && @node.main_image %><%= @node.main_image.path(:default) %><% elsif params[:main_image] && Image.find_by_id(params[:main_image]) %><%= Image.find_by_id(params[:main_image]).path %><% elsif @image %><%= @image.path(:default) %><% end %>" />
   <div class="side-dropzone" id="side-dropzone">
     <p class="prompt">
-      <span class="hidden-phone">
+      <span class="hidden-sm">
         Drag &amp; drop to add an image, or 
       </span>
-      <span class="fileinput-button">
-        <a><i class="icon icon-upload visible-phone pull-left" style="padding-right:6px;"></i> choose an image</a>
-        <input tabindex="3" id="side-fileinput" type="file" name="image[photo]" style="height:4em;" />
-      </span>
+
+      <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
+      <label class="" for="fileinput">
+        <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
+        <a class="hidden-xs">choose one</a>
+        <span class="visible-xs">
+          <i class="fa fa-upload"></i> 
+          <a>Upload image</a>
+        </span>
+      </label> 
+
     </p>
-    <br class="hidden-phone" />
+    <br class="hidden-sm" />
   </div>
-  <div id="side-progress" style="display:none;" class="progress progress-striped active pull-right">
-    <div class="bar" style="width: 0%;"></div>
+  <div id="side-progress" style="display:none;width:100%;" class="progress progress-striped active">
+    <div class="progress-bar" role="progressbar" style="width: 0%;"></div>
   </div>
   <p class="side-uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
 
@@ -45,9 +52,9 @@
 
     <h4 style="margin-top:20px;">Choose a main image:</h4>
 
-    <div class="row-fluid">
+    <div class="row">
       <% @all.each do |note| %>
-        <% if note.main_image %><a class="span6" onClick="upload_main_img('<%= note.main_image.path(:original) %>','<%= note.author.username %>')"><img class="img-rounded" src="<%= note.main_image.path(:default) %>" /></a><% end %>
+        <% if note.main_image %><a class="col-md-6" onClick="upload_main_img('<%= note.main_image.path(:original) %>','<%= note.author.username %>')"><img class="img-rounded" src="<%= note.main_image.path(:default) %>" /></a><% end %>
       <% end %>
     </div>
 

@@ -1,3 +1,12 @@
+# def index
+# def show
+# def edit
+# def delete
+# def update
+# def new
+# def create
+# def tag
+
 require 'test_helper'
 
 class MapControllerTest < ActionController::TestCase

@@ -1,3 +1,7 @@
+# def create
+# def update
+# def delete
+
 require 'test_helper'
 
 class CommentMailerTest < ActionMailer::TestCase

@@ -6,7 +6,8 @@ class TagController < ApplicationController
   def index
     @title = "Tags"
     @paginated = true
-    @tags = DrupalTag.paginate(:page => params[:page]).order('count DESC')
+    @tags = DrupalTag.paginate(:page => params[:page])
+                     .order('count DESC')
   end
 
   def show
@@ -15,11 +16,19 @@ class TagController < ApplicationController
       @node_type = "map" if @node_type == "maps"
     if params[:id][-1..-1] == "*" # wildcard tags
       @wildcard = true
-      @tags = DrupalTag.find :all, :conditions => ['name LIKE (?)',params[:id][0..-2]+'%']
-      nodes = DrupalNode.where(:status => 1, :type => @node_type).includes(:drupal_node_revision,:drupal_tag).where('term_data.name LIKE (?)',params[:id][0..-2]+'%').page(params[:page]).order("node_revisions.timestamp DESC")
+      @tags = DrupalTag.where('name LIKE (?)', params[:id][0..-2] + '%')
+      nodes = DrupalNode.where(:status => 1, :type => @node_type)
+                        .includes(:drupal_node_revision, :drupal_tag)
+                        .where('term_data.name LIKE (?)', params[:id][0..-2] + '%')
+                        .page(params[:page])
+                        .order("node_revisions.timestamp DESC")
     else
       @tags = DrupalTag.find_all_by_name params[:id]
-      nodes = DrupalNode.where(:status => 1, :type => @node_type).includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?',params[:id]).page(params[:page]).order("node_revisions.timestamp DESC")
+      nodes = DrupalNode.where(status: 1, type: @node_type)
+                        .includes(:drupal_node_revision, :drupal_tag)
+                        .where('term_data.name = ?', params[:id])
+                        .page(params[:page])
+                        .order("node_revisions.timestamp DESC")
     end
       @notes = nodes if @node_type == "note"
       @wikis = nodes if @node_type == "page"
@@ -31,13 +40,17 @@ class TagController < ApplicationController
   def widget
     num = params[:n] || 4
     nids = DrupalTag.find_nodes_by_type(params[:id],'note',num).collect(&:nid)
-    @notes = DrupalNode.paginate(:conditions => ['status = 1 AND nid in (?)', nids], :order => "nid DESC", :page => params[:page])
+    @notes = DrupalNode.page(params[:page])
+                       .where('status = 1 AND nid in (?)', nids)
+                       .order("nid DESC")
     render :layout => false
   end
 
   def blog
     nids = DrupalTag.find_nodes_by_type(params[:id],'note',20).collect(&:nid)
-    @notes = DrupalNode.paginate(:conditions => ['status = 1 AND nid in (?)', nids], :order => "nid DESC", :page => params[:page])
+    @notes = DrupalNode.page(params[:page])
+                       .where('status = 1 AND nid in (?)', nids)
+                       .order("nid DESC")
     @tags = DrupalTag.find_all_by_name params[:id]
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(',') + " Blog" if @tagnames
@@ -111,7 +124,7 @@ class TagController < ApplicationController
 
   # should delete only the term_node/node_tag (instance), not the term_data (class)
   def delete
-    node_tag = DrupalNodeCommunityTag.find(:first,:conditions => {:nid => params[:nid], :tid => params[:tid]})
+    node_tag = DrupalNodeCommunityTag.where(nid: params[:nid], tid: params[:tid]).first
     # check for community tag too...
     if node_tag.uid == current_user.uid || current_user.role == "admin" || current_user.role == "moderator"
 
@@ -136,7 +149,10 @@ class TagController < ApplicationController
     if params[:id].length > 2
       suggestions = []
       # filtering out tag spam by requiring tags attached to a published node
-      DrupalTag.where('name LIKE ?', "%"+params[:id]+"%").includes(:drupal_node).where('node.status = 1').limit(10).each do |tag|
+      DrupalTag.where('name LIKE ?', "%" + params[:id] + "%")
+               .includes(:drupal_node)
+               .where('node.status = 1')
+               .limit(10).each do |tag|
         suggestions << tag.name.downcase
       end
       render :json => suggestions.uniq
@@ -147,7 +163,11 @@ class TagController < ApplicationController
 
   def rss
     if params[:tagname][-1..-1] == "*"
-      @notes = DrupalNode.where(:status => 1, :type => 'note').includes(:drupal_node_revision,:drupal_tag).where('term_data.name LIKE (?)',params[:tagname][0..-2]+'%').limit(20).order("node_revisions.timestamp DESC")
+      @notes = DrupalNode.where(:status => 1, :type => 'note')
+                         .includes(:drupal_node_revision,:drupal_tag)
+                         .where('term_data.name LIKE (?)', params[:tagname][0..-2]+'%')
+                         .limit(20)
+                         .order("node_revisions.timestamp DESC")
     else
       @notes = DrupalTag.find_nodes_by_type([params[:tagname]],'note',20)
     end
@@ -168,7 +188,10 @@ class TagController < ApplicationController
     set_sidebar :tags, [params[:id]], {:note_count => 20}
     @tagnames = [params[:id]]
     @tag = DrupalTag.find_by_name params[:id]
-    @notes = DrupalNode.where(:status => 1, :type => 'note').includes(:drupal_node_revision,:drupal_tag).where('term_data.name = ?',params[:id]).order("node_revisions.timestamp DESC")
+    @notes = DrupalNode.where(:status => 1, :type => 'note')
+                       .includes(:drupal_node_revision,:drupal_tag)
+                       .where('term_data.name = ?', params[:id])
+                       .order("node_revisions.timestamp DESC")
     @users = @notes.collect(&:author).uniq
   end
 

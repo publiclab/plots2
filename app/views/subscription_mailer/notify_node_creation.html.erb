@@ -12,7 +12,7 @@ Dear <%= @user.name %>,
 
 <hr /> 
 
-<% if @user.role == "admin" || @user.role == "moderator" %>Does this look like spam? <a class="btn btn-small" href="https://publiclab.org/moderate/spam/<%= @node.id %>">Spam</a><% end %>
+<% if @user.role == "admin" || @user.role == "moderator" %>Does this look like spam? <a class="btn btn-sm" href="https://publiclab.org/moderate/spam/<%= @node.id %>">Spam</a><% end %>
 
 <div style="color:#aaa;">
 

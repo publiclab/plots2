@@ -1,3 +1,19 @@
+# def subdomain
+# def show
+# def raw
+# def edit
+# def new
+# def create
+# def update
+# def delete
+# def revert
+# def root
+# def revisions
+# def revision
+# def index
+# def popular
+# def liked
+
 require 'test_helper'
 
 class WikiControllerTest < ActionController::TestCase
@@ -23,7 +39,13 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  def test_post_wiki_no_login
+  test "should get wiki page" do
+    id = DrupalNode.where(type: 'page').last.id
+    get :show, id: id
+    assert_response :success
+  end
+
+  test "post wiki no login" do
     # kind of weird, to successfully log out, we seem to have to first log in to get the UserSession...
     user_session = UserSession.create @user
     user_session.destroy
@@ -32,7 +54,7 @@ class WikiControllerTest < ActionController::TestCase
     assert_redirected_to('/login?return_to=/wiki/create')
   end
 
-  def test_post_wiki
+  test "post wiki" do
     UserSession.new(@user)
     title = "All about balloon mapping"
     post :create, :uid => @user.id, :title => title, :body => "This is fascinating documentation about balloon mapping.", :tags => "balloon-mapping,event"
@@ -41,7 +63,7 @@ class WikiControllerTest < ActionController::TestCase
     #assert_template "wiki/show"
   end
 
-  def test_edit_wiki
+  test "edit wiki" do
     UserSession.new(@user)
     title = "All about balloon mapping redux"
     post :create, :uid => @user.id, :title => title, :body => "This is fascinating documentation about balloon mapping.", :tags => "balloon-mapping,event"

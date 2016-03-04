@@ -1,5 +1,5 @@
 <%= render :partial => "sidebar/related" %>
-<div class="span9">
+<div class="col-md-9">
   <% if @tags.first %>
   <div id="note-graph" style="height:100px;"></div>
 
@@ -43,25 +43,25 @@
   <% if current_user %>
   <!-- AJAXify -->
   <div class="btn-group">
-    <a class="btn btn-small" href="/feed/tag/<%= params[:id] %>.rss"><i class="icon icon-rss"></i> RSS</a>
+    <a class="btn btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
     <% unless @wildcard %>
       <% if current_user.following(params[:id]) %>
-      <a rel="tooltip" title="Click to unfollow" class="btn btn-small active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="icon icon-eye-open"></i> Following <b><%= params[:id] %></b></a>
+      <a rel="tooltip" title="Click to unfollow" class="btn btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-eye-open"></i> Following <b><%= params[:id] %></b></a>
       <% else %>
-      <a class="btn btn-small" href="/subscribe/tag/<%= params[:id] %>"><i class="icon icon-eye-open"></i> Follow <b><%= params[:id] %></b></a>
+      <a class="btn btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye-open"></i> Follow <b><%= params[:id] %></b></a>
       <% end %>
-      <a class="btn btn-small" rel="popover" data-placement="bottom" data-html="true" data-title="Users following this tag" data-content="<% DrupalTag.followers(params[:id]).each do |user| %><i class='icon icon-star-empty'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if DrupalTag.follower_count(params[:id]) == 0 %><i>None</i><% end %>"><%= DrupalTag.follower_count(params[:id]) %> <i class="icon icon-user"></i> <span class="caret"></span></a>
+      <a class="btn btn-sm" rel="popover" data-placement="bottom" data-html="true" data-title="Users following this tag" data-content="<% DrupalTag.followers(params[:id]).each do |user| %><i class='fa fa-star-empty'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if DrupalTag.follower_count(params[:id]) == 0 %><i>None</i><% end %>"><%= DrupalTag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a>
     <% end %>
   </div>
   <!-- AJAXify -->
   <% end %>
 
-  <% unless @wildcard %><p style="clear:both;padding-top:8px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:<%= params[:id] %>&template=question"><i class="icon icon-white icon-question-sign"></i> Ask a question about <b><%= params[:id] %></b></a> or <a style="margin-bottom:6px;" class="btn" target="_blank" href="/subscribe/tag/question:<%= params[:id] %>">Sign up to answer questions on this topic</a></p><% end %>
+  <% unless @wildcard %><p style="clear:both;padding-top:8px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:<%= params[:id] %>&template=question"><i class="fa fa-white icon-question-sign"></i> Ask a question about <b><%= params[:id] %></b></a> or <a style="margin-bottom:6px;" class="btn btn-default" target="_blank" href="/subscribe/tag/question:<%= params[:id] %>">Subscribe to answer questions on this topic</a></p><% end %>
 
   <ul class="nav nav-tabs" style="margin-top:10px;">
-    <li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="icon icon-file"></i> <span class="hidden-phone">Research </span>Notes</a></li>
-    <li<% if @node_type == "page" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>"><i class="icon icon-book"></i> Wiki<span class="hidden-phone"> pages</span></a></li>
-    <li<% if @node_type == "map" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="icon icon-map-marker"></i> Maps</a></li>
+    <li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <span class="hidden-sm">Research </span>Notes</a></li>
+    <li<% if @node_type == "page" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> Wiki<span class="hidden-sm"> pages</span></a></li>
+    <li<% if @node_type == "map" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> Maps</a></li>
   </ul>
 
   <div class="tab-content">

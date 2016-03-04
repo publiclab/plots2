@@ -94,22 +94,28 @@ class UsersController < ApplicationController
   def list
     # allow admins to view recent users
     if current_user && current_user.role == "admin" && params[:all] == 'true'
-      @users = DrupalUsers.paginate(:order => "uid DESC", :page => params[:page])
+      @users = DrupalUsers.page(params[:page])
+                          .order("uid DESC")
     else
       @users = DrupalUsers.select('*, MAX(node.changed) AS last_updated')
                           .group('users.uid')
                           .where('users.status = 1 AND node.status = 1')
                           .joins(:drupal_node)
                           .order("last_updated DESC")
-                          .paginate(:page => params[:page])
+                          .page(params[:page])
     end
   end
 
   def profile
     @user = DrupalUsers.find_by_name(params[:id])
     @title = @user.name
-    @notes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => @user.uid}, :page => params[:page])
-    wikis = DrupalNodeRevision.find(:all, :order => "nid DESC", :conditions => {'node.type' => 'page', 'node.status' => 1, :uid => @user.uid},:joins => :drupal_node, :limit => 20)
+    @notes = DrupalNode.page(params[:page])
+                       .order("nid DESC")
+                       .where(type: 'note', status: 1, uid: @user.uid)
+    wikis = DrupalNodeRevision.order("nid DESC")
+                              .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
+                              .joins(:drupal_node)
+                              .limit(20)
     @wikis = wikis.collect(&:parent).uniq
     if @user.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
       flash[:error] = "That user has been banned."
@@ -120,7 +126,8 @@ class UsersController < ApplicationController
   def likes
     @user = DrupalUsers.find_by_name(params[:id])
     @title = "Liked by "+@user.name
-    @notes = @user.liked_notes.includes([:drupal_tag, :drupal_comments]).paginate(page: params[:page], per_page: 20)
+    @notes = @user.liked_notes.includes([:drupal_tag, :drupal_comments])
+                              .paginate(page: params[:page], per_page: 20)
     @wikis = @user.liked_pages
     @tagnames = []
     @unpaginated = false
@@ -130,7 +137,9 @@ class UsersController < ApplicationController
     if params[:author]
       @author = DrupalUsers.find_by_name params[:author]
       if @author
-        @notes = DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => @author.uid},:limit => 20)
+        @notes = DrupalNode.order("nid DESC")
+                           .where(type: 'note', status: 1, uid: @author.uid)
+                           .limit(20)
       else
         flash[:error] = "No user by that name found"
         redirect_to "/"
@@ -185,7 +194,9 @@ class UsersController < ApplicationController
   end
 
   def comments
-    @comments = DrupalComment.find :all, :limit => 20, :order => "timestamp DESC", :conditions => {:status => 0, :uid => params[:id]}
+    @comments = DrupalComment.limit(20)
+                             .order("timestamp DESC")
+                             .where(status: 0, uid: params[:id])
     render :partial => "home/comments"
   end
 
