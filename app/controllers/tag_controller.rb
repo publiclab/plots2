@@ -202,12 +202,12 @@ class TagController < ApplicationController
     @tags = []
 
     @tagnames.each do |tagname|
-      @tags << DrupalTag.find_by_name(tagname)
-
+      tag = DrupalTag.find_by_name(tagname)
+      @tags << tag if tag
       @tagdata[tagname] = {}
       t = DrupalTag.find :all, :conditions => {:name => tagname}
       nct = DrupalNodeCommunityTag.find :all, :conditions => ['tid in (?)',t.collect(&:tid)]
-      @tagdata[tagname][:users] = DrupalNode.find(:all, :conditions => ['nid IN (?)',(nct).collect(&:nid)]).collect(&:author).uniq!.length
+      @tagdata[tagname][:users] = DrupalNode.find(:all, :conditions => ['nid IN (?)',(nct).collect(&:nid)]).collect(&:author).uniq.length
       @tagdata[tagname][:wikis] = DrupalNode.count :all, :conditions => ["nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", (nct).collect(&:nid)]
       @tagdata[:notes] = DrupalNode.count :all, :conditions => ["nid IN (?) AND type = 'note'", (nct).collect(&:nid)]
     end
