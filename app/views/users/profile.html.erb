@@ -2,7 +2,7 @@
  <% if @user.user && @user.user.photo_file_name %><img class="img-rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @user.user.photo_path(:thumb) %>" /><% end %>
 
   <!--<a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope"></i> Send message</a>-->
-  <a href="#" class="btn btn-default btn-block disabled"><i class="fa fa-eye-open"></i> Follow <%= @user.name %></a>
+  <a href="#" class="btn btn-default btn-block disabled"><i class="fa fa-eye"></i> Follow <%= @user.name %></a>
   <% if @user.user.nil? && current_user && current_user.role == "admin" %>
     <a href="/admin/migrate/<%= @user.uid %>" class="btn btn-block"><i class="fa fa-bolt"></i> Migrate to new site</a>
   <% end %>
@@ -10,7 +10,7 @@
     <a href="/admin/promote/admin/<%= @user.user.id %>" class="btn btn-default btn-block"><i class="fa fa-certificate"></i> Make admin</a>
   <% end %>
   <% if @user.user && current_user && current_user.role == "admin" && @user.role == "moderator" %>
-    <a href="/admin/demote/basic/<%= @user.user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban-circle"></i> Revert to basic user</a>
+    <a href="/admin/demote/basic/<%= @user.user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban"></i> Revert to basic user</a>
   <% end %>
   <% if @user.user && current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.role == "basic" %>
     <a href="/admin/promote/moderator/<%= @user.user.id %>" class="btn btn-default btn-block"><i class="fa fa-certificate"></i> Make moderator</a>
@@ -19,7 +19,7 @@
   <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.status == 0 %>
     <a href="/unban/<%= @user.id %>" class="btn btn-default btn-block"><i class="fa fa-thumbs-up"></i> Unban user</a>
   <% elsif current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.status == 1 %>
-    <a data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= @user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban-circle"></i> Ban user</a>
+    <a data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= @user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban"></i> Ban user</a>
   <% end %>
 
   <% if @user.user && !@user.user.reset_key.nil? && current_user && current_user.role == "admin" %>
@@ -63,7 +63,7 @@
       <% if current_user && current_user.role == "admin" %> | <%= @user.email %><% end %>
       <% if @user.role == "moderator" %> | <i class="fa fa-certificate"></i> Moderator<% end %>
       <% if @user.role == "admin" %> | <i class="fa fa-certificate"></i> Admin<% end %>
-      <% if @user.status == 0 %> | <i class="fa fa-ban-circle" style="color:#a00;"></i> Banned<% end %>
+      <% if @user.status == 0 %> | <i class="fa fa-ban" style="color:#a00;"></i> Banned<% end %>
     </small>
   </h3>
 
@@ -73,7 +73,7 @@
 
   <% if @user.user %>
   <% @user.user.barnstars.each do |tag| %>
-    <p style="color:#aaa;"><i style="color:#db4;" class="fa fa-large fa fa-star-empty"></i> <i><a href="/profile/<%= tag.node.author.name %>"><%= tag.node.author.name %></a> was awarded <a href="/wiki/barnstars#<%= tag.name.split('-').each{|w| w.capitalize!}.join('+') %>+Barnstar">the <%= tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' ') %> Barnstar</a> by <a href="/profile/<%= tag.author.username %>"><%= tag.author.username %></a> for their work published in <a href="<%= tag.node.path %>"><%= tag.node.title %></a>.</i></p>
+    <p style="color:#aaa;"><i style="color:#db4;" class="fa fa-large fa fa-star-o"></i> <i><a href="/profile/<%= tag.node.author.name %>"><%= tag.node.author.name %></a> was awarded <a href="/wiki/barnstars#<%= tag.name.split('-').each{|w| w.capitalize!}.join('+') %>+Barnstar">the <%= tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' ') %> Barnstar</a> by <a href="/profile/<%= tag.author.username %>"><%= tag.author.username %></a> for their work published in <a href="<%= tag.node.path %>"><%= tag.node.title %></a>.</i></p>
     <hr />
   <% end %>
   <% end %>

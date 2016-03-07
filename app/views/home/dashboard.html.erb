@@ -50,7 +50,7 @@
     </div>
     <script>
       (function(){
-        $('a#comments-tab').on('shown',function (e) {
+        $('a#comments-tab').on('shown.bs.tab',function (e) {
           $.ajax({
             url : '/dashboard/comments',
             type: 'GET',

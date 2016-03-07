@@ -30,9 +30,9 @@ class TagController < ApplicationController
                         .page(params[:page])
                         .order("node_revisions.timestamp DESC")
     end
-      @notes = nodes if @node_type == "note"
-      @wikis = nodes if @node_type == "page"
-      @nodes = nodes if @node_type == "map"
+    @notes = nodes if @node_type == "note"
+    @wikis = nodes if @node_type == "page"
+    @nodes = nodes if @node_type == "map"
     @title = params[:id]
     set_sidebar :tags, [params[:id]]
   end

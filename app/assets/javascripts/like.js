@@ -10,7 +10,7 @@ function changelikecount(value,node_id) {
   $('#like-count-'+node_id).html("(" + count + ")");
 }
 function shownotliked(node_id) {
-  $('#like-star-'+node_id)[0].className = "fa fa-star-empty";
+  $('#like-star-'+node_id)[0].className = "fa fa-star-o";
 }
 function showliked(node_id) {
   $('#like-star-'+node_id)[0].className = "fa fa-star";

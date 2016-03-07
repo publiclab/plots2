@@ -208,6 +208,10 @@ body { padding-top: 70px; }
   margin-top: 8px;
 }
 
+#tags .label {
+  line-height: 2em;
+}
+
 /* Styles for specific areas of the site */
 
 .note-show .main-image {
