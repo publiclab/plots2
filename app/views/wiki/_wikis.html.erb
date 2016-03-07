@@ -4,12 +4,12 @@
     <th>Last edited</th>
     <th>Edits</th>
     <th class="hidden-xs">Pageviews</th>
-    <th><i class="fa fa-star-empty"></i> Likes</th>
+    <th><i class="fa fa-star-o"></i> Likes</th>
   </tr>
   <% @wikis.each do |wiki| %>
     <tr>
       <td style="width:50%"><i class="fa fa-file"></i> <a href="<%= wiki.path %>"><%= wiki.latest.title %></a></td>
-      <td><%= time_ago_in_words(wiki.latest.created_at) %> ago by 
+      <td><%= time_ago_in_words(Time.at(wiki.latest.created_at)) %> ago by 
       <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></td>
       <td><%= wiki.revisions.length %></td>
       <td class="hidden-xs"><%= number_with_delimiter(wiki.totalcount) %>

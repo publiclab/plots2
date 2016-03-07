@@ -1,14 +1,7 @@
-# def index
-# def show
-# def widget
-# def blog
-# def author
 # def barnstar
 # def create
 # def delete
 # def suggested
-# def rss
-# def contributors
 # def contributors_index
 
 require 'test_helper'
@@ -21,20 +14,20 @@ class TagControllerTest < ActionController::TestCase
   end
 
   # create accepts comma-delimited list of tags
-  def test_add_tag
+  test "add tag" do
     UserSession.new(@user)
     post :create, :name => 'mytag', :nid => node(:one).nid, :uid => @user.id
     assert_redirected_to(node(:one).path)
   end
 
-  def test_validate_unused_tag
+  test "validate unused tag" do
     UserSession.new(@user)
     get :contributors, :id => 'question:*'
     assert_template :contributors
     assert_tag :tag => 'p', :child => /No contributors for that tag/
   end
 
-  def test_add_invalid_tag
+  test "add invalid tag" do
     UserSession.new(@user)
     post :create, :name => 'my invalid tag $_', :nid => node(:one).nid, :uid => @user.id
     assert_redirected_to(node(:one).path)
@@ -42,7 +35,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   # create returns JSON list of errors in response[:errors]
-  def test_add_duplicate_tag
+  test "add duplicate tag" do
     UserSession.new(@user)
     post :create, :name => 'mytag', :nid => node(:one).nid, :uid => @user.id
     assert_redirected_to(node(:one).path)
@@ -53,10 +46,54 @@ class TagControllerTest < ActionController::TestCase
     assert_equal "Error: that tag already exists.", assigns['output']['errors'][0]
   end
 
-  def test_add_tag_not_logged_in
+  test "add tag not logged in" do
     @user.destroy
     post :create, :name => 'mytag', :nid => node(:one).nid, :uid => 1
     assert_redirected_to('/login?return_to='+URI.encode(request.env['PATH_INFO']))
+  end
+
+  test "tag index" do
+    get :index
+    assert :success
+    assert_not_nil :tags
+  end
+
+  test "tag show" do
+    get :show, id: DrupalTag.last.name
+    assert :success
+    assert_not_nil :tags
+  end
+
+  test "tag widget" do
+    get :widget, id: DrupalTag.last.name
+    assert :success
+    assert_not_nil :notes
+  end
+
+  test "tag blog" do
+    get :blog, id: DrupalTag.last.name
+    assert :success
+    assert_not_nil :notes
+    assert_not_nil :tags
+  end
+
+  test "tag author" do
+    get :author, id: User.last.username
+    assert :success
+  end
+
+  test "tag rss" do
+    get :rss, tagname: DrupalTag.last.name
+    assert :success
+    assert_not_nil :notes
+  end
+
+  test "tag contributors" do
+    get :contributors, id: DrupalTag.last.name
+    assert :success
+    assert_not_nil :notes
+    assert_not_nil :users
+    assert_not_nil :tag
   end
 
 end

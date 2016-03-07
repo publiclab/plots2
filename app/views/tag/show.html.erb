@@ -50,7 +50,7 @@
       <% else %>
       <a class="btn btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye-open"></i> Follow <b><%= params[:id] %></b></a>
       <% end %>
-      <a class="btn btn-sm" rel="popover" data-placement="bottom" data-html="true" data-title="Users following this tag" data-content="<% DrupalTag.followers(params[:id]).each do |user| %><i class='fa fa-star-empty'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if DrupalTag.follower_count(params[:id]) == 0 %><i>None</i><% end %>"><%= DrupalTag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a>
+      <a class="btn btn-sm" rel="popover" data-placement="bottom" data-html="true" data-title="Users following this tag" data-content="<% DrupalTag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if DrupalTag.follower_count(params[:id]) == 0 %><i>None</i><% end %>"><%= DrupalTag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a>
     <% end %>
   </div>
   <!-- AJAXify -->

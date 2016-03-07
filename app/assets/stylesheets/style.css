@@ -53,6 +53,10 @@ h4,h5,h6, h1 small, h3 small {
   margin-top:8px;
 }
 
+#content p img {
+  max-width: 100%;
+}
+
 /* fontawesome default color */
 a .fa { color:#222; }
 a .fa-white,
@@ -202,6 +206,10 @@ body { padding-top: 70px; }
 #content blockquote p {
   padding: 8px 4px;
   margin-top: 8px;
+}
+
+#tags .label {
+  line-height: 2em;
 }
 
 /* Styles for specific areas of the site */

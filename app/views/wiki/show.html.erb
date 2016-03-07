@@ -49,6 +49,8 @@
     </div>
   </div>
 
+  <br />
+
   <% if @node.has_power_tag('parent') %>
     <% slug = @node.power_tag('parent') %>
     <% parent = DrupalNode.find_by_slug(slug) %>

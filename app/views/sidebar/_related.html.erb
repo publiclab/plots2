@@ -62,7 +62,7 @@
       <% @users.each do |author| %>
       <p>
         <i class="fa fa-user"></i>
-        <a href="/profile/<%= author %>"><%= author %></a>
+        <a href="/profile/<%= author.name %>"><%= author.name %></a>
       </p>
       <% end %>
       <p><a href="/contributors/<%= params[:id] %>"><i class="fa fa-list"></i> View all &raquo;</a></p>

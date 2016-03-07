@@ -46,7 +46,7 @@
             <% if params[:controller] == "notes" && params[:action] == "popular" %>
             | <%= number_with_delimiter(node.totalcount) %> views
             <% else %>
-            | <i style="color:#888;" class="fa fa-star-empty"></i> <%= node.likes %>
+            | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
             <% end %>
           </small></p>
           <p><%= raw auto_link(node.latest.render_body, :sanitize => false) %></p>

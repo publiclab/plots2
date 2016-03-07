@@ -2,7 +2,7 @@
 <div id="notes">
     <div class="row">
     <% notes.each_with_index do |node,i| %>
-      <div class="col-md-3 clearfix note" style="overflow:hidden;">
+      <div class="<% if @widget %>col-xs-3 col-sm-3 <% end %>col-md-3 clearfix note" style="overflow:hidden;">
         <% if node.main_image %>
           <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
         <% end %>
@@ -20,28 +20,28 @@
             | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
           <% else %>
             last edit by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a> 
-            <%= time_ago_in_words(Time.new(node.latest.timestamp)) %> ago
+            <%= time_ago_in_words(Time.at(node.latest.timestamp)) %> ago
           <% end %>
           | <i class="hidden-xs hidden-sm fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-xs hidden-sm">views</span>
           | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
         </small></p>
 
         <% if @compact.nil? %>
-        <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
-        <p>
-          <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> Spam</a><% end %>
-          <a href="<%= node.path %>">Read more &raquo;</a>
-        </p>
+          <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
+          <p>
+            <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> Spam</a><% end %>
+            <a href="<%= node.path %>">Read more &raquo;</a>
+          </p>
         <% end %>
         <% if params[:mod] %>
-        <a class="btn btn-default btn-xs" href="#"><i class="fa fa-ban-circle"></i> Spam</a>
+          <a class="btn btn-default btn-xs" href="#"><i class="fa fa-ban-circle"></i> Spam</a>
         <% end %>
         <hr style="display:none;" class="bottom" />
       </div>
-      <hr class="visible-xs visible-sm" />
+      <% unless @widget %><hr class="visible-xs visible-sm" /><% end %>
     <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
     </div>
-    <hr class="visible-xs visible-sm grid" />
+    <% unless @widget %><hr class="visible-xs visible-sm grid" /><% end %>
     <div class="row">
     <% end %>
     <% end %>

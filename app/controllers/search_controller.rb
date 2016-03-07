@@ -59,7 +59,7 @@ class SearchController < ApplicationController
       matches << "<i data-url='"+match.path+"' class='fa fa-"+match.icon+"'></i> "+match.title
     end
     DrupalUsers.limit(5)
-               .order("nid DESC")
+               .order("uid DESC")
                .where('name LIKE ? AND access != 0', "%" + params[:id] + "%").each do |match|
       matches << "<i data-url='/profile/"+match.name+"' class='fa fa-user'></i> "+match.name
     end
