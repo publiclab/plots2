@@ -28,8 +28,7 @@ class Image < ActiveRecord::Base
   end
 
   def filetype
-    filename = self.filename[-3..self.filename.length]
-    filename.downcase unless filename.nil?
+    self.filename[-3..self.filename.length].downcase
   end
 
   def path(size = :medium)
@@ -46,7 +45,7 @@ class Image < ActiveRecord::Base
   end
 
   def filename
-    self.photo_file_name || ""
+    self.photo_file_name
   end
 
 private
@@ -58,17 +57,14 @@ private
 
   def download_remote_image
     self.photo = do_download_remote_image
+    puts remote_url
+    puts "finishes to do_download"
     self.remote_url = remote_url
   end
 
   def do_download_remote_image
     io = open(URI.parse(remote_url))
-    # handle data urls
-    if remote_url.split('/').first == "data:image"
-      def io.original_filename; nil; end
-    else
-      def io.original_filename; base_uri.path.split('/').last; end
-    end
+    def io.original_filename; base_uri.path.split('/').last; end
     io.original_filename.blank? ? nil : io
   rescue # catch url errors with validations instead of exceptions (Errno:ENOENT, OpenURI:HTTPError, etc...)
     puts "had to be rescued"
