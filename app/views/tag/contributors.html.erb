@@ -45,9 +45,9 @@
     <div class="btn-group">
       <a class="btn btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
       <% if current_user.following(params[:id]) %>
-      <a rel="tooltip" title="Click to unfollow" class="btn btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-eye-open"></i> Following <b><%= params[:id] %></b></a>
+      <a rel="tooltip" title="Click to unfollow" class="btn btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> Following <b><%= params[:id] %></b></a>
       <% else %>
-      <a class="btn btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye-open"></i> Follow <b><%= params[:id] %></b></a>
+      <a class="btn btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> Follow <b><%= params[:id] %></b></a>
       <% end %>
     </div>
     <!-- AJAXify -->

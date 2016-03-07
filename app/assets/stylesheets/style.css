@@ -149,20 +149,13 @@ body { padding-top: 70px; }
 
 .footer {
   clear:both;
-  margin: 20px -20px 0;
   padding: 20px;
   border-top: 1px solid #E5E5E5;
   background-color: #f8f8f8;
 }
 
-@media (min-width: 768px) {
-  .footer { margin:20px 0 0 0; }
-}
-
-@media (max-with: 786px) {
-  .footer {
-    margin: 20px -20px 20px;
-  }
+.footer ul {
+  margin-bottom: 30px;
 }
 
 .caption {
