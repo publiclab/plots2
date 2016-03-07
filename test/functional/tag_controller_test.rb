@@ -27,6 +27,13 @@ class TagControllerTest < ActionController::TestCase
     assert_redirected_to(node(:one).path)
   end
 
+  def test_validate_unused_tag
+    UserSession.new(@user)
+    get :contributors, :id => 'question:*'
+    assert_template :contributors
+    assert_tag :tag => 'p', :child => /No contributors for that tag/
+  end
+
   def test_add_invalid_tag
     UserSession.new(@user)
     post :create, :name => 'my invalid tag $_', :nid => node(:one).nid, :uid => @user.id

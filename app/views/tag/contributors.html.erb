@@ -1,57 +1,60 @@
 <%= render :partial => "sidebar/related" %>
 <div class="col-md-9">
-  <div id="note-graph" style="height:100px;"></div>
+  <% if @tag %>
+    <div id="note-graph" style="height:100px;"></div>
 
-  <script type="text/javascript">
-  (function () {
+    <script type="text/javascript">
+    (function () {
 
-    flotoptions_minimal = {
-      yaxis: { show: false },
-      xaxis: { show: true },
-      grid: {
-        borderWidth: 0,
-        //color: "#444",
-        markers: []
-      },
-      colors: [ "#08f", "#80f" ]
-    }
+      flotoptions_minimal = {
+        yaxis: { show: false },
+        xaxis: { show: true },
+        grid: {
+          borderWidth: 0,
+          //color: "#444",
+          markers: []
+        },
+        colors: [ "#08f", "#80f" ]
+      }
 
-    var notes = <%= @tag.weekly_tallies.to_a.sort.to_json %>
+      var notes = <%= @tag.weekly_tallies.to_a.sort.to_json %>
 
-    $.plot($("#note-graph"), [
-      {
+      $.plot($("#note-graph"), [
+        {
           data: notes,
           hoverable: true,
- //         label: "Research Notes",
-          bars: { show: true, 
-                  lineWidth: 0,
-                  fillColor: "#08f",
-                  barWidth: 0.5
-                }
-      }
-    ],flotoptions_minimal)
+ //       label: "Research Notes",
+          bars: {
+            show: true,
+            lineWidth: 0,
+            fillColor: "#08f",
+            barWidth: 0.5
+          }
+        }
+      ],flotoptions_minimal)
 
-  })()
-  </script>
+    })()
+    </script>
 
-  <h3 style="margin-top:0;">Contributors for <i style="color:#aaa;"><%= params[:id] %></i></h3>
-  <p><i>Above: contributions over the past year.</p>
-  <% if @users %><p><%= @users.length || 0 %> people have contributed <%= @notes.length %> research notes and <%= @wikis.length %> wiki pages tagged with "<%= params[:id] %>"</i></p><% end %>
+    <h3 style="margin-top:0;">Contributors for <i style="color:#aaa;"><%= params[:id] %></i></h3>
+    <p><i>Above: contributions over the past year.</p>
+    <% if @users %><p><%= @users.length || 0 %> people have contributed <%= @notes.length %> research notes and <%= @wikis.length %> wiki pages tagged with "<%= params[:id] %>"</i></p><% end %>
 
-  <% if current_user %>
-  <!-- AJAXify -->
-  <div class="btn-group">
-    <a class="btn btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
-    <% if current_user.following(params[:id]) %>
-    <a rel="tooltip" title="Click to unfollow" class="btn btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-eye-open"></i> Following <b><%= params[:id] %></b></a>
-    <% else %>
-    <a class="btn btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye-open"></i> Follow <b><%= params[:id] %></b></a>
+    <% if current_user %>
+    <!-- AJAXify -->
+    <div class="btn-group">
+      <a class="btn btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
+      <% if current_user.following(params[:id]) %>
+      <a rel="tooltip" title="Click to unfollow" class="btn btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-eye-open"></i> Following <b><%= params[:id] %></b></a>
+      <% else %>
+      <a class="btn btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye-open"></i> Follow <b><%= params[:id] %></b></a>
+      <% end %>
+    </div>
+    <!-- AJAXify -->
+    &nbsp; <%= DrupalTag.follower_count(params[:id]) %> people are watching this tag
+
     <% end %>
-  </div>
-  <!-- AJAXify -->
-  &nbsp; <%= DrupalTag.follower_count(params[:id]) %> people are watching this tag
   <% end %>
-
   <hr />
 
   <% if @notes.nil? || @notes.length == 0 %>
