@@ -7,35 +7,34 @@
 <% end %>
 <div class="col-md-9">
   <% if params[:controller] == "search" %>
-    <h3 style="margin-top:0;">Search results for <i style="color:#aaa;"><%= params[:id] %></i> <small>(<a href="/search/advanced/<%= params[:id] %>">advanced search</a>)</h3>
+    <h3>Search results for <i style="color:#aaa;"><%= params[:id] %></i> <small>(<a href="/search/advanced/<%= params[:id] %>">advanced search</a>)</h3>
   <% elsif params[:controller] == "tag" %>
-    <h3 style="margin-top:0;">Notes tagged with <i style="color:#aaa;"><%= params[:id] %></i></h3>
+    <h3>Notes tagged with <i style="color:#aaa;"><%= params[:id] %></i></h3>
   <% elsif params[:action] == "popular" %>
-    <h2 style="margin-top:0;">Popular research notes</h2>
+    <h2>Popular research notes</h2>
   <% elsif params[:action] == "author_topic" %>
-    <h3 style="margin-top:0;">Research on "<%= @tagnames.join(', ') %>" by <a href="/people/<%= @user.name %>"><%= @user.name %></a> <br /><small><%= @user.node_count %> research notes and wiki edits starting <%= time_ago_in_words(@user.created_at) %> ago</small></h3>
+    <h3>Research on "<%= @tagnames.join(', ') %>" by <a href="/people/<%= @user.name %>"><%= @user.name %></a> <br /><small><%= @user.node_count %> research notes and wiki edits starting <%= time_ago_in_words(@user.created_at) %> ago</small></h3>
   <% elsif params[:action] == "author" %>
-    <h3 style="margin-top:0;">Research by <a href="/people/<%= @user.name %>"><%= @user.name %></a> <small><%= @user.node_count %> research notes and wiki edits <% if @user.notes.length > 0 %>starting <%= time_ago_in_words(@user.created_at) %> ago<% end %></small></h3>
+    <h3>Research by <a href="/people/<%= @user.name %>"><%= @user.name %></a> <small><%= @user.node_count %> research notes and wiki edits <% if @user.notes.length > 0 %>starting <%= time_ago_in_words(@user.created_at) %> ago<% end %></small></h3>
   <% else %>
-    <h2 style="margin-top:0;">Research notes <small class="hidden-sm">ideas & documentation from contributors like you</small></h2>
+    <h2>Research notes <small class="hidden-sm">ideas & documentation from contributors like you</small></h2>
   <% end %>
   <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked") %>
-    <div class="navbar">
-      <div class="navbar-inner">
-        <ul class="nav">
-          <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/notes/">Recent</a></li>
-          <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/notes/popular/">Popular</a></li>
-          <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="fa fa-star-empty"></i><span class="hidden-sm"> Liked</span></a></li>
+
+    <%= render :partial => "notes/format_toggle" %>
+    <% if params[:action] == "liked" %><a style="margin-right:4px;" class="pull-right btn btn-default btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
+
+    <ul class="nav nav-tabs">
+        <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/notes/">Recent</a></li>
+        <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/notes/popular/">Popular</a></li>
+        <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="fa fa-star-empty"></i><span class="hidden-sm"> Liked</span></a></li>
   
-          <li><a href="/wiki/">Wiki<span class="hidden-sm"> pages</span></a></li>
-        </ul>
+        <li><a href="/wiki/">Wiki<span class="hidden-sm"> pages</span></a></li>
+    </ul>
 
-        <%= render :partial => "notes/format_toggle" %>
-        <% if params[:action] == "liked" %><a style="margin-right:4px;" class="pull-right btn btn-default btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
-
-      </div>
-    </div>
   <% end %>
+
+  <br />
 
   <%= render :partial => "notes/notes" %>
 

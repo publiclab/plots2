@@ -40,13 +40,13 @@ $('.dropzone').fileupload({
     'nid':$D.nid
   },
   start: function(e) {
-    $('.progress').show()
+    $('#imagebar .progress').show()
     $('#imagebar .uploading').show()
     $('#imagebar .prompt').hide()
     $('.dropzone').removeClass('hover');
   },
   done: function (e, data) {
-    $('.progress').hide()
+    $('#imagebar .progress').hide()
     $('#imagebar .uploading').hide()
     $('#imagebar .prompt').show()
     var is_image = false
@@ -83,7 +83,7 @@ $('.dropzone').fileupload({
   },
   progressall: function (e, data) {
     var progress = parseInt(data.loaded / data.total * 100, 10);
-    $('.progress .progress-bar').css(
+    $('#imagebar .progress .progress-bar').css(
       'width',
       progress + '%'
     );
