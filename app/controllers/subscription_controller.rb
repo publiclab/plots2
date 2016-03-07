@@ -52,11 +52,15 @@ class SubscriptionController < ApplicationController
             :name => params[:name],
             :description => "",
             :weight => 0})
-          unless tag.save! 
-            flash[:error] = "There was an error and your subscription failed. Please contact web@publiclab.org."
+          begin
+            tag.save!
+          rescue ActiveRecord::RecordInvalid
+            flash[:error] = tag.errors.full_messages
             redirect_to "/subscriptions"
+            return false
           end
         end
+
         # test for uniqueness, handle it as a validation error if you like
         if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length > 0
           flash[:error] = "You are already subscribed to '#{params[:name]}'"
