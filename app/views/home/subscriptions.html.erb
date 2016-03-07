@@ -6,7 +6,7 @@
 
   <p>
     <% if current_user.following("everything") %>
-      <a rel="tooltip" title="Click to unfollow" class="btn btn-default active" href="/unsubscribe/tag/everything"><i class="fa fa-eye-open"></i> Following <b>all research notes</b></a>
+      <a rel="tooltip" title="Click to unfollow" class="btn btn-default active" href="/unsubscribe/tag/everything"><i class="fa fa-eye"></i> Following <b>all research notes</b></a>
     <% else %>
       <a href="/subscribe/tag/everything" class="btn btn-default"><i class="fa fa-tag"></i> Subscribe to <b>all</b> notes</a>
     <% end %>

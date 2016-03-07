@@ -46,9 +46,9 @@
     <a class="btn btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
     <% unless @wildcard %>
       <% if current_user.following(params[:id]) %>
-      <a rel="tooltip" title="Click to unfollow" class="btn btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-eye-open"></i> Following <b><%= params[:id] %></b></a>
+      <a rel="tooltip" title="Click to unfollow" class="btn btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> Following <b><%= params[:id] %></b></a>
       <% else %>
-      <a class="btn btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye-open"></i> Follow <b><%= params[:id] %></b></a>
+      <a class="btn btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> Follow <b><%= params[:id] %></b></a>
       <% end %>
       <a class="btn btn-sm" rel="popover" data-placement="bottom" data-html="true" data-title="Users following this tag" data-content="<% DrupalTag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if DrupalTag.follower_count(params[:id]) == 0 %><i>None</i><% end %>"><%= DrupalTag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a>
     <% end %>
