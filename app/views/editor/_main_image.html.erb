@@ -3,6 +3,7 @@
   <h3 class="hidden-sm">Main image <i id="main-image-spinner" class="hidden icon-spinner icon-spin"></i></h3>
 
   <img style="width:100%;" class="img-rounded" id="leadImage" <% unless (@node && @node.main_image) || params[:main_image] || params[:i] %>style="display:none;" <% end %>src="<% if @node && @node.main_image %><%= @node.main_image.path(:default) %><% elsif params[:main_image] && Image.find_by_id(params[:main_image]) %><%= Image.find_by_id(params[:main_image]).path %><% elsif @image %><%= @image.path(:default) %><% end %>" />
+
   <div class="side-dropzone" id="side-dropzone">
     <p class="prompt">
       <span class="hidden-sm">
@@ -10,7 +11,7 @@
       </span>
 
       <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
-      <label class="" for="fileinput">
+      <label class="" for="side-fileinput">
         <input id="side-fileinput" type="file" name="image[photo]" style="display:none;" />
         <a class="hidden-xs">choose one</a>
         <span class="visible-xs">
