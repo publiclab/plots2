@@ -54,9 +54,7 @@ class UsersController < ApplicationController
       @user.drupal_user.set_bio(params[:drupal_user][:bio])
       @user.save({}) do |result|
         if result
-#puts session.inspect
           if session[:openid_return_to] # for openid login, redirects back to openid auth process
-#puts 'return_to session'
             return_to = session[:openid_return_to]
             session[:openid_return_to] = nil
             redirect_to return_to
