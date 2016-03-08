@@ -15,7 +15,7 @@
   <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning">This page has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
 
   <% if @node.main_image && !@presentation %>
-    <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img style="max-height:400px;margin-bottom:10px;" class="img-rounded" src="<%= @node.main_image.path(:large) %>" /></a>
+    <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img style="max-width:100%;max-height:600px;margin-bottom:10px;" class="img-rounded" src="<%= @node.main_image.path(:large) %>" /></a>
   <% end %>
 
   <div style="margin-top:10px;" class="hidden-print">
@@ -60,14 +60,12 @@
   <% end %>
 
   <% if @node.has_power_tag('tabbed') %>
-  <div class="navbar">
-    <div class="navbar-inner">
-      <ul class="nav">
-        <li class="active"><a data-toggle="tab" href="#tab-overview">Overview</a></li>
-        <% if @node.power_tags('tabbed').include?("notes") %><li><a data-toggle="tab" href="#tab-notes">Research</a></li><% end %>
-        <% if @node.power_tags('tabbed').include?("wikis") %><li><a data-toggle="tab" href="#tab-wikis">Wiki<span class="hidden-sm"> pages</span></a></li><% end %>
-      </ul>
-    </div>
+  <div class="navbar navbar-default">
+    <ul class="nav navbar-nav">
+      <li class="active"><a data-toggle="tab" href="#tab-overview">Overview</a></li>
+      <% if @node.power_tags('tabbed').include?("notes") %><li><a data-toggle="tab" href="#tab-notes">Research</a></li><% end %>
+      <% if @node.power_tags('tabbed').include?("wikis") %><li><a data-toggle="tab" href="#tab-wikis">Wiki<span class="hidden-sm"> pages</span></a></li><% end %>
+    </ul>
   </div>
   <% end %>
 

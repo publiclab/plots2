@@ -7,7 +7,7 @@ function changelikecount(value,node_id) {
   count = parseInt(count.substr(1, count.length-2));
   count += value;
   // push value back out
-  $('#like-count-'+node_id).html("(" + count + ")");
+  $('#like-count-'+node_id).html(count);
 }
 function shownotliked(node_id) {
   $('#like-star-'+node_id)[0].className = "fa fa-star-o";

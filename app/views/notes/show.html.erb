@@ -5,7 +5,7 @@
   <% if current_user && @node.tags.length == 0 %><div class="alert">This note has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
 
   <% if @node.main_image %>
-    <a class="main-image" style="width:100%;max-width:800px;" href="<%= @node.main_image.path(:original) %>">
+    <a class="main-image" style="max-height:600px;max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
       <img class="img-rounded" src="<%= @node.main_image.path(:large) %>" />
     </a>
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->

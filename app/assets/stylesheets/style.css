@@ -53,7 +53,8 @@ h4,h5,h6, h1 small, h3 small {
   margin-top:8px;
 }
 
-#content p img {
+#content p img,
+#content p iframe {
   max-width: 100%;
 }
 
@@ -119,7 +120,13 @@ body { padding-top: 70px; }
   font-size: 22px;
 }
 
-#header #brand-compact { padding-top: 22px; }
+@media (max-width: 768px) {
+  #header #brand,
+  #header #brand-compact {
+    padding-top: 22px;
+    padding-right: 4px;
+  }
+}
 
 @media (max-width: 340px) {
   #brand { display:none; }
