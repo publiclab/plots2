@@ -11,8 +11,8 @@
         <% end %>
         <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
       <% end %>
-      <a style="color:#aaa;" href="#c<%= comment.cid %>">commented</a>
-      <%= time_ago_in_words(comment.created_at) %> ago
+      <span class="hidden-xs">commented</span>
+      <a style="color:#aaa;" href="#c<%= comment.cid %>"><%= time_ago_in_words(comment.created_at) %> ago</a>
     </div>
 
     <div class="navbar-text navbar-right pull-right" style="padding-right:10px;">
