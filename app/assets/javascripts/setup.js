@@ -86,7 +86,7 @@ jQuery(document).ready(function($) {
 
   /* setup bootstrap behaviors */
   $("[rel=tooltip]").tooltip()
-  $("[rel=popover]").popover()
+  $("[rel=popover]").popover({container: 'body'})
   $('table').addClass('table')
   
   $('iframe').css('border','none')
