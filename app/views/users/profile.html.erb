@@ -88,9 +88,9 @@
   <ul class="nav nav-tabs">
     <span style="float:right;"><small>Joined <%= time_ago_in_words(@user.created_at) %> ago</small></span>
     <li class="active"><a href="#research" data-toggle="tab">Research</a></li>
-    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm"> Comments</span></a></li>
-    <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm"> Liked</span> (<%= @user.like_count %>)</a></li>
-    <li><a href="#maps" data-toggle="tab"><i class="fa fa-map-marker"></i> MapKnitter maps</a></a>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span></a></li>
+    <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> Liked</span> (<%= @user.like_count %>)</a></li>
+    <li><a href="#maps" data-toggle="tab"><i class="fa fa-map-marker"></i><span class="hidden-sm hidden-xs"> MapKnitter maps</span></a></a>
   </ul>
 
   <br />
