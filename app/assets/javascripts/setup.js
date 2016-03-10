@@ -117,6 +117,7 @@ jQuery(document).ready(function($) {
 
 function print_linkless() {
   //$('a, a:after').addClass('linkless')
+  $('.popover').hide();
   $('body').append('<style> a, a:after { content: normal !important; } </style>');
   window.print();
 }
