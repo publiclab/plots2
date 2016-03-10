@@ -90,3 +90,10 @@ a[href]:after, abbr[title]:after {
 h2 {
   margin-top:20pt;
 }
+
+footer {
+  font-size: 8px;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}

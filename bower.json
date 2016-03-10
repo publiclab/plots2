@@ -1,8 +1,8 @@
 {
   "name": "plots2",
-  "version": "2.0.2",
+  "version": "2.1",
   "dependencies": {
-    "fontawesome":           "~4.2.0",
+    "fontawesome":           "~4.5.0",
     "bootstrap":             "~3.2.0",
     "bootstrap-lightbox":    "jbutz/bootstrap-lightbox#~0.5.0",
     "bootstrap-typeahead":   "bassjobsen/Bootstrap-3-Typeahead#~4.0.0",
