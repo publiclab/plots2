@@ -66,6 +66,13 @@ class NotesController < ApplicationController
     set_sidebar :tags, @tagnames
   end
 
+  def image
+    #response.headers['Content-Type'] = 'image/png'
+    #render text: DrupalNode.find(params[:id]).main_image.photo, layout: false
+    params[:size] = params[:size] || :large
+    redirect_to DrupalNode.find(params[:id]).main_image.path(params[:size])
+  end
+
   def create
     if current_user.drupal_user.status == 1
       saved,@node,@revision = DrupalNode.new_note({
