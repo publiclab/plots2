@@ -194,7 +194,7 @@ class WikiController < ApplicationController
 
   # wiki pages which have a root URL, like //publiclab.org/about
   def root
-    @node = DrupalNode.find_root_by_slug(params[:id])
+    @node = DrupalNode.find_by_slug(params[:id])
     return if check_and_redirect_node(@node)
     @revision = @node.latest
     @title = @revision.title
