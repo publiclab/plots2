@@ -1,0 +1,32 @@
+<div class="row">
+<% notes.each_with_index do |node, i| %>
+  <div class="col-md-6 note">
+
+    <% if node.main_image %>
+      <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+    <% end %>
+
+    <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
+
+    <p class="meta">
+        by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
+        <%= time_ago_in_words(node.created) %> ago
+        | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
+      | <i class="hidden-xs hidden-sm fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %>
+      | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
+    </p>
+
+    <% if params[:mod] %>
+      <a class="btn btn-default btn-xs" href="#"><i class="fa fa-ban-circle"></i> Spam</a>
+    <% end %>
+    <hr style="display:none;" class="bottom" />
+
+  </div>
+<% end %>
+</div>
+
+<br />
+
+<div class="text-center">
+  <%= will_paginate notes, :renderer => BootstrapPagination::Rails %>
+</div>
