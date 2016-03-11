@@ -1,0 +1,64 @@
+<%= stylesheet_link_tag "dashboard" %>
+<%= javascript_include_tag "dashboard" %>
+
+<div class="dashboard container">
+
+<%= render :partial => "dashboard/header" %>
+
+<div class="row">
+
+<div class="col-md-8">
+
+  <div class="dashboard-blog">
+
+    <div class="img" href="/blog" style="background-image: url('https://i.publiclab.org/system/images/photos/000/014/383/large/IMG_2819.JPG')">
+
+      <div class="blog-caption">
+        <h4>
+          <small class="pull-right hidden-xs hidden-sm">From the <a href="">Public Lab Blog</a></small>
+          <%= 'Blog title here' %> 
+          <small>by <a href="">Matej</a></small>
+        </h4>
+      </div>
+    </div>
+
+  </div>
+
+  <h3><i>Activity</i></h3>
+
+  <button class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i> Share your work</button>
+
+  <div class="meta">
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        All updates <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="">Research notes</a></li>
+        <li><a href="">Questions</a></li>
+        <li><a href="">Events</a></li>
+        <li><a href="">Comments</a></li>
+      </ul>
+    </div>
+    from other <a href="">community scientists</a> in the past week | 
+    <a href="/profile/<%= current_user.username %>">Your work</a> 
+    <!-- (2 responses) -->
+  </div>
+
+  <div class="activity">
+
+  </div>
+  
+  <br />
+
+</div>
+
+<div class="col-md-4">
+
+  <%= render :partial => "dashboard/sidebar" %>
+
+</div>
+
+</div>
+
+</div>

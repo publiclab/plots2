@@ -1,0 +1,156 @@
+.dashboard .header h1 {
+  font-size: 3em;
+  margin-bottom: 0;
+}
+
+@media (max-width:992px) {
+  .dashboard .header h1 {
+    font-size: 2em;
+  }
+}
+
+@media (min-width:992px) {
+  .dashboard .header {
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
+}
+
+@media (min-width:768px) {
+  .dashboard .header .btn-group {
+    float: right;
+  }
+}
+
+@media (min-width:768px) and (max-width:992px) {
+  .dashboard .header .btn-group {
+    margin-top: -20px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (min-width:1200px) {
+  .dashboard .header .btn-group {
+    margin-top: 21px;
+  }
+}
+
+.dashboard .stats h4 {
+  margin-bottom: 0;
+  font-size: 14px;
+  color: #888;
+}                          
+                           
+.dashboard .stats h4 b {
+  font-weight: normal;
+  color: #333;
+}
+
+@media (min-width:768px) {
+  .dashboard .stats h4 {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+}
+
+.dashboard h3 {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: -10px;
+  overflow: hidden;
+}
+
+/* line-on-sides-header example based on https://css-tricks.com/line-on-sides-headers/ */
+.dashboard h3 i {
+  display: inline-block;
+  position: relative;  
+  font-style: normal;
+}
+
+.dashboard h3 i:before,
+.dashboard h3 i:after {
+  content: "";
+  position: absolute;
+  height: 12px;
+  border-bottom: 1px solid #ccc;
+  top: 0;
+  width: 600px;
+}
+
+.dashboard h3 i:before {
+  right: 100%;
+  margin-right: 15px;
+}
+
+.dashboard h3 i:after {
+  left: 100%;
+  margin-left: 15px;
+}
+
+.dashboard .tab-pane {
+  padding: 12px 8px;
+}
+
+.dashboard .meta {
+  font-size: 13px;
+  color: #aaa;
+}
+
+.dashboard .meta .btn,
+.dashboard .meta .fa {
+  color: #888;
+}
+
+.dashboard .btn-block,
+.dashboard .input-group {
+  margin-bottom: 6px;
+}
+
+.dashboard .dashboard-blog {
+  display: block;
+}
+
+.dashboard .dashboard-blog .img {
+  background-size: cover;
+}
+
+@media (max-width:992px) {
+  .dashboard .dashboard-blog {
+    margin-top: 20px;
+  }
+}
+
+.dashboard .dashboard-blog div.blog-caption {
+  padding-top: 220px;
+}
+
+.dashboard .dashboard-blog div.blog-caption h4 {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 14px 10px 10px;
+}
+
+.dashboard .dashboard-blog div.blog-caption h4 small {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #444;
+  font-size: 13px;
+}
+
+.dashboard .dashboard-blog div.blog-caption h4 small.pull-right {
+  padding-top: 10px;
+}
+
+.dashboard .wikis .wiki {
+  margin-top: 14px;
+}
+
+.dashboard .wikis h4 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Junction Light", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  margin-top: 3px;
+}
+
+.dashboard .wikis h4 a {
+  color: #444;
+}
+

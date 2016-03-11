@@ -37,6 +37,20 @@ class HomeController < ApplicationController
     @unpaginated = true
   end
 
+  def dashboard2
+    @note_count = DrupalNode.select([:created, :type, :status])
+                            .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                            .count
+    @wiki_count = DrupalNodeRevision.select(:timestamp)
+                                    .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                                    .count
+    @notes = DrupalNode.where(type: 'note', status: 1)
+                       .page(params[:page])
+    @wikis = DrupalNode.where(type: 'page', status: 1)
+                       .page(params[:page])
+    render template: 'dashboard/dashboard'
+  end
+
   def comments
     @comments = DrupalComment.limit(20)
                              .order("timestamp DESC")
