@@ -3,7 +3,7 @@
 
 <div class="dashboard container">
 
-<%= render :partial => "dashboard/header" %>
+<%= render partial: "dashboard/header" %>
 
 <div class="row">
 
@@ -26,7 +26,7 @@
 
   <h3><i>Activity</i></h3>
 
-  <button class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i> Share your work</button>
+  <button class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i> Share<span class="hidden-xs"> your work</span></button>
 
   <div class="meta">
     <div class="btn-group">
@@ -34,18 +34,20 @@
         All updates <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
-        <li><a href="">Research notes</a></li>
-        <li><a href="">Questions</a></li>
-        <li><a href="">Events</a></li>
-        <li><a href="">Comments</a></li>
+        <li><a href="#"><input type="checkbox" /> Research notes</a></li>
+        <li><a href="#"><input type="checkbox" /> Questions</a></li>
+        <li><a href="#"><input type="checkbox" /> Events</a></li>
+        <li><a href="#"><input type="checkbox" /> Comments</a></li>
       </ul>
     </div>
-    from other <a href="">community scientists</a> in the past week | 
+    <span class="hidden-xs">from other <a href="">community scientists</a></span> &nbsp; in the past week |
     <a href="/profile/<%= current_user.username %>">Your work</a> 
     <!-- (2 responses) -->
   </div>
 
   <div class="activity">
+
+    <%= render partial: "dashboard/activity", locals: { notes: @notes } %>
 
   </div>
   
@@ -55,7 +57,7 @@
 
 <div class="col-md-4">
 
-  <%= render :partial => "dashboard/sidebar" %>
+  <%= render partial: "dashboard/sidebar" %>
 
 </div>
 

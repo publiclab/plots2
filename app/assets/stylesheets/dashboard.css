@@ -87,6 +87,17 @@
   margin-left: 15px;
 }
 
+.dashboard .nav-tabs > li, .nav-pills > li {
+  float:none;
+  display:inline-block;
+  *display:inline; /* ie7 fix */
+   zoom:1; /* hasLayout ie7 trigger */
+}
+
+.dashboard .nav-tabs, .nav-pills {
+  text-align:center;
+}
+
 .dashboard .tab-pane {
   padding: 12px 8px;
 }
@@ -124,6 +135,12 @@
   padding-top: 220px;
 }
 
+@media (max-width:992px) {
+  .dashboard .dashboard-blog div.blog-caption {
+    padding-top: 160px;
+  }
+}
+
 .dashboard .dashboard-blog div.blog-caption h4 {
   background: rgba(255, 255, 255, 0.8);
   padding: 14px 10px 10px;
@@ -154,3 +171,20 @@
   color: #444;
 }
 
+.dashboard .activity {
+  padding: 20px 0;
+}
+
+.dashboard .activity .note {
+  margin-bottom: 40px;
+}
+
+.dashboard .activity .note a.img {
+  max-height: 200px;
+  display: block;
+  overflow: hidden;
+}
+
+.dashboard .activity .note h4 a {
+  color: #444;
+}
