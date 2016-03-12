@@ -53,6 +53,7 @@ class HomeController < ApplicationController
     @wikis = DrupalNode.where(type: 'page', status: 1)
                        .order('nid DESC')
                        .page(params[:page])
+    @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count
     render template: 'dashboard/dashboard'
   end
 
