@@ -1,11 +1,14 @@
 (function() {
 
-  $('a#lists-tab').on('shown.bs.tab',function (e) {
+console.log('setup tab listener',  $('a.lists-tab'))
+//  $('a.lists-tab').on('shown.bs.tab', function (e) {
 
-    $.get('http://rssmixer.com/feed/2851.xml', function (feed) {
+    //$.get('http://rssmixer.com/feed/2851.xml', function (feed) {
+    $.get('http://feeds.feedburner.com/rssmixer/ZvcX', function (feed) {
  
       $('.lists i').remove();
-  
+ 
+console.log('hi there'); 
       $.each($(feed).find('channel item').slice(0, 4), function (i, item) { 
   
         $('.lists').append('<div class="feed-item-' + i + '"></div>');
@@ -36,7 +39,8 @@
       });
 
     });
+console.log('sent req'); 
 
-  });
+//  });
 
 })();
