@@ -141,9 +141,19 @@
   }
 }
 
+@media (max-width:768px) {
+  .dashboard .dashboard-blog div.blog-caption {
+    padding-top: 120px;
+  }
+}
+
 .dashboard .dashboard-blog div.blog-caption h4 {
   background: rgba(255, 255, 255, 0.8);
-  padding: 14px 10px 10px;
+  padding: 16px 10px 6px;
+}
+
+.dashboard .dashboard-blog div.blog-caption h4 a.title {
+  color: #444;
 }
 
 .dashboard .dashboard-blog div.blog-caption h4 small {
@@ -153,7 +163,7 @@
 }
 
 .dashboard .dashboard-blog div.blog-caption h4 small.pull-right {
-  padding-top: 10px;
+  padding-top: 6px;
 }
 
 .dashboard .wikis .wiki {
