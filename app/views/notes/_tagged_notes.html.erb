@@ -1,35 +1,34 @@
-  <div class="row-fluid">
+  <div class="row">
   <% nodes.each_with_index do |node,i| %>
-    <div class="span3 clearfix" style="overflow:hidden;">
+    <div class="col-md-3 clearfix" style="overflow:hidden;">
       <% if node.main_image %>
-        <a class="visible-phone thumbnail" style="float:left;width:30%;margin-right:10px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
-        <a class="hidden-phone thumbnail" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+        <a class="img-thumbnail" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
       <% end %>
       <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
       <p style="color:#888;"><small>
         by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> 
         | <%= time_ago_in_words(node.created_at) %> ago
-        | <a href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
+        | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-alt"></i> <%= node.comment_count %></a>
         | <%= number_with_delimiter(node.totalcount) %> views
-        | <i style="color:#888;" class="icon icon-star-empty"></i> <%= node.likes %>
+        | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
       </small></p>
-      <p class="hidden-desktop"><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150) %></p>
-      <p class="visible-desktop"><small><%= raw (strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150)) %></small></p>
+      <p class="hidden-lg"><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150) %></p>
+      <p class="visible-lg"><small><%= raw (strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150)) %></small></p>
       <p><a href="<%= node.path %>">Read more &raquo;</a></p>
       <p>
         <% node.tags[0..3].each do |tag| %>
-          <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
+          <a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
         <% end %>
       </p>
       <% if params[:mod] %>
-      <a class="btn btn-mini" href="#"><i class="icon-ban-circle"></i> Spam</a>
+      <a class="btn btn-mini" href="#"><i class="fa fa-ban-circle"></i> Spam</a>
       <% end %>
     </div>
-    <hr class="visible-phone" />
+    <hr class="visible-sm" />
   <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
   </div>
-  <hr class="hidden-phone" />
-  <div class="row-fluid">
+  <hr class="visible-sm" />
+  <div class="row">
   <% end %>
   <% end %>
   </div>

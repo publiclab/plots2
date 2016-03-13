@@ -20,7 +20,7 @@ class ImagesController < ApplicationController
         :notes => params[:image][:notes]
       })
     end
-    @image.nid = DrupalNode.find(params[:nid].to_i).nid unless params[:nid].nil?
+    @image.nid = DrupalNode.find(params[:nid].to_i).nid unless params[:nid].nil? || params[:nid] == "undefined"
     if @image.save!
       #@image = Image.find @image.id
       if request.xhr?

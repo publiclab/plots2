@@ -1,24 +1,45 @@
-<h2>Log in <small> or <a href="/signup">sign up to join</a> the Public Lab network</small></h2>
+<div class="container">
 
-<%= form_for @user_session, :as => :user_session, :url => { :action => "create" }, :html => {:class => "form"} do |f| %>
-  <% if f.error_messages != "" %><div class="alert alert-error"><%= f.error_messages %></div><% end %>
+<%= form_for @user_session, :as => :user_session, :url => { :action => "create" }, :html => {:class => "form col-md-6 offset-3"} do |f| %>
+
+  <h2>Log in <small> or <a href="/signup">sign up to join</a> the Public Lab network</small></h2>
+
+  <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
   <br style="clear:both;"/>
 
-  <p><%= f.text_field :username, {:placeholder => "username", :tabindex => 1} %></p>
-  <p><%= f.password_field :password, {:placeholder => "password", :tabindex => 2} %></p>
+  <div class="form-group">
+
+    <label for="username">Username</label>
+    <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username' } %>
+
+  </div>
+
+  <div class="form-group">
+
+    <label for="password">Password</label>
+    <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password' } %>
+
+  </div>
+ 
   <input type="hidden" name="return_to" value="<%= params[:return_to] %>" />
 
-  <p style="width:30%;"><i class="icon icon-exclamation-sign"></i> If you are migrating from the old PublicLaboratory.org website, you will be asked to connect your old account when you log in.</p>
+  <div class="checkbox">
+    <label>
+      <%= f.check_box :remember_me %> Remember me
+    </label>
+  </div>
 
-  <p><label class="checkbox">
-    <%= f.check_box :remember_me %> Remember me
-  </p></label>
+  <div class="input-group-inline">
 
-  <p>
-    <button class="btn-large btn-primary" type="submit" tabindex="3">Log in</button>
-    <a class="btn btn-large" href="/signup" tabindex="4">Sign up</a>
-  </p>
+    <button class="btn btn-primary btn-lg" type="submit" tabindex="3">Log in</button> 
+    <a class="btn btn-default btn-lg" href="/signup" tabindex="4">Sign up</a>
 
-  <p>Forgotten or lost your password? Reset it by <a href="/reset/">clicking here</a></p>
+  </div>
+
+  <br />
+  <p style="color: #888;">Forgotten or lost your password? Reset it by <a href="/reset/">clicking here</a></p>
+
 <% end %>
+
+</div>

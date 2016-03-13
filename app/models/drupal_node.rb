@@ -82,7 +82,9 @@ class DrupalNode < ActiveRecord::Base
   def self.weekly_tallies(type = "note",span = 52)
     weeks = {}
     (0..span).each do |week|
-      weeks[span-week] = DrupalNode.count :all, :select => :created, :conditions => {:type => type, :status => 1, :created => Time.now.to_i-week.weeks.to_i..Time.now.to_i-(week-1).weeks.to_i}
+      weeks[span-week] = DrupalNode.select(:created)
+                                   .where(type: type, status: 1, created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week-1).weeks.to_i)
+                                   .count
     end
     weeks
   end
@@ -115,6 +117,8 @@ class DrupalNode < ActiveRecord::Base
     self.likers.collect(&:uid).include?(uid)
   end
 
+  # should only be run at actual creation time -- 
+  # or, we should refactor to us node.created instead of Time.now
   def generate_path
     if self.type == 'note'
       username = DrupalUsers.find_by_uid(self.uid).name
@@ -184,7 +188,9 @@ class DrupalNode < ActiveRecord::Base
 
   # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_main_image
-    DrupalMainImage.find :last, :order => 'vid', :conditions => ['nid = ? AND field_main_image_fid IS NOT NULL',self.nid]
+    DrupalMainImage.order('vid')
+                   .where('nid = ? AND field_main_image_fid IS NOT NULL', self.nid)
+                   .last
   end
 
   # provide either a Drupally main_iamge or a Railsy one 
@@ -200,7 +206,8 @@ class DrupalNode < ActiveRecord::Base
 
   # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_content_field_image_gallery
-    DrupalContentFieldImageGallery.find :all, :conditions => {:nid => self.nid}, :order => "field_image_gallery_fid"
+    DrupalContentFieldImageGallery.where(nid: self.nid)
+                                  .order("field_image_gallery_fid")
   end
 
   def gallery
@@ -234,14 +241,19 @@ class DrupalNode < ActiveRecord::Base
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(tag)
-    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
-    DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids).length > 0
+    tids = DrupalTag.includes(:drupal_node_community_tag)
+                    .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
+                    .collect(&:tid)
+    DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids).length > 0
   end
 
   # returns the value for the most recent power tag of form key:value
   def power_tag(tag)
-    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
-    node_tag = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids).order('nid DESC')
+    tids = DrupalTag.includes(:drupal_node_community_tag)
+                    .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
+                    .collect(&:tid)
+    node_tag = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
+                                     .order('nid DESC')
     if node_tag && node_tag.first
       node_tag.first.tag.name.gsub(tag+':','')
     else
@@ -251,8 +263,10 @@ class DrupalNode < ActiveRecord::Base
 
   # returns all results
   def power_tags(tag)
-    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
-    node_tags = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids)
+    tids = DrupalTag.includes(:drupal_node_community_tag)
+                    .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
+                    .collect(&:tid)
+    node_tags = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
     tags = []
     node_tags.each do |nt|
       tags << nt.name.gsub(tag+':','')
@@ -262,14 +276,18 @@ class DrupalNode < ActiveRecord::Base
 
   # returns all results as whole tag (node) objects
   def power_tag_objects(tag)
-    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
-    DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids)
+    tids = DrupalTag.includes(:drupal_node_community_tag)
+                    .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
+                    .collect(&:tid)
+    DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
   end
 
   # return whole tag objects but no powertags or "event"
   def normal_tags
-    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag+":%").collect(&:tid)
-    node_tags = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)',self.id,tids)
+    tids = DrupalTag.includes(:drupal_node_community_tag)
+                    .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
+                    .collect(&:tid)
+    node_tags = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
     tags = []
     node_tags.each do |nt|
       tags << nt
@@ -278,19 +296,17 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def has_tag(tag)
-    tids = DrupalTag.includes(:drupal_node_community_tag).where("community_tags.nid = ? AND name LIKE ?",self.id,tag).collect(&:tid)
-    DrupalNodeCommunityTag.where('nid IN (?) AND tid IN (?)',self.id,tids).length > 0
+    tids = DrupalTag.includes(:drupal_node_community_tag)
+                    .where("community_tags.nid = ? AND name LIKE ?", self.id, tag)
+                    .collect(&:tid)
+    DrupalNodeCommunityTag.where('nid IN (?) AND tid IN (?)', self.id, tids).length > 0
   end
 
   # has it been tagged with "list:foo" where "foo" is the name of a Google Group?
   def mailing_list
     begin
-      if true#Rails.env == "production"
-        Rails.cache.fetch("feed-"+self.id.to_s+"-"+(self.updated_at.to_i/300).to_i.to_s) do
-          RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
-        end
-      else
-        return []
+      Rails.cache.fetch("feed-"+self.id.to_s+"-"+(self.updated_at.to_i/300).to_i.to_s) do
+        RSS::Parser.parse(open('https://groups.google.com/group/'+self.power_tag('list')+'/feed/rss_v2_0_topics.xml').read, false).items
       end
     rescue
       return []
@@ -405,11 +421,15 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def next_by_author
-    DrupalNode.find :first, :conditions => ['uid = ? and nid > ? and type = "note"', self.author.uid, self.nid], :order => 'nid'
+    DrupalNode.where('uid = ? and nid > ? and type = "note"', self.author.uid, self.nid)
+              .order('nid')
+              .first
   end
 
   def prev_by_author
-    DrupalNode.find :first, :conditions => ['uid = ? and nid < ? and type = "note"', self.author.uid, self.nid], :order => 'nid desc'
+    DrupalNode.where('uid = ? and nid < ? and type = "note"', self.author.uid, self.nid)
+              .order('nid desc')
+              .first
   end
 
   # ============================================

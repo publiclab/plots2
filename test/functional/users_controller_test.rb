@@ -1,16 +1,37 @@
+# def new
+# def create
+# def update
+# def edit
+# def list
+# def likes
+# def rss
+# def reset
+# def comments
+# def photo
+
 require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
 
-  def test_new
+  test "new user page" do
     get :new
     assert_response :success
   end
 
-  def test_list
+  test "list users" do
     get :list
     assert_response :success
     assert_not_nil :users
+  end
+
+  test "should not get spam profile" do
+    get :profile, id: User.find(3).username  #spam user
+    assert_response 302
+  end
+
+  test "should get profile" do
+    get :profile, id: DrupalUsers.where(status: 1).last.name
+    assert_response :success
   end
 
 #  def test_create_invalid

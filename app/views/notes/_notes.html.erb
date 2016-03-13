@@ -1,11 +1,10 @@
 <% notes = notes || @notes # accept local if present, default to instance %>
-<div class="" id="notes">
-    <div class="row-fluid">
+<div id="notes">
+    <div class="row">
     <% notes.each_with_index do |node,i| %>
-      <div class="span3 clearfix note" style="overflow:hidden;">
+      <div class="<% if @widget %>col-xs-3 col-sm-3 <% end %>col-md-3 clearfix note" style="overflow:hidden;">
         <% if node.main_image %>
-          <a class="visible-phone thumbnail" <% if @widget %>target="_blank"<% end %> style="float:left;width:30%;margin-right:10px;margin-bottom:6px;" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
-          <a class="hidden-phone thumbnail" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
+          <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
         <% end %>
 
         <% if node.type == 'note' %>
@@ -18,37 +17,32 @@
           <% if node.type == 'note' %>
             by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
             <%= time_ago_in_words(node.created) %> ago
-            | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="icon icon-comment-alt"></i> <%= node.comment_count %></a>
+            | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
           <% else %>
             last edit by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a> 
-            <%= time_ago_in_words(node.latest.timestamp) %> ago
+            <%= time_ago_in_words(Time.at(node.latest.timestamp)) %> ago
           <% end %>
-          | <i class="visible-phone icon icon-eye-open"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-phone">views</span>
-          | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="icon icon-star-empty"></i> <%= node.likes %>
+          | <i class="hidden-xs hidden-sm fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-xs hidden-sm">views</span>
+          | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
         </small></p>
 
         <% if @compact.nil? %>
-        <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
-        <p><a href="<%= node.path %>">Read more &raquo;</a></p>
-        <p>
-          <% if logged_in_as(['admin','moderator']) %><a class="btn btn-mini" href="/moderate/spam/<%= node.id %>"><i class="icon icon-ban-circle"></i> Spam</a><% end %>
-          <% if node.tags.length > 1 %>
-            <% node.tags[0..3].each do |tag| %>
-              <a class="label label-info" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
-            <% end %>
-          <% end %>
-        </p>
+          <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
+          <p>
+            <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> Spam</a><% end %>
+            <a href="<%= node.path %>">Read more &raquo;</a>
+          </p>
         <% end %>
         <% if params[:mod] %>
-        <a class="btn btn-mini" href="#"><i class="icon-ban-circle"></i> Spam</a>
+          <a class="btn btn-default btn-xs" href="#"><i class="fa fa-ban-circle"></i> Spam</a>
         <% end %>
         <hr style="display:none;" class="bottom" />
       </div>
-      <hr class="visible-phone" />
+      <% unless @widget %><hr class="visible-xs visible-sm" /><% end %>
     <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
     </div>
-    <hr class="hidden-phone grid" />
-    <div class="row-fluid">
+    <% unless @widget %><hr class="visible-xs visible-sm grid" /><% end %>
+    <div class="row">
     <% end %>
     <% end %>
     </div>

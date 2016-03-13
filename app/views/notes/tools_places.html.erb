@@ -15,11 +15,11 @@
 </script>
 
 <br />
-<div class="row-fluid">
+<div class="row">
 <% end %>
 
 <%= render :partial => "sidebar/featured" %>
-<div class="span9">
+<div class="col-md-9">
 
   <%= render :partial => "notes/format_toggle" %>
 
@@ -33,8 +33,8 @@
     <div class="navbar">
       <div class="navbar-inner">
         <ul class="nav">
-          <li<% if params[:action] == "tools" %> class="active"<% end %>><a href="/tools/"><i class="icon icon-wrench"></i> Tools</a></li>
-          <li<% if params[:action] == "places" %> class="active"<% end %>><a href="/places/"><i class="icon icon-flag"></i> Places</a></li>
+          <li<% if params[:action] == "tools" %> class="active"<% end %>><a href="/tools/"><i class="fa fa-wrench"></i> Tools</a></li>
+          <li<% if params[:action] == "places" %> class="active"<% end %>><a href="/places/"><i class="fa fa-flag"></i> Places</a></li>
         </ul>
       </div>
     </div>

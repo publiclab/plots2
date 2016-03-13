@@ -27,14 +27,40 @@ class HomeController < ApplicationController
   def dashboard
     @title = "Dashboard"
     @user = DrupalUsers.find_by_name current_user.username
-    @note_count = DrupalNode.count :all, :select => :created, :conditions => {:type => 'note', :status => 1, :created => Time.now.to_i-1.weeks.to_i..Time.now.to_i}
-    @wiki_count = DrupalNodeRevision.count :all, :select => :created, :conditions => {:timestamp => Time.now.to_i-1.weeks.to_i..Time.now.to_i}
+    @note_count = DrupalNode.select([:created, :type, :status])
+                            .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                            .count
+    @wiki_count = DrupalNodeRevision.select(:timestamp)
+                                    .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                                    .count
     set_sidebar
     @unpaginated = true
   end
 
+  def dashboard2
+    @note_count = DrupalNode.select([:created, :type, :status])
+                            .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                            .count
+    @wiki_count = DrupalNodeRevision.select(:timestamp)
+                                    .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                                    .count
+    @blog = DrupalTag.find_nodes_by_type('blog', 'note', 1).first
+    @notes = DrupalNode.where(type: 'note', status: 1)
+                       .where('nid != (?)', @blog.nid)
+                       .order('nid DESC')
+                       .page(params[:page])
+    # include revisions, then mix with new pages:
+    @wikis = DrupalNode.where(type: 'page', status: 1)
+                       .order('nid DESC')
+                       .page(params[:page])
+    @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count
+    render template: 'dashboard/dashboard'
+  end
+
   def comments
-    @comments = DrupalComment.find :all, :limit => 20, :order => "timestamp DESC", :conditions => {:status => 0}
+    @comments = DrupalComment.limit(20)
+                             .order("timestamp DESC")
+                             .where(status: 0)
     render :partial => "home/comments"
   end
 
@@ -47,7 +73,7 @@ class HomeController < ApplicationController
       maxlat = current_user.lat + dist
       minlon = current_user.lon - dist
       maxlon = current_user.lon + dist
-      @users = DrupalUsers.find(:all, :conditions => ["lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?",minlat,maxlat,minlon,maxlon])
+      @users = DrupalUsers.where("lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?", minlat, maxlat, minlon, maxlon)
     end
   end
 

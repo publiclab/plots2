@@ -1,0 +1,66 @@
+<%= stylesheet_link_tag "dashboard" %>
+<%= javascript_include_tag "dashboard" %>
+
+<div class="dashboard container">
+
+<%= render partial: "dashboard/header" %>
+
+<div class="row">
+
+<div class="col-md-8">
+
+  <div class="dashboard-blog">
+
+    <div class="img"<% if @blog.main_image %> style="background-image: url('<%= @blog.main_image.path(:large) %>')"<% end %>>
+
+      <div class="blog-caption">
+        <h4>
+          <small class="pull-right hidden-xs hidden-sm">From the <a href="/blog">Public Lab Blog</a></small>
+          <a class="title" href="/blog"><%= @blog.title %></a> 
+          <small>by <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
+        </h4>
+      </div>
+    </div>
+
+  </div>
+
+  <h3><i>Activity</i></h3>
+
+  <button href="/post" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i> Share<span class="hidden-xs"> your work</span></button>
+
+  <div class="meta">
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        All updates <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#"><input type="checkbox" /> Research notes</a></li>
+        <li><a href="#"><input type="checkbox" /> Questions</a></li>
+        <li><a href="#"><input type="checkbox" /> Events</a></li>
+        <li><a href="#"><input type="checkbox" /> Comments</a></li>
+      </ul>
+    </div> &nbsp; 
+    <span class="hidden-xs">from other <a href="">community scientists</a></span> in the past week <span class="hidden-xs">|
+    <a href="/profile/<%= current_user.username %>">Your work</a></span> 
+    <!-- (2 responses) -->
+  </div>
+
+  <div class="activity">
+
+    <%= render partial: "dashboard/activity", locals: { notes: @notes } %>
+
+  </div>
+  
+  <br />
+
+</div>
+
+<div class="col-md-4">
+
+  <%= render partial: "dashboard/sidebar" %>
+
+</div>
+
+</div>
+
+</div>

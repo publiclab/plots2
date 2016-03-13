@@ -1,6 +1,6 @@
 <%= render :partial => "sidebar/featured" %>
 
-<div class="span9">
+<div class="col-md-9">
   <h1 style="font-family:Junction Light;">Popular tags</h1>
 
   <p>We use tags to group research by topic -- browse below to see the most popular tags.</p>
@@ -12,7 +12,7 @@
     </tr>
     <% @tags.each do |tag| %>
       <tr>
-        <td><i class="icon-tag"></i> <a href="/tag/<%= tag.name %>"><%= tag.name %></a></td>
+        <td><i class="fa fa-tag"></i> <a href="/tag/<%= tag.name %>"><%= tag.name %></a></td>
         <td><%= tag.count %></td>
       </tr>
     <% end %>

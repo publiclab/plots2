@@ -136,6 +136,7 @@ Plots2::Application.routes.draw do
   match 'feed/liked' => 'notes#liked_rss'
 
   match 'dashboard' => 'home#dashboard'
+  match 'dashboard2' => 'home#dashboard2'
   match 'dashboard/comments' => 'home#comments'
   match 'profile/comments/:id' => 'users#comments'
   match 'nearby' => 'home#nearby'

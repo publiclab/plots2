@@ -1,3 +1,9 @@
+# def home
+# def front
+# def dashboard
+# def comments
+# def nearby
+
 require 'test_helper'
 
 class HomeControllerTest < ActionController::TestCase

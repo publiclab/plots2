@@ -53,10 +53,12 @@ class AdminController < ApplicationController
 
   def spam
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+      @nodes = DrupalNode.paginate(page: params[:page])
+                         .order("nid DESC")
       if params[:type] == "wiki"
-        @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:type => "page", :status => 1}, :page => params[:page])
+        @nodes = @nodes.where(type: "page", status: 1)
       else 
-        @nodes = DrupalNode.paginate(:order => "nid DESC", :conditions => {:status => 0}, :page => params[:page])
+        @nodes = @nodes.where(type: "page", status: 0)
       end
     else
       flash[:error] = "Only moderators can moderate posts."
@@ -153,7 +155,7 @@ class AdminController < ApplicationController
 
   def users
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      @users = DrupalUsers.find :all, :order => "uid DESC", :limit => 200
+      @users = DrupalUsers.order("uid DESC").limit(200)
     else
       flash[:error] = "Only moderators can moderate other users."
       redirect_to "/dashboard"

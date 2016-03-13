@@ -1,0 +1,30 @@
+<% if wikis && wikis.length > 0 %>
+  <div class="hidden-sm hidden-xs wiki-list">
+
+    <h4><%= title %></h4>
+
+    <% wikis.each do |wiki| %>
+      <% unless (!node.nil? && wiki.nid == node.nid) %>
+        <p style="margin:14px 0 0;">
+          <i class="fa fa-<%= raw wiki.icon %>"></i> 
+          <a href="<%= wiki.path %>">
+            <b><%= wiki.latest.title %></b>
+          </a> 
+        </p>
+        <p>
+          <small style="color:#888;">
+            updated <%= time_ago_in_words(wiki.updated_at) %> ago 
+            by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a>
+          </small>
+        </p>
+      <% end %>
+    <% end %>
+
+    <% if params[:controller] == "search" %>
+      <p><a href="/tag/<%= params[:id] %>">More...</a></p>
+    <% else %>
+      <p><a href="/wiki/">More &raquo;</a></p>
+    <% end %>
+
+  </div>
+<% end %>

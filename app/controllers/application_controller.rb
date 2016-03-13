@@ -11,6 +11,8 @@ class ApplicationController < ActionController::Base
       args[:note_count] ||= 8
       if type == :tags # accepts data of array of tag names as strings
         @notes = @notes || DrupalTag.find_nodes_by_type(data, 'note', args[:note_count])
+        
+        @notes = @notes.where('node.nid != (?)', @node.nid) if @node
         @wikis = DrupalTag.find_pages(data,10)
         @videos = DrupalTag.find_nodes_by_type_with_all_tags(['video']+data,'note',8) if args[:videos] && data.length > 1
         @maps = DrupalTag.find_nodes_by_type(data,'map',20)
@@ -27,7 +29,10 @@ class ApplicationController < ActionController::Base
                            .where('node.nid NOT IN (?)', hidden_nids)
                            .order('node.nid DESC')
                            .paginate(:page => params[:page])
-        @wikis = DrupalNode.find(:all, :order => "changed DESC", :conditions => {:status => 1, :type => 'page'}, :limit => 10)
+        @notes = @notes.where('node.nid != (?)', @node.nid) if @node
+        @wikis = DrupalNode.order("changed DESC")
+                           .where(status: 1, type: 'page')
+                           .limit(10)
       end
     end
     

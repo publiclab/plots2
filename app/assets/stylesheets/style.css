@@ -30,14 +30,19 @@ h1,h2,h3 {
   font-weight:normal;
 }
 
-h4,h5,h6, h1 small, h2 small, h3 small {
-  font-family:"Junction Regular", lucida grande,lucida sans console,sans-serif;
-  font-weight:normal;
+h2 small {
+  font-size: 60%;
+}
+
+h4,h5,h6, h1 small, h3 small {
+  font-family: "Junction Regular", lucida grande,lucida sans console,sans-serif;
+  font-weight: normal;
+  line-height: 1.4em;
 }
 
 #content h1, #content h2, #content h3 {
-  font-family:"Junction Light",lucida grande,lucida sans console,sans-serif;
-  padding-top:0.4em;
+  font-family: "Junction Light",lucida grande,lucida sans console,sans-serif;
+  padding-top: 0.4em;
 }
 
 #content h4 {
@@ -48,9 +53,17 @@ h4,h5,h6, h1 small, h2 small, h3 small {
   margin-top:8px;
 }
 
+#content p img,
+#content p iframe {
+  max-width: 100%;
+}
+
 /* fontawesome default color */
-a i { color:#222; }
-a i.icon-white { color:white; }
+a .fa { color:#222; }
+a .fa-white,
+.fa-white { 
+    color: white !important; 
+}
 
 .label a {
   color:white;
@@ -86,16 +99,12 @@ a i.icon-white { color:white; }
   }
 }
 
-@media (min-width: 979px) {
-  .header-spacer {
-    padding-top:60px;
-  }
-}
+body { padding-top: 70px; }
 
-@media (max-width: 1024px) {
-  #header .compact {
-    display: none;
-  }
+#header .collapse.in .hidden-xs,
+#header .collapse.in .hidden-sm,
+#header .collapse.in .hidden-md {
+  display: block !important;
 }
 
 .col2 {
@@ -104,21 +113,33 @@ a i.icon-white { color:white; }
   columns:2;
 }
 
-#header .brand {
-  color:white;
-  padding-top:13px;
-  padding-bottom:2px;
-  font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
+#header .navbar-brand {
+  color: white;
+  padding-top: 19px;
+  font-family: "Junction Light", lucida grande,lucida sans console,sans-serif;
+  font-size: 22px;
+}
+
+@media (max-width: 768px) {
+  #header #brand,
+  #header #brand-compact {
+    padding-top: 22px;
+    padding-right: 4px;
+  }
 }
 
 @media (max-width: 340px) {
   #brand { display:none; }
-  #brand-compact { display:inline; }
+  #header .brand-compact { display:inline; }
 }
 
 @media (min-width: 340px) {
-  #brand-compact { display:none; }
   #brand { display:inline; }
+  #header .brand-compact { display:none; }
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #aaa;
 }
 
 .nav-tabs li {
@@ -134,21 +155,19 @@ a i.icon-white { color:white; }
 }
 
 .footer {
+  color: #666;
   clear:both;
-  margin: 20px -20px 0;
-  padding: 20px;
+  margin-top: 40px;
+  padding: 30px;
   border-top: 1px solid #E5E5E5;
   background-color: #f8f8f8;
 }
 
-@media (min-width: 768px) {
-  .footer { margin:20px 0 0 0; }
-}
-
-@media (max-with: 786px) {
-  .footer {
-    margin: 20px -20px 20px;
-  }
+.footer ul {
+  margin-bottom: 50px;
+  list-style: none;
+  padding-left: 0;
+  line-height: 2em;
 }
 
 .caption {
@@ -173,18 +192,18 @@ a i.icon-white { color:white; }
   padding-bottom:4px;
 }
 
-#content h1 i.icon-link,
-#content h2 i.icon-link,
-#content h3 i.icon-link,
-#content h4 i.icon-link,
-#content h5 i.icon-link {
+#content h1 i.fa-link,
+#content h2 i.fa-link,
+#content h3 i.fa-link,
+#content h4 i.fa-link,
+#content h5 i.fa-link {
   color:#aaa;
 }
-#content h1 a:hover i.icon-link,
-#content h2 a:hover i.icon-link,
-#content h3 a:hover i.icon-link,
-#content h4 a:hover i.icon-link,
-#content h5 a:hover i.icon-link {
+#content h1 a:hover i.fa-link,
+#content h2 a:hover i.fa-link,
+#content h3 a:hover i.fa-link,
+#content h4 a:hover i.fa-link,
+#content h5 a:hover i.fa-link {
   color:#888;
   text-decoration:none;
 }
@@ -194,49 +213,22 @@ a i.icon-white { color:white; }
   margin-top: 8px;
 }
 
+#tags .label {
+  line-height: 2em;
+}
+
 /* Styles for specific areas of the site */
 
 .note-show .main-image {
   margin-bottom: 14px;
   height: auto;
   display: block;
-  width: 800px;
-}
-
-.note-show .main-image.compressed {
-  overflow: hidden;
-  max-height: 500px;
 }
 
 .note-show .main-image img {
   margin-bottom: 10px;
-  width: 100%;
 }
 
-.note-show .expand {
-  position: absolute;
-  margin: -90px 0 0;
-  padding: 30px 0 10px;
-  width: 71%;
-}
-
-.note-show .expand a:hover {
-  color: #bbb;
-}
-
-.note-show .expand a {
-  text-decoration: none;
-  width: 100%;
-  display: block;
-}
-
-.note-show .expand a i {
-  margin: 0 auto 0;
-  display: block;
-  font-size: 36px;
-  color: white;
-  width: 0;
-}
 
 #carousel h1, #carousel h2, #carousel h3, #carousel h4, #carousel h5 {
   color:white;

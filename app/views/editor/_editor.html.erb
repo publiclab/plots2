@@ -1,17 +1,18 @@
-<div class="btn-toolbar">
+<div class="btn-toolbar" style="margin-bottom:8px;">
+
   <div class="btn-group">
-    <a class="btn btn-small" onClick="$E.bold()"><i class="icon-bold"></i></a>
-    <a class="btn btn-small" onClick="$E.italic()"><i class="icon-italic"></i></a>
-    <a class="btn btn-small" onClick="$E.h2()"><b><span class="hidden-phone">Header</span><span class="visible-phone">H</span></b></a>
+    <a class="btn btn-default btn-sm" onClick="$E.bold()"><i class="fa fa-bold"></i></a>
+    <a class="btn btn-default btn-sm" onClick="$E.italic()"><i class="fa fa-italic"></i></a>
+    <a class="btn btn-default btn-sm" onClick="$E.h2()"><b><span class="hidden-sm">Header</span><span class="visible-sm">H</span></b></a>
   </div>
 
   <div class="btn-group">
-    <a rel="tooltip" title="Make a link" class="btn btn-small" href="javascript:void(0)" onClick="$E.link()"><i class="icon-link"></i></a>
-    <!--<a rel="tooltip" title="Place an image" class="btn btn-small" href="javascript:void(0)" onClick="$E.image()" data-><i class="icon-picture"></i></a>-->
+    <a rel="tooltip" title="Make a link" class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$E.link()"><i class="fa fa-link"></i></a>
+    <!--<a rel="tooltip" title="Place an image" class="btn btn-sm" href="javascript:void(0)" onClick="$E.image()" data-><i class="fa fa-picture"></i></a>-->
   </div>
 
-  <div class="btn-group hidden-phone">
-    <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+  <div class="btn-group hidden-sm">
+    <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
       Templates
       <span class="caret"></span>
     </a>
@@ -23,45 +24,49 @@
   </div>
 
   <div class="btn-group">
-    <a onClick="$E.save()" class="btn btn-small"><i class="icon-save"></i></a>
-    <a onClick="$E.recover()" class="btn btn-small">Recover</a>
+    <a onClick="$E.save()" class="btn btn-default btn-sm"><i class="fa fa-save"></i></a>
+    <a onClick="$E.recover()" class="btn btn-default btn-sm">Recover</a>
   </div>
 
   <div class="btn-group">
-    <a class="btn btn-link hidden-phone" target="_blank" href="/wiki/authoring-help"><i class="icon-question-sign"></i> Help</a>
-    <a class="btn btn-small visible-phone" target="_blank" href="/wiki/authoring-help"><i class="icon-question-sign"></i></a>
+    <a class="btn btn-default btn-sm" target="_blank" href="/wiki/authoring-help"><i class="fa fa-question-circle"></i></a>
   </div>
 
 </div>
 
-<div id="dropzone">
-  <textarea name="body" tabindex="2" class="span9" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %><%= render :partial => "editor/newsletter" if params[:newsletter] %></textarea>
+<div class="form-group dropzone">
+  <textarea name="body" tabindex="2" class="form-control" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %><%= render :partial => "editor/newsletter" if params[:newsletter] %></textarea>
   <div id="imagebar">
-    <div id="progress" style="display:none;" class="progress progress-striped active pull-right">
-      <div class="bar" style="width: 0%;"></div>
+    <div style="display:none;" class="progress progress-striped active pull-right">
+      <div class="progress-bar" style="width: 0%;"></div>
     </div>
     <p>
+
       <span class="uploading" style="display:none;">
         Uploading... (<a onClick="$E.cancel_upload()">cancel</a>)
       </span>
+
       <span class="prompt">
-        <span style="padding-right:4px;float:left;" class="hidden-phone">
+        <span style="padding-right:4px;float:left;" class="hidden-sm">
           Drag &amp; drop to add an image or file, or 
         </span>
-        <span class="fileinput-button">
-          <a class="hidden-phone">choose one</a>
-          <a class="visible-phone">
-            <i class="icon icon-upload"></i> Upload image
-          </a>
-          <input id="fileinput" type="file" name="image[photo]" style="height:4em;" />
-        </span>
+
+        <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
+        <label class="" for="fileinput">
+          <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
+          <a class="hidden-xs">choose one</a>
+          <span class="visible-xs">
+            <i class="fa fa-upload"></i> 
+            <a>Upload image</a>
+          </span>
+        </label> 
       </span>
+
     </p>
   </div>
 </div>
 
-<div class="well span9" id="preview" style="display:none;"> </div>
-<br style="clear:both;"/>
+<div class="well" id="preview" style="display:none;"> </div>
 
 <script>
   jQuery(document).ready(function() {

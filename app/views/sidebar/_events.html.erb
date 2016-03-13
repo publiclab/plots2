@@ -5,7 +5,7 @@
       <% events = @node.power_tags('events') %>
       <% events.each do |power_tag| %>
         <% DrupalTag.find_nodes_by_type_with_all_tags(["event",power_tag]).sort_by{|a| a.changed}.each do |node| %>
-          <li><a href="<%= node.path %>"><i class="icon-calendar"></i><% if node.has_power_tag('date') %> <b><%= DateTime.strptime(node.power_tag('date'),'%m-%d-%Y').to_date.to_s(:long) %></b><% end %> <%= node.title %></a></li>
+          <li><a href="<%= node.path %>"><i class="fa fa-calendar"></i><% if node.has_power_tag('date') %> <b><%= DateTime.strptime(node.power_tag('date'),'%m-%d-%Y').to_date.to_s(:long) %></b><% end %> <%= node.title %></a></li>
         <% end %>
       <% end %>
       <% if events.length == 0 %><li>No events</li><% end %>

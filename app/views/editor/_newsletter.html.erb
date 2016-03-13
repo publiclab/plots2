@@ -26,7 +26,7 @@ _[Barnstars](/wiki/barnstars) are a way to show appreciation for others' work._
 
 <% @barnstars.each do |note| %>
 <% tags = note.normal_tags[0..3] %>
-<i style="color:#db4;" class="icon icon-large icon-star-empty"></i> [<%= note.author.username %>](/profile/<%= note.author.username %>) was awarded a barnstar for their work in "[<%= note.title %>](<%= note.path %>)" by [<%= note.barnstar.author.username %>](/profile/<%= note.barnstar.author.username %>) <% if tags.length > 0 %>(<% tags.each_with_index do |tag,i| %>[<%= tag.name %>](/tag/<%= tag.name %>)<%= ', ' if i < tags.length-1 %><% end %>)<% end %>
+<i style="color:#db4;" class="fa fa-large icon-star-empty"></i> [<%= note.author.username %>](/profile/<%= note.author.username %>) was awarded a barnstar for their work in "[<%= note.title %>](<%= note.path %>)" by [<%= note.barnstar.author.username %>](/profile/<%= note.barnstar.author.username %>) <% if tags.length > 0 %>(<% tags.each_with_index do |tag,i| %>[<%= tag.name %>](/tag/<%= tag.name %>)<%= ', ' if i < tags.length-1 %><% end %>)<% end %>
 <% end %>
 
 ###Recent research

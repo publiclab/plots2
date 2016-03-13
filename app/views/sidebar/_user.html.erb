@@ -1,26 +1,16 @@
-<div class="span3">
+<div class="col-md-3">
+
   <%= render :partial => "sidebar/post_button" %>
+
   <%= feature('sidebar-feature') %>
 
-  <div class="hidden-phone">
-    <p><i class="icon icon-envelope"></i> <a href="/lists">Discussion lists &raquo;</a></p>
+  <div class="hidden-xs hidden-sm">
+    <p><i class="fa fa-envelope"></i> <a href="/lists">Discussion lists &raquo;</a></p>
     <p>Much of our work happens on our regional and topical discussion lists. <a href="/lists">Join one today!</a></p>
     <!--<p><a href="/wiki/barnraising-2013"><img src="/images/barnraising-2013.png" width="100%" /></a></p>-->
     <hr />
   </div>
 
-  <% if @wikis && @wikis.length > 0 %>
-  <div class="hidden-phone">
-  <h4>Recent wiki edits</h4>
-  <ul class="nav wikis bullet">
-    <% @wikis.each do |wiki| %>
-      <% if not wiki.latest.blank? %>
-        <li><a href="<%= wiki.path %>"><i class="icon-book"></i> <%= wiki.latest.title %></a> <small style="color:#888;">updated <%= time_ago_in_words(wiki.updated_at) %> ago by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
-      <% end %>
-    <% end %>
-  </ul>
-  <% end %>
-  <p><a href="/wiki/">More &raquo;</a></p>
-  </div>
+  <%= render partial: 'sidebar/wikis', locals: { wikis: @wikis, title: "Recent wiki edits", node: @node } %>
 
 </div>
