@@ -2,8 +2,9 @@
 
   $('a.lists-tab').on('shown.bs.tab', function (e) {
 
-    $.get('http://rssmixer.com/feed/2851.xml', function (feed) {
-    //$.get('http://feeds.feedburner.com/rssmixer/ZvcX', function (feed) {
+// must be https
+//    $.get('http://rssmixer.com/feed/2851.xml', function (feed) {
+    $.get('https://feeds.feedburner.com/rssmixer/ZvcX', function (feed) {
  
       $('.lists i').remove();
  
