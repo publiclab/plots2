@@ -1,6 +1,5 @@
 read -p "Enter your cloud9 username: " un
 rvm install ruby-2.1.2
-rvm use ruby-2.1.2
 sudo apt-get update
 sudo apt-get -y install imagemagick ruby-rmagick
 mysql-ctl start
