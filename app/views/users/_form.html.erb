@@ -1,4 +1,4 @@
-<%= form_for @user, :url => {:controller => 'users', :action => @action}, :html => {:class => "form-horizontal"} do |f| %>
+<%= form_for @user, :url => {:controller => 'users', :action => @action}, :html => {:class => "row"} do |f| %>
 
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
