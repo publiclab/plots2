@@ -14,6 +14,7 @@
     "jsdiff":                "~1.2.2",
     "flot":                  "~0.7",
     "leaflet":               "0.7.3",
+    "moment":                "~2.10.6",
     "junction":              "theleagueof/junction"
   }
 }

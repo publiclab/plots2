@@ -1,15 +1,27 @@
 (function() {
 
-  $('a.lists-tab').on('shown.bs.tab', function (e) {
+  // must be https
+  // 'http://rssmixer.com/feed/2851.xml'
+  var lists = {
+    'test':               '/feed.rss',
+    'combined':           'https://feeds.feedburner.com/rssmixer/ZvcX',
+    'publiclaboratory':   'https://groups.google.com/forum/feed/publiclaboratory/topics/rss.xml?num=15',
+    'grassrootsmapping':  'https://groups.google.com/forum/feed/grassrootsmapping/topics/rss.xml?num=15',
+    'plots-spectrometry': 'https://groups.google.com/forum/feed/plots-spectrometry/topics/rss.xml?num=15',
+    'plots-infrared':     'https://groups.google.com/forum/feed/plots-infrared/topics/rss.xml?num=15',
+    'plots-airquality':   'https://groups.google.com/forum/feed/plots-airquality/topics/rss.xml?num=15',
+    'plots-waterquality': 'https://groups.google.com/forum/feed/plots-waterquality/topics/rss.xml?num=15',
+    'plots-dev':          'https://groups.google.com/forum/feed/plots-dev/topics/rss.xml?num=15'
+  };
 
-// must be https
-//    $.get('http://rssmixer.com/feed/2851.xml', function (feed) {
-    $.get('https://feeds.feedburner.com/rssmixer/ZvcX', function (feed) {
+  var show_list = function (list) {
+
+    $.get(lists[list], function (feed) {
  
-      $('.lists i').remove();
+      $('.lists').html('');
  
       $.each($(feed).find('channel item').slice(0, 4), function (i, item) { 
-  
+ 
         $('.lists').append('<div class="feed-item-' + i + '"></div>');
   
         var itemEl       = $('.lists .feed-item-' + i),
@@ -19,14 +31,15 @@
             pubDate      = $(item).find('pubDate').html(),
             description  = $(item).find('description').html();
   
-        pubDate = moment(new Date(pubDate)).format("MMM Do");
+        pubDate = moment(new Date(pubDate)).fromNow();
   
         itemEl.append('<h4 class="title"></h4>');
         itemEl.find('.title').append('<a></a>');
         itemEl.find('.title a').attr('href', link);
         itemEl.find('.title a').append(title);
-  
-        var metaEl = itemEl.append('<p class="meta"></p>');
+ 
+        itemEl.append('<p class="meta"></p>');
+        var metaEl = $('.lists .meta:last');
   
         // metaEl.append('by <a class="author"></a>');
         // metaEl.find('.author').attr('href', 'https://publiclab.org/profile/' + author);
@@ -38,8 +51,11 @@
       });
 
     });
-console.log('sent req'); 
 
-  });
+  }
+
+  $('a.lists-tab').on('shown.bs.tab', function() { show_list('combined'); });
+
+  $('.list-select').change(function() { show_list($(this).val()); });
 
 })();

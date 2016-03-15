@@ -152,7 +152,8 @@
   padding: 16px 10px 6px;
 }
 
-.dashboard .dashboard-blog div.blog-caption h4 a.title {
+.dashboard .dashboard-blog div.blog-caption h4 a.title,
+.dashboard .lists h4 a {
   color: #444;
 }
 
@@ -197,4 +198,8 @@
 
 .dashboard .activity .note h4 a {
   color: #444;
+}
+
+.dashboard .lists h4 {
+  margin: 18px 0 2px;
 }
