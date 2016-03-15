@@ -45,7 +45,7 @@
   </script>
   
   <div id="c<%= comment.cid %>show">
-    <p><%= raw auto_link(RDiscount.new(comment.body).to_html, :sanitize => false) %></p>
+    <p><%= raw sanitize(auto_link(RDiscount.new(comment.body).to_html)) %></p>
   </div>
 
   <% if current_user %>

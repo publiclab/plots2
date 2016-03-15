@@ -67,8 +67,6 @@ class NotesController < ApplicationController
   end
 
   def image
-    #response.headers['Content-Type'] = 'image/png'
-    #render text: DrupalNode.find(params[:id]).main_image.photo, layout: false
     params[:size] = params[:size] || :large
     redirect_to DrupalNode.find(params[:id]).main_image.path(params[:size])
   end
