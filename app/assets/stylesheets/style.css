@@ -285,3 +285,14 @@ body { padding-top: 70px; }
   border-top:    1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
+
+@media (max-width:400px) {
+  .pagination > li {
+    display: none;
+  }
+
+  .pagination > li:first-child,
+  .pagination > li:last-child {
+    display: inline;
+  }
+}

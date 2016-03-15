@@ -56,7 +56,7 @@
   <!-- AJAXify -->
   <% end %>
 
-  <% unless @wildcard %><p style="clear:both;padding-top:8px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:<%= params[:id] %>&template=question"><i class="fa fa-white icon-question-sign"></i> Ask a question about <b><%= params[:id] %></b></a> or <a style="margin-bottom:6px;" class="btn btn-default" target="_blank" href="/subscribe/tag/question:<%= params[:id] %>">Subscribe to answer questions on this topic</a></p><% end %>
+  <% unless @wildcard %><p style="clear:both;padding-top:8px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:<%= params[:id] %>&template=question"><i class="fa fa-white icon-question-circle"></i> Ask a question about <b><%= params[:id] %></b></a> or <a style="margin-bottom:6px;" class="btn btn-default" target="_blank" href="/subscribe/tag/question:<%= params[:id] %>">Subscribe to answer questions on this topic</a></p><% end %>
 
   <ul class="nav nav-tabs" style="margin-top:10px;">
     <li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <span class="hidden-sm">Research </span>Notes</a></li>

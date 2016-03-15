@@ -203,3 +203,76 @@
 .dashboard .lists h4 {
   margin: 18px 0 2px;
 }
+
+.note-default {
+
+}
+
+.note .header-icon {
+  text-align: center;
+  margin-top: -14px;
+}
+
+.note .header-icon i {
+  padding: 9px;
+  border-radius: 20px;
+}
+
+.note-question h4,
+.note-event h4 {
+  margin-top: 0;
+}
+
+.note .btn-default {
+  margin-left: 6px;
+}
+
+.note-question,
+.note-event {
+  padding: 0 10px 2px;
+  border-top: 2px solid white;
+}
+
+.note-question,
+.note-question .btn-default {
+  background: #FFF2CC;
+  border-color: #F9D0A2;
+  color: #DAA583;
+}
+
+.note-question .btn-default:hover {
+  background: #F9D0A2;
+}
+
+.note-question .meta,
+.note-question i.fa,
+.note-question .meta i.fa {
+  color: #DAA583;
+  background: #FFF2CC;
+}
+
+.note-event,
+.note-event .btn-default {
+  background: #CFE2F3;
+  border-color: #B1CCF3;
+  color: #7591BF;
+}
+
+.note-event .btn-default {
+  background: #B1CCF3;
+}
+
+.note-event .meta,
+.note-event i.fa,
+.note-event .meta i.fa {
+  color: #7591BF;
+  background: #CFE2F3;
+}
+
+.note .meta a:hover i {
+  color: #666;
+}
+
+.note .btn-default {
+  background: none;
+}

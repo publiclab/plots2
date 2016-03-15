@@ -45,16 +45,23 @@
         // metaEl.find('.author').attr('href', 'https://publiclab.org/profile/' + author);
         // metaEl.find('.author').append(author);
   
+        metaEl.append('<i class="fa fa-envelope-o"></i> ');
         metaEl.append('<span class="date"></span>');
         metaEl.find('.date').append(pubDate);
   
       });
 
+      if (lists[list].match('https://groups.google.com')) {
+
+        $('.lists').append('<a href="https://groups.google.com/forum/#!forum/' + list + '">Read more &raquo;</a>');
+
+      }
+
     });
 
   }
 
-  $('a.lists-tab').on('shown.bs.tab', function() { show_list('combined'); });
+  $('a.lists-tab').on('shown.bs.tab', function() { show_list('test'); });
 
   $('.list-select').change(function() { show_list($(this).val()); });
 
