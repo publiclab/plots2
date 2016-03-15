@@ -45,7 +45,7 @@
   </script>
   
   <div id="c<%= comment.cid %>show">
-    <p><%= raw sanitize(auto_link(RDiscount.new(comment.body).to_html), tags: %w(iframe)) %></p>
+    <p><%= raw sanitize(auto_link(RDiscount.new(comment.body).to_html)) %></p>
   </div>
 
   <% if current_user %>

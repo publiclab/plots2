@@ -122,4 +122,17 @@ class NotesControllerTest < ActionController::TestCase
     # assert_select ".label", "meetup" # test for tag addition too, later
   end
 
+  test "should load iframe url in comments" do
+    comment = DrupalComment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id,
+      thread: "01/"
+    })
+    comment.comment = '<iframe src="http://mapknitter.org/embed/sattelite-imagery" style="border:0;"></iframe>'
+    comment.save
+    node = node(:one).path.split("/")
+    get :show, id: node[4], author: node[2], date: node[3]
+    assert_tag :tag => 'iframe', attributes: {src: 'http://mapknitter.org/embed/sattelite-imagery'}
+  end
+
 end
