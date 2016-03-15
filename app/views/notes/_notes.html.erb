@@ -22,7 +22,7 @@
             last edit by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a> 
             <%= time_ago_in_words(Time.at(node.latest.timestamp)) %> ago
           <% end %>
-          | <i class="hidden-xs hidden-sm fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-xs hidden-sm">views</span>
+          | <i class="fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-xs hidden-sm">views</span>
           | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
         </small></p>
 

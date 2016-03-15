@@ -1,32 +1,44 @@
-<div class="row">
-<% notes.each_with_index do |node, i| %>
-  <div class="col-md-6 note">
+<h3><i>Activity</i></h3>
 
-    <% if node.main_image %>
-      <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+<button href="/post" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i> Share<span class="hidden-xs"> your work</span></button>
+
+<div class="meta">
+  <div class="btn-group">
+    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      All updates <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><a href="#"><input type="checkbox" /> Research notes</a></li>
+      <li><a href="#"><input type="checkbox" /> Questions</a></li>
+      <li><a href="#"><input type="checkbox" /> Events</a></li>
+      <li><a href="#"><input type="checkbox" /> Comments</a></li>
+    </ul>
+  </div> &nbsp; 
+  <span class="hidden-xs">from other <a href="">community scientists</a></span> in the past week <span class="hidden-xs">|
+  <a href="/profile/<%= current_user.username %>">Your work</a></span> 
+  <!-- (2 responses) -->
+</div>
+
+<div class="activity">
+
+  <div class="row">
+    <% notes.each_with_index do |node, i| %>
+      <% if node.has_power_tag('question') %>
+        <%= render partial: "dashboard/node_question", locals: { node: node } %>
+      <% elsif node.has_tag('event') %>
+        <%= render partial: "dashboard/node_event", locals: { node: node } %>
+      <% else %>
+        <%= render partial: "dashboard/node_default", locals: { node: node } %>
+      <% end %>
     <% end %>
-
-    <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
-
-    <p class="meta">
-        by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
-        <%= time_ago_in_words(node.created) %> ago
-        | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
-      | <i class="hidden-xs hidden-sm fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %>
-      | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
-    </p>
-
-    <% if params[:mod] %>
-      <a class="btn btn-default btn-xs" href="#"><i class="fa fa-ban-circle"></i> Spam</a>
-    <% end %>
-    <hr style="display:none;" class="bottom" />
-
   </div>
-<% end %>
+
+  <br />
+
+  <div class="text-center">
+    <%= will_paginate notes, :renderer => BootstrapPagination::Rails %>
+  </div>
+
 </div>
 
 <br />
-
-<div class="text-center">
-  <%= will_paginate notes, :renderer => BootstrapPagination::Rails %>
-</div>

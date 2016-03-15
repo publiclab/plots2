@@ -27,6 +27,7 @@
 //= require ics/ics.deps.min.js
 //= require ics/ics.min.js
 //= require leaflet/dist/leaflet
+//= require moment/moment.js
 //  APPLICATION SCRIPTS:
 //= require search.js
 //= require setup.js

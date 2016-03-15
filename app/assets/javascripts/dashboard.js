@@ -1,16 +1,27 @@
 (function() {
 
-console.log('setup tab listener',  $('a.lists-tab'))
-//  $('a.lists-tab').on('shown.bs.tab', function (e) {
+  // must be https
+  // 'http://rssmixer.com/feed/2851.xml'
+  var lists = {
+    'test':               '/feed.rss',
+    'combined':           'https://feeds.feedburner.com/rssmixer/ZvcX',
+    'publiclaboratory':   'https://groups.google.com/forum/feed/publiclaboratory/topics/rss.xml?num=15',
+    'grassrootsmapping':  'https://groups.google.com/forum/feed/grassrootsmapping/topics/rss.xml?num=15',
+    'plots-spectrometry': 'https://groups.google.com/forum/feed/plots-spectrometry/topics/rss.xml?num=15',
+    'plots-infrared':     'https://groups.google.com/forum/feed/plots-infrared/topics/rss.xml?num=15',
+    'plots-airquality':   'https://groups.google.com/forum/feed/plots-airquality/topics/rss.xml?num=15',
+    'plots-waterquality': 'https://groups.google.com/forum/feed/plots-waterquality/topics/rss.xml?num=15',
+    'plots-dev':          'https://groups.google.com/forum/feed/plots-dev/topics/rss.xml?num=15'
+  };
 
-    //$.get('http://rssmixer.com/feed/2851.xml', function (feed) {
-    $.get('http://feeds.feedburner.com/rssmixer/ZvcX', function (feed) {
+  var show_list = function (list) {
+
+    $.get(lists[list], function (feed) {
  
-      $('.lists i').remove();
+      $('.lists').html('');
  
-console.log('hi there'); 
       $.each($(feed).find('channel item').slice(0, 4), function (i, item) { 
-  
+ 
         $('.lists').append('<div class="feed-item-' + i + '"></div>');
   
         var itemEl       = $('.lists .feed-item-' + i),
@@ -20,27 +31,38 @@ console.log('hi there');
             pubDate      = $(item).find('pubDate').html(),
             description  = $(item).find('description').html();
   
-        pubDate = moment(new Date(pubDate)).format("MMM Do");
+        pubDate = moment(new Date(pubDate)).fromNow();
   
         itemEl.append('<h4 class="title"></h4>');
         itemEl.find('.title').append('<a></a>');
         itemEl.find('.title a').attr('href', link);
         itemEl.find('.title a').append(title);
-  
-        var metaEl = itemEl.append('<p class="meta"></p>');
+ 
+        itemEl.append('<p class="meta"></p>');
+        var metaEl = $('.lists .meta:last');
   
         // metaEl.append('by <a class="author"></a>');
         // metaEl.find('.author').attr('href', 'https://publiclab.org/profile/' + author);
         // metaEl.find('.author').append(author);
   
+        metaEl.append('<i class="fa fa-envelope-o"></i> ');
         metaEl.append('<span class="date"></span>');
         metaEl.find('.date').append(pubDate);
   
       });
 
-    });
-console.log('sent req'); 
+      if (lists[list].match('https://groups.google.com')) {
 
-//  });
+        $('.lists').append('<a href="https://groups.google.com/forum/#!forum/' + list + '">Read more &raquo;</a>');
+
+      }
+
+    });
+
+  }
+
+  $('a.lists-tab').on('shown.bs.tab', function() { show_list('test'); });
+
+  $('.list-select').change(function() { show_list($(this).val()); });
 
 })();

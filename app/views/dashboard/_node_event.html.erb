@@ -1,0 +1,17 @@
+<div class="col-md-6">
+  <div class="note note-event">
+
+    <div class="header-icon"><i class="fa fa-calendar"></i></div>
+ 
+    <% if node.main_image %>
+      <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+    <% end %>
+ 
+    <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
+
+    <a class="btn btn-default btn-xs pull-right responsd rsvp">RSVP</a>
+ 
+    <p class="meta">Event <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
+
+  </div>
+</div>
