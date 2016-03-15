@@ -7,14 +7,28 @@
 </script>
 <%= javascript_include_tag "dragdrop" %>
 
-<hr class="visible-sm" />
+<hr style="clear:both;" class="visible-sm visible-xs" />
+
 <h3>Profile photo</h3>
 
 <div class="profile-dropzone" id="profile-dropzone" style="margin-bottom:20px;">
-  <img class="img-rounded" id="profile-photo" style="<% unless @user.photo_file_name %>display:none;<% end %>width:100%;margin-bottom:10px;margin-top:5%;;opacity:0.2;filter: alpha(opacity=20);" src="<% if @user.photo %><%= @user.photo_path(:thumb) %><% end %>" />
-  <p class="prompt"><span class="hidden-sm">Drag &amp; drop to add an image, or </span><span class="fileinput-button"><a><i class="fa fa-upload hidden-sm pull-left" style="padding-right:6px;"></i> choose an image</a><input tabindex="3" id="profile-fileinput" type="file" name="image[photo]" style="height:4em;"></span></p>
-  <br class="hidden-sm" />
-</div>
+    <img class="img-rounded" id="profile-photo" style="<% unless @user.photo_file_name %>display:none;<% end %>
+    width:100%;
+    margin-bottom:10px;
+    margin-top:5%;
+    opacity:0.2;
+    filter: alpha(opacity=20);" src="<% if @user.photo %><%= @user.photo_path(:thumb) %><% end %>" />
+
+    <p class="prompt">
+      <span class="hidden-sm hidden-xs"> Drag &amp; drop to add an image, or </span>
+      <span class="fileinput-button">
+        <a> <i class="fa fa-upload hidden-sm pull-left" style="padding-right:6px;"></i> choose an image</a>
+        
+      </span>
+    </p>
+    <br class="hidden-sm" />
+  </div>
+  <input id="profile-fileinput" type="file" name="image[photo]" >
 
 <div id="profile-progress" style="display:none;" class="progress progress-striped active">
   <div class="progress-bar" style="width: 0%;"></div>
@@ -22,6 +36,11 @@
 <p class="profile-uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
 
 <script>
+
+  // file field trigger
+  $("#profile-dropzone").click(function(e){
+   $("#profile-fileinput").trigger("click"); 
+  });
   $('#profile-fileinput').bind('focus',function(e) { $('#profile-dropzone').css('border-color','#4ac') })
   $('#profile-fileinput').bind('focusout',function(e) { $('#profile-dropzone').css('border-color','#ccc') })
   $('#profile-dropzone').bind('dragover',function(e) {
@@ -34,7 +53,7 @@
   $('#profile-dropzone').bind('drop',function(e) {
     e.preventDefault();
   })
-  $('#profile-dropzone').fileupload({
+  $('#profile-fileinput').fileupload({
     url: "/profile/photo",
     paramName: "photo",
     dropZone: $('#profile-dropzone'),
