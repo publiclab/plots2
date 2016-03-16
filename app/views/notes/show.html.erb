@@ -2,7 +2,7 @@
 
 <div class="col-md-9 note-show">
 
-  <% if current_user && @node.tags.length == 0 %><div class="alert">This note has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
+  <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning">This note has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
 
   <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
@@ -20,7 +20,7 @@
 
   <% if @node.has_power_tag('question') %>
   <% pt = @node.power_tag('question') %>
-  <div class="alert"><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> is asking a question about <b><%= pt %></b>: <a class="btn" target="_blank" href="/subscribe/tag/question:<%= pt %>">Sign up to answer questions on this topic</a></div>
+  <div class="alert alert-warning"><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> is asking a question about <b><%= pt %></b>: <a class="btn" target="_blank" href="/subscribe/tag/question:<%= pt %>">Sign up to answer questions on this topic</a></div>
   <% end %>
 
   <div>
