@@ -23,18 +23,19 @@ class CommentController < ApplicationController
       flash[:error] = "The comment could not be saved."
     end
   end
-     
+
   def update
     @comment = DrupalComment.find params[:id]
     if @comment.uid == current_user.uid
       # should abstract ".comment" to ".body" for future migration to native db
       @comment.comment = params[:body] 
       if @comment.save
+        redirect_to @comment.parent.path
         flash[:notice] = "Comment updated."
       else
         flash[:error] = "The comment could not be updated."
       end
-      redirect_to @comment.parent.path
+      
     else
       flash[:error] = "Only the author of the comment can edit it."
     end
