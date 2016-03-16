@@ -52,7 +52,14 @@ class HomeController < ApplicationController
     # include revisions, then mix with new pages:
     @wikis = DrupalNode.where(type: 'page', status: 1)
                        .order('nid DESC')
-                       .page(params[:page])
+                       .limit(10)
+    @wikis += DrupalNodeRevision.joins(:drupal_node)
+                                .where('type = (?)', 'page')
+                                .where('status = (?)', 1)
+                                .order('timestamp DESC')
+                                .limit(10)
+                                .group('DATE(FROM_UNIXTIME(timestamp))') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
+    @wikis = @wikis.sort_by { |a| a.created_at }.reverse
     @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count
     render template: 'dashboard/dashboard'
   end
