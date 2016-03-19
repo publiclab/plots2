@@ -29,9 +29,9 @@
       <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
       <td>
         <% if user.status == 0 %>
-          <i class='icon icon-ban-circle' style="color:#a00;"></i> Banned
+          <i class='fa fa-ban' style="color:#a00;"></i> Banned
         <% elsif user.status == 1 %>
-          <a class="btn btn-sm" data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= user.uid %>" ><i class='icon icon-ban-circle'></i> Ban</a>
+          <a class="btn btn-default btn-sm" data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> Ban</a>
         <% end %>
       </td>
       <% end %>
