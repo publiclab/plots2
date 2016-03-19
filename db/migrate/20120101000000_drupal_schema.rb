@@ -2,6 +2,7 @@ class DrupalSchema < ActiveRecord::Migration
   def up
     unless table_exists? "comments"
       create_table "comments", :primary_key => "cid", :options=>'ENGINE=MyISAM' do |t|
+        t.integer "cid",                             :default => 0,  :null => false
         t.integer "pid",                             :default => 0,  :null => false
         t.integer "nid",                             :default => 0,  :null => false
         t.integer "uid",                             :default => 0,  :null => false
