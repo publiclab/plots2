@@ -100,15 +100,15 @@ class UsersController < ApplicationController
       elsif params[:all] == 'true'
         @users = DrupalUsers.page(params[:page])
                             .order("uid DESC")
-      else
-        # recently active
-        @users = DrupalUsers.select('*, MAX(node.changed) AS last_updated')
-                            .group('users.uid')
-                            .where('users.status = 1 AND node.status = 1')
-                            .joins(:drupal_node)
-                            .order("last_updated DESC")
-                            .page(params[:page])
       end
+    else
+      # recently active
+      @users = DrupalUsers.select('*, MAX(node.changed) AS last_updated')
+                          .group('users.uid')
+                          .where('users.status = 1 AND node.status = 1')
+                          .joins(:drupal_node)
+                          .order("last_updated DESC")
+                          .page(params[:page])
     end
   end
 
