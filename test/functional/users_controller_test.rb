@@ -24,6 +24,14 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_nil :users
   end
 
+  test "list users by role" do
+    @user =  FactoryGirl.create(:user)
+    UserSession.create(@user)
+    get :list, id: 'admin'
+    assert_response :success
+    assert_not_nil :users
+  end
+
   test "should not get spam profile" do
     get :profile, id: User.find(3).username  #spam user
     assert_response 302
