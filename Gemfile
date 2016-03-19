@@ -1,84 +1,67 @@
 source 'https://rubygems.org'
-source 'https://rails-assets.org'
 
 ruby '2.1.2'
-gem 'rails', '3.2.20'
+gem 'rails', '~> 3.2.20'
+gem 'passenger'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-# Database handling
-#group :sqlite do
-#  gem 'sqlite3'
-#end
-group :mysql do
-  gem 'mysql2', '~> 0.3.20' # 0.4.3+ causes a version mismatch, apparently, and demands 'activerecord-mysql2-adapter', below
+# run with `bundle install --without production` or `bundle install --without mysql` to exclude this
+group :mysql, :production do
+  gem 'mysql2', '~> 0.3.20'
+  # mysql 0.4.3+ causes a version mismatch, apparently, and demands 'activerecord-mysql2-adapter'
 end
-# TODO support postgresql
+
+# ships with sqlite set up for easy setup during development
+# run with `bundle install --without development` or `bundle install --without sqlite` to exclude this
+group :sqlite, :development do
+  gem 'sqlite3'
+end
+
 #group :postgresql do
 #  gem "activerecord-postgresql-adapter"
 #end
 
-# Support composite primary keys
-gem 'composite_primary_keys'
-
-# Gems used only for assets and not required
-# in production environments by default.
+# Gems used only for assets and not required in production environments by default.
 group :assets do
-#  gem 'sass-rails',   '~> 3.2.3'
+  gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
-
+  gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+  gem 'therubyracer'
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
-gem 'passenger'
+# run with `bundle install --without development` to exclude these
+group :development do
+  gem "nifty-generators"
+end
 
-gem 'execjs'
-gem 'therubyracer'
-#gem 'secondbase', '0.5.0'
-gem 'rdiscount', '1.6.8'
+# run with `bundle install --without test` to exclude these
+group :test do
+  #gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'test-unit'
+  gem 'rake'
+end
+
+# run with `bundle install --without production` to exclude these
+group :production do
+  gem "scrypt", "~> 1.2.1"
+end
+
+gem 'composite_primary_keys'
+gem 'jquery-rails'
+gem 'rdiscount', '1.6.8' # Markdown
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
 gem 'georuby', '2.0'
 gem 'geokit-rails'
-gem 'spatial_adapter', :git => 'https://github.com/descentintomael/spatial_adapter.git'
 gem 'rails_autolink'
 gem 'rb-readline'
 gem "paperclip", ">= 4.1.1"
-
-gem "nifty-generators", :group => :development
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
 gem "authlogic", "3.2.0"
-#gem "authlogic-oid", :require => "authlogic_openid"
 gem "php-serialize", :require => "php_serialize"
-
-gem "scrypt", "~> 1.2.1"
-
 gem 'less-rails',   '~> 2.6'
-
-group :development, :test do
-  #gem 'rspec-rails'
-  gem 'factory_girl_rails'
-end
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'debugger'
-
-#gem "mocha", :group => :test

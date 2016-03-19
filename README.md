@@ -1,27 +1,19 @@
 PublicLab.org
 ======
 
-A complete rewrite of the Public Lab website on a new platform, with a whole new look. Rails, Bootstrap; intended to:
+The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes," and a wiki. 
 
-* boast more usable, friendly, but also more powerful interfaces
-* simplify and refine common tasks like posting research notes and filtering spam
-* enable faster development (based on Ruby on Rails and Twitter's Bootstrap frameworks)
-* completely revise and streamline "following" other contributors or specific keywords, with email alerts
-* work on tablets, smartphones, and in recent versions of Internet Explorer
+It features a Bootstrap-based UI and a variety of community and attribution features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails, and has since extended but not entirely replaced the legacy Drupal data model and database design. 
 
-###Key new features:
+Some key features include:
 
-* new simpler/faster note posting form
-* vastly improved advanced search
-* fast and easy auto-complete search
-* faster, nicer wiki revision interface
-* revamped integrated subscriptions interface
-* events and mailing list info for place wiki pages
-* recent notes, wiki pages, and active contributors per topic in page sidebar
-* easy tag-based pages
-* "follow" and "star" for each page
-* new simplified/improved wiki editing form
-* sorting and prioritization of notes and pages by popularity metric
+* a Markdown-based research note and wiki editor
+* wiki editing and revision tracking
+* tagging and tag-based content organization
+* email notification subscriptions for tags and comments
+* a barebones search interface
+* a user dashboard presenting recent activity
+
 
 ====
 
@@ -29,24 +21,33 @@ A complete rewrite of the Public Lab website on a new platform, with a whole new
 
 1. If you have a GitHub account, visit https://c9.io and log in with the GitHub button.
 2. Fork this repository to your own GitHub account, creating a `yourname/plots2` project.
-3. Name your project, then (order important!) choose the **Ruby** template, THEN enter `yourname/plots2` in the "Clone from Git or Mercurial URL" field, and press **Create Workspace** 
+3. Name your project, then enter `yourname/plots2` in the "Clone from Git or Mercurial URL" field, and press **Create Workspace** 
 4. In the command line prompt at the bottom of the page, type `./install_cloudnine.sh` and press enter.
-5. Enter your username when prompted, and click "Run Project" when it's done.
+5. Enter your username when prompted, and run `rails s -b $IP -p $PORT` when it's done.
 6. You're done! Go to the URL shown!
+
 
 ====
 
-##Prerequisites
+## Prerequisites
 
-Recommended; for an Ubuntu/Debian system. Varies slightly for mac/fedora/etc
+### Database
 
-Install a database, if necessary. We use mysql -- we're not adverse to others, but this is what we've built it on.
+Our production application runs on mysql, but for development, sqlite3 is sufficient.
 
-`sudo apt-get install mysql-server`
+* Mac OS X: Macs ship with sqlite3 already installed.
+* Ubuntu/Debian: `sudo apt-get install sqlite3`
+* Fedora/Red Hat/CentOS: `sudo yum install sqlite` -- you may need `sqlite-devel` as well.
 
-Application-specific dependencies:
 
-`sudo apt-get install bundler libmysqlclient-dev imagemagick ruby-rmagick`
+### Image libraries
+
+If you are just developing and don't plan to do work with image uploading, you may not need the following, but otherwise:
+
+`sudo apt-get install imagemagick ruby-rmagick`
+
+
+### Ruby
 
 Install rvm for Ruby management (http://rvm.io)
 
@@ -60,20 +61,20 @@ Then, use RVM to install version 2.1.2 of Ruby. (v1.9.3+ should also work):
 
 `rvm install 2.1.2`
 
-You'll also need **bower** which is available through NPM. To install NPM, you can run:
 
-`sudo apt-get install npm`
+### Gems with Bundler
 
-However, on Ubuntu, you may need to also install the `nodejs-legacy` package, as due to a naming collision, some versions of Ubuntu already have an unrelated package called `node`. To do this, run:
+Ruby dependencies, or Gems, are managed with Bundler. 
 
-`sudo apt-get install nodejs-legacy`
+`gem install bundler` - if it's not already installed, but it should be in a basic RVM ruby. 
 
-On Debian Wheezy, you may need instead to:
 
-* Run `sudo apt-get -t wheezy-backports install nodejs` as the `npm` package may not be available. 
-* Then run `sudo update-alternatives --install /usr/bin/node nodejs /usr/bin/nodejs 100` to make it available under the name `node` -- similarly to what we do for Ubuntu, above. 
-* Finally, run `curl -0 -L https://www.npmjs.org/install.sh | sudo sh` 
+### Assets with Bower
 
+You'll also need **bower** which is available through `npm`, part of `node.js`.
+
+[This wiki page from the nodejs repository](https://github.com/nodejs/node-v0.x-archive/wiki/Installing-Node.js-via-package-manager) has comprehensive and up to date installation guides for many systems. 
+ 
 Once NPM is installed, you should be able to run:
 
 `sudo npm install -g bower`
@@ -83,20 +84,21 @@ Once NPM is installed, you should be able to run:
 
 Installation steps:
 
-1. In the console, download a copy of the source with `git clone https://github.com/publiclab/plots2.git` or `git clone git@github.com:publiclab/plots2.git`.
-2. `cd plots2` to enter the new 'plots2' directory.
-3. Install gems with `bundle install` from the rails root folder. You may need to run `bundle update` if you have older gems in your environment.
-4. Copy and configure `config/database.yml` from `config/database.yml.example`, using a new empty databse you've created. A quick command you could use is: `cp config/database.yml.example config/database.yml`. You can then use your favorite editor to edit the `config/database.yml` file.
-5. Grant database creation permissions to your username.
-6. Initialize database with `bundle exec rake db:setup`
-  * if there are any errors, try one of these two fixes:
-    * run `rake db:migrate`
-    * OR
-    * in MySQL, `drop database XXX;` for each database in `config/database.yml` and then try `rake db:setup` again
-7. `rake db:seed` to populate it with initial dummy data
-8. Install static assets (like external javascript libraries, fonts) with `bower install` 
-9. Start rails with `bundle exec passenger start` from the Rails root and open http://localhost:3000 in a web browser. (For some, just `passenger start` will work; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler.) You may use `passenger start -a 0.0.0.0 -p 3000 -d -e production` to run production version and access it via publicly accessibly IP address.
-10. Wheeeee!
+1. In the console, download a copy of the source with `git clone https://github.com/publiclab/plots2.git`.
+2. Enter the new 'plots2' directory with `cd plots2`.
+3. Install gems with `bundle install --without production` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work. 
+4. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml` -- for development, we've included a prebuilt sqlite database in the `development.db` file, and this example database config is already set up to connect to it. If you are using another database, you can run `bundle exec rake db:setup` to set it up, and `bundle exec rake db:seed` to populate it with initial dummy data.
+5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
+6. Install static assets (like external javascript libraries, fonts) with `bower install` 
+7. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser. 
+8. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password". 
+9. Run `rake test` to confirm that your install is working properly. 
+
+### Bundle exec
+
+For some, it will be necessary to prepend your gem-related commands with `bundle exec`, for example `bundle exec passenger start`; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler. `bundle exec rake db:setup`, `bundle exec rake db:seed` are other examples of where this might be necessary.
+
+****
 
 ##Bugs and support
 
