@@ -3,33 +3,31 @@
   <h4 style="margin-top:0;"><%= title %></h4>
 
   <style>
-    #imagebar {
-      width:100%;
-    }
+    #imagebar {width:100%;}
   </style>
 
-  <div class="form-group dropzone">
-    <textarea onFocus="editing=true" name="body" class="form-control" id="<% if comment %>c<%= comment.id %><% end %>text-input" rows="6" cols="40" placeholder="Help the author refine their post, or point them at other helpful information on the site.
+  <div id="c<%= comment.id%>div" class="form-group">
+    <textarea onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="Help the author refine their post, or point them at other helpful information on the site.
 
-    Mention users by @username to notify them of this thread by email."><%= comment.comment if comment %></textarea>
+    Mention users by @username to notify them of this thread by email."><%= comment.comment%></textarea>
 
     <div id="imagebar">
-      <div style="display:none;" class="progress progress-striped active pull-right">
-        <div class="progress-bar" style="width: 0%;"></div>
+      <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-striped active pull-right">
+        <div id="c<%= comment.id%>progress-bar" class="progress-bar" style="width: 0%;"></div>
       </div>
 
       <p>
-        <span class="uploading" style="display:none;">
+        <span id="c<%= comment.id%>uploading" class="uploading" style="display:none;">
           Uploading...
         </span>
-        <span class="prompt">
+        <span id="c<%= comment.id%>prompt" class="prompt">
 
           <span style="padding-right:4px;float:left;" class="hidden-xs">
             Drag &amp; drop to add an image or file, or 
           </span>
 
-            <label class="" for="fileinput">
-            <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
+            <label id="c<%= comment.id%>input_label" for="c<%= comment.id%>input">
+            <input id="c<%= comment.id%>input" type="file" name="image[photo]" style="display:none;" />
             <a class="hidden-xs">choose one</a>
             <span class="visible-xs">
               <i class="fa fa-upload"></i> 
@@ -43,21 +41,92 @@
     </div>
   </div>
 
-  <div class="well col-md-11" id="<% if comment %>c<%= comment.id %><% end %>preview" style="background:white;display:none;"> 
+  <script type="application/javascript">
+    function setInit(id) {
+       var args = {
+         'textarea': 'c'+id+'text',
+         'preview': 'c'+id+'preview'
+       }
+       $E.initialize(args);
+    }
+
+    $('#c<%= comment.id%>div').bind('dragover',function(e) {
+      e.preventDefault();
+      $('#c<%= comment.id%>div').addClass('hover');
+    });
+
+    $('#c<%= comment.id%>div').bind('dragout',function(e) {
+      $('#c<%= comment.id%>div').removeClass('hover');
+    });
+
+    $('#c<%= comment.id%>div').bind('drop',function(e) {
+      e.preventDefault();
+      setInit(<%= comment.cid %>);
+    });
+
+    $('#c<%= comment.id%>div').fileupload({
+      url: "/images",
+      paramName: "image[photo]",
+      dropZone: $('#c<%= comment.id%>div'),
+      dataType: 'json',
+      formData: {
+        'uid':<%= current_user.uid %>,
+        'nid':<%= comment.uid %>
+      },
+      start: function(e) {
+        $('#imagebar #c<%= comment.id%>progress').show()
+        $('#imagebar #c<%= comment.id%>uploading').show()
+        $('#imagebar #c<%= comment.id%>prompt').hide()
+        $('#c<%= comment.id%>div').removeClass('hover');
+      },
+      done: function (e, data) {
+        $('#imagebar #c<%= comment.id%>progress-bar').hide()
+        $('#imagebar #c<%= comment.id%>uploading').hide()
+        $('#imagebar #c<%= comment.id%>prompt').show()
+        var is_image = false
+        if (data.result['filename'].substr(-3,3) == "jpg") is_image = true
+        if (data.result['filename'].substr(-4,4) == "jpeg") is_image = true
+        if (data.result['filename'].substr(-3,3) == "png") is_image = true
+        if (data.result['filename'].substr(-3,3) == "gif") is_image = true
+        if (data.result['filename'].substr(-3,3) == "JPG") is_image = true
+        if (data.result['filename'].substr(-4,4) == "JPEG") is_image = true
+        if (data.result['filename'].substr(-3,3) == "PNG") is_image = true
+        if (data.result['filename'].substr(-3,3) == "GIF") is_image = true
+
+        if (is_image) {
+          image_url = data.result.url.split('?')[0];
+          orig_image_url = image_url.replace('medium','original');
+          $E.wrap('[![',']('+image_url+')]('+orig_image_url+')', {'newline': true, 'fallback': data.result['filename']});
+        } else {
+          $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="fa fa-file"></i> ','</a>', {'newline': true, 'fallback': data.result['filename']});
+        }
+
+        if ($('#node_images').val() && $('#node_images').val().split(',').length > 1) $('#node_images').val([$('#node_images').val(),data.result.id].join(','));
+        else $('#node_images').val(data.result.id)
+      },
+
+      fileuploadfail: function(e,data) {},
+      progressall: function (e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $('#imagebar #c<%= comment.id%>progress #c<%= comment.id%>progress-bar').css(
+            'width',
+            progress + '%'
+        );
+      }
+    });
+  </script>
+
+  <div class="well col-md-11" id="c<%= comment.id %>preview" style="background:white;display: none">
   </div>
 
   <div class="control-group">
     <button type="submit" class="btn btn-primary">Publish</button>
-    <% if comment %>
       <a class="btn btn-default preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();$('#c<%= comment.cid %>text-input').toggle();$('#c<%= comment.cid %>edit .preview-btn').button('toggle');$E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">
         Preview
       </a>
       <a class="btn btn-default" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()">
         Cancel
       </a>
-    <% else %>
-      <a id="preview-btn" class="btn btn-default" onClick="$E.toggle_preview()">Preview</a>
-    <% end %>
 
     <span style="color:#888;"> &nbsp; 
       <br class="visible-xs" />Logged in as <b><%= current_user.username %></b> | 
