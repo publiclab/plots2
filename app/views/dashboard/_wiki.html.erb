@@ -1,0 +1,49 @@
+<p class="meta">A <a href="/wiki">shared knowledge base</a> for community science<!-- | <a href="">Your pages</a>--></p>
+
+<div class="meta row">
+  <div class="col-lg-8 col-md-7 col-sm-7 col-xs-7">
+    <div class="input-group">
+      <input type="text" class="form-control input-sm" placeholder="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-sm btn-default" type="button"><i class="fa fa-search"></i></button>
+      </span>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-md-5 col-sm-5 col-xs-5">
+    <button href="/wiki/new" class="btn btn-sm btn-default btn-block" type="button"><i class="fa fa-plus-circle"></i> New page</button>
+  </div>
+
+</div>
+
+<div class="wikis">
+
+  <% wikis.each do |wiki| %>
+    <div class="wiki">
+      <p>
+        <small style="color:#888;">
+          <% if wiki.is_a?(DrupalNode) %>
+            <i class="fa fa-book"></i>
+            New page by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a>
+          <% else %>
+            <i class="fa fa-pencil"></i>
+            New edit by <a href="/profile/<%= wiki.author.name %>"><%= wiki.author.name %></a>
+          <% end %>
+          <%= time_ago_in_words(wiki.created_at) %> ago 
+        </small>
+      </p>
+      <h4>
+        <a href="<%= wiki.path %>">
+          <% if wiki.is_a?(DrupalNode) %>
+            <%= wiki.latest.title %>
+          <% else %>
+            <%= wiki.title %>
+          <% end %>
+        </a> 
+      </h4>
+    </div>
+  <% end %>
+
+  <p><small><a href="/wiki/">More &raquo;</a></small></p>
+
+</div>

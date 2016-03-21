@@ -2,6 +2,7 @@
 
   // must be https
   // 'http://rssmixer.com/feed/2851.xml'
+  // cors? http://cors.io/?u=https://groups.google.com/forum/feed/publiclaboratory/topics/rss.xml?num=15
   var lists = {
     'test':               '/feed.rss',
     'combined':           'https://feeds.feedburner.com/rssmixer/ZvcX',

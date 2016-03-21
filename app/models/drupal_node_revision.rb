@@ -27,6 +27,14 @@ class DrupalNodeRevision < ActiveRecord::Base
     Time.at(self.timestamp)
   end
 
+  def updated_at
+    Time.at(self.timestamp)
+  end
+
+  def path
+    self.drupal_node.path
+  end
+
   def author
     DrupalUsers.find_by_uid self.uid
   end

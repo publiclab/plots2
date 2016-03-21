@@ -2,7 +2,7 @@
 
 <div class="col-md-9 note-show">
 
-  <% if current_user && @node.tags.length == 0 %><div class="alert">This note has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
+  <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning">This note has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
 
   <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
@@ -20,27 +20,13 @@
 
   <% if @node.has_power_tag('question') %>
   <% pt = @node.power_tag('question') %>
-  <div class="alert"><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> is asking a question about <b><%= pt %></b>: <a class="btn" target="_blank" href="/subscribe/tag/question:<%= pt %>">Sign up to answer questions on this topic</a></div>
+  <div class="alert alert-warning"><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> is asking a question about <b><%= pt %></b>: <a class="btn btn-default" target="_blank" href="/subscribe/tag/question:<%= pt %>">Sign up to answer questions on this topic</a></div>
   <% end %>
 
   <div>
-    <div class="btn-group pull-right hidden-print">
-      <script>var editing = false;</script>
-      <% if @node.prev_by_author %><a class="btn btn-link btn-sm" href="<%= @node.prev_by_author.path %>">&laquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 37) { window.location = "https://"+(window.location+'').split('/')[2]+"<%= @node.prev_by_author.path %>" }})</script><% end %>
-        <a class="btn btn-sm btn-link dropdown-toggle" data-toggle="dropdown">
-          <i class="fa fa-cog"></i> 
-        </a>
-        <ul class="dropdown-menu">
-          <li class="disabled"><a href="javascript:void(0)">by author</a></li>
-          <% @node.tags.each do |tag| %>
-          <li><a href="javascript:void(0)">by tag <b><%= tag.name %></b></a></li>
-          <% end %>
-        </ul>
-      <% if @node.next_by_author %><a class="btn btn-sm btn-link" href="<%= @node.next_by_author.path %>">&raquo;</a><script>$(document).keydown(function(e){ if (!editing && e.keyCode == 39) { window.location = "https://"+(window.location+'').split('/')[2]+"<%= @node.next_by_author.path %>" }})</script><% end %>
-    </div>
 
     <span>
-      <% if @node.status == 0 %><span class="label label-important">UNPUBLISHED</span> | <% end %>
+      <% if @node.status == 0 %><span class="label label-danger">UNPUBLISHED</span> | <% end %>
       by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> 
       <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %> <a href="/profile/<%= coauthor.username %>"><%= coauthor.username%></a><%= ',' if i < @node.coauthors.length-1 %><% end %><% end %> |
 
