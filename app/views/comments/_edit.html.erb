@@ -121,7 +121,10 @@
 
   <div class="control-group">
     <button type="submit" class="btn btn-primary">Publish</button>
-      <a class="btn btn-default preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();$('#c<%= comment.cid %>text-input').toggle();$('#c<%= comment.cid %>edit .preview-btn').button('toggle');$E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">
+      <a class="btn btn-default preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();
+          $('#c<%= comment.cid %>text').toggle();
+          $('#c<%= comment.cid %>edit .preview-btn').button('toggle');
+          $E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text').val())">
         Preview
       </a>
       <a class="btn btn-default" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()">
