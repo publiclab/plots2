@@ -1,4 +1,4 @@
-<form id="<% if comment %>c<%= comment.id %>edit<% else %>comment-form<% end %>"<% if comment %> style="display:none;"<% end %> data-remote="true" class="well" action="<% if comment %>/comment/update/<%= comment.id %><% else %>/comment/create/<%= @node.nid %><% end %>">
+<form id="comment-form" data-remote="true" class="well" action="/comment/create/<%= @node.nid %>">
 
   <h4 style="margin-top:0;"><%= title %></h4>
 
@@ -9,10 +9,8 @@
   </style>
 
   <div class="form-group dropzone">
-
-    <textarea onFocus="editing=true" name="body" class="form-control" id="<% if comment %>c<%= comment.id %><% end %>text-input" rows="6" cols="40" placeholder="Help the author refine their post, or point them at other helpful information on the site.
-
-Mention users by @username to notify them of this thread by email."><%= comment.comment if comment %></textarea>
+    <textarea onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email.">
+    </textarea>
 
     <div id="imagebar">
 
@@ -31,7 +29,7 @@ Mention users by @username to notify them of this thread by email."><%= comment.
           </span>
 
           <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
-          <label class="" for="fileinput">
+          <label id="input_label" class="" for="fileinput">
             <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
             <a class="hidden-xs">choose one</a>
             <span class="visible-xs">
@@ -46,37 +44,39 @@ Mention users by @username to notify them of this thread by email."><%= comment.
     </div>
   </div>
 
-  <div class="well col-md-11" id="<% if comment %>c<%= comment.id %><% end %>preview" style="background:white;display:none;"> </div>
+  <div class="well col-md-11" id="preview" style="background:white;display: none">
+  </div>
 
   <script>
-    (function() { 
-      $E.initialize({})
-    })()
 
     $D = {
       uid: <%= current_user.uid %>,
       type: 'comment'
     }
+      $('#input_label').click(function(e){
+        $E.initialize({});
+    });
   </script>
 
   <%= javascript_include_tag "dragdrop" %>
-
-  <script>
-    $('#comment-form').bind('ajax:beforeSend', function(){
+  <script>    
+    $('#comment-form').bind('ajax:beforeSend', function(event){      
       $("#text-input").prop('disabled',true)
-      $("#comment-form .btn-primary").button('loading',true)
+      $("#comment-form .btn-primary").button('loading',true);      
     });
-    $('#comment-form').bind('ajax:success', function(e,response){
-      $('#text-input').prop('disabled',false)
-      $('#text-input').val('')
-      $('#comments-container').append(response)
-      $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)+1
-      $("#comment-form .btn-primary").button('reset')
-      $('#preview').hide();
-      $('#text-input').show();
-      $('#preview-btn').button('toggle');
+
+    $('#comment-form').bind('ajax:success', function(e, data, status, xhr){      
+      $('#text-input').prop('disabled',false);      
+      $('#text-input').val('');      
+      $('#comments-container').append(xhr.responseText);      
+      $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)+1;
+      $("#comment-form .btn-primary").button('reset');      
+      $('#preview').hide();      
+      $('#text-input').show();      
+      $('#preview-btn').button('toggle');      
     })
-    $('#comment-form').bind('ajax:error', function(e,response){
+
+    $('#comment-form').bind('ajax:error', function(e,response){      
       $('#comment-form .control-group').addClass('has-error')
       $('#comment-form .control-group .help-block ').remove()
       $('#comment-form .control-group').append('<span class="help-block ">Error: there was a problem.</span>')
@@ -84,10 +84,14 @@ Mention users by @username to notify them of this thread by email."><%= comment.
   </script>
 
   <div class="control-group">
-
     <button type="submit" class="btn btn-primary">Publish</button>
     <% if comment %>
-      <a class="btn btn-default preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();$('#c<%= comment.cid %>text-input').toggle();$('#c<%= comment.cid %>edit .preview-btn').button('toggle');$E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">Preview</a>
+      <a class="btn btn-default preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();
+          $('#c<%= comment.cid %>text-input').toggle();
+          $('#c<%= comment.cid %>edit .preview-btn').button('toggle');
+          $E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">
+        Preview
+      </a>
       <a class="btn btn-default" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()">Cancel</a>
     <% else %>
       <a id="preview-btn" class="btn btn-default" onClick="$E.toggle_preview()">Preview</a>
@@ -100,6 +104,8 @@ Mention users by @username to notify them of this thread by email."><%= comment.
     </span>
   </div>
 
-  <p id="who-is-notified" style="display:none;color:#888;">Author, commenters, and those who've "liked" this note will receive email notifications</p>
+  <p id="who-is-notified" style="display:none;color:#888;">
+    Author, commenters, and those who've "liked" this note will receive email notifications
+  </p>
 
 </form>
