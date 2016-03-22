@@ -297,3 +297,16 @@ body { padding-top: 70px; }
     display: inline;
   }
 }
+
+.diff .diff-object,
+.diff .diff-object { 
+  padding: 3px; 
+}
+.diff .diff-added { 
+  background: #afa;
+  color: green;
+}
+.diff .diff-removed {
+  color: #900;
+  background: #faa; 
+}

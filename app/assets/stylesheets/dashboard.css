@@ -186,6 +186,10 @@
   padding: 20px 0;
 }
 
+.dashboard .activity-dropdown label {
+  font-weight: normal;
+}
+
 .dashboard .activity .note {
   margin-bottom: 40px;
 }
@@ -218,20 +222,46 @@
   border-radius: 20px;
 }
 
-.note-question h4,
-.note-event h4 {
-  margin-top: 0;
-}
-
 .note .btn-default {
   margin-left: 6px;
 }
 
-.note-question,
-.note-event {
+.note-pane h4 {
+  margin-top: 0;
+}
+
+.note-pane {
   padding: 0 10px 2px;
   border-top: 2px solid white;
 }
+
+/* begin wiki node styles */
+
+.note-wiki,
+.note-wiki .btn-default {
+  background: #f8f8f8;
+  border-color: #ddd;
+  color: #555;
+}
+
+.note-wiki .btn-default:hover {
+  background: #eee;
+}
+
+.note-wiki .btn-default {
+  background: #B1CCF3;
+}
+
+.note-wiki .meta,
+.note-wiki i.fa,
+.note-wiki .meta i.fa {
+  color: #555;
+  background: #f8f8f8;
+}
+
+/* end wiki node styles */
+
+/* begin event node styles */
 
 .note-question,
 .note-question .btn-default {
@@ -241,7 +271,7 @@
 }
 
 .note-question .btn-default:hover {
-  background: #F9D0A2;
+  background: #FFE7B3;
 }
 
 .note-question .meta,
@@ -251,11 +281,19 @@
   background: #FFF2CC;
 }
 
+/* end question node styles */
+
+/* begin event node styles */
+
 .note-event,
 .note-event .btn-default {
   background: #CFE2F3;
   border-color: #B1CCF3;
   color: #7591BF;
+}
+
+.note-event .btn-default:hover {
+  background: #BAD5EE;
 }
 
 .note-event .btn-default {
@@ -269,10 +307,22 @@
   background: #CFE2F3;
 }
 
+/* end event node styles */
+
+@media (min-width:992px) {
+  .note-container-wiki {
+    display: none;
+  }
+}
+
 .note .meta a:hover i {
   color: #666;
 }
 
 .note .btn-default {
   background: none;
+}
+
+.wiki .btn-diff {
+  color: #ccc;
 }

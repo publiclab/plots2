@@ -227,6 +227,12 @@ class WikiController < ApplicationController
     end
   end
 
+  def diff
+    @a = DrupalNodeRevision.find_by_vid(params[:a])
+    @b = DrupalNodeRevision.find_by_vid(params[:b])
+    render partial: 'wiki/diff'
+  end
+
   def index
     @title = "Wiki"
 

@@ -1,5 +1,5 @@
-<div class="col-md-6">
-  <div class="note note-event">
+<div class="col-md-6 note-container-event">
+  <div class="note note-pane note-event">
 
     <div class="header-icon"><i class="fa fa-calendar"></i></div>
  
@@ -9,7 +9,7 @@
  
     <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
 
-    <a class="btn btn-default btn-xs pull-right responsd rsvp">RSVP</a>
+    <a class="btn btn-default btn-xs pull-right respond rsvp">RSVP</a>
  
     <p class="meta">Event <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 

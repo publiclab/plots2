@@ -2,16 +2,26 @@
 
 <button href="/post" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i> Share<span class="hidden-xs"> your work</span></button>
 
-<div class="meta">
+<div class="meta activity-dropdown">
   <div class="btn-group">
     <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      All updates <span class="caret"></span>
+      <span class="node-type-filter">All updates</span> 
+      <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-      <li><a href="#"><input type="checkbox" /> Research notes</a></li>
-      <li><a href="#"><input type="checkbox" /> Questions</a></li>
-      <li><a href="#"><input type="checkbox" /> Events</a></li>
-      <li><a href="#"><input type="checkbox" /> Comments</a></li>
+      <li><a href="#"><label><input data-type="note"     class="node-type" type="checkbox" checked="checked" /> Research notes</label></a></li>
+      <li><a href="#"><label><input data-type="question" class="node-type" type="checkbox" checked="checked" /> Questions     </label></a></li>
+      <li><a href="#"><label><input data-type="event"    class="node-type" type="checkbox" checked="checked" /> Events        </label></a></li>
+      <li><a href="#"><label><input data-type="comment"  class="node-type" type="checkbox" checked="checked" /> Comments      </label></a></li>
+      <li class="hidden-sm"><a href="#"><label><input data-type="wiki" class="node-type" type="checkbox" checked="checked" /> Wiki          </label></a></li>
+
+      <li class="divider"></li>
+
+      <li class="dropdown-header">Sort by</li>
+      <li><a href="#"><a href="#">Post date</a></li>
+      <li><a href="#"><a href="#">Recent activity</a></li>
+
+
     </ul>
   </div> &nbsp; 
   <span class="hidden-xs">from other <a href="">community scientists</a></span> in the past week <span class="hidden-xs">|
@@ -22,13 +32,15 @@
 <div class="activity">
 
   <div class="row">
-    <% notes.each_with_index do |node, i| %>
-      <% if node.has_power_tag('question') %>
-        <%= render partial: "dashboard/node_question", locals: { node: node } %>
+    <% activity.each_with_index do |node, i| %>
+      <% if node.is_a?(DrupalNodeRevision) || node.type == 'page' %>
+        <%= render partial: "dashboard/node_wiki",     locals: { node: node, index: i } %>
+      <% elsif node.has_power_tag('question') %>
+        <%= render partial: "dashboard/node_question", locals: { node: node, index: i } %>
       <% elsif node.has_tag('event') %>
-        <%= render partial: "dashboard/node_event", locals: { node: node } %>
+        <%= render partial: "dashboard/node_event",    locals: { node: node, index: i } %>
       <% else %>
-        <%= render partial: "dashboard/node_default", locals: { node: node } %>
+        <%= render partial: "dashboard/node_default",  locals: { node: node, index: i } %>
       <% end %>
     <% end %>
   </div>
@@ -36,7 +48,7 @@
   <br />
 
   <div class="text-center">
-    <%= will_paginate notes, :renderer => BootstrapPagination::Rails %>
+    <%= will_paginate notes, :renderer => BootstrapPagination::Rails if notes %>
   </div>
 
 </div>

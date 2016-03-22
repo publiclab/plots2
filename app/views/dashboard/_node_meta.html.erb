@@ -1,5 +1,6 @@
 by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
-<%= time_ago_in_words(node.created) %> ago
+<%= time_ago_in_words(node.created_at) %> ago
+<% node = node.parent if node.is_a?(DrupalNodeRevision) %>
 <span class="">
   <% if node.comment_count > 0 %>| <a href="<%= node.path %>#comments"><i class="fa fa-comment-o"></i> <%= node.comment_count %></a><% end %>
   | <i class="hidden-xs hidden-sm fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %>

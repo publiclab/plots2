@@ -1,5 +1,62 @@
 (function() {
 
+  // load from localstorage?
+  // sort by recent activity
+
+  $('.activity-dropdown .dropdown-toggle').click(function(e) {
+    e.preventDefault();
+  });
+
+  $('.activity-dropdown input').click(function() {
+
+    if ($(this).prop('checked')) {
+
+      $('.note-container-' + $(this).attr('data-type')).show();
+
+    } else {
+
+      $('.note-container-' + $(this).attr('data-type')).hide();
+      console.log( $(this).attr('data-type'));
+
+    }
+
+    if ($('.activity-dropdown input.node-type:checked').length < $('.activity-dropdown input.node-type').length) {
+
+      $('.activity-dropdown .dropdown-toggle .node-type-filter').html('Selected updates');
+
+    } else {
+
+      $('.activity-dropdown .dropdown-toggle .node-type-filter').html('All updates');
+
+    }
+
+  });
+
+
+  $('.note-wiki, .wikis .wiki').each(function(wiki) {
+
+    var wikiEl = $(this),
+        index  = wikiEl.attr("data-index"),
+        a      = wikiEl.find(".wiki-diff-" + index).attr("data-diff-a"),
+        b      = wikiEl.find(".wiki-diff-" + index).attr("data-diff-b");
+
+    $(this).find(".btn-diff-" + index).click(function() {
+
+      wikiEl.find(".wiki-diff-" + index).load("/wiki/diff/?a=" + a + "&b=" + b);
+      wikiEl.find(".wiki-diff-" + index).show();
+
+      $(this).off('click');
+      $(this).click(function() {
+
+        wikiEl.find(".wiki-diff-" + index).toggle();
+
+      });
+
+    });
+
+  });
+
+
   // must be https
   // 'http://rssmixer.com/feed/2851.xml'
   // cors? http://cors.io/?u=https://groups.google.com/forum/feed/publiclaboratory/topics/rss.xml?num=15

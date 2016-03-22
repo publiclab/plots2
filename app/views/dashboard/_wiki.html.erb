@@ -18,8 +18,12 @@
 
 <div class="wikis">
 
-  <% wikis.each do |wiki| %>
-    <div class="wiki">
+  <% wikis.each_with_index do |wiki, index| %>
+
+    <% revision = wiki %>
+    <% wiki = wiki.parent if wiki.is_a?(DrupalNodeRevision) %>
+
+    <div class="wiki" data-index="<%= index %>">
       <p>
         <small style="color:#888;">
           <% if wiki.is_a?(DrupalNode) %>
@@ -29,7 +33,13 @@
             <i class="fa fa-pencil"></i>
             New edit by <a href="/profile/<%= wiki.author.name %>"><%= wiki.author.name %></a>
           <% end %>
+
           <%= time_ago_in_words(wiki.created_at) %> ago 
+
+          <% if revision.is_a?(DrupalNodeRevision) && revision.previous %>
+           - <a class="btn-diff btn-diff-<%= index %>">diff</a>
+          <% end %>
+
         </small>
       </p>
       <h4>
@@ -41,6 +51,10 @@
           <% end %>
         </a> 
       </h4>
+
+      <% if revision.is_a?(DrupalNodeRevision) && revision.previous %>
+        <div data-diff-a="<%= revision.previous.vid %>" data-diff-b="<%= revision.vid %>" class="well wiki-diff-<%= index %>" style="display:none;"><i class="fa fa-circle-o-notched fa-spin"></i></div>
+      <% end %>
     </div>
   <% end %>
 
