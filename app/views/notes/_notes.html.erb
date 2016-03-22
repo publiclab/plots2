@@ -23,7 +23,7 @@
             <%= time_ago_in_words(Time.at(node.latest.timestamp)) %> ago
           <% end %>
           | <i class="fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-xs hidden-sm">views</span>
-          | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likers.length %>
+          | <i style="<% if node.likers.length > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likers.length %>
         </small></p>
 
         <% if @compact.nil? %>
