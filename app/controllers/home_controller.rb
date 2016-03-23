@@ -69,9 +69,10 @@ class HomeController < ApplicationController
                                 .limit(10)
                                 .group(:title, 'DATE(FROM_UNIXTIME(timestamp))') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     @wikis = @wikis.sort_by { |a| a.created_at }.reverse
-    @comments = DrupalComment.joins(:drupal_node)
+    @comments = DrupalComment.joins(:drupal_node, :drupal_users)
                              .order('timestamp DESC')
                              .where('timestamp - node.created > ?', 86400) # don't report edits within 1 day of page creation
+                             .limit(20)
                              .group('title', 'DATE(FROM_UNIXTIME(timestamp))') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
 #                            .where('comments.status = (?)', 1)
     @activity = (@notes + @wikis + @comments).sort_by { |a| a.created_at }.reverse
