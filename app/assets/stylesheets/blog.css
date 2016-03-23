@@ -23,6 +23,10 @@
  line-height:1.2em;
 }
 
+.blog .blog-entry img {
+  max-width: 100%;
+}
+
 .blog .meta {
   text-align:center;
   margin:10px 0 20px;

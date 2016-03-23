@@ -34,7 +34,7 @@
   <% else %>
 
       <% @notes.each_with_index do |node,i| %>
-        <div class="clearfix">
+        <div class="clearfix blog-entry">
           <% if node.main_image %>
             <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" /></a>
           <% end %>
