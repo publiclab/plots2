@@ -45,8 +45,16 @@ class HomeController < ApplicationController
                                     .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                                     .count
     @blog = DrupalTag.find_nodes_by_type('blog', 'note', 1).first
+    # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
+    hidden_nids = DrupalNode.joins(:drupal_node_community_tag)
+                            .joins("LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid")
+                            .select('node.*, term_data.*, community_tags.*')
+                            .where(type: 'note', status: 1)
+                            .where('term_data.name = (?)', 'hidden:response')
+                            .collect(&:nid)
     @notes = DrupalNode.where(type: 'note', status: 1)
                        .where('nid != (?)', @blog.nid)
+                       .where('node.nid NOT IN (?)', hidden_nids)
                        .order('nid DESC')
                        .page(params[:page])
     # include revisions, then mix with new pages:
@@ -54,12 +62,19 @@ class HomeController < ApplicationController
                        .order('nid DESC')
                        .limit(10)
     @wikis += DrupalNodeRevision.joins(:drupal_node)
+                                .order('timestamp DESC')
                                 .where('type = (?)', 'page')
                                 .where('status = (?)', 1)
-                                .order('timestamp DESC')
+                                .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
                                 .limit(10)
-                                .group('DATE(FROM_UNIXTIME(timestamp))') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
+                                .group(:title, 'DATE(FROM_UNIXTIME(timestamp))') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     @wikis = @wikis.sort_by { |a| a.created_at }.reverse
+    @comments = DrupalComment.joins(:drupal_node)
+                             .order('timestamp DESC')
+                             .where('timestamp - node.created > ?', 86400) # don't report edits within 1 day of page creation
+                             .group('title', 'DATE(FROM_UNIXTIME(timestamp))') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
+#                            .where('comments.status = (?)', 1)
+    @activity = (@notes + @wikis + @comments).sort_by { |a| a.created_at }.reverse
     @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count
     render template: 'dashboard/dashboard'
   end

@@ -11,15 +11,16 @@
   </div>
 
   <div class="col-lg-4 col-md-5 col-sm-5 col-xs-5">
-    <button href="/wiki/new" class="btn btn-sm btn-default btn-block" type="button"><i class="fa fa-plus-circle"></i> New page</button>
+    <a href="/wiki/new" class="btn btn-sm btn-default btn-block" type="button"><i class="fa fa-plus-circle"></i> New page</a>
   </div>
 
 </div>
 
 <div class="wikis">
 
-  <% wikis.each do |wiki| %>
-    <div class="wiki">
+  <% wikis.each_with_index do |wiki, index| %>
+
+    <div class="wiki" data-index="<%= index %>">
       <p>
         <small style="color:#888;">
           <% if wiki.is_a?(DrupalNode) %>
@@ -29,18 +30,29 @@
             <i class="fa fa-pencil"></i>
             New edit by <a href="/profile/<%= wiki.author.name %>"><%= wiki.author.name %></a>
           <% end %>
+
           <%= time_ago_in_words(wiki.created_at) %> ago 
+
+          <% if wiki.is_a?(DrupalNodeRevision) && wiki.previous %>
+           - <a class="btn-diff btn-diff-<%= index %>">diff</a>
+          <% end %>
+
         </small>
       </p>
+
       <h4>
         <a href="<%= wiki.path %>">
           <% if wiki.is_a?(DrupalNode) %>
             <%= wiki.latest.title %>
           <% else %>
-            <%= wiki.title %>
+            <%= wiki.parent.latest.title %>
           <% end %>
         </a> 
       </h4>
+
+      <% if wiki.is_a?(DrupalNodeRevision) && wiki.previous %>
+        <div data-diff-a="<%= wiki.previous.vid %>" data-diff-b="<%= wiki.vid %>" class="well wiki-diff wiki-diff-<%= index %>" style="display:none;"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+      <% end %>
     </div>
   <% end %>
 

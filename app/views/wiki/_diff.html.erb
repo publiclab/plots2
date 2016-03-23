@@ -1,0 +1,29 @@
+<div class="diff-container diff-container-<%= @a.vid %>-<%= @b.vid %>">
+  <span class="diff diff-<%= @a.vid %>-<%= @b.vid %>"></span>
+  <div class="diff-hidden diff-a" style="display:none;"><%= raw RDiscount.new(@a.body).to_html %></div>
+  <div class="diff-hidden diff-b" style="display:none;"><%= raw RDiscount.new(@b.body).to_html %></div>
+  <script>
+    (function() {
+
+      var a = $('.diff-container-<%= @a.vid %>-<%= @b.vid %> .diff-a').html(),
+          b = $('.diff-container-<%= @a.vid %>-<%= @b.vid %> .diff-b').html(),
+          diff = JsDiff.diffLines(a,b),
+          output = "";
+
+      diff.forEach(function(obj) {
+
+        if (obj.added || obj.removed) {
+          var line = "<div class='diff-object ";
+          if (obj.removed) line += "diff-removed";
+          if (obj.added)   line += "diff-added";
+          line += "'>" + obj.value + "</div>";
+          output += line;
+        }
+
+      });
+
+      $('.diff-<%= @a.vid %>-<%= @b.vid %>').html(output);
+
+    })();
+  </script>
+</div>

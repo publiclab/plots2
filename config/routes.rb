@@ -66,6 +66,7 @@ Plots2::Application.routes.draw do
   match 'wiki/popular' => 'wiki#popular'
   match 'wiki/liked' => 'wiki#liked'
   match 'wiki/create' => 'wiki#create'
+  match 'wiki/diff' => 'wiki#diff'
   match 'wiki/:id' => 'wiki#show'
     # these need precedence for tag listings
     match 'feed/tag/:tagname' => 'tag#rss'

@@ -100,6 +100,14 @@ For some, it will be necessary to prepend your gem-related commands with `bundle
 
 ****
 
+
+##Testing
+
+Run tests with `rake test`. We are extremely interested in building our out test suite, so please consider helping us write tests! 
+
+
+****
+
 ##Bugs and support
 
 To report bugs and request features, please use the GitHub issue tracker provided at https://github.com/publiclab/plots2/issues 
@@ -112,7 +120,9 @@ Help improve Public Lab software!
 
 * Join the 'plots-dev@googlegroups.com' discussion list to get involved
 * Look for open issues at https://github.com/publiclab/plots2/issues
-* Review contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software
+* We're specifically asking for help with issues labelled with [help-wanted](https://github.com/publiclab/plots2/labels/help-wanted) tag
+* Find lots of info on contributing at http://publiclab.org/wiki/developers
+* Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software
 * Some devs hang out in http://publiclab.org/chat (irc webchat)
 
 ##First time?

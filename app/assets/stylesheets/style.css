@@ -54,6 +54,7 @@ h4,h5,h6, h1 small, h3 small {
 }
 
 #content p img,
+#comments p img,
 #content p iframe {
   max-width: 100%;
 }
@@ -295,4 +296,17 @@ body { padding-top: 70px; }
   .pagination > li:last-child {
     display: inline;
   }
+}
+
+.diff .diff-object,
+.diff .diff-object { 
+  padding: 3px; 
+}
+.diff .diff-added { 
+  background: #afa;
+  color: green;
+}
+.diff .diff-removed {
+  color: #900;
+  background: #faa; 
 }

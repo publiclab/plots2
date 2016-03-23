@@ -60,7 +60,12 @@
 
         <div class="form-group spamaway">
 
-          <label for="spamaway_follow_instructions">Are you human? <span style="font-weight:normal;">(sorry: spam filtering!)</span></label>
+          <label for="spamaway_follow_instructions">
+            Are you human?
+          </label>
+          <p>
+            Sorry: spam filtering! Please answer these four questions to ensure you're a real person.
+          </p>
 
           <% vars = [:statement1, :statement2, :statement3, :statement4] %>
           <% turingtest = Spamaway.get_pairs vars.length %>
@@ -69,7 +74,7 @@
               <div class="btn-group btn-group-justified" role="group">
                 <% [0,1].each_with_index do |s, j| %><% statement = turingtest[i][s] %>
                   <div class="btn-group" role="group">
-                    <button type="button" class="col-xs-6 btn btn-default" style="text-align:left;" id="spamaway-<%= i.to_s + j.to_s %>">
+                    <button type="button" class="col-xs-5 btn btn-default" style="text-align:left;<% if i.odd? %> background:#eef;<% end %>" id="spamaway-<%= i.to_s + j.to_s %>">
                       <%= spam.radio_button vars[i], statement %> <%= statement %>
                     </button>
                   </div>
@@ -101,12 +106,8 @@
         })
       })();
     </script>
- 
-    <% if params[:controller] == "users" && params[:action] == "new" %>
-      <!-- email lists here -->
-    <% end %>
- 
-    <div class="form-group form-inline">
+
+    <div class="form-group form-inline" style="clear:both;padding-top:10px;">
 
       <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
         <button class="btn btn-lg btn-primary" type="submit" tabindex="7">Sign up</button>

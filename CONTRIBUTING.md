@@ -5,8 +5,8 @@ We welcome community contributions to PLOTS2! To install PLOTS2 locally, follow 
 
 Learn more about contributing to PLOTS2 or other Public Lab code projects on these pages: 
 
-* http://publiclab.org/wiki/developers
-* http://publiclab.org/wiki/contributing-to-public-lab-software
+* https://publiclab.org/wiki/developers
+* https://publiclab.org/wiki/contributing-to-public-lab-software
 
 ##Bug reports & troubleshooting
 

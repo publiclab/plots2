@@ -1,5 +1,101 @@
 (function() {
 
+  var types = {
+    'note':     true, 
+    'question': true, 
+    'event':    true, 
+    'comment':  true, 
+    'wiki':     true
+  };
+
+  var setTypeVisibility = function(type, checked) {
+
+    if (checked) {
+
+      $('.note-container-' + type).show();
+
+    } else {
+
+      $('.note-container-' + type).hide();
+
+    }
+
+    if (localStorage) {
+
+      types[type] = (checked == true);
+      localStorage.setItem('pl-dash-' + type, checked);
+      $('.node-type-' + type).prop('checked', checked);
+
+    }
+
+    if ($('.activity-dropdown input.node-type:checked').length < $('.activity-dropdown input.node-type').length) {
+
+      $('.activity-dropdown .dropdown-toggle .node-type-filter').html('Selected updates');
+
+    } else {
+
+      $('.activity-dropdown .dropdown-toggle .node-type-filter').html('All updates');
+
+    }
+
+  }
+
+  // load any settings from browser storage
+  if (localStorage) {
+
+    Object.keys(types).forEach(function(key, i) {
+
+      var type = types[key];
+      types[key] = localStorage.getItem('pl-dash-' + key) == "true",
+      setTypeVisibility(key, types[key]);
+
+    });
+
+  }
+
+  $('.activity-dropdown .dropdown-toggle').click(function(e) {
+
+    e.preventDefault();
+
+  });
+
+  $('.activity-dropdown input').click(function() {
+
+    setTypeVisibility($(this).attr('data-type'), $(this).prop('checked'));
+
+  });
+
+
+  $('.note-wiki, .wikis .wiki').each(function(wiki) {
+
+    var wikiEl = $(this),
+        index  = wikiEl.attr("data-index"),
+        a      = wikiEl.find(".wiki-diff-" + index).attr("data-diff-a"),
+        b      = wikiEl.find(".wiki-diff-" + index).attr("data-diff-b");
+
+    $(this).find(".btn-diff-" + index).click(function() {
+
+      var btn = this;
+
+      wikiEl.find(".wiki-diff-" + index).show();
+      wikiEl.find(".wiki-diff-" + index).load("/wiki/diff/?a=" + a + "&b=" + b, function() {
+
+        wikiEl.find(".wiki-diff-" + index).prepend('<p class="header"><b>Changes in this edit:</b></p>');
+
+        $(btn).off('click');
+        $(btn).click(function() {
+
+        wikiEl.find(".wiki-diff-" + index).toggle();
+
+      });
+
+      });
+
+    });
+
+  });
+
+
   // must be https
   // 'http://rssmixer.com/feed/2851.xml'
   // cors? http://cors.io/?u=https://groups.google.com/forum/feed/publiclaboratory/topics/rss.xml?num=15

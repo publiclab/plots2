@@ -33,3 +33,4 @@
 //= require setup.js
 //= require editor.js
 //= require like.js
+//= require jsdiff/diff.js 

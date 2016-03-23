@@ -43,6 +43,22 @@ class DrupalNodeRevision < ActiveRecord::Base
     self.drupal_node
   end
 
+  def is_initial?
+    self.parent.drupal_node_revision.count == 1
+  end
+
+  def previous
+    self.parent.drupal_node_revision.order('timestamp DESC')
+                                    .where('timestamp < ?', self.timestamp)
+                                    .last
+  end
+
+  def next
+    self.parent.drupal_node_revision.order('timestamp DESC')
+                                    .where('timestamp > ?', self.timestamp)
+                                    .first
+  end
+
   # filtered version of node content
   def render_body
     body = self.body || ""
