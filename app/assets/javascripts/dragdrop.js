@@ -65,7 +65,7 @@ jQuery(document).ready(function() {
           image_url = data.result.url.split('?')[0]
           orig_image_url = image_url.replace('medium','original') // not really portable, should parse response and look for "original_filename" or something
 
-          $E.wrap('[![',']('+image_url+')]('+orig_image_url+')', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
+          $E.wrap('[![',']('+image_url+')]('+orig_image_url+')', {'newline': true, 'fallback': data.result['filename'].replace(/[()]/g , "-")}) // on its own line; see /app/assets/js/editor.js
         } else {
           $E.wrap('<a href="'+data.result.url.split('?')[0]+'"><i class="fa fa-file"></i> ','</a>', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
         }
