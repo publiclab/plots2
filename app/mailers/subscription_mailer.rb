@@ -58,7 +58,7 @@ class SubscriptionMailer < ActionMailer::Base
     # include special tid for indiscriminant subscribers who want it all!
     all_tag = DrupalTag.find_by_name("everything")
     tids += [all_tag.tid,] if all_tag
-    usertags = TagSelection.find(:all, :conditions => ["tid IN (?) AND following = true",tids])
+    usertags = TagSelection.where("tid IN (?) AND following = 'true'", tids)
     d = {}
     usertags.each do |usertag|
       # For each row of (user,tag), build a user's tag subscriptions 

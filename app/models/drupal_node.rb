@@ -31,7 +31,6 @@ class DrupalNode < ActiveRecord::Base
     # has_many :drupal_tag, :through => :drupal_node_tag
   has_many :drupal_comments, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_type_map, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_content_field_bboxes, :foreign_key => 'nid'
   has_many :drupal_content_field_mappers, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_field_map_editor, :foreign_key => 'nid', :dependent => :destroy
 
@@ -380,19 +379,6 @@ class DrupalNode < ActiveRecord::Base
     # and is quicker than doing .order(vid: :DESC) for some reason.
     self.drupal_content_type_map.last
   end
-
-  def locations
-    self.drupal_content_field_bboxes.collect(&:field_bbox_geo)
-  end 
-
-  def location
-    locations = []
-    self.locations.each do |l|
-      locations << l if l && l.x && l.y
-    end
-    # cheap divide by zero hack
-    {:x => locations.collect(&:x).sum/(locations.length+0.000001),:y => locations.collect(&:y).sum/(locations.length+0.000001)}
-  end 
 
   def lat
     if self.has_power_tag("lat")

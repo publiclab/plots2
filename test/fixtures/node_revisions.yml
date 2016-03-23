@@ -2,13 +2,16 @@ one:
   nid: 1
   uid: 1
   title: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON"
+  body: "A fine day was had"
 
 two: 
   nid: 2
   uid: 2
   title: About
+  body: "All about Public Lab"
 
 three: 
   nid: 3
   uid: 3
   title: "Hot stuff I'm selling"
+  body: "Get it while it lasts!"
