@@ -67,8 +67,7 @@ class HomeController < ApplicationController
                                 .where('status = (?)', 1)
                                 .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
                                 .limit(10)
-                                .group(:title)
-                                #.group('DATE(FROM_UNIXTIME(timestamp))') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
+                                .group(:title, 'DATE(FROM_UNIXTIME(timestamp))') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     @wikis = @wikis.sort_by { |a| a.created_at }.reverse
     @activity = (@notes + @wikis).sort_by { |a| a.created_at }.reverse
     @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count

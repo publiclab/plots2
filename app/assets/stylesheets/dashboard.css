@@ -326,3 +326,9 @@
 .wiki .btn-diff {
   color: #ccc;
 }
+
+.wiki-diff p.header {
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 4px;
+}

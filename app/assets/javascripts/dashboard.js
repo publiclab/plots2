@@ -42,13 +42,19 @@
 
     $(this).find(".btn-diff-" + index).click(function() {
 
-      wikiEl.find(".wiki-diff-" + index).load("/wiki/diff/?a=" + a + "&b=" + b);
-      wikiEl.find(".wiki-diff-" + index).show();
+      var btn = this;
 
-      $(this).off('click');
-      $(this).click(function() {
+      wikiEl.find(".wiki-diff-" + index).show();
+      wikiEl.find(".wiki-diff-" + index).load("/wiki/diff/?a=" + a + "&b=" + b, function() {
+
+        wikiEl.find(".wiki-diff-" + index).prepend('<p class="header"><b>Changes in this edit:</b></p>');
+
+        $(btn).off('click');
+        $(btn).click(function() {
 
         wikiEl.find(".wiki-diff-" + index).toggle();
+
+      });
 
       });
 

@@ -8,24 +8,29 @@
       <div class="header-icon"><i class="fa fa-pencil"></i></div>
       <p class="meta">New edit by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a></p>
     <% end %>
-
-    <% revision = node %>
-    <% node = node.parent if node.is_a?(DrupalNodeRevision) %>
  
     <% if false && node.main_image %>
       <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
     <% end %>
  
-    <h4><a href="<%= node.path %>"><%= node.latest.title %></a></h4>
+    <h4>
+      <a href="<%= node.path %>">
+        <% if node.is_a?(DrupalNode) %>
+          <%= node.latest.title %>
+        <% else %>
+          <%= node.parent.latest.title %>
+        <% end %>
+      </a> 
+    </h4>
 
-    <% if revision.is_a?(DrupalNodeRevision) && revision.previous %>
+    <% if node.is_a?(DrupalNodeRevision) && node.previous %>
       <a class="btn btn-default btn-xs pull-right btn-diff btn-diff-<%= index %>">Changes &raquo;</a>
     <% end %>
  
-    <p class="meta"><%= render partial: "dashboard/node_meta", locals: { node: revision } %></p>
+    <p class="meta"><%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 
-    <% if revision.is_a?(DrupalNodeRevision) && revision.previous %>
-      <div data-diff-a="<%= revision.previous.vid %>" data-diff-b="<%= revision.vid %>" class="well wiki-diff-<%= index %>" style="display:none;"><i class="fa fa-circle-o-notched fa-spin"></i></div>
+    <% if node.is_a?(DrupalNodeRevision) && node.previous %>
+      <div data-diff-a="<%= node.previous.vid %>" data-diff-b="<%= node.vid %>" class="well wiki-diff wiki-diff-<%= index %>" style="display:none;"><i class="fa fa-circle-o-notch fa-spin"></i></div>
     <% end %>
 
   </div>
