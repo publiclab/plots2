@@ -1,6 +1,6 @@
 <h3><i>Activity</i></h3>
 
-<button href="/post" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i> Share<span class="hidden-xs"> your work</span></button>
+<a href="/post" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i> Share<span class="hidden-xs"> your work</span></a>
 
 <div class="meta activity-dropdown">
   <div class="btn-group">
@@ -9,18 +9,21 @@
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-      <li><a href="#"><label><input data-type="note"     class="node-type" type="checkbox" checked="checked" /> Research notes</label></a></li>
-      <li><a href="#"><label><input data-type="question" class="node-type" type="checkbox" checked="checked" /> Questions     </label></a></li>
-      <li><a href="#"><label><input data-type="event"    class="node-type" type="checkbox" checked="checked" /> Events        </label></a></li>
-      <li><a href="#"><label><input data-type="comment"  class="node-type" type="checkbox" checked="checked" /> Comments      </label></a></li>
-      <li class="hidden-sm"><a href="#"><label><input data-type="wiki" class="node-type" type="checkbox" checked="checked" /> Wiki          </label></a></li>
+      <li><a href="#"><label><input data-type="note"     class="node-type node-type-note"     type="checkbox" checked="checked" /> Research notes</label></a></li>
+      <li><a href="#"><label><input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" /> Questions     </label></a></li>
+      <li><a href="#"><label><input data-type="event"    class="node-type node-type-event"    type="checkbox" checked="checked" /> Events        </label></a></li>
+      <li><a href="#"><label><input data-type="comment"  class="node-type node-type-comment"  type="checkbox" checked="checked" /> Comments      </label></a></li>
+      <li class="visible-sm visible-xs">
+          <a href="#"><label><input data-type="wiki"     class="node-type node-type-wiki"     type="checkbox" checked="checked" /> Wiki          </label></a>
+      </li>
 
+      <!--
       <li class="divider"></li>
 
       <li class="dropdown-header">Sort by</li>
       <li><a href="#"><a href="#">Post date</a></li>
       <li><a href="#"><a href="#">Recent activity</a></li>
-
+      -->
 
     </ul>
   </div> &nbsp; 
@@ -35,6 +38,8 @@
     <% activity.each_with_index do |node, i| %>
       <% if node.is_a?(DrupalNodeRevision) || node.type == 'page' %>
         <%= render partial: "dashboard/node_wiki",     locals: { node: node, index: i } %>
+      <% elsif node.is_a?(DrupalComment) %>
+        <%= render partial: "dashboard/node_comment",  locals: { node: node, index: i } %>
       <% elsif node.has_power_tag('question') %>
         <%= render partial: "dashboard/node_question", locals: { node: node, index: i } %>
       <% elsif node.has_tag('event') %>

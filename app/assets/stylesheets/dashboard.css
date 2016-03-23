@@ -235,31 +235,47 @@
   border-top: 2px solid white;
 }
 
-/* begin wiki node styles */
+/* begin wiki and comment node styles */
 
 .note-wiki,
-.note-wiki .btn-default {
+.note-comment,
+.note-wiki    .btn-default,
+.note-comment .btn-default {
   background: #f8f8f8;
   border-color: #ddd;
   color: #555;
 }
 
-.note-wiki .btn-default:hover {
+.note-wiki    .btn-default:hover, 
+.note-comment .btn-default:hover {
   background: #eee;
 }
 
-.note-wiki .btn-default {
+.note-wiki    .btn-default,
+.note-comment .btn-default {
   background: #B1CCF3;
 }
 
-.note-wiki .meta,
 .note-wiki i.fa,
-.note-wiki .meta i.fa {
-  color: #555;
+.note-wiki .meta i.fa,
+.note-comment i.fa,
+.note-comment .meta i.fa {
   background: #f8f8f8;
+  color: #444;
 }
 
-/* end wiki node styles */
+.note-wiki .meta,
+.note-comment .meta {
+  color: #888;
+}
+
+@media (min-width:992px) {
+  .note-container-wiki {
+    display: none;
+  }
+}
+
+/* end wiki and comment node styles */
 
 /* begin event node styles */
 
@@ -309,12 +325,6 @@
 
 /* end event node styles */
 
-@media (min-width:992px) {
-  .note-container-wiki {
-    display: none;
-  }
-}
-
 .note .meta a:hover i {
   color: #666;
 }
@@ -331,4 +341,8 @@
   margin-top: 0;
   padding-top: 0;
   padding-bottom: 4px;
+}
+
+.wiki-diff {
+  overflow-x: hidden;
 }

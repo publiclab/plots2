@@ -1,22 +1,30 @@
 (function() {
 
-  // load from localstorage?
-  // sort by recent activity
+  var types = {
+    'note':     true, 
+    'question': true, 
+    'event':    true, 
+    'comment':  true, 
+    'wiki':     true
+  };
 
-  $('.activity-dropdown .dropdown-toggle').click(function(e) {
-    e.preventDefault();
-  });
+  var setTypeVisibility = function(type, checked) {
 
-  $('.activity-dropdown input').click(function() {
+    if (checked) {
 
-    if ($(this).prop('checked')) {
-
-      $('.note-container-' + $(this).attr('data-type')).show();
+      $('.note-container-' + type).show();
 
     } else {
 
-      $('.note-container-' + $(this).attr('data-type')).hide();
-      console.log( $(this).attr('data-type'));
+      $('.note-container-' + type).hide();
+
+    }
+
+    if (localStorage) {
+
+      types[type] = (checked == true);
+      localStorage.setItem('pl-dash-' + type, checked);
+      $('.node-type-' + type).prop('checked', checked);
 
     }
 
@@ -29,6 +37,31 @@
       $('.activity-dropdown .dropdown-toggle .node-type-filter').html('All updates');
 
     }
+
+  }
+
+  // load any settings from browser storage
+  if (localStorage) {
+
+    Object.keys(types).forEach(function(key, i) {
+
+      var type = types[key];
+      types[key] = localStorage.getItem('pl-dash-' + key) == "true",
+      setTypeVisibility(key, types[key]);
+
+    });
+
+  }
+
+  $('.activity-dropdown .dropdown-toggle').click(function(e) {
+
+    e.preventDefault();
+
+  });
+
+  $('.activity-dropdown input').click(function() {
+
+    setTypeVisibility($(this).attr('data-type'), $(this).prop('checked'));
 
   });
 

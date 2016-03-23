@@ -1,9 +1,11 @@
-by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
+<% unless node.is_a?(DrupalComment) || node.is_a?(DrupalNodeRevision) || node.type == 'page' %>
+  by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
+<% end %>
 <%= time_ago_in_words(node.created_at) %> ago
 <% node = node.parent if node.is_a?(DrupalNodeRevision) %>
 <span class="">
   <% if node.comment_count > 0 %>| <a href="<%= node.path %>#comments"><i class="fa fa-comment-o"></i> <%= node.comment_count %></a><% end %>
-  | <i class="hidden-xs hidden-sm fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %>
+  <span class="hidden-xs hidden-sm">| <i class="fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %></span>
   <% if node.likes > 0 %>| <i style="<% if node.likes > 0 %>color:#db4;<% end %>" class="fa fa-star-o"></i> <%= node.likes %><% end %>
   <% if params[:mod] %>| <a href="#"><i class="fa fa-ban"></i></a><% end %>
 </span>
