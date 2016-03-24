@@ -199,7 +199,7 @@ class DrupalNode < ActiveRecord::Base
   # provide either a Drupally main_iamge or a Railsy one 
   def main_image(node_type = :all)
     if self.images.length > 0 && node_type != :drupal
-      self.images.last 
+      self.images.order('vid').last
     elsif self.drupal_main_image && node_type != :rails
       self.drupal_main_image.drupal_file 
     else
