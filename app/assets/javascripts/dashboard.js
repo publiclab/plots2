@@ -46,6 +46,7 @@
     Object.keys(types).forEach(function(key, i) {
 
       var type = types[key];
+      if (localStorage.getItem('pl-dash-' + key) == null) localStorage.setItem('pl-dash-' + key, true);
       types[key] = localStorage.getItem('pl-dash-' + key) == "true",
       setTypeVisibility(key, types[key]);
 
