@@ -109,7 +109,11 @@ class DrupalNode < ActiveRecord::Base
 
   # users who like this node
   def likers
-    self.node_selections.where(:liking => true).collect(&:user)
+    self.node_selections
+        .joins(:drupal_users)
+        .where(liking: true)
+        .where('users.status = ?', 1)
+        .collect(&:user)
   end
 
   def liked_by(uid)

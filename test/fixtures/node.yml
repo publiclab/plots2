@@ -7,6 +7,7 @@ one:
   type: "note"
   uid: 2
   nid: 1
+  cached_likes: 0
 
 two: 
   title: "about"
@@ -17,6 +18,7 @@ two:
   type: "page"
   uid: 1
   nid: 2
+  cached_likes: 0
 
 spam:
   title: "Hot stuff I'm selling"
@@ -27,3 +29,4 @@ spam:
   type: "note"
   uid: 3
   nid: 3
+  cached_likes: 0

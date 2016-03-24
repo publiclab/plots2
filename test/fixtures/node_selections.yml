@@ -1,0 +1,7 @@
+good_like:
+  user_id: 1
+  nid: 1
+
+unbanned_spammer_like:
+  user_id: 3
+  nid: 1

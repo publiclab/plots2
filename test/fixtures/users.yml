@@ -12,3 +12,8 @@ spammer:
   uid: 3
   name: spammer
   status: 0 #spam
+
+unbanned_spammer:
+  uid: 4
+  name: unbanned_spammer
+  status: 1
