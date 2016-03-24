@@ -32,6 +32,8 @@ class LikeController < ApplicationController
 
   private
 
+  # this ought to go in a model, such as node_selection, and pass :uid and :nid
+  # then it could also be tested independently in a unit test
   def set_liking(value)
     # scope like variable outside the transaction
     like = nil

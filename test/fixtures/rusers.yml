@@ -19,3 +19,8 @@ spammer:
   username: spammer
   email: spam@spam.com
   id: 3
+
+unbanned_spammer:
+  username: unbanned_spammer
+  email: uspam@spam.com
+  id: 4
