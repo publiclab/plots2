@@ -6,7 +6,9 @@ class TagController < ApplicationController
   def index
     @title = "Tags"
     @paginated = true
-    @tags = DrupalTag.paginate(:page => params[:page])
+    @tags = DrupalTag.joins(:drupal_node_community_tag,:drupal_node)
+                     .where('node.status = ?', 1)
+                     .paginate(:page => params[:page])
                      .order('count DESC')
   end
 
