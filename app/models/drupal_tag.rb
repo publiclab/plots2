@@ -32,15 +32,6 @@ class DrupalTag < ActiveRecord::Base
     self.tid
   end
 
-  # does this work? Better than self.drupal_nodes? 
-  def nodes
-    ids = []
-    self.drupal_node_tag.each do |node_tag|
-      ids << node_tag.nid
-    end
-    DrupalNode.find :all, :conditions => ['status = 1 AND nid IN ('+ids.uniq.join(',')+')'], :order => "nid DESC"
-  end 
-
   def run_count
     self.count = DrupalNodeCommunityTag.where(:tid => self.tid).count
     self.save

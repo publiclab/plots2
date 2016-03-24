@@ -55,6 +55,9 @@ class TagControllerTest < ActionController::TestCase
   test "tag index" do
     get :index
     assert :success
+    assert_equal assigns['tags'].sort_by { |rev| rev.count }, assigns['tags']
+    assert_equal assigns['tags'].collect(&:name), assigns['tags'].collect(&:name).uniq
+    assert_false assigns['tags'].collect(&:drupal_node).flatten.collect(&:status).include?(0)
     assert_not_nil :tags
   end
 

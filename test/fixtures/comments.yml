@@ -1,0 +1,11 @@
+first:
+  uid: 1
+  nid: 1
+  status: 1
+  comment: This thing is rad. 
+
+legacy:
+  uid: 0
+  nid: 1
+  status: 1
+  comment: Hey there!
