@@ -143,8 +143,15 @@ class WikiController < ApplicationController
         if params[:main_image] && params[:main_image] != ""
           begin
             img = Image.find params[:main_image]
+            if @node.images.length > 0
+              created = @node.images.collect {|i| i.created_at}
+              if params[:image_revision] && created.max >= img.created_at
+                img = Image.find params[:image_revision]
+              end
+            end
             unless img.nil?
               img.nid = @node.id
+              img.vid = @revision.vid
               img.save
             end
           rescue
