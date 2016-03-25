@@ -6,8 +6,8 @@ class Image < ActiveRecord::Base
   #has_many :comments, :dependent => :destroy
   #has_many :likes, :dependent => :destroy
   #has_many :tags, :dependent => :destroy
-  has_one :user, :foreign_key => :uid
-  has_one :node, :foreign_key => :nid
+  belongs_to :user, :foreign_key => :uid
+  belongs_to :node, :foreign_key => :nid
   
   has_attached_file :photo, :styles => { :thumb => "200x150>", :medium => "500x375>", :large => "800x600>" }#,
                   #:url  => "/system/images/photos/:id/:style/:basename.:extension",

@@ -5,8 +5,8 @@ one:
   changed: 1362354920
   status: 1
   type: "note"
-  uid: 2
   nid: 1
+  uid: 2
   cached_likes: 0
 
 two: 
@@ -16,8 +16,8 @@ two:
   changed: 1362354920
   status: 1
   type: "page"
-  uid: 1
   nid: 2
+  uid: 1
   cached_likes: 0
 
 spam:
@@ -27,6 +27,6 @@ spam:
   changed: 1362354920
   status: 0
   type: "note"
-  uid: 3
   nid: 3
+  uid: 3
   cached_likes: 0
