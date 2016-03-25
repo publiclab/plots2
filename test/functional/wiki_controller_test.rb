@@ -84,4 +84,137 @@ class WikiControllerTest < ActionController::TestCase
     # assert_select ".label", "meetup" # test for tag addition too, later
   end
 
+  test "normal user should not delete wiki page" do
+    UserSession.new(@user)
+    title = "All about balloon mapping"
+    post :create, :uid => @user.id, :title => title, :body => "This is fascinating documentation about balloon mapping.", :tags => "balloon-mapping,event"
+    assert_redirected_to "/wiki/" + title.parameterize
+    nid = DrupalNode.find_by_title(title).nid
+    post :delete, :id => nid
+    assert_equal flash[:error], "Only admins can delete wiki pages."
+    assert_redirected_to "/wiki/" + title.parameterize
+  end
+
+  test "admin user should delete wiki page" do
+    @user.role = "admin"
+    @user.save!
+    UserSession.new(@user)
+    title = "All about balloon mapping"
+    post :create, :uid => @user.id, :title => title, :body => "This is fascinating documentation about balloon mapping.", :tags => "balloon-mapping,event"
+    assert_redirected_to "/wiki/" + title.parameterize
+    nid = DrupalNode.find_by_title(title).nid
+    post :delete, :id => nid
+    assert_equal flash[:notice], "Wiki page deleted."
+    assert_redirected_to "/dashboard"
+  end
+
+  test "should display wiki pages with slug in root" do
+    @user.role = "admin"
+    @user.save!
+    wiki_page = DrupalNode.create!(
+      "type" => "page",
+      "title" => "About",
+      "uid" => @user.id,
+      "status" => 1,
+      "comment" => 0,
+      "cached_likes" => 0
+    )
+
+    get :root, id: "invalid"
+    assert_template file: 'public/404'
+  end
+
+  test "admin should revert wiki page to parent version" do
+    @user.role = "admin"
+    @user.save!
+    UserSession.new(@user)
+    title = "All about balloon mapping"
+    post :create, :uid => @user.id, :title => title, :body => "This is fascinating documentation about balloon mapping.", :tags => "balloon-mapping,event"
+    assert_redirected_to "/wiki/" + title.parameterize
+
+    nid = DrupalNodeRevision.find_by_title(title)
+    get :revert, id: nid
+    assert_equal flash[:notice], "The wiki page was reverted."
+    assert_redirected_to "/wiki/" + title.parameterize
+  end
+
+  test "user cannot revert wiki page" do
+    UserSession.new(@user)
+    title = "All about balloon mapping"
+    post :create, :uid => @user.id, :title => title, :body => "This is fascinating documentation about balloon mapping.", :tags => "balloon-mapping,event"
+    assert_redirected_to "/wiki/" + title.parameterize
+
+    nid = DrupalNodeRevision.find_by_title(title)
+    get :revert, id: nid
+    assert_equal flash[:error], "Only moderators and admins can delete wiki pages."
+    assert_redirected_to "/wiki/" + title.parameterize
+  end
+
+  test "should display revisions" do
+    @user.role = "admin"
+    @user.save!
+    UserSession.new(@user)
+    title = "All about balloon mapping"
+    post :create, :uid => @user.id, :title => title, :body => "This is fascinating documentation about balloon mapping.", :tags => "balloon-mapping,event"
+    assert_redirected_to "/wiki/" + title.parameterize
+
+    #Edit wiki page
+    newtitle = title + "Edited page"
+    nid = DrupalNodeRevision.find_by_title(title).nid
+    post :update, :id => nid, :title => newtitle, :body => "This is fascinating documentation about balloon mapping. <span id='teststring'>added content</span>", :tags => "balloon-mapping,event,meetup"
+    assert_redirected_to "/wiki/" + title.parameterize
+
+    get :revisions, id: title.parameterize
+    assert_template :revisions
+  end
+
+  test "should not error if no node exist" do
+    UserSession.new(@user)
+    title = "All about balloon mapping"
+    post :create, :uid => @user.id, :title => title, :body => "This is fascinating documentation about balloon mapping.", :tags => "balloon-mapping,event"
+    assert_redirected_to "/wiki/" + title.parameterize
+
+    get :revisions, id: "Invalid Node"
+    assert_template :revisions
+    assert_equal flash[:error], "Invalid wiki page. No Revisions exist for this wiki page."
+  end
+
+  test "should display individual version" do
+    UserSession.new(@user)
+    title = "All about balloon mapping"
+    post :create, :uid => @user.id, :title => title, :body => "This is fascinating documentation about balloon mapping.", :tags => "balloon-mapping,event"
+    assert_redirected_to "/wiki/" + title.parameterize
+
+    vid = DrupalNodeRevision.find_by_title(title).vid
+    get :revision, id: title.parameterize, vid: vid
+    assert_template "show"
+  end
+
+  test "should display error message for invalid revision" do
+    UserSession.new(@user)
+    title = "All about balloon mapping"
+    post :create, :uid => @user.id, :title => title, :body => "This is fascinating documentation about balloon mapping.", :tags => "balloon-mapping,event"
+    assert_redirected_to "/wiki/" + title.parameterize
+
+    get :revision, id: title.parameterize, vid: -3
+    assert_equal flash[:error], "invalid revision -3"
+  end
+
+  test "should display all the wiki pages" do
+    get :index
+    assert_response :success
+    assert_template :index
+  end
+
+  test "should display popular wiki pages" do
+    get :popular
+    assert_template :index
+    assert_select "title", "Public Lab: Popular wiki pages" 
+  end
+
+  test  "should display well liked wiki pages" do
+    get :liked
+    assert_template :index
+    assert_select "title", "Public Lab: Well-liked wiki pages"
+  end
 end

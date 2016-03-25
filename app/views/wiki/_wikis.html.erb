@@ -10,10 +10,10 @@
     <tr>
       <td style="width:50%"><i class="fa fa-file"></i> <a href="<%= wiki.path %>"><%= wiki.latest.title %></a></td>
       <td><%= time_ago_in_words(Time.at(wiki.latest.created_at)) %> ago by 
-      <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></td>
+      <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></td>
       <td><%= wiki.revisions.length %></td>
-      <td class="hidden-xs"><%= number_with_delimiter(wiki.totalcount) %>
-      <td><%= number_with_delimiter(wiki.cached_likes) %>
+      <td class="hidden-xs"><%= number_with_delimiter(wiki.totalcount) %></td>
+      <td><%= number_with_delimiter(wiki.cached_likes) %></td>
     </tr>
   <% end %>
 </table>

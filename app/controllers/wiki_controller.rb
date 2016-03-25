@@ -196,17 +196,25 @@ class WikiController < ApplicationController
   def root
     @node = DrupalNode.find_root_by_slug(params[:id])
     return if check_and_redirect_node(@node)
-    @revision = @node.latest
-    @title = @revision.title
-    @tags = @node.tags
-    @tagnames = @tags.collect(&:name)
-    render :template => "wiki/show"
+    if @node
+      @revision = @node.latest
+      @title = @revision.title
+      @tags = @node.tags
+      @tagnames = @tags.collect(&:name)
+      render :template => "wiki/show"
+    else
+      render :file => "public/404"
+    end
   end
 
   def revisions
     @node = DrupalNode.find_by_slug(params[:id])
-    @title = "Revisions for '"+@node.title+"'"
-    @tags = @node.tags
+    if @node
+      @title = "Revisions for '"+@node.title+"'"
+      @tags = @node.tags
+    else
+      flash[:error] = "Invalid wiki page. No Revisions exist for this wiki page."
+    end
   end
 
   def revision
