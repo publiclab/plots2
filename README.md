@@ -87,8 +87,8 @@ Installation steps:
 1. In the console, download a copy of the source with `git clone https://github.com/publiclab/plots2.git`.
 2. Enter the new 'plots2' directory with `cd plots2`.
 3. Install gems with `bundle install --without production` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work. 
-4. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml` -- for development, we've included a prebuilt sqlite database in the `development.db` file, and this example database config is already set up to connect to it. If you are using another database, you can run `bundle exec rake db:setup` to set it up, and `bundle exec rake db:seed` to populate it with initial dummy data.
-5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
+4. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
+5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml` -- for development, we've included a prebuilt sqlite database in the `development.db` file, and this example database config is already set up to connect to it. If you are using another database, you can run `bundle exec rake db:setup` to set it up, and `bundle exec rake db:seed` to populate it with initial dummy data.
 6. Install static assets (like external javascript libraries, fonts) with `bower install` 
 7. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser. 
 8. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password". 
