@@ -26,7 +26,7 @@
     <ul class="nav nav-list">
       <li class="nav-header">More</li>
       <li><a href="/wiki/getting-started">Getting started with Public Lab</a></li>
-      <% if @node %><li><a href="/wiki/revisions/<%= @node.slug %>">Revisions for this page</a></li><% end %>
+      <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug %>">Revisions for this page</a></li><% end %>
       <li><a href="/wiki/posting-research">About posting research</a></li>
       <li><a href="/wiki/authoring-help#Advanced+formatting">Advanced formatting</a></li>
     </ul>
@@ -35,7 +35,7 @@
 
 <div class="col-sm-9">
 
-  <% if @node && params[:action] != "create"
+  <% if @node && @node.path
     url = { :controller => "wiki", :action => "update", :id => @node.id }
   else 
     url = { :controller => "wiki", :action => "create", :id => params[:id] }

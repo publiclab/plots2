@@ -81,6 +81,7 @@ class WikiController < ApplicationController
   end
 
   def new
+    @node = DrupalNode.new
     @tags = []
     if params[:id]
       flash.now[:notice] = "This page does not exist yet, but you can create it now:" 
@@ -109,6 +110,11 @@ class WikiController < ApplicationController
       })
       if saved
         flash[:notice] = "Wiki page created."
+        if params[:main_image] && params[:main_image] != ""
+          img = Image.find params[:main_image]
+          img.nid = @node.id
+          img.save
+        end
         redirect_to @node.path
       else
         render :action => :edit
