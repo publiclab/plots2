@@ -74,15 +74,15 @@
         'nid':<%= comment.uid %>
       },
       start: function(e) {
-        $('#imagebar #c<%= comment.id%>progress').show()
-        $('#imagebar #c<%= comment.id%>uploading').show()
-        $('#imagebar #c<%= comment.id%>prompt').hide()
+        $('#c<%= comment.id%>progress').show()
+        $('#c<%= comment.id%>uploading').show()
+        $('#c<%= comment.id%>prompt').hide()
         $('#c<%= comment.id%>div').removeClass('hover');
       },
       done: function (e, data) {
-        $('#imagebar #c<%= comment.id%>progress-bar').hide()
-        $('#imagebar #c<%= comment.id%>uploading').hide()
-        $('#imagebar #c<%= comment.id%>prompt').show()
+        $('#c<%= comment.id%>progress').hide()
+        $('#c<%= comment.id%>uploading').hide()
+        $('#c<%= comment.id%>prompt').show()
         var is_image = false
         if (data.result['filename'].substr(-3,3) == "jpg") is_image = true
         if (data.result['filename'].substr(-4,4) == "jpeg") is_image = true
@@ -108,7 +108,7 @@
       fileuploadfail: function(e,data) {},
       progressall: function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
-        $('#imagebar #c<%= comment.id%>progress #c<%= comment.id%>progress-bar').css(
+        $('#c<%= comment.id%>progress #c<%= comment.id%>progress-bar').css(
             'width',
             progress + '%'
         );

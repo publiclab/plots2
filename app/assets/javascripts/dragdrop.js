@@ -42,15 +42,15 @@ jQuery(document).ready(function() {
       },
       start: function(e) {
 
-        $('#imagebar .progress').show()
-        $('#imagebar .uploading').show()
-        $('#imagebar .prompt').hide()
+        $('#create_progress').show()
+        $('#create_uploading').show()
+        $('#create_prompt').hide()
         $('.dropzone').removeClass('hover');
       },
       done: function (e, data) {
-        $('#imagebar .progress').hide()
-        $('#imagebar .uploading').hide()
-        $('#imagebar .prompt').show()
+        $('#create_progress').hide()
+        $('#create_uploading').hide()
+        $('#create_prompt').show()
         var is_image = false
         if (data.result['filename'].substr(-3,3) == "jpg") is_image = true
         if (data.result['filename'].substr(-4,4) == "jpeg") is_image = true
@@ -86,7 +86,7 @@ jQuery(document).ready(function() {
       },
       progressall: function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
-        $('#imagebar .progress .progress-bar').css(
+        $('#create_progress-bar').css(
           'width',
           progress + '%'
         );
