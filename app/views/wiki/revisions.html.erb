@@ -2,80 +2,80 @@
 
   
   <% if !@node.nil? %>
-  <h3 id="wiki-title" style="margin-top:0;">Revisions for <%= @node.title %></h3>
-  <ul class="nav nav-tabs">
-    <li><a href="/wiki/<%= @node.slug %>">View</a></li>
-    <li class="disabled"><a href="/wiki/edit/<%= @node.slug %>">Edit</a></li>
-    <li class="active"><a href="/wiki/revisions/<%= @node.slug %>">Revisions (<%= @node.revisions.length %>)</a></li>
-    <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
-  </ul>
+    <h3 id="wiki-title" style="margin-top:0;">Revisions for <%= @node.title %></h3>
+    <ul class="nav nav-tabs">
+      <li><a href="/wiki/<%= @node.slug %>">View</a></li>
+      <li class="disabled"><a href="/wiki/edit/<%= @node.slug %>">Edit</a></li>
+      <li class="active"><a href="/wiki/revisions/<%= @node.slug %>">Revisions (<%= @node.revisions.length %>)</a></li>
+      <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
+    </ul>
 
-  <table class="table">
-    <tr>
-      <th>#</th>
-      <th>User</th>
-      <th>Created</th>
-      <th style="width:90px;"></th>
-      <th style="width:80px;"></th>
-    </tr>
-  <% @node.revisions.each_with_index do |revision,index| %>
-    <tr id="row<%= @node.revisions.length-1-index %>"<% if index < 2 %> class="warning"<% end %>>
-      <td><b><a href="javascript:void(0)" onClick="goto(<%= @node.revisions.length-1-index %>,<%= @node.revisions.length-2-index %>)"><%= @node.revisions.length-1-index %></b></td>
-      <% if revision.author %><td><a href="/people/<%= revision.author.name %>"><%= revision.author.name %></a></td><% end %>
-      <td><a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a> <i class="fa fa-external-link"></i>
-        | <%= time_ago_in_words(revision.created_at) %> ago
-        <div style="display:none;" id="body_<%= @node.revisions.length-1-index %>"><%= raw RDiscount.new(revision.body).to_html %></div>
-      </td>
-      <td><small><a class="btn btn-link" href="/wiki/revert/<%= revision.vid %>" data-confirm="Are you sure?"><i class="fa fa-backward"></i> Revert</a></small></td>
-      <td><small><a class="btn btn-link" href="/wiki/raw/<%= revision.vid %>"><i class="fa fa-code"></i> Raw</a></small></td>
-    </tr>
-  <% end %>
-  </table>
+    <table class="table">
+      <tr>
+        <th>#</th>
+        <th>User</th>
+        <th>Created</th>
+        <th style="width:90px;"></th>
+        <th style="width:80px;"></th>
+      </tr>
+    <% @node.revisions.each_with_index do |revision,index| %>
+      <tr id="row<%= @node.revisions.length-1-index %>"<% if index < 2 %> class="warning"<% end %>>
+        <td><b><a href="javascript:void(0)" onClick="goto(<%= @node.revisions.length-1-index %>,<%= @node.revisions.length-2-index %>)"><%= @node.revisions.length-1-index %></b></td>
+        <% if revision.author %><td><a href="/people/<%= revision.author.name %>"><%= revision.author.name %></a></td><% end %>
+        <td><a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a> <i class="fa fa-external-link"></i>
+          | <%= time_ago_in_words(revision.created_at) %> ago
+          <div style="display:none;" id="body_<%= @node.revisions.length-1-index %>"><%= raw RDiscount.new(revision.body).to_html %></div>
+        </td>
+        <td><small><a class="btn btn-link" href="/wiki/revert/<%= revision.vid %>" data-confirm="Are you sure?"><i class="fa fa-backward"></i> Revert</a></small></td>
+        <td><small><a class="btn btn-link" href="/wiki/raw/<%= revision.vid %>"><i class="fa fa-code"></i> Raw</a></small></td>
+      </tr>
+    <% end %>
+    </table>
 
-  <hr />
-  
-</div>
-<div class="col-md-7">
-  <div class="btn-group pull-right">
-    <a class="btn btn-link" href="javascript:void(0)" onClick="prev()">&laquo;</a>
-    <a class="btn btn-link" href="javascript:void(0)" onClick="next()">&raquo;</a>
+    <hr />
+    
   </div>
-  <h3 style="margin-top:0;">Comparing revision <span id="older"><%= @node.revisions.length-1 %></span> with revision <span id="newer"><%= @node.revisions.length-2 %></span></h3>
+  <div class="col-md-7">
+    <div class="btn-group pull-right">
+      <a class="btn btn-link" href="javascript:void(0)" onClick="prev()">&laquo;</a>
+      <a class="btn btn-link" href="javascript:void(0)" onClick="next()">&raquo;</a>
+    </div>
+    <h3 style="margin-top:0;">Comparing revision <span id="older"><%= @node.revisions.length-1 %></span> with revision <span id="newer"><%= @node.revisions.length-2 %></span></h3>
 
-  <div class="well" id="diff"></div>
+    <div class="well" id="diff"></div>
 
-  <style>
-    del { background:#faa; }
-    ins { background:#afa; }
-  </style>
+    <style>
+      del { background:#faa; }
+      ins { background:#afa; }
+    </style>
 
-  <script>
+    <script>
 
-  jQuery(document).ready(function() {
-    var newer = <%= @node.revisions.length-1 %>; older = <%= @node.revisions.length-2 %>;
-    $('#diff').html(diffString($('#body_'+older).html(),$('#body_'+newer).html()))
-    $(document).keydown(function(e){ if (e.keyCode == 39) { next() }})
-    $(document).keydown(function(e){ if (e.keyCode == 37) { prev() }})
-    function prev() {
-      if (older > 0) {
-        goto(newer-1,older-1)
-    }}
-    function next() {
-      if (newer < <%= @node.revisions.length-1 %>) {
-        goto(newer+1,older+1)
-    }}
-    function goto(newr,old) {
-      newer = newr
-      older = old
-      $('#newer').html(newer)
-      $('#older').html(older)
+    jQuery(document).ready(function() {
+      var newer = <%= @node.revisions.length-1 %>; older = <%= @node.revisions.length-2 %>;
       $('#diff').html(diffString($('#body_'+older).html(),$('#body_'+newer).html()))
-      $('tr').removeClass('warning')
-      $('#row'+older).addClass('warning')
-      $('#row'+newer).addClass('warning')
-    }
-  });
+      $(document).keydown(function(e){ if (e.keyCode == 39) { next() }})
+      $(document).keydown(function(e){ if (e.keyCode == 37) { prev() }})
+      function prev() {
+        if (older > 0) {
+          goto(newer-1,older-1)
+      }}
+      function next() {
+        if (newer < <%= @node.revisions.length-1 %>) {
+          goto(newer+1,older+1)
+      }}
+      function goto(newr,old) {
+        newer = newr
+        older = old
+        $('#newer').html(newer)
+        $('#older').html(older)
+        $('#diff').html(diffString($('#body_'+older).html(),$('#body_'+newer).html()))
+        $('tr').removeClass('warning')
+        $('#row'+older).addClass('warning')
+        $('#row'+newer).addClass('warning')
+      }
+    });
 
-  </script>
+    </script>
   <% end %>
 </div>
