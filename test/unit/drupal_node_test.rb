@@ -9,6 +9,24 @@ class DrupalNodeTest < ActiveSupport::TestCase
     assert node.save!
   end
 
+  test "create a research note" do
+    node =  DrupalNode.new({
+      uid: rusers(:bob).id,
+      type: 'note',
+      title: 'My research note'
+    })
+    assert node.save!
+  end
+
+  test "create a wiki page" do
+    node =  DrupalNode.new({
+      uid: rusers(:bob).id,
+      type: 'page',
+      title: 'My wiki page'
+    })
+    assert node.save!
+  end
+
   test "create a node_revision" do
     # in testing, uid and id should be matched, although this is not yet true in production db
     node_revision =  DrupalNodeRevision.new({
