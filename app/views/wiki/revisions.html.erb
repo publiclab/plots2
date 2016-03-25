@@ -1,6 +1,8 @@
 <div class="col-md-5">
 
-  <h3 style="margin-top:0;">Revisions for <%= @node.title %></h3>
+  
+  <% if !@node.nil? %>
+  <h3 id="wiki-title" style="margin-top:0;">Revisions for <%= @node.title %></h3>
   <ul class="nav nav-tabs">
     <li><a href="/wiki/<%= @node.slug %>">View</a></li>
     <li class="disabled"><a href="/wiki/edit/<%= @node.slug %>">Edit</a></li>
@@ -75,5 +77,5 @@
   });
 
   </script>
-
+  <% end %>
 </div>
