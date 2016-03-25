@@ -17,6 +17,7 @@
 require 'test_helper'
 
 class WikiControllerTest < ActionController::TestCase
+  self.use_instantiated_fixtures = true
 
   def setup
     activate_authlogic
@@ -82,6 +83,30 @@ class WikiControllerTest < ActionController::TestCase
     assert_select "h1", newtitle # title should change but not URL
     # assert_select "span#teststring", "added content" # this test does not work! very frustrating. 
     # assert_select ".label", "meetup" # test for tag addition too, later
+  end
+
+  test "update wiki uploading new image" do
+    UserSession.new(@user)
+    node = DrupalNode.where(type: 'page').last
+    image = fixture_file_upload 'rails.png'
+    post :update, :id => node.nid, :uid => @user.id,
+                  :title => "New Title", :body => "Editing about Page", 
+                  :image => { :title => "new image",
+                              :photo => image 
+                   }
+    assert_redirected_to node.path
+    assert_equal flash[:notice], "Edits saved."
+  end
+
+  test "update wiki selecting previous image" do
+    UserSession.new(@user)
+    node = DrupalNode.where(type: 'page').last
+    image = node.images.where(photo_file_name: 'filename-1.jpg').last
+    post :update, :id => node.nid, :uid => @user.id,
+                  :title => "New Title", :body => "Editing about Page",
+                  :image_revision => image.id
+    assert_redirected_to node.path
+    assert_equal flash[:notice], "Edits saved."
   end
 
   test "normal user should not delete wiki page" do
@@ -217,4 +242,5 @@ class WikiControllerTest < ActionController::TestCase
     assert_template :index
     assert_select "title", "Public Lab: Well-liked wiki pages"
   end
+
 end
