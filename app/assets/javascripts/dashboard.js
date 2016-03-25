@@ -20,6 +20,8 @@
 
     }
 
+    $('.activity .col-md-6:visible:even').css('clear', 'left');
+
     if (localStorage) {
 
       types[type] = (checked == true);
