@@ -25,7 +25,7 @@ class ImagesController < ApplicationController
       #@image = Image.find @image.id
       if request.xhr?
         render :json => { :filename => @image.photo_file_name,
-                          :url => @image.path,
+                          :url => @image.path(:large),
                           :id => @image.id
                         }
       else

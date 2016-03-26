@@ -63,7 +63,7 @@ jQuery(document).ready(function() {
 
         if (is_image) {
           image_url = data.result.url.split('?')[0]
-          orig_image_url = image_url.replace('medium','original') // not really portable, should parse response and look for "original_filename" or something
+          orig_image_url = image_url.replace('large','original') // not really portable, should parse response and look for "original_filename" or something
 
           $E.wrap('[![',']('+image_url+')]('+orig_image_url+')', {'newline': true, 'fallback': data.result['filename']}) // on its own line; see /app/assets/js/editor.js
         } else {
