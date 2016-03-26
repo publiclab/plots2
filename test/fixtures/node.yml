@@ -1,8 +1,8 @@
 one:
   title: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON"
-  path: "/notes/jeff/03-03-2013/canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon"
-  created: 1362353067
-  changed: 1362354920
+  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
   status: 1
   type: "note"
   nid: 1
@@ -12,8 +12,8 @@ one:
 two: 
   title: "about"
   path: "about"
-  created: 1362353067
-  changed: 1362354920
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
   status: 1
   type: "page"
   nid: 2
@@ -22,9 +22,9 @@ two:
 
 spam:
   title: "Hot stuff I'm selling"
-  path: "/notes/spammer/03-03-2013/hot-stuff-i-m-selling"
-  created: 1362353067
-  changed: 1362354920
+  path: "/notes/spammer/<%= Time.now.strftime("%m-%d-%Y") %>/hot-stuff-i-m-selling"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
   status: 0
   type: "note"
   nid: 3
