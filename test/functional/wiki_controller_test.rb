@@ -190,6 +190,8 @@ class WikiControllerTest < ActionController::TestCase
     assert_redirected_to "/wiki/" + title.parameterize
 
     get :revisions, id: title.parameterize
+    assert_tag :tag => 'h3', :child => /Revisions for #{title}/
+    assert_select 'title', "Public Lab: Revisions for &#x27;#{title}&#x27;"
     assert_template :revisions
   end
 
