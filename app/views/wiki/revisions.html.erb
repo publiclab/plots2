@@ -20,7 +20,7 @@
       </tr>
     <% @node.revisions.each_with_index do |revision,index| %>
       <tr id="row<%= @node.revisions.length-1-index %>"<% if index < 2 %> class="warning"<% end %>>
-        <td><b><a href="javascript:void(0)" onClick="goto(<%= @node.revisions.length-1-index %>,<%= @node.revisions.length-2-index %>)"><%= @node.revisions.length-1-index %></b></td>
+        <td><b><a href="javascript:void(0)" onClick="goto(<%= @node.revisions.length-1-index %>,<%= @node.revisions.length-2-index %>)"><%= @node.revisions.length-1-index %></a></b></td>
         <% if revision.author %><td><a href="/people/<%= revision.author.name %>"><%= revision.author.name %></a></td><% end %>
         <td><a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a> <i class="fa fa-external-link"></i>
           | <%= time_ago_in_words(revision.created_at) %> ago
@@ -50,31 +50,37 @@
     </style>
 
     <script>
-
-    jQuery(document).ready(function() {
-      var newer = <%= @node.revisions.length-1 %>; older = <%= @node.revisions.length-2 %>;
-      $('#diff').html(diffString($('#body_'+older).html(),$('#body_'+newer).html()))
-      $(document).keydown(function(e){ if (e.keyCode == 39) { next() }})
-      $(document).keydown(function(e){ if (e.keyCode == 37) { prev() }})
       function prev() {
         if (older > 0) {
           goto(newer-1,older-1)
       }}
+
       function next() {
         if (newer < <%= @node.revisions.length-1 %>) {
           goto(newer+1,older+1)
       }}
+
       function goto(newr,old) {
         newer = newr
         older = old
         $('#newer').html(newer)
         $('#older').html(older)
-        $('#diff').html(diffString($('#body_'+older).html(),$('#body_'+newer).html()))
-        $('tr').removeClass('warning')
-        $('#row'+older).addClass('warning')
-        $('#row'+newer).addClass('warning')
+        older_str = $('#body_' + older).html()
+        newer_str = $('#body_' + newer).html()
+        if(older_str != null && newer_str != null) {
+          $('#diff').html(diffString(older_str, newer_str))
+          $('tr').removeClass('warning')
+          $('#row'+older).addClass('warning')
+          $('#row'+newer).addClass('warning')
+        }
       }
-    });
+
+      jQuery(document).ready(function() {
+        var newer = <%= @node.revisions.length-1 %>; older = <%= @node.revisions.length-2 %>;
+        $('#diff').html(diffString($('#body_'+older).html(),$('#body_'+newer).html()))
+        $(document).keydown(function(e){ if (e.keyCode == 39) { next() }})
+        $(document).keydown(function(e){ if (e.keyCode == 37) { prev() }})
+      });
 
     </script>
   <% end %>
