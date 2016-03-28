@@ -76,7 +76,7 @@ class HomeController < ApplicationController
                              .group('title', 'DATE(FROM_UNIXTIME(timestamp))') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
 #                            .where('comments.status = (?)', 1)
     @activity = (@notes + @wikis + @comments).sort_by { |a| a.created_at }.reverse
-    @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count
+    @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
     render template: 'dashboard/dashboard'
   end
 
