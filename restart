@@ -1,2 +1,0 @@
-rvmsudo `which passenger` stop -p 80
-rvmsudo `which passenger` start -d -e production -p 80 --user=warren

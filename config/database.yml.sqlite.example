@@ -1,11 +1,11 @@
 development:
   adapter: sqlite3
-  database: development.db
+  database: development.sqlite
 
 production:
   adapter: sqlite3
-  database: production.db
+  database: production.sqlite
 
 test:
   adapter: sqlite3
-  database: test.db
+  database: test.sqlite
