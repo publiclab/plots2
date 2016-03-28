@@ -19,6 +19,8 @@ Some key features include:
 
 ##Simple installation with Cloud9
 
+This is a quick installation for use with the cloud environment https://c9.io - for more standard, full instructions, see below. 
+
 1. If you have a GitHub account, visit https://c9.io and log in with the GitHub button.
 2. Fork this repository to your own GitHub account, creating a `yourname/plots2` project.
 3. Name your project, then enter `yourname/plots2` in the "Clone from Git or Mercurial URL" field, and press **Create Workspace** 
@@ -88,11 +90,12 @@ Installation steps:
 2. Enter the new 'plots2' directory with `cd plots2`.
 3. Install gems with `bundle install --without production` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work. 
 4. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
-5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml` -- for development, we've included a prebuilt sqlite database in the `development.db` file, and this example database config is already set up to connect to it. If you are using another database, you can run `bundle exec rake db:setup` to set it up, and `bundle exec rake db:seed` to populate it with initial dummy data.
-6. Install static assets (like external javascript libraries, fonts) with `bower install` 
-7. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser. 
-8. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password". 
-9. Run `rake test` to confirm that your install is working properly. 
+5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
+6. For development, we've included a prebuilt sqlite database in the `development.sqlite.example` file. Make a copy of this and name it `development.sqlite`, and the above example database config is already set up to connect to it. Copying it ensures that changes to your local database won't be added your commits. If you are using another database, you can run `bundle exec rake db:setup` to set it up, and `bundle exec rake db:seed` to populate it with initial dummy data.
+7. Install static assets (like external javascript libraries, fonts) with `bower install` 
+8. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser. 
+9. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password". 
+10. Run `rake test` to confirm that your install is working properly. For some setups, you may see warnings even if test pass; [see this issue](https://github.com/publiclab/plots2/issues/440) we're working to resolve. 
 
 ### Bundle exec
 

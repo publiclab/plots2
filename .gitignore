@@ -18,6 +18,7 @@ data
 .ruby-version
 Gemfile.lock
 coverage*
+development.sqlite
 config/database.yml
 config/amazon_s3.yml
 config/initializers/recaptcha.rb

@@ -61,9 +61,9 @@ Create the tables, schema, and fill the database with example seed data:
 
         rake db:setup
 
-Create the tables and schema with the example data:
+Fill database with the example data:
 
-        rake db:create && rake db:migrate
+        rake db:seed
 
 6. Prepare static files
 ---
