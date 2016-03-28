@@ -133,6 +133,25 @@ class WikiControllerTest < ActionController::TestCase
     assert_redirected_to "/dashboard"
   end
 
+#  test "normal user should not delete wiki revision" do
+#    UserSession.new(users(:bob))
+#    post :delete_revision, id: DrupalNodeRevision.last.vid
+#    assert_equal flash[:error], "Only admins can delete wiki revisions."
+#    assert_redirected_to "/wiki/" + title.parameterize # use node_path?
+#  end
+
+#  test "admin user should delete wiki revision" do
+#    UserSession.new(users(:admin))
+#    post :delete_revision, id: DrupalNodeRevision.last.vid
+#    assert_equal flash[:notice], "Wiki revision deleted."
+#    assert_redirected_to "/wiki/" + title.parameterize # use node_path?
+#  end
+
+#  test "admin user should not delete wiki revision if its the only revision" do
+## this will require creating a wiki page with only one revision, to be sure
+## this could also be done in a unit test if we add a before_destroy filter on the DrupalNodeRevision model
+#  end
+
   test "should display wiki pages with slug in root" do
     @user.role = "admin"
     @user.save!
