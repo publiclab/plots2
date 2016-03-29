@@ -17,7 +17,11 @@
       </ul>
     </div>
  
-    <h1>Dashboard</h1>
+    <% if current_user %>
+      <h1>Dashboard</h1>
+    <% else %>
+      <h1>Community research</h1>
+    <% end %>
 
   </div>
 
@@ -25,8 +29,13 @@
 
 <div class="row stats">
   <h4 class="col-lg-12">
-    <span class="hidden-xs hidden-sm">Welcome<span class="hidden-md">, <b><%= current_user.username %></b></span>!</span> 
-    <a href="/research"><%= @note_count %> notes</a> and <a href="/wiki"><%= @wiki_count %> wiki edits</a> posted in the past week. 
-    You've shared <a href="/profile/<%= current_user.username %>"><%= @user_note_count %> research note<% if @user_note_count > 1 %>s<% end %></a>.
+    <% if current_user %>
+      <span class="hidden-xs hidden-sm">Welcome<span class="hidden-md">, <b><%= current_user.username %></b></span>!</span> 
+      <a href="/research"><%= @note_count %> notes</a> and <a href="/wiki"><%= @wiki_count %> wiki edits</a> posted in the past week. 
+      You've shared <a href="/profile/<%= current_user.username %>"><%= @user_note_count %> research note<% if @user_note_count > 1 %>s<% end %></a>.
+    <% else %>
+      <span class="hidden-xs hidden-sm">Welcome!</span> 
+      This could be your dashboard if you <a href="/signup">joined Public Lab</a>
+    <% end %>
   </h4>
 </div>

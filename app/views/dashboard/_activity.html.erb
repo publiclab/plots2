@@ -28,7 +28,9 @@
     </ul>
   </div> &nbsp; 
   <span class="hidden-xs">from other <a href="">community scientists</a></span> in the past week <span class="hidden-xs">|
-  <a href="/profile/<%= current_user.username %>">Your work</a></span> 
+  <% if current_user %>
+    <a href="/profile/<%= current_user.username %>">Your work</a></span> 
+  <% end %>
   <!-- (2 responses) -->
 </div>
 
