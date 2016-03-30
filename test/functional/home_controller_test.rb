@@ -8,6 +8,10 @@ require 'test_helper'
 
 class HomeControllerTest < ActionController::TestCase
 
+  def setup
+    activate_authlogic
+  end
+
   test "should get home" do
     get :home
     assert_response :success
@@ -18,10 +22,10 @@ class HomeControllerTest < ActionController::TestCase
     assert_response 302
   end
 
-#  test "should get dashboard" do
-#    UserSession.create(@user)
-#    get :dashboard
-#    assert_response :success
-#  end
+  test "should get dashboard" do
+    UserSession.create(rusers(:bob))
+    get :dashboard
+    assert_response :success
+  end
 
 end

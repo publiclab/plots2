@@ -25,8 +25,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "list users by role" do
-    @user =  FactoryGirl.create(:user)
-    UserSession.create(@user)
+    UserSession.create(rusers(:bob))
     get :list, id: 'admin'
     assert_response :success
     assert_not_nil :users

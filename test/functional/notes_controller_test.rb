@@ -22,11 +22,6 @@ class NotesControllerTest < ActionController::TestCase
 
   def setup
     activate_authlogic
-    @user =  FactoryGirl.create(:user)
-  end
-
-  def teardown
-    @user.destroy
   end
 
   test "redirect note short url" do
@@ -80,21 +75,22 @@ class NotesControllerTest < ActionController::TestCase
 
   test "post note no login" do
     # kind of weird, to successfully log out, we seem to have to first log in to get the UserSession...
-    user_session = UserSession.create @user
+    user_session = UserSession.create(rusers(:bob))
     user_session.destroy
     title = "My new post about balloon mapping"
-    post :create, :id => @user.id, :title => title, :body => "This is a fascinating post about a balloon mapping event.", :tags => "balloon-mapping,event"#, :main_image => "/images/testimage.jpg"
+    post :create, :id => rusers(:bob).id, :title => title, :body => "This is a fascinating post about a balloon mapping event.", :tags => "balloon-mapping,event"#, :main_image => "/images/testimage.jpg"
     assert_redirected_to('/login?return_to=/notes/create')
   end
 
   test "post note" do
-    UserSession.create(@user)
+    UserSession.create(rusers(:bob))
     title = "My new post about balloon mapping"
     post :create, :title => title, :body => "This is a fascinating post about a balloon mapping event.", :tags => "balloon-mapping,event"#, :main_image => "/images/testimage.jpg"
-    assert_redirected_to "/notes/"+@user.username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
+    assert_redirected_to "/notes/"+rusers(:bob).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
   end
 
   test "post_note_error_no_title" do
+    UserSession.create(rusers(:bob))
     post :create, :body => "This is a fascinating post about a balloon mapping event.", :tags => "balloon-mapping,event"
     assert_template "editor/post"
     assert_select ".alert"
@@ -105,17 +101,17 @@ class NotesControllerTest < ActionController::TestCase
   #end
 
   test "edit note" do
-    UserSession.create(@user)
+    UserSession.create(rusers(:bob))
     title = "My second post about balloon mapping"
     post :create, :title => title, :body => "This is a fascinating post about a balloon mapping event.", :tags => "balloon-mapping,event"#, :main_image => "/images/testimage.jpg"
-    assert_redirected_to "/notes/"+@user.username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
+    assert_redirected_to "/notes/"+rusers(:bob).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
 
     # add a tag, and change the title and body
     newtitle = title + " which I amended"
     post :update, :id => DrupalNode.where(title: title).first.id, :title => newtitle, :body => "This is a fascinating post about a balloon mapping event. <span id='teststring'>added content</span>", :tags => "balloon-mapping,event,meetup"
-    assert_redirected_to "/notes/"+@user.username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
+    assert_redirected_to "/notes/"+rusers(:bob).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
 
-    get :show, {:author => @user.username, :date => Time.now.strftime("%m-%d-%Y"), :id => title.parameterize}
+    get :show, {:author => rusers(:bob).username, :date => Time.now.strftime("%m-%d-%Y"), :id => title.parameterize}
     assert_equal flash[:notice], "Edits saved."
     assert_select "h1", newtitle
     # assert_select "span#teststring", "added content" # this test does not work!! very frustrating. 

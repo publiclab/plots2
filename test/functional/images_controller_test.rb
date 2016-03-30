@@ -6,6 +6,10 @@ class ImagesControllerTest < ActionController::TestCase
 # def new
 # def update
 
+  def setup
+    activate_authlogic
+  end
+
 #  test "normal user should not delete image" do
 #    UserSession.new(users(:bob))
 #    post :delete, id: Image.last.id
