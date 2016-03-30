@@ -27,8 +27,8 @@
     <div class="progress-bar" role="progressbar" style="width: 0%;"></div>
   </div>
   <p class="side-uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
-  <% if @node.images.length > 0 %>
-  <p>Select Previous image</p>
+  <% if @node && @node.images && @node.images.length > 0 %>
+  <p>Select previous image</p>
   <p>
     <select name="image_revision" id="image_revision">
       <% @node.images.each do |i| %>

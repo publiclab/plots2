@@ -17,3 +17,8 @@ unbanned_spammer:
   uid: 4
   name: unbanned_spammer
   status: 1
+
+admin:
+  uid: 5
+  name: palpatine
+  status: 1

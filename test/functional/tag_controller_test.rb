@@ -10,44 +10,42 @@ class TagControllerTest < ActionController::TestCase
 
   def setup
     activate_authlogic
-    @user =  FactoryGirl.create(:user)
   end
 
   # create accepts comma-delimited list of tags
   test "add tag" do
-    UserSession.new(@user)
-    post :create, :name => 'mytag', :nid => node(:one).nid, :uid => @user.id
+    UserSession.create(rusers(:bob))
+    post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob).id
     assert_redirected_to(node(:one).path)
   end
 
   test "validate unused tag" do
-    UserSession.new(@user)
+    UserSession.create(rusers(:bob))
     get :contributors, :id => 'question:*'
     assert_template :contributors
     assert_tag :tag => 'p', :child => /No contributors for that tag/
   end
 
   test "add invalid tag" do
-    UserSession.new(@user)
-    post :create, :name => 'my invalid tag $_', :nid => node(:one).nid, :uid => @user.id
+    UserSession.create(rusers(:bob))
+    post :create, :name => 'my invalid tag $_', :nid => node(:one).nid, :uid => rusers(:bob).id
     assert_redirected_to(node(:one).path)
     assert_equal "Error: tags can only include letters, numbers, and dashes", assigns['output']['errors'][0]
   end
 
   # create returns JSON list of errors in response[:errors]
   test "add duplicate tag" do
-    UserSession.new(@user)
-    post :create, :name => 'mytag', :nid => node(:one).nid, :uid => @user.id
+    UserSession.create(rusers(:bob))
+    post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
     assert_redirected_to(node(:one).path)
 
     # 2nd identical tag:
-    post :create, :name => 'mytag', :nid => node(:one).nid, :uid => @user.id
+    post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
     assert_redirected_to(node(:one).path)
     assert_equal "Error: that tag already exists.", assigns['output']['errors'][0]
   end
 
   test "add tag not logged in" do
-    @user.destroy
     post :create, :name => 'mytag', :nid => node(:one).nid, :uid => 1
     assert_redirected_to('/login?return_to='+URI.encode(request.env['PATH_INFO']))
   end

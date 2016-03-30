@@ -10,7 +10,7 @@ require 'test_helper'
 class FeaturesControllerTest < ActionController::TestCase
 
   test "should not get features if not admin" do
-    session[:user_id] = rusers(:bob).id # log in; this is not actually working
+    UserSession.create(rusers(:bob))
     get :index
     assert_response :redirect
   end

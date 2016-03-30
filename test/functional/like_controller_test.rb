@@ -10,11 +10,9 @@ class LikeControllerTest < ActionController::TestCase
 
   def setup
     activate_authlogic
-    @user =  FactoryGirl.create(:user)
   end
 
   def teardown
-    @user.destroy
   end
 
   test "show like" do
