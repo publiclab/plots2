@@ -18,6 +18,19 @@ class HomeController < ApplicationController
     end
   end
 
+  # proxy to enable AJAX loading of RSS feeds, which requires same-origin
+  def fetch
+    if true #Rails.env.production?
+      if params[:url][0..24] == "https://groups.google.com" || params[:url] == "https://feeds.feedburner.com/rssmixer/ZvcX"
+        url = URI.parse(params[:url])
+        result = Net::HTTP.get_response(url)
+        send_data result.body, :type => result.content_type, :disposition => 'inline'
+      end
+    else
+      redirect_to params[:url]
+    end
+  end
+
   # route for seeing the front page even if you are logged in
   def front
     @title = "a community for DIY environmental investigation"
