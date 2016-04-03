@@ -156,6 +156,7 @@ class UsersController < ApplicationController
       format.rss {
         render :layout => false
         response.headers["Content-Type"] = "application/xml; charset=utf-8"
+        response.headers["Access-Control-Allow-Origin"] = "*"
       } 
     end
   end

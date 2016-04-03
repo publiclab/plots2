@@ -99,28 +99,55 @@
   });
 
 
-  // must be https
-  // 'http://rssmixer.com/feed/2851.xml'
-  // cors? http://cors.io/?u=https://groups.google.com/forum/feed/publiclaboratory/topics/rss.xml?num=15
+  // (must be https)
+  // should adapt so we can store the "home" url of each feed, for click-through.
+  // so, { title: '', feed: '', url: '' }
   var lists = {
-    'test':               '/feed.rss',
-    'combined':           'https://feeds.feedburner.com/rssmixer/ZvcX',
-    'publiclaboratory':   'https://groups.google.com/forum/feed/publiclaboratory/topics/rss.xml?num=15',
-    'grassrootsmapping':  'https://groups.google.com/forum/feed/grassrootsmapping/topics/rss.xml?num=15',
-    'plots-spectrometry': 'https://groups.google.com/forum/feed/plots-spectrometry/topics/rss.xml?num=15',
-    'plots-infrared':     'https://groups.google.com/forum/feed/plots-infrared/topics/rss.xml?num=15',
-    'plots-airquality':   'https://groups.google.com/forum/feed/plots-airquality/topics/rss.xml?num=15',
-    'plots-waterquality': 'https://groups.google.com/forum/feed/plots-waterquality/topics/rss.xml?num=15',
-    'plots-dev':          'https://groups.google.com/forum/feed/plots-dev/topics/rss.xml?num=15'
+    'test': {
+      feed:  '/feed.rss',
+      url:   '/'
+    },
+    'combined': {
+      feed:  '/home/fetch?url=https://feeds.feedburner.com/rssmixer/ZvcX',
+      url:   '/lists'
+    },
+    'publiclaboratory': {
+      feed:  '/home/fetch?url=https://groups.google.com/forum/feed/publiclaboratory/topics/rss.xml?num=15',
+      url:   '/lists#publiclaboratory'
+    },
+    'grassrootsmapping': {
+      feed:  '/home/fetch?url=https://groups.google.com/forum/feed/grassrootsmapping/topics/rss.xml?num=15',
+      url:   '/lists#publiclaboratory'
+    },
+    'plots-spectrometry': {
+      feed:  '/home/fetch?url=https://groups.google.com/forum/feed/plots-spectrometry/topics/rss.xml?num=15',
+      url:   '/lists#publiclaboratory'
+    },
+    'plots-infrared': {
+      feed:  '/home/fetch?url=https://groups.google.com/forum/feed/plots-infrared/topics/rss.xml?num=15',
+      url:   '/lists#publiclaboratory'
+    },
+    'plots-airquality': {
+      feed:  '/home/fetch?url=https://groups.google.com/forum/feed/plots-airquality/topics/rss.xml?num=15',
+      url:   '/lists#publiclaboratory'
+    },
+    'plots-waterquality': {
+      feed:  '/home/fetch?url=https://groups.google.com/forum/feed/plots-waterquality/topics/rss.xml?num=15',
+      url:   '/lists#publiclaboratory'
+    },
+    'plots-dev': {
+      feed: '/home/fetch?url=https://groups.google.com/forum/feed/plots-dev/topics/rss.xml?num=15',
+      url:   '/lists#publiclaboratory'
+    },
   };
 
   var show_list = function (list) {
 
-    $.get(lists[list], function (feed) {
+    $.get(lists[list].feed, function (feed) {
  
       $('.lists').html('');
  
-      $.each($(feed).find('channel item').slice(0, 4), function (i, item) { 
+      $.each($(feed).find('channel item').slice(0, 10), function (i, item) { 
  
         $('.lists').append('<div class="feed-item-' + i + '"></div>');
   
@@ -141,19 +168,18 @@
         itemEl.append('<p class="meta"></p>');
         var metaEl = $('.lists .meta:last');
   
-        // metaEl.append('by <a class="author"></a>');
-        // metaEl.find('.author').attr('href', 'https://publiclab.org/profile/' + author);
-        // metaEl.find('.author').append(author);
-  
         metaEl.append('<i class="fa fa-envelope-o"></i> ');
         metaEl.append('<span class="date"></span>');
         metaEl.find('.date').append(pubDate);
-  
+
+        if (author) metaEl.find('.date').append(' by <i>' + author + '</i>');
+        if (list != 'combined') metaEl.find('.date').append(' on <a href="' + lists[list].url + '">' + list + '</a>');
+
       });
 
-      if (lists[list].match('https://groups.google.com')) {
+      if (lists[list].feed.match('https://groups.google.com')) {
 
-        $('.lists').append('<a href="https://groups.google.com/forum/#!forum/' + list + '">Read more &raquo;</a>');
+        $('.lists').append('<p><a href="https://groups.google.com/forum/#!forum/' + list + '">More list topics &raquo;</a></p>');
 
       }
 
@@ -161,7 +187,7 @@
 
   }
 
-  $('a.lists-tab').on('shown.bs.tab', function() { show_list('test'); });
+  $('a.lists-tab').on('shown.bs.tab', function() { show_list('combined'); });
 
   $('.list-select').change(function() { show_list($(this).val()); });
 
