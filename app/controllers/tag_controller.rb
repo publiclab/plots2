@@ -177,6 +177,7 @@ class TagController < ApplicationController
     respond_to do |format|
       format.rss {
         response.headers["Content-Type"] = "application/xml; charset=utf-8"
+        response.headers["Access-Control-Allow-Origin"] = "*"
         render :layout => false
       } 
       format.ics {
