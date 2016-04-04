@@ -23,7 +23,8 @@ class DrupalComment < ActiveRecord::Base
   end
 
   def body
-    self.comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
+    finder = self.comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
+    finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
   end
 
   # filtered version additionally appending http/https protocol to protocol-relative URLs like "//publiclab.org/foo"
