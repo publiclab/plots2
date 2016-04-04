@@ -5,7 +5,7 @@ bob:
   password_salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
-  last_request_at: <%= Time.now.to_i %>
+  last_request_at: <%= Time.now %>
 
 jeff:
   username: jeff
@@ -15,23 +15,32 @@ jeff:
   password_salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
-  last_request_at: <%= Time.now.to_i %>
+  last_request_at: <%= Time.now %>
 
 spammer:
   username: spammer
   email: spam@spam.com
   id: 3
-  last_request_at: <%= Time.now.to_i %>
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
 
 unbanned_spammer:
   username: unbanned_spammer
   email: uspam@spam.com
   id: 4
-  last_request_at: <%= Time.now.to_i %>
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
 
 admin:
   username: palpatine
   email: admin@publiclab.org
   id: 5
-  last_request_at: <%= Time.now.to_i %>
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
   role: admin
