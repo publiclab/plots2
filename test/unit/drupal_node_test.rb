@@ -27,6 +27,20 @@ class DrupalNodeTest < ActiveSupport::TestCase
     assert node.save!
   end
 
+  test "create a wiki page with DrupalNode.new_wiki" do
+    node = DrupalNode.new_wiki({
+      uid: rusers(:bob).id,
+      type: 'page',
+      title: 'My wiki page',
+      body: 'Wiki page content/body'
+    })[1] # returns an array, oddly. refactor this API!
+    assert node.save!
+    assert_equal rusers(:bob).id, node.uid
+    assert_equal 'page', node.type
+    assert_equal 'My wiki page', node.title
+    assert_equal 'Wiki page content/body', node.body
+  end
+
   test "create a node_revision" do
     # in testing, uid and id should be matched, although this is not yet true in production db
     node_revision =  DrupalNodeRevision.new({

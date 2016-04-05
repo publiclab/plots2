@@ -12,7 +12,9 @@ class DrupalCommentTest < ActiveSupport::TestCase
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
-    comment.comment = 'Hey, @bob, what do you think?'
+    comment.comment = 'Hey, @Bob, what do you think?'
+    assert_not_nil comment
+    assert_equal 1, comment.mentioned_users.length
     assert_equal comment.mentioned_users.first.id, rusers(:bob).id
   end
 
@@ -21,7 +23,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
-    comment.comment = 'Hey, @bob, @jeff, @bob, what do you think?'
+    comment.comment = 'Hey, @Bob, @jeff, @Bob, what do you think?'
     assert_equal comment.mentioned_users.length, 2 # one duplicate, removed
     assert_equal comment.mentioned_users.first.id, rusers(:bob).id
     assert_equal comment.mentioned_users[1].id, rusers(:jeff).id
@@ -32,7 +34,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
-    comment.comment = 'Hey, @bob @jeff @bob, what do you think?'
+    comment.comment = 'Hey, @Bob @jeff @Bob, what do you think?'
     assert_equal comment.mentioned_users.length, 2 # one duplicate, removed
     assert_equal comment.mentioned_users[0].id, rusers(:bob).id
     assert_equal comment.mentioned_users[1].id, rusers(:jeff).id

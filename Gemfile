@@ -4,9 +4,6 @@ ruby '2.1.2'
 gem 'rails', '~> 3.2.20'
 gem 'passenger'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
   gem 'mysql2', '~> 0.3.20'

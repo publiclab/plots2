@@ -39,13 +39,19 @@ class NotesControllerTest < ActionController::TestCase
 
   test "show note" do
     note = DrupalNode.where(type: 'note', status: 1).last
-    get :show, author: note.author.name, date: Time.at(note.created).strftime("%m-%d-%Y"), id: note.title.parameterize
+    get :show, 
+        author: note.author.name, 
+        date: Time.at(note.created).strftime("%m-%d-%Y"), 
+        id: note.title.parameterize
     assert_response :success
   end
 
   test "don't show note by spam author" do
     note = DrupalNode.find_by_nid(3) # spam fixture
-    get :show, author: note.author.name, date: Time.at(note.created).strftime("%m-%d-%Y"), id: note.title.parameterize
+    get :show, 
+        author: note.author.name, 
+        date: Time.at(note.created).strftime("%m-%d-%Y"), 
+        id: note.title.parameterize
     assert_redirected_to '/'
   end
 
