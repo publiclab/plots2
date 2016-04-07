@@ -88,7 +88,7 @@ class WikiController < ApplicationController
       title = params[:id].gsub('-',' ')
       @related = DrupalNode.limit(10)
                            .order("node.nid DESC")
-                           .where('type = "page" AND status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', "%" + title + "%","%" + title + "%")
+                           .where('type = "page" AND node.status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', "%" + title + "%","%" + title + "%")
                            .includes(:drupal_node_revision)
       tag = DrupalTag.find_by_name(params[:id]) # add page name as a tag, too
       @tags << tag if tag
@@ -143,8 +143,6 @@ class WikiController < ApplicationController
           i.vid = @revision.vid 
           i.save
         end
-        # can't do this because it changes the URL:
-        #@node.title = @revision.title
         # save main image
         if params[:main_image] && params[:main_image] != ""
           begin
@@ -223,6 +221,8 @@ class WikiController < ApplicationController
   def revisions
     @node = DrupalNode.find_by_slug(params[:id])
     if @node
+      @revisions = @node.revisions
+      @revisions = @revisions.where(status: 1) unless current_user && (current_user.role == "moderator" || current_user.role == "admin")
       @title = "Revisions for '"+@node.title+"'"
       @tags = @node.tags
     else
@@ -239,12 +239,14 @@ class WikiController < ApplicationController
     set_sidebar :tags, @tagnames, {:videos => true}
     @revision = DrupalNodeRevision.find_by_nid_and_vid(@node.id, params[:vid])
     if @revision.nil?
-      # revision not found, forward to revision list
-      flash[:error] = "invalid revision " + params[:vid]
+      flash[:error] = "Revision not found."
       redirect_to action: 'revisions'
-    else
+    elsif @revision.status == 1 || current_user && (current_user.role == "moderator" || current_user.role == "admin")
       @title = "Revision for '"+@revision.title+"'"
       render :template => "wiki/show"
+    else
+      flash[:error] = "That revision has been moderated. Please see <a href='/wiki/moderation'>the moderation page to learn more</a>."
+      redirect_to @node.path
     end
   end
 
@@ -257,9 +259,10 @@ class WikiController < ApplicationController
   def index
     @title = "Wiki"
 
-    @wikis = DrupalNode.includes(:drupal_node_revision,:drupal_node_counter)
+    @wikis = DrupalNode.includes(:drupal_node_revision, :drupal_node_counter)
+                       .group('node_revisions.nid')
                        .order("node_revisions.timestamp DESC")
-                       .where("status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
+                       .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
                        .page(params[:page])
 
     @paginated = true
@@ -269,7 +272,10 @@ class WikiController < ApplicationController
     @title = "Popular wiki pages"
     @wikis = DrupalNode.limit(40)
                        .order("node_counter.totalcount DESC")
-                       .where("status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
+                       .joins(:drupal_node_revision)
+                       .group('node_revisions.nid')
+                       .order("node_revisions.timestamp DESC")
+                       .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
                        .includes(:drupal_node_counter)
     render :template => "wiki/index"
   end

@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
 
-  before_filter :require_user, :only => [:spam]
+  before_filter :require_user, :only => [:spam, :spam_revisions]
 
   def promote_admin
     if current_user && current_user.role == "admin"
@@ -66,16 +66,24 @@ class AdminController < ApplicationController
     end
   end
 
-  def mark_spam
+  def spam_revisions
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      @node = DrupalNode.find params[:id]
+      @revisions = DrupalNodeRevision.paginate(page: params[:page])
+                                     .order("timestamp DESC")
+                                     .where(status: 0)
+      render template: 'admin/spam'
+    else
+      flash[:error] = "Only moderators can moderate revisions."
+      redirect_to "/dashboard"
+    end
+  end
+
+  def mark_spam
+    @node = DrupalNode.find params[:id]
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
       if @node.status == 1
-        @node.status = 0
-        @node.save
-        # ban the user too
-        author = @node.author
-        author.status = 0
-        author.save
+        @node.spam
+        @node.author.ban
         flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
         redirect_to "/dashboard"
       else
@@ -83,7 +91,7 @@ class AdminController < ApplicationController
         redirect_to "/dashboard"
       end
     else
-      flash[:error] = "Only moderators can publish posts."
+      flash[:error] = "Only moderators can moderate posts."
       redirect_to @node.path
     end
   end
@@ -91,10 +99,41 @@ class AdminController < ApplicationController
   def publish
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
       @node = DrupalNode.find params[:id]
-      @node.status = 1
-      @node.save
+      @node.publish
+      @node.author.unban
       flash[:notice] = "Item published."
       redirect_to @node.path
+    else
+      flash[:error] = "Only moderators can publish posts."
+      redirect_to "/dashboard"
+    end
+  end
+
+  def mark_spam_revision
+    @revision = DrupalNodeRevision.find_by_vid params[:vid]
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+      if @revision.status == 1
+        @revision.spam
+        @revision.author.ban
+        flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam/revisions'>spam moderation page</a>."
+        redirect_to "/dashboard"
+      else
+        flash[:notice] = "Item already marked as spam and author banned. You can undo this on the <a href='/spam/revisions'>spam moderation page</a>."
+        redirect_to "/dashboard"
+      end
+    else
+      flash[:error] = "Only moderators can moderate posts."
+      redirect_to @node.path
+    end
+  end
+
+  def publish_revision
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+      @revision = DrupalNodeRevision.find params[:vid]
+      @revision.publish
+      @revision.author.unban
+      flash[:notice] = "Item published."
+      redirect_to @revision.parent.path
     else
       flash[:error] = "Only moderators can publish posts."
       redirect_to "/dashboard"
@@ -106,10 +145,6 @@ class AdminController < ApplicationController
       user = DrupalUsers.find params[:id]
       user.status = 0
       user.save({})
-      #user.notes.each do |note|
-      #  note.status = 0
-      #  note.save
-      #end
       flash[:notice] = "The user has been banned."
     else
       flash[:error] = "Only moderators can ban other users."
@@ -144,8 +179,7 @@ class AdminController < ApplicationController
       users = []
       params[:ids].split(',').uniq.each do |nid|
         node = DrupalNode.find nid
-        node.status = 0
-        node.save
+        node.spam
         nodes += 1
         user = node.author
         user.status = 0

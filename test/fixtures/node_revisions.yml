@@ -1,17 +1,47 @@
 one: 
   nid: 1
   uid: 1
-  title: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON"
-  body: "A fine day was had"
+  title: Canon A1200 IR conversion at PLOTS Barnraising at LUMCON
+  body: A fine day was had
 
 two: 
   nid: 2
   uid: 2
   title: About
-  body: "All about Public Lab"
+  body: All about Public Lab
 
 three: 
   nid: 3
   uid: 3
-  title: "Hot stuff I'm selling"
-  body: "Get it while it lasts!"
+  title: Hot stuff I'm selling
+  body: Get it while it lasts!
+
+organizers: 
+  nid: 5
+  uid: 1
+  title: Organizers
+  body: The organizers group page
+
+prespam_revision: 
+  timestamp: <%= (Time.now - 1.week).to_i %>
+  nid: 4
+  uid: 1
+  status: 1
+  title: Important research
+  body: Real research content
+
+second_prespam_revision: 
+  timestamp: <%= (Time.now - 1.day).to_i %>
+  nid: 4
+  uid: 2
+  status: 1
+  title: Important research
+  body: Real research content
+
+unmoderated_spam_revision: 
+  timestamp: <%= Time.now.to_i %>
+  nid: 4
+  uid: 3
+  status: 1
+  title: Bad spam title
+  body: Lots of stuff for sale

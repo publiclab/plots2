@@ -41,7 +41,11 @@
       <i class='fa fa-code'></i><span class='hidden-xs hidden-sm' Raw</span>
     </a>
     <% if current_user.role == "moderator" || current_user.role == "admin" %>
-      <a class='btn btn-default btn-sm' href='/moderate/spam/<%= node.id %>'><i class='fa fa-ban-circle'></i> Spam</a>
+      <% if node.type == 'note' %>
+        <a class='btn btn-default btn-sm' href='/moderate/spam/<%= node.id %>'><i class='fa fa-ban-circle'></i> Spam</a>
+      <% elsif node.type == 'page' %>
+        <a class='btn btn-default btn-sm' href='/moderate/revision/spam/<%= @revision.vid %>'><i class='fa fa-ban-circle'></i> Spam revision</a>
+      <% end %>
     <% end %>
   </div> 
 <% end %>

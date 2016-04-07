@@ -33,6 +33,18 @@ class DrupalUsers < ActiveRecord::Base
     self.user.role if self.user
   end
 
+  def unban
+    self.status = 1
+    self.save
+    self
+  end
+
+  def ban
+    self.status = 0
+    self.save
+    self
+  end
+
   def email
     self.mail
   end

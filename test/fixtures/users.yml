@@ -22,3 +22,8 @@ admin:
   uid: 5
   name: palpatine
   status: 1
+
+moderator:
+  uid: 6
+  name: obiwan
+  status: 1

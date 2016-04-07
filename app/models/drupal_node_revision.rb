@@ -16,6 +16,18 @@ class DrupalNodeRevision < ActiveRecord::Base
 
   before_save :inline_tags
 
+  def publish
+    self.status = 1
+    self.save
+    self
+  end
+
+  def spam
+    self.status = 0
+    self.save
+    self
+  end
+
   # search for inline special tags such as [question:foo]
   def inline_tags
     self.body.scan(/\[question(:[\w-]+)\]/).each do |match|
