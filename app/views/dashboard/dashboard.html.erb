@@ -7,21 +7,23 @@
     <div class="col-md-8">
  
       <div class="dashboard-blog">
-  
-        <div class="img"<% if @blog.main_image %> style="background-image: url('<%= @blog.main_image.path(:large) %>')"<% end %>>
-  
-          <div class="blog-caption">
-
-            <h4>
-              <small class="pull-right hidden-xs hidden-sm">From the <a href="/blog">Public Lab Blog</a></small>
-              <a class="title" href="/blog"><%= @blog.title %></a> 
-              <small>by <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
-            </h4>
-
+ 
+        <% if @blog %> 
+          <div class="img"<% if @blog.main_image %> style="background-image: url('<%= @blog.main_image.path(:large) %>')"<% end %>>
+       
+            <div class="blog-caption">
+       
+              <h4>
+                <small class="pull-right hidden-xs hidden-sm">From the <a href="/blog">Public Lab Blog</a></small>
+                <a class="title" href="/blog"><%= @blog.title %></a> 
+                <small>by <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
+              </h4>
+       
+            </div>
           </div>
+       
         </div>
-  
-      </div>
+      <% end %>
   
       <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
  
