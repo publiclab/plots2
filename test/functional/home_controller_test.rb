@@ -32,4 +32,12 @@ class HomeControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should get dashboard2" do
+    UserSession.create(rusers(:bob))
+
+    get :dashboard2
+
+    assert_response :success
+  end
+
 end

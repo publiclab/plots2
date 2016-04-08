@@ -13,7 +13,7 @@
         <span style="color:grey;"><%= time_ago_in_words(revision.timestamp) %> ago</span>
       </td>
       <td style="width:200px;">
-        <%= revision.body %>
+        <%= revision.body.truncate(40) %>
       </td>
       <td style="width:200px;">
         <a href="/profile/<%= revision.author.name %>"><%= revision.author.name %></a> 
