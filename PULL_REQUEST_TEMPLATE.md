@@ -5,6 +5,7 @@ Make sure these boxes are checked before your pull request is ready to be review
 * [ ] pull request are descriptively named
 * [ ] if possible, multiple commits squashed if they're smaller changes
 * [ ] reviewed/confirmed/tested by another contributor or maintainer
+* [ ] `development.sqlite.example` has been updated if any database migrations were added
 
 Please be sure you've reviewed our contribution guidelines at https://publiclab.org/wiki/contributing-to-public-lab-software
 
