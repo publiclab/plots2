@@ -74,7 +74,7 @@ class HomeController < ApplicationController
     @wikis = DrupalNode.where(type: 'page', status: 1)
                        .order('nid DESC')
                        .limit(10)
-    @wikis += DrupalNodeRevision.joins(:drupal_node)
+    revisions = DrupalNodeRevision.joins(:drupal_node)
                                 .order('timestamp DESC')
                                 .where('type = (?)', 'page')
                                 .where('node.status = 1')
@@ -82,7 +82,8 @@ class HomeController < ApplicationController
                                 .limit(10)
                                 .group('node.title')
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
-    @wikis = @wikis.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
+    revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
+    @wikis = @wikis + revisions
     @wikis = @wikis.sort_by { |a| a.created_at }.reverse
     @comments = DrupalComment.joins(:drupal_node, :drupal_users)
                              .order('timestamp DESC')
