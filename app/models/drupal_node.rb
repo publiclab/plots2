@@ -196,12 +196,16 @@ class DrupalNode < ActiveRecord::Base
                    .last
   end
 
-  # provide either a Drupally main_iamge or a Railsy one 
+  # provide either a Drupally main_image or a Railsy one
   def main_image(node_type = :all)
     if self.images.length > 0 && node_type != :drupal
-      self.images.order('vid').last
+      if self.main_image_id.blank?
+        self.images.order('vid').last
+      else
+        self.images.where(id: self.main_image_id).first
+      end
     elsif self.drupal_main_image && node_type != :rails
-      self.drupal_main_image.drupal_file 
+      self.drupal_main_image.drupal_file
     else
       nil
     end

@@ -2,7 +2,14 @@
 
   <h3 class="hidden-sm">Main image <i id="main-image-spinner" class="hidden icon-spinner icon-spin"></i></h3>
 
-  <img class="img-rounded" id="leadImage" style="width:100%;<% unless (@node && @node.main_image) || params[:main_image] || params[:i] %>display:none;<% end %>" src="<% if @node && @node.main_image %><%= @node.main_image.path(:default) %><% elsif params[:main_image] && Image.find_by_id(params[:main_image]) %><%= Image.find_by_id(params[:main_image]).path %><% elsif @image %><%= @image.path(:default) %><% end %>" />
+  <img class="img-rounded" id="leadImage" style="width:100%;<% unless (@node && @node.main_image) || params[:main_image] || params[:i] %>display:none;<% end %>"
+       src="<% if @node && @node.main_image %>
+         <%= @node.main_image.path(:default) %>
+       <% elsif params[:main_image] && Image.find_by_id(params[:main_image]) %>
+         <%= Image.find_by_id(params[:main_image]).path %>
+       <% elsif @image %>
+         <%= @image.path(:default) %>
+       <% end %>" />
 
   <div class="side-dropzone" id="side-dropzone">
     <p class="prompt">
@@ -28,14 +35,14 @@
   </div>
   <p class="side-uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
   <% if @node && @node.images && @node.images.length > 0 %>
-  <p>Select previous image</p>
-  <p>
-    <select name="image_revision" id="image_revision">
-      <% @node.images.each do |i| %>
-        <option value="<%= i.id %>" <% if i.vid == @node.vid %>selected='selected'<% end %> ><%= i.photo_file_name%></option>
-      <% end %>
-    </select>
-  </p>
+    <p>Select previous image</p>
+    <p>
+      <select name="image_revision" id="image_revision">
+        <% @node.images.each_with_index do |i,index| %>
+          <option id="<%=i.id%>" value="<%=i.path(:default)%>" <% if i.vid == @node.vid %>selected='selected'<% end %> >Image <%=index+1%></option>
+        <% end %>
+      </select>
+    </p>
   <% end %>
   <% if params[:newsletter] %>
 
@@ -64,7 +71,11 @@
 
     <div class="row">
       <% @all.each do |note| %>
-        <% if note.main_image %><a class="col-md-6" onClick="upload_main_img('<%= note.main_image.path(:original) %>','<%= note.author.username %>')"><img class="img-rounded" src="<%= note.main_image.path(:default) %>" /></a><% end %>
+        <% if note.main_image %>
+          <a class="col-md-6" onClick="upload_main_img('<%= note.main_image.path(:original) %>','<%= note.author.username %>')">
+            <img class="img-rounded" src="<%= note.main_image.path(:default) %>" />
+          </a>
+        <% end %>
       <% end %>
     </div>
 

@@ -57,7 +57,7 @@ class NotesController < ApplicationController
       # no notification; don't let people easily fish for existing draft titles; we should try to 404 it
       redirect_to "/"
     end
- 
+
     @node.view
     @title = @node.latest.title
     @tags = @node.tags
@@ -145,6 +145,7 @@ class NotesController < ApplicationController
           img = Image.find params[:main_image]
           unless img.nil?
             img.nid = @node.id
+            @node.main_image_id = img.id
             img.save
           end
         end
