@@ -25,14 +25,17 @@ class ApplicationController < ActionController::Base
                                 .where('term_data.name = (?)', 'hidden:response')
                                 .collect(&:nid)
         @notes = DrupalNode.joins(:drupal_node_revision)
-                           .where(type: 'note', status: 1)
-                           .where('node.nid NOT IN (?)', hidden_nids)
+                           .where(type: 'note')
+                           .where('node_revisions.status = 1 AND node.status = 1 AND node.nid NOT IN (?)', hidden_nids)
                            .order('node.nid DESC')
                            .paginate(:page => params[:page])
         @notes = @notes.where('node.nid != (?)', @node.nid) if @node
         @wikis = DrupalNode.order("changed DESC")
-                           .where(status: 1, type: 'page')
+                           .joins(:drupal_node_revision)
+                           .where('node_revisions.status = 1 AND node.status = 1 AND type = "page"')
                            .limit(10)
+                           .group('node_revisions.nid')
+                           .order('node_revisions.timestamp DESC')
       end
     end
     

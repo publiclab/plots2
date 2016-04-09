@@ -1,0 +1,34 @@
+<table class="table">
+  <tr>
+    <th>Title</th>
+    <th>Content</th>
+    <th>Author</th>
+    <th>Action</th>
+  </tr>
+
+  <% @revisions.each do |revision| %>
+    <tr id="n<%= revision.vid %>">
+      <td>
+        <i class="fa fa-file"></i> <a href="<%= revision.parent.path %>"><%= revision.title.truncate(40) %></a><br />
+        <span style="color:grey;"><%= time_ago_in_words(revision.timestamp) %> ago</span>
+      </td>
+      <td style="width:200px;">
+        <%= revision.body.truncate(40) %>
+      </td>
+      <td style="width:200px;">
+        <a href="/profile/<%= revision.author.name %>"><%= revision.author.name %></a> 
+      </td>
+      <td><div class="btn-toolbar" style="margin:0;">
+        <div class="btn-group">
+          <a class="btn btn-default btn-lg <% if revision.status == 0 %>btn-success<% else %>disabled<% end %> publish" href="/moderate/revision/publish/<%= revision.vid %>"><i class="fa fa-ok-circle fa fa-white"></i> Publish</a>
+          
+          <% if revision.author.status == 0 %>
+            <a class="btn btn-default btn-lg ban a<%= revision.author.id %>" href="/ban/<%= revision.author.id %>">Ban</a>
+          <% elsif revision.author.status == 1 %>
+            <a class="btn btn-default btn-lg unban a-unban<%= revision.author.id %>" href="/unban/<%= revision.author.id %>">Unban</a>
+          <% end %>
+        </div>
+      </div></td>
+    </tr>
+  <% end %>
+</table>

@@ -66,28 +66,33 @@ class HomeController < ApplicationController
                             .where('term_data.name = (?)', 'hidden:response')
                             .collect(&:nid)
     @notes = DrupalNode.where(type: 'note', status: 1)
-                       .where('nid != (?)', @blog.nid)
                        .where('node.nid NOT IN (?)', hidden_nids)
                        .order('nid DESC')
                        .page(params[:page])
+    @notes = @notes.where('nid != (?)', @blog.nid) if @blog
     # include revisions, then mix with new pages:
     @wikis = DrupalNode.where(type: 'page', status: 1)
                        .order('nid DESC')
                        .limit(10)
-    @wikis += DrupalNodeRevision.joins(:drupal_node)
+    revisions = DrupalNodeRevision.joins(:drupal_node)
                                 .order('timestamp DESC')
                                 .where('type = (?)', 'page')
-                                .where('status = (?)', 1)
+                                .where('node.status = 1')
                                 .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
                                 .limit(10)
-                                .group(:title, 'DATE(FROM_UNIXTIME(timestamp))') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
+                                .group('node.title')
+    # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
+    revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
+    @wikis = @wikis + revisions
     @wikis = @wikis.sort_by { |a| a.created_at }.reverse
     @comments = DrupalComment.joins(:drupal_node, :drupal_users)
                              .order('timestamp DESC')
                              .where('timestamp - node.created > ?', 86400) # don't report edits within 1 day of page creation
                              .limit(20)
-                             .group('title', 'DATE(FROM_UNIXTIME(timestamp))') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
+                             .group('title') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
 #                            .where('comments.status = (?)', 1)
+    # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
+    @comments = @comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
     @activity = (@notes + @wikis + @comments).sort_by { |a| a.created_at }.reverse
     @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
     render template: 'dashboard/dashboard'

@@ -24,7 +24,7 @@ This is a quick installation for use with the cloud environment https://c9.io - 
 1. If you have a GitHub account, visit https://c9.io and log in with the GitHub button.
 2. Fork this repository to your own GitHub account, creating a `yourname/plots2` project.
 3. Name your project, then enter `yourname/plots2` in the "Clone from Git or Mercurial URL" field, and press **Create Workspace** 
-4. In the command line prompt at the bottom of the page, type `./install_cloudnine.sh` and press enter.
+4. In the command line prompt at the bottom of the page, type `. ./install_cloudnine.sh` and press enter.
 5. Enter your username when prompted, and run `rails s -b $IP -p $PORT` when it's done.
 6. You're done! Go to the URL shown!
 

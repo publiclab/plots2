@@ -9,14 +9,25 @@ one:
   uid: 2
   cached_likes: 0
 
-two: 
+about: 
   title: "about"
-  path: "about"
+  path: "/about"
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
   type: "page"
   nid: 2
+  uid: 1
+  cached_likes: 0
+
+organizers: 
+  title: "Organizers"
+  path: "/wiki/organizers"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "page"
+  nid: 5
   uid: 1
   cached_likes: 0
 
@@ -29,4 +40,15 @@ spam:
   type: "note"
   nid: 3
   uid: 3
+  cached_likes: 0
+
+spam_targeted_page: 
+  title: "Important work"
+  path: "/wiki/important"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "page"
+  nid: 4
+  uid: 1
   cached_likes: 0

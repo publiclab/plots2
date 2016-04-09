@@ -18,7 +18,7 @@ class DrupalNode < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy, :order => :timestamp
+  has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
 # wasn't working to tie it to .vid, manually defining below
 #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
 #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
@@ -88,15 +88,16 @@ class DrupalNode < ActiveRecord::Base
     weeks
   end
 
-  # this looks backwards... do we use it?
-  def current_revision
-    # Grab the most recent revision for this node.
-    self.drupal_node_revision.order(timestamp: "DESC").last
+  def publish
+    self.status = 1
+    self.save
+    self
   end
 
-  def current_title
-    # Grab the title from the most recent revision for this node.
-    current_revision.title
+  def spam
+    self.status = 0
+    self.save
+    self
   end
 
   def files
@@ -133,28 +134,30 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
-  # ============================================
-  # Manual associations: 
-
   def latest
-    self.drupal_node_revision.sort_by { |rev| rev.timestamp }.last
+    self.revisions
+        .where(status: 1)
+        .first
   end
 
   def revisions
-    r = self.drupal_node_revision.sort_by { |rev| rev.timestamp }
-    r.reverse
+    self.drupal_node_revision
+        .order("timestamp DESC")
   end
 
   def revision_count
-    self.drupal_node_revision.size
+    self.drupal_node_revision
+        .count
   end
 
   def comment_count
-    self.drupal_comments.size
+    self.drupal_comments
+        .count
   end
 
   def comments
-    self.drupal_comments.order(timestamp: :desc)
+    self.drupal_comments
+        .order(timestamp: :desc)
   end
 
   def author
@@ -342,14 +345,14 @@ class DrupalNode < ActiveRecord::Base
 
   # increment view count
   def view
-    DrupalNodeCounter.new({:nid => self.id}).save! if self.drupal_node_counter.nil? 
+    DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil? 
     self.drupal_node_counter.totalcount += 1
     self.drupal_node_counter.save
   end
 
   # view count
   def totalcount
-    DrupalNodeCounter.new({:nid => self.id}).save! if self.drupal_node_counter.nil? 
+    DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil? 
     self.drupal_node_counter.totalcount
   end
 
