@@ -63,6 +63,10 @@ h4,h5,h6, h1 small, h3 small {
   visibility: hidden; 
 }
 
+#image_revision {
+    width: 200px;
+}
+
 /* fontawesome default color */
 a .fa { color:#222; }
 a .fa-white,

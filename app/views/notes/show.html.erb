@@ -20,7 +20,13 @@
 
   <% if @node.has_power_tag('question') %>
   <% pt = @node.power_tag('question') %>
-  <div class="alert alert-warning"><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> is asking a question about <b><%= pt %></b>: <a class="btn btn-default" target="_blank" href="/subscribe/tag/question:<%= pt %>">Sign up to answer questions on this topic</a></div>
+  <div class="alert alert-warning">
+    <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a>
+    is asking a question about <b><%= pt %></b>:
+    <a class="btn btn-default" target="_blank" href="/subscribe/tag/question:<%= pt %>">
+      Sign up to answer questions on this topic
+    </a>
+  </div>
   <% end %>
 
   <div>
@@ -28,14 +34,20 @@
     <span>
       <% if @node.status == 0 %><span class="label label-danger">UNPUBLISHED</span> | <% end %>
       by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> 
-      <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %> <a href="/profile/<%= coauthor.username %>"><%= coauthor.username%></a><%= ',' if i < @node.coauthors.length-1 %><% end %><% end %> |
+      <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
+              <a href="/profile/<%= coauthor.username %>">
+                <%= coauthor.username%></a>
+              <%= ',' if i < @node.coauthors.length-1 %><% end %><% end %> |
 
       <span class="hidden-xs hidden-sm">
         <%= @node.created_at.to_s(:long) %> 
       </span>
       <span class="hidden-xs hidden-sm hidden-print">
         | <%= number_with_delimiter(@node.totalcount) %> views 
-        <% if @node.comments %>| <i class="fa fa-comment"></i> <a href="#comments"><%= @node.comments.length %> comments</a><% end %>
+        <% if @node.comments %>
+          | <i class="fa fa-comment"></i>
+          <a href="#comments"> <%= @node.comments.length %> comments</a>
+        <% end %>
         | <a href="/n/<%= @node.id %>">shortlink</a>
       </span>
       <span class="hidden-lg">
@@ -73,7 +85,7 @@
         <th>Files</th>
         <th>Size</th>
         <th>Uploaded</th>
-      </td>
+      </tr>
       <% @node.files.each do |file| %>
         <tr>
           <td><a href="<%= file.path %>"><i style="text-decoration:none;" class="fa fa-file"></i><span style="text-decoration:none;"> </span><%= file.filename %></a></td>

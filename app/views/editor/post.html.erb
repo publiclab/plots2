@@ -15,10 +15,12 @@
     <h4 class="visible-sm">Ask a question</h4>
     <div id="research-note-detail" class="hidden-sm">
       <h3>Use this form to ask about "<%= params[:tags].split(':').last %>"</h3>
-      <% if DrupalTag.follower_count(params[:tags]) > 0 %><p><%= DrupalTag.follower_count(params[:tags]) %> people have signed up to answer questions on this topic.</p><% end %>
+      <% if DrupalTag.follower_count(params[:tags]) > 0 %>
+        <p><%= DrupalTag.follower_count(params[:tags]) %> people have signed up to answer questions on this topic.</p>
+      <% end %>
       <ul>
         <li>Need to learn more?</li>
-      <hr />
+      </ul>
     </div>
 
   <% else %>
@@ -89,9 +91,9 @@
  
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-tags"></i></span>
-    
         <input autocomplete="off" class="form-control" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
       </div>
+
       <input name="remote" type="hidden" value="true" />
  
       <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>

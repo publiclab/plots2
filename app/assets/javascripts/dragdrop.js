@@ -117,11 +117,12 @@ jQuery(document).ready(function() {
         $('#leadImage').show()
         // here append the image id to the note as the lead image
         $('#main_image').val(data.result.id)
+        $("#image_revision").append(
+          '<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
       },
 
       // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
       fileuploadfail: function(e,data) {
-
       },
       progressall: function (e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
