@@ -1,5 +1,5 @@
 class DrupalUsers < ActiveRecord::Base
-  attr_accessible :title, :body, :name, :pass, :mail, :mode, :sort, :threshold, :theme, :signature, :signature_format, :created, :access, :login, :status, :timezone, :language, :picture, :init, :data, :timezone_id, :timezone_name
+  attr_accessible :uid, :title, :body, :name, :pass, :mail, :mode, :sort, :threshold, :theme, :signature, :signature_format, :created, :access, :login, :status, :timezone, :language, :picture, :init, :data, :timezone_id, :timezone_name
 
   self.table_name = 'users'
   self.primary_key = 'uid'
@@ -159,5 +159,28 @@ class DrupalUsers < ActiveRecord::Base
       return false
     end
   end
+  
+  # accepts an integer for nid, and a boolean value for value... ex: drupuser.add_like(42, true)
+  def add_like(nid, value)
+    like = nil
+    ActiveRecord::Base.transaction do
+      like = NodeSelection.where(user_id: self.uid,
+                                 nid: nid).first_or_create
+      like.liking = value
+      
+      if like.liking_changed?
+        node = DrupalNode.find(nid)
+          if like.liking
+            node.cached_likes = node.cached_likes + 1
+          else
+            node.cached_likes = node.cached_likes - 1
+          end  
+      end  
+      
+      node.save!
+      like.save!
+    end
+    
+  end  
 
 end

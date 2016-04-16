@@ -36,7 +36,7 @@ end
 
 # run with `bundle install --without test` to exclude these
 group :test do
-  #gem 'rspec-rails'
+  gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'test-unit'
   gem 'rake'
