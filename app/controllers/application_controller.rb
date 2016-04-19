@@ -26,10 +26,19 @@ class ApplicationController < ActionController::Base
                                 .collect(&:nid)
         @notes = DrupalNode.joins(:drupal_node_revision)
                            .where(type: 'note')
-                           .where('node_revisions.status = 1 AND node.status = 1 AND node.nid NOT IN (?)', hidden_nids)
                            .order('node.nid DESC')
-                           .paginate(:page => params[:page])
+                           .paginate(page: params[:page])
         @notes = @notes.where('node.nid != (?)', @node.nid) if @node
+        @notes = @notes.where('node_revisions.status = 1 AND node.nid NOT IN (?)', hidden_nids) if hidden_nids.length > 0
+
+        if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+          @notes = @notes.where('(node.status = 1 OR node.status = 4)')
+        elsif current_user
+          @notes = @notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
+        else
+          @notes = @notes.where('node.status = 1')
+        end
+
         @wikis = DrupalNode.order("changed DESC")
                            .joins(:drupal_node_revision)
                            .where('node_revisions.status = 1 AND node.status = 1 AND type = "page"')

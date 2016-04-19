@@ -23,7 +23,7 @@
     <% @users.each do |user| %>
     <tr>
       <td><a href="/profile/<%= user.username %>"><%= user.username %></a></td>
-      <td><%= time_ago_in_words(user.last['changed']) %></td>
+      <td><%= time_ago_in_words(user.last['changed']) if user.last %></td>
       <td><%= user.node_count %> research notes and wiki edits</td>
       <td><%= time_ago_in_words(user.created_at) %> ago</td>
       <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>

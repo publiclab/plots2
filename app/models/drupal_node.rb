@@ -41,7 +41,8 @@ class DrupalNode < ActiveRecord::Base
   validates_with UniqueUrlValidator, :on => :create
   validates :path, :uniqueness => { :scope => :nid, :message => "This title has already been taken" }
 
-  # making drupal and rails database conventions play nice
+  # making drupal and rails database conventions play nice;
+  # 'changed' is a reserved word in rails
   class << self
     def instance_method_already_implemented?(method_name)
       return true if method_name == 'changed'
@@ -50,7 +51,8 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
-  # making drupal and rails database conventions play nice
+  # making drupal and rails database conventions play nice;
+  # 'type' is a reserved word in rails
   def self.inheritance_column
     "rails_type"
   end
@@ -82,13 +84,27 @@ class DrupalNode < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span-week] = DrupalNode.select(:created)
-                                   .where(type: type, status: 1, created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week-1).weeks.to_i)
+                                   .where(type:    type, 
+                                          status:  1, 
+                                          created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week-1).weeks.to_i)
                                    .count
     end
     weeks
   end
 
+  def notify
+    if self.status == 4
+      AdminMailer.notify_node_moderators(self)
+    else
+      SubscriptionMailer.notify_node_creation(self)
+    end
+  end
+
   def publish
+    if self.status = 4 # first timer
+      self.status = 1
+      self.notify
+    end
     self.status = 1
     self.save
     self
@@ -171,6 +187,15 @@ class DrupalNode < ActiveRecord::Base
   # for wikis:
   def authors
     self.revisions.collect(&:author).uniq
+  end
+
+  # tag- and node-based followers
+  def subscribers
+    users = TagSelection.where(tid: self.tags.collect(&:tid))
+                        .collect(&:user)
+    users += NodeSelection.where(nid: self.nid)
+                          .collect(&:user)
+    users.uniq
   end
 
   # view adaptors for typical rails db conventions so we can migrate someday
@@ -339,6 +364,10 @@ class DrupalNode < ActiveRecord::Base
     self.drupal_tag
   end
 
+  def community_tags
+    self.drupal_node_community_tag
+  end
+
   def tagnames
     self.tags.collect(&:name)
   end
@@ -472,22 +501,24 @@ class DrupalNode < ActiveRecord::Base
   # researching simultaneous creation of associated records
   def self.new_note(params)
     saved = false
+    author = DrupalUsers.find(params[:uid])
     node = DrupalNode.new({
-      :uid => params[:uid],
-      :title => params[:title],
-      :comment => 2,
-      :type => "note"
+      uid:     author.uid,
+      title:   params[:title],
+      comment: 2,
+      type:    "note"
     })
+    node.status = 4 if author.first_time_poster
     if node.valid? # is this not triggering title uniqueness validation?
       saved = true
       revision = false
       ActiveRecord::Base.transaction do
         node.save! 
         revision = node.new_revision({
-          :nid => node.id,
-          :uid => params[:uid],
-          :title => params[:title],
-          :body => params[:body]
+          nid:   node.id,
+          uid:   author.uid,
+          title: params[:title],
+          body:  params[:body]
         })
         if revision.valid?
           revision.save!
@@ -499,6 +530,7 @@ class DrupalNode < ActiveRecord::Base
             img.save
           end
           node.save!
+          node.notify
         else
           saved = false
           node.destroy
@@ -530,6 +562,7 @@ class DrupalNode < ActiveRecord::Base
           revision.save!
           node.vid = revision.vid
           node.save!
+          #node.notify # we don't yet notify of wiki page creations
         else
           saved = false
           node.destroy # clean up

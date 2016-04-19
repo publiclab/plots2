@@ -37,19 +37,20 @@ class DrupalTag < ActiveRecord::Base
     self.save
   end
 
-  def author
-    DrupalUsers.find_by_uid self.uid
-  end
-
   def subscriptions
     self.tag_selection
+  end
+
+  # nodes this tag has been used on
+  def nodes
+    DrupalNode.where(nid: self.drupal_node_community_tag.collect(&:nid))
   end
 
   def is_community_tag(nid)
     !self.drupal_node_community_tag.find_by_nid(nid).nil?
   end
 
-  def belongs_to(current_user,nid)
+  def belongs_to(current_user, nid)
     node_tag = self.drupal_node_community_tag.find_by_nid(nid)
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
@@ -101,19 +102,56 @@ class DrupalTag < ActiveRecord::Base
   end
 
   def self.followers(tagname)
-    uids = TagSelection.joins(:drupal_tag).where(['term_data.name = ?',tagname]).collect(&:user_id)
-    DrupalUsers.find(:all, :conditions => ['uid in (?)',uids]).collect(&:user)
+    uids = TagSelection.joins(:drupal_tag)
+                       .where('term_data.name = ?', tagname)
+                       .collect(&:user_id)
+    DrupalUsers.where(['uid in (?)', uids])
+               .collect(&:user)
   end
 
   # optimize this too!
   def weekly_tallies(type = "note",span = 52)
     weeks = {}
-    tids = DrupalTag.find(:all, :conditions => ['name IN (?)',[self.name]]).collect(&:tid)
-    nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
+    tids = DrupalTag.where('name IN (?)', [self.name])
+                    .collect(&:tid)
+    nids = DrupalNodeCommunityTag.where("tid IN (?)", tids)
+                                 .collect(&:nid)
     (0..span).each do |week|
-      weeks[span-week] = DrupalNode.count :all, :select => :created, :conditions => ['type = "'+type+'" AND status = 1 AND nid IN ('+nids.uniq.join(',')+') AND created > '+(Time.now.to_i-week.weeks.to_i).to_s+' AND created < '+(Time.now.to_i-(week-1).weeks.to_i).to_s]
+      weeks[span-week] = DrupalNode.select(:created)
+                                   .where(
+                                     'type = ? AND status = 1 AND nid IN (?) AND created > ? AND created < ?',
+                                     type,
+                                     nids.uniq.join(','),
+                                     (Time.now.to_i - week.weeks.to_i).to_s,
+                                     (Time.now.to_i - (week - 1).weeks.to_i).to_s
+                                   )
     end
     weeks
+  end
+
+  # Given a set of tags, return all users following
+  # those tags. Return a dictionary of tags indexed by user.
+  # Accepts array of DrupalTags, outputs array of users as:
+  # {user: <user>, tags: [<tags>]}
+  # Used in subscription_mailer
+  def self.subscribers(tags)
+    tids = tags.collect(&:tid)
+    # include special tid for indiscriminant subscribers who want it all!
+    all_tag = DrupalTag.find_by_name("everything")
+    tids += [all_tag.tid,] if all_tag
+    usertags = TagSelection.where("tid IN (?) AND following = ?", tids, true)
+    d = {}
+    usertags.each do |usertag|
+      # For each row of (user,tag), build a user's tag subscriptions 
+      if (usertag.tid == all_tag) and (usertag.tag.nil?)
+        puts "WARNING: all_tag tid " + String(all_tag) + " not found for DrupalTag! Please correct this!"
+        next
+      end
+      d[usertag.user.name] = {:user => usertag.user}
+      d[usertag.user.name][:tags] = Set.new if d[usertag.user.name][:tags].nil?
+      d[usertag.user.name][:tags].add(usertag.tag)
+    end
+    d
   end
 
 end

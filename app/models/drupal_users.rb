@@ -49,6 +49,10 @@ class DrupalUsers < ActiveRecord::Base
     self.mail
   end
 
+  def first_time_poster
+    self.user.first_time_poster
+  end
+
   def likes
     NodeSelection.find(:all, :conditions => {:user_id => self.uid, :liking => true})
   end
@@ -90,8 +94,8 @@ class DrupalUsers < ActiveRecord::Base
     end
   end
 
-  def notes(limit = 10)
-    DrupalNode.find_all_by_uid(self.uid, :limit => limit, :order => "created DESC")
+  def notes
+    self.user.notes
   end
 
   def note_count

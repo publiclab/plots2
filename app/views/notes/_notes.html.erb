@@ -2,9 +2,22 @@
 <div id="notes">
     <div class="row">
     <% notes.each_with_index do |node,i| %>
-      <div class="<% if @widget %>col-xs-3 col-sm-3 <% end %>col-md-3 clearfix note" style="overflow:hidden;">
+      <div class="<% if @widget %>col-xs-3 col-sm-3 <% end %>col-md-3 clearfix note note-nid-<%= node.id %>" style="overflow:hidden;">
+
         <% if node.main_image %>
           <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+        <% end %>
+
+        <% if node.status == 4 %>
+          <p class="alert alert-warning moderated">
+            <% if logged_in_as(['admin','moderator']) %>
+              Post by a first-time contributor needs review: 
+              <a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>">Approve</a>
+              <a class="btn btn-default btn-xs" href="/moderate/publish/<%= node.id %>">Spam</a>
+            <% else %>
+              Pending approval by <a href='/wiki/moderation'>community moderators</a>. Please be patient!
+            <% end %>
+          </p>
         <% end %>
 
         <% if node.type == 'note' %>

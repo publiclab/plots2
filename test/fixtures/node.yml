@@ -1,54 +1,65 @@
 one:
+  nid: 1
+  uid: 2
   title: "Canon A1200 IR conversion at PLOTS Barnraising at LUMCON"
   path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon"
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
   type: "note"
-  nid: 1
-  uid: 2
   cached_likes: 0
 
 about: 
+  nid: 2
+  uid: 1
   title: "about"
   path: "/about"
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
   type: "page"
-  nid: 2
-  uid: 1
-  cached_likes: 0
-
-organizers: 
-  title: "Organizers"
-  path: "/wiki/organizers"
-  created: <%= Time.now.to_i %>
-  changed: <%= Time.now.to_i %>
-  status: 1
-  type: "page"
-  nid: 5
-  uid: 1
   cached_likes: 0
 
 spam:
+  nid: 3
+  uid: 3
   title: "Hot stuff I'm selling"
   path: "/notes/spammer/<%= Time.now.strftime("%m-%d-%Y") %>/hot-stuff-i-m-selling"
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 0
   type: "note"
-  nid: 3
-  uid: 3
   cached_likes: 0
 
 spam_targeted_page: 
+  nid: 4
+  uid: 1
   title: "Important work"
   path: "/wiki/important"
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
   type: "page"
-  nid: 4
+  cached_likes: 0
+
+organizers: 
+  nid: 5
   uid: 1
+  title: "Organizers"
+  path: "/wiki/organizers"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+
+first_timer_note:
+  nid: 6
+  uid: 7
+  title: "My very first post to Public Lab"
+  path: "/notes/newcomer/<%= Time.now.strftime("%m-%d-%Y") %>/my-very-first-post-to-public-lab"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 4
+  type: "note"
   cached_likes: 0

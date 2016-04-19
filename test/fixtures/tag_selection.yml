@@ -1,0 +1,14 @@
+awesome:
+  user_id: 1
+  tid: 2
+  following: true
+
+two:
+  user_id: 6
+  tid: 2
+  following: true
+
+everything:
+  user_id: 6
+  tid: 4
+  following: true

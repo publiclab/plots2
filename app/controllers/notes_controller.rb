@@ -1,3 +1,4 @@
+include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 class NotesController < ApplicationController
 
   respond_to :html
@@ -52,6 +53,10 @@ class NotesController < ApplicationController
     if @node.author.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
       flash[:error] = "The author of that note has been banned."
       redirect_to "/"
+    elsif @node.status == 4 && (current_user && (current_user.role == "admin" || current_user.role == "moderator"))
+      flash[:warning] = "First-time poster <a href='#{@node.author.name}'>#{@node.author.name}</a> submitted this #{time_ago_in_words(@node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-small' href='/moderate/publish/#{@node.id}'>Approve</a> or <a class='btn btn-small' href='/moderate/spam/#{@node.id}'>Spam</a>."
+    elsif @node.status == 4 && (current_user && current_user.id == @node.author.id)
+      flash[:warning] = "Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so."
     elsif @node.status != 1 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
       # if it's spam or a draft
       # no notification; don't let people easily fish for existing draft titles; we should try to 404 it
@@ -91,16 +96,17 @@ class NotesController < ApplicationController
           @node.add_tag("event:rsvp",current_user)
           @node.add_tag("date:"+params[:date],current_user) if params[:date]
         end
-        # trigger subscription notifications:
-        SubscriptionMailer.notify_node_creation(@node)
-        # opportunity for moderation
-        flash[:notice] = "Research note published. Get the word out on <a href='/lists'>the discussion lists</a>!"
+        if current_user.first_time_poster
+          flash[:notice] = "Success! Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so."
+        else
+          flash[:notice] = "Research note published. Get the word out on <a href='/lists'>the discussion lists</a>!"
+        end
         redirect_to @node.path
       else
         render :template => "editor/post"
       end
     else
-      flash.keep[:error] = "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
+      flash.keep[:error] = "You have been banned. Please contact <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> if you believe this is in error."
       redirect_to "/logout"
     end
   end

@@ -1,0 +1,15 @@
+Post was approved by <a href='https://publiclab.org/profile/<%= @moderator.username %>'><%= @moderator.username %></a> after entering moderation queue <%= time_ago_in_words(@node.created_at) %> ago and is now visible in the <a href='https://publiclab.org/dashboard'>Public Lab research feed</a>. Thanks for helping to keep Public Lab a welcoming and spam-free space!
+
+Now, reach out to welcome the new community member; thank them, just say hello, or help them revise/format their post in the comments. You can read and respond to the post here: https://publiclab.org<%= @node.path %>
+
+View <a href="https://publiclab.org/profile/<%= @node.author.name %>"><%= @node.author.name %>'s profile</a>
+
+<hr /> 
+
+<div style="color:#aaa;">
+
+<p>You received this email because you are <a href="https://publiclab.org/wiki/moderation">a Public Lab community moderator</a></p>
+
+<p>To discuss spam/abuse, forward this to <a href="mailto:moderators@publiclab.org">moderators@publiclab.org</a></p>
+
+</div>

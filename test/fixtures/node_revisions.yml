@@ -45,3 +45,11 @@ unmoderated_spam_revision:
   status: 1
   title: Bad spam title
   body: Lots of stuff for sale
+
+first_timer_note: 
+  timestamp: <%= Time.now.to_i %>
+  nid: 6
+  uid: 5
+  status: 1
+  title: My very first post to Public Lab
+  body: I'm new here -- whoa!

@@ -98,6 +98,10 @@
  
       <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
       <br />
+
+      <% if current_user.first_time_poster %>
+        <p class="moderation-notice">Hi! Just letting you know ahead of time that everyone's first posts to this website are <a href='/wiki/moderation'>moderated</a> due to issues we've had with spam. Thanks for your patience!</p>
+      <% end %>
  
       <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
       <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>

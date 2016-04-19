@@ -5,15 +5,17 @@
 <% if flash[:error] %>
   <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert">×</button>
-    <% if flash[:error].is_a? String %>
-      <%= raw flash[:error] %>
-    <% elsif flash[:error].is_a? Array %>
-      <ul>
-        <% flash[:error].each do |error| %>
-          <li><%= raw error %></li>
-        <% end %>
-      </ul>
-    <% end %>
+    <span class="alert-content">
+      <% if flash[:error].is_a? String %>
+        <%= raw flash[:error] %>
+      <% elsif flash[:error].is_a? Array %>
+        <ul>
+          <% flash[:error].each do |error| %>
+            <li><%= raw error %></li>
+          <% end %>
+        </ul>
+      <% end %>
+    </span>
   </div>
 <% end %>
 
