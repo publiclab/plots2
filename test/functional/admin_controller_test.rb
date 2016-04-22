@@ -23,6 +23,62 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.find.destroy if UserSession.find
   end
 
+  test "admin should promote user role to admin" do
+    UserSession.create(rusers(:jeff))
+    user = rusers(:bob)
+    get :promote_admin, id: user.id
+    assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now an admin.", flash[:notice]
+    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+  end
+
+  test "admin should promote user role to moderator" do
+    UserSession.create(rusers(:jeff))
+    user = rusers(:bob)
+    get :promote_moderator, id: user.id
+    assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now a moderator.", flash[:notice]
+    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+  end
+
+  test "moderator should promote user role to moderator" do
+    UserSession.create(rusers(:moderator))
+    user = rusers(:jeff)
+    get :promote_moderator, id: user.id
+    assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now a moderator.", flash[:notice]
+    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+  end
+
+  test "user should not promote other user role to moderator" do
+    UserSession.create(rusers(:bob))
+    user = rusers(:jeff)
+    get :promote_moderator, id: user.id
+    assert_equal "Only moderators can promote other users.", flash[:error]
+    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+  end
+
+  test "user should not promote other user role to admin" do
+    UserSession.create(rusers(:bob))
+    user = rusers(:moderator)
+    get :promote_admin, id: user.id
+    assert_equal "Only admins can promote other users to admins.", flash[:error]
+    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+  end
+
+  test "admin should demote moderator role to basic" do
+    UserSession.create(rusers(:admin))
+    user = rusers(:moderator)
+    get :demote_basic, id: user.id
+    assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is no longer a moderator.", flash[:notice]
+    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+  end
+
+  test "user should not demote other moderator role to basic" do
+    UserSession.create(rusers(:bob))
+    user = rusers(:moderator)
+    get :demote_basic, id: user.id
+    assert_equal "Only admins and moderators can demote other users.", flash[:error]
+    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+  end
+
   test "non-registered user should not be able to see spam page" do
 
     get :spam

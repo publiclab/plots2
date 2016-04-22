@@ -3,39 +3,45 @@ class AdminController < ApplicationController
   before_filter :require_user, :only => [:spam, :spam_revisions]
 
   def promote_admin
-    if current_user && current_user.role == "admin"
-      @user = User.find params[:id]
-      @user.role = 'admin'
-      @user.save({})
-      flash[:notice] = "User '<a href='/profile/"+@user.username+"'>"+@user.username+"</a>' is now an admin."
-    else
-      flash[:error] = "Only admins can promote other users to admins."
+    @user = User.find params[:id]
+    if !@user.nil?
+      if current_user && current_user.role == "admin"
+        @user.role = 'admin'
+        @user.save({})
+        flash[:notice] = "User '<a href='/profile/"+@user.username+"'>"+@user.username+"</a>' is now an admin."
+      else
+        flash[:error] = "Only admins can promote other users to admins."
+      end
     end
-    redirect_to "/profile/"+@user.username
+    redirect_to "/profile/" + @user.username + "?_=" + Time.now.to_i.to_s
   end
 
   def promote_moderator
-    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      @user = User.find params[:id]
-      @user.role = 'moderator'
-      @user.save({})
-      flash[:notice] = "User '<a href='/profile/"+@user.username+"'>"+@user.username+"</a>' is now a moderator."
-    else
-      flash[:error] = "Only moderators can promote other users."
+    @user = User.find params[:id]
+    if !@user.nil?
+      if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+        @user.role = 'moderator'
+        @user.save({})
+        flash[:notice] = "User '<a href='/profile/"+@user.username+"'>"+@user.username+"</a>' is now a moderator."
+      else
+        flash[:error] = "Only moderators can promote other users."
+      end
     end
-    redirect_to "/profile/"+@user.username
+    redirect_to "/profile/" + @user.username + "?_=" + Time.now.to_i.to_s
   end
 
   def demote_basic
-    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      @user = User.find params[:id]
-      @user.role = 'basic'
-      @user.save({})
-      flash[:notice] = "User '<a href='/profile/"+@user.username+"'>"+@user.username+"</a>' is no longer a moderator."
-    else
-      flash[:error] = "Only moderators can demote other users."
+    @user = User.find params[:id]
+    if !@user.nil?
+      if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+        @user.role = 'basic'
+        @user.save({})
+        flash[:notice] = "User '<a href='/profile/"+@user.username+"'>"+@user.username+"</a>' is no longer a moderator."
+      else
+        flash[:error] = "Only admins and moderators can demote other users."
+      end
     end
-    redirect_to "/profile/"+@user.username
+    redirect_to "/profile/" + @user.username + "?_=" + Time.now.to_i.to_s
   end
 
   def useremail
