@@ -148,6 +148,13 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 0, node.status
     assert_equal 0, node.author.status
     assert_redirected_to "/dashboard"
+
+    email = ActionMailer::Base.deliveries.last
+    assert_not_nil email.to
+    assert_not_nil email.bcc
+    assert_equal ["moderators@publiclab.org"], ActionMailer::Base.deliveries.last.to
+    # title same as initial for email client threading
+    assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
   end
 
   test "admin user should be able to mark a node as spam" do
@@ -161,6 +168,13 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 0, node.status
     assert_equal 0, node.author.status
     assert_redirected_to "/dashboard"
+
+    email = ActionMailer::Base.deliveries.last
+    assert_not_nil email.to
+    assert_not_nil email.bcc
+    assert_equal ["moderators@publiclab.org"], ActionMailer::Base.deliveries.last.to
+    # title same as initial for email client threading
+    assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
   end
 
   test "admin user should not be able to mark a node as spam if it's already spammed" do
@@ -188,6 +202,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(rusers(:moderator))
     node = node(:first_timer_note)
     assert_equal 4, node.status
+    ActionMailer::Base.deliveries.clear                                                                                                          
 
     get :publish, id: node(:first_timer_note).id
 
@@ -197,6 +212,22 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 1, node.author.status
     assert_redirected_to node.path
 
+#    assert_equal 2 + node.subscribers.length, ActionMailer::Base.deliveries.length
+
+    # emails are currently in this order, but we should make tests order-independent
+
+    # test the author notification
+    email = ActionMailer::Base.deliveries.first
+    assert_equal "[Public Lab] Your post was approved!", email.subject
+    assert_equal [node.author.mail], email.to
+
+    # test the moderator notification
+    email = ActionMailer::Base.deliveries[1]
+    assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
+    assert_equal ["moderators@publiclab.org"], email.to
+
+    # test general subscription notices
+    # (we test the final one, but there are many)
     email = ActionMailer::Base.deliveries.last
     assert_equal "[PublicLab] " + node.title, email.subject
   end
@@ -296,23 +327,10 @@ class AdminControllerTest < ActionController::TestCase
     assert_redirected_to revision.parent.path
   end
 
-  test "first-timer moderated note (status=4) can be approved by moderator with notice and emails" do
-    UserSession.create(rusers(:admin))
-    node = node(:first_timer_note)
-
-    get :publish, id: node.id
-
-    assert_equal "Post approved and published after #{time_ago_in_words(node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments.", flash[:notice]
-
-    node = assigns(:node)
-    assert_equal 1, node.status
-    assert_equal 1, node.author.status
-    assert_redirected_to node.path
-  end
-
   test "first-timer moderated note (status=4) can be spammed by moderator with notice and emails" do
     UserSession.create(rusers(:admin))
     node = node(:first_timer_note)
+    ActionMailer::Base.deliveries.clear
 
     get :mark_spam, id: node.id
 
@@ -322,6 +340,12 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 0, node.status
     assert_equal 0, node.author.status
     assert_redirected_to '/dashboard'
+
+    # test the moderator notification
+    email = ActionMailer::Base.deliveries.last
+    assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
+    assert_equal ["moderators@publiclab.org"], email.to
+    assert_not_nil email.bcc
   end
 
   test "should not get /admin/queue if not logged in" do

@@ -90,6 +90,7 @@ class AdminController < ApplicationController
       if @node.status == 1 || @node.status == 4
         @node.spam
         @node.author.ban
+        AdminMailer.notify_moderators_of_spam(@node, current_user)
         flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
         redirect_to "/dashboard"
       else
@@ -109,6 +110,9 @@ class AdminController < ApplicationController
       @node.publish
       @node.author.unban
       if first_timer_post
+        AdminMailer.notify_author_of_approval(@node, current_user)
+        AdminMailer.notify_moderators_of_approval(@node, current_user)
+        SubscriptionMailer.notify_node_creation(@node)
         flash[:notice] = "Post approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
       else
         flash[:notice] = "Item published."
