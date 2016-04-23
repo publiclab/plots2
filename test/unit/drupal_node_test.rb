@@ -2,6 +2,15 @@ require 'test_helper'
 
 class DrupalNodeTest < ActiveSupport::TestCase
 
+  test "basic node attributes" do
+    node = node(:one)
+    assert_equal 'note', node.type
+    assert_equal 1, node.status
+    node = node(:about)
+    assert_equal 'page', node.type
+    assert_equal 1, node.status
+  end
+
   test "create a node" do
     # in testing, uid and id should be matched, although this is not yet true in production db
     node =  DrupalNode.new({:uid => rusers(:bob).id})
@@ -16,6 +25,34 @@ class DrupalNodeTest < ActiveSupport::TestCase
       title: 'My research note'
     })
     assert node.save!
+    assert_equal 'note', node.type
+  end
+
+  # new_note also generates a revision
+  test "create a research note with new_note" do
+    assert !users(:jeff).first_time_poster
+    saved, node, revision = DrupalNode.new_note({
+      uid: users(:jeff).uid,
+      title: "Title",
+      body: "New note body"
+    })
+    assert saved
+    assert_equal 1, node.status
+    assert_equal 1, revision.status
+    assert_not_nil node.latest
+    assert_equal 'note', node.type
+  end
+
+  test "first-time poster creates a research note with new_note" do
+    assert users(:lurker).first_time_poster
+    saved, node, revision = DrupalNode.new_note({
+      uid: users(:lurker).uid,
+      title: "Title",
+      body: "New note body"
+    })
+    assert saved
+    assert_equal 4, node.status
+    assert_equal 1, revision.status
   end
 
   test "spam a note" do
@@ -35,6 +72,7 @@ class DrupalNodeTest < ActiveSupport::TestCase
       title: 'My wiki page'
     })
     assert node.save!
+    assert_equal 'page', node.type
   end
 
   test "create a wiki page with DrupalNode.new_wiki" do
@@ -80,6 +118,19 @@ class DrupalNodeTest < ActiveSupport::TestCase
     node.latest.spam
     assert_not_equal node.revisions.first, node.latest
     assert_equal 1, node.latest.status
+  end
+
+  test "should have tags" do
+    node = node(:one)
+    assert node.tags.length > 0
+    assert_equal node.tags, node.drupal_tag
+    assert node.community_tags.length > 0
+    assert_equal node.community_tags, node.drupal_node_community_tag
+  end
+
+  test "should have subscribers" do
+    node = tag_selection(:awesome).tag.nodes.first
+    assert_equal 4, node.subscribers.length
   end
 
   #test "should not save node without title, or anything else" do

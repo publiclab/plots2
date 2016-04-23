@@ -2,28 +2,46 @@ bob:
   uid: 1
   name: Bob
   status: 1
+  mail: bob@publiclab.org
 
 jeff:
   uid: 2
   name: jeff
   status: 1
+  mail: jeff@pxlshp.com
 
 spammer:
   uid: 3
   name: spammer
   status: 0 #spam
+  mail: spam@spam.com
 
 unbanned_spammer:
   uid: 4
   name: unbanned_spammer
   status: 1
+  mail: uspam@spam.com
 
 admin:
   uid: 5
   name: palpatine
   status: 1
+  mail: admin@publiclab.org
 
 moderator:
   uid: 6
   name: obiwan
   status: 1
+  mail: obiwan@publiclab.org
+
+newcomer:
+  uid: 7
+  name: newcomer
+  status: 1
+  mail: newcomer@publiclab.org
+
+lurker:
+  uid: 8
+  name: lurker
+  status: 1
+  mail: lurker@publiclab.org

@@ -2,9 +2,22 @@
 <div id="notes">
     <div class="row">
     <% notes.each_with_index do |node,i| %>
-      <div class="<% if @widget %>col-xs-3 col-sm-3 <% end %>col-md-3 clearfix note" style="overflow:hidden;">
+      <div class="<% if @widget %>col-xs-3 col-sm-3 <% end %>col-md-3 clearfix note note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>" style="overflow:hidden;">
+
         <% if node.main_image %>
           <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+        <% end %>
+
+        <% if node.status == 4 %>
+          <p class="alert alert-warning moderated">
+            <% if logged_in_as(['admin','moderator']) %>
+              Moderate first-time post: <br class="hidden-xs hidden-sm"/>
+              <a class="btn btn-default btn-xs" href="/moderate/publish/<%= node.id %>">Approve</a>
+              <a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>">Spam</a>
+            <% else %>
+              Pending approval by <a href='/wiki/moderation'>community moderators</a>. Please be patient!
+            <% end %>
+          </p>
         <% end %>
 
         <% if node.type == 'note' %>
@@ -13,7 +26,7 @@
           <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= node.latest.title %></a></h4>
         <% end %>
 
-        <p style="color:#888;"><small>
+        <p class="meta"><small>
           <% if node.type == 'note' %>
             by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
             <%= time_ago_in_words(node.created) %> ago
@@ -26,17 +39,20 @@
           | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
         </small></p>
 
-        <% if @compact.nil? %>
-          <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
-          <p>
-            <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> Spam</a><% end %>
-            <a href="<%= node.path %>">Read more &raquo;</a>
-          </p>
-        <% end %>
-        <% if params[:mod] %>
-          <a class="btn btn-default btn-xs" href="#"><i class="fa fa-ban-circle"></i> Spam</a>
-        <% end %>
-        <hr style="display:none;" class="bottom" />
+        <div class="content">
+          <% if @compact.nil? %>
+            <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
+            <p>
+              <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> Spam</a><% end %>
+              <a href="<%= node.path %>">Read more &raquo;</a>
+            </p>
+          <% end %>
+          <% if params[:mod] %>
+            <a class="btn btn-default btn-xs" href="#"><i class="fa fa-ban-circle"></i> Spam</a>
+          <% end %>
+          <hr style="display:none;" class="bottom" />
+        </div>
+
       </div>
       <% unless @widget %><hr class="visible-xs visible-sm" /><% end %>
     <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>

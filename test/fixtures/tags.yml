@@ -8,4 +8,8 @@ awesome:
 
 spam:
   tid: 3
-  name: 'spam'
+  name: spam
+
+everything:
+  tid: 4
+  name: everything

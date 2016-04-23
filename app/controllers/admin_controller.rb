@@ -87,7 +87,7 @@ class AdminController < ApplicationController
   def mark_spam
     @node = DrupalNode.find params[:id]
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      if @node.status == 1
+      if @node.status == 1 || @node.status == 4
         @node.spam
         @node.author.ban
         flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
@@ -105,9 +105,14 @@ class AdminController < ApplicationController
   def publish
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
       @node = DrupalNode.find params[:id]
+      first_timer_post = (@node.status == 4)
       @node.publish
       @node.author.unban
-      flash[:notice] = "Item published."
+      if first_timer_post
+        flash[:notice] = "Post approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
+      else
+        flash[:notice] = "Item published."
+      end
       redirect_to @node.path
     else
       flash[:error] = "Only moderators can publish posts."
@@ -216,6 +221,18 @@ class AdminController < ApplicationController
       flash[:error] = "Only admins can migrate users."
     end
     redirect_to "/profile/"+du.name
+  end
+
+  def queue
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+      @notes = DrupalNode.where(status: 4)
+                         .paginate(page: params[:page])
+      flash[:warning] = "These are notes requiring moderation. <a href='/wiki/moderation'>Community moderators</a> may approve or reject them."
+      render template: 'notes/index'
+    else
+      flash[:error] = "Only moderators and admins can see the moderation queue."
+      redirect_to "/dashboard"
+    end
   end
 
 end

@@ -12,6 +12,7 @@
 # def migrate
 
 require 'test_helper'
+include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 
 class AdminControllerTest < ActionController::TestCase
 
@@ -80,7 +81,6 @@ class AdminControllerTest < ActionController::TestCase
   end
 
   test "non-registered user should not be able to see spam page" do
-
     get :spam
 
     assert_equal "You must be logged in to access this page", flash[:notice]
@@ -184,10 +184,29 @@ class AdminControllerTest < ActionController::TestCase
     assert_redirected_to "/dashboard"
   end
 
+  test "moderator user should be able to publish a moderated first timer's note" do
+    UserSession.create(rusers(:moderator))
+    node = node(:first_timer_note)
+    assert_equal 4, node.status
+
+    get :publish, id: node(:first_timer_note).id
+
+    assert_equal "Post approved and published after #{time_ago_in_words(node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments.", flash[:notice]
+    node = assigns(:node)
+    assert_equal 1, node.status
+    assert_equal 1, node.author.status
+    assert_redirected_to node.path
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal "[PublicLab] " + node.title, email.subject
+  end
+
   test "moderator user should be able to unspam a note" do
     UserSession.create(rusers(:moderator))
+    node = node(:spam)
+    assert_equal 0, node.status
 
-    get :publish, id: node(:spam).id
+    get :publish, id: node.id
 
     assert_equal "Item published.", flash[:notice]
     node = assigns(:node)
@@ -275,6 +294,48 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 1, revision.author.status
     assert_equal revision.parent.latest.vid, revision.vid
     assert_redirected_to revision.parent.path
+  end
+
+  test "first-timer moderated note (status=4) can be approved by moderator with notice and emails" do
+    UserSession.create(rusers(:admin))
+    node = node(:first_timer_note)
+
+    get :publish, id: node.id
+
+    assert_equal "Post approved and published after #{time_ago_in_words(node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments.", flash[:notice]
+
+    node = assigns(:node)
+    assert_equal 1, node.status
+    assert_equal 1, node.author.status
+    assert_redirected_to node.path
+  end
+
+  test "first-timer moderated note (status=4) can be spammed by moderator with notice and emails" do
+    UserSession.create(rusers(:admin))
+    node = node(:first_timer_note)
+
+    get :mark_spam, id: node.id
+
+    assert_equal "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
+
+    node = assigns(:node)
+    assert_equal 0, node.status
+    assert_equal 0, node.author.status
+    assert_redirected_to '/dashboard'
+  end
+
+  test "should not get /admin/queue if not logged in" do
+    get :queue
+
+    assert_redirected_to '/dashboard'
+  end
+
+  test "should get /admin/queue if moderator" do
+    UserSession.create(rusers(:moderator))
+    get :queue
+
+    assert_response :success
+    assert_not_nil :notes
   end
 
 end

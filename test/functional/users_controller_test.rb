@@ -24,7 +24,28 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_nil :users
   end
 
-  test "list users by role" do
+  test "list users while logged in" do
+    UserSession.create(rusers(:bob))
+    get :list
+    assert_response :success
+    assert_not_nil :users
+  end
+
+  test "list users while logged in as admin" do
+    UserSession.create(rusers(:admin))
+    get :list
+    assert_response :success
+    assert_not_nil :users
+  end
+
+  test "list users by moderator role" do
+    UserSession.create(rusers(:bob))
+    get :list, id: 'moderator'
+    assert_response :success
+    assert_not_nil :users
+  end
+
+  test "list users by admin role" do
     UserSession.create(rusers(:bob))
     get :list, id: 'admin'
     assert_response :success

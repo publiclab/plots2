@@ -54,3 +54,21 @@ moderator:
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   role: moderator
+
+newcomer:
+  username: newcomer
+  email: newcomer@publiclab.org
+  id: 7
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+
+lurker:
+  username: lurker
+  email: lurker@publiclab.org
+  id: 8
+  last_request_at: <%= Time.now %>
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>

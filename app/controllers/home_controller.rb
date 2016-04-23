@@ -65,11 +65,20 @@ class HomeController < ApplicationController
                             .where(type: 'note', status: 1)
                             .where('term_data.name = (?)', 'hidden:response')
                             .collect(&:nid)
-    @notes = DrupalNode.where(type: 'note', status: 1)
-                       .where('node.nid NOT IN (?)', hidden_nids)
+    @notes = DrupalNode.where(type: 'note')
+                       .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
                        .order('nid DESC')
                        .page(params[:page])
     @notes = @notes.where('nid != (?)', @blog.nid) if @blog
+
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+      @notes = @notes.where('(node.status = 1 OR node.status = 4)')
+    elsif current_user
+      @notes = @notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
+    else
+      @notes = @notes.where('node.status = 1')
+    end
+
     # include revisions, then mix with new pages:
     @wikis = DrupalNode.where(type: 'page', status: 1)
                        .order('nid DESC')

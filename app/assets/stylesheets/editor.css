@@ -1,3 +1,9 @@
+.moderation-notice {
+  font-style: italic;
+  color: #888;
+  padding-left: 8px;
+}
+
 #preview {
   margin:0;
   margin-bottom:10px;

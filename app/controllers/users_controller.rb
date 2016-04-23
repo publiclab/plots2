@@ -91,25 +91,21 @@ class UsersController < ApplicationController
 
   def list
     # allow admins to view recent users
-    if current_user
-      if params[:id]
-        @users = DrupalUsers.page(params[:page])
-                            .joins('INNER JOIN rusers ON rusers.username = users.name')
-                            .order("uid DESC")
-                            .where('rusers.role = ?', params[:id])
-      elsif params[:all] == 'true'
-        @users = DrupalUsers.page(params[:page])
-                            .order("uid DESC")
-      end
+    if params[:id]
+      @users = DrupalUsers.joins('INNER JOIN rusers ON rusers.username = users.name')
+                          .order("updated_at DESC")
+                          .where('rusers.role = ?', params[:id])
+                          .page(params[:page])
     else
       # recently active
       @users = DrupalUsers.select('*, MAX(node.changed) AS last_updated')
+                          .joins(:drupal_node)
                           .group('users.uid')
                           .where('users.status = 1 AND node.status = 1')
-                          .joins(:drupal_node)
                           .order("last_updated DESC")
                           .page(params[:page])
     end
+    @users = @users.where('users.status = 1') unless current_user && (current_user.role == "admin" || current_user.role == "moderator")
   end
 
   def profile

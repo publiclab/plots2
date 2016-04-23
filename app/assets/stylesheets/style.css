@@ -314,3 +314,31 @@ body { padding-top: 70px; }
   color: #900;
   background: #faa; 
 }
+
+div.note .meta {
+  color:#888;
+}
+
+div.note-show.moderated #content, 
+div.note.moderated .content, 
+div.note.moderated .meta, 
+div.note.moderated h4 {
+  -moz-opacity: 0.5;
+  opacity:.5;
+  filter:alpha(opacity=50);
+}
+
+.note p.moderated {
+  color: #940;
+  background: #fec;
+  border-color: #eb8;
+  padding: 10px;
+  font-size: smaller;
+}
+
+.note p.moderated .btn {
+  color: #940;
+  border-color: #eb8;
+  background: none;
+  font-size: smaller;
+}

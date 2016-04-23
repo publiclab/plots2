@@ -73,6 +73,12 @@ class User < ActiveRecord::Base
     DrupalUsers.find_by_name(self.username)
   end
 
+  def notes
+    DrupalNode.where(uid: self.uid)
+              .where(type: 'note')
+              .order("created DESC")
+  end
+
   def generate_reset_key
     # invent a key and save it
     key = ""
@@ -157,6 +163,10 @@ class User < ActiveRecord::Base
     else
       self.photo.url(size).gsub('//i.publiclab.org','')
     end
+  end
+
+  def first_time_poster
+    self.notes.where(status: 1).count == 0
   end
 
   private
