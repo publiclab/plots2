@@ -191,7 +191,7 @@ class AdminControllerTest < ActionController::TestCase
 
     get :publish, id: node(:first_timer_note).id
 
-    assert_equal "Post approved and published after #{time_ago_in_words(node.created_at)} minutes in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments.", flash[:notice]
+    assert_equal "Post approved and published after #{time_ago_in_words(node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments.", flash[:notice]
     node = assigns(:node)
     assert_equal 1, node.status
     assert_equal 1, node.author.status
@@ -302,7 +302,7 @@ class AdminControllerTest < ActionController::TestCase
 
     get :publish, id: node.id
 
-    assert_equal "Post approved and published after #{time_ago_in_words(node.created_at)} minutes in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments.", flash[:notice]
+    assert_equal "Post approved and published after #{time_ago_in_words(node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments.", flash[:notice]
 
     node = assigns(:node)
     assert_equal 1, node.status
@@ -322,6 +322,20 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 0, node.status
     assert_equal 0, node.author.status
     assert_redirected_to '/dashboard'
+  end
+
+  test "should not get /admin/queue if not logged in" do
+    get :queue
+
+    assert_redirected_to '/dashboard'
+  end
+
+  test "should get /admin/queue if moderator" do
+    UserSession.create(rusers(:moderator))
+    get :queue
+
+    assert_response :success
+    assert_not_nil :notes
   end
 
 end

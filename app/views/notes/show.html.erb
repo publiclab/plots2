@@ -1,6 +1,6 @@
 <%= render :partial => "sidebar/related" %>
 
-<div class="col-md-9 note-show">
+<div class="col-md-9 note-show<% if @node.status == 4 || @node.status == 0 %> moderated<% end %>">
 
   <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning">This note has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
 
@@ -32,7 +32,7 @@
   <div>
 
     <span>
-      <% if @node.status == 0 %><span class="label label-danger">UNPUBLISHED</span> | <% end %>
+      <% if @node.status == 0 || @node.status == 4 %><span class="label label-danger">UNPUBLISHED</span> | <% end %>
       by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> 
       <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">

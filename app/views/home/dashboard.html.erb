@@ -16,6 +16,10 @@
       <button type="button" class="close" data-dismiss="alert">×</button>
       Please <a href="/profile/edit">create a password for the new PublicLab.org website</a>; the older PublicLaboratory.org will soon be retired. 
     </div>
+  <% else %>
+    <div class="alert alert-success hidden-sm">
+      <b>Coming soon:</b> a revised dashboard! <a href="/dashboard2">Try it out here</a>.
+    </div>
   <% end %>
 
   <h2 style="font-family:Junction Light;">Dashboard <small><span class="hidden-xs">Welcome, <%= current_user.username %>! </span><br class="visible-xs visible-sm"/> <a href="/research"><%= @note_count %> notes</a> and <a href="/wiki"><%= @wiki_count %> wiki edits</a> were posted in the past week. </small></h2>
