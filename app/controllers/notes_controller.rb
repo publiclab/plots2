@@ -179,7 +179,7 @@ class NotesController < ApplicationController
             render :text => "Content deleted."
           else
             flash[:notice] = "Content deleted."
-            redirect_to "/dashboard"
+            redirect_to "/dashboard" + "?_=" + Time.now.to_i.to_s
           end
         end
       end
