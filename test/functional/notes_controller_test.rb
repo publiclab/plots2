@@ -141,6 +141,7 @@ class NotesControllerTest < ActionController::TestCase
          #, :main_image => "/images/testimage.jpg"
 
     assert_equal "Success! Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so.", flash[:notice]
+    assert_nil flash[:warning] # no double notice
     assert_equal 4, DrupalNode.last.status
     assert_equal title, DrupalNode.last.title
     assert_redirected_to "/notes/"+rusers(:lurker).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize

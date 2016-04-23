@@ -101,10 +101,6 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def publish
-    if self.status = 4 # first timer
-      self.status = 1
-      self.notify
-    end
     self.status = 1
     self.save
     self
