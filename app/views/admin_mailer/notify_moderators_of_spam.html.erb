@@ -1,12 +1,12 @@
-Post was marked as spam by <a href='https://publiclab.org/profile/<%= @moderator.username %>'><%= @moderator.username %></a> after entering moderation queue <%= time_ago_in_words(@node.created_at) %> ago. The user was also banned from the site. 
+<p>Post was marked as spam by <a href='https://publiclab.org/profile/<%= @moderator.username %>'><%= @moderator.username %></a> after entering moderation queue <%= time_ago_in_words(@node.created_at) %> ago. The user was also banned from the site.</p>
 
-If you feel this was an error, you can republish this post at <a href='https://publiclab.org/spam'>Public Lab research feed</a>. To discuss spam/abuse with other moderators, forward this to <a href="mailto:moderators@publiclab.org">moderators@publiclab.org</a>
+<p>If you feel this was an error, you can republish this post at <a href='https://publiclab.org/spam'>Public Lab research feed</a>. To discuss spam/abuse with other moderators, forward this to <a href="mailto:moderators@publiclab.org">moderators@publiclab.org</a></p>
 
-If this moderation was due to failure to follow <a href="https://publiclab.org/wiki/moderation">community content guidelines</a>, and not advertising spam, consider reaching out to the poster to explain why you decided to moderate their content. Their email address is: <%= @node.author.mail %>
+<p>If this moderation was due to failure to follow <a href="https://publiclab.org/wiki/moderation">community content guidelines</a>, and not advertising spam, consider reaching out to the poster to explain why you decided to moderate their content. Their email address is: <%= @node.author.mail %></p>
 
-Thanks for helping to keep Public Lab a welcoming and spam-free space!
+<p>Thanks for helping to keep Public Lab a welcoming and spam-free space!</p>
 
-View <a href="https://publiclab.org/profile/<%= @node.author.name %>"><%= @node.author.name %>'s profile</a>
+<p>View <a href="https://publiclab.org/profile/<%= @node.author.name %>"><%= @node.author.name %>'s profile</a></p>
 
 <hr /> 
 
