@@ -37,20 +37,11 @@ class HomeController < ApplicationController
     render :template => "home/home"
   end
 
-  def dashboard
-    @title = "Dashboard"
-    @user = DrupalUsers.find_by_name current_user.username
-    @note_count = DrupalNode.select([:created, :type, :status])
-                            .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-                            .count
-    @wiki_count = DrupalNodeRevision.select(:timestamp)
-                                    .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-                                    .count
-    set_sidebar
-    @unpaginated = true
+  def dashboard2
+    redirect_to '/dashboard'
   end
 
-  def dashboard2
+  def dashboard
     @note_count = DrupalNode.select([:created, :type, :status])
                             .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                             .count
