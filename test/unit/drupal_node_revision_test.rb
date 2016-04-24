@@ -8,12 +8,14 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
     assert node.save!
     # in testing, uid and id should be matched, although this is not yet true in production db
     node_revision =  DrupalNodeRevision.new({
-      :uid => rusers(:bob).id,
-      :nid => node(:one).nid
+      title: "My new node",
+      body: "My new node",
+      uid: rusers(:bob).id,
+      nid: node(:one).nid
     })
-    node_revision.title = "My new node"
-    node_revision.body = "My new node"
     assert node_revision.save!
+    assert_not_equal 0, node_revision.timestamp
+    assert_not_nil node_revision.timestamp
   end
 
   test "spam and republish a revision" do
@@ -23,6 +25,46 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
     assert_equal 0, revision.status
     revision.publish
     assert_equal 1, revision.status
+  end
+
+  test "previous and next revisions" do
+
+    revision = node_revisions(:about)
+# does previous respect status = 1? no.
+    new_revision = DrupalNodeRevision.new({
+      title: revision.title,
+      body:  'New body',
+      uid:   rusers(:bob).id,
+      nid:   revision.nid
+    })
+
+    assert_difference 'revision.parent.revisions.length', 1 do
+      assert new_revision.save
+      assert_not_equal revision.timestamp, new_revision.timestamp
+    end
+
+    assert_equal new_revision.previous, revision
+    assert_equal revision.next, new_revision
+
+    new_revision_2 = DrupalNodeRevision.new({
+      title: revision.title,
+      body:  'New body 2',
+      uid:   rusers(:bob).id,
+      nid:   revision.nid
+    })
+
+    assert_difference 'revision.parent.revisions.length', 1 do
+      assert new_revision_2.save
+    end
+
+    # future-date the timestamp since it's second resolution and tests run faster than that:
+    new_revision_2.timestamp = Time.now.to_i + 1
+    new_revision_2.save
+
+    assert_not_equal new_revision_2.timestamp, new_revision.timestamp
+    assert_equal new_revision_2.previous, new_revision
+    assert_equal new_revision.next, new_revision_2
+
   end
 
 end

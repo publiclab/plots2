@@ -56,7 +56,7 @@ class SubscriptionController < ApplicationController
             tag.save!
           rescue ActiveRecord::RecordInvalid
             flash[:error] = tag.errors.full_messages
-            redirect_to "/subscriptions"
+            redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
             return false
           end
         end
@@ -64,7 +64,7 @@ class SubscriptionController < ApplicationController
         # test for uniqueness, handle it as a validation error if you like
         if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length > 0
           flash[:error] = "You are already subscribed to '#{params[:name]}'"
-          redirect_to "/subscriptions"
+          redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
         else
           if set_following(true,params[:type],tag.tid)
             respond_with do |format|
@@ -73,7 +73,7 @@ class SubscriptionController < ApplicationController
                   render :json => true
                 else
                   flash[:notice] = "You are now following '#{params[:name]}'."
-                  redirect_to "/subscriptions"
+                  redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
                 end
               end
             end
@@ -99,7 +99,7 @@ class SubscriptionController < ApplicationController
     end
     if id.nil?
       flash[:error] = "You are not subscribed to '#{params[:name]}'"
-      redirect_to "/subscriptions"
+      redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
     else
       if !set_following(false,params[:type],id) #should return false if result is that following == false
         respond_with do |format|
@@ -108,13 +108,13 @@ class SubscriptionController < ApplicationController
               render :json => true
             else
               flash[:notice] = "You have stopped following '#{params[:name]}'."
-              redirect_to "/subscriptions"
+              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
             end
           end
         end
       else
         flash[:error] = "Something went wrong!" # silly 
-        redirect_to "/subscriptions"
+        redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
       end
     end
   end

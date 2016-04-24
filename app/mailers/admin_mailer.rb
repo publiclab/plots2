@@ -1,5 +1,5 @@
 class AdminMailer < ActionMailer::Base
-  default from: "do-not-reply@publiclab.org"
+  default from: "moderators@publiclab.org"
 
   def notify_node_moderators(node)
     subject = "[New Public Lab poster needs moderation] " + node.title
