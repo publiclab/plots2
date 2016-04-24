@@ -26,7 +26,6 @@ class WikiController < ApplicationController
       @node = DrupalNode.find_by_slug(params[:id])
     end
 
-
     return if check_and_redirect_node(@node)
     if !@node.nil? # it's a place page!
       @tags = @node.tags
@@ -104,9 +103,9 @@ class WikiController < ApplicationController
       #slug = params[:id].parameterize if params[:id] != "" && !params[:id].nil?
       #slug = params[:url].parameterize if params[:url] != "" && !params[:url].nil?
       saved,@node,@revision = DrupalNode.new_wiki({
-        :uid => current_user.uid,
-        :title => params[:title],
-        :body => params[:body]
+        uid:   current_user.uid,
+        title: params[:title],
+        body:  params[:body]
       })
       if saved
         flash[:notice] = "Wiki page created."
@@ -128,10 +127,10 @@ class WikiController < ApplicationController
   def update
     @node = DrupalNode.find(params[:id])
     @revision = @node.new_revision({
-      :nid => @node.id,
-      :uid => current_user.uid,
-      :title => params[:title],
-      :body => params[:body]
+      nid:   @node.id,
+      uid:   current_user.uid,
+      title: params[:title],
+      body:  params[:body]
     })
     if @revision.valid?
       ActiveRecord::Base.transaction do

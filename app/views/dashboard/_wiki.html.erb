@@ -51,7 +51,12 @@
       </h4>
 
       <% if wiki.is_a?(DrupalNodeRevision) && wiki.previous %>
-        <div data-diff-a="<%= wiki.previous.vid %>" data-diff-b="<%= wiki.vid %>" class="well wiki-diff wiki-diff-<%= index %>" style="display:none;"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+        <div data-diff-a="<%= wiki.previous.vid %>" 
+             data-diff-b="<%= wiki.vid %>" 
+             class="well wiki-diff wiki-diff-<%= index %>" 
+             style="display:none;">
+          <i class="fa fa-circle-o-notch fa-spin"></i>
+        </div>
       <% end %>
     </div>
   <% end %>

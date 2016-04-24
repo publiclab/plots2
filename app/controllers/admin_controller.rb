@@ -64,7 +64,7 @@ class AdminController < ApplicationController
       if params[:type] == "wiki"
         @nodes = @nodes.where(type: "page", status: 1)
       else 
-        @nodes = @nodes.where(type: "page", status: 0)
+        @nodes = @nodes.where(status: 0)
       end
     else
       flash[:error] = "Only moderators can moderate posts."
@@ -164,7 +164,7 @@ class AdminController < ApplicationController
     else
       flash[:error] = "Only moderators can ban other users."
     end
-    redirect_to "/profile/"+user.name
+    redirect_to "/profile/" + user.name + "?_=" + Time.now.to_i.to_s
   end
 
   def unban
@@ -176,7 +176,7 @@ class AdminController < ApplicationController
     else
       flash[:error] = "Only moderators can unban other users."
     end
-    redirect_to "/profile/"+user.name
+    redirect_to "/profile/" + user.name + "?_=" + Time.now.to_i.to_s
   end
 
   def users

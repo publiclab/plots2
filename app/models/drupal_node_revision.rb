@@ -15,6 +15,14 @@ class DrupalNodeRevision < ActiveRecord::Base
   validates :nid, :presence => :true
 
   before_save :inline_tags
+  before_create :setup
+
+  def setup
+    self.teaser = ""
+    self.log = ""
+    self.timestamp = DateTime.now.to_i
+    self.format = 1
+  end
 
   def publish
     self.status = 1
@@ -62,13 +70,13 @@ class DrupalNodeRevision < ActiveRecord::Base
   def previous
     self.parent.drupal_node_revision.order('timestamp DESC')
                                     .where('timestamp < ?', self.timestamp)
-                                    .last
+                                    .first
   end
 
   def next
     self.parent.drupal_node_revision.order('timestamp DESC')
                                     .where('timestamp > ?', self.timestamp)
-                                    .first
+                                    .last
   end
 
   # filtered version of node content

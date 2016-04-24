@@ -484,11 +484,7 @@ class DrupalNode < ActiveRecord::Base
       :nid => params[:nid],
       :uid => params[:uid],
       :title => params[:title],
-      :body => params[:body],
-      :teaser => "",
-      :log => "",
-      :timestamp => DateTime.now.to_i,
-      :format => 1
+      :body => params[:body]
     })
   end
 
