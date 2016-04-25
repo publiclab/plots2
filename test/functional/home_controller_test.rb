@@ -18,10 +18,10 @@ class HomeControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should not get dashboard if not logged in" do
+  test "should get dashboard if not logged in" do
     get :dashboard
 
-    assert_response 302
+    assert_response :success
   end
 
   test "should get dashboard" do
