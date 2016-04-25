@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
 
-  before_filter :require_user, :only => [:dashboard, :subscriptions, :nearby]
+  before_filter :require_user, :only => [:subscriptions, :nearby]
 
   #caches_action :index, :cache_path => proc { |c|
   #  node = DrupalNode.find :last #c.params[:id]
