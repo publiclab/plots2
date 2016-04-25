@@ -1,17 +1,7 @@
 <div class="col-md-6 note-container-note">
   <div class="note note-default<% if node.status == 4 %> moderated<% end %>">
 
-    <% if node.status == 4 %>
-      <p class="alert alert-warning moderated">
-        <% if logged_in_as(['admin','moderator']) %>
-          Moderate first-time post: <br class="hidden-xs hidden-sm"/>
-          <a class="btn btn-default btn-xs" href="/moderate/publish/<%= node.id %>">Approve</a>
-          <a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>">Spam</a>
-        <% else %>
-          Pending approval by <a href='/wiki/moderation'>community moderators</a>. Please be patient!
-        <% end %>
-      </p>
-    <% end %>
+    <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
 
     <% if node.main_image %>
       <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>

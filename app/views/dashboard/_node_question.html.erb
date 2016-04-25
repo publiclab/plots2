@@ -1,7 +1,9 @@
 <div class="col-md-6 note-container-question">
-  <div class="note note-pane note-question">
+  <div class="note note-pane note-question<% if node.status == 4 %> moderated<% end %>">
 
     <div class="header-icon"><i class="fa fa-question-circle"></i></div>
+
+    <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
  
     <% if node.main_image %>
       <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
