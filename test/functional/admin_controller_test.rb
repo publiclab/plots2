@@ -232,6 +232,18 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal "[PublicLab] " + node.title, email.subject
   end
 
+  test "moderator user should not be able to publish a note if it's already published" do
+    UserSession.create(rusers(:moderator))
+    node = node(:one)
+    assert_equal 1, node.status
+
+    get :publish, id: node.id
+
+    assert_equal "Item already published.", flash[:notice]
+    assert_equal 1, node.status
+    assert_redirected_to node.path
+  end
+
   test "moderator user should be able to unspam a note" do
     UserSession.create(rusers(:moderator))
     node = node(:spam)

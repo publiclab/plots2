@@ -168,14 +168,14 @@
 }
 
 .dashboard .wikis .wiki {
-  margin-top: 14px;
+  margin-top: 16px;
 }
 
 .dashboard .wikis h4 {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-family: "Junction Light", Helvetica, Arial, sans-serif;
   font-size: 18px;
-  margin-top: 3px;
+  margin-top: 0px;
 }
 
 .dashboard .wikis h4 a {
@@ -198,6 +198,7 @@
   max-height: 200px;
   display: block;
   overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .dashboard .activity .note h4 a {
