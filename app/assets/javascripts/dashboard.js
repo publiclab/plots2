@@ -8,9 +8,18 @@
     'wiki':     true
   };
 
+  var viewport = function() {
+    var e = window, a = 'inner';
+    if (!('innerWidth' in window )) {
+      a = 'client';
+      e = document.documentElement || document.body;
+    }
+    return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
+  }
+
   var setTypeVisibility = function(type, checked) {
 
-    if (checked) {
+    if (checked && !(type == 'wiki' && viewport().width > 992)) {
 
       $('.note-container-' + type).show();
 
@@ -20,6 +29,7 @@
 
     }
 
+    $('.activity .col-md-6').css('clear', 'none');
     $('.activity .col-md-6:visible:even').css('clear', 'left');
 
     if (localStorage) {
@@ -42,19 +52,35 @@
 
   }
 
+
   // load any settings from browser storage
-  if (localStorage) {
+  var getLocalStorageActivity = function() {  
 
-    Object.keys(types).forEach(function(key, i) {
-
-      var type = types[key];
-      if (localStorage.getItem('pl-dash-' + key) == null) localStorage.setItem('pl-dash-' + key, true);
-      types[key] = localStorage.getItem('pl-dash-' + key) == "true",
-      setTypeVisibility(key, types[key]);
-
-    });
+    if (localStorage) {
+ 
+      Object.keys(types).forEach(function(key, i) {
+ 
+        var type = types[key];
+        if (localStorage.getItem('pl-dash-' + key) == null) localStorage.setItem('pl-dash-' + key, true);
+        types[key] = localStorage.getItem('pl-dash-' + key) == "true",
+        setTypeVisibility(key, types[key]);
+ 
+      });
+ 
+    }
 
   }
+
+  getLocalStorageActivity();
+
+
+  // allow native stylesheets to determine visibility on 
+  $(window).on('resize', function() {
+
+    $('.activity .col-md-6').css('display', '');
+    getLocalStorageActivity();
+
+  });
 
   $('.activity-dropdown .dropdown-toggle').click(function(e) {
 
@@ -190,5 +216,12 @@
   $('a.lists-tab').on('shown.bs.tab', function() { show_list('combined'); });
 
   $('.list-select').change(function() { show_list($(this).val()); });
+
+  $('.search-form-wiki').submit(function(e){ 
+
+    e.preventDefault();
+    window.location = '/search/' + $('.search-form-wiki input').val();
+
+  })
 
 })();

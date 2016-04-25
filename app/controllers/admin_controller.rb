@@ -106,16 +106,20 @@ class AdminController < ApplicationController
   def publish
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
       @node = DrupalNode.find params[:id]
-      first_timer_post = (@node.status == 4)
-      @node.publish
-      @node.author.unban
-      if first_timer_post
-        AdminMailer.notify_author_of_approval(@node, current_user)
-        AdminMailer.notify_moderators_of_approval(@node, current_user)
-        SubscriptionMailer.notify_node_creation(@node)
-        flash[:notice] = "Post approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
+      if @node.status == 1
+        flash[:notice] = "Item already published."
       else
-        flash[:notice] = "Item published."
+        first_timer_post = (@node.status == 4)
+        @node.publish
+        @node.author.unban
+        if first_timer_post
+          AdminMailer.notify_author_of_approval(@node, current_user)
+          AdminMailer.notify_moderators_of_approval(@node, current_user)
+          SubscriptionMailer.notify_node_creation(@node)
+          flash[:notice] = "Post approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
+        else
+          flash[:notice] = "Item published."
+        end
       end
       redirect_to @node.path
     else
