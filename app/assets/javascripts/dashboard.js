@@ -134,12 +134,13 @@
       url:   '/'
     },
     'combined': {
-      feed:  'https://publiclab.org/rssproxy/combined/',
-      //feed:  '/home/fetch?url=https://feeds.feedburner.com/rssmixer/ZvcX',
+      feed:  '/home/fetch?url=https://feeds.feedburner.com/rssmixer/ZvcX',
+      //feed:  'https://publiclab.org/rssproxy/combined/',
       url:   '/lists'
     },
     'publiclaboratory': {
-      //feed:  'https://publiclab.org/rssproxy/publiclaboratory/',
+      feed:  'https://publiclab.org/rssproxy/publiclaboratory/',
+      //feed:  '/home/fetch?url=https://groups.google.com/forum/feed/publiclaboratory/topics/rss.xml?num=15',
       url:   '/lists#publiclaboratory'
     },
     'grassrootsmapping': {
