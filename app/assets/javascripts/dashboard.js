@@ -134,35 +134,42 @@
       url:   '/'
     },
     'combined': {
-      feed:  '/home/fetch?url=https://feeds.feedburner.com/rssmixer/ZvcX',
+      feed:  'https://publiclab.org/rssproxy/combined/',
+      //feed:  '/home/fetch?url=https://feeds.feedburner.com/rssmixer/ZvcX',
       url:   '/lists'
     },
     'publiclaboratory': {
-      feed:  '/home/fetch?url=https://groups.google.com/forum/feed/publiclaboratory/topics/rss.xml?num=15',
+      //feed:  'https://publiclab.org/rssproxy/publiclaboratory/',
       url:   '/lists#publiclaboratory'
     },
     'grassrootsmapping': {
-      feed:  '/home/fetch?url=https://groups.google.com/forum/feed/grassrootsmapping/topics/rss.xml?num=15',
+      feed:  'https://publiclab.org/rssproxy/grassrootsmapping/',
+      //feed:  '/home/fetch?url=https://groups.google.com/forum/feed/grassrootsmapping/topics/rss.xml?num=15',
       url:   '/lists#publiclaboratory'
     },
     'plots-spectrometry': {
-      feed:  '/home/fetch?url=https://groups.google.com/forum/feed/plots-spectrometry/topics/rss.xml?num=15',
+      feed:  'https://publiclab.org/rssproxy/plots-spectrometry/',
+      //feed:  '/home/fetch?url=https://groups.google.com/forum/feed/plots-spectrometry/topics/rss.xml?num=15',
       url:   '/lists#publiclaboratory'
     },
     'plots-infrared': {
-      feed:  '/home/fetch?url=https://groups.google.com/forum/feed/plots-infrared/topics/rss.xml?num=15',
+      feed:  'https://publiclab.org/rssproxy/plots-infrared/',
+      //feed:  '/home/fetch?url=https://groups.google.com/forum/feed/plots-infrared/topics/rss.xml?num=15',
       url:   '/lists#publiclaboratory'
     },
     'plots-airquality': {
-      feed:  '/home/fetch?url=https://groups.google.com/forum/feed/plots-airquality/topics/rss.xml?num=15',
+      feed:  'https://publiclab.org/rssproxy/plots-airquality/',
+      //feed:  '/home/fetch?url=https://groups.google.com/forum/feed/plots-airquality/topics/rss.xml?num=15',
       url:   '/lists#publiclaboratory'
     },
     'plots-waterquality': {
-      feed:  '/home/fetch?url=https://groups.google.com/forum/feed/plots-waterquality/topics/rss.xml?num=15',
+      feed:  'https://publiclab.org/rssproxy/plots-waterquality/',
+      //feed:  '/home/fetch?url=https://groups.google.com/forum/feed/plots-waterquality/topics/rss.xml?num=15',
       url:   '/lists#publiclaboratory'
     },
     'plots-dev': {
-      feed: '/home/fetch?url=https://groups.google.com/forum/feed/plots-dev/topics/rss.xml?num=15',
+      feed: 'https://publiclab.org/rssproxy/plots-dev/',
+      //feed: '/home/fetch?url=https://groups.google.com/forum/feed/plots-dev/topics/rss.xml?num=15',
       url:   '/lists#publiclaboratory'
     },
   };
