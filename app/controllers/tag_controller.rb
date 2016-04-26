@@ -51,7 +51,7 @@ class TagController < ApplicationController
 
   def blog
     nids = DrupalTag.find_nodes_by_type(params[:id],'note',20).collect(&:nid)
-    @notes = DrupalNode.page(params[:page])
+    @notes = DrupalNode.paginate(:page => params[:page], :per_page => 6)
                        .where('status = 1 AND nid in (?)', nids)
                        .order("nid DESC")
     @tags = DrupalTag.find_all_by_name params[:id]
