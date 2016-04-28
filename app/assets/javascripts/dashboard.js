@@ -19,35 +19,90 @@
 
   var setTypeVisibility = function(type, checked) {
 
-    if (checked && !(type == 'wiki' && viewport().width > 992)) {
+    if (type == "all") {
 
-      $('.note-container-' + type).show();
+      Object.keys(types).forEach(function(type, i) {
+
+        $('.node-type').prop('checked', checked);
+        setTypeVisibility(type, checked);
+
+      });
 
     } else {
 
-      $('.note-container-' + type).hide();
 
-    }
-
-    $('.activity .col-md-6').css('clear', 'none');
-    $('.activity .col-md-6:visible:even').css('clear', 'left');
-
-    if (localStorage) {
-
+      // record status
       types[type] = (checked == true);
-      localStorage.setItem('pl-dash-' + type, checked);
-      $('.node-type-' + type).prop('checked', checked);
 
-    }
 
-    if ($('.activity-dropdown input.node-type:checked').length < $('.activity-dropdown input.node-type').length) {
+      // record status in browser localStorage
+      if (localStorage) {
+ 
+        localStorage.setItem('pl-dash-' + type, checked);
+        // match displayed state to localStorage saved state:
+        $('.node-type-' + type).prop('checked', checked);
+ 
+      }
 
-      $('.activity-dropdown .dropdown-toggle .node-type-filter').html('Selected updates');
 
-    } else {
+      // if all checked?
+      var checked_array = $(".node-type").map(function(i, el) { return $(el).prop('checked'); });
 
-      $('.activity-dropdown .dropdown-toggle .node-type-filter').html('All updates');
+      // if contains some falses:
+      if (checked_array.toArray().indexOf(false) != -1) {
 
+        // if also contains some trues:
+        if (checked_array.toArray().indexOf(true) != -1) {
+
+          $('.node-type-all').prop('indeterminate', true);
+
+        } else {
+
+          $('.node-type-all').prop('checked', false);
+          $('.node-type-all').prop('indeterminate', false);
+
+        }
+
+      } else {
+
+        $('.node-type-all').prop('indeterminate', false);
+        $('.node-type-all').prop('checked', true);
+
+      }
+
+
+      // actually hide/show
+      if (checked && !(type == 'wiki' && viewport().width > 992)) {
+ 
+        $('.note-container-' + type).show();
+ 
+      } else {
+ 
+        $('.note-container-' + type).hide();
+ 
+      }
+
+
+      // use CSS clear:left to tidy columns 
+      $('.activity .col-md-6').css('clear', 'none');
+      $('.activity .col-md-6:visible:even').css('clear', 'left');
+
+
+      // change dropdown title 
+      if ($('.activity-dropdown input.node-type:checked').length < $('.activity-dropdown input.node-type').length) {
+ 
+        $('.activity-dropdown .dropdown-toggle .node-type-filter').html('Selected updates');
+ 
+      } else if ($('.activity-dropdown input.node-type:checked').length == 0) {
+
+        $('.activity-dropdown .dropdown-toggle .node-type-filter').html('None');
+
+      } else {
+ 
+        $('.activity-dropdown .dropdown-toggle .node-type-filter').html('All updates');
+ 
+      }
+ 
     }
 
   }
@@ -82,15 +137,16 @@
 
   });
 
-  $('.activity-dropdown .dropdown-toggle').click(function(e) {
 
-    e.preventDefault();
+  $('.activity-dropdown .dropdown-toggle').click(function(e) {
 
   });
 
-  $('.activity-dropdown input').click(function() {
+  $('.activity-dropdown li').click(function(e) {
 
-    setTypeVisibility($(this).attr('data-type'), $(this).prop('checked'));
+    e.stopPropagation();
+
+    setTypeVisibility($(this).find('input').attr('data-type'), $(this).find('input').prop('checked'));
 
   });
 
@@ -223,7 +279,11 @@
 
   $('a.lists-tab').on('shown.bs.tab', function() { show_list('combined'); });
 
-  $('.list-select').change(function() { show_list($(this).val()); });
+  $('.list-select').change(function(e) { 
+
+    show_list($(this).val());
+
+  });
 
   $('.search-form-wiki').submit(function(e){ 
 
