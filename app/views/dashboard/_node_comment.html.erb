@@ -10,7 +10,7 @@
     <p class="body"><%= raw strip_tags(sanitize(RDiscount.new(node.comment).to_html)).truncate(100) %></p>
 
     <p class="meta">
-      <a href="<%= node.parent.path %>#comments" class="btn btn-default pull-right btn-xs">View &amp; respond &raquo;</a>
+      <a href="<%= node.parent.path %>#comments" class="btn btn-default pull-right btn-xs"><%= node.parent.comments.count %> comments &raquo;</a>
       <%= time_ago_in_words(node.created_at) %> ago
     </p>
 
