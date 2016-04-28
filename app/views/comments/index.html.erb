@@ -1,3 +1,5 @@
+<h1>Comments</h1>
+
 <table class="table">
   <% @comments.each do |comment| %>
   <tr id="c<%= comment.cid %>">
@@ -6,3 +8,5 @@
   </tr>
   <% end %>
 </table>
+
+<%= will_paginate @comments, :renderer => BootstrapPagination::Rails %>

@@ -3,6 +3,11 @@ class CommentController < ApplicationController
   respond_to :html, :xml, :json
   before_filter :require_user, :only => [:create, :update, :delete]
 
+  def index
+    @comments = DrupalComment.paginate(page: params[:page], per_page: 30)
+    render template: 'comments/index'
+  end
+
   # handle some errors!!!!!!
   # create node comments
   def create
