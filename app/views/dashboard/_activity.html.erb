@@ -5,15 +5,23 @@
 
 <div class="meta activity-dropdown">
   <div class="btn-group">
+
     <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <span class="node-type-filter">All updates</span> 
       <span class="caret"></span>
     </button>
+
     <ul class="dropdown-menu">
+
+      <li><a href="#"><label><input data-type="all"      class="node-type-all"      type="checkbox" checked="checked" /> All           </label></a></li>
+
+      <li class="divider"></li>
+
       <li><a href="#"><label><input data-type="note"     class="node-type node-type-note"     type="checkbox" checked="checked" /> Research notes</label></a></li>
       <li><a href="#"><label><input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" /> Questions     </label></a></li>
       <li><a href="#"><label><input data-type="event"    class="node-type node-type-event"    type="checkbox" checked="checked" /> Events        </label></a></li>
       <li><a href="#"><label><input data-type="comment"  class="node-type node-type-comment"  type="checkbox" checked="checked" /> Comments      </label></a></li>
+
       <li class="visible-sm visible-xs">
           <a href="#"><label><input data-type="wiki"     class="node-type node-type-wiki"     type="checkbox" checked="checked" /> Wiki          </label></a>
       </li>
@@ -27,6 +35,7 @@
       -->
 
     </ul>
+
   </div> &nbsp; 
   <span class="hidden-xs">from other <a href="">community scientists</a></span> in the past week <span class="hidden-xs">|
   <% if current_user %>

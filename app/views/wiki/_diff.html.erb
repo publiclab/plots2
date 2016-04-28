@@ -14,9 +14,14 @@
 
         if (obj.added || obj.removed) {
           var line = "<div class='diff-object ";
-          if (obj.removed) line += "diff-removed";
-          if (obj.added)   line += "diff-added";
-          line += "'>" + obj.value + "</div>";
+          if (obj.removed) line += "diff-removed'>";
+          if (obj.added)   line += "diff-added'>";
+
+          // add eventually, for red/green color issues:
+          // <i class='fa fa-minus-circle'></i>
+          // <i class='fa fa-plus-circle'></i> 
+
+          line += obj.value + "</div>";
           output += line;
         }
 
