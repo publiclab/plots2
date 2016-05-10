@@ -53,3 +53,22 @@ first_timer_note:
   status: 1
   title: My very first post to Public Lab
   body: I'm new here -- whoa!
+
+hashtag_one:
+  nid: 1
+  uid: 1
+  title: Hashtag post
+  body: |+
+    #Heading 1
+    Something about hashtag
+    Here is a #hashtag
+
+hashtag_two:
+  nid: 1
+  uid: 1
+  title: Ignore headings as hasgtag
+  body: |+
+    #Heading 1
+    Some text on hashtag
+    #Heading 2
+    There is no hashtag in this post

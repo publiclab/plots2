@@ -40,4 +40,21 @@ class DrupalCommentTest < ActiveSupport::TestCase
     assert_equal comment.mentioned_users[1].id, rusers(:jeff).id
   end
 
+  test "should scan hashtags in comments and link them" do
+    comment = DrupalComment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = 'This is a test #hashtag'
+    assert_equal comment.body, 'This is a test [#hashtag](/tag/hashtag/)'
+  end
+
+  test "should ignore Headers as hashtags in markdown" do
+    comment = DrupalComment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = '#This is a Heading'
+    assert_not_equal comment.body, '[#This](/tag/hashtag/) is a Heading'
+  end
 end

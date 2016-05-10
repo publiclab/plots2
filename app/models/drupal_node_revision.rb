@@ -85,6 +85,7 @@ class DrupalNodeRevision < ActiveRecord::Base
     body = RDiscount.new(body, :generate_toc)
     body = body.to_html
     body = body.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKHTML))
+    body = body.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKHTML))
     # inline edit button
     body = body.gsub('[edit]','<p class="well" style="padding:6px;"><a class="btn btn-primary" href="'+self.parent.edit_path+'"><i class="fa fa-white icon-pencil"></i> Edit this page</a> to help complete it!</p>')
     # inline question button
