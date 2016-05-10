@@ -73,7 +73,7 @@ class TagController < ApplicationController
     else
       flash[:notice] = "You awarded the <a href='/wiki/barnstars#"+params[:star].split('-').each{|w| w.capitalize!}.join('+')+"+Barnstar'>"+params[:star]+" barnstar</a> to <a href='/profile/"+node.author.name+"'>"+node.author.name+"</a>"
     end
-    redirect_to node.path
+    redirect_to node.path + "?_=" + Time.now.to_i.to_s
   end
 
   def create
