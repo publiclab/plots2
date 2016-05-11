@@ -69,11 +69,11 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
 
   test "should recognize hashtags and link them" do
     revision = node_revisions(:hashtag_one)
-    assert_includes revision.render_body, '<a href="/tag/hashtag/">#hashtag</a>'
+    assert_includes revision.render_body, '<a href="/tag/hashtag">#hashtag</a>'
   end
 
   test "should ignore Headers as hashtags in markdown" do
     revision = node_revisions(:hashtag_two)
-    assert_not_includes revision.render_body, '<a href="/tag/hashtag/">#Heading 1</a>'
+    assert_not_includes revision.render_body, '<a href="/tag/Heading 1">#Heading 1</a>'
   end
 end
