@@ -46,7 +46,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
       uid: rusers(:bob).id
     })
     comment.comment = 'This is a test #hashtag'
-    assert_equal comment.body, 'This is a test [#hashtag](/tag/hashtag/)'
+    assert_equal comment.body, 'This is a test [#hashtag](/tag/hashtag)'
   end
 
   test "should ignore Headers as hashtags in markdown" do
@@ -55,6 +55,65 @@ class DrupalCommentTest < ActiveSupport::TestCase
       uid: rusers(:bob).id
     })
     comment.comment = '#This is a Heading'
-    assert_not_equal comment.body, '[#This](/tag/hashtag/) is a Heading'
+    assert_not_equal comment.body, '[#This](/tag/This) is a Heading'
+  end
+
+  test "should ignore commas, exclamation, periods in hashtag" do
+    comment = DrupalComment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = 'Testing #tagnames with #commas, #exclamations! and #periods.'
+    assert_includes comment.body, '[#tagnames](/tag/tagnames)'
+    assert_not_includes comment.body, '[#commas,](/tag/commas,)'
+    assert_not_includes comment.body, '[#exclamations!](/tag/exclamations!)'
+    assert_not_includes comment.body, '[#periods.](/tag/periods.)'
+  end
+
+  test "should link hashtags in headers" do
+    comment = DrupalComment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = '#Titles and #tagnames'
+    assert_equal comment.body, '#Titles and [#tagnames](/tag/tagnames)'
+  end
+
+  test "should ignore sub-headings as hashtags" do
+    comment = DrupalComment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = '##Titles'
+    assert_not_equal comment.body, '[##Titles](/tag/Titles)'
+  end
+
+  test "should ignore Titles with spaces after hash as hashtags" do
+    comment = DrupalComment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = '## Titles'
+    assert_not_equal comment.body, '[## Titles](/tag/Titles)'
+    comment.comment = '# Tagnames'
+    assert_not_equal comment.body, '[# Tagnames](/tag/Tagnames)'
+  end
+
+  test "should ignore hashtag in links as nesting of links is not allowed" do
+    comment = DrupalComment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = '[#tags in links](/)'
+    assert_not_equal comment.body, '[[#tags](/tag/tags) in links](/)'
+  end
+
+  test "should ignore hashtags in URLs" do
+    comment = DrupalComment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = '[tags in URLs](/mypage#tags)'
+    assert_not_equal comment.body, '[tags in URLs](/mypage[#tags](/tags/tags))'
   end
 end
