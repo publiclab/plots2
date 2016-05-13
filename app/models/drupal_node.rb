@@ -186,11 +186,13 @@ class DrupalNode < ActiveRecord::Base
   end
 
   # tag- and node-based followers
-  def subscribers
+  def subscribers(conditions = false)
     users = TagSelection.where(tid: self.tags.collect(&:tid))
                         .collect(&:user)
     users += NodeSelection.where(nid: self.nid)
                           .collect(&:user)
+
+    users = users.where(conditions) if conditions
     users.uniq
   end
 
