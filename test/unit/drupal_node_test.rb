@@ -133,6 +133,11 @@ class DrupalNodeTest < ActiveSupport::TestCase
     assert_equal 4, node.subscribers.length
   end
 
+  test "should have place node icon according to tagging" do
+    node = node(:place)
+    assert_equal node.icon, 'flag'
+  end
+
   #test "should not save node without title, or anything else" do
     #node = DrupalNode.new
     #assert !node.save
