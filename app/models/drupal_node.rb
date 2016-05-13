@@ -351,7 +351,7 @@ class DrupalNode < ActiveRecord::Base
    icon = "file" if self.type == "note"
    icon = "book" if self.type == "page"
    icon = "map-marker" if self.type == "map"
-   icon = "flag" if self.type == "place"
+   icon = "flag" if self.has_tag('chapter')
    icon = "wrench" if self.type == "tool"
    icon
   end
