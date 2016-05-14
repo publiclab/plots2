@@ -289,4 +289,14 @@ class NotesControllerTest < ActionController::TestCase
     assert_tag :tag => 'iframe', attributes: {src: 'http://mapknitter.org/embed/sattelite-imagery'}
   end
 
+  # test "should mark admins and moderators with a special icon" do
+  #   node = node(:one)
+  #   get :show, 
+  #       author: node.author.username, 
+  #       date: node.created_at.strftime("%m-%d-%Y"),
+  #       id: node.title.parameterize
+  #   assert_select "i[title='Admin']", 1
+  #   assert_select "i[title='Moderator']", 1
+  # end
+
 end
