@@ -9,3 +9,15 @@ legacy:
   nid: 1
   status: 1
   comment: Hey there!
+
+admin:
+  uid: 5
+  nid: 1
+  status: 1
+  comment: Admin comment
+
+moderator:
+  uid: 6
+  nid: 1
+  status: 1
+  comment: Moderator comment
