@@ -188,6 +188,8 @@ Plots2::Application.routes.draw do
   match 'note/add' => 'legacy#note_add'
   match 'page/add' => 'legacy#page_add'
 
+  match 'talk/:id' => 'talk#show'
+
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
