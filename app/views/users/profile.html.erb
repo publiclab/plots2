@@ -90,7 +90,6 @@
     <li class="active"><a href="#research" data-toggle="tab">Research</a></li>
     <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span></a></li>
     <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> Liked</span> (<%= @user.like_count %>)</a></li>
-    <li><a href="#maps" data-toggle="tab"><i class="fa fa-map-marker"></i><span class="hidden-sm hidden-xs"> MapKnitter maps</span></a></a>
   </ul>
 
   <br />
@@ -102,28 +101,14 @@
     </div>
 
     <div class="tab-pane" id="maps">
-      <% if @user.using_new_site? && @user.user.mapknitter_maps && @user.user.mapknitter_maps.length > 0 %>
-  
       <p><i>View these maps <a href="//mapknitter.org/profile/<%= @user.name %>">at MapKnitter.org &raquo;</a></i></a>
-  
       <table class="table">
         <tr>
-          <th>Title</th>
-          <th style="width:100px;">Creation date</th>
+          <th style="width:200px;">Title</th>
+          <th style="width:200px;">Creation date</th>
           <th>Description</th>
         </tr>
-        <% @user.user.mapknitter_maps.each_with_index do |map, i| %>
-        <tr>
-          <td><a href="<%= map.link %>"><i class="fa fa-map-marker"></i> <%= map.title %></a></td>
-          <td><%= time_ago_in_words(map.pubDate) %> ago</td>
-          <td><%= raw map.description.truncate(100) %></td>
-        </tr>
-        <% end %>
       </table>
-  
-      <% else %>
-        <p>No <a href="//mapknitter.org">MapKnitter maps</a></p>
-      <% end %>
     </div>
 
     <div class="tab-pane" id="comments">
@@ -190,4 +175,40 @@
 
   })()
 </script>
+<script type="text/javascript">
+  (function() {
+    $.get('https://mapknitter.org/feeds/author/<%= @user.name %>', function (feed) {
+      
+      if ($(feed).find('channel item').length > 0)
+      {
+        $('.nav-tabs').append('<li><a href="#maps" data-toggle="tab"><i class="fa fa-map-marker"></i><span class="hidden-sm hidden-xs"> MapKnitter maps</span></a></li>');
+      }
+      
+      $.each($(feed).find('channel item'), function (i, item) { 
+        
+        $('#maps table').append('<tr class="feed-item-' + i + '"></tr>');
+        
+        var itemEl       = $('#maps table .feed-item-' + i),
+            title        = $(item).find('title').html(),
+            link         = $(item).find('link').html(),
+            author       = $(item).find('author').html(),
+            pubDate      = $(item).find('pubDate').html(),
+            id           = $(item).find('guid').html().split('maps/')[1],
+            description  = $(item).find('description').text();
+        
+        pubDate = moment(new Date(pubDate)).fromNow();
+        
+        itemEl.append('<td class = "title"><a><i class="fa fa-map-marker"></i></a></td>');
+        itemEl.find('a').attr('href', link);
+        itemEl.find('.title a').append(title);
 
+        itemEl.append('<td class="date"></td>');
+        itemEl.find('.date').append(pubDate);
+        
+        itemEl.append('<td class="description"></td>');
+        itemEl.find('.description').html(description);
+
+      });
+    });
+  })();
+</script>
