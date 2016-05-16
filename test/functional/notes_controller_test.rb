@@ -299,4 +299,15 @@ class NotesControllerTest < ActionController::TestCase
   #   assert_select "i[title='Moderator']", 1
   # end
 
+  test "should display an icon for users with streak longer than 7 days" do
+    node = node(:one)
+    User.any_instance.stubs(:note_streak).returns([8,10])
+    User.any_instance.stubs(:wiki_edit_streak).returns([9,15])
+    User.any_instance.stubs(:comment_streak).returns([10,30])
+    get :show, 
+        author: node.author.username, 
+        date: node.created_at.strftime("%m-%d-%Y"),
+        id: node.title.parameterize
+    assert_select ".fa-fire", 3
+  end
 end
