@@ -186,11 +186,13 @@ class DrupalNode < ActiveRecord::Base
   end
 
   # tag- and node-based followers
-  def subscribers
+  def subscribers(conditions = false)
     users = TagSelection.where(tid: self.tags.collect(&:tid))
                         .collect(&:user)
     users += NodeSelection.where(nid: self.nid)
                           .collect(&:user)
+
+    users = users.where(conditions) if conditions
     users.uniq
   end
 
@@ -351,7 +353,7 @@ class DrupalNode < ActiveRecord::Base
    icon = "file" if self.type == "note"
    icon = "book" if self.type == "page"
    icon = "map-marker" if self.type == "map"
-   icon = "flag" if self.type == "place"
+   icon = "flag" if self.has_tag('chapter')
    icon = "wrench" if self.type == "tool"
    icon
   end

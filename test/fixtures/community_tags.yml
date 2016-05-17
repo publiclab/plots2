@@ -21,3 +21,9 @@ spam:
   uid: 3
   nid: 3
   date: Time.now
+
+chapter:
+  tid: 5
+  uid: 1
+  nid: 7
+  date: Time.now

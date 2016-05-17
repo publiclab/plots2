@@ -63,3 +63,14 @@ first_timer_note:
   status: 4
   type: "note"
   cached_likes: 0
+
+place:
+  nid: 7
+  uid: 1
+  title: "Chicago"
+  path: "/wiki/chicago"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "wiki"
+  cached_likes: 0

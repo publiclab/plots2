@@ -134,7 +134,7 @@ class WikiControllerTest < ActionController::TestCase
          uid:            rusers(:bob).id,
          title:          "New Title", 
          body:           "Editing about Page",
-         image_revision: image.id
+         image_revision: image.path(:default)
 
     assert_redirected_to node.path
     assert_equal flash[:notice], "Edits saved."

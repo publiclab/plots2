@@ -39,7 +39,7 @@
     <p>
       <select name="image_revision" id="image_revision">
         <% @node.images.each_with_index do |i,index| %>
-          <option id="<%=i.id%>" value="<%=i.path(:default)%>" <% if i.vid == @node.vid %>selected='selected'<% end %> >Image <%=index+1%></option>
+          <option id="<%=i.id%>" value="<%=i.path(:default)%>" <% if i.id == @node.main_image_id %>selected='selected'<% end %> >Image <%=index+1%></option>
         <% end %>
       </select>
     </p>

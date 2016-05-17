@@ -13,3 +13,7 @@ spam:
 everything:
   tid: 4
   name: everything
+
+chapter:
+  tid: 5
+  name: chapter
