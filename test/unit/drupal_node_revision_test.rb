@@ -76,4 +76,9 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
     revision = node_revisions(:hashtag_two)
     assert_not_includes revision.render_body, '<a href="/tag/Heading 1">#Heading 1</a>'
   end
+
+  test "should render correct link for images in email" do
+    revision = node_revisions(:email)
+    assert_includes revision.render_body_email, 'https://i.publiclab.org/system/images/photos/000/016/229/original/admin_tooltip.png'
+  end
 end
