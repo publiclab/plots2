@@ -246,7 +246,11 @@ class WikiController < ApplicationController
   def diff
     @a = DrupalNodeRevision.find_by_vid(params[:a])
     @b = DrupalNodeRevision.find_by_vid(params[:b])
-    render partial: 'wiki/diff'
+    if @a.body == @b.body
+      render text: '<p>Lead image or title change</p>'
+    else
+      render partial: 'wiki/diff'
+    end
   end
 
   def index
