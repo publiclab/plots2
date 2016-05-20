@@ -72,3 +72,11 @@ hashtag_two:
     Some text on hashtag
     #Heading 2
     There is no hashtag in this post
+
+email:
+  nid: 1
+  uid: 1
+  title: Email links
+  body: >
+    [![admin_tooltip.png](//i.publiclab.org/system/images/photos/000/016/229/large/admin_tooltip.png)]
+    (//i.publiclab.org/system/images/photos/000/016/229/original/admin_tooltip.png)
