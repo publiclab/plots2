@@ -55,6 +55,9 @@ module Plots2
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    
+    I18n.available_locales = [:en, :de]
+    config.i18n.default_locale = :en 
 
     config.action_view.sanitized_allowed_tags = ['iframe', 'embed']
 
