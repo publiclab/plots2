@@ -1,31 +1,30 @@
 <footer class="footer">
-
   <div class="col-md-3 hidden-print">
     <p><b>Getting help</b></p>
     <ul>
-      <li><a href="/wiki/issues">Report a bug or issue</a></li>
-      <li><a href="mailto:web@publiclab.org">Email the Web working group</a></li>
-      <li>PublicLab.org is <a href="https://github.com/publiclab/plots2">open source software</a> - and <a href="/wiki/developers">looking for contributors</a></li>
+      <li><a href="/wiki/issues"> <%= t('layout._footer.getting_help.report_bug') %> </a></li>
+      <li><a href="mailto:web@publiclab.org"> <%= t('layout._footer.getting_help.email_working_group') %> </a></li>
+      <li> <%= raw t('layout._footer.getting_help.publiclab_oss', :url1 => 'https://github.com/publiclab/plots2', :url2 => '/wiki/developers') %> </li>
     </ul>
   </div>
   <div class="col-md-3 hidden-print">
     <p><b>Links</b></p>
     <ul>
-      <li><a href="/about">About</a></li>
-      <li><a href="/wiki/getting-started">Getting Started</a></li>
-      <li><a href="/wiki/licenses">Licenses</a></li>
-      <li><a href="/lists">Discussion lists</a></li>
-      <li><a href="/stats">Site statistics</a></li>
-      <li><a href="/feed.rss">RSS</a></li>
+      <li><a href="/about"><%= t('layout._footer.links.about') %></a></li>
+      <li><a href="/wiki/getting-started"><%= t('layout._footer.links.getting_started') %></a></li>
+      <li><a href="/wiki/licenses"><%= t('layout._footer.links.licenses') %></a></li>
+      <li><a href="/lists"><%= t('layout._footer.links.discussion_lists') %></a></li>
+      <li><a href="/stats"><%= t('layout._footer.links.site_statistics') %></a></li>
+      <li><a href="/feed.rss"><%= t('layout._footer.links.rss') %></a></li>
     </ul>
   </div>
   <div class="col-md-3">
-    <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><i class="fa fa-creative-commons"></i></a> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>. Hardware designs on this site are released under the <a href="http://www.ohwr.org/cernohl">CERN Open Hardware License 1.1</a>. Read more about Public Lab's <a href="/licenses">open source licensing here</a>.</p>
+    <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><i class="fa fa-creative-commons"></i></a> <%= raw t('layout._footer.license', :creative_commons_url => 'http://creativecommons.org/licenses/by-sa/3.0/', :cern_license_url => 'http://www.ohwr.org/cernohl', :publiclab_license_url => '/licenses') %> </p>
   </div>
   <div class="col-md-3 hidden-print">
-    <p>Specific works on this site may be released or dedicated under different licenses, but only if such alternatives are clearly indicated by their authors.</p>
-    <p>This site makes extensive use of the open source font <a href="http://www.theleagueofmoveabletype.com/junction">Junction</a>.</p>
-    <p>PublicLab.org is hosted through a donation of server space by <a href="http://rackspace.com/">Rackspace</a>.</p>
+    <p><%= t('layout._footer.different_licenses') %></p>
+    <p><%= raw t('layout._footer.font_use', :url => 'http://www.theleagueofmoveabletype.com/junction') %></p>
+    <p><%= raw t('layout._footer.server_donation', :url => 'http://rackspace.com/') %></p>
   </div>
   <br style="clear:both;" />
 </footer>
