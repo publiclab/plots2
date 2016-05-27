@@ -16,7 +16,12 @@
 
   <div id="sidebar" class="hidden-xs hidden-sm">
 
+  <% if params[:controller] == 'questions' %>
+    <a style="margin-bottom:6px;" rel="tooltip" title="Ask a quuestion to the community" data-placement="bottom" href="/post?tags=question:question&template=question&redirect=question" class="btn btn-primary btn-lg btn-block hidden-sm"><i class="fa fa-question-circle fa fa-white"></i> Ask a Question</a>
+  <% else %>    
   <a style="margin-bottom:6px;" rel="tooltip" title="Share your work with others" data-placement="bottom" href="/post" class="btn btn-primary btn-lg btn-block hidden-sm"><i class="fa fa-pencil fa fa-white"></i> Write a research note</a>
+  <% end %>
+
   <a rel="tooltip" title="Post <% if @tagnames %>about <%= (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') %><% else %>research<% end %>" data-placement="bottom" href="/post<%= '?tags='+(@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames %><% if params[:controller] == 'notes' && params[:action] == 'show' %>,response:<%= @node.id %><% end %>" class="btn btn-primary btn-lg btn-block"><i class="fa fa-pencil fa fa-white"></i> Post related work &raquo;</a>
 
   <% if @node %>

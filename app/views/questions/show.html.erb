@@ -1,0 +1,42 @@
+<%= render :partial => "sidebar/related" %>
+<div class="col-md-9 note-show">
+  
+  <div style="margin-top:10px;" class="hidden-print">
+    <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
+  </div>
+
+  <h1 style="margin-top: 40px;"><span class="question">Question:</span><a href="/questions/<%= @node.author.name %>/<%= Time.at(@node.created).strftime("%m-%d-%Y") %>/<%= @node.title.parameterize %>"><%= @node.title %></a></h1>
+  <% pt = @node.power_tag('question') %>
+  <div class="alert alert-warning">
+    <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a>
+    is asking a question about <b><%= pt %></b>:
+    <a class="btn btn-default" target="_blank" href="/subscribe/tag/question:<%= pt %>">
+      Subscribe to answer questions on this topic
+    </a>
+  </div>
+  <div class="inline">
+  <% if @node.author.user && @node.author.user.photo_file_name %>
+    <img class="img-circle" src="<%= @node.author.user.photo_path(:thumb) %>" /> 
+   <% else %>
+    <div class="img-circle"></div>
+  <% end %>
+  </div>
+  <div class="inline">
+  	<p><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> asked on <%= @node.created_at.to_s(:long) %> <% if @node.status == 0 || @node.status == 4 %><span class="label label-danger">| UNPUBLISHED</span><% end %> <br />
+    <small><i class="fa fa-eye"></i> <%= number_with_delimiter(@node.totalcount) %> <span class="hidden-xs hidden-sm hidden-print ">views</span> | <a href="/q/<%= @node.id %>">shortlink</a></small></p>
+  </div>
+
+  <hr style="margin-top:10px;" />
+
+  <div style="overflow:hidden;" id="content">
+  <%= raw auto_link(@node.latest.render_body, :sanitize => false) %>
+  </div>
+
+  <hr />
+
+  <%= render :partial => "home/social" %>
+
+  <hr />
+ 
+  <%= render :partial => "tag/tagging" %>
+</div>
