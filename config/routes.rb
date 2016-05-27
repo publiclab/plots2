@@ -102,7 +102,7 @@ Plots2::Application.routes.draw do
   match 'sites/default/files/:filename.:format' => 'legacy#file'
   match 'sites/default/files/imagecache/:size/:filename.:format' => 'legacy#image'
 
-  match 'research' => 'notes#index'
+  match 'research' => 'home#dashboard'
   match 'notes' => 'legacy#notes'
   match 'notes/author/:id' => 'notes#author'
   match 'notes/author/:author/:topic' => 'notes#author_topic'
