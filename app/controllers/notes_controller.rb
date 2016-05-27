@@ -103,7 +103,11 @@ class NotesController < ApplicationController
         else
           flash[:notice] = "Research note published. Get the word out on <a href='/lists'>the discussion lists</a>!"
         end
-        redirect_to @node.path
+        if params[:redirect] && params[:redirect] == 'question'
+          redirect_to '/questions/'+@node.author.name+'/'+Time.at(@node.created).strftime("%m-%d-%Y")+'/'+@node.title.parameterize
+        else
+         redirect_to @node.path
+        end
       else
         render :template => "editor/post"
       end
@@ -159,7 +163,11 @@ class NotesController < ApplicationController
         end
         @node.save!
         flash[:notice] = "Edits saved."
-        redirect_to @node.path
+        if params[:redirect] && params[:redirect] == 'question'
+          redirect_to '/questions/'+@node.author.name+'/'+Time.at(@node.created).strftime("%m-%d-%Y")+'/'+@node.title.parameterize
+        else
+         redirect_to @node.path
+        end
       else
         flash[:error] = "Your edit could not be saved."
         render :action => :edit
