@@ -105,7 +105,7 @@ class NotesControllerTest < ActionController::TestCase
          tags: "balloon-mapping,event"
          #, main_image: "/images/testimage.jpg"
 
-    assert_redirected_to('/login?return_to=/notes/create')
+    assert_redirected_to('/login')
   end
 
   test "non-first-timer posts note" do
@@ -310,4 +310,30 @@ class NotesControllerTest < ActionController::TestCase
         id: node.title.parameterize
     assert_select ".fa-fire", 3
   end
+
+  test "should redirect to questions show page after creating a new question" do
+    user = UserSession.create(rusers(:bob))
+    title = "How to use a Spectrometer"
+    post :create,
+         title: title,
+         body: "Spectrometer question",
+         tags: "question:spectrometer",
+         redirect: "question"
+
+    assert_redirected_to "/questions/"+rusers(:bob).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
+  end
+
+  test "should redirect to questions show page when editing an existing question" do
+    user = UserSession.create(rusers(:jeff))
+    note = node(:question)
+    post :update,
+         id: note.nid,
+         title: note.title,
+         body: "Spectrometer doubts",
+         tags: "question:spectrometer",
+         redirect: "question"
+
+    assert_redirected_to "/questions/"+rusers(:jeff).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+note.title.parameterize
+  end
+
 end

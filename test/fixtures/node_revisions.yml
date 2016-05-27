@@ -80,3 +80,9 @@ email:
   body: >
     [![admin_tooltip.png](//i.publiclab.org/system/images/photos/000/016/229/large/admin_tooltip.png)]
     (//i.publiclab.org/system/images/photos/000/016/229/original/admin_tooltip.png)
+
+question:
+  nid: 8
+  uid: 2
+  title: How to use a Spectrometer
+  body: Spectrometer Question
