@@ -79,6 +79,10 @@
         <h3>Share your work</h3>
       <% end %>
   
+      <% if params[:redirect] == 'question' %>
+        <%= hidden_field_tag 'redirect', 'question' %>
+      <% end %>
+
       <div class="form-group">
         <input id="title" tabindex="1" name="title" class="form-control" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %><%= "Question: " if params[:template] == "question" %><%= 'Public Lab Community Newsletter '+ DateTime.now.to_date.to_s(:long) if params[:newsletter] %>"/>
       </div>
