@@ -224,4 +224,8 @@ class UsersController < ApplicationController
     end
   end
 
+  def info
+    @tags = current_user.user_tags
+  end
+
 end

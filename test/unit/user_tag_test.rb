@@ -13,5 +13,7 @@ class UserTagTest < ActiveSupport::TestCase
     assert_not_nil user_tag.id
     assert_not_nil user_tag.uid
     assert_not_nil user_tag.value
+
+    assert_not_nil user.user_tags
   end
 end

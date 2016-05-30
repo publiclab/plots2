@@ -148,6 +148,7 @@ Plots2::Application.routes.draw do
   match 'profile/edit' => 'users#edit'
   match 'profile/photo' => 'users#photo'
   match 'profile/:id' => 'users#profile'
+  match 'profile/:id/info' => 'users#info'
   match 'profile/:id/edit' => 'users#edit'
   match 'profile/:id/likes' => 'users#likes'
   match 'feed/:author' => 'users#rss'
