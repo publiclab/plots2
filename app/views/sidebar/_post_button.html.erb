@@ -1,10 +1,22 @@
+<% if params[:controller] == 'questions' %>
+<a style="margin-bottom:6px;" rel="tooltip" title="Ask a question to the community" data-placement="bottom" href="/post?tags=question:question&template=question&redirect=question" class="btn btn-primary btn-lg btn-block hidden-md"><i class="fa fa-question-circle fa-white"></i> Ask a Question</a>
+<% else %>
 <a style="margin-bottom:6px;" rel="tooltip" title="Share your work with others" data-placement="bottom" href="/post" class="btn btn-primary btn-lg btn-block hidden-md"><i class="fa fa-pencil fa-white"></i> Write a research note</a>
+<% end%>
 <div class="btn-group visible-md" style="margin-bottom:6px;">
+  <% if params[:controller] == 'questions' %>
+    <a rel="tooltip" title="Ask a question to the community" data-placement="bottom" href="/post?tags=question:question&template=question&redirect=question" class="btn btn-primary btn-lg"><i class="fa fa-question-circle fa-white"></i> Ask Question</a>
+  <% else %>
   <a rel="tooltip" title="Share your work with others" data-placement="bottom" href="/post" class="btn btn-primary btn-lg"><i class="fa fa-pencil fa fa-white"></i> Post research</a>
+  <% end %>
   <a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
 
   <ul class="dropdown-menu">
+    <% if params[:controller] == 'questions' %>
+    <li><a href="/post?tags=question:question&template=question&redirect=question"><i class="fa fa-question-circle"></i> <b>Ask a Question</b></a></li>
+    <% else %>
     <li><a href="/post"><i class="fa fa-pencil"></i> <b>Post a research note</b></a></li>
+    <% end %>
     <li><a href="/wiki/new"><i class="fa fa-book"></i> Create a wiki page</a></li>
     <li class="divider"></li>
     <li><a href="/wiki/about-posting" class="hidden-lg"><i class="fa fa-question-sign"></i> About posting</a></li>

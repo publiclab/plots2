@@ -27,3 +27,9 @@ chapter:
   uid: 1
   nid: 7
   date: Time.now
+
+question:
+  tid: 6
+  uid: 2
+  nid: 8
+  date: Time.now

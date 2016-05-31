@@ -1,0 +1,53 @@
+<%= render :partial => "sidebar/user" %>
+<% if params[:action] == 'popular' %>
+<h2>Popular Questions <small class="hidden-sm">Most viewed questions</small></h2>
+<% elsif params[:action] == 'liked' %>
+<h2>Liked Questions <small class="hidden-sm">Most liked questions</small></h2>
+<% else %>
+<h2>All Questions <small class="hidden-sm">Listing all recent questions</small></h2>
+<% end %>
+<div class="col-md-9">
+  <%= render :partial => "notes/format_toggle" %>
+  <ul class="nav nav-tabs">
+    <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/questions/">Recent</a></li>
+    <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/questions/popular/">Popular</a></li>
+    <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/questions/liked/"><i class="fa fa-star-o"></i><span class="hidden-sm"> Liked</span></a></li>
+  </ul>
+	<div id="notes">
+		<div class="row">
+		<% @notes.each_with_index do |node,i| %>
+		  <div class="<% if @widget %>col-xs-4 col-sm-4 <% end %>col-md-4 note note-container-question" style="margin-top:20px;">
+        <div class="note-pane note-question<% if node.status == 4 %> moderated<% end %>">
+
+          <div class="header-icon"><i class="fa fa-question-circle"></i></div>
+
+          <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
+
+          <h4><a <% if @widget %>target="_blank"<% end %> href="/questions/<%= node.author.name %>/<%= Time.at(node.created).strftime("%m-%d-%Y") %>/<%= node.title.parameterize %>"><%= node.title %></a></h4>
+
+          <p class="meta">asked <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
+
+          <span id="tags">
+          <% node.tags.limit(4).each do |tag| %>
+            <span id="tag_<%= tag.id %>" class="label label-primary"><a href="/tag/<%= tag.name %>"><%= tag.name %></a></span>
+          <% end %>
+          </span>
+          <p style="margin-top:30px;"><% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> Spam</a><% end %>
+          <a href="#" class="btn btn-default btn-xs">Post an answer</a></p>
+        </div>
+      </div>
+
+    <% unless @widget %><hr class="visible-xs visible-sm" /><% end %>
+    <% if ((i+1)/3.0).to_i == ((i+1)/3.0) %>
+    </div>
+    <% unless @widget %><hr class="visible-xs visible-sm grid" /><% end %>
+    <div class="row">
+    <% end %>
+    <% end %>
+    </div>
+  </div>
+</div>
+<div class="text-center"><%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>
+
+<%= stylesheet_link_tag "dashboard" %>
+<%= javascript_include_tag "dashboard" %>
