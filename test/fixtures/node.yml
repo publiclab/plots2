@@ -74,14 +74,3 @@ place:
   status: 1
   type: "wiki"
   cached_likes: 0
-
-question:
-  nid: 8
-  uid: 2
-  title: "How to use a Spectrometer"
-  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/how-to-use-a-spectrometer"
-  created: <%= Time.now.to_i %>
-  changed: <%= Time.now.to_i %>
-  status: 1
-  type: "note"
-  cached_likes: 0

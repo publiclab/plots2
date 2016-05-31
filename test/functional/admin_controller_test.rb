@@ -84,7 +84,7 @@ class AdminControllerTest < ActionController::TestCase
     get :spam
 
     assert_equal "You must be logged in to access this page", flash[:notice]
-    assert_redirected_to "/login"
+    assert_redirected_to "/login?return_to=/spam"
   end
 
   test "normal user should not be able to see spam page" do
@@ -277,7 +277,7 @@ class AdminControllerTest < ActionController::TestCase
     get :spam_revisions
 
     assert_equal "You must be logged in to access this page", flash[:notice]
-    assert_redirected_to "/login"
+    assert_redirected_to "/login?return_to=/spam/revisions"
   end
 
   test "normal user should not be able to see spam_revisions page" do

@@ -1,5 +1,4 @@
 Plots2::Application.routes.draw do
-
   resources :rusers
   resources :user_sessions
   resources :images
@@ -190,13 +189,6 @@ Plots2::Application.routes.draw do
   match 'page/add' => 'legacy#page_add'
 
   match 'talk/:id' => 'talk#show'
-
-  match 'questions' => 'questions#index'
-  match 'questions/:author/:date/:id' => 'questions#show'
-  match 'questions/show/:id' => 'questions#show'
-  match 'q/:id' => 'questions#shortlink'
-  match 'questions/popular' => 'questions#popular'
-  match 'questions/liked' => 'questions#liked'
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
