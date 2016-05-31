@@ -96,6 +96,7 @@ class HomeController < ApplicationController
     @activity = (@notes + @wikis + @comments).sort_by { |a| a.created_at }.reverse
     @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
     render template: 'dashboard/dashboard'
+    @title = "Community research" unless current_user
   end
 
   def comments
