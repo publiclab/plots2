@@ -47,7 +47,7 @@ class TagControllerTest < ActionController::TestCase
 
   test "add tag not logged in" do
     post :create, :name => 'mytag', :nid => node(:one).nid, :uid => 1
-    assert_redirected_to('/login?return_to='+URI.encode(request.env['PATH_INFO']))
+    assert_redirected_to('/login')
   end
 
   test "tag index" do
