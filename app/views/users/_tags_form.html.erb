@@ -1,0 +1,135 @@
+<form id="infoform" class="form" data-remote="true" action="/info/tags/create">
+  <div class="control-group row">
+    <div class="col-md-3">
+      <label class="" for="skills">Skills</label>
+    </div>
+    <div class="col-md-4">
+      <p><span id="skill"></span></p>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+        <input autocomplete="off" id="taginput1" name="info[skill]" type="text" placeholder="enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="skill"/>
+      </div>
+    </div>
+  </div>
+  <br />
+
+
+  <div class="control-group row">
+    <div class="col-md-3">
+      <label class="" for="gears">Gears</label>
+    </div>
+    <div class="col-md-4">
+      <p><span id="gear"></span></p>
+      <div class="input-group">
+        <input name="remote" type="hidden" value="true" />
+        <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+
+          <input autocomplete="off" id="taginput" name="info[gear]" type="text" placeholder="enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="gear" />
+      </div>
+    </div>
+  </div>
+  <br />
+
+
+  <div class="control-group row">
+    <div class="col-md-3">
+      <label class="" for="tools">Tools</label>
+    </div>
+    <div class="col-md-4">
+      <p><span id="tool"></span></p>
+      <div class="input-group">
+        <input name="remote" type="hidden" value="true" />
+        <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+        <input autocomplete="off" id="taginput" name="info[tool]" type="text" placeholder="enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="tool" />
+      </div>
+    </div>
+  </div>
+  <br />
+
+
+  <div class="control-group row">
+    <div class="col-md-3">
+      <label class="" for="skills">Roles</label>
+    </div>
+    <div class="col-md-4">
+      <p><span id="role"></span></p>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+        <input autocomplete="off" id="taginput" name="info[role]" type="text" placeholder="enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="role" />
+      </div>
+    </div>
+  </div>
+  <br />
+
+
+  <div class="control-group row">
+    <div class="col-md-3">
+      <label class="" for="location">Location</label>
+    </div>
+    <div class="col-md-4">
+      <p><span id="location"></span></p>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+        <input autocomplete="off" id="taginput" name="info[location]" type="text" placeholder="Type location" data-provide="typeahead" class="form-control" data-tag="location" />
+      </div>
+    </div>
+  </div>
+  <br />
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+      $('.tag-input').typeahead({
+        items: 8,
+        minLength: 3,
+        source: function(query, process) {
+          return $.post('/info/suggested/'+query, {}, function(data) {
+            return process(data)
+          });
+        },
+        updater: function(text) {
+          $(this).val(text)
+          
+        }
+      });
+
+      $('.tag-input').keydown(function(e){
+        if(e.keyCode == 13) {
+          // Send ajax request
+          var type = $(this).data('tag');
+          var value = $(this).val();
+          var that = this;
+          $.ajax({
+            url: "/info/tags/create",
+            type: 'POST',
+            data: { 
+              'type': type,
+              'value': value
+            },
+            success: function(data) {
+              response = JSON.parse(data);
+              parent = $(that).parent().parent().parent()
+              if (response['errors'].length > 0) {
+                $(parent).children('.help-block').html("")
+                $(parent).addClass('has-error')
+                $(parent).append('<span class="help-block">'+response['errors']+'</span>')
+              }
+              else {
+                var type = response['saved'][1]
+                var tag = response['saved'][2]
+                var tag_id = response['saved'][0]
+                $(parent).children('.help-block').html("")
+                $("#" + type).append("<span id='tag_"+tag_id+"' class='label label-primary' style='font-size:13px;'><a href='/tag/"+tag+"'>"+tag+"</a> <a class='tagdelete' data-remote='true' href='/tag/delete/"+tag_id+"'>x</a></span> ");
+                $(that).val("");
+              }
+            },
+            error: function(error) {
+
+            }
+          });
+        }
+
+      });
+    });
+  </script>
+</form>
