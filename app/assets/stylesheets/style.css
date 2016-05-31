@@ -224,8 +224,6 @@ body { padding-top: 70px; }
 
 #tags .label {
   line-height: 2em;
-  font-size: 13px;
-  margin-right: 4px;
 }
 
 /* Styles for specific areas of the site */
@@ -343,30 +341,4 @@ div.note.moderated h4 {
   border-color: #eb8;
   background: none;
   font-size: smaller;
-}
-
-.question{
-  color: #aaa;
-  font-style: italic;
-}
-.question + a{
-  text-decoration: none;
-}
-
-.inline{
-  display: inline-block;
-}
-
-.inline img.img-circle{
-  vertical-align: baseline;
-  width: 35px;
-  margin-right: 6px;
-}
-
-.inline div.img-circle{
-  vertical-align: middle;
-  height: 35px;
-  width: 35px;
-  margin-right: 6px;
-  background: #ccc;
 }

@@ -80,7 +80,7 @@ class ApplicationController < ActionController::Base
       unless current_user
         store_location
         flash[:notice] = "You must be logged in to access this page"
-        redirect_to login_url
+        redirect_to login_url+'?return_to=' + URI.encode(request.env['PATH_INFO'])
         return false
       end
     end

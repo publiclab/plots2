@@ -17,7 +17,3 @@ everything:
 chapter:
   tid: 5
   name: chapter
-
-question:
-  tid: 6
-  name: question:spectrometer
