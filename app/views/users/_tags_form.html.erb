@@ -111,7 +111,8 @@
         items: 8,
         minLength: 3,
         source: function(query, process) {
-          return $.post('/info/suggested/'+query, {}, function(data) {
+          var key = $(this.$element[0]).data('tag')
+          return $.post('/info/suggested/'+key+'/'+query, {}, function(data) {
             return process(data)
           });
         },

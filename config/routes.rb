@@ -153,7 +153,7 @@ Plots2::Application.routes.draw do
   match 'profile/:id/likes' => 'users#likes'
   match 'feed/:author' => 'users#rss'
 
-  match 'info/suggested/:id' => 'user_tags#suggested'
+  match 'info/suggested/:key/:value' => 'user_tags#suggested'
   match 'info/tags/create' => 'user_tags#create'
 
   match 'maps' => 'map#index'

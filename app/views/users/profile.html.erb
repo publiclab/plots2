@@ -41,6 +41,18 @@
 
   <hr />
 
+  <p>
+    <%= render partial: 'user_tags/tags', locals: { type: 'skill', data: fetch_tags('skill') } %>
+    <%= render partial: 'user_tags/tags', locals: { type: 'gear', data: fetch_tags('gear') } %>
+    <%= render partial: 'user_tags/tags', locals: { type: 'tool', data: fetch_tags('tool') } %>
+    <%= render partial: 'user_tags/tags', locals: { type: 'role', data: fetch_tags('role') } %>
+
+    <% if current_user || current_user.role == 'admin' %>
+      <a href="/profile/<%= @user.name %>/info" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> Edit Information</a>
+    <% end %>
+  </p>
+  <hr />
+
   <div class="hidden-xs">
     <% if @wikis && @wikis.length > 0 %>
     <h4>Wiki pages recently contributed to</h4>
