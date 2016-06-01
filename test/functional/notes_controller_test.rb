@@ -333,7 +333,7 @@ class NotesControllerTest < ActionController::TestCase
          tags: "question:spectrometer",
          redirect: "question"
 
-    assert_redirected_to "/questions/"+rusers(:jeff).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+note.title.parameterize
+    assert_redirected_to note.path(:question)
   end
 
 end

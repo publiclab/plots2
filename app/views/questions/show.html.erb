@@ -5,7 +5,7 @@
     <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   </div>
 
-  <h1 style="margin-top: 40px;"><span class="question">Question:</span><a href="/questions/<%= @node.author.name %>/<%= Time.at(@node.created).strftime("%m-%d-%Y") %>/<%= @node.title.parameterize %>"><%= @node.title %></a></h1>
+  <h1 style="margin-top: 40px;"><span class="question">Question:</span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
   <% pt = @node.power_tag('question') %>
   <div class="alert alert-warning">
     <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a>
