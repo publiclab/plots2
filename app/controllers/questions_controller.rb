@@ -48,7 +48,7 @@ class QuestionsController < ApplicationController
 
   def shortlink
     @node = DrupalNode.find params[:id]
-    redirect_to '/questions/'+@node.author.name+'/'+Time.at(@node.created).strftime("%m-%d-%Y")+'/'+@node.title.parameterize
+    redirect_to @node.path(:question)
   end
 
   def popular

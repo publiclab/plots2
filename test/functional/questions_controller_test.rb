@@ -37,7 +37,7 @@ class QuestionsControllerTest < ActionController::TestCase
   test "redirect question to short url" do
     note = node(:question)
     get :shortlink, id: note.id
-    assert_redirected_to "/questions/"+note.author.name+"/"+Time.now.strftime("%m-%d-%Y")+"/"+note.title.parameterize
+    assert_redirected_to note.path(:question)
   end
 
   test "should get popular" do

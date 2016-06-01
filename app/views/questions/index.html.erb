@@ -6,6 +6,7 @@
 <% else %>
 <h2>All Questions <small class="hidden-sm">Listing all recent questions</small></h2>
 <% end %>
+<a rel="tooltip" title="Ask a question to the community" data-placement="bottom" href="/post?tags=question:question&template=question&redirect=question" class="btn btn-primary btn-lg pull-right"><i class="fa fa-question-circle fa-white"></i> Ask a Question</a>
 <div class="col-md-9">
   <%= render :partial => "notes/format_toggle" %>
   <ul class="nav nav-tabs">
@@ -23,7 +24,7 @@
 
           <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
 
-          <h4><a <% if @widget %>target="_blank"<% end %> href="/questions/<%= node.author.name %>/<%= Time.at(node.created).strftime("%m-%d-%Y") %>/<%= node.title.parameterize %>"><%= node.title %></a></h4>
+          <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h4>
 
           <p class="meta">asked <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 
