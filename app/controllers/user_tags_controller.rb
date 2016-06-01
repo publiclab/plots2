@@ -51,8 +51,8 @@ class UserTagsController < ApplicationController
     if params[:id].length > 0
       suggested = []
 
-      UserTag.where('value LIKE ?', "%" + params[:id] + "%").each do |tag|
-        suggested << tag.value#.split(":")[1]
+      UserTag.where('value LIKE ?', params[:id] + ":" + "%").each do |tag|
+        suggested << tag.value.split(":")[1]
       end
       render json: suggested.uniq
     else
