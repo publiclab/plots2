@@ -31,5 +31,24 @@ class HomeControllerTest < ActionController::TestCase
 
     assert_response :success
   end
+  
+  test "should change i18n-locale to English" do
+    I18n.locale = 'en'
+    assert_equal 'en', "#{I18n.locale}"
+    assert true
+  end
 
+  test "should change i18n-locale to Deutsch" do
+    I18n.locale = 'de'
+    assert_equal 'de', "#{I18n.locale}"
+    assert true
+  end
+  
+  test "should choose i18n-locale for footer partial" do
+    available_testing_locales.each do |lang|
+      get :home, :locale => lang
+      assert_select "a[href=/wiki/issues]", I18n.t("layout._footer.getting_help.report_bug")
+      assert true
+    end
+  end
 end
