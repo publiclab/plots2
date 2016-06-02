@@ -18,6 +18,19 @@
     </div>
 
     <div class="navbar-text navbar-right pull-right" style="padding-right:10px;">
+      <% if comment.author && comment.author.user && comment.author.user.role %>
+        <% streak = comment.author.user.streak
+           if streak[0] > 7 %>
+          <a href="/wiki/streaks"><i class="fa fa-fire" style="font-size:16px; color:#FF0000;" data-toggle="tooltip" data-placement="top" title="You are on Fire! <%= streak[1][0]%> notes, <%= streak[1][1]%> wiki edits, <%= streak[1][2]%> comments in last <%= streak[0]%> days"></i></a>
+        <% end %>
+      <!-- Role icon for admins & moderators
+        <% if comment.author.user.role == 'admin' %>
+          <a href="/users/role/admin"><i class="fa fa-cog" style="font-size:20px; margin-top:8px;" data-toggle="tooltip" data-placement="top" title="Admin"></i></a>
+        <% elsif comment.author && comment.author.user.role == 'moderator' %>
+          <a href="/wiki/moderators"><i class="fa fa-star" style="font-size:20px; margin-top:8px;" data-toggle="tooltip" data-placement="top" title="Moderator"></i></a>
+        <% end %>
+      -->  
+      <% end %>
       <% if current_user && comment.uid == current_user.uid %>
         <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
           <i class="fa fa-pencil"></i>
@@ -42,6 +55,9 @@
     $("#c<%= comment.cid %>delete-btn-2").bind('ajax:success', function(e,response){
       $("#c<%= comment.cid %>").remove()
       $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)-1
+    })
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
     })
   </script>
   

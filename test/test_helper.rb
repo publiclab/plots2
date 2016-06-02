@@ -18,6 +18,7 @@ class ActiveSupport::TestCase
   set_fixture_class :tag_selection => TagSelection
   set_fixture_class :tags => DrupalTag
   set_fixture_class :community_tags => DrupalNodeCommunityTag
+  set_fixture_class :comments => DrupalComment
   
   fixtures :all
 
