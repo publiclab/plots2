@@ -73,7 +73,7 @@ class SearchController < ApplicationController
   end
 
   def questions
-     @title = "Search"
+    @title = "Search questions"
     @tagnames = params[:id].split(',')
     @users = DrupalUsers.where('name LIKE ? AND access != 0', "%"+params[:id]+"%")
                         .order("uid")

@@ -13,4 +13,23 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
   	follow_redirect!
   	assert_equal '/post?tags=question:question&template=question', request.fullpath
   end
+
+  test "search a question and go through post mechanism if question not found when user is not logged in" do
+    get '/search/questions/What'
+    follow_redirect!
+    assert_equal '/post?tags=question:question&template=question&title=What&redirect=question', request.fullpath
+
+    follow_redirect!
+    assert_equal '/login', path
+
+    post '/user_sessions', user_session: {
+                      username: rusers(:jeff).username,
+                      password: 'secret'
+                    }
+    follow_redirect!
+    assert_equal '/post?tags=question:question&template=question&title=What&redirect=question', request.fullpath
+    assert_select "input#title" do
+      assert_select "[value=?]", "What"
+    end
+  end
 end

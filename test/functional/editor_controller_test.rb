@@ -45,4 +45,14 @@ class EditorControllerTest < ActionController::TestCase
         redirect: 'question'
     assert_select "h3", "Ask a question of the community"
   end
+
+  test "should show title form input if title parameter present" do
+    UserSession.create(rusers(:bob))
+    get :post,
+        title: 'New Question'
+    assert_response :success
+    assert_select "input#title" do
+      assert_select "[value=?]", "New Question"
+    end
+  end
 end
