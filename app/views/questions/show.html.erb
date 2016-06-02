@@ -1,11 +1,12 @@
 <%= render :partial => "sidebar/related" %>
 <div class="col-md-9 note-show">
   
-  <div style="margin-top:10px;" class="hidden-print">
+  <div class="hidden-print">
+    <a rel="tooltip" title="Ask a question to the community" data-placement="right" href="/post?tags=question:question&template=question&redirect=question" class="btn btn-primary btn-lg"><i class="fa fa-question-circle fa-white"></i> Ask a Question</a>
     <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   </div>
 
-  <h1 style="margin-top: 40px;"><span class="question">Question:</span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
+  <h1 style="margin-top: 20px;"><span class="question">Question:</span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
   <% pt = @node.power_tag('question') %>
   <div class="alert alert-warning">
     <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a>

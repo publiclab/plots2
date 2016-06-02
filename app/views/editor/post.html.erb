@@ -85,7 +85,7 @@
       <% end %>
 
       <div class="form-group">
-        <input id="title" tabindex="1" name="title" class="form-control" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %><%= "Question: " if params[:template] == "question" %><%= 'Public Lab Community Newsletter '+ DateTime.now.to_date.to_s(:long) if params[:newsletter] %>"/>
+        <input id="title" tabindex="1" name="title" class="form-control" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %><%= "Question: " if params[:template] == "question" && params[:title].nil? %><%= 'Public Lab Community Newsletter '+ DateTime.now.to_date.to_s(:long) if params[:newsletter] %>"/>
       </div>
  
       <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
