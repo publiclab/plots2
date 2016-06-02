@@ -1,5 +1,5 @@
 class UserTagsController < ApplicationController
-  respond_to :html, :xml, :json
+  respond_to :html, :xml, :json, :js
   def create
     tags = ['skill', 'gear', 'role', 'tool']
     @output = {
@@ -28,7 +28,7 @@ class UserTagsController < ApplicationController
         @output[:errors] << "Error: value cannot be empty"
       end
     else
-      @output[:errors] << "Error: Invalid value #{param[:type]}"
+      @output[:errors] << "Error: Invalid value #{params[:type]}"
     end
 
     respond_with do |format|
@@ -42,6 +42,31 @@ class UserTagsController < ApplicationController
             flash[:notice] = "#{@output[:saved][2]} tag created successfully"
           end
           redirect_to info_path
+        end
+      end
+    end
+  end
+
+  def delete
+    @user_tag = UserTag.find(params[:id])
+    output = {
+      status: false,
+      errors: []
+    }
+    message = ""
+    if @user_tag
+      @user_tag.destroy
+      message = "Tag deleted."
+      output[:status] = true
+    else
+      output[:status] = false
+      message = "Tag doesn't exist."
+    end
+    respond_with do |format|
+      format.js
+      format.html do
+        if request.xhr?
+          render json: output
         end
       end
     end

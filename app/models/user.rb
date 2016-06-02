@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   #has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
   has_many :images, :foreign_key => :uid
   has_many :drupal_node, :foreign_key => 'uid'
-  has_many :user_tags, :foreign_key => 'uid'
+  has_many :user_tags, :foreign_key => 'uid', :dependent => :destroy
   validates_with UniqueUsernameValidator, :on => :create
   validates_format_of :username, :with => /^[A-Za-z\d_\-]+$/
 

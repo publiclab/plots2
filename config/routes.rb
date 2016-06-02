@@ -155,6 +155,7 @@ Plots2::Application.routes.draw do
 
   match 'info/suggested/:key/:value' => 'user_tags#suggested'
   match 'info/tags/create' => 'user_tags#create'
+  match 'info/tags/delete/:id' => 'user_tags#delete'
 
   match 'maps' => 'map#index'
   match 'map' => 'search#map'
