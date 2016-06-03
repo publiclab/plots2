@@ -16,7 +16,7 @@
     <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   </div>
 
-  <h1 style="margin-top: 30px;font-family: 'Junction Light';clear:left;"><% if @node.has_power_tag('question') %><span style="color:#aaa;font-style:italic;"><i class="fa fa-question-sign"></i> Question:</span> <% end %><%= @node.title %></h1>
+  <h1 style="margin-top: 40px;"><% if @node.has_power_tag('question') %><span class="question">Question:</span> <% end %><%= @node.title %></h1>
 
   <% if @node.has_power_tag('question') %>
   <% pt = @node.power_tag('question') %>

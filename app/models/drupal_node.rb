@@ -61,6 +61,16 @@ class DrupalNode < ActiveRecord::Base
   after_create :setup
   before_validation :set_path, on: :create
 
+  def path(type = :default)
+    if type == :question
+      username = DrupalUsers.find_by_uid(self.uid).name
+      "/questions/"+username+"/"+Time.at(self.created).strftime("%m-%d-%Y")+"/"+self.title.parameterize
+    else 
+      # default path
+      self[:path]
+    end
+  end
+
   private
 
   def set_path

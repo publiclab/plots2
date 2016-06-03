@@ -7,7 +7,11 @@
   (function(){
     toggle_format = function(format) {
       if (format == "grid") {
+        <% if params[:controller] == 'questions' %>
+        $('.note').addClass('col-md-4')
+        <% else %>
         $('.note').addClass('col-md-3')
+        <% end %>
         $('.note .img-thumbnail').css('width','100%')
         $('.note hr.bottom').hide()
         $('#notes hr.hidden-sm').show()
@@ -16,7 +20,11 @@
         $('#notes._container-fluid').addClass('container-fluid')
         $('#notes._container-fluid').removeClass('_container-fluid')
       } else {
+        <% if params[:controller] == 'questions' %>
+        $('.note').removeClass('col-md-4')
+        <% else %>
         $('.note').removeClass('col-md-3')
+        <% end %>
         $('.note .img-thumbnail').css('width','30%')
         $('.note hr.bottom').show()
         $('#notes hr.hidden-sm').hide()
