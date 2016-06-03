@@ -32,14 +32,13 @@ class SearchController < ApplicationController
                              .order("nid DESC")
                              .where('status = 1 AND comment LIKE ?', "%" + params[:id] + "%") if params[:comments] || all
     end
-    
-    
   end
 
   # utility response to fill out search autocomplete
   # needs *dramatic* optimization
   def typeahead
-    render json: SearchService.new.type_ahead(params[:id])
+    @match = SearchService.new.type_ahead(params[:id])
+    render json: @match
   end
 
   def questions
