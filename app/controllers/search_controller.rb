@@ -56,7 +56,8 @@ class SearchController < ApplicationController
   # utility response to fill out search autocomplete
   # needs *dramatic* optimization
   def typeahead
-    render json: SearchService.new.type_ahead(params[:id])
+    @match = SearchService.new.type_ahead(params[:id])
+    render json: @match
   end
 
   def questions
