@@ -204,5 +204,4 @@ class SearchService
     return sresult
   end
 
-  
 end
