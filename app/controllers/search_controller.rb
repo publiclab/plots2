@@ -55,11 +55,30 @@ class SearchController < ApplicationController
 
   # utility response to fill out search autocomplete
   # needs *dramatic* optimization
-
   def typeahead
-    @match = @search_service.type_ahead(params[:id])
-    render json: @match
+    render json: SearchService.new.type_ahead(params[:id])
   end
+
+  def questions
+    @title = "Search questions"
+    @tagnames = params[:id].split(',')
+    @users = DrupalUsers.where('name LIKE ? AND access != 0', "%"+params[:id]+"%")
+                        .order("uid")
+                        .limit(5)
+    set_sidebar :tags, [params[:id]]
+    @notes = DrupalNode.where('type = "note" AND node.status = 1 AND title LIKE ?', "%" + params[:id] + "%")
+                          .joins(:drupal_tag)
+                          .where('term_data.name LIKE ?', 'question:%')
+                          .order('node.nid DESC')
+                          .page(params[:page])
+    if @notes.empty?
+      session[:title] = params[:id]
+      redirect_to '/post?tags=question:question&template=question&title='+params[:id]+'&redirect=question'
+    else
+      render :template => 'search/index'
+    end
+  end
+
 
   def map
     @users = DrupalUsers.where("lat != 0.0 AND lon != 0.0")
