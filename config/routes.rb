@@ -1,4 +1,5 @@
 Plots2::Application.routes.draw do
+
   resources :rusers
   resources :user_sessions
   resources :images
@@ -120,6 +121,8 @@ Plots2::Application.routes.draw do
   match 'search/advanced/:id' => 'search#advanced'
   match 'search/:id' => 'search#index'
   match 'search/typeahead/:id' => 'search#typeahead'
+  match 'search/questions/:id' => 'search#questions'
+  match 'search/questions_typeahead/:id' => 'search#questions_typeahead'
 
   match 'tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'
@@ -189,6 +192,13 @@ Plots2::Application.routes.draw do
   match 'page/add' => 'legacy#page_add'
 
   match 'talk/:id' => 'talk#show'
+
+  match 'questions' => 'questions#index'
+  match 'questions/:author/:date/:id' => 'questions#show'
+  match 'questions/show/:id' => 'questions#show'
+  match 'q/:id' => 'questions#shortlink'
+  match 'questions/popular' => 'questions#popular'
+  match 'questions/liked' => 'questions#liked'
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products

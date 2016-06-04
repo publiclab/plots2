@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   layout 'application'
 
   helper_method :current_user_session, :current_user, :prompt_login, :sidebar
+  
+  before_filter :set_locale
 
   private
 
@@ -80,7 +82,7 @@ class ApplicationController < ActionController::Base
       unless current_user
         store_location
         flash[:notice] = "You must be logged in to access this page"
-        redirect_to login_url+'?return_to=' + URI.encode(request.env['PATH_INFO'])
+        redirect_to login_url
         return false
       end
     end
@@ -110,6 +112,10 @@ class ApplicationController < ActionController::Base
         return true
       end
       false
+    end
+    
+    def set_locale
+      I18n.locale = params[:locale] || I18n.default_locale
     end
 
 end

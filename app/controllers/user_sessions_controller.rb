@@ -32,8 +32,10 @@ class UserSessionsController < ApplicationController
                 return_to = session[:openid_return_to]
                 session[:openid_return_to] = nil
                 redirect_to return_to
-              elsif params[:return_to]
-                redirect_to params[:return_to]
+              elsif session[:return_to]
+                return_to = session[:return_to]
+                session[:return_to] = nil
+                redirect_to return_to
               else
                 redirect_to "/dashboard"
               end
