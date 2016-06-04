@@ -9,7 +9,7 @@ class UserTagsController < ApplicationController
     exist = false
 
     if params[:type] && tags.include?(params[:type])
-      if params[:value]
+      if params[:value] != ""
         value = params[:type] + ":" + params[:value]
         if UserTag.exists?(current_user.id, value)
           @output[:errors] << "Error: tag already exists."
@@ -36,7 +36,7 @@ class UserTagsController < ApplicationController
         if request.xhr?
           render json: @output
         else
-          if @output.errors.length > 0
+          if @output[:errors].length > 0
             flash[:error] = "#{@output[:errors].length} errors occured."
           else
             flash[:notice] = "#{@output[:saved][2]} tag created successfully"
@@ -48,12 +48,18 @@ class UserTagsController < ApplicationController
   end
 
   def delete
-    @user_tag = UserTag.find(params[:id])
     output = {
       status: false,
       errors: []
     }
     message = ""
+
+    begin
+      @user_tag = UserTag.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      output[:status] = false
+      message = "Tag doesn't exist."
+    end
     if @user_tag
       @user_tag.destroy
       message = "Tag deleted."
@@ -67,6 +73,13 @@ class UserTagsController < ApplicationController
       format.html do
         if request.xhr?
           render json: output
+        else
+          if output[:status]
+            flash[:notice] = message
+          else
+            flash[:error] = message
+          end
+          redirect_to info_path
         end
       end
     end

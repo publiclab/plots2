@@ -16,4 +16,26 @@ class UserTagTest < ActiveSupport::TestCase
 
     assert_not_nil user.user_tags
   end
+
+  test "should contain value with : delimiter" do
+    user = rusers(:jeff)
+    valid_user_tag = UserTag.new({
+      uid: user.id,
+      value: 'skill:Entrepreneur'
+    })
+    
+    assert valid_user_tag.save
+    assert valid_user_tag.value =~ /[a-z]*:[a-zA-Z1-9\S]*/
+  end
+
+  test "cannot contain format with : delimiter" do
+    user = rusers(:jeff)
+    invalid_user_tag = UserTag.new({
+      uid: user.id,
+      value: 'skill$Entrepreneur'
+    })
+
+    invalid_user_tag.save
+    assert_nil invalid_user_tag.value =~ /[a-z]*:[a-zA-Z1-9\S]*/
+  end
 end

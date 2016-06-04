@@ -225,7 +225,6 @@ class UsersController < ApplicationController
   end
 
   def info
-
   end
 
 end
