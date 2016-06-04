@@ -51,4 +51,12 @@ class HomeControllerTest < ActionController::TestCase
       assert true
     end
   end
+  
+  test "should choose i18n-locale for header partial" do
+    available_testing_locales.each do |lang|
+      get :home, :locale => lang
+      assert_select "p[class=facebook-summary]", I18n.t('layout._header.summary')
+      assert true
+    end
+  end
 end
