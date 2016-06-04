@@ -41,7 +41,7 @@ group :test do
   #gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'test-unit'
-  gem 'rake'
+  gem 'rake',  '~> 10.5.0'
 end
 
 # run with `bundle install --without production` to exclude these
