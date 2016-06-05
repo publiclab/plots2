@@ -15,4 +15,5 @@ class Search < ActiveRecord::Base
                     .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', "%" + input + "%") if params[:wikis] || all
     end
   end
+
 end
