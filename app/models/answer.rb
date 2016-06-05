@@ -3,6 +3,7 @@ class Answer < ActiveRecord::Base
 
   belongs_to :drupal_node, foreign_key: 'nid', dependent: :destroy
   belongs_to :drupal_users, foreign_key: 'uid'
+  has_many :answer_selections, foreign_key: 'aid'
 
   validates :content, presence: true
 
