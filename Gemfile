@@ -72,3 +72,9 @@ gem 'http_accept_language'
 gem 'friendly_id'
 gem 'jbuilder'
 
+gem 'jbuilder'
+gem 'grape'
+gem 'grape-entity'
+gem 'grape-swagger'
+gem 'grape-swagger-rails'
+
