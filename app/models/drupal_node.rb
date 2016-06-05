@@ -37,6 +37,8 @@ class DrupalNode < ActiveRecord::Base
   has_many :images, :foreign_key => :nid
   has_many :node_selections, :foreign_key => :nid
 
+  has_many :answers, :foreign_key => :nid
+
   validates :title, :presence => :true
   validates_with UniqueUrlValidator, :on => :create
   validates :path, :uniqueness => { :scope => :nid, :message => "This title has already been taken" }
