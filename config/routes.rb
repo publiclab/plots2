@@ -8,6 +8,7 @@ Plots2::Application.routes.draw do
   resources :user_sessions
   resources :images
   resources :features
+  resources :searches
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
