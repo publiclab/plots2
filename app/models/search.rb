@@ -74,4 +74,5 @@ class Search < ActiveRecord::Base
   def conditions_parts
     private_methods(false).grep(/_conditions$/).map { |m| send(m) }.compact
   end
+
 end
