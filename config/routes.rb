@@ -123,8 +123,7 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/query' => 'like#liked?', :as => :is_liked
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
-
-  
+ 
   match 'questions_search/:id' => 'questions_search#index'
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
 
