@@ -51,44 +51,13 @@ class SearchController < ApplicationController
                              .order("nid DESC")
                              .where('status = 1 AND comment LIKE ?', "%" + params[:id] + "%") if params[:comments] || all
     end
-    
-    
   end
 
   # utility response to fill out search autocomplete
   # needs *dramatic* optimization
   def typeahead
-    matches = []
-    DrupalNode.limit(5)
-              .order("nid DESC")
-              .where('type = "note" AND node.status = 1 AND title LIKE ?', "%" + params[:id] + "%")
-              .select("title,type,nid,path").each do |match|
-      matches << "<i data-url='"+match.path+"' class='fa fa-file'></i> "+match.title
-    end
-    DrupalNode.limit(5)
-              .order("nid DESC")
-              .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', "%" + params[:id] + "%")
-              .select("title,type,nid,path").each do |match|
-      matches << "<i data-url='"+match.path+"' class='fa fa-"+match.icon+"'></i> "+match.title
-    end
-    DrupalNode.limit(5)
-              .order("nid DESC")
-              .where('type = "map" AND node.status = 1 AND title LIKE ?', "%" + params[:id] + "%")
-              .select("title,type,nid,path").each do |match|
-      matches << "<i data-url='"+match.path+"' class='fa fa-"+match.icon+"'></i> "+match.title
-    end
-    DrupalUsers.limit(5)
-               .order("uid DESC")
-               .where('name LIKE ? AND access != 0', "%" + params[:id] + "%").each do |match|
-      matches << "<i data-url='/profile/"+match.name+"' class='fa fa-user'></i> "+match.name
-    end
-    DrupalTag.includes(:drupal_node)
-             .where('node.status = 1')
-             .limit(5)
-             .where('name LIKE ?', "%" + params[:id] + "%").each do |match|
-      matches << "<i data-url='/tag/"+match.name+"' class='fa fa-tag'></i> "+match.name
-    end
-    render :json => matches
+    @match = SearchService.new.type_ahead(params[:id])
+    render json: @match
   end
 
   def questions

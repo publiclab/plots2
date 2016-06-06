@@ -64,4 +64,6 @@ gem "rack-openid"
 gem "authlogic", "3.2.0"
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
+gem 'jbuilder'
 gem 'mocha', '~> 1.1'
+
