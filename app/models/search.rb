@@ -14,6 +14,14 @@ class Search < ActiveRecord::Base
                     .order("nid DESC")
                     .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', "%" + input + "%") if params[:wikis] || all
     end
+  def users(params)
+    @users ||= find_users(params)
+  end
+
+  def find_users(input)
+    DrupalUsers.where('name LIKE ? AND access != 0', '%' +input+ '%')
+        .order("uid")
+        .limit(5)
   end
 
 end
