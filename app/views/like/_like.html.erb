@@ -3,7 +3,7 @@
 
     <li class="btn btn-default btn-sm" data-html="true" rel="popover" data-content="<%= "No tags" if tagnames.nil? || tagnames.length == 0 %><% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-default btn-mini'><%= tagname %></a></p><% end %><% end %><hr /><a class='btn btn-sm'><i class='fa fa-user'></i> <%= node.author.name %></a>" title="Follow by tag or author" data-placement="left"><i class="fa fa-eye"></i><span class="hidden-xs hidden-sm"> Follow</span></li>
 
-    <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm" node-id="<%= node.id %>" id="like-button-<%= node.id %>"><span id="like-star-<%= node.id %>" class="fa fa-star<% if current_user && !node.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="like-count-<%= node.id %>"><%= node.likers.length %> </span></li>
+    <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>"><span id="like-star-<%= node.id %>" class="fa fa-star<% if current_user && !node.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="like-count-<%= node.id %>"><%= node.likers.length %> </span></li>
 
     <li class="btn btn-default btn-sm" rel="popover" data-placement="left" data-html="true" data-title="Tools" data-content="
 <p><b>Users who liked this</b></p>
