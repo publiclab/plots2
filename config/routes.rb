@@ -302,8 +302,4 @@ Plots2::Application.routes.draw do
 
   match ':controller(/:action(/:id))(.:format)'
 
-  mount API::Base => '/api'
-  mount GrapeSwaggerRails::Engine => '/apidoc'
-
-
 end
