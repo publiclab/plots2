@@ -1,6 +1,25 @@
 class SearchController < ApplicationController
 
   def index
+
+  end
+
+  def new
+    # Render advanced search form
+    @search = Search.new
+  end
+
+  def create
+    if @search.save
+      render
+    end
+  end
+
+  def show
+
+  end
+
+  def normal_search
     @title = "Search"
     @tagnames = params[:id].split(',')
     @users = DrupalUsers.where('name LIKE ? AND access != 0', "%"+params[:id]+"%")
