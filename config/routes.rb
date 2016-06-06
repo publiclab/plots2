@@ -1,5 +1,7 @@
 Plots2::Application.routes.draw do
 
+  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+
   resources :rusers
   resources :user_sessions
   resources :images
