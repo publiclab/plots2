@@ -133,6 +133,7 @@ Plots2::Application.routes.draw do
   match 'search/questions/:id' => 'searches#questions'
   match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
 
+
   match 'tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'
   match 'blog' => 'tag#blog', :id => "blog"
