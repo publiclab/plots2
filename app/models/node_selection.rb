@@ -12,5 +12,5 @@ class NodeSelection < ActiveRecord::Base
   def user
     User.find_by_username(DrupalUsers.find_by_uid(self.user_id).name)
   end
-
+  
 end
