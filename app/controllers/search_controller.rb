@@ -1,5 +1,7 @@
 class SearchController < ApplicationController
 
+  before_filter :set_search_service
+
   def index
 
   end
@@ -22,9 +24,8 @@ class SearchController < ApplicationController
   def normal_search
     @title = "Search"
     @tagnames = params[:id].split(',')
-    @users = DrupalUsers.where('name LIKE ? AND access != 0', "%"+params[:id]+"%")
-                        .order("uid")
-                        .limit(5)
+    # @users = @search_service.users(params[:id])
+    @users =
     set_sidebar :tags, [params[:id]]
     @notes = DrupalNode.paginate(page: params[:page])
                        .order("node.nid DESC")
@@ -55,13 +56,18 @@ class SearchController < ApplicationController
 
   # utility response to fill out search autocomplete
   # needs *dramatic* optimization
+
   def typeahead
-    @match = SearchService.new.type_ahead(params[:id])
+    @match = @search_service.type_ahead(params[:id])
     render json: @match
   end
 
   def map
     @users = DrupalUsers.where("lat != 0.0 AND lon != 0.0")
+  end
+
+  def set_search_service
+    @search_service = SearchService.new
   end
 
 end
