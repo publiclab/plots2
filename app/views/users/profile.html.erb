@@ -37,10 +37,12 @@
     <% if current_user && current_user.uid == @user.uid %>
       <a href="/profile/<%= @user.name %>/edit" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> Edit profile</a>
     <% end %>
+    <a href="?preview=true" class="btn btn-default btn-sm btn-block">Preview profile tag system</a>
   </p>
 
   <hr />
 
+  <% if params[:preview] %>
   <p>
     <%= render partial: 'user_tags/tags', locals: { type: 'skill', data: fetch_tags('skill') } %>
     <%= render partial: 'user_tags/tags', locals: { type: 'gear', data: fetch_tags('gear') } %>
@@ -52,6 +54,7 @@
     <% end %>
   </p>
   <hr />
+  <% end %>
 
   <div class="hidden-xs">
     <% if @wikis && @wikis.length > 0 %>
@@ -212,7 +215,7 @@
         
         itemEl.append('<td class = "title"><a><i class="fa fa-map-marker"></i></a></td>');
         itemEl.find('a').attr('href', link);
-        itemEl.find('.title a').append(title);
+        itemEl.find('.title a').append(' ' + title);
 
         itemEl.append('<td class="date"></td>');
         itemEl.find('.date').append(pubDate);
