@@ -24,14 +24,13 @@ class SearchController < ApplicationController
   def normal_search
     @title = "Search"
     @tagnames = params[:id].split(',')
-    # @users = @search_service.users(params[:id])
-    @users =
+    @users = @search_service.users(params[:id])
     set_sidebar :tags, [params[:id]]
+
     @notes = DrupalNode.paginate(page: params[:page])
                        .order("node.nid DESC")
                        .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ?)', "%"+params[:id]+"%","%"+params[:id]+"%","%"+params[:id]+"%")
                        .includes(:drupal_node_revision)
-    render :template => 'search/index'
   end
 
   def advanced
