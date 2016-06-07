@@ -124,14 +124,17 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
-  match 'search' => 'search#advanced'
-  match 'search/advanced' => 'search#advanced'
-  match 'search/advanced/:id' => 'search#advanced'
-  match 'search/:id' => 'search#normal_search'
-  match 'search/typeahead/:id' => 'search#typeahead'
   
   match 'questions_search/:id' => 'questions_search#index'
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
+
+  match 'search' => 'searches#new'
+  match 'search/advanced' => 'searches#new'
+  match 'search/advanced/:id' => 'searches#new'
+  match 'search/:id' => 'searches#normal_search'
+  match 'search/typeahead/:id' => 'searches#typeahead'
+  match 'search/questions/:id' => 'searches#questions'
+  match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
 
   match 'widget/:id' => 'tag#widget'
   match 'blog' => 'tag#blog', :id => "blog"
