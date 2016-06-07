@@ -8,7 +8,7 @@ class EditorControllerTest < ActionController::TestCase
 
   test "should not get post form if not logged in" do
     get :post
-    assert_redirected_to '/login?return_to=/post'
+    assert_redirected_to '/login'
   end
 
   test "should get post form" do
@@ -27,4 +27,32 @@ class EditorControllerTest < ActionController::TestCase
     assert_select "p.moderation-notice", "Hi! Just letting you know ahead of time that everyone's first posts to this website are moderated due to issues we've had with spam. Thanks for your patience!"
   end
 
+  test "should redirect to login page while posting  question" do
+    get :post,
+        tags: 'question:question',
+        template: 'question',
+        redirect: 'question'
+    assert_redirected_to '/login'
+    # uses ASCII format instead of utf-8
+    assert_equal "/post?redirect=question&tags=question%3Aquestion&template=question", session[:return_to]
+  end
+
+  test "should show question template in post form for questions" do
+    UserSession.create(rusers(:bob))
+    get :post,
+        tags: 'question:question',
+        template: 'question',
+        redirect: 'question'
+    assert_select "h3", "Ask a question of the community"
+  end
+
+  test "should show title form input if title parameter present" do
+    UserSession.create(rusers(:bob))
+    get :post,
+        title: 'New Question'
+    assert_response :success
+    assert_select "input#title" do
+      assert_select "[value=?]", "New Question"
+    end
+  end
 end

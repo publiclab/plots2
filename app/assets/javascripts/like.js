@@ -4,7 +4,7 @@
 function changelikecount(value,node_id) {
   var count = $('#like-count-'+node_id).html();
   // strip parens and convert to number
-  count = parseInt(count.substr(1, count.length-2));
+  count = parseInt(count);
   count += value;
   // push value back out
   $('#like-count-'+node_id).html(count);

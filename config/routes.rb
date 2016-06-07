@@ -1,9 +1,11 @@
 Plots2::Application.routes.draw do
+
   resources :rusers
   resources :user_sessions
   resources :images
 
   resources :features
+  resources :searches
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -115,11 +117,13 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
-  match 'search' => 'search#advanced'
-  match 'search/advanced' => 'search#advanced'
-  match 'search/advanced/:id' => 'search#advanced'
-  match 'search/:id' => 'search#index'
-  match 'search/typeahead/:id' => 'search#typeahead'
+  match 'search' => 'searches#new'
+  match 'search/advanced' => 'searches#new'
+  match 'search/advanced/:id' => 'searches#new'
+  match 'search/:id' => 'searches#normal_search'
+  match 'search/typeahead/:id' => 'searches#typeahead'
+  match 'search/questions/:id' => 'searches#questions'
+  match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
 
   match 'tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'
@@ -189,6 +193,13 @@ Plots2::Application.routes.draw do
   match 'page/add' => 'legacy#page_add'
 
   match 'talk/:id' => 'talk#show'
+
+  match 'questions' => 'questions#index'
+  match 'questions/:author/:date/:id' => 'questions#show'
+  match 'questions/show/:id' => 'questions#show'
+  match 'q/:id' => 'questions#shortlink'
+  match 'questions/popular' => 'questions#popular'
+  match 'questions/liked' => 'questions#liked'
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
