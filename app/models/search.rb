@@ -19,5 +19,4 @@ class Search < ActiveRecord::Base
     @users ||= find_users(params)
   end
 
-
 end

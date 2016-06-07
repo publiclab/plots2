@@ -124,7 +124,6 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
-
   match 'search' => 'searches#new'
   match 'search/advanced' => 'searches#new'
   match 'search/advanced/:id' => 'searches#new'
