@@ -19,29 +19,39 @@ class SearchService
     @maps ||= find_maps(params)
   end
 
-  def find_users(input)
-    DrupalUsers.limit(5)
+  def comments
+    @comments ||= find_comments(params)
+  end
+
+  def find_users(input, limit=5)
+    DrupalUsers.limit(limit)
         .order('uid DESC')
         .where('name LIKE ? AND access != 0', '%' + input + '%')
   end
 
-  def find_tags(input)
+  def find_tags(input, limit=5)
     DrupalTag.includes(:drupal_node)
         .where('node.status = 1')
-        .limit(5)
+        .limit(limit)
         .where('name LIKE ?', '%' + input + '%')
+  end
+
+  def find_comments(input, limit=5)
+    DrupalComment.limit(limit)
+        .order('nid DESC')
+        .where('status = 1 AND comment LIKE ?', '%' + input + '%')
   end
 
   ## search for node title only
   ## FIXme with solr
-  def find_notes(input)
-    DrupalNode.limit(5)
+  def find_notes(input, limit=5)
+    DrupalNode.limit(limit)
         .order('nid DESC')
         .where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
   end
 
-  def find_maps(input)
-    DrupalNode.limit(5)
+  def find_maps(input, limit=5)
+    DrupalNode.limit(limit)
         .order('nid DESC')
         .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
   end
