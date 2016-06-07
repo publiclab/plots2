@@ -65,6 +65,7 @@ class Search < ActiveRecord::Base
     conditions_parts.map { |condition| condition.first }
   end
 
+<<<<<<< 08e29eb74f7701b872cd3fd879fbcb30aa61badb
   def conditions_options
     conditions_parts.map { |condition| condition[1..-1] }.flatten
   end
@@ -73,4 +74,6 @@ class Search < ActiveRecord::Base
     private_methods(false).grep(/_conditions$/).map { |m| send(m) }.compact
   end
 
+=======
+>>>>>>> fix current sreach function
 end
