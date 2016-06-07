@@ -18,9 +18,6 @@ class Search < ActiveRecord::Base
                     .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', "%" + input + "%") if params[:wikis] || all
     end
 
-  def users(params)
-    @users ||= find_users(params)
-  end
 
   def date_i(date_param)
     Date.strptime(date_param, '%d-%m-%Y').to_time.to_i
