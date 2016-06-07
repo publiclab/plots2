@@ -42,6 +42,12 @@ class SearchesController < ApplicationController
                  .includes(:drupal_node_revision)
   end
 
+  # def advanced
+  #   @title = "Advanced search"
+  #   all = !params[:notes] && !params[:wikis] && !params[:maps] && !params[:comments]
+  #   @nodes = []
+  # end
+
   # utility response to fill out search autocomplete
   # needs *dramatic* optimization
 
