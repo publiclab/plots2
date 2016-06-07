@@ -20,7 +20,7 @@ describe("Plots2", function() {
     ajaxSpy = spyOn($, "ajax").and.callFake(function(object) {
 
       var response;
-      if   (object.url == '/likes/node/1/delete') response = "4";
+      if   (object.url == '/likes/node/1/create') response = "4";
       else response = 'none';
 
       // check this if you have trouble faking a server response: 
@@ -32,13 +32,12 @@ describe("Plots2", function() {
   });
 
 
-  it("sends a like request when like button is clicked", function() {
+  xit("sends a like request when like button is clicked", function() {
 
     $('.btn-like').trigger('click');
-    // should trigger: 
-    // jQuery.getJSON("/likes/node/"+node_id+"/create", function () {
-    // but depends on a unique id which isn't in our fixture:
-    // $('#like-button-'+node_id).on('click',clicknotliked);
+    // should trigger the following and our ajaxSpy should return a fake response of "4": 
+    // jQuery.getJSON("/likes/node/1/create", function () { ...
+    // then triggering like.js code
 
     expect($('#like-count-1').html()).toEqual('4');
 
