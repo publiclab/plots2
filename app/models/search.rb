@@ -19,10 +19,5 @@ class Search < ActiveRecord::Base
     @users ||= find_users(params)
   end
 
-  def find_users(input)
-    DrupalUsers.where('name LIKE ? AND access != 0', '%' +input+ '%')
-        .order("uid")
-        .limit(5)
-  end
 
 end

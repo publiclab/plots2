@@ -25,6 +25,7 @@ class SearchController < ApplicationController
     @title = "Search"
     @tagnames = params[:id].split(',')
     @users = @search_service.users(params[:id])
+
     set_sidebar :tags, [params[:id]]
 
     @notes = DrupalNode.paginate(page: params[:page])
@@ -55,8 +56,9 @@ class SearchController < ApplicationController
 
   # utility response to fill out search autocomplete
   # needs *dramatic* optimization
+
   def typeahead
-    @match = SearchService.new.type_ahead(params[:id])
+    @match = @search_service.type_ahead(params[:id])
     render json: @match
   end
 
