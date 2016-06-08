@@ -108,6 +108,8 @@ For some, it will be necessary to prepend your gem-related commands with `bundle
 
 Run tests with `rake test`. We are extremely interested in building our out test suite, so please consider helping us write tests! 
 
+Client-side code is tested using [Jasmine](https://jasmine.github.io/) in [jasmine-rails](https://github.com/searls/jasmine-rails). You can run tests by navigating to `/specs/` in the browser. Headless, or command-line test running may be possible with `rake spec:javascript` if you have phantomjs v1.9.8 installed; v2.1.1 seems to crash, however. 
+
 
 ****
 

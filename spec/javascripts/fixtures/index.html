@@ -1,0 +1,24 @@
+<ul class="btn-group">
+
+  <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like" node-id="1" id="like-button-1"><span id="like-star-1" class="fa fa-star"></span> <span id="like-count-1">0</span></li>
+
+</ul>
+
+<script>
+  jQuery(document).ready(function() {
+    // 304 cached response yields no data to insert, which is not useful
+    // jQuery.ajaxSetup({
+    //   cache: false
+    // });
+   
+    // grab the like count for this node; "/likes/node/11278/count"
+    // jQuery.getJSON("<%= like_count_path(node) %>", function (json) {
+    //   // push like count into the Like button placeholder 
+    //   $('#like-count-<%= node.id %>').html(json);
+    // });
+   
+    // <% if current_user %>
+      $('#like-button-1').on('click', clickliked) 
+    // <% end %>
+  })
+</script>

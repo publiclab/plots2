@@ -1,9 +1,10 @@
 Plots2::Application.routes.draw do
 
+  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+
   resources :rusers
   resources :user_sessions
   resources :images
-
   resources :features
   resources :searches
 
@@ -148,10 +149,15 @@ Plots2::Application.routes.draw do
   match 'nearby' => 'home#nearby'
   match 'profile/edit' => 'users#edit'
   match 'profile/photo' => 'users#photo'
+  match 'profile/info' => 'users#info', as: 'info'
   match 'profile/:id' => 'users#profile'
   match 'profile/:id/edit' => 'users#edit'
   match 'profile/:id/likes' => 'users#likes'
   match 'feed/:author' => 'users#rss'
+
+  match 'info/suggested/:key/:value' => 'user_tags#suggested'
+  match 'info/tags/create' => 'user_tags#create'
+  match 'info/tags/delete/:id' => 'user_tags#delete'
 
   match 'maps' => 'map#index'
   match 'map' => 'search#map'
@@ -188,6 +194,7 @@ Plots2::Application.routes.draw do
   # This route can be invoked with purchase_url(:id => product.id)
 
   match 'post' => 'editor#post'
+  match 'editor' => 'editor#rich'
   match 'images/create' => 'images#create'
   match 'note/add' => 'legacy#note_add'
   match 'page/add' => 'legacy#page_add'

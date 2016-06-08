@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  id: 1
+  uid: 1
+  value: skill:java
+
+two:
+  id: 2
+  uid: 1
+  value: tool:barometer
