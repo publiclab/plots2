@@ -1,0 +1,2 @@
+$('#answers').append('<%= escape_javascript(render :partial => "questions/answer", :locals => {answer: @answer}) %>')
+$('#short-comment-count')[0].innerHTML = parseInt($('#short-comment-count')[0].innerHTML)+1
