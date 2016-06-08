@@ -45,7 +45,7 @@
           <% end %>
           </span>
           <p style="margin-top:30px;"><% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> Spam</a><% end %>
-          <a href="#" class="btn btn-default btn-xs">Post an answer</a></p>
+          <a href="<%= node.path(:question) %>#comment-form" class="btn btn-default btn-xs">Post an answer</a></p>
         </div>
       </div>
 
