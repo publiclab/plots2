@@ -110,6 +110,7 @@ class UsersController < ApplicationController
 
   def profile
     @user = DrupalUsers.find_by_name(params[:id])
+    @profile_user = User.find_by_username(params[:id])
     @title = @user.name
     @notes = DrupalNode.page(params[:page])
                        .order("nid DESC")
