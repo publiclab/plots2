@@ -5,7 +5,7 @@
     </div>
     <div class="col-md-8">
       <p><span id="skill">
-        <% fetch_tags('skill').each do |tag| %>
+        <% fetch_tags(@user.id, 'skill').each do |tag| %>
           <span id="tag_<%= tag.id %>" class="label label-primary" style="font-size:13px;margin-right: 4px;">
             <%= tag.value.split(":")[1] %>
             <a class="tagdelete" href="/info/tags/delete/<%= tag.id %>">x</a>
@@ -27,7 +27,7 @@
     </div>
     <div class="col-md-8">
       <p><span id="gear">
-        <% fetch_tags('gear').each do |tag| %>
+        <% fetch_tags(@user.id, 'gear').each do |tag| %>
           <span id="tag_<%= tag.id %>" class="label label-primary" style="font-size:13px;margin-right: 4px;">
             <%= tag.value.split(":")[1] %>
             <a class="tagdelete" href="/info/tags/delete/<%= tag.id %>">x</a>
@@ -51,7 +51,7 @@
     </div>
     <div class="col-md-8">
       <p><span id="tool">
-        <% fetch_tags('tool').each do |tag| %>
+        <% fetch_tags(@user.id, 'tool').each do |tag| %>
           <span id="tag_<%= tag.id %>" class="label label-primary" style="font-size:13px;margin-right: 4px;">
             <%= tag.value.split(":")[1] %>
             <a class="tagdelete" href="/info/tags/delete/<%= tag.id %>">x</a>
@@ -74,7 +74,7 @@
     </div>
     <div class="col-md-8">
       <p><span id="role">
-        <% fetch_tags('role').each do |tag| %>
+        <% fetch_tags(@user.id, 'role').each do |tag| %>
           <span id="tag_<%= tag.id %>" class="label label-primary" style="font-size:13px;margin-right: 4px;">
             <%= tag.value.split(":")[1] %>
             <a class="tagdelete" href="/info/tags/delete/<%= tag.id %>">x</a>
@@ -129,7 +129,7 @@
           var value = $(this).val();
           var that = this;
           $.ajax({
-            url: "/info/tags/create",
+            url: "/info/tags/create/<%= @user.name %>",
             type: 'POST',
             data: { 
               'type': type,

@@ -226,6 +226,7 @@ class UsersController < ApplicationController
   end
 
   def info
+    @user = DrupalUsers.find_by_name(params[:id])
   end
 
 end

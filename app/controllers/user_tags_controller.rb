@@ -8,16 +8,17 @@ class UserTagsController < ApplicationController
     }
     exist = false
 
+    user = User.find_by_username(params[:id])
     if params[:type] && tags.include?(params[:type])
       if params[:value] != ""
         value = params[:type] + ":" + params[:value]
-        if UserTag.exists?(current_user.id, value)
+        if UserTag.exists?(user.id, value)
           @output[:errors] << "Error: tag already exists."
           exist = true
         end
 
         if !exist
-          user_tag = current_user.user_tags.build(value: value)
+          user_tag = user.user_tags.build(value: value)
           if user_tag.save
             @output[:saved] = [user_tag.id, value.split(":")[0], value.split(":")[1]]
           else
