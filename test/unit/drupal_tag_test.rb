@@ -26,4 +26,33 @@ class DrupalTagTest < ActiveSupport::TestCase
     assert (subscribers.to_a.collect(&:last).map { |o| o[:user]}).include?(tag_selection(:awesome).user)
   end
 
+  test "tag weekly tallies" do
+    tag = tags(:awesome)
+    tallies = tag.weekly_tallies
+    assert_equal 52, tallies.length
+    assert_not_nil tallies[51]
+    assert_not_equal [], tallies[51]
+    assert_equal 1, tallies[51]
+  end
+
+  test "tag nodes_in_week" do
+    nodes_in_week = DrupalTag.nodes_for_period(
+      'note', 
+      [ node(:one).nid ],
+      (Time.now.to_i - 1.weeks.to_i).to_s,
+      (Time.now.to_i).to_s
+    )
+    assert_not_nil nodes_in_week
+    assert nodes_in_week.length > 0
+
+    nodes_in_year = DrupalTag.nodes_for_period(
+      'note', 
+      [ node(:one).nid ],
+      (Time.now.to_i - 52.weeks.to_i).to_s,
+      (Time.now.to_i).to_s
+    )
+    assert_not_nil nodes_in_year
+    assert nodes_in_year.length > 0
+  end
+
 end
