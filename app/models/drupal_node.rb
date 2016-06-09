@@ -90,13 +90,13 @@ class DrupalNode < ActiveRecord::Base
 
   public
 
-  def self.weekly_tallies(type = "note",span = 52)
+  def self.weekly_tallies(type = "note", span = 52, time = Time.now)
     weeks = {}
     (0..span).each do |week|
       weeks[span-week] = DrupalNode.select(:created)
                                    .where(type:    type, 
                                           status:  1, 
-                                          created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week-1).weeks.to_i)
+                                          created: time.to_i - week.weeks.to_i..time.to_i - (week-1).weeks.to_i)
                                    .count
     end
     weeks
