@@ -1,4 +1,4 @@
-<div class="btn-group visible-desktop" style="float:right;" id="#note-format" data-toggle="buttons-radio">
+<div class="btn-group visible-desktop" style="float:right;" id="note-format" data-toggle="buttons-radio">
   <a onClick="toggle_format('grid')" id="grid-format" class="btn btn-default btn-sm active" href="#"><i style="font-size:14px;" class="fa fa-th-large"></i></a>
   <a onClick="toggle_format('list')" id="list-format" class="btn btn-default btn-sm" href="#"><i style="font-size:14px;" class="fa fa-list"></i></a>
 </div>
@@ -7,7 +7,11 @@
   (function(){
     toggle_format = function(format) {
       if (format == "grid") {
+        <% if params[:controller] == 'questions' %>
+        $('.note').addClass('col-md-4')
+        <% else %>
         $('.note').addClass('col-md-3')
+        <% end %>
         $('.note .img-thumbnail').css('width','100%')
         $('.note hr.bottom').hide()
         $('#notes hr.hidden-sm').show()
@@ -15,8 +19,14 @@
         $('#notes ._row').removeClass('_row')
         $('#notes._container-fluid').addClass('container-fluid')
         $('#notes._container-fluid').removeClass('_container-fluid')
+        $('#grid-format').addClass('active')
+        $('#list-format').removeClass('active')
       } else {
+        <% if params[:controller] == 'questions' %>
+        $('.note').removeClass('col-md-4')
+        <% else %>
         $('.note').removeClass('col-md-3')
+        <% end %>
         $('.note .img-thumbnail').css('width','30%')
         $('.note hr.bottom').show()
         $('#notes hr.hidden-sm').hide()
@@ -25,6 +35,8 @@
         $('#notes.container-fluid').addClass('_container-fluid')
         $('#notes.container-fluid').removeClass('container-fluid')
         $('#notes .note').removeClass('row-fluid')
+        $('#list-format').addClass('active')
+        $('#grid-format').removeClass('active')
       }
     }
   })()

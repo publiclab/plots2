@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160319213901) do
+ActiveRecord::Schema.define(:version => 20160527131458) do
 
   create_table "comments", :primary_key => "cid", :force => true do |t|
     t.integer "pid",                             :default => 0,  :null => false
@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(:version => 20160319213901) do
     t.integer "timestamp",                       :default => 0,  :null => false
     t.integer "status",    :limit => 1,          :default => 0,  :null => false
     t.integer "format",    :limit => 2,          :default => 0,  :null => false
-    t.string  "thread",                                          :null => false
     t.string  "name",      :limit => 60
     t.string  "mail",      :limit => 64
     t.string  "homepage"
@@ -327,6 +326,13 @@ ActiveRecord::Schema.define(:version => 20160319213901) do
   end
 
   add_index "user_selections", ["self_id", "other_id"], :name => "index_user_selections_on_self_id_and_other_id", :unique => true
+
+  create_table "user_tags", :force => true do |t|
+    t.integer  "uid"
+    t.string   "value"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :primary_key => "uid", :force => true do |t|
     t.string  "name",             :limit => 60,                                         :default => "",  :null => false

@@ -22,19 +22,15 @@ class ImagesController < ApplicationController
     end
     @image.nid = DrupalNode.find(params[:nid].to_i).nid unless params[:nid].nil? || params[:nid] == "undefined"
     if @image.save!
-      #@image = Image.find @image.id
-      if request.xhr?
-        render :json => { :filename => @image.photo_file_name,
-                          :url => @image.path(:large),
-                          :id => @image.id
-                        }
-      else
-        flash[:notice] = "Image saved."
-        redirect_to @node.path
-      end
+      render :json => { 
+        id:       @image.id,
+        url:      @image.path(:large),
+        filename: @image.photo_file_name,
+        href:     @image.path(:large), # Woofmark/PublicLab.Editor
+        title:    @image.photo_file_name
+      }
     else
-      flash[:error] = "The image could not be saved."
-      redirect_to "/images/new"
+      render text: "The image could not be saved."
     end
   end
 

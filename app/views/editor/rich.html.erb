@@ -1,0 +1,176 @@
+<link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
+<link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
+<link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
+<link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
+
+<link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
+
+<script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
+
+<div class="pl-editor">
+
+  <div class="ple-header">
+
+    <h1>Share</h1>
+
+    <!-- selector module -->
+    <div class="container ple-type">
+
+      <div class="col-md-5 col-md-push-4">
+        <div class="row">
+          <div class="col-xs-10">
+            <select class="form-control input-lg">
+              <option selected value="">a research note</option>
+              <option value="">a question or request</option>
+              <option value="">an event</option>
+            </select>
+          </div>
+          <div class="col-xs-2" style="padding-top:10px;text-align:left;">
+            <a rel="tooltip" data-placement="bottom" title="Learn more about different posting types." class="ple-help-light" style="font-size:18px;"><i class="fa fa-question-circle"></i></a>
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- end selector module -->
+
+  </div>
+
+  <div class="ple-content">
+
+
+    <!-- title module -->
+    <div class="ple-module-title ple-module container">
+
+      <div class="ple-module-guide col-md-3">
+        <h2>1</h2>
+      </div>
+
+      <div class="ple-module-content col-md-9">
+        <input class="form-control input-lg" type="text" placeholder="Title" />
+      </div>
+
+    </div>
+    <!-- end title module -->
+
+
+    <!-- main_image module -->
+    <div class="ple-module-main_image ple-module container">
+
+      <div class="ple-module-guide col-md-3">
+        <h2>2</h2>
+      </div>
+
+      <div class="ple-module-content col-md-9 container">
+        <div class="ple-drag-drop col-md-6">
+          Drag an image here to upload.
+        </div>
+        <div class="col-md-6 help">
+
+          <p><input type="file" name="image[photo]" /></p>
+          <p class="ple-help"><span class="ple-help-minor">Select an optional main image for your post.</span></p>
+
+        </div>
+      </div>
+
+    </div>
+    <!-- end main_image module -->
+
+
+    <!-- body module -->
+    <div class="ple-module-body ple-module container">
+
+      <div class="ple-module-guide col-md-3">
+        <h2>3</h2>
+      </div>
+
+      <div class="ple-module-content col-md-9 container">
+        <textarea class="ple-textarea form-control"># About my project
+
+ been working on [this thing](/) and wanted to share.
+
+oals have been:
+
+mple to make
+se of use
+w cost
+
+then, after #balloon-mapping with @eustatic, tables:
+
+l1 | col2 | col3 |
+---|------|------|
+o  | bar  | baz  |
+od | bars | bats |
+
+js
+
+ode could go here
+myVariable = 4;
+
+</textarea>
+      </div>
+
+    </div>
+    <!-- end body module -->
+
+
+    <!-- tags module -->
+    <div class="ple-module-tags ple-module container">
+
+      <div class="ple-module-guide col-md-3">
+        <h2>4</h2>
+      </div>
+
+      <div class="ple-module-content col-md-9">
+        <input class="form-control input-lg" type="text" placeholder="balloon-mapping..." />
+      </div>
+
+    </div>
+    <!-- end tags module -->
+
+    
+  </div>
+
+  <div class="ple-footer">
+
+    <div class="ple-menu-more" style="display:none;">
+      <b>History</b>
+      <div class="ple-history">
+      </div>
+      <hr />
+      <!--
+      <div class="form-control input-md ple-history">
+        <option selected value="">recent edits</option>
+      </div>
+      -->
+    </div>
+
+    <button class="btn btn-lg btn-default"><i class="fa fa-cog"></i></button>
+    <button class="btn btn-lg btn-default btn-more">...</button>
+
+    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a> so that others may use it.</span>
+
+    <button class="ple-publish btn btn-lg btn-primary pull-right disabled">Publish</button>
+    <span class="ple-help pull-right"><span class="ple-steps-left">2</span> steps left</span>
+    
+  </div>
+
+</div>
+
+
+<script>
+
+  var editor;
+
+  (function() {
+
+    editor = new PL.Editor({
+      textarea:    $('.ple-textarea')[0],
+      destination: '/notes/create',
+      format:      'publiclab'
+    });
+
+  })();
+
+</script>

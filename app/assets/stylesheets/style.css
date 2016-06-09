@@ -25,6 +25,7 @@ It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
 
 }
 
+
 h1,h2,h3 {
   font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
   font-weight:normal;
@@ -224,6 +225,8 @@ body { padding-top: 70px; }
 
 #tags .label {
   line-height: 2em;
+  font-size: 13px;
+  margin-right: 4px;
 }
 
 /* Styles for specific areas of the site */
@@ -279,6 +282,11 @@ body { padding-top: 70px; }
   -moz-background-clip: padding;
   background-clip: padding-box;
 }
+
+html[lang="de"] .chat-popover {
+    top:100px;
+}
+
 
 .foldaway {
   display:none;
@@ -342,3 +350,30 @@ div.note.moderated h4 {
   background: none;
   font-size: smaller;
 }
+
+.question{
+  color: #aaa;
+  font-style: italic;
+}
+.question + a{
+  text-decoration: none;
+}
+
+.inline{
+  display: inline-block;
+}
+
+.inline img.img-circle{
+  vertical-align: baseline;
+  width: 35px;
+  margin-right: 6px;
+}
+
+.inline div.img-circle{
+  vertical-align: middle;
+  height: 35px;
+  width: 35px;
+  margin-right: 6px;
+  background: #ccc;
+}
+

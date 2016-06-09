@@ -1,9 +1,12 @@
 Plots2::Application.routes.draw do
+
+  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+
   resources :rusers
   resources :user_sessions
   resources :images
-
   resources :features
+  resources :searches
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -115,11 +118,13 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
-  match 'search' => 'search#advanced'
-  match 'search/advanced' => 'search#advanced'
-  match 'search/advanced/:id' => 'search#advanced'
-  match 'search/:id' => 'search#index'
-  match 'search/typeahead/:id' => 'search#typeahead'
+  match 'search' => 'searches#new'
+  match 'search/advanced' => 'searches#new'
+  match 'search/advanced/:id' => 'searches#new'
+  match 'search/:id' => 'searches#normal_search'
+  match 'search/typeahead/:id' => 'searches#typeahead'
+  match 'search/questions/:id' => 'searches#questions'
+  match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
 
   match 'tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'
@@ -144,10 +149,15 @@ Plots2::Application.routes.draw do
   match 'nearby' => 'home#nearby'
   match 'profile/edit' => 'users#edit'
   match 'profile/photo' => 'users#photo'
+  match 'profile/info' => 'users#info', as: 'info'
   match 'profile/:id' => 'users#profile'
   match 'profile/:id/edit' => 'users#edit'
   match 'profile/:id/likes' => 'users#likes'
   match 'feed/:author' => 'users#rss'
+
+  match 'info/suggested/:key/:value' => 'user_tags#suggested'
+  match 'info/tags/create' => 'user_tags#create'
+  match 'info/tags/delete/:id' => 'user_tags#delete'
 
   match 'maps' => 'map#index'
   match 'map' => 'search#map'
@@ -184,11 +194,19 @@ Plots2::Application.routes.draw do
   # This route can be invoked with purchase_url(:id => product.id)
 
   match 'post' => 'editor#post'
+  match 'editor' => 'editor#rich'
   match 'images/create' => 'images#create'
   match 'note/add' => 'legacy#note_add'
   match 'page/add' => 'legacy#page_add'
 
   match 'talk/:id' => 'talk#show'
+
+  match 'questions' => 'questions#index'
+  match 'questions/:author/:date/:id' => 'questions#show'
+  match 'questions/show/:id' => 'questions#show'
+  match 'q/:id' => 'questions#shortlink'
+  match 'questions/popular' => 'questions#popular'
+  match 'questions/liked' => 'questions#liked'
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products

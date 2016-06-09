@@ -7,7 +7,7 @@
     <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %> 
   </p>
 <% end %>
-<p class="facebook-summary" style="display:none;">Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues.</p>
+<p class="facebook-summary" style="display:none;"><%= t('layout._header.summary') %></p>
 
 <!-- facebook needs this apparently -->
 <div id="fb-root"></div>
@@ -33,36 +33,36 @@
 
       <ul class="nav navbar-nav navbar-left">
  
-        <% if current_user %><li><a rel="tooltip" title="Your dashboard" data-placement="bottom" href="/dashboard"><i class="fa fa-home fa fa-white"></i></a></li><% end %>
+        <% if current_user %><li><a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard"><i class="fa fa-home fa fa-white"></i></a></li><% end %>
  
         <li class="dropdown">
  
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Projects <b class="caret"></b>
+            <%= t('layout._header.projects.projects_title') %> <b class="caret"></b>
           </a>
  
           <ul class="dropdown-menu">
  
-            <li class="dropdown-header">Research</li>
+            <li class="dropdown-header"><%= t('layout._header.projects.research.research_title') %></li>
  
-            <li><a href="/research/">Research notes</a></li>
-            <li><a href="/wiki/">Public Lab Wiki</a></li>
-            <li><a href="/tools">Tools</a></li>
-            <li><a href="/places">Places</a></li>
- 
-            <li class="divider"></li>
- 
-            <li class="dropdown-header">Initiatives</li>
- 
-            <li><a href="/wiki/nonprofit-initiatives#Open+Land">Open Land</a></li>
-            <li><a href="/wiki/nonprofit-initiatives#Open+Water">Open Water</a></li>
-            <li><a href="/wiki/nonprofit-initiatives#Open+Air">Open Air</a></li>
-            <li><a href="/wiki/kits">Kits</a></li>
+            <li><a href="/research/"><%= t('layout._header.projects.research.research_notes') %></a></li>
+            <li><a href="/wiki/"><%= t('layout._header.projects.research.publiclab_wiki') %></a></li>
+            <li><a href="/tools"><%= t('layout._header.projects.research.tools') %></a></li>
+            <li><a href="/places"><%= t('layout._header.projects.research.places') %></a></li>
  
             <li class="divider"></li>
  
-            <li><a href="/wiki/fellows">Fellows</a></li>
-            <li><a href="/wiki/lending-library">Lending Library</a></li>
+            <li class="dropdown-header"><%= t('layout._header.projects.initiatives.initiatives_title') %></li>
+ 
+            <li><a href="/wiki/nonprofit-initiatives#Open+Land"><%= t('layout._header.projects.initiatives.open_land') %></a></li>
+            <li><a href="/wiki/nonprofit-initiatives#Open+Water"><%= t('layout._header.projects.initiatives.open_water') %></a></li>
+            <li><a href="/wiki/nonprofit-initiatives#Open+Air"><%= t('layout._header.projects.initiatives.open_air') %></a></li>
+            <li><a href="/wiki/kits"><%= t('layout._header.projects.initiatives.kits') %></a></li>
+ 
+            <li class="divider"></li>
+ 
+            <li><a href="/wiki/fellows"><%= t('layout._header.projects.fellows') %></a></li>
+            <li><a href="/wiki/lending-library"><%= t('layout._header.projects.lending_library') %></a></li>
           </ul>
  
         </li>
@@ -70,7 +70,7 @@
 
       <form id="searchform" class="navbar-form navbar-left" role="search" autocomplete="off">
         <div class="form-group">
-          <input tabindex="1" id="searchform_input" type="text" class="form-control search-query typeahead" data-provide="typeahead" placeholder="Search">
+          <input tabindex="1" id="searchform_input" type="text" class="form-control search-query typeahead" data-provide="typeahead" placeholder="<%= t('layout._header.search') %>">
         </div>
         <button type="submit" class="btn btn-primary" style="background:#444;border-color:#222;"><i class="fa fa-search"></i></button>
       </form>
@@ -79,69 +79,69 @@
 
         <li class="dropdown hidden-xs hidden-sm">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            About <b class="caret"></b>
+            <%= t('layout._header.about.about_title') %> <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/wiki/stories">Stories</a></li>
-            <li><a href="/blog">Blog</a></li>
-            <li><a href="/about">About Public Lab</a></li>
+            <li><a href="/wiki/stories"><%= t('layout._header.about.stories') %></a></li>
+            <li><a href="/blog"><%= t('layout._header.about.blog') %></a></li>
+            <li><a href="/about"><%= t('layout._header.about.about_public_lab') %></a></li>
             <li class="divider"></li>
-            <li><a href="/wiki/plots-staff">Non-profit team</a></li>
-            <li><a href="/wiki/organizers">Organizers</a></li>
-            <li><a href="/wiki/board">Non-profit board</a></li>
-            <li><a href="/wiki/how-public-lab-funded">How we're funded</a></li>
+            <li><a href="/wiki/plots-staff"><%= t('layout._header.about.team') %></a></li>
+            <li><a href="/wiki/organizers"><%= t('layout._header.about.organizers') %></a></li>
+            <li><a href="/wiki/board"><%= t('layout._header.about.board') %></a></li>
+            <li><a href="/wiki/how-public-lab-funded"><%= t('layout._header.about.fund') %></a></li>
             <li class="divider"></li>
-            <li><a href="/media">Press and Media</a></li>
-            <li><a href="/wiki/contact">Contact the staff</a></li>
+            <li><a href="/media"><%= t('layout._header.about.press_and_media') %></a></li>
+            <li><a href="/wiki/contact"><%= t('layout._header.about.contact') %></a></li>
           </ul>
         </li>
 
         <li class="dropdown hidden-xs hidden-sm<%= ' hidden-md' unless current_user %>">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Get Involved <b class="caret"></b>
+            <%= t('layout._header.get_involved.get_involved_title') %> <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/getting-started">Getting started</a></li>
+            <li><a href="/getting-started"><%= t('layout._header.get_involved.getting_started') %></a></li>
             <li class="divider"></li>
-            <li><a href="/signup">Join the website</a></li>
-            <li><a href="/lists">Join one of our discussion lists</a></li>
-            <li><a href="/events">Attend an event</a></li>
-            <li><a href="/wiki/post-an-event">Post an event</a></li>
+            <li><a href="/signup"><%= t('layout._header.get_involved.join') %></a></li>
+            <li><a href="/lists"><%= t('layout._header.get_involved.discussion_lists') %></a></li>
+            <li><a href="/events"><%= t('layout._header.get_involved.attend_event') %></a></li>
+            <li><a href="/wiki/post-an-event"><%= t('layout._header.get_involved.post_event') %></a></li>
             <li class="divider"></li>
-            <li><a href="/wiki/start-a-chapter">Starting new chapters</a></li>
-            <li><a href="/wiki/new-projects">Starting new projects</a></li>
+            <li><a href="/wiki/start-a-chapter"><%= t('layout._header.get_involved.new_chapters') %></a></li>
+            <li><a href="/wiki/new-projects"><%= t('layout._header.get_involved.new_projects') %></a></li>
             <li class="divider"></li>
-            <li><a href="/wiki/organizers">Become an organizer</a></li>
+            <li><a href="/wiki/organizers"><%= t('layout._header.get_involved.organizer') %></a></li>
           </ul>
         </li>
 
         <li class="dropdown hidden-xs hidden-sm<%= ' hidden-md' unless current_user %>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Data 
+            <%= t('layout._header.data.data_title') %> 
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/archive">Public Lab Archive</a></li>
-            <li class="dropdown-header">Web tools</li>
-            <li><a href="//mapknitter.org">MapKnitter</a></li>
-            <li><a href="//spectralworkbench.org">Spectral Workbench</a></li>
-            <li><a href="//infragram.org">Infragram</a></li>
-            <li><a href="//openwaterproject.io">Open Water</a></li>
+            <li><a href="/archive"><%= t('layout._header.data.archive') %></a></li>
+            <li class="dropdown-header"><%= t('layout._header.data.web_tools.web_tools_title') %></li>
+            <li><a href="//mapknitter.org"><%= t('layout._header.data.web_tools.mapknitter') %></a></li>
+            <li><a href="//spectralworkbench.org"><%= t('layout._header.data.web_tools.spectralworkbench') %></a></li>
+            <li><a href="//infragram.org"><%= t('layout._header.data.web_tools.infragram') %></a></li>
+            <li><a href="//openwaterproject.io"><%= t('layout._header.data.web_tools.open_water') %></a></li>
           </ul>
         </li>
 
-        <li class="hidden-xs hidden-sm hidden-md"><a href="/donate">Donate</a></li>
-        <li class="hidden-xs hidden-sm hidden-md"><a href="//store.publiclab.org">Store</a></li>
+        <li class="hidden-xs hidden-sm hidden-md"><a href="/donate"><%= t('layout._header.donate') %></a></li>
+        <li class="hidden-xs hidden-sm hidden-md"><a href="//store.publiclab.org"><%= t('layout._header.store') %></a></li>
 
       </ul>
  
       <div id="chat" class="chat-popover" data-placement="bottom" style="display:none;">
-        <a style="margin-right:4px;" class="pull-right btn btn-sm" href="https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>" target="_blank">pop out</a>
-        <p class="popover-title">Public Lab chatroom</p>
+        <a style="margin-right:4px;" class="pull-right btn btn-sm" href="https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>" target="_blank"><%= t('layout._header.chatroom.pop_out') %></a>
+        <p class="popover-title"><%= t('layout._header.chatroom.chatroom_title') %></p>
         
       </div>
  
-      <% unless current_user %><a rel="tooltip" title="Become part of this community" data-placement="bottom" style="margin-left:14px;" href="/signup" class="btn btn-primary navbar-btn navbar-right hidden-xs">Join</a><% end %>
+      <% unless current_user %><a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" data-placement="bottom" style="margin-left:14px;" href="/signup" class="btn btn-primary navbar-btn navbar-right hidden-xs"><%= t('layout._header.join') %></a><% end %>
  
       <% unless params[:action] == "register" || params[:action] == "signup" %>
         <ul class="nav navbar-nav navbar-right">
@@ -158,19 +158,19 @@
             </a> 
             <ul class="dropdown-menu">
               <li class="dropdown-header"><%= current_user.username %><% if current_user.role === 'moderator' || current_user.role === 'admin'%>: <%= current_user.role %><% end %></li>
-              <li><a href="/dashboard">Dashboard</a></li>
-              <li><a href="/profile/<%= current_user.username %>">Profile</a></li>
-              <li><a href="/profile/edit">Edit profile</a></li> 
+              <li><a href="/dashboard"><%= t('layout._header.dashboard') %></a></li>
+              <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
+              <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li> 
               <li class="divider"></li>
-              <li><a href="/subscriptions">Subscriptions</a></li>
-              <li><a href="/profile/<%= current_user.username %>/likes">Notes you've liked</a></li> 
+              <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
+              <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li> 
               <li class="divider"></li>
-              <li><%= link_to "Logout", logout_path %></li>
+              <li><%= link_to t('layout._header.logout'), logout_path %></li>
             </ul>
             <% else %>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-user fa fa-white"></i>
-               Log in <b class="caret"></b> 
+               <%= t('layout._header.login.login_title') %> <b class="caret"></b> 
             </a> 
             <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
               <li style="padding:6px;">
@@ -178,14 +178,14 @@
       
                   <div class="form-group">
         
-                    <label for="username">Username</label>
+                    <label for="username"><%= t('layout._header.login.username') %></label>
                     <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username' } %>
         
                   </div>
         
                   <div class="form-group">
         
-                    <label for="password">Password</label>
+                    <label for="password"><%= t('layout._header.login.password') %></label>
                     <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password' } %>
         
                   </div>
@@ -194,16 +194,16 @@
 
                   <div class="checkbox">
                     <label>
-                      <%= f.check_box :remember_me %> Remember me
+                      <%= f.check_box :remember_me %> <%= t('layout._header.login.remember_me') %>
                     </label>
                   </div>
       
                   <p>
-                    <button class="btn btn-primary" type="submit" tabindex="3">Log in</button>
-                    <a class="btn btn-default" href="/signup" tabindex="4">Sign up</a>
+                    <button class="btn btn-primary" type="submit" tabindex="3"><%= t('layout._header.login.login_title') %></button>
+                    <a class="btn btn-default" href="/signup" tabindex="4"><%= t('layout._header.login.sign_up') %></a>
                   </p>
       
-                  <p><a href="/reset/">Reset your password</a></p>
+                  <p><a href="/reset/"><%= t('layout._header.login.reset_password') %></a></p>
 
                 <% end %>
               </li>
@@ -220,8 +220,8 @@
 <div class="body-container container">
 
   <div class="visible-print">
-    <% if params[:controller] == "notes" %><h1>Public Lab <small>Research note</small></h1><% end %>
-    <% if params[:controller] == "wiki" %><h1>Public Lab <small>Wiki documentation</small></h1><% end %>
+    <% if params[:controller] == "notes" %><h1>Public Lab <small><%= t('layout._header.research_note') %></small></h1><% end %>
+    <% if params[:controller] == "wiki" %><h1>Public Lab <small><%= t('layout._header.wiki_doc') %></small></h1><% end %>
     <hr />
   </div>
 

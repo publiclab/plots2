@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   #has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
   has_many :images, :foreign_key => :uid
   has_many :drupal_node, :foreign_key => 'uid'
-
+  has_many :user_tags, :foreign_key => 'uid', :dependent => :destroy
   validates_with UniqueUsernameValidator, :on => :create
   validates_format_of :username, :with => /^[A-Za-z\d_\-]+$/
 
@@ -151,6 +151,54 @@ class User < ActiveRecord::Base
       weeks[span-week] = DrupalComment.count :all, :select => :timestamp, :conditions => {:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.to_i-week.weeks.to_i..Time.now.to_i-(week-1).weeks.to_i}
     end
     weeks
+  end
+
+  def note_streak(span = 365)
+    days = {}
+    streak = 0
+    note_count = 0
+    (0..span).each do |day|
+      days[day] = DrupalNode.count :all, :select => :created, :conditions => {:uid => self.drupal_user.uid, :type => 'note', :status => 1, :created => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i}
+      break if days[day] == 0
+      streak+=1
+      note_count+=days[day]
+    end
+    [streak, note_count]
+  end
+
+  def wiki_edit_streak(span = 365)
+    days = {}
+    streak = 0
+    wiki_edit_count = 0
+    (0..span).each do |day|
+      days[day] = DrupalNodeRevision.joins(:drupal_node).where(:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i).where("node.type != ?", 'note').count 
+      break if days[day] == 0
+      streak+=1
+      wiki_edit_count+=days[day]
+    end
+    [streak, wiki_edit_count]
+  end
+
+  def comment_streak(span = 365)
+    days = {}
+    streak = 0
+    comment_count = 0
+    (0..span).each do |day|
+      days[day] = DrupalComment.count :all, :select => :timestamp, :conditions => {:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i}
+      break if days[day] == 0
+      streak+=1
+      comment_count+=days[day]
+    end
+    [streak, comment_count]
+  end
+
+  def streak(span = 365)
+    note_streak = self.note_streak(span)
+    wiki_edit_streak = self.wiki_edit_streak(span)
+    comment_streak = self.comment_streak(span)
+    streak_count = [note_streak[1], wiki_edit_streak[1], comment_streak[1]]
+    streak = [note_streak[0], wiki_edit_streak[0], comment_streak[0]]
+    [streak.max, streak_count]
   end
 
   def barnstars

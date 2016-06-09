@@ -1,5 +1,92 @@
-# Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  layout:
+    _footer:
+      getting_help:
+        report_bug: "Report a bug or issue"
+        email_working_group: "Email the Web working group"
+        publiclab_oss: "PublicLab.org is <a href='%{url1}'> open source software</a> - and <a href='%{url2}'>looking for contributors</a>"
+      links:
+        about: "About"
+        getting_started: "Getting Started"
+        licenses: "Licenses"
+        discussion_lists: "Discussion lists"
+        site_statistics: "Site statistics"
+        rss: "RSS"
+      license: "This work is licensed under a <a href='%{creative_commons_url}'>Creative Commons Attribution-ShareAlike 3.0 Unported License</a>. Hardware designs on this site are released under the <a href='%{cern_license_url}'>CERN Open Hardware License 1.1</a>. Read more about Public Lab's <a href='%{publiclab_license_url}'>open source licensing here</a>."
+      different_licenses: "Specific works on this site may be released or dedicated under different licenses, but only if such alternatives are clearly indicated by their authors."
+      font_use: "This site makes extensive use of the open source font <a href='%{url}'>Junction</a>."
+      server_donation: "PublicLab.org is hosted through a donation of server space by <a href='%{url}'>Rackspace</a>."
+    _header:
+      summary: "Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues."
+      your_dashboard: "Your dashboard"
+      projects:
+        projects_title: "Projects"
+        research:
+          research_title: "Research"
+          research_notes: "Research notes"
+          publiclab_wiki: "Public Lab Wiki"
+          tools: "Tools"
+          places: "Places"
+          kits: "Kits"
+        initiatives:
+          initiatives_title: "Initiatives"
+          open_land: "Open Land"
+          open_water: "Open Water"
+          open_air: "Open Air"
+        fellows: "Fellows"
+        lending_library: "Lending Library"
+      search: "Search"
+      about:
+        about_title: "About"
+        stories: "Stories"
+        blog: "Blog"
+        about_public_lab: "About Public Lab"
+        team: "Non-profit team"
+        organizers: "Organizers"
+        board: "Non-profit board"
+        fund: "How we're funded"
+        press_and_media: "Press and Media"
+        contact: "Contact the staff"
+      get_involved:
+        get_involved_title: "Get Involved"
+        getting_started: "Getting started"
+        join: "Join the website"
+        discussion_lists: "Join one of our discussion lists"
+        attend_event: "Attend an event"
+        post_event: "Post an event"
+        new_chapters: "Starting new chapters"
+        new_projects: "Starting new projects"
+        organizer: "Become an organizer"
+      data:
+        data_title: "Data"
+        archive: "Public Lab Archive"
+        web_tools:
+          web_tools_title: "Web tools"
+          mapknitter: "MapKnitter"
+          spectral_workbench: "Spectral Workbench"
+          infragram: "Infragram"
+          open_water: "Open Water"
+      donate: "Donate"
+      store: "Store"
+      chatroom:
+        pop_out: "pop out"
+        chatroom_title: "Public Lab chatroom"
+      become_part_community: "Become part of this community"
+      join: "Join"
+      dashboard: "Dashboard"
+      profile: "Profile"
+      edit_profile: "Edit Profile"
+      subscriptions: "Subscriptions"
+      notes_liked: "Notes you've liked"
+      logout: "Logout"
+      login:
+        login_title: "Login"
+        username: "Username"
+        password: "Password"
+        remember_me: "Remember me"
+        sign_up: "Sign up"
+        reset_password: "Reset your password"
+      research_note: "Research note"
+      wiki_doc: "Wiki documentation"

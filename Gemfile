@@ -4,6 +4,8 @@ ruby '2.1.2'
 gem 'rails', '~> 3.2.20'
 gem 'passenger'
 
+gem 'rails-i18n', '~> 3.0.0'
+
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
   gem 'mysql2', '~> 0.3.20'
@@ -36,10 +38,8 @@ end
 
 # run with `bundle install --without test` to exclude these
 group :test do
-  #gem 'rspec-rails'
-  gem 'factory_girl_rails'
   gem 'test-unit'
-  gem 'rake'
+  gem 'rake',  '~> 10.5.0'
 end
 
 # run with `bundle install --without production` to exclude these
@@ -62,9 +62,17 @@ gem "rack-openid"
 gem "authlogic", "3.2.0"
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
-gem 'jbuilder'
+
+# RESTful API Support
 gem 'grape'
 gem 'grape-entity'
 gem 'grape-swagger'
 gem 'grape-swagger-rails'
+
+
+gem 'mocha', '~> 1.1'
+gem 'jasmine-rails'
+gem 'jasmine'
+gem 'jasmine-jquery-rails'
+gem 'jbuilder'
 

@@ -1,0 +1,92 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  layout:
+    _footer:
+      getting_help:
+        report_bug: "Fehler melden oder Ausgabe"
+        email_working_group: "E-Mail an die Web -Arbeitsgruppe"
+        publiclab_oss: "PublicLab.org ist <a href='%{url1}'> Open Source Software</a> - und <a href='%{url2}'>und der Suche nach Beiträgen</a>"
+      links:
+        about: "Etwa"
+        getting_started: "Anfangen"
+        licenses: "Lizenzen"
+        discussion_lists: "Diskussionslisten"
+        site_statistics: "Website- Statistiken"
+        rss: "RSS"
+      license: "Diese Arbeit wird unter einer <a href='%{creative_commons_url}'>Attribution-ShareAlike Creative Commons 3.0 Unported -Lizenz</a>. Hardware -Designs auf dieser Website sind unter dem <a href='%{cern_license_url}'>CERN Open Hardware License 1.1</a> veröffentlicht.  Lesen Sie mehr über Public Lab's <a href='%{publiclab_license_url}'>Open-Source Lizenzierung hier</a>."
+      different_licenses: "Spezifische Arbeiten auf dieser Website können unter verschiedenen Lizenzen freigegeben oder gewidmet werden, aber nur dann, wenn diese Alternativen sind klar von den Autoren angegeben."
+      font_use: "Diese Seite macht intensiven Gebrauch von der Open-Source Schrift<a href='%{url}'>Junction</a>."
+      server_donation: "PublicLab.org wird durch eine Spende von Server-Raum gehostet von <a href='%{url}'>Rackspace</a>."
+    _header:
+      summary: "Öffentliche Lab ist eine offene Gemeinschaft, die gemeinsam entwickelt zugänglich , Open Source, Do -It-Yourself -Technologien für die lokale Umwelt, Gesundheit und Fragen der Gerechtigkeit zu untersuchen."
+      your_dashboard: "Ihr Dashboard"
+      projects: 
+        projects_title: "Projekte"
+        research:
+          research_title: "Forschung"
+          research_notes: "Research notes"
+          publiclab_wiki: "Public Lab Wiki"
+          tools: "Werkzeuge"
+          places: "Setzt"
+          kits: "Werkzeug"
+        initiatives:
+          initiatives_title: "Initiativen"
+          open_land: "Offenes Land"
+          open_water: "Offenes Wasser"
+          open_air: "Open Air"
+        fellows: "Kollege"
+        lending_library: "Leihbücherei"
+      search: "Suche"
+      about:
+        about_title: "Etwa"
+        stories: "Geschichten"
+        blog: "Blog"
+        about_public_lab: "Über Public Lab"
+        team: "Non-profit team"
+        organizers: "Veranstalter"
+        board: "Non-profit board"
+        fund: "Wie wir finanziert"
+        press_and_media: "Presse und Medien"
+        contact: "Kontaktieren Sie die Mitarbeiter"
+      get_involved:
+        get_involved_title: "sich einlassen"
+        getting_started: "Anfangen"
+        join: "Treten Sie der Website"
+        discussion_lists: "Nehmen Sie an einer unserer Diskussionslisten"
+        attend_event: "Nehmen Sie an einer Veranstaltung"
+        post_event: "Eine Veranstaltung"
+        new_chapters: "Ab neue Kapitel"
+        new_projects: "Starten neuer Projekte"
+        organizer: "Werden Veranstalter"
+      data:
+        data_title: "Daten"
+        archive: "Public Lab archivieren"
+        web_tools:
+          web_tools_title: "Web Werkzeuge"
+          mapknitter: "MapKnitter"
+          spectral_workbench: "Spectral Workbench"
+          infragram: "Infragram"
+          open_water: "Offenes Wasser"
+      donate: "schenken"
+      store: "Laden"
+      chatroom:
+        pop_out: "herausspringen"
+        chatroom_title: "Public Lab chatroom"
+      become_part_community: "Werden Sie Teil dieser Gemeinschaft"
+      join: "Beitreten"
+      dashboard: "Instrumententafel"
+      profile: "Profil"
+      edit_profile: "Profil bearbeiten"
+      subscriptions: "Abonnements"
+      notes_liked: "Notizen Sie haben mochte"
+      logout: "Ausloggen"
+      login:
+        login_title: "Einloggen"
+        username: "Benutzername"
+        password: "Passwort"
+        remember_me: "Erinnere dich an mich"
+        sign_up: "Anmelden"
+        reset_password: "Setze dein Passwort zurück"
+      research_note: "Research note"
+      wiki_doc: "Wiki Dokumentation"

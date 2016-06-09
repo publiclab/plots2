@@ -2,6 +2,7 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require "authlogic/test_case"
+require "i18n"
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
@@ -18,8 +19,13 @@ class ActiveSupport::TestCase
   set_fixture_class :tag_selection => TagSelection
   set_fixture_class :tags => DrupalTag
   set_fixture_class :community_tags => DrupalNodeCommunityTag
+  set_fixture_class :comments => DrupalComment
   
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+end
+
+def available_testing_locales
+  I18n.available_locales
 end
