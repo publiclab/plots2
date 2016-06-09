@@ -148,14 +148,14 @@ Plots2::Application.routes.draw do
   match 'nearby' => 'home#nearby'
   match 'profile/edit' => 'users#edit'
   match 'profile/photo' => 'users#photo'
-  match 'profile/info' => 'users#info', as: 'info'
+  match 'profile/info/:id' => 'users#info', as: 'info'
   match 'profile/:id' => 'users#profile'
   match 'profile/:id/edit' => 'users#edit'
   match 'profile/:id/likes' => 'users#likes'
   match 'feed/:author' => 'users#rss'
 
   match 'info/suggested/:key/:value' => 'user_tags#suggested'
-  match 'info/tags/create' => 'user_tags#create'
+  match 'info/tags/create/:id' => 'user_tags#create'
   match 'info/tags/delete/:id' => 'user_tags#delete'
 
   match 'maps' => 'map#index'

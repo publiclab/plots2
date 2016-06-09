@@ -44,13 +44,13 @@
 
   <% if params[:preview] %>
   <p>
-    <%= render partial: 'user_tags/tags', locals: { type: 'skill', data: fetch_tags('skill') } %>
-    <%= render partial: 'user_tags/tags', locals: { type: 'gear', data: fetch_tags('gear') } %>
-    <%= render partial: 'user_tags/tags', locals: { type: 'tool', data: fetch_tags('tool') } %>
-    <%= render partial: 'user_tags/tags', locals: { type: 'role', data: fetch_tags('role') } %>
+    <%= render partial: 'user_tags/tags', locals: { type: 'skill', data: fetch_tags(@user.id, 'skill') } %>
+    <%= render partial: 'user_tags/tags', locals: { type: 'gear', data: fetch_tags(@user.id, 'gear') } %>
+    <%= render partial: 'user_tags/tags', locals: { type: 'tool', data: fetch_tags(@user.id, 'tool') } %>
+    <%= render partial: 'user_tags/tags', locals: { type: 'role', data: fetch_tags(@user.id, 'role') } %>
 
     <% if current_user == @profile_user || current_user.role == 'admin' %>
-      <a href="/profile/info" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> Edit Information</a>
+      <a href="/profile/info/<%= @user.name %>" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> Edit Information</a>
     <% end %>
   </p>
   <hr />
