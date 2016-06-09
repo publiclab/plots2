@@ -4,6 +4,7 @@ class SearchesController < ApplicationController
   before_filter :set_search, only: [:show]
 
   def index
+    @searches = Search.all
   end
 
   def new
