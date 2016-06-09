@@ -64,5 +64,10 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "browse /stats" do
+    get "/stats"
+    assert_response :success
+  end
+
 end
 
