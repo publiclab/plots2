@@ -110,23 +110,32 @@ class DrupalTag < ActiveRecord::Base
   end
 
   # optimize this too!
-  def weekly_tallies(type = "note",span = 52)
+  def weekly_tallies(type = "note", span = 52)
     weeks = {}
     tids = DrupalTag.where('name IN (?)', [self.name])
                     .collect(&:tid)
     nids = DrupalNodeCommunityTag.where("tid IN (?)", tids)
                                  .collect(&:nid)
-    (0..span).each do |week|
-      weeks[span-week] = DrupalNode.select(:created)
-                                   .where(
-                                     'type = ? AND status = 1 AND nid IN (?) AND created > ? AND created < ?',
-                                     type,
-                                     nids.uniq.join(','),
-                                     (Time.now.to_i - week.weeks.to_i).to_s,
-                                     (Time.now.to_i - (week - 1).weeks.to_i).to_s
-                                   )
+    (1..span).each do |week|
+      weeks[span - week] = DrupalTag.nodes_for_period(
+        type,
+        nids,
+        (Time.now.to_i - week.weeks.to_i).to_s,
+        (Time.now.to_i - (week - 1).weeks.to_i).to_s
+      ).count
     end
     weeks
+  end
+
+  def self.nodes_for_period(type, nids, start, finish)
+    DrupalNode.select([:created, :status, :type, :nid])
+              .where(
+                'type = ? AND status = 1 AND nid IN (?) AND created > ? AND created <= ?',
+                type,
+                nids.uniq,
+                start,
+                finish
+              )
   end
 
   # Given a set of tags, return all users following
