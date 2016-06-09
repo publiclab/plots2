@@ -4,8 +4,14 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
+normal:
+  title: search
+  key_words: event
+  user_id: 2
+
 # column: value
 #
-two: {}
-#  column: value
+advanced:
+  title: Advanced search
+  key_words: event
+  user_id: 2
