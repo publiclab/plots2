@@ -18,5 +18,22 @@ class Answer < ActiveRecord::Base
 
   def node
     self.drupal_node
+  end
+
+  def likes
+    self.cached_likes
+  end
+
+  # users who like this answer
+  def likers
+    self.answer_selections
+        .joins(:drupal_users)
+        .where(liking: true)
+        .where('users.status = ?', 1)
+        .collect(&:user)
+  end
+
+  def liked_by(uid)
+    self.likers.collect(&:uid).include?(uid)
   end 
 end
