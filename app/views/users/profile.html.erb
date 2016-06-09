@@ -49,7 +49,7 @@
     <%= render partial: 'user_tags/tags', locals: { type: 'tool', data: fetch_tags('tool') } %>
     <%= render partial: 'user_tags/tags', locals: { type: 'role', data: fetch_tags('role') } %>
 
-    <% if current_user == @user || current_user && current_user.role == 'admin' %>
+    <% if current_user == @profile_user || current_user.role == 'admin' %>
       <a href="/profile/info" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> Edit Information</a>
     <% end %>
   </p>

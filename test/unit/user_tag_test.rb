@@ -25,7 +25,7 @@ class UserTagTest < ActiveSupport::TestCase
     })
     
     assert valid_user_tag.save
-    assert valid_user_tag.value =~ /[a-z]*:[a-zA-Z1-9\S]*/
+    assert valid_user_tag.value =~ /\A[a-z]*:[a-zA-Z1-9\S]*\Z/
   end
 
   test "cannot contain format with : delimiter" do
@@ -36,6 +36,20 @@ class UserTagTest < ActiveSupport::TestCase
     })
 
     invalid_user_tag.save
-    assert_nil invalid_user_tag.value =~ /[a-z]*:[a-zA-Z1-9\S]*/
+    assert_nil invalid_user_tag.value =~ /\A[a-z]*:[a-zA-Z1-9\S]*\Z/
   end
+
+  test "should not contains special characters in value" do
+    user = rusers(:jeff)
+    invalid_values = ["\"", "\"\"", "'", "$"]
+    invalid_values.each do |value|
+      invalid_user_tag = UserTag.new({
+        uid: user.id,
+        value: 'skill:#{value}'
+      })
+
+      assert_equal ["Value contains invalid input"], invalid_user_tag.errors.full_messages
+    end
+  end
+
 end
