@@ -29,4 +29,18 @@ class AnswerTest < ActiveSupport::TestCase
     assert_equal answer.node, node
     assert_equal answer.author, user
   end
+
+  test "should return user objects who liked it" do
+    answer = answers(:one)
+    user = rusers(:bob)
+    assert_equal answer.likers, [user]
+  end
+
+  test "should assert users who liked it" do
+    bob = users(:bob)
+    jeff = users(:jeff)
+    answer = answers(:one)
+    assert answer.liked_by(bob.uid)
+    assert !answer.liked_by(jeff.uid)
+  end
 end

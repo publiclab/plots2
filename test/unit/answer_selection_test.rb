@@ -22,4 +22,46 @@ class AnswerSelectionTest < ActiveSupport::TestCase
     user = rusers(:bob)
     assert_equal answer_selection.user, user
   end
+
+  test "should create answer_selection if not present" do
+    user = users(:admin)
+    answer = answers(:one)
+    assert_difference 'AnswerSelection.count' do
+      assert AnswerSelection.set_likes(user.uid, answer.id, true)
+    end
+  end
+
+  test "should set liking false if value is false" do
+    user = users(:bob)
+    answer = answers(:one)
+    assert_no_difference 'AnswerSelection.count' do
+      assert !AnswerSelection.set_likes(user.uid, answer.id, false)
+    end
+  end
+
+  test "should not create new answer_selection if present" do
+    user = users(:jeff)
+    answer = answers(:one)
+    assert_no_difference 'AnswerSelection.count' do
+      assert AnswerSelection.set_likes(user.uid, answer.id, true)
+    end
+  end
+
+  test "should increase cached likes if liked" do
+    user = users(:admin)
+    answer = answers(:one)
+    assert_difference 'answer.cached_likes' do
+      AnswerSelection.set_likes(user.uid, answer.id, true)
+      answer.reload
+    end
+  end
+
+  test "should decrease cached likes if unliked" do
+    user = users(:bob)
+    answer = answers(:one)
+    assert_difference 'answer.cached_likes', -1 do
+      AnswerSelection.set_likes(user.uid, answer.id, false)
+      answer.reload
+    end
+  end
 end
