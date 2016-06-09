@@ -64,4 +64,9 @@ class SearchesControllerTest < ActionController::TestCase
     assert_redirected_to search_path(assigns(:search))
   end
 
+  test 'should get normal search' do
+    get :normal_search, id: 'ujitha'
+    assert_response :success
+  end
+
 end
