@@ -22,7 +22,7 @@ class NotesController < ApplicationController
     @weekly_wikis = DrupalNodeRevision.select(:timestamp)
                                       .where(timestamp: @time.to_i - 1.weeks.to_i..@time.to_i)
                                       .count
-    @weekly_members = User.where(created_at: @time.to_i - 1.weeks.to_i..@time.to_i)
+    @weekly_members = User.where(created_at: @time - 1.weeks..@time)
                           .count
     @monthly_notes = DrupalNode.select([:created, :type, :status])
                                .where(type: 'note', status: 1, created: @time.to_i - 1.months.to_i..@time.to_i)
@@ -30,7 +30,7 @@ class NotesController < ApplicationController
     @monthly_wikis = DrupalNodeRevision.select(:timestamp)
                                        .where(timestamp: @time.to_i - 1.months.to_i..@time.to_i)
                                        .count
-    @monthly_members = User.where(created_at: @time.to_i - 1.months.to_i..@time.to_i)
+    @monthly_members = User.where(created_at: @time - 1.months..@time)
                            .count
 
     @notes_per_week_past_year = DrupalNode.select([:created, :type, :status])
