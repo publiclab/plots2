@@ -211,6 +211,9 @@ Plots2::Application.routes.draw do
   match 'answers/update/:id' => 'answers#update'
   match 'answers/delete/:id' => 'answers#delete'
 
+  match 'answer_like/show/:aid' => 'answer_like#show'
+  match 'answer_like/likes/:aid' => 'answer_like#likes'
+
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
