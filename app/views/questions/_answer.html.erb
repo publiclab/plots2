@@ -31,7 +31,21 @@
     <% end %>
     <hr />
     <div style="padding: 0px 20px 10px 20px;">
+       <a href=<% if current_user %>"/answer_like/likes/<%= answer.id %>"<% else %>"#"<% end %>data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-default btn-sm btn-like" id="answer-like-button-<%= answer.id %>" <% unless current_user %> popover-content="You must be logged in to Like the answer" <% end %> ><span id="answer-like-star-<%= answer.id %>" class="fa fa-star<% if current_user && !answer.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="answer-like-count-<%= answer.id %>"><%= answer.likers.length %></span> Likes</a>
       <a href="#a<%= answer.id %>">Share Link</a>
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(function(){
+    $("#answer-like-button-<%= answer.id %>").popover({
+      content: $("#answer-like-button-<%= answer.id %>").attr("popover-content")
+    })
+
+    $("#answer-like-button-<%= answer.id %>").tooltip({
+      title: $("#answer-like-button-<%= answer.id %>").attr("tooltip-title")
+    })
+
+  })
+</script>
