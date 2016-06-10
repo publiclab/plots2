@@ -78,4 +78,17 @@ class UserTagsControllerTest < ActionController::TestCase
     assert_equal user_tags_count+1, UserTag.where(uid: rusers(:bob).id).count
   end
 
+  test "Normal user should not create tag for other user" do
+    UserSession.create(rusers(:bob))
+    post :create, :id => rusers(:jeff).username, :type => "role", :value => "Organizer"
+    assert_equal "Only admin (or) target user can manage tags", assigns['output']['errors'][0]
+  end
+
+
+  test "Normal user should not delete tag for other user" do
+    user_tag = UserTag.where(uid: rusers(:jeff).id).last
+    UserSession.create(rusers(:bob))
+    post :delete, :id => user_tag.id
+    assert_equal "Only admin (or) target user can manage tags", flash[:error]
+  end
 end

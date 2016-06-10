@@ -9,27 +9,32 @@ class UserTagsController < ApplicationController
     exist = false
 
     user = User.find_by_username(params[:id])
-    if params[:type] && tags.include?(params[:type])
-      if params[:value] != ""
-        value = params[:type] + ":" + params[:value]
-        if UserTag.exists?(user.id, value)
-          @output[:errors] << "Error: tag already exists."
-          exist = true
-        end
 
-        if !exist
-          user_tag = user.user_tags.build(value: value)
-          if user_tag.save
-            @output[:saved] = [user_tag.id, value.split(":")[0], value.split(":")[1]]
-          else
-            @output[:errors] << "Error: Cannot save value. Try Again"
+    if current_user.role == "admin" || current_user == user
+      if params[:type] && tags.include?(params[:type])
+        if params[:value] != ""
+          value = params[:type] + ":" + params[:value]
+          if UserTag.exists?(user.id, value)
+            @output[:errors] << "Error: tag already exists."
+            exist = true
           end
+
+          if !exist
+            user_tag = user.user_tags.build(value: value)
+            if user_tag.save
+              @output[:saved] = [user_tag.id, value.split(":")[0], value.split(":")[1]]
+            else
+              @output[:errors] << "Error: Cannot save value. Try Again"
+            end
+          end
+        else
+          @output[:errors] << "Error: value cannot be empty"
         end
       else
-        @output[:errors] << "Error: value cannot be empty"
+        @output[:errors] << "Error: Invalid value #{params[:type]}"
       end
     else
-      @output[:errors] << "Error: Invalid value #{params[:type]}"
+      @output[:errors] << "Only admin (or) target user can manage tags"
     end
 
     respond_with do |format|
@@ -57,18 +62,24 @@ class UserTagsController < ApplicationController
 
     begin
       @user_tag = UserTag.find(params[:id])
+      if current_user.role == "admin" || @user_tag.user == current_user
+        if @user_tag
+          @user_tag.destroy
+          message = "Tag deleted."
+          output[:status] = true
+        else
+          output[:status] = false
+          message = "Tag doesn't exist."
+        end
+      else
+        message = "Only admin (or) target user can manage tags"
+      end
     rescue ActiveRecord::RecordNotFound
       output[:status] = false
       message = "Tag doesn't exist."
     end
-    if @user_tag
-      @user_tag.destroy
-      message = "Tag deleted."
-      output[:status] = true
-    else
-      output[:status] = false
-      message = "Tag doesn't exist."
-    end
+
+    output[:errors] << message
     respond_with do |format|
       format.js
       format.html do
