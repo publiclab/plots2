@@ -9,3 +9,8 @@ two:
   id: 2
   uid: 1
   value: tool:barometer
+
+three:
+  id: 3
+  uid: 2
+  value: skill:rails

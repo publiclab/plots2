@@ -45,10 +45,10 @@ class UserTagTest < ActiveSupport::TestCase
     invalid_values.each do |value|
       invalid_user_tag = UserTag.new({
         uid: user.id,
-        value: 'skill:#{value}'
+        value: "skill:#{value}"
       })
-
-      assert_equal ["Value contains invalid input"], invalid_user_tag.errors.full_messages
+      invalid_user_tag.save
+      assert_equal ["Value field contains invalid input"], invalid_user_tag.errors.full_messages
     end
   end
 
