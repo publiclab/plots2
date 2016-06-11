@@ -2,7 +2,9 @@ require 'grape'
 
 module API
   class Base < Grape::API
-    default_format :json
+    version 'v1', using: :header, vendor: 'publiclab'
+    format :json
+    prefix :api
   
     # mount the individual api modules here
     # mount API::HighScores => '/high_scores'
