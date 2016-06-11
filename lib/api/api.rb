@@ -8,7 +8,7 @@ module API
   
     # mount the individual api modules here
     # mount API::HighScores => '/high_scores'
-    mount API::Typeahead => 'typeahead'
+    mount API::Typeahead => '/'
 
 
     # Add the swagger documentation
