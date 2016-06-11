@@ -86,29 +86,7 @@
       </div>
 
       <div class="ple-module-content col-md-9 container">
-        <textarea class="ple-textarea form-control"># About my project
-
- been working on [this thing](/) and wanted to share.
-
-oals have been:
-
-mple to make
-se of use
-w cost
-
-then, after #balloon-mapping with @eustatic, tables:
-
-l1 | col2 | col3 |
----|------|------|
-o  | bar  | baz  |
-od | bars | bats |
-
-js
-
-ode could go here
-myVariable = 4;
-
-</textarea>
+        <textarea class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
       </div>
 
     </div>
