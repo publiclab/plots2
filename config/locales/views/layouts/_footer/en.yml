@@ -1,0 +1,21 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  layout:
+    _footer:
+      getting_help:
+        report_bug: "Report a bug or issue"
+        email_working_group: "Email the Web working group"
+        publiclab_oss: "PublicLab.org is <a href='%{url1}'> open source software</a> - and <a href='%{url2}'>looking for contributors</a>"
+      links:
+        about: "About"
+        getting_started: "Getting Started"
+        licenses: "Licenses"
+        discussion_lists: "Discussion lists"
+        site_statistics: "Site statistics"
+        rss: "RSS"
+      license: "This work is licensed under a <a href='%{creative_commons_url}'>Creative Commons Attribution-ShareAlike 3.0 Unported License</a>. Hardware designs on this site are released under the <a href='%{cern_license_url}'>CERN Open Hardware License 1.1</a>. Read more about Public Lab's <a href='%{publiclab_license_url}'>open source licensing here</a>."
+      different_licenses: "Specific works on this site may be released or dedicated under different licenses, but only if such alternatives are clearly indicated by their authors."
+      font_use: "This site makes extensive use of the open source font <a href='%{url}'>Junction</a>."
+      server_donation: "PublicLab.org is hosted through a donation of server space by <a href='%{url}'>Rackspace</a>."
+    
