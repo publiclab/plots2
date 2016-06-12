@@ -7,18 +7,27 @@
 
   <hr />
 
-  <table class="table">
-    <% @nodes.each do |node| %>
-      <tr class="<%= node.type %>">
-        <% if node.type == "comment" %>
-            <td><i class="fa fa-<%= node.icon %>"></i> Comment by <a href="<%= node.author.name %>"><%= node.author.name %></a></td>
-        <% else %>
-            <td><i class="fa fa-<%= node.icon %>"></i> <a href="<%= node.path %>"><%= node.title %></a></td>
-        <% end %>
-        <td><% if node.type != "page" %><a href="/profile/<%= node.author.name %>"><%= node.author.name %></a><% end %></td>
-        <td><% node.tags.each do |tag| %><a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %></td>
-      </tr>
-    <% end %>
-  </table>
+  <div class="pull-right" style="margin-top:5px;">
+    <label class="checkbox pull-right" style="width:100px;margin-right:10px;">
+      <input type="checkbox" checked="<%= !params[:comments] %>" name="comments" onClick="$('.comment').toggle()" />
+      <i class="fa fa-comment"></i> Comments
+    </label>
+
+    <label class="checkbox pull-right" style="width:60px;margin-right:10px;">
+      <input type="checkbox" checked="<%= !(params[:maps].nil?) %>" name="maps" onClick="$('.map').toggle()" />
+      <i class="fa fa-map-marker"></i> Maps
+    </label>
+
+    <label class="checkbox pull-right" style="width:55px;margin-right:10px;">
+      <input type="checkbox" checked="true" name="wikis" onClick="$('.page').toggle()"/>
+      <i class="fa fa-book"></i> Wiki
+    </label>
+
+    <label class="checkbox pull-right" style="width:130px;margin-right:10px;">
+      <input type="checkbox" checked="true" name="notes" onClick="$('.note').toggle()"/>
+      <i class="fa fa-file"></i> Research notes
+    </label>
+
+  </div>
 
 </div>
