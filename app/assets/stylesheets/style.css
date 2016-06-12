@@ -392,3 +392,7 @@ div.note.moderated h4 {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff3071a9', GradientType=0);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
+
+#questions_searchform .dropdown-menu {
+  width: 95%;
+}
