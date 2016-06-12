@@ -72,5 +72,9 @@ en:
         remember_me: "Remember me"
         sign_up: "Sign up"
         reset_password: "Reset your password"
+      language:
+        language_title: "Language"
+        english: "English"
+        german: "German"
       research_note: "Research note"
       wiki_doc: "Wiki documentation"
