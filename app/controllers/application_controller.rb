@@ -116,14 +116,14 @@ class ApplicationController < ActionController::Base
     
     def set_locale
       if params[:locale]
-        l = params[:locale]
-        cookies.permanent[:plots2_locale] = l
+        lang = params[:locale]
+        cookies.permanent[:plots2_locale] = lang
       elsif cookies[:plots2_locale] && I18n.available_locales.include?(cookies[:plots2_locale].to_sym)
-        l = cookies[:plots2_locale].to_sym
+        lang = cookies[:plots2_locale].to_sym
       else
-        l = I18n.default_locale
-        cookies.permanent[:plots2_locale] = l
+        lang = I18n.default_locale
+        cookies.permanent[:plots2_locale] = lang
       end
-      I18n.locale = l
+      I18n.locale = lang
     end
 end
