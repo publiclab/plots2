@@ -7,7 +7,7 @@
   (function () {
 
     flotoptions_minimal = {
-      yaxis: { show: false },
+      yaxis: { show: true },
       xaxis: { show: true },
       grid: {
         borderWidth: 0,
@@ -17,7 +17,7 @@
       colors: [ "#08f", "#80f" ]
     }
 
-    var notes = <%= @tags.first.weekly_tallies.to_a.sort.to_json %>
+    var notes = <%=raw @tags.first.weekly_tallies.to_a.sort.to_json %>
 
     $.plot($("#note-graph"), [
       {

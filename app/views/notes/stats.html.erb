@@ -10,30 +10,54 @@
 
   <h2>Contributor statistics</h2>
 
-  <% 
-    users = []
-    nids = []
-    DrupalNode.find(:all, :conditions => {:type => 'note', :status => 1}).each do |note|
-      unless note.uid == 674 || note.uid == 671
-        users << note.uid
-        nids << note.nid
-      end
-    end
-  %>
+  <p>Looking back from <i><%= @time.to_formatted_s(:long) %></i>.</p>
+  <p>
+    Try 
+    <a href="?time=<%= (@time-1.year).to_formatted_s(:long) %>">one year</a>, 
+    <a href="?time=<%= (@time-1.month).to_formatted_s(:long) %>">one month</a>, or
+    <a href="?time=<%= (@time-1.week).to_formatted_s(:long) %>">one week</a>
+    further back.
+  </p>
 
-  <h4><%= nids.uniq.length %> research notes have been posted by <%= users.uniq.length %> contributors since <%= time_ago_in_words(DrupalNode.find(:first, :conditions => {:type => 'note', :status => 1}).created_at) %> ago</h4>
+  <hr />
+
+  <h4>
+    <a href="/research"><%= @weekly_notes %> notes</a> 
+    and <a href="/wiki"><%= @weekly_wikis %> wiki edits</a> posted in the past week. 
+    <b><%= @weekly_members %> people</b> joined in the past week. 
+  </h4>
+
+  <hr />
+
+  <h4>
+    <a href="/research"><%= @monthly_notes %> notes</a> 
+    and <a href="/wiki"><%= @monthly_wikis %> wiki edits</a> posted in the past month. 
+    <b><%= @monthly_members %> people</b> joined in the past month. 
+  </h4>
+
+
+  <hr />
+
+
+  <h4><%= @all_notes %> research notes have been posted by <%= @all_contributors %> contributors since <%= time_ago_in_words(DrupalNode.find(:first, :conditions => {:type => 'note', :status => 1}).created_at) %> ago</h4>
+  <p><%= @notes_per_week_past_year.round(2) %> notes per week over the past year.</p>
 
   <p><i>Note posting for the past 52 weeks:</i></p>
 
   <div id="notes" style="height:100px;"></div>
 
-  <h4><%= DrupalNode.count(:all, :conditions => {:type => 'page', :status => 1}) %> wiki pages have been posted</h4>
+  <hr />
+
+  <h4><%= DrupalNode.count(:all, :conditions => {:type => 'page', :status => 1}) %> wiki pages have been posted, total</h4>
 
   <p><i>Wiki page posting for the past 52 weeks:</i></p>
 
   <div id="wikis" style="height:100px;"></div>
 
-  <h4><%= DrupalNodeRevision.count(:all) %> wiki page edits have been made</h4>
+  <hr />
+
+  <h4><%= DrupalNodeRevision.count(:all) %> wiki page edits have been made, total</h4>
+  <p><%= @edits_per_week_past_year.round(2) %> edits per week over the past year.</p>
 
 </div>
 
@@ -53,8 +77,8 @@
       //colors: [ "#E02130", "#FAB243", "#429867", "#2B5166" ]//, "#482344" ]
     }
 
-    var notes = <%= DrupalNode.weekly_tallies.to_a.sort.to_json %>
-    var wikis = <%= DrupalNode.weekly_tallies('page').to_a.sort.to_json %>
+    var notes = <%= @graph_notes %>
+    var wikis = <%= @graph_wikis %>
 
     $.plot($("#notes"), [
       {
