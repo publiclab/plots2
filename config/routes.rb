@@ -122,8 +122,9 @@ Plots2::Application.routes.draw do
   match 'search/advanced/:id' => 'search#advanced'
   match 'search/:id' => 'search#index'
   match 'search/typeahead/:id' => 'search#typeahead'
-  match 'search/questions/:id' => 'search#questions'
-  match 'search/questions_typeahead/:id' => 'search#questions_typeahead'
+  
+  match 'questions_search/:id' => 'questions_search#index'
+  match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
 
   match 'tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'

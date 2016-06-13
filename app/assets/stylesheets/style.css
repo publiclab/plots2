@@ -377,3 +377,6 @@ div.note.moderated h4 {
   background: #ccc;
 }
 
+#questions_searchform .dropdown-menu{
+  width: 95%;
+}
