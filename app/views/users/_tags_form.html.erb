@@ -1,4 +1,4 @@
-<form id="infoform" class="form" data-remote="true" action="/info/tags/create">
+<form id="infoform" class="form" action="/info/tags/create">
   <div class="control-group row">
     <div class="col-md-3">
       <label class="" for="skills">Skills</label>
@@ -94,18 +94,66 @@
     <div class="col-md-3">
       <label class="" for="location">Location</label>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-8">
       <p><span id="location"></span></p>
-      <div class="input-group">
+      <div class="input-group col-md-5">
         <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
-        <input autocomplete="off" id="taginput" name="info[location]" type="text" placeholder="Type location" data-provide="typeahead" class="form-control" data-tag="location" />
+        <input autocomplete="off" name="info[location]" type="text" placeholder="Type location" data-provide="typeahead" class="form-control" data-tag="location" />
       </div>
+      <div class="input-group col-md-offset-6" style="margin-top: -33px;">
+        <a class="btn btn-default" id="myLocation">
+          <span class="glyphicon glyphicon-map-marker">Map</span>
+        </a>
+      </div>
+      <div class="clearfix"></div><br />
     </div>
   </div>
   <br />
+  
+  <div class="container">
+    <div id="map" class="row"></div>
+  </div>
+
 
   <script type="text/javascript">
     $(document).ready(function() {
+
+      // fetch geo location
+      if ("geolocation" in navigator) {
+        $('#myLocation').click(function(e) {
+          initMap();
+        });
+      } else {
+        console.log("Geo Location not available in navaigator");
+      }
+
+      function initMap() {
+
+        var lat, lon;
+        navigator.geolocation.getCurrentPosition(function(position) {
+          lat = position.coords.latitude;
+          long = position.coords.longitude;
+
+          $('#map').attr('style', 'height: 300px;');
+
+          var mymap = L.map('map').setView([lat, long], 15);
+          L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+            attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
+          }).addTo(mymap);
+
+          L.marker([lat, long]).addTo(mymap)
+            .bindPopup('<b><%= current_user.username %></b>')
+            .openPopup();
+
+          $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+long, function(data) {
+            if (data.status) {
+              var address = data.results[0].formatted_address;
+              console.log(address);
+              $("input[data-tag='location']").attr('value', address);
+            }
+          });
+        });
+      }
 
       $('.tag-input').typeahead({
         items: 8,
