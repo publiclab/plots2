@@ -77,5 +77,9 @@ module Plots2
       OpenID::Util.logger = Rails.logger
       ActionController::Base.send :include, OpenIdAuthentication
     end
+
+    # Search API configuration
+    config.paths.add File.join('app','api', glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
   end
 end
