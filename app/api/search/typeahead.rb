@@ -1,4 +1,6 @@
-module API
+require 'grape'
+
+module Search
   class Typeahead < Grape::API
     
     before_filter :set_search_service
