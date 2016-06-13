@@ -11,7 +11,27 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160527131458) do
+ActiveRecord::Schema.define(:version => 20160604065635) do
+
+  create_table "answer_selections", :force => true do |t|
+    t.integer "user_id"
+    t.integer "aid"
+    t.boolean "liking",    :default => false
+    t.boolean "following", :default => false
+  end
+
+  add_index "answer_selections", ["user_id", "aid"], :name => "index_answer_selections_on_user_id_and_aid"
+
+  create_table "answers", :force => true do |t|
+    t.integer  "uid",          :default => 0, :null => false
+    t.integer  "nid",          :default => 0, :null => false
+    t.string   "content",                     :null => false
+    t.integer  "cached_likes", :default => 0
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+  end
+
+  add_index "answers", ["uid", "nid"], :name => "index_answers_on_uid_and_nid"
 
   create_table "comments", :primary_key => "cid", :force => true do |t|
     t.integer "pid",                             :default => 0,  :null => false
@@ -23,6 +43,7 @@ ActiveRecord::Schema.define(:version => 20160527131458) do
     t.integer "timestamp",                       :default => 0,  :null => false
     t.integer "status",    :limit => 1,          :default => 0,  :null => false
     t.integer "format",    :limit => 2,          :default => 0,  :null => false
+    t.string  "thread"
     t.string  "name",      :limit => 60
     t.string  "mail",      :limit => 64
     t.string  "homepage"
@@ -136,6 +157,7 @@ ActiveRecord::Schema.define(:version => 20160527131458) do
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
     t.string   "remote_url"
+    t.integer  "vid",                :default => 0
   end
 
   create_table "node", :primary_key => "nid", :force => true do |t|
@@ -157,6 +179,7 @@ ActiveRecord::Schema.define(:version => 20160527131458) do
     t.integer "drupal_comments_count",                     :default => 0
     t.integer "drupal_node_revisions_count",               :default => 0
     t.string  "path"
+    t.integer "main_image_id"
   end
 
   add_index "node", ["changed"], :name => "node_changed"
@@ -195,6 +218,7 @@ ActiveRecord::Schema.define(:version => 20160527131458) do
     t.text    "log"
     t.integer "timestamp",                       :default => 0,  :null => false
     t.integer "format",                          :default => 0,  :null => false
+    t.integer "status",                          :default => 1
   end
 
   add_index "node_revisions", ["nid"], :name => "index_node_revisions_nid"
