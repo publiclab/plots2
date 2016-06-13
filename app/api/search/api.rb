@@ -1,7 +1,8 @@
 require 'grape'
+require 'grape-swagger'
 
-module API
-  class Base < Grape::API
+module Search
+  class API < Grape::API
     version 'v1', using: :header, vendor: 'publiclab'
     format :json
     prefix :api
