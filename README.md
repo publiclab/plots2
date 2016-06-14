@@ -121,11 +121,13 @@ For additional support, join the Public Lab website and mailing list at http://p
 
 ****
 
-##Bugs and support
+##Internationalization
 
-To report bugs and request features, please use the GitHub issue tracker provided at https://github.com/publiclab/plots2/issues 
+Publiclab.org now supports Internationalization and localization, though we are in the initial stages. This has been accomplished with [rails-I8n](https://github.com/svenfuchs/rails-i18n). 
 
-For additional support, join the Public Lab website and mailing list at http://publiclab.org/lists or for urgent requests, email web@publiclab.org
+To see it in action, click on the 'Language' dropdown located in the header section of the page. All the guidelines and best practices for I18n can be found [here](http://guides.rubyonrails.org/i18n.html).
+
+****
 
 ##Developers
 
