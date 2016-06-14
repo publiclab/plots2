@@ -1,4 +1,4 @@
-<form id="comment-form" data-remote="true" class="well" action="/comment/create/<%= @node.nid %>">
+<form id="comment-form" data-remote="true" class="well" <% if params[:controller] == 'questions' %> action= "/answers/create/<%= @node.nid %>" <% else %> action="/comment/create/<%= @node.nid %>" <% end %>>
 
   <h4 style="margin-top:0;"><%= title %></h4>
 
@@ -8,8 +8,12 @@
     }
   </style>
 
+  <% if params[:controller] == 'questions' %>
+    <%= render :partial => "editor/toolbar" %>
+  <% end %>
+
   <div class="form-group dropzone">
-    <textarea onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email."></textarea>
+    <textarea onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"></textarea>
 
     <div id="imagebar">
 
@@ -47,6 +51,9 @@
   </div>
 
   <script>
+    jQuery(document).ready(function() {
+      $E.initialize();
+    });
 
     $D = {
       uid: <%= current_user.uid %>,
@@ -99,11 +106,11 @@
     <span style="color:#888;"> &nbsp; 
       <br class="visible-xs" />Logged in as <b><%= current_user.username %></b> | 
       <a target="_blank" href="/wiki/authoring-help#Formatting">Formatting</a> | 
-      <a onClick="$('#who-is-notified').toggle()">Notifications</a>
+      <a onClick="$('#who-is-notified-form').toggle()">Notifications</a>
     </span>
   </div>
 
-  <p id="who-is-notified" style="display:none;color:#888;">
+  <p id="who-is-notified-form" style="display:none;color:#888;">
     Author, commenters, and those who've "liked" this note will receive email notifications
   </p>
 

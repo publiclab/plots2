@@ -207,6 +207,13 @@ Plots2::Application.routes.draw do
   match 'questions/popular' => 'questions#popular'
   match 'questions/liked' => 'questions#liked'
 
+  match 'answers/create/:nid' => 'answers#create'
+  match 'answers/update/:id' => 'answers#update'
+  match 'answers/delete/:id' => 'answers#delete'
+
+  match 'answer_like/show/:aid' => 'answer_like#show'
+  match 'answer_like/likes/:aid' => 'answer_like#likes'
+
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
