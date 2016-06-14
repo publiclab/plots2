@@ -12,10 +12,10 @@
 
       <p>Or try an <a href="/search/advanced/">advanced search</a></p>
 
+    <p>No results found; try looking for <a href="/tag/<%= params[:id] %>">items tagged with '<b><%= params[:id] %></b>'</a> or broadening your search:</p>
+    <!--<p>Try an <a href="/search/advanced/">advanced search</a></p>-->
   <% else %>
-
-      <%= render :partial => "notes/notes" %>
-
+    <%= render :partial => "notes/notes" %>
   <% end %>
 
   <hr />

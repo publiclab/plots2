@@ -1,7 +1,7 @@
 class SearchesController < ApplicationController
 
   before_filter :set_search_service
-  before_filter :set_search, only: [:show]
+  before_filter :set_search, only: [:show, :update]
 
   def index
     @searches = Search.all
@@ -15,12 +15,20 @@ class SearchesController < ApplicationController
   end
 
   def create
-    @search = Search.new(key_words: params[:id])
+    @search = Search.new(search_params)
     @search.title = 'Advanced search'
     if @search.save
       redirect_to @search
     else
       puts 'search failed !'
+      render :new
+    end
+  end
+
+  def update
+    if @search.update_attributes(search_params)
+      redirect_to @search
+    else
       render :new
     end
   end
@@ -97,7 +105,7 @@ class SearchesController < ApplicationController
     end
 
     def search_params
-      params.require(:search).permit(:comments, :maps, :wikis, :notes)
+      params.require(:search).permit(:key_words, :main_type, :note_type, :date_created, :created_by)
     end
 
 end
