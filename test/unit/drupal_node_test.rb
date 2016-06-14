@@ -143,4 +143,10 @@ class DrupalNodeTest < ActiveSupport::TestCase
     #assert !node.save
   #end
 
+  test "reports weekly_tallies" do
+    node = node(:one)
+    assert_not_nil DrupalNode.weekly_tallies
+    assert_not_nil DrupalNode.weekly_tallies('page', 2, Time.now - 1.month)
+  end
+
 end

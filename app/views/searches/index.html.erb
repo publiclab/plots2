@@ -1,0 +1,10 @@
+<table>
+  <h3> All the search records </h3>
+  <% for search in @searches %>
+    <tr>
+      <td><%= search.id %></td>
+      <td><%= search.title %></td>
+      <td><%= search.key_words %></td>
+    </tr>
+  <% end %>
+</table>
