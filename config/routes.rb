@@ -143,8 +143,6 @@ Plots2::Application.routes.draw do
   match 'search/typeahead/:id' => 'searches#typeahead'
   match 'search/questions/:id' => 'searches#questions'
   match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
-  match 'search/dynamic' => 'searches#dynamic'
-  match 'search/dynamic/:id' => 'searches#dynamic'
   match 'search/:id' => 'searches#normal_search'
 
   # Question Search capability--temporary until combined with full Search Capabilities
