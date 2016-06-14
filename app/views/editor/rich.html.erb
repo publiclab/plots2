@@ -48,7 +48,7 @@
       </div>
 
       <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="Title" />
+        <input class="form-control input-lg" type="text" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %>" />
       </div>
 
     </div>
@@ -68,7 +68,7 @@
         </div>
         <div class="col-md-6 help">
 
-          <p><input type="file" name="image[photo]" /></p>
+          <p><input type="file" name="image[photo]" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" /></p>
           <p class="ple-help"><span class="ple-help-minor">Select an optional main image for your post.</span></p>
 
         </div>
@@ -101,7 +101,7 @@
       </div>
 
       <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="balloon-mapping..." />
+        <input class="form-control input-lg" type="text" placeholder="balloon-mapping..." value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
       </div>
 
     </div>

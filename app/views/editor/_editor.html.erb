@@ -1,7 +1,7 @@
 <%= render :partial => "editor/toolbar" %>
 
 <div class="form-group dropzone">
-  <textarea name="body" tabindex="2" class="form-control" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %><%= render :partial => "editor/newsletter" if params[:newsletter] %></textarea>
+  <textarea name="body" tabindex="2" class="form-control" id="text-input" rows="20" cols="60"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
   <div id="imagebar">
     <div style="display:none;" id="create_progress" class="progress progress-striped active pull-right">
       <div id="create_progress-bar" class="progress-bar" style="width: 0%;"></div>
