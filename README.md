@@ -119,6 +119,14 @@ To report bugs and request features, please use the GitHub issue tracker provide
 
 For additional support, join the Public Lab website and mailing list at http://publiclab.org/lists or for urgent requests, email web@publiclab.org
 
+****
+
+##Bugs and support
+
+To report bugs and request features, please use the GitHub issue tracker provided at https://github.com/publiclab/plots2/issues 
+
+For additional support, join the Public Lab website and mailing list at http://publiclab.org/lists or for urgent requests, email web@publiclab.org
+
 ##Developers
 
 Help improve Public Lab software!
