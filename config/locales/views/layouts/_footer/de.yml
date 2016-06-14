@@ -18,4 +18,7 @@ de:
       different_licenses: "Spezifische Arbeiten auf dieser Website können unter verschiedenen Lizenzen freigegeben oder gewidmet werden, aber nur dann, wenn diese Alternativen sind klar von den Autoren angegeben."
       font_use: "Diese Seite macht intensiven Gebrauch von der Open-Source Schrift<a href='%{url}'>Junction</a>."
       server_donation: "PublicLab.org wird durch eine Spende von Server-Raum gehostet von <a href='%{url}'>Rackspace</a>."
-   
+      language:
+        language_title: "Sprache"
+        english: "Englisch"
+        german: "Deutsch"
