@@ -155,7 +155,11 @@ class NotesController < ApplicationController
         if params[:redirect] && params[:redirect] == 'question'
           redirect_to @node.path(:question)
         else
-          redirect_to @node.path
+          if request.xhr?
+            render text: @node.path
+          else
+            redirect_to @node.path
+          end
         end
       else
         render :template => "editor/post"
@@ -169,7 +173,11 @@ class NotesController < ApplicationController
   def edit
     @node = DrupalNode.find(params[:id],:conditions => {:type => "note"})
     if current_user.uid == @node.uid || current_user.role == "admin" 
-      render :template => "editor/post"
+      if params[:rich]
+        render :template => "editor/rich"
+      else
+        render :template => "editor/post"
+      end
     else
       prompt_login "Only the author can edit a research note."
     end
