@@ -1,6 +1,9 @@
 <%= render :partial => "sidebar/related" %>
 
+
 <div class="col-md-9">
+  <%= render 'form' %>
+
   <table class="table">
     <% @nodes.each do |node| %>
       <tr class="<%= node.type %>">

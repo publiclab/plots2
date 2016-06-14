@@ -5,17 +5,10 @@
   <h3>Search results for <i style="color:#aaa;"><%= params[:id] %></i> <small>(<a href="/search/advanced/<%= params[:id] %>">advanced search</a>)</small></h3>
 
   <% if @notes.length == 0 %>
-
-      <p>No results found; try looking for <a href="/tag/<%= params[:id] %>">items tagged with '<b><%= params[:id] %></b>'</a> or broadening your search:</p>
-
-      <%= render :partial => "searches/search" %>
-
-      <p>Or try an <a href="/search/advanced/">advanced search</a></p>
-
+    <p>No results found; try looking for <a href="/tag/<%= params[:id] %>">items tagged with '<b><%= params[:id] %></b>'</a> or broadening your search:</p>
+    <!--<p>Try an <a href="/search/advanced/">advanced search</a></p>-->
   <% else %>
-
-      <%= render :partial => "notes/notes" %>
-
+    <%= render :partial => "notes/notes" %>
   <% end %>
 
   <hr />
