@@ -2,12 +2,18 @@
 
 one:
   uid: 1
-  location: MyString
-  lat: 1.5
-  long: 1.5
+  location: New york City, US
+  country: US
+  state: New york
+  city: New york
+  lat: 17.3755495
+  long: 78.5498682
 
 two:
   uid: 1
-  location: MyString
-  lat: 1.5
-  long: 1.5
+  location: Hyderabad, India
+  country: India
+  state: Telangana
+  city: Hyderabad
+  lat: 18.3755495
+  long: 78.5498682
