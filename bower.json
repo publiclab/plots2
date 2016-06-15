@@ -16,10 +16,7 @@
     "leaflet": "0.7.3",
     "moment": "~2.10.6",
     "junction": "theleagueof/junction",
-    "publiclab-editor": "~0.0.1",
-    "woofmark": "~4.1.0",
-    "horsey": "3.0.0",
-    "bootstrap-tokenfield": "~0.12.0"
+    "publiclab-editor": "~0.0.1"
   },
   "resolutions": {
     "jquery": "~2.1.0",

@@ -174,6 +174,13 @@ class NotesController < ApplicationController
     @node = DrupalNode.find(params[:id],:conditions => {:type => "note"})
     if current_user.uid == @node.uid || current_user.role == "admin" 
       if params[:rich]
+        if @node.main_image
+          @main_image = @node.main_image.path(:default) 
+        elsif params[:main_image] && Image.find_by_id(params[:main_image])
+          @main_image = Image.find_by_id(params[:main_image]).path
+        elsif @image
+          @main_image = @image.path(:default)
+        end
         render :template => "editor/rich"
       else
         render :template => "editor/post"
@@ -222,10 +229,12 @@ class NotesController < ApplicationController
         flash[:notice] = "Edits saved."
         # Notice: Temporary redirect.Remove this condition after questions show page is complete.
         #         Just keep @node.path(:question)
-        if params[:redirect] && params[:redirect] == 'question'
-          redirect_to @node.path(:question)
+        format = false
+        format = :question if params[:redirect] && params[:redirect] == 'question'
+        if request.xhr?
+          render text: @node.path(format)
         else
-          redirect_to @node.path
+          redirect_to @node.path(format)
         end
       else
         flash[:error] = "Your edit could not be saved."
