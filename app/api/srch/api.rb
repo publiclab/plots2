@@ -24,4 +24,5 @@ module Srch
                               ]
 
   end
+
 end
