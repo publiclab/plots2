@@ -86,13 +86,8 @@ gem "i18n-js", ">= 3.0.0.rc11"
 gem 'http_accept_language'
 gem 'friendly_id'
 gem 'jbuilder'
-gem 'grape'
-gem 'grape-entity'
-gem 'grape-swagger'
-gem 'grape-swagger-rails'
 gem 'strong_parameters'
 
-gem 'strong_parameters'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
 
