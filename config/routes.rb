@@ -1,6 +1,13 @@
 Plots2::Application.routes.draw do
 
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+  
+  #Search RESTful endpoints
+  #constraints(subdomain: 'api') do
+  mount Srch::API => '/api'
+  mount GrapeSwaggerRails::Engine => '/api/docs'
+  #end
+  
 
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
@@ -292,9 +299,8 @@ Plots2::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
 
-  match ':controller(/:action(/:id))(.:format)'
+  # match ':controller(/:action(/:id))(.:format)'
 
-  mount Search::API => '/'
-  mount GrapeSwaggerRails::Engine => '/apidoc'
+
 
 end

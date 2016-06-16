@@ -63,6 +63,15 @@ gem "authlogic", "3.2.0"
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
 
+# RESTful API Support
+gem 'grape'
+gem 'grape-entity'
+gem 'grape-swagger'
+gem 'grape-swagger-entity'
+gem 'grape-swagger-rails'
+gem 'grape-swagger-ui'
+gem 'rack-cors', :require => 'rack/cors'
+
 gem 'mocha', '~> 1.1'
 gem 'jasmine-rails'
 gem 'jasmine-jquery-rails'
@@ -72,10 +81,5 @@ gem 'http_accept_language'
 gem 'friendly_id'
 gem 'jbuilder'
 
-gem 'grape'
-gem 'grape-entity'
-gem 'grape-swagger'
-gem 'grape-swagger-rails'
- 
 gem 'strong_parameters'
 
