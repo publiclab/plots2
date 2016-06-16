@@ -8,7 +8,6 @@ Plots2::Application.routes.draw do
   mount GrapeSwaggerRails::Engine => '/api/docs'
   #end
   
-
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
   resources :rusers
@@ -285,7 +284,5 @@ Plots2::Application.routes.draw do
   # match ':controller(/:action(/:id))(.:format)'
 
 
-  mount Search::API => '/'
-  mount GrapeSwaggerRails::Engine => '/apidoc'
 
 end

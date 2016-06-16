@@ -1,5 +1,5 @@
 require 'grape'
-require 'grape-entity'
+require 'grape-entities'
 
 module Srch
   module Entities
@@ -15,7 +15,7 @@ module Srch
       expose :docUrl, documentation: { type: "String", desc: "URL to the resource document." }
       expose :docTitle, documentation: { type: "String", desc: "Title or primary descriptor of the linked result." }
       expose :docSummary, documentation: { type: "String", desc: "If available, first paragraph or descriptor of the linked document." }
-      #expose :docTags, using Srch::Entities::TagResult, as :responses, documentation: { type: "API::Entities::TagResult", desc:  "An array of the associated tag values for the document, if they exist." }
+      expose :docTags, using API::Entities::TagResult, as: :responses, documentation: { type: "API::Entities::TagResult", desc:  "An array of the associated tag values for the document, if they exist." }
       expose :docScore, documentation: { type: "Float", desc: "If calculated, the relevance of the document result to the search request; i.e. the 'matching score'" }
     end
 
@@ -29,8 +29,8 @@ module Srch
 
     # SearchResult encapsulates the values returned from a search request.
     class SearchResult < Grape::Entity
-      #expose :docList, using Srch::Entities::DocResult, as :responses
-      #expose :tagList, using Srch::Entities::TagResult, as :responses
+      expose :docList, using API::Entities::DocResult, as :responses
+      expose :tagList, using API::Entities::TagResult, as :responses
       expose :srchString, documentation: { type: "String", desc: "Search Query text."}
       expose :seq, documentation: { type: "Integer", desc: "Sequence value passed from client through to the SearchResult.  For client sequencing usage" }      
     end
