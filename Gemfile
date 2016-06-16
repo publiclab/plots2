@@ -63,6 +63,17 @@ gem "authlogic", "3.2.0"
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
 
+
+# RESTful API Support
+gem 'grape'
+gem 'grape-entity'
+gem 'grape-swagger'
+gem 'grape-swagger-entity'
+gem 'grape-swagger-rails'
+gem 'grape-swagger-ui'
+gem 'rack-cors', :require => 'rack/cors'
+
+>>>>>>> Successful RESTful search call for typeahead
 gem 'mocha', '~> 1.1'
 gem 'jasmine-rails'
 gem 'jasmine'
@@ -70,10 +81,4 @@ gem 'jasmine-jquery-rails'
 gem 'strong_parameters'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
-
-gem 'jbuilder'
-gem 'grape'
-gem 'grape-entity'
-gem 'grape-swagger'
-gem 'grape-swagger-rails'
 

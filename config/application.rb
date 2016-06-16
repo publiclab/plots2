@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require 'rack/cors'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
@@ -63,6 +64,11 @@ module Plots2
 
     config.action_view.sanitized_allowed_tags = ['iframe', 'embed']
 
+    # Search API
+    # Auto-load API and its subdirectories
+    config.paths.add File.join('app/api'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app','api', '**', '*.rb')]
+
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
     config.assets.paths << Rails.root.join("public","lib")
@@ -79,9 +85,5 @@ module Plots2
       OpenID::Util.logger = Rails.logger
       ActionController::Base.send :include, OpenIdAuthentication
     end
-
-    # Search API configuration
-    config.paths.add File.join('app','api', glob: File.join('**', '*.rb')
-    config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
   end
 end
