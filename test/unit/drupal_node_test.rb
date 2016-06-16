@@ -25,7 +25,24 @@ class DrupalNodeTest < ActiveSupport::TestCase
       title: 'My research note'
     })
     assert node.save!
+    username = rusers(:bob).username
+    assert_equal "/notes/#{username}/#{Time.now.strftime("%m-%d-%Y")}/#{node.title.parameterize}", node.path
+    assert_equal "/questions/#{username}/#{Time.now.strftime("%m-%d-%Y")}/#{node.title.parameterize}", node.path(:question)
     assert_equal 'note', node.type
+  end
+
+  test "edit a research note and check path" do
+    original_title = 'My research note'
+    node =  DrupalNode.new({
+      uid: rusers(:bob).id,
+      type: 'note',
+      title: original_title
+    })
+    assert node.save!
+    node.title = "I changed my mind"
+    username = rusers(:bob).username
+    assert_not_equal "/notes/#{username}/#{Time.now.strftime("%m-%d-%Y")}/#{node.title.parameterize}", node.path
+    assert_equal "/notes/#{username}/#{Time.now.strftime("%m-%d-%Y")}/#{original_title.parameterize}", node.path
   end
 
   # new_note also generates a revision
@@ -142,5 +159,11 @@ class DrupalNodeTest < ActiveSupport::TestCase
     #node = DrupalNode.new
     #assert !node.save
   #end
+
+  test "reports weekly_tallies" do
+    node = node(:one)
+    assert_not_nil DrupalNode.weekly_tallies
+    assert_not_nil DrupalNode.weekly_tallies('page', 2, Time.now - 1.month)
+  end
 
 end

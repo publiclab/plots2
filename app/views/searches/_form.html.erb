@@ -1,30 +1,21 @@
 <%= form_for @search, class: 'navbar-form' do |f|%>
 
   <div class="form-group form-inline">
-    <input name="id" type="text" class="search-query form-control" data-provide="typeahead" data-source='["Balloon mapping","Thermal photography","Spectrometry"]' value="<%= params[:id] %>">
+    <%= f.text_field :key_words, value: params[:keyword], class: 'search-query form-control', :data => {provide: "typeahead", source: '["Balloon mapping","Thermal photography","Spectrometry"]'} %>
+    <!--<input name="id" type="text" class="search-query form-control" data-provide="typeahead" data-source='["Balloon mapping","Thermal photography","Spectrometry"]' value="<%= params[:keyword] %>">-->
     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
   </div>
 
-  <div class="pull-right" style="margin-top:5px;">
-    <label class="checkbox pull-right" style="width:100px;margin-right:10px;">
-      <input type="checkbox" checked="<%= !params[:comments] %>" name="comments" onClick="$('.comment').toggle()" />
-      <i class="fa fa-comment"></i> Comments
-    </label>
+    <%= f.label :main_type, 'Main Type (filter 1) ' %>
+    <%= f.select(:main_type, options_for_select([['Notes or Wiki updates'],['User Profiles']],1)) %>
+    <br />
+    <%= f.label :note_type, 'Note Type (filter 2) ' %>
+    <%= f.select :note_type, DrupalNode.pluck('DISTINCT type'), {include_blank: true} %>
+    <br />
+    <%= f.label :created_by, 'Created By (filter 3) ' %>
+    <%= f.text_field :created_by %>
+    <br />
+    <%= f.label :date_created, 'Date Created (filter 4) ' %>
+    <%= f.text_field :date_created %>
 
-    <label class="checkbox pull-right" style="width:60px;margin-right:10px;">
-      <input type="checkbox" checked="<%= !(params[:maps].nil?) %>" name="maps" onClick="$('.map').toggle()" />
-      <i class="fa fa-map-marker"></i> Maps
-    </label>
-
-    <label class="checkbox pull-right" style="width:55px;margin-right:10px;">
-      <input type="checkbox" checked="true" name="wikis" onClick="$('.page').toggle()"/>
-      <i class="fa fa-book"></i> Wiki
-    </label>
-
-    <label class="checkbox pull-right" style="width:130px;margin-right:10px;">
-      <input type="checkbox" checked="true" name="notes" onClick="$('.note').toggle()"/>
-      <i class="fa fa-file"></i> Research notes
-    </label>
-
-  </div>
 <% end %>

@@ -76,5 +76,4 @@ gem 'mocha', '~> 1.1'
 gem 'jasmine-rails'
 gem 'jasmine'
 gem 'jasmine-jquery-rails'
-gem 'jbuilder'
-
+gem 'strong_parameters'

@@ -44,13 +44,13 @@
 
   <% if params[:preview] %>
   <p>
-    <%= render partial: 'user_tags/tags', locals: { type: 'skill', data: fetch_tags('skill') } %>
-    <%= render partial: 'user_tags/tags', locals: { type: 'gear', data: fetch_tags('gear') } %>
-    <%= render partial: 'user_tags/tags', locals: { type: 'tool', data: fetch_tags('tool') } %>
-    <%= render partial: 'user_tags/tags', locals: { type: 'role', data: fetch_tags('role') } %>
+    <%= render partial: 'user_tags/tags', locals: { type: 'skill', data: fetch_tags(@user.id, 'skill') } %>
+    <%= render partial: 'user_tags/tags', locals: { type: 'gear', data: fetch_tags(@user.id, 'gear') } %>
+    <%= render partial: 'user_tags/tags', locals: { type: 'tool', data: fetch_tags(@user.id, 'tool') } %>
+    <%= render partial: 'user_tags/tags', locals: { type: 'role', data: fetch_tags(@user.id, 'role') } %>
 
-    <% if current_user == @user || current_user && current_user.role == 'admin' %>
-      <a href="/profile/info" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> Edit Information</a>
+    <% if current_user == @profile_user || current_user.role == 'admin' %>
+      <a href="/profile/info/<%= @user.name %>" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> Edit Information</a>
     <% end %>
   </p>
   <hr />
@@ -121,7 +121,7 @@
         <tr>
           <th style="width:200px;">Title</th>
           <th style="width:200px;">Creation date</th>
-          <th>Description</th>
+          <th>Image</th>
         </tr>
       </table>
     </div>
@@ -209,8 +209,9 @@
             author       = $(item).find('author').html(),
             pubDate      = $(item).find('pubDate').html(),
             id           = $(item).find('guid').html().split('maps/')[1],
-            description  = $(item).find('description').text();
-        
+            description  = $(item).find('description').text(),
+            image        = $(item).find('image').html();
+          
         pubDate = moment(new Date(pubDate)).fromNow();
         
         itemEl.append('<td class = "title"><a><i class="fa fa-map-marker"></i></a></td>');
@@ -220,8 +221,8 @@
         itemEl.append('<td class="date"></td>');
         itemEl.find('.date').append(pubDate);
         
-        itemEl.append('<td class="description"></td>');
-        itemEl.find('.description').html(description);
+        itemEl.append('<td class="image"><img src=""></td>');
+        itemEl.find('.image img').attr('src', image);
 
       });
     });

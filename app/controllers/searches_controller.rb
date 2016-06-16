@@ -1,8 +1,10 @@
 class SearchesController < ApplicationController
 
   before_filter :set_search_service
+  before_filter :set_search, only: [:show, :update]
 
   def index
+    @searches = Search.all
   end
 
   def new
@@ -13,38 +15,41 @@ class SearchesController < ApplicationController
   end
 
   def create
-    @title = 'Advanced search'
-    @search = Search.new(key_words: params[:id], title: @title)
-
+    @search = Search.new(search_params)
+    @search.title = 'Advanced search'
     if @search.save
-      @nodes = @search.advanced_search(params[:id], params)
-      render :show
+      redirect_to @search
     else
       puts 'search failed !'
+      render :new
+    end
+  end
+
+  def update
+    if @search.update_attributes(search_params)
+      redirect_to @search
+    else
+      render :new
     end
   end
 
   def show
-    set_sidebar :tags, [params[:id]]
+    @title = @search.title
+    @nodes = @search.advanced_search(@search.key_words, params)
+    set_sidebar :tags, @search.key_words
   end
 
   def normal_search
-    @title = "Search"
+    @title = 'Search'
     @tagnames = params[:id].split(',')
     @users = @search_service.users(params[:id])
     set_sidebar :tags, [params[:id]]
 
     @notes = DrupalNode.paginate(page: params[:page])
-                 .order("node.nid DESC")
+                 .order('node.nid DESC')
                  .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ?)', "%"+params[:id]+"%","%"+params[:id]+"%","%"+params[:id]+"%")
                  .includes(:drupal_node_revision)
   end
-
-  # def advanced
-  #   @title = "Advanced search"
-  #   all = !params[:notes] && !params[:wikis] && !params[:maps] && !params[:comments]
-  #   @nodes = []
-  # end
 
   # utility response to fill out search autocomplete
   # needs *dramatic* optimization
@@ -55,11 +60,11 @@ class SearchesController < ApplicationController
   end
 
   def questions
-    @title = "Search questions"
+    @title = 'Search questions'
     @tagnames = params[:id].split(',')
     @users = @search_service.users(params[:id])
     set_sidebar :tags, [params[:id]]
-    @notes = DrupalNode.where('type = "note" AND node.status = 1 AND title LIKE ?', "%" + params[:id] + "%")
+    @notes = DrupalNode.where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + params[:id] + '%')
                  .joins(:drupal_tag)
                  .where('term_data.name LIKE ?', 'question:%')
                  .order('node.nid DESC')
@@ -74,7 +79,7 @@ class SearchesController < ApplicationController
 
   def questions_typeahead
     matches = []
-    questions = DrupalNode.where('type = "note" AND node.status = 1 AND title LIKE ?', "%" + params[:id] + "%")
+    questions = DrupalNode.where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + params[:id] + '%')
                     .joins(:drupal_tag)
                     .where('term_data.name LIKE ?', 'question:%')
                     .order('node.nid DESC')
@@ -90,12 +95,17 @@ class SearchesController < ApplicationController
   end
 
   private
+
+    def set_search
+      @search = Search.find(params[:id])
+    end
+
     def set_search_service
       @search_service = SearchService.new
     end
 
     def search_params
-      params.require(:search).permit(:comments, :maps, :wikis, :@notes)
+      params.require(:search).permit(:key_words, :main_type, :note_type, :date_created, :created_by)
     end
 
 end

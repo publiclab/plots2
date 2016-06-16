@@ -1,0 +1,51 @@
+<div class="answers-container" style="margin-bottom:30px;">
+  <div id="a<%= answer.id %>" style="border: 1px solid #337ab7; border-radius:5px;">
+    <div class="navbar navbar-default">
+      <div class="navbar-text pull-left">
+      <% if answer.author %>
+        <% if answer.author.user && answer.author.user.photo_file_name %>
+        <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= answer.author.user.photo_path(:thumb) %>" /> 
+        <% else %>
+        <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="img-circle"></div> 
+        <% end %>
+        <a href="/profile/<%= answer.author.name %>"><%= answer.author.name %></a>
+      <% end %>
+        <span class="hidden-xs">answered</span>
+        <span style="color:#aaa;"><%= time_ago_in_words(answer.created_at) %> ago</span>
+      </div>
+      <div class="navbar-text pull-right">
+        <% if current_user && answer.uid == current_user.uid %>
+        <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= answer.id %>edit').toggle();$('#c<%= answer.id %>show').toggle();setInit(<%= answer.id %>);"><i class="fa fa-pencil"></i></a>
+        <% end %>
+
+        <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || answer.uid == current_user.uid || answer.node.uid == current_user.uid) %>
+          <a data-remote="true" data-confirm="Are you sure? <% if current_user && answer.uid != current_user.uid %>Please exercise caution in deleting/moderating others' answer; this cannot be undone.<% end %>" href="/answers/delete/<%= answer.id %>" class="btn btn-default btn-sm" id="a<%= answer.id %>delete-btn"><i class='icon fa fa-trash'></i></a>
+        <% end %>
+      </div>
+    </div>
+    <div id="c<%= answer.id %>show" style="padding:0px 20px">
+      <p><%= raw sanitize(auto_link(RDiscount.new(answer.body).to_html)) %></p>
+    </div>
+    <% if current_user %>
+      <%=  render :partial => "comments/edit", :locals => { title: "Edit answer", comment: answer, placeholder: "Help users by posting an answer to this question" } %>
+    <% end %>
+    <hr />
+    <div style="padding: 0px 20px 10px 20px;">
+       <a href=<% if current_user %>"/answer_like/likes/<%= answer.id %>"<% else %>"#"<% end %>data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-default btn-sm btn-like" id="answer-like-button-<%= answer.id %>" <% unless current_user %> popover-content="You must be logged in to Like the answer" <% end %> ><span id="answer-like-star-<%= answer.id %>" class="fa fa-star<% if current_user && !answer.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="answer-like-count-<%= answer.id %>"><%= answer.likers.length %></span> Likes</a>
+      <a href="#a<%= answer.id %>">Share Link</a>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    $("#answer-like-button-<%= answer.id %>").popover({
+      content: $("#answer-like-button-<%= answer.id %>").attr("popover-content")
+    })
+
+    $("#answer-like-button-<%= answer.id %>").tooltip({
+      title: $("#answer-like-button-<%= answer.id %>").attr("tooltip-title")
+    })
+
+  })
+</script>

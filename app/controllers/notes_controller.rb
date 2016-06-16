@@ -9,6 +9,53 @@ class NotesController < ApplicationController
     set_sidebar
   end
 
+  def stats
+    if params[:time]
+      @time = Time.parse(params[:time])
+    else
+      @time = Time.now
+    end
+
+    @weekly_notes = DrupalNode.select([:created, :type, :status])
+                              .where(type: 'note', status: 1, created: @time.to_i - 1.weeks.to_i..@time.to_i)
+                              .count
+    @weekly_wikis = DrupalNodeRevision.select(:timestamp)
+                                      .where(timestamp: @time.to_i - 1.weeks.to_i..@time.to_i)
+                                      .count
+    @weekly_members = User.where(created_at: @time - 1.weeks..@time)
+                          .count
+    @monthly_notes = DrupalNode.select([:created, :type, :status])
+                               .where(type: 'note', status: 1, created: @time.to_i - 1.months.to_i..@time.to_i)
+                               .count
+    @monthly_wikis = DrupalNodeRevision.select(:timestamp)
+                                       .where(timestamp: @time.to_i - 1.months.to_i..@time.to_i)
+                                       .count
+    @monthly_members = User.where(created_at: @time - 1.months..@time)
+                           .count
+
+    @notes_per_week_past_year = DrupalNode.select([:created, :type, :status])
+                                          .where(type: 'note', status: 1, created: @time.to_i - 1.years.to_i..@time.to_i)
+                                          .count / 52.0
+    @edits_per_week_past_year = DrupalNodeRevision.select(:timestamp)
+                                                  .where(timestamp: @time.to_i - 1.years.to_i..@time.to_i)
+                                                  .count / 52.0
+
+    @graph_notes = DrupalNode.weekly_tallies('note', 52, @time).to_a.sort.to_json
+    @graph_wikis = DrupalNode.weekly_tallies('page', 52, @time).to_a.sort.to_json
+
+    users = []
+    nids = []
+    DrupalNode.find(:all, :conditions => {:type => 'note', :status => 1}).each do |note|
+      unless note.uid == 674 || note.uid == 671
+        users << note.uid
+        nids << note.nid
+      end
+    end
+
+    @all_notes = nids.uniq.length
+    @all_contributors = users.uniq.length
+  end
+
   def tools
     @title = "Tools"
     @notes = DrupalNode.where(status: 1, type: ['page','tool'])
@@ -108,7 +155,11 @@ class NotesController < ApplicationController
         if params[:redirect] && params[:redirect] == 'question'
           redirect_to @node.path(:question)
         else
-          redirect_to @node.path
+          if request.xhr?
+            render text: @node.path
+          else
+            redirect_to @node.path
+          end
         end
       else
         render :template => "editor/post"
@@ -122,7 +173,11 @@ class NotesController < ApplicationController
   def edit
     @node = DrupalNode.find(params[:id],:conditions => {:type => "note"})
     if current_user.uid == @node.uid || current_user.role == "admin" 
-      render :template => "editor/post"
+      if params[:rich]
+        render :template => "editor/rich"
+      else
+        render :template => "editor/post"
+      end
     else
       prompt_login "Only the author can edit a research note."
     end

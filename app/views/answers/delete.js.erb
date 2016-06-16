@@ -1,0 +1,5 @@
+$("#a<%= @answer.id %>delete-btn").bind('ajax:success', function(e,response){
+  $("#a<%= @answer.id %>").remove()
+  $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)-1
+  $('#short-comment-count')[0].innerHTML = parseInt($('#short-comment-count')[0].innerHTML)-1
+})

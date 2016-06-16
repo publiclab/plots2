@@ -1,5 +1,11 @@
-<table class="table">
-  <% @nodes.each do |node| %>
+<%= render :partial => "sidebar/related" %>
+
+
+<div class="col-md-9">
+  <%= render 'form' %>
+
+  <table class="table">
+    <% @nodes.each do |node| %>
       <tr class="<%= node.type %>">
         <% if node.type == "comment" %>
             <td><i class="fa fa-<%= node.icon %>"></i> Comment by <a href="<%= node.author.name %>"><%= node.author.name %></a></td>
@@ -9,5 +15,6 @@
         <td><% if node.type != "page" %><a href="/profile/<%= node.author.name %>"><%= node.author.name %></a><% end %></td>
         <td><% node.tags.each do |tag| %><a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %></td>
       </tr>
-  <% end %>
-</table>
+    <% end %>
+  </table>
+</div>
