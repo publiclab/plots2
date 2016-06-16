@@ -19,25 +19,25 @@ class DrupalNode < ActiveRecord::Base
   self.primary_key = 'nid'
 
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
-# wasn't working to tie it to .vid, manually defining below
-#  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
-#  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
+  # wasn't working to tie it to .vid, manually defining below
+  #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
+  #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
   has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_files, :through => :drupal_upload
-    has_many :drupal_node_community_tag, :foreign_key => 'nid', :dependent => :destroy
-    has_many :drupal_tag, :through => :drupal_node_community_tag
-    # these override the above... have to do it manually:
-    # has_many :drupal_tag, :through => :drupal_node_tag
+  has_many :drupal_node_community_tag, :foreign_key => 'nid', :dependent => :destroy
+  has_many :drupal_tag, :through => :drupal_node_community_tag
+  # these override the above... have to do it manually:
+  # has_many :drupal_tag, :through => :drupal_node_tag
   has_many :drupal_comments, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_type_map, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_field_mappers, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_field_map_editor, :foreign_key => 'nid', :dependent => :destroy
-
   has_many :images, :foreign_key => :nid
   has_many :node_selections, :foreign_key => :nid
-
   has_many :answers, :foreign_key => :nid
+
+  belongs_to :drupal_users, :foreign_key => 'uid'
 
   validates :title, :presence => :true
   validates_with UniqueUrlValidator, :on => :create
