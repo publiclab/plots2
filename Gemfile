@@ -62,6 +62,18 @@ gem "rack-openid"
 gem "authlogic", "3.2.0"
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
+<<<<<<< b2f1a093f026083ad75ce6432a3498bbe4c71042
+=======
+
+# RESTful API Support
+gem 'grape'
+gem 'grape-entity'
+gem 'grape-swagger'
+gem 'grape-swagger-entity'
+gem 'grape-swagger-rails'
+gem 'grape-swagger-ui'
+gem 'rack-cors', :require => 'rack/cors'
+
 gem 'mocha', '~> 1.1'
 gem 'jasmine-rails'
 gem 'jasmine-jquery-rails'
@@ -70,9 +82,5 @@ gem "i18n-js", ">= 3.0.0.rc11"
 gem 'http_accept_language'
 gem 'friendly_id'
 gem 'jbuilder'
-gem 'grape'
-gem 'grape-entity'
-gem 'grape-swagger'
-gem 'grape-swagger-rails'
 gem 'strong_parameters'
 

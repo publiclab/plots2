@@ -1,8 +1,7 @@
 require 'grape'
 require 'grape-entities'
 
-
-module Search
+module Srch
   module Entities
     # Class encapsulating search requests.
     class SearchRequest < Grape::Entity
