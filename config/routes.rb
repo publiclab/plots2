@@ -118,13 +118,16 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
-  match 'search' => 'searches#new'
-  match 'search/advanced' => 'searches#new'
-  match 'search/advanced/:keyword' => 'searches#new'
-  match 'search/:id' => 'searches#normal_search'
-  match 'search/typeahead/:id' => 'searches#typeahead'
-  match 'search/questions/:id' => 'searches#questions'
-  match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
+  # Search pattern matches--Modify accordingly for RESTful operations
+  match 'search' => 'search#advanced'
+  match 'search/advanced' => 'search#advanced'
+  match 'search/advanced/:id' => 'search#advanced'
+  match 'search/:id' => 'search#index'
+  match 'search/typeahead/:id' => 'search#typeahead'
+  
+  match 'questions_search/:id' => 'questions_search#index'
+  match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
+
 
   match 'tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'
@@ -149,14 +152,14 @@ Plots2::Application.routes.draw do
   match 'nearby' => 'home#nearby'
   match 'profile/edit' => 'users#edit'
   match 'profile/photo' => 'users#photo'
-  match 'profile/info' => 'users#info', as: 'info'
+  match 'profile/info/:id' => 'users#info', as: 'info'
   match 'profile/:id' => 'users#profile'
   match 'profile/:id/edit' => 'users#edit'
   match 'profile/:id/likes' => 'users#likes'
   match 'feed/:author' => 'users#rss'
 
   match 'info/suggested/:key/:value' => 'user_tags#suggested'
-  match 'info/tags/create' => 'user_tags#create'
+  match 'info/tags/create/:id' => 'user_tags#create'
   match 'info/tags/delete/:id' => 'user_tags#delete'
 
   match 'maps' => 'map#index'
@@ -207,6 +210,13 @@ Plots2::Application.routes.draw do
   match 'q/:id' => 'questions#shortlink'
   match 'questions/popular' => 'questions#popular'
   match 'questions/liked' => 'questions#liked'
+
+  match 'answers/create/:nid' => 'answers#create'
+  match 'answers/update/:id' => 'answers#update'
+  match 'answers/delete/:id' => 'answers#delete'
+
+  match 'answer_like/show/:aid' => 'answer_like#show'
+  match 'answer_like/likes/:aid' => 'answer_like#likes'
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products

@@ -8,7 +8,7 @@ class UserTagsControllerTest < ActionController::TestCase
 
   test "should create a new tags" do
     UserSession.create(rusers(:bob))
-    post :create, :type => 'skill', :value => 'environment'
+    post :create, :id => rusers(:bob).username, :type => 'skill', :value => 'environment'
     assert_equal "environment tag created successfully", flash[:notice]
     assert_redirected_to info_path
   end
@@ -30,9 +30,9 @@ class UserTagsControllerTest < ActionController::TestCase
 
   test "should not create duplicate tag" do
     UserSession.create(rusers(:bob))
-    post :create, :type => 'skill', :value => 'environment'
+    post :create, :id => rusers(:bob).username, :type => 'skill', :value => 'environment'
     # duplicate tag
-    post :create, :type => 'skill', :value => 'environment'
+    post :create, :id => rusers(:bob).username, :type => 'skill', :value => 'environment'
     assert_equal "Error: tag already exists.", assigns['output']['errors'][0]
     assert_redirected_to info_path
   end
@@ -41,22 +41,54 @@ class UserTagsControllerTest < ActionController::TestCase
     UserSession.create(rusers(:bob))
     valid_tags = ['skill', 'gear', 'role', 'tool']
     valid_tags.each do |tag|
-      post :create, :type => tag, :value => 'tagvalue'
+      post :create, :id => rusers(:bob).username, :type => tag, :value => 'tagvalue'
       assert_equal "tagvalue tag created successfully", flash[:notice]
       assert_redirected_to info_path
     end
 
     invalid_tags = ['skills', 'abc', '123']
     invalid_tags.each do |tag|
-      post :create, :type => tag, :value => 'tagvalue'
+      post :create, :id => rusers(:bob).username, :type => tag, :value => 'tagvalue'
       assert_equal "Error: Invalid value #{tag}", assigns['output']['errors'][0]
     end
   end
 
   test "should not allow empty tag value" do
     UserSession.create(rusers(:bob))
-    post :create, :type => "skill", :value => ''
+    post :create, :id => rusers(:bob).username, :type => "skill", :value => ''
     assert_equal "Error: value cannot be empty", assigns['output']['errors'][0]
     assert_redirected_to info_path
+  end
+
+  test "admin should delete existing tag of normal user" do
+    UserSession.create(rusers(:bob))
+    post :create, :id => rusers(:bob).username, :type => "role", :value => "Organizer"
+    user_tag = UserTag.where(uid: rusers(:bob).id).last
+    user_tags_count = UserTag.where(uid: rusers(:bob).id).count
+    # Delete above tag
+    UserSession.create(rusers(:jeff))
+    post :delete, :id => user_tag.id
+    assert_equal user_tags_count -1, UserTag.where(uid: rusers(:bob).id).count
+  end
+
+  test "admin should create new tags for normal user" do
+    UserSession.create(rusers(:jeff))
+    user_tags_count = UserTag.where(uid: rusers(:bob).id).count
+    post :create, :id => rusers(:bob).username, :type => "role", :value => "Organizer"
+    assert_equal user_tags_count+1, UserTag.where(uid: rusers(:bob).id).count
+  end
+
+  test "Normal user should not create tag for other user" do
+    UserSession.create(rusers(:bob))
+    post :create, :id => rusers(:jeff).username, :type => "role", :value => "Organizer"
+    assert_equal "Only admin (or) target user can manage tags", assigns['output']['errors'][0]
+  end
+
+
+  test "Normal user should not delete tag for other user" do
+    user_tag = UserTag.where(uid: rusers(:jeff).id).last
+    UserSession.create(rusers(:bob))
+    post :delete, :id => user_tag.id
+    assert_equal "Only admin (or) target user can manage tags", flash[:error]
   end
 end

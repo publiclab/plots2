@@ -1,4 +1,4 @@
-<form id="c<%= comment.id %>edit" style="display:none;" class="well" action="/comment/update/<%= comment.id %>">
+<form id="c<%= comment.id %>edit" style="display:none;" class="well" <% if params[:controller] == 'questions' %> action= "/answers/update/<%= comment.id %>" <% else %> action="/comment/update/<%= comment.id %>" <% end %>>
 
   <h4 style="margin-top:0;"><%= title %></h4>
 
@@ -6,10 +6,12 @@
     #imagebar {width:100%;}
   </style>
 
-  <div id="c<%= comment.id%>div" class="form-group">
-    <textarea onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="Help the author refine their post, or point them at other helpful information on the site.
+  <% if params[:controller] == 'questions' %>
+    <%= render :partial => "editor/toolbar" %>
+  <% end %>
 
-    Mention users by @username to notify them of this thread by email."><%= comment.comment%></textarea>
+  <div id="c<%= comment.id%>div" class="form-group">
+    <textarea onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="<%= placeholder %>"><%= (params[:controller] == 'questions' || params[:controller] == 'answers')? comment.content : comment.comment %></textarea>
 
     <div id="imagebar">
       <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-striped active pull-right">
@@ -42,6 +44,10 @@
   </div>
 
   <script type="application/javascript">
+    jQuery(document).ready(function() {
+      $E.initialize();
+    });
+
     function setInit(id) {
        var args = {
          'textarea': 'c'+id+'text',
@@ -61,7 +67,7 @@
 
     $('#c<%= comment.id%>div').bind('drop',function(e) {
       e.preventDefault();
-      setInit(<%= comment.cid %>);
+      setInit(<%= comment.id %>);
     });
 
     $('#c<%= comment.id%>div').fileupload({
@@ -121,13 +127,13 @@
 
   <div class="control-group">
     <button type="submit" class="btn btn-primary">Publish</button>
-      <a class="btn btn-default preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();
-          $('#c<%= comment.cid %>text').toggle();
-          $('#c<%= comment.cid %>edit .preview-btn').button('toggle');
-          $E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text').val())">
+      <a class="btn btn-default preview-btn" onClick="$('#c<%= comment.id %>preview').toggle();
+          $('#c<%= comment.id %>text').toggle();
+          $('#c<%= comment.id %>edit .preview-btn').button('toggle');
+          $E.generate_preview('c<%= comment.id %>preview',$('#c<%= comment.id %>text').val())">
         Preview
       </a>
-      <a class="btn btn-default" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()">
+      <a class="btn btn-default" onClick="$('#c<%= comment.id %>show').toggle();$('#c<%= comment.id %>edit').toggle()">
         Cancel
       </a>
 

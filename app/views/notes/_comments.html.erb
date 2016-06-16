@@ -14,7 +14,7 @@
     </div>
  
     <% if current_user %>
-      <%= render :partial => "comments/form", :locals => { title: "Post comment", comment: false } %>
+      <%= render :partial => "comments/form", :locals => { title: "Post comment", comment: false, placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email." } %>
     <% else %>
       <p>You must be <a href="/login">logged in</a> to comment.</p>
     <% end %>
