@@ -1,4 +1,5 @@
 require 'grape'
+require 'grape-entity'
 
 module Srch
   class Typeahead < Grape::API
