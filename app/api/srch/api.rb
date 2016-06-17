@@ -30,7 +30,6 @@ module Srch
         contact_email: "web@publiclab.org",
         version: "1.0.0"
       }
-
   end
 
 end
