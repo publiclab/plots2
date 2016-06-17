@@ -9,6 +9,17 @@
 <% end %>
 <p class="facebook-summary" style="display:none;"><%= t('layout._header.summary') %></p>
 
+<script>
+jQuery(document).ready(function() {
+  $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            $(this).parent().siblings().removeClass('open');
+            $(this).parent().toggleClass('open');
+  });
+});
+</script>
+
 <!-- facebook needs this apparently -->
 <div id="fb-root"></div>
 
@@ -165,6 +176,14 @@
               <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
               <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li> 
               <li class="divider"></li>
+              <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <%= t('layout._header.language.language_title') %> <b class="caret"></b> 
+                </a>
+                <ul class="dropdown-menu">
+                  <li><%= link_to t('layout._header.language.english'), change_locale_path(:en) %></li>
+                  <li><%= link_to t('layout._header.language.deutsch'), change_locale_path(:de) %></li>
+                </ul>
+              </li>
               <li><%= link_to t('layout._header.logout'), logout_path %></li>
             </ul>
             <% else %>
@@ -206,6 +225,14 @@
                   <p><a href="/reset/"><%= t('layout._header.login.reset_password') %></a></p>
 
                 <% end %>
+              </li>
+              <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle text-center" data-toggle="dropdown">
+                <%= t('layout._header.language.language_title') %> <b class="caret"></b> 
+                </a>
+                <ul class="dropdown-menu">
+                  <li><%= link_to t('layout._header.language.english'), change_locale_path(:en) %></li>
+                  <li><%= link_to t('layout._header.language.deutsch'), change_locale_path(:de) %></li>
+                </ul>
               </li>
             </ul>
             <% end %>
