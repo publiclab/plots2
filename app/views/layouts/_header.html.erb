@@ -33,7 +33,7 @@
 
       <ul class="nav navbar-nav navbar-left">
  
-        <% if current_user %><li><a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard"><i class="fa fa-home fa fa-white"></i></a></li><% end %>
+        <li><a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="<% if current_user %>/dashboard<% else %>/research<% end %>"><i class="fa fa-home fa fa-white"></i></a></li>
  
         <li class="dropdown">
  
