@@ -221,9 +221,9 @@ class NotesController < ApplicationController
         format = false
         format = :question if params[:redirect] && params[:redirect] == 'question'
         if request.xhr?
-          render text: @node.path(format)
+          render text: @node.path(format) + "?_=" + Time.now.to_i.to_s
         else
-          redirect_to @node.path(format)
+          redirect_to @node.path(format) + "?_=" + Time.now.to_i.to_s
         end
       else
         flash[:error] = "Your edit could not be saved."
