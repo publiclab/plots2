@@ -1,0 +1,15 @@
+<div id="answer-<%= answer_id %>-comment-<%= comment.id %>" class="answer-<%= answer_id %>-comments" style="padding-top: 10px; display:none;">
+  <div class="inline">
+  <% if comment.author.user && comment.author.user.photo_file_name %>
+    <img class="img-circle" src="<%= comment.author.user.photo_path(:thumb) %>" /> 
+   <% else %>
+    <div class="img-circle"></div>
+  <% end %>
+  </div>
+  <div class="inline">
+    <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
+    <span class="hidden-xs">commented</span>
+    <a style="color:#aaa;" href="#answer-comment-<%= comment.id %>"><%= time_ago_in_words(comment.created_at) %> ago</a><br/>
+    <%= raw sanitize(auto_link(RDiscount.new(comment.body).to_html)) %>
+  </div>
+</div>

@@ -43,5 +43,47 @@
 
   <hr />
 
+  <h4><span class="question-comment-count"><%= @node.comments.length %></span> Comments</h4>
+
+  <div id="answer-0-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee">
+    <div>
+    <% if current_user %>
+      <div class="inline">
+      <% if current_user.photo_file_name %>
+        <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" /> 
+      <% else %>
+        <div class="img-circle"></div> 
+      <% end %>
+      </div>
+      <div class="inline" style="width: 89%">
+        <form class="answer-comment-form" action="#">
+          <textarea class="form-control" name="body" rows="1" placeholder="Leave a comment"></textarea>
+        </form>
+      </div>
+      <% else %>
+        <p><a href="/login">Log in</a> to comment</p>  
+      <% end %>
+    </div>
+    <% @node.comments.each do |comment| %>
+      <%= render partial: "questions/comment", locals: { comment: comment, answer_id: 0 } %>
+    <% end %>
+    
+  </div>
+
   <%= render :partial => "questions/answers" %>
 </div>
+
+<%= javascript_include_tag('comment_expand') %>
+
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    $('.answer-0-comments').slice(0,3).show();
+    if (<%= @node.comments.length %> > 3){
+      $('#answer-0-comment').append('<p id="answer-0-expand" style="color: #006dcc;">View ' + comment_select(0).length + ' more comments</p>');
+      $("#answer-0-expand").on('click',function(){
+        expand_comments(0);
+      });
+    }
+  })
+
+</script>
