@@ -9,13 +9,13 @@ class LocationTagsController < ApplicationController
 
     user = DrupalUsers.find_by_name(params[:id])
 
-    if current_user.role == "admin" || current_user == user
+    if current_user.role == "admin" || current_user.email == user.email
       if params[:type] && params[:value]
         location = params[:value]
         @address = location[:address]
         lat, long = location[:lat], location[:long]
         if lat.nil? && long.nil?
-          if address.nil?
+          if @address.nil?
             @output[:errors] << "Invalid input. Try again" 
           else
             # Fetch geolocation data using geocoder through address
@@ -27,6 +27,8 @@ class LocationTagsController < ApplicationController
         end
 
         if @geo_location != ""
+          lat = @geo_location.latitude if lat.nil?
+          long = @geo_location.longitude if long.nil?
           # @geo_location holds complete information of location
           if user.location_tag
             @location_tag = user.location_tag.update_attributes({
@@ -38,8 +40,10 @@ class LocationTagsController < ApplicationController
               city: @geo_location.city
             })
 
+            @output[:status] = @location_tag ? true : false
+            @location_tag = user.location_tag
           else
-            @location_tag = user.location_tag.build({
+            @location_tag = user.build_location_tag({
               location: @address,
               lat: lat,
               long: long,
