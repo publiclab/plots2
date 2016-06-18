@@ -23,6 +23,7 @@ Plots2::Application.routes.draw do
     match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
   end
   get '/change_locale/:locale', to: 'settings#change_locale', as: :change_locale
+  get '/set_locale/:locale', to: 'application#set_locale', as: :set_locale, :controller => 'application'
   match 'ioby' => "legacy#ioby"
 
   match 'login' => "user_sessions#new",      :as => :login

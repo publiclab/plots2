@@ -9,17 +9,6 @@
 <% end %>
 <p class="facebook-summary" style="display:none;"><%= t('layout._header.summary') %></p>
 
-<script>
-jQuery(document).ready(function() {
-  $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            $(this).parent().siblings().removeClass('open');
-            $(this).parent().toggleClass('open');
-  });
-});
-</script>
-
 <!-- facebook needs this apparently -->
 <div id="fb-root"></div>
 
@@ -176,12 +165,15 @@ jQuery(document).ready(function() {
               <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
               <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li> 
               <li class="divider"></li>
-              <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <%= t('layout._header.language.language_title') %> <b class="caret"></b> 
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  <i class="fa fa-language" aria-hidden="true"></i>
+                  <%= t('layout._footer.language.language_title') %> <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><%= link_to t('layout._header.language.english'), change_locale_path(:en) %></li>
-                  <li><%= link_to t('layout._header.language.deutsch'), change_locale_path(:de) %></li>
+                  <% locale_name_pairs.each do |locale_name, locale| %>
+                    <li><%= link_to locale_name, change_locale_path(locale) %></li>
+                  <% end %>
                 </ul>
               </li>
               <li><%= link_to t('layout._header.logout'), logout_path %></li>
@@ -226,12 +218,15 @@ jQuery(document).ready(function() {
 
                 <% end %>
               </li>
-              <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle text-center" data-toggle="dropdown">
-                <%= t('layout._header.language.language_title') %> <b class="caret"></b> 
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  <i class="fa fa-language" aria-hidden="true"></i>
+                  <%= t('layout._footer.language.language_title') %> <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><%= link_to t('layout._header.language.english'), change_locale_path(:en) %></li>
-                  <li><%= link_to t('layout._header.language.deutsch'), change_locale_path(:de) %></li>
+                  <% locale_name_pairs.each do |locale_name, locale| %>
+                    <li><%= link_to locale_name, change_locale_path(locale) %></li>
+                  <% end %>
                 </ul>
               </li>
             </ul>

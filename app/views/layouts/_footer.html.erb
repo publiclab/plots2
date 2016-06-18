@@ -27,11 +27,13 @@
     <p><%= raw t('layout._footer.server_donation', :url => 'http://rackspace.com/') %></p>
     <ul class="dropdown">
       <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="fa fa-language" aria-hidden="true"></i>
         <%= t('layout._footer.language.language_title') %> <b class="caret"></b>
       </a>
       <ul class="dropdown-menu">
-        <li><%= link_to t('layout._footer.language.english'), change_locale_path(:en) %></li>
-        <li><%= link_to t('layout._footer.language.deutsch'), change_locale_path(:de) %></li>
+        <% locale_name_pairs.each do |locale_name, locale| %>
+          <li><%= link_to locale_name, change_locale_path(locale) %></li>
+        <% end %>
       </ul>
     </ul>
   </div>
