@@ -112,65 +112,43 @@
   
 
   <div class="container">
-    <div id="map" class="row"></div>
+    <div id="location_map" class="row"></div>
   </div>
 
   <script type="text/javascript">
     $(document).ready(function() {
-
       // fetch geo location
+      <% if @location_tag %>
+
+        var geo_location = {
+          lat: <%= @location_tag.lat %>,
+          long: <%= @location_tag.long %>,
+        }
+
+        // Display Map
+        $('#geo_location').attr("value", "<%= @location_tag.location %>");
+
+        $('#location_map').html("<div id='map' class='col-md-8' style='height:300px;'></div>");
+        window.map = L.map('map').setView([geo_location.lat, geo_location.long], 15) || {};
+        var mymap = window.map;
+        L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+          attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
+        }).addTo(mymap);
+
+        var circle = L.circle([geo_location.lat, geo_location.long], 300, {
+          color: 'blue',
+          fillColor: '#87CEFA',
+          fillOpacity: 0.5
+        }).addTo(mymap);
+
+      <% end %>
+
       if ("geolocation" in navigator) {
         $('#myLocation').click(function(e) {
           initMap();
         });
       } else {
         console.log("Geo Location not available in navaigator");
-      }
-
-      function initMap() {
-
-        var lat, lon;
-        navigator.geolocation.getCurrentPosition(function(position) {
-          lat = position.coords.latitude;
-          long = position.coords.longitude;
-
-          $('#map').attr('style', 'height: 300px;');
-
-          var mymap = L.map('map').setView([lat, long], 15);
-          L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
-            attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
-          }).addTo(mymap);
-
-          L.marker([lat, long]).addTo(mymap)
-            .bindPopup('<b><%= current_user.username %></b>')
-            .openPopup();
-
-          $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+long, function(data) {
-            if (data.status) {
-              var address = data.results[0].formatted_address;
-              $("input[data-tag='location']").attr('value', address);
-              $.ajax({
-                url: "/info/location/create/<%= @user.name %>",
-                type: 'POST',
-                data: {
-                  type: 'location',
-                  value: {
-                    address: address,
-                    lat: lat,
-                    long: long
-                  }
-                },
-                success: function(data) {
-                  response = JSON.parse(data);
-                  if (response.status) {
-                    console.log("Success");
-                  }
-
-                }
-              });
-            }
-          });
-        });
       }
 
       $('.tag-input').typeahead({
@@ -244,5 +222,55 @@
       });
 
     });
+
+    function initMap() {
+
+      var lat, lon;
+      navigator.geolocation.getCurrentPosition(function(position) {
+        lat = position.coords.latitude;
+        long = position.coords.longitude;
+
+        var mymap;
+        $('#location_map').html("<div id='map' class='col-md-8' style='height:300px;'></div>");
+        mymap = new L.map('map').setView([lat, long], 15);
+
+        L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+          attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
+        }).addTo(mymap);
+
+        var circle = L.circle([lat, long], 300, {
+          color: 'blue',
+          fillColor: '#87CEFA',
+          fillOpacity: 0.5
+        }).addTo(mymap);
+
+        $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+long, function(data) {
+          if (data.status) {
+            var address = data.results[0].formatted_address;
+            $("input[data-tag='location']").attr('value', address);
+            $.ajax({
+              url: "/info/location/create/<%= @user.name %>",
+              type: 'POST',
+              data: {
+                type: 'location',
+                value: {
+                  address: address,
+                  lat: lat,
+                  long: long
+                }
+              },
+              success: function(data) {
+                response = data;
+                if (response.status) {
+                  console.log("Success");
+                }
+
+              }
+            });
+          }
+        });
+      });
+    }
+
   </script>
 </form>

@@ -7,7 +7,7 @@ class LocationTagsController < ApplicationController
       errors: []
     }
 
-    user = User.find_by_username(params[:id])
+    user = DrupalUsers.find_by_name(params[:id])
 
     if current_user.role == "admin" || current_user == user
       if params[:type] && params[:value]
@@ -28,15 +28,27 @@ class LocationTagsController < ApplicationController
 
         if @geo_location != ""
           # @geo_location holds complete information of location
-          @location_tag = user.location_tags.build({
-            location: @address,
-            lat: lat,
-            long: long,
-            country: @geo_location.country,
-            state: @geo_location.state,
-            city: @geo_location.city
-          })
-          @output[:status] = @location_tag.save ? true : false
+          if user.location_tag
+            @location_tag = user.location_tag.update_attributes({
+              location: @address,
+              lat: lat,
+              long: long,
+              country: @geo_location.country,
+              state: @geo_location.state,
+              city: @geo_location.city
+            })
+
+          else
+            @location_tag = user.location_tag.build({
+              location: @address,
+              lat: lat,
+              long: long,
+              country: @geo_location.country,
+              state: @geo_location.state,
+              city: @geo_location.city
+            })
+            @output[:status] = @location_tag.save ? true : false
+          end
         else
           @output[:errors] << "Cannot fetch location."
         end
@@ -50,22 +62,24 @@ class LocationTagsController < ApplicationController
       @output[:errors] << "Only admin (or) target user can manage tags"
     end
 
-    respond_with do |format|
+    respond_to do |format|
 
       if request.xhr?
-        render json: {
-          status: true,
-          location: @location_tag,
-          errors: @output[:errors]
+        format.json {
+          render json: {
+            status: @output[:status],
+            location: @location_tag,
+            errors: @output[:errors]
+          }.to_json
         }
       else
-        
         if @output[:errors].length > 0
           flash[:error] = "#{@output[:errors].length} errors have occured"
         else
           flash[:notice] = "Location saved successfully"
         end
         redirect_to info_path, :id => params[:id]
+
       end
     end
   end
