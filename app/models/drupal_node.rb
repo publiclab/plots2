@@ -181,7 +181,7 @@ class DrupalNode < ActiveRecord::Base
 
   def comments
     self.drupal_comments
-        .order(timestamp: :desc)
+        .order('timestamp DESC')
   end
 
   def author
