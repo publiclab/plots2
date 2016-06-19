@@ -21,4 +21,42 @@ class Search < ActiveRecord::Base
     @users ||= find_users(params)
   end
 
+  def nodes
+    @nodes ||= find_nodes
+  end
+
+  private
+
+  def find_nodes
+    DrupalNode.all(conditions: conditions)
+  end
+
+  def keyword_conditions
+    ["nodes.title LIKE ?", "%#{key_words}%"] unless key_words.blank?
+  end
+
+  # def minimum_price_conditions
+  #   ["nodes.price >= ?", minimum_price] unless minimum_price.blank?
+  # end
+
+  def type_conditions
+    ["nodes.type = ?", note_type] unless note_type.blank?
+  end
+
+  ## Query assembling methods
+  def conditions
+    [conditions_clauses.join(' AND '), *conditions_options]
+  end
+
+  def conditions_clauses
+    conditions_parts.map { |condition| condition.first }
+  end
+
+  def conditions_options
+    conditions_parts.map { |condition| condition[1..-1] }.flatten
+  end
+
+  def conditions_parts
+    private_methods(false).grep(/_conditions$/).map { |m| send(m) }.compact
+  end
 end
