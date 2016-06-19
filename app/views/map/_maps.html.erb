@@ -5,9 +5,10 @@
       <a class="img-thumbnail" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
     <% end %>
     <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
-    <p style="color:#888;"><small> 
-      <% unless !node.map || node.map.captured_on == "" %>| <%= time_ago_in_words(node.map.captured_on) %> ago<% end %>
-      | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-alt"></i> <%= node.comment_count %></a>
+    <p style="color:#888;"><small>
+      by <a href="/profile/<%= node.map.authorship %>"><%= node.map.authorship %></a> 
+      <% unless !node.map || node.map.captured_on == "" %> <%= time_ago_in_words(node.map.captured_on) %> ago<% end %>
+      | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
       | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
       <% if current_user && current_user.role == "admin" %>| <%= link_to "/map/delete/"+node.id.to_s, :confirm => 'Are you sure?' do %>
           <i class="fa fa-trash"></i>
@@ -23,4 +24,4 @@
 <% end %>
 <% end %>
 </div>
-<%= will_paginate @nodes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+<div class="text-center"><%= will_paginate @nodes, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>

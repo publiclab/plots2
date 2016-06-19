@@ -1,0 +1,8 @@
+one:
+  id: 1
+  uid: 1
+  nid: 8
+  content: Test answer
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+  cached_likes: 1

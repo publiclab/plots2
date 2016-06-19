@@ -37,6 +37,8 @@ class DrupalNode < ActiveRecord::Base
   has_many :images, :foreign_key => :nid
   has_many :node_selections, :foreign_key => :nid
 
+  has_many :answers, :foreign_key => :nid
+
   validates :title, :presence => :true
   validates_with UniqueUrlValidator, :on => :create
   validates :path, :uniqueness => { :scope => :nid, :message => "This title has already been taken" }
@@ -61,13 +63,26 @@ class DrupalNode < ActiveRecord::Base
   after_create :setup
   before_validation :set_path, on: :create
 
+  # can switch to a "question-style" path if specified
   def path(type = :default)
     if type == :question
-      username = DrupalUsers.find_by_uid(self.uid).name
-      "/questions/"+username+"/"+Time.at(self.created).strftime("%m-%d-%Y")+"/"+self.title.parameterize
+      self[:path].gsub("/notes/", "/questions/")
     else 
       # default path
       self[:path]
+    end
+  end
+
+  # should only be run at actual creation time -- 
+  # or, we should refactor to us node.created instead of Time.now
+  def generate_path
+    if self.type == 'note'
+      username = DrupalUsers.find_by_uid(self.uid).name
+      "/notes/#{username}/#{Time.now.strftime("%m-%d-%Y")}/#{self.title.parameterize}"
+    elsif self.type == 'page'
+      "/wiki/" + self.title.parameterize
+    elsif self.type == 'map'
+      "/map/#{self.title.parameterize}/#{Time.now.strftime("%m-%d-%Y")}"
     end
   end
 
@@ -141,19 +156,6 @@ class DrupalNode < ActiveRecord::Base
 
   def liked_by(uid)
     self.likers.collect(&:uid).include?(uid)
-  end
-
-  # should only be run at actual creation time -- 
-  # or, we should refactor to us node.created instead of Time.now
-  def generate_path
-    if self.type == 'note'
-      username = DrupalUsers.find_by_uid(self.uid).name
-      "/notes/"+username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+self.title.parameterize
-    elsif self.type == 'page'
-      "/wiki/"+self.title.parameterize
-    elsif self.type == 'map'
-      "/map/"+self.title.parameterize+"/"+Time.now.strftime("%m-%d-%Y")
-    end
   end
 
   def latest
