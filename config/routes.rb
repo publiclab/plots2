@@ -125,6 +125,8 @@ Plots2::Application.routes.draw do
   match 'search/typeahead/:id' => 'searches#typeahead'
   match 'search/questions/:id' => 'searches#questions'
   match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
+  
+  match 'questions_search/:id' => 'questions_search#index'
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
 
   match 'tag/:id' => 'tag#show'
