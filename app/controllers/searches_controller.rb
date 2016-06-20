@@ -35,7 +35,6 @@ class SearchesController < ApplicationController
 
   def show
     @title = @search.title
-    # @nodes = @search.advanced_search(@search.key_words, params)
     @nodes = @search.nodes
     set_sidebar :tags, @search.key_words
   end
@@ -82,7 +81,7 @@ class SearchesController < ApplicationController
 
     def search_params
       params.require(:search).permit(:key_words, :main_type, :note_type,
-                                     :date_created, :created_by, :language)
+                                     :min_date, :max_date, :created_by, :language)
     end
 
 end
