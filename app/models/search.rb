@@ -1,5 +1,5 @@
 class Search < ActiveRecord::Base
-
+  require 'date'
   include ActiveModel::ForbiddenAttributesProtection
 
   attr_accessible :key_words, :title, :main_type, :note_type, :min_date, :created_by,
@@ -21,6 +21,10 @@ class Search < ActiveRecord::Base
     @users ||= find_users(params)
   end
 
+  def date_i(date_param)
+    Date.strptime(date_param, '%d-%m-%Y').to_time.to_i
+  end
+
   def nodes
     @nodes ||= find_nodes
   end
@@ -36,11 +40,11 @@ class Search < ActiveRecord::Base
   end
 
   def minimum_date_conditions
-    ['node.created >= ?', min_date] unless min_date.blank?
+    ['node.created >= ?', date_i(min_date)] unless min_date.blank?
   end
 
   def maximum_date_conditions
-    ['node.created <= ?', max_date] unless max_date.blank?
+    ['node.created <= ?', date_i(max_date)] unless max_date.blank?
   end
 
   def type_conditions
