@@ -36,9 +36,13 @@ class Search < ActiveRecord::Base
     ['node.title LIKE ?', "%#{key_words}%"] unless key_words.blank?
   end
 
-  # def minimum_price_conditions
-  #   ["nodes.price >= ?", minimum_price] unless minimum_price.blank?
-  # end
+  def minimum_date_conditions
+    ['node.created >= ?', min_date] unless min_date.blank?
+  end
+
+  def maximum_date_conditions
+    ['node.created <= ?', max_date] unless max_date.blank?
+  end
 
   def type_conditions
     ['node.type = ?', note_type] unless note_type.blank?
