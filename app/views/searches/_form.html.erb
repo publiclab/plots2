@@ -16,6 +16,7 @@ typeahead' %>
     <%= f.label :language, 'Language (filter 3) ' %>
     <%= f.select :language, DrupalNode.pluck('DISTINCT language'), {include_blank: true} %>
     <br />
+<<<<<<< a92f225ceee7d2d0b1a1b5185080865cb0e2469d
     <%= f.label :date_created, 'Date range (filter 4) ' %>
     <%= f.text_field :min_date %> - <%= f.text_field :max_date %>
 
@@ -40,5 +41,4 @@ $(function() {
 	});
 });
 </script>
-
 
