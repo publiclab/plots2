@@ -7,15 +7,18 @@
   </div>
 
     <%= f.label :main_type, 'Main Type (filter 1) ' %>
-    <%= f.select(:main_type, options_for_select([['Notes or Wiki updates'],['User Profiles']],1)) %>
+    <%= f.select(:main_type, options_for_select([['Notes or Wiki updates'],['User Profiles'], ['Tags']],1)) %>
     <br />
     <%= f.label :note_type, 'Note Type (filter 2) ' %>
     <%= f.select :note_type, DrupalNode.pluck('DISTINCT type'), {include_blank: true} %>
     <br />
-    <%= f.label :created_by, 'Created By (filter 3) ' %>
-    <%= f.text_field :created_by %>
+    <%= f.label :language, 'Language (filter 3) ' %>
+    <%= f.select :language, DrupalNode.pluck('DISTINCT language'), {include_blank: true} %>
     <br />
     <%= f.label :date_created, 'Date Created (filter 4) ' %>
     <%= f.text_field :date_created %>
+    <br />
+    <%= f.label :created_by, 'Date Created By (filter 5) ' %>
+    <%= f.text_field :created_by %>
 
 <% end %>
