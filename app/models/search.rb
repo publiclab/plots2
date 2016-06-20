@@ -80,11 +80,11 @@ class Search < ActiveRecord::Base
   private
 
   def find_nodes
-    DrupalNode.all(conditions: conditions)
+    DrupalNode.find(:all, :conditions => conditions)
   end
 
   def keyword_conditions
-    ["nodes.title LIKE ?", "%#{key_words}%"] unless key_words.blank?
+    ['node.title LIKE ?', "%#{key_words}%"] unless key_words.blank?
   end
 
   # def minimum_price_conditions
@@ -92,7 +92,7 @@ class Search < ActiveRecord::Base
   # end
 
   def type_conditions
-    ["nodes.type = ?", note_type] unless note_type.blank?
+    ['node.type = ?', note_type] unless note_type.blank?
   end
 
   ## Query assembling methods
