@@ -1,0 +1,18 @@
+<input type="hidden" name="type" value="question">
+<div class="form-group"> 
+  <div class="col-sm-10"> 
+    <div class="inline" style="vertical-align: top;">
+      <% if current_user.photo_file_name %>
+        <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" /> 
+      <% else %>
+        <div class="img-circle"></div> 
+      <% end %>
+    </div>
+    <div class="inline" style="width: 88%;">
+      <textarea class="form-control" name="body" rows="1" placeholder="Leave a comment"></textarea>
+    </div>  
+  </div>
+  <div class="col-sm-2">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</div>

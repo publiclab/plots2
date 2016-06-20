@@ -140,4 +140,22 @@ class ApplicationController < ActionController::Base
       I18n.locale = lang
     end
 
+    def comments_node_and_path
+      if @comment.aid == 0
+        # finding node for node comments
+        @node = @comment.node
+      else
+        # finding node for answer comments
+        @node = @comment.answer.node
+      end
+
+      if params[:type] && params[:type] == 'question'
+        # questions path
+        @path = @node.path(:question)
+      else
+        # notes path
+        @path = @node.path
+      end
+    end
+
 end

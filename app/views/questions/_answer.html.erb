@@ -35,21 +35,13 @@
       <a href="#a<%= answer.id %>">Share Link</a> | 
       <span id="answer-<%= answer.id %>-comment-count"><%= answer.comments.length %></span> <a id="answer-<%= answer.id %>-comment-button"  style="color: #006dcc;">Comments</a>
     </div>
+
     <div id="answer-<%= answer.id %>-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee; display: none;">
-      <div>
+      <div id="answer-<%= answer.id %>-comment-section">
       <% if current_user %>
-        <div class="inline">
-        <% if current_user.photo_file_name %>
-          <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" /> 
-        <% else %>
-          <div class="img-circle"></div> 
-        <% end %>
-        </div>
-        <div class="inline" style="width: 89%">
-        <form class="answer-comment-form" action="#">
-          <textarea class="form-control" name="body" rows="1" placeholder="Leave a comment"></textarea>
+        <form id="answer-<%= answer.id %>-comment-form" class="form-horizontal" action="/comment/answer_create/<%= answer.id %>" data-remote="true">
+          <%= render partial: "questions/form" %> 
         </form>
-       </div>
       <% else %>
         <p><a href="/login">Log in</a> to comment</p> 
       <% end %>
@@ -86,5 +78,9 @@
   $("#answer-<%= answer.id %>-comment-button").click( function(){
     $("#answer-<%= answer.id %>-comment").toggle();
   });
+
+  $('#answer-<%= answer.id %>-comment-form').bind('ajax:error', function(e, response){
+    $('#answer-<%= answer.id %>-comment-form .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
+  })
   
 </script>
