@@ -16,10 +16,10 @@
     <%= f.select :language, DrupalNode.pluck('DISTINCT language'), {include_blank: true} %>
     <br />
     <%= f.label :date_created, 'Date range (filter 4) ' %>
-    <%= f.text_field :min_date %> -
-    <%= f.text_field :max_date %>
+    <%= f.text_field :min_date %> - <%= f.text_field :max_date %>
+
     <br />
-    <%= f.label :created_by, 'Date Created By (filter 5) ' %>
+    <%= f.label :created_by, 'Created User (filter 5) ' %>
     <%= f.text_field :created_by %>
 
 <% end %>
