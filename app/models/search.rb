@@ -2,8 +2,8 @@ class Search < ActiveRecord::Base
 
   include ActiveModel::ForbiddenAttributesProtection
 
-  attr_accessible :key_words, :title, :main_type, :note_type, :date_created, :created_by,
-                  :language
+  attr_accessible :key_words, :title, :main_type, :note_type, :min_date, :created_by,
+                  :language, :max_date
 
   ## current advanced search
   def advanced_search(input, params)
