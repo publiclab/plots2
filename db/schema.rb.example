@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160604065635) do
+ActiveRecord::Schema.define(:version => 20160616035549) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(:version => 20160604065635) do
     t.string  "name",      :limit => 60
     t.string  "mail",      :limit => 64
     t.string  "homepage"
+    t.integer "aid",                             :default => 0,  :null => false
   end
 
   add_index "comments", ["nid"], :name => "index_comments_nid"
