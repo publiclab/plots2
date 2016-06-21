@@ -22,4 +22,11 @@ class LocationTagTest < ActiveSupport::TestCase
     assert_not_nil location_tag.city
     assert_not_nil location_tag.state
   end
+
+  test "user object should have location_tag method" do
+    location_tag = location_tags(:one)
+    user = rusers(:bob)
+
+    assert DrupalUsers.method_defined? :location_tag
+  end
 end

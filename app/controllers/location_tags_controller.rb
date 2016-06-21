@@ -14,7 +14,7 @@ class LocationTagsController < ApplicationController
         location = params[:value]
         @address = location[:address]
         lat, long = location[:lat], location[:long]
-        if lat.nil? && long.nil?
+        if lat.nil? || long.nil?
           if @address.nil?
             @output[:errors] << "Invalid input. Try again" 
           else
@@ -26,7 +26,7 @@ class LocationTagsController < ApplicationController
           @geo_location = Geocoder.search("#{lat},#{long}").first || ""
         end
 
-        if @geo_location != ""
+        if !@geo_location.nil? && @geo_location != ""
           lat = @geo_location.latitude if lat.nil?
           long = @geo_location.longitude if long.nil?
           # @geo_location holds complete information of location
@@ -53,7 +53,7 @@ class LocationTagsController < ApplicationController
             })
             @output[:status] = @location_tag.save ? true : false
           end
-        else
+        elsif @geo_location.nil?
           @output[:errors] << "Cannot fetch location."
         end
 
@@ -88,6 +88,4 @@ class LocationTagsController < ApplicationController
     end
   end
 
-  def destroy
-  end
 end

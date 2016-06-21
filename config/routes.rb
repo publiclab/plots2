@@ -160,6 +160,8 @@ Plots2::Application.routes.draw do
   match 'info/tags/create/:id' => 'user_tags#create'
   match 'info/tags/delete/:id' => 'user_tags#delete'
   match 'info/location/create/:id' => 'location_tags#create'
+  match 'info/privacy' => 'users#privacy'
+
 
   match 'maps' => 'map#index'
   match 'map' => 'search#map'

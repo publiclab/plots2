@@ -231,4 +231,35 @@ class UsersController < ApplicationController
     @location_tag = @user.location_tag
   end
 
+  def privacy
+  # maintains location privacy functionality
+    status = params[:location_privacy]
+    @output = {
+      errors: [],
+      status: false
+    }
+
+    if current_user.update_attribute(:location_privacy, status)
+      @output[:status] = true
+      flash[:notice] = "Your preference has been saved"
+    else
+      flash[:error] = "Something went wrong, Please try again"
+      @output[:errors] << flash[:error]
+    end
+
+    respond_to do |format|
+      format.json {
+        render json: {
+          status: @output[:status],
+          model: current_user
+        }.to_json
+      }
+
+      format.html {
+        redirect_to info_path, :id => current_user.username
+      }
+    end
+
+  end
+
 end

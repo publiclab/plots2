@@ -13,6 +13,10 @@ require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
 
+  def setup
+    activate_authlogic
+  end
+
   test "new user page" do
     get :new
     assert_response :success
@@ -117,6 +121,16 @@ class UsersControllerTest < ActionController::TestCase
     get :profile, id: user.username
 
     assert_select 'a#user-reset-key'
+
+  end
+
+  test "should update location privacy attribute" do
+    UserSession.create(rusers(:jeff))
+    user = rusers(:jeff)
+    post :privacy, status: true
+
+    assert user.location_privacy
+    assert_equal "Your preference has been saved", flash[:notice]
   end
 
 #  def test_create_invalid

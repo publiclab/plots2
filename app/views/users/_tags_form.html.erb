@@ -107,6 +107,15 @@
       </div>
       <div class="clearfix"></div><br />
     </div>
+
+    <div class="col-md-3">
+      <label for="preference">Location privacy</label>
+    </div>
+    <div class="col-md-8">
+      <div class="input-group">
+        <input id="location_privacy" type="checkbox" name="privacy" <%= current_user.location_privacy ? "checked" : "" %>>
+      </div>
+    </div>
   </div>
   <br />
   
@@ -136,7 +145,7 @@
         }).addTo(mymap);
 
         var circle = L.circle([geo_location.lat, geo_location.long], 300, {
-          color: 'blue',
+          color: 'grey',
           fillColor: '#87CEFA',
           fillOpacity: 0.5
         }).addTo(mymap);
@@ -239,7 +248,7 @@
         }).addTo(mymap);
 
         var circle = L.circle([lat, long], 300, {
-          color: 'blue',
+          color: 'grey',
           fillColor: '#87CEFA',
           fillOpacity: 0.5
         }).addTo(mymap);

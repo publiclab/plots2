@@ -38,4 +38,28 @@ $(document).ready(function() {
       }
     })
   })
+
+  $('#location_privacy').click(function(e) {
+    e.preventDefault();
+    that = this
+    var status = $(this).is(':checked')
+
+    $.ajax({
+      url: '/info/privacy',
+      type: 'POST',
+      data: {
+        location_privacy: status
+      },
+      success: function(data) {
+
+        if (data.status) {
+          $(that).prop('checked', data.model.location_privacy)
+
+        }
+
+      }
+    })
+
+  });
+
 });
