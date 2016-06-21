@@ -2,22 +2,65 @@ first:
   uid: 1
   nid: 1
   status: 1
-  comment: This thing is rad. 
+  comment: This thing is rad.
+  # Since timestamp is an integer field it takes same values for all records
+  # Thus we manually increment it to test the usage of ORDER BY queries
+  timestamp: <%= Time.now.to_i + 1 %>
+  thread: /01
+
+second:
+  uid: 2
+  nid: 2
+  status: 1
+  comment: Note comment
+  timestamp: <%= Time.now.to_i + 2 %>
+  thread: /02
 
 legacy:
   uid: 0
   nid: 1
   status: 1
   comment: Hey there!
+  timestamp: <%= Time.now.to_i + 3 %>
+  thread: /03
 
 admin:
   uid: 5
   nid: 1
   status: 1
   comment: Admin comment
+  timestamp: <%= Time.now.to_i + 4 %>
+  thread: /04
 
 moderator:
   uid: 6
   nid: 1
   status: 1
   comment: Moderator comment
+  timestamp: <%= Time.now.to_i + 5 %>
+  thread: /05
+
+answer_comment_one:
+  uid: 1
+  nid: 0
+  aid: 1
+  status: 1
+  comment: Answer comment one
+  timestamp: <%= Time.now.to_i + 6 %>
+
+answer_comment_two:
+  uid: 2
+  nid: 0
+  aid: 1
+  status: 1
+  comment: Answer comment two
+  timestamp: <%= Time.now.to_i + 7 %>
+
+question:
+  uid: 1
+  nid: 8
+  aid: 0
+  status: 1
+  comment: Question comment
+  timestamp: <%= Time.now.to_i + 8 %>
+  thread: /01

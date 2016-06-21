@@ -216,6 +216,7 @@ Plots2::Application.routes.draw do
   match 'answer_like/show/:aid' => 'answer_like#show'
   match 'answer_like/likes/:aid' => 'answer_like#likes'
 
+  match 'comment/answer_create/:aid' => 'comment#answer_create'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
