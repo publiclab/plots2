@@ -48,9 +48,18 @@
   <div id="answer-0-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee">
     <div id="answer-0-comment-section">
     <% if current_user %>
-    <form id="answer-0-comment-form" class="form-horizontal" action="/comment/create/<%= @node.id%>" data-remote="true">
-      <%= render partial: "questions/form" %>  
-    </form>
+    <div class="inline" style="vertical-align: top;">
+      <% if current_user.photo_file_name %>
+        <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" /> 
+      <% else %>
+        <div class="img-circle"></div> 
+      <% end %>
+    </div>
+    <div class="inline" style="width: 90%">
+      <form id="answer-0-comment-form" class="form-horizontal" action="/comment/create/<%= @node.id%>" data-remote="true">
+        <%= render partial: "questions/form" %>  
+      </form>
+    </div>
     <% else %>
       <p><a href="/login">Log in</a> to comment</p>  
     <% end %>
@@ -66,6 +75,8 @@
 </div>
 
 <%= javascript_include_tag('comment_expand') %>
+<%= javascript_include_tag('textbox_expand') %>
+
 
 <script type="text/javascript">
   jQuery(document).ready(function(){
@@ -78,6 +89,7 @@
     }
 
     $('#answer-0-comment-form').bind('ajax:error', function(e, response){
+      $('#answer-<%= @answer_id %>-comment-form .help-block').remove()
       $('#answer-0-comment-form .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
     })
   })
