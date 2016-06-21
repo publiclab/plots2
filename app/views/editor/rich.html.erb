@@ -154,6 +154,27 @@
         destination: '/notes/create',
       <% end %>
       format:      'publiclab',
+      richTextEditor: {
+        tags: function(value, done) {
+
+          if (value.length > 2) {
+
+            $.ajax('/tags/recent')
+             .done(function(response) {
+               done(response);
+             });
+
+          } else {
+
+            $.ajax('/tags/suggested/' + value)
+             .done(function(response) {
+               done(response);
+             });
+
+          }
+
+        }
+      }
     });
 
   })();

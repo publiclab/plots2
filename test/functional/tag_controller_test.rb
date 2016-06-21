@@ -1,7 +1,6 @@
 # def barnstar
 # def create
 # def delete
-# def suggested
 # def contributors_index
 
 require 'test_helper'
@@ -95,6 +94,28 @@ class TagControllerTest < ActionController::TestCase
     assert_not_nil :notes
     assert_not_nil :users
     assert_not_nil :tag
+  end
+
+  test "suggested tags" do
+    get :suggested, id: 'tes'
+    assert :success
+    assert_not_nil :tags
+    assert assigns(:tags).length > 0
+  end
+
+  test "suggested tags for too-short entry" do
+    get :suggested, id: 'te'
+    assert :success
+    assert_not_nil :tags
+    assert_equal "[]", @response.body 
+  end
+
+  test "recent tags for this author" do
+    UserSession.create(rusers(:bob))
+    get :recent
+    assert :success
+    assert_not_nil :tags
+    assert_equal rusers(:bob).recent_tags.collect(&:name), assigns(:tags)
   end
 
 end
