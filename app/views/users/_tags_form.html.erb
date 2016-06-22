@@ -144,11 +144,20 @@
           attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
         }).addTo(mymap);
 
-        var circle = L.circle([geo_location.lat, geo_location.long], 300, {
-          color: 'grey',
-          fillColor: '#87CEFA',
-          fillOpacity: 0.5
-        }).addTo(mymap);
+        <% if current_user.location_privacy %>
+
+          var marker = L.marker([geo_location.lat, geo_location.long]).addTo(mymap);
+          marker.bindPopup("<b><%= @user.name %></b>").openPopup();
+
+        <% else %>
+
+          var circle = L.circle([geo_location.lat, geo_location.long], 300, {
+            color: 'grey',
+            fillColor: '#87CEFA',
+            fillOpacity: 0.5
+          }).addTo(mymap);
+
+        <% end %>
 
       <% end %>
 
@@ -247,11 +256,20 @@
           attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
         }).addTo(mymap);
 
-        var circle = L.circle([lat, long], 300, {
-          color: 'grey',
-          fillColor: '#87CEFA',
-          fillOpacity: 0.5
-        }).addTo(mymap);
+        <% if current_user.location_privacy %>
+
+          var marker = L.marker([lat, long]).addTo(mymap);
+          marker.bindPopup("<b><%= @user.name %></b>").openPopup();
+
+        <% else %>
+
+          var circle = L.circle([lat, long], 300, {
+            color: 'grey',
+            fillColor: '#87CEFA',
+            fillOpacity: 0.5
+          }).addTo(mymap);
+
+        <% end %>
 
         $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+long, function(data) {
           if (data.status) {

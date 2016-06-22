@@ -26,7 +26,7 @@ $(document).ready(function() {
           }).addTo(mymap);
 
           var circle = L.circle([response.location.lat, response.location.long], 300, {
-            color: 'blue',
+            color: 'grey',
             fillColor: '#87CEFA',
             fillOpacity: 0.5
           }).addTo(mymap);
@@ -48,16 +48,43 @@ $(document).ready(function() {
       url: '/info/privacy',
       type: 'POST',
       data: {
-        location_privacy: status
+        location_privacy: status,
+        id: $('#infoform').data('user') 
       },
       success: function(data) {
 
         if (data.status) {
-          $(that).prop('checked', data.model.location_privacy)
+          $(that).prop('checked', data.model.location_privacy);
+          if (data.model.location_privacy) {
+            $("#location_map").html("<div class='col-md-8' id='map' style='height: 300px;'></div>");
+            var mymap = new L.map('map').setView([data.lat, data.long], 15);
 
+            L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+              attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
+            }).addTo(mymap);
+
+            var marker = L.marker([data.lat, data.long]).addTo(mymap);
+            marker.bindPopup("<b>" + data.model.username + "</b>").openPopup();
+
+          }
+          else {
+            $("#location_map").html("<div class='col-md-8' id='map' style='height: 300px;'></div>");
+            var mymap = new L.map('map').setView([data.lat, data.long], 15);
+
+            L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+              attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
+            }).addTo(mymap);
+
+            var circle = L.circle([data.lat, data.long], 300, {
+              color: 'grey',
+              fillColor: '#87CEFA',
+              fillOpacity: 0.5
+            }).addTo(mymap);
+          }
         }
 
       }
+
     })
 
   });

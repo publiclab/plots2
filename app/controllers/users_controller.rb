@@ -239,6 +239,7 @@ class UsersController < ApplicationController
       status: false
     }
 
+    user = DrupalUsers.find_by_name(params[:id])
     if current_user.update_attribute(:location_privacy, status)
       @output[:status] = true
       flash[:notice] = "Your preference has been saved"
@@ -251,7 +252,9 @@ class UsersController < ApplicationController
       format.json {
         render json: {
           status: @output[:status],
-          model: current_user
+          model: current_user,
+          lat: user.location_tag.lat,
+          long: user.location_tag.long
         }.to_json
       }
 
