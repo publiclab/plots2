@@ -35,4 +35,8 @@ class UserTest < ActiveSupport::TestCase
     assert        users(:lurker).first_time_poster
   end
 
+  test "user recent tags" do  
+    assert_equal rusers(:bob).recent_tags.collect(&:name), []
+  end
+
 end

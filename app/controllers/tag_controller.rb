@@ -158,9 +158,10 @@ class TagController < ApplicationController
                .limit(10).each do |tag|
         suggestions << tag.name.downcase
       end
-      render :json => suggestions.uniq
-    else
-      render :json => []
+      @tags = suggestions.uniq
+      render json: @tags
+    else           
+      render json: []
     end
   end
 
@@ -216,6 +217,10 @@ class TagController < ApplicationController
       @tagdata[:notes] = DrupalNode.count :all, :conditions => ["nid IN (?) AND type = 'note'", (nct).collect(&:nid)]
     end
     render :template => "tag/contributors-index"
+  end
+
+  def recent
+    #@user = User.where(username: current
   end
 
 end
