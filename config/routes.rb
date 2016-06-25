@@ -24,6 +24,7 @@ Plots2::Application.routes.draw do
     match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
   end
 
+  get '/change_locale/:locale', to: 'settings#change_locale', as: :change_locale
   match 'ioby' => "legacy#ioby"
 
   match 'login' => "user_sessions#new",      :as => :login
@@ -218,6 +219,7 @@ Plots2::Application.routes.draw do
   match 'answer_like/show/:aid' => 'answer_like#show'
   match 'answer_like/likes/:aid' => 'answer_like#likes'
 
+  match 'comment/answer_create/:aid' => 'comment#answer_create'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 

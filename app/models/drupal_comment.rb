@@ -1,8 +1,12 @@
 class DrupalComment < ActiveRecord::Base
-  attr_accessible :pid, :nid, :uid, :subject, :hostname, :comment, :status, :format, :thread, :timestamp 
+  attr_accessible :pid, :nid, :uid, :aid,
+                  :subject, :hostname, :comment,
+                  :status, :format, :thread, :timestamp 
 
-  belongs_to :drupal_node, :foreign_key => 'nid', :touch => true, :dependent => :destroy, :counter_cache => true
-  has_one :drupal_users, :foreign_key => 'uid'
+  belongs_to :drupal_node, :foreign_key => 'nid', :touch => true,
+                           :dependent => :destroy, :counter_cache => true
+  belongs_to :drupal_users, :foreign_key => 'uid'
+  belongs_to :answer, :foreign_key => 'aid'
 
 
   validates :comment,  :presence => true
@@ -27,7 +31,8 @@ class DrupalComment < ActiveRecord::Base
     finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
   end
 
-  # filtered version additionally appending http/https protocol to protocol-relative URLs like "//publiclab.org/foo"
+  # filtered version additionally appending http/https
+  #   protocol to protocol-relative URLslike "//publiclab.org/foo"
   def body_email
     self.body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?publiclab.org)/, '\1https://\3')
   end
@@ -73,7 +78,9 @@ class DrupalComment < ActiveRecord::Base
   # email all users in this thread 
   # plus all who've starred it
   def notify(current_user)
-    CommentMailer.notify_note_author(self.parent.author,self).deliver if self.parent.uid != current_user.uid
+    if self.parent.uid != current_user.uid
+      CommentMailer.notify_note_author(self.parent.author,self).deliver
+    end
     # notify_callout_users
     self.mentioned_users.each do |user|
       CommentMailer.notify_callout(self,user) if user.username != self.author.username
@@ -81,11 +88,18 @@ class DrupalComment < ActiveRecord::Base
     already = self.mentioned_users.collect(&:uid)
     uids = []
     # notify note author, other commenters, and likers, but not those already @called out
-    (self.parent.comments.collect(&:uid) + [self.parent.uid] + self.parent.likers.collect(&:uid)).uniq.each do |u|
+    (self.parent.comments.collect(&:uid) + [self.parent.uid] +
+      self.parent.likers.collect(&:uid)).uniq.each do |u|
+
       uids << u unless already.include?(u)
     end
     DrupalUsers.find(:all, :conditions => ['uid IN (?)',uids]).each do |user|
-      CommentMailer.notify(user.user,self).deliver if user.uid != current_user.uid && user.uid != self.uid && self.parent.uid != user.uid
+      if user.uid != current_user.uid &&
+        user.uid != self.uid &&
+        self.parent.uid != user.uid
+
+        CommentMailer.notify(user.user,self).deliver
+      end
     end 
   end
 

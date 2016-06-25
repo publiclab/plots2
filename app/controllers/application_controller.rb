@@ -113,10 +113,6 @@ class ApplicationController < ActionController::Base
       end
       false
     end
-    
-    def set_locale
-      I18n.locale = params[:locale] || I18n.default_locale
-    end
 
   def alert_and_redirect_moderated
     if @node.author.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
@@ -132,5 +128,34 @@ class ApplicationController < ActionController::Base
       redirect_to "/"
     end
   end
+  
+  # Check the locale set and adjust the locale accordingly
+    def set_locale
+      if cookies[:plots2_locale] && I18n.available_locales.include?(cookies[:plots2_locale].to_sym)
+        lang = cookies[:plots2_locale].to_sym
+      else
+        lang = I18n.default_locale
+        cookies.permanent[:plots2_locale] = lang
+      end
+      I18n.locale = lang
+    end
+
+    def comments_node_and_path
+      if @comment.aid == 0
+        # finding node for node comments
+        @node = @comment.node
+      else
+        # finding node for answer comments
+        @node = @comment.answer.node
+      end
+
+      if params[:type] && params[:type] == 'question'
+        # questions path
+        @path = @node.path(:question)
+      else
+        # notes path
+        @path = @node.path
+      end
+    end
 
 end
