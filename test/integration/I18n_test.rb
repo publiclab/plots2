@@ -44,5 +44,4 @@ class I18nTest < ActionDispatch::IntegrationTest
         assert_equal "#{I18n.locale}", "#{I18n.default_locale}"
         assert true
     end
-    
 end
