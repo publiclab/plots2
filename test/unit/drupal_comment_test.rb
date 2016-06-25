@@ -116,4 +116,28 @@ class DrupalCommentTest < ActiveSupport::TestCase
     comment.comment = '[tags in URLs](/mypage#tags)'
     assert_not_equal comment.body, '[tags in URLs](/mypage[#tags](/tags/tags))'
   end
+
+  test "should create comments for answers" do
+    answer = answers(:one)
+    comment = DrupalComment.new(
+      uid: rusers(:bob).id,
+      aid: answer.id,
+      comment: 'Test comment'
+    )
+    assert comment.save
+  end
+
+  test "should relate answer comments to user and answer but not node" do
+    answer = answers(:one)
+    user = users(:bob)
+    comment = DrupalComment.new(comment: 'Test comment')
+    comment.drupal_users = user
+    comment.answer = answer
+
+    assert comment.save
+    assert_equal user.drupal_comments.last, comment
+    assert_equal answer.drupal_comments.last, comment
+    assert_not_equal answer.node.drupal_comments.last, comment
+  end
+
 end

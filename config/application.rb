@@ -58,6 +58,8 @@ module Plots2
     
     I18n.available_locales = [:en, :de]
     config.i18n.default_locale = :en 
+    
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
     config.action_view.sanitized_allowed_tags = ['iframe', 'embed']
 

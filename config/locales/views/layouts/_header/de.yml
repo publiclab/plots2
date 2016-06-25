@@ -1,0 +1,78 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  layout:
+    _header:
+      summary: "Öffentliche Lab ist eine offene Gemeinschaft, die gemeinsam entwickelt zugänglich , Open Source, Do -It-Yourself -Technologien für die lokale Umwelt, Gesundheit und Fragen der Gerechtigkeit zu untersuchen."
+      your_dashboard: "Ihr Dashboard"
+      projects: 
+        projects_title: "Projekte"
+        research:
+          research_title: "Forschung"
+          research_notes: "Research notes"
+          publiclab_wiki: "Public Lab Wiki"
+          tools: "Werkzeuge"
+          places: "Setzt"
+          kits: "Werkzeug"
+        initiatives:
+          initiatives_title: "Initiativen"
+          open_land: "Offenes Land"
+          open_water: "Offenes Wasser"
+          open_air: "Open Air"
+        fellows: "Kollege"
+        lending_library: "Leihbücherei"
+      search: "Suche"
+      about:
+        about_title: "Etwa"
+        stories: "Geschichten"
+        blog: "Blog"
+        about_public_lab: "Über Public Lab"
+        team: "Non-profit team"
+        organizers: "Veranstalter"
+        board: "Non-profit board"
+        fund: "Wie wir finanziert"
+        press_and_media: "Presse und Medien"
+        contact: "Kontaktieren Sie die Mitarbeiter"
+      get_involved:
+        get_involved_title: "sich einlassen"
+        getting_started: "Anfangen"
+        join: "Treten Sie der Website"
+        discussion_lists: "Nehmen Sie an einer unserer Diskussionslisten"
+        attend_event: "Nehmen Sie an einer Veranstaltung"
+        post_event: "Eine Veranstaltung"
+        new_chapters: "Ab neue Kapitel"
+        new_projects: "Starten neuer Projekte"
+        organizer: "Werden Veranstalter"
+      data:
+        data_title: "Daten"
+        archive: "Public Lab archivieren"
+        web_tools:
+          web_tools_title: "Web Werkzeuge"
+          mapknitter: "MapKnitter"
+          spectral_workbench: "Spectral Workbench"
+          infragram: "Infragram"
+          open_water: "Offenes Wasser"
+      donate: "schenken"
+      store: "Laden"
+      chatroom:
+        pop_out: "herausspringen"
+        chatroom_title: "Public Lab chatroom"
+      become_part_community: "Werden Sie Teil dieser Gemeinschaft"
+      join: "Beitreten"
+      dashboard: "Instrumententafel"
+      profile: "Profil"
+      edit_profile: "Profil bearbeiten"
+      subscriptions: "Abonnements"
+      notes_liked: "Notizen Sie haben mochte"
+      logout: "Ausloggen"
+      login:
+        login_title: "Einloggen"
+        username: "Benutzername"
+        password: "Passwort"
+        remember_me: "Erinnere dich an mich"
+        sign_up: "Anmelden"
+        reset_password: "Setze dein Passwort zurück"
+      language:
+        language_title: "Sprache"
+      research_note: "Research note"
+      wiki_doc: "Wiki Dokumentation"
