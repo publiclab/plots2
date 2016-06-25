@@ -28,6 +28,9 @@
 //= require ics/ics.min.js
 //= require leaflet/dist/leaflet
 //= require moment/moment.js
+//= require d3/d3
+//= require d3-plugins/hexbin/hexbin
+//= require leaflet-d3/dist/leaflet-d3
 //  APPLICATION SCRIPTS:
 //= require search.js
 //= require setup.js

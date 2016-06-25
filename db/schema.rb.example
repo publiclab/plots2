@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160616035549) do
+ActiveRecord::Schema.define(:version => 20160621221429) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -161,6 +161,18 @@ ActiveRecord::Schema.define(:version => 20160616035549) do
     t.integer  "vid",                :default => 0
   end
 
+  create_table "location_tags", :force => true do |t|
+    t.integer  "uid"
+    t.string   "location"
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.decimal  "lat",        :precision => 15, :scale => 10
+    t.decimal  "long",       :precision => 15, :scale => 10
+    t.string   "country"
+    t.string   "state"
+    t.string   "city"
+  end
+
   create_table "node", :primary_key => "nid", :force => true do |t|
     t.integer "vid",                                       :default => 0,  :null => false
     t.string  "type",                        :limit => 32, :default => "", :null => false
@@ -292,7 +304,10 @@ ActiveRecord::Schema.define(:version => 20160616035549) do
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.string   "photo_file_size"
+    t.boolean  "location_privacy",   :default => true
   end
+
+  add_index "rusers", ["location_privacy"], :name => "index_rusers_on_location_privacy"
 
   create_table "tag_selections", :id => false, :force => true do |t|
     t.integer "user_id"
