@@ -62,8 +62,6 @@ gem "rack-openid"
 gem "authlogic", "3.2.0"
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
-<<<<<<< b2f1a093f026083ad75ce6432a3498bbe4c71042
-=======
 
 # RESTful API Support
 gem 'grape'
@@ -83,4 +81,6 @@ gem 'http_accept_language'
 gem 'friendly_id'
 gem 'jbuilder'
 gem 'strong_parameters'
+gem 'sunspot_rails'
+gem 'sunspot_solr'
 
