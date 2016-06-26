@@ -17,6 +17,7 @@ class SearchesController < ApplicationController
   def create
     @search = Search.new(search_params)
     @search.title = 'Advanced search'
+    @search.user_id = current_user.id
     if @search.save
       redirect_to @search
     else
