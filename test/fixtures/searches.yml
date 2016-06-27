@@ -11,7 +11,15 @@ normal:
 
 # column: value
 #
-advanced:
+advanced_note:
   title: Advanced search
-  key_words: event
+  key_words: gsoc
+  main_type: 'Notes or Wiki updates'
+  note_type: note
+  language: english
   user_id: 2
+
+advanced_profile:
+  key_words: ujitha
+  main_type: 'User Profiles'
+  user_id: 7

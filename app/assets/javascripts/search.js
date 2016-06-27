@@ -22,5 +22,10 @@ jQuery(document).ready(function() {
       window.location = url;
     }
   })
+    $('#search_min_date,#search_max_date').each(function(){
+      $(this).datepicker({
+        format: 'dd-mm-yyyy'
+      });
+    });
 
 })

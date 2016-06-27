@@ -43,4 +43,9 @@ class AnswerTest < ActiveSupport::TestCase
     assert answer.liked_by(bob.uid)
     assert !answer.liked_by(jeff.uid)
   end
+
+  test "should list comments in descending order" do
+    answer = answers(:one)
+    assert_equal answer.comments.first, DrupalComment.last
+  end
 end

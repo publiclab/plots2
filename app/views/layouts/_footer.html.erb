@@ -25,6 +25,17 @@
     <p><%= t('layout._footer.different_licenses') %></p>
     <p><%= raw t('layout._footer.font_use', :url => 'http://www.theleagueofmoveabletype.com/junction') %></p>
     <p><%= raw t('layout._footer.server_donation', :url => 'http://rackspace.com/') %></p>
+    <ul class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="fa fa-language" aria-hidden="true"></i>
+        <%= t('layout._footer.language.language_title') %> <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu">
+        <% locale_name_pairs.each do |locale_name, locale| %>
+          <li><%= link_to locale_name, change_locale_path(locale) %></li>
+        <% end %>
+      </ul>
+    </ul>
   </div>
   <br style="clear:both;" />
 </footer>

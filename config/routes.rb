@@ -24,6 +24,7 @@ Plots2::Application.routes.draw do
     match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
   end
 
+  get '/change_locale/:locale', to: 'settings#change_locale', as: :change_locale
   match 'ioby' => "legacy#ioby"
 
   match 'login' => "user_sessions#new",      :as => :login
@@ -118,16 +119,16 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
-  # Search pattern matches--Modify accordingly for RESTful operations
-  match 'search' => 'search#advanced'
-  match 'search/advanced' => 'search#advanced'
-  match 'search/advanced/:id' => 'search#advanced'
-  match 'search/:id' => 'search#index'
-  match 'search/typeahead/:id' => 'search#typeahead'
+  match 'search' => 'searches#new'
+  match 'search/advanced' => 'searches#new'
+  match 'search/advanced/:id' => 'searches#new'
+  match 'search/:id' => 'searches#normal_search'
+  match 'search/typeahead/:id' => 'searches#typeahead'
+  match 'search/questions/:id' => 'searches#questions'
+  match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
   
   match 'questions_search/:id' => 'questions_search#index'
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
-
 
   match 'tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'
@@ -218,6 +219,7 @@ Plots2::Application.routes.draw do
   match 'answer_like/show/:aid' => 'answer_like#show'
   match 'answer_like/likes/:aid' => 'answer_like#likes'
 
+  match 'comment/answer_create/:aid' => 'comment#answer_create'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 

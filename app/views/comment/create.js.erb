@@ -1,0 +1,5 @@
+$('#answer-<%= @answer_id %>-comment-section').after('<%= escape_javascript(render :partial => "questions/comment", :locals => {comment: @comment, answer_id: @answer_id}) %>')
+$('#answer-<%= @answer_id %>-comment-<%= @comment.id %>').show()
+$('#answer-<%= @answer_id %>-comment-count')[0].innerHTML = parseInt($('#answer-<%= @answer_id %>-comment-count')[0].innerHTML) + 1
+$('#answer-<%= @answer_id %>-comment-form textarea').val('');
+$('#answer-<%= @answer_id %>-comment-form .help-block').remove()

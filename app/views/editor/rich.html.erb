@@ -145,8 +145,15 @@
 
     editor = new PL.Editor({
       textarea:    $('.ple-textarea')[0],
-      destination: '/notes/create',
-      format:      'publiclab'
+      <% if @main_image %>
+        mainImageUrl:   '<%= @main_image %>',
+      <% end %>
+      <% if params[:action] == 'edit' %>
+        destination: '/notes/update/<%= @node.id %>',
+      <% else %>
+        destination: '/notes/create',
+      <% end %>
+      format:      'publiclab',
     });
 
   })();

@@ -42,6 +42,7 @@ public/sites/
 public/assets/
 production.db
 test.db
+solr/*
 
 # Ignore NPM
 node_modules

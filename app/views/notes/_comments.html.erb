@@ -2,11 +2,11 @@
 
   <div id="comments" class="col-md-10 comments">
 
-    <h3><span id="comment-count"><%= @node.comments.length %></span> Comments</h3>
+    <h3><span id="comment-count"><%= @node.drupal_comments.length %></span> Comments</h3>
  
     <div id="comments-container">
-      <% @node.comments.each do |comment| %>
-        <% if comment.cid == @node.comments.last.cid %><a id="last" name="last"></a><% end %>
+      <% @node.drupal_comments.each do |comment| %>
+        <% if comment.cid == @node.drupal_comments.last.cid %><a id="last" name="last"></a><% end %>
   
         <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
   

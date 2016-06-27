@@ -97,18 +97,7 @@ class NotesController < ApplicationController
 
     return if check_and_redirect_node(@node)
 
-    if @node.author.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
-      flash[:error] = "The author of that note has been banned."
-      redirect_to "/"
-    elsif @node.status == 4 && (current_user && (current_user.role == "admin" || current_user.role == "moderator"))
-      flash[:warning] = "First-time poster <a href='#{@node.author.name}'>#{@node.author.name}</a> submitted this #{time_ago_in_words(@node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{@node.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{@node.id}'>Spam</a>"
-    elsif @node.status == 4 && (current_user && current_user.id == @node.author.id) && !flash[:first_time_post]
-      flash[:warning] = "Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so."
-    elsif @node.status != 1 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
-      # if it's spam or a draft
-      # no notification; don't let people easily fish for existing draft titles; we should try to 404 it
-      redirect_to "/"
-    end
+    alert_and_redirect_moderated
 
     @node.view
     @title = @node.latest.title
@@ -174,6 +163,13 @@ class NotesController < ApplicationController
     @node = DrupalNode.find(params[:id],:conditions => {:type => "note"})
     if current_user.uid == @node.uid || current_user.role == "admin" 
       if params[:rich]
+        if @node.main_image
+          @main_image = @node.main_image.path(:default) 
+        elsif params[:main_image] && Image.find_by_id(params[:main_image])
+          @main_image = Image.find_by_id(params[:main_image]).path
+        elsif @image
+          @main_image = @image.path(:default)
+        end
         render :template => "editor/rich"
       else
         render :template => "editor/post"
@@ -222,10 +218,12 @@ class NotesController < ApplicationController
         flash[:notice] = "Edits saved."
         # Notice: Temporary redirect.Remove this condition after questions show page is complete.
         #         Just keep @node.path(:question)
-        if params[:redirect] && params[:redirect] == 'question'
-          redirect_to @node.path(:question)
+        format = false
+        format = :question if params[:redirect] && params[:redirect] == 'question'
+        if request.xhr?
+          render text: @node.path(format) + "?_=" + Time.now.to_i.to_s
         else
-          redirect_to @node.path
+          redirect_to @node.path(format) + "?_=" + Time.now.to_i.to_s
         end
       else
         flash[:error] = "Your edit could not be saved."
