@@ -22,7 +22,7 @@
 <% if flash[:warning] %><div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert">×</button><i class="fa fa-exclamation-mark"></i> <%= raw flash[:warning] %></div><% end %>
 
 <% if current_user && session[:openid_return_to] # for openid login, redirects back to openid auth process %>
-  <div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert">×</button><i class="fa fa-exclamation-mark"></i><%= t('layouts._alerts.request_access') %><a href="/openid/resume"><%= t('layout._alerts.approve_or_deny') %> &raquo;</a></div>
+  <div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert">×</button><i class="fa fa-exclamation-mark"></i><%= t('layout._alerts.request_access') %><a href="/openid/resume"><%= t('layout._alerts.approve_or_deny') %> &raquo;</a></div>
 <% end %>
 
 <% cache('feature_sitewide-alert') do %>

@@ -43,4 +43,14 @@ class HomeControllerTest < ActionController::TestCase
     assert_equal 'de', "#{I18n.locale}"
     assert true
   end
+  
+  test "should choose i18n for layout/alerts" do
+    available_testing_locales.each do |lang|
+      cookies.permanent[:plots2_locale] = lang
+      UserSession.create(rusers(:bob))
+      session[:openid_return_to] = '/home'
+      get :dashboard
+      assert_select "a[href=/openid/resume]", I18n.t('layout._alerts.approve_or_deny')+' &raquo;'
+    end
+  end
 end
