@@ -165,6 +165,17 @@
               <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
               <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li> 
               <li class="divider"></li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  <i class="fa fa-language" aria-hidden="true"></i>
+                  <%= t('layout._footer.language.language_title') %> <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <% locale_name_pairs.each do |locale_name, locale| %>
+                    <li><%= link_to locale_name, change_locale_path(locale) %></li>
+                  <% end %>
+                </ul>
+              </li>
               <li><%= link_to t('layout._header.logout'), logout_path %></li>
             </ul>
             <% else %>
@@ -206,6 +217,17 @@
                   <p><a href="/reset/"><%= t('layout._header.login.reset_password') %></a></p>
 
                 <% end %>
+              </li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  <i class="fa fa-language" aria-hidden="true"></i>
+                  <%= t('layout._footer.language.language_title') %> <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <% locale_name_pairs.each do |locale_name, locale| %>
+                    <li><%= link_to locale_name, change_locale_path(locale) %></li>
+                  <% end %>
+                </ul>
               </li>
             </ul>
             <% end %>

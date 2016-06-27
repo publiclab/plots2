@@ -258,7 +258,7 @@ class NotesControllerTest < ActionController::TestCase
          body: "This is a fascinating post about a balloon mapping event. <span id='teststring'>added content</span>", 
          tags: "balloon-mapping,event,meetup"
 
-    assert_redirected_to "/notes/"+rusers(:bob).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
+    assert_redirected_to "/notes/" + rusers(:bob).username + "/" + Time.now.strftime("%m-%d-%Y") + "/" + title.parameterize + "?_=" + Time.now.to_i.to_s
 
     # approve the first-timer's note:
     node.publish
@@ -320,7 +320,7 @@ class NotesControllerTest < ActionController::TestCase
          tags: "question:spectrometer",
          redirect: "question"
 
-    assert_redirected_to "/questions/"+rusers(:bob).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
+    assert_redirected_to "/questions/" + rusers(:bob).username + "/" + Time.now.strftime("%m-%d-%Y") + "/" + title.parameterize
   end
 
   test "should redirect to questions show page when editing an existing question" do
@@ -333,7 +333,7 @@ class NotesControllerTest < ActionController::TestCase
          tags: "question:spectrometer",
          redirect: "question"
 
-    assert_redirected_to note.path(:question)
+    assert_redirected_to note.path(:question) + "?_=" + Time.now.to_i.to_s
   end
 
 end
