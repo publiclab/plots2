@@ -265,4 +265,9 @@ class UsersController < ApplicationController
 
   end
 
+  def map
+    @title = "Maps"
+    @users = DrupalUsers.all.select {|user| user.location_tag if !user.location_tag.nil? }
+  end
+
 end

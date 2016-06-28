@@ -1,0 +1,25 @@
+<div class="container">
+  <div id="users_map" class="row"></div>
+</div>
+
+
+<script type="text/javascript">
+  
+  $(document).ready(function() {
+    <% if @users %>
+      $('#users_map').html("<div id='map' class='col-md-12' style='height:300px;'></div>");
+
+      var user_map = L.map('map').setView([15,0], 2);
+      L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+          attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>"
+        }).addTo(user_map);
+
+      <% @users.each do |user| %>
+        var marker = L.marker([<%= user.location_tag.lat %>, <%= user.location_tag.long %>]).addTo(user_map);
+        marker.bindPopup("<b></b>");
+      <% end %>
+
+    <% end %>
+  });
+
+</script>

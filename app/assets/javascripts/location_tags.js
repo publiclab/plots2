@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  
   var geo_location = document.getElementById('geo_location');
   var autocomplete = new google.maps.places.Autocomplete(geo_location);
 
@@ -20,16 +21,32 @@ $(document).ready(function() {
         if (response.status) {
           $("#location_map").html("<div class='col-md-8' id='map' style='height: 300px;'></div>");
           var mymap = new L.map('map').setView([response.location.lat, response.location.long], 15);
+          var lat  = parseFloat(response.location.lat).toFixed(4);
+          var long = parseFloat(response.location.long).toFixed(4);
+
+          var options = {
+            radius : 20,                            // Size of the hexagons/bins
+            opacity: 0.5,                           // Opacity of the hexagonal layer
+            duration: 200,                          // millisecond duration of d3 transitions (see note below)
+            lng: function(d){ return d[1]; },       // longitude accessor
+            lat: function(d){ return d[0]; },       // latitude accessor
+            value: function(d){ return d.length; }, // value accessor - derives the bin value
+            valueFloor: 0,                          // override the color scale domain low value
+            valueCeil: undefined,                   // override the color scale domain high value
+            colorRange: ['#f7fbff', '#08306b'],     // default color range for the heat map (see note below)
+            onmouseover: function(d, node, layer) {},
+            onmouseout: function(d, node, layer) {},
+            onclick: function(d, node, layer) {}
+          }
 
           L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
             attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
           }).addTo(mymap);
 
-          var circle = L.circle([response.location.lat, response.location.long], 300, {
-            color: 'grey',
-            fillColor: '#87CEFA',
-            fillOpacity: 0.5
-          }).addTo(mymap);
+          var hexlayer = L.hexbinLayer(options).addTo(mymap);
+          hexlayer.colorScale().range(["white", "grey"]);
+
+          hexlayer.data([[lat, long]]);
 
         }
         else {
@@ -38,6 +55,7 @@ $(document).ready(function() {
       }
     })
   })
+
 
   $('#location_privacy').click(function(e) {
     e.preventDefault();
@@ -98,11 +116,6 @@ $(document).ready(function() {
 
             hexlayer.data([[lat, long]]);
 
-            // var circle = L.circle([data.lat, data.long], 300, {
-            //   color: 'grey',
-            //   fillColor: '#87CEFA',
-            //   fillOpacity: 0.5
-            // }).addTo(mymap);
           }
         }
 
