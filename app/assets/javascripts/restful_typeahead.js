@@ -111,7 +111,7 @@ function hideResultsOnBlur(ielem, resList) {
 
 /**
   Process the element's typed values and perform the query; display the results in the associated datalist
-**/
+*/
 function typeaheadSearch(srchElem) {
 	var qtype = $(srchElem).attr('qryType');
 	keycount += 1;
@@ -218,3 +218,4 @@ function typeaheadTagList(ielem, tagList) {
 //	$(ielem).val(optval);
 //        $(ielem).parent().toggleClass('results-noshow',true);
 //}
+
