@@ -212,6 +212,7 @@ Plots2::Application.routes.draw do
   match 'answers/create/:nid' => 'answers#create'
   match 'answers/update/:id' => 'answers#update'
   match 'answers/delete/:id' => 'answers#delete'
+  match 'answers/accept/:id' => 'answers#accept'
 
   match 'answer_like/show/:aid' => 'answer_like#show'
   match 'answer_like/likes/:aid' => 'answer_like#likes'

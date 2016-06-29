@@ -1,0 +1,9 @@
+<% if @answer.accepted %>
+  $('#answer-<%= @answer.id %>-accept').removeClass('btn-default')
+  $('#answer-<%= @answer.id %>-accept').addClass('btn-success')
+  $('#answer-<%= @answer.id %>-accept').html('Accepted')
+<% else %>
+  $('#answer-<%= @answer.id %>-accept').removeClass('btn-success')
+  $('#answer-<%= @answer.id %>-accept').addClass('btn-default')
+  $('#answer-<%= @answer.id %>-accept').html('Accept')
+<% end %>
