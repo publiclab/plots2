@@ -32,10 +32,37 @@
     <hr />
     <div style="padding: 0px 20px 10px 20px;">
        <a href=<% if current_user %>"/answer_like/likes/<%= answer.id %>"<% else %>"#"<% end %>data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-default btn-sm btn-like" id="answer-like-button-<%= answer.id %>" <% unless current_user %> popover-content="You must be logged in to Like the answer" <% end %> ><span id="answer-like-star-<%= answer.id %>" class="fa fa-star<% if current_user && !answer.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="answer-like-count-<%= answer.id %>"><%= answer.likers.length %></span> Likes</a>
-      <a href="#a<%= answer.id %>">Share Link</a>
+      <a href="#a<%= answer.id %>">Share Link</a> | 
+      <span id="answer-<%= answer.id %>-comment-count"><%= answer.comments.length %></span> <a id="answer-<%= answer.id %>-comment-button"  style="color: #006dcc;">Comments</a>
+    </div>
+
+    <div id="answer-<%= answer.id %>-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee; display: none;">
+      <div id="answer-<%= answer.id %>-comment-section">
+      <% if current_user %>
+      <div class="inline" style="vertical-align: top;">
+        <% if current_user.photo_file_name %>
+          <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" /> 
+        <% else %>
+          <div class="img-circle"></div> 
+        <% end %>
+      </div>
+      <div class="inline" style="width: 90%">
+        <form id="answer-<%= answer.id %>-comment-form" class="form-horizontal" action="/comment/answer_create/<%= answer.id%>" data-remote="true">
+          <%= render partial: "questions/form" %>  
+        </form>
+      </div>
+      <% else %>
+        <p><a href="/login">Log in</a> to comment</p> 
+      <% end %>
+      </div>
+      <% answer.comments.each do |comment| %>
+        <%= render partial: "questions/comment", locals: { comment: comment, answer_id: answer.id } %>
+      <% end %>
     </div>
   </div>
 </div>
+
+<%= javascript_include_tag('comment_expand') %>
 
 <script type="text/javascript">
   $(function(){
@@ -47,5 +74,23 @@
       title: $("#answer-like-button-<%= answer.id %>").attr("tooltip-title")
     })
 
+    $('.answer-<%= answer.id %>-comments').slice(0,3).show();
+    if (<%= answer.comments.length %> > 3){
+      $('#answer-<%= answer.id %>-comment').append('<p id="answer-<%= answer.id %>-expand" style="color: #006dcc;">View ' + comment_select(<%= answer.id %>).length + ' more comments</p>');
+      $("#answer-<%= answer.id %>-expand").on('click',function(){
+        expand_comments(<%= answer.id %>);
+      });
+    }
+
   })
+
+  $("#answer-<%= answer.id %>-comment-button").click( function(){
+    $("#answer-<%= answer.id %>-comment").toggle();
+  });
+
+  $('#answer-<%= answer.id %>-comment-form').bind('ajax:error', function(e, response){
+    $('#answer-<%= @answer_id %>-comment-form .help-block').remove()
+    $('#answer-<%= answer.id %>-comment-form .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
+  })
+  
 </script>

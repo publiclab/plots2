@@ -4,6 +4,7 @@ class Answer < ActiveRecord::Base
   belongs_to :drupal_node, foreign_key: 'nid', dependent: :destroy
   belongs_to :drupal_users, foreign_key: 'uid'
   has_many :answer_selections, foreign_key: 'aid'
+  has_many :drupal_comments, foreign_key: 'aid'
 
   validates :content, presence: true
 
@@ -35,5 +36,10 @@ class Answer < ActiveRecord::Base
 
   def liked_by(uid)
     self.likers.collect(&:uid).include?(uid)
+  end
+
+  def comments
+    self.drupal_comments
+        .order('timestamp DESC')
   end 
 end

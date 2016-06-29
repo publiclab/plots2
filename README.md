@@ -119,6 +119,20 @@ To report bugs and request features, please use the GitHub issue tracker provide
 
 For additional support, join the Public Lab website and mailing list at http://publiclab.org/lists or for urgent requests, email web@publiclab.org
 
+****
+
+###Internationalization
+
+Publiclab.org now supports Internationalization and localization, though we are in the initial stages. This has been accomplished with [rails-I8n](https://github.com/svenfuchs/rails-i18n). 
+
+To see it in action, click on the 'Language' dropdown located in the header/footer section of the page. All the guidelines and best practices for I18n can be found [here](http://guides.rubyonrails.org/i18n.html).
+
+Translations are arranged in the yaml files [here](https://github.com/publiclab/plots2/tree/master/config/locales), which are organized in the similar way to [views](https://github.com/publiclab/plots2/tree/master/app/views) files. An example for adding translations can be found [here](http://guides.rubyonrails.org/i18n.html#adding-translations).
+
+To add new languages or for additional support, please write to plots-dev@googlegroups.com
+
+****
+
 ##Developers
 
 Help improve Public Lab software!

@@ -17,6 +17,7 @@ class SearchesController < ApplicationController
   def create
     @search = Search.new(search_params)
     @search.title = 'Advanced search'
+    @search.user_id = current_user.id
     if @search.save
       redirect_to @search
     else
@@ -35,7 +36,7 @@ class SearchesController < ApplicationController
 
   def show
     @title = @search.title
-    @nodes = @search.advanced_search(@search.key_words, params)
+    @nodes = @search.nodes
     set_sidebar :tags, @search.key_words
   end
 
@@ -59,37 +60,6 @@ class SearchesController < ApplicationController
     render json: @match
   end
 
-  def questions
-    @title = 'Search questions'
-    @tagnames = params[:id].split(',')
-    @users = @search_service.users(params[:id])
-    set_sidebar :tags, [params[:id]]
-    @notes = DrupalNode.where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + params[:id] + '%')
-                 .joins(:drupal_tag)
-                 .where('term_data.name LIKE ?', 'question:%')
-                 .order('node.nid DESC')
-                 .page(params[:page])
-    if @notes.empty?
-      session[:title] = params[:id]
-      redirect_to '/post?tags=question:question&template=question&title='+params[:id]+'&redirect=question'
-    else
-      render :template => 'search/index'
-    end
-  end
-
-  def questions_typeahead
-    matches = []
-    questions = DrupalNode.where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + params[:id] + '%')
-                    .joins(:drupal_tag)
-                    .where('term_data.name LIKE ?', 'question:%')
-                    .order('node.nid DESC')
-                    .limit(25)
-    questions.each do |match|
-      matches << "<i data-url='"+match.path(:question)+"' class='fa fa-question-circle'></i> "+match.title
-    end
-    render :json => matches
-  end
-
   def map
     @users = DrupalUsers.where("lat != 0.0 AND lon != 0.0")
   end
@@ -105,7 +75,8 @@ class SearchesController < ApplicationController
     end
 
     def search_params
-      params.require(:search).permit(:key_words, :main_type, :note_type, :date_created, :created_by)
+      params.require(:search).permit(:key_words, :main_type, :note_type,
+                                     :min_date, :max_date, :created_by, :language)
     end
 
 end
