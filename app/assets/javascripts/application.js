@@ -29,10 +29,9 @@
 //= require leaflet/dist/leaflet
 //= require moment/moment.js
 //  APPLICATION SCRIPTS:
-//= require search.js
 //= require setup.js
 //= require editor.js
 //= require like.js
 //= require jsdiff/diff.js
 //= require main_image.js
-
+//= require restful_typeahead.js
