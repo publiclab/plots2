@@ -35,3 +35,4 @@
 //= require jsdiff/diff.js
 //= require main_image.js
 //= require restful_typeahead.js
+//= require searchform.js
