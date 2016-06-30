@@ -41,4 +41,5 @@
 //= require main_image.js
 //= require users.js
 //= require restful_typeahead.js
+//= require searchform.js
 
