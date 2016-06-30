@@ -23,5 +23,6 @@ class SearchRequest
     expose :showCount, documentation: { type: "Integer", desc: "The requested number of records to show per page" }
     expose :pageNum, documentation: { type: "Integer", desc: "Which page (zero-based counting, as in Array indexes) to show paginated data."}
   end   
+
 end
 

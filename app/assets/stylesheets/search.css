@@ -6,7 +6,6 @@ ul.typeahead-results {
   z-index: 1000;
 }
 
-
 ul.typeahead-results>li:hover {
   background-color: #BBBBBB;
   cursor:pointer;

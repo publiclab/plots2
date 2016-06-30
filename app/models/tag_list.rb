@@ -31,5 +31,6 @@ class TagList
       expose :items, using: TagResult::Entity
       expose :srchParams, using: SearchRequest::Entity  
   end
+
 end
 
