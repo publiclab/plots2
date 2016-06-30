@@ -85,4 +85,128 @@ class SearchService
     return matches
   end
 
+  # Run a search in any of the associated systems for references that contain the search string
+  def textSearch_all(srchString)
+    sresult = DocList.new
+    unless srchString.nil? || srchString == 0
+      # notes
+      notes(srchString).select("title,type,nid,path").each do |match|
+        doc = DocResult.new(match.nid,"file",match.path,match.title,0,0)
+        sresult.addDoc(doc)
+      end
+      # DrupalNode search
+      DrupalNode.limit(5)
+      .order("nid DESC")
+      .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', "%" + srchString + "%")
+      .select("title,type,nid,path").each do |match|
+        doc = DocResult.new(match.nid,match.icon,match.path,match.title,0,0)
+        sresult.addDoc(doc)
+      end
+      # User profiles
+      users(srchString).each do |match|
+        doc = DocResult.new(0,"user","/profile/"+match.name,match.name,0,0)
+        sresult.addDoc(doc)
+      end
+      # Tags
+      tags(srchString).each do |match|
+        doc = DocResult.new(0,"tag","/tag/"+match.name,match.name,0,0)
+        sresult.addDoc(doc)
+      end
+      # maps
+      maps(srchString).select("title,type,nid,path").each do |match|
+        doc = DocResult.new(match.nid,match.icon,match.path,match.title,0,0)
+        sresult.addDoc(doc)
+      end
+      # questions
+      questions = DrupalNode.where(
+                  'type = "note" AND node.status = 1 AND title LIKE ?',
+                  "%" + srchString + "%"
+                )
+                  .joins(:drupal_tag)
+                  .where('term_data.name LIKE ?', 'question:%')
+                  .order('node.nid DESC')
+                  .limit(25)
+      questions.each do |match|
+        doc = DocResult.new(match.nid,'question-circle',match.path(:question),match.title,0,match.answers.length.to_i)
+        sresult.addDoc(doc)
+      end
+    end
+    return sresult
+  end
+
+  # Search profiles for matching text
+  def textSearch_profiles(srchString)
+    sresult = DocList.new
+    unless srchString.nil? || srchString == 0
+      # User profiles
+      users(srchString).each do |match|
+        doc = DocResult.new(0,"user","/profile/"+match.name,match.name,0,0)
+        sresult.addDoc(doc)
+      end
+    end
+    return sresult
+  end  
+
+  # Search notes for matching strings
+  def textSearch_notes(srchString)
+    sresult = DocList.new
+    unless srchString.nil? || srchString == 0
+      # notes
+      notes(srchString).select("title,type,nid,path").each do |match|
+        doc = DocResult.new(match.nid,"file",match.path,match.title,0,0)
+        sresult.addDoc(doc)
+      end
+    end
+    return sresult
+  end  
+
+  # Search maps for matching text
+  def textSearch_maps(srchString)
+    sresult = DocList.new
+    unless srchString.nil? || srchString == 0
+      # maps
+      maps(srchString).select("title,type,nid,path").each do |match|
+        doc = DocResult.new(match.nid,match.icon,match.path,match.title,0,0)
+        sresult.addDoc(doc)
+      end
+    end
+    return sresult
+  end
+
+  # Search tag values for matching text
+  def textSearch_tags(srchString)
+    sresult = TagList.new
+    unless srchString.nil? || srchString == 0
+      # Tags
+       tlist= DrupalTag.includes(:drupal_node)
+        .where('node.status = 1')
+        .limit(25)
+        .where('name LIKE ?', '%' + srchString + '%')
+      tlist.each do |match|
+        ntag = TagResult.new(0,match.name,"tag","/tag/"+match.name)
+        sresult.addTag(ntag)
+      end
+    end
+    return sresult
+  end
+
+  # Search question entries for matching text
+  def textSearch_questions(srchString)
+    sresult = DocList.new
+    questions = DrupalNode.where(
+                  'type = "note" AND node.status = 1 AND title LIKE ?',
+                  "%" + srchString + "%"
+                )
+                  .joins(:drupal_tag)
+                  .where('term_data.name LIKE ?', 'question:%')
+                  .order('node.nid DESC')
+                  .limit(25)
+    questions.each do |match|
+      doc = DocResult.new(match.nid,'question-circle',match.path(:question),match.title,0,match.answers.length.to_i)
+      sresult.addDoc(doc)
+    end
+    return sresult
+  end
+
+  
 end

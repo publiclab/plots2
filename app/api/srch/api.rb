@@ -17,11 +17,11 @@ module Srch
       :hide_documentation_path => true,
       :mount_path => '/swagger_doc',
       models: [
-        Srch::Entities::SearchRequest,
-        Srch::Entities::DocResult,
-        Srch::Entities::TagResult,
-        Srch::Entities::DocList,
-        Srch::Entities::TagList
+        SearchRequest::Entity,
+        DocResult::Entity,
+        TagResult::Entity,
+        DocList::Entity,
+        TagList::Entity
       ],
       info: {
         title: "RESTful API calls for Public Lab site",

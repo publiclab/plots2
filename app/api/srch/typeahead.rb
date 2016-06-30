@@ -4,9 +4,10 @@ require 'grape-entity'
 module Srch
   class Typeahead < Grape::API
 
+    # Endpoint definitions
     resource :typeahead do
 
-      # Request URL should be /api/typeahead/all/:id
+      # Request URL should be /api/typeahead/all?srchString=QRY&seq=KEYCOUNT
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of all available resources', {
         hidden: false,
@@ -18,67 +19,105 @@ module Srch
         optional :seq, type: Integer, documentation: { example: 995 }
       end
       get :all do
-        srchReq = ::Srch::Entities::SearchRequest.new
-        srchReq.srchString = params[:srchString]
-        srchReq.seq = params[:seq]
-        sresult = ::Srch::Entities::DocList.new
-        sresult.srchParams = srchReq
-        unless srchReq.srchString.nil? || srchReq.srchString == 0
+        sresult = DocList.new
+        unless params[:srchString].nil? || params[:srchString] == 0
           sservice = SearchService.new
-          # notes
-          sservice.notes(id).select("title,type,nid,path").each do |match|
-            doc = ::Srch::Entities::DocResult.new
-            doc.docId = match.nid
-            doc.docType = 'file'
-            doc.docUrl = match.path
-            doc.doctitle = match.title
-            sresult.docs << doc
-          end
-          # DrupalNode search
-          DrupalNode.limit(5)
-          .order("nid DESC")
-          .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', "%" + id + "%")
-          .select("title,type,nid,path").each do |match|
-            doc = ::Srch::Entities::DocResult.new
-            doc.docId = match.nid
-            doc.docType = match.icon
-            doc.docUrl = match.path
-            doc.doctitle = match.title
-            sresult.docs << doc
-          end
-          # User profiles
-          users(id).each do |match|
-            doc = ::Srch::Entities::DocResult.new
-            doc.docType = "user"
-            doc.docUrl = "/profile/"+match.name
-            doc.doctitle = match.name
-            sresult.docs << doc
-            matches << "<i data-url='/profile/"+match.name+"' class='fa fa-user'></i> "+match.name
-          end
-          # Tags
-          tags(id).each do |match|
-            doc = ::Srch::Entities::DocResult.new
-            doc.docType = "tag"
-            doc.docUrl = "/tag/"+match.name
-            doc.doctitle = match.name
-            sresult.docs << doc
-          end
-          # maps
-          maps(id).select("title,type,nid,path").each do |match|
-            doc = ::Srch::Entities::DocResult.new
-            doc.docId = match.nid
-            doc.docType = match.icon
-            doc.docUrl = match.path
-            doc.doctitle = match.title
-            sresult.docs << doc
-          end
+          sresult = sservice.textSearch_all(params[:srchString])
         end
-	return sresult
+        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sresult.srchParams=sparms
+	sresult
       end
 
-      get :test do
-        { sresult: 'success!' }
+      # Request URL should be /api/typeahead/profiles?srchString=QRY&seq=KEYCOUNT
+      # Basic implementation from classic plots2 SearchController
+      desc 'Perform a search of profiles', {
+        hidden: false,
+        is_array: false,
+        nickname: 'typeaheadGetProfiles'
+      }
+      params do
+        requires :srchString, type: String, documentation: { example: 'Spec' }
+        optional :seq, type: Integer, documentation: { example: 995 }
       end
+      get :profiles do
+        sresult = DocList.new
+        unless params[:srchString].nil? || params[:srchString] == 0
+          sservice = SearchService.new
+          sresult = sservice.textSearch_profiles(params[:srchString])
+        end
+        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sresult.srchParams=sparms
+	sresult
+      end
+
+      # Request URL should be /api/typeahead/notes?srchString=QRY&seq=KEYCOUNT
+      # Basic implementation from classic plots2 SearchController
+      desc 'Perform a search of research notes', {
+        hidden: false,
+        is_array: false,
+        nickname: 'typeaheadGetNotes'
+      }
+      params do
+        requires :srchString, type: String, documentation: { example: 'Spec' }
+        optional :seq, type: Integer, documentation: { example: 995 }
+      end
+      get :notes do
+        sresult = DocList.new
+        unless params[:srchString].nil? || params[:srchString] == 0
+          sservice = SearchService.new
+          sresult = sservice.textSearch_notes(params[:srchString])
+        end
+        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sresult.srchParams=sparms
+	sresult
+      end
+
+      # Request URL should be /api/typeahead/questions?srchString=QRY&seq=KEYCOUNT
+      # Basic implementation from classic plots2 SearchController
+      desc 'Perform a search of questions tables', {
+        hidden: false,
+        is_array: false,
+        nickname: 'typeaheadGetQuestions'
+      }
+      params do
+        requires :srchString, type: String, documentation: { example: 'Spec' }
+        optional :seq, type: Integer, documentation: { example: 995 }
+      end
+      get :questions do
+        sresult = DocList.new
+        unless params[:srchString].nil? || params[:srchString] == 0
+          sservice = SearchService.new
+          sresult = sservice.textSearch_questions(params[:srchString])
+        end
+        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sresult.srchParams=sparms
+	sresult
+      end
+
+      # Request URL should be /api/typeahead/tags?srchString=QRY&seq=KEYCOUNT
+      # Basic implementation from classic plots2 SearchController
+      desc 'Perform a search of tags within the system', {
+        hidden: false,
+        is_array: false,
+        nickname: 'typeaheadGetTags'
+      }
+      params do
+        requires :srchString, type: String, documentation: { example: 'Spec' }
+        optional :seq, type: Integer, documentation: { example: 995 }
+      end
+      get :tags do
+        sresult = TagList.new
+        unless params[:srchString].nil? || params[:srchString] == 0
+          sservice = SearchService.new
+          sresult = sservice.textSearch_tags(params[:srchString])
+        end
+        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sresult.srchParams=sparms
+	sresult
+      end
+
+    # end of endpoint definitions
     end
 
   end
