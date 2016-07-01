@@ -73,6 +73,8 @@ class LocationTagsController < ApplicationController
           render json: {
             status: @output[:status],
             location: @location_tag,
+            location_privacy: user.user.location_privacy,
+            name: user.name,
             errors: @output[:errors]
           }.to_json
         }

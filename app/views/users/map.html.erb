@@ -64,7 +64,7 @@
     <% elsif @users %>
       $('#users_map').html("<div id='map' class='col-md-12' style='height:500px;'></div>");
 
-      <% if !@country.empty? %>
+      <% if !@country.nil? and !@country.empty? %>
         <%  geo_location = Geocoder.search("#{@country}").first || "" %>
         var user_map = L.map('map').setView([<%= geo_location.latitude %>, <%= geo_location.longitude %>], 4);
       <% else %>
@@ -98,7 +98,9 @@
           hexlayer.colorScale().range(["white", "grey"]);
           hexlayer.data([[<%= user.location_tag.lat %>, <%= user.location_tag.long %>]]);
         <% else %>
-          var marker = L.marker([<%= user.location_tag.lat %>, <%= user.location_tag.long %>]).addTo(user_map);
+          var marker = L.marker([<%= user.location_tag.lat %>, <%= user.location_tag.long %>]);
+          console.log(L.popup().setLatLng(<%= user.location_tag.lat %>, <%= user.location_tag.long %>));
+          marker.addTo(user_map);
           marker.bindPopup("<b><%= user.name %></b>");
         <% end %>
       <% end %>

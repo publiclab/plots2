@@ -248,13 +248,17 @@ class UsersController < ApplicationController
       @output[:errors] << flash[:error]
     end
 
+    if user.location_tag
+      @lat, @long =  user.location_tag.lat, user.location_tag.long
+    end
+
     respond_to do |format|
       format.json {
         render json: {
           status: @output[:status],
           model: current_user,
-          lat: user.location_tag.lat,
-          long: user.location_tag.long
+          lat: @lat,
+          long: @long
         }.to_json
       }
 
