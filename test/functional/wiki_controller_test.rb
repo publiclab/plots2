@@ -80,13 +80,9 @@ class WikiControllerTest < ActionController::TestCase
          title: newtitle,
          body:  "Editing about Page"
 
+    wiki.reload
     assert_redirected_to wiki.path
-
-    get :show, id: wiki.slug
-
-    assert_response :success
     assert_equal flash[:notice], "Edits saved."
-    assert_select "h1", newtitle # title should change but not URL
   end
 
   test "update root-path (/about) wiki" do
@@ -96,16 +92,12 @@ class WikiControllerTest < ActionController::TestCase
     post :update, 
          id:    wiki.nid, 
          uid:   rusers(:bob).id,
-         title: "New Title",
+         title: newtitle,
          body:  "Editing about Page"
 
+    wiki.reload
     assert_redirected_to wiki.path
-
-    get :show, id: wiki.slug
-
-    assert_response :success
     assert_equal flash[:notice], "Edits saved."
-    assert_select "h1", newtitle # title should change but not URL
   end
 
   test "update wiki uploading new image" do
@@ -121,6 +113,7 @@ class WikiControllerTest < ActionController::TestCase
                   :photo => image 
                 }
 
+    node.reload
     assert_redirected_to node.path
     assert_equal flash[:notice], "Edits saved."
   end
@@ -136,6 +129,7 @@ class WikiControllerTest < ActionController::TestCase
          body:           "Editing about Page",
          image_revision: image.path(:default)
 
+    node.reload
     assert_redirected_to node.path
     assert_equal flash[:notice], "Edits saved."
   end

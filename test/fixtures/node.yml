@@ -8,6 +8,7 @@ one:
   status: 1
   type: "note"
   cached_likes: 0
+  slug: canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon
 
 about: 
   nid: 2
@@ -19,6 +20,7 @@ about:
   status: 1
   type: "page"
   cached_likes: 0
+  slug: about
 
 spam:
   nid: 3
@@ -30,17 +32,19 @@ spam:
   status: 0
   type: "note"
   cached_likes: 0
+  slug: hot-stuff-i-m-selling
 
 spam_targeted_page: 
   nid: 4
   uid: 1
   title: "Important work"
-  path: "/wiki/important"
+  path: "/wiki/important-work"
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
   type: "page"
   cached_likes: 0
+  slug: important-work
 
 organizers: 
   nid: 5
@@ -52,6 +56,7 @@ organizers:
   status: 1
   type: "page"
   cached_likes: 0
+  slug: organizers
 
 first_timer_note:
   nid: 6
@@ -63,6 +68,7 @@ first_timer_note:
   status: 4
   type: "note"
   cached_likes: 0
+  slug: my-very-first-post-to-public-lab
 
 place:
   nid: 7
@@ -74,6 +80,7 @@ place:
   status: 1
   type: "wiki"
   cached_likes: 0
+  slug: chicago
 
 question:
   nid: 8
@@ -85,3 +92,4 @@ question:
   status: 1
   type: "note"
   cached_likes: 0
+  slug: how-to-use-a-spectrometer

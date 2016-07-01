@@ -54,8 +54,8 @@ class NotesControllerTest < ActionController::TestCase
 
   test "don't show note by spam author" do
     note = node(:spam) # spam fixture
-
-    get :show,
+    
+    get :show, 
         author: note.author.name,
         date: Time.at(note.created).strftime("%m-%d-%Y"),
         id: note.title.parameterize
@@ -235,45 +235,6 @@ class NotesControllerTest < ActionController::TestCase
 
   #end
 
-  test "edit note" do
-    UserSession.create(rusers(:bob))
-    title = "My second post about balloon mapping"
-
-    post :create,
-         title: title,
-         body: "This is a fascinating post about a balloon mapping event.",
-         tags: "balloon-mapping,event"
-         #, main_image: "/images/testimage.jpg"
-
-    assert_redirected_to "/notes/"+rusers(:bob).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
-
-    node = DrupalNode.where(title: title).first
-
-    # add a tag, and change the title and body
-    newtitle = title + " which I amended"
-
-    post :update,
-         id: node.id,
-         title: newtitle,
-         body: "This is a fascinating post about a balloon mapping event. <span id='teststring'>added content</span>",
-         tags: "balloon-mapping,event,meetup"
-
-    assert_redirected_to "/notes/" + rusers(:bob).username + "/" + Time.now.strftime("%m-%d-%Y") + "/" + title.parameterize + "?_=" + Time.now.to_i.to_s
-
-    # approve the first-timer's note:
-    node.publish
-
-    get :show,
-        author: rusers(:bob).username,
-        date: Time.now.strftime("%m-%d-%Y"),
-        id: title.parameterize
-
-    assert_equal flash[:notice], "Edits saved."
-    assert_select "h1", newtitle
-    # assert_select "span#teststring", "added content" # this test does not work!! very frustrating.
-    # assert_select ".label", "meetup" # test for tag addition too, later
-  end
-
   test "should load iframe url in comments" do
     comment = DrupalComment.new({
       nid: node(:one).nid,
@@ -313,7 +274,7 @@ class NotesControllerTest < ActionController::TestCase
 
   test "should redirect to questions show page after creating a new question" do
     user = UserSession.create(rusers(:bob))
-    title = "How to use a Spectrometer"
+    title = "How to use Spectrometer"
     post :create,
          title: title,
          body: "Spectrometer question",
