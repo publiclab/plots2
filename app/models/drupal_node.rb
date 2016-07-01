@@ -16,9 +16,16 @@ end
 class DrupalNode < ActiveRecord::Base
   include NodeShared # common methods for node-like models
 
-  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path
+  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug
   self.table_name = 'node'
   self.primary_key = 'nid'
+
+  extend FriendlyId
+  friendly_id :title, use: [:slugged, :history]
+
+  def should_generate_new_friendly_id?
+    slug.blank? || title_changed?
+  end
 
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
   # wasn't working to tie it to .vid, manually defining below
@@ -43,7 +50,7 @@ class DrupalNode < ActiveRecord::Base
 
   validates :title, :presence => :true
   validates_with UniqueUrlValidator, :on => :create
-  validates :path, :uniqueness => { :scope => :nid, :message => "This title has already been taken" }
+  validates :path, :uniqueness => { :message => "This title has already been taken" }
 
   # making drupal and rails database conventions play nice;
   # 'changed' is a reserved word in rails
@@ -64,6 +71,7 @@ class DrupalNode < ActiveRecord::Base
   before_save :set_changed_and_created
   after_create :setup
   before_validation :set_path, on: :create
+  after_save :update_path
 
   # can switch to a "question-style" path if specified
   def path(type = :default)
@@ -92,6 +100,18 @@ class DrupalNode < ActiveRecord::Base
 
   def set_path
     self.path = self.generate_path if self.path.blank? && !self.title.blank?
+  end
+
+  def update_path
+    new_path = if self.type == 'note'
+                  username = DrupalUsers.find_by_uid(self.uid).name
+                  "/notes/#{username}/#{Time.at(self.created).strftime("%m-%d-%Y")}/#{self.friendly_id}"
+                elsif self.type == 'page'
+                  "/wiki/" + self.friendly_id
+                elsif self.type == 'map'
+                  "/map/#{self.friendly_id}/#{Time.at(self.created).strftime("%m-%d-%Y")}"
+                end
+    self.update_column(:path, new_path)
   end
 
   def set_changed_and_created
@@ -384,14 +404,6 @@ class DrupalNode < ActiveRecord::Base
     self.drupal_node_counter.totalcount
   end
 
-  # ============================================
-  # URL-related methods:
-
-  # is this used anymore? deprecate?
-  def slug
-    self.path.split('/').last
-  end
-
   def edit_path
     if self.type == "page" || self.type == "tool" || self.type == "place"
       path = "/wiki/edit/" + self.path.split("/").last
@@ -401,16 +413,8 @@ class DrupalNode < ActiveRecord::Base
     path
   end
 
-  def self.find_by_slug(title)
-    DrupalNode.where(path: ["/#{title}", "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
-  end
-
   def self.find_root_by_slug(title)
     DrupalNode.where(path: ["/#{title}"]).first
-  end
-
-  def self.find_map_by_slug(title)
-    DrupalNode.where(path: "/map/#{title}").first
   end
 
   def map

@@ -16,7 +16,10 @@ class MapController < ApplicationController
   end
 
   def show
-    @node = DrupalNode.find_map_by_slug(params[:name]+'/'+params[:date])
+    @node = DrupalNode.find params[:name]
+
+    redirect_old_urls
+
     @node.view
     @title = @node.title
     @tags = @node.tags

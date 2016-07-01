@@ -15,8 +15,11 @@ class QuestionsController < ApplicationController
 
   def show
     if params[:author] && params[:date]
-      @node = DrupalNode.where(path: "/notes/#{params[:author]}/#{params[:date]}/#{params[:id]}").first
+      @node = DrupalNode.find params[:id]
       @node = @node || DrupalNode.where(path: "/report/#{params[:id]}").first
+      if request.path != @node.path(:question)
+        return redirect_to @node.path(:question), :status => :moved_permanently
+      end
     else
       @node = DrupalNode.find params[:id]
     end

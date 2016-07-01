@@ -20,10 +20,10 @@ class WikiController < ApplicationController
   end
 
   def show
-    if params[:lang]
-      @node = DrupalNode.find_by_slug(params[:lang]+"/"+params[:id])
-    else
-      @node = DrupalNode.find_by_slug(params[:id])
+    @node = DrupalNode.find params[:id]
+
+    if request.path != @node.path && request.path != '/wiki/' + @node.nid.to_s
+      return redirect_to @node.path, :status => :moved_permanently
     end
 
     return if check_and_redirect_node(@node)
@@ -63,11 +63,7 @@ class WikiController < ApplicationController
   end
 
   def edit
-    if params[:lang]
-      @node = DrupalNode.find_by_slug(params[:lang]+"/"+params[:id])
-    else
-      @node = DrupalNode.find_by_slug(params[:id])
-    end
+    @node = DrupalNode.find params[:id]
     if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
       flash.now[:warning] = "Someone has clicked 'Edit' less than 5 minutes ago; be careful not to overwrite each others' edits!"
     end
@@ -142,6 +138,7 @@ class WikiController < ApplicationController
           i.vid = @revision.vid 
           i.save
         end
+        @node.title = @revision.title
         # save main image
         if params[:main_image] && params[:main_image] != ""
           begin
