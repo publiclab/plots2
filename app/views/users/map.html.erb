@@ -1,4 +1,39 @@
 <div class="container">
+  <form method="GET" action="/users/map" id="search">
+    <div class="row">
+      <div class="col-md-1">
+        <label for="search">Search</label>
+      </div>
+      <div class="form-group col-md-1">
+        <select name="tag" id="tag_type" class="form-control">
+          <option></option>
+          <option>Skill</option>
+          <option>Gear</option>
+          <option>Role</option>
+          <option>Tool</option>
+        </select>
+      </div>
+      <div class="form-group col-md-2">
+        <input id="tag_value" type="text" name="value" class="form-control">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-1">
+        <label for="search location">Location</label>
+      </div>
+      <div class="form-group col-md-3">
+        <input type="text" name="country" class="form-control" id="country" value="<%= params[:country] %>">
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-offset-1">
+        <input type="submit" id="submit" value="Search" class="btn btn-primary">
+      </div>
+    </div>
+  </form>
+  <br >
   <div id="users_map" class="row"></div>
 </div>
 
@@ -6,17 +41,66 @@
 <script type="text/javascript">
   
   $(document).ready(function() {
-    <% if @users %>
-      $('#users_map').html("<div id='map' class='col-md-12' style='height:300px;'></div>");
+    <% if @location_tags %>
+      $("#users_map").html("<div id='map' class='col-md-12' style='height:500px;'></div>");
 
       var user_map = L.map('map').setView([15,0], 2);
       L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
           attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>"
         }).addTo(user_map);
 
+      <% @location_tags.each do |location_tag, user_tag| %>
+
+        var marker = L.marker([<%= location_tag[0] %>, <%= location_tag[1] %>]).addTo(user_map);
+        var contents = "";
+
+        <% user_tag.each do |tag| %>
+          contents += "<b><%= tag.value %></b><br />"
+        <% end %>
+        marker.bindPopup(contents)
+        marker.openPopup()
+
+      <% end %>
+    <% elsif @users %>
+      $('#users_map').html("<div id='map' class='col-md-12' style='height:500px;'></div>");
+
+      <% if !@country.empty? %>
+        <%  geo_location = Geocoder.search("#{@country}").first || "" %>
+        var user_map = L.map('map').setView([<%= geo_location.latitude %>, <%= geo_location.longitude %>], 4);
+      <% else %>
+        var user_map = L.map('map').setView([15,0], 2);
+      <% end %>
+      
+      L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+          attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>"
+        }).addTo(user_map);
+
       <% @users.each do |user| %>
-        var marker = L.marker([<%= user.location_tag.lat %>, <%= user.location_tag.long %>]).addTo(user_map);
-        marker.bindPopup("<b></b>");
+        <% location_privacy = user.user.location_privacy %>
+
+        <% if !location_privacy %>
+          var options = {
+            radius : 20,
+            opacity: 0.5,
+            duration: 200,
+            lng: function(d){ return d[1]; },
+            lat: function(d){ return d[0]; },
+            value: function(d){ return d.length; },
+            valueFloor: 0,
+            valueCeil: undefined,
+            colorRange: ['#f7fbff', '#08306b'],
+            onmouseover: function(d, node, layer) {},
+            onmouseout: function(d, node, layer) {},
+            onclick: function(d, node, layer) {}
+          }
+
+          var hexlayer = L.hexbinLayer(options).addTo(user_map);
+          hexlayer.colorScale().range(["white", "grey"]);
+          hexlayer.data([[<%= user.location_tag.lat %>, <%= user.location_tag.long %>]]);
+        <% else %>
+          var marker = L.marker([<%= user.location_tag.lat %>, <%= user.location_tag.long %>]).addTo(user_map);
+          marker.bindPopup("<b><%= user.name %></b>");
+        <% end %>
       <% end %>
 
     <% end %>

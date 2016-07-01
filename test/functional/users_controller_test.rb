@@ -129,6 +129,7 @@ class UsersControllerTest < ActionController::TestCase
     user = rusers(:jeff)
     post :privacy, location_privacy: true, :id => user.username
 
+    assert_response 302
     assert user.location_privacy
     assert_equal "Your preference has been saved", flash[:notice]
   end
@@ -138,6 +139,7 @@ class UsersControllerTest < ActionController::TestCase
     user = rusers(:jeff)
     post :privacy, location_privacy: false, :id => user.username
 
+    assert_response 302
     assert user.location_privacy
     assert_equal "Your preference has been saved", flash[:notice]
   end

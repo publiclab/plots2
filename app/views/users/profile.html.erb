@@ -56,7 +56,12 @@
         </div>
         <div class="col-md-9">
           <span class="glyphicon glyphicon-map-marker"></span>
-          <%= @user.location_tag.state + "," + @user.location_tag.country %>
+          <%= @user.location_tag.state if @user.location_tag.state %>
+          <% if @user.location_tag.state && @user.location_tag.country %>
+            <%= "," + @user.location_tag.country %>
+          <% else %>
+            <%= @user.location_tag.country %>
+          <% end %>
         </div>
       </div>
 
