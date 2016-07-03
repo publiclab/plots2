@@ -271,22 +271,32 @@ class UsersController < ApplicationController
 
   def map
     @title = "Maps"
+    valid_tags = ["skill", "role", "gear", "tool"]
     tag = params[:tag].downcase if params[:tag]
+
     value = params[:value]
     @country = params[:country]
 
     if !tag.blank?
+      if !valid_tags.include? tag
+        flash[:error] = "#{tag} doesn't exitst"
+      end
       @location_tags = Hash.new
       LocationTag.all.each do |location_tag|
-        user_tags = location_tag.drupal_users.user.user_tags.select { |utag| utag if utag.value =~ /\A#{tag}:[A-Za-z0-9]*\z/ }
-        if !user_tags.empty?
+        if !value.empty?
+          @user_tags = location_tag.drupal_users.user.user_tags.select { |utag| utag if utag.value == "#{tag}:#{value}" }
+        else
+          @user_tags = location_tag.drupal_users.user.user_tags.select { |utag| utag if utag.value =~ /\A#{tag}:[A-Za-z0-9]*\z/ }
+        end
+
+        if !@user_tags.empty?
           if @location_tags[[location_tag.lat, location_tag.long]]
-            user_tags.each do |user_tag|
+            @user_tags.each do |user_tag|
               @location_tags[[location_tag.lat, location_tag.long]] << user_tag
             end
           else
             @location_tags[[location_tag.lat, location_tag.long]] = []
-            user_tags.each do |user_tag|
+            @user_tags.each do |user_tag|
               @location_tags[[location_tag.lat, location_tag.long]] << user_tag
             end
           end

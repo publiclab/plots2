@@ -5,7 +5,7 @@
         <label for="search">Search</label>
       </div>
       <div class="form-group col-md-1">
-        <select name="tag" id="tag_type" class="form-control">
+        <select name="tag" id="tag_type" class="form-control" value="<%= params[:tag] %>">
           <option></option>
           <option>Skill</option>
           <option>Gear</option>
@@ -14,7 +14,7 @@
         </select>
       </div>
       <div class="form-group col-md-2">
-        <input id="tag_value" type="text" name="value" class="form-control">
+        <input id="tag_value" type="text" name="value" class="form-control" value="<%= params[:value] %>">
       </div>
     </div>
 
@@ -41,6 +41,8 @@
 <script type="text/javascript">
   
   $(document).ready(function() {
+    $("#tag_type").val("<%= params[:tag] %>");
+
     <% if @location_tags %>
       $("#users_map").html("<div id='map' class='col-md-12' style='height:500px;'></div>");
 
@@ -99,7 +101,6 @@
           hexlayer.data([[<%= user.location_tag.lat %>, <%= user.location_tag.long %>]]);
         <% else %>
           var marker = L.marker([<%= user.location_tag.lat %>, <%= user.location_tag.long %>]);
-          console.log(L.popup().setLatLng(<%= user.location_tag.lat %>, <%= user.location_tag.long %>));
           marker.addTo(user_map);
           marker.bindPopup("<b><%= user.name %></b>");
         <% end %>
