@@ -1,10 +1,10 @@
 ul.typeahead-results {
   position: absolute;
-  z-index: 1000;
   background-color: white;
   color: black;
   list-style-type:none
 }
+
 
 ul.typeahead-results>li:hover {
   background-color: #BBBBBB;

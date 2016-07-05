@@ -3,11 +3,7 @@ class TagResult
 
   attr_accessor :tagId, :tagVal, :tagType, :tagSource
 
-  def initialize(tid, tval, ttype, tsrc)
-    @tagid = tid
-    @tagVal = tval
-    @tagType = ttype
-    @tagSource = tsrc
+  def initialize
   end
   
   # This subclass is used to auto-generate the RESTful data structure.  It is generally not useful for internal Ruby usage

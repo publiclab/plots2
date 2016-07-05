@@ -3,15 +3,9 @@ class DocResult
   
   attr_accessor :docId, :docType, :docUrl, :docTitle, :docSummary, :docScore
 
-  def initialize(id,dtype,durl,dtitle,dsumm,dscore)
-    @docId = id
-    @docType = dtype
-    @docUrl = durl
-    @docTitle = dtitle
-    @docSummary = dsumm
-    @docScore = dscore
+  def initialize
   end
-  
+
   # This subclass is used to auto-generate the RESTful data structure.  It is generally not useful for internal Ruby usage
   #  but must be included for full RESTful functionality.
   class Entity < Grape::Entity

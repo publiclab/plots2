@@ -134,6 +134,7 @@ Plots2::Application.routes.draw do
   match 'questions_search/:id' => 'questions_search#index'
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
 
+  #Search Pages
   match 'search' => 'searches#new'
   match 'search/advanced' => 'searches#new'
   match 'search/advanced/:id' => 'searches#new'
@@ -149,6 +150,12 @@ Plots2::Application.routes.draw do
   match 'search/typeahead/:id' => 'searches#typeahead'
   match 'search/questions/:id' => 'searches#questions'
   match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
+  match 'search/dynamic' => 'searches#dynamic'
+  match 'search/dynamic/:id' => 'searches#dynamic'
+
+  # Question Search capability--temporary until combined with full Search Capabilities
+  match 'questions_search/:id' => 'questions_search#index'
+  match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
 
   match 'tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'

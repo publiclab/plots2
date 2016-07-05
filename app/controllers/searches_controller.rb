@@ -26,6 +26,14 @@ class SearchesController < ApplicationController
     end
   end
 
+  # Dynamic Search Page using RESTful API
+  def dynamic
+   @search = Search.new(search_params)
+   @search.title = 'Dynamic Search Page'
+   @search.user_id = current_user.id
+   render :dynamic
+  end
+
   def update
     if @search.update_attributes(search_params)
       redirect_to @search
@@ -52,15 +60,9 @@ class SearchesController < ApplicationController
                  .includes(:drupal_node_revision)
   end
 
-  # def advanced
-  #   @title = "Advanced search"
-  #   all = !params[:notes] && !params[:wikis] && !params[:maps] && !params[:comments]
-  #   @nodes = []
-  # end
-
+  # deprecated 
   # utility response to fill out search autocomplete
   # needs *dramatic* optimization
-
   def typeahead
     @match = @search_service.type_ahead(params[:id])
     render json: @match
