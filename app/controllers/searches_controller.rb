@@ -26,6 +26,11 @@ class SearchesController < ApplicationController
     end
   end
 
+  # Dynamic Search Page using RESTful API
+  def dynamic
+   render :dynamic
+  end
+
   def update
     if @search.update_attributes(search_params)
       redirect_to @search

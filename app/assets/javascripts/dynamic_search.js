@@ -2,6 +2,7 @@
   This script holds the functionality for the dynamic search forms, using the RESTful API and new search classes
   under development by the Advanced Search Project.
 **/
+
   //URL for search queries
   var srchBase = "/api/srch/all";
   //Number of searches conducted--used to manage display flow
@@ -166,5 +167,4 @@
 		$(tabDataArray[i].tabId).find('div.row.sresults-row').html('');
 	}
   }
-
 
