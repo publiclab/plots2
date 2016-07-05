@@ -96,10 +96,9 @@ class SearchService
     sresult = DocList.new
     unless srchString.nil? || srchString == 0
       # notes
-      notes(srchString).select("title,type,nid,path").each do |match|
-        doc = DocResult.new(match.nid,"file",match.path,match.title,0,0)
-        sresult.addDoc(doc)
-      end
+      noteList = textSearch_notes(srchString)
+      sresult.addAll(noteList.items)
+      
       # DrupalNode search
       DrupalNode.limit(5)
       .order("nid DESC")
@@ -109,33 +108,20 @@ class SearchService
         sresult.addDoc(doc)
       end
       # User profiles
-      users(srchString).each do |match|
-        doc = DocResult.new(0,"user","/profile/"+match.name,match.name,0,0)
-        sresult.addDoc(doc)
-      end
+      userList = textSearch_profiles(srchString)
+      sresult.addAll(userList.items)
+      
       # Tags
-      tags(srchString).each do |match|
-        doc = DocResult.new(0,"tag","/tag/"+match.name,match.name,0,0)
+      textSearch_tags(srchString).each do |match|
+        doc = DocResult.new(match.tagId,match.tagType,match.tagSource,match.tagVal,0,0)
         sresult.addDoc(doc)
       end
       # maps
-      maps(srchString).select("title,type,nid,path").each do |match|
-        doc = DocResult.new(match.nid,match.icon,match.path,match.title,0,0)
-        sresult.addDoc(doc)
-      end
+      mapList = textSearch_maps(srchString)
+      sresult.addAll(mapList.items)
       # questions
-      questions = DrupalNode.where(
-                  'type = "note" AND node.status = 1 AND title LIKE ?',
-                  "%" + srchString + "%"
-                )
-                  .joins(:drupal_tag)
-                  .where('term_data.name LIKE ?', 'question:%')
-                  .order('node.nid DESC')
-                  .limit(25)
-      questions.each do |match|
-        doc = DocResult.new(match.nid,'question-circle',match.path(:question),match.title,0,match.answers.length.to_i)
-        sresult.addDoc(doc)
-      end
+      qList = textSearch_questions(srchString)
+      sresult.addAll(qList.items)
     end
     return sresult
   end
@@ -146,7 +132,7 @@ class SearchService
     unless srchString.nil? || srchString == 0
       # User profiles
       users(srchString).each do |match|
-        doc = DocResult.new(0,"user","/profile/"+match.name,match.name,0,0)
+        doc = DocResult.fromSearch(0,"user","/profile/"+match.name,match.name,0,0)
         sresult.addDoc(doc)
       end
     end
@@ -159,7 +145,7 @@ class SearchService
     unless srchString.nil? || srchString == 0
       # notes
       notes(srchString).select("title,type,nid,path").each do |match|
-        doc = DocResult.new(match.nid,"file",match.path,match.title,0,0)
+        doc = DocResult.fromSearch(match.nid,"file",match.path,match.title,0,0)
         sresult.addDoc(doc)
       end
     end
@@ -172,7 +158,7 @@ class SearchService
     unless srchString.nil? || srchString == 0
       # maps
       maps(srchString).select("title,type,nid,path").each do |match|
-        doc = DocResult.new(match.nid,match.icon,match.path,match.title,0,0)
+        doc = DocResult.fromSearch(match.nid,match.icon,match.path,match.title,0,0)
         sresult.addDoc(doc)
       end
     end
@@ -208,7 +194,7 @@ class SearchService
                   .order('node.nid DESC')
                   .limit(25)
     questions.each do |match|
-      doc = DocResult.new(match.nid,'question-circle',match.path(:question),match.title,0,match.answers.length.to_i)
+      doc = DocResult.fromSearch(match.nid,'question-circle',match.path(:question),match.title,0,match.answers.length.to_i)
       sresult.addDoc(doc)
     end
     return sresult

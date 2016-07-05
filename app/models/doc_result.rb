@@ -6,6 +6,15 @@ class DocResult
   def initialize
   end
 
+  def self.fromSearch(idval, typeval, urlval,titleval,sumval,scoreval)
+    @docId = idval
+    @doctype = typeval
+    @docUrl = urlval
+    @docTitle = titleval
+    @docSummary = sumval
+    @docScore = scoreval
+  end
+
   # This subclass is used to auto-generate the RESTful data structure.  It is generally not useful for internal Ruby usage
   #  but must be included for full RESTful functionality.
   class Entity < Grape::Entity
