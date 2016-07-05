@@ -1,7 +1,7 @@
 development:
   adapter: mysql2
-  username:root 
-  password: Vmaaw22%
+  username: 
+  password: 
   database: publiclab_dev
 
 test:
