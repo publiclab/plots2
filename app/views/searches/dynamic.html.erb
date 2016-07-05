@@ -1,4 +1,4 @@
-<% content_for (:head), javascript_include_tag "dynamic_search" %>
+<% content_for (:head) { javascript_include_tag "dynamic_search" } %>
 
 <%= render :partial => "sidebar/related" %>
 
@@ -9,8 +9,8 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
-          <div class="panel with-nav-tabs panel-primary">
+      <div class="col-md-9">
+          <div class="panel with-nav-tabs panel-default">
               <div class="panel-heading clearfix">
                   <div class="pull-left">
                       <h1 class="panel-title">Search Results</h1>
@@ -88,7 +88,6 @@
                               <div class="col-lg-12">
                                   <div class="pull-right">
                                       <button class="btn btn-default previous-tab" type="button"><span class="glyphicon glyphicon-chevron-left"></span> Previous</button>
-                                      <button class="btn btn-default next-tab" type="submit"><span class="glyphicon glyphicon-chevron-ok"></span> Submit</button>
                                   </div>
                               </div>
                           </div>

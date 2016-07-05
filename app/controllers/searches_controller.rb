@@ -28,9 +28,6 @@ class SearchesController < ApplicationController
 
   # Dynamic Search Page using RESTful API
   def dynamic
-   @search = Search.new(search_params)
-   @search.title = 'Dynamic Search Page'
-   @search.user_id = current_user.id
    render :dynamic
   end
 
