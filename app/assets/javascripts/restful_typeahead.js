@@ -10,7 +10,7 @@ var idcount = 0;
 var keycount = 0;
 /**
   This call performs two setup operations in support of typeahead usage.  The usage is separated by the organization of the data that is returned.  General document typeahead searches return a 'docList', which is a list of document data and their URLs (not used in typeahead functionality at this time).  Conversely, that tag searches/suggestions return tag data, which can be associated with multiple URLs, and is thus less specific but could be more informative.
-  First, set any input field with the classes of 'search-query' and 'typeahead' to act as a typeahead field.  If the input field has the attribute 'srchGroup=[all | questions | profiles | notes]', then that particular method in the typeahead service is called.  Otherwise, it defaults to 'all'.
+  First, set any input field with the classes of 'search-query' and 'typeahead' to act as a typeahead field.  If the input field has the attribute 'qryType=[all | questions | profiles | notes]', then that particular method in the typeahead service is called.  Otherwise, it defaults to 'all'.
   Second, set any input field with the  classes of 'search-query' and 'tagsrch' to act as a tag-centric typeahead field.
 **/
 jQuery(document).ready(function() {
@@ -63,6 +63,9 @@ function setupSrchSuggest(inelem) {
 			typeaheadSearch(this);
 		}
 	});
+        elemRef.on("blur", function(e) {
+		listelem.toggleClass('results-noshow',true);
+	});
 }
 
 /**
@@ -77,14 +80,14 @@ function typeaheadSearch(srchElem) {
 	$.getJSON(typeaheadBase+qtype,qparams,function(qdata) {
 		if (qdata.srchParams) {
 			if (qdata.srchParams.seq >= keycount) {		
-				typeaheadDocList(srchElem, qdata);
+				typeaheadTagList(srchElem, qdata);
 			}
 		}
 	});
 }
 
 /**
-  Handle the return values for a typeahead call
+  Handle the return values for a typeahead call which returns a list of document data
 **/
 function typeaheadDocList(ielem, docList) {
 	var elemRef = $(ielem);
@@ -93,7 +96,7 @@ function typeaheadDocList(ielem, docList) {
 	if (docList.items) {
 		for (var i=0;i<docList.items.length;i++) {
 			var listopt = $('<li data-text="'+docList.items[i].docTitle+'"><span class="fa fa-'+docList.items[i].docType+'"></span>&nbsp;'+docList.items[i].docTitle+'</li>');
-			listopt.on('click',function(e) {
+			listopt.mousedown(function(e) {
 				e.preventDefault();
 				elemRef.val($(this).attr('data-text'));
 				elemList.toggleClass('results-noshow',true);
@@ -166,13 +169,13 @@ function typeaheadTagList(ielem, tagList) {
 	if (tagList.items) {
 		for (var i=0;i<tagList.items.length;i++) {
 			var listopt = $('<li data-text="'+tagList.items[i].tagVal+'"><span class="fa fa-'+tagList.items[i].tagType+'"></span>&nbsp;'+tagList.items[i].tagVal+'</li>');
-			listopt.on('click',function(e) {
-				e.preventDefault();
-				elemRef.val($(this).attr('data-text'));
-				elemList.toggleClass('results-noshow',true);
-			});
 			elemList.append(listopt);
 		}
+		$(elemList).find('li').mousedown( function(e) {
+			e.preventDefault();
+			elemRef.val($(this).attr('data-text'));
+			elemList.toggleClass('results-noshow',true);
+		});
 	}
 	elemList.toggleClass('results-noshow',false);
 }

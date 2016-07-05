@@ -31,12 +31,14 @@
 
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
-
     <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d" />
     <% if @node && @node.main_image %>
       <!-- facebook like button image: -->
       <meta property="og:image" content="<%= @node.main_image.path(:default) %>" />
     <% end %>
+
+    <%= yield(:head) %> 
+    
   </head>
 
   <body>
