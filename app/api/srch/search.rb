@@ -118,7 +118,7 @@ module Srch
         optional :pageNum, type: Integer, documentation: {example: 0 }
       end
       get :tags do
-        sresult = TagList.new
+        sresult = DocList.new
         unless params[:srchString].nil? || params[:srchString] == 0
           sservice = SearchService.new
           sresult = sservice.textSearch_tags(params[:srchString])
