@@ -64,5 +64,4 @@ gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
 gem 'mocha', '~> 1.1'
 gem 'jasmine-rails'
-gem 'jasmine'
 gem 'jasmine-jquery-rails'
