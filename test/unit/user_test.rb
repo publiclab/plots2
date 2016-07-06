@@ -35,4 +35,12 @@ class UserTest < ActiveSupport::TestCase
     assert        users(:lurker).first_time_poster
   end
 
+  test "user reset key" do
+    user = rusers(:jeff)
+    assert_nil user.reset_key
+
+    user.generate_reset_key
+    assert_not_nil user.reset_key
+  end
+
 end
