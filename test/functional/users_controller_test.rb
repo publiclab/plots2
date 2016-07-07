@@ -62,6 +62,63 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "generate user reset key" do
+    user = rusers(:jeff)
+    assert_nil user.reset_key
+
+    get :reset, email: user.email
+
+    assert_not_nil User.find(user.id).reset_key
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal "[Public Lab] Reset your password", email.subject
+    assert_equal [user.email], email.to
+  end
+
+  test "use user reset key to change password" do
+    user = rusers(:jeff)
+    crypted_password = user.crypted_password
+    key = user.generate_reset_key
+    user.save({})
+
+    user_attributes = user.attributes
+    user_attributes[:password] = 'newpass'
+
+    get :reset, key: key, user: user_attributes 
+
+    saved_user = User.find(user.id)
+
+    assert_nil saved_user.reset_key
+    assert_equal "Your password was successfully changed.", flash[:notice]
+    assert_not_equal crypted_password, saved_user.crypted_password
+
+  end
+
+  test "confirm user reset key not visible on profile to non-admins" do
+    user = rusers(:jeff)
+    assert_nil user.reset_key
+    user.generate_reset_key
+    user.save({})
+    assert_not_nil User.find(user.id).reset_key
+
+    get :profile, id: user.username
+
+    assert_select 'a.user-reset-key', false
+  end
+
+  test "confirm user reset key visible to admins on profile" do
+    activate_authlogic
+    UserSession.create(rusers(:admin))
+    user = rusers(:jeff)
+    user.generate_reset_key
+    user.save({})
+    assert_not_nil User.find(user.id).reset_key
+
+    get :profile, id: user.username
+
+    assert_select 'a#user-reset-key'
+  end
+
 #  def test_create_invalid
 #    User.any_instance.stubs(:valid?).returns(false)
 #    post :create
