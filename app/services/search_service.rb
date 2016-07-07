@@ -55,8 +55,10 @@ class SearchService
         .order('nid DESC')
         .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
   end
-
+  
+  # DEPRECATED
   def type_ahead(id)
+    warn "[DEPRECATED] SearchService.type_ahead is deprecated.  Use the TypeaheadService methods instead."
     matches = []
 
     notes(id).select("title,type,nid,path").each do |match|
@@ -98,7 +100,7 @@ class SearchService
       .order("nid DESC")
       .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', "%" + srchString + "%")
       .select("title,type,nid,path").each do |match|
-        doc = DocResult.new(match.nid,match.icon,match.path,match.title,0,0)
+        doc = DocResult.fromSearch(match.nid,match.icon,match.path,match.title,"",0)
         sresult.addDoc(doc)
       end
       # User profiles
@@ -106,10 +108,8 @@ class SearchService
       sresult.addAll(userList.items)
       
       # Tags
-      textSearch_tags(srchString).each do |match|
-        doc = DocResult.new(match.tagId,match.tagType,match.tagSource,match.tagVal,0,0)
-        sresult.addDoc(doc)
-      end
+      tagList = textSearch_tags(srchString)
+      sresult.addAll(tagList.items)
       # maps
       mapList = textSearch_maps(srchString)
       sresult.addAll(mapList.items)
@@ -126,7 +126,7 @@ class SearchService
     unless srchString.nil? || srchString == 0
       # User profiles
       users(srchString).each do |match|
-        doc = DocResult.fromSearch(0,"user","/profile/"+match.name,match.name,0,0)
+        doc = DocResult.fromSearch(0,"user","/profile/"+match.name,match.name,"",0)
         sresult.addDoc(doc)
       end
     end
@@ -139,7 +139,7 @@ class SearchService
     unless srchString.nil? || srchString == 0
       # notes
       notes(srchString).select("title,type,nid,path").each do |match|
-        doc = DocResult.fromSearch(match.nid,"file",match.path,match.title,0,0)
+        doc = DocResult.fromSearch(match.nid,"file",match.path,match.title,"",0)
         sresult.addDoc(doc)
       end
     end
@@ -152,25 +152,29 @@ class SearchService
     unless srchString.nil? || srchString == 0
       # maps
       maps(srchString).select("title,type,nid,path").each do |match|
-        doc = DocResult.fromSearch(match.nid,match.icon,match.path,match.title,0,0)
+        doc = DocResult.fromSearch(match.nid,match.icon,match.path,match.title,"",0)
         sresult.addDoc(doc)
       end
     end
     return sresult
   end
 
-  # Search tag values for matching text
+  # Search documents with matching tag values
+  # The search string that is passed in is split into tokens, and the tag names are compared and
+  # chained to the notes that are tagged with those values
   def textSearch_tags(srchString)
-    sresult = TagList.new
+    sresult = DocList.new
     unless srchString.nil? || srchString == 0
       # Tags
-       tlist= DrupalTag.includes(:drupal_node)
+      sterms = srchString.split(" ")
+      tlist= DrupalTag.where({ name: sterms })
+        .joins(:drupal_node_community_tag)
+        .joins(:drupal_node)
         .where('node.status = 1')
-        .limit(25)
-        .where('name LIKE ?', '%' + srchString + '%')
+        .select('DISTINCT node.nid,node.title,node.path')
       tlist.each do |match|
-        ntag = TagResult.new(0,match.name,"tag","/tag/"+match.name)
-        sresult.addTag(ntag)
+        tagdoc = DocResult.fromSearch(match.nid,"tag",match.path,match.title,"",0)
+        sresult.addDoc(tagdoc)
       end
     end
     return sresult

@@ -57,10 +57,12 @@ class SearchesController < ApplicationController
                  .includes(:drupal_node_revision)
   end
 
+  # DEPRECATED 
   # utility response to fill out search autocomplete
   # needs *dramatic* optimization
 
   def typeahead
+    warn "[DEPRECATED] SearchesController.typeahead is deprecated.  Use the RESTful API for typeahead instead."
     @match = @search_service.type_ahead(params[:id])
     render json: @match
   end

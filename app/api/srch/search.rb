@@ -2,21 +2,23 @@ require 'grape'
 require 'grape-entity'
 
 module Srch
-  class Typeahead < Grape::API
+  class Search < Grape::API
 
     # Endpoint definitions
-    resource :typeahead do
+    resource :srch do
 
-      # Request URL should be /api/typeahead/all?srchString=QRY&seq=KEYCOUNT
+      # Request URL should be /api/srch/all?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of all available resources', {
         hidden: false,
         is_array: false,
-        nickname: 'typeaheadGetAll'
+        nickname: 'srchGetAll'
       }
       params do
         requires :srchString, type: String, documentation: { example: 'Spec' }
         optional :seq, type: Integer, documentation: { example: 995 }
+        optional :showCount, type: Integer, documentation: { example: 3 }
+        optional :pageNum, type: Integer, documentation: {example: 0 }
       end
       get :all do
         sresult = DocList.new
@@ -24,21 +26,24 @@ module Srch
           sservice = SearchService.new
           sresult = sservice.textSearch_all(params[:srchString])
         end
-        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
-	present sresult, with: TagList::Entity
+	sresult
       end
 
-      # Request URL should be /api/typeahead/profiles?srchString=QRY&seq=KEYCOUNT
+
+      # Request URL should be /api/srch/profiles?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of profiles', {
         hidden: false,
         is_array: false,
-        nickname: 'typeaheadGetProfiles'
+        nickname: 'srchGetProfiles'
       }
       params do
         requires :srchString, type: String, documentation: { example: 'Spec' }
         optional :seq, type: Integer, documentation: { example: 995 }
+        optional :showCount, type: Integer, documentation: { example: 3 }
+        optional :pageNum, type: Integer, documentation: {example: 0 }
       end
       get :profiles do
         sresult = DocList.new
@@ -46,21 +51,23 @@ module Srch
           sservice = SearchService.new
           sresult = sservice.textSearch_profiles(params[:srchString])
         end
-        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
-	present sresult, with: TagList::Entity
+	sresult
       end
 
-      # Request URL should be /api/typeahead/notes?srchString=QRY&seq=KEYCOUNT
+      # Request URL should be /api/srch/notes?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of research notes', {
         hidden: false,
         is_array: false,
-        nickname: 'typeaheadGetNotes'
+        nickname: 'srchGetNotes'
       }
       params do
         requires :srchString, type: String, documentation: { example: 'Spec' }
         optional :seq, type: Integer, documentation: { example: 995 }
+        optional :showCount, type: Integer, documentation: { example: 3 }
+        optional :pageNum, type: Integer, documentation: {example: 0 }
       end
       get :notes do
         sresult = DocList.new
@@ -68,21 +75,23 @@ module Srch
           sservice = SearchService.new
           sresult = sservice.textSearch_notes(params[:srchString])
         end
-        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
-	present sresult, with: TagList::Entity
+	sresult
       end
 
-      # Request URL should be /api/typeahead/questions?srchString=QRY&seq=KEYCOUNT
+      # Request URL should be /api/srch/questions?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of questions tables', {
         hidden: false,
         is_array: false,
-        nickname: 'typeaheadGetQuestions'
+        nickname: 'srchGetQuestions'
       }
       params do
         requires :srchString, type: String, documentation: { example: 'Spec' }
         optional :seq, type: Integer, documentation: { example: 995 }
+        optional :showCount, type: Integer, documentation: { example: 3 }
+        optional :pageNum, type: Integer, documentation: {example: 0 }
       end
       get :questions do
         sresult = DocList.new
@@ -90,21 +99,23 @@ module Srch
           sservice = SearchService.new
           sresult = sservice.textSearch_questions(params[:srchString])
         end
-        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
-	present sresult, with: TagList::Entity
+	sresult
       end
 
-      # Request URL should be /api/typeahead/tags?srchString=QRY&seq=KEYCOUNT
+      # Request URL should be /api/srch/tags?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
-      desc 'Perform a search of tags within the system', {
+      desc 'Perform a search of documents associated with tags within the system', {
         hidden: false,
         is_array: false,
-        nickname: 'typeaheadGetTags'
+        nickname: 'srchGetByTags'
       }
       params do
         requires :srchString, type: String, documentation: { example: 'Spec' }
         optional :seq, type: Integer, documentation: { example: 995 }
+        optional :showCount, type: Integer, documentation: { example: 3 }
+        optional :pageNum, type: Integer, documentation: {example: 0 }
       end
       get :tags do
         sresult = DocList.new
@@ -112,13 +123,13 @@ module Srch
           sservice = SearchService.new
           sresult = sservice.textSearch_tags(params[:srchString])
         end
-        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
-	present sresult, with: TagList::Entity
+	sresult
       end
 
-    # end of endpoint definitions
-    end
 
+    #end endpoint definitions
+    end
   end
 end
