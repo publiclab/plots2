@@ -1,6 +1,11 @@
 require 'test_helper'
 
 class QuestionsControllerTest < ActionController::TestCase
+  
+  def setup
+    activate_authlogic
+  end
+
   test "should get index" do
     get :index
     assert_response :success
@@ -50,4 +55,53 @@ class QuestionsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should show accepted label for accepted answers" do
+    note = node(:question)
+    answer = answers(:two)
+    get :show,
+        author: note.author.name,
+        date: Time.at(note.created).strftime("%m-%d-%Y"),
+        id: note.title.parameterize
+
+    assert_response :success
+    assert_select '#answer-' + answer.id.to_s + '-accept', 1
+  end
+
+  test "should not show answer accept button to users if not logged in" do
+    note = node(:question)
+    answer = answers(:one)
+    get :show,
+        author: note.author.name,
+        date: Time.at(note.created).strftime("%m-%d-%Y"),
+        id: note.title.parameterize
+
+    assert_response :success
+    assert_select '#answer-' + answer.id.to_s + '-accept', 0
+  end
+
+  test "should show accept answer button to author of the question" do
+    UserSession.create(rusers(:jeff))
+    note = node(:question)
+    answer = answers(:one)
+    get :show,
+        author: note.author.name,
+        date: Time.at(note.created).strftime("%m-%d-%Y"),
+        id: note.title.parameterize
+
+    assert_response :success
+    assert_select '#answer-' + answer.id.to_s + '-accept', 1
+  end
+
+  test "should not show accept answer button to user who is not the author of the question" do
+    UserSession.create(rusers(:bob))
+    note = node(:question)
+    answer = answers(:one)
+    get :show,
+        author: note.author.name,
+        date: Time.at(note.created).strftime("%m-%d-%Y"),
+        id: note.title.parameterize
+
+    assert_response :success
+    assert_select '#answer-' + answer.id.to_s + '-accept', 0
+  end
 end
