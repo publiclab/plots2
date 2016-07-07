@@ -25,8 +25,6 @@ class DocList
   class Entity < Grape::Entity
       expose :items, using: DocResult::Entity
       expose :srchParams, using: SearchRequest::Entity 
-      expose :pageNum, documentation: { type: "Integer", desc: "Which page (zero-based counting, as in Array indexes) this return contains for paginated data."}
-      expose :pageCount, documentation: { type: "Integer", desc: "Number of pages in paginated data that are the result of the search." }
   end
 end
 

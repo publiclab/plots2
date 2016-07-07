@@ -9,7 +9,7 @@ module Srch
   
     # mount the individual api modules here
     mount Srch::Typeahead
-
+    mount Srch::Search
 
     # Add the swagger documentation
     add_swagger_documentation :format => :json,

@@ -26,7 +26,7 @@ module Srch
         end
         sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
-	sresult
+	present sresult, with: TagList::Entity
       end
 
       # Request URL should be /api/typeahead/profiles?srchString=QRY&seq=KEYCOUNT
@@ -48,7 +48,7 @@ module Srch
         end
         sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
-	sresult
+	present sresult, with: TagList::Entity
       end
 
       # Request URL should be /api/typeahead/notes?srchString=QRY&seq=KEYCOUNT
@@ -70,7 +70,7 @@ module Srch
         end
         sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
-	sresult
+	present sresult, with: TagList::Entity
       end
 
       # Request URL should be /api/typeahead/questions?srchString=QRY&seq=KEYCOUNT
@@ -92,7 +92,7 @@ module Srch
         end
         sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
-	sresult
+	present sresult, with: TagList::Entity
       end
 
       # Request URL should be /api/typeahead/tags?srchString=QRY&seq=KEYCOUNT
@@ -114,7 +114,7 @@ module Srch
         end
         sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
-	sresult
+	present sresult, with: TagList::Entity
       end
 
     # end of endpoint definitions
