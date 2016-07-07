@@ -451,10 +451,10 @@ pre {
   visibility: hidden;
 }
 
-.answer-accept{
+.answer-accept {
   font-weight: bold;
 }
 
-.answer-accept.btn-success{
-  color: #ffff00;
+.answer-accept.btn-success {
+  color: #fff;
 }
