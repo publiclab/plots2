@@ -106,10 +106,10 @@ module Srch
 
       # Request URL should be /api/srch/tags?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
-      desc 'Perform a search of tags within the system', {
+      desc 'Perform a search of documents associated with tags within the system', {
         hidden: false,
         is_array: false,
-        nickname: 'typeaheadGetTags'
+        nickname: 'srchGetByTags'
       }
       params do
         requires :srchString, type: String, documentation: { example: 'Spec' }

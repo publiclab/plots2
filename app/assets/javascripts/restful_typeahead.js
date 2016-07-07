@@ -15,15 +15,20 @@ var keycount = 0;
 **/
 jQuery(document).ready(function() {
 	$('input.search-query.typeahead').each(function() {
-		setupSrchSuggest(this);
+		var resultList = setupSrchSuggest(this);
+		typeaheadSearchKeys(this, resultList);
+		hideResultsOnBlur(this, resultList);
 	});
 	$('input.search-query.tagsrch').each(function() {
-		setupTagSuggest(this);
+		var resultList = setupTagSuggest(this);
+		typeaheadTagKeys(this, resultList);
+		hideResultsOnBlur(this, resultList);
 	});
 });
 
 /**
-  Perform the suggest search setup for the specified input element
+  Perform the suggest search setup for the specified input element.  
+  Returns a reference (jQuery object) for the associated list element
 **/
 function setupSrchSuggest(inelem) {
 	var elemRef = $(inelem);
@@ -53,6 +58,15 @@ function setupSrchSuggest(inelem) {
 		var listhtml = '<ul class="typeahead-results results-noshow" id="'+listid+'"></ul>';
 		listelem = $(listhtml).insertAfter(elemRef);
 	}
+	return listelem;
+}
+
+/**
+  Set up to perform search on key stroke entries for the input element.  If "Enter" or "Esc" is the key stroke, then hide the typeahead.
+**/
+function typeaheadSearchKeys(ielem, reslist) {
+        var elemRef = $(ielem);
+        var listelem = $(reslist);
 	elemRef.on("keyup", function(e) {
 		e.preventDefault();
 		var kcode = e.which || e.keyCode;
@@ -63,6 +77,33 @@ function setupSrchSuggest(inelem) {
 			typeaheadSearch(this);
 		}
 	});
+}
+
+/**
+  Set up to perform tag search on key stroke entries for the input element.  If "Enter" or "Esc" is the key stroke, then hide the typeahead.
+**/
+function typeaheadTagKeys(ielem, reslist) {
+	var elemRef = $(ielem);
+	var listelem = $(reslist);
+	elemRef.on("keyup", function(e) {
+		e.preventDefault();
+		var kcode = e.which || e.keyCode;
+		if (kcode == 13 || kcode == 27) {
+			//hit enter or escape, so hide the typeahead
+			listelem.toggleClass('results-noshow',true);
+		} else {
+			typeaheadTags(this);
+		}
+	});
+
+}
+
+/**
+  On lost focus (blur) of the input element, hide the result list
+**/
+function hideResultsOnBlur(ielem, resList) {
+	var elemRef = $(ielem);
+	var listelem = $(resList);
         elemRef.on("blur", function(e) {
 		listelem.toggleClass('results-noshow',true);
 	});
@@ -129,17 +170,7 @@ function setupTagSuggest(inelem) {
 		var listhtml = '<ul class="typeahead-results results-noshow" id="'+listid+'"></ul>';
 		listelem = $(listhtml).insertAfter(elemRef);
 	}
-	elemRef.on("keyup", function(e) {
-		e.preventDefault();
-		var kcode = e.which || e.keyCode;
-		if (kcode == 13 || kcode == 27) {
-			//hit enter or escape, so hide the typeahead
-			listelem.toggleClass('results-noshow',true);
-		} else {
-			typeaheadTags(this);
-		}
-	});
-
+	return listelem;
 }
 
 /**
