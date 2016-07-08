@@ -2,7 +2,7 @@
   <% @comments.each do |comment| %>
   <tr id="c<%= comment.cid %>">
     <td style="width:80%;"><i class="fa fa-comment-alt"></i> <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a> <span style="color:#aaa;"><%= t('home._comments.commented') %> <% if comment.parent %>on <a href="<%= comment.parent.path %>"><%= comment.parent.title %></a><% end %>:</span> "<%= raw strip_tags(sanitize(RDiscount.new(comment.comment).to_html)).truncate(150) %>" | <% if comment.parent %><a href="<%= comment.parent.path %>#c<%= comment.cid %>"><%= t('home._comments.read_more') %> &raquo;</a><% end %></td>
-    <td><%= time_ago_in_words(comment.created_at) %></td>
+    <td><%= distance_of_time_in_words(comment.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words')</td>
   </tr>
   <% end %>
 </table>
