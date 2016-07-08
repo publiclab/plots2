@@ -10,7 +10,7 @@ var srchCount = 0;
 var tabDataArray = [
 	{ qryType: "file", tabId: "#tabnotes", countspan: "#notecount"},
 	{ qryType: "tag", tabId: "#tabtags", countspan: "#tagcount"},
-	{ qryType: "map", tabId: "#tabmaps", countspan: "#mapcount"},
+	{ qryType: "map-marker", tabId: "#tabmaps", countspan: "#mapcount"},
 	{ qryType: "user", tabId: "#tabprofiles", countspan: "#profilecount"},
 	{ qryType: "book", tabId: "#tabstatic", countspan: "#staticcount"},
 	{ qryType: "question-circle", tabId: "#tabquestions", countspan: "#questioncount"}
@@ -24,7 +24,7 @@ jQuery(document).ready(function() {
 	//for now, prevent submission of the query form--all restful at this point
 	jQuery("#dynamic_srch_form").submit(function(e) {
 		e.preventDefault();
-		dynamicSearch();
+		dynamicSearch("#qryField");
 	});
 	var qfield = $("#qryField");
 	var qryList = setupSrchSuggest(qfield);
@@ -146,7 +146,7 @@ function docPanel(docitem) {
 	var iconclass = "fa fa-"+docitem.docType;
 	var doclink = "<a href='"+docitem.docUrl+"'>"+docitem.docTitle+"</a>";
 	var dtxt = "<div class='panel panel-default'>";
-	dtxt += "<div class='panel-heading'><span class='"+iconclass+"'></span>"+doclink+"</div>";
+	dtxt += "<div class='panel-heading'><span class='"+iconclass+"'></span>&nbsp;"+doclink+"</div>";
 	dtxt += "<div class='panel-body'>";
 	dtxt += (docitem.docSummary && docitem.docSummar != '' ? docitem.docSummary : 'No summary available'); 
 	dtxt += "</div>";
@@ -155,53 +155,10 @@ function docPanel(docitem) {
 }
 
 function clearResults() {
+        $("#taball").find("div.row.sresults-row").html("");
 	for (var i=0;i<tabDataArray.length;i++) {
 		$(tabDataArray[i].tabId).find('div.row.sresults-row').html('');
 	}
 }
 
-/**
- Provides prev/next button functionality.  Originally from http://bootsnipp.com/snippets/7NyNP
-**/
-$(function(){
-    $('.nav-tabs a:first',this.$page).tab('show')
-    $('.nav-tabs li:gt(0)',this.$page).each(function(){
-        $(this).addClass('disabled');
-        $('a',$(this)).attr('data-toggle','');
-    });
-    
-    $('.next-tab').on('click',function(){
-        var $panel = $(this).closest('.panel');
-        var $tabs = $('.nav-tabs li',$panel);
-        var $tab = $('.nav-tabs li.active',$panel);
-        var index  = $tabs.index($tab);
-        if (index < 0) {
-            return; //no hope for you!
-        }
-        index++;
-        var $next_tab = $('a',$tabs.eq(index));
-        if (!$next_tab.length) {
-            return;
-        }
-        $next_tab.parents('li').removeClass('disabled');
-        $next_tab.attr('data-toggle','tab');
-        $next_tab.tab('show');
-    });
-    $('.previous-tab').on('click',function(){
-        var $panel = $(this).closest('.panel');
-        var $tabs = $('.nav-tabs li',$panel);
-        var $tab = $('.nav-tabs li.active',$panel);
-        var index  = $tabs.index($tab);
-        if (index < 0) {
-            return; //no hope for you!
-        }
-        index--;
-        var $previous_tab = $('a',$tabs.eq(index));
-        if (!$previous_tab.length) {
-            return;
-        }
-        $previous_tab.parents('li').removeClass('disabled');
-        $previous_tab.data('toggle','tab');
-        $previous_tab.tab('show');    });
-    
-});
+

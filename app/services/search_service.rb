@@ -144,8 +144,8 @@ class SearchService
     sresult = DocList.new
     unless srchString.nil? || srchString == 0
       # notes
-      notes(srchString).select("title,type,nid,path").each do |match|
-        doc = DocResult.fromSearch(match.nid,"file",match.path,match.title,"",0)
+      find_notes(srchString,25).each do |match|
+        doc = DocResult.fromSearch(match.nid,"file",match.path,match.title,match.body.split(/#+.+\n+/,5)[1],0)
         sresult.addDoc(doc)
       end
     end
