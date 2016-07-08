@@ -56,7 +56,7 @@ de:
     - :month
     - :year
   datetime:
-    distance_in_words:
+    time_ago_in_words:
       about_x_hours:
         one: vor etwa eine Stunde
         other: vor etwa %{count} Stunden
