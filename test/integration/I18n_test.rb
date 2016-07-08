@@ -44,4 +44,18 @@ class I18nTest < ActionDispatch::IntegrationTest
         assert_equal "#{I18n.locale}", "#{I18n.default_locale}"
         assert true
     end
+    
+    test "should choose i18n for subscriptions" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        get '/subscriptions'
+        assert_select 'b', I18n.t('home.subscriptions.title')
+        assert true
+      end
+    end
 end
