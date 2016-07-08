@@ -64,4 +64,14 @@ class HomeControllerTest < ActionController::TestCase
       assert true
     end
   end
+  
+  test "should choose i18n for home/home" do
+    available_testing_locales.each do |lang|
+      cookies.permanent[:plots2_locale] = lang
+      get 'home'
+      assert_template "home/home"
+      assert_select 'h1', I18n.t('home.home.the_problem.title')
+      assert true
+    end
+  end
 end

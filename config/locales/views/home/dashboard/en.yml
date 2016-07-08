@@ -1,0 +1,33 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  home:
+    dashboard:
+      welcome: 'Welcome!'
+      need_help: 'Need help, want to float an idea, or find collaborators?'
+      join_discussion_list: 'Join a topical or local Public Lab discussion list'
+      no_research_note: "You haven't posted a research note yet -- consider"
+      sharing_work: "sharing your work and interests"
+      please: "Please"
+      create_password: "create a password for the new PublicLab.org website"
+      older_site_deactive: "the older PublicLaboratory.org will soon be retired."
+      coming_soon: "Coming soon"
+      revised_dashboard: "a revised dashboard!"
+      try_it: "Try it out here"
+      dashboard_main:
+        dashboard_title: 'Dashboard'
+        welcome: 'Welcome'
+        notes: 'notes'
+        and: 'and'
+        wiki_edits: 'wiki edits'
+        posted_last_week: 'were posted in the past week.'
+      nav_tabs:
+        recent: 'Recent'
+        activity: 'Activity'
+        comments: 'Comments'
+        liked: 'Liked'
+        subscriptions: 'Subscriptions'
+        lists: 'Lists'
+      read_more_research_notes: 'Read more research notes'
+        
+      
