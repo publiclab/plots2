@@ -73,10 +73,11 @@ class TagController < ApplicationController
     else
       flash[:notice] = "You awarded the <a href='/wiki/barnstars#"+params[:star].split('-').each{|w| w.capitalize!}.join('+')+"+Barnstar'>"+params[:star]+" barnstar</a> to <a href='/profile/"+node.author.name+"'>"+node.author.name+"</a>"
       # on success add comment
+      barnstar_info_link = '<a href="publiclab.org/wiki/barnstars">barnstar</a>'
       node.add_comment({
           :subject => 'barnstar',
           :uid => current_user.uid,
-          :body => "Awards a barnstar to #{node.drupal_users.name}"
+          :body => "#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_users.name} for their awesome contribution!"
         })
     end
     redirect_to node.path + "?_=" + Time.now.to_i.to_s
