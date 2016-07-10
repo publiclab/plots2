@@ -5,11 +5,7 @@ var editor;
 
 describe("Plots2", function() {
 
-  var response;
-
   beforeEach(function() {
-
-    response = null;
 
     // for phantomjs running
     jasmine.getFixtures().fixturesPath="../../spec/javascripts/fixtures";
@@ -62,7 +58,7 @@ describe("Plots2", function() {
 
     expect(response).toEqual('4');
 
-    expect($('#like-count-1').html()).toEqual('4'); // failing
+    expect($('#like-count-1').html()).toEqual('4'); // passing
 
   });
 

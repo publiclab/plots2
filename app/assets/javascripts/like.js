@@ -30,12 +30,12 @@ function clickliked() {
   var node_id = $(this).attr('node-id');
   // toggle liked to not liked.
   $.getJSON("/likes/node/" + node_id + "/delete")
-   .done(function() {
+   .done(function(response) {
 
-    shownotliked(node_id);
-    changelikecount(-1, node_id);
-    $('#like-button-' + node_id).on('click', clicknotliked);
-    $('#like-button-' + node_id).off('click', clickliked);
+     shownotliked(node_id);
+     changelikecount(parseInt(response), node_id);
+     $('#like-button-' + node_id).on('click', clicknotliked);
+     $('#like-button-' + node_id).off('click', clickliked);
 
   });
 
