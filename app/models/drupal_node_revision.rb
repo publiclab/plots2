@@ -6,8 +6,8 @@ class DrupalNodeRevision < ActiveRecord::Base
   belongs_to :drupal_node, :foreign_key => 'nid', :dependent => :destroy, :counter_cache => true
   has_one :drupal_users, :foreign_key => 'uid'
 
-  validates :title, 
-    :presence => :true, 
+  validates :title,
+    :presence => :true,
     :length => { :minimum => 2, :maximum => 100 },
     :format => {:with => /[A-Z][\w\-_]*/i, :message => "can only include letters, numbers, and dashes"}
   validates :body, :presence => :true
@@ -15,6 +15,7 @@ class DrupalNodeRevision < ActiveRecord::Base
   validates :nid, :presence => :true
 
   before_save :inline_tags
+  after_save :inline_hashtags
   before_create :setup
 
   def setup
@@ -40,6 +41,13 @@ class DrupalNodeRevision < ActiveRecord::Base
   def inline_tags
     self.body.scan(/\[question(:[\w-]+)\]/).each do |match|
       self.parent.add_tag("prompt"+match.first,self.author)
+    end
+  end
+
+  # search for inline hashtags(such as #hashtag) and create a new tag
+  def inline_hashtags
+    self.body.scan(Callouts.const_get(:HASHTAG)).each do |match|
+      self.parent.add_tag(match.last, self.author)
     end
   end
 

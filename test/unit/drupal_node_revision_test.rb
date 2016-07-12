@@ -81,4 +81,89 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
     revision = node_revisions(:email)
     assert_includes revision.render_body_email, 'https://i.publiclab.org/system/images/photos/000/016/229/original/admin_tooltip.png'
   end
+
+  test "should add tags for hashtags" do
+    revision = node_revisions(:hashtag_one)
+    revision.save
+    associated_tags = revision.parent.drupal_tag
+    tag_names = associated_tags.map{|x| x.name}
+    assert_includes tag_names, 'hashtag'
+  end
+
+  test "should ignore hashtags in markdown" do
+    revision = node_revisions(:hashtag_one)
+    revision.save
+    associated_tags = revision.parent.drupal_tag
+    tag_names = associated_tags.map{|x| x.name}
+    assert_false tag_names.include?('heading')
+  end
+
+  test "should ignore commas, exclamation, and periods in hashtags" do
+    revision = node_revisions(:hashtag_with_punctuation)
+    revision.save
+    associated_tags = revision.parent.drupal_tag
+    tag_names = associated_tags.map{|x| x.name}
+    expected_tags = ['hashtag1', 'hashtag2', 'hashtag3']
+    ignore_tags = ['hashtag1,', 'hashtag2!', 'hashtag3.']
+    assert_true (expected_tags - tag_names).empty?
+    assert_true (ignore_tags - tag_names).length == ignore_tags.length
+  end
+
+  test "should tag hashtags in headers" do
+    revision = node_revisions(:hashtag_in_header)
+    revision.save
+    associated_tags = revision.parent.drupal_tag
+    tag_names = associated_tags.map{|x| x.name}
+    assert_includes tag_names, 'hashtags'
+  end
+
+  test "should ignore subheaders" do
+    revision = node_revisions(:subheader)
+    revision.save
+    associated_tags = revision.parent.drupal_tag
+    tag_names = associated_tags.map{|x| x.name}
+    assert_false tag_names.include?('subheader') or tag_names.include?('#subheader')
+  end
+
+  test "should ignore hashtags in links" do
+    revision = node_revisions(:hashtag_in_link)
+    revision.save
+    associated_tags = revision.parent.drupal_tag
+    tag_names = associated_tags.map{|x| x.name}
+    assert_false tag_names.include?('hashtag')
+  end
+
+  test "should ignore hashtags in URLs" do
+    revision = node_revisions(:hashtag_in_url)
+    revision.save
+    associated_tags = revision.parent.drupal_tag
+    tag_names = associated_tags.map{|x| x.name}
+    assert_false tag_names.include?('hashtag')
+  end
+
+  test "should not add duplicate tags" do
+    revision = node_revisions(:hashtag_three)
+    revision.save
+    associated_tags = revision.parent.drupal_tag
+    tag_names = associated_tags.map{|x| x.name}
+    assert_false tag_names.count('hashtag') > 1
+    assert_false tag_names.include?('heading')
+  end
+
+  test "should make the author the tag author" do
+    revision = node_revisions(:hashtag_three)
+    revision.save
+    author = revision.parent.drupal_tag.last.drupal_node_community_tag.first.drupal_users
+    assert_equal revision.author, author
+  end
+
+  test "should not add duplicate hashtags on update" do
+    revision = node_revisions(:hashtag_three)
+    revision.save
+    revision.body = "another #hashtag"
+    revision.save
+    associated_tags = revision.parent.drupal_tag
+    tag_names = associated_tags.map{|x| x.name}
+    assert_true tag_names.count('hashtag') == 1
+  end
 end
