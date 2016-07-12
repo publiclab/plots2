@@ -40,6 +40,10 @@ end
 group :test do
   gem 'test-unit'
   gem 'rake',  '~> 10.5.0'
+  # gems to test RESTful API
+  gem 'rest-client' 
+  gem 'rspec'
+  gem 'json_expressions'
 end
 
 # run with `bundle install --without production` to exclude these
