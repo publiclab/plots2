@@ -40,6 +40,10 @@ end
 group :test do
   gem 'test-unit'
   gem 'rake',  '~> 10.5.0'
+  # gems to test RESTful API
+  gem 'rest-client' 
+  gem 'rspec'
+  gem 'json_expressions'
 end
 
 # run with `bundle install --without production` to exclude these
@@ -63,10 +67,6 @@ gem "authlogic", "3.2.0"
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
 
-<<<<<<< c571a71720a7940582b99615557297ba75ee58ed
-=======
-
->>>>>>> Successful RESTful search call for typeahead
 # RESTful API Support
 gem 'grape'
 gem 'grape-entity'
