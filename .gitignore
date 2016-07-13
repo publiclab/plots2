@@ -20,7 +20,6 @@ Gemfile.lock
 coverage*
 development.sqlite
 test.sqlite
-config/database.yml.mysql.example
 config/database.yml
 config/amazon_s3.yml
 config/initializers/recaptcha.rb
