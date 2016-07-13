@@ -124,10 +124,19 @@ class UsersControllerTest < ActionController::TestCase
 
   end
 
-  test "should update location privacy attribute" do
+  test "should update true value of location privacy attribute" do
     UserSession.create(rusers(:jeff))
     user = rusers(:jeff)
-    post :privacy, status: true
+    post :privacy, location_privacy: true, :id => user.username
+
+    assert user.location_privacy
+    assert_equal "Your preference has been saved", flash[:notice]
+  end
+
+  test "should update false value location privacy attribute" do
+    UserSession.create(rusers(:jeff))
+    user = rusers(:jeff)
+    post :privacy, location_privacy: false, :id => user.username
 
     assert user.location_privacy
     assert_equal "Your preference has been saved", flash[:notice]

@@ -259,7 +259,7 @@ class UsersController < ApplicationController
       }
 
       format.html {
-        redirect_to info_path, :id => current_user.username
+        redirect_to info_path(params[:id])
       }
     end
 
