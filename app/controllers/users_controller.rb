@@ -249,7 +249,7 @@ class UsersController < ApplicationController
     end
 
     if user.location_tag
-      @lat, @long =  user.location_tag.lat, user.location_tag.long
+      @lat, @long =  user.location_tag.lat, user.location_tag.lon
     end
 
     respond_to do |format|
@@ -290,14 +290,14 @@ class UsersController < ApplicationController
         end
 
         if !@user_tags.empty?
-          if @location_tags[[location_tag.lat, location_tag.long]]
+          if @location_tags[[location_tag.lat, location_tag.lon]]
             @user_tags.each do |user_tag|
-              @location_tags[[location_tag.lat, location_tag.long]] << user_tag
+              @location_tags[[location_tag.lat, location_tag.lon]] << user_tag
             end
           else
-            @location_tags[[location_tag.lat, location_tag.long]] = []
+            @location_tags[[location_tag.lat, location_tag.lon]] = []
             @user_tags.each do |user_tag|
-              @location_tags[[location_tag.lat, location_tag.long]] << user_tag
+              @location_tags[[location_tag.lat, location_tag.lon]] << user_tag
             end
           end
         end

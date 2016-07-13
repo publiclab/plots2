@@ -8,7 +8,7 @@ $(document).ready(function() {
 
     var user = $('#infoform').data('user');
     $.ajax({
-      url: "/info/location/create/" + user,
+      url: "/profile/location/create/" + user,
       type: "POST",
       data: {
         type: 'location',
@@ -20,10 +20,10 @@ $(document).ready(function() {
         response = data;
         if (response.status) {
           $("#location_map").html("<div class='col-md-8' id='map' style='height: 300px;'></div>");
-          var mymap = new L.map('map').setView([response.location.lat, response.location.long], 15);
+          var mymap = new L.map('map').setView([response.location.lat, response.location.lon], 15);
           if (response.location_privacy) {
             var lat = response.location.lat;
-            var long = response.location.long;
+            var long = response.location.lon;
 
             L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
               attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
@@ -34,7 +34,7 @@ $(document).ready(function() {
 
           } else {
             var lat  = parseFloat(response.location.lat).toFixed(4);
-            var long = parseFloat(response.location.long).toFixed(4);
+            var long = parseFloat(response.location.lon).toFixed(4);
 
             var options = {
               radius : 20,                            // Size of the hexagons/bins
@@ -75,7 +75,7 @@ $(document).ready(function() {
     var status = $(this).is(':checked')
 
     $.ajax({
-      url: '/info/privacy',
+      url: '/profile/user/privacy',
       type: 'POST',
       data: {
         location_privacy: status,

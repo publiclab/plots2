@@ -8,7 +8,7 @@ class LocationTagTest < ActiveSupport::TestCase
       uid: user.id,
       location: "New York, NY, United States",
       lat: 40.712784,
-      long: -74.005941,
+      lon: -74.005941,
       city: "New York",
       state: "NY",
       country: "United States"
@@ -17,7 +17,7 @@ class LocationTagTest < ActiveSupport::TestCase
     assert location_tag.save
     assert_not_nil location_tag.location
     assert_not_nil location_tag.lat
-    assert_not_nil location_tag.long
+    assert_not_nil location_tag.lon
     assert_not_nil location_tag.country
     assert_not_nil location_tag.city
     assert_not_nil location_tag.state

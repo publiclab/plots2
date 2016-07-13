@@ -34,7 +34,7 @@ class LocationTagsController < ApplicationController
             @location_tag = user.location_tag.update_attributes({
               location: @address,
               lat: lat,
-              long: long,
+              lon: long,
               country: @geo_location.country,
               state: @geo_location.state,
               city: @geo_location.city
@@ -46,7 +46,7 @@ class LocationTagsController < ApplicationController
             @location_tag = user.build_location_tag({
               location: @address,
               lat: lat,
-              long: long,
+              lon: long,
               country: @geo_location.country,
               state: @geo_location.state,
               city: @geo_location.city

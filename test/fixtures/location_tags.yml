@@ -8,7 +8,7 @@ one:
   state: New york
   city: New york
   lat: 17.3755495
-  long: 78.5498682
+  lon: 78.5498682
 
 two:
   id: 2
@@ -18,4 +18,4 @@ two:
   state: Telangana
   city: Hyderabad
   lat: 18.3755495
-  long: 78.5498682
+  lon: 78.5498682
