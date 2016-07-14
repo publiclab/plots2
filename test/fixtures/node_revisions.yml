@@ -1,28 +1,28 @@
-one: 
+one:
   nid: 1
   uid: 1
   title: Canon A1200 IR conversion at PLOTS Barnraising at LUMCON
   body: A fine day was had
 
-about: 
+about:
   nid: 2
   uid: 2
   title: About
   body: All about Public Lab
 
-three: 
+three:
   nid: 3
   uid: 3
   title: Hot stuff I'm selling
   body: Get it while it lasts!
 
-organizers: 
+organizers:
   nid: 5
   uid: 1
   title: Organizers
   body: The organizers group page
 
-prespam_revision: 
+prespam_revision:
   timestamp: <%= (Time.now - 1.week).to_i %>
   nid: 4
   uid: 1
@@ -30,7 +30,7 @@ prespam_revision:
   title: Important research
   body: Real research content
 
-second_prespam_revision: 
+second_prespam_revision:
   timestamp: <%= (Time.now - 1.day).to_i %>
   nid: 4
   uid: 2
@@ -38,7 +38,7 @@ second_prespam_revision:
   title: Important research
   body: Real research content
 
-unmoderated_spam_revision: 
+unmoderated_spam_revision:
   timestamp: <%= Time.now.to_i %>
   nid: 4
   uid: 3
@@ -46,7 +46,7 @@ unmoderated_spam_revision:
   title: Bad spam title
   body: Lots of stuff for sale
 
-first_timer_note: 
+first_timer_note:
   timestamp: <%= Time.now.to_i %>
   nid: 6
   uid: 5
@@ -72,6 +72,55 @@ hashtag_two:
     Some text on hashtag
     #Heading 2
     There is no hashtag in this post
+
+hashtag_three:
+  nid: 1
+  uid: 1
+  title: Ignores multiple same hashtags
+  body: |+
+    # Heading 1
+    Here is a #hashtag
+    # Heading 2
+    Here is another #hashtag
+
+hashtag_with_punctuation:
+  nid: 1
+  uid: 1
+  title: Ignores punctuation in hashtags
+  body: |+
+    # Heading 1
+    Here is a #hashtag1, and another #hashtag2!
+    # Heading 2
+    Here is another #hashtag3.
+
+hashtag_in_header:
+  nid: 1
+  uid: 1
+  title: grabs hashtags in headers
+  body: |+
+    # Heading 1 is about #hashtags
+    Here is the message
+
+subheader:
+  nid: 1
+  uid: 1
+  title: ignores subheaders
+  body: |+
+   ##subheader 1
+
+hashtag_in_link:
+  nid: 1
+  uid: 1
+  title: ignores hashtags in links
+  body: |+
+    [#hashtag in links](/)
+
+hashtag_in_url:
+  nid: 1
+  uid: 1
+  title: ignores hashtags in url
+  body: |+
+    [tags in URLs](/mypage#tags)
 
 email:
   nid: 1
