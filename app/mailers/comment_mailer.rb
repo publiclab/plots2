@@ -5,7 +5,7 @@ class CommentMailer < ActionMailer::Base
   def notify(user,comment)
     @user = user
     @comment = comment
-    mail(:to => user.email, :subject => "New comment on '"+comment.node.title+"'")
+    mail(:to => user.email, :subject => "New comment on '"+comment.parent.title+"'")
   end
 
   def notify_note_author(user,comment)
@@ -27,4 +27,9 @@ class CommentMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "You were mentioned in a comment.").deliver
   end
 
+  def notify_answer_author(user, comment)
+    @user = user
+    @comment = comment
+    mail(:to => user.email, :subject => "New comment on your answer on '" + comment.parent.title + "'")
+  end
 end
