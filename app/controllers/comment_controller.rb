@@ -41,6 +41,7 @@ class CommentController < ApplicationController
       timestamp: Time.now.to_i
     )
     if @comment.save
+      @comment.answer_comment_notify(current_user)
       respond_to do |format|
         format.js { render template: "comment/create" }
       end

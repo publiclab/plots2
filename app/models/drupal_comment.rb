@@ -68,7 +68,11 @@ class DrupalComment < ActiveRecord::Base
   end
 
   def parent
-    self.drupal_node
+    if self.aid == 0
+      self.drupal_node
+    else
+      self.answer.drupal_node
+    end
   end
 
   def node
@@ -108,6 +112,31 @@ class DrupalComment < ActiveRecord::Base
         user.uid != self.uid &&
         self.parent.uid != user.uid
 
+        CommentMailer.notify(user.user,self).deliver
+      end
+    end
+  end
+
+  def answer_comment_notify(current_user)
+    # notify answer author
+    if self.answer.uid != current_user.uid
+      CommentMailer.notify_answer_author(self.answer.author,self).deliver
+    end
+
+    # notify mentioned users
+    self.mentioned_users.each do |user|
+      CommentMailer.notify_callout(self,user) if user.username != self.author.username
+    end
+
+    already = self.mentioned_users.collect(&:uid) + [self.answer.uid]
+    uids = []
+    # notify users who liked the answer and others involved in the conversation
+    (self.answer.comments.collect(&:uid) + self.answer.likers.collect(&:uid)).uniq.each do |u|
+      uids << u unless already.include?(u)
+    end
+
+    DrupalUsers.find(:all, :conditions => ['uid IN (?)',uids]).each do |user|
+      if user.uid != current_user.uid
         CommentMailer.notify(user.user,self).deliver
       end
     end
