@@ -28,7 +28,7 @@
   <% end %>
 
   <% if @user.user && !@user.user.reset_key.nil? && current_user && current_user.role == "admin" %>
-    <a href="/reset/key/<%= @user.user.reset_key %>" class="btn btn-default btn-block"><i class="fa fa-info-sign"></i> Reset Key: <%= @user.user.reset_key %></a>
+    <a id="user-reset-key" href="/reset/key/<%= @user.user.reset_key %>" class="btn btn-default btn-block"><i class="fa fa-info-sign"></i> Reset Key: <%= @user.user.reset_key %></a>
   <% end %>
   <hr />
 
@@ -116,7 +116,7 @@
     </div>
 
     <div class="tab-pane" id="maps">
-      <p><i>View these maps <a href="//mapknitter.org/profile/<%= @user.name %>">at MapKnitter.org &raquo;</a></i></a>
+      <p><i>View these maps <a href="//mapknitter.org/profile/<%= @user.name %>">at MapKnitter.org &raquo;</a></i></p>
       <table class="table">
         <tr>
           <th style="width:200px;">Title</th>
@@ -129,6 +129,7 @@
     <div class="tab-pane" id="comments">
       <h2 style="text-align:center;"><i class="fa fa-spinner fa fa-spin"></i></h2>
     </div>
+
     <script>
       (function(){
         $('a#comments-tab').on('shown.bs.tab',function (e) {
@@ -142,9 +143,11 @@
         })
       })()
     </script>
+  </div>
 
   <hr />
 </div>
+
 <script type="text/javascript">
   (function () {
 

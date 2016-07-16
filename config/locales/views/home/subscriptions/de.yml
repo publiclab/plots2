@@ -1,0 +1,22 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  home:
+    subscriptions:
+      title: 'Abonnements'
+      up_to_date_emails: 'können Sie mit Themen über das öffentliche Lab auf dem Laufenden halten .Sie können wählen, um sie per E-Mail oder in Kurzform vor erhalten.'
+      manage_subscriptions: 'Abonnements verwalten'
+      click_unfollow: 'Klicken Sie hier um unfollow'
+      following: 'folgende'
+      research_notes: 'alle Forschungsnotizen'
+      subscribe_to: 'Melden Sie sich an'
+      all: 'alle'
+      notes: 'Noten'
+      receive_mails: 'Empfangen von E-Mails für alle Forschungsnotizen.'
+      enter_tags: 'geben Sie Tags'
+      add: 'addieren'
+      tag: 'Etikett'
+      options: 'Optionen'
+      share_subscription_link: 'Teilen Sie diese Abo-Link'
+      share: 'Aktie'
+      unsubscribe: 'Abmelden'

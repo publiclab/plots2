@@ -1,0 +1,25 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  home:
+    subscriptions:
+      title: 'Subscriptions'
+      up_to_date_emails: 'let you keep up to date with topics on Public Lab. You can choose to receive them by email or in digest form.'
+      manage_subscriptions: 'Manage subscriptions'
+      click_unfollow: 'Click to unfollow'
+      following: 'Following'
+      research_notes: 'all research notes'
+      subscribe_to: 'Subscribe to'
+      all: 'all'
+      notes: 'notes'
+      receive_mails: 'Receive emails for all research notes.'
+      enter_tags: 'enter tags'
+      add: 'Add'
+      tag: 'Tag'
+      options: 'Options'
+      share_subscription_link: 'Share this subscription link'
+      share: 'Share'
+      unsubscribe: 'Unsubscribe'
+      
+      
+      

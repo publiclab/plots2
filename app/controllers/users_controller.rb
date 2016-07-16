@@ -164,11 +164,12 @@ class UsersController < ApplicationController
       if @user
         if params[:user] && params[:user][:password]
           if @user.username.downcase == params[:user][:username].downcase
-            @user.attributes = params[:user]
+            @user.password = params[:user][:password]
+            @user.password_confirmation = params[:user][:password]
             @user.reset_key = nil
-            if @user.save({})
-            flash[:notice] = "Your password was successfully changed."
-            redirect_to "/dashboard"
+            if @user.changed? && @user.save({})
+              flash[:notice] = "Your password was successfully changed."
+              redirect_to "/dashboard"
             else
               flash[:error] = "Password reset failed. Please <a href='/wiki/issues'>contact the web team</a> if you are having trouble."
               redirect_to "/"
@@ -190,7 +191,7 @@ class UsersController < ApplicationController
         key = user.generate_reset_key
         user.save({})
         # send key to user email
-        PasswordResetMailer.reset_notify(user,key) unless user.nil? # respond the same to both successes and failures; security
+        PasswordResetMailer.reset_notify(user, key) unless user.nil? # respond the same to both successes and failures; security
       end
       flash[:notice] = "You should receive an email with instructions on how to reset your password. If you do not, please double check that you are using the email you registered with."
       redirect_to "/login"

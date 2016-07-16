@@ -72,6 +72,13 @@ class TagController < ApplicationController
       flash[:error] = "The barnstar could not be created."
     else
       flash[:notice] = "You awarded the <a href='/wiki/barnstars#"+params[:star].split('-').each{|w| w.capitalize!}.join('+')+"+Barnstar'>"+params[:star]+" barnstar</a> to <a href='/profile/"+node.author.name+"'>"+node.author.name+"</a>"
+      # on success add comment
+      barnstar_info_link = '<a href="publiclab.org/wiki/barnstars">barnstar</a>'
+      node.add_comment({
+          :subject => 'barnstar',
+          :uid => current_user.uid,
+          :body => "#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_users.name} for their awesome contribution!"
+        })
     end
     redirect_to node.path + "?_=" + Time.now.to_i.to_s
   end
@@ -91,7 +98,7 @@ class TagController < ApplicationController
 
       if DrupalTag.exists?(tagname,params[:nid])
         @output[:errors] << "Error: that tag already exists."
-      else 
+      else
         # "with:foo" coauthorship powertag: by author only
         if tagname[0..4] == "with:" && node.author.uid != current_user.uid
           @output[:errors] << "Error: only the author may use that powertag."
@@ -179,12 +186,12 @@ class TagController < ApplicationController
         response.headers["Content-Type"] = "application/xml; charset=utf-8"
         response.headers["Access-Control-Allow-Origin"] = "*"
         render :layout => false
-      } 
+      }
       format.ics {
         response.headers['Content-Disposition'] = "attachment; filename='public-lab-events.ics'"
         response.headers["Content-Type"] = "text/calendar; charset=utf-8"
         render :layout => false, :template => "tag/icalendar.ics", :filename => "public-lab-events.ics"
-      } 
+      }
     end
   end
 

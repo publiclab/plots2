@@ -1,0 +1,8 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+   layout:
+       _alerts:
+         request_access: " Eine Website hat den Zugriff auf Ihr Konto beantragt. "
+         approve_or_deny: "Genehmigen oder die Anforderung verweigern "
+    

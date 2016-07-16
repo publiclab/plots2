@@ -82,4 +82,23 @@ class AnswersControllerTest < ActionController::TestCase
     assert_equal 'Only the answer or question author can delete this answer', flash[:warning]
   end
 
+  test "should accept an answer which the question author approves" do
+    UserSession.create(rusers(:jeff))
+    answer = answers(:one)
+    assert !answer.accepted
+    xhr :get, :accept, id: answer.id
+    answer.reload
+    assert_response :success
+    assert answer.accepted
+  end
+
+  test "should not accept an answer by an user other than the question author" do
+    UserSession.create(rusers(:bob))
+    answer = answers(:one)
+    assert !answer.accepted
+    xhr :get, :accept, id: answer.id
+    answer.reload
+    assert !answer.accepted
+    assert_template text: "Answer couldn't be accepted"
+  end
 end
