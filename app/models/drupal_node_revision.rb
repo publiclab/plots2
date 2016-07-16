@@ -1,4 +1,9 @@
 class DrupalNodeRevision < ActiveRecord::Base
+
+  searchable do
+    text :title, :body
+  end
+
   attr_accessible :title, :body, :nid, :uid, :teaser, :log, :timestamp, :format
   self.table_name = 'node_revisions'
   self.primary_key = 'vid'
