@@ -13,6 +13,10 @@ class Answer < ActiveRecord::Base
     finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
   end
 
+  def body_email
+    self.body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?publiclab.org)/, '\1https://\3')
+  end
+
   def author
     DrupalUsers.find_by_uid self.uid
   end
@@ -41,5 +45,21 @@ class Answer < ActiveRecord::Base
   def comments
     self.drupal_comments
         .order('timestamp DESC')
+  end
+
+  def answer_notify(current_user)
+    # notify question author
+    if current_user.uid != self.author.uid
+      AnswerMailer.notify_question_author(self.author, self).deliver
+    end
+
+    uids =  (self.node.answers.collect(&:uid) + self.node.likers.collect(&:uid)).uniq
+
+    # notify other answer authors and users who liked the question
+    DrupalUsers.where("uid IN (?)", uids).each do |user|
+      if user.uid != (current_user.uid && self.author.uid)
+        AnswerMailer.notify_answer_likers_author(user.user, self).deliver
+      end
+    end
   end 
 end
