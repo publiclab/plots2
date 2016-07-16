@@ -97,4 +97,11 @@ class TagControllerTest < ActionController::TestCase
     assert_not_nil :tag
   end
 
+  test "adds comment when awarding a barnstar" do
+    ApplicationController.any_instance.stubs(:current_user).returns(User.first)
+    assert_difference 'DrupalComment.count' do
+      post :barnstar, :nid => DrupalNode.last.nid, :star => "basic"
+      assert_equal "#{User.first.username} awards a <a href=\"publiclab.org/wiki/barnstars\">barnstar</a> to #{DrupalNode.last.drupal_users.name} for their awesome contribution!", DrupalComment.last.body
+    end
+  end
 end

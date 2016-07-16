@@ -64,3 +64,9 @@ question:
   comment: Question comment
   timestamp: <%= Time.now.to_i + 8 %>
   thread: /01
+  
+comment_status_0:
+  uid: 1
+  status: 0
+  comment: I love a good comment!
+  timestamp: <%= Time.now.to_i + 1 %>

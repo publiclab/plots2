@@ -31,9 +31,12 @@
     <% end %>
     <hr />
     <div style="padding: 0px 20px 10px 20px;">
+    <% if current_user && current_user.uid == answer.node.uid || answer.accepted %>
+      <a <% if current_user && current_user.uid == answer.node.uid %> href="/answers/accept/<%= answer.id %>" <% end %> data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm <% if answer.accepted %>btn-success<% else %>btn-default<% end%>"><% if answer.accepted %>Accepted<% else %>Accept this answer<% end %></a>
+    <% end %>
        <a href=<% if current_user %>"/answer_like/likes/<%= answer.id %>"<% else %>"#"<% end %>data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-default btn-sm btn-like" id="answer-like-button-<%= answer.id %>" <% unless current_user %> popover-content="You must be logged in to Like the answer" <% end %> ><span id="answer-like-star-<%= answer.id %>" class="fa fa-star<% if current_user && !answer.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="answer-like-count-<%= answer.id %>"><%= answer.likers.length %></span> Likes</a>
-      <a href="#a<%= answer.id %>">Share Link</a> | 
-      <span id="answer-<%= answer.id %>-comment-count"><%= answer.comments.length %></span> <a id="answer-<%= answer.id %>-comment-button"  style="color: #006dcc;">Comments</a>
+      <a href="#a<%= answer.id %>"><i class="fa fa-share-alt" style="padding: 0px 5px; font-size: 15px;"></i></a>
+      <a id="answer-<%= answer.id %>-comment-button"  style="color: #006dcc;"><span id="answer-<%= answer.id %>-comment-count"><%= answer.comments.length %></span> Comments</a>
     </div>
 
     <div id="answer-<%= answer.id %>-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee; display: none;">

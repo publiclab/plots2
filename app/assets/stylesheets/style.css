@@ -450,3 +450,11 @@ pre {
   /* Hide the text; just using it for sizing */
   visibility: hidden;
 }
+
+.answer-accept {
+  font-weight: bold;
+}
+
+.answer-accept.btn-success {
+  color: #fff;
+}
