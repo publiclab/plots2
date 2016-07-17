@@ -29,6 +29,13 @@ class Search < ActiveRecord::Base
     @nodes ||= find_nodes
   end
 
+  def notes
+    solr_search = DrupalNode.search do
+      fulltext self.key_words
+    end
+    @nodes = solr_search.results
+  end
+
   private
 
   def find_nodes
