@@ -1,34 +1,33 @@
 <h3><i>Activity</i></h3>
 
-<a href="/post" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i><span class="hidden-xs"> Share your work</span></a>
+<a href="/post" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i><span class="hidden-xs"> <%= t('dashboard._activity.share_work') %></span></a>
 <a style="margin-right:2px;" href="/dashboard" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-refresh"></i></a>
 
 <div class="meta activity-dropdown">
   <div class="btn-group">
 
     <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <span class="node-type-filter">All updates</span> 
+      <span class="node-type-filter"><%= t('dashboard._activity.all_updates') %></span> 
       <span class="caret"></span>
     </button>
 
     <ul class="dropdown-menu">
 
-      <li><a href="#"><label><input data-type="all"      class="node-type-all"      type="checkbox" checked="checked" /> All           </label></a></li>
+      <li><a href="#"><label><input data-type="all"      class="node-type-all"      type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.all') %>           </label></a></li>
 
       <li class="divider"></li>
 
-      <li><a href="#"><label><input data-type="note"     class="node-type node-type-note"     type="checkbox" checked="checked" /> Research notes</label></a></li>
-      <li><a href="#"><label><input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" /> Questions     </label></a></li>
-      <li><a href="#"><label><input data-type="event"    class="node-type node-type-event"    type="checkbox" checked="checked" /> Events        </label></a></li>
-      <li><a href="#"><label><input data-type="comment"  class="node-type node-type-comment"  type="checkbox" checked="checked" /> Comments      </label></a></li>
+      <li><a href="#"><label><input data-type="note"     class="node-type node-type-note"     type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.research_notes') %></label></a></li>
+      <li><a href="#"><label><input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.question') %>     </label></a></li>
+      <li><a href="#"><label><input data-type="event"    class="node-type node-type-event"    type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.events') %>        </label></a></li>
+      <li><a href="#"><label><input data-type="comment"  class="node-type node-type-comment"  type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.comments') %>      </label></a></li>
 
       <li class="visible-sm visible-xs">
-          <a href="#"><label><input data-type="wiki"     class="node-type node-type-wiki"     type="checkbox" checked="checked" /> Wiki          </label></a>
+          <a href="#"><label><input data-type="wiki"     class="node-type node-type-wiki"     type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.wiki') %>          </label></a>
       </li>
 
       <!--
       <li class="divider"></li>
-
       <li class="dropdown-header">Sort by</li>
       <li><a href="#"><a href="#">Post date</a></li>
       <li><a href="#"><a href="#">Recent activity</a></li>
@@ -37,9 +36,9 @@
     </ul>
 
   </div> &nbsp; 
-  <span class="hidden-xs">from other <a href="">community scientists</a></span> in the past week <span class="hidden-xs">|
+  <span class="hidden-xs"><%= t('dashboard._activity.from_other') %> <a href=""><%= t('dashboard._activity.community_scientists') %></a></span> <%= t('dashboard._activity.past_week') %> <span class="hidden-xs">|
   <% if current_user %>
-    <a href="/profile/<%= current_user.username %>">Your work</a></span> 
+    <a href="/profile/<%= current_user.username %>"><%= t('dashboard._activity.your_work') %></a></span> 
   <% end %>
   <!-- (2 responses) -->
 </div>
