@@ -67,8 +67,20 @@ class I18nTest < ActionDispatch::IntegrationTest
           password: 'secret'
         }
         follow_redirect!
-        get '/dashboard'
         assert_select 'h3', I18n.t('dashboard._activity.activity')
+        assert true
+      end
+    end
+    
+    test "should choose i18n for dashboard/_header" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        assert_select 'h1', I18n.t('dashboard._header.dashboard')
         assert true
       end
     end
