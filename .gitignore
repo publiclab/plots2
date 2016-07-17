@@ -46,3 +46,4 @@ solr/*
 
 # Ignore NPM
 node_modules
+.byebug_history
