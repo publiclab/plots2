@@ -1,0 +1,34 @@
+<% @nodes.each do |node| %>
+
+    <div class="panel-body">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="taball">
+          <div class="row sresults-row">
+            <div class="panel-group">
+
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <span class="fa fa-file"></span>&nbsp;
+                  <a href="/notes/admin/05-26-2016/blog-post">Blog Post</a>
+                </div>
+                <div class="panel-body">No summary available</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <tr class="<%= node.type %>">
+      <% if node.type == "comment" %>
+          <td><i class="fa fa-<%= node.icon %>"></i> Comment by <a href="<%= node.author.name %>"><%= node.author.name %></a></td>
+      <% else %>
+          <td><i class="fa fa-<%= node.icon %>"></i> <a href="<%= node.path %>"><%= node.title %></a></td>
+      <% end %>
+      <td><% if node.type != "page" %><a href="/profile/<%= node.author.name %>"><%= node.author.name %></a><% end %></td>
+      <td><% node.tags.each do |tag| %><a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %></td>
+    </tr>
+<% end %>
