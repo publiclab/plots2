@@ -1,0 +1,6 @@
+en:
+  js:
+    dashboard:
+      selected_updates: "Selected updates"
+      none: "None"
+      all_updates: "All updates"
