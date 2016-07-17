@@ -66,3 +66,4 @@ gem 'mocha', '~> 1.1'
 gem 'jasmine-rails'
 gem 'jasmine'
 gem 'jasmine-jquery-rails'
+gem "i18n-js", ">= 3.0.0.rc11"
