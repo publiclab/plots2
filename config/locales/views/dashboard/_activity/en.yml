@@ -3,6 +3,7 @@
 en:
   dashboard:
     _activity:
+      activity: "Activity"
       share_work: "Share your work"
       all_updates: "Alle updates"
       dropdown:
