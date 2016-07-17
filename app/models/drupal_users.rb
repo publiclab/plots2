@@ -4,6 +4,13 @@ class DrupalUsers < ActiveRecord::Base
   self.table_name = 'users'
   self.primary_key = 'uid'
 
+  searchable do
+    string :name, :mail
+    # text :comments do
+    #   comments.map { |comment| comment.comment }
+    # end
+  end
+
   has_many :drupal_node, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
