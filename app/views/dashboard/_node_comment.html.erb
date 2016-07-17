@@ -4,14 +4,14 @@
     <div class="header-icon"><i class="fa fa-comment-o"></i></div>
     <p class="meta">
       <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>
-      commented on <a href="<%= node.parent.path %>"><%= node.parent.title %></a>
+      <%= t('dashboard._node_comment.commented_on') %> <a href="<%= node.parent.path %>"><%= node.parent.title %></a>
     </p>
 
     <p class="body"><%= raw strip_tags(sanitize(RDiscount.new(node.comment).to_html)).truncate(100) %></p>
 
     <p class="meta">
-      <a href="<%= node.parent.path %>#comments" class="btn btn-default pull-right btn-xs"><%= node.parent.comments.count %> comments &raquo;</a>
-      <%= time_ago_in_words(node.created_at) %> ago
+      <a href="<%= node.parent.path %>#comments" class="btn btn-default pull-right btn-xs"><%= node.parent.comments.count %> <%= t('dashboard._node_comment.comments') %> &raquo;</a>
+      <%= distance_of_time_in_words(node.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
     </p>
 
   </div>
