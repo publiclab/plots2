@@ -1,7 +1,7 @@
 class DrupalComment < ActiveRecord::Base
   attr_accessible :pid, :nid, :uid, :aid,
                   :subject, :hostname, :comment,
-                  :status, :format, :thread, :timestamp 
+                  :status, :format, :thread, :timestamp
 
   belongs_to :drupal_node, :foreign_key => 'nid', :touch => true,
                            :dependent => :destroy, :counter_cache => true
@@ -16,6 +16,16 @@ class DrupalComment < ActiveRecord::Base
 
   def self.inheritance_column
     "rails_type"
+  end
+
+  def self.comment_weekly_tallies(span = 52, time = Time.now)
+    weeks = {}
+    (0..span).each do |week|
+      weeks[span-week] = DrupalComment.select(:timestamp)
+                                   .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week-1).weeks.to_i)
+                                   .count
+    end
+    weeks
   end
 
   def id
@@ -67,7 +77,7 @@ class DrupalComment < ActiveRecord::Base
 
   # users who are involved in this comment thread
   def thread_participants
-    
+
   end
 
   def mentioned_users
@@ -75,7 +85,7 @@ class DrupalComment < ActiveRecord::Base
     User.find_all_by_username(usernames.map {|m| m[1] }).uniq
   end
 
-  # email all users in this thread 
+  # email all users in this thread
   # plus all who've starred it
   def notify(current_user)
     if self.parent.uid != current_user.uid
@@ -100,7 +110,7 @@ class DrupalComment < ActiveRecord::Base
 
         CommentMailer.notify(user.user,self).deliver
       end
-    end 
+    end
   end
 
 end
