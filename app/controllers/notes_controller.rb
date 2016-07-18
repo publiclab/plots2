@@ -42,6 +42,7 @@ class NotesController < ApplicationController
 
     @graph_notes = DrupalNode.weekly_tallies('note', 52, @time).to_a.sort.to_json
     @graph_wikis = DrupalNode.weekly_tallies('page', 52, @time).to_a.sort.to_json
+    @graph_comments = DrupalComment.comment_weekly_tallies(52, @time).to_a.sort.to_json
 
     users = []
     nids = []
@@ -161,10 +162,10 @@ class NotesController < ApplicationController
 
   def edit
     @node = DrupalNode.find(params[:id],:conditions => {:type => "note"})
-    if current_user.uid == @node.uid || current_user.role == "admin" 
+    if current_user.uid == @node.uid || current_user.role == "admin"
       if params[:rich]
         if @node.main_image
-          @main_image = @node.main_image.path(:default) 
+          @main_image = @node.main_image.path(:default)
         elsif params[:main_image] && Image.find_by_id(params[:main_image])
           @main_image = Image.find_by_id(params[:main_image]).path
         elsif @image
@@ -182,7 +183,7 @@ class NotesController < ApplicationController
   # at /notes/update/:id
   def update
     @node = DrupalNode.find(params[:id])
-    if current_user.uid == @node.uid || current_user.role == "admin" 
+    if current_user.uid == @node.uid || current_user.role == "admin"
       @revision = @node.latest
       @revision.title = params[:title]
       @revision.body = params[:body]
@@ -197,7 +198,7 @@ class NotesController < ApplicationController
         # update vid (version id) of main image
         if @node.drupal_main_image
           i = @node.drupal_main_image
-          i.vid = @revision.vid 
+          i.vid = @revision.vid
           i.save
         end
         @node.drupal_content_field_image_gallery.each do |img|
@@ -309,7 +310,7 @@ class NotesController < ApplicationController
         render :layout => false
         response.headers["Content-Type"] = "application/xml; charset=utf-8"
         response.headers["Access-Control-Allow-Origin"] = "*"
-      } 
+      }
     end
   end
 
@@ -321,14 +322,14 @@ class NotesController < ApplicationController
       format.rss {
         render :layout => false, :template => "notes/rss"
         response.headers["Content-Type"] = "application/xml; charset=utf-8"
-      } 
+      }
     end
   end
 
   def rsvp
     @node = DrupalNode.find params[:id]
     # leave a comment
-    @comment = @node.add_comment({:subject => 'rsvp', :uid => current_user.uid,:body => 
+    @comment = @node.add_comment({:subject => 'rsvp', :uid => current_user.uid,:body =>
       "I will be attending!"
     })
     # make a tag

@@ -140,4 +140,20 @@ class DrupalCommentTest < ActiveSupport::TestCase
     assert_not_equal answer.node.drupal_comments.last, comment
   end
 
+  test "should return weekly tallies" do
+    DrupalComment.delete_all
+    seconds_to_two_weeks_ago = 1210000
+    seconds_to_four_weeks_ago = seconds_to_two_weeks_ago * 2
+    weeks_to_tally = 52
+    # placing a comment right before Time.now places it in week 51 so two weeks later is week 49
+    two_weeks_ago = weeks_to_tally - 3
+    four_weeks_ago = two_weeks_ago - 2
+    DrupalComment.create!({comment: 'blah', timestamp: Time.now() - 1}) # place a comment right before now
+    DrupalComment.create!({comment: 'blah', timestamp: Time.now() - seconds_to_two_weeks_ago})
+    DrupalComment.create!({comment: 'blahblah', timestamp: Time.now() - seconds_to_four_weeks_ago})
+    weekly_tallies = DrupalComment.comment_weekly_tallies(52)
+    assert_equal weekly_tallies[weeks_to_tally - 1], 1
+    assert_equal weekly_tallies[two_weeks_ago], 1
+    assert_equal weekly_tallies[four_weeks_ago], 1
+  end
 end

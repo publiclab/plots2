@@ -12,8 +12,8 @@
 
   <p>Looking back from <i><%= @time.to_formatted_s(:long) %></i>.</p>
   <p>
-    Try 
-    <a href="?time=<%= (@time-1.year).to_formatted_s(:long) %>">one year</a>, 
+    Try
+    <a href="?time=<%= (@time-1.year).to_formatted_s(:long) %>">one year</a>,
     <a href="?time=<%= (@time-1.month).to_formatted_s(:long) %>">one month</a>, or
     <a href="?time=<%= (@time-1.week).to_formatted_s(:long) %>">one week</a>
     further back.
@@ -22,17 +22,17 @@
   <hr />
 
   <h4>
-    <a href="/research"><%= @weekly_notes %> notes</a> 
-    and <a href="/wiki"><%= @weekly_wikis %> wiki edits</a> posted in the past week. 
-    <b><%= @weekly_members %> people</b> joined in the past week. 
+    <a href="/research"><%= @weekly_notes %> notes</a>
+    and <a href="/wiki"><%= @weekly_wikis %> wiki edits</a> posted in the past week.
+    <b><%= @weekly_members %> people</b> joined in the past week.
   </h4>
 
   <hr />
 
   <h4>
-    <a href="/research"><%= @monthly_notes %> notes</a> 
-    and <a href="/wiki"><%= @monthly_wikis %> wiki edits</a> posted in the past month. 
-    <b><%= @monthly_members %> people</b> joined in the past month. 
+    <a href="/research"><%= @monthly_notes %> notes</a>
+    and <a href="/wiki"><%= @monthly_wikis %> wiki edits</a> posted in the past month.
+    <b><%= @monthly_members %> people</b> joined in the past month.
   </h4>
 
 
@@ -53,6 +53,14 @@
   <p><i>Wiki page posting for the past 52 weeks:</i></p>
 
   <div id="wikis" style="height:100px;"></div>
+
+  <hr />
+
+  <h4><%= DrupalComment.count %> comments have been posted, total</h4>
+
+  <p><i>Comments posted for the past 52 weeks:</i></p>
+
+  <div id="comments" style="height:100px;"></div>
 
   <hr />
 
@@ -79,11 +87,12 @@
 
     var notes = <%= @graph_notes %>
     var wikis = <%= @graph_wikis %>
+    var comments = <%= @graph_comments %>
 
     $.plot($("#notes"), [
       {
           data: notes,
-          bars: { show: true, 
+          bars: { show: true,
                   lineWidth: 0,
                   fillColor: "#08f",
                   barWidth: 0.5
@@ -94,7 +103,18 @@
     $.plot($("#wikis"), [
       {
           data: wikis,
-          bars: { show: true, 
+          bars: { show: true,
+                  lineWidth: 0,
+                  fillColor: "#80f",
+                  barWidth: 0.5
+                }
+      }
+    ],flotoptions_minimal)
+
+    $.plot($("#comments"), [
+      {
+          data: comments,
+          bars: { show: true,
                   lineWidth: 0,
                   fillColor: "#80f",
                   barWidth: 0.5
@@ -104,4 +124,3 @@
 
   })()
 </script>
-
