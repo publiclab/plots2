@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160616035549) do
+ActiveRecord::Schema.define(:version => 20160715024414) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -23,12 +23,13 @@ ActiveRecord::Schema.define(:version => 20160616035549) do
   add_index "answer_selections", ["user_id", "aid"], :name => "index_answer_selections_on_user_id_and_aid"
 
   create_table "answers", :force => true do |t|
-    t.integer  "uid",          :default => 0, :null => false
-    t.integer  "nid",          :default => 0, :null => false
-    t.string   "content",                     :null => false
+    t.integer  "uid",          :default => 0,     :null => false
+    t.integer  "nid",          :default => 0,     :null => false
+    t.string   "content",                         :null => false
     t.integer  "cached_likes", :default => 0
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "accepted",     :default => false
   end
 
   add_index "answers", ["uid", "nid"], :name => "index_answers_on_uid_and_nid"
@@ -161,6 +162,18 @@ ActiveRecord::Schema.define(:version => 20160616035549) do
     t.integer  "vid",                :default => 0
   end
 
+  create_table "location_tags", :force => true do |t|
+    t.integer  "uid"
+    t.string   "location"
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.decimal  "lat",        :precision => 15, :scale => 10
+    t.decimal  "lon",        :precision => 15, :scale => 10
+    t.string   "country"
+    t.string   "state"
+    t.string   "city"
+  end
+
   create_table "node", :primary_key => "nid", :force => true do |t|
     t.integer "vid",                                       :default => 0,  :null => false
     t.string  "type",                        :limit => 32, :default => "", :null => false
@@ -261,6 +274,17 @@ ActiveRecord::Schema.define(:version => 20160616035549) do
   add_index "profile_values", ["fid"], :name => "index_profile_values_fid"
   add_index "profile_values", ["uid"], :name => "index_profile_values_on_uid"
 
+  create_table "relationships", :force => true do |t|
+    t.integer  "follower_id"
+    t.integer  "followed_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "relationships", ["followed_id"], :name => "index_relationships_on_followed_id"
+  add_index "relationships", ["follower_id", "followed_id"], :name => "index_relationships_on_follower_id_and_followed_id", :unique => true
+  add_index "relationships", ["follower_id"], :name => "index_relationships_on_follower_id"
+
   create_table "rsessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
@@ -292,7 +316,10 @@ ActiveRecord::Schema.define(:version => 20160616035549) do
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.string   "photo_file_size"
+    t.boolean  "location_privacy",   :default => true
   end
+
+  add_index "rusers", ["location_privacy"], :name => "index_rusers_on_location_privacy"
 
   create_table "tag_selections", :id => false, :force => true do |t|
     t.integer "user_id"

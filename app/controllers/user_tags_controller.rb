@@ -47,7 +47,7 @@ class UserTagsController < ApplicationController
           else
             flash[:notice] = "#{@output[:saved][2]} tag created successfully"
           end
-          redirect_to info_path
+          redirect_to info_path, :id => params[:id]
         end
       end
     end

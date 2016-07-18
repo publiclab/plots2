@@ -156,11 +156,15 @@ Plots2::Application.routes.draw do
   match 'profile/:id/likes' => 'users#likes'
   match 'feed/:author' => 'users#rss'
 
-  match 'info/suggested/:key/:value' => 'user_tags#suggested'
-  match 'info/tags/create/:id' => 'user_tags#create'
-  match 'info/tags/delete/:id' => 'user_tags#delete'
+  match 'profile/suggested/:key/:value' => 'user_tags#suggested'
+  match 'profile/tags/create/:id' => 'user_tags#create'
+  match 'profile/tags/delete/:id' => 'user_tags#delete'
+  match 'profile/location/create/:id' => 'location_tags#create'
+  match 'profile/user/privacy' => 'users#privacy'
+
 
   match 'maps' => 'map#index'
+  match 'users/map' => 'users#map'
   match 'map' => 'search#map'
   match 'maps/:id' => 'map#tag'
   match 'map/edit/:id' => 'map#edit'

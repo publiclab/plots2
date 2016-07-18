@@ -13,6 +13,10 @@ require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
 
+  def setup
+    activate_authlogic
+  end
+
   test "new user page" do
     get :new
     assert_response :success
@@ -117,6 +121,63 @@ class UsersControllerTest < ActionController::TestCase
     get :profile, id: user.username
 
     assert_select 'a#user-reset-key'
+
+  end
+
+  test "should update true value of location privacy attribute" do
+    UserSession.create(rusers(:jeff))
+    user = rusers(:jeff)
+    post :privacy, location_privacy: true, :id => user.username
+
+    assert_response 302
+    assert user.location_privacy
+    assert_equal "Your preference has been saved", flash[:notice]
+  end
+
+  test "should update false value location privacy attribute" do
+    UserSession.create(rusers(:jeff))
+    user = rusers(:jeff)
+    post :privacy, location_privacy: false, :id => user.username
+
+    assert_response 302
+    assert user.location_privacy
+    assert_equal "Your preference has been saved", flash[:notice]
+  end
+
+  test "should display map with success response" do
+    UserSession.create(rusers(:jeff))
+    get :map
+    assert_response 200
+  end
+
+  test "should display map based on tags" do
+    UserSession.create(rusers(:jeff))
+    get :map, :tag => 'Skill', :country => "", :value => ""
+    assert_response 200
+    assert assigns[:location_tags]
+    assert assigns[:location_tags].is_a? Hash
+  end
+
+  test "should display users map based on location" do
+    UserSession.create(rusers(:jeff))
+    get :map, :country => 'United States', tag: "", value: ""
+    assert_response 200
+    assert assigns[:users]
+  end
+
+  test "should display user map on tag and value parameter" do
+    UserSession.create(rusers(:jeff))
+    get :map, :tag => 'Skill', :value => 'Developer', country: ''
+    assert_response 200
+    assert assigns[:location_tags]
+    assert assigns[:location_tags].is_a? Hash
+  end
+
+  test "should display flash error for invalid tag" do
+    UserSession.create(rusers(:jeff))
+    get :map, :tag => 'abc', value: '', country: ''
+    assert_response 200
+    assert_equal "abc doesn't exitst", flash[:error]
   end
 
 #  def test_create_invalid
