@@ -1,5 +1,6 @@
 //= require application
 //= require jasmine-jquery
+//= require comment_expand
 
 var editor;
 
@@ -12,7 +13,7 @@ describe("Plots2", function() {
 
     // for in-browser running... still doesn't work
     //jasmine.getFixtures().fixturesPath = 'assets/fixtures';
-    preloadFixtures('index.html');
+    preloadFixtures('index.html', 'unlike.html', 'comment_expand.html');
 
     jasmine.Ajax.install();
 
@@ -57,10 +58,44 @@ describe("Plots2", function() {
     // then triggering like.js code
 
     expect(response).toEqual('4');
-
     expect($('#like-count-1').html()).toEqual('4'); // passing
+    expect($('#like-star-1')[0].className).toEqual('fa fa-star');
 
   });
 
-});
 
+  it("unlikes a request if already liked", function() {
+
+    loadFixtures('unlike.html');
+
+    ajaxSpy = spyOn($, "ajax").and.callFake(function(object) {
+
+      if   (object.url == '/likes/node/1/delete') response = "-1";
+      else response = 'none';
+
+      var d = $.Deferred();
+      d.resolve(response);
+      d.reject(response);
+      return d.promise();
+
+    });
+
+    $('#like-button-1').trigger('click');
+
+    expect(response).toEqual('-1');
+    expect($('#like-count-1').html()).toEqual('0');
+    expect($('#like-star-1')[0].className).toEqual('fa fa-star-o');
+
+  });
+
+  it("shows expand comment button with remaining comment count", function(){
+    loadFixtures('comment_expand.html');
+
+    $('#answer-0-expand').trigger('click');
+    expect($('#answer-0-expand').html()).toEqual('View 2 more comments');
+
+    $('#answer-0-expand').trigger('click');
+    expect($('#answer-0-expand').css('display')).toEqual('none');
+  })
+
+});
