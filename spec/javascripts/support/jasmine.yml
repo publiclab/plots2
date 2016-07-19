@@ -49,5 +49,5 @@ spec_files:
 # defaults to tmp/jasmine
 tmp_dir: "tmp/jasmine"
 
-use_phantom_gem: false
+use_phantom_gem: true
 
