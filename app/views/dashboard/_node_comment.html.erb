@@ -4,7 +4,7 @@
     <div class="header-icon"><i class="fa fa-comment-o"></i></div>
     <p class="meta">
       <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>
-      <%= t('dashboard._node_comment.commented_on') %> <a href="<%= node.parent.path %>"><%= node.parent.title %></a>
+      <span><%= t('dashboard._node_comment.commented_on') %></span> <a href="<%= node.parent.path %>"><%= node.parent.title %></a>
     </p>
 
     <p class="body"><%= raw strip_tags(sanitize(RDiscount.new(node.comment).to_html)).truncate(100) %></p>

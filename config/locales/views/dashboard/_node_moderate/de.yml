@@ -1,0 +1,9 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  dashboard:
+    _node_moderate:
+      first_time_post: "Moderate erstmalige Post:"
+      approve: "Genehmigen"
+      spam: "Spam"
+      pending_approval: "Vorbehaltlich der Zustimmung durch <a href='%{url}'>Community-Moderatoren</a>. Bitte haben Sie Geduld!"
