@@ -1,0 +1,19 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  dashboard:
+    _activity:
+      activity: "Activity"
+      share_work: "Share your work"
+      all_updates: "Alle updates"
+      dropdown:
+        all: "All"
+        research_notes: "Research notes"
+        questions: "Questions"
+        events: "Events"
+        comments: "Comments"
+        wiki: "Wiki"
+      from_other: "from other"
+      community_scientists: "community scientists"
+      past_week: "in the past week"
+      your_work: "Your work"

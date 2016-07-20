@@ -67,3 +67,4 @@ gem 'jasmine-rails'
 gem 'jasmine'
 gem 'jasmine-jquery-rails'
 gem 'geocoder'
+gem "i18n-js", ">= 3.0.0.rc11"

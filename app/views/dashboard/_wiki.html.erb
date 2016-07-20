@@ -1,10 +1,10 @@
-<p class="meta">A <a href="/wiki">shared knowledge base</a> for community science<!-- | <a href="">Your pages</a>--></p>
+<p class="meta"><%= raw t('dashboard._wiki.shared_knowledge_base', :url => '/wiki') %><!-- | <a href="">Your pages</a>--></p>
 
 <div class="meta row">
   <div class="col-lg-8 col-md-7 col-sm-7 col-xs-7">
     <div class="input-group">
       <form class="search-form-wiki" role="search" autocomplete="off">
-        <input type="text" class="search-wiki form-control input-sm" style="width:70%;" placeholder="Search for...">
+        <input type="text" class="search-wiki form-control input-sm" style="width:70%;" placeholder="<%= t('dashboard._wiki.search') %>">
         <span class="input-group-btn">
           <button class="btn btn-sm btn-default" type="submit"><i class="fa fa-search"></i></button>
         </span>
@@ -13,7 +13,7 @@
   </div>
 
   <div class="col-lg-4 col-md-5 col-sm-5 col-xs-5">
-    <a href="/wiki/new" class="btn btn-sm btn-default btn-block" type="button"><i class="fa fa-plus-circle"></i> New page</a>
+    <a href="/wiki/new" class="btn btn-sm btn-default btn-block" type="button"><i class="fa fa-plus-circle"></i> <%= t('dashboard._wiki.new_page') %></a>
   </div>
 
 </div>
@@ -27,16 +27,16 @@
         <small style="color:#888;">
           <% if wiki.is_a?(DrupalNode) %>
             <i class="fa fa-book"></i>
-            New page by <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a>
+            <%= t('dashboard._wiki.new_page_by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a>
           <% else %>
             <i class="fa fa-pencil"></i>
-            New edit by <a href="/profile/<%= wiki.author.name %>"><%= wiki.author.name %></a>
+            <%= t('dashboard._wiki.new_edit_by') %> <a href="/profile/<%= wiki.author.name %>"><%= wiki.author.name %></a>
           <% end %>
 
-          <%= time_ago_in_words(wiki.created_at) %> ago 
+          <%= distance_of_time_in_words(wiki.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
 
           <% if wiki.is_a?(DrupalNodeRevision) && wiki.previous %>
-           - <a class="btn-diff btn-diff-<%= index %>">changes</a>
+           - <a class="btn-diff btn-diff-<%= index %>"><%= t('dashboard._wiki.changes') %></a>
           <% end %>
 
         </small>
@@ -63,6 +63,6 @@
     </div>
   <% end %>
 
-  <p><small><a href="/wiki/">More &raquo;</a></small></p>
+  <p><small><a href="/wiki/"><%= t('dashboard._wiki.more') %> &raquo;</a></small></p>
 
 </div>

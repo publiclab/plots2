@@ -31,6 +31,8 @@
 //= require d3/d3
 //= require d3-plugins/hexbin/hexbin
 //= require leaflet-d3/dist/leaflet-d3
+//= require i18n
+//= require i18n/translations
 //  APPLICATION SCRIPTS:
 //= require search.js
 //= require setup.js
