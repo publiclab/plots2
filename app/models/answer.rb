@@ -1,4 +1,6 @@
 class Answer < ActiveRecord::Base
+  include NodeShared, CommentsShared
+
   attr_accessible :uid, :nid, :content, :cached_likes, :created_at, :updated_at
 
   belongs_to :drupal_node, foreign_key: 'nid', dependent: :destroy
@@ -13,22 +15,6 @@ class Answer < ActiveRecord::Base
     finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
   end
 
-  def body_email
-    self.body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?publiclab.org)/, '\1https://\3')
-  end
-
-  def author
-    DrupalUsers.find_by_uid self.uid
-  end
-
-  def node
-    self.drupal_node
-  end
-
-  def likes
-    self.cached_likes
-  end
-
   # users who like this answer
   def likers
     self.answer_selections
@@ -36,15 +22,6 @@ class Answer < ActiveRecord::Base
         .where(liking: true)
         .where('users.status = ?', 1)
         .collect(&:user)
-  end
-
-  def liked_by(uid)
-    self.likers.collect(&:uid).include?(uid)
-  end
-
-  def comments
-    self.drupal_comments
-        .order('timestamp DESC')
   end
 
   def answer_notify(current_user)
