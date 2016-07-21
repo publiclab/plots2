@@ -140,4 +140,61 @@ class NodeUpdateTest < ActionDispatch::IntegrationTest
 
   end
 
+  test "should take the old url if the title is reverted to the old title" do
+    post '/user_sessions', user_session: {
+      username: rusers(:bob).username,
+      password: 'secret'
+    }
+
+    node = node(:about)
+    oldtitle = node.title
+    newtitle = oldtitle + " page amended"
+
+    post '/wiki/update/' + node.id.to_s,
+         title: newtitle, 
+         body: "Some test string"
+
+    follow_redirect!
+    # path gets updated
+    assert_equal "/wiki/" + newtitle.parameterize, path
+    assert_equal flash[:notice], "Edits saved."
+
+    # reverting to the old title
+    post '/wiki/update/' + node.id.to_s,
+         title: oldtitle, 
+         body: "Some test string"
+
+    follow_redirect!
+    # path gets changed to the old url
+    assert_equal "/wiki/" + oldtitle.parameterize, path
+    assert_equal flash[:notice], "Edits saved."
+  end
+
+  test "should reuse old slugs if a new wiki page is created with an old title of another wiki" do
+    post '/user_sessions', user_session: {
+      username: rusers(:bob).username,
+      password: 'secret'
+    }
+
+    node = node(:about)
+    oldtitle = node.title
+    newtitle = oldtitle + " page amended"
+
+    post '/wiki/update/' + node.id.to_s,
+         title: newtitle, 
+         body: "Some test string"
+
+    follow_redirect!
+    assert_equal "/wiki/" + newtitle.parameterize, path
+    assert_equal flash[:notice], "Edits saved."
+
+    # create wiki page with oldtitle
+    post '/wiki/create/',
+         title: oldtitle,
+         body: "Test string"
+
+    follow_redirect!
+    assert_equal "/wiki/" + oldtitle.parameterize, path
+  end
+
 end

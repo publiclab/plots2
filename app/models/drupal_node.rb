@@ -72,6 +72,7 @@ class DrupalNode < ActiveRecord::Base
   after_create :setup
   before_validation :set_path, on: :create
   after_save :update_path
+  before_create :remove_slug
 
   # can switch to a "question-style" path if specified
   def path(type = :default)
@@ -112,6 +113,13 @@ class DrupalNode < ActiveRecord::Base
                   "/map/#{self.friendly_id}/#{Time.at(self.created).strftime("%m-%d-%Y")}"
                 end
     self.update_column(:path, new_path)
+  end
+
+  def remove_slug
+    if !FriendlyId::Slug.find_by_slug(self.title.parameterize).nil? && self.type == 'page'
+      slug = FriendlyId::Slug.find_by_slug(self.title.parameterize)
+      slug.delete
+    end
   end
 
   def set_changed_and_created
