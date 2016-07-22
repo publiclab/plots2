@@ -14,7 +14,7 @@ class UniqueUrlValidator < ActiveModel::Validator
 end
 
 class DrupalNode < ActiveRecord::Base
-  include NodeShared
+  include NodeShared # common methods for node-like models
 
   attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path
   self.table_name = 'node'

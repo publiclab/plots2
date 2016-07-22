@@ -1,5 +1,5 @@
 class DrupalComment < ActiveRecord::Base
-  include CommentsShared
+  include CommentsShared # common methods for comment-like models
 
   attr_accessible :pid, :nid, :uid, :aid,
                   :subject, :hostname, :comment,

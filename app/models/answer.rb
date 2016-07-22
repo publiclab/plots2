@@ -1,5 +1,5 @@
 class Answer < ActiveRecord::Base
-  include NodeShared, CommentsShared
+  include NodeShared, CommentsShared # common methods for node-like and comment-like models
 
   attr_accessible :uid, :nid, :content, :cached_likes, :created_at, :updated_at
 
