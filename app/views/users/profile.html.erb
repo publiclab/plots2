@@ -55,7 +55,7 @@
           <label class="" for="location">Location</label>
         </div>
         <div class="col-md-9">
-          <span class="glyphicon glyphicon-map-marker"></span>
+          <span class="fa fa-map-marker"></span>
           <%= @user.location_tag.state if @user.location_tag.state %>
           <% if @user.location_tag.state && @user.location_tag.country %>
             <%= "," + @user.location_tag.country %>
