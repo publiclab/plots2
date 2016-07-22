@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
   has_many :images, :foreign_key => :uid
   has_many :drupal_node, :foreign_key => 'uid'
   has_many :user_tags, :foreign_key => 'uid', :dependent => :destroy
+  has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
+
   validates_with UniqueUsernameValidator, :on => :create
   validates_format_of :username, :with => /^[A-Za-z\d_\-]+$/
 
