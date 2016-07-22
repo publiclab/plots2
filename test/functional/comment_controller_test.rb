@@ -9,6 +9,7 @@ class CommentControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil :comments
+    assert assigns(:comments).first.timestamp > assigns(:comments).last.timestamp
   end
 
   test "should create note comments" do

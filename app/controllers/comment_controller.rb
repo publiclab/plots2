@@ -5,6 +5,7 @@ class CommentController < ApplicationController
 
   def index
     @comments = DrupalComment.paginate(page: params[:page], per_page: 30)
+                             .order('timestamp DESC')
     render template: 'comments/index'
   end
 
