@@ -15,6 +15,7 @@ en:
           places: "Places"
           kits: "Kits"
           users_map: "Users map"
+          comments: "Recent comments"
         initiatives:
           initiatives_title: "Initiatives"
           open_land: "Open Land"

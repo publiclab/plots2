@@ -1,7 +1,6 @@
 # def home
 # def front
 # def dashboard
-# def comments
 # def nearby
 
 require 'test_helper'
@@ -51,16 +50,6 @@ class HomeControllerTest < ActionController::TestCase
       session[:openid_return_to] = '/home'
       get :dashboard
       assert_select "a[href=/openid/resume]", I18n.t('layout._alerts.approve_or_deny')+' &raquo;'
-      assert true
-    end
-  end
-  
-  test "should choose i18n for home/comments" do
-    available_testing_locales.each do |lang|
-      cookies.permanent[:plots2_locale] = lang
-      get 'comments'
-      assert_template partial: "home/_comments"
-      assert_select 'span', I18n.t('home._comments.commented') + ' :'
       assert true
     end
   end
