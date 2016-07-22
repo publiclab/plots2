@@ -112,9 +112,16 @@ class UsersController < ApplicationController
     @user = DrupalUsers.find_by_name(params[:id])
     @profile_user = User.find_by_username(params[:id])
     @title = @user.name
-    @notes = DrupalNode.page(params[:page])
+    @notes = DrupalNode.research_notes
+                       .page(params[:page])
                        .order("nid DESC")
-                       .where(type: 'note', status: 1, uid: @user.uid)
+                       .where(status: 1, uid: @user.uid)
+    @questions = DrupalNode.where(status: 1, type: 'note', uid: @user.uid)
+                           .joins(:drupal_tag)
+                           .where('term_data.name LIKE ?', 'question:%')
+                           .order('node.nid DESC')
+                           .group('node.nid')
+                           .paginate(:page => params[:page], :per_page => 30)
     wikis = DrupalNodeRevision.order("nid DESC")
                               .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
                               .joins(:drupal_node)
@@ -202,7 +209,8 @@ class UsersController < ApplicationController
     @comments = DrupalComment.limit(20)
                              .order("timestamp DESC")
                              .where(status: 0, uid: params[:id])
-    render :partial => "home/comments"
+                             .paginate(page: params[:page], per_page: 30)
+    render partial: 'comments/comments'
   end
 
   def photo

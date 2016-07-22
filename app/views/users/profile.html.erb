@@ -153,6 +153,7 @@
   <ul class="nav nav-tabs">
     <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words')) %></small></span>
     <li class="active"><a href="#research" data-toggle="tab"><%= t('users.profile.research') %></a></li>
+    <li><a href="#questions" data-toggle="tab"><i class="fa fa-comments"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %></span></a></li>
     <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.comments') %></span></a></li>
     <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
   </ul>
@@ -163,6 +164,10 @@
 
     <div class="tab-pane active" id="research">
       <%= render :partial => "notes/notes" %>
+    </div>
+
+    <div class="tab-pane" id="questions">
+      <%= render :partial => "questions/questions" %>
     </div>
 
     <div class="tab-pane" id="maps">
@@ -281,3 +286,5 @@
     });
   })();
 </script>
+<%= stylesheet_link_tag "dashboard" %>
+<%= javascript_include_tag "dashboard" %>

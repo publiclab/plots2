@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
 
   def index
     @title = "Recent Questions"
-    @notes = DrupalNode.where(status: 1, type: 'note')
+    @questions = DrupalNode.where(status: 1, type: 'note')
                        .joins(:drupal_tag)
                        .where('term_data.name LIKE ?', 'question:%')
                        .order('node.nid DESC')
@@ -40,7 +40,7 @@ class QuestionsController < ApplicationController
 
   def answered
     @title = "Recently answered"
-    @notes = DrupalNode.joins(:answers)
+    @questions = DrupalNode.joins(:answers)
                        .order('answers.created_at DESC')
                        .group('node.nid')
                        .paginate(:page => params[:page], :per_page => 30)
@@ -61,7 +61,7 @@ class QuestionsController < ApplicationController
 
   def popular
     @title = "Popular Questions"
-    @notes = DrupalNode.where(status: 1, type: 'note')
+    @questions = DrupalNode.where(status: 1, type: 'note')
                        .joins(:drupal_tag)
                        .where('term_data.name LIKE ?', 'question:%')
                        .order('node_counter.totalcount DESC')
@@ -77,7 +77,7 @@ class QuestionsController < ApplicationController
 
   def liked
     @title = "Highly liked Questions"
-    @notes = DrupalNode.where(status: 1, type: 'note')
+    @questions = DrupalNode.where(status: 1, type: 'note')
                        .joins(:drupal_tag)
                        .where('term_data.name LIKE ?', 'question:%')
                        .order("cached_likes DESC")
