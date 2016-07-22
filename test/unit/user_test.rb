@@ -43,4 +43,12 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil user.reset_key
   end
 
+  test "should follow and unfollow user" do
+    bob = rusers(:bob)
+    jeff = rusers(:jeff)
+    #assert_not bob.following?(jeff)
+    bob.follow(jeff)
+    bob.unfollow(jeff)
+  end
+
 end
