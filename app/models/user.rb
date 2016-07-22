@@ -27,7 +27,9 @@ class User < ActiveRecord::Base
   has_many :drupal_node, :foreign_key => 'uid'
   has_many :user_tags, :foreign_key => 'uid', :dependent => :destroy
   has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
-  has_many :following, through: :active_relationships, source: :followed
+  has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
+  has_many :following_users, through: :active_relationships, source: :followed
+  has_many :followers, through: :passive_relationships, source: :follower
 
   validates_with UniqueUsernameValidator, :on => :create
   validates_format_of :username, :with => /^[A-Za-z\d_\-]+$/
@@ -225,11 +227,11 @@ class User < ActiveRecord::Base
   end
 
   def unfollow(other_user)
-    self.active_relationships.find_by(followed_id: other_user.id).destroy
+    self.active_relationships.find_by_followed_id(other_user.id).destroy
   end
 
   def following?(other_user)
-    self.following.include?(other_user)
+    following_users.include?(other_user)
   end
 
   private
