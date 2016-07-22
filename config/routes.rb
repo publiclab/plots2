@@ -215,6 +215,7 @@ Plots2::Application.routes.draw do
   match 'questions/:author/:date/:id' => 'questions#show'
   match 'questions/show/:id' => 'questions#show'
   match 'q/:id' => 'questions#shortlink'
+  match 'questions/answered' => 'questions#answered'
   match 'questions/popular' => 'questions#popular'
   match 'questions/liked' => 'questions#liked'
 

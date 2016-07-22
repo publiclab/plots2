@@ -38,6 +38,18 @@ class QuestionsController < ApplicationController
     set_sidebar :tags, @tagnames
   end
 
+  def answered
+    @title = "Recently answered"
+    @notes = DrupalNode.joins(:answers)
+                       .order('answers.created_at DESC')
+                       .group('node.nid')
+                       .paginate(:page => params[:page], :per_page => 30)
+    @wikis = DrupalNode.limit(10)
+                       .where(type: 'page', status: 1)
+                       .order("nid DESC")
+    render :template => 'questions/index'
+  end
+
   def shortlink
     @node = DrupalNode.find params[:id]
     if @node.has_power_tag('question')

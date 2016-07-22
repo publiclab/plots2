@@ -2,7 +2,9 @@
 
 <div class="col-md-9">
 
-  <% if params[:action] == 'popular' %>
+  <% if params[:action] == 'answered' %>
+  <h2>Recently Answered <small class="hidden-sm">Recently answered questions</small></h2>
+  <% elsif params[:action] == 'popular' %>
   <h2>Popular Questions <small class="hidden-sm">Most viewed questions</small></h2>
   <% elsif params[:action] == 'liked' %>
   <h2>Liked Questions <small class="hidden-sm">Most liked questions</small></h2>
@@ -27,7 +29,8 @@
   <%= render :partial => "notes/format_toggle" %>
 
   <ul class="nav nav-tabs">
-    <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/questions/">Recent</a></li>
+    <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/questions/">Recently Asked</a></li>
+    <li<% if params[:action] == "answered" %> class="active"<% end %>><a href="/questions/answered/">Recently Answered</a></li>
     <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/questions/popular/">Popular</a></li>
     <li<% if params[:action] == "liked" %> class="active"<% end %>>
       <a href="/questions/liked/"><i class="fa fa-star-o"></i><span class="hidden-sm"> Liked</span></a>
