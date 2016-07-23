@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160715024414) do
+ActiveRecord::Schema.define(:version => 20160720235923) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -320,6 +320,7 @@ ActiveRecord::Schema.define(:version => 20160715024414) do
   end
 
   add_index "rusers", ["location_privacy"], :name => "index_rusers_on_location_privacy"
+  add_index "rusers", ["username"], :name => "index_rusers_on_username"
 
   create_table "tag_selections", :id => false, :force => true do |t|
     t.integer "user_id"
