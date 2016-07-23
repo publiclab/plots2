@@ -1,0 +1,24 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  users:
+    new:
+      sign_up: "Melden Sie sich für das Public Lab Community beitreten"
+      licensing_agreement: "Lizenzvertrag"
+      licensing_detail: 'Als Open -Source-Community, wir glauben an offene Lizenzierung von Inhalten, so dass andere Mitglieder der Gemeinschaft Ihre Arbeit legal nutzen können - mit Namensnennung, natürlich. Durch die Verbindungsstelle das Public Lab stimmen, <b>Sie den Inhalt, der hier unter einer <a href="%{url1}">Creative Commons Attribution Sharealike Lizenz</a></b>, veröffentlichen zu lösen, und die Hardware- Designs, die Sie schreiben unter dem <b><a href="%{url2}">CERN Open Hardware Lizenz 1.1</a> (<a href="%{url3}">volltext</a>)</b>. Dies hat den zusätzlichen Vorteil, dass andere müssen ihre Verbesserungen wiederum mit Ihnen teilen.'
+      about_public_lab: |
+
+        <h3>Was ist Public Lab?</h3>
+        
+        <p>Public Lab ist eine offene Gemeinschaft, die Entwicklung und Anwendung von Open-Source- Tools für Umwelt Erforschung und Untersuchung. <a href="/about">Lesen Sie mehr hier</a></p> 
+        
+        <p>Wenn Sie sich, werden Sie eine vielfältige Gruppe von Forschern aus der Gemeinschaft und die Erschließung viel Basis Know-how beitreten. Wir entwickeln neue Werkzeuge zu untersuchen und zu Umwelt- und Umwelt und Gesundheit Herausforderungen gerecht zu werden, mit einem Schwerpunkt auf:</p>
+        
+        <ul>
+          <li>preisgünstig</li>
+          <li>Daten Lesbarkeit</li>
+          <li>einfache Bedienung / niedrige Eintrittsbarriere &amp; hohe Beteiligung der Öffentlichkeit</li>
+          <li>qualitativ hochwertige, ökologisch und sozial relevanten Daten</li>
+          <li>kreative Wiederverwendung von Consumer-Technologie</li>
+          <li>Open Source und Anwender modifizierbar Designs</li>
+        </ul>

@@ -70,7 +70,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def liked_pages
-    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = true AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')",self.uid], :include => :drupal_node).collect(&:node).reverse
+    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = ? AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')",self.uid, true], :include => :drupal_node).collect(&:node).reverse
   end
 
   # last node

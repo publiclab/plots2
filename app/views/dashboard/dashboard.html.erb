@@ -16,7 +16,7 @@
               <h4>
                 <small class="pull-right hidden-xs hidden-sm"><%= raw t('dashboard.dashboard.from_blog', :url => '/blog') %></small>
                 <a class="title" href="/blog"><%= @blog.title %></a> 
-                <small>by <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
+                <small><%= t('dashboard.dashboard.by') %> <a href="/profile/<%= @blog.author.username %>"><%= @blog.author.username %></a></small>
               </h4>
        
             </div>

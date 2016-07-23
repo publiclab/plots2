@@ -1,0 +1,17 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  users:
+    list:
+      user_moderation: "User moderation"
+      admins_ban_spam: 'Normal users see only a list of recent users here, but moderators and admins can ban "spam" users and view those who have been banned.'
+      members_last_activity: "Public Lab members <small>by last activity</small>"
+      username: "Username"
+      last_activity: "Last activity"
+      history: "History"
+      joined: "Joined"
+      moderation: "Moderation"
+      notes_and_edits: "research notes and wiki edits"
+      banned: "Banned"
+      are_you_sure: "Are you sure? The user will no longer be able to log in or publish."
+      ban: "Ban"

@@ -4,15 +4,15 @@
   <form method="GET" action="/users/map" id="search">
     <div class="row">
       <div class="col-md-1">
-        <label for="search">Search</label>
+        <label for="search"><%= t('users.map.search') %></label>
       </div>
       <div class="form-group col-md-1">
         <select name="tag" id="tag_type" class="form-control" value="<%= params[:tag] %>">
           <option></option>
-          <option>Skill</option>
-          <option>Gear</option>
-          <option>Role</option>
-          <option>Tool</option>
+          <option><%= t('users.map.skill') %></option>
+          <option><%= t('users.map.gear') %></option>
+          <option><%= t('users.map.role') %></option>
+          <option><%= t('users.map.tool') %></option>
         </select>
       </div>
       <div class="form-group col-md-2">
@@ -22,7 +22,7 @@
 
     <div class="row">
       <div class="col-md-1">
-        <label for="search location">Location</label>
+        <label for="search location"><%= t('users.map.location') %></label>
       </div>
       <div class="form-group col-md-3">
         <input type="text" name="country" class="form-control" id="country" value="<%= params[:country] %>">

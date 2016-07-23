@@ -176,23 +176,119 @@ class I18nTest < ActionDispatch::IntegrationTest
       end
     end
     
-    test "should choose i18n-de and move back to i18n-en" do
-      post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
-        password: 'secret'
-      }
-      follow_redirect!
-      get '/dashboard'
-      
-      # Set the language as Deutsch
-      lang=:de
-      get_via_redirect "/change_locale/"+lang.to_s
-      assert_equal "#{lang}", "#{I18n.locale}"
-      
-      # Move back to English(Default locale)
-      lang=:en
-      get_via_redirect "/change_locale/"+lang.to_s
-      assert_equal "#{lang}", "#{I18n.locale}"
+    test "should choose i18n for user/_form + user/new" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        get '/signup'
+        assert_select 'label', I18n.t('users._form.username')
+        assert_select 'h2', I18n.t('users.new.sign_up')
+      end
+    end
+    
+    test "should choose i18n for user/_photo + user/edit" do
+      available_testing_locales.each do |lang|
+        get '/home'
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get '/profile/edit'
+        assert_select 'h3', I18n.t('users._photo.profile_photo')
+        assert_select 'h2', I18n.t('users.edit.edit_profile')
+      end
+    end
+    
+    test "should choose i18n for user/_tags_form + user/info" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get '/profile/info/'+rusers(:jeff).username.to_s
+        assert_select 'label[for=skills]', I18n.t('users._tags_form.skills')
+        assert_select 'h2', I18n.t('users.info.additonal_information')
+      end
+    end
+    
+    test "should choose i18n for user/likes" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        username = rusers(:jeff).username.to_s
+        get '/profile/'+username+'/likes'
+        assert_template 'users/likes'
+        assert_select 'h3', I18n.t('users.likes.liked_by')+' '+username
+      end
+    end
+    
+    test "should choose i18n for user/list" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/people'
+        assert_select 'th', I18n.t('users.list.username')
+      end
+    end
+    
+    test "should choose i18n for user/map" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/users/map'
+        assert_select 'label[for=search]', I18n.t('users.map.search')
+      end
+    end
+    
+    test "should choose i18n for user/profile" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get '/profile/'+rusers(:jeff).username
+        assert_select 'h4', I18n.t('users.profile.wiki_contributed_to')
+      end
+    end
+    
+    test "should choose i18n for user/reset" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get '/reset'
+        assert_select 'h2', I18n.t('users.reset.reset_password')
+      end
     end
     
     test "should choose i18n for user_sessions/new" do

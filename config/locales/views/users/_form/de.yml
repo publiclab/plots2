@@ -1,0 +1,20 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  users:
+    _form:
+      username: "Benutzername"
+      email: "Email"
+      create_password: "Erstelle ein Passwort"
+      change_password: "Ändern Sie Ihr Passwort"
+      password: "Passwort"
+      confirmation: "Bestätigung"
+      confirm_password: "Bestätigen Sie ihr Passwort"
+      bio: "Biografie"
+      add_bio: "Fügen Sie eine kurze Biographie auf Ihrer Profilseite angezeigt werden"
+      are_you_human: "Sind Sie ein Mensch?"
+      spam_filtering: "Leider: Spam-Filter! Bitte beantworten Sie diese vier Fragen, damit Sie eine reale Person sind."
+      dont_write_here: "Sie hier nichts schreiben, wenn Sie eine reale Person sind."
+      sign_up: "Anmelden"
+      log_in: "Einloggen"
+      save: "Sparen"

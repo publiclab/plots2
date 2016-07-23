@@ -1,7 +1,7 @@
 <form id="infoform" class="form" action="/profile/tags/create" data-user="<%= @user.name %>">
   <div class="control-group row">
     <div class="col-md-3">
-      <label class="" for="skills">Skills</label>
+      <label class="" for="skills"><%= t('users._tags_form.skills') %></label>
     </div>
     <div class="col-md-8">
       <p><span id="skill">
@@ -14,7 +14,7 @@
       </span></p>
       <div class="input-group col-md-4">
         <span class="input-group-addon"><i class="fa fa-tags"></i></span>
-        <input autocomplete="off" id="taginput1" name="info[skill]" type="text" placeholder="Enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="skill"/>
+        <input autocomplete="off" id="taginput1" name="info[skill]" type="text" placeholder="<%= t('users._tags_form.enter_tags') %>" data-provide="typeahead" class="form-control tag-input" data-tag="skill"/>
       </div>
     </div>
   </div>
@@ -23,7 +23,7 @@
 
   <div class="control-group row">
     <div class="col-md-3">
-      <label class="" for="gears">Gears</label>
+      <label class="" for="gears"><%= t('users._tags_form.gears') %></label>
     </div>
     <div class="col-md-8">
       <p><span id="gear">
@@ -38,7 +38,7 @@
         <input name="remote" type="hidden" value="true" />
         <span class="input-group-addon"><i class="fa fa-tags"></i></span>
 
-          <input autocomplete="off" id="taginput" name="info[gear]" type="text" placeholder="Enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="gear" />
+          <input autocomplete="off" id="taginput" name="info[gear]" type="text" placeholder="<%= t('users._tags_form.enter_tags') %>" data-provide="typeahead" class="form-control tag-input" data-tag="gear" />
       </div>
     </div>
   </div>
@@ -47,7 +47,7 @@
 
   <div class="control-group row">
     <div class="col-md-3">
-      <label class="" for="tools">Tools</label>
+      <label class="" for="tools"><%= t('users._tags_form.tools') %></label>
     </div>
     <div class="col-md-8">
       <p><span id="tool">
@@ -61,7 +61,7 @@
       <div class="input-group col-md-4">
         <input name="remote" type="hidden" value="true" />
         <span class="input-group-addon"><i class="fa fa-tags"></i></span>
-        <input autocomplete="off" id="taginput" name="info[tool]" type="text" placeholder="Enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="tool" />
+        <input autocomplete="off" id="taginput" name="info[tool]" type="text" placeholder="<%= t('users._tags_form.enter_tags') %>" data-provide="typeahead" class="form-control tag-input" data-tag="tool" />
       </div>
     </div>
   </div>
@@ -70,7 +70,7 @@
 
   <div class="control-group row">
     <div class="col-md-3">
-      <label class="" for="role">Roles</label>
+      <label class="" for="role"><%= t('users._tags_form.roles') %></label>
     </div>
     <div class="col-md-8">
       <p><span id="role">
@@ -83,7 +83,7 @@
       </span></p>
       <div class="input-group col-md-4">
         <span class="input-group-addon"><i class="fa fa-tags"></i></span>
-        <input autocomplete="off" id="taginput" name="info[role]" type="text" placeholder="Enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="role" />
+        <input autocomplete="off" id="taginput" name="info[role]" type="text" placeholder="<%= t('users._tags_form.enter_tags') %>" data-provide="typeahead" class="form-control tag-input" data-tag="role" />
       </div>
     </div>
   </div>
@@ -92,24 +92,24 @@
 
   <div class="control-group row">
     <div class="col-md-3">
-      <label class="" for="location">Location</label>
+      <label class="" for="location"><%= t('users._tags_form.location') %></label>
     </div>
     <div class="col-md-8">
       <p><span id="location"></span></p>
       <div class="input-group col-md-5">
         <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-        <input autocomplete="off" id="geo_location" name="info[location]" type="text" placeholder="Type location" data-provide="typeahead" class="form-control ui-autocomplete-input" data-tag="location" />
+        <input autocomplete="off" id="geo_location" name="info[location]" type="text" placeholder="<%= t('users._tags_form.type_location') %>" data-provide="typeahead" class="form-control ui-autocomplete-input" data-tag="location" />
       </div>
       <div class="input-group col-md-offset-6" style="margin-top: -33px;">
         <a class="btn btn-default" id="myLocation">
-          <span class="glyphicon glyphicon-map-marker">Map</span>
+          <span class="glyphicon glyphicon-map-marker"><%= t('users._tags_form.map') %></span>
         </a>
       </div>
       <div class="clearfix"></div><br />
     </div>
 
     <div class="col-md-3">
-      <label for="preference">Location privacy</label>
+      <label for="preference"><%= t('users._tags_form.location_privacy') %></label>
     </div>
     <div class="col-md-8">
       <div class="input-group">

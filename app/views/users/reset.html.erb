@@ -1,33 +1,33 @@
 <div class="col-md-6">
 
-<h2>Reset your password</h2>
+<h2><%= t('users.reset.reset_password') %></h2>
 
 <hr />
 
 <% if params[:key] && User.find_by_reset_key(params[:key]) %>
 
-<p>Enter your username and a new password:</p>
+<p><%= t('users.reset.enter_username_and_password') %>:</p>
 
 <form class='form'>
 
   <input class="form-control" name="key" type="hidden" value="<%= params[:key] %>" /> 
-  <input class="form-control" name="user[username]" placeholder="username" tabindex='2' type="text" /> <br />
-  <input class="form-control" name="user[password]" placeholder="enter a new password" tabindex='3' type="password" /> <br />
-  <input class="form-control" name="user[password_confirmation]" placeholder="retype your password" tabindex='4' type="password" /> <br />
+  <input class="form-control" name="user[username]" placeholder="<%= t('users.reset.username_placeholder') %>" tabindex='2' type="text" /> <br />
+  <input class="form-control" name="user[password]" placeholder="<%= t('users.reset.password_placeholder') %>" tabindex='3' type="password" /> <br />
+  <input class="form-control" name="user[password_confirmation]" placeholder="<%= t('users.reset.retype_password_placeholder') %>" tabindex='4' type="password" /> <br />
 
-  <button class="btn btn-lg btn-primary" type="submit" tabindex="5">Save</button>
+  <button class="btn btn-lg btn-primary" type="submit" tabindex="5"><%= t('users.reset.save') %></button>
 
 </form>
 
 <% else %>
 
-<p>Enter your email address to reset your password:</p>
+<p><%= t('users.reset.enter_email_reset_password') %>:</p>
 
 <form action="/reset/" class='form'>
 
   <input class="form-control" name="email" placeholder="you@example.com" tabindex='2' type="text" /> <br />
 
-  <button class="btn btn-lg btn-primary" type="submit" tabindex="3">Reset</button>
+  <button class="btn btn-lg btn-primary" type="submit" tabindex="3"><%= t('users.reset.reset') %></button>
 
 </form>
 

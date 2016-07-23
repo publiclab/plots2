@@ -1,0 +1,14 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  users:
+    _tags_form:
+      skills: "Können"
+      enter_tags: "Geben Sie Tags"
+      gears: "Getriebe"
+      tools: "Werkzeuge"
+      roles: "Partie"
+      location: "Stelle"
+      type_location: "Typ Ort"
+      map: "Karte"
+      location_privacy: "Ort der Privatsphäre"

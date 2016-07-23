@@ -1,0 +1,9 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  users:
+    _photo:
+      profile_photo: "Profilfoto"
+      drag_and_drop_image: "Drag &amp; Drop ein Bild hinzuzufügen, oder"
+      choose_image: "wählen Sie ein Bild"
+      uploading: "Hochladen"
