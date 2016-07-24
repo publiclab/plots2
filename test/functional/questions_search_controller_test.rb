@@ -14,14 +14,14 @@ class QuestionsSearchControllerTest < ActionController::TestCase
     assert_not_nil :title
     assert_not_nil :tagnames
     assert_not_nil :users
-    assert_not_nil :notes
+    assert_not_nil :questions
     assert_template :index
   end
 
   test "should redirect to post form if no question match found" do
     UserSession.create(rusers(:bob))
     get :index, id: 'What'
-    assert_empty assigns(:notes)
+    assert_empty assigns(:questions)
     assert_redirected_to '/post?tags=question:question&template=question&title=What&redirect=question'
   end
 

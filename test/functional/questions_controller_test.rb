@@ -9,8 +9,8 @@ class QuestionsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:notes)
-    assert assigns(:notes).first.has_power_tag('question')
+    assert_not_nil assigns(:questions)
+    assert assigns(:questions).first.has_power_tag('question')
   end
 
   test "should get show" do
@@ -102,5 +102,13 @@ class QuestionsControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select '#answer-' + answer.id.to_s + '-accept', 0
+  end
+
+  test "should get answered" do
+    get :answered
+    assert_response :success
+    assert_equal assigns(:title), "Recently answered"
+    assert_not_nil assigns(:questions)
+    assert_template :index
   end
 end
