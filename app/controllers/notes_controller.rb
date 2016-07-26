@@ -97,6 +97,10 @@ class NotesController < ApplicationController
       @node = DrupalNode.find params[:id]
     end
 
+    if @node.has_power_tag('question')
+      redirect_to @node.path(:question)
+    end
+
     return if check_and_redirect_node(@node)
 
     alert_and_redirect_moderated

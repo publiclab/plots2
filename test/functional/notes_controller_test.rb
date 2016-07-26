@@ -33,7 +33,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note by id" do
-    note = DrupalNode.where(type: 'note', status: 1).last
+    note = DrupalNode.where(type: 'note', status: 1).first
     assert_not_nil note.id
 
     get :show, id: note.id
@@ -42,7 +42,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note" do
-    note = DrupalNode.where(type: 'note', status: 1).last
+    note = DrupalNode.where(type: 'note', status: 1).first
 
     get :show,
         author: note.author.name,
