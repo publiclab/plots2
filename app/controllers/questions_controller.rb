@@ -25,8 +25,7 @@ class QuestionsController < ApplicationController
     end
 
     unless @node.has_power_tag('question')
-      flash[:error] = "Not a question"
-      redirect_to "/"
+      redirect_to @node.path
     end
 
     alert_and_redirect_moderated
@@ -41,7 +40,11 @@ class QuestionsController < ApplicationController
 
   def shortlink
     @node = DrupalNode.find params[:id]
-    redirect_to @node.path(:question)
+    if @node.has_power_tag('question')
+      redirect_to @node.path(:question)
+    else
+      redirect_to @node.path
+    end
   end
 
   def popular

@@ -25,7 +25,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "redirect note short url" do
-    note = DrupalNode.where(type: 'note', status: 1).last
+    note = DrupalNode.where(type: 'note', status: 1).first
 
     get :shortlink, id: note.id
 

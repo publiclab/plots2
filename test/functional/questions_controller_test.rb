@@ -29,14 +29,13 @@ class QuestionsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should not show notes other than question" do
+  test "should redirect notes other than question to note path" do
     note = node(:one)
     get :show,
         author: note.author.name,
         date: Time.at(note.created).strftime("%m-%d-%Y"),
         id: note.title.parameterize
-    assert_redirected_to '/'
-    assert_equal flash[:error], "Not a question"
+    assert_redirected_to note.path
   end
 
   test "redirect question to short url" do

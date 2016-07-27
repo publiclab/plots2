@@ -679,4 +679,15 @@ class DrupalNode < ActiveRecord::Base
     finder = "#{name} #{date}".parameterize
     DrupalNode.find(finder)
   end
+
+  def self.research_notes
+    nids = DrupalNode.where(type: 'note', status: 1)
+                     .joins(:drupal_tag)
+                     .where('term_data.name LIKE ?', 'question:%')
+                     .group('node.nid')
+                     .collect(&:nid)
+    notes = DrupalNode.where(type: 'note')
+                      .where('node.nid NOT IN (?)', nids)
+  end
+
 end

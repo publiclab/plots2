@@ -26,8 +26,8 @@ class ApplicationController < ActionController::Base
                                 .where(type: 'note', status: 1)
                                 .where('term_data.name = (?)', 'hidden:response')
                                 .collect(&:nid)
-        @notes = DrupalNode.joins(:drupal_node_revision)
-                           .where(type: 'note')
+        @notes = DrupalNode.research_notes
+                           .joins(:drupal_node_revision)
                            .order('node.nid DESC')
                            .paginate(page: params[:page])
         @notes = @notes.where('node.nid != (?)', @node.nid) if @node

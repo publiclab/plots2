@@ -79,7 +79,11 @@ class NotesController < ApplicationController
 
   def shortlink
     @node = DrupalNode.find params[:id]
-    redirect_to @node.path
+    if @node.has_power_tag('question')
+      redirect_to @node.path(:question)
+    else
+      redirect_to @node.path
+    end
   end
 
   # display a revision, raw
@@ -285,9 +289,11 @@ class NotesController < ApplicationController
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
-    @notes = DrupalNode.limit(20)
-                       .order("cached_likes DESC")
-                       .where(type: 'note', status: 1)
+    
+    @notes = DrupalNode.research_notes
+                       .where(status: 1)
+                       .limit(20)
+                       .order('nid DESC')
     @unpaginated = true
     render :template => 'notes/index'
   end
@@ -298,9 +304,10 @@ class NotesController < ApplicationController
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
-    @notes = DrupalNode.limit(20)
+    @notes = DrupalNode.research_notes
+                       .limit(20)
+                       .where(status: 1)
                        .order("node_counter.totalcount DESC")
-                       .where(type: 'note', status: 1)
                        .includes(:drupal_node_counter)
     @unpaginated = true
     render :template => 'notes/index'
