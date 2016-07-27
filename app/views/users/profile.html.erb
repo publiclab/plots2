@@ -72,6 +72,24 @@
     <% end %>
   </p>
   <hr />
+    <div class="row">
+      <div class="col-md-3 col-md-offset-1">
+        <h4>Followers</h4>
+      </div>
+      <div class="col-md-3 col-md-offset-2">
+        <h4>Following</h4>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 col-md-offset-2">
+        <h5><b><%= @profile_user.followers.count %></b></h5>
+      </div>
+      <div class="col-md-3 col-md-offset-2">
+        <h5><b><%= @profile_user.following_users.count %></b></h5>
+      </div>
+    </div>
+  <hr />
   <% end %>
 
   <div class="hidden-xs">
