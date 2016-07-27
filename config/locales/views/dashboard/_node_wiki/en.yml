@@ -1,0 +1,8 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  dashboard:
+    _node_wiki:
+      new_page_by: 'New page by'
+      new_edit_by: 'New edit by'
+      changes: 'Changes'

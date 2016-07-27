@@ -99,13 +99,6 @@ class HomeController < ApplicationController
     @title = "Community research" unless current_user
   end
 
-  def comments
-    @comments = DrupalComment.limit(20)
-                             .order("timestamp DESC")
-                             .where(status: 0)
-    render :partial => "home/comments"
-  end
-
   # trashy... clean this up!
   # this will eventually be based on the profile_tags data where people can mark their location with "location:lat,lon"
   def nearby

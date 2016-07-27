@@ -1,0 +1,23 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  dashboard:
+    _header:
+      share_work: "Share your work"
+      dropdown:
+        share_research_note: "Share a research note"
+        ask_question: "Ask a question"
+        post_event: "Post an event"
+        tell_story_blog: "Tell your story on the blog"
+      dashboard: "Dashboard"
+      community_research: "Community research"
+      welcome: "Welcome"
+      notes: "notes"
+      and: "and"
+      wiki_edits: "wiki edits"
+      posted_past_week: "posted in the past week."
+      you_shared: "You've shared"
+      research_note: "research note"
+      research_notes: "research notes"
+      this_could_be_dashboard: "This could be your dashboard if you"
+      joined_public_lab: "joined Public Lab"

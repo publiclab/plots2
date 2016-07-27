@@ -1,0 +1,8 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  js:
+    dashboard:
+      selected_updates: "Ausgewählte Updates"
+      none: "Keiner"
+      all_updates: "Alle updates"

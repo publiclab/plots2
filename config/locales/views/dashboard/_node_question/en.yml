@@ -1,0 +1,7 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  dashboard:
+    _node_question:
+      post_answer: "Post an answer"
+      question: "Question"

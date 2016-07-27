@@ -37,6 +37,7 @@ class LikeController < ApplicationController
   def set_liking(value)
     # scope like variable outside the transaction
     like = nil
+    count = nil
     # Check like status and update like and cache in an atomic transaction
     ActiveRecord::Base.transaction do
       # Create the entry if it isn't already created.
@@ -53,8 +54,10 @@ class LikeController < ApplicationController
           if node.type == "note"
               SubscriptionMailer.notify_note_liked(node,like.user)
           end
+          count = 1
           node.cached_likes = node.cached_likes + 1
         else
+          count = -1
           node.cached_likes = node.cached_likes - 1
         end
         
@@ -64,7 +67,7 @@ class LikeController < ApplicationController
       end
     end
 
-    return like.liking
+    return count
   end
 
 end

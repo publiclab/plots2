@@ -91,5 +91,10 @@ module Plots2
       OpenID::Util.logger = Rails.logger
       ActionController::Base.send :include, OpenIdAuthentication
     end
+
+    config.autoload_paths += %W(
+      #{config.root}/app/controllers/concerns
+      #{config.root}/app/models/concerns
+    )
   end
 end

@@ -1,0 +1,6 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  dashboard:
+    dashboard:
+      from_blog: "From the <a href='%{url}'>Public Lab Blog</a>"
