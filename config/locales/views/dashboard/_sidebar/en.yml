@@ -1,0 +1,15 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  dashboard:
+    _sidebar:
+      wiki: "Wiki"
+      discussion_list: "Discussion lists"
+      all: 'All'
+      public_laboratory: "Public Laboratory"
+      grassroots_mapping: "Grassroots Mapping"
+      spectrometry: "Spectrometry"
+      infrared: 'Infrared'
+      air_quality: "Air Quality"
+      water_quality: "Water Quality"
+      developers: "Developers"

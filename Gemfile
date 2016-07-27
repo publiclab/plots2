@@ -78,9 +78,9 @@ gem 'rack-cors', :require => 'rack/cors'
 
 gem 'mocha', '~> 1.1'
 gem 'jasmine-rails'
-gem 'jasmine'
 gem 'jasmine-jquery-rails'
 gem 'strong_parameters'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
-
+gem 'geocoder'
+gem "i18n-js", ">= 3.0.0.rc11"

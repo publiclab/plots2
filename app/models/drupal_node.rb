@@ -14,6 +14,8 @@ class UniqueUrlValidator < ActiveModel::Validator
 end
 
 class DrupalNode < ActiveRecord::Base
+  include NodeShared # common methods for node-like models
+
   attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path
   self.table_name = 'node'
   self.primary_key = 'nid'
@@ -150,10 +152,6 @@ class DrupalNode < ActiveRecord::Base
     self.drupal_files
   end
 
-  def likes
-    self.cached_likes
-  end
-
   # users who like this node
   def likers
     self.node_selections
@@ -161,10 +159,6 @@ class DrupalNode < ActiveRecord::Base
         .where(liking: true)
         .where('users.status = ?', 1)
         .collect(&:user)
-  end
-
-  def liked_by(uid)
-    self.likers.collect(&:uid).include?(uid)
   end
 
   def latest
@@ -186,11 +180,6 @@ class DrupalNode < ActiveRecord::Base
   def comment_count
     self.drupal_comments
         .count
-  end
-
-  def comments
-    self.drupal_comments
-        .order('timestamp DESC')
   end
 
   def author

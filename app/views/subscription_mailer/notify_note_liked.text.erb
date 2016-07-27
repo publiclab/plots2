@@ -1,10 +1,10 @@
 Dear <%= @node.author.name %>,
 
-Public Lab contributor <%= @user.username %> (https://publiclab.org/profile/<%= @user.username %>) just liked your research note entitled '<%= @node.title %>':
+Public Lab contributor <%= @user.username %> (https://publiclab.org/profile/<%= @user.username %>) just liked your <% if @node.has_power_tag('question') %>question<% else %>research note<% end %> entitled '<%= @node.title %>':
 
 -------------------------
 
-View your post here: https://publiclab.org<%= @node.path %> 
+View your post here: https://publiclab.org<% if @node.has_power_tag('question') %><%= @node.path(:question) %><% else %><%= @node.path %><% end %> 
 
 =========================
 

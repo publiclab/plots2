@@ -44,9 +44,9 @@ class NotesControllerTest < ActionController::TestCase
   test "show note" do
     note = DrupalNode.where(type: 'note', status: 1).last
 
-    get :show, 
-        author: note.author.name, 
-        date: Time.at(note.created).strftime("%m-%d-%Y"), 
+    get :show,
+        author: note.author.name,
+        date: Time.at(note.created).strftime("%m-%d-%Y"),
         id: note.title.parameterize
 
     assert_response :success
@@ -55,9 +55,9 @@ class NotesControllerTest < ActionController::TestCase
   test "don't show note by spam author" do
     note = node(:spam) # spam fixture
 
-    get :show, 
-        author: note.author.name, 
-        date: Time.at(note.created).strftime("%m-%d-%Y"), 
+    get :show,
+        author: note.author.name,
+        date: Time.at(note.created).strftime("%m-%d-%Y"),
         id: note.title.parameterize
 
     assert_redirected_to '/'
@@ -98,7 +98,7 @@ class NotesControllerTest < ActionController::TestCase
     user_session.destroy
     title = "My new post about balloon mapping"
 
-    post :create, 
+    post :create,
          id: rusers(:bob).id,
          title: title,
          body: "This is a fascinating post about a balloon mapping event.",
@@ -116,9 +116,9 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_difference 'ActionMailer::Base.deliveries.size', User.where(role: 'moderator').count do
 
-      post :create, 
-           title: title, 
-           body:  "This is a fascinating post about a balloon mapping event.", 
+      post :create,
+           title: title,
+           body:  "This is a fascinating post about a balloon mapping event.",
            tags:  "balloon-mapping,event"
            #, main_image: "/images/testimage.jpg"
 
@@ -134,9 +134,9 @@ class NotesControllerTest < ActionController::TestCase
     UserSession.create(rusers(:lurker))
     title = "My first post to Public Lab"
 
-    post :create, 
-         title: title, 
-         body: "This is a fascinating post about a balloon mapping event.", 
+    post :create,
+         title: title,
+         body: "This is a fascinating post about a balloon mapping event.",
          tags: "balloon-mapping,event"
          #, :main_image => "/images/testimage.jpg"
 
@@ -160,8 +160,8 @@ class NotesControllerTest < ActionController::TestCase
     node = node(:first_timer_note)
     assert_equal 4, node.status
 
-    get :show, 
-        author: node.author.username, 
+    get :show,
+        author: node.author.username,
         date: node.created_at.strftime("%m-%d-%Y"),
         id: node.title.parameterize
 
@@ -173,8 +173,8 @@ class NotesControllerTest < ActionController::TestCase
     UserSession.create(node.author.user)
     assert_equal 4, node.status
 
-    get :show, 
-        author: node.author.username, 
+    get :show,
+        author: node.author.username,
         date: node.created_at.strftime("%m-%d-%Y"),
         id: node.title.parameterize
 
@@ -199,8 +199,8 @@ class NotesControllerTest < ActionController::TestCase
     node = node(:first_timer_note)
     assert_equal 4, node.status
 
-    get :show, 
-        author: node.author.username, 
+    get :show,
+        author: node.author.username,
         date: node.created_at.strftime("%m-%d-%Y"),
         id: node.title.parameterize
 
@@ -223,7 +223,7 @@ class NotesControllerTest < ActionController::TestCase
   test "post_note_error_no_title" do
     UserSession.create(rusers(:bob))
 
-    post :create, 
+    post :create,
          body: "This is a fascinating post about a balloon mapping event.",
          tags: "balloon-mapping,event"
 
@@ -239,9 +239,9 @@ class NotesControllerTest < ActionController::TestCase
     UserSession.create(rusers(:bob))
     title = "My second post about balloon mapping"
 
-    post :create, 
-         title: title, 
-         body: "This is a fascinating post about a balloon mapping event.", 
+    post :create,
+         title: title,
+         body: "This is a fascinating post about a balloon mapping event.",
          tags: "balloon-mapping,event"
          #, main_image: "/images/testimage.jpg"
 
@@ -252,10 +252,10 @@ class NotesControllerTest < ActionController::TestCase
     # add a tag, and change the title and body
     newtitle = title + " which I amended"
 
-    post :update, 
-         id: node.id, 
-         title: newtitle, 
-         body: "This is a fascinating post about a balloon mapping event. <span id='teststring'>added content</span>", 
+    post :update,
+         id: node.id,
+         title: newtitle,
+         body: "This is a fascinating post about a balloon mapping event. <span id='teststring'>added content</span>",
          tags: "balloon-mapping,event,meetup"
 
     assert_redirected_to "/notes/" + rusers(:bob).username + "/" + Time.now.strftime("%m-%d-%Y") + "/" + title.parameterize + "?_=" + Time.now.to_i.to_s
@@ -263,14 +263,14 @@ class NotesControllerTest < ActionController::TestCase
     # approve the first-timer's note:
     node.publish
 
-    get :show, 
-        author: rusers(:bob).username, 
-        date: Time.now.strftime("%m-%d-%Y"), 
+    get :show,
+        author: rusers(:bob).username,
+        date: Time.now.strftime("%m-%d-%Y"),
         id: title.parameterize
 
     assert_equal flash[:notice], "Edits saved."
     assert_select "h1", newtitle
-    # assert_select "span#teststring", "added content" # this test does not work!! very frustrating. 
+    # assert_select "span#teststring", "added content" # this test does not work!! very frustrating.
     # assert_select ".label", "meetup" # test for tag addition too, later
   end
 
@@ -291,8 +291,8 @@ class NotesControllerTest < ActionController::TestCase
 
   # test "should mark admins and moderators with a special icon" do
   #   node = node(:one)
-  #   get :show, 
-  #       author: node.author.username, 
+  #   get :show,
+  #       author: node.author.username,
   #       date: node.created_at.strftime("%m-%d-%Y"),
   #       id: node.title.parameterize
   #   assert_select "i[title='Admin']", 1
@@ -304,8 +304,8 @@ class NotesControllerTest < ActionController::TestCase
     User.any_instance.stubs(:note_streak).returns([8,10])
     User.any_instance.stubs(:wiki_edit_streak).returns([9,15])
     User.any_instance.stubs(:comment_streak).returns([10,30])
-    get :show, 
-        author: node.author.username, 
+    get :show,
+        author: node.author.username,
         date: node.created_at.strftime("%m-%d-%Y"),
         id: node.title.parameterize
     assert_select ".fa-fire", 3
@@ -334,6 +334,13 @@ class NotesControllerTest < ActionController::TestCase
          redirect: "question"
 
     assert_redirected_to note.path(:question) + "?_=" + Time.now.to_i.to_s
+  end
+
+  test "should assign correct value to graph_comments on GET stats" do
+    DrupalComment.delete_all
+    DrupalComment.create!({comment: 'blah', timestamp: Time.now() - 1})
+    get :stats
+    assert_equal assigns(:graph_comments), DrupalComment.comment_weekly_tallies(52, Time.now()).to_a.sort.to_json
   end
 
 end

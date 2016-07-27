@@ -4,13 +4,13 @@
     <li class="active">
       <a class="wikis-tab" href="#wiki" data-toggle="tab">
         <span class="visible-xs"><i class="fa fa-book"></i></span>
-        <span class="hidden-xs">Wiki</span>
+        <span class="hidden-xs"><%= t('dashboard._sidebar.wiki') %></span>
       </a>
     </li>
     <li>
       <a class="lists-tab" href="#lists" data-toggle="tab">
         <span class="visible-xs"><i class="fa fa-comment"></i></span>
-        <span class="hidden-xs">Discussion lists</span>
+        <span class="hidden-xs"><%= t('dashboard._sidebar.discussion_list') %></span>
       </a>
     </li>
   </ul>
@@ -27,14 +27,14 @@
 
       <div class="meta"> 
         <select class="form-control input-sm list-select">
-          <option value="combined">All</option>
-          <option value="publiclaboratory">Public Laboratory</option>
-          <option value="grassrootsmapping">Grassroots Mapping</option>
-          <option value="plots-spectrometry">Spectrometry</option>
-          <option value="plots-infrared">Infrared</option>
-          <option value="plots-airquality">Air Quality</option>
-          <option value="plots-waterquality">Water Quality</option>
-          <option value="plots-dev">Developers</option>
+          <option value="combined"><%= t('dashboard._sidebar.all') %></option>
+          <option value="publiclaboratory"><%= t('dashboard._sidebar.public_laboratory') %></option>
+          <option value="grassrootsmapping"><%= t('dashboard._sidebar.grassroots_mapping') %></option>
+          <option value="plots-spectrometry"><%= t('dashboard._sidebar.spectrometry') %></option>
+          <option value="plots-infrared"><%= t('dashboard._sidebar.infrared') %></option>
+          <option value="plots-airquality"><%= t('dashboard._sidebar.air_quality') %></option>
+          <option value="plots-waterquality"><%= t('dashboard._sidebar.water_quality') %></option>
+          <option value="plots-dev"><%= t('dashboard._sidebar.developers') %></option>
         </select>
       </div>
 
