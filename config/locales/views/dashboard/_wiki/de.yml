@@ -1,0 +1,12 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  dashboard:
+    _wiki:
+      shared_knowledge_base: "Eine <a href='%{url}'>gemeinsame Wissensbasis</a> für die Gemeinschaft der Wissenschaft"
+      search: "Suchen nach..."
+      new_page: "Neue Seite"
+      new_page_by: 'Neue Seite von'
+      new_edit_by: 'Neu bearbeitet von'
+      changes: "Änderungen"
+      more: 'Mehr'

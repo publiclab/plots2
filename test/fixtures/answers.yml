@@ -6,3 +6,14 @@ one:
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
   cached_likes: 1
+  accepted: false
+
+two:
+  id: 2
+  uid: 2
+  nid: 8
+  content: Another Test answer
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+  cached_likes: 0
+  accepted: true

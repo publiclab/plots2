@@ -9,6 +9,8 @@ Plots2::Application.routes.draw do
   #end
   
 
+  mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
+
   resources :rusers
   resources :user_sessions
   resources :images
@@ -159,7 +161,7 @@ Plots2::Application.routes.draw do
 
   match 'dashboard' => 'home#dashboard'
   match 'dashboard2' => 'home#dashboard2'
-  match 'dashboard/comments' => 'home#comments'
+  match 'comments' => 'comment#index'
   match 'profile/comments/:id' => 'users#comments'
   match 'nearby' => 'home#nearby'
   match 'profile/edit' => 'users#edit'
@@ -170,11 +172,15 @@ Plots2::Application.routes.draw do
   match 'profile/:id/likes' => 'users#likes'
   match 'feed/:author' => 'users#rss'
 
-  match 'info/suggested/:key/:value' => 'user_tags#suggested'
-  match 'info/tags/create/:id' => 'user_tags#create'
-  match 'info/tags/delete/:id' => 'user_tags#delete'
+  match 'profile/suggested/:key/:value' => 'user_tags#suggested'
+  match 'profile/tags/create/:id' => 'user_tags#create'
+  match 'profile/tags/delete/:id' => 'user_tags#delete'
+  match 'profile/location/create/:id' => 'location_tags#create'
+  match 'profile/user/privacy' => 'users#privacy'
+
 
   match 'maps' => 'map#index'
+  match 'users/map' => 'users#map'
   match 'map' => 'search#map'
   match 'maps/:id' => 'map#tag'
   match 'map/edit/:id' => 'map#edit'
@@ -226,6 +232,7 @@ Plots2::Application.routes.draw do
   match 'answers/create/:nid' => 'answers#create'
   match 'answers/update/:id' => 'answers#update'
   match 'answers/delete/:id' => 'answers#delete'
+  match 'answers/accept/:id' => 'answers#accept'
 
   match 'answer_like/show/:aid' => 'answer_like#show'
   match 'answer_like/likes/:aid' => 'answer_like#likes'

@@ -62,6 +62,12 @@ module Plots2
     
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
+    # rails will fallback to config.i18n.default_locale translation
+    config.i18n.fallbacks = true
+    
+    # rails will fallback to en, no matter what is set as config.i18n.default_locale
+    config.i18n.fallbacks = [:en]
+
     config.action_view.sanitized_allowed_tags = ['iframe', 'embed']
 
     # Search API
@@ -85,5 +91,10 @@ module Plots2
       OpenID::Util.logger = Rails.logger
       ActionController::Base.send :include, OpenIdAuthentication
     end
+
+    config.autoload_paths += %W(
+      #{config.root}/app/controllers/concerns
+      #{config.root}/app/models/concerns
+    )
   end
 end

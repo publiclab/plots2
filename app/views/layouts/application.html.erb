@@ -40,6 +40,12 @@
     <%= yield(:head) %> 
     
   </head>
+  
+  <script type="text/javascript">
+    I18n.defaultLocale = "<%= I18n.default_locale %>";
+    I18n.locale = "<%= I18n.locale %>";
+    I18n.fallbacks = true;
+  </script>
 
   <body>
 
@@ -51,7 +57,7 @@
         <%= yield %>
 
       </div><!--/row-->
-    </div><!--/.fluid-container-->
+    </div><!--/container-->
 
     <%= render :partial => "layouts/footer" %>
 

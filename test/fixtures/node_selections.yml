@@ -5,3 +5,8 @@ good_like:
 unbanned_spammer_like:
   user_id: 3
   nid: 1
+
+question_like:
+  user_id: 5
+  nid: 8
+  liking: true

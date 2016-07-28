@@ -1,4 +1,6 @@
 class Answer < ActiveRecord::Base
+  include NodeShared, CommentsShared # common methods for node-like and comment-like models
+
   attr_accessible :uid, :nid, :content, :cached_likes, :created_at, :updated_at
 
   belongs_to :drupal_node, foreign_key: 'nid', dependent: :destroy
@@ -13,18 +15,6 @@ class Answer < ActiveRecord::Base
     finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
   end
 
-  def author
-    DrupalUsers.find_by_uid self.uid
-  end
-
-  def node
-    self.drupal_node
-  end
-
-  def likes
-    self.cached_likes
-  end
-
   # users who like this answer
   def likers
     self.answer_selections
@@ -34,12 +24,19 @@ class Answer < ActiveRecord::Base
         .collect(&:user)
   end
 
-  def liked_by(uid)
-    self.likers.collect(&:uid).include?(uid)
-  end
+  def answer_notify(current_user)
+    # notify question author
+    if current_user.uid != self.author.uid
+      AnswerMailer.notify_question_author(self.author, self).deliver
+    end
 
-  def comments
-    self.drupal_comments
-        .order('timestamp DESC')
+    uids =  (self.node.answers.collect(&:uid) + self.node.likers.collect(&:uid)).uniq
+
+    # notify other answer authors and users who liked the question
+    DrupalUsers.where("uid IN (?)", uids).each do |user|
+      if user.uid != (current_user.uid && self.author.uid)
+        AnswerMailer.notify_answer_likers_author(user.user, self).deliver
+      end
+    end
   end 
 end

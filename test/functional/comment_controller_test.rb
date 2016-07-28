@@ -5,6 +5,13 @@ class CommentControllerTest < ActionController::TestCase
     activate_authlogic
   end
 
+  test "should get index" do
+    get :index
+    assert_response :success
+    assert_not_nil :comments
+    assert assigns(:comments).first.timestamp > assigns(:comments).last.timestamp
+  end
+
   test "should create note comments" do
     UserSession.create(rusers(:bob))
     assert_difference 'DrupalComment.count' do

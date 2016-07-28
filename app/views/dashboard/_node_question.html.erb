@@ -1,6 +1,6 @@
 <div class="col-md-6 note-container-question">
   <div class="note note-pane note-question<% if node.status == 4 %> moderated<% end %>">
-
+    
     <div class="header-icon"><i class="fa fa-question-circle"></i></div>
 
     <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
@@ -11,9 +11,9 @@
  
     <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
 
-    <a class="btn btn-default btn-xs pull-right respond answer">Post an answer</a>
+    <a class="btn btn-default btn-xs pull-right respond answer"><%= t('dashboard._node_question.post_answer') %></a>
  
-    <p class="meta">Question <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
+    <p class="meta"><%= t('dashboard._node_question.question') %> <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 
   </div>
 </div>

@@ -6,7 +6,7 @@ sudo apt-get -y install imagemagick ruby-rmagick
 npm install -g bower
 bower install
 bundle install --without production
-cp development.sqlite.example development.sqlite
+cp db/schema.rb.example db/schema.rb
+rake db:setup
 rake cloud9 username=$un
 echo "Done! Run the application with 'rails s -b \$IP -p \$PORT'"
-

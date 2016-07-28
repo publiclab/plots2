@@ -3,6 +3,12 @@ class CommentController < ApplicationController
   respond_to :html, :xml, :json
   before_filter :require_user, :only => [:create, :update, :delete]
 
+  def index
+    @comments = DrupalComment.paginate(page: params[:page], per_page: 30)
+                             .order('timestamp DESC')
+    render template: 'comments/index'
+  end
+
   # handle some errors!!!!!!
   # create node comments
   def create
@@ -41,6 +47,7 @@ class CommentController < ApplicationController
       timestamp: Time.now.to_i
     )
     if @comment.save
+      @comment.answer_comment_notify(current_user)
       respond_to do |format|
         format.js { render template: "comment/create" }
       end

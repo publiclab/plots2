@@ -91,15 +91,15 @@
       // change dropdown title 
       if ($('.activity-dropdown input.node-type:checked').length < $('.activity-dropdown input.node-type').length) {
  
-        $('.activity-dropdown .dropdown-toggle .node-type-filter').html('Selected updates');
+        $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.selected_updates'));
  
       } else if ($('.activity-dropdown input.node-type:checked').length == 0) {
 
-        $('.activity-dropdown .dropdown-toggle .node-type-filter').html('None');
+        $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.none'));
 
       } else {
  
-        $('.activity-dropdown .dropdown-toggle .node-type-filter').html('All updates');
+        $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.all_updates'));
  
       }
  

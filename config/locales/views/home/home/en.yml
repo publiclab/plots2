@@ -1,0 +1,26 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  home:
+    home:
+      public_lab_community: 'is a community where you can learn how to investigate environmental concerns. Using inexpensive DIY techniques, we seek to change how people see the world in environmental, social, and political terms.'
+      join_now: 'Join now'
+      the_problem: 
+        title: 'I. The Problem'
+        lack_access: 'Communities lack access to'
+        tools: 'the tools and techniques'
+        need_participation: 'needed to participate in decisions being made about their communities, especially when facing environmental hazards.'
+      the_collaboration:
+        title: 'II. The Collaboration'
+        open_network: 'We are an open network of'
+        organizers: 'community organizers'
+        create_low_cost_solutions: 'educators, technologists and researchers working to create low cost solutions for'
+        monitoring: 'monitoring air, water and land'
+        discover: 'Discover, collaborate on, and contribute to'
+        locally_important_matters: 'locally important matters'
+        global_community: 'with the support of a global community.'
+      the_solution:
+        title: 'III. The Solution'
+        join_us_today: 'Join us today, as we work together to build and inspire a community of DIY activists and explorers using simple tools to build a'
+        growing_data: 'growing body of data'
+        local_environments: 'about our local environments.'

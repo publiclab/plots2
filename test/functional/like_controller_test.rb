@@ -31,7 +31,7 @@ class LikeControllerTest < ActionController::TestCase
     assert_response :success
 
     note = DrupalNode.find note.id
-    assert_equal @response.body, "true"
+    assert_equal @response.body, "1"
     assert_equal note.likers.length, note.cached_likes
     assert_equal cached_likes + 1, note.cached_likes
   end
@@ -49,7 +49,7 @@ class LikeControllerTest < ActionController::TestCase
     assert_response :success
 
     note = DrupalNode.find note.id
-    assert_equal @response.body, "false"
+    assert_equal @response.body, "-1"
     assert_equal note.likers.length, note.cached_likes
     assert_equal cached_likes - 1, note.cached_likes
   end

@@ -1,0 +1,26 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  home:
+    home:
+      public_lab_community: 'ist eine Gemeinschaft, wo Sie können lernen, wie Umweltbelange zu untersuchen. Mit preiswerten DIY Techniken versuchen wir ändern, wie Menschen die Welt in ökologischen, sozialen sehen und politischer Hinsicht.'
+      join_now: 'Jetzt beitreten'
+      the_problem: 
+        title: 'I. Das Problem'
+        lack_access: 'Gemeinschaften haben keinen Zugang zu'
+        tools: 'den Werkzeugen und Techniken erforderlich'
+        need_participation: 'an den Entscheidungen teilnehmen zu ihren Gemeinden gemacht werden , vor allem, wenn Gefahren für die Umwelt gegenüber ..'
+      the_collaboration:
+        title: 'II. Die Zusammenarbeit'
+        open_network: 'Wir sind ein offenes Netzwerk von'
+        organizers: 'Community-Organisatoren'
+        create_low_cost_solutions: 'Lehrer ,Techniker und Forscher arbeiten kostengünstige Lösungen zu schaffen, für'
+        monitoring: 'die Überwachung von Luft , Wasser und Boden'
+        discover: 'Entdecken Sie ,gemeinsam an ,und dazu beitragen,'
+        locally_important_matters: 'lokal wichtige Angelegenheiten'
+        global_community: 'mit der Unterstützung einer globalen Gemeinschaft.'
+      the_solution:
+        title: 'III. Die Lösung'
+        join_us_today: 'Begleiten Sie uns heute, wie wir zusammenarbeiten , um zu bauen und eine Gemeinschaft von DIY -Aktivisten und Forscher mit einfachen Werkzeugen inspirieren eine'
+        growing_data: 'wachsende Zahl von Daten'
+        local_environments: 'über unsere lokalen Umgebungen zu bauen.'
