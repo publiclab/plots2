@@ -1,0 +1,2 @@
+module LocationTagsHelper
+end

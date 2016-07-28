@@ -12,3 +12,8 @@ everything:
   user_id: 6
   tid: 4
   following: true
+
+question:
+  user_id: 1
+  tid: 6
+  following: true

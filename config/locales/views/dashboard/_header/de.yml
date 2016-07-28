@@ -1,0 +1,21 @@
+de: 
+  dashboard: 
+    _header: 
+      and: und
+      community_research: Gemeinschaftsforschung
+      dashboard: Instrumententafel
+      dropdown: 
+        ask_question: "Stelle eine Frage"
+        post_event: "Eine Veranstaltung"
+        share_research_note: "Teile einer Research Note"
+        tell_story_blog: "Erzählen Sie Ihre Geschichte auf dem Blog"
+      joined_public_lab: "wenn Sie das Public Lab verbunden"
+      notes: Notizen
+      posted_past_week: "in der vergangenen Woche veröffentlicht."
+      research_note: "research note"
+      research_notes: Forschungsnotizen
+      share_work: "Teilen Sie Ihre Arbeit"
+      this_could_be_dashboard: "Dies könnte Ihr Armaturenbrett"
+      welcome: Willkommen!
+      wiki_edits: Wiki-Bearbeitungen
+      you_shared: "Sie haben geteilt"

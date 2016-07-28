@@ -10,6 +10,7 @@ class AnswersController < ApplicationController
     )
     respond_to do |format|
       if current_user && @answer.save
+        @answer.answer_notify(current_user)
         format.html{ redirect_to @node.path(:question), notice: "Answer successfully posted" }
         format.js{}
       end
@@ -50,6 +51,27 @@ class AnswersController < ApplicationController
       end
     else
       prompt_login "Only the answer or question author can delete this answer"
+    end
+  end
+
+  def accept
+    @answer = Answer.find(params[:id])
+
+    if current_user.uid == @answer.node.uid
+      respond_to do |format|
+        if @answer.accepted
+          @answer.accepted = false
+          @answer.save
+        else
+          @answer.accepted = true
+          @answer.save
+          AnswerMailer.notify_answer_accept(@answer.author, @answer).deliver
+        end
+        @answer.reload
+        format.js
+      end
+    else
+      render text: "Answer couldn't be accepted"
     end
   end
 end

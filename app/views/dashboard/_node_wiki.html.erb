@@ -3,10 +3,10 @@
 
     <% if node.is_a?(DrupalNode) %>
       <div class="header-icon"><i class="fa fa-book"></i></div>
-      <p class="meta">New page by <a href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></p>
+      <p class="meta"><span><%= t('dashboard._node_wiki.new_page_by') %></span> <a href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></p>
     <% else %>
       <div class="header-icon"><i class="fa fa-pencil"></i></div>
-      <p class="meta">New edit by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a></p>
+      <p class="meta"><%= t('dashboard._node_wiki.new_edit_by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a></p>
     <% end %>
  
     <% if false && node.main_image %>
@@ -24,7 +24,7 @@
     </h4>
 
     <% if node.is_a?(DrupalNodeRevision) && node.previous %>
-      <a class="btn btn-default btn-xs pull-right btn-diff btn-diff-<%= index %>">Changes &raquo;</a>
+      <a class="btn btn-default btn-xs pull-right btn-diff btn-diff-<%= index %>"><%= t('dashboard._node_wiki.changes') %> &raquo;</a>
     <% end %>
  
     <p class="meta"><%= render partial: "dashboard/node_meta", locals: { node: node } %></p>

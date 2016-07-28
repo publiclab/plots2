@@ -4,25 +4,25 @@
   <% if @user.note_count == 0 && (-1 * (@user.created_at - DateTime.now) < 3600*48) # created in last 48 hours %>
     <div class="alert alert-success hidden-sm">
       <button type="button" class="close" data-dismiss="alert">×</button>
-      <strong>Welcome!</strong> Need help, want to float an idea, or find collaborators? <a href="/lists">Join a topical or local Public Lab discussion list &raquo;</a> 
+      <strong><%= t('home.dashboard.welcome') %></strong> <%= t('home.dashboard.need_help') %> <a href="/lists"><%= t('home.dashboard.join_discussion_list') %> &raquo;</a> 
     </div>
   <% elsif @user.note_count == 0 %>
     <div class="alert alert-success hidden-sm">
       <button type="button" class="close" data-dismiss="alert">×</button>
-      <strong>Welcome!</strong> You haven't posted a research note yet -- consider <a href="/post">sharing your work and interests</a>!
+      <strong><%= t('home.dashboard.welcome') %></strong> <%= t('home.dashboard.no_research_note') %> <a href="/post"><%= t('home.dashboard.sharing_work') %></a>!
     </div>
   <% elsif current_user.crypted_password.nil? %>
     <div class="alert alert-success hidden-sm">
       <button type="button" class="close" data-dismiss="alert">×</button>
-      Please <a href="/profile/edit">create a password for the new PublicLab.org website</a>; the older PublicLaboratory.org will soon be retired. 
+      <%= t('home.dashboard.please') %> <a href="/profile/edit"><%= t('home.dashboard.create_password') %></a>; <%= t('home.dashboard.older_site_deactive') %>
     </div>
   <% else %>
     <div class="alert alert-success hidden-sm">
-      <b>Coming soon:</b> a revised dashboard! <a href="/dashboard2">Try it out here</a>.
+      <b><%= t('home.dashboard.coming_soon') %>:</b> <%= t('home.dashboard.revised_dashboard') %> <a href="/dashboard2"><%= t('home.dashboard.try_it') %></a>.
     </div>
   <% end %>
 
-  <h2 style="font-family:Junction Light;">Dashboard <small><span class="hidden-xs">Welcome, <%= current_user.username %>! </span><br class="visible-xs visible-sm"/> <a href="/research"><%= @note_count %> notes</a> and <a href="/wiki"><%= @wiki_count %> wiki edits</a> were posted in the past week. </small></h2>
+  <h2 style="font-family:Junction Light;"><%= t('home.dashboard.dashboard_main.dashboard_title') %> <small><span class="hidden-xs"><%= t('home.dashboard.dashboard_main.welcome') %>, <%= current_user.username %>! </span><br class="visible-xs visible-sm"/> <a href="/research"><%= @note_count %> <%= t('home.dashboard.dashboard_main.notes') %></a> <%= t('home.dashboard.dashboard_main.and') %> <a href="/wiki"><%= @wiki_count %> <%= t('home.dashboard.dashboard_main.wiki_edits') %></a> <%= t('home.dashboard.dashboard_main.posted_last_week') %> </small></h2>
 
   <div id="share" class="hidden-xs hidden-sm" style="width:230px;float:right;margin-top:5px;text-align:right;height:30px;">
     <div style="float:right;margin-left:6px;"><a href="https://twitter.com/PublicLab" class="twitter-follow-button" data-show-count="false">Follow @PublicLab</a></div>
@@ -31,12 +31,12 @@
   </div>
 
   <ul class="nav nav-tabs">
-    <li class="active"><a href="#research" data-toggle="tab"><span class="hidden-xs hidden-sm">Recent </span>Activity</a></li>
-    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-xs hidden-sm"> Comments</span></a></li>
-    <li><a href="/profile/<%= current_user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-xs hidden-sm"> Liked</span></a></li>
+    <li class="active"><a href="#research" data-toggle="tab"><span class="hidden-xs hidden-sm"><%= t('home.dashboard.nav_tabs.recent') %> </span><%= t('home.dashboard.nav_tabs.activity') %></a></li>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-xs hidden-sm"> <%= t('home.dashboard.nav_tabs.comments') %></span></a></li>
+    <li><a href="/profile/<%= current_user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-xs hidden-sm"> <%= t('home.dashboard.nav_tabs.liked') %></span></a></li>
     <!--<li><a href="/nearby"><i class="fa fa-globe"></i><span class="hidden-xs hidden-sm"> Nearby</span></a></li>-->
-    <li><a href="/subscriptions"><i class="fa fa-eye"></i><span class="hidden-xs hidden-sm hidden-md"> Subscriptions</span></a></li>
-    <li class="hidden-sm"><a href="/lists"><i class="fa fa-envelope"></i><span class="hidden-xs hidden-sm hidden-md"> Lists</span></a></li>
+    <li><a href="/subscriptions"><i class="fa fa-eye"></i><span class="hidden-xs hidden-sm hidden-md"> <%= t('home.dashboard.nav_tabs.subscriptions') %></span></a></li>
+    <li class="hidden-sm"><a href="/lists"><i class="fa fa-envelope"></i><span class="hidden-xs hidden-sm hidden-md"> <%= t('home.dashboard.nav_tabs.lists') %></span></a></li>
   </ul>
 
   <div class="tab-content">
@@ -45,7 +45,7 @@
       <br />
       <%= render :partial => "notes/notes" %>
       <hr />
-      <p><a href="/research?page=2">Read more research notes &raquo;</a></p>
+      <p><a href="/research?page=2"><%= t('home.dashboard.read_more_research_notes') %> &raquo;</a></p>
       <br />
     </div>
  

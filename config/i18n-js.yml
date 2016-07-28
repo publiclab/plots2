@@ -1,0 +1,3 @@
+translations:
+- file: "app/assets/javascripts/application/i18n/translations.js"
+  only: '*.js.*'

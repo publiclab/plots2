@@ -164,11 +164,12 @@ class UsersController < ApplicationController
       if @user
         if params[:user] && params[:user][:password]
           if @user.username.downcase == params[:user][:username].downcase
-            @user.attributes = params[:user]
+            @user.password = params[:user][:password]
+            @user.password_confirmation = params[:user][:password]
             @user.reset_key = nil
-            if @user.save({})
-            flash[:notice] = "Your password was successfully changed."
-            redirect_to "/dashboard"
+            if @user.changed? && @user.save({})
+              flash[:notice] = "Your password was successfully changed."
+              redirect_to "/dashboard"
             else
               flash[:error] = "Password reset failed. Please <a href='/wiki/issues'>contact the web team</a> if you are having trouble."
               redirect_to "/"
@@ -190,7 +191,7 @@ class UsersController < ApplicationController
         key = user.generate_reset_key
         user.save({})
         # send key to user email
-        PasswordResetMailer.reset_notify(user,key) unless user.nil? # respond the same to both successes and failures; security
+        PasswordResetMailer.reset_notify(user, key) unless user.nil? # respond the same to both successes and failures; security
       end
       flash[:notice] = "You should receive an email with instructions on how to reset your password. If you do not, please double check that you are using the email you registered with."
       redirect_to "/login"
@@ -227,6 +228,86 @@ class UsersController < ApplicationController
 
   def info
     @user = DrupalUsers.find_by_name(params[:id])
+    @location_tag = @user.location_tag
+  end
+
+  def privacy
+  # maintains location privacy functionality
+    status = params[:location_privacy]
+    @output = {
+      errors: [],
+      status: false
+    }
+
+    user = DrupalUsers.find_by_name(params[:id])
+    if current_user.update_attribute(:location_privacy, status)
+      @output[:status] = true
+      flash[:notice] = "Your preference has been saved"
+    else
+      flash[:error] = "Something went wrong, Please try again"
+      @output[:errors] << flash[:error]
+    end
+
+    if user.location_tag
+      @lat, @long =  user.location_tag.lat, user.location_tag.lon
+    end
+
+    respond_to do |format|
+      format.json {
+        render json: {
+          status: @output[:status],
+          model: current_user,
+          lat: @lat,
+          long: @long
+        }.to_json
+      }
+
+      format.html {
+        redirect_to info_path(params[:id])
+      }
+    end
+
+  end
+
+  def map
+#    @title = "Maps"
+#    valid_tags = ["skill", "role", "gear", "tool"]
+#    tag = params[:tag].downcase if params[:tag]
+#
+#    value = params[:value]
+#    @country = params[:country]
+#
+#    if !tag.blank?
+#      if !valid_tags.include? tag
+#        flash[:error] = "#{tag} doesn't exitst"
+#      end
+#      @location_tags = Hash.new
+#      LocationTag.all.each do |location_tag|
+#        if !value.empty?
+#          @user_tags = location_tag.drupal_users.user.user_tags.select { |utag| utag if utag.value == "#{tag}:#{value}" }
+#        else
+#          @user_tags = location_tag.drupal_users.user.user_tags.select { |utag| utag if utag.value =~ /\A#{tag}:[A-Za-z0-9]*\z/ }
+#        end
+#
+#        if !@user_tags.empty?
+#          if @location_tags[[location_tag.lat, location_tag.lon]]
+#            @user_tags.each do |user_tag|
+#              @location_tags[[location_tag.lat, location_tag.lon]] << user_tag
+#            end
+#          else
+#            @location_tags[[location_tag.lat, location_tag.lon]] = []
+#            @user_tags.each do |user_tag|
+#              @location_tags[[location_tag.lat, location_tag.lon]] << user_tag
+#            end
+#          end
+#        end
+#      end
+#    elsif !@country.blank?
+#      @users = DrupalUsers.all.select {|user| user.location_tag if user.location_tag }
+#                .select {|user| user.location_tag if user.location_tag.country && user.location_tag.country == @country }
+#    else
+#      @users = DrupalUsers.all.select {|user| user.location_tag if !user.location_tag.nil? } if !@users
+#    end
   end
 
 end

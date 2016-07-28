@@ -3,24 +3,24 @@
   <div class="col-lg-12">
 
     <div class="btn-group">
-      <a href="/post" class="btn btn-primary btn-lg"><i class="fa fa-plus-circle fa-white"></i> Share your work</a>
+      <a href="/post" class="btn btn-primary btn-lg"><i class="fa fa-plus-circle fa-white"></i> <%= t('dashboard._header.share_work') %></a>
       <a class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
       </a>
       <ul class="dropdown-menu">
-        <li><a href="/post">Share a research note</a></li>
-        <li><a href="/post?tags=question:question&template=question">Ask a question</a></li>
-        <li><a href="/post?template=event&tags=event">Post an event</a></li>
+        <li><a href="/post"><%= t('dashboard._header.dropdown.share_research_note') %></a></li>
+        <li><a href="/post?tags=question:question&template=question"><%= t('dashboard._header.dropdown.ask_question') %></a></li>
+        <li><a href="/post?template=event&tags=event"><%= t('dashboard._header.dropdown.post_event') %></a></li>
         <li role="separator" class="divider"></li>
-        <li><a href="/post?tags=blog-submission">Tell your story on the blog</a></li>
+        <li><a href="/post?tags=blog-submission"><%= t('dashboard._header.dropdown.tell_story_blog') %></a></li>
       </ul>
     </div>
  
     <% if current_user %>
-      <h1>Dashboard</h1>
+      <h1><%= t('dashboard._header.dashboard') %></h1>
     <% else %>
-      <h1>Community research</h1>
+      <h1><%= t('dashboard._header.community_research') %></h1>
     <% end %>
 
   </div>
@@ -30,12 +30,12 @@
 <div class="row stats">
   <h4 class="col-lg-12">
     <% if current_user %>
-      <span class="hidden-xs hidden-sm">Welcome<span class="hidden-md">, <b><%= current_user.username %></b></span>!</span> 
-      <a href="/research"><%= @note_count %> notes</a> and <a href="/wiki"><%= @wiki_count %> wiki edits</a> posted in the past week. 
-      You've shared <a href="/profile/<%= current_user.username %>"><%= @user_note_count %> research note<% if @user_note_count > 1 %>s<% end %></a>.
+      <span class="hidden-xs hidden-sm"><%= t('dashboard._header.welcome') %><span class="hidden-md">, <b><%= current_user.username %></b></span>!</span> 
+      <a href="/research"><%= @note_count %> <%= t('dashboard._header.notes') %></a> <%= t('dashboard._header.and') %> <a href="/wiki"><%= @wiki_count %> <%= t('dashboard._header.wiki_edits') %></a> <%= t('dashboard._header.posted_past_week') %> 
+      <%= t('dashboard._header.you_shared') %> <a href="/profile/<%= current_user.username %>"><%= @user_note_count %> <% if @user_note_count <= 1 %><%= t('dashboard._header.research_note') %><% else %><%= t('dashboard._header.research_notes') %><% end %></a>.
     <% else %>
-      <span class="hidden-xs hidden-sm">Welcome!</span> 
-      This could be your dashboard if you <a href="/signup">joined Public Lab</a>
+      <span class="hidden-xs hidden-sm"><%= t('dashboard._header.welcome') %>!</span> 
+      <%= t('dashboard._header.this_could_be_dashboard') %> <a href="/signup"><%= t('dashboard._header.joined_public_lab') %></a>
     <% end %>
   </h4>
 </div>

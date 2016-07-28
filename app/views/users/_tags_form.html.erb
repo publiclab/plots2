@@ -1,4 +1,4 @@
-<form id="infoform" class="form" data-remote="true" action="/info/tags/create">
+<form id="infoform" class="form" action="/profile/tags/create" data-user="<%= @user.name %>">
   <div class="control-group row">
     <div class="col-md-3">
       <label class="" for="skills">Skills</label>
@@ -8,13 +8,13 @@
         <% fetch_tags(@user.id, 'skill').each do |tag| %>
           <span id="tag_<%= tag.id %>" class="label label-primary" style="font-size:13px;margin-right: 4px;">
             <%= tag.value.split(":")[1] %>
-            <a class="tagdelete" href="/info/tags/delete/<%= tag.id %>">x</a>
+            <a class="tagdelete" href="/profile/tags/delete/<%= tag.id %>">x</a>
           </span>
         <% end %>
       </span></p>
       <div class="input-group col-md-4">
         <span class="input-group-addon"><i class="fa fa-tags"></i></span>
-        <input autocomplete="off" id="taginput1" name="info[skill]" type="text" placeholder="enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="skill"/>
+        <input autocomplete="off" id="taginput1" name="info[skill]" type="text" placeholder="Enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="skill"/>
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@
         <% fetch_tags(@user.id, 'gear').each do |tag| %>
           <span id="tag_<%= tag.id %>" class="label label-primary" style="font-size:13px;margin-right: 4px;">
             <%= tag.value.split(":")[1] %>
-            <a class="tagdelete" href="/info/tags/delete/<%= tag.id %>">x</a>
+            <a class="tagdelete" href="/profile/tags/delete/<%= tag.id %>">x</a>
           </span>
         <% end %>
       </span></p>
@@ -38,7 +38,7 @@
         <input name="remote" type="hidden" value="true" />
         <span class="input-group-addon"><i class="fa fa-tags"></i></span>
 
-          <input autocomplete="off" id="taginput" name="info[gear]" type="text" placeholder="enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="gear" />
+          <input autocomplete="off" id="taginput" name="info[gear]" type="text" placeholder="Enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="gear" />
       </div>
     </div>
   </div>
@@ -54,14 +54,14 @@
         <% fetch_tags(@user.id, 'tool').each do |tag| %>
           <span id="tag_<%= tag.id %>" class="label label-primary" style="font-size:13px;margin-right: 4px;">
             <%= tag.value.split(":")[1] %>
-            <a class="tagdelete" href="/info/tags/delete/<%= tag.id %>">x</a>
+            <a class="tagdelete" href="/profile/tags/delete/<%= tag.id %>">x</a>
           </span>
         <% end %>
       </span></p>
       <div class="input-group col-md-4">
         <input name="remote" type="hidden" value="true" />
         <span class="input-group-addon"><i class="fa fa-tags"></i></span>
-        <input autocomplete="off" id="taginput" name="info[tool]" type="text" placeholder="enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="tool" />
+        <input autocomplete="off" id="taginput" name="info[tool]" type="text" placeholder="Enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="tool" />
       </div>
     </div>
   </div>
@@ -77,13 +77,13 @@
         <% fetch_tags(@user.id, 'role').each do |tag| %>
           <span id="tag_<%= tag.id %>" class="label label-primary" style="font-size:13px;margin-right: 4px;">
             <%= tag.value.split(":")[1] %>
-            <a class="tagdelete" href="/info/tags/delete/<%= tag.id %>">x</a>
+            <a class="tagdelete" href="/profile/tags/delete/<%= tag.id %>">x</a>
           </span>
         <% end %>
       </span></p>
       <div class="input-group col-md-4">
         <span class="input-group-addon"><i class="fa fa-tags"></i></span>
-        <input autocomplete="off" id="taginput" name="info[role]" type="text" placeholder="enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="role" />
+        <input autocomplete="off" id="taginput" name="info[role]" type="text" placeholder="Enter tags" data-provide="typeahead" class="form-control tag-input" data-tag="role" />
       </div>
     </div>
   </div>
@@ -94,25 +94,109 @@
     <div class="col-md-3">
       <label class="" for="location">Location</label>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-8">
       <p><span id="location"></span></p>
+      <div class="input-group col-md-5">
+        <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+        <input autocomplete="off" id="geo_location" name="info[location]" type="text" placeholder="Type location" data-provide="typeahead" class="form-control ui-autocomplete-input" data-tag="location" />
+      </div>
+      <div class="input-group col-md-offset-6" style="margin-top: -33px;">
+        <a class="btn btn-default" id="myLocation">
+          <span class="glyphicon glyphicon-map-marker">Map</span>
+        </a>
+      </div>
+      <div class="clearfix"></div><br />
+    </div>
+
+    <div class="col-md-3">
+      <label for="preference">Location privacy</label>
+    </div>
+    <div class="col-md-8">
       <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
-        <input autocomplete="off" id="taginput" name="info[location]" type="text" placeholder="Type location" data-provide="typeahead" class="form-control" data-tag="location" />
+        <input id="location_privacy" type="checkbox" name="privacy" <%= current_user.location_privacy ? "checked" : "" %>>
       </div>
     </div>
   </div>
   <br />
+  
 
+  <div class="container">
+    <div id="location_map" class="row"></div>
+  </div>
+
+  <style type="text/css">
+    .hexbin-hexagon {
+      stroke: #000;
+      stroke-width: 1px;
+    }
+  </style>
   <script type="text/javascript">
     $(document).ready(function() {
+      // fetch geo location
+      <% if @location_tag %>
+
+        var geo_location = {
+          lat: <%= @location_tag.lat %>,
+          long: <%= @location_tag.lon %>,
+        }
+
+        // Display Map
+        $('#geo_location').attr("value", "<%= @location_tag.location %>");
+
+        $('#location_map').html("<div id='map' class='col-md-8' style='height:300px;'></div>");
+        window.map = L.map('map').setView([geo_location.lat, geo_location.long], 15) || {};
+        var mymap = window.map;
+        L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+          attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>"
+        }).addTo(mymap);
+
+        <% if current_user.location_privacy %>
+
+          var marker = L.marker([geo_location.lat, geo_location.long]).addTo(mymap);
+          marker.bindPopup("<b><%= @user.name %></b>").openPopup();
+
+        <% else %>
+          var lat = parseFloat(geo_location.lat).toFixed(4);
+          var long = parseFloat(geo_location.long).toFixed(4);
+
+          var options = {
+            radius : 20,                            // Size of the hexagons/bins
+            opacity: 0.5,                           // Opacity of the hexagonal layer
+            duration: 200,                          // millisecond duration of d3 transitions (see note below)
+            lng: function(d){ return d[1]; },       // longitude accessor
+            lat: function(d){ return d[0]; },       // latitude accessor
+            value: function(d){ return d.length; }, // value accessor - derives the bin value
+            valueFloor: 0,                          // override the color scale domain low value
+            valueCeil: undefined,                   // override the color scale domain high value
+            colorRange: ['#f7fbff', '#08306b'],     // default color range for the heat map (see note below)
+            onmouseover: function(d, node, layer) {},
+            onmouseout: function(d, node, layer) {},
+            onclick: function(d, node, layer) {}
+          }
+
+          var hexlayer = L.hexbinLayer(options).addTo(mymap);
+          hexlayer.colorScale().range(["white", "grey"]);
+
+          hexlayer.data([[lat, long]]);
+
+        <% end %>
+
+      <% end %>
+
+      if ("geolocation" in navigator) {
+        $('#myLocation').click(function(e) {
+          initMap();
+        });
+      } else {
+        console.log("Geo Location not available in navaigator");
+      }
 
       $('.tag-input').typeahead({
         items: 8,
         minLength: 3,
         source: function(query, process) {
           var key = $(this.$element[0]).data('tag')
-          return $.post('/info/suggested/'+key+'/'+query, {}, function(data) {
+          return $.post('/profile/suggested/'+key+'/'+query, {}, function(data) {
             return process(data)
           });
         },
@@ -129,7 +213,7 @@
           var value = $(this).val();
           var that = this;
           $.ajax({
-            url: "/info/tags/create/<%= @user.name %>",
+            url: "/profile/tags/create/<%= @user.name %>",
             type: 'POST',
             data: { 
               'type': type,
@@ -178,5 +262,80 @@
       });
 
     });
+
+    function initMap() {
+
+      var lat, lon;
+      navigator.geolocation.getCurrentPosition(function(position) {
+        lat = position.coords.latitude;
+        long = position.coords.longitude;
+
+        var mymap;
+        $('#location_map').html("<div id='map' class='col-md-8' style='height:300px;'></div>");
+        mymap = new L.map('map').setView([lat, long], 15);
+
+        L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+          attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
+        }).addTo(mymap);
+
+        <% if current_user.location_privacy %>
+
+          var marker = L.marker([lat, long]).addTo(mymap);
+          marker.bindPopup("<b><%= @user.name %></b>").openPopup();
+
+        <% else %>
+          lat = parseFloat(lat).toFixed(4);
+          long = parseFloat(long).toFixed(4);
+
+          var options = {
+            radius : 20,                            // Size of the hexagons/bins
+            opacity: 0.5,                           // Opacity of the hexagonal layer
+            duration: 200,                          // millisecond duration of d3 transitions (see note below)
+            lng: function(d){ return d[1]; },       // longitude accessor
+            lat: function(d){ return d[0]; },       // latitude accessor
+            value: function(d){ return d.length; }, // value accessor - derives the bin value
+            valueFloor: 0,                          // override the color scale domain low value
+            valueCeil: undefined,                   // override the color scale domain high value
+            colorRange: ['#f7fbff', '#08306b'],     // default color range for the heat map (see note below)
+            onmouseover: function(d, node, layer) {},
+            onmouseout: function(d, node, layer) {},
+            onclick: function(d, node, layer) {}
+          }
+
+          var hexlayer = L.hexbinLayer(options).addTo(mymap);
+          hexlayer.colorScale().range(["white", "grey"]);
+
+          hexlayer.data([[lat, long]]);
+
+        <% end %>
+
+        $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+long, function(data) {
+          if (data.status) {
+            var address = data.results[0].formatted_address;
+            $.ajax({
+              url: "/profile/location/create/<%= @user.name %>",
+              type: 'POST',
+              data: {
+                type: 'location',
+                value: {
+                  address: address,
+                  lat: lat,
+                  long: long
+                }
+              },
+              success: function(data) {
+                response = data;
+                if (response.status) {
+                  $("#geo_location").val(response.location.location);
+                  console.log("Success");
+                }
+
+              }
+            });
+          }
+        });
+      });
+    }
+
   </script>
 </form>

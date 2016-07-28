@@ -1,0 +1,7 @@
+<p>Dear <%= @answer.author.name %>,</p>
+
+<p>Your answer for the question <a href='https://publiclab.org<%= @answer.node.path(:question) %>'><%= @answer.node.title %></a> has been accepted by the question author.</p>
+
+<p>View your answer here: https://publiclab.org<%= @answer.node.path(:question) %>#a<%= @answer.id %></p> 
+
+<p>To change your email preferences, please visit https://publiclab.org/subscriptions.</p>
