@@ -1,0 +1,14 @@
+<div class="container">
+  <% @users.each do |user| %>
+    <div class="col-md-3">
+      <div style="text-align:center;">
+        <% if user.photo_file_name %>
+          <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= user.photo_path(:thumb) %>" />
+        <% else %>
+          <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(user.email}">
+        <% end %>
+        <h3><%= user.username %></h3>
+      </div>
+    </div>
+  <% end %>
+</div>
