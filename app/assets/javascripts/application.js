@@ -40,6 +40,5 @@
 //= require like.js
 //= require jsdiff/diff.js
 //= require main_image.js
-//= require location_tags.js
 //= require users.js
 

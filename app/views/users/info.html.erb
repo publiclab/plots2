@@ -1,5 +1,3 @@
-<script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>
-
 <div class="container">
   <h2>Additonal Information</h2>
 
@@ -7,3 +5,4 @@
 
   <%= render 'tags_form', locals: { user: @user } %>
 </div>
+<%= javascript_include_tag "location_tags.js" %>
