@@ -194,4 +194,11 @@ class I18nTest < ActionDispatch::IntegrationTest
       get_via_redirect "/change_locale/"+lang.to_s
       assert_equal "#{lang}", "#{I18n.locale}"
     end
+    
+    test "should choose i18n for user_sessions/new" do
+      available_testing_locales.each do |lang|
+        get '/login'
+        assert_select 'a[href=/signup]', I18n.t('user_sessions.new.sign_up')
+      end
+    end
 end
