@@ -37,8 +37,8 @@ Plots2::Application.routes.draw do
   get 'people' => 'users#list'
   get 'users/role/:id' => 'users#list'
   match 'users/update' => 'users#update'
-  match 'users/:id/following' => 'users#following', as: :following
-  match 'users/:id/followers' => 'users#followers', as: :followers
+  match 'people/:id/following' => 'users#following', as: :following
+  match 'people/:id/followers' => 'users#followers', as: :followers
   match 'signup' => 'users#new'
   match 'home' => 'home#front'
   resources :relationships, only: [:create, :destroy]

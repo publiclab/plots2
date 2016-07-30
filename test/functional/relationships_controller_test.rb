@@ -31,4 +31,14 @@ class RelationshipsControllerTest < ActionController::TestCase
     assert_response :redirect
     assert_redirected_to '/profile/' + followed_user.username
   end
+
+  test "actions require authorization" do
+    followed_user = rusers(:bob)
+    post :create, followed_id: followed_user.id
+
+    assert_response :unprocessable_entity
+
+    post :destroy, id: 1
+    assert_response :unprocessable_entity
+  end
 end

@@ -1,15 +1,16 @@
 <div class="col-md-3">
-  <% if @user.user && @user.user.photo_file_name %>
-    <img class="hidden-xs hidden-sm img-rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @user.user.photo_path(:thumb) %>" />
+  <% if @user.user %>
+    <img class="hidden-xs hidden-sm img-rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @user.user.profile_image %>" />
     <div style="text-align:center;" class="visible-sm visible-xs">
-      <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.user.photo_path(:thumb) %>" />
+      <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.user.profile_image %>" />
     </div>
   <% end %>
 
   <!--<a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope"></i> Send message</a>-->
   <% if current_user %>
-    <hr />
+   
     <% unless current_user == @profile_user %>
+      <hr />
       <div id="follow_form" class="col-md-offset-4">
       <% if current_user.following?(@profile_user) %>
         <%= render 'unfollow' %>
@@ -17,6 +18,7 @@
         <%= render 'follow' %>
       <% end %>
       </div>
+      <br />
     <% end %>
   <% end %>
 
@@ -91,9 +93,8 @@
       <div class="col-md-3 col-md-offset-2">
         <h4>Following</h4>
       </div>
-    </div>
-
-    <div class="row">
+      
+      <br />
       <div class="col-md-3 col-md-offset-2">
         <h5><b><%= link_to @profile_user.followers.count, followers_path(id: @profile_user.username) %></b></h5>
       </div>
@@ -102,6 +103,7 @@
       </div>
     </div>
   <hr />
+
   <% end %>
 
   <div class="hidden-xs">

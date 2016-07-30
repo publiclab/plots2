@@ -234,6 +234,15 @@ class User < ActiveRecord::Base
     following_users.include?(other_user)
   end
 
+  def profile_image
+    if self.photo_file_name
+      puts self.photo_path(:thumb)
+      self.photo_path(:thumb)
+    else
+      "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(self.email)}"
+    end
+  end
+
   private
 
   def map_openid_registration(registration)
