@@ -297,4 +297,57 @@ class I18nTest < ActionDispatch::IntegrationTest
         assert_select 'a[href=/signup]', I18n.t('user_sessions.new.sign_up')
       end
     end
+    
+    test "should choose i18n for wiki/_wiki + wiki/index" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get '/wiki'
+        assert_select 'th', I18n.t('wiki._wikis.likes')
+        assert_select 'small', I18n.t('wiki.index.collaborative_documentation')
+      end
+    end
+    
+    test "should choose i18n for wiki/edit" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get '/wiki/edit'
+        assert_select 'a', I18n.t('wiki.edit.getting_started')
+      end
+    end
+    
+    test "should choose i18n for wiki/revisions" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/wiki/revisions/'+node(:organizers).title.parameterize
+        assert_select 'a', I18n.t('wiki.revisions.view')
+      end
+    end
+    
+    test "should choose i18n for wiki/show" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/wiki/'+node(:organizers).title.parameterize
+        assert_select 'span', I18n.t('wiki.show.view')
+      end
+    end
 end

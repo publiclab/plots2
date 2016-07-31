@@ -1,0 +1,12 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  wiki:
+    _wikis:
+      table_content: |
+        <th>Titel</th>
+        <th>Zuletzt bearbeitet</th>
+        <th>Edits</th>
+        <th class="hidden-xs">Seiten</th>
+      by: 'von'
+      
