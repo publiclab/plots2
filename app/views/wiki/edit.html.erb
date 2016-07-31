@@ -1,34 +1,25 @@
 <div class="col-sm-3">
   <%= javascript_include_tag "dragdrop" %>
   <% if @related && @related.length > 0 %>
-    <h3>Did you mean:</h3>
+    <h3><%= t('wiki.edit.did_you_mean') %>:</h3>
     <ul class="nav bullet">
     <% @related[0..5].each do |wiki| %>
       <li><a href="/wiki/<%= wiki.slug %>"><i class="fa fa-book"></i> <%= wiki.title %></a></li>
     <% end %>
     </ul>
-    <p><i class="fa fa-search"></i> Try <a href="/search/<%=h params[:id] %>">searching for '<%=h params[:id] %>' &raquo;</a></p>
+    <p><i class="fa fa-search"></i> <%= raw t('wiki.edit.try_searching_for', :url1 => "/search/"+params[:id], :wiki => params[:id]) %></p>
   <hr />
   <% end %>
 
-  <h3><i class="fa fa-book"></i> What's a <br />a wiki page?</h3>
-  <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Wiki pages</b> are web pages that anyone can create or edit -- we use them to collect information, documentation, and instructions on projects.</p>
-  <p><b>Wiki pages can be:</b></p>
-  <ul>
-    <li>a <a href="/tag/tutorial">tutorial</a> on how to make something</li>
-    <li>documentation of a project</li>
-    <li>an event planning page</li>
-    <li>a place to collect lists of research notes</li>
-    <li>etc!</li>
-  </ul>
+  <%= raw t('wiki.edit.whats_a_wiki_page') %>
   <hr />
   <div class="sidebar-nav hidden-sm">
     <ul class="nav nav-list">
-      <li class="nav-header">More</li>
-      <li><a href="/wiki/getting-started">Getting started with Public Lab</a></li>
-      <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug %>">Revisions for this page</a></li><% end %>
-      <li><a href="/wiki/posting-research">About posting research</a></li>
-      <li><a href="/wiki/authoring-help#Advanced+formatting">Advanced formatting</a></li>
+      <li class="nav-header"><%= t('wiki.edit.more') %></li>
+      <li><a href="/wiki/getting-started"><%= t('wiki.edit.getting_started') %></a></li>
+      <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug %>"><%= t('wiki.edit.revisions_for_this_page') %></a></li><% end %>
+      <li><a href="/wiki/posting-research"><%= t('wiki.edit.about_posting_research') %></a></li>
+      <li><a href="/wiki/authoring-help#Advanced+formatting"><%= t('wiki.edit.advanced_formatting') %></a></li>
     </ul>
   </div>
 </div>
@@ -54,9 +45,9 @@
     <div class="col-md-9 col-md-pull-3">
 
       <% if @node && @node.latest && @node.latest.title %>
-        <h3>Editing page: <i><%= @node.latest.title %></i></h3>
+        <h3><%= t('wiki.edit.editing_page') %>: <i><%= @node.latest.title %></i></h3>
       <% else %>
-        <h3>Create page: <i><%=h params[:id] %></i></h3>
+        <h3><%= t('wiki.edit.create_page') %>: <i><%=h params[:id] %></i></h3>
       <% end %>
  
       <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
@@ -78,15 +69,15 @@
  
       <%= render :partial => 'editor/editor' %>
  
-      <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
-      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
+      <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= t('wiki.edit.publish') %></a>
+      <a tabindex="6" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
 
     </div>
 
     <div style="clear:both;">
       <br />
-      <p class="col-md-12">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
-      <% if @node && @node.latest %><p style="padding:10px 0 0 0;"><i>This page was last edited <%= time_ago_in_words(@node.latest.created_at) %> ago by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a></i></p><% end %> 
+      <p class="col-md-12"><%= raw t('wiki.edit.agree_to_open_source_work', :url1 => "/licenses") %></p>
+      <% if @node && @node.latest %><p style="padding:10px 0 0 0;"><i><%= raw t('wiki.edit.last_edited_by', :time => time_ago_in_words(@node.latest.created_at), :url1 => "/profile/"+@node.latest.author.name, :author => @node.latest.author.name) %></i></p><% end %>
       <br />
     </div>
 

@@ -1,0 +1,22 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  wiki:
+    revisions:
+      revisions_for: "Revisions for <i>%{wiki}</i>"
+      view: "View"
+      edit: "Edit"
+      revisions: "Revisions"
+      table_content: |
+        <th>#</th>
+        <th>User</th>
+        <th>Created</th>
+        <th></th>
+        <th></th>
+        <th>Raw</th>
+      moderated: "MODERATED"
+      current: "CURRENT"
+      revert: "Revert"
+      are_you_sure: "Are you sure?"
+      republish: "Republish"
+      comparing_revision: "Comparing revision <span id='older'>%{revision_1}</span> with revision <span id='newer'>%{revision_2}</span>"

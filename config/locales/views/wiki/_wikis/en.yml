@@ -1,0 +1,13 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  wiki:
+    _wikis:
+      table_content: |
+        <th>Title</th>
+        <th>Last edited</th>
+        <th>Edits</th>
+        <th class="hidden-xs">Pageviews</th>
+      likes: 'Likes'
+      by: 'by'
+      
