@@ -32,8 +32,11 @@ class QuestionsController < ApplicationController
 
     @node.view
     @title = @node.latest.title
-    @tags = @node.tags
+    @tags = @node.power_tag_objects('question')
     @tagnames = @tags.collect(&:name)
+    @users = @node.answers.group(:uid)
+                  .order('count(*) DESC')
+                  .collect(&:author)
 
     set_sidebar :tags, @tagnames
   end

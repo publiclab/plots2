@@ -12,7 +12,11 @@ class ApplicationController < ActionController::Base
     def set_sidebar(type = :generic, data = :all, args = {})
       args[:note_count] ||= 8
       if type == :tags # accepts data of array of tag names as strings
-        @notes = @notes || DrupalTag.find_nodes_by_type(data, 'note', args[:note_count])
+        if params[:controller] == 'questions'
+          @notes = @notes || DrupalTag.find_nodes_by_type(data, 'note', args[:note_count])
+        else
+          @notes = @notes || DrupalTag.find_research_notes(data, args[:note_count])
+        end
         
         @notes = @notes.where('node.nid != (?)', @node.nid) if @node
         @wikis = DrupalTag.find_pages(data,10)

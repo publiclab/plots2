@@ -333,7 +333,7 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
-  # returns all results
+  # returns all tagnames for a given power tag
   def power_tags(tag)
     tids = DrupalTag.includes(:drupal_node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
@@ -346,7 +346,7 @@ class DrupalNode < ActiveRecord::Base
     tags
   end
 
-  # returns all results as whole tag (node) objects
+  # returns all power tag results as whole community_tag objects
   def power_tag_objects(tag)
     tids = DrupalTag.includes(:drupal_node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
@@ -354,17 +354,12 @@ class DrupalNode < ActiveRecord::Base
     DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
   end
 
-  # return whole tag objects but no powertags or "event"
+  # return whole community_tag objects but no powertags or "event"
   def normal_tags
     tids = DrupalTag.includes(:drupal_node_community_tag)
-                    .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
+                    .where("community_tags.nid = ? AND name LIKE ?", self.id, "%:%")
                     .collect(&:tid)
-    node_tags = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
-    tags = []
-    node_tags.each do |nt|
-      tags << nt
-    end
-    tags
+    DrupalNodeCommunityTag.where('nid = ? AND tid NOT IN (?)', self.id, tids)
   end
 
   def has_tag(tag)
@@ -394,6 +389,7 @@ class DrupalNode < ActiveRecord::Base
    icon = "map-marker" if self.type == "map"
    icon = "flag" if self.has_tag('chapter')
    icon = "wrench" if self.type == "tool"
+   icon = "question-circle" if self.has_power_tag('question')
    icon
   end
 
