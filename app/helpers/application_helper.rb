@@ -23,9 +23,9 @@ module ApplicationHelper
   end
   
   def locale_name_pairs
-    I18n.available_locales.map do |locale|
-      [I18n.t('language', locale: locale), locale]
-    end
+    locale_map = {}
+    I18n.available_locales.each { |locale| locale_map[I18n.t('language', locale: locale)] = locale }
+    return locale_map
   end
 
 end
