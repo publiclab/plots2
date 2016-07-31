@@ -1,0 +1,17 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  wiki:
+    index:
+      wiki_pages_tagged_with: "Wiki-Seiten mit <i style='color:#aaa;'>%{tag}</i> getaggt"
+      wiki_pages_by: "Wiki-Seiten von <a href='%{url1}'>%{user}</a> <small>%{note_length} Forschung Notizen und Wiki-Bearbeitungen beginnend vor %{time}</small>"
+      highly_liked_wiki_pages: "Sehr beliebt Wiki-Seiten"
+      create_wiki_page: "Erstelle ein neues Wiki -Seite"
+      by_recency: "von Aktualitäts"
+      by_popularity: "nach Beliebtheit"
+      by_number_of_likes: "von # von Gleichen"
+      popular_wiki_pages: "Beliebte Wiki-Seiten"
+      collaborative_documentation: "kollaborative Dokumentation von Anbietern, wie Sie"
+      public_lab_wiki: "Das Public Lab Wiki"
+      about_collaboration: "Bei Public Lab, wir alle zusammenarbeiten Umweltwissenschaften Open-Source-Tools zu erfinden und zu verbessern."
+      about_wiki_pages: "Wiki-Seiten sind Webseiten, die <b>jeder anlegen oder bearbeiten können</b> -- verwenden wir diese Informationen, Dokumentationen und Anleitungen für Projekte zu sammeln."

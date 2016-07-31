@@ -1,0 +1,22 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  wiki:
+    show:
+     page_has_no_tags: "Diese Seite wurde noch nicht zugeordnet; helfen, sie zu anderen Inhalten verbinden unten durch <a onClick='$('#taginput').focus()'>Hinzufügen beschreibende Tags</a>."
+     revision_from: "Dies ist eine Änderung von %{time}."
+     view_all_revisions: "Alle Versionen"
+     views: "Ansichten"
+     last_edited: "Zuletzt von <a href='%{url1}'>%{author}</a> vor %{time} bearbeitet"
+     shortlink: "Kurzlink"
+     view: "Aussicht"
+     edit: "Bearbeiten"
+     delete: "Löschen"
+     are_you_sure_delete: "Sind Sie absolut sicher, dass Sie '%{path}' zu löschen? Alle Änderungen werden verloren gehen , und Sie können diese Aktion nicht rückgängig gemacht werden. Wenn diese eine Spam- Seite ist , sicher sein, dass es nicht einen gültigen Inhalt überschrieben hat , bevor die gesamte Seite zu löschen."
+     talk: "Sprechen"
+     back_to_wiki: "Zurück zu <a href='%{url1}'>%{title}"
+     overview: "Überblick"
+     research: "Forschung"
+     wiki_pages: "Wiki<span class=\"hidden-sm\">Seiten</span>"
+     more_research: "Mehr Forschung auf  \"%{tag}\""
+     more_tag_research: "Mehr \"%{tag}\" Forschung"
