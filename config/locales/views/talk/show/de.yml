@@ -1,0 +1,7 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  talk:
+    show:
+      welcome: "Sprechen Seite für <a href='%{url1}'>%{page}</a> | Auf dieser Seite können für die synchronisierte Bearbeitung von mehreren Personen angezeigt werden. <a href='%{url2}'>Mehr erfahren</a>"
+      try_direct_link: "Wenn diese Seite nicht korrekt geladen wird, <a href='%{url1}'>versuchen Sie hier</a>"

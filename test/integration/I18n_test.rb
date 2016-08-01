@@ -447,4 +447,14 @@ class I18nTest < ActionDispatch::IntegrationTest
         assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('tag.show.no_results_found', :tag => 'some-tag'))+":"
       end
     end
+    
+    test "should choose i18n for talk/show" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/talk/'+'topic'
+        assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', :page => 'topic', :url1 => '/wiki/'+'topic', :url2 => '/wiki/talk-pages'))
+      end
+    end
 end
