@@ -6,8 +6,10 @@ class QuestionsController < ApplicationController
                        .joins(:drupal_tag)
                        .where('term_data.name LIKE ?', 'question:%')
                        .order('node.nid DESC')
-                       .group('node.nid')
-                       .paginate(:page => params[:page], :per_page => 30)
+                       .group('node.nid') 
+    sort_question_by_tags
+    @questions = @questions.paginate(:page => params[:page], :per_page => 30)
+
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
@@ -46,7 +48,9 @@ class QuestionsController < ApplicationController
     @questions = DrupalNode.joins(:answers)
                        .order('answers.created_at DESC')
                        .group('node.nid')
-                       .paginate(:page => params[:page], :per_page => 30)
+    sort_question_by_tags
+    @questions = @questions.paginate(:page => params[:page], :per_page => 30)
+
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
@@ -70,7 +74,9 @@ class QuestionsController < ApplicationController
                        .order('node_counter.totalcount DESC')
                        .includes(:drupal_node_counter)
                        .group('node.nid')
-                       .limit(20)
+    sort_question_by_tags
+    @questions = @questions.limit(20)
+
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
@@ -85,7 +91,9 @@ class QuestionsController < ApplicationController
                        .where('term_data.name LIKE ?', 'question:%')
                        .order("cached_likes DESC")
                        .group('node.nid')
-                       .limit(20)
+    sort_question_by_tags
+    @questions = @questions.limit(20)
+
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")

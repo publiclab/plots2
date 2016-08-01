@@ -171,4 +171,11 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def sort_question_by_tags
+      if session[:tags] && !session[:tags].empty?
+        @session_tags = session[:tags]
+        @questions = @questions.select{|q| !(q.drupal_tag.collect(&:name) & @session_tags.values).empty?}
+      end
+    end
+
 end

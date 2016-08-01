@@ -132,7 +132,6 @@ Plots2::Application.routes.draw do
   match 'questions_search/:id' => 'questions_search#index'
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
 
-  match 'tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'
   match 'blog' => 'tag#blog', :id => "blog"
   match 'blog/:id' => 'tag#blog'
@@ -145,6 +144,12 @@ Plots2::Application.routes.draw do
   match 'tag/delete/:nid/:tid' => 'tag#delete'
   match 'barnstar/give/:nid/:star' => 'tag#barnstar'
   match 'barnstar/give' => 'tag#barnstar'
+  match 'tag/add_tag' => 'tag#add_tag'
+  match 'tag/remove_tag/:id' => 'tag#remove_tag'
+  match 'tag/remove_all_tags' => 'tag#remove_all_tags'
+  match 'tag/:id' => 'tag#show'
+
+
   match 'rsvp/:id' => 'notes#rsvp'
   match 'feed/liked' => 'notes#liked_rss'
 

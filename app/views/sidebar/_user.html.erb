@@ -11,6 +11,12 @@
     <hr />
   </div>
 
+  <% if params[:controller] == 'questions' %>
+    <%= render partial: 'tag/sorting' %>
+  <% end %>
+
+  <hr/>
+
   <%= render partial: 'sidebar/wikis', locals: { wikis: @wikis, title: I18n.t('sidebar._user.recent_wiki_edits'), node: @node } %>
 
 </div>

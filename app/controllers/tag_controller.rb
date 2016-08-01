@@ -225,4 +225,30 @@ class TagController < ApplicationController
     render :template => "tag/contributors-index"
   end
 
+  def add_tag
+    unless session[:tags]
+      session[:tags] = {}
+    end
+    tagnames = params[:name].split(',')
+    tagnames.each do |tagname|
+      tag = DrupalTag.find_by_name(tagname)
+      tag = tagname unless tag
+      session[:tags][tag.tid.to_s] = tagname
+    end
+    redirect_to params[:return_to]
+  end
+
+  def remove_tag
+    if session[:tags]
+      session[:tags].delete(params[:id])
+    end
+    redirect_to params[:return_to]
+  end
+
+  def remove_all_tags
+    if session[:tags] 
+      session[:tags].clear
+    end
+    redirect_to params[:return_to]
+  end
 end
