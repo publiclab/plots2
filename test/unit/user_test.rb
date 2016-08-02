@@ -43,4 +43,20 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil user.reset_key
   end
 
+  test "should follow and unfollow user" do
+    bob = rusers(:bob)
+    jeff = rusers(:jeff)
+    assert_false bob.following?(jeff)
+    bob.follow(jeff)
+    assert bob.following?(jeff)
+    assert jeff.followers.include?(bob)
+    bob.unfollow(jeff)
+    assert_false bob.following?(jeff)
+  end
+
+  test "returns sha email for users who doesn't have image" do
+    bob = rusers(:bob)
+    assert_equal "https://www.gravatar.com/avatar/927536542991ac10fe2c546bc386a521", bob.profile_image
+  end
+
 end

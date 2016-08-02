@@ -1,13 +1,27 @@
 <div class="col-md-3">
-  <% if @user.user && @user.user.photo_file_name %>
-    <img class="hidden-xs hidden-sm img-rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @user.user.photo_path(:thumb) %>" />
+  <% if @user.user %>
+    <img class="hidden-xs hidden-sm img-rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @user.user.profile_image %>" />
     <div style="text-align:center;" class="visible-sm visible-xs">
-      <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.user.photo_path(:thumb) %>" />
+      <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.user.profile_image %>" />
     </div>
   <% end %>
 
   <!--<a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope"></i> Send message</a>-->
-  <a href="#" class="btn btn-default btn-block disabled"><i class="fa fa-eye"></i> <%= t('users.profile.follow') %> <%= @user.name %></a>
+  <% if current_user %>
+   
+    <% unless current_user == @profile_user %>
+      <hr />
+      <div id="follow_form" class="col-md-offset-4">
+      <% if current_user.following?(@profile_user) %>
+        <%= render 'unfollow' %>
+      <% else %>
+        <%= render 'follow' %>
+      <% end %>
+      </div>
+      <br />
+    <% end %>
+  <% end %>
+
   <% if @user.user.nil? && current_user && current_user.role == "admin" %>
     <a href="/admin/migrate/<%= @user.uid %>" class="btn btn-block"><i class="fa fa-bolt"></i> <%= t('users.profile.migrate_new_site') %></a>
   <% end %>
@@ -72,6 +86,24 @@
     <% end %>
   </p>
   <hr />
+    <div class="row">
+      <div class="col-md-3 col-md-offset-1">
+        <h4>Followers</h4>
+      </div>
+      <div class="col-md-3 col-md-offset-2">
+        <h4>Following</h4>
+      </div>
+      
+      <br />
+      <div class="col-md-3 col-md-offset-2">
+        <h5><b><%= link_to @profile_user.followers.count, followers_path(id: @profile_user.username) %></b></h5>
+      </div>
+      <div class="col-md-3 col-md-offset-2">
+        <h5><b><%= link_to @profile_user.following_users.count, following_path(id: @profile_user.username) %></b></h5>
+      </div>
+    </div>
+  <hr />
+
   <% end %>
 
   <div class="hidden-xs">
