@@ -6,6 +6,10 @@ class SettingsController < ApplicationController
     lang = I18n.default_locale unless I18n.available_locales.include?(lang)
     cookies.permanent[:plots2_locale] = lang
     I18n.locale = lang
-    redirect_to request.referer || root_url
+    if request.referer
+      redirect_to request.referer + "?_=" + Time.now.to_i.to_s
+    else
+      redirect_to root_url
+    end
   end
 end
