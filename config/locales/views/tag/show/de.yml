@@ -1,0 +1,18 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  tag:
+    show:
+      notes_tagged: "Hinweise getaggt mit <i style=\"color:#aaa;\">%{tag}</i>"
+      following: "Folgende"
+      unfollow: "Klicken Sie hier um unfollow"
+      follow: "Folgen"
+      none: "Keiner"
+      users_following_tag: "Benutzer beobachten das Tag"
+      ask_question: "Stellen Sie eine Frage zu <b>%{tag}</b>"
+      or_subscribe_to_answer: "oder <a style='margin-bottom:6px;' class='btn btn-default' target='_blank' href='%{url1}'>abonnieren Fragen zu diesem Thema beantworten</a>"
+      research_notes: "<span class=\"hidden-sm\">Research </span>Notes"
+      wiki_pages: "Wiki<span class=\"hidden-sm\"> Seiten</span>"
+      maps: "Karten"
+      no_results_found: "Keine Ergebnisse gefunden; versuchen, für '<b>%{tag}</b>' Suche"
+      try_advanced_search: "Oder versuchen Sie eine <a href='%{url1}'>erweiterte Suche</a>"

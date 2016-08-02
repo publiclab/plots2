@@ -1,14 +1,14 @@
 <%= render :partial => "sidebar/featured" %>
 
 <div class="col-md-9">
-  <h1 style="font-family:Junction Light;">Popular tags</h1>
+  <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
 
-  <p>We use tags to group research by topic -- browse below to see the most popular tags.</p>
+  <p><%= t('tag.index.browse_popular_tags') %></p>
 
   <table class="table">
     <tr>
-      <th>Tag</th>
-      <th># of uses</th>
+      <th><%= t('tag.index.tag') %></th>
+      <th><%= t('tag.index.number_of_uses') %></th>
     </tr>
     <% @tags.each do |tag| %>
       <tr>

@@ -11,11 +11,11 @@
 </style>
 
 <% if @notes.nil? || @notes.length == 0 %>
-  <p>No results found; try searching for '<b><%= params[:id] %></b>':</p>
+  <p><%= raw t('tag.show.no_results_found', :tag => params[:id]) %>:</p>
 
   <%= render :partial => "search/search" %>
 
-  <p>Or try an <a href="/search/advanced/">advanced search</a></p>
+  <p><%= raw t('tag.show.try_advanced_search', :url1 => params[:id]) %></p>
 <% else %>
   <% @compact = true %>
   <% @widget = true %>
