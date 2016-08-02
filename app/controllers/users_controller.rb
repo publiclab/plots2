@@ -269,6 +269,20 @@ class UsersController < ApplicationController
 
   end
 
+  def following
+    @title = "Following"
+    @user  = User.find_by_username(params[:id])
+    @users = @user.following_users.paginate(page: params[:page])
+    render 'show_follow'
+  end
+
+  def followers
+    @title = "Followers"
+    @user  = User.find_by_username(params[:id])
+    @users = @user.followers.paginate(page: params[:page])
+    render 'show_follow'
+  end
+
   def map
 #    @title = "Maps"
 #    valid_tags = ["skill", "role", "gear", "tool"]
