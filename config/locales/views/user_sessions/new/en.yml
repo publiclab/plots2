@@ -1,0 +1,12 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  user_sessions:
+    new:
+      log_in_or_sign_up: "Log in <small> or <a href='%{url1}'>sign up to join</a> the Public Lab network</small>"
+      username: "Username"
+      password: "Password"
+      remember_me: "Remember me"
+      log_in: "Log in"
+      sign_up: "Sign up"
+      reset_by_clicking_here: "Forgotten or lost your password? Reset it by <a href='%{url1}'>clicking here</a>"

@@ -2,6 +2,11 @@
   <%= feature('anniversary-banner') %>
 <% end %>
 
+<!-- facilitate space for multi-line header -->
+<% if !current_user %>
+  <%= stylesheet_link_tag "I18n" %>
+<% end %>
+
 <% if @node && @node.body %>
   <p class="facebook-summary" style="display:none;">
     <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %> 
@@ -118,7 +123,7 @@
         </li>
 
         <li class="dropdown hidden-xs hidden-sm<%= ' hidden-md' unless current_user %>">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
             <%= t('layout._header.data.data_title') %> 
             <b class="caret"></b>
           </a>

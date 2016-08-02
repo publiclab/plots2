@@ -29,6 +29,7 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
     <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d" />
@@ -38,14 +39,13 @@
     <% end %>
 
     <%= yield(:head) %> 
-    
+
+    <script type="text/javascript">
+      I18n.defaultLocale = "<%= I18n.default_locale %>";
+      I18n.locale = "<%= I18n.locale %>";
+      I18n.fallbacks = true;
+    </script>
   </head>
-  
-  <script type="text/javascript">
-    I18n.defaultLocale = "<%= I18n.default_locale %>";
-    I18n.locale = "<%= I18n.locale %>";
-    I18n.fallbacks = true;
-  </script>
 
   <body>
 

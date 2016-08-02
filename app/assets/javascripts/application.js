@@ -43,3 +43,5 @@
 //= require searchform.js
 //= require location_tags.js
 //= require users.js
+//= require users.js
+

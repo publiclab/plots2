@@ -7,7 +7,7 @@
 
       <div class="form-group">
      
-        <label for="username">Username</label>
+        <label for="username"><%= t('users._form.username') %></label>
         <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username' } %>
      
       </div>
@@ -16,7 +16,7 @@
 
     <div class="form-group">
    
-      <label for="email">Email</label>
+      <label for="email"><%= t('users._form.email') %></label>
       <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
    
     </div>
@@ -24,11 +24,11 @@
 
     <div class="form-group">
       <% if @user.crypted_password.nil? %>
-        <label for="password">Create a password</label>
+        <label for="password"><%= t('users._form.create_password') %></label>
       <% else %>
-        <label for="password">Change your password</label>
+        <label for="password"><%= t('users._form.change_password') %></label>
       <% end %>
-      <%= f.password_field :password, { placeholder: "password", 
+      <%= f.password_field :password, { placeholder: I18n.t('users._form.password'), 
                                         tabindex: 4,
                                         class: 'form-control',
                                         id: 'password' }
@@ -36,8 +36,8 @@
     </div>
 
     <div class="form-group">
-      <label for="password_confirmation">Confirm your password</label>
-      <%= f.password_field :password_confirmation, { placeholder: "confirm your password",
+      <label for="password_confirmation"><%= t('users._form.confirmation') %></label>
+      <%= f.password_field :password_confirmation, { placeholder: I18n.t('users._form.confirm_password'),
                                                      tabindex: 5,
                                                      class: 'form-control',
                                                      id: 'password-confirmation' }
@@ -46,8 +46,8 @@
 
 
     <div class="form-group">
-      <label for="drupal_user_bio">Bio</label>
-      <%= text_area :drupal_user, :bio, { placeholder: "Add a short bio to appear on your profile page", 
+      <label for="drupal_user_bio"><%= t('users._form.bio') %></label>
+      <%= text_area :drupal_user, :bio, { placeholder: I18n.t('users._form.add_bio'), 
                                           rows: 8, 
                                           class: 'form-control',
                                           tabindex: 6 } 
@@ -61,10 +61,10 @@
         <div class="form-group spamaway">
 
           <label for="spamaway_follow_instructions">
-            Are you human?
+            <%= t('users._form.are_you_human') %>
           </label>
           <p>
-            Sorry: spam filtering! Please answer these four questions to ensure you're a real person.
+            <%= t('users._form.spam_filtering') %>
           </p>
 
           <% vars = [:statement1, :statement2, :statement3, :statement4] %>
@@ -91,7 +91,7 @@
           <%= spam.text_area :follow_instructions, { class: "form-control col-md-6",
                                                      rows: 8,
                                                      tabindex: 7,
-                                                     placeholder: "Don't write anything here if you're a real person." }
+                                                     placeholder: I18n.t('users._form.dont_write_here') }
           %>
   
         </div>
@@ -110,10 +110,10 @@
     <div class="form-group form-inline" style="clear:both;padding-top:10px;">
 
       <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
-        <button class="btn btn-lg btn-primary" type="submit" tabindex="7">Sign up</button>
-        <a class="btn btn-lg btn-default" href="/login">Log in</a>
+        <button class="btn btn-lg btn-primary" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
+        <a class="btn btn-lg btn-default" href="/login"><%= t('users._form.log_in') %></a>
       <% elsif params[:controller] == "users" && params[:action] == "edit" %>
-        <button class="btn btn-lg btn-primary" type="submit" tabindex="7">Save</button>
+        <button class="btn btn-lg btn-primary" type="submit" tabindex="7"><%= t('users._form.save') %></button>
       <% end %>
 
     </div>

@@ -4,3 +4,4 @@ de:
   dashboard:
     dashboard:
       from_blog: "Vom <a href='%{url}'>Public Lab Blog</a>"
+      by: "vom"
