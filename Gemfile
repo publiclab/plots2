@@ -88,7 +88,6 @@ gem 'friendly_id'
 gem 'jbuilder'
 
 gem 'strong_parameters'
-
 gem 'sunspot_rails'
 gem 'sunspot_solr'
 
