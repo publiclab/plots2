@@ -9,7 +9,7 @@
 
 <hr style="clear:both;" class="visible-sm visible-xs" />
 
-<h3>Profile photo</h3>
+<h3><%= t('users._photo.profile_photo') %></h3>
 
 <div class="profile-dropzone" id="profile-dropzone" style="margin-bottom:20px;">
     <img class="img-rounded" id="profile-photo" style="<% unless @user.photo_file_name %>display:none;<% end %>
@@ -20,9 +20,9 @@
     filter: alpha(opacity=20);" src="<% if @user.photo %><%= @user.photo_path(:thumb) %><% end %>" />
 
     <p class="prompt">
-      <span class="hidden-sm hidden-xs"> Drag &amp; drop to add an image, or </span>
+      <span class="hidden-sm hidden-xs"> <%= t('users._photo.drag_and_drop_image') %> </span>
       <span class="fileinput-button">
-        <a> <i class="fa fa-upload hidden-sm pull-left" style="padding-right:6px;"></i> choose an image</a>
+        <a> <i class="fa fa-upload hidden-sm pull-left" style="padding-right:6px;"></i> <%= t('users._photo.choose_image') %></a>
         
       </span>
     </p>
@@ -33,7 +33,7 @@
 <div id="profile-progress" style="display:none;" class="progress progress-striped active">
   <div class="progress-bar" style="width: 0%;"></div>
 </div>
-<p class="profile-uploading" style="display:none;padding-top:4px;color:#aaa;">Uploading...</p>
+<p class="profile-uploading" style="display:none;padding-top:4px;color:#aaa;"><%= t('users._photo.uploading') %>...</p>
 
 <script>
 

@@ -82,7 +82,7 @@ class UsersController < ApplicationController
       @drupal_user = current_user.drupal_user
     end
     if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
-      render :template => "users/edit.html.erb"
+      render :template => "users/edit"
     else
       flash[:error] = "Only <b>"+@user.name+"</b> can edit their profile."
       redirect_to "/profile/"+@user.name

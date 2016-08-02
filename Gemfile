@@ -77,13 +77,11 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'mocha', '~> 1.1'
 gem 'jasmine-rails'
 gem 'jasmine-jquery-rails'
-<<<<<<< HEAD
 gem 'strong_parameters'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
 gem 'geocoder'
 gem "i18n-js", ">= 3.0.0.rc11"
-=======
 
 gem 'strong_parameters'
 gem 'sunspot_rails'
@@ -94,4 +92,3 @@ gem 'geocoder'
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'http_accept_language'
 
->>>>>>> 1349fe40be5747bb47d102b3c82cb05827b39969

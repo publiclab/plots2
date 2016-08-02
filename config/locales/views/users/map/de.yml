@@ -1,0 +1,11 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  users:
+    map:
+      search: "Suche"
+      location: "Ort"
+      skill: "Ortung"
+      gear: "Ausrüstung"
+      role: "Partie"
+      tool: "Werkzeug"

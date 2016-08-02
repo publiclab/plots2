@@ -1,0 +1,17 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  users:
+    list:
+      user_moderation: "Benutzer Mäßigung"
+      admins_ban_spam: 'Normale Benutzer sehen nur eine Liste der letzten Benutzer hier, aber Moderatoren und Administratoren können "Spam" Benutzer verbieten und sehen diejenigen, die verboten wurden.'
+      members_last_activity: "Öffentliche Lab Mitglieder <small>durch letzte Aktivität</small>"
+      username: "Benutzername"
+      last_activity: "Letzte Aktivität"
+      history: "Historie"
+      joined: "Beigetreten"
+      moderation: "Mäßigung"
+      notes_and_edits: "Forschungsnotizen und Wiki-Bearbeitungen"
+      banned: "Verboten"
+      are_you_sure: "Bist du sicher? Der Benutzer wird sich einloggen oder zu veröffentlichen, nicht mehr möglich sein."
+      ban: "Verbot"
