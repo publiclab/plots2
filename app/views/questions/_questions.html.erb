@@ -8,6 +8,10 @@
 
         <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
 
+        <% if node.answers.collect(&:accepted).include?(true) %>
+          <div class="text-center"><p><span class="label accepted">Answered</span></p></div>
+        <% end %>
+
         <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h4>
 
         <p class="meta">asked <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
@@ -31,4 +35,4 @@
   <% end %>
   </div>
 </div>
-<div class="text-center"><%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>
+<div class="text-center"><%= will_paginate @questions, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>
