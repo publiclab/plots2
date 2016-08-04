@@ -116,11 +116,9 @@ class UsersController < ApplicationController
                        .page(params[:page])
                        .order("nid DESC")
                        .where(status: 1, uid: @user.uid)
-    @questions = DrupalNode.where(status: 1, type: 'note', uid: @user.uid)
-                           .joins(:drupal_tag)
-                           .where('term_data.name LIKE ?', 'question:%')
+    @questions = DrupalNode.questions
+                           .where(status: 1, uid: @user.uid)
                            .order('node.nid DESC')
-                           .group('node.nid')
                            .paginate(:page => params[:page], :per_page => 30)
     @answered_questions = @questions.select{|q| q.answers.collect(&:author).include?(@user)}
     wikis = DrupalNodeRevision.order("nid DESC")

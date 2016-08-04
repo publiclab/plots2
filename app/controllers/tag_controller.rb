@@ -14,28 +14,37 @@ class TagController < ApplicationController
   end
 
   def show
-    @node_type = params[:node_type] || "note"
-      @node_type = "page" if @node_type == "wiki"
-      @node_type = "map" if @node_type == "maps"
+    if params[:id].match('question:')
+      default_type = "questions"
+    else
+      default_type = "note"
+    end
+    @node_type = params[:node_type] || default_type
+    node_type = "note" if @node_type == "questions" || @node_type == "note"
+    node_type = "page" if @node_type == "wiki"
+    node_type = "map" if @node_type == "maps"
+    qids = DrupalNode.questions.where(status: 1).collect(&:nid)
     if params[:id][-1..-1] == "*" # wildcard tags
       @wildcard = true
       @tags = DrupalTag.where('name LIKE (?)', params[:id][0..-2] + '%')
-      nodes = DrupalNode.where(:status => 1, :type => @node_type)
+      nodes = DrupalNode.where(:status => 1, :type => node_type)
                         .includes(:drupal_node_revision, :drupal_tag)
                         .where('term_data.name LIKE (?)', params[:id][0..-2] + '%')
                         .page(params[:page])
                         .order("node_revisions.timestamp DESC")
     else
       @tags = DrupalTag.find_all_by_name params[:id]
-      nodes = DrupalNode.where(status: 1, type: @node_type)
+      nodes = DrupalNode.where(status: 1, type: node_type)
                         .includes(:drupal_node_revision, :drupal_tag)
                         .where('term_data.name = ?', params[:id])
                         .page(params[:page])
                         .order("node_revisions.timestamp DESC")
     end
-    @notes = nodes if @node_type == "note"
-    @wikis = nodes if @node_type == "page"
-    @nodes = nodes if @node_type == "map"
+
+    @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == "note"
+    @questions = nodes.where('node.nid IN (?)', qids) if @node_type == "questions"
+    @wikis = nodes if @node_type == "wiki"
+    @nodes = nodes if @node_type == "maps"
     @title = params[:id]
     set_sidebar :tags, [params[:id]]
   end

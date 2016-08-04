@@ -18,7 +18,7 @@
 
         <span id="tags">
         <% node.tags.limit(4).each do |tag| %>
-          <span id="tag_<%= tag.id %>" class="label label-primary"><a href="/tag/<%= tag.name %>"><%= tag.name %></a></span>
+          <span id="tag_<%= tag.id %>" class="label label-primary"><a href="/questions/tag/<%= tag.name %>"><%= tag.name %></a></span>
         <% end %>
         </span>
         <p style="margin-top:30px;"><% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> Spam</a><% end %>
