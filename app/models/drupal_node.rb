@@ -686,4 +686,11 @@ class DrupalNode < ActiveRecord::Base
                       .where('node.nid NOT IN (?)', nids)
   end
 
+  def self.questions
+    questions = DrupalNode.where(type: 'note')
+                          .joins(:drupal_tag)
+                          .where('term_data.name LIKE ?', 'question:%')
+                          .group('node.nid')
+  end
+
 end

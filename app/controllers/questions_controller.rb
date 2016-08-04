@@ -2,13 +2,10 @@ class QuestionsController < ApplicationController
 
   def index
     @title = "Recent Questions"
-    @questions = DrupalNode.where(status: 1, type: 'note')
-                       .joins(:drupal_tag)
-                       .where('term_data.name LIKE ?', 'question:%')
-                       .order('node.nid DESC')
-                       .group('node.nid') 
+    @questions = DrupalNode.questions.where(status: 1)
     sort_question_by_tags
-    @questions = @questions.paginate(:page => params[:page], :per_page => 30)
+    @questions = @questions.order('node.nid DESC')
+                           .paginate(:page => params[:page], :per_page => 30)
 
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)
@@ -45,11 +42,12 @@ class QuestionsController < ApplicationController
 
   def answered
     @title = "Recently answered"
-    @questions = DrupalNode.joins(:answers)
-                       .order('answers.created_at DESC')
-                       .group('node.nid')
+    @questions = DrupalNode.questions.where(status: 1)
     sort_question_by_tags
-    @questions = @questions.paginate(:page => params[:page], :per_page => 30)
+    @questions = @questions.joins(:answers)
+                          .order('answers.created_at DESC')
+                          .group('node.nid')
+                          .paginate(:page => params[:page], :per_page => 30)
 
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)
@@ -68,14 +66,11 @@ class QuestionsController < ApplicationController
 
   def popular
     @title = "Popular Questions"
-    @questions = DrupalNode.where(status: 1, type: 'note')
-                       .joins(:drupal_tag)
-                       .where('term_data.name LIKE ?', 'question:%')
-                       .order('node_counter.totalcount DESC')
-                       .includes(:drupal_node_counter)
-                       .group('node.nid')
+    @questions = DrupalNode.questions.where(status: 1)
     sort_question_by_tags
-    @questions = @questions.limit(20)
+    @questions = @questions.order('node_counter.totalcount DESC')
+                           .includes(:drupal_node_counter)
+                           .limit(20)
 
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)
@@ -86,13 +81,10 @@ class QuestionsController < ApplicationController
 
   def liked
     @title = "Highly liked Questions"
-    @questions = DrupalNode.where(status: 1, type: 'note')
-                       .joins(:drupal_tag)
-                       .where('term_data.name LIKE ?', 'question:%')
-                       .order("cached_likes DESC")
-                       .group('node.nid')
+    @questions = DrupalNode.questions.where(status: 1)
     sort_question_by_tags
-    @questions = @questions.limit(20)
+    @questions = @questions.order("cached_likes DESC")
+                           .limit(20)
 
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)

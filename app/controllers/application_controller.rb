@@ -174,7 +174,12 @@ class ApplicationController < ActionController::Base
     def sort_question_by_tags
       if session[:tags] && !session[:tags].empty?
         @session_tags = session[:tags]
-        @questions = @questions.select{|q| !(q.drupal_tag.collect(&:name) & @session_tags.values).empty?}
+        qids = @questions.collect(&:nid)
+        @questions = DrupalNode.where(status: 1, type: 'note')
+                      .joins(:drupal_tag)
+                      .where('term_data.name IN (?)', @session_tags.values)
+                      .where('node.nid IN (?)', qids)
+                      .group('node.nid')
       end
     end
 
