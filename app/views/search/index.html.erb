@@ -1,4 +1,8 @@
-<%= render :partial => "sidebar/related" %>
+<% if params[:controller] == 'questions_search' %>
+  <%= render :partial => "sidebar/question" %>
+<% else %>
+  <%= render :partial => "sidebar/related" %>
+<% end %>
 
 <% if params[:controller] == 'questions_search'
      @notes = @questions
@@ -9,24 +13,32 @@
 
     <h3>Search results for <i style="color:#aaa;"><%= params[:id] %></i> <small>(<a href="/search/advanced/<%= params[:id] %>">advanced search</a>)</small></h3>
 
-  <% if @notes.length == 0 %>
+  <% if params[:controller] == 'questions_search' %>
+    <% if @questions.length == 0 %>
 
-    <p>No results found; try looking for <a href="/tag/<%= params[:id] %>">items tagged with '<b><%= params[:id] %></b>'</a> or broadening your search:</p>
+      <p>No questions found for the search term '<b><%= params[:id] %></b>'</p><hr/>
 
-    <%= render :partial => "search/search" %>
+    <% else %>
+      <%= render :partial => "questions/questions" %>
+      <hr/>
+      <h4>Still didn't find the question you were looking for? Just proceed to Ask your question.</h4>
+    <% end %>
 
-    <p>Or try an <a href="/search/advanced/">advanced search</a></p>
+    <div class="text-center"><a href="/post?tags=question:question&template=question&redirect=question&title=<%= params[:id] %>" class="btn btn-info">Proceed to your Question &raquo;</a></div>
 
   <% else %>
-    <% if params[:controller] == 'questions_search' %>
-      <%= render :partial => "questions/questions" %>
+    <% if @notes.length == 0 %>
+
+      <p>No results found; try looking for <a href="/tag/<%= params[:id] %>">items tagged with '<b><%= params[:id] %></b>'</a> or broadening your search:</p>
+
+      <%= render :partial => "search/search" %>
+
+      <p>Or try an <a href="/search/advanced/">advanced search</a></p>
+
     <% else %>
       <%= render :partial => "notes/notes" %>
     <% end %>
-
   <% end %>
-
-  <hr />
   
 </div>
 

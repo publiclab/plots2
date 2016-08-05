@@ -42,9 +42,10 @@
         <a href="/profile/<%= author %>"><%= author %></a>
       </p>
     <% end %>
-    <% if params[:controller] == "tag" || (@node && @node.type == "page") %><li><a href="/contributors/<%= params[:id] %>"><i class="fa fa-list"></i> <%= t('sidebar._related.view_all') %> &raquo;</a></li><% end %>
+
+    <% if params[:controller] == "tag" || (@node && @node.type == "page") %><a href="/contributors/<%= params[:id] %>"><i class="fa fa-list"></i> <%= t('sidebar._related.view_all') %> &raquo;</a><% end %>
     <% end %>
- 
+
     <% if @users && @users.length > 0 %>
     <h4><%= t('sidebar._related.contributors') %></h4>
       <% @users.each do |author| %>

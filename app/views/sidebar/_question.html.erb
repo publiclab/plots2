@@ -9,17 +9,23 @@
     <a rel="tooltip" title="Ask question<% if @tagnames %> about <%= (@tagnames.uniq.collect {|x| x.gsub(/[\w-]+:/, '') }).join(',') %><% end %>" data-placement="bottom" href="/post<%= '?tags=' + @tagnames.uniq.join(',') if @tagnames %>&template=question&redirect=question" class="btn btn-primary btn-lg btn-block"><i class="fa fa-question-circle fa-white"></i> Ask related question &raquo;</a>
 
     <br />
-    <%= render :partial => "sidebar/list" %>
+    
+    <% if @node %>
+      <%= render :partial => "sidebar/list" %>
+    <% end %>
 
-    <% if @users.length > 0 %>
-    <h4>Top Answerers</h4>
-      <% @users.each do |author| %>
-        <% count = @node.answers.where(uid: author.uid).length %>
-        <p><i class="fa fa-user" style="margin-right: 5px;"></i><a rel="tooltip" title="<%= count %> answers" data-placement="right" href="/profile/<%= author.name %>"><%= author.name %></a></p>
+    <% if params[:controller] == 'questions' %>
+      <% if @users.length > 0 %>
+      <h4>Top Answerers</h4>
+        <% @users.each do |author| %>
+          <% count = @node.answers.where(uid: author.uid).length %>
+          <p><i class="fa fa-user" style="margin-right: 5px;"></i><a rel="tooltip" title="<%= count %> answers" data-placement="right" href="/profile/<%= author.name %>"><%= author.name %></a></p>
+        <% end %>
       <% end %>
-    <% end %> 
-  </div>
+    <% end %>
 
-  <%= render partial: 'sidebar/notes', locals: { notes: @notes, title: "Related Questions", node: @node } %>
+    <%= render partial: 'sidebar/notes', locals: { notes: @notes, title: "Related Questions", node: @node } %>
+
+  </div>
 </div>
 <%= javascript_include_tag 'sidebar' %>
