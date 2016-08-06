@@ -99,6 +99,34 @@
         <input autocomplete="off" class="form-control" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
       </div>
 
+      <br />
+
+      <div class="input-group checkbox">
+        <label for="display-location">
+          <input tabindex="7" id="display-location" type="checkbox" name="display_location">
+          Add Location to the content
+        </label>        
+      </div>
+
+      <br />
+
+      <div class="hide">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+          <input autocomplete="off" class="form-control" id="location-input" tabindex="3" name="location" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="New York City, USA"<% end %> data-provide="typeahead" />
+        </div>
+        <br />
+
+
+        <br />
+        <div class="input-group checkbox">
+          <label for="display-location">
+            <input tabindex="7" id="location_privacy" type="checkbox" name="location_privacy">
+            Obscure my exact location
+          </label>
+        </div>
+      </div>
+
       <input name="remote" type="hidden" value="true" />
  
       <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
