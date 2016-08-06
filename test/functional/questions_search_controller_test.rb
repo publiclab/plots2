@@ -18,11 +18,11 @@ class QuestionsSearchControllerTest < ActionController::TestCase
     assert_template :index
   end
 
-  test "should redirect to post form if no question match found" do
+  test "questions instance should be empty if no question match found" do
     UserSession.create(rusers(:bob))
     get :index, id: 'What'
+    assert_response :success
     assert_empty assigns(:questions)
-    assert_redirected_to '/post?tags=question:question&template=question&title=What&redirect=question'
   end
 
   test "get search/questions_typehead" do

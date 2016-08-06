@@ -166,4 +166,25 @@ class DrupalNodeTest < ActiveSupport::TestCase
     assert_not_nil DrupalNode.weekly_tallies('page', 2, Time.now - 1.month)
   end
 
+  test "should show normal tags" do
+    node = node(:question)
+    assert_equal node.normal_tags, [community_tags(:test2)]
+  end
+
+  test "should show question icon for question node" do
+    node = node(:question)
+    assert_equal 'question-circle', node.icon
+  end
+
+  test "should find all research notes" do
+    notes = DrupalNode.research_notes
+    expected = [node(:one), node(:spam), node(:first_timer_note)]
+    assert_equal expected, notes
+  end
+
+  test "should find all questions" do
+    questions = DrupalNode.questions
+    expected = [node(:question), node(:question2)]
+    assert_equal expected, questions
+  end
 end

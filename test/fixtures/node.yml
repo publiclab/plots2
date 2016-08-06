@@ -93,3 +93,15 @@ question:
   type: "note"
   cached_likes: 0
   slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-how-to-use-a-spectrometer
+
+question2:
+  nid: 9
+  uid: 2
+  title: "How to ask a question"
+  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/how-to-ask-a-question"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-how-to-ask-a-question

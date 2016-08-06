@@ -226,4 +226,21 @@ class UsersControllerTest < ActionController::TestCase
 #    assert_redirected_to root_url
 #  end
 
+  test "should list notes and questions in user profile" do
+    user = users(:jeff)
+    get :profile, id: user.name
+    assert_not_nil assigns(:notes)
+    assert_not_nil assigns(:questions)
+    assert_not_nil assigns(:answered_questions)
+    assert_select "#asked .note-question", 2
+    assert_select "#answered .note-answer", 1
+  end
+
+  test "should get comments" do
+    user = users(:jeff)
+    get :comments, id: user.id
+    assert_response :success
+    assert_not_nil assigns(:comments)
+    assert_template partial: 'comments/_comments'
+  end
 end

@@ -120,7 +120,10 @@ class UsersController < ApplicationController
                            .where(status: 1, uid: @user.uid)
                            .order('node.nid DESC')
                            .paginate(:page => params[:page], :per_page => 30)
-    @answered_questions = @questions.select{|q| q.answers.collect(&:author).include?(@user)}
+    questions = DrupalNode.questions
+                          .where(status: 1)
+                          .order('node.nid DESC')
+    @answered_questions = questions.select{|q| q.answers.collect(&:author).include?(@user)}
     wikis = DrupalNodeRevision.order("nid DESC")
                               .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
                               .joins(:drupal_node)

@@ -111,4 +111,43 @@ class QuestionsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:questions)
     assert_template :index
   end
+
+  test "should list questions with status 1 in index" do
+    UserSession.create(rusers(:admin))
+    get :index
+    questions = assigns(:questions)
+    expected = [node(:question), node(:question2)]
+    notes = [node(:one)]
+    assert (questions & expected).present?
+    assert !(questions & notes).present?
+  end
+
+  test "should list questions with status 1 in popular" do
+    UserSession.create(rusers(:admin))
+    get :popular
+    questions = assigns(:questions)
+    expected = [node(:question), node(:question2)]
+    notes = [node(:one)]
+    assert (questions & expected).present?
+    assert !(questions & notes).present?
+  end
+
+  test "should list questions with status 1 in liked" do
+    UserSession.create(rusers(:admin))
+    get :liked
+    questions = assigns(:questions)
+    expected = [node(:question), node(:question2)]
+    notes = [node(:one)]
+    assert (questions & expected).present?
+    assert !(questions & notes).present?
+  end
+
+  test "should list only answered questions in answered" do
+    UserSession.create(rusers(:admin))
+    get :answered
+    questions = assigns(:questions)
+    expected = [node(:question)]
+    assert (questions & expected).present?
+    assert !(questions & [node(:question2)]).present?
+  end
 end

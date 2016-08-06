@@ -141,3 +141,9 @@ place:
   uid: 1
   title: Chicago
   body: Chicago chapter
+
+question2:
+  nid: 9
+  uid: 2
+  title: How to ask a question
+  body: Some sample text

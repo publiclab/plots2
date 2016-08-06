@@ -104,4 +104,56 @@ class TagControllerTest < ActionController::TestCase
       assert_equal "#{User.first.username} awards a <a href=\"publiclab.org/wiki/barnstars\">barnstar</a> to #{DrupalNode.last.drupal_users.name} for their awesome contribution!", DrupalComment.last.body
     end
   end
+
+  test "should take node type as question if tag is a question tag" do
+    tag = tags(:question)
+    get :show, id: tag.name
+    assert_equal "questions", assigns(:node_type)
+  end
+
+  test "should take node type as note if tag is not a question tag" do
+    tag = tags(:awesome)
+    get :show, id: tag.name
+    assert_equal "note", assigns(:node_type)
+  end
+
+  test "should list only question in question view" do
+    tag = tags(:question)
+    get :show, id: tag.name
+    questions = assigns(:questions)
+    expected = [node(:question), node(:question2)]
+    assert_not_nil assigns(:questions)
+    assert (questions & expected).present?
+  end
+
+  test "should list only notes in notes view" do
+    tag = tags(:test)
+    get :show, id: tag.name
+    notes = assigns(:notes)
+    expected = [node(:one)]
+    assert_not_nil assigns(:notes)
+    assert (notes & expected).present?
+  end
+
+  test "should have active Research tab for notes" do
+    tag = tags(:test)
+    get :show, id: tag.name
+    assert_select 'ul.nav-tabs' do
+      assert_select 'li.active' do
+        assert_select "a[href = '/tag/test']", 1
+      end
+    end
+    assert_select '#notes.active', 1
+  end
+
+  test "should have active question tab for question" do
+    tag = tags(:question)
+    get :show, id: tag.name
+    assert_select 'ul.nav-tabs' do
+      assert_select 'li.active' do
+        assert_select "a[href = '/questions/tag/question:spectrometer']", 1
+      end
+    end
+    assert_select '#questions.active', 1
+  end
 end
