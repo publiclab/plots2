@@ -103,27 +103,29 @@
 
       <div class="input-group checkbox">
         <label for="display-location">
-          <input tabindex="7" id="display-location" type="checkbox" name="display_location">
+          <input tabindex="7" id="display-location" type="checkbox" name="display_location" onchange="$('#location-info').toggle();">
           Add Location to the content
         </label>        
       </div>
 
       <br />
 
-      <div class="hide">
+      <div id="location-info" style="display:none;">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-          <input autocomplete="off" class="form-control" id="location-input" tabindex="3" name="location" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="New York City, USA"<% end %> data-provide="typeahead" />
+          <input autocomplete="off" class="form-control" id="location-input" tabindex="3" name="location" type="text" placeholder="New York City, USA" data-provide="typeahead" />
         </div>
         <br />
 
-
-        <br />
         <div class="input-group checkbox">
-          <label for="display-location">
-            <input tabindex="7" id="location_privacy" type="checkbox" name="location_privacy">
+          <label for="location-privacy">
+            <input tabindex="7" id="location-privacy" type="checkbox" name="location_privacy">
             Obscure my exact location
           </label>
+        </div>
+
+        <div class="container">
+          <div id="location_map" class="row"></div>
         </div>
       </div>
 
@@ -164,3 +166,5 @@
 
   <% end %>
 </div>
+
+<%= javascript_include_tag "note_location_tags.js" %>
