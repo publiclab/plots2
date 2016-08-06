@@ -137,6 +137,27 @@ class NotesController < ApplicationController
             @node.add_tag(tagname.strip,current_user)
           end
         end
+
+        # Handle Location for Note
+        if params[:display_location] && params[:location]
+          geo_location = LocationTag.fetch_location(params[:location])
+
+          latitude = params[:location_privacy].present? ? geo_location.latitude.round(4) : geo_location.latitude
+          longitude = params[:location_privacy].present? ? geo_location.longitude.round(4) : geo_location.longitude
+
+          @location_tag = @node.build_location_tag({
+            uid: current_user.id,
+            lat: geo_location.latitude,
+            lon: geo_location.longitude,
+            location: params[:display_location],
+            country: geo_location.country,
+            state: geo_location.state,
+            city: geo_location.city,
+            location_privacy: params[:location_privacy].present?
+          })
+          @location_tag.save!
+        end
+
         if params[:event] == "on"
           @node.add_tag("event",current_user)
           @node.add_tag("event:rsvp",current_user)
