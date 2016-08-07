@@ -1,0 +1,9 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+   sidebar:
+     _list:
+       mailing_list: "Treten Sie der <a href='%{url1}'<b>%{mailing_list}</b> Mailingliste</a>"
+       subscribe: "Abonnieren"
+       recent_discussion_topics: "Aktuelle Diskussionsthemen"
+       all_topics: "Alle Themen"
