@@ -15,6 +15,11 @@ class SearchesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should get dynamic' do
+    get :dynamic
+    assert_response :success
+  end
+
   test 'should get show' do
     get :show, id: @advanced_search
     assert_response :success
