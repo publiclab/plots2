@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'rest-client'
 
-class TypeaheadApiTest < ActionController::TestCase
+class RestfulSearchTest < ActionController::TestCase
 
   def setup
     @stxt = 'l'
@@ -10,10 +10,10 @@ class TypeaheadApiTest < ActionController::TestCase
     @sseq = 7
   end
 
-  test 'typeahead all functionality' do
-    typeresponse = RestClient.get 'http://localhost:3000/api/typeahead/all', {:params => {'srchString' => @stxt, 'seq' => @sseq }}
+  test 'search all functionality' do
+    srchresponse = RestClient.get 'http://localhost:3000/api/srch/all', {:params => {'srchString' => @stxt, 'seq' => @sseq }}
     
-    # Expected typeahead pattern
+    # Expected search pattern
     pattern = {
       items: Array,
       srchParams: {
@@ -24,11 +24,11 @@ class TypeaheadApiTest < ActionController::TestCase
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
-    assert matcher =~ JSON.parse(typeresponse.body)
+    assert matcher =~ JSON.parse(srchresponse.body)
   end
 
-  test 'typeahead profile functionality' do
-    typeresponse = RestClient.get 'http://localhost:3000/api/typeahead/profiles', {:params => {'srchString' => @sprofile, 'seq' => @sseq }}
+  test 'search profile functionality' do
+    searchresponse = RestClient.get 'http://localhost:3000/api/srch/profiles', {:params => {'srchString' => @sprofile, 'seq' => @sseq }}
     
     # Expected profile response pattern
     pattern = {
@@ -41,11 +41,11 @@ class TypeaheadApiTest < ActionController::TestCase
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
-    assert matcher =~ JSON.parse(typeresponse.body)
+    assert matcher =~ JSON.parse(searchresponse.body)
   end
 
-  test 'typeahead notes functionality' do
-    typeresponse = RestClient.get 'http://localhost:3000/api/typeahead/notes', {:params => {'srchString' => @stxt, 'seq' => @sseq }}
+  test 'search notes functionality' do
+    searchresponse = RestClient.get 'http://localhost:3000/api/srch/notes', {:params => {'srchString' => @stxt, 'seq' => @sseq }}
     
     # Expected notes pattern
     pattern = {
@@ -58,11 +58,11 @@ class TypeaheadApiTest < ActionController::TestCase
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
-    assert matcher =~ JSON.parse(typeresponse.body)
+    assert matcher =~ JSON.parse(searchresponse.body)
   end
 
-  test 'typeahead questions functionality' do
-    typeresponse = RestClient.get 'http://localhost:3000/api/typeahead/questions', {:params => {'srchString' => @stxt, 'seq' => @sseq }}
+  test 'search questions functionality' do
+    searchresponse = RestClient.get 'http://localhost:3000/api/srch/questions', {:params => {'srchString' => @stxt, 'seq' => @sseq }}
     
     # Expected question pattern
     #  Returns null right now for test--need to set a better search sequence on demo seed data
@@ -75,11 +75,11 @@ class TypeaheadApiTest < ActionController::TestCase
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
-    assert matcher =~ JSON.parse(typeresponse.body)
+    assert matcher =~ JSON.parse(searchresponse.body)
   end
 
-  test 'typeahead tags functionality' do
-    typeresponse = RestClient.get 'http://localhost:3000/api/typeahead/tags', {:params => {'srchString' => @stags, 'seq' => @sseq }}
+  test 'search tags functionality' do
+    searchresponse = RestClient.get 'http://localhost:3000/api/srch/tags', {:params => {'srchString' => @stags, 'seq' => @sseq }}
     
     # Expected tag pattern
     pattern = {
@@ -92,7 +92,7 @@ class TypeaheadApiTest < ActionController::TestCase
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
-    assert matcher =~ JSON.parse(typeresponse.body)
+    assert matcher =~ JSON.parse(searchresponse.body)
   end
 
 
