@@ -1,0 +1,8 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+   sidebar:
+     _events: 
+       post_event: "Eine Veranstaltung"
+       local_events: "Lokale Veranstaltungen"
+       no_events: "Keine Veranstaltungen"
