@@ -21,10 +21,21 @@ class DrupalNode < ActiveRecord::Base
   self.primary_key = 'nid'
 
   extend FriendlyId
-  friendly_id :title, use: [:slugged, :history]
+  friendly_id :friendly_id_string, use: [:slugged, :history]
 
   def should_generate_new_friendly_id?
     slug.blank? || title_changed?
+  end
+
+  def friendly_id_string
+    if self.type == 'note'
+      username = DrupalUsers.find_by_uid(self.uid).name
+      "#{username} #{Time.at(self.created).strftime("%m-%d-%Y")} #{self.title}"
+    elsif self.type == 'page'
+      "#{self.title}"
+    elsif self.type == 'map'
+      "#{self.title} #{Time.at(self.created).strftime("%m-%d-%Y")}"
+    end
   end
 
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
@@ -71,8 +82,8 @@ class DrupalNode < ActiveRecord::Base
   before_save :set_changed_and_created
   after_create :setup
   before_validation :set_path, on: :create
-  after_save :update_path
   before_create :remove_slug
+  before_update :update_path
 
   # can switch to a "question-style" path if specified
   def path(type = :default)
@@ -104,15 +115,14 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def update_path
-    new_path = if self.type == 'note'
+    self.path = if self.type == 'note'
                   username = DrupalUsers.find_by_uid(self.uid).name
-                  "/notes/#{username}/#{Time.at(self.created).strftime("%m-%d-%Y")}/#{self.friendly_id}"
+                  "/notes/#{username}/#{Time.at(self.created).strftime("%m-%d-%Y")}/#{self.title.parameterize}"
                 elsif self.type == 'page'
-                  "/wiki/" + self.friendly_id
+                  "/wiki/" + self.title.parameterize
                 elsif self.type == 'map'
-                  "/map/#{self.friendly_id}/#{Time.at(self.created).strftime("%m-%d-%Y")}"
+                  "/map/#{self.title.parameterize}/#{Time.at(self.created).strftime("%m-%d-%Y")}"
                 end
-    self.update_column(:path, new_path)
   end
 
   def remove_slug
@@ -660,4 +670,13 @@ class DrupalNode < ActiveRecord::Base
     User.find_all_by_username(usernames.map {|m| m[1] }).uniq
   end
 
+  def self.find_notes(author, date, title)
+    finder = "#{author} #{date} #{title}".parameterize
+    DrupalNode.find(finder)
+  end
+
+  def self.find_map(name, date)
+    finder = "#{name} #{date}".parameterize
+    DrupalNode.find(finder)
+  end
 end

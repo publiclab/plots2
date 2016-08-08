@@ -90,7 +90,7 @@ class NotesController < ApplicationController
 
   def show
     if params[:author] && params[:date]
-      @node = DrupalNode.find params[:id]
+      @node = DrupalNode.find_notes(params[:author], params[:date], params[:id])
       @node = @node || DrupalNode.where(path: "/report/#{params[:id]}").first
       redirect_old_urls
     else
