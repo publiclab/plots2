@@ -1,6 +1,6 @@
 one:
   id: 1
-  slug: canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon
   sluggable_id: 1
   sluggable_type: DrupalNode
   created_at: <%= Time.now %>
@@ -14,7 +14,7 @@ two:
 
 three:
   id: 3
-  slug: hot-stuff-i-m-selling
+  slug: spammer-<%= Time.now.strftime("%m-%d-%Y") %>-hot-stuff-i-m-selling
   sluggable_id: 3
   sluggable_type: DrupalNode
   created_at: <%= Time.now %>
@@ -35,7 +35,7 @@ five:
 
 six:
   id: 6
-  slug: my-very-first-post-to-public-lab
+  slug: newcomer-<%= Time.now.strftime("%m-%d-%Y") %>-my-very-first-post-to-public-lab
   sluggable_id: 6
   sluggable_type: DrupalNode
   created_at: <%= Time.now %>
@@ -49,7 +49,7 @@ seven:
 
 eight:
   id: 8
-  slug: how-to-use-a-spectrometer
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-how-to-use-a-spectrometer
   sluggable_id: 8
   sluggable_type: DrupalNode
   created_at: <%= Time.now %>

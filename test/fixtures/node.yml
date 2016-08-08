@@ -8,7 +8,7 @@ one:
   status: 1
   type: "note"
   cached_likes: 0
-  slug: canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon
 
 about: 
   nid: 2
@@ -32,7 +32,7 @@ spam:
   status: 0
   type: "note"
   cached_likes: 0
-  slug: hot-stuff-i-m-selling
+  slug: spammer-<%= Time.now.strftime("%m-%d-%Y") %>-hot-stuff-i-m-selling
 
 spam_targeted_page: 
   nid: 4
@@ -68,7 +68,7 @@ first_timer_note:
   status: 4
   type: "note"
   cached_likes: 0
-  slug: my-very-first-post-to-public-lab
+  slug: newcomer-<%= Time.now.strftime("%m-%d-%Y") %>-my-very-first-post-to-public-lab
 
 place:
   nid: 7
@@ -78,7 +78,7 @@ place:
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
-  type: "wiki"
+  type: "page"
   cached_likes: 0
   slug: chicago
 
@@ -92,4 +92,4 @@ question:
   status: 1
   type: "note"
   cached_likes: 0
-  slug: how-to-use-a-spectrometer
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-how-to-use-a-spectrometer

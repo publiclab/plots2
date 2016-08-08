@@ -135,3 +135,9 @@ question:
   uid: 2
   title: How to use a Spectrometer
   body: Spectrometer Question
+
+place:
+  nid: 7
+  uid: 1
+  title: Chicago
+  body: Chicago chapter
