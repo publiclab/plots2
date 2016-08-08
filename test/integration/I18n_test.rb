@@ -377,4 +377,34 @@ class I18nTest < ActionDispatch::IntegrationTest
         assert_select 'a', I18n.t('sidebar._related.write_research_note')
       end
     end
+    
+    test "should choose i18n for search/advanced" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/search/advanced'
+        assert_select 'h3', I18n.t('search.advanced.advanced_search')
+      end
+    end
+    
+    test "should choose i18n for search/index" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/search/some-query'
+        assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('search.index.try_advanced_search', :url1 => "/search/advanced/"))
+      end
+    end
+    
+    test "should choose i18n for search/map" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/map'
+        assert_select 'h3', I18n.t('search.map.user_map')
+      end
+    end
 end

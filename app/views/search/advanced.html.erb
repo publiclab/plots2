@@ -2,7 +2,7 @@
 
 <div class="col-md-9">
 
-  <h3 style="margin-top:0;">Advanced search</h3>
+  <h3 style="margin-top:0;"><%= t('search.advanced.advanced_search') %></h3>
 
   <form class="navbar-form" action="/search/advanced">
 
@@ -14,19 +14,19 @@
     <div class="pull-right" style="margin-top:5px;">           
       <label class="checkbox pull-right" style="width:100px;margin-right:10px;">
         <input type="checkbox" checked="<%= !params[:comments] %>" name="comments" onClick="$('.comment').toggle()" />
-        <i class="fa fa-comment"></i> Comments
+        <i class="fa fa-comment"></i> <%= t('search.advanced.comments') %>
       </label>
       <label class="checkbox pull-right" style="width:60px;margin-right:10px;">
         <input type="checkbox" checked="<%= !(params[:maps].nil?) %>" name="maps" onClick="$('.map').toggle()" />
-        <i class="fa fa-map-marker"></i> Maps
+        <i class="fa fa-map-marker"></i> <%= t('search.advanced.maps') %>
       </label>
       <label class="checkbox pull-right" style="width:55px;margin-right:10px;">
         <input type="checkbox" checked="true" name="wikis" onClick="$('.page').toggle()"/>
-        <i class="fa fa-book"></i> Wiki
+        <i class="fa fa-book"></i> <%= t('search.advanced.wiki') %>
       </label>
       <label class="checkbox pull-right" style="width:130px;margin-right:10px;">
         <input type="checkbox" checked="true" name="notes" onClick="$('.note').toggle()"/>
-        <i class="fa fa-file"></i> Research notes
+        <i class="fa fa-file"></i> <%= t('search.advanced.research_notes') %>
       </label>
     </div>
 
@@ -38,7 +38,7 @@
   <% @nodes.each do |node| %>
     <tr class="<%= node.type %>">
       <% if node.type == "comment" %>
-        <td><i class="fa fa-<%= node.icon %>"></i> Comment by <a href="<%= node.author.name %>"><%= node.author.name %></a></td>
+        <td><i class="fa fa-<%= node.icon %>"></i> <%= t('search.advanced.comment_by') %> <a href="<%= node.author.name %>"><%= node.author.name %></a></td>
       <% else %>
         <td><i class="fa fa-<%= node.icon %>"></i> <a href="<%= node.path %>"><%= node.title %></a></td>
       <% end %>

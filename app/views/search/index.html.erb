@@ -2,16 +2,16 @@
 
 <div class="col-md-9">
 
-    <h3>Search results for <i style="color:#aaa;"><%= params[:id] %></i> <small>(<a href="/search/advanced/<%= params[:id] %>">advanced search</a>)</small></h3>
+    <h3><%= raw t('search.index.search_results', :query => params[:id]) %> <small>(<a href="/search/advanced/<%= params[:id] %>"><%= t('search.index.advanced_search') %></a>)</small></h3>
 
   <% if @notes.length == 0 %>
 
-    <p>No results found; try looking for <a href="/tag/<%= params[:id] %>">items tagged with '<b><%= params[:id] %></b>'</a> or broadening your search:</p>
+    <p><%= raw t('search.index.no_results', :url1 => "/tag/"+params[:id], :tag => params[:id]) %></p>
 
     <%= render :partial => "search/search" %>
 
-    <p>Or try an <a href="/search/advanced/">advanced search</a></p>
-
+    <p><%= raw t('search.index.try_advanced_search', :url1 => "/search/advanced/") %></p>
+    
   <% else %>
     <% if params[:controller] == 'questions_search' %>
       <%= render :partial => "questions/questions" %>
