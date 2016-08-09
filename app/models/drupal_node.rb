@@ -28,7 +28,6 @@ class DrupalNode < ActiveRecord::Base
   end
 
   # friendly_id uses this method to set the slug column for nodes
-
   def friendly_id_string
     if self.type == 'note'
       username = DrupalUsers.find_by_uid(self.uid).name
@@ -38,13 +37,6 @@ class DrupalNode < ActiveRecord::Base
     elsif self.type == 'map'
       "#{self.title} #{Time.at(self.created).strftime("%m-%d-%Y")}"
     end
-  searchable do
-    text :title
-    # integer :vid
-    # integer :nid
-    # text :comments do
-    #   comments.map { |comment| comment.comment }
-    # end
   end
 
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy

@@ -28,6 +28,5 @@ class SwaggerDocTest < ActionController::TestCase
     assert matcher =~ JSON.parse(docresponse.body)
   end
 
-
 end
 
