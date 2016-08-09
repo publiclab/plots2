@@ -1,0 +1,15 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  comments:
+    _form:
+      uploading: "Hochladen..."
+      drag_and_drop: "Drag &amp; Drop ein Bild oder eine Datei, hinzufügen oder"
+      choose_one: "wähle ein"
+      upload_image: "Bild hochladen"
+      preview: "Vorschau"
+      cancel: "Stornieren"
+      logged_in: "Angemeldet als <b>%{username}</b>"
+      formatting: "Formatierung"
+      notifications: "Benachrichtigungen"
+      email_notifications: "Autor, commenters, und diejenigen, die haben \"gemocht\" diese Note E-Mail -Benachrichtigungen erhalten"

@@ -378,4 +378,20 @@ class I18nTest < ActionDispatch::IntegrationTest
         assert_select 'a', I18n.t('sidebar._related.write_research_note')
       end
     end
+    
+    test "should choose i18n for comments" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get node(:one).path
+        assert_select "a", I18n.t('comments._form.upload_image')
+      end
+    end
 end
