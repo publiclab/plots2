@@ -1,0 +1,11 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+   search:
+     advanced:
+       advanced_search: "Advanced search"
+       comments: "Comments"
+       maps: "Maps"
+       wiki: "Wiki"
+       research_notes: "Research notes"
+       comment_by: "Comment by"

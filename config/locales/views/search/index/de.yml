@@ -1,0 +1,9 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+   search:
+     index:
+       search_results: "Suchergebnisse für <i style=\"color:#aaa;\">%{query}</i>"
+       advanced_search: "Erweiterte Suche"
+       no_results: "Keine Ergebnisse gefunden; versuchen nach <a href='%{url1}'>Artikeln suchen, um mit einem '<b>%{tag}</b>' versehen</a> oder erweitern Sie Ihre Suche:"
+       try_advanced_search: "Oder versuchen Sie eine <a href='%{url1}'>erweiterte Suche</a>"
