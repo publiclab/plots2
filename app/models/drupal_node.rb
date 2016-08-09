@@ -20,6 +20,23 @@ class DrupalNode < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
+  extend FriendlyId
+  friendly_id :friendly_id_string, use: [:slugged, :history]
+
+  def should_generate_new_friendly_id?
+    slug.blank? || title_changed?
+  end
+
+  def friendly_id_string
+    if self.type == 'note'
+      username = DrupalUsers.find_by_uid(self.uid).name
+      "#{username} #{Time.at(self.created).strftime("%m-%d-%Y")} #{self.title}"
+    elsif self.type == 'page'
+      "#{self.title}"
+    elsif self.type == 'map'
+      "#{self.title} #{Time.at(self.created).strftime("%m-%d-%Y")}"
+    end
+
   searchable do
     text :title
     # integer :vid

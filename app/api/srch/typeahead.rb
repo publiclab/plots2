@@ -107,7 +107,7 @@ module Srch
         optional :seq, type: Integer, documentation: { example: 995 }
       end
       get :tags do
-        sresult = TagList.new
+        sresult = DocList.new
         unless params[:srchString].nil? || params[:srchString] == 0
           tservice = TypeaheadService.new
           sresult = tservice.textSearch_tags(params[:srchString])

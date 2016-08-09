@@ -41,3 +41,29 @@
     </div>
   </div>
 </div>
+
+          <% if @nodes.present? %>
+            <%= render partial: 'node_result', locals: {notes: @nodes} %>
+          <% else %>
+            <div class="panel-body">
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="taball">
+                  <div class="row sresults-row">
+                    <div class="panel-group">
+                      <div class="panel panel-default">
+                        <p> Your search - <strong><%= @search.key_words %> </strong> - </p>
+                        <p>did not match any documents.</p>
+                        <a href="<%= search_dynamic_url + '/'+ @search.key_words %>">Try Dynamic search</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

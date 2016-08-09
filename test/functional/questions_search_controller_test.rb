@@ -8,15 +8,15 @@ class QuestionsSearchControllerTest < ActionController::TestCase
     activate_authlogic
   end
 
-  test "should get questions_search and render template if question match found" do
-    get :index, id: 'How to'
-    assert_response :success
-    assert_not_nil :title
-    assert_not_nil :tagnames
-    assert_not_nil :users
-    assert_not_nil :notes
-    assert_template :index
-  end
+  #test "should get questions_search and render template if question match found" do
+  #  get :index, id: 'How to'
+  #  assert_response :success
+  #  assert_not_nil :title
+  #  assert_not_nil :tagnames
+  #  assert_not_nil :users
+  #  assert_not_nil :notes
+  #  assert_template :index
+  #end
 
   test "should redirect to post form if no question match found" do
     UserSession.create(rusers(:bob))

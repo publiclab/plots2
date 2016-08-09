@@ -4,6 +4,7 @@
 # is to provide _detailed_ results at a deep level.  In effect, TypeaheadService provides pointers to 
 # better searches, while SearchService provides deep and detailed information.
 # TODO: Refactor TypeaheadService and SearchService so that common functions come from a higher level class?
+
 class SearchService
 
   def initialize
@@ -204,5 +205,4 @@ class SearchService
     return sresult
   end
 
-  
 end

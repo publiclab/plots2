@@ -20,20 +20,20 @@
 
       <p>
         <span id="c<%= comment.id%>uploading" class="uploading" style="display:none;">
-          Uploading...
+          <%= t('comments._edit.uploading') %>
         </span>
         <span id="c<%= comment.id%>prompt" class="prompt">
 
           <span style="padding-right:4px;float:left;" class="hidden-xs">
-            Drag &amp; drop to add an image or file, or 
+            <%= raw t('comments._edit.drag_and_drop') %>
           </span>
 
             <label id="c<%= comment.id%>input_label" for="c<%= comment.id%>input">
             <input id="c<%= comment.id%>input" type="file" name="image[photo]" style="display:none;" />
-            <a class="hidden-xs">choose one</a>
+            <a class="hidden-xs"><%= t('comments._edit.choose_one') %></a>
             <span class="visible-xs">
               <i class="fa fa-upload"></i> 
-              <a>Upload image</a>
+              <a><%= t('comments._edit.upload_image') %></a>
             </span>
           </label> 
 
@@ -126,7 +126,7 @@
   </div>
 
   <div class="control-group">
-    <button type="submit" class="btn btn-primary">Publish</button>
+    <button type="submit" class="btn btn-primary"><%= t('comments._edit.publish') %></button>
       <a class="btn btn-default preview-btn" onClick="$('#c<%= comment.id %>preview').toggle();
           $('#c<%= comment.id %>text').toggle();
           $('#c<%= comment.id %>edit .preview-btn').button('toggle');
@@ -138,14 +138,14 @@
       </a>
 
     <span style="color:#888;"> &nbsp; 
-      <br class="visible-xs" />Logged in as <b><%= current_user.username %></b> | 
-      <a target="_blank" href="/wiki/authoring-help#Formatting">Formatting</a> | 
-      <a onClick="$('#who-is-notified').toggle()">Notifications</a>
+      <br class="visible-xs" /><%= raw t('comments._edit.logged_in', :username => current_user.username) %> |
+      <a target="_blank" href="/wiki/authoring-help#Formatting"><%= t('comments._edit.formatting') %></a> | 
+      <a onClick="$('#who-is-notified').toggle()"><%= t('comments._edit.notifications') %></a>
     </span>
   </div>
 
   <p id="who-is-notified" style="display:none;color:#888;">
-    Author, commenters, and those who've "liked" this note will receive email notifications
+    <%= t('comments._edit.email_notifications') %>
   </p>
 </form>
 

@@ -44,4 +44,6 @@
 //= require location_tags.js
 //= require users.js
 //= require users.js
+//= require restful_typeahead.js
+//= require searchform.js
 

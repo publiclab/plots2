@@ -96,5 +96,7 @@ module Plots2
       #{config.root}/app/controllers/concerns
       #{config.root}/app/models/concerns
     )
+
+
   end
 end

@@ -14,6 +14,15 @@ class TagResult
     @tagSource = tsrc
     obj
   end
+
+  def self.fromSearch(tid, tval, ttype, tsrc)
+    obj = new
+    @tagid = tid
+    @tagVal = tval
+    @tagType = ttype
+    @tagSource = tsrc
+    obj
+  end
   
   # This subclass is used to auto-generate the RESTful data structure.  It is generally not useful for internal Ruby usage
   #  but must be included for full RESTful functionality.
