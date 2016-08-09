@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160722022014) do
+ActiveRecord::Schema.define(:version => 20160809215356) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -147,6 +147,17 @@ ActiveRecord::Schema.define(:version => 20160722022014) do
   add_index "files", ["timestamp"], :name => "index_files_timestamp"
   add_index "files", ["uid"], :name => "index_files_uid"
 
+  create_table "friendly_id_slugs", :force => true do |t|
+    t.string   "slug",                         :null => false
+    t.integer  "sluggable_id",                 :null => false
+    t.string   "sluggable_type", :limit => 40
+    t.datetime "created_at"
+  end
+
+  add_index "friendly_id_slugs", ["slug", "sluggable_type"], :name => "index_friendly_id_slugs_on_slug_and_sluggable_type", :unique => true
+  add_index "friendly_id_slugs", ["sluggable_id"], :name => "index_friendly_id_slugs_on_sluggable_id"
+  add_index "friendly_id_slugs", ["sluggable_type"], :name => "index_friendly_id_slugs_on_sluggable_type"
+
   create_table "images", :force => true do |t|
     t.string   "title"
     t.integer  "uid"
@@ -194,12 +205,14 @@ ActiveRecord::Schema.define(:version => 20160722022014) do
     t.integer "drupal_node_revisions_count",               :default => 0
     t.string  "path"
     t.integer "main_image_id"
+    t.string  "slug"
   end
 
   add_index "node", ["changed"], :name => "node_changed"
   add_index "node", ["created"], :name => "node_created"
   add_index "node", ["moderate"], :name => "node_moderate"
   add_index "node", ["promote", "status"], :name => "node_promote_status"
+  add_index "node", ["slug"], :name => "index_node_on_slug"
   add_index "node", ["status", "type", "nid"], :name => "node_status_type"
   add_index "node", ["title", "type"], :name => "node_title_type"
   add_index "node", ["tnid"], :name => "index_node_tnid"
