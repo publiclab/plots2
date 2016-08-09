@@ -1,0 +1,9 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  users:
+    likes:
+      wiki_liked_by: "Wiki pages liked by"
+      more: "More"
+      liked_by: "Liked by"
+      updated: "updated"

@@ -2,19 +2,42 @@
 
 
 <div class="col-md-9">
+
   <%= render 'form' %>
 
-  <table class="table">
-    <% @nodes.each do |node| %>
-      <tr class="<%= node.type %>">
-        <% if node.type == "comment" %>
-            <td><i class="fa fa-<%= node.icon %>"></i> Comment by <a href="<%= node.author.name %>"><%= node.author.name %></a></td>
-        <% else %>
-            <td><i class="fa fa-<%= node.icon %>"></i> <a href="<%= node.path %>"><%= node.title %></a></td>
-        <% end %>
-        <td><% if node.type != "page" %><a href="/profile/<%= node.author.name %>"><%= node.author.name %></a><% end %></td>
-        <td><% node.tags.each do |tag| %><a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a> <% end %></td>
-      </tr>
-    <% end %>
-  </table>
+  <div class="container">
+    <div class="raw">
+      <div class="col-md-9">
+        <div class="panel with-nav-tabs panel-default">
+
+          <div class="panel-heading clearfix">
+            <div class="pull-left">
+              <h1 class="panel-title">Search Results</h1>
+            </div>
+          </div>
+
+          <% if @nodes.present? %>
+            <%= render partial: 'node_result', locals: {notes: @nodes} %>
+          <% else %>
+            <div class="panel-body">
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="taball">
+                  <div class="row sresults-row">
+                    <div class="panel-group">
+                      <div class="panel panel-default">
+                        <p> Your search - <strong><%= @search.key_words %> </strong> - </p>
+                        <p>did not match any documents.</p>
+                        <a href="<%= search_dynamic_url + '/'+ @search.key_words %>">Try Dynamic search</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

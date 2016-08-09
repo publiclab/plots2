@@ -20,6 +20,15 @@ class DrupalNode < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
+  searchable do
+    text :title
+    # integer :vid
+    # integer :nid
+    # text :comments do
+    #   comments.map { |comment| comment.comment }
+    # end
+  end
+
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy

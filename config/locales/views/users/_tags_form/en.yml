@@ -1,0 +1,14 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  users:
+    _tags_form:
+      skills: "Skills"
+      enter_tags: "Enter tags"
+      gears: "Gears"
+      tools: "Tools"
+      roles: "Roles"
+      location: "Location"
+      type_location: "Type location"
+      map: "Map"
+      location_privacy: "Location privacy"

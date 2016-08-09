@@ -34,6 +34,7 @@ end
 # run with `bundle install --without development` to exclude these
 group :development do
   gem "nifty-generators"
+  gem 'byebug'
 end
 
 # run with `bundle install --without test` to exclude these
@@ -62,6 +63,7 @@ gem "rack-openid"
 gem "authlogic", "3.2.0"
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
+gem 'progress_bar'
 
 
 # RESTful API Support
@@ -77,7 +79,11 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'mocha', '~> 1.1'
 gem 'jasmine-rails'
 gem 'jasmine-jquery-rails'
-
+gem 'strong_parameters'
+gem 'sunspot_rails'
+gem 'sunspot_solr'
+gem 'geocoder'
+gem "i18n-js", ">= 3.0.0.rc11"
 gem 'strong_parameters'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
@@ -86,4 +92,3 @@ gem 'sunspot_solr'
 gem 'geocoder'
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'http_accept_language'
-
