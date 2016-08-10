@@ -1,0 +1,6 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+   sidebar:
+     _author: 
+       recent_tags_for_author: "Recent tags for <a href='%{url1}'>%{author}</a>"
