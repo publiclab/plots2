@@ -2,7 +2,7 @@
 
   <div id="comments" class="col-md-10 comments">
 
-    <h3><span id="comment-count"><%= @node.drupal_comments.length %></span> Comments</h3>
+    <h3><span id="comment-count"><%= @node.drupal_comments.length %></span> <%= t('notes._comments.comments') %></h3>
  
     <div id="comments-container">
       <% @node.drupal_comments.each do |comment| %>
@@ -14,9 +14,9 @@
     </div>
  
     <% if current_user %>
-      <%= render :partial => "comments/form", :locals => { title: "Post comment", comment: false, placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email." } %>
+      <%= render :partial => "comments/form", :locals => { title: I18n.t('notes._comments.post_comment'), comment: false, placeholder: I18n.t('notes._comments.post_placeholder') } %>
     <% else %>
-      <p>You must be <a href="/login">logged in</a> to comment.</p>
+      <p><%= raw t('notes._comments.must_be_logged_in', :url1 => "/login") %></p>
     <% end %>
 
   </div>

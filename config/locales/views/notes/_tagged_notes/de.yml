@@ -1,0 +1,11 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  notes:
+    _tagged_notes:
+      by_author_time_ago: |
+        von <a href='%{url1}'>%{author}</a> 
+        | vor %{time}
+      views: "Ansichten"
+      read_more: "Weiterlesen"
+      spam: "Spam"
