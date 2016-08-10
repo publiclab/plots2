@@ -350,4 +350,31 @@ class I18nTest < ActionDispatch::IntegrationTest
         assert_select 'span', I18n.t('wiki.show.view')
       end
     end
+    
+    test "should choose i18n for sidebar/_author + sidebar/_post_button" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get '/notes/author/'+rusers(:jeff).username
+        assert_select 'h4', ActionView::Base.full_sanitizer.sanitize(I18n.t('sidebar._author.recent_tags_for_author', :url1 => "/people/"+rusers(:jeff).username, :author => rusers(:jeff).username))
+        assert_select 'a', I18n.t('sidebar._post_button.write_research_note')
+      end
+    end
+    
+    test "should choose i18n for sidebar/_related" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/wiki/'+node(:organizers).title.parameterize
+        assert_select 'a', I18n.t('sidebar._related.write_research_note')
+      end
+    end
 end
