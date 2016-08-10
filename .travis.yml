@@ -1,5 +1,9 @@
 sudo: required
 
+before_install:
+   - sudo apt-get -qq update
+   - sudo apt-get install -y openjdk-7-jre openjdk-7-jdk
+
 services:
   - docker
 
@@ -8,6 +12,7 @@ install:
   - cp db/schema.rb.example db/schema.rb
   - docker-compose build
   - docker-compose run web sleep 5
+  - docker-compose run web bundle exec rake sunspot:solr:start
   - docker-compose run web rake db:setup
   - docker-compose run web rake db:migrate
   - docker-compose run web bower install --allow-root

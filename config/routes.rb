@@ -220,7 +220,7 @@ Plots2::Application.routes.draw do
   match 'admin/demote/basic/:id' => 'admin#demote_basic'
   match 'admin/promote/admin/:id' => 'admin#promote_admin'
   match 'admin/migrate/:id' => 'admin#migrate'
-  
+
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
