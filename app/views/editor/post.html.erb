@@ -100,29 +100,31 @@
       </div>
 
       <br />
-
-      <div class="input-group checkbox">
-        <label for="display-location">
-          <input tabindex="7" id="display-location" type="checkbox" name="display_location" <%= @node && @node.location_tag ? "checked" : "" %>>
-          Add Location to the content
-        </label>        
-      </div>
-
-      <br />
-
-      <div id="location-info" style="<%= @node && @node.location_tag ? '' : 'display:none;' %>">
-        <div class="input-group">
-          <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-          <input autocomplete="off" class="form-control" id="location-input" tabindex="3" name="location" type="text" placeholder="New York City, USA" data-provide="typeahead" value="<%= @node && @node.location_tag ? @node.location_tag.location : '' %>" />
-        </div>
-        <br />
+      <% if current_user %>
 
         <div class="input-group checkbox">
-          <label for="location-privacy">
-            <input tabindex="7" id="location-privacy" type="checkbox" name="location_privacy" <%= @node && @node.location_tag.location_privacy ? "checked" : "" %>>
-            Obscure my exact location
-          </label>
+          <label for="display-location">
+            <input tabindex="7" id="display-location" type="checkbox" name="display_location" <%= @node && @node.location_tag ? "checked" : "" %>>
+            Add Location to the content
+          </label>        
         </div>
+
+        <br />
+
+        <div id="location-info" style="<%= @node && @node.location_tag ? '' : 'display:none;' %>">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+            <input autocomplete="off" class="form-control" id="location-input" tabindex="3" name="location" type="text" placeholder="New York City, USA" data-provide="typeahead" value="<%= @node && @node.location_tag ? @node.location_tag.location : '' %>" />
+          </div>
+          <br />
+
+          <div class="input-group checkbox">
+            <label for="location-privacy">
+              <input tabindex="7" id="location-privacy" type="checkbox" name="location_privacy" <%= @node && @node.location_tag && @node.location_tag.location_privacy ? "checked" : "" %>>
+              Obscure my exact location
+            </label>
+          </div>
+        <% end %>
 
         <div class="container">
           <div id="location_map" class="row"></div>

@@ -146,7 +146,7 @@ class NotesController < ApplicationController
           longitude = params[:location_privacy].present? ? geo_location.longitude.round(4) : geo_location.longitude
 
           @location_tag = @node.build_location_tag({
-            uid: current_user.id,
+            uid: current_user.uid,
             lat: geo_location.latitude,
             lon: geo_location.longitude,
             location: params[:location],

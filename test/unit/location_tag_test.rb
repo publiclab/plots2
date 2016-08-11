@@ -29,4 +29,23 @@ class LocationTagTest < ActiveSupport::TestCase
 
     assert DrupalUsers.method_defined? :location_tag
   end
+
+  test "location tag object should have drupal_node method" do
+    location_tag = location_tags(:two)
+
+    assert LocationTag.method_defined? :drupal_node
+  end
+
+  test "location tag object should have valid nid for note" do
+    location_tag  = location_tags(:two)
+
+    assert location_tag.save
+    assert_not_nil location_tag.nid
+    assert_not_nil location_tag.location
+    assert_not_nil location_tag.lat
+    assert_not_nil location_tag.lon
+    assert_not_nil location_tag.country
+    assert_not_nil location_tag.city
+    assert_not_nil location_tag.state
+  end
 end

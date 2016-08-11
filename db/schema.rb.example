@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160816094642) do
+ActiveRecord::Schema.define(:version => 20160806200424) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -176,13 +176,15 @@ ActiveRecord::Schema.define(:version => 20160816094642) do
   create_table "location_tags", :force => true do |t|
     t.integer  "uid"
     t.string   "location"
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
-    t.decimal  "lat",        :precision => 15, :scale => 10
-    t.decimal  "lon",        :precision => 15, :scale => 10
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
+    t.decimal  "lat",              :precision => 15, :scale => 10
+    t.decimal  "lon",              :precision => 15, :scale => 10
     t.string   "country"
     t.string   "state"
     t.string   "city"
+    t.integer  "nid"
+    t.boolean  "location_privacy"
   end
 
   create_table "node", :primary_key => "nid", :force => true do |t|

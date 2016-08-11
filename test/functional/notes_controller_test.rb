@@ -358,4 +358,61 @@ class NotesControllerTest < ActionController::TestCase
     assert (notes & expected).present?
     assert !(notes & questions).present?
   end
+
+  test "should create a location_tag" do
+    user = UserSession.create(rusers(:bob))
+    title = "How to use a Spectrometer"
+
+    post :create,
+          title: title,
+          body: 'Spectrometer note',
+          display_location: 'on',
+          location: 'New York, NY, United States',
+          remote: true,
+          event: 'on',
+          date: '08-10-2016'
+
+    assert_response :redirect
+    node = DrupalNode.last
+    assert node
+    assert node.location_tag
+    assert_equal "New York, NY, United States", node.location_tag.location
+  end
+
+  test "should update a location_tag" do
+    user = UserSession.create(rusers(:bob))
+    title = "How to use a Spectrometer"
+
+    post :create,
+          title: title,
+          body: 'Spectrometer note',
+          display_location: 'on',
+          location: 'New York, NY, United States',
+          remote: true,
+          event: 'on',
+          date: '08-10-2016'
+
+    assert_response :redirect
+    node = DrupalNode.last
+    assert node
+    assert node.location_tag
+    assert_equal "New York, NY, United States", node.location_tag.location
+
+    post :update,
+          id: node.id,
+          title: title,
+          body: 'Spectrometer note',
+          display_location: 'on',
+          location: 'Los Angeles, CA, United States',
+          remote: true,
+          event: 'on',
+          date: '08-10-2016'
+
+    assert_response :redirect
+    node = DrupalNode.last
+    assert node
+    assert node.location_tag
+    assert_equal "Los Angeles, CA, United States", node.location_tag.location
+  end
+
 end
