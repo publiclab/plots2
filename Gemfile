@@ -89,5 +89,4 @@ gem 'jbuilder'
 gem 'strong_parameters'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
-gem 'geocoder'
 
