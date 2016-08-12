@@ -1,0 +1,13 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  users:
+    reset:
+      reset_password: "Reset your password"
+      enter_username_and_password: "Enter your username and a new password"
+      username_placeholder: "username"
+      password_placeholder: "enter a new password"
+      retype_password_placeholder: "retype your password"
+      save: "Save"
+      enter_email_reset_password: "Enter your email address to reset your password"
+      reset: "Reset"

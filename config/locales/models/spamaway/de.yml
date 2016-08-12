@@ -1,0 +1,21 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  spamaway:
+    human:
+      statement1: 'Ich bin eine Person.'
+      statement2: 'Ich habe ein Herz.'
+      statement3: 'Ich esse Essen.'
+      statement4: 'Ich lebe auf der Erde.'
+      statement5: 'Ich bin ein Organismus.'
+      statement6: 'Ich trinke Wasser.'
+    robot:
+      statement1: 'Ich bin ein Roboter.'
+      statement2: 'Ich bin ein Zentralprozessor'
+      statement3: 'Ich bin ein Computer.'
+      statement4: 'Ich bin ein Algorithmus.'
+      statement5: 'Ich lebe in einem Computer.'
+      statement6: 'Ich bin hier Anzeigen zu schreiben.'
+    errors:
+      please_read_instructions: "Bitte lesen Sie die Anweisungen in der letzten Box sorgfältig."
+      not_a_real_person: "-- Es scheint nicht, wie Sie eine reale Person sind ! Wenn Sie nicht einverstanden sind oder Schwierigkeiten haben , finden Sie unter https://publiclab.org/wiki/registration-test."

@@ -1,40 +1,41 @@
 <div class="col-md-3">
 
   <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
-    <h2>User moderation</h2>
-    <p>Normal users see only a list of recent users here, but moderators and admins can ban "spam" users and view those who have been banned. </p>
+    <h2><%= t('users.list.user_moderation') %></h2>
+    <p><%= t('users.list.admins_ban_spam') %> </p>
   <% end %>
   
 
 </div>
 <div class="col-md-9">
-  <h2>Public Lab members <small>by last activity</small></h2>
+  <h2><%= raw t('users.list.members_last_activity') %></h2>
 
   <table class="table">
     <tr>
-      <th>Username</th>
-      <th>Last activity</th>
-      <th>History</th>
-      <th>Joined</th>
+      <th><%= t('users.list.username') %></th>
+      <th><%= t('users.list.last_activity') %></th>
+      <th><%= t('users.list.history') %></th>
+      <th><%= t('users.list.joined') %></th>
       <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
-        <th>Moderation</th>
+        <th><%= t('users.list.moderation') %></th>
       <% end %>
     </tr>
     <% @users.each do |user| %>
     <tr>
       <td><a href="/profile/<%= user.username %>"><%= user.username %></a></td>
       <td><%= time_ago_in_words(user.last['changed']) if user.last %></td>
-      <td><%= user.node_count %> research notes and wiki edits</td>
-      <td><%= time_ago_in_words(user.created_at) %> ago</td>
+      <td><%= user.node_count %> <%= t('users.list.notes_and_edits') %></td>
+      <td><%= distance_of_time_in_words(user.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %></td>
       <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
       <td>
         <% if user.status == 0 %>
-          <i class='fa fa-ban' style="color:#a00;"></i> Banned
+          <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
         <% elsif user.status == 1 %>
-          <a class="btn btn-default btn-sm" data-confirm="Are you sure? The user will no longer be able to log in or publish." href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> Ban</a>
+          <a class="btn btn-default btn-sm" data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a>
         <% end %>
       </td>
       <% end %>
+     </tr>
     <% end %>
   </table>
   <%= will_paginate @users, :renderer => BootstrapPagination::Rails unless @unpaginated %>

@@ -283,11 +283,6 @@ body { padding-top: 70px; }
   background-clip: padding-box;
 }
 
-html[lang="de"] .chat-popover {
-    top:100px;
-}
-
-
 .foldaway {
   display:none;
   padding: 0 20px;

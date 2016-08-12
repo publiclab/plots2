@@ -41,7 +41,7 @@ class SearchesController < ApplicationController
 
   def show
     @title = @search.title
-    @nodes = @search.nodes
+    @nodes = @search.notes
     set_sidebar :tags, @search.key_words
   end
 
@@ -55,15 +55,6 @@ class SearchesController < ApplicationController
                  .order('node.nid DESC')
                  .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ?)', "%"+params[:id]+"%","%"+params[:id]+"%","%"+params[:id]+"%")
                  .includes(:drupal_node_revision)
-  end
-
-  # DEPRECATED 
-  # utility response to fill out search autocomplete
-  # needs *dramatic* optimization
-  def typeahead
-    warn "[DEPRECATED] SearchesController.typeahead is deprecated.  Use the RESTful API for typeahead instead."
-    @match = @search_service.type_ahead(params[:id])
-    render json: @match
   end
 
   def map

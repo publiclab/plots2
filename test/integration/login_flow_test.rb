@@ -33,4 +33,18 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
       assert_select "[value=?]", "What"
     end
   end
+
+  test "should redirect to current page when logging in through the header login" do
+    get '/questions'
+    assert_response :success
+
+    post '/user_sessions',
+         return_to: request.path,
+         user_session: {
+           username: rusers(:jeff).username,
+           password: 'secret'
+         }
+    follow_redirect!
+    assert_equal '/questions', path
+  end
 end
