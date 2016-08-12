@@ -2,13 +2,13 @@
   This script holds the functionality for the dynamic search forms, using the RESTful API and new search classes
   under development by the Advanced Search Project.
 **/
-//URL for search queries
-var srchBase = "/api/srch/all";
-//Number of searches conducted--used to manage display flow
-var srchCount = 0;
-//array of mapping objects to coordinate displays
-var tabDataArray = [
-	{ qryType: "file", tabId: "#tabnotes", countspan: "#notecount"},
+  //URL for search queries
+  var srchBase = "/api/srch/all";
+  //Number of searches conducted--used to manage display flow
+  var srchCount = 0;
+  //array of mapping objects to coordinate displays
+  var tabDataArray = [
+  	{ qryType: "file", tabId: "#tabnotes", countspan: "#notecount"},
 	{ qryType: "tag", tabId: "#tabtags", countspan: "#tagcount"},
 	{ qryType: "map-marker", tabId: "#tabmaps", countspan: "#mapcount"},
 	{ qryType: "user", tabId: "#tabprofiles", countspan: "#profilecount"},
@@ -17,10 +17,10 @@ var tabDataArray = [
 	];
 
 
-/**
-  Setup for dynamic search
-**/
-jQuery(document).ready(function() {
+  /**
+    Setup for dynamic search
+  **/
+  jQuery(document).ready(function() {
 	//for now, prevent submission of the query form--all restful at this point
 	jQuery("#dynamic_srch_form").submit(function(e) {
 		e.preventDefault();
@@ -30,16 +30,16 @@ jQuery(document).ready(function() {
 	var qryList = setupSrchSuggest(qfield);
 	dynamicSearchKeys(qfield, qryList);
 	hideResultsOnBlur(qfield, qryList);
-});
+  });
 
-/**
-  Set up the dynamic search and typeahead suggest for this particular element.  The following key strokes cause the following actions:
-  1)  ENTER (KeyCode = 13):  perform dynamic search, hide typeahead
-  2)  ESC (KeyCode = 27):  hide typeahead
-  3)  SPACE (KeyCode = 32):  perform dynamic search, do not hide typeahead
-  4)  Any other key:  perform typeahead search, show suggestion list (if not visible)
-**/
-function dynamicSearchKeys(ielem, reslist) {
+  /**
+    Set up the dynamic search and typeahead suggest for this particular element.  The following key strokes cause the following actions:
+    1)  ENTER (KeyCode = 13):  perform dynamic search, hide typeahead
+    2)  ESC (KeyCode = 27):  hide typeahead
+    3)  SPACE (KeyCode = 32):  perform dynamic search, do not hide typeahead
+    4)  Any other key:  perform typeahead search, show suggestion list (if not visible)
+  **/
+  function dynamicSearchKeys(ielem, reslist) {
 	var elemRef = $(ielem);
 	var listelem = $(reslist);
 	elemRef.on("keyup", function(e) {
@@ -65,12 +65,12 @@ function dynamicSearchKeys(ielem, reslist) {
 				break;
 		}
 	});
-}
+  }
 
-/**
-  Execute the live search function
-**/
-function dynamicSearch(inputElem) {
+  /**
+    Execute the live search function
+  **/
+  function dynamicSearch(inputElem) {
 	srchCount += 1;
         var srchParams = searchParams(inputElem);
 	//don't send nulls or empty strings
@@ -79,27 +79,27 @@ function dynamicSearch(inputElem) {
 			parseDynamicSearch(sdata);
 		});
 	}
-}
-
-/**
-  Collect up the search parameters and return a search object to be submitted
-**/
-function searchParams(inputElem) {
-  var sparms = {};
-  var stxt = $(inputElem).val();
-  if (stxt) {
-	  sparms.srchString = stxt.trim();
   }
-  sparms.seq = srchCount;
-  sparms.showCount = 25;
-  sparms.pageNum = 0;
-  return sparms;
-}
 
-/**
-  Parse out the results of the live search and display accordingly
-**/
-function parseDynamicSearch(doclist) {
+  /**
+    Collect up the search parameters and return a search object to be submitted
+  **/
+  function searchParams(inputElem) {
+    var sparms = {};
+    var stxt = $(inputElem).val();
+    if (stxt) {
+  	  sparms.srchString = stxt.trim();
+    }
+    sparms.seq = srchCount;
+    sparms.showCount = 25;
+    sparms.pageNum = 0;
+    return sparms;
+  }
+
+  /**
+    Parse out the results of the live search and display accordingly
+  **/
+  function parseDynamicSearch(doclist) {
 	if (doclist) {
 		//if (doclist.seq >= srchCount) {
 			clearResults();
@@ -132,17 +132,20 @@ function parseDynamicSearch(doclist) {
 			}
 		//}
 	}
-}
+  }
 
-function resultContainer() {
+  /**
+    Create the result container HTML
+  **/
+  function resultContainer() {
 	return $("<div class='panel-group'></div>");
-}
+  }
 
-/**
-  Create a row result item from the document
-  TODO:  Better way to create these?
-**/
-function docPanel(docitem) {
+  /**
+    Create a row result item from the document
+    TODO:  Better way to create these?
+  **/
+  function docPanel(docitem) {
 	var iconclass = "fa fa-"+docitem.docType;
 	var doclink = "<a href='"+docitem.docUrl+"'>"+docitem.docTitle+"</a>";
 	var dtxt = "<div class='panel panel-default'>";
@@ -152,13 +155,16 @@ function docPanel(docitem) {
 	dtxt += "</div>";
 	dtxt += "</div>";
 	return dtxt;
-}
+  }
 
-function clearResults() {
+  /**
+    Clear out the result container so not contaminated with previous values
+  **/
+  function clearResults() {
         $("#taball").find("div.row.sresults-row").html("");
 	for (var i=0;i<tabDataArray.length;i++) {
 		$(tabDataArray[i].tabId).find('div.row.sresults-row').html('');
 	}
-}
+  }
 
 
