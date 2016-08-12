@@ -68,3 +68,4 @@ gem 'jasmine-jquery-rails'
 gem 'geocoder'
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'http_accept_language'
+gem 'friendly_id'
