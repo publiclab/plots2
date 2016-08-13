@@ -8,6 +8,10 @@ Plots2::Application.routes.draw do
   mount GrapeSwaggerRails::Engine => '/api/docs'
   #end
   
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0fa10243997cf2920f21100852e98ca3d44732cf
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
   resources :rusers
@@ -130,9 +134,9 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
+  #Search Pages
   match 'search' => 'searches#new'
   match 'search/advanced' => 'searches#new'
-
   match 'search/advanced/:id' => 'searches#new'
   match 'search/dynamic' => 'searches#dynamic'
   match 'search/dynamic/:id' => 'searches#dynamic'
@@ -141,6 +145,9 @@ Plots2::Application.routes.draw do
   match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
   match 'search/:id' => 'searches#normal_search'
 
+  # Question Search capability--temporary until combined with full Search Capabilities
+  match 'questions_search/:id' => 'questions_search#index'
+  match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
 
   match 'tag/:id' => 'tag#show'
   match 'widget/:id' => 'tag#widget'

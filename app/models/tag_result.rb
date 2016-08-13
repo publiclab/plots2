@@ -3,11 +3,7 @@ class TagResult
 
   attr_accessor :tagId, :tagVal, :tagType, :tagSource
 
-  def initialize(tid, tval, ttype, tsrc)
-    @tagid = tid
-    @tagVal = tval
-    @tagType = ttype
-    @tagSource = tsrc
+  def initialize
   end
 
   def self.fromSearch(tid, tval, ttype, tsrc)

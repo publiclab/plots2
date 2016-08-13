@@ -3,6 +3,7 @@
   under development by the Advanced Search Project.
 **/
 
+
   //URL for search queries
   var srchBase = "/api/srch/all";
   //Number of searches conducted--used to manage display flow

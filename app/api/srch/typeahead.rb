@@ -19,12 +19,12 @@ module Srch
         optional :seq, type: Integer, documentation: { example: 995 }
       end
       get :all do
-        sresult = DocList.new
+        sresult = TagList.new
         unless params[:srchString].nil? || params[:srchString] == 0
-          sservice = SearchService.new
-          sresult = sservice.textSearch_all(params[:srchString])
+          tservice = TypeaheadService.new
+          sresult = tservice.textSearch_all(params[:srchString])
         end
-        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
 	present sresult, with: TagList::Entity
       end
@@ -41,12 +41,12 @@ module Srch
         optional :seq, type: Integer, documentation: { example: 995 }
       end
       get :profiles do
-        sresult = DocList.new
+        sresult = TagList.new
         unless params[:srchString].nil? || params[:srchString] == 0
-          sservice = SearchService.new
-          sresult = sservice.textSearch_profiles(params[:srchString])
+          tservice = TypeaheadService.new
+          sresult = tservice.textSearch_profiles(params[:srchString])
         end
-        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
 	present sresult, with: TagList::Entity
       end
@@ -63,12 +63,12 @@ module Srch
         optional :seq, type: Integer, documentation: { example: 995 }
       end
       get :notes do
-        sresult = DocList.new
+        sresult = TagList.new
         unless params[:srchString].nil? || params[:srchString] == 0
-          sservice = SearchService.new
-          sresult = sservice.textSearch_notes(params[:srchString])
+          tservice = TypeaheadService.new
+          sresult = tservice.textSearch_notes(params[:srchString])
         end
-        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
 	present sresult, with: TagList::Entity
       end
@@ -85,12 +85,12 @@ module Srch
         optional :seq, type: Integer, documentation: { example: 995 }
       end
       get :questions do
-        sresult = DocList.new
+        sresult = TagList.new
         unless params[:srchString].nil? || params[:srchString] == 0
-          sservice = SearchService.new
-          sresult = sservice.textSearch_questions(params[:srchString])
+          tservice = TypeaheadService.new
+          sresult = tservice.textSearch_questions(params[:srchString])
         end
-        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
 	present sresult, with: TagList::Entity
       end
@@ -107,12 +107,12 @@ module Srch
         optional :seq, type: Integer, documentation: { example: 995 }
       end
       get :tags do
-        sresult = DocList.new
+        sresult = TagList.new
         unless params[:srchString].nil? || params[:srchString] == 0
-          sservice = SearchService.new
-          sresult = sservice.textSearch_tags(params[:srchString])
+          tservice = TypeaheadService.new
+          sresult = tservice.textSearch_tags(params[:srchString])
         end
-        sparms = SearchRequest.new(params[:srchString],params[:seq])
+        sparms = SearchRequest.fromRequest(params)
         sresult.srchParams=sparms
 	present sresult, with: TagList::Entity
       end
