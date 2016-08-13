@@ -293,6 +293,9 @@ class I18nTest < ActionDispatch::IntegrationTest
     
     test "should choose i18n for user_sessions/new" do
       available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
         get '/login'
         assert_select 'a[href=/signup]', I18n.t('user_sessions.new.sign_up')
       end
@@ -392,6 +395,56 @@ class I18nTest < ActionDispatch::IntegrationTest
         
         get node(:one).path
         assert_select "a", I18n.t('comments._form.upload_image')
+      end
+    end
+    
+    test "should choose i18n for tag/blog" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/blog'
+        assert_select 'p', I18n.t('tag.blog.stories_from_community')
+      end
+    end
+    
+    test "should choose i18n for tag/contributors-index" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/contributors'
+        assert_select 'a[href=/post]', I18n.t('tag.contributors-index.write_research_note')
+      end
+    end
+    
+    test "should choose i18n for tag/index" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/tags'
+        assert_select 'p', I18n.t('tag.index.browse_popular_tags')
+      end
+    end
+    
+    test "should choose i18n for tag/show" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/tag/some-tag'
+        assert_select 'a', I18n.t('tag.show.maps')
+      end
+    end
+    
+    test "should choose i18n for tag/widget" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/widget/some-tag'
+        assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('tag.show.no_results_found', :tag => 'some-tag'))+":"
       end
     end
 end
