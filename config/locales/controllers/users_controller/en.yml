@@ -1,0 +1,21 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  users_controller:
+    account_migrated_create_new_password: "Your account has been migrated from the old PublicLaboratory.org website; please create a password for the new site."
+    registration_successful: "Registration successful. You've been added to the <b>publiclaboratory</b> mailing list."
+    spectralworkbench_or_mapknitter: "<i class='icon icon-exclamation-sign'></i> If you registered in order to use <b>SpectralWorkbench.org</b> or <b>MapKnitter.org</b>, <a href='%{url1}'>click here to continue &raquo;</a>"
+    successful_updated_profile: "Successfully updated profile."
+    return_dashboard: "Return to your dashboard"
+    only_user_edit_profile: "Only <b>%{user}</b> can edit their profile."
+    user_has_been_banned: "That user has been banned."
+    no_user_found: "No user by that name found"
+    password_change_success: "Your password was successfully changed."
+    password_reset_failed: "Password reset failed. Please <a href='/wiki/issues'>contact the web team</a> if you are having trouble."
+    password_change_failed: "Password change failed; key does not correspond to username."
+    password_reset_failed_no_user: "Password reset failed. Please <a href='/wiki/issues'>contact the web team</a> if you are having trouble. (Error: no user with that key)"
+    password_reset_email: "You should receive an email with instructions on how to reset your password. If you do not, please double check that you are using the email you registered with."
+    image_saved: "Image saved."
+    image_not_saved: "The image could not be saved."
+    preference_saved: "Your preference has been saved"
+    something_went_wrong: "Something went wrong, Please try again"

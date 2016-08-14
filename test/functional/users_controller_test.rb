@@ -159,6 +159,23 @@ class UsersControllerTest < ActionController::TestCase
     assert user.location_privacy
     assert_equal "Your preference has been saved", flash[:notice]
   end
+  
+  test "should choose I18n for wiki controller" do
+    available_testing_locales.each do |lang|
+        old_controller = @controller
+        @controller = SettingsController.new
+        
+        get :change_locale, :locale => lang.to_s
+        
+        @controller = old_controller
+        
+        UserSession.create(rusers(:jeff))
+        user = rusers(:jeff)
+        post :privacy, location_privacy: true, :id => user.username
+    
+        assert_equal I18n.t('users_controller.preference_saved'), flash[:notice]
+    end
+  end
 
 #  test "should display map with success response" do
 #    UserSession.create(rusers(:jeff))
