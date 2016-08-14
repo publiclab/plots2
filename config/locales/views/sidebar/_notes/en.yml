@@ -1,0 +1,9 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+   sidebar:
+     _notes:
+       updated_by: |
+         updated %{time} ago 
+         by <a href='%{url1}'>%{author_name}</a>
+       more: "More..."

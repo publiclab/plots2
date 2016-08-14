@@ -1,0 +1,19 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  tag:
+    blog:
+      the_public_lab: "Das Public Lab"
+      blog: "Blog"
+      stories_from_community: "Geschichten aus der Community Public Lab"
+      about_the_blog: "Über das Blog"
+      following: "Folgende"
+      unfollow: "Klicken Sie hier um unfollow"
+      follow: "Folgen"
+      no_results: "Keine Ergebnisse gefunden; versuchen, für '%{search}' suchen"
+      advanced_search: "Oder versuchen Sie eine <a href='%{url}'>erweiterte Suche</a>"
+      by: "von"
+      views: "ansichten"
+      read_more: "Weiterlesen"
+      spam: "Spam"
+      

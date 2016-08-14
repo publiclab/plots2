@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  follower: jeff
+  followed: bob
+
+two:
+  follower: bob
+  followed: jeff
+
+three:
+  follower: jeff
+  followed: admin
+
+four:
+  follower: jeff
+  followed: moderator

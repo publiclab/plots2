@@ -16,7 +16,7 @@ end
 class DrupalNode < ActiveRecord::Base
   include NodeShared # common methods for node-like models
 
-  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path
+  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug
   self.table_name = 'node'
   self.primary_key = 'nid'
 
@@ -27,6 +27,23 @@ class DrupalNode < ActiveRecord::Base
     # text :comments do
     #   comments.map { |comment| comment.comment }
     # end
+
+  extend FriendlyId
+  friendly_id :friendly_id_string, use: [:slugged, :history]
+
+  def should_generate_new_friendly_id?
+    slug.blank? || title_changed?
+  end
+
+  def friendly_id_string
+    if self.type == 'note'
+      username = DrupalUsers.find_by_uid(self.uid).name
+      "#{username} #{Time.at(self.created).strftime("%m-%d-%Y")} #{self.title}"
+    elsif self.type == 'page'
+      "#{self.title}"
+    elsif self.type == 'map'
+      "#{self.title} #{Time.at(self.created).strftime("%m-%d-%Y")}"
+    end
   end
 
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
@@ -52,7 +69,7 @@ class DrupalNode < ActiveRecord::Base
 
   validates :title, :presence => :true
   validates_with UniqueUrlValidator, :on => :create
-  validates :path, :uniqueness => { :scope => :nid, :message => "This title has already been taken" }
+  validates :path, :uniqueness => { :message => "This title has already been taken" }
 
   # making drupal and rails database conventions play nice;
   # 'changed' is a reserved word in rails
@@ -73,6 +90,8 @@ class DrupalNode < ActiveRecord::Base
   before_save :set_changed_and_created
   after_create :setup
   before_validation :set_path, on: :create
+  before_create :remove_slug
+  before_update :update_path
 
   # can switch to a "question-style" path if specified
   def path(type = :default)
@@ -101,6 +120,24 @@ class DrupalNode < ActiveRecord::Base
 
   def set_path
     self.path = self.generate_path if self.path.blank? && !self.title.blank?
+  end
+
+  def update_path
+    self.path = if self.type == 'note'
+                  username = DrupalUsers.find_by_uid(self.uid).name
+                  "/notes/#{username}/#{Time.at(self.created).strftime("%m-%d-%Y")}/#{self.title.parameterize}"
+                elsif self.type == 'page'
+                  "/wiki/" + self.title.parameterize
+                elsif self.type == 'map'
+                  "/map/#{self.title.parameterize}/#{Time.at(self.created).strftime("%m-%d-%Y")}"
+                end
+  end
+
+  def remove_slug
+    if !FriendlyId::Slug.find_by_slug(self.title.parameterize).nil? && self.type == 'page'
+      slug = FriendlyId::Slug.find_by_slug(self.title.parameterize)
+      slug.delete
+    end
   end
 
   def set_changed_and_created
@@ -393,14 +430,6 @@ class DrupalNode < ActiveRecord::Base
     self.drupal_node_counter.totalcount
   end
 
-  # ============================================
-  # URL-related methods:
-
-  # is this used anymore? deprecate?
-  def slug
-    self.path.split('/').last
-  end
-
   def edit_path
     if self.type == "page" || self.type == "tool" || self.type == "place"
       path = "/wiki/edit/" + self.path.split("/").last
@@ -410,16 +439,8 @@ class DrupalNode < ActiveRecord::Base
     path
   end
 
-  def self.find_by_slug(title)
-    DrupalNode.where(path: ["/#{title}", "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
-  end
-
   def self.find_root_by_slug(title)
     DrupalNode.where(path: ["/#{title}"]).first
-  end
-
-  def self.find_map_by_slug(title)
-    DrupalNode.where(path: "/map/#{title}").first
   end
 
   def map
@@ -657,4 +678,13 @@ class DrupalNode < ActiveRecord::Base
     User.find_all_by_username(usernames.map {|m| m[1] }).uniq
   end
 
+  def self.find_notes(author, date, title)
+    finder = "#{author} #{date} #{title}".parameterize
+    DrupalNode.find(finder)
+  end
+
+  def self.find_map(name, date)
+    finder = "#{name} #{date}".parameterize
+    DrupalNode.find(finder)
+  end
 end

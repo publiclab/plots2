@@ -1,0 +1,22 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  wiki:
+    show:
+     page_has_no_tags: "This page has no tags yet; help connect it to other content by <a onClick='$('#taginput').focus()'>adding descriptive tags below</a>."
+     revision_from: "This is a revision from %{time}."
+     view_all_revisions: "View all revisions"
+     views: "views"
+     last_edited: "Last edited by <a href='%{url1}'>%{author}</a> %{time} ago"
+     shortlink: "shortlink"
+     view: "View"
+     edit: "Edit"
+     delete: "Delete"
+     are_you_sure_delete: "Are you absolutely sure you want to delete '%{path}'? All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page."
+     talk: "Talk"
+     back_to_wiki: "Back to <a href='%{url1}'>%{title}"
+     overview: "Overview"
+     research: "Research"
+     wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
+     more_research: "More research on \"%{tag}\""
+     more_tag_research: "More \"%{tag}\" research"

@@ -1,0 +1,30 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  wiki:
+    edit:
+      did_you_mean: 'Hast du gemeint'
+      try_searching_for: "Versuchen <a href='%{url1}'>Sie, für '%{wiki}' Suche &raquo;</a>"
+      whats_a_wiki_page: |
+        <h3><i class="fa fa-book"></i> Was ist eine <br />Wiki-Seite?</h3>
+        <p>Bei Public Lab, wir alle zusammenarbeiten Umweltwissenschaften Open-Source-Tools zu erfinden und zu verbessern. <b>Wiki-Seiten</b> sind Webseiten, die jeder anlegen oder bearbeiten können - wir verwenden sie Informationen, Dokumentationen und Anleitungen für Projekte zu sammeln.</p>
+        <p><b>Wiki-Seiten können sein:</b></p>
+        <ul>
+          <li>eine <a href="/tag/tutorial">Anleitung</a>, wie man etwas machen</li>
+          <li>Dokumentation eines Projektes</li>
+          <li>eine Event-Planung Seite</li>
+          <li>ein Ort, um Listen von Forschungsnotizen sammeln</li>
+          <li>usw!</li>
+        </ul>
+      more: 'Mehr'
+      getting_started: 'Erste Schritte mit Public Lab'
+      revisions_for_this_page: 'Revisionen für diese Seite'
+      about_posting_research: 'Über Forschung Entsendung'
+      advanced_formatting: 'Erweiterte Formatierung'
+      editing_page: 'Bearbeiten Seite'
+      create_page: 'Seite erstellen'
+      publish: 'Veröffentlichen'
+      preview: 'Vorschau'
+      previewing_text: "Vorschau( zu redigieren Klicken )"
+      agree_to_open_source_work: "In einer Publikation, stimmen Sie <a target='_blank' href='%{url1}'>Ihre Arbeit zu Open-Source</a>, so dass andere es verwenden können."
+      last_edited_by: "Diese Seite wurde zuletzt vor %{time} bearbeitet von <a href='%{url1}'>%{author}</a>"

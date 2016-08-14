@@ -1,0 +1,30 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  wiki:
+    edit:
+      did_you_mean: 'Did you mean'
+      try_searching_for: "Try <a href='%{url1}'>searching for '%{wiki}' &raquo;</a>"
+      whats_a_wiki_page: |
+        <h3><i class="fa fa-book"></i> What's a <br /> wiki page?</h3>
+        <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Wiki pages</b> are web pages that anyone can create or edit -- we use them to collect information, documentation, and instructions on projects.</p>
+        <p><b>Wiki pages can be:</b></p>
+        <ul>
+          <li>a <a href="/tag/tutorial">tutorial</a> on how to make something</li>
+          <li>documentation of a project</li>
+          <li>an event planning page</li>
+          <li>a place to collect lists of research notes</li>
+          <li>etc!</li>
+        </ul>
+      more: 'More'
+      getting_started: 'Getting started with Public Lab'
+      revisions_for_this_page: 'Revisions for this page'
+      about_posting_research: 'About posting research'
+      advanced_formatting: 'Advanced formatting'
+      editing_page: 'Editing page'
+      create_page: 'Create page'
+      publish: 'Publish'
+      preview: 'Preview'
+      previewing_text: "Previewing (click to edit)"
+      agree_to_open_source_work: "By publishing, you agree to <a target='_blank' href='%{url1}'>open source your work</a> so that others may use it."
+      last_edited_by: "This page was last edited %{time} ago by <a href='%{url1}'>%{author}</a>"
