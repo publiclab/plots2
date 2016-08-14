@@ -156,4 +156,36 @@ class TagControllerTest < ActionController::TestCase
     end
     assert_select '#questions.active', 1
   end
+  
+  test "should choose I18n for tag controller" do
+    available_testing_locales.each do |lang|
+        old_controller = @controller
+        @controller = SettingsController.new
+        
+        get :change_locale, :locale => lang.to_s
+        
+        @controller = old_controller
+        
+        UserSession.create(rusers(:bob))
+        post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
+        post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
+        assert_equal I18n.t('tag_controller.tag_already_exists'), assigns['output']['errors'][0]
+    end
+  end
+  
+  test "should choose I18n for tag controller" do
+    available_testing_locales.each do |lang|
+        old_controller = @controller
+        @controller = SettingsController.new
+        
+        get :change_locale, :locale => lang.to_s
+        
+        @controller = old_controller
+        
+        UserSession.create(rusers(:bob))
+        post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
+        post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
+        assert_equal I18n.t('tag_controller.tag_already_exists'), assigns['output']['errors'][0]
+    end
+  end
 end
