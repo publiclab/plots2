@@ -26,7 +26,7 @@ class DrupalNode < ActiveRecord::Base
     # integer :nid
     # text :comments do
     #   comments.map { |comment| comment.comment }
-    # end
+  end
 
   extend FriendlyId
   friendly_id :friendly_id_string, use: [:slugged, :history]
