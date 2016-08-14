@@ -93,7 +93,7 @@ Please report any error regarding phantomjs installation in the github issue tra
 ### Solr search engine
 
 Solr is a standalone search server. You put documents in it (called "indexing") via JSON, XML, CSV or binary over HTTP. You query it via HTTP GET and receive JSON, XML, CSV or binary results. Solr enables powerful matching capabilities including phrases, wildcards, joins, grouping and much more across any data type.
-We are using an adapter called `sunspot` to communicate to solr search server through our rails app.
+We are using an adapter called [sunspot_rails](https://github.com/outoftime/sunspot_rails) to communicate to solr search server through our rails app.
 
 
 ##Installation
