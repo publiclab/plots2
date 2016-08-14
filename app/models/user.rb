@@ -10,14 +10,9 @@ class User < ActiveRecord::Base
   self.table_name = 'rusers'
   attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :location_privacy
 
-  begin
-    searchable do
-      text :username, :email
-    end
-  rescue Exception => e
-    puts e
+  searchable do
+    text :username, :email
   end
-
 
   acts_as_authentic do |c|
     c.openid_required_fields = [:nickname, :email]
