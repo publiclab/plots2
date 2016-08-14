@@ -92,7 +92,7 @@ class UserTagsControllerTest < ActionController::TestCase
     assert_equal "Only admin (or) target user can manage tags", flash[:error]
   end
   
-  test "should choose I18n for wiki controller" do
+  test "should choose I18n for user tags controller" do
     available_testing_locales.each do |lang|
         old_controller = @controller
         @controller = SettingsController.new
