@@ -1,0 +1,16 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+   sidebar:
+     _post_button:
+       share_your_work: "Teilen Sie Ihre Arbeit mit anderen"
+       write_research_note: "Schreiben Sie eine Research Note"
+       post_research: "Beitrag Forschung"
+       post_research_note: "Stellen Sie eine Research Note"
+       create_wiki_page: "Erstellen Sie eine Wiki-Seite"
+       about_posting: "Über Entsendung"
+       moderate_spam: "Moderate spam"
+       email_search: "E-Mail Adresse suchen"
+       tools: "Werkzeuge"
+       post_newsletter: "Einen Newsletter"
+       browse_wiki: "Durchsuchen Sie das Public Lab Wiki"

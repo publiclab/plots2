@@ -1,0 +1,16 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  comments:
+    _edit:
+      uploading: "Uploading..."
+      drag_and_drop: "Drag &amp; drop to add an image or file, or"
+      choose_one: "choose one"
+      upload_image: "Upload image"
+      preview: "Preview"
+      cancel: "Cancel"
+      publish: "Publish"
+      logged_in: "Logged in as <b>%{username}</b>"
+      formatting: "Formatting"
+      notifications: "Notifications"
+      email_notifications: "Author, commenters, and those who've \"liked\" this note will receive email notifications"

@@ -12,7 +12,7 @@
 
 <div class="col-md-9">
 
-  <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning">This page has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
+  <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning"><%= raw t('wiki.show.page_has_no_tags') %></div><% end %>
 
   <% if @node.main_image && !@presentation %>
     <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img style="max-width:100%;max-height:600px;margin-bottom:10px;" class="img-rounded" src="<%= @node.main_image.path(:large) %>" /></a>
@@ -26,24 +26,25 @@
   <h1 style="font-family: 'Junction Light';"><i class="fa fa-book"></i> <%= @revision.title %> <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a></h1>
 
 <% if @is_revision %>
-  <div class="alert alert-warning">This is a revision from <%= @revision.created_at.to_s(:long) %>. <a href="/wiki/revisions/<%= @node.slug %>">View all revisions</a></div>
+  <div class="alert alert-warning"><%= raw t('wiki.show.revision_from', :time => @revision.created_at.to_s(:long)) %> <a href="/wiki/revisions/<%= @node.slug %>"><%= t('wiki.show.view_all_revisions') %></a></div>
+  
 <% end %>
 
   <div <% if @presentation %>style="display:none" <% end %>id="wiki-toolbar">
     <div class="hidden-print">
       <div class="pull-right" style="padding-top:8px;">
         <span class="hidden-sm hidden-xs">
-          <%= number_with_delimiter(@node.totalcount) %> views | 
-          Last edited by <a href="/profile/<%= @node.latest.author.name %>"><%= @node.latest.author.name %></a> <%= time_ago_in_words(@node.latest.created_at) %> ago
-          | <a href="/n/<%= @node.id %>">shortlink</a>
+          <%= number_with_delimiter(@node.totalcount) %> <%= t('wiki.show.views') %> | 
+          <%= raw t('wiki.show.last_edited', :url1 => "/profile/"+@node.latest.author.name, :author => @node.latest.author.name, :time => time_ago_in_words(@node.latest.created_at)) %>
+          | <a href="/n/<%= @node.id %>"><%= t('wiki.show.shortlink') %></a>
         </span>
       </div>
  
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#"><span class="hidden-xs">View</span><span class="visible-xs"><i class="fa fa-file-o"></i></span></a></li>
-        <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="fa fa-pencil"></i><span class="hidden-xs hidden-sm"> Edit</span></a></li>
-        <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => "Are you absolutely sure you want to delete '"+@node.path+"'? All revisions will be lost, and you cannot undo this action. If this is a spam page, be sure that it did not overwrite valid content before deleting the entire page." do %><i class="fa fa-trash"></i><span class="hidden-xs hidden-sm"> Delete</span><% end %></li><% end %>
-        <li><a href="/talk/<%= @node.slug[0,50] %>"><i class="fa fa-comments-o"></i><span class="hidden-xs hidden-sm"> Talk</span></a></li>
+        <li class="active"><a href="#"><span class="hidden-xs"><%= t('wiki.show.view') %></span><span class="visible-xs"><i class="fa fa-file-o"></i></span></a></li>
+        <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="fa fa-pencil"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.edit') %></span></a></li>
+        <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => I18n.t('wiki.show.are_you_sure_delete', :path => @node.path) do %><i class="fa fa-trash"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.delete') %></span><% end %></li><% end %>
+        <li><a href="/talk/<%= @node.slug[0,50] %>"><i class="fa fa-comments-o"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.talk') %></span></a></li>
         <li><a href="/wiki/revisions/<%= @node.slug %>"><span class="hidden-xs"><%= @node.revisions.length %> </span><i class="fa fa-list"></i></a></li>
       </ul>
     </div>
@@ -55,16 +56,16 @@
     <% slug = @node.power_tag('parent') %>
     <% parent = DrupalNode.find_by_slug(slug) %>
     <% if parent %>
-    <div class="alert alert-success" style="border-color:#eee;background:#f8f8f8;color:#aaa;">&laquo; Back to <a href="<%= parent.path %>"><%= parent.latest.title %></a></div>
+    <div class="alert alert-success" style="border-color:#eee;background:#f8f8f8;color:#aaa;">&laquo; <%= raw t('wiki.show.back_to_wiki', :url1 => parent.path, :title => parent.latest.title) %></a></div>
     <% end %>
   <% end %>
 
   <% if @node.has_power_tag('tabbed') %>
   <div class="navbar navbar-default">
     <ul class="nav navbar-nav">
-      <li class="active"><a data-toggle="tab" href="#tab-overview">Overview</a></li>
-      <% if @node.power_tags('tabbed').include?("notes") %><li><a data-toggle="tab" href="#tab-notes">Research</a></li><% end %>
-      <% if @node.power_tags('tabbed').include?("wikis") %><li><a data-toggle="tab" href="#tab-wikis">Wiki<span class="hidden-sm"> pages</span></a></li><% end %>
+      <li class="active"><a data-toggle="tab" href="#tab-overview"><%= t('wiki.show.overview') %></a></li>
+      <% if @node.power_tags('tabbed').include?("notes") %><li><a data-toggle="tab" href="#tab-notes"><%= t('wiki.show.research') %></a></li><% end %>
+      <% if @node.power_tags('tabbed').include?("wikis") %><li><a data-toggle="tab" href="#tab-wikis"><%= raw t('wiki.show.wiki_pages') %></a></li><% end %>
     </ul>
   </div>
   <% end %>
@@ -76,7 +77,7 @@
       <% if @node.power_tags('tabbed').include?("notes") %>
         <div class="tab-pane" id="tab-notes">
           <%= render :partial => "notes/notes" %>
-          <p><a href="/tag/<%= @node.slug %>">More research on "<%= @node.slug %>" &raquo;</a></p>
+          <p><a href="/tag/<%= @node.slug %>"><%= raw t('wiki.show.more_research', :tag => @node.slug) %> &raquo;</a></p>
           <br />
         </div>
       <% end %>
@@ -93,6 +94,7 @@
       <% if @nodes.length > 0 %>
         <%= render :partial => "notes/tagged_notes", :locals => {:nodes => @nodes} %>
         <p><a href="/tag/<%= tagname %>">More "<%= tagname %>" research &raquo;</a></p>
+        <%= raw t('wiki.show.more_tag_research', :tag => tagname) %>
         <hr />
       <% end %>
     <% end %>

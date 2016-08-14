@@ -1,0 +1,18 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+   sidebar:
+     _related:
+       write_research_note: "Schreiben Sie eine Research Note"
+       share_your_work: "Teilen Sie Ihre Arbeit mit anderen"
+       post_related_work: "Beitrag im Zusammenhang mit der Arbeit"
+       translation: "Übersetzung"
+       response_to: "Dies ist eine Antwort auf"
+       responses_to_note: "Die Antworten auf diese Notiz"
+       recent_topic_contributors: "Aktuelle Thema Mitwirkenden"
+       view_all: "Alle"
+       contributors: "Mitwirkende"
+       recent_wiki_edits: "Letzte Änderungen Wiki"
+       recent_wiki_pages: "Neue Wiki-Seiten"
+       related_research_notes: "Verwandte Forschungsnotizen"
+       related_maps: "Verwandte Karten"

@@ -293,8 +293,158 @@ class I18nTest < ActionDispatch::IntegrationTest
     
     test "should choose i18n for user_sessions/new" do
       available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
         get '/login'
         assert_select 'a[href=/signup]', I18n.t('user_sessions.new.sign_up')
+      end
+    end
+    
+    test "should choose i18n for wiki/_wiki + wiki/index" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get '/wiki'
+        assert_select 'th', I18n.t('wiki._wikis.likes')
+        assert_select 'small', I18n.t('wiki.index.collaborative_documentation')
+      end
+    end
+    
+    test "should choose i18n for wiki/edit" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        wiki = node(:about)
+        get '/wiki/edit/' + wiki.title.parameterize
+        assert_select 'a', I18n.t('wiki.edit.getting_started')
+      end
+    end
+    
+    test "should choose i18n for wiki/revisions" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/wiki/revisions/'+node(:organizers).title.parameterize
+        assert_select 'a', I18n.t('wiki.revisions.view')
+      end
+    end
+    
+    test "should choose i18n for wiki/show" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/wiki/'+node(:organizers).title.parameterize
+        assert_select 'span', I18n.t('wiki.show.view')
+      end
+    end
+    
+    test "should choose i18n for sidebar/_author + sidebar/_post_button" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get '/notes/author/'+rusers(:jeff).username
+        assert_select 'h4', ActionView::Base.full_sanitizer.sanitize(I18n.t('sidebar._author.recent_tags_for_author', :url1 => "/people/"+rusers(:jeff).username, :author => rusers(:jeff).username))
+        assert_select 'a', I18n.t('sidebar._post_button.write_research_note')
+      end
+    end
+    
+    test "should choose i18n for sidebar/_related" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/wiki/'+node(:organizers).title.parameterize
+        assert_select 'a', I18n.t('sidebar._related.write_research_note')
+      end
+    end
+    
+    test "should choose i18n for comments" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get node(:one).path
+        assert_select "a", I18n.t('comments._form.upload_image')
+      end
+    end
+    
+    test "should choose i18n for tag/blog" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/blog'
+        assert_select 'p', I18n.t('tag.blog.stories_from_community')
+      end
+    end
+    
+    test "should choose i18n for tag/contributors-index" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/contributors'
+        assert_select 'a[href=/post]', I18n.t('tag.contributors-index.write_research_note')
+      end
+    end
+    
+    test "should choose i18n for tag/index" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/tags'
+        assert_select 'p', I18n.t('tag.index.browse_popular_tags')
+      end
+    end
+    
+    test "should choose i18n for tag/show" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/tag/some-tag'
+        assert_select 'a', I18n.t('tag.show.maps')
+      end
+    end
+    
+    test "should choose i18n for tag/widget" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/widget/some-tag'
+        assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('tag.show.no_results_found', :tag => 'some-tag'))+":"
       end
     end
 end

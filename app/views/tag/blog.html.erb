@@ -1,14 +1,13 @@
 <div class="col-md-2">
-
 </div>
 <div class="col-md-8 blog">
   <div class="blog-header">
-    <h1><%= params[:id] == "blog" ? "The Public Lab" : params[:id].split('-').join(' ').capitalize %> Blog</h1>
+    <h1><%= params[:id] == "blog" ? I18n.t('tag.blog.the_public_lab') : params[:id].split('-').join(' ').capitalize %> <%= t('tag.blog.blog') %></h1>
 
     <% if params[:id] == "blog" %>
       <br />
-      <p>stories from the Public Lab community</p>
-      <p><a href="/wiki/blog">About the blog</a></p>
+      <p><%= t('tag.blog.stories_from_community') %></p>
+      <p><a href="/wiki/blog"><%= t('tag.blog.about_the_blog') %></a></p>
     <% end %>
 
     <br />
@@ -16,9 +15,9 @@
     <% if current_user %>
       <a class="btn btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
       <% if current_user.following(params[:id]) %>
-      <a rel="tooltip" title="Click to unfollow" class="btn btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> Following <b><%= params[:id] %></b></a>
+      <a rel="tooltip" title="<%= t('tag.blog.unfollow') %>" class="btn btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> <%= t('tag.blog.following') %> <b><%= params[:id] %></b></a>
       <% else %>
-      <a class="btn btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> Follow <b><%= params[:id] %></b></a>
+      <a class="btn btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> <%= t('tag.blog.follow') %> <b><%= params[:id] %></b></a>
       <% end %>
     <% end %>
   </div>
@@ -26,11 +25,11 @@
   <hr />
 
   <% if @notes.nil? || @notes.length == 0 %>
-    <p>No results found; try searching for '<b><%= params[:id] %></b>':</p>
+    <p><%= raw t('tag.blog.no_results', :search => params[:id]) %>:</p>
 
     <%= render :partial => "searches/search" %>
 
-    <p>Or try an <a href="/search/advanced/">advanced search</a></p>
+    <p><%= raw t('tag.blog.advanced_search', :url => "/search/advanced/") %></p>
   <% else %>
 
       <% @notes.each_with_index do |node,i| %>
@@ -40,17 +39,17 @@
           <% end %>
           <h1><a href="<%= node.path %>"><%= node.title %></a></h1>
           <p class="meta" style="color:#888;"><small>
-            by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
-            | <%= time_ago_in_words(node.created_at) %> ago
+            <%= t('tag.blog.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>
+            | <%= distance_of_time_in_words(node.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
             | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-alt"></i> <%= node.comment_count %></a>
             <% if params[:controller] == "notes" && params[:action] == "popular" %>
-            | <%= number_with_delimiter(node.totalcount) %> views
+            | <%= number_with_delimiter(node.totalcount) %> <%= t('tag.blog.views') %>
             <% else %>
             | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
             <% end %>
           </small></p>
           <p><%= raw auto_link(node.latest.render_body, :sanitize => false) %></p>
-          <p><a href="<%= node.path %>">Read more &raquo;</a></p>
+          <p><a href="<%= node.path %>"><%= t('tag.blog.read_more') %> &raquo;</a></p>
           <p>
             <%= render :partial => "like/like", :locals => {:node => node, :tagnames => node.tags.collect(&:name) } %>
             <% node.tags[0..3].each do |tag| %>
@@ -58,7 +57,7 @@
             <% end %>
           </p>
           <% if params[:mod] %>
-          <a class="btn btn-mini" href="#"><i class="fa fa-ban-circle"></i> Spam</a>
+          <a class="btn btn-mini" href="#"><i class="fa fa-ban-circle"></i> <%= t('tag.blog.spam') %></a>
           <% end %>
         </div>
         <hr />

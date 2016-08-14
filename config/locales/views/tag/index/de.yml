@@ -1,0 +1,9 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  tag:
+    index:
+      popular_tags: "Beliebte Tags"
+      browse_popular_tags: "Wir verwenden Tags Gruppenforschung thematisch - Suchen unter den beliebtesten Tags."
+      tag: "Etikett"
+      number_of_uses: "# Einsatz"

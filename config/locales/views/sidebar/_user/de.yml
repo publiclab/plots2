@@ -1,0 +1,9 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+   sidebar:
+     _user:
+       discussion_list: "Diskussionslisten"
+       work_happens_on_discussion_lists: "Ein großer Teil unserer Arbeit geschieht auf unserem regionalen und aktuelle Diskussionslisten."
+       join_one_today: "Nehmen Sie an einer heute!"
+       recent_wiki_edits: "Letzte Änderungen Wiki"
