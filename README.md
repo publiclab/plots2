@@ -89,6 +89,13 @@ But some architectures don't support the phantomjs gem. For those you have to ru
 
 Please report any error regarding phantomjs installation in the github issue tracker. We will try to solve it as fast as possible.
 
+
+### Solr search engine
+
+Solr is a standalone search server. You put documents in it (called "indexing") via JSON, XML, CSV or binary over HTTP. You query it via HTTP GET and receive JSON, XML, CSV or binary results. Solr enables powerful matching capabilities including phrases, wildcards, joins, grouping and much more across any data type.
+We are using an adapter called `sunspot` to communicate to solr search server through our rails app.
+
+
 ##Installation
 
 Installation steps:
