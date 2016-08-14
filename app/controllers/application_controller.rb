@@ -30,10 +30,15 @@ class ApplicationController < ActionController::Base
                                 .where(type: 'note', status: 1)
                                 .where('term_data.name = (?)', 'hidden:response')
                                 .collect(&:nid)
-        @notes = DrupalNode.research_notes
+        if params[:controller] == 'questions'
+          @notes = DrupalNode.questions
+                             .joins(:drupal_node_revision)
+        else
+          @notes = DrupalNode.research_notes
                            .joins(:drupal_node_revision)
                            .order('node.nid DESC')
                            .paginate(page: params[:page])
+        end
         @notes = @notes.where('node.nid != (?)', @node.nid) if @node
         @notes = @notes.where('node_revisions.status = 1 AND node.nid NOT IN (?)', hidden_nids) if hidden_nids.length > 0
 

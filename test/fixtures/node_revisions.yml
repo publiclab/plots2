@@ -147,3 +147,9 @@ question2:
   uid: 2
   title: How to ask a question
   body: Some sample text
+
+first_timer_question:
+  nid: 10
+  uid: 7
+  title: A first timer question
+  body: First timer question

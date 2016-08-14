@@ -184,7 +184,7 @@ class DrupalNodeTest < ActiveSupport::TestCase
 
   test "should find all questions" do
     questions = DrupalNode.questions
-    expected = [node(:question), node(:question2)]
+    expected = [node(:question), node(:question2), node(:first_timer_question)]
     assert_equal expected, questions
   end
 end

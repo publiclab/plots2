@@ -60,3 +60,10 @@ nine:
   sluggable_id: 9
   sluggable_type: DrupalNode
   created_at: <%= Time.now %>
+
+ten:
+  id: 10
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-a-first-timer-question
+  sluggable_id: 10
+  sluggable_type: DrupalNode
+  created_at: <%= Time.now %>

@@ -105,3 +105,15 @@ question2:
   type: "note"
   cached_likes: 0
   slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-how-to-ask-a-question
+
+first_timer_question:
+  nid: 10
+  uid: 7
+  title: "A first timer question"
+  path: "/notes/newcomer/<%= Time.now.strftime("%m-%d-%Y") %>/a-first-timer-question"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 4
+  type: "note"
+  cached_likes: 0
+  slug: newcomer-<%= Time.now.strftime("%m-%d-%Y") %>-a-first-timer-question

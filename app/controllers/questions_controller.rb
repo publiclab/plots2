@@ -2,14 +2,11 @@ class QuestionsController < ApplicationController
 
   def index
     @title = "Recent Questions"
-    @questions = DrupalNode.questions.where(status: 1)
+    set_sidebar
+    @questions = @notes
     sort_question_by_tags
     @questions = @questions.order('node.nid DESC')
                            .paginate(:page => params[:page], :per_page => 30)
-
-    @wikis = DrupalNode.limit(10)
-                       .where(type: 'page', status: 1)
-                       .order("nid DESC")
   end
 
   def show

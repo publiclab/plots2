@@ -677,7 +677,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.research_notes
-    nids = DrupalNode.where(type: 'note', status: 1)
+    nids = DrupalNode.where(type: 'note')
                      .joins(:drupal_tag)
                      .where('term_data.name LIKE ?', 'question:%')
                      .group('node.nid')

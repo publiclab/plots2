@@ -113,10 +113,19 @@ class QuestionsControllerTest < ActionController::TestCase
   end
 
   test "should list questions with status 1 in index" do
-    UserSession.create(rusers(:admin))
     get :index
     questions = assigns(:questions)
     expected = [node(:question), node(:question2)]
+    notes = [node(:one), node(:first_timer_question)]
+    assert (questions & expected).present?
+    assert !(questions & notes).present?
+  end
+
+  test "should list questions with status 1 & 4 in index to admin" do
+    UserSession.create(rusers(:admin))
+    get :index
+    questions = assigns(:questions)
+    expected = [node(:question), node(:question2), node(:first_timer_question)]
     notes = [node(:one)]
     assert (questions & expected).present?
     assert !(questions & notes).present?
