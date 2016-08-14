@@ -31,18 +31,18 @@ class WikiController < ApplicationController
       @tags = @node.tags
       @tags += [DrupalTag.find_by_name(params[:id])] if DrupalTag.find_by_name(params[:id])
     else # it's a new wiki page!
-      @title = "New wiki page"
+      @title = I18n.t('wiki_controller.new_wiki_page')
       if current_user
         new
       else
-        flash[:warning] = "That page does not yet exist. You must be logged in to create a new wiki page."
+        flash[:warning] = I18n.t('wiki_controller.pages_does_not_exist')
         redirect_to "/login"
       end
     end
 
     unless @title # the page exists
       if @node.status == 0
-        flash[:warning] = "That page has been moderated as spam. Please contact web@publiclab.org if you believe there is a problem."
+        flash[:warning] = I18n.t('wiki_controller.page_moderated_as_spam')
         redirect_to "/wiki"
       end
       @tagnames = @tags.collect(&:name)
@@ -65,12 +65,12 @@ class WikiController < ApplicationController
   def edit
     @node = DrupalNode.find params[:id]
     if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
-      flash.now[:warning] = "Someone has clicked 'Edit' less than 5 minutes ago; be careful not to overwrite each others' edits!"
+      flash.now[:warning] = I18n.t('wiki_controller.someone_clicked_edit_5_minutes_ago')
     end
     # we could do this...
     #@node.locked = true
     #@node.save
-    @title = "Editing '"+@node.title+"'"
+    @title = I18n.t('wiki_controller.editing', :title => @node.title).html_safe
 
     @tags = @node.tags
   end
@@ -79,7 +79,7 @@ class WikiController < ApplicationController
     @node = DrupalNode.new
     @tags = []
     if params[:id]
-      flash.now[:notice] = "This page does not exist yet, but you can create it now:" 
+      flash.now[:notice] = I18n.t('wiki_controller.page_does_not_exist_create')
       title = params[:id].gsub('-',' ')
       @related = DrupalNode.limit(10)
                            .order("node.nid DESC")
@@ -104,7 +104,7 @@ class WikiController < ApplicationController
         body:  params[:body]
       })
       if saved
-        flash[:notice] = "Wiki page created."
+        flash[:notice] = I18n.t('wiki_controller.wiki_page_created')
         if params[:main_image] && params[:main_image] != ""
           img = Image.find params[:main_image]
           img.nid = @node.id
@@ -115,7 +115,7 @@ class WikiController < ApplicationController
         render :action => :edit
       end
     else
-      flash.keep[:error] = "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
+      flash.keep[:error] = I18n.t('wiki_controller.you_have_been_banned').html_safe
       redirect_to "/logout"
     end
   end
@@ -153,10 +153,10 @@ class WikiController < ApplicationController
         end
         @node.save
       end
-      flash[:notice] = "Edits saved."
+      flash[:notice] = I18n.t('wiki_controller.edits_saved')
       redirect_to @node.path
     else
-      flash[:error] = "Your edit could not be saved."
+      flash[:error] = I18n.t('wiki_controller.edit_could_not_be_saved')
       render :action => :edit
       #redirect_to "/wiki/edit/"+@node.slug
     end
@@ -168,10 +168,10 @@ class WikiController < ApplicationController
       @node.transaction do
         @node.destroy
       end
-      flash[:notice] = "Wiki page deleted."
+      flash[:notice] = I18n.t('wiki_controller.wiki_page_deleted')
       redirect_to "/dashboard"
     else
-      flash[:error] = "Only admins can delete wiki pages."
+      flash[:error] = I18n.t('wiki_controller.only_admins_delete_pages')
       redirect_to @node.path
     end
   end
@@ -183,12 +183,12 @@ class WikiController < ApplicationController
       new_rev = revision.dup
       new_rev.timestamp = DateTime.now.to_i
       if new_rev.save!
-        flash[:notice] = "The wiki page was reverted."
+        flash[:notice] = I18n.t('wiki_controller.wiki_page_reverted')
       else
-        flash[:error] = "There was a problem reverting."
+        flash[:error] = I18n.t('wiki_controller.problem_reverting')
       end
     else
-      flash[:error] = "Only moderators and admins can delete wiki pages."
+      flash[:error] = I18n.t('wiki_controller.moderators_admin_delete_pages')
     end
     redirect_to node.path
   end
@@ -213,10 +213,10 @@ class WikiController < ApplicationController
     if @node
       @revisions = @node.revisions
       @revisions = @revisions.where(status: 1) unless current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      @title = "Revisions for '"+@node.title+"'"
+      @title = I18n.t('wiki_controller.revisions_for', :title => @node.title).html_safe
       @tags = @node.tags
     else
-      flash[:error] = "Invalid wiki page. No Revisions exist for this wiki page."
+      flash[:error] = I18n.t('wiki_controller.invalid_wiki_page')
     end
   end
 
@@ -229,13 +229,13 @@ class WikiController < ApplicationController
     set_sidebar :tags, @tagnames, {:videos => true}
     @revision = DrupalNodeRevision.find_by_nid_and_vid(@node.id, params[:vid])
     if @revision.nil?
-      flash[:error] = "Revision not found."
+      flash[:error] = I18n.t('wiki_controller.revision_not_found')
       redirect_to action: 'revisions'
     elsif @revision.status == 1 || current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      @title = "Revision for '"+@revision.title+"'"
+      @title = I18n.t('wiki_controller.revisions_for', :title => @revision.title).html_safe
       render :template => "wiki/show"
     else
-      flash[:error] = "That revision has been moderated. Please see <a href='/wiki/moderation'>the moderation page to learn more</a>."
+      flash[:error] = I18n.t('wiki_controller.revision_has_been_moderated').html_safe
       redirect_to @node.path
     end
   end
@@ -244,14 +244,14 @@ class WikiController < ApplicationController
     @a = DrupalNodeRevision.find_by_vid(params[:a])
     @b = DrupalNodeRevision.find_by_vid(params[:b])
     if @a.body == @b.body
-      render text: '<p>Lead image or title change</p>'
+      render text: I18n.t('wiki_controller.lead_image_or_title_change').html_safe
     else
       render partial: 'wiki/diff'
     end
   end
 
   def index
-    @title = "Wiki"
+    @title = I18n.t('wiki_controller.wiki')
 
     @wikis = DrupalNode.includes(:drupal_node_revision, :drupal_node_counter)
                        .group('node_revisions.nid')
@@ -263,7 +263,7 @@ class WikiController < ApplicationController
   end
 
   def popular
-    @title = "Popular wiki pages"
+    @title = I18n.t('wiki_controller.popular_wiki_pages')
     @wikis = DrupalNode.limit(40)
                        .order("node_counter.totalcount DESC")
                        .joins(:drupal_node_revision)
@@ -275,7 +275,7 @@ class WikiController < ApplicationController
   end
 
   def liked
-    @title = "Well-liked wiki pages"
+    @title = I18n.t('wiki_controller.well_liked_wiki_pages')
     @wikis = DrupalNode.limit(40)
                        .order("node.cached_likes DESC")
                        .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes > 0")

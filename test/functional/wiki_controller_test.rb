@@ -287,5 +287,29 @@ class WikiControllerTest < ActionController::TestCase
     assert_template :index
     assert_select "title", "Public Lab: Well-liked wiki pages"
   end
+  
+  test "should choose I18n for wiki controller" do
+    available_testing_locales.each do |lang|
+        old_controller = @controller
+        @controller = SettingsController.new
+        
+        get :change_locale, :locale => lang.to_s
+        
+        @controller = old_controller
+        
+        wiki = node(:organizers)
+        newtitle = "New Title"
+    
+        post :update, 
+             id:    wiki.nid, 
+             uid:   rusers(:bob).id,
+             title: newtitle,
+             body:  "Editing about Page"
+    
+        wiki.reload
+        assert_redirected_to wiki.path
+        assert_equal flash[:notice], I18n.t('wiki_controller.edits_saved')
+    end
+  end
 
 end
