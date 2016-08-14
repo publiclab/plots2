@@ -45,7 +45,13 @@ class HomeControllerTest < ActionController::TestCase
   
   test "should choose i18n for layout/alerts" do
     available_testing_locales.each do |lang|
-      cookies.permanent[:plots2_locale] = lang
+      old_controller = @controller
+      @controller = SettingsController.new
+      
+      get :change_locale, :locale => lang.to_s
+      
+      @controller = old_controller
+      
       UserSession.create(rusers(:bob))
       session[:openid_return_to] = '/home'
       get :dashboard
@@ -56,7 +62,13 @@ class HomeControllerTest < ActionController::TestCase
   
   test "should choose i18n for home/home" do
     available_testing_locales.each do |lang|
-      cookies.permanent[:plots2_locale] = lang
+      old_controller = @controller
+      @controller = SettingsController.new
+      
+      get :change_locale, :locale => lang.to_s
+      
+      @controller = old_controller
+      
       get 'home'
       assert_template "home/home"
       assert_select 'h1', I18n.t('home.home.the_problem.title')

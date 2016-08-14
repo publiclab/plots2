@@ -378,4 +378,5 @@ class NotesControllerTest < ActionController::TestCase
     
         assert_equal I18n.t('notes_controller.research_note_published'), flash[:notice]
     end
+  end
 end

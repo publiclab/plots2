@@ -10,7 +10,7 @@ class HomeController < ApplicationController
   #caches_action :index, :cache_path => { :last => DrupalNode.find(:last).updated_at.to_i }
 
   def home
-    @title = "a DIY environmental science community"
+    @title = I18n.t('home_controller.science_community')
     if current_user
       redirect_to "/dashboard"
     else
@@ -33,7 +33,7 @@ class HomeController < ApplicationController
 
   # route for seeing the front page even if you are logged in
   def front
-    @title = "a community for DIY environmental investigation"
+    @title = I18n.t('home_controller.environmental_investigation')
     render :template => "home/home"
   end
 
@@ -96,7 +96,7 @@ class HomeController < ApplicationController
     @activity = (@notes + @wikis + @comments).sort_by { |a| a.created_at }.reverse
     @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
     render template: 'dashboard/dashboard'
-    @title = "Community research" unless current_user
+    @title = I18n.t('home_controller.community_research') unless current_user
   end
 
   # trashy... clean this up!
