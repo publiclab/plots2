@@ -91,4 +91,19 @@ class UserTagsControllerTest < ActionController::TestCase
     post :delete, :id => user_tag.id
     assert_equal "Only admin (or) target user can manage tags", flash[:error]
   end
+  
+  test "should choose I18n for wiki controller" do
+    available_testing_locales.each do |lang|
+        old_controller = @controller
+        @controller = SettingsController.new
+        
+        get :change_locale, :locale => lang.to_s
+        
+        @controller = old_controller
+        
+        UserSession.create(rusers(:bob))
+        post :delete, :id => 9999
+        assert_equal I18n.t('user_tags_controller.tag_doesnt_exist'), flash[:error]
+    end
+  end
 end
