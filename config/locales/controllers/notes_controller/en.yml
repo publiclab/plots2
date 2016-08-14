@@ -1,0 +1,14 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  notes_controller:
+    research_notes: "Research notes"
+    thank_you_for_contribution: "Success! Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so."
+    research_note_published: "Research note published. Get the word out on <a href='/lists'>the discussion lists</a>!"
+    you_have_been_banned: "You have been banned. Please contact <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> if you believe this is in error."
+    author_can_edit_note: "Only the author can edit a research note."
+    edits_saved: "Edits saved."
+    edit_not_saved: "Your edit could not be saved."
+    content_deleted: "Content deleted."
+    highly_liked_research_notes: "Highly liked research notes"
+    popular_research_notes: "Popular research notes"
