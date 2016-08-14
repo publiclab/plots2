@@ -160,7 +160,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal "Your preference has been saved", flash[:notice]
   end
   
-  test "should choose I18n for wiki controller" do
+  test "should choose I18n for users controller" do
     available_testing_locales.each do |lang|
         old_controller = @controller
         @controller = SettingsController.new
