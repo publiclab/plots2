@@ -18,13 +18,13 @@ class UsersController < ApplicationController
       @user.save({}) do |result| # <<<<< THIS LINE WAS THE PROBLEM FOR "Undefined [] for True" error...
         if result
           if current_user.crypted_password.nil? # the user has not created a pwd in the new site
-            flash[:warning] = "Your account has been migrated from the old PublicLaboratory.org website; please create a password for the new site."
+            flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
             redirect_to "/profile/edit"
           else
             @user.drupal_user.set_bio(params[:drupal_user][:bio])
             @user.add_to_lists(['publiclaboratory'])
-            flash[:notice] = "Registration successful. You've been added to the <b>publiclaboratory</b> mailing list."
-            flash[:warning] = "<i class='icon icon-exclamation-sign'></i> If you registered in order to use <b>SpectralWorkbench.org</b> or <b>MapKnitter.org</b>, <a href='#{session[:openid_return_to]}'>click here to continue &raquo;</a>" if session[:openid_return_to]
+            flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
+            flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
             session[:openid_return_to] = nil 
             redirect_to "/dashboard"
           end
@@ -59,7 +59,7 @@ class UsersController < ApplicationController
             session[:openid_return_to] = nil
             redirect_to return_to
           else
-            flash[:notice] = "Successfully updated profile. <a href='/dashboard'>Return to your dashboard &raquo;</a>"
+            flash[:notice] = I18n.t('users_controller.successful_updated_profile')+"<a href='/dashboard'>"+I18n.t('users_controller.return_dashboard')+" &raquo;</a>"
             redirect_to "/profile/"+@user.username
           end
         else
@@ -67,7 +67,7 @@ class UsersController < ApplicationController
         end
       end
     else
-      flash[:error] = "Only <b>"+@user.name+"</b> can edit their profile."
+      flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
       redirect_to "/profile/"+@user.name
     end
   end
@@ -84,7 +84,7 @@ class UsersController < ApplicationController
     if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
       render :template => "users/edit"
     else
-      flash[:error] = "Only <b>"+@user.name+"</b> can edit their profile."
+      flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
       redirect_to "/profile/"+@user.name
     end
   end
@@ -130,7 +130,7 @@ class UsersController < ApplicationController
                               .limit(20)
     @wikis = wikis.collect(&:parent).uniq
     if @user.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
-      flash[:error] = "That user has been banned."
+      flash[:error] = I18n.t('users_controller.user_has_been_banned')
       redirect_to "/"
     end 
   end
@@ -153,7 +153,7 @@ class UsersController < ApplicationController
                            .where(type: 'note', status: 1, uid: @author.uid)
                            .limit(20)
       else
-        flash[:error] = "No user by that name found"
+        flash[:error] = I18n.t('users_controller.no_user_found')
         redirect_to "/"
       end
     else
@@ -177,20 +177,20 @@ class UsersController < ApplicationController
             @user.password_confirmation = params[:user][:password]
             @user.reset_key = nil
             if @user.changed? && @user.save({})
-              flash[:notice] = "Your password was successfully changed."
+              flash[:notice] = I18n.t('users_controller.password_change_success')
               redirect_to "/dashboard"
             else
-              flash[:error] = "Password reset failed. Please <a href='/wiki/issues'>contact the web team</a> if you are having trouble."
+              flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
               redirect_to "/"
             end
           else
-            flash[:error] = "Password change failed; key does not correspond to username."
+            flash[:error] = I18n.t('users_controller.password_change_failed')
           end
         else
           # Just display page prompting username & pwd
         end
       else
-        flash[:error] = "Password reset failed. Please <a href='/wiki/issues'>contact the web team</a> if you are having trouble. (Error: no user with that key)"
+        flash[:error] = I18n.t('users_controller.password_reset_failed_no_user').html_safe
         redirect_to "/"
       end
       
@@ -202,7 +202,7 @@ class UsersController < ApplicationController
         # send key to user email
         PasswordResetMailer.reset_notify(user, key) unless user.nil? # respond the same to both successes and failures; security
       end
-      flash[:notice] = "You should receive an email with instructions on how to reset your password. If you do not, please double check that you are using the email you registered with."
+      flash[:notice] = I18n.t('users_controller.password_reset_email')
       redirect_to "/login"
     end
   end
@@ -223,15 +223,15 @@ class UsersController < ApplicationController
         if request.xhr?
           render :json => { :url => @user.photo_path } 
         else
-          flash[:notice] = "Image saved."
+          flash[:notice] = I18n.t('users_controller.image_saved')
           redirect_to @node.path
         end
       else
-        flash[:error] = "The image could not be saved."
+        flash[:error] = I18n.t('users_controller.image_not_saved')
         redirect_to "/images/new"
       end
     else
-      flash[:error] = "The image could not be saved."
+      flash[:error] = I18n.t('users_controller.image_not_saved')
       redirect_to "/images/new"
     end
   end
@@ -252,9 +252,9 @@ class UsersController < ApplicationController
     user = DrupalUsers.find_by_name(params[:id])
     if current_user.update_attribute(:location_privacy, status)
       @output[:status] = true
-      flash[:notice] = "Your preference has been saved"
+      flash[:notice] = I18n.t('users_controller.preference_saved')
     else
-      flash[:error] = "Something went wrong, Please try again"
+      flash[:error] = I18n.t('users_controller.something_went_wrong')
       @output[:errors] << flash[:error]
     end
 
