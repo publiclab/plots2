@@ -1,0 +1,27 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  wiki_controller:
+    new_wiki_page: "New wiki page"
+    pages_does_not_exist: "That page does not yet exist. You must be logged in to create a new wiki page."
+    page_moderated_as_spam: "That page has been moderated as spam. Please contact web@publiclab.org if you believe there is a problem."
+    someone_clicked_edit_5_minutes_ago: "Someone has clicked 'Edit' less than 5 minutes ago; be careful not to overwrite each others' edits!"
+    editing: "Editing '%{title}'"
+    page_does_not_exist_create: "This page does not exist yet, but you can create it now:"
+    wiki_page_created: "Wiki page created."
+    you_have_been_banned: "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
+    edit_could_not_be_saved: "Your edit could not be saved."
+    edits_saved: "Edits saved."
+    wiki_page_deleted: "Wiki page deleted."
+    only_admins_delete_pages: "Only admins can delete wiki pages."
+    wiki_page_reverted: "The wiki page was reverted."
+    problem_reverting: "There was a problem reverting."
+    moderators_admin_delete_pages: "Only moderators and admins can delete wiki pages."
+    revisions_for: "Revisions for '%{title}'"
+    invalid_wiki_page: "Invalid wiki page. No Revisions exist for this wiki page."
+    revision_not_found: "Revision not found."
+    revision_has_been_moderated: "That revision has been moderated. Please see <a href='/wiki/moderation'>the moderation page to learn more</a>."
+    lead_image_or_title_change: '<p>Lead image or title change</p>'
+    wiki: "Wiki"
+    popular_wiki_pages: "Popular wiki pages"
+    well_liked_wiki_pages: "Well-liked wiki pages"
