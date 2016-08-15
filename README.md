@@ -123,6 +123,8 @@ For some, it will be necessary to prepend your gem-related commands with `bundle
 
 ##Testing
 
+Run solr server in test environment `RAILS_ENV=test bundle exec rake sunspot:solr:start` (required)
+
 Run tests with `rake test:all` for running all tests. We are extremely interested in building our out test suite, so please consider helping us write tests! 
 
 Run only rails tests with `rake test`.
