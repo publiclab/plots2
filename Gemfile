@@ -78,8 +78,6 @@ gem 'mocha', '~> 1.1'
 gem 'jasmine-rails'
 gem 'jasmine-jquery-rails'
 gem 'strong_parameters'
-gem 'geocoder'
-gem "i18n-js", ">= 3.0.0.rc11"
 
 gem 'sunspot_rails'
 gem 'sunspot_solr'
