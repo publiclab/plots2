@@ -21,7 +21,7 @@ class SearchesController < ApplicationController
     if @search.save
       redirect_to @search
     else
-      puts 'search failed !'
+      puts @search.errors
       render :new
     end
   end
