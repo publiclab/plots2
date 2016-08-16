@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
 
   def index
-    @title = "Recent Questions"
+    @title = "Questions and Answers"
     set_sidebar
     @questions = @notes
     sort_question_by_tags
