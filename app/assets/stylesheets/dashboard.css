@@ -348,27 +348,27 @@
   overflow-x: hidden;
 }
 
-.note-answer{
-  background: #feffc1;
+.note-answer {
+  background: #f3ffc1;
   border-color: #babb80;
   color: #555;
 }
 
-.note-answer .btn-default{
+.note-answer .btn-default {
   color: #75754e;
   border-color: #75754e;
   margin-bottom: 5px;
 }
 
-.note-answer .btn-default:hover{
-  background: #fbfda7;
+.note-answer .btn-default:hover {
+  background: #e6f3ad;
 }
 
-.note-answer .btn-default i{
+.note-answer .btn-default i {
   padding: 4px;
 }
 
-.note-answer .fa-question-circle{
+.note-answer .fa-question-circle {
   color: #75754e;
-  background: #feffc1;
+  background: #f3ffc1;
 }

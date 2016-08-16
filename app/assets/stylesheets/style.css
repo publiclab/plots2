@@ -454,14 +454,11 @@ pre {
   color: #fff;
 }
 
-.accepted{
-  color: #76e276;
-  border: 1px solid #76e276;
-  padding: 8px;
-  font-size: 12px;
+.accepted {
+  background: #76e276;
 }
 
-.user-answer{
+.user-answer {
   margin-top: 10px;
   margin-bottom: 5px;
   padding: 10px;
