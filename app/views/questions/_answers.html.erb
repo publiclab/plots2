@@ -10,7 +10,7 @@
     <% if current_user %>
       <%= render :partial => "comments/form", :locals => { title: "Post an answer", comment: false, placeholder: "Help users by posting an answer to this question" } %>
     <% else %>
-      <p>You must be <a href="/login">logged in</a> to answer.</p>
+      <p><a href="/signup">Sign up</a> or <a href="/login">Login</a> to post an answer to this question.</p>
     <% end %> 
     </div> 
   </div>
