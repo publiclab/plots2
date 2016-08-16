@@ -212,7 +212,7 @@ Plots2::Application.routes.draw do
   match 'admin/demote/basic/:id' => 'admin#demote_basic'
   match 'admin/promote/admin/:id' => 'admin#promote_admin'
   match 'admin/migrate/:id' => 'admin#migrate'
-  
+
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
@@ -288,7 +288,7 @@ Plots2::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
 
-  # match ':controller(/:action(/:id))(.:format)'
+  match ':controller(/:action(/:id))(.:format)'
 
 
 
