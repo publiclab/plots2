@@ -145,7 +145,7 @@
 
   <% if @user.user %>
   <% @user.user.barnstars.each do |tag| %>
-    <p style="color:#aaa;"><i style="color:#db4;" class="fa fa-large fa fa-star-o"></i> <i><%= raw t('users.profile.barnstar_awarded_to_by', :url1 => "/profile/"+tag.node.author.name, :author => tag.node.author.name, :url2 => "/wiki/barnstars#"+tag.name.split('-').each{|w| w.capitalize!}.join('+'), :barnstar => tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' '), :url3 => "/profile/"+tag.author.username, :author => tag.author.username, :url4 => tag.node.path, :work => tag.node.title) %></i></p>
+    <p style="color:#aaa;"><i style="color:#db4;" class="fa fa-large fa fa-star-o"></i> <i><%= raw t('users.profile.barnstar_awarded_to_by', :url1 => "/profile/"+tag.node.author.name, :author => tag.node.author.name, :url2 => "/wiki/barnstars#"+tag.name.split('-').each{|w| w.capitalize!}.join('+'), :barnstar => tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' '), :url3 => "/profile/"+tag.author.username, :awarder => tag.author.username, :url4 => tag.node.path, :work => tag.node.title) %></i></p>
     <hr />
   <% end %>
   <% end %>
