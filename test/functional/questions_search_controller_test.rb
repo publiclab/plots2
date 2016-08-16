@@ -15,7 +15,7 @@ class QuestionsSearchControllerTest < ActionController::TestCase
     assert_not_nil :tagnames
     assert_not_nil :users
     assert_not_nil :notes
-    assert_template :index
+    assert_template :normal_search
   end
 
   test "should redirect to post form if no question match found" do

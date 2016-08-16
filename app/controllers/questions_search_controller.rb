@@ -22,7 +22,7 @@ class QuestionsSearchController < ApplicationController
       redirect_to '/post?tags=question:question&template=question&title=' +
                   params[:id] + '&redirect=question'
     else
-      render :template => 'search/index'
+      render :template => 'searches/normal_search'
     end
   end
 

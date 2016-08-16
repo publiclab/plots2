@@ -6,8 +6,10 @@ class SearchesControllerTest < ActionController::TestCase
   def setup
     @normal_search = searches(:normal)
     @advanced_search = searches(:advanced_note)
-    @user = users(:newcomer)
+
     activate_authlogic
+    @user = rusers(:newcomer)
+    UserSession.create(@user)
   end
 
   test 'should get index' do
@@ -30,7 +32,6 @@ class SearchesControllerTest < ActionController::TestCase
     assert_difference('Search.count') do
       post :create, search: {
         title: 'advanced search',
-        user_id: @user.id,
         main_type: 'Notes or Wiki updates',
         key_words: 'blog'
       }
