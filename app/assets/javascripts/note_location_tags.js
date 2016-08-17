@@ -48,28 +48,55 @@ $(document).ready(function() {
       lat = options.lat;
       long = options.lon;
 
-      var hexbin = {
-        radius : 20,                            // Size of the hexagons/bins
-        opacity: 0.5,                           // Opacity of the hexagonal layer
-        duration: 200,                          // millisecond duration of d3 transitions (see note below)
-        lng: function(d){ return d[1]; },       // longitude accessor
-        lat: function(d){ return d[0]; },       // latitude accessor
-        value: function(d){ return d.length; }, // value accessor - derives the bin value
-        valueFloor: 0,                          // override the color scale domain low value
-        valueCeil: undefined,                   // override the color scale domain high value
-        colorRange: ['#f7fbff', '#08306b'],     // default color range for the heat map (see note below)
-        onmouseover: function(d, node, layer) {},
-        onmouseout: function(d, node, layer) {},
-        onclick: function(d, node, layer) {}
-      }
+      var circle = L.circle([lat, long], 150, {
+        color: 'red'
+      }).addTo(mymap);
 
-      var hexlayer = L.hexbinLayer(hexbin).addTo(mymap);
-      hexlayer.colorScale().range(["white", "grey"]);
+      circle.addTo(mymap);
 
-      hexlayer.data([[lat, long]]);
+      circle.on('mousedown', function (event) {
+        mymap.dragging.disable();
+        let {lat: circleStartingLat, lng: circleStartingLng} = circle._latlng;
+        let {lat: mouseStartingLat, lng: mouseStartingLng} = event.latlng;
+
+
+        mymap.on('mousemove', event => {
+          let {lat: mouseNewLat, lng: mouseNewLng} = event.latlng;
+          let latDifference = mouseStartingLat - mouseNewLat;
+          let lngDifference = mouseStartingLng - mouseNewLng;
+
+          let center = [circleStartingLat-latDifference, circleStartingLng-lngDifference];
+          circle.setLatLng(center);
+        });
+      });
+
+      mymap.on('mouseup', () => { 
+        mymap.dragging.enable();
+        mymap.removeEventListener('mousemove');
+        var lat = parseFloat(circle.getLatLng().lat).toFixed(5);
+        var lng = parseFloat(circle.getLatLng().lng).toFixed(5);
+        updateAddress(lat, lng);
+      });
     }
     else {
-      var marker = L.marker([options.lat, options.lon]).addTo(mymap);
+      var marker = L.marker([options.lat, options.lon], {
+        draggable: true
+      });
+      marker.on('dragend', function(event){
+        var target = event.target;
+        var position = target.getLatLng();
+        updateAddress(position.lat, position.lng);
+      });
+      marker.addTo(mymap);
     }
+  }
+
+  function updateAddress(lat, long) {
+    $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+long, function(data) {
+      if (data.status) {
+        var address = data.results[0].formatted_address;
+        $("#location-input").val(address);
+      }
+    });
   }
 });

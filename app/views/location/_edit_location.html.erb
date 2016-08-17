@@ -30,28 +30,9 @@
       var marker = L.marker([<%= location_tag.lat %>, <%= location_tag.lon %>]).addTo(mymap);
     <% else %>
       // Handle privacy case with hexbin and lat, lng are rounded to 4 decimal places
-      var lat = <%= location_tag.lat %>;
-      var long = <%= location_tag.lon %>;
-
-      var options = {
-        radius : 20,                            // Size of the hexagons/bins
-        opacity: 0.5,                           // Opacity of the hexagonal layer
-        duration: 200,                          // millisecond duration of d3 transitions (see note below)
-        lng: function(d){ return d[1]; },       // longitude accessor
-        lat: function(d){ return d[0]; },       // latitude accessor
-        value: function(d){ return d.length; }, // value accessor - derives the bin value
-        valueFloor: 0,                          // override the color scale domain low value
-        valueCeil: undefined,                   // override the color scale domain high value
-        colorRange: ['#f7fbff', '#08306b'],     // default color range for the heat map (see note below)
-        onmouseover: function(d, node, layer) {},
-        onmouseout: function(d, node, layer) {},
-        onclick: function(d, node, layer) {}
-      }
-
-      var hexlayer = L.hexbinLayer(options).addTo(mymap);
-      hexlayer.colorScale().range(["white", "grey"]);
-
-      hexlayer.data([[lat, long]]);
+      var circle = L.circle([<%= location_tag.lat %>, <%= location_tag.lon %>], 150, {
+        color: 'red'
+      }).addTo(mymap);
     <% end %>
   <% end %>
 </script>
