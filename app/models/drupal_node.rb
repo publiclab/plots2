@@ -56,6 +56,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :images, :foreign_key => :nid
   has_many :node_selections, :foreign_key => :nid
   has_many :answers, :foreign_key => :nid
+  has_one :location_tag, :foreign_key => :nid, :dependent => :destroy
 
   belongs_to :drupal_users, :foreign_key => 'uid'
 

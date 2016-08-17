@@ -1,0 +1,47 @@
+<br />
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>
+<% if current_user %>
+
+  <div class="input-group checkbox">
+    <label for="display-location">
+      <input tabindex="7" id="display-location" type="checkbox" name="display_location" <%= node && node.location_tag ? "checked" : "" %>>
+      Add Location to the content
+    </label>        
+  </div>
+
+  <br />
+
+  <div id="location-info" style="<%= node && node.location_tag ? '' : 'display:none;' %>">
+    <div class="input-group">
+      <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+      <input autocomplete="off" class="form-control" id="location-input" tabindex="3" name="location" type="text" placeholder="New York City, USA" data-provide="typeahead" value="<%= node && node.location_tag ? node.location_tag.location : '' %>" />
+    </div>
+    <br />
+
+    <div class="input-group checkbox">
+      <label for="location-privacy">
+        <input tabindex="7" id="location-privacy" type="checkbox" name="location_privacy" <%= node && node.location_tag && node.location_tag.location_privacy ? "checked" : "" %>>
+        Obscure my exact location
+      </label>
+    </div>
+  <% end %>
+  
+  <h4>This is what other users will see</h4>
+  <br />
+  <div class="container">
+    <div id="location_map" class="row"></div>
+  </div>
+</div>
+
+<%= javascript_include_tag "note_location_tags.js" %>
+<script type="text/javascript">
+  <% if node && node.location_tag %>
+    var options = {
+      lat: <%= node.location_tag.lat %>,
+      lon: <%= node.location_tag.lon %>
+    }
+    $(document).ready(function() {
+      window.initiateMap(options);
+    });
+  <% end %>
+</script>

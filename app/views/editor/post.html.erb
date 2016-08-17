@@ -99,6 +99,7 @@
         <input autocomplete="off" class="form-control" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
       </div>
 
+      <%= render partial: 'location/new_location', locals: { node: @node } %> 
       <input name="remote" type="hidden" value="true" />
  
       <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
@@ -136,3 +137,4 @@
 
   <% end %>
 </div>
+

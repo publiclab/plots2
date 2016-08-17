@@ -76,6 +76,8 @@
   <div style="overflow:hidden;" id="content">
   <%= raw auto_link(@node.latest.render_body, :sanitize => false) %>
   </div>
+  
+  <%= render partial: 'location/edit_location', locals: { node: @node } %>
 
   <% if @node.files && @node.files.length > 0 %>
     <table id="files" class="table">

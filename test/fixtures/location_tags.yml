@@ -12,6 +12,7 @@ one:
 
 two:
   id: 2
+  nid: 1
   uid: 2
   location: Hyderabad, India
   country: India
@@ -19,3 +20,16 @@ two:
   city: Hyderabad
   lat: 18.3755495
   lon: 78.5498682
+  location_privacy: true
+
+three:
+  id: 3
+  nid: 2
+  uid: 2
+  location: Hyderabad, India
+  country: India
+  state: Telangana
+  city: Hyderabad
+  lat: 18.3755495
+  lon: 78.5498682
+  location_privacy: false

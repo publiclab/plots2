@@ -1,0 +1,38 @@
+<% if node.location_tag %>
+  <br />
+    
+  <div class="container">
+    <div id="location_map" class="row"></div>
+  </div>
+
+  <br />
+  <h4><%= node.location_tag.location %></h4>
+<% end %>
+
+<style type="text/css">
+  .hexbin-hexagon {
+    stroke: #000;
+    stroke-width: 1px;
+  }
+</style>
+
+<script type="text/javascript">
+  <% if node.location_tag %>
+    $('#location_map').html("<div id='map' class='col-md-6' style='height: 250px;'></div>");
+    <% location_tag = node.location_tag %>
+    mymap = new L.map('map').setView([<%= location_tag.lat %>, <%= location_tag.lon %>], 15);
+
+    L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+      attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
+    }).addTo(mymap);
+
+    <% unless location_tag.location_privacy %>
+      var marker = L.marker([<%= location_tag.lat %>, <%= location_tag.lon %>]).addTo(mymap);
+    <% else %>
+      // Handle privacy case with hexbin and lat, lng are rounded to 4 decimal places
+      var circle = L.circle([<%= location_tag.lat %>, <%= location_tag.lon %>], 150, {
+        color: 'red'
+      }).addTo(mymap);
+    <% end %>
+  <% end %>
+</script>
