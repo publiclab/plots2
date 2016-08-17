@@ -4,7 +4,7 @@ class TagController < ApplicationController
   before_filter :require_user, :only => [:create, :delete]
 
   def index
-    @title = "Tags"
+    @title = I18n.t('tag_controller.tags')
     @paginated = true
     @tags = DrupalTag.joins(:drupal_node_community_tag, :drupal_node)
                      .where('node.status = ?', 1)
@@ -76,11 +76,11 @@ class TagController < ApplicationController
     node = DrupalNode.find params[:nid]
     tagname = "barnstar:"+params[:star]
     if DrupalTag.exists?(tagname,params[:nid])
-      flash[:error] = "Error: that tag already exists."
+      flash[:error] = I18n.t('tag_controller.tag_already_exists')
     elsif !node.add_barnstar(tagname.strip,current_user)
-      flash[:error] = "The barnstar could not be created."
+      flash[:error] = I18n.t('tag_controller.barnstar_not_created')
     else
-      flash[:notice] = "You awarded the <a href='/wiki/barnstars#"+params[:star].split('-').each{|w| w.capitalize!}.join('+')+"+Barnstar'>"+params[:star]+" barnstar</a> to <a href='/profile/"+node.author.name+"'>"+node.author.name+"</a>"
+      flash[:notice] = I18n.t('tag_controller.barnstar_awarded', :url1 => "/wiki/barnstars#"+params[:star].split('-').each{|w| w.capitalize!}.join('+')+"+Barnstar", :star => params[:star], :url2 => "/profile/"+node.author.name, :awardee => node.author.name).html_safe
       # on success add comment
       barnstar_info_link = '<a href="publiclab.org/wiki/barnstars">barnstar</a>'
       node.add_comment({
@@ -106,25 +106,25 @@ class TagController < ApplicationController
       # this should all be done in the model:
 
       if DrupalTag.exists?(tagname,params[:nid])
-        @output[:errors] << "Error: that tag already exists."
+        @output[:errors] << I18n.t('tag_controller.tag_already_exists')
       else
         # "with:foo" coauthorship powertag: by author only
         if tagname[0..4] == "with:" && node.author.uid != current_user.uid
-          @output[:errors] << "Error: only the author may use that powertag."
+          @output[:errors] << I18n.t('tag_controller.only_author_use_powertag')
         # "with:foo" coauthorship powertag: only for real users
         elsif tagname[0..4] == "with:" && User.find_by_username(tagname.split(':')[1]).nil?
-          @output[:errors] << "Error: cannot find that username."
+          @output[:errors] << I18n.t('tag_controller.cannot_find_username')
         elsif tagname[0..4] == "with:" && tagname.split(':')[1] == current_user.username
-          @output[:errors] << "Error: you cannot add yourself as coauthor."
+          @output[:errors] << I18n.t('tag_controller.cannot_add_yourself_coauthor')
         elsif tagname[0..4] == "rsvp:" && current_user.username != tagname.split(':')[1]
-          @output[:errors] << "Error: you can only RSVP for yourself."
+          @output[:errors] << I18n.t('tag_controller.only_RSVP_for_yourself')
         else
           saved,tag = node.add_tag(tagname.strip,current_user)
           if saved
             @tags << tag
             @output[:saved] << [tag.name,tag.id]
           else
-            @output[:errors] << "Error: tags "+tag.errors[:name].first
+            @output[:errors] << I18n.t('tag_controller.error_tags')+tag.errors[:name].first
           end
         end
       end
@@ -134,7 +134,7 @@ class TagController < ApplicationController
         if request.xhr?
           render :json => @output
         else
-          flash[:notice] = "#{@output[:saved].length} tags created, #{@output[:errors].length} errors."
+          flash[:notice] = I18n.t('tag_controller.tags_created_error', :tag_count => @output[:saved].length, :error_count => @output[:errors].length).html_safe
           redirect_to node.path
         end
       end
@@ -153,13 +153,13 @@ class TagController < ApplicationController
           if request.xhr?
             render :text => node_tag.tid
           else
-            flash[:notice] = "Tag deleted."
+            flash[:notice] = I18n.t('tag_controller.tag_deleted')
             redirect_to node_tag.node.path
           end
         end
       end
     else
-      flash[:error] = "You must own the tag to delete it."
+      flash[:error] = I18n.t('tag_controller.must_own_tag_to_delete')
       redirect_to DrupalNode.find_by_nid(params[:nid]).path
     end
   end

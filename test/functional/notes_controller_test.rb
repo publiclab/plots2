@@ -358,4 +358,25 @@ class NotesControllerTest < ActionController::TestCase
     assert (notes & expected).present?
     assert !(notes & questions).present?
   end
+  
+  test "should choose I18n for notes controller" do
+    available_testing_locales.each do |lang|
+        old_controller = @controller
+        @controller = SettingsController.new
+        
+        get :change_locale, :locale => lang.to_s
+        
+        @controller = old_controller
+        
+        UserSession.create(rusers(:jeff))
+        title = "Some post to Public Lab"
+    
+        post :create,
+             title: title+lang.to_s,
+             body: "Some text.",
+             tags: "event"
+    
+        assert_equal I18n.t('notes_controller.research_note_published'), flash[:notice]
+    end
+  end
 end
