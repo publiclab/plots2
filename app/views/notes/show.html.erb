@@ -79,16 +79,7 @@
   <%= raw auto_link(@node.latest.render_body, :sanitize => false) %>
   </div>
   
-  <% if @node.location_tag %>
-    <br />
-      
-    <div class="container">
-      <div id="location_map" class="row"></div>
-    </div>
-
-    <br />
-    <h4><%= @node.location_tag.location %></h4>
-  <% end %>
+  <%= render partial: 'location/edit_location', locals: { node: @node } %>
 
   <% if @node.files && @node.files.length > 0 %>
     <table id="files" class="table">
@@ -141,51 +132,3 @@
   </div>
 
 </div><!--/span-->
-
-
-<style type="text/css">
-  .hexbin-hexagon {
-    stroke: #000;
-    stroke-width: 1px;
-  }
-</style>
-
-<script type="text/javascript">
-  <% if @node.location_tag %>
-    $('#location_map').html("<div id='map' class='col-md-6' style='height: 250px;'></div>");
-    <% location_tag = @node.location_tag %>
-    mymap = new L.map('map').setView([<%= location_tag.lat %>, <%= location_tag.lon %>], 15);
-
-    L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
-      attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
-    }).addTo(mymap);
-
-    <% unless location_tag.location_privacy %>
-      var marker = L.marker([<%= location_tag.lat %>, <%= location_tag.lon %>]).addTo(mymap);
-    <% else %>
-      // Handle privacy case with hexbin and lat, lng are rounded to 4 decimal places
-      var lat = <%= location_tag.lat %>;
-      var long = <%= location_tag.lon %>;
-
-      var options = {
-        radius : 20,                            // Size of the hexagons/bins
-        opacity: 0.5,                           // Opacity of the hexagonal layer
-        duration: 200,                          // millisecond duration of d3 transitions (see note below)
-        lng: function(d){ return d[1]; },       // longitude accessor
-        lat: function(d){ return d[0]; },       // latitude accessor
-        value: function(d){ return d.length; }, // value accessor - derives the bin value
-        valueFloor: 0,                          // override the color scale domain low value
-        valueCeil: undefined,                   // override the color scale domain high value
-        colorRange: ['#f7fbff', '#08306b'],     // default color range for the heat map (see note below)
-        onmouseover: function(d, node, layer) {},
-        onmouseout: function(d, node, layer) {},
-        onclick: function(d, node, layer) {}
-      }
-
-      var hexlayer = L.hexbinLayer(options).addTo(mymap);
-      hexlayer.colorScale().range(["white", "grey"]);
-
-      hexlayer.data([[lat, long]]);
-    <% end %>
-  <% end %>
-</script>
