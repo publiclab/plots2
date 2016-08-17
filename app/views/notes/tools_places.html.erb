@@ -24,17 +24,17 @@
   <%= render :partial => "notes/format_toggle" %>
 
   <% if params[:action] == 'tools' %>
-  <h2 style="margin-top:0;">Tools &amp; techniques <small>developed by Public Lab contributors</small></h2>
+  <h2 style="margin-top:0;"><%= raw t('notes.tools_places.tools_and_techniques') %></h2>
   <% else %>
-  <h2>Public Lab chapters <small>local groups and gatherings around the world | <a href="/wiki/start-a-chapter">Start a chapter &raquo;</a></small></h2>
+  <h2><%= t('notes.tools_places.public_lab_chapters') %> <small><%= raw t('notes.tools_places.start_a_chapter', :url1 => "/wiki/start-a-chapter") %></small></h2>
   <% end %>
   <hr />
   <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked") %>
     <div class="navbar">
       <div class="navbar-inner">
         <ul class="nav">
-          <li<% if params[:action] == "tools" %> class="active"<% end %>><a href="/tools/"><i class="fa fa-wrench"></i> Tools</a></li>
-          <li<% if params[:action] == "places" %> class="active"<% end %>><a href="/places/"><i class="fa fa-flag"></i> Places</a></li>
+          <li<% if params[:action] == "tools" %> class="active"<% end %>><a href="/tools/"><i class="fa fa-wrench"></i> <%= t('notes.tools_places.tools') %></a></li>
+          <li<% if params[:action] == "places" %> class="active"<% end %>><a href="/places/"><i class="fa fa-flag"></i> <%= t('notes.tools_places.places') %></a></li>
         </ul>
       </div>
     </div>

@@ -1,0 +1,19 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  notes:
+    index:
+      search_results_for: "Suchergebnisse für  <i style=\"color:#aaa;\">%{params}</i>"
+      advanced_search: "Erweiterte Suche"
+      notes_tagged_with: "Hinweise getaggt mit <i style=\"color:#aaa;\">%{params}</i>"
+      popular_research_notes: "Beliebte Forschungsnotizen"
+      research_on: "Forschung auf \"%{tags}\" von <a href='%{url1}'>%{user_name}</a>"
+      research_notes_and_wiki_edits_with_time: "%{count} Forschung Notizen und Wiki-Bearbeitungen beginnend vor %{time}"
+      research_by: "Forschung von <a href='%{url1}'>%{user_name}</a>"
+      research_notes_and_wiki_edits: "%{count} Forschung Notizen und Wiki-Bearbeitungen"
+      starting_time: "beginnend vor %{time}"
+      research_notes_ideas_and_documentation: "Forschung Notizen <small class=\"hidden-sm\">Ideen und Dokumentation von Mitwirkenden wie Sie</small>"
+      recent: "Kürzlich"
+      popular: "Beliebt"
+      liked: "Zufrieden"
+      wiki_pages: "Wiki<span class=\"hidden-sm\"> Seiten</span>"

@@ -1,0 +1,10 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  notes:
+    tools_places:
+      tools_and_techniques: "Tools &amp; techniques <small>developed by Public Lab contributors</small>"
+      public_lab_chapters: "Public Lab chapters"
+      start_a_chapter: "local groups and gatherings around the world | <a href='%{url1}'>Start a chapter &raquo;</a>"
+      tools: "Tools"
+      places: "Places"

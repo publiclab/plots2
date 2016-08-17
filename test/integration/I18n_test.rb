@@ -457,4 +457,77 @@ class I18nTest < ActionDispatch::IntegrationTest
         assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', :page => 'topic', :url1 => '/wiki/'+'topic', :url2 => '/wiki/talk-pages'))
       end
     end
+    
+    test "should choose i18n for notes/_comment" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get node(:one).path
+        assert_select "span", I18n.t('notes._comment.commented')
+      end
+    end
+    
+    test "should choose i18n for notes/_comments" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get node(:one).path
+        assert_select "p",  ActionView::Base.full_sanitizer.sanitize(I18n.t('notes._comments.must_be_logged_in', :url1 => "/login"))
+      end
+    end
+    
+    test "should choose i18n for notes/index" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/notes/popular'
+        assert_select "h2",  I18n.t('notes.index.popular_research_notes')
+      end
+    end
+    
+    test "should choose i18n for notes/show" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        post '/user_sessions', user_session: {
+          username: rusers(:jeff).username,
+          password: 'secret'
+        }
+        follow_redirect!
+        
+        get node(:first_timer_note).path
+        assert_template "notes/show"
+        assert_select "div[class=alert alert-warning]",  ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.show.note_no_tags'))
+      end
+    end
+    
+    test "should choose i18n for notes/stats" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/stats'
+        assert_select "h2",  I18n.t('notes.stats.contributors_statistics')
+      end
+    end
+    
+    test "should choose i18n for notes/tools_places" do
+      available_testing_locales.each do |lang|
+        get "/change_locale/"+lang.to_s
+        follow_redirect!
+        
+        get '/tools'
+        assert_select "h2",  ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.tools_places.tools_and_techniques'))
+      end
+    end
 end
