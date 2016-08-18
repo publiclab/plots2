@@ -37,4 +37,7 @@
 
 <script type="text/javascript">
   $('#comment-<%= comment.id %>-edit-form textarea').val('<%= comment.comment %>');
+  $('.expandingArea').each(function(){
+    makeExpandingArea($(this));
+  })
 </script>

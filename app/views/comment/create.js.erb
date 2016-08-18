@@ -2,4 +2,4 @@ $('#answer-<%= @answer_id %>-comment-section').after('<%= escape_javascript(rend
 $('#answer-<%= @answer_id %>-comment-<%= @comment.id %>').show()
 $('#answer-<%= @answer_id %>-comment-count')[0].innerHTML = parseInt($('#answer-<%= @answer_id %>-comment-count')[0].innerHTML) + 1
 $('#answer-<%= @answer_id %>-comment-form textarea').val('');
-$('#answer-<%= @answer_id %>-comment-form .help-block').remove()
+$('#answer-<%= @answer_id %>-comment-section .help-block').remove()
