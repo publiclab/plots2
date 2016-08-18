@@ -1,3 +1,5 @@
+<%= stylesheet_link_tag "comments.css" %>
+
 <% if answer_id == 0 %>
   <% node = comment.node %>
 <% else %>
@@ -11,7 +13,7 @@
     <div class="img-circle"></div>
   <% end %>
   </div>
-  <div class="inline" style="width: 80%">  
+  <div class="inline" id="comment-content">  
     <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
     <span class="hidden-xs">commented</span>
     <a style="color:#aaa;" href="#answer-comment-<%= comment.id %>"><%= time_ago_in_words(comment.created_at) %> ago</a><br/>
@@ -25,7 +27,7 @@
     </div>
     
   </div>
-  <div class="inline pull-right" style="vertical-align: top;">
+  <div class="inline pull-xs-right" style="vertical-align: top">
     <p><% if current_user && current_user.uid == comment.uid %>
     <a class="btn btn-default btn-sm" onClick="$('#answer-<%= answer_id %>-comment-<%= comment.id %> .content').toggle();$('#answer-<%= answer_id %>-comment-<%= comment.id %> .content-form').toggle();" ><i class="fa fa-pencil"></i></a>
     <% end %>
