@@ -6,22 +6,21 @@
       <% end %>
       <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
       <p style="color:#888;"><small>
-        by <a href="/notes/author/<%= node.author.name %>"><%= node.author.name %></a> 
-        | <%= time_ago_in_words(node.created_at) %> ago
+        <%= raw t('notes._tagged_notes.by_author_time_ago', :url1 => "/notes/author/"+node.author.name, :author => node.author.name, :time => time_ago_in_words(node.created_at)) %>
         | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-alt"></i> <%= node.comment_count %></a>
-        | <%= number_with_delimiter(node.totalcount) %> views
+        | <%= number_with_delimiter(node.totalcount) %> <%= t('notes._tagged_notes.views') %>
         | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
       </small></p>
       <p class="hidden-lg"><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150) %></p>
       <p class="visible-lg"><small><%= raw (strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150)) %></small></p>
-      <p><a href="<%= node.path %>">Read more &raquo;</a></p>
+      <p><a href="<%= node.path %>"><%= t('notes._tagged_notes.read_more') %> &raquo;</a></p>
       <p>
         <% node.tags[0..3].each do |tag| %>
           <a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
         <% end %>
       </p>
       <% if params[:mod] %>
-      <a class="btn btn-mini" href="#"><i class="fa fa-ban-circle"></i> Spam</a>
+      <a class="btn btn-mini" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._tagged_notes.spam') %></a>
       <% end %>
     </div>
     <hr class="visible-sm" />

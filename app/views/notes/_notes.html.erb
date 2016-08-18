@@ -11,11 +11,11 @@
         <% if node.status == 4 %>
           <p class="alert alert-warning moderated">
             <% if logged_in_as(['admin','moderator']) %>
-              Moderate first-time post: <br class="hidden-xs hidden-sm"/>
-              <a class="btn btn-default btn-xs" href="/moderate/publish/<%= node.id %>">Approve</a>
-              <a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>">Spam</a>
+              <%= t('notes._notes.moderate_first_time_post') %> <br class="hidden-xs hidden-sm"/>
+              <a class="btn btn-default btn-xs" href="/moderate/publish/<%= node.id %>"><%= t('notes._notes.approve') %></a>
+              <a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><%= t('notes._notes.spam') %></a>
             <% else %>
-              Pending approval by <a href='/wiki/moderation'>community moderators</a>. Please be patient!
+              <%= raw t('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
             <% end %>
           </p>
         <% end %>
@@ -28,14 +28,14 @@
 
         <p class="meta"><small>
           <% if node.type == 'note' %>
-            by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
-            <%= time_ago_in_words(node.created) %> ago
+            by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a>
+            <%= distance_of_time_in_words(node.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
             | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
           <% else %>
-            last edit by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a> 
-            <%= time_ago_in_words(Time.at(node.latest.timestamp)) %> ago
+            <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a>
+            <%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, false, :scope => :'datetime.time_ago_in_words') %>
           <% end %>
-          | <i class="fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-xs hidden-sm">views</span>
+          | <i class="fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %> <span class="hidden-xs hidden-sm"><%= t('notes._notes.views') %></span>
           | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
         </small></p>
 
@@ -43,12 +43,12 @@
           <% if @compact.nil? %>
             <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) if node.body %></p>
             <p>
-              <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> Spam</a><% end %>
-              <a href="<%= node.path %>">Read more &raquo;</a>
+              <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
+              <a href="<%= node.path %>"><%= t('notes._notes.read_more') %> &raquo;</a>
             </p>
           <% end %>
           <% if params[:mod] %>
-            <a class="btn btn-default btn-xs" href="#"><i class="fa fa-ban-circle"></i> Spam</a>
+            <a class="btn btn-default btn-xs" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._notes.spam') %></a>
           <% end %>
           <hr style="display:none;" class="bottom" />
         </div>

@@ -99,7 +99,11 @@ class AdminController < ApplicationController
       end
     else
       flash[:error] = "Only moderators can moderate posts."
-      redirect_to @node.path
+      if @node.has_power_tag('question')
+        redirect_to @node.path(:question)
+      else
+        redirect_to @node.path
+      end
     end
   end
 
@@ -121,7 +125,11 @@ class AdminController < ApplicationController
           flash[:notice] = "Item published."
         end
       end
-      redirect_to @node.path
+      if @node.has_power_tag('question')
+        redirect_to @node.path(:question)
+      else
+        redirect_to @node.path
+      end
     else
       flash[:error] = "Only moderators can publish posts."
       redirect_to "/dashboard"
@@ -142,7 +150,11 @@ class AdminController < ApplicationController
       end
     else
       flash[:error] = "Only moderators can moderate posts."
-      redirect_to @node.path
+      if @node.has_power_tag('question')
+        redirect_to @node.path(:question)
+      else
+        redirect_to @node.path
+      end
     end
   end
 
@@ -152,7 +164,11 @@ class AdminController < ApplicationController
       @revision.publish
       @revision.author.unban
       flash[:notice] = "Item published."
-      redirect_to @revision.parent.path
+      if @revision.parent.has_power_tag('question')
+        redirect_to @revision.parent.path(:question)
+      else
+        redirect_to @revision.parent.path
+      end
     else
       flash[:error] = "Only moderators can publish posts."
       redirect_to "/dashboard"

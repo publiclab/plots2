@@ -162,4 +162,12 @@ class DrupalTag < ActiveRecord::Base
     d
   end
 
+  def self.find_research_notes(tagnames, limit = 10)
+    DrupalNode.research_notes.where(status: 1)
+              .includes(:drupal_node_revision, :drupal_tag)
+              .where('term_data.name IN (?)', tagnames)
+              .order("node_revisions.timestamp DESC")
+              .limit(limit)
+  end
+
 end

@@ -453,3 +453,16 @@ pre {
 .answer-accept.btn-success {
   color: #fff;
 }
+
+.accepted {
+  background: #76e276;
+}
+
+.user-answer {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  padding: 10px;
+  display:none;
+  background-color: #fff;
+  border-radius: 5px;
+}

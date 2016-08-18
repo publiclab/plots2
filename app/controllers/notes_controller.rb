@@ -5,7 +5,7 @@ class NotesController < ApplicationController
   before_filter :require_user, :only => [:create, :edit, :update, :delete, :rsvp]
 
   def index
-    @title = "Research notes"
+    @title = I18n.t('notes_controller.research_notes')
     set_sidebar
   end
 
@@ -79,7 +79,11 @@ class NotesController < ApplicationController
 
   def shortlink
     @node = DrupalNode.find params[:id]
-    redirect_to @node.path
+    if @node.has_power_tag('question')
+      redirect_to @node.path(:question)
+    else
+      redirect_to @node.path
+    end
   end
 
   # display a revision, raw
@@ -95,6 +99,10 @@ class NotesController < ApplicationController
       redirect_old_urls
     else
       @node = DrupalNode.find params[:id]
+    end
+
+    if @node.has_power_tag('question')
+      redirect_to @node.path(:question)
     end
 
     return if check_and_redirect_node(@node)
@@ -137,9 +145,9 @@ class NotesController < ApplicationController
         if current_user.first_time_poster
           AdminMailer.notify_node_moderators(@node)
           flash[:first_time_post] = true
-          flash[:notice] = "Success! Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so."
+          flash[:notice] = I18n.t('notes_controller.thank_you_for_contribution').html_safe
         else
-          flash[:notice] = "Research note published. Get the word out on <a href='/lists'>the discussion lists</a>!"
+          flash[:notice] = I18n.t('notes_controller.research_note_published').html_safe
         end
         # Notice: Temporary redirect.Remove this condition after questions show page is complete.
         #         Just keep @node.path(:question)
@@ -156,7 +164,7 @@ class NotesController < ApplicationController
         render :template => "editor/post"
       end
     else
-      flash.keep[:error] = "You have been banned. Please contact <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> if you believe this is in error."
+      flash.keep[:error] = I18n.t('notes_controller.you_have_been_banned').html_safe
       redirect_to "/logout"
     end
   end
@@ -177,7 +185,7 @@ class NotesController < ApplicationController
         render :template => "editor/post"
       end
     else
-      prompt_login "Only the author can edit a research note."
+      prompt_login I18n.t('notes_controller.author_can_edit_note')
     end
   end
 
@@ -217,7 +225,7 @@ class NotesController < ApplicationController
           end
         end
         @node.save!
-        flash[:notice] = "Edits saved."
+        flash[:notice] = I18n.t('notes_controller.edits_saved')
         # Notice: Temporary redirect.Remove this condition after questions show page is complete.
         #         Just keep @node.path(:question)
         format = false
@@ -228,7 +236,7 @@ class NotesController < ApplicationController
           redirect_to @node.path(format) + "?_=" + Time.now.to_i.to_s
         end
       else
-        flash[:error] = "Your edit could not be saved."
+        flash[:error] = I18n.t('notes_controller.edit_not_saved')
         render :action => :edit
       end
     end
@@ -243,9 +251,9 @@ class NotesController < ApplicationController
       respond_with do |format|
         format.html do
           if request.xhr?
-            render :text => "Content deleted."
+            render :text => I18n.t('notes_controller.content_deleted')
           else
-            flash[:notice] = "Content deleted."
+            flash[:notice] = I18n.t('notes_controller.content_deleted')
             redirect_to "/dashboard" + "?_=" + Time.now.to_i.to_s
           end
         end
@@ -277,26 +285,29 @@ class NotesController < ApplicationController
 
   # notes with high # of likes
   def liked
-    @title = "Highly liked research notes"
+    @title = I18n.t('notes_controller.highly_liked_research_notes')
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
-    @notes = DrupalNode.limit(20)
-                       .order("cached_likes DESC")
-                       .where(type: 'note', status: 1)
+    
+    @notes = DrupalNode.research_notes
+                       .where(status: 1)
+                       .limit(20)
+                       .order('nid DESC')
     @unpaginated = true
     render :template => 'notes/index'
   end
 
   # notes with high # of views
   def popular
-    @title = "Popular research notes"
+    @title = I18n.t('notes_controller.popular_research_notes')
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
-    @notes = DrupalNode.limit(20)
+    @notes = DrupalNode.research_notes
+                       .limit(20)
+                       .where(status: 1)
                        .order("node_counter.totalcount DESC")
-                       .where(type: 'note', status: 1)
                        .includes(:drupal_node_counter)
     @unpaginated = true
     render :template => 'notes/index'

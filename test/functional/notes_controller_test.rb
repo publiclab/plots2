@@ -25,7 +25,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "redirect note short url" do
-    note = DrupalNode.where(type: 'note', status: 1).last
+    note = DrupalNode.where(type: 'note', status: 1).first
 
     get :shortlink, id: note.id
 
@@ -33,7 +33,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note by id" do
-    note = DrupalNode.where(type: 'note', status: 1).last
+    note = DrupalNode.where(type: 'note', status: 1).first
     assert_not_nil note.id
 
     get :show, id: note.id
@@ -42,7 +42,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note" do
-    note = DrupalNode.where(type: 'note', status: 1).last
+    note = DrupalNode.where(type: 'note', status: 1).first
 
     get :show,
         author: note.author.name,
@@ -304,4 +304,79 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal assigns(:graph_comments), DrupalComment.comment_weekly_tallies(52, Time.now()).to_a.sort.to_json
   end
 
+  test "should redirect to question path if node is a question when visiting shortlink" do
+    node = node(:question)
+    get :shortlink, id: node.id
+    assert_redirected_to node.path(:question)
+  end
+
+  test "should redirect to question path if node is a question when visiting show path" do
+    note = node(:question)
+
+    get :show,
+        author: note.author.name,
+        date: Time.at(note.created).strftime("%m-%d-%Y"),
+        id: note.title.parameterize
+    assert_redirected_to note.path(:question)
+  end
+
+  test "should list only research notes with status 1 in index" do
+    get :index
+    notes = assigns(:notes)
+    expected = [node(:one)]
+    questions = [node(:question)]
+    assert (notes & expected).present?
+    assert !(notes & questions).present?
+  end
+
+  test "should list research notes with status 1 & 4 in index if admin is logged in" do
+    UserSession.create(rusers(:admin))
+    get :index
+    notes = assigns(:notes)
+    expected = [node(:one), node(:first_timer_note)]
+    questions = [node(:question)]
+    assert (notes & expected).present?
+    assert !(notes & questions).present?
+  end
+
+  test "should list only research notes with status 1 in popular" do
+    UserSession.create(rusers(:admin))
+    get :popular
+    notes = assigns(:notes)
+    expected = [node(:one)]
+    questions = [node(:question)]
+    assert (notes & expected).present?
+    assert !(notes & questions).present?
+  end
+
+  test "should list only research notes with status 1 in liked" do
+    UserSession.create(rusers(:admin))
+    get :liked
+    notes = assigns(:notes)
+    expected = [node(:one)]
+    questions = [node(:question)]
+    assert (notes & expected).present?
+    assert !(notes & questions).present?
+  end
+  
+  test "should choose I18n for notes controller" do
+    available_testing_locales.each do |lang|
+        old_controller = @controller
+        @controller = SettingsController.new
+        
+        get :change_locale, :locale => lang.to_s
+        
+        @controller = old_controller
+        
+        UserSession.create(rusers(:jeff))
+        title = "Some post to Public Lab"
+    
+        post :create,
+             title: title+lang.to_s,
+             body: "Some text.",
+             tags: "event"
+    
+        assert_equal I18n.t('notes_controller.research_note_published'), flash[:notice]
+    end
+  end
 end

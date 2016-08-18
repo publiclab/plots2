@@ -1,0 +1,10 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  user_sessions_controller:
+    log_in: "Einloggen"
+    create_password_for_new_site: "Ihr Konto wurde von der alten PublicLaboratory.org Website migriert ; bitte ein Passwort für den neuen Standort erstellen."
+    logged_in: "Erfolgreich angemeldet."
+    sign_up_to_join: "Es sieht aus wie Sie neu hier! Melden Sie sich hier bis zu verbinden."
+    user_has_been_banned: "Der Benutzer '%{username}' wurde gesperrt; bitte kontaktieren Sie <a href='mailto:web@publiclab.org'>web@publiclab.org</a> wenn Sie dies in Fehler ist zu glauben."
+    logged_out: "Erfolgreich abgemeldet."

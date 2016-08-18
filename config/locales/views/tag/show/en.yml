@@ -12,6 +12,7 @@ en:
       ask_question: "Ask a question about <b>%{tag}</b>"
       or_subscribe_to_answer: "or <a style='margin-bottom:6px;' class='btn btn-default' target='_blank' href='%{url1}'>Subscribe to answer questions on this topic</a>"
       research_notes: "<span class=\"hidden-sm\">Research </span>Notes"
+      questions: "Questions"
       wiki_pages: "Wiki<span class=\"hidden-sm\"> pages</span>"
       maps: "Maps"
       no_results_found: "No results found; try searching for '<b>%{tag}</b>'"

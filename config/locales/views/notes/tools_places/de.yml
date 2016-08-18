@@ -1,0 +1,10 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  notes:
+    tools_places:
+      tools_and_techniques: "Werkzeuge &amp; Techniken <small>entwickelt, mit öffentlichen Lab Mitwirkenden</small>"
+      public_lab_chapters: "Public Lab Kapiteln"
+      start_a_chapter: "lokale Gruppen und Versammlungen auf der ganzen Welt | <a href='%{url1}'>Starten Sie ein Kapitel &raquo;</a>"
+      tools: "Werkzeuge"
+      places: "Setzt"

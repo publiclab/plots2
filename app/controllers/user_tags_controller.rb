@@ -15,7 +15,7 @@ class UserTagsController < ApplicationController
         if params[:value] != ""
           value = params[:type] + ":" + params[:value]
           if UserTag.exists?(user.id, value)
-            @output[:errors] << "Error: tag already exists."
+            @output[:errors] << I18n.t('user_tags_controller.tag_already_exists')
             exist = true
           end
 
@@ -24,17 +24,17 @@ class UserTagsController < ApplicationController
             if user_tag.save
               @output[:saved] = [user_tag.id, value.split(":")[0], value.split(":")[1]]
             else
-              @output[:errors] << "Error: Cannot save value. Try Again"
+              @output[:errors] << I18n.t('user_tags_controller.cannot_save_value')
             end
           end
         else
-          @output[:errors] << "Error: value cannot be empty"
+          @output[:errors] << I18n.t('user_tags_controller.value_cannot_be_empty')
         end
       else
-        @output[:errors] << "Error: Invalid value #{params[:type]}"
+        @output[:errors] << I18n.t('user_tags_controller.invalid_value', :type => params[:type]).html_safe
       end
     else
-      @output[:errors] << "Only admin (or) target user can manage tags"
+      @output[:errors] << I18n.t('user_tags_controller.admin_user_manage_tags')
     end
 
     respond_with do |format|
@@ -43,9 +43,9 @@ class UserTagsController < ApplicationController
           render json: @output
         else
           if @output[:errors].length > 0
-            flash[:error] = "#{@output[:errors].length} errors occured."
+            flash[:error] = I18n.t('user_tags_controller.errors_occured', :count => @output[:errors].length).html_safe
           else
-            flash[:notice] = "#{@output[:saved][2]} tag created successfully"
+            flash[:notice] = I18n.t('user_tags_controller.tag_created', :tag_name => @output[:saved][2]).html_safe
           end
           redirect_to info_path, :id => params[:id]
         end
@@ -65,18 +65,18 @@ class UserTagsController < ApplicationController
       if current_user.role == "admin" || @user_tag.user == current_user
         if @user_tag
           @user_tag.destroy
-          message = "Tag deleted."
+          message = I18n.t('user_tags_controller.tag_deleted')
           output[:status] = true
         else
           output[:status] = false
-          message = "Tag doesn't exist."
+          message = I18n.t('user_tags_controller.tag_doesnt_exist')
         end
       else
-        message = "Only admin (or) target user can manage tags"
+        message = I18n.t('user_tags_controller.admin_user_manage_tags')
       end
     rescue ActiveRecord::RecordNotFound
       output[:status] = false
-      message = "Tag doesn't exist."
+      message = I18n.t('user_tags_controller.tag_doesnt_exist')
     end
 
     output[:errors] << message

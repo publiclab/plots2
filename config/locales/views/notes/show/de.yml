@@ -1,0 +1,24 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  notes:
+    show:
+      note_no_tags: "Diese Notiz wurde noch nicht zugeordnet; helfen, sie zu anderen Inhalten verbinden unten durch <a onClick=\"$('#taginput').focus()\">Hinzufügen beschreibende Tags</a>."
+      question: "Frage:"
+      author_is_asking_about: |
+        <a href='%{url1}'> %{author} </a>
+        stellt eine Frage über <b>%{tag}</b>:
+      sign_up_to_answer: "Melden Sie sich für Fragen zu diesem Thema beantworten"
+      unpublished: "unveröffentlicht"
+      views: "Ansichten"
+      comments: "Bemerkungen"
+      shortlink: "Kurzlink"
+      barnstar_awarded_to_by: "<a href='%{url1}'>%{author}</a> wurde <a href='%{url2}'>die %{barnstar} Barnstar</a> von <a href='%{url3}'>%{awarder}</a> für ihre Arbeit in diesem Research Note verliehen."
+      file_table: |
+        <th>Dateien</th>
+        <th>Größe</th>
+        <th>Hochgeladen</th>
+      event_is_on: "Dieses Ereignis ist auf %{date}"
+      ical: "iCal"
+      login_to: "Bitte <a href='%{url1}'>melden</a> Sie sich an"
+      people_will_attend: "%{count} Personen teilnehmen wird"

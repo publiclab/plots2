@@ -6,9 +6,7 @@
     </div>
   <% end %>
 
-  <!--<a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope"></i> Send message</a>-->
   <% if current_user %>
-   
     <% unless current_user == @profile_user %>
       <hr />
       <div id="follow_form" class="col-md-offset-4">
@@ -81,7 +79,7 @@
 
     <% end %>
     <br />
-    <% if current_user == @profile_user || current_user.role == 'admin' %>
+    <% if current_user && (current_user == @profile_user || current_user.role == 'admin' ) %>
       <a href="/profile/info/<%= @user.name %>" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_information') %></a>
     <% end %>
   </p>
@@ -145,7 +143,7 @@
 
   <% if @user.user %>
   <% @user.user.barnstars.each do |tag| %>
-    <p style="color:#aaa;"><i style="color:#db4;" class="fa fa-large fa fa-star-o"></i> <i><%= raw t('users.profile.barnstar_awarded_to_by', :url1 => "/profile/"+tag.node.author.name, :author => tag.node.author.name, :url2 => "/wiki/barnstars#"+tag.name.split('-').each{|w| w.capitalize!}.join('+'), :barnstar => tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' '), :url3 => "/profile/"+tag.author.username, :author => tag.author.username, :url4 => tag.node.path, :work => tag.node.title) %></i></p>
+    <p style="color:#aaa;"><i style="color:#db4;" class="fa fa-large fa fa-star-o"></i> <i><%= raw t('users.profile.barnstar_awarded_to_by', :url1 => "/profile/"+tag.node.author.name, :author => tag.node.author.name, :url2 => "/wiki/barnstars#"+tag.name.split('-').each{|w| w.capitalize!}.join('+'), :barnstar => tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' '), :url3 => "/profile/"+tag.author.username, :awarder => tag.author.username, :url4 => tag.node.path, :work => tag.node.title) %></i></p>
     <hr />
   <% end %>
   <% end %>
@@ -153,6 +151,7 @@
   <ul class="nav nav-tabs">
     <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words')) %></small></span>
     <li class="active"><a href="#research" data-toggle="tab"><%= t('users.profile.research') %></a></li>
+    <li><a href="#questions" data-toggle="tab"><i class="fa fa-comments"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %></span></a></li>
     <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.comments') %></span></a></li>
     <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
   </ul>
@@ -163,6 +162,23 @@
 
     <div class="tab-pane active" id="research">
       <%= render :partial => "notes/notes" %>
+    </div>
+
+    <div class="tab-pane" id="questions">
+      <div class="btn-group text-center">
+        <a href="#asked" class="btn btn-default active" data-toggle="tab">Asked</a>
+        <a href="#answered" class="btn btn-default" data-toggle="tab">Answered</a>
+      </div>
+      
+      <div class="tab-content">
+        <div class="tab-pane active" id="asked">
+          <%= render :partial => "questions/questions" %>
+        </div>
+      
+        <div class="tab-pane" id="answered">
+          <%= render :partial => "users/answered" %>
+        </div>
+      </div>
     </div>
 
     <div class="tab-pane" id="maps">
@@ -192,6 +208,10 @@
           })
         })
       })()
+
+      $('#questions .btn-group .btn').click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+      })
     </script>
   </div>
 
@@ -281,3 +301,5 @@
     });
   })();
 </script>
+<%= stylesheet_link_tag "dashboard" %>
+<%= javascript_include_tag "dashboard" %>

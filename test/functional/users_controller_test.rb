@@ -159,6 +159,23 @@ class UsersControllerTest < ActionController::TestCase
     assert user.location_privacy
     assert_equal "Your preference has been saved", flash[:notice]
   end
+  
+  test "should choose I18n for users controller" do
+    available_testing_locales.each do |lang|
+        old_controller = @controller
+        @controller = SettingsController.new
+        
+        get :change_locale, :locale => lang.to_s
+        
+        @controller = old_controller
+        
+        UserSession.create(rusers(:jeff))
+        user = rusers(:jeff)
+        post :privacy, location_privacy: true, :id => user.username
+    
+        assert_equal I18n.t('users_controller.preference_saved'), flash[:notice]
+    end
+  end
 
 #  test "should display map with success response" do
 #    UserSession.create(rusers(:jeff))
@@ -226,4 +243,21 @@ class UsersControllerTest < ActionController::TestCase
 #    assert_redirected_to root_url
 #  end
 
+  test "should list notes and questions in user profile" do
+    user = users(:jeff)
+    get :profile, id: user.name
+    assert_not_nil assigns(:notes)
+    assert_not_nil assigns(:questions)
+    assert_not_nil assigns(:answered_questions)
+    assert_select "#asked .note-question", 2
+    assert_select "#answered .note-answer", 1
+  end
+
+  test "should get comments" do
+    user = users(:jeff)
+    get :comments, id: user.id
+    assert_response :success
+    assert_not_nil assigns(:comments)
+    assert_template partial: 'comments/_comments'
+  end
 end

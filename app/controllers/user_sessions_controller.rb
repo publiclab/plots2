@@ -1,7 +1,7 @@
 class UserSessionsController < ApplicationController
 
   def new
-    @title = "Log in"
+    @title = I18n.t('user_sessions_controller.log_in')
   end
 
   def create
@@ -24,10 +24,10 @@ class UserSessionsController < ApplicationController
             # replace this with temporarily saving pwd in session,
             # and automatically saving it in the user record after login is completed
             if current_user.crypted_password.nil? # the user has not created a pwd in the new site
-              flash[:warning] = "Your account has been migrated from the old PublicLaboratory.org website; please create a password for the new site."
+              flash[:warning] = I18n.t('user_sessions_controller.create_password_for_new_site')
               redirect_to "/profile/edit"
             else
-              flash[:notice] = "Successfully logged in."
+              flash[:notice] =I18n.t('user_sessions_controller.logged_in')
               if session[:openid_return_to] # for openid login, redirects back to openid auth process
                 return_to = session[:openid_return_to]
                 session[:openid_return_to] = nil
@@ -51,12 +51,12 @@ class UserSessionsController < ApplicationController
           # this is a user from the old site who hasn't registered on the new site
           redirect_to :controller => :users, :action => :create, :user => {:openid_identifier => username}
         else # totally new user!
-          flash[:warning] = "It looks like you're new here! Sign up below to join."
+          flash[:warning] = I18n.t('user_sessions_controller.sign_up_to_join')
           redirect_to "/signup"
         end
       end
     else
-      flash[:error] = "The user '"+@user.username+"' has been banned; please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
+      flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', :username => @user.username).html_safe
       redirect_to "/"
     end
   end
@@ -64,7 +64,7 @@ class UserSessionsController < ApplicationController
   def destroy
     @user_session = UserSession.find
     @user_session.destroy
-    flash[:notice] = "Successfully logged out."
+    flash[:notice] = I18n.t('user_sessions_controller.logged_out')
     redirect_to root_url
   end
 

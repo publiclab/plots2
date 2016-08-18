@@ -7,6 +7,7 @@
     "bootstrap-lightbox": "jbutz/bootstrap-lightbox#~0.5.0",
     "bootstrap-typeahead": "bassjobsen/Bootstrap-3-Typeahead#~4.0.0",
     "bootstrap-datepicker": "~1.6.0",
+    "bootstrap-tokenfield": "~0.12.0",
     "jquery": "~1.11",
     "jquery-file-upload": "~8.1.0",
     "marked": "0.3.2",
@@ -17,7 +18,9 @@
     "moment": "~2.10.6",
     "junction": "theleagueof/junction",
     "publiclab-editor": "~0.1.0",
-    "leaflet-d3": "^0.3.8"
+    "leaflet-d3": "^0.3.8",
+    "woofmark": "~4.2.0",
+    "horsey": "3.0.0"
   },
   "resolutions": {
     "jquery": "~2.1.0",
