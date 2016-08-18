@@ -46,6 +46,12 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should get root-level (/about) wiki page" do
+    get :root, id: 'about'
+
+    assert_response :success
+  end
+
   test "post wiki no login" do
     UserSession.find.destroy
 
@@ -88,6 +94,7 @@ class WikiControllerTest < ActionController::TestCase
   test "update root-path (/about) wiki" do
     wiki = node(:about)
     newtitle = "New Title"
+    assert_equal wiki.path, "/about"
 
     post :update, 
          id:    wiki.nid, 
