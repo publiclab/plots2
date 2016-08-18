@@ -252,9 +252,7 @@ class UsersController < ApplicationController
     user = DrupalUsers.find_by_name(params[:id])
     if current_user.update_attribute(:location_privacy, status)
       @output[:status] = true
-      flash[:notice] = I18n.t('users_controller.preference_saved')
     else
-      flash[:error] = I18n.t('users_controller.something_went_wrong')
       @output[:errors] << flash[:error]
     end
 
@@ -273,6 +271,11 @@ class UsersController < ApplicationController
       }
 
       format.html {
+        if @output[:status]
+          flash[:notice] = I18n.t('users_controller.preference_saved')
+        else
+          flash[:error] = I18n.t('users_controller.something_went_wrong')
+        end
         redirect_to info_path(params[:id])
       }
     end
