@@ -45,14 +45,14 @@
   <div id="answer-0-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee">
     <div id="answer-0-comment-section">
     <% if current_user %>
-    <div class="inline" style="vertical-align: top;">
+    <div class="inline hidden-xs" style="vertical-align: top;">
       <% if current_user.photo_file_name %>
         <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" /> 
       <% else %>
         <div class="img-circle"></div> 
       <% end %>
     </div>
-    <div class="inline" style="width: 90%">
+    <div class="inline" id="comment-form">
       <form id="answer-0-comment-form" class="form-horizontal" action="/comment/create/<%= @node.id%>" data-remote="true">
         <%= render partial: "questions/form" %>  
       </form>
