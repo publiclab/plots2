@@ -319,4 +319,10 @@ class WikiControllerTest < ActionController::TestCase
     end
   end
 
+  test "should get wiki with differnt title and path" do
+    wiki = node(:wiki_page)
+    slug = wiki.path.gsub('/wiki/', '')
+    get :show, id: slug
+    assert_response :success
+  end
 end

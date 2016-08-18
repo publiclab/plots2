@@ -82,8 +82,8 @@ class DrupalNode < ActiveRecord::Base
   before_save :set_changed_and_created
   after_create :setup
   before_validation :set_path, on: :create
-  before_create :remove_slug
-  #before_update :update_path
+  # before_create :remove_slug
+  # before_update :update_path
 
   # can switch to a "question-style" path if specified
   def path(type = :default)
@@ -125,12 +125,12 @@ class DrupalNode < ActiveRecord::Base
 #                end
 #  end
 
-  def remove_slug
-    if !FriendlyId::Slug.find_by_slug(self.title.parameterize).nil? && self.type == 'page'
-      slug = FriendlyId::Slug.find_by_slug(self.title.parameterize)
-      slug.delete
-    end
-  end
+#  def remove_slug
+#    if !FriendlyId::Slug.find_by_slug(self.title.parameterize).nil? && self.type == 'page'
+#      slug = FriendlyId::Slug.find_by_slug(self.title.parameterize)
+#      slug.delete
+#    end
+#  end
 
   def set_changed_and_created
     self['changed'] = DateTime.now.to_i
@@ -667,13 +667,15 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_notes(author, date, title)
-    finder = "#{author} #{date} #{title}".parameterize
-    DrupalNode.find(finder)
+    DrupalNode.where(path: "/notes/#{author}/#{date}/#{title}").first
   end
 
   def self.find_map(name, date)
-    finder = "#{name} #{date}".parameterize
-    DrupalNode.find(finder)
+    DrupalNode.where(path: "/map/#{title}").first
+  end
+
+  def self.find_wiki(title)
+    DrupalNode.where(path: ["/#{title}", "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
   end
 
   def self.research_notes

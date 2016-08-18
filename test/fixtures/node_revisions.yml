@@ -153,3 +153,9 @@ first_timer_question:
   uid: 7
   title: A first timer question
   body: First timer question
+
+wiki_page:
+  nid: 11
+  uid: 1
+  title: Wiki page title
+  body: this wiki has a differnt title and path

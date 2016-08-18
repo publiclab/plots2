@@ -13,9 +13,9 @@ class QuestionsController < ApplicationController
     if params[:author] && params[:date]
       @node = DrupalNode.find_notes(params[:author], params[:date], params[:id])
       @node = @node || DrupalNode.where(path: "/report/#{params[:id]}").first
-      if request.path != @node.path(:question)
-        return redirect_to @node.path(:question), :status => :moved_permanently
-      end
+      # if request.path != @node.path(:question)
+      #   return redirect_to @node.path(:question), :status => :moved_permanently
+      # end
     else
       @node = DrupalNode.find params[:id]
     end
