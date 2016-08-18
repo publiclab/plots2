@@ -28,6 +28,7 @@ en:
       barnstar_awarded_to_by: "<a href='%{url1}'>%{author}</a> was awarded <a href='%{url2}'>the %{barnstar} Barnstar</a> by <a href='%{url3}'>%{awarder}</a> for their work published in <a href='%{url4}'>%{work}</a>."
       joined_time_ago: "Joined %{time_ago}"
       research: "Research"
+      questions: "Questions"
       comments: "Comments"
       liked: "Liked"
       view_these_maps: "View these maps <a href='%{url1}'>at MapKnitter.org &raquo;</a>"

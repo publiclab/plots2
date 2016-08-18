@@ -13,12 +13,12 @@
         <% end %>
         <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
       <% end %>
-      <span class="hidden-xs">commented</span>
-      <a style="color:#aaa;" href="#c<%= comment.cid %>"><%= time_ago_in_words(comment.created_at) %> ago</a>
+      <span class="hidden-xs"><%= t('notes._comment.commented') %></span>
+      <a style="color:#aaa;" href="#c<%= comment.cid %>"><%= distance_of_time_in_words(comment.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %></a>
       <% if comment.author && comment.author.user %>
         <% streak = comment.author.user.streak %>
         <% if streak[0] > 7 %>
-          <a href="/wiki/streaks"><i class="fa fa-fire" style="padding-left:4px; font-size:16px; color:#f63;" data-toggle="tooltip" data-placement="top" title="<%= comment.author.name %> is on fire! <%= streak[1][0]%> notes, <%= streak[1][1]%> wiki edits, <%= streak[1][2]%> comments in the last <%= streak[0]%> days"></i></a>
+          <a href="/wiki/streaks"><i class="fa fa-fire" style="padding-left:4px; font-size:16px; color:#f63;" data-toggle="tooltip" data-placement="top" title="<%= raw t('notes._comment.streak_title', :author => comment.author.name, :streak_notes => streak[1][0], :streak_wiki => streak[1][1], :streak_comments => streak[1][2], :streak_days => streak[0]) %>"></i></a>
         <% end %>
       <% end %>
     </div>
@@ -40,7 +40,7 @@
       <% end %>
 
       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
-        <a data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in deleting/moderating others' comments; this cannot be undone.<% end %>" href="/comment/delete/<%= comment.cid %>" class="btn btn-default btn-sm" id="c<%= comment.cid %>delete-btn">
+        <a data-remote="true" data-confirm="<%= t('notes._comment.are_you_sure') %> <% if current_user && comment.uid != current_user.uid %><%= t('notes._comment.please_exercise_caution') %><% end %>" href="/comment/delete/<%= comment.cid %>" class="btn btn-default btn-sm" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
         </a>
       <% end %>
@@ -68,7 +68,7 @@
   </div>
 
   <% if current_user %>
-     <%=  render :partial => "comments/edit", :locals => { title: "Edit comment", comment: comment, placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email" } %>
+     <%=  render :partial => "comments/edit", :locals => { title: I18n.t('notes._comment.edit_comment'), comment: comment, placeholder: I18n.t('notes._comment.edit_placeholder') } %>
   <% end %>
   <br />
 

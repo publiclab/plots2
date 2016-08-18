@@ -9,8 +9,8 @@ class QuestionsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:notes)
-    assert assigns(:notes).first.has_power_tag('question')
+    assert_not_nil assigns(:questions)
+    assert assigns(:questions).first.has_power_tag('question')
   end
 
   test "should get show" do
@@ -29,14 +29,13 @@ class QuestionsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should not show notes other than question" do
+  test "should redirect notes other than question to note path" do
     note = node(:one)
     get :show,
         author: note.author.name,
         date: Time.at(note.created).strftime("%m-%d-%Y"),
         id: note.title.parameterize
-    assert_redirected_to '/'
-    assert_equal flash[:error], "Not a question"
+    assert_redirected_to note.path
   end
 
   test "redirect question to short url" do
@@ -103,5 +102,61 @@ class QuestionsControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select '#answer-' + answer.id.to_s + '-accept', 0
+  end
+
+  test "should get answered" do
+    get :answered
+    assert_response :success
+    assert_equal assigns(:title), "Recently answered"
+    assert_not_nil assigns(:questions)
+    assert_template :index
+  end
+
+  test "should list questions with status 1 in index" do
+    get :index
+    questions = assigns(:questions)
+    expected = [node(:question), node(:question2)]
+    notes = [node(:one), node(:first_timer_question)]
+    assert (questions & expected).present?
+    assert !(questions & notes).present?
+  end
+
+  test "should list questions with status 1 & 4 in index to admin" do
+    UserSession.create(rusers(:admin))
+    get :index
+    questions = assigns(:questions)
+    expected = [node(:question), node(:question2), node(:first_timer_question)]
+    notes = [node(:one)]
+    assert (questions & expected).present?
+    assert !(questions & notes).present?
+  end
+
+  test "should list questions with status 1 in popular" do
+    UserSession.create(rusers(:admin))
+    get :popular
+    questions = assigns(:questions)
+    expected = [node(:question), node(:question2)]
+    notes = [node(:one)]
+    assert (questions & expected).present?
+    assert !(questions & notes).present?
+  end
+
+  test "should list questions with status 1 in liked" do
+    UserSession.create(rusers(:admin))
+    get :liked
+    questions = assigns(:questions)
+    expected = [node(:question), node(:question2)]
+    notes = [node(:one)]
+    assert (questions & expected).present?
+    assert !(questions & notes).present?
+  end
+
+  test "should list only answered questions in answered" do
+    UserSession.create(rusers(:admin))
+    get :answered
+    questions = assigns(:questions)
+    expected = [node(:question)]
+    assert (questions & expected).present?
+    assert !(questions & [node(:question2)]).present?
   end
 end

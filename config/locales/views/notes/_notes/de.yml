@@ -1,0 +1,13 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  notes:
+    _notes:
+      moderate_first_time_post: "Moderate erstmalige Post:"
+      approve: "Genehmigen"
+      span: "Spam"
+      pending_approval: "Vorbehaltlich der Zustimmung durch <a href='%{url1}'>Community-Moderatoren</a>. Bitte haben Sie Geduld!"
+      last_edit_by: "zuletzt von"
+      views: "Ansichten"
+      read_more: "Weiterlesen"
+      

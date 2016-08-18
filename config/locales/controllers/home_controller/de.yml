@@ -1,0 +1,7 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  home_controller:
+    science_community: "ein DIY Umweltwissenschaften Gemeinschaft"
+    environmental_investigation: "eine Gemeinschaft für DIY Umweltuntersuchung"
+    community_research: "Gemeinschaftsforschung"

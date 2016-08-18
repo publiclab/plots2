@@ -55,4 +55,10 @@ class DrupalTagTest < ActiveSupport::TestCase
     assert nodes_in_year.length > 0
   end
 
+  test "find all tagged research notes with status 1" do
+    tagnames = ["test"]
+    notes = DrupalTag.find_research_notes(tagnames)
+    expected = [node(:one)]
+    assert_equal expected, notes
+  end
 end

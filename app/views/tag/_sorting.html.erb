@@ -1,0 +1,48 @@
+<div>
+<h4>Refine Questions by tags</h4>
+<p>
+  <span id="tags">
+    <% if @session_tags %>
+      <% @session_tags.each do |tag_id, tag_name| %>
+        <span id="tag_<%= tag_id %>" class="label label-primary">
+          <a href="/tag/<%= tag_name %>"><%= tag_name %></a>
+          <a class="tagdelete" href="/tag/remove_tag/<%= tag_id %>?return_to=<%= request.path %>">x</a>
+        </span>
+      <% end %>
+    <% end %>
+  </span>
+</p>
+
+<% if @session_tags && !@session_tags.empty? %>
+  <p><a href="/tag/remove_all_tags?return_to=<%= request.path %>">Clear all tags</a></p>
+<% end %>
+
+<form id="tagform" class="form" action="/tag/add_tag">
+  <div class="control-group">
+    <input name="return_to" type="hidden" value="<%= request.path %>" />
+    <div class="input-group col-md-12">
+      <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+      <input autocomplete="off" id="taginput" name="name" type="text" placeholder="enter tags" data-provide="typeahead" class="form-control" />
+    </div>
+    <script>
+      jQuery(document).ready(function() {
+ 
+        $('#taginput').typeahead({
+          items: 8,
+          minLength: 3,
+          source: function (query, process) {
+            return $.post('/tag/suggested/'+query, {}, function (data) {
+              return process(data)
+            })
+          },
+          updater: function(text) { 
+            $('#taginput').val(text)
+            $('#tagform').submit()
+          }
+        });
+ 
+      });
+    </script>
+  </div>
+</form>
+</div>

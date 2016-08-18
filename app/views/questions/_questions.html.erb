@@ -1,6 +1,6 @@
 <div id="notes">
 	<div class="row">
-	<% @notes.each_with_index do |node,i| %>
+	<% @questions.each_with_index do |node,i| %>
 		<div class="<% if @widget %>col-xs-4 col-sm-4 <% end %>col-md-4 note note-container-question" style="margin-top:20px;">
       <div class="note-pane note-question<% if node.status == 4 %> moderated<% end %>">
 
@@ -10,15 +10,19 @@
 
         <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path(:question) %>"><%= node.title %></a></h4>
 
+        <% if node.answers.collect(&:accepted).include?(true) %>
+          <p><span class="label accepted">Answered</span></p>
+        <% end %>
+
         <p class="meta">asked <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 
         <span id="tags">
         <% node.tags.limit(4).each do |tag| %>
-          <span id="tag_<%= tag.id %>" class="label label-primary"><a href="/tag/<%= tag.name %>"><%= tag.name %></a></span>
+          <span id="tag_<%= tag.id %>" class="label label-primary"><a href="/questions/tag/<%= tag.name %>"><%= tag.name %></a></span>
         <% end %>
         </span>
         <p style="margin-top:30px;"><% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> Spam</a><% end %>
-        <a href="#" class="btn btn-default btn-xs">Post an answer</a></p>
+        <a href="<%= node.path(:question) %>#post-answer" class="btn btn-default btn-xs">Post an answer</a></p>
       </div>
     </div>
 
@@ -31,4 +35,4 @@
   <% end %>
   </div>
 </div>
-<div class="text-center"><%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>
+<div class="text-center"><%= will_paginate @questions, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>

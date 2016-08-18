@@ -12,7 +12,11 @@ class ApplicationController < ActionController::Base
     def set_sidebar(type = :generic, data = :all, args = {})
       args[:note_count] ||= 8
       if type == :tags # accepts data of array of tag names as strings
-        @notes = @notes || DrupalTag.find_nodes_by_type(data, 'note', args[:note_count])
+        if params[:controller] == 'questions'
+          @notes = @notes || DrupalTag.find_nodes_by_type(data, 'note', args[:note_count])
+        else
+          @notes = @notes || DrupalTag.find_research_notes(data, args[:note_count])
+        end
         
         @notes = @notes.where('node.nid != (?)', @node.nid) if @node
         @wikis = DrupalTag.find_pages(data,10)
@@ -26,10 +30,15 @@ class ApplicationController < ActionController::Base
                                 .where(type: 'note', status: 1)
                                 .where('term_data.name = (?)', 'hidden:response')
                                 .collect(&:nid)
-        @notes = DrupalNode.joins(:drupal_node_revision)
-                           .where(type: 'note')
+        if params[:controller] == 'questions'
+          @notes = DrupalNode.questions
+                             .joins(:drupal_node_revision)
+        else
+          @notes = DrupalNode.research_notes
+                           .joins(:drupal_node_revision)
                            .order('node.nid DESC')
                            .paginate(page: params[:page])
+        end
         @notes = @notes.where('node.nid != (?)', @node.nid) if @node
         @notes = @notes.where('node_revisions.status = 1 AND node.nid NOT IN (?)', hidden_nids) if hidden_nids.length > 0
 
@@ -164,6 +173,18 @@ class ApplicationController < ActionController::Base
       # a 301 redirect that uses the current friendly id.
       if request.path != @node.path
         return redirect_to @node.path, :status => :moved_permanently
+      end
+    end
+
+    def sort_question_by_tags
+      if session[:tags] && !session[:tags].empty?
+        @session_tags = session[:tags]
+        qids = @questions.collect(&:nid)
+        @questions = DrupalNode.where(status: 1, type: 'note')
+                      .joins(:drupal_tag)
+                      .where('term_data.name IN (?)', @session_tags.values)
+                      .where('node.nid IN (?)', qids)
+                      .group('node.nid')
       end
     end
 

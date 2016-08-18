@@ -54,6 +54,11 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "browse root-level (/about) wiki page" do
+    get '/about'
+    assert_response :success
+  end
+
   test "browse /tag/*" do
     get "/tag/test"
     assert_response :success

@@ -1,6 +1,6 @@
 class EditorController < ApplicationController
 
-  before_filter :require_user, :only => [:post]
+  before_filter :require_user, :only => [:post, :rich]
 
   # main image via URL passed as GET param
   def post

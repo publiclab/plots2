@@ -28,6 +28,7 @@ de:
       barnstar_awarded_to_by: "<a href='%{url1}'>%{author}</a> wurde in <a href='%{url4}'>%{work}</a> die <a href='%{url2}'>the %{barnstar} Barnstar</a> von <a href='%{url3}'>%{awarder}</a> für ihre Arbeit veröffentlicht ausgezeichnet."
       joined_time_ago: "Registriert %{time_ago}"
       research: "Forschung"
+      questions: "Vragen"
       comments: "Bemerkungen"
       liked: "Zufrieden"
       view_these_maps: "Sehen Sie diese <a href='%{url1}'>Karten MapKnitter.org &raquo;</a>"

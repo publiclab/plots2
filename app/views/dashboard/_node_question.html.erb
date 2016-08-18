@@ -4,14 +4,18 @@
     <div class="header-icon"><i class="fa fa-question-circle"></i></div>
 
     <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>
- 
+
     <% if node.main_image %>
-      <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+      <a class="img" href="<%= node.path(:question) %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
     <% end %>
  
-    <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
+    <h4><a href="<%= node.path(:question) %>"><%= node.title %></a></h4>
+ 
+    <% if node.answers.collect(&:accepted).include?(true) %>
+      <p><span class="label accepted">Answered</span></p>
+    <% end %>
 
-    <a class="btn btn-default btn-xs pull-right respond answer"><%= t('dashboard._node_question.post_answer') %></a>
+    <a href="<%= node.path(:question) %>#post-answer" class="btn btn-default btn-xs pull-right respond answer"><%= t('dashboard._node_question.post_answer') %></a>
  
     <p class="meta"><%= t('dashboard._node_question.question') %> <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 

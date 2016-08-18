@@ -56,12 +56,13 @@
   <!-- AJAXify -->
   <% end %>
 
-  <% unless @wildcard %><p style="clear:both;padding-top:8px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:<%= params[:id] %>&template=question"><i class="fa fa-white icon-question-circle"></i> <%= raw t('tag.show.ask_question', :tag => params[:id]) %></a> <%= raw t('tag.show.or_subscribe_to_answer', :url1 => "/subscribe/tag/question:"+params[:id]) %></p><% end %>
+  <% unless @wildcard %><p style="clear:both;padding-top:8px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:<%= params[:id] %>&template=question&redirect=question"><i class="fa fa-white icon-question-circle"></i> <%= raw t('tag.show.ask_question', :tag => params[:id]) %></a> <%= raw t('tag.show.or_subscribe_to_answer', :url1 => "/subscribe/tag/question:"+params[:id]) %></p><% end %>
 
   <ul class="nav nav-tabs" style="margin-top:10px;">
-    <li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <%= raw t('tag.show.research_notes') %></a></li>
-    <li<% if @node_type == "page" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
-    <li<% if @node_type == "map" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
+    <% unless params[:id].match("question:") %><li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <%= raw t('tag.show.research_notes') %></a></li><% end %>
+    <li<% if @node_type == "questions" %> class="active"<% end %>><a href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
+    <li<% if @node_type == "wiki" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
+    <li<% if @node_type == "maps" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
   </ul>
 
   <br />
@@ -82,19 +83,27 @@
       </div>
     <% end %>
 
-    <% if @node_type == "page" %> 
+    <% if @node_type == "questions" %> 
+      <div class="tab-pane active" id="questions">
+        <%= render :partial => "questions/questions" %>
+      </div>
+    <% end %>
+
+    <% if @node_type == "wiki" %> 
       <div class="tab-pane active" id="wikis">
         <%= render :partial => "wiki/wikis" %>
       </div>
     <% end %>
 
-    <% if @node_type == "map" %> 
+    <% if @node_type == "maps" %> 
       <div class="tab-pane active" id="wikis">
         <%= render :partial => "map/maps" %>
       </div>
     <% end %>
 
-  <hr />
-  
+    <hr />
   </div>
+
 </div>
+<%= stylesheet_link_tag "dashboard" %>
+<%= javascript_include_tag "dashboard" %>

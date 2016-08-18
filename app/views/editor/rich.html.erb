@@ -21,7 +21,7 @@
           <div class="col-xs-10">
             <select class="form-control input-lg">
               <option selected value="">a research note</option>
-              <option value="">a question or request</option>
+              <option value="" <% if params[:redirect] == 'question' %>selected='selected'<% end %>>a question or request</option>
               <option value="">an event</option>
             </select>
           </div>
@@ -36,6 +36,10 @@
     <!-- end selector module -->
 
   </div>
+
+  <% if params[:redirect] == 'question' %>
+    <%= hidden_field_tag 'redirect', 'question' %>
+  <% end %>
 
   <div class="ple-content">
 
@@ -67,6 +71,10 @@
           Drag an image here to upload.
         </div>
         <div class="col-md-6 help">
+
+          <div style="display:none;" class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+          </div>
 
           <p><input type="file" name="image[photo]" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" /></p>
           <p class="ple-help"><span class="ple-help-minor">Select an optional main image for your post.</span></p>
@@ -101,13 +109,45 @@
       </div>
 
       <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="balloon-mapping..." value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
+        <input class="form-control input-lg" type="text" placeholder="balloon-mapping, water-quality..." value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
       </div>
 
     </div>
     <!-- end tags module -->
 
-    
+    <!-- multi module -->
+    <div class="ple-module-multi ple-module container">
+
+      <div class="ple-module-guide col-md-3">
+        <p>Extras</p>
+      </div>
+
+      <div class="ple-module-content col-md-9">
+
+        <div class="btn-group">
+          <a class="btn btn-lg btn-default">
+            <i class="fa fa-comment-o"></i> Invite responses <i class="fa fa-caret-down"></i>
+          </a>
+          <a class="btn btn-lg btn-default">
+            <i class="fa fa-envelope-o"></i> Event <i class="fa fa-caret-down"></i>
+          </a>
+          <a class="btn btn-lg btn-default">
+            <i class="fa fa-map-o"></i> Map
+          </a>
+          <a class="btn btn-lg btn-default">
+            <i class="fa fa-line-chart"></i> Chart
+          </a>
+          <a class="btn btn-lg btn-default">
+            More <i class="fa fa-caret-down"></i>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- end multi module -->    
+  
+
   </div>
 
   <div class="ple-footer">
@@ -124,13 +164,15 @@
       -->
     </div>
 
-    <button class="btn btn-lg btn-default"><i class="fa fa-cog"></i></button>
     <button class="btn btn-lg btn-default btn-more">...</button>
 
-    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a> so that others may use it.</span>
+    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="hidden-xs"> so that others may use it.</span></span>
 
     <button class="ple-publish btn btn-lg btn-primary pull-right disabled">Publish</button>
-    <span class="ple-help pull-right"><span class="ple-steps-left">2</span> steps left</span>
+    <span class="ple-help pull-right">
+      <span class="ple-steps-left">2</span>
+      <span class="hidden-xs"> steps left</span>
+    </span>
     
   </div>
 
@@ -153,7 +195,10 @@
       <% else %>
         destination: '/notes/create',
       <% end %>
-      format:      'publiclab',
+      <% if params[:redirect] == 'question' %>
+        redirect: 'redirect',
+      <% end %>
+      format:      'publiclab'
     });
 
   })();

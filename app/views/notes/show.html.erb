@@ -1,8 +1,7 @@
 <%= render :partial => "sidebar/related" %>
 
 <div class="col-md-9 note-show<% if @node.status == 4 || @node.status == 0 %> moderated<% end %>">
-
-  <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning">This note has no tags yet; help connect it to other content by <a onClick="$('#taginput').focus()">adding descriptive tags below</a>.</div><% end %>
+  <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning"><%= raw t('notes.show.note_no_tags') %></div><% end %>
 
   <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
@@ -16,15 +15,14 @@
     <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   </div>
 
-  <h1 style="margin-top: 40px;"><% if @node.has_power_tag('question') %><span class="question">Question:</span> <% end %><%= @node.title %></h1>
+  <h1 style="margin-top: 40px;"><% if @node.has_power_tag('question') %><span class="question"><%= t('notes.show.question') %></span> <% end %><%= @node.title %></h1>
 
   <% if @node.has_power_tag('question') %>
   <% pt = @node.power_tag('question') %>
   <div class="alert alert-warning">
-    <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a>
-    is asking a question about <b><%= pt %></b>:
+    <%= raw t('notes.show.author_is_asking_about', :url1 => "/profile/"+@node.author.name, :author => @node.author.name, :tag => pt) %>
     <a class="btn btn-default" target="_blank" href="/subscribe/tag/question:<%= pt %>">
-      Sign up to answer questions on this topic
+      <%= t('notes.show.sign_up_to_answer') %>
     </a>
   </div>
   <% end %>
@@ -32,7 +30,7 @@
   <div>
 
     <span>
-      <% if @node.status == 0 || @node.status == 4 %><span class="label label-danger">UNPUBLISHED</span> | <% end %>
+      <% if @node.status == 0 || @node.status == 4 %><span class="label label-danger"><%= t('notes.show.unpublished') %></span> | <% end %>
       by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> 
       <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">
@@ -43,12 +41,12 @@
         <%= @node.created_at.to_s(:long) %> 
       </span>
       <span class="hidden-xs hidden-sm hidden-print">
-        | <%= number_with_delimiter(@node.totalcount) %> views 
+        | <%= number_with_delimiter(@node.totalcount) %> <%= t('notes.show.views') %> 
         <% if @node.comments %>
           | <i class="fa fa-comment"></i>
-          <a href="#comments"> <%= @node.comments.length %> comments</a>
+          <a href="#comments"> <%= @node.comments.length %> <%= t('notes.show.comments') %> </a>
         <% end %>
-        | <a href="/n/<%= @node.id %>">shortlink</a>
+        | <a href="/n/<%= @node.id %>"><%= t('notes.show.shortlink') %> </a>
       </span>
       <span class="hidden-lg">
         <%= @node.created_at.to_s(:short) %>
@@ -60,7 +58,7 @@
   <hr style="margin-top:10px;" />
 
   <% @node.power_tag_objects('barnstar').each do |tag| %>
-    <p style="color:#aaa;"><i style="color:#db4;" class="fa fa-large fa fa-star-o"></i> <i><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> was awarded <a href="/wiki/barnstars#<%= tag.name.split('-').each{|w| w.capitalize!}.join('+') %>+Barnstar">the <%= tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' ') %> Barnstar</a> by <a href="/profile/<%= tag.author.username %>"><%= tag.author.username %></a> for their work in this research note.</i></p>
+    <p style="color:#aaa;"><i style="color:#db4;" class="fa fa-large fa fa-star-o"></i> <i><%= raw t('notes.show.barnstar_awarded_to_by', :url1 => "/profile/"+@node.author.name, :author => @node.author.name, :url2 => "/wiki/barnstars#"+tag.name.split('-').each{|w| w.capitalize!}.join('+'), :barnstar => tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' '), :url3 => "/profile/"+tag.author.username, :awarder => tag.author.username) %></i></p>
     <hr />
   <% end %>
 
@@ -82,9 +80,7 @@
   <% if @node.files && @node.files.length > 0 %>
     <table id="files" class="table">
       <tr>
-        <th>Files</th>
-        <th>Size</th>
-        <th>Uploaded</th>
+        <%= raw t('notes.show.file_table') %>
       </tr>
       <% @node.files.each do |file| %>
         <tr>
@@ -107,12 +103,12 @@
             cal.addEvent('<%= @node.latest.title %>', false, false, '<%= @node.power_tag('date') %>', '<%= @node.power_tag('date') %>');
           })
         </script>
-        <i class="fa fa-calendar"></i> This event is on <%= @node.power_tag('date') %> <% end %></b>
-        <a class="label" onClick="cal.download()">iCal</a>
+        <i class="fa fa-calendar"></i> <%= raw t('notes.show.event_is_on', :date => @node.power_tag('date')) %> <% end %></b>
+        <a class="label" onClick="cal.download()"><%= t('notes.show.ical') %></a>
       </p><br />
-      <p><% if !current_user %>Please <a href="/login">log in</a> to <% end %><a class="btn-lg btn-primary" href="/rsvp/<%= @node.id %>">RSVP</a> 
+      <p><% if !current_user %><%= raw t('notes.show.login_to', :url1 => "/login") %> <% end %><a class="btn-lg btn-primary" href="/rsvp/<%= @node.id %>">RSVP</a> 
         <% attendees = @node.power_tags('rsvp').length %> 
-        <% if attendees > 1 %> (<%= attendees %> people will attend)<% end %>
+        <% if attendees > 1 %> (<%= raw t('notes.show.people_will_attend', :count => attendees) %>)<% end %>
       <hr />
     <% end %>
 

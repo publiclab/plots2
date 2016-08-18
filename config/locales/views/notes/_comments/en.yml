@@ -1,0 +1,9 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  notes:
+    _comments:
+      comments: "Comments"
+      post_comment: "Post comment"
+      post_placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email"
+      must_be_logged_in: "You must be <a href='%{url1}'>logged in</a> to comment."
