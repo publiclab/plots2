@@ -167,6 +167,8 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    # used for url redirects for friendly_id
+    # currently unused for issues discussed in https://github.com/publiclab/plots2/issues/691
     def redirect_old_urls
       # If an old id or a numeric id was used to find the record, then
       # the request path will not match the notes path, and we should do

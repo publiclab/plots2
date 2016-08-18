@@ -27,6 +27,8 @@ class DrupalNode < ActiveRecord::Base
     slug.blank? || title_changed?
   end
 
+  # friendly_id uses this method to set the slug column for nodes
+
   def friendly_id_string
     if self.type == 'note'
       username = DrupalUsers.find_by_uid(self.uid).name
@@ -120,6 +122,10 @@ class DrupalNode < ActiveRecord::Base
   def set_path
     self.path = self.generate_path if self.path.blank? && !self.title.blank?
   end
+
+# These methods are used for updating node paths upon changing the title
+# friendly_id is being used for updating slugs and manage url redirects when an url changes
+# removed due to issues discussed in https://github.com/publiclab/plots2/issues/691
 
 #  def update_path
 #    self.path = if self.type == 'note'
