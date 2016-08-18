@@ -86,8 +86,8 @@
     }
 
     $('#answer-0-comment-form').bind('ajax:error', function(e, response){
-      $('#answer-<%= @answer_id %>-comment-form .help-block').remove()
-      $('#answer-0-comment-form .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
+      $('#answer-0-comment-section .help-block').remove()
+      $('#answer-0-comment-section .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
     })
   })
   

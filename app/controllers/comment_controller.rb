@@ -66,15 +66,15 @@ class CommentController < ApplicationController
       # should abstract ".comment" to ".body" for future migration to native db
       @comment.comment = params[:body]
       if @comment.save
-        redirect_to @path
         flash[:notice] = "Comment updated."
-      else
         redirect_to @path
+      else
         flash[:error] = "The comment could not be updated."
+        redirect_to @path
       end 
     else
-      redirect_to @path
       flash[:error] = "Only the author of the comment can edit it."
+      redirect_to @path
     end
   end
 

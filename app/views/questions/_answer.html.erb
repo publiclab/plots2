@@ -65,8 +65,6 @@
   </div>
 </div>
 
-<%= javascript_include_tag('comment_expand') %>
-
 <script type="text/javascript">
   $(function(){
     $("#answer-like-button-<%= answer.id %>").popover({
@@ -92,8 +90,8 @@
   });
 
   $('#answer-<%= answer.id %>-comment-form').bind('ajax:error', function(e, response){
-    $('#answer-<%= @answer_id %>-comment-form .help-block').remove()
-    $('#answer-<%= answer.id %>-comment-form .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
+    $('#answer-<%= answer.id %>-comment-section .help-block').remove()
+    $('#answer-<%= answer.id %>-comment-section .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
   })
   
 </script>
