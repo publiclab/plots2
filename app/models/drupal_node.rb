@@ -83,7 +83,7 @@ class DrupalNode < ActiveRecord::Base
   after_create :setup
   before_validation :set_path, on: :create
   before_create :remove_slug
-  before_update :update_path
+  #before_update :update_path
 
   # can switch to a "question-style" path if specified
   def path(type = :default)
@@ -114,16 +114,16 @@ class DrupalNode < ActiveRecord::Base
     self.path = self.generate_path if self.path.blank? && !self.title.blank?
   end
 
-  def update_path
-    self.path = if self.type == 'note'
-                  username = DrupalUsers.find_by_uid(self.uid).name
-                  "/notes/#{username}/#{Time.at(self.created).strftime("%m-%d-%Y")}/#{self.title.parameterize}"
-                elsif self.type == 'page'
-                  "/wiki/" + self.title.parameterize
-                elsif self.type == 'map'
-                  "/map/#{self.title.parameterize}/#{Time.at(self.created).strftime("%m-%d-%Y")}"
-                end
-  end
+#  def update_path
+#    self.path = if self.type == 'note'
+#                  username = DrupalUsers.find_by_uid(self.uid).name
+#                  "/notes/#{username}/#{Time.at(self.created).strftime("%m-%d-%Y")}/#{self.title.parameterize}"
+#                elsif self.type == 'page'
+#                  "/wiki/" + self.title.parameterize
+#                elsif self.type == 'map'
+#                  "/map/#{self.title.parameterize}/#{Time.at(self.created).strftime("%m-%d-%Y")}"
+#                end
+#  end
 
   def remove_slug
     if !FriendlyId::Slug.find_by_slug(self.title.parameterize).nil? && self.type == 'page'
