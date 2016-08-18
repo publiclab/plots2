@@ -131,3 +131,15 @@ wiki_page:
   type: "page"
   cached_likes: 0
   slug: wiki-page-title
+
+map:
+  nid: 12
+  uid: 1
+  title: "A map page"
+  path: "/map/a-map-page/<%= Time.now.strftime("%m-%d-%Y") %>"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "map"
+  cached_likes: 0
+  slug: a-map-page-<%= Time.now.strftime("%m-%d-%Y") %>

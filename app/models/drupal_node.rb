@@ -671,7 +671,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_map(name, date)
-    DrupalNode.where(path: "/map/#{title}").first
+    DrupalNode.where(path: "/map/#{name}/#{date}").first
   end
 
   def self.find_wiki(title)

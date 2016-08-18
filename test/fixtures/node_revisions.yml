@@ -159,3 +159,9 @@ wiki_page:
   uid: 1
   title: Wiki page title
   body: this wiki has a differnt title and path
+
+map:
+  nid: 12
+  uid: 1
+  title: A map page
+  body: This is a map
