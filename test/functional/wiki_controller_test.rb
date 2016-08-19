@@ -319,10 +319,17 @@ class WikiControllerTest < ActionController::TestCase
     end
   end
 
-  test "should get wiki with differnt title and path" do
+  test "should get wiki with different title and path" do
     wiki = node(:wiki_page)
     slug = wiki.path.gsub('/wiki/', '')
     get :show, id: slug
     assert_response :success
+  end
+
+  test "should show the wiki post page if wiki page doesn't exist" do
+    UserSession.create(rusers(:jeff))
+    get :show, id: "A-new-wiki-page"
+    assert_response :success
+    assert_template 'wiki/edit'
   end
 end
