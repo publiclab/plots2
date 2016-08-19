@@ -30,7 +30,7 @@ module ApplicationHelper
 
   def insert_extras(body)
     body = body.gsub(/\[notes\:(.+)\]/) do |tagname|
-      output =  '<table class="table">'
+      output =  '<table class="table insert-extras">'
       output += '  <tr>'
       output += '    <th>Title</th>'
       output += '    <th>Author</th>'
@@ -44,7 +44,7 @@ module ApplicationHelper
                         .order("node_revisions.timestamp DESC")
       nodes.each do |node|
         output += '    <tr>'
-        output += '      <td><a href="' + node.path + '">' + node.title + '</td>'
+        output += '      <td><a href="' + node.path + '">' + node.title + '</a></td>'
         output += '      <td><a href="/profile/' + node.author.username + '">' + node.author.username + '</a></td>'
         output += '      <td>' + distance_of_time_in_words(Time.at(node.updated_at), Time.current, false, :scope => :'datetime.time_ago_in_words') + '</td>'
         output += '      <td>' + number_with_delimiter(node.cached_likes) + '</td>'
