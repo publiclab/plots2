@@ -1,0 +1,6 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  questions:
+    index:
+      explanation: "Ask a question to the Public Lab community to help you in your environmental exploration."
