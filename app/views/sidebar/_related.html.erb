@@ -25,7 +25,8 @@
     </p>
   <% end %>
 
-  <% if @node && @node.has_power_tag('response') %>
+  <% responses = @node.responses if @node %>
+  <% if @node && responses.length > 0 %>
     <%= render partial: 'sidebar/notes', locals: { notes: @node.responded_to, title: I18n.t('sidebar._related.response_to'), node: @node } %>
   <% end %>
 
