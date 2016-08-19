@@ -77,14 +77,25 @@
       title: $("#answer-like-button-<%= answer.id %>").attr("tooltip-title")
     })
 
-    $('.answer-<%= answer.id %>-comments').slice(0,3).show();
-    if (<%= answer.comments.length %> > 3){
-      $('#answer-<%= answer.id %>-comment').append('<p id="answer-<%= answer.id %>-expand" style="color: #006dcc;">View ' + comment_select(<%= answer.id %>).length + ' more comments</p>');
-      $("#answer-<%= answer.id %>-expand").on('click',function(){
-        expand_comments(<%= answer.id %>);
-      });
+    var anchor_value;
+    var stripped_url = document.location.toString().split("#");
+    if (stripped_url.length > 1){
+      anchor_value = stripped_url[1];
+      if(anchor_value.match('answer-<%= answer.id %>-comment')){
+        $("#answer-<%= answer.id %>-comment").toggle();
+        $('.answer-<%= answer.id %>-comments').show();
+      }
     }
-
+    else{
+      $('.answer-<%= answer.id %>-comments').slice(0,3).show();
+      if (<%= answer.comments.length %> > 3){
+        $('#answer-<%= answer.id %>-comment').append('<p id="answer-<%= answer.id %>-expand" style="color: #006dcc;">View ' + comment_select(<%= answer.id %>).length + ' more comments</p>');
+        $("#answer-<%= answer.id %>-expand").on('click',function(){
+          expand_comments(<%= answer.id %>);
+        });
+      }
+    }
+    
   })
 
   $("#answer-<%= answer.id %>-comment-button").click( function(){
