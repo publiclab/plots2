@@ -241,8 +241,11 @@ class TagController < ApplicationController
     tagnames = params[:name].split(',')
     tagnames.each do |tagname|
       tag = DrupalTag.find_by_name(tagname)
-      tag = tagname unless tag
-      session[:tags][tag.tid.to_s] = tagname
+      if tag
+        session[:tags][tag.tid.to_s] = tagname
+      else
+        session[:tags][tagname] = tagname
+      end
     end
     redirect_to params[:return_to]
   end

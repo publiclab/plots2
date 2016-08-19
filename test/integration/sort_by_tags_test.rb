@@ -32,4 +32,15 @@ class SortByTagsTest < ActionDispatch::IntegrationTest
     assert (expected & questions).present?
   end
 
+  test "should show no results if tagname not found" do
+    get '/questions'
+    assert_response :success
+    get '/tag/add_tag', name: "newtag", return_to: request.path
+    assert_not_nil session[:tags]
+    follow_redirect!
+    assert_equal '/questions', path
+    assert_not_nil assigns(:questions)
+    assert_empty assigns(:questions)
+  end
+
 end
