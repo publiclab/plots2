@@ -4,5 +4,6 @@ class RenameLongColumnInUsers < ActiveRecord::Migration
   end
 
   def down
+  	rename_column :location_tags, :lon, :long
   end
 end

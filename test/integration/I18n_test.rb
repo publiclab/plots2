@@ -326,7 +326,8 @@ class I18nTest < ActionDispatch::IntegrationTest
         }
         follow_redirect!
         
-        get '/wiki/edit'
+        wiki = node(:about)
+        get '/wiki/edit/' + wiki.title.parameterize
         assert_select 'a', I18n.t('wiki.edit.getting_started')
       end
     end

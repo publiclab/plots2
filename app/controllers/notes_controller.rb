@@ -90,8 +90,9 @@ class NotesController < ApplicationController
 
   def show
     if params[:author] && params[:date]
-      @node = DrupalNode.where(path: "/notes/#{params[:author]}/#{params[:date]}/#{params[:id]}").first
+      @node = DrupalNode.find_notes(params[:author], params[:date], params[:id])
       @node = @node || DrupalNode.where(path: "/report/#{params[:id]}").first
+      redirect_old_urls
     else
       @node = DrupalNode.find params[:id]
     end

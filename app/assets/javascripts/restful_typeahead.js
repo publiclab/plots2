@@ -121,7 +121,7 @@
 	$.getJSON(typeaheadBase+qtype,qparams,function(qdata) {
 		if (qdata.srchParams) {
 			if (qdata.srchParams.seq >= keycount) {		
-				typeaheadTagList(srchElem, qdata);
+				typeaheadDocList(srchElem, qdata);
 			}
 		}
 	});
@@ -137,7 +137,7 @@
 	if (docList.items) {
 		for (var i=0;i<docList.items.length;i++) {
 			var listopt = $('<li data-text="'+docList.items[i].docTitle+'"><span class="fa fa-'+docList.items[i].docType+'"></span>&nbsp;'+docList.items[i].docTitle+'</li>');
-			listopt.mousedown(function(e) {
+			listopt.on('click',function(e) {
 				e.preventDefault();
 				elemRef.val($(this).attr('data-text'));
 				elemList.toggleClass('results-noshow',true);
@@ -200,13 +200,13 @@
 	if (tagList.items) {
 		for (var i=0;i<tagList.items.length;i++) {
 			var listopt = $('<li data-text="'+tagList.items[i].tagVal+'"><span class="fa fa-'+tagList.items[i].tagType+'"></span>&nbsp;'+tagList.items[i].tagVal+'</li>');
+			listopt.on('click',function(e) {
+				e.preventDefault();
+				elemRef.val($(this).attr('data-text'));
+				elemList.toggleClass('results-noshow',true);
+			});
 			elemList.append(listopt);
 		}
-		$(elemList).find('li').mousedown( function(e) {
-			e.preventDefault();
-			elemRef.val($(this).attr('data-text'));
-			elemList.toggleClass('results-noshow',true);
-		});
 	}
 	elemList.toggleClass('results-noshow',false);
   }
