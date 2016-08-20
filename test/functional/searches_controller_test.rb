@@ -64,21 +64,4 @@ class SearchesControllerTest < ActionController::TestCase
     assert_redirected_to search_path(assigns(:search))
   end
 
-  test 'should get normal search' do
-    get :normal_search, id: 'ujitha'
-    assert_response :success
-  end
-
-  test 'should update advanced search' do
-    put :update, id: @advanced_search, search: {
-      key_words: 'Ujitha',
-      main_type: 'User Profiles'
-    }
-    assert_equal 'Advanced search', assigns(:search).title
-    assert_equal '2', assigns(:search).user_id
-    assert_equal 'User Profiles', assigns(:search).main_type
-    assert_equal 'Ujitha', assigns(:search).key_words
-    assert_redirected_to search_path(assigns(:search))
-  end
-
 end
