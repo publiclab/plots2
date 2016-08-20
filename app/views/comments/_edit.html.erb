@@ -1,4 +1,4 @@
-<form id="c<%= comment.id %>edit" style="display:none;" class="well" <% if params[:controller] == 'questions' %> action= "/answers/update/<%= comment.id %>" <% else %> action="/comment/update/<%= comment.id %>" <% end %>>
+<form id="c<%= comment.id %>edit" style="display:none;" class="well" <% if params[:controller] == 'questions' || params[:controller] == 'answers' %> action= "/answers/update/<%= comment.id %>" <% else %> action="/comment/update/<%= comment.id %>" <% end %>>
 
   <h4 style="margin-top:0;"><%= title %></h4>
 

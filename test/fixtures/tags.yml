@@ -21,3 +21,11 @@ chapter:
 question:
   tid: 6
   name: question:spectrometer
+
+map_lat:
+  tid: 7
+  name: lat:71
+
+map_lon:
+  tid: 8
+  name: lon:52

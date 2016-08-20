@@ -16,9 +16,9 @@ class MapController < ApplicationController
   end
 
   def show
-    @node = DrupalNode.find_map(params[:name], params[:name])
+    @node = DrupalNode.find_map(params[:name], params[:date])
 
-    redirect_old_urls
+    # redirect_old_urls
 
     @node.view
     @title = @node.title

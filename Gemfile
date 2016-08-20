@@ -85,4 +85,6 @@ gem 'sunspot_solr'
 gem 'geocoder'
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'http_accept_language'
+
+# The default friendly_id version compatible with Rails 3 is v4.0 
 gem 'friendly_id'

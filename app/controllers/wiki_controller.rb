@@ -20,11 +20,15 @@ class WikiController < ApplicationController
   end
 
   def show
-    @node = DrupalNode.find params[:id]
-
-    if request.path != @node.path && request.path != '/wiki/' + @node.nid.to_s
-      return redirect_to @node.path, :status => :moved_permanently
+    if params[:lang]
+      @node = DrupalNode.find_wiki(params[:lang]+"/"+params[:id])
+    else
+      @node = DrupalNode.find_wiki(params[:id])
     end
+
+    # if request.path != @node.path && request.path != '/wiki/' + @node.nid.to_s
+    #   return redirect_to @node.path, :status => :moved_permanently
+    # end
 
     return if check_and_redirect_node(@node)
     if !@node.nil? # it's a place page!
@@ -63,7 +67,11 @@ class WikiController < ApplicationController
   end
 
   def edit
-    @node = DrupalNode.find params[:id]
+    if params[:lang]
+      @node = DrupalNode.find_wiki(params[:lang]+"/"+params[:id])
+    else
+      @node = DrupalNode.find_wiki(params[:id])
+    end
     if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
       flash.now[:warning] = I18n.t('wiki_controller.someone_clicked_edit_5_minutes_ago')
     end
@@ -209,7 +217,7 @@ class WikiController < ApplicationController
   end
 
   def revisions
-    @node = DrupalNode.find_by_slug(params[:id])
+    @node = DrupalNode.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
       @revisions = @revisions.where(status: 1) unless current_user && (current_user.role == "moderator" || current_user.role == "admin")
@@ -221,7 +229,7 @@ class WikiController < ApplicationController
   end
 
   def revision
-    @node = DrupalNode.find_by_slug(params[:id])
+    @node = DrupalNode.find_wiki(params[:id])
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)
     @unpaginated = true

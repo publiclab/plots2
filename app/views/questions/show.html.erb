@@ -27,7 +27,7 @@
   <hr style="margin-top:10px;" />
 
   <div style="overflow:hidden;" id="content">
-  <%= raw auto_link(@node.latest.render_body, :sanitize => false) %>
+    <%= raw auto_link(insert_extras(@node.latest.render_body), :sanitize => false) %>
   </div>
 
   <hr />
@@ -45,14 +45,14 @@
   <div id="answer-0-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee">
     <div id="answer-0-comment-section">
     <% if current_user %>
-    <div class="inline" style="vertical-align: top;">
+    <div class="inline hidden-xs" style="vertical-align: top;">
       <% if current_user.photo_file_name %>
         <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" /> 
       <% else %>
         <div class="img-circle"></div> 
       <% end %>
     </div>
-    <div class="inline" style="width: 90%">
+    <div class="inline" id="comment-form">
       <form id="answer-0-comment-form" class="form-horizontal" action="/comment/create/<%= @node.id%>" data-remote="true">
         <%= render partial: "questions/form" %>  
       </form>
@@ -77,17 +77,27 @@
 
 <script type="text/javascript">
   jQuery(document).ready(function(){
-    $('.answer-0-comments').slice(0,3).show();
-    if (<%= @node.comments.length %> > 3){
-      $('#answer-0-comment').append('<p id="answer-0-expand" style="color: #006dcc;">View ' + comment_select(0).length + ' more comments</p>');
-      $("#answer-0-expand").on('click',function(){
-        expand_comments(0);
-      });
+    var anchor_value;
+    var stripped_url = document.location.toString().split("#");
+    if (stripped_url.length > 1){
+      anchor_value = stripped_url[1];
+      if(anchor_value.match('answer-0-comment')){
+        $('.answer-0-comments').show();
+      }
+    }
+    else{
+      $('.answer-0-comments').slice(0,3).show();
+      if (<%= @node.comments.length %> > 3){
+        $('#answer-0-comment').append('<p id="answer-0-expand" style="color: #006dcc;">View ' + comment_select(0).length + ' more comments</p>');
+        $("#answer-0-expand").on('click',function(){
+          expand_comments(0);
+        });
+      }
     }
 
     $('#answer-0-comment-form').bind('ajax:error', function(e, response){
-      $('#answer-<%= @answer_id %>-comment-form .help-block').remove()
-      $('#answer-0-comment-form .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
+      $('#answer-0-comment-section .help-block').remove()
+      $('#answer-0-comment-section .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
     })
   })
   
