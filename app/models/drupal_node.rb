@@ -36,13 +36,6 @@ class DrupalNode < ActiveRecord::Base
     elsif self.type == 'map'
       "#{self.title} #{Time.at(self.created).strftime("%m-%d-%Y")}"
     end
-  searchable do
-    text :title
-    # integer :vid
-    # integer :nid
-    # text :comments do
-    #   comments.map { |comment| comment.comment }
-    # end
   end
 
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy

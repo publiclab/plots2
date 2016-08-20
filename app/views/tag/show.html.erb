@@ -73,7 +73,7 @@
         <% if @notes.nil? || @notes.length == 0 %>
           <p>No results found; try searching for '<b><%= params[:id] %></b>':</p>
    
-          <%= render :partial => "search/search" %>
+          <%= render :partial => "searches/search" %>
    
           <p>Or try an <a href="/search/advanced/">advanced search</a></p>
         <% else %>
