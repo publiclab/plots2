@@ -16,7 +16,7 @@
   <div class="inline" id="comment-content">  
     <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
     <span class="hidden-xs">commented</span>
-    <a style="color:#aaa;" href="#answer-comment-<%= comment.id %>"><%= time_ago_in_words(comment.created_at) %> ago</a><br/>
+    <a style="color:#aaa;" href="#answer-<%= answer_id %>-comment-<%= comment.id %>"><%= time_ago_in_words(comment.created_at) %> ago</a><br/>
     <span class="content">
       <%= raw sanitize(auto_link(RDiscount.new(comment.body).to_html)) %>
     </span>
@@ -39,4 +39,7 @@
 
 <script type="text/javascript">
   $('#comment-<%= comment.id %>-edit-form textarea').val('<%= comment.comment %>');
+  $('.expandingArea').each(function(){
+    makeExpandingArea($(this));
+  })
 </script>

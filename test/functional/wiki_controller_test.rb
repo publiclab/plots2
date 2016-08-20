@@ -46,6 +46,12 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should get root-level (/about) wiki page" do
+    get :root, id: 'about'
+
+    assert_response :success
+  end
+
   test "post wiki no login" do
     UserSession.find.destroy
 
@@ -88,6 +94,7 @@ class WikiControllerTest < ActionController::TestCase
   test "update root-path (/about) wiki" do
     wiki = node(:about)
     newtitle = "New Title"
+    assert_equal wiki.path, "/about"
 
     post :update, 
          id:    wiki.nid, 
@@ -312,4 +319,17 @@ class WikiControllerTest < ActionController::TestCase
     end
   end
 
+  test "should get wiki with different title and path" do
+    wiki = node(:wiki_page)
+    slug = wiki.path.gsub('/wiki/', '')
+    get :show, id: slug
+    assert_response :success
+  end
+
+  test "should show the wiki post page if wiki page doesn't exist" do
+    UserSession.create(rusers(:jeff))
+    get :show, id: "A-new-wiki-page"
+    assert_response :success
+    assert_template 'wiki/edit'
+  end
 end

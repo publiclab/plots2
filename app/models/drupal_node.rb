@@ -27,6 +27,8 @@ class DrupalNode < ActiveRecord::Base
     slug.blank? || title_changed?
   end
 
+  # friendly_id uses this method to set the slug column for nodes
+
   def friendly_id_string
     if self.type == 'note'
       username = DrupalUsers.find_by_uid(self.uid).name
@@ -82,8 +84,8 @@ class DrupalNode < ActiveRecord::Base
   before_save :set_changed_and_created
   after_create :setup
   before_validation :set_path, on: :create
-  before_create :remove_slug
-  before_update :update_path
+  # before_create :remove_slug
+  # before_update :update_path
 
   # can switch to a "question-style" path if specified
   def path(type = :default)
@@ -114,23 +116,27 @@ class DrupalNode < ActiveRecord::Base
     self.path = self.generate_path if self.path.blank? && !self.title.blank?
   end
 
-  def update_path
-    self.path = if self.type == 'note'
-                  username = DrupalUsers.find_by_uid(self.uid).name
-                  "/notes/#{username}/#{Time.at(self.created).strftime("%m-%d-%Y")}/#{self.title.parameterize}"
-                elsif self.type == 'page'
-                  "/wiki/" + self.title.parameterize
-                elsif self.type == 'map'
-                  "/map/#{self.title.parameterize}/#{Time.at(self.created).strftime("%m-%d-%Y")}"
-                end
-  end
+# These methods are used for updating node paths upon changing the title
+# friendly_id is being used for updating slugs and manage url redirects when an url changes
+# removed due to issues discussed in https://github.com/publiclab/plots2/issues/691
 
-  def remove_slug
-    if !FriendlyId::Slug.find_by_slug(self.title.parameterize).nil? && self.type == 'page'
-      slug = FriendlyId::Slug.find_by_slug(self.title.parameterize)
-      slug.delete
-    end
-  end
+#  def update_path
+#    self.path = if self.type == 'note'
+#                  username = DrupalUsers.find_by_uid(self.uid).name
+#                  "/notes/#{username}/#{Time.at(self.created).strftime("%m-%d-%Y")}/#{self.title.parameterize}"
+#                elsif self.type == 'page'
+#                  "/wiki/" + self.title.parameterize
+#                elsif self.type == 'map'
+#                  "/map/#{self.title.parameterize}/#{Time.at(self.created).strftime("%m-%d-%Y")}"
+#                end
+#  end
+
+#  def remove_slug
+#    if !FriendlyId::Slug.find_by_slug(self.title.parameterize).nil? && self.type == 'page'
+#      slug = FriendlyId::Slug.find_by_slug(self.title.parameterize)
+#      slug.delete
+#    end
+#  end
 
   def set_changed_and_created
     self['changed'] = DateTime.now.to_i
@@ -667,13 +673,15 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_notes(author, date, title)
-    finder = "#{author} #{date} #{title}".parameterize
-    DrupalNode.find(finder)
+    DrupalNode.where(path: "/notes/#{author}/#{date}/#{title}").first
   end
 
   def self.find_map(name, date)
-    finder = "#{name} #{date}".parameterize
-    DrupalNode.find(finder)
+    DrupalNode.where(path: "/map/#{name}/#{date}").first
+  end
+
+  def self.find_wiki(title)
+    DrupalNode.where(path: ["/#{title}", "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
   end
 
   def self.research_notes

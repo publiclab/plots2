@@ -9,8 +9,12 @@
   <% elsif params[:action] == 'liked' %>
   <h2>Liked Questions <small class="hidden-sm">Most liked questions</small></h2>
   <% else %>
-  <h2>All Questions <small class="hidden-sm">Listing all recent questions</small></h2>
+  <h2>Questions and Answers <small class="hidden-sm">Public Lab's growing knowledge base</small>
+  </h2>
+  <h4><small><%= t('questions.index.explanation') %></small></h4>
   <% end %>
+
+  <p>New to Public Lab? <a href="/wiki/public-lab-q-and-a">Learn how this works &raquo;</a></p>
 
   <hr />
 

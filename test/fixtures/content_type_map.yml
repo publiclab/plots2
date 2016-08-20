@@ -1,0 +1,25 @@
+map:
+  nid: 12
+  vid: 12
+  field_publication_date_value: <%= Time.now.to_s %>
+  field_capture_date_value: <%= Time.now.to_s %>
+  field_geotiff_url_value: publiclab.org
+  field_google_maps_url_value: map.google.com
+  field_openlayers_url_value: map.google.com
+  field_tms_url_value: tms
+  field_jpg_url_value: jpg
+  field_license_value: "12345"
+  field_raw_images_value: "12345"
+  field_cartographer_notes_value: cartographer-notes
+  field_cartographer_notes_format: 10000
+  field_notes_value: notes
+  field_notes_format: 100
+  field_mbtiles_url_value: map.google.com
+  field_zoom_min_value: 17
+  field_ground_resolution_value: 10000.00
+  field_geotiff_filesize_value: 10.00
+  field_jpg_filesize_value: 100.00
+  field_raw_images_filesize_value: 100.00
+  field_tms_tile_type_value: large
+  field_zoom_max_value: 50
+  authorship: admin

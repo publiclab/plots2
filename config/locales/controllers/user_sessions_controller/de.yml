@@ -1,6 +1,6 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
-en:
+de:
   user_sessions_controller:
     log_in: "Einloggen"
     create_password_for_new_site: "Ihr Konto wurde von der alten PublicLaboratory.org Website migriert ; bitte ein Passwort für den neuen Standort erstellen."
