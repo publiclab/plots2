@@ -1,14 +1,5 @@
 class DrupalNodeRevision < ActiveRecord::Base
 
-  searchable do
-    text :title, :body, :teaser
-    integer :vid
-    integer :nid
-    # text :comments do
-    #   comments.map { |comment| comment.comment }
-    # end
-  end
-
   attr_accessible :title, :body, :nid, :uid, :teaser, :log, :timestamp, :format
   self.table_name = 'node_revisions'
   self.primary_key = 'vid'
