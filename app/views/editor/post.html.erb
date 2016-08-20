@@ -14,13 +14,14 @@
   <% if params[:template] == "question" %>
     <h4 class="visible-sm">Ask a question</h4>
     <div id="research-note-detail" class="hidden-sm">
-      <h3>Use this form to ask about "<%= params[:tags].split(':').last %>"</h3>
+      <h4><i class="fa fa-question-circle"></i> Use this form to ask Question about <b><%= params[:tags].split(':').last %></b></h4>
       <% if DrupalTag.follower_count(params[:tags]) > 0 %>
         <p><%= DrupalTag.follower_count(params[:tags]) %> people have signed up to answer questions on this topic.</p>
       <% end %>
-      <ul>
-        <li>Need to learn more?</li>
-      </ul>
+      <p>Here you can ask a question to the Public Lab community to help you in your environmental exploration. This is a great space to ask whether a method exists for identifying a possible pollutant, or ask about details of a specific technique for identifying a pollutant.</p>
+      <p>You can add more tags in the tags section below to further relate your question. You can also change the main tag of the question by renaming the part after <b><i>question:</i></b> tag</p>
+      <p>New to Public Lab? Take a minute to read the Q &amp; A wiki before posting your question</p>
+      <h4><a href="//publiclab.org/wiki/public-lab-q-and-a">Learn more &raquo;</a></h4>
     </div>
 
   <% else %>

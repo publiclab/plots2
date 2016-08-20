@@ -51,3 +51,15 @@ first_timer_question:
   uid: 7
   nid: 10
   date: Time.now
+
+map_lat:
+  tid: 7
+  uid: 1
+  nid: 12
+  date: Time.now
+
+map_lon:
+  tid: 8
+  uid: 1
+  nid: 12
+  date: Time.now

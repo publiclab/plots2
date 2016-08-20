@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160816094642) do
+ActiveRecord::Schema.define(:version => 20160818201147) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -23,13 +23,13 @@ ActiveRecord::Schema.define(:version => 20160816094642) do
   add_index "answer_selections", ["user_id", "aid"], :name => "index_answer_selections_on_user_id_and_aid"
 
   create_table "answers", :force => true do |t|
-    t.integer  "uid",          :default => 0,     :null => false
-    t.integer  "nid",          :default => 0,     :null => false
-    t.string   "content",                         :null => false
-    t.integer  "cached_likes", :default => 0
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
-    t.boolean  "accepted",     :default => false
+    t.integer  "uid",                                :default => 0,     :null => false
+    t.integer  "nid",                                :default => 0,     :null => false
+    t.text     "content",      :limit => 2147483647,                    :null => false
+    t.integer  "cached_likes",                       :default => 0
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
+    t.boolean  "accepted",                           :default => false
   end
 
   add_index "answers", ["uid", "nid"], :name => "index_answers_on_uid_and_nid"

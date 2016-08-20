@@ -93,7 +93,13 @@ class HomeController < ApplicationController
 #                            .where('comments.status = (?)', 1)
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     @comments = @comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
-    @activity = (@notes + @wikis + @comments).sort_by { |a| a.created_at }.reverse
+    @answer_comments = DrupalComment.joins(:answer, :drupal_users)
+                             .order('timestamp DESC')
+                             .where('timestamp - answers.created_at > ?', 0)
+                             .limit(20)
+                             .group('answers.id')
+    @answer_comments = @comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
+    @activity = (@notes + @wikis + @comments + @answer_comments).sort_by { |a| a.created_at }.reverse
     @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
     render template: 'dashboard/dashboard'
     @title = I18n.t('home_controller.community_research') unless current_user

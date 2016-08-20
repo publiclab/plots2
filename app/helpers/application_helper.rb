@@ -28,4 +28,32 @@ module ApplicationHelper
     end
   end
 
+  def insert_extras(body)
+    body = body.gsub(/\[notes\:(.+)\]/) do |tagname|
+      output =  '<table class="table insert-extras">'
+      output += '  <tr>'
+      output += '    <th>Title</th>'
+      output += '    <th>Author</th>'
+      output += '    <th>Updated</th>'
+      output += '    <th>Likes</th>'
+      output += '  </tr>'
+      nodes = DrupalNode.where(status: 1, type: 'note')
+                        .includes(:drupal_node_revision, :drupal_tag)
+                        .where('term_data.name = ?', $1)
+                        .page(params[:page])
+                        .order("node_revisions.timestamp DESC")
+      nodes.each do |node|
+        output += '    <tr>'
+        output += '      <td><a href="' + node.path + '">' + node.title + '</a></td>'
+        output += '      <td><a href="/profile/' + node.author.username + '">' + node.author.username + '</a></td>'
+        output += '      <td>' + distance_of_time_in_words(Time.at(node.updated_at), Time.current, false, :scope => :'datetime.time_ago_in_words') + '</td>'
+        output += '      <td>' + number_with_delimiter(node.cached_likes) + '</td>'
+        output += '    </tr>'
+      end
+      output += '</table>'
+      output
+    end
+    body
+  end
+
 end

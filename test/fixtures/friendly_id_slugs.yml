@@ -67,3 +67,17 @@ ten:
   sluggable_id: 10
   sluggable_type: DrupalNode
   created_at: <%= Time.now %>
+
+eleven:
+  id: 11
+  slug: wiki-page-title
+  sluggable_id: 11
+  sluggable_type: DrupalNode
+  created_at: <%= Time.now %>
+
+twelve:
+  id: 12
+  slug: a-map-page-<%= Time.now.strftime("%m-%d-%Y") %>
+  sluggable_id: 12
+  sluggable_type: DrupalNode
+  created_at: <%= Time.now %>

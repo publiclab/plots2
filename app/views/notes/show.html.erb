@@ -74,7 +74,7 @@
   <% end %>
 
   <div style="overflow:hidden;" id="content">
-  <%= raw auto_link(@node.latest.render_body, :sanitize => false) %>
+  <%= raw auto_link(insert_extras(@node.latest.render_body), :sanitize => false) %>
   </div>
 
   <% if @node.files && @node.files.length > 0 %>
