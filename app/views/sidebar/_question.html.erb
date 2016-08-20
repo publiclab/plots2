@@ -1,0 +1,31 @@
+<div class="col-md-3 hidden-print">
+  
+  <a style="margin-top:-16px;margin-bottom:0;" class="btn btn-mini btn-block btn-link visible-xs visible-sm" href="javascript:void()" onClick="toggle_sidebar()"><i class="fa fa-chevron-down"></i></a>
+
+  <div id="sidebar" class="hidden-xs hidden-sm">
+  
+    <a style="margin-bottom:6px;" rel="tooltip" title="Ask a question to the community" data-placement="bottom" href="/post?tags=question:question&template=question&redirect=question" class="btn btn-primary btn-lg btn-block hidden-sm"><i class="fa fa-question-circle fa-white"></i> Ask a Question</a>
+
+    <a rel="tooltip" title="Ask question<% if @tagnames %> about <%= (@tagnames.uniq.collect {|x| x.gsub(/[\w-]+:/, '') }).join(',') %><% end %>" data-placement="bottom" href="/post<%= '?tags=' + @tagnames.uniq.join(',') if @tagnames %>&template=question&redirect=question" class="btn btn-primary btn-lg btn-block"><i class="fa fa-question-circle fa-white"></i> Ask related question &raquo;</a>
+
+    <br />
+    
+    <% if @node %>
+      <%= render :partial => "sidebar/list" %>
+    <% end %>
+
+    <% if params[:controller] == 'questions' %>
+      <% if @users.length > 0 %>
+      <h4>Top Answerers</h4>
+        <% @users.each do |author| %>
+          <% count = @node.answers.where(uid: author.uid).length %>
+          <p><i class="fa fa-user" style="margin-right: 5px;"></i><a rel="tooltip" title="<%= count %> answers" data-placement="right" href="/profile/<%= author.name %>"><%= author.name %></a></p>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= render partial: 'sidebar/notes', locals: { notes: @notes, title: "Related Questions", node: @node } %>
+
+  </div>
+</div>
+<%= javascript_include_tag 'sidebar' %>

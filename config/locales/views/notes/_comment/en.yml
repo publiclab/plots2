@@ -1,0 +1,11 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  notes:
+    _comment:
+      commented: "commented"
+      streak_title: "%{author} is on fire! %{streak_notes} notes, %{streak_wiki} wiki edits, %{streak_comments} comments in the last %{streak_days} days"
+      are_you_sure: "Are you sure?"
+      please_exercise_caution: "Please exercise caution in deleting/moderating others' comments; this cannot be undone."
+      edit_comment: "Edit comment"
+      edit_placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email"

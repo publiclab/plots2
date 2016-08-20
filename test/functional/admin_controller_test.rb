@@ -374,4 +374,17 @@ class AdminControllerTest < ActionController::TestCase
     assert_not_nil :notes
   end
 
+  test "first timer question should redirect to question path when approved by admin" do
+    UserSession.create(rusers(:admin))
+    node = node(:first_timer_question)
+    assert_equal 4, node.status                                                                                                        
+
+    get :publish, id: node(:first_timer_question).id
+
+    assert_equal "Post approved and published after #{time_ago_in_words(node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments.", flash[:notice]
+    node = assigns(:node)
+    assert_equal 1, node.status
+    assert_equal 1, node.author.status
+    assert_redirected_to node.path(:question)
+  end
 end

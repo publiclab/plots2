@@ -1,0 +1,14 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  tag:
+    contributors-index:
+      contributors_over_last_week: "Mitwirkende für <i style=\"color:#aaa;\">%{tag_name}</i> in den letzten 52 Wochen"
+      read_more: "Weiterlesen"
+      notes_and_wiki_contributions: "%{users} Personen haben %{notes} Forschungsnotizen beigetragen und %{wikis} Wiki-Seiten mit dem Stichwort \"%{tag_name}\"</i>"
+      following: "Folgende"
+      unfollow: "Klicken Sie hier um unfollow"
+      follow: "Folgen"
+      people_watching_tag: "%[count} Personen beobachten Diesen Tag"
+      no_contributors_listed: "Keine Mitwirkenden aufgeführt."
+      write_research_note: "Ritus einer Research Note"

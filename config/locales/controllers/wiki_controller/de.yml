@@ -1,0 +1,27 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  wiki_controller:
+    new_wiki_page: "Neue Wiki-Seite"
+    pages_does_not_exist: "Diese Seite existiert noch nicht. Sie müssen angemeldet sein, um einen neuen Wiki-Seite zu erstellen."
+    page_moderated_as_spam: "Diese Seite wurde als Spam moderiert. Bitte kontaktieren Sie web@publiclab.org, wenn Sie glauben, dass es ein Problem gibt."
+    someone_clicked_edit_5_minutes_ago: "Jemand hat geklickt \"Bearbeiten\" weniger als 5 Minuten vor; sein nicht vorsichtig jeweils anderen Änderungen zu überschreiben!"
+    editing: "Bearbeiten von '%{title}'"
+    page_does_not_exist: "Diese Seite existiert noch nicht, aber man kann es jetzt schaffen :"
+    wiki_page_created: "Wiki-Seite erstellt."
+    you_have_been_banned: "Sie wurden verboten. Bitte kontaktieren Sie <a href='mailto:web@publiclab.org'> web@publiclab.org </a>, wenn Sie glauben, dass das ein Fehler ist."
+    edit_could_not_be_saved: "Ihre Bearbeitung konnte nicht gespeichert werden."
+    edits_saved: "Edits gespeichert."
+    wiki_page_deleted: "Wiki-Seite gelöscht."
+    only_admins_delete_pages: "Nur Administratoren können Wiki-Seiten zu löschen."
+    wiki_page_reverted: "Die Wiki-Seite wurde rückgängig gemacht."
+    problem_reverting: "Es gab ein Problem zurückkehrt."
+    moderators_admin_delete_pages: "Nur Moderatoren und Administratoren können Wiki-Seiten löschen."
+    revisions_for: "Revisionen für '%{title}'"
+    invalid_wiki_page: "Ungültige Wiki-Seite. Keine Änderungen gibt es für diese Wiki-Seite."
+    revision_not_found: "Diese Version wurde nicht gefunden."
+    revision_has_been_moderated: "Diese Revision wurde moderiert. Bitte beachten Sie <a href='/wiki/moderation'>die Moderation Seite um mehr zu erfahren</a>."
+    lead_image_or_title_change: '<p>Bild Blei oder Titeländerung</p>'
+    wiki: "Wiki"
+    popular_wiki_pages: "Beliebte Wiki-Seiten"
+    well_liked_wiki_pages: "Gut gefiel Wiki-Seiten"

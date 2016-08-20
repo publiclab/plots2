@@ -141,3 +141,27 @@ place:
   uid: 1
   title: Chicago
   body: Chicago chapter
+
+question2:
+  nid: 9
+  uid: 2
+  title: How to ask a question
+  body: Some sample text
+
+first_timer_question:
+  nid: 10
+  uid: 7
+  title: A first timer question
+  body: First timer question
+
+wiki_page:
+  nid: 11
+  uid: 1
+  title: Wiki page title
+  body: this wiki has a differnt title and path
+
+map:
+  nid: 12
+  uid: 1
+  title: A map page
+  body: This is a map

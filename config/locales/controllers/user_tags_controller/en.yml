@@ -1,0 +1,13 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  user_tags_controller:
+    tag_already_exists: "Error: tag already exists."
+    cannot_save_value: "Error: Cannot save value. Try Again"
+    value_cannot_be_empty: "Error: value cannot be empty"
+    invalid_value: "Error: Invalid value %{type}"
+    admin_user_manage_tags: "Only admin (or) target user can manage tags"
+    errors_occured: "%{count} errors occured."
+    tag_created: "%{tag_name} tag created successfully"
+    tag_deleted: "Tag deleted."
+    tag_doesnt_exist: "Tag doesn't exist."

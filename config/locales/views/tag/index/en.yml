@@ -1,0 +1,9 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  tag:
+    index:
+      popular_tags: "Popular tags"
+      browse_popular_tags: "We use tags to group research by topic -- browse below to see the most popular tags."
+      tag: "Tag"
+      number_of_uses: "# of uses"

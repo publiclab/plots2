@@ -1,0 +1,34 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  notes:
+    stats:
+      about_this_page: |
+        <h4>Über diese Seite</h4>
+
+        <p>Public Lab wird über die Beiträge der Mitglieder der Gemeinschaft gebaut, und diese Webseite steht für unsere kollektive Open-Source- Arbeit.</p>
+      contributors_statistics: "Profi- Statistiken"
+      looking_back: "Im Rückblick von <i>%{time}</i>."
+      try_time_further_back: |
+        Versuchen Sie,
+        <a href='%{url1}'>ein Jahr</a>,
+        <a href='%{url2}'>ein Monat </a>, oder
+        <a href='%{url3}'>ein Woche</a>
+        weiter zurück.
+      notes_and_wiki_edits_past_week: |
+        <a href='%{url1}'>%{note_count} Notizen</a>
+        und <a href='%{url2}'>%{wiki_count} Wiki-Bearbeitungen</a> in der vergangenen Woche veröffentlicht.
+      people_joined_past_week: "<b>%{people_count} Personen</b> trat in der vergangenen Woche"
+      notes_and_wiki_edits_past_month: |
+        <a href='%{url1}'>%{note_count} Notizen</a>
+        und <a href='%{url2}'>%{wiki_count} Wiki-Bearbeitungen</a> im letzten Monat veröffentlicht.
+      people_joined_past_month: "<b>%{people_count} Personen</b> trat im letzten Monat."
+      research_notes_posted_by_contributors: "%{note_count} Forschungsnotizen um %{contributors_count} Mitwirkenden seit vor %{time} gepostet"
+      notes_per_week_past_year: "%{note_count} Noten pro Woche im vergangenen Jahr."
+      note_posting_52_weeks: "Hinweis für die letzten 52 Wochen der Veröffentlichung:"
+      wiki_pages_posted: "%{count} Wiki-Seiten wurden geschrieben insgesamt"
+      wiki_page_posting_52_weeks: "Wiki-Seite Beitrag für die letzten 52 Wochen:"
+      comments_posted: "%{count} Kommentare wurden geschrieben insgesamt"
+      comments_posted_52_weeks: "Kommentare zu den letzten 52 Wochen geschrieben:"
+      wiki_page_edits: "%{count} Wiki-Seite Änderungen wurden vorgenommen insgesamt"
+      edits_per_week: "%{count} Bearbeitungen pro Woche im vergangenen Jahr."

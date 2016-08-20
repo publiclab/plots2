@@ -6,9 +6,7 @@
     </div>
   <% end %>
 
-  <!--<a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope"></i> Send message</a>-->
   <% if current_user %>
-   
     <% unless current_user == @profile_user %>
       <hr />
       <div id="follow_form" class="col-md-offset-4">
@@ -81,7 +79,7 @@
 
     <% end %>
     <br />
-    <% if current_user == @profile_user || current_user.role == 'admin' %>
+    <% if current_user && (current_user == @profile_user || current_user.role == 'admin' ) %>
       <a href="/profile/info/<%= @user.name %>" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_information') %></a>
     <% end %>
   </p>
@@ -145,7 +143,7 @@
 
   <% if @user.user %>
   <% @user.user.barnstars.each do |tag| %>
-    <p style="color:#aaa;"><i style="color:#db4;" class="fa fa-large fa fa-star-o"></i> <i><%= raw t('users.profile.barnstar_awarded_to_by', :url1 => "/profile/"+tag.node.author.name, :author => tag.node.author.name, :url2 => "/wiki/barnstars#"+tag.name.split('-').each{|w| w.capitalize!}.join('+'), :barnstar => tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' '), :url3 => "/profile/"+tag.author.username, :author => tag.author.username, :url4 => tag.node.path, :work => tag.node.title) %></i></p>
+    <p style="color:#aaa;"><i style="color:#db4;" class="fa fa-large fa fa-star-o"></i> <i><%= raw t('users.profile.barnstar_awarded_to_by', :url1 => "/profile/"+tag.node.author.name, :author => tag.node.author.name, :url2 => "/wiki/barnstars#"+tag.name.split('-').each{|w| w.capitalize!}.join('+'), :barnstar => tag.name.split(':').last.split('-').each{|w| w.capitalize!}.join(' '), :url3 => "/profile/"+tag.author.username, :awarder => tag.author.username, :url4 => tag.node.path, :work => tag.node.title) %></i></p>
     <hr />
   <% end %>
   <% end %>
@@ -153,6 +151,7 @@
   <ul class="nav nav-tabs">
     <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words')) %></small></span>
     <li class="active"><a href="#research" data-toggle="tab"><%= t('users.profile.research') %></a></li>
+    <li><a href="#questions" data-toggle="tab"><i class="fa fa-comments"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %></span></a></li>
     <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.comments') %></span></a></li>
     <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
   </ul>
@@ -163,6 +162,23 @@
 
     <div class="tab-pane active" id="research">
       <%= render :partial => "notes/notes" %>
+    </div>
+
+    <div class="tab-pane" id="questions">
+      <div class="btn-group text-center">
+        <a href="#asked" class="btn btn-default active" data-toggle="tab">Asked</a>
+        <a href="#answered" class="btn btn-default" data-toggle="tab">Answered</a>
+      </div>
+      
+      <div class="tab-content">
+        <div class="tab-pane active" id="asked">
+          <%= render :partial => "questions/questions" %>
+        </div>
+      
+        <div class="tab-pane" id="answered">
+          <%= render :partial => "users/answered" %>
+        </div>
+      </div>
     </div>
 
     <div class="tab-pane" id="maps">
@@ -179,105 +195,32 @@
     <div class="tab-pane" id="comments">
       <h2 style="text-align:center;"><i class="fa fa-spinner fa fa-spin"></i></h2>
     </div>
-
-    <script>
-      (function(){
-        $('a#comments-tab').on('shown.bs.tab',function (e) {
-          $.ajax({
-            url : '/profile/comments/<%= @user.id %>',
-            type: 'GET',
-            success: function(response){
-              $('#comments').html(response);
-            }
-          })
-        })
-      })()
-    </script>
   </div>
 
   <hr />
 </div>
 
 <script type="text/javascript">
-  (function () {
 
-    flotoptions_minimal = {
-      yaxis: { show: false },
-      xaxis: { show: true },
-      grid: {
-        borderWidth: 0,
-        //color: "#444",
-        markers: []
-      },
-      colors: [ "#08f", "#80f" ]
-    }
+  (function () {
+    var profile = Object.create(Profile);
+    profile.value.user_id = "<%= @user.uid %>"
+    profile.display_comments();
 
     <% if @user && @user.user %>
-    var notes = <%= @user.user.weekly_note_tally.to_a.sort.to_json %>
-    var comments = <%= @user.user.weekly_comment_tally.to_a.sort.to_json %>
-    $('#note-graph').show()
+      var notes = <%= @user.user.weekly_note_tally.to_a.sort.to_json %>
+      var comments = <%= @user.user.weekly_comment_tally.to_a.sort.to_json %>
+      $('#note-graph').show()
     <% end %>
 
-    $.plot($("#note-graph"), [
-      {
-          data: notes,
-          hoverable: true,
- //         label: "Research Notes",
-          bars: { show: true, 
-                  lineWidth: 0,
-                  fillColor: "#08f",
-                  barWidth: 0.5
-                }
-      }//,
- //     {
- //         data: comments,
- //         hoverable: true,
- //         label: "Comments",
- //         bars: { show: true, 
- //                 lineWidth: 0,
- //                 fillColor: "#80f",
- //                 barWidth: 0.5
- //               }
-//      }
-    ],flotoptions_minimal)
+    profile.value.notes = notes;
+    profile.value.comments = comments;
+    profile.plot_graph();
 
-  })()
-</script>
-<script type="text/javascript">
-  (function() {
-    $.get('https://mapknitter.org/feeds/author/<%= @user.name %>', function (feed) {
-      
-      if ($(feed).find('channel item').length > 0)
-      {
-        $('.nav-tabs').append('<li><a href="#maps" data-toggle="tab"><i class="fa fa-map-marker"></i><span class="hidden-sm hidden-xs"> MapKnitter maps</span></a></li>');
-      }
-      
-      $.each($(feed).find('channel item'), function (i, item) { 
-        
-        $('#maps table').append('<tr class="feed-item-' + i + '"></tr>');
-        
-        var itemEl       = $('#maps table .feed-item-' + i),
-            title        = $(item).find('title').html(),
-            link         = $(item).find('link').html(),
-            author       = $(item).find('author').html(),
-            pubDate      = $(item).find('pubDate').html(),
-            id           = $(item).find('guid').html().split('maps/')[1],
-            description  = $(item).find('description').text(),
-            image        = $(item).find('image').html();
-          
-        pubDate = moment(new Date(pubDate)).fromNow();
-        
-        itemEl.append('<td class = "title"><a><i class="fa fa-map-marker"></i></a></td>');
-        itemEl.find('a').attr('href', link);
-        itemEl.find('.title a').append(' ' + title);
+    profile.value.name = "<%= @user.name %>"
+    profile.fetch_maps();
 
-        itemEl.append('<td class="date"></td>');
-        itemEl.find('.date').append(pubDate);
-        
-        itemEl.append('<td class="image"><img src=""></td>');
-        itemEl.find('.image img').attr('src', image);
-
-      });
-    });
   })();
 </script>
+<%= stylesheet_link_tag "dashboard" %>
+<%= javascript_include_tag "dashboard" %>

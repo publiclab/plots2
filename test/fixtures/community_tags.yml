@@ -33,3 +33,33 @@ question:
   uid: 2
   nid: 8
   date: Time.now
+
+test2:
+  tid: 1
+  uid: 2
+  nid: 8
+  date: Time.now
+
+question2:
+  tid: 6
+  uid: 2
+  nid: 9
+  date: Time.now
+
+first_timer_question:
+  tid: 6
+  uid: 7
+  nid: 10
+  date: Time.now
+
+map_lat:
+  tid: 7
+  uid: 1
+  nid: 12
+  date: Time.now
+
+map_lon:
+  tid: 8
+  uid: 1
+  nid: 12
+  date: Time.now

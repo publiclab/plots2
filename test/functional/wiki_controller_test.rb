@@ -46,6 +46,12 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should get root-level (/about) wiki page" do
+    get :root, id: 'about'
+
+    assert_response :success
+  end
+
   test "post wiki no login" do
     UserSession.find.destroy
 
@@ -88,6 +94,7 @@ class WikiControllerTest < ActionController::TestCase
   test "update root-path (/about) wiki" do
     wiki = node(:about)
     newtitle = "New Title"
+    assert_equal wiki.path, "/about"
 
     post :update, 
          id:    wiki.nid, 
@@ -287,5 +294,42 @@ class WikiControllerTest < ActionController::TestCase
     assert_template :index
     assert_select "title", "Public Lab: Well-liked wiki pages"
   end
+  
+  test "should choose I18n for wiki controller" do
+    available_testing_locales.each do |lang|
+        old_controller = @controller
+        @controller = SettingsController.new
+        
+        get :change_locale, :locale => lang.to_s
+        
+        @controller = old_controller
+        
+        wiki = node(:organizers)
+        newtitle = "New Title"
+    
+        post :update, 
+             id:    wiki.nid, 
+             uid:   rusers(:bob).id,
+             title: newtitle,
+             body:  "Editing about Page"
+    
+        wiki.reload
+        assert_redirected_to wiki.path
+        assert_equal flash[:notice], I18n.t('wiki_controller.edits_saved')
+    end
+  end
 
+  test "should get wiki with different title and path" do
+    wiki = node(:wiki_page)
+    slug = wiki.path.gsub('/wiki/', '')
+    get :show, id: slug
+    assert_response :success
+  end
+
+  test "should show the wiki post page if wiki page doesn't exist" do
+    UserSession.create(rusers(:jeff))
+    get :show, id: "A-new-wiki-page"
+    assert_response :success
+    assert_template 'wiki/edit'
+  end
 end

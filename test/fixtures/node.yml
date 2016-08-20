@@ -93,3 +93,53 @@ question:
   type: "note"
   cached_likes: 0
   slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-how-to-use-a-spectrometer
+
+question2:
+  nid: 9
+  uid: 2
+  title: "How to ask a question"
+  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/how-to-ask-a-question"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-how-to-ask-a-question
+
+first_timer_question:
+  nid: 10
+  uid: 7
+  title: "A first timer question"
+  path: "/notes/newcomer/<%= Time.now.strftime("%m-%d-%Y") %>/a-first-timer-question"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 4
+  type: "note"
+  cached_likes: 0
+  slug: newcomer-<%= Time.now.strftime("%m-%d-%Y") %>-a-first-timer-question
+
+# this wiki has a differnt title and path
+# this is a gatekeeper to test nodes with differnt title and path
+wiki_page:
+  nid: 11
+  uid: 1
+  title: "Wiki page title"
+  path: "/wiki/wiki-page-path"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  slug: wiki-page-title
+
+map:
+  nid: 12
+  uid: 1
+  title: "A map page"
+  path: "/map/a-map-page/<%= Time.now.strftime("%m-%d-%Y") %>"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "map"
+  cached_likes: 0
+  slug: a-map-page-<%= Time.now.strftime("%m-%d-%Y") %>

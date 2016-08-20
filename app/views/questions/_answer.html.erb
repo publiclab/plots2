@@ -35,21 +35,21 @@
       <a <% if current_user && current_user.uid == answer.node.uid %> href="/answers/accept/<%= answer.id %>" <% end %> data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm <% if answer.accepted %>btn-success<% else %>btn-default<% end%>"><% if answer.accepted %>Accepted<% else %>Accept this answer<% end %></a>
     <% end %>
        <a href=<% if current_user %>"/answer_like/likes/<%= answer.id %>"<% else %>"#"<% end %>data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-default btn-sm btn-like" id="answer-like-button-<%= answer.id %>" <% unless current_user %> popover-content="You must be logged in to Like the answer" <% end %> ><span id="answer-like-star-<%= answer.id %>" class="fa fa-star<% if current_user && !answer.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="answer-like-count-<%= answer.id %>"><%= answer.likers.length %></span> Likes</a>
-      <a href="#a<%= answer.id %>"><i class="fa fa-share-alt" style="padding: 0px 5px; font-size: 15px;"></i></a>
-      <a id="answer-<%= answer.id %>-comment-button"  style="color: #006dcc;"><span id="answer-<%= answer.id %>-comment-count"><%= answer.comments.length %></span> Comments</a>
+      <a href="#a<%= answer.id %>" class="btn btn-default btn-sm "><i class="fa fa-share-alt"></i></a> &nbsp;
+      <a id="answer-<%= answer.id %>-comment-button"  style="color: #006dcc;"><span id="answer-<%= answer.id %>-comment-count"><%= answer.comments.length %></span> Comments <i class="fa fa-caret-down"></i></a>
     </div>
 
     <div id="answer-<%= answer.id %>-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee; display: none;">
       <div id="answer-<%= answer.id %>-comment-section">
       <% if current_user %>
-      <div class="inline" style="vertical-align: top;">
+      <div class="inline hidden-xs" style="vertical-align: top;">
         <% if current_user.photo_file_name %>
           <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" /> 
         <% else %>
           <div class="img-circle"></div> 
         <% end %>
       </div>
-      <div class="inline" style="width: 90%">
+      <div class="inline" id="comment-form">
         <form id="answer-<%= answer.id %>-comment-form" class="form-horizontal" action="/comment/answer_create/<%= answer.id%>" data-remote="true">
           <%= render partial: "questions/form" %>  
         </form>
@@ -65,8 +65,6 @@
   </div>
 </div>
 
-<%= javascript_include_tag('comment_expand') %>
-
 <script type="text/javascript">
   $(function(){
     $("#answer-like-button-<%= answer.id %>").popover({
@@ -77,14 +75,25 @@
       title: $("#answer-like-button-<%= answer.id %>").attr("tooltip-title")
     })
 
-    $('.answer-<%= answer.id %>-comments').slice(0,3).show();
-    if (<%= answer.comments.length %> > 3){
-      $('#answer-<%= answer.id %>-comment').append('<p id="answer-<%= answer.id %>-expand" style="color: #006dcc;">View ' + comment_select(<%= answer.id %>).length + ' more comments</p>');
-      $("#answer-<%= answer.id %>-expand").on('click',function(){
-        expand_comments(<%= answer.id %>);
-      });
+    var anchor_value;
+    var stripped_url = document.location.toString().split("#");
+    if (stripped_url.length > 1){
+      anchor_value = stripped_url[1];
+      if(anchor_value.match('answer-<%= answer.id %>-comment')){
+        $("#answer-<%= answer.id %>-comment").toggle();
+        $('.answer-<%= answer.id %>-comments').show();
+      }
     }
-
+    else{
+      $('.answer-<%= answer.id %>-comments').slice(0,3).show();
+      if (<%= answer.comments.length %> > 3){
+        $('#answer-<%= answer.id %>-comment').append('<p id="answer-<%= answer.id %>-expand" style="color: #006dcc;">View ' + comment_select(<%= answer.id %>).length + ' more comments</p>');
+        $("#answer-<%= answer.id %>-expand").on('click',function(){
+          expand_comments(<%= answer.id %>);
+        });
+      }
+    }
+    
   })
 
   $("#answer-<%= answer.id %>-comment-button").click( function(){
@@ -92,8 +101,8 @@
   });
 
   $('#answer-<%= answer.id %>-comment-form').bind('ajax:error', function(e, response){
-    $('#answer-<%= @answer_id %>-comment-form .help-block').remove()
-    $('#answer-<%= answer.id %>-comment-form .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
+    $('#answer-<%= answer.id %>-comment-section .help-block').remove()
+    $('#answer-<%= answer.id %>-comment-section .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
   })
   
 </script>

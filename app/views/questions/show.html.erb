@@ -1,10 +1,7 @@
-<%= render :partial => "sidebar/related" %>
+<%= render :partial => "sidebar/question" %>
 <div class="col-md-9 note-show">
   
-  <div class="hidden-print">
-    <a rel="tooltip" title="Ask a question to the community" data-placement="right" href="/post?tags=question:question&template=question&redirect=question" class="btn btn-primary btn-lg"><i class="fa fa-question-circle fa-white"></i> Ask a Question</a>
-    <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
-  </div>
+  <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
 
   <h1 style="margin-top: 20px;"><span class="question">Question:</span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
   <% pt = @node.power_tag('question') %>
@@ -23,14 +20,14 @@
   <% end %>
   </div>
   <div class="inline">
-  	<p><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> asked on <%= @node.created_at.to_s(:long) %> <% if @node.status == 0 || @node.status == 4 %><span class="label label-danger">| UNPUBLISHED</span><% end %> <br />
+  	<p><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> asked on <%= @node.created_at.to_s(:long) %> <% if @node.status == 0 || @node.status == 4 %>| <span class="label label-danger">UNPUBLISHED</span><% end %> <br />
     <small><i class="fa fa-eye"></i> <%= number_with_delimiter(@node.totalcount) %> <span class="hidden-xs hidden-sm hidden-print ">views</span> | <i class="fa fa-comments"></i> <a href="#answers"><span id="short-comment-count"><%= @node.answers.length %></span> answers</a> | <a href="/q/<%= @node.id %>">shortlink</a></small></p>
   </div>
 
   <hr style="margin-top:10px;" />
 
   <div style="overflow:hidden;" id="content">
-  <%= raw auto_link(@node.latest.render_body, :sanitize => false) %>
+    <%= raw auto_link(insert_extras(@node.latest.render_body), :sanitize => false) %>
   </div>
 
   <hr />
@@ -48,14 +45,14 @@
   <div id="answer-0-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee">
     <div id="answer-0-comment-section">
     <% if current_user %>
-    <div class="inline" style="vertical-align: top;">
+    <div class="inline hidden-xs" style="vertical-align: top;">
       <% if current_user.photo_file_name %>
         <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" /> 
       <% else %>
         <div class="img-circle"></div> 
       <% end %>
     </div>
-    <div class="inline" style="width: 90%">
+    <div class="inline" id="comment-form">
       <form id="answer-0-comment-form" class="form-horizontal" action="/comment/create/<%= @node.id%>" data-remote="true">
         <%= render partial: "questions/form" %>  
       </form>
@@ -80,17 +77,27 @@
 
 <script type="text/javascript">
   jQuery(document).ready(function(){
-    $('.answer-0-comments').slice(0,3).show();
-    if (<%= @node.comments.length %> > 3){
-      $('#answer-0-comment').append('<p id="answer-0-expand" style="color: #006dcc;">View ' + comment_select(0).length + ' more comments</p>');
-      $("#answer-0-expand").on('click',function(){
-        expand_comments(0);
-      });
+    var anchor_value;
+    var stripped_url = document.location.toString().split("#");
+    if (stripped_url.length > 1){
+      anchor_value = stripped_url[1];
+      if(anchor_value.match('answer-0-comment')){
+        $('.answer-0-comments').show();
+      }
+    }
+    else{
+      $('.answer-0-comments').slice(0,3).show();
+      if (<%= @node.comments.length %> > 3){
+        $('#answer-0-comment').append('<p id="answer-0-expand" style="color: #006dcc;">View ' + comment_select(0).length + ' more comments</p>');
+        $("#answer-0-expand").on('click',function(){
+          expand_comments(0);
+        });
+      }
     }
 
     $('#answer-0-comment-form').bind('ajax:error', function(e, response){
-      $('#answer-<%= @answer_id %>-comment-form .help-block').remove()
-      $('#answer-0-comment-form .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
+      $('#answer-0-comment-section .help-block').remove()
+      $('#answer-0-comment-section .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
     })
   })
   

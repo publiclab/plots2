@@ -4,13 +4,18 @@
     <div class="header-icon"><i class="fa fa-comment-o"></i></div>
     <p class="meta">
       <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>
-      <span><%= t('dashboard._node_comment.commented_on') %></span> <a href="<%= node.parent.path %>"><%= node.parent.title %></a>
+      <span><%= t('dashboard._node_comment.commented_on') %></span> <% unless node.aid == 0 %> an answer about<% end %> <% if node.parent.has_power_tag('question') %><a href="<%= node.parent.path(:question) %>"><% else %><a href="<%= node.parent.path %><% end %><%= node.parent.title %></a>
     </p>
 
     <p class="body"><%= raw strip_tags(sanitize(RDiscount.new(node.comment).to_html)).truncate(100) %></p>
 
     <p class="meta">
-      <a href="<%= node.parent.path %>#comments" class="btn btn-default pull-right btn-xs"><%= node.parent.comments.count %> <%= t('dashboard._node_comment.comments') %> &raquo;</a>
+      <% if node.aid == 0 %>
+      <a href="<% if node.parent.has_power_tag('question') %><%= node.parent.path(:question) %>#anwer-0-comment<% else %><%= node.parent.path %>#comments<% end %>" class="btn btn-default pull-right btn-xs"><%= node.parent.comments.count %>
+      <% else %>
+      <a href="<%= node.parent.path(:question) %>#answer-<%= node.answer.id %>-comment" class="btn btn-default pull-right btn-xs"><%= node.answer.comments.count %>
+      <% end %> 
+      <%= t('dashboard._node_comment.comments') %> &raquo;</a>
       <%= distance_of_time_in_words(node.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
     </p>
 

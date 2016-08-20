@@ -1,0 +1,21 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  users_controller:
+    account_migrated_create_new_password: "Ihr Konto wurde von der alten PublicLaboratory.org Website migriert; bitte ein Passwort für den neuen Standort erstellen."
+    registration_successful: "Registrierung erfolgreich. Sie wurden in die <b>publiclaboratory</b> Mailingliste  hinzugefügt."
+    spectralworkbench_or_mapknitter: "<i class='icon icon-exclamation-sign'></i> Wenn Sie registriert, um zu verwenden <b>SpectralWorkbench.org</b> oder <b>MapKnitter.org</b>, <a href='%{url1}'>hier lecken, um fortzufahren &raquo;</a>"
+    successful_updated_profile: "Erfolgreich sein Profil aktualisiert."
+    return_dashboard: "Kehren Sie zu Ihrem Armaturenbrett"
+    only_user_edit_profile: "<b>%{user}</b> kann nur sein Profil bearbeiten."
+    user_has_been_banned: "Dieser Benutzer wurde gesperrt."
+    no_user_found: "Kein Benutzer mit diesem Namen gefunden"
+    password_change_success: "Ihr Passwort wurde erfolgreich geändert."
+    password_reset_failed: "Passwort-Reset nicht. Bitte <a href='/wiki/issues'>kontaktieren Sie das Web-Team</a>, wenn Sie Probleme haben."
+    password_change_failed: "Passwortänderung fehlgeschlagen; Schlüssel entspricht nicht Benutzernamenein."
+    password_reset_failed_no_user: "Passwort-Reset nicht. Bitte <a href='/wiki/issues'>kontaktieren Sie das Web-Team</a> wenn Sie Probleme haben. (Fehler: kein Benutzer mit diesem Schlüssel)"
+    password_reset_email: "Sie sollten eine E-Mail mit Anweisungen, wie Sie Ihr Passwort zurücksetzen. Wenn Sie dies nicht tun, Bitte überprüfen Sie, dass Sie die E-Mail Sie registriert sind, verwenden."
+    image_saved: "Bild gespeichert."
+    image_not_saved: "Das Bild konnte nicht gespeichert werden."
+    preference_saved: "Ihre Präferenz wurde gespeichert"
+    something_went_wrong: "Etwas ist schief gelaufen. Bitte versuche es erneut"
