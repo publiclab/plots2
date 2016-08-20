@@ -41,7 +41,7 @@ class SearchesController < ApplicationController
 
   def show
     @title = @search.title
-    @nodes = @search.notes
+    @nodes = @search.nodes
     set_sidebar :tags, @search.key_words
   end
 
