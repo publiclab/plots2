@@ -17,6 +17,7 @@ class Search < ActiveRecord::Base
                     .order("nid DESC")
                     .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', "%" + input + "%") if params[:wikis] || all
     end
+  end
 
 
   def date_i(date_param)
