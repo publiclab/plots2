@@ -14,7 +14,7 @@ class QuestionsSearchController < ApplicationController
                            .order('node.nid DESC')
                            .page(params[:page])
     
-    render :template => 'search/index'
+    render :template => 'searches/normal_search'
   end
 
   def typeahead
