@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   layout 'application'
 
+  include ApplicationHelper
+
   helper_method :current_user_session, :current_user, :prompt_login, :sidebar
   
   before_filter :set_locale
@@ -140,11 +142,10 @@ class ApplicationController < ActionController::Base
   
   # Check the locale set and adjust the locale accordingly
     def set_locale
-      if cookies[:plots2_locale] && I18n.available_locales.include?(cookies[:plots2_locale].to_sym)
-        lang = cookies[:plots2_locale].to_sym
+      if extract_locale_from_subdomain
+        lang = extract_locale_from_subdomain
       else
         lang = http_accept_language.compatible_language_from(I18n.available_locales) || I18n.default_locale
-        cookies.permanent[:plots2_locale] = lang
       end
       I18n.locale = lang
     end

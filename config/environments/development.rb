@@ -37,6 +37,9 @@ Plots2::Application.configure do
 
   config.action_mailer.delivery_method = :file
 
+  # Sets the TLD (top-level domain) length for the application. Defaults to 1.
+  config.action_dispatch.tld_length = 0
+
   # force SSL
   #config.force_ssl = true
 
