@@ -48,7 +48,7 @@
             | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
             <% end %>
           </small></p>
-          <p><%= raw auto_link(insert_extras(@node.latest.render_body), :sanitize => false) %></p>
+          <p><%= raw auto_link(insert_extras(node.latest.render_body), :sanitize => false) %></p>
           <p><a href="<%= node.path %>"><%= t('tag.blog.read_more') %> &raquo;</a></p>
           <p>
             <%= render :partial => "like/like", :locals => {:node => node, :tagnames => node.tags.collect(&:name) } %>
