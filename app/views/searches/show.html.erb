@@ -1,42 +1,52 @@
 <%= render :partial => "sidebar/related" %>
 
-
 <div class="col-md-9">
-
   <%= render 'form' %>
+</div>
 
-  <div class="container">
-    <div class="raw">
-      <div class="col-md-9">
-        <div class="panel with-nav-tabs panel-default">
+<div class="container">
+  <div class="raw">
+    <div class="col-md-8">
+      <div class="panel with-nav-tabs panel-default">
 
-          <div class="panel-heading clearfix">
-            <div class="pull-left">
-              <h1 class="panel-title">Search Results</h1>
-            </div>
+        <div class="panel-heading clearfix">
+          <div class="pull-left">
+            <h1 class="panel-title">Search Results
+            | <%= pluralize @nodes.count, 'result' %>
+            </h1>
           </div>
+        </div>
 
-          <% if @nodes.present? %>
-            <%= render partial: 'node_result', locals: {notes: @nodes} %>
-          <% else %>
-            <div class="panel-body">
-              <div class="tab-content">
-                <div class="tab-pane fade in active" id="taball">
-                  <div class="row sresults-row">
-                    <div class="panel-group">
-                      <div class="panel panel-default">
-                        <p> Your search - <strong><%= @search.key_words %> </strong> - </p>
-                        <p>did not match any documents.</p>
-                        <a href="<%= search_dynamic_url + '/'+ @search.key_words %>">Try Dynamic search</a>
-                      </div>
+        <% if @nodes.present? %>
+          <%= render partial: 'node_result', locals: {notes: @nodes} %>
+        <% else %>
+          <div class="panel-body">
+            <div class="tab-content">
+              <div class="tab-pane fade in active" id="taball">
+                <div class="row sresults-row">
+                  <div class="panel-group">
+                    <div class="panel panel-default">
+                      <p> Your search - <strong><%= @search.key_words %> </strong> - </p>
+                      <p>did not match any documents.</p>
+                      <a href="<%= search_dynamic_url + '/'+ @search.key_words %>">Try Dynamic search</a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          <% end %>
+          </div>
+        <% end %>
 
-        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="facets">
+        <h3>Browse by Updated Month</h3>
+        <ul class="facet">
+          <% for row in @solr_nodes.facet(:updated_month).rows -%>
+            <li><%= link_to(row.value, url_for(:month => row.value)) %> (<%= row.count %>)</li>
+          <% end -%>
+        </ul>
       </div>
     </div>
   </div>

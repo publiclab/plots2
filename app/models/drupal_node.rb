@@ -21,12 +21,24 @@ class DrupalNode < ActiveRecord::Base
   self.primary_key = 'nid'
 
   searchable do
-    text :title
-    # integer :vid
-    # integer :nid
-    # text :comments do
-    #   comments.map { |comment| comment.comment }
+    text :title, boost: 5
+    text :body
+    time :updated_at
+    string :status
+    string :updated_month
+    text :comments do
+      drupal_comments.map { |comment| comment.comment }
+    end
+
+    string :user_name do
+      drupal_users.name
+    end
   end
+
+  def updated_month
+    updated_at.strftime('%B %Y')
+  end
+
 
   extend FriendlyId
   friendly_id :friendly_id_string, use: [:slugged, :history]
@@ -92,8 +104,6 @@ class DrupalNode < ActiveRecord::Base
   before_save :set_changed_and_created
   after_create :setup
   before_validation :set_path, on: :create
-  # before_create :remove_slug
-  # before_update :update_path
 
   # can switch to a "question-style" path if specified
   def path(type = :default)

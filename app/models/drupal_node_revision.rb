@@ -1,12 +1,8 @@
 class DrupalNodeRevision < ActiveRecord::Base
 
   searchable do
-    text :title, :body, :teaser
-    integer :vid
-    integer :nid
-    # text :comments do
-    #   comments.map { |comment| comment.comment }
-    # end
+    text :title, boost: 5
+    text :body, :teaser
   end
 
   attr_accessible :title, :body, :nid, :uid, :teaser, :log, :timestamp, :format

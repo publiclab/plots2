@@ -13,11 +13,19 @@ class Search < ActiveRecord::Base
     @nodes ||= find_nodes
   end
 
-  def notes
+  def notes(month)
     solr_search = DrupalNode.search do
       fulltext self.key_words
+      with(:updated_at).less_than(Time.zone.now)
+      facet(:updated_month)
+      with(:updated_month, month) if month.present?
+      paginate :page => 1, :per_page => 10
     end
-    @nodes = solr_search.results
+
+  end
+
+  def note_results(month)
+    @nodes = notes(month).results
   end
 
   private
