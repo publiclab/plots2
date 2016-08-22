@@ -3,13 +3,7 @@ class DocResult
   
   attr_accessor :docId, :docType, :docUrl, :docTitle, :docSummary, :docScore
 
-  def initialize(id,dtype,durl,dtitle,dsumm,dscore)
-    @docId = id
-    @docType = dtype
-    @docUrl = durl
-    @docTitle = dtitle
-    @docSummary = dsumm
-    @docScore = dscore
+  def initialize
   end
 
   def self.fromSearch(idval, typeval, urlval,titleval,sumval,scoreval)
