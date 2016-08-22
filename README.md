@@ -1,6 +1,8 @@
 PublicLab.org
 ======
 
+[![Build Status](https://travis-ci.org/publiclab/plots2.svg)](https://travis-ci.org/publiclab/plots2)
+
 The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes," and a wiki. 
 
 It features a Bootstrap-based UI and a variety of community and attribution features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails, and has since extended but not entirely replaced the legacy Drupal data model and database design. 
