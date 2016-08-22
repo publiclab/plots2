@@ -9,7 +9,7 @@ class SwaggerDocTest < ActiveSupport::TestCase
   end
 
   test 'Swagger doc functionality' do
-    get 'http://localhost:3000/api/swagger_doc.json'
+    get '/api/swagger_doc.json'
     assert last_response.ok?
     
     # Expected swagger doc patter
