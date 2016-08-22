@@ -1,11 +1,16 @@
 require 'test_helper'
-require 'rest-client'
 require 'json_expressions/rspec'
 
-class SwaggerDocTest < ActionController::TestCase
+class SwaggerDocTest < ActiveSupport::TestCase
+  include Rack::Test::Methods
+
+  def app
+    Rails.application
+  end
 
   test 'Swagger doc functionality' do
-    docresponse = RestClient.get 'http://localhost:3000/api/swagger_doc.json'
+    get 'http://localhost:3000/api/swagger_doc.json'
+    assert last_response.ok?
     
     # Expected swagger doc patter
     pattern = {
@@ -24,8 +29,7 @@ class SwaggerDocTest < ActionController::TestCase
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
-    assert matcher =~ JSON.parse(docresponse.body)
+    assert matcher =~ JSON.parse(last_response.body)
   end
 
 end
