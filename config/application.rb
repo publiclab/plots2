@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require 'rack/cors'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
@@ -68,6 +69,11 @@ module Plots2
     config.i18n.fallbacks = [:en]
 
     config.action_view.sanitized_allowed_tags = ['iframe', 'embed']
+
+    # Search API
+    # Auto-load API and its subdirectories
+    config.paths.add File.join('app/api'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app','api', '**', '*.rb')]
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'

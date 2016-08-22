@@ -11,8 +11,7 @@
 
 <div class="col-md-9">
 
-    <h3>Search results for <i style="color:#aaa;"><%= params[:id] %></i> <small>(<a href="/search/advanced/<%= params[:id] %>">advanced search</a>)</small></h3>
-
+  <h3>Search results for <i style="color:#aaa;"><%= params[:id] %></i> <small>(<a href="/search/advanced/<%= params[:id] %>">advanced search</a>)</small></h3>
   <% if params[:controller] == 'questions_search' %>
     <% if @questions.length == 0 %>
 

@@ -8,13 +8,14 @@ class QuestionsSearchController < ApplicationController
     @users = DrupalUsers.where('name LIKE ? AND access != 0', "%"+params[:id]+"%")
                         .order("uid")
                         .limit(5)
+
     set_sidebar :tags, @tagnames
     @questions = DrupalNode.questions
                            .where('node.status = 1 AND title LIKE ?', "%" + params[:id] + "%")
                            .order('node.nid DESC')
                            .page(params[:page])
     
-    render :template => 'search/index'
+    render :template => 'searches/normal_search'
   end
 
   def typeahead

@@ -15,7 +15,7 @@ class QuestionsSearchControllerTest < ActionController::TestCase
     assert_not_nil :tagnames
     assert_not_nil :users
     assert_not_nil :questions
-    assert_template :index
+    assert_template :normal_search
   end
 
   test "questions instance should be empty if no question match found" do

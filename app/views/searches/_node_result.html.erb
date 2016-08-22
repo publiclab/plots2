@@ -1,0 +1,33 @@
+<% @nodes.each do |node| %>
+
+    <div class="panel-body">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="taball">
+          <div class="row sresults-row">
+            <div class="panel-group">
+
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <span class="fa fa-<%= node.icon %>"></span>&nbsp;
+                  <a href="<%= node.path %>"><%= node.title %></a>
+                  <% if node.author.name.present? %>
+                    | by <a href="/profile/<%= node.author.name %>"> <%= node.author.name %> </a>
+                  <% end %>
+                  | <%= pluralize node.drupal_comments.count, 'comment' %>
+
+                </div>
+                <div class="panel-body">
+                  <%= node.drupal_node_revision.first.body.first(350) %>...........
+                </div>
+                <div>
+                  <% node.tags.each do |tag| %>
+                    <a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>

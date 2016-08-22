@@ -34,11 +34,14 @@
 //= require i18n
 //= require i18n/translations
 //  APPLICATION SCRIPTS:
-//= require search.js
 //= require setup.js
 //= require editor.js
 //= require like.js
 //= require jsdiff/diff.js
 //= require main_image.js
+//= require restful_typeahead.js
+//= require searchform.js
+//= require location_tags.js
+//= require users.js
 //= require users.js
 

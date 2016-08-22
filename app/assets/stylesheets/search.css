@@ -1,0 +1,17 @@
+ul.typeahead-results {
+  position: absolute;
+  background-color: white;
+  color: black;
+  list-style-type:none;
+  z-index: 1000;
+}
+
+
+ul.typeahead-results>li:hover {
+  background-color: #BBBBBB;
+  cursor:pointer;
+}
+
+.results-noshow {
+  display: none;
+}

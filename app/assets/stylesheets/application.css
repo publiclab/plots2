@@ -19,5 +19,6 @@
  *= require feature
  *= require editor
  *= require blog
+ *= require search
  *= require map
 */

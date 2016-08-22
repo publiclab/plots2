@@ -1,6 +1,13 @@
 Plots2::Application.routes.draw do
 
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+  
+  #Search RESTful endpoints
+  #constraints(subdomain: 'api') do
+  mount Srch::API => '/api'
+  mount GrapeSwaggerRails::Engine => '/api/docs'
+  #end
+  
 
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
@@ -8,6 +15,7 @@ Plots2::Application.routes.draw do
   resources :user_sessions
   resources :images
   resources :features
+  resources :searches
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -123,12 +131,18 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
-  match 'search' => 'search#advanced'
-  match 'search/advanced' => 'search#advanced'
-  match 'search/advanced/:id' => 'search#advanced'
-  match 'search/:id' => 'search#index'
-  match 'search/typeahead/:id' => 'search#typeahead'
-  
+  #Search Pages
+  match 'search' => 'searches#new'
+  match 'search/advanced' => 'searches#new'
+  match 'search/advanced/:id' => 'searches#new'
+  match 'search/dynamic' => 'searches#dynamic'
+  match 'search/dynamic/:id' => 'searches#dynamic'
+  match 'search/typeahead/:id' => 'searches#typeahead'
+  match 'search/questions/:id' => 'searches#questions'
+  match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
+  match 'search/:id' => 'searches#normal_search'
+
+  # Question Search capability--temporary until combined with full Search Capabilities
   match 'questions_search/:id' => 'questions_search#index'
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
 
@@ -203,7 +217,7 @@ Plots2::Application.routes.draw do
   match 'admin/demote/basic/:id' => 'admin#demote_basic'
   match 'admin/promote/admin/:id' => 'admin#promote_admin'
   match 'admin/migrate/:id' => 'admin#migrate'
-  
+
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
@@ -281,6 +295,7 @@ Plots2::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
 
   match ':controller(/:action(/:id))(.:format)'
+
 
 
 end

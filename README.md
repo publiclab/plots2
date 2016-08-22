@@ -89,6 +89,13 @@ But some architectures don't support the phantomjs gem. For those you have to ru
 
 Please report any error regarding phantomjs installation in the github issue tracker. We will try to solve it as fast as possible.
 
+
+### Solr search engine
+
+Solr is a standalone search server. You put documents in it (called "indexing") via JSON, XML, CSV or binary over HTTP. You query it via HTTP GET and receive JSON, XML, CSV or binary results. Solr enables powerful matching capabilities including phrases, wildcards, joins, grouping and much more across any data type.
+We are using an adapter called [sunspot_rails](https://github.com/outoftime/sunspot_rails) to communicate to solr search server through our rails app.
+
+
 ##Installation
 
 Installation steps:
@@ -99,10 +106,13 @@ Installation steps:
 4. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
 5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 6. Run `rake db:setup` to set up the database
-7. Install static assets (like external javascript libraries, fonts) with `bower install` 
-8. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser. 
-9. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password". 
-10. Run `rake test:all` to confirm that your install is working properly. For some setups, you may see warnings even if test pass; [see this issue](https://github.com/publiclab/plots2/issues/440) we're working to resolve. 
+7. Install static assets (like external javascript libraries, fonts) with `bower install`
+8. Install solr engine `rails generate sunspot_rails:install`
+9. Index your local relational database in solr server using  `bundle exec rake sunspot:reindex`
+10. Start the solr server in foreground by using `bundle exec rake sunspot:solr:start`
+11. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
+12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
+13. Run `rake test:all` to confirm that your install is working properly. For some setups, you may see warnings even if test pass; [see this issue](https://github.com/publiclab/plots2/issues/440) we're working to resolve.
 
 ### Bundle exec
 
@@ -112,6 +122,8 @@ For some, it will be necessary to prepend your gem-related commands with `bundle
 
 
 ##Testing
+
+Run solr server in test environment `RAILS_ENV=test bundle exec rake sunspot:solr:start` (required)
 
 Run tests with `rake test:all` for running all tests. We are extremely interested in building our out test suite, so please consider helping us write tests! 
 

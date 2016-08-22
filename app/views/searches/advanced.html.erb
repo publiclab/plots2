@@ -1,3 +1,5 @@
+<% content_for (:head) { javascript_include_tag "advanced_search" } %>
+
 <%= render :partial => "sidebar/related" %>
 
 <div class="col-md-9">
@@ -7,7 +9,7 @@
   <form class="navbar-form" action="/search/advanced">
 
     <div class="form-group form-inline">
-      <input name="id" type="text" class="search-query form-control" data-provide="typeahead" data-source='["Balloon mapping","Thermal photography","Spectrometry"]' value="<%= params[:id] %>">
+      <input name="id" type="text" class="search-query form-control typeahead" value="<%= params[:id] %>">
       <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
     </div>
 

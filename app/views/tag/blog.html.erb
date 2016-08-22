@@ -27,7 +27,7 @@
   <% if @notes.nil? || @notes.length == 0 %>
     <p><%= raw t('tag.blog.no_results', :search => params[:id]) %>:</p>
 
-    <%= render :partial => "search/search" %>
+    <%= render :partial => "searches/search" %>
 
     <p><%= raw t('tag.blog.advanced_search', :url => "/search/advanced/") %></p>
   <% else %>
