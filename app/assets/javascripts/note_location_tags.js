@@ -45,37 +45,22 @@ $(document).ready(function() {
     var location_privacy = $('#location-privacy').is(':checked');
 
     if (location_privacy) {
-      lat = options.lat;
-      long = options.lon;
+      $('#location_map').html("");
+      $('#location_map').html("<div id='map' class='col-md-6' style='height: 250px;'></div>");
+      mymap = new L.map('map').setView([options.lat, options.lon], 3);
 
-      var circle = L.circle([lat, long], 150, {
-        color: 'red'
+      L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
+        attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
       }).addTo(mymap);
 
-      circle.addTo(mymap);
-
-      circle.on('mousedown', function (event) {
-        mymap.dragging.disable();
-        let {lat: circleStartingLat, lng: circleStartingLng} = circle._latlng;
-        let {lat: mouseStartingLat, lng: mouseStartingLng} = event.latlng;
-
-
-        mymap.on('mousemove', event => {
-          let {lat: mouseNewLat, lng: mouseNewLng} = event.latlng;
-          let latDifference = mouseStartingLat - mouseNewLat;
-          let lngDifference = mouseStartingLng - mouseNewLng;
-
-          let center = [circleStartingLat-latDifference, circleStartingLng-lngDifference];
-          circle.setLatLng(center);
-        });
-      });
-
-      mymap.on('mouseup', () => { 
-        mymap.dragging.enable();
-        mymap.removeEventListener('mousemove');
-        var lat = parseFloat(circle.getLatLng().lat).toFixed(5);
-        var lng = parseFloat(circle.getLatLng().lng).toFixed(5);
-        updateAddress(lat, lng);
+      var locationFilter = new L.LocationFilter().addTo(mymap);
+      locationFilter.on("change", function (e) {
+        bounds = locationFilter.getBounds();
+        lat = bounds._northEast.lat + "," + bounds._southWest.lat;
+        long = bounds._northEast.lng + "," + bounds._southWest.lng;
+        console.log(lat)
+        $('#latitude').val(lat);
+        $('#longitude').val(long);
       });
     }
     else {

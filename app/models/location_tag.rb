@@ -7,4 +7,8 @@ class LocationTag < ActiveRecord::Base
   def self.fetch_location(address)
     geo_location = Geocoder.search("#{address}").first || ""
   end
+
+  def self.fetch_address(lat, lng)
+    geo_location = Geocoder.search("#{lat},#{lng}").first || ""
+  end
 end

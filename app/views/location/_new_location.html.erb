@@ -15,6 +15,8 @@
     <div class="input-group">
       <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
       <input autocomplete="off" class="form-control" id="location-input" tabindex="3" name="location" type="text" placeholder="New York City, USA" data-provide="typeahead" value="<%= node && node.location_tag ? node.location_tag.location : '' %>" />
+      <input type="hidden" id="latitude" name="lat" />
+      <input type="hidden" id="longitude" name="lng" />
     </div>
     <br />
 
@@ -36,12 +38,20 @@
 <%= javascript_include_tag "note_location_tags.js" %>
 <script type="text/javascript">
   <% if node && node.location_tag %>
-    var options = {
-      lat: <%= node.location_tag.lat %>,
-      lon: <%= node.location_tag.lon %>
-    }
+    <% if node.location_tag.location_privacy %>
+      var options = {
+        lat: <%= node.location_tag.lat.split(",").map(&:to_f).inject(:+)/2 %>,
+        lon: <%= node.location_tag.lon.split(",").map(&:to_f).inject(:+)/2 %>
+      }
+    <% else %>
+      var options = {
+        lat: <%= node.location_tag.lat %>,
+        lon: <%= node.location_tag.lon %>
+      }
+    <% end %>
     $(document).ready(function() {
       window.initiateMap(options);
     });
   <% end %>
 </script>
+
