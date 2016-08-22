@@ -1,6 +1,7 @@
 Plots2::Application.routes.draw do
 
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+  mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
   
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
@@ -8,7 +9,6 @@ Plots2::Application.routes.draw do
   mount GrapeSwaggerRails::Engine => '/api/docs'
   #end
   
-  mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
   resources :rusers
   resources :user_sessions
