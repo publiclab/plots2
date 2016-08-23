@@ -19,7 +19,6 @@ class Search < ActiveRecord::Base
     end
   end
 
-
   def date_i(date_param)
     Date.strptime(date_param, '%d-%m-%Y').to_time.to_i
   end

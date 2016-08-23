@@ -36,6 +36,9 @@
       <!-- facebook like button image: -->
       <meta property="og:image" content="<%= @node.main_image.path(:default) %>" />
     <% end %>
+
+    <%= yield(:head) %> 
+
     <script type="text/javascript">
       I18n.defaultLocale = "<%= I18n.default_locale %>";
       I18n.locale = "<%= I18n.locale %>";
