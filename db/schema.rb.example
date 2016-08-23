@@ -335,6 +335,20 @@ ActiveRecord::Schema.define(:version => 20160818201147) do
   add_index "rusers", ["location_privacy"], :name => "index_rusers_on_location_privacy"
   add_index "rusers", ["username"], :name => "index_rusers_on_username"
 
+  create_table "searches", :force => true do |t|
+    t.string   "key_words"
+    t.string   "title"
+    t.string   "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "main_type"
+    t.string   "note_type"
+    t.string   "created_by"
+    t.string   "max_date"
+    t.string   "language"
+    t.string   "min_date"
+  end
+
   create_table "tag_selections", :id => false, :force => true do |t|
     t.integer "user_id"
     t.integer "tid"
