@@ -165,3 +165,9 @@ map:
   uid: 1
   title: A map page
   body: This is a map
+
+one:
+  nid: 13
+  uid: 2
+  title: Blog post
+  body: Introducing the Public Lab Blog!

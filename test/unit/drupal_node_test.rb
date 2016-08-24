@@ -178,7 +178,7 @@ class DrupalNodeTest < ActiveSupport::TestCase
 
   test "should find all research notes" do
     notes = DrupalNode.research_notes
-    expected = [node(:one), node(:spam), node(:first_timer_note)]
+    expected = [node(:one), node(:spam), node(:first_timer_note), node(:blog)]
     assert_equal expected, notes
   end
 

@@ -531,4 +531,3 @@ class I18nTest < ActionDispatch::IntegrationTest
       end
     end
 end
-

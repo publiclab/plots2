@@ -63,3 +63,9 @@ map_lon:
   uid: 1
   nid: 12
   date: Time.now
+
+blog:
+  tid: 9
+  uid: 1
+  nid: 13
+  date: Time.now
