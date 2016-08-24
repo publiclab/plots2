@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class SortByTagsTest < ActionDispatch::IntegrationTest
+
+
   test "sort question by tags" do
     get '/questions'
     assert_response :success
@@ -26,7 +28,7 @@ class SortByTagsTest < ActionDispatch::IntegrationTest
     get '/tag/remove_all_tags', return_to: request.path
     follow_redirect!
     assert_equal '/questions', path
-    assert_empty session[:tags]
+    assert_empty session(:tags)
     questions = assigns(:questions)
     expected = [node(:question), node(:question2)]
     assert (expected & questions).present?
