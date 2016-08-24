@@ -33,7 +33,7 @@ class SearchesControllerTest < ActionController::TestCase
   end
 
   test 'should create new search' do
-    assert_difference('Search.count') do
+    assert_difference('SearchRecord.count') do
       post :create, search: {
         title: 'advanced search',
         main_type: 'Notes or Wiki updates',

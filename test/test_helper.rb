@@ -20,6 +20,7 @@ class ActiveSupport::TestCase
   set_fixture_class :tags => DrupalTag
   set_fixture_class :community_tags => DrupalNodeCommunityTag
   set_fixture_class :comments => DrupalComment
+  set_fixture_class :searches => SearchRecord
   
   fixtures :all
 

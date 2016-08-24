@@ -4,22 +4,22 @@ class SearchesController < ApplicationController
   before_filter :set_search, only: [:show, :update]
 
   def index
-    @searches = Search.all
+    @searches = SearchRecord.all
   end
 
   def new
     # Rendering advanced search form
     @title = 'Advanced search'
-    @search = Search.new
+    @search = SearchRecord.new
     @nodes = []
   end
 
   def create
-    @search = Search.new(search_params)
+    @search = SearchRecord.new(search_params)
     @search.title = 'Advanced search'
     @search.user_id = current_user.id
     if @search.save
-      redirect_to @search
+      redirect_to search_url(@search)
     else
       puts 'search failed !'
       render :new
@@ -33,7 +33,7 @@ class SearchesController < ApplicationController
 
   def update
     if @search.update_attributes(search_params)
-      redirect_to @search
+      redirect_to search_url(@search)
     else
       render :new
     end
@@ -74,7 +74,7 @@ class SearchesController < ApplicationController
   private
 
     def set_search
-      @search = Search.find(params[:id])
+      @search = SearchRecord.find(params[:id])
     end
 
     def set_search_service

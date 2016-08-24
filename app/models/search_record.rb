@@ -1,4 +1,5 @@
-class Search < ActiveRecord::Base
+class SearchRecord < ActiveRecord::Base
+  self.table_name = 'searches'
   require 'date'
   include ActiveModel::ForbiddenAttributesProtection
 
@@ -71,20 +72,6 @@ class Search < ActiveRecord::Base
 
   def conditions_parts
     private_methods(false).grep(/_conditions$/).map { |m| send(m) }.compact
-  end
-
-  def date_i(date_param)
-    Date.strptime(date_param, '%d-%m-%Y').to_time.to_i
-  end
-
-  def nodes
-    @nodes ||= find_nodes
-  end
-
-  private
-
-  def find_nodes
-    DrupalNode.find(:all, :conditions => conditions)
   end
 
   def keyword_conditions
