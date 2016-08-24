@@ -316,6 +316,13 @@ class DrupalNode < ActiveRecord::Base
     DrupalTag.find_nodes_by_type(["response:"+self.id.to_s])
   end
 
+  def response_count
+    DrupalNode.where(status: 1, type: 'note')
+              .includes(:drupal_node_revision, :drupal_tag)
+              .where('term_data.name = ?', "response:#{self.id}")
+              .count
+  end
+
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(tag)
     tids = DrupalTag.includes(:drupal_node_community_tag)
