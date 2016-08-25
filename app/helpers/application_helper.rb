@@ -73,6 +73,7 @@ module ApplicationHelper
       nodes.each do |node|
         output += '    <tr>'
         output += '      <td><a href="' + node.path + '">' + node.title + '</a></td>'
+        output += '      <td>' + (node.has_power_tag('category') ? node.power_tag('category') : '-') + '</td>'
         output += '      <td>' + (node.has_power_tag('status') ? node.power_tag('status') : '-') + '</td>'
         output += '      <td><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
         output += '      <td>' + (node.has_power_tag('time') ? node.power_tag('time') : '-') + '</td>'
@@ -103,7 +104,6 @@ module ApplicationHelper
       nodes.each do |node|
         output += '    <tr>'
         output += '      <td><a href="' + node.path + '">' + node.title + '</a></td>'
-        output += '      <td>' + (node.has_power_tag('category') ? node.power_tag('status') : '-') + '</td>'
         output += '      <td>' + (node.has_power_tag('status') ? node.power_tag('status') : '-') + '</td>'
         output += '      <td><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
         output += '      <td>' + (node.has_power_tag('time') ? node.power_tag('time') : '-') + '</td>'
