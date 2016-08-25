@@ -9,27 +9,27 @@ class TypeaheadService
   def initialize
   end
 
-  def users(params)
-    @users ||= find_users(params)
+  def users(params, limit)
+    @users ||= find_users(params, limit)
   end
 
-  def tags(params)
-    @tags ||= find_tags(params)
+  def tags(params, limit)
+    @tags ||= find_tags(params,limit)
   end
 
-  def notes(params)
+  def notes(params, limit)
     @notes ||= find_notes(params)
   end
 
-  def maps(params)
-    @maps ||= find_maps(params)
+  def maps(params, limit)
+    @maps ||= find_maps(params, limit)
   end
 
-  def comments
+  def comments(params, limit)
     @comments ||= find_comments(params)
   end
 
-  def find_users(input, limit=25)
+  def find_users(input, limit=5)
     DrupalUsers.limit(limit)
         .order('uid DESC')
         .where('name LIKE ? AND access != 0', '%' + input + '%')
@@ -64,34 +64,34 @@ class TypeaheadService
 
 
   # Run a search in any of the associated systems for references that contain the search string
-  def textSearch_all(srchString)
+  def textSearch_all(srchString, limit=5)
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
       # notes
-      notesrch = textSearch_notes(srchString)
+      notesrch = textSearch_notes(srchString, limit)
       sresult.addAll(notesrch.getTags)
       # User profiles
-      usersrch = textSearch_profiles(srchString)
+      usersrch = textSearch_profiles(srchString, limit)
       sresult.addAll(usersrch.getTags)
       # Tags -- handled differently because tag
-      tagsrch = textSearch_tags(srchString)
+      tagsrch = textSearch_tags(srchString, limit)
       sresult.addAll(tagsrch.getTags)
       # maps
-      mapsrch = textSearch_maps(srchString)
+      mapsrch = textSearch_maps(srchString, limit)
       sresult.addAll(mapsrch.getTags)
       # questions
-      qsrch = textSearch_questions(srchString)
+      qsrch = textSearch_questions(srchString, limit)
       sresult.addAll(qsrch.getTags)
     end
     return sresult
   end
 
   # Search profiles for matching text
-  def textSearch_profiles(srchString)
+  def textSearch_profiles(srchString, limit=5)
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
       # User profiles
-      users(srchString).each do |match|
+      users(srchString,limit).each do |match|
         tval = TagResult.new
         tval.tagId = 0
         tval.tagType = "user"
@@ -103,11 +103,11 @@ class TypeaheadService
   end  
 
   # Search notes for matching strings
-  def textSearch_notes(srchString)
+  def textSearch_notes(srchString, limit=5)
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
       # notes
-      notes(srchString).select("title,type,nid").each do |match|
+      notes(srchString,limit).select("title,type,nid").each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
@@ -119,11 +119,11 @@ class TypeaheadService
   end  
 
   # Search maps for matching text
-  def textSearch_maps(srchString)
+  def textSearch_maps(srchString, limit=5)
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
       # maps
-      maps(srchString).select("title,type,nid").each do |match|
+      maps(srchString, limit).select("title,type,nid").each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
@@ -135,13 +135,13 @@ class TypeaheadService
   end
 
   # Search tag values for matching text
-  def textSearch_tags(srchString)
+  def textSearch_tags(srchString, limit=5)
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
       # Tags
        tlist= DrupalTag.includes(:drupal_node)
         .where('node.status = 1')
-        .limit(25)
+        .limit(limit)
         .where('name LIKE ?', '%' + srchString + '%')
       tlist.each do |match|
         ntag = TagResult.new
@@ -155,7 +155,7 @@ class TypeaheadService
   end
 
   # Search question entries for matching text
-  def textSearch_questions(srchString)
+  def textSearch_questions(srchString, limit=5)
     sresult = TagList.new
     questions = DrupalNode.where(
                   'type = "note" AND node.status = 1 AND title LIKE ?',
@@ -164,7 +164,7 @@ class TypeaheadService
                   .joins(:drupal_tag)
                   .where('term_data.name LIKE ?', 'question:%')
                   .order('node.nid DESC')
-                  .limit(25)
+                  .limit(limit)
     questions.each do |match|
       tval = TagResult.fromTypeahead(match.nid,match.title,"question-circle")
       sresult.addTag(tval)
@@ -172,5 +172,4 @@ class TypeaheadService
     return sresult
   end
 
-  
 end

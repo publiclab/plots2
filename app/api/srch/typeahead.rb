@@ -4,6 +4,10 @@ require 'grape-entity'
 module Srch
   class Typeahead < Grape::API
 
+    # Number of top values of each type to return
+    TYPEAHEAD_LIMIT = 5
+
+
     # Endpoint definitions
     resource :typeahead do
 
@@ -20,11 +24,11 @@ module Srch
       end
       get :all do
         sresult = TagList.new
-        unless params[:srchString].nil? || params[:srchString] == 0
-          tservice = TypeaheadService.new
-          sresult = tservice.textSearch_all(params[:srchString])
-        end
         sparms = SearchRequest.fromRequest(params)
+        unless !sparms.valid?
+          tservice = TypeaheadService.new
+          sresult = tservice.textSearch_all(params[:srchString],TYPEAHEAD_LIMIT)
+        end
         sresult.srchParams=sparms
 	present sresult, with: TagList::Entity
       end
@@ -42,11 +46,11 @@ module Srch
       end
       get :profiles do
         sresult = TagList.new
-        unless params[:srchString].nil? || params[:srchString] == 0
-          tservice = TypeaheadService.new
-          sresult = tservice.textSearch_profiles(params[:srchString])
-        end
         sparms = SearchRequest.fromRequest(params)
+        unless !sparms.valid?
+          tservice = TypeaheadService.new
+          sresult = tservice.textSearch_profiles(params[:srchString],TYPEAHEAD_LIMIT)
+        end
         sresult.srchParams=sparms
 	present sresult, with: TagList::Entity
       end
@@ -64,11 +68,11 @@ module Srch
       end
       get :notes do
         sresult = TagList.new
-        unless params[:srchString].nil? || params[:srchString] == 0
-          tservice = TypeaheadService.new
-          sresult = tservice.textSearch_notes(params[:srchString])
-        end
         sparms = SearchRequest.fromRequest(params)
+        unless !sparms.valid?
+          tservice = TypeaheadService.new
+          sresult = tservice.textSearch_notes(params[:srchString],TYPEAHEAD_LIMIT)
+        end
         sresult.srchParams=sparms
 	present sresult, with: TagList::Entity
       end
@@ -86,11 +90,11 @@ module Srch
       end
       get :questions do
         sresult = TagList.new
-        unless params[:srchString].nil? || params[:srchString] == 0
-          tservice = TypeaheadService.new
-          sresult = tservice.textSearch_questions(params[:srchString])
-        end
         sparms = SearchRequest.fromRequest(params)
+        unless !sparms.valid?
+          tservice = TypeaheadService.new
+          sresult = tservice.textSearch_questions(params[:srchString],TYPEAHEAD_LIMIT)
+        end
         sresult.srchParams=sparms
 	present sresult, with: TagList::Entity
       end
@@ -107,12 +111,12 @@ module Srch
         optional :seq, type: Integer, documentation: { example: 995 }
       end
       get :tags do
-        sresult = DocList.new
-        unless params[:srchString].nil? || params[:srchString] == 0
-          tservice = TypeaheadService.new
-          sresult = tservice.textSearch_tags(params[:srchString])
-        end
+        sresult = TagList.new
         sparms = SearchRequest.fromRequest(params)
+        unless !sparms.valid?
+          tservice = TypeaheadService.new
+          sresult = tservice.textSearch_tags(params[:srchString],TYPEAHEAD_LIMIT)
+        end
         sresult.srchParams=sparms
 	present sresult, with: TagList::Entity
       end
