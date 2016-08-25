@@ -7,6 +7,7 @@
   //RESTful typeahead base URL
   var typeaheadBase = '/api/typeahead/';
   var idcount = 0;
+  var minQry = 3;
   var keycount = 0;
   /**
     This call performs two setup operations in support of typeahead usage.  The usage is separated by the organization of the data that is returned.  General document typeahead searches return a 'docList', which is a list of document data and their URLs (not used in typeahead functionality at this time).  Conversely, that tag searches/suggestions return tag data, which can be associated with multiple URLs, and is thus less specific but could be more informative.
@@ -118,7 +119,11 @@
 	var qparams = new Object();
 	qparams.srchString = $(srchElem).val();
 	qparams.seq = keycount;
-	$.getJSON(typeaheadBase+qtype,qparams,function(qdata) {
+	//checks to reduce server load and minimize long return values
+        if (!qparams.srchString) return;
+        if (qparams.srchString = '' || qparams.srchString = ' ') return;
+        if (qparams.srchString.length < minQry) return;
+        $.getJSON(typeaheadBase+qtype,qparams,function(qdata) {
 		if (qdata.srchParams) {
 			if (qdata.srchParams.seq >= keycount) {		
 				typeaheadTagList(srchElem, qdata);
