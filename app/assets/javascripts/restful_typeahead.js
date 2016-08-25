@@ -36,12 +36,12 @@
 	var inid = elemRef.attr('id');
 	//Check to see if the element is looking for a defined qry type; otherwise default to 'all'
 	var ttype = 'all';
-	var intype = elemRef.attr('qryType');
+	var intype = elemRef.attr('qrytype');
 	if (intype) {
 		ttype = intype;
 	} else {
-		//set the qryType attribute to 'all'
-		elemRef.attr('qryType',ttype);
+		//set the qrytype attribute to 'all'
+		elemRef.attr('qrytype',ttype);
 	}
 	if (!inid) {
 		//create a dynamic id if there is none
@@ -114,14 +114,14 @@
     Process the element's typed values and perform the query; display the results in the associated datalist
   **/
   function typeaheadSearch(srchElem) {
-	var qtype = $(srchElem).attr('qryType');
+	var qtype = $(srchElem).attr('qrytype');
 	keycount += 1;
 	var qparams = new Object();
 	qparams.srchString = $(srchElem).val();
 	qparams.seq = keycount;
 	//checks to reduce server load and minimize long return values
         if (!qparams.srchString) return;
-        if (qparams.srchString = '' || qparams.srchString = ' ') return;
+        if (qparams.srchString == '' || qparams.srchString == ' ') return;
         if (qparams.srchString.length < minQry) return;
         $.getJSON(typeaheadBase+qtype,qparams,function(qdata) {
 		if (qdata.srchParams) {
