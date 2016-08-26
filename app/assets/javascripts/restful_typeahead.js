@@ -56,8 +56,13 @@
 		//create a datalist
 		listid = 'dlist_'+inid;
 		elemRef.attr('data-results',listid);
-		var listhtml = '<ul class="typeahead-results results-noshow" id="'+listid+'"></ul>';
+		var inputtop = elemRef.position().top;
+		var inputht = elemRef.outerHeight();
+		var inputleft = elemRef.position().left;
+		var listhtml = '<ul class="typeahead-results dropdown-menu" id="'+listid+'" style="display:none;"></ul>';
 		listelem = $(listhtml).insertAfter(elemRef);
+		listelem.css("top",inputtop+inputht);
+		listelem.css("left",inputleft);
 	}
 	return listelem;
   }
@@ -73,7 +78,7 @@
 		var kcode = e.which || e.keyCode;
 		if (kcode == 13 || kcode == 27) {
 			//hit enter or escape, so hide the typeahead
-			listelem.toggleClass('results-noshow',true);
+			listelem.css("display","none");
 		} else {
 			typeaheadSearch(this);
 		}
@@ -91,7 +96,7 @@
 		var kcode = e.which || e.keyCode;
 		if (kcode == 13 || kcode == 27) {
 			//hit enter or escape, so hide the typeahead
-			listelem.toggleClass('results-noshow',true);
+			listelem.css("display","none");
 		} else {
 			typeaheadTags(this);
 		}
@@ -106,7 +111,7 @@
 	var elemRef = $(ielem);
 	var listelem = $(resList);
         elemRef.on("blur", function(e) {
-		listelem.toggleClass('results-noshow',true);
+		var dlist = $("#"+$(this).attr("data-results")).hide();
 	});
   }
 
@@ -141,16 +146,17 @@
 	elemList.html('');
 	if (docList.items) {
 		for (var i=0;i<docList.items.length;i++) {
-			var listopt = $('<li data-text="'+docList.items[i].docTitle+'"><span class="fa fa-'+docList.items[i].docType+'"></span>&nbsp;'+docList.items[i].docTitle+'</li>');
+			var listopt = $('<li data-text="'+docList.items[i].docTitle+'"><span class="fa fa-'+docList.items[i].docType+'"></span><a href="#">&nbsp;'+docList.items[i].docTitle+'</a></li>');
 			listopt.on('mousedown',function(e) {
 				e.preventDefault();
 				elemRef.val($(this).attr('data-text'));
-				elemList.toggleClass('results-noshow',true);
+				elemList.css("display","none");
 			});
 			elemList.append(listopt);
 		}
 	}
-	elemList.toggleClass('results-noshow',false);
+	//elemList.toggleClass('results-noshow',false);
+	elemList.css("display","block");
   }
 
   /**
@@ -172,8 +178,13 @@
 		//create a datalist
 		listid = 'dlist_'+inid;
 		elemRef.attr('data-results',listid);
-		var listhtml = '<ul class="typeahead-results results-noshow" id="'+listid+'"></ul>';
+		var inputtop = elemRef.position().top;
+		var inputht = elemRef.outerHeight();
+		var inputleft = elemRef.position().left;
+		var listhtml = '<ul class="typeahead-results dropdown-menu" id="'+listid+'" style="display:none;"></ul>';
 		listelem = $(listhtml).insertAfter(elemRef);
+		listelem.css("top",inputtop+inputht);
+		listelem.css("left",inputleft);
 	}
 	return listelem;
   }
@@ -204,28 +215,21 @@
 	elemList.html('');
 	if (tagList.items) {
 		for (var i=0;i<tagList.items.length;i++) {
-			var listopt = $('<li data-text="'+tagList.items[i].tagVal+'"><span class="fa fa-'+tagList.items[i].tagType+'"></span>&nbsp;'+tagList.items[i].tagVal+'</li>');
+			var listopt = $('<li data-text="'+tagList.items[i].tagVal+'"><a href="#"><i class="fa fa-'+tagList.items[i].tagType+'"></i>&nbsp;'+tagList.items[i].tagVal+'</a></li>');
 			listopt.on('mousedown',function(e) {
 				e.preventDefault();
 				elemRef.val($(this).attr('data-text'));
-				elemList.toggleClass('results-noshow',true);
+				elemList.css("display","none");
 			});
 			elemList.append(listopt);
 		}
 		$(elemList).find('li').mousedown( function(e) {
 			e.preventDefault();
 			elemRef.val($(this).attr('data-text'));
-			elemList.toggleClass('results-noshow',true);
+			elemList.css("display","none");
 		});
 	}
-	elemList.toggleClass('results-noshow',false);
+	elemList.css("display","block");
   }
 
-  /**
-    Set the value for the data item into the given element
-  **/
-  //function dataListClick(ielem, optval) {
-  //	$(ielem).val(optval);
-  //        $(ielem).parent().toggleClass('results-noshow',true);
-  //}
 
