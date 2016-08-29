@@ -63,7 +63,6 @@ module ApplicationHelper
       output += '    <th>Time</th>'
       output += '    <th>Difficulty</th>'
       output += '    <th>Replications</th>'
-      output += '    <th>Goal</th>'
       output += '  </tr>'
       nodes = DrupalNode.where(status: 1, type: 'note')
                         .includes(:drupal_node_revision, :drupal_tag)
@@ -78,8 +77,7 @@ module ApplicationHelper
         output += '      <td><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
         output += '      <td>' + (node.has_power_tag('time') ? node.power_tag('time') : '-') + '</td>'
         output += '      <td>' + (node.has_power_tag('difficulty') ? node.power_tag('difficulty') : '-') + '</td>'
-        output += '      <td>' + node.response_count.to_s + ' replications</td>'
-        output += '      <td>' + (node.has_power_tag('goal') ? node.power_tag('goal') + ' replications' : '-') + '</td>'
+        output += '      <td>' + node.response_count('replication').to_s + ' replications</td>'
         output += '    </tr>'
       end
       output += '</table>'
@@ -94,7 +92,6 @@ module ApplicationHelper
       output += '    <th>Time</th>'
       output += '    <th>Difficulty</th>'
       output += '    <th>Builds</th>'
-      output += '    <th>Goal</th>'
       output += '  </tr>'
       nodes = DrupalNode.where(status: 1, type: 'note')
                         .includes(:drupal_node_revision, :drupal_tag)
@@ -108,8 +105,7 @@ module ApplicationHelper
         output += '      <td><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
         output += '      <td>' + (node.has_power_tag('time') ? node.power_tag('time') : '-') + '</td>'
         output += '      <td>' + (node.has_power_tag('difficulty') ? node.power_tag('difficulty') : '-') + '</td>'
-        output += '      <td>' + node.response_count.to_s + ' builds</td>'
-        output += '      <td>' + (node.has_power_tag('goal') ? node.power_tag('goal') + ' builds' : '-') + '</td>'
+        output += '      <td>' + node.response_count('build').to_s + ' builds</td>'
         output += '    </tr>'
       end
       output += '</table>'

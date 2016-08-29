@@ -308,18 +308,24 @@ class DrupalNode < ActiveRecord::Base
     self.has_power_tag("list")
   end
 
-  def responded_to
-    DrupalNode.find_all_by_nid(self.power_tags("response")) || []
+  # Nodes this node is responding to with a `response:<nid>` power tag;
+  # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
+  def responded_to(key = 'response')
+    DrupalNode.find_all_by_nid(self.power_tags(key)) || []
   end
 
-  def responses
-    DrupalTag.find_nodes_by_type(["response:"+self.id.to_s])
+  # Nodes that respond to this node with a `response:<nid>` power tag;
+  # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
+  def responses(key = 'response')
+    DrupalTag.find_nodes_by_type([key+":"+self.id.to_s])
   end
 
-  def response_count
+  # Nodes that respond to this node with a `response:<nid>` power tag;
+  # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
+  def response_count(key = 'response')
     DrupalNode.where(status: 1, type: 'note')
               .includes(:drupal_node_revision, :drupal_tag)
-              .where('term_data.name = ?', "response:#{self.id}")
+              .where('term_data.name = ?', "#{key}:#{self.id}")
               .count
   end
 
