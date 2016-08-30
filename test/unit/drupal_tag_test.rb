@@ -61,4 +61,34 @@ class DrupalTagTest < ActiveSupport::TestCase
     expected = [node(:one)]
     assert_equal expected, notes
   end
+
+  test "response power tagging" do
+    tag = DrupalTag.new({
+      name: "response:#{node(:blog).id}"
+    })
+    assert tag.save!
+    community_tag = DrupalNodeCommunityTag.new(
+      tid: tag.tid,
+      nid: node(:one).nid,
+      uid: rusers(:bob).uid
+    )
+    assert community_tag.save!
+    assert node(:blog).responses.length > 0
+    assert node(:blog).response_count > 0
+  end
+
+  test "response power tagging with custom key" do
+    tag = DrupalTag.new({
+      name: "replication:#{node(:blog).id}"
+    })
+    assert tag.save!
+    community_tag = DrupalNodeCommunityTag.new(
+      tid: tag.tid,
+      nid: node(:one).nid,
+      uid: rusers(:bob).uid
+    )
+    assert community_tag.save!
+    assert node(:blog).responses('replication').length > 0
+    assert node(:blog).response_count('replication') > 0
+  end
 end
