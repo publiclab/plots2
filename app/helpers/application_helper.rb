@@ -97,7 +97,7 @@ module ApplicationHelper
                         .includes(:drupal_node_revision, :drupal_tag)
                         .where('term_data.name LIKE ?', "upgrade:#{$1}")
                         .page(params[:page])
-                        .order("node.like_count DESC")
+                        .order("node.cached_likes DESC")
       nodes.each do |node|
         output += '    <tr>'
         output += '      <td><a href="' + node.path + '">' + node.title + '</a></td>'
