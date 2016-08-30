@@ -29,7 +29,7 @@ module ApplicationHelper
   end
 
   def insert_extras(body)
-    body = body.gsub(/\[notes\:(.+)\]/) do |tagname|
+    body = body.gsub(/^\[notes\:(.+)\]/) do |tagname|
       output  =  '<table class="table insert-extras">'
       output += '  <tr>'
       output += '    <th>Title</th>'
@@ -53,7 +53,7 @@ module ApplicationHelper
       output += '</table>'
       output
     end
-    body = body.gsub(/\[activities\:(.+)\]/) do |tagname|
+    body = body.gsub(/^\[activities\:(.+)\]/) do |tagname|
       output  =  '<table class="table insert-extras activity-grid">'
       output += '  <tr>'
       output += '    <th>Purpose</th>'
@@ -83,7 +83,7 @@ module ApplicationHelper
       output += '</table>'
       output
     end
-    body = body.gsub(/\[upgrades\:(.+)\]/) do |tagname|
+    body = body.gsub(/^\[upgrades\:(.+)\]/) do |tagname|
       output  =  '<table class="table insert-extras upgrades-grid">'
       output += '  <tr>'
       output += '    <th>Title</th>'
@@ -97,7 +97,7 @@ module ApplicationHelper
                         .includes(:drupal_node_revision, :drupal_tag)
                         .where('term_data.name LIKE ?', "upgrade:#{$1}")
                         .page(params[:page])
-                        .order("node_revisions.timestamp DESC")
+                        .order("node.like_count DESC")
       nodes.each do |node|
         output += '    <tr>'
         output += '      <td><a href="' + node.path + '">' + node.title + '</a></td>'

@@ -12,7 +12,7 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
 
     post '/notes/create', 
          title: title,
-         body:  "This is a fascinating post about a balloon mapping event. [notes:test]",
+         body:  "This is a fascinating post about a balloon mapping event. \n[notes:test]",
          tags:  "test"
 
     follow_redirect!
