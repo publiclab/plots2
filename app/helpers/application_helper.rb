@@ -30,7 +30,7 @@ module ApplicationHelper
 
   def insert_extras(body)
     body = body.gsub(/\<p\>\[notes\:(.+)\]/) do |tagname|
-      output  = '<p><table class="table insert-extras">'
+      output  = '<p><table class="table inline-grid notes-grid notes-grid-' + $1 + '">'
       output += '  <tr>'
       output += '    <th>Title</th>'
       output += '    <th>Author</th>'
@@ -54,7 +54,7 @@ module ApplicationHelper
       output
     end
     body = body.gsub(/\<p\>\[activities\:(.+)\]/) do |tagname|
-      output  = '<p><table class="table insert-extras activity-grid">'
+      output  = '<p><table class="table inline-grid activity-grid activity-grid-' + $1 + '">'
       output += '  <tr>'
       output += '    <th>Purpose</th>'
       output += '    <th>Category</th>'
@@ -84,7 +84,7 @@ module ApplicationHelper
       output
     end
     body = body.gsub(/\<p\>\[upgrades\:(.+)\]/) do |tagname|
-      output  =  '<p><table class="table insert-extras upgrades-grid">'
+      output  =  '<p><table class="table inline-grid upgrades-grid upgrades-grid-' + $1 + '">'
       output += '  <tr>'
       output += '    <th>Title</th>'
       output += '    <th>Status</th>'
