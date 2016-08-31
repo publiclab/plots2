@@ -13,7 +13,7 @@
         </p>
         <p>
           <small style="color:#888;">
-            <%= raw t('sidebar._wikis.updated_by', :time => time_ago_in_words(wiki.updated_at), :url1 => "/profile/"+wiki.latest.author.name, :author => wiki.latest.author.name) %>
+            <%= raw t('sidebar._wikis.updated_by', :time => time_ago_in_words(wiki.latest.updated_at), :url1 => "/profile/"+wiki.latest.author.name, :author => wiki.latest.author.name) %>
           </small>
         </p>
       <% end %>
