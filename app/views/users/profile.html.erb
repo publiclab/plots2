@@ -6,7 +6,7 @@
     </div>
   <% end %>
 
-  <% if current_user %>
+  <% if current_user && @profile_user %>
     <% unless current_user == @profile_user %>
       <hr />
       <div id="follow_form" class="col-md-offset-4">
