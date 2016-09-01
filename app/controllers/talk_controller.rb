@@ -1,5 +1,5 @@
 class TalkController < ApplicationController
   def show
-    @slug = params[:id]
+    @node = DrupalNode.find_by_slug params[:id]
   end
 end
