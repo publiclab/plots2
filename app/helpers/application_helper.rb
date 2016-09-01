@@ -30,7 +30,8 @@ module ApplicationHelper
 
   def insert_extras(body)
     body = body.gsub(/\<p\>\[notes\:(.+)\]/) do |tagname|
-      output  = '<p><table class="table inline-grid notes-grid notes-grid-' + $1 + '">'
+      className = 'notes-grid-' + $1.parameterize
+      output  = '<p><table class="table inline-grid notes-grid ' + className + '">'
       output += '  <tr>'
       output += '    <th><a data-type="title">Title</a></th>'
       output += '    <th><a data-type="author">Author</a></th>'
@@ -46,17 +47,18 @@ module ApplicationHelper
         output += '<tr>'
         output += '  <td class="title"><a href="' + node.path + '">' + node.title + '</a></td>'
         output += '  <td class="author"><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
-        output += '  <td class="updated">' + distance_of_time_in_words(Time.at(node.updated_at), Time.current, false, :scope => :'datetime.time_ago_in_words') + '</td>'
+        output += '  <td class="updated" data-timestamp="' + node.latest.timestamp.to_s + '">' + distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, false, :scope => :'datetime.time_ago_in_words') + '</td>'
         output += '  <td class="likes">' + number_with_delimiter(node.cached_likes) + '</td>'
         output += '</tr>'
       end
       output += '</table>'
-      output += '<script>(function(){ setupGridSorters(".notes-grid-' + $1 + '"); })()</script>'
+      output += '<script>(function(){ setupGridSorters(".' + className + '"); })()</script>'
       output
     end
 
     body = body.gsub(/\<p\>\[activities\:(.+)\]/) do |tagname|
-      output  = '<p><table class="table inline-grid activity-grid activity-grid-' + $1 + '">'
+      className = 'activity-grid-' + $1.parameterize
+      output  = '<p><table class="table inline-grid activity-grid ' + className + '">'
       output += '  <tr>'
       output += '    <th><a data-type="title">Purpose</a></th>'
       output += '    <th><a data-type="category">Category</a></th>'
@@ -83,12 +85,13 @@ module ApplicationHelper
         output += '</tr>'
       end
       output += '</table>'
-      output += '<script>(function(){ setupGridSorters(".activity-grid-' + $1 + '"); })()</script>'
+      output += '<script>(function(){ setupGridSorters(".' + className + '"); })()</script>'
       output
     end
 
     body = body.gsub(/\<p\>\[upgrades\:(.+)\]/) do |tagname|
-      output  =  '<p><table class="table inline-grid upgrades-grid upgrades-grid-' + $1 + '">'
+      className = 'upgrades-grid-' + $1.parameterize
+      output  =  '<p><table class="table inline-grid upgrades-grid ' + className + '">'
       output += '  <tr>'
       output += '    <th><a data-type="title">Title</a></th>'
       output += '    <th><a data-type="status">Status</a></th>'
@@ -113,7 +116,7 @@ module ApplicationHelper
         output += '</tr>'
       end
       output += '</table>'
-      output += '<script>(function(){ setupGridSorters(".upgrades-grid-' + $1 + '"); })()</script>'
+      output += '<script>(function(){ setupGridSorters(".' + className + '"); })()</script>'
       output
     end
 
