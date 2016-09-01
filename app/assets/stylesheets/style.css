@@ -466,3 +466,12 @@ pre {
   background-color: #fff;
   border-radius: 5px;
 }
+
+table th a {
+  color: #333;
+  text-decoration: underline;
+}
+
+table th a:hover {
+  color: #aaa;
+}
