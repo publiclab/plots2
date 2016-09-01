@@ -16,13 +16,21 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
          tags:  "test"
 
     follow_redirect!
-    get DrupalNode.last.path
+
+    node = DrupalNode.last
+    node.add_tag("seeks:replications", rusers(:jeff))
+    node(:blog).add_tag("replication:#{node.id}", rusers(:jeff))
+
+    get node.path
     
     assert_select "h1", title
     assert_select "table.notes-grid-test"
     assert_select "table.activity-grid"
     assert_select "table.upgrades-grid"
     assert_select "table.notes-grid-shouldnt", false
+
+    assert_select "table.notes-grid-replication-#{node.id}"
+
   end
 
 end
