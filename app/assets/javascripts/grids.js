@@ -19,8 +19,17 @@ function sortGrid(type, selector, headerLink) {
 
     // look for data-timestamp, also insert it in application_helper.rb
 
-    if (desc) return cellA.text() > cellB.text();
-    else      return cellA.text() < cellB.text();
+    if (cellA.attr('data-timestamp')) {
+
+      if (desc) return cellA.attr('data-timestamp') > cellB.attr('data-timestamp');
+      else      return cellA.attr('data-timestamp') < cellB.attr('data-timestamp');
+      
+    } else {
+
+      if (desc) return cellA.text() > cellB.text();
+      else      return cellA.text() < cellB.text();
+
+    }
 
   });
 
