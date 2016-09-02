@@ -21,10 +21,14 @@ function sortGrid(type, selector, headerLink) {
 
     if (cellA.attr('data-timestamp')) {
 
+      console.log(cellA.attr('data-timestamp'), cellB.attr('data-timestamp'));
+
       if (desc) return cellA.attr('data-timestamp') > cellB.attr('data-timestamp');
       else      return cellA.attr('data-timestamp') < cellB.attr('data-timestamp');
       
     } else {
+
+      console.log(cellA.text(), cellB.text());
 
       if (desc) return cellA.text() > cellB.text();
       else      return cellA.text() < cellB.text();

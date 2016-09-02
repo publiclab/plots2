@@ -2,6 +2,8 @@
 
 <div class="col-md-9 note-show<% if @node.status == 4 || @node.status == 0 %> moderated<% end %>">
   <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning"><%= raw t('notes.show.note_no_tags') %></div><% end %>
+  <% if @node.has_power_tag('replication') %><div class="alert alert-info"><%= raw t('notes.show.replication') %> <a href="/n/<%= @node.power_tag('replication') %>"><%= raw t('notes.show.replication_link') %></a>.</div><% end %>
+  <% if @node.has_power_tag('build') %><div class="alert alert-info"><%= raw t('notes.show.build') %> <a href="/n/<%= @node.power_tag('build') %>"><%= raw t('notes.show.build_link') %></a>.</div><% end %>
 
   <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
