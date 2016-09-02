@@ -38,7 +38,7 @@
   <% unless @node.has_power_tag('status') %>
   <p class="status">
     What is it's current <a href="/wiki/activity-categories#Status">status</a>?
-    <% ['build','verify','observe','test-limits','field-test','experiment','monitor'].each do |tag| %>
+    <% ['request','proposal','draft','in-progress','review-me','complete'].each do |tag| %>
       <a class="btn btn-sm btn-default" href="javascript:void()" onClick="addTag('status:<%= tag %>');$('.quiz .status').hide()"><%= tag %></a>
     <% end %>
   </p>
