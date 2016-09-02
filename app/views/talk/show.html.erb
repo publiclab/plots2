@@ -1,2 +1,2 @@
-<div><p style="margin-top: 10px;font-family: 'Junction Light';clear:left;"><%= raw t('talk.show.welcome', :page => @node.latest.title, :url1 => '/wiki/'+@node.latest.title, :url2 => '/wiki/talk-pages') %></p></div>
-<div><iframe src="https://pad.publiclab.org/p/<%= @node.path[0,50] %>" style="width: 100%; height:800px;"><p><%= t('talk.show.try_direct_link', :url1 => 'https://pad.publiclab.org/p/'+@node.path[0,50]) %></p></iframe></div>
+<div><p style="margin-top: 10px;font-family: 'Junction Light';clear:left;"><%= raw t('talk.show.welcome', :page => @node.latest.title, :url1 => @node.path, :url2 => '/wiki/talk-pages') %></p></div>
+<div><iframe src="https://pad.publiclab.org/p/<%= @node.slug[0,50] %>" style="width: 100%; height:800px;"><p><%= t('talk.show.try_direct_link', :url1 => 'https://pad.publiclab.org/p/'+@node.slug[0,50]) %></p></iframe></div>
