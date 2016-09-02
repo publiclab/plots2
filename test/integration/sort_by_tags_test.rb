@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class SortByTagsTest < ActionDispatch::IntegrationTest
+
+
   test "sort question by tags" do
     get '/questions'
     assert_response :success

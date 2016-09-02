@@ -29,3 +29,7 @@ map_lat:
 map_lon:
   tid: 8
   name: lon:52
+
+blog:
+  tid: 9
+  name: blog

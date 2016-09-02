@@ -1,10 +1,12 @@
+<%= render partial: 'tag/replication' %>
+
 <p>
   <span id="tags">
     <% @node.tags.each do |tag| %>
       <span id="tag_<%= tag.id %>" class="label label-primary">
         <a href="<%= "/maps" if @node.type == "map" %>/tag/<%= tag.name %>"><%= tag.name %></a>
         <% if current_user && (tag.is_community_tag(@node.id) && tag.belongs_to(current_user,@node.id) || current_user.role == "admin" || current_user.role == "moderator") %>
-          <a class="tagdelete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.id %>">x</a>
+          <a class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.id %>" data-tag-id="<%= tag.id %>">x</a>
         <% end %>
       </span>
     <% end %>
@@ -17,61 +19,13 @@
     <input name="remote" type="hidden" value="true" />
     <div class="input-group col-md-6">
       <span class="input-group-addon"><i class="fa fa-tags"></i></span>
-      <input autocomplete="off" id="taginput" name="name" type="text" placeholder="<%= t('tag._tagging.enter_tags') %>" data-provide="typeahead" class="form-control" />
+      <input autocomplete="off" class="tag-input form-control" name="name" type="text" placeholder="<%= t('tag._tagging.enter_tags') %>" data-provide="typeahead" />
     </div>
     <script>
       jQuery(document).ready(function() {
- 
-        $('#tagform').bind('ajax:beforeSend', function(){
-          $("#taginput").prop('disabled',true)
-        });
- 
-        $('#tagform').bind('ajax:success', function(e,response){
-          response = JSON.parse(response)
-          $.each(response['saved'],function(i,tag) {
-            var tag_name = tag[0]
-            var tag_id = tag[1]
-            $('#tags').append("<span id='tag_"+tag_id+"' class='label label-primary' style='font-size:13px;'><a href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tagdelete' data-remote='true' href='/tag/delete/<%= @node.id %>/"+tag_id+"'>x</a></span> ")
-            $('#taginput').val("")
-            $('#tagform .control-group').removeClass('has-error')
-            $('#tagform .control-group .help-block').remove()
-            $('#tag_'+tag_id).bind('ajax:success', function(e,tagid){
-              $('#tag_'+tagid).remove()
-            });
-          })
-          if (response['errors'].length > 0) {
-            $('#tagform .control-group').addClass('has-error')
-            $('#tagform .control-group .help-block').remove()
-            $('#tagform .control-group').append('<span class="help-block">'+response['errors']+'</span>')
-          }
-          $('#taginput').prop('disabled',false)
-        });
- 
-        $('#tagform').bind('ajax:error', function(e,response){
-          $('#tagform .control-group').addClass('has-error')
-          $('#taginput').prop('disabled',false)
-          $('#tagform .control-group .help-block').remove()
-          $('#tagform .control-group').append('<span class="help-block">'+response.responseText+'</span>')
-        });
- 
-        $('.tagdelete').bind('ajax:success', function(e,tagid){
-          $('#tag_'+tagid).remove()
-        });
- 
-        $('#taginput').typeahead({
-          items: 8,
-          minLength: 3,
-          source: function (query, process) {
-            return $.post('/tag/suggested/'+query, {}, function (data) {
-              return process(data)
-            })
-          },
-          updater: function(text) { 
-            $('#taginput').val(text)
-            $('#tagform').submit()
-          }
-        });
- 
+
+        initTagForm(<%= @node.id %>, '#tagform');
+
       });
     </script>
   </div>

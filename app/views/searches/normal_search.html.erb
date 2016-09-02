@@ -30,9 +30,9 @@
 
       <p>No results found; try looking for <a href="/tag/<%= params[:id] %>">items tagged with '<b><%= params[:id] %></b>'</a> or broadening your search:</p>
 
-      <%= render :partial => "search/search" %>
+      <%= render :partial => "searches/search" %>
 
-      <p>Or try an <a href="/search/advanced/">advanced search</a></p>
+      <p>Or try an <a href="/searches/advanced/">advanced search</a></p>
 
     <% else %>
       <%= render :partial => "notes/notes" %>
@@ -44,3 +44,4 @@
 <%= stylesheet_link_tag "dashboard" %>
 <%= javascript_include_tag "dashboard" %>
 <%= javascript_include_tag "questions_search" %>
+

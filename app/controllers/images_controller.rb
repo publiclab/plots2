@@ -27,7 +27,11 @@ class ImagesController < ApplicationController
         url:      @image.path(:large),
         filename: @image.photo_file_name,
         href:     @image.path(:large), # Woofmark/PublicLab.Editor
-        title:    @image.photo_file_name
+        title:    @image.photo_file_name,
+        results:  [{ # Woofmark/PublicLab.Editor
+                    href:  @image.path(:large),
+                    title: @image.photo_file_name
+                  }]
       }
     else
       render text: "The image could not be saved."
@@ -36,18 +40,6 @@ class ImagesController < ApplicationController
 
   def new
     @image = Image.new()
-  end
-
-  # Jeff believes this is not used.
-  def update
-    @image = Image.find params[:id]
-    # make changes
-    if @image.save
-      flash[:notice] = "Image updated."
-    else
-      flash[:error] = "The image could not be updated."
-    end
-    redirect_to "/post"
   end
 
   def delete

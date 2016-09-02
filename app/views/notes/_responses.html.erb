@@ -1,16 +1,26 @@
-<% if @node.has_tag('seeks:responses') %>
+<% ['response', 'build', 'replication'].each do |response_type| %>
+  <% if @node.has_tag("seeks:#{response_type}s") %>
 
-  <% @responses = DrupalTag.find_nodes_by_type("response:#{@node.id}") %>
-  <% @unpaginated = true %>
+    <% @responses = DrupalTag.find_nodes_by_type("#{response_type}:#{@node.id}") %>
+    <% @unpaginated = true %>
+ 
+    <p><a class='btn btn-primary btn-lg' href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0%>"><%= t('notes._responses.post_' + response_type) %></a></p>
+ 
+    <hr />
+ 
+    <h3><%= t("notes._responses.#{response_type}s") %> (<%= @responses.length %>)</h3>
 
-  <p><a class='btn btn-primary btn-lg' href="/post?tags=response:<%= @node.id %>,hidden:response<%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0%>"><%= t('notes._responses.post_response') %></a></p>
+    <% if response_type == 'response' %> 
+      <%= render :partial => "notes/notes", locals: { notes: @responses } %>
+    <% else %>
+      <% if @node.response_count(response_type) > 0 %>
+        <%= raw insert_extras("<p>[notes:#{response_type}:#{@node.id}]</p>") %>
+      <% else %>
+        None yet. <a href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0%>"">Be the first to post one!</a>
+      <% end %>
+    <% end %>
+ 
+    <hr />
 
-  <hr />
-
-  <h3><%= t('notes._responses.responses') %> (<%= @responses.length %>)</h3>
-
-  <%= render :partial => "notes/notes", locals: { notes: @responses } %>
-
-  <hr />
-
+  <% end %>
 <% end %>

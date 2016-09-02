@@ -21,4 +21,6 @@
  *= require blog
  *= require search
  *= require map
+ *= require search
+ *= require comments
 */

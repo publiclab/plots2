@@ -1,0 +1,33 @@
+<% ['activity', 'upgrade'].each do |response_type| %>
+<% if @node.has_power_tag(response_type) %>
+<p class="guided-tags alert alert-info">
+  <b>This is marked this as an <%= response_type %> for others to try.</b> <br />
+  <a href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0%>" class="btn btn-sm btn-default">Try it now</a> &nbsp;
+  <a href="javascript:void()" onClick="$('.quiz').toggle();">Click here</a> to add some more details.
+</p>
+
+<div class="quiz" style="display:none;">
+
+  <% unless @node.has_power_tag('time') %>
+  <p class="time">
+    How long does this <%= response_type %> take?
+    <% ['1h', '3h', '5h', '10h'].each do |tag| %>
+      <a class="btn btn-sm btn-default" href="javascript:void()" onClick="addTag('time:<%= tag %>');$('.quiz .time').hide()"><%= tag %></a>
+    <% end %>
+  </p>
+  <% end %>
+
+  <% unless @node.has_power_tag('difficulty') %>
+  <p class="difficulty">
+    How hard is this <%= response_type %>?
+    <% ['easy', 'medium', 'hard'].each do |tag| %>
+      <a class="btn btn-sm btn-default" href="javascript:void()" onClick="addTag('difficulty:<%= tag %>');$('.quiz .difficulty').hide()"><%= tag %></a>
+    <% end %>
+  </p>
+  <% end %>
+
+</div>
+
+<hr />
+<% end %>
+<% end %>

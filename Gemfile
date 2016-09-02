@@ -41,6 +41,10 @@ end
 group :test do
   gem 'test-unit'
   gem 'rake',  '~> 10.5.0'
+  # gems to test RESTful API
+  gem 'rest-client' 
+  gem 'rspec'
+  gem 'json_expressions'
 end
 
 # run with `bundle install --without production` to exclude these
@@ -77,7 +81,6 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'mocha', '~> 1.1'
 gem 'jasmine-rails'
 gem 'jasmine-jquery-rails'
-gem 'strong_parameters'
 
 gem 'sunspot_rails'
 gem 'sunspot_solr'
@@ -88,3 +91,5 @@ gem 'http_accept_language'
 
 # The default friendly_id version compatible with Rails 3 is v4.0 
 gem 'friendly_id'
+gem 'jbuilder'
+gem 'strong_parameters'

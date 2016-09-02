@@ -17,6 +17,11 @@ class SearchesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should get dynamic' do
+    get :dynamic
+    assert_response :success
+  end
+
   test 'should get show' do
     get :show, id: @advanced_search
     assert_response :success
@@ -29,7 +34,7 @@ class SearchesControllerTest < ActionController::TestCase
   end
 
   test 'should create new search' do
-    assert_difference('Search.count') do
+    assert_difference('SearchRecord.count') do
       post :create, search: {
         title: 'advanced search',
         main_type: 'Notes or Wiki updates',

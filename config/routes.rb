@@ -1,6 +1,7 @@
 Plots2::Application.routes.draw do
 
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+  mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
   
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
@@ -8,8 +9,6 @@ Plots2::Application.routes.draw do
   mount GrapeSwaggerRails::Engine => '/api/docs'
   #end
   
-
-  mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
   resources :rusers
   resources :user_sessions
@@ -130,6 +129,9 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/query' => 'like#liked?', :as => :is_liked
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
+ 
+  match 'questions_search/:id' => 'questions_search#index'
+  match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
 
   #Search Pages
   match 'search' => 'searches#new'
@@ -145,6 +147,7 @@ Plots2::Application.routes.draw do
   # Question Search capability--temporary until combined with full Search Capabilities
   match 'questions_search/:id' => 'questions_search#index'
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
+
 
   match 'widget/:id' => 'tag#widget'
   match 'blog' => 'tag#blog', :id => "blog"
@@ -295,7 +298,6 @@ Plots2::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
 
   match ':controller(/:action(/:id))(.:format)'
-
 
 
 end

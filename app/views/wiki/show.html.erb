@@ -1,7 +1,7 @@
 </div>
 <% @presentation = @node.has_tag('style:presentation') %>
 <% if @presentation && @node.main_image%>
-<div id="main-image-presentation" style=""><a href="<%= @node.main_image.path(:original) %>"><img style="width:100%;" class="img-rounded" src="<%= @node.main_image.path(:original) %>" /></a></div>
+  <div id="main-image-presentation" style="margin-bottom:8px;"><a href="<%= @node.main_image.path(:original) %>"><img style="width:100%;" class="img-rounded" src="<%= @node.main_image.path(:original) %>" /></a></div>
 <% end %>
 <div class="row">
 <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
@@ -30,7 +30,7 @@
   
 <% end %>
 
-  <div <% if @presentation %>style="display:none" <% end %>id="wiki-toolbar">
+  <div <% if @presentation || @node.has_tag('style:minimal') %>style="display:none" <% end %>id="wiki-toolbar">
     <div class="hidden-print">
       <div class="pull-right" style="padding-top:8px;">
         <span class="hidden-sm hidden-xs">
@@ -44,7 +44,7 @@
         <li class="active"><a href="#"><span class="hidden-xs"><%= t('wiki.show.view') %></span><span class="visible-xs"><i class="fa fa-file-o"></i></span></a></li>
         <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="fa fa-pencil"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.edit') %></span></a></li>
         <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => I18n.t('wiki.show.are_you_sure_delete', :path => @node.path) do %><i class="fa fa-trash"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.delete') %></span><% end %></li><% end %>
-        <li><a href="/talk/<%= @node.slug[0,50] %>"><i class="fa fa-comments-o"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.talk') %></span></a></li>
+        <li><a href="/talk/<%= @node.slug %>"><i class="fa fa-comments-o"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.talk') %></span></a></li>
         <li><a href="/wiki/revisions/<%= @node.slug %>"><span class="hidden-xs"><%= @node.revisions.length %> </span><i class="fa fa-list"></i></a></li>
       </ul>
     </div>
