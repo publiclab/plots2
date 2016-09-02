@@ -731,4 +731,8 @@ class DrupalNode < ActiveRecord::Base
                           .group('node.nid')
   end
 
+  def body_preview
+    self.try(:latest).body_preview
+  end
+
 end
