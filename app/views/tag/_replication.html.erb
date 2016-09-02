@@ -26,6 +26,24 @@
   </p>
   <% end %>
 
+  <% unless @node.has_power_tag('category') %>
+  <p class="category">
+    What <a href="/wiki/activity-categories">kind of <%= response_type %></a> is it?
+    <% ['build','verify','observe','test-limits','field-test','experiment','monitor'].each do |tag| %>
+      <a class="btn btn-sm btn-default" href="javascript:void()" onClick="addTag('category:<%= tag %>');$('.quiz .category').hide()"><%= tag %></a>
+    <% end %>
+  </p>
+  <% end %>
+
+  <% unless @node.has_power_tag('status') %>
+  <p class="status">
+    What is it's current <a href="/wiki/activity-categories#Status">status</a>?
+    <% ['build','verify','observe','test-limits','field-test','experiment','monitor'].each do |tag| %>
+      <a class="btn btn-sm btn-default" href="javascript:void()" onClick="addTag('status:<%= tag %>');$('.quiz .status').hide()"><%= tag %></a>
+    <% end %>
+  </p>
+  <% end %>
+
 </div>
 
 <hr />
