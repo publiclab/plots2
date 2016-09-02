@@ -1,7 +1,7 @@
 class UniqueUrlValidator < ActiveModel::Validator
   def validate(record)
     if record.title == "" || record.title.nil?
-      #record.errors[:base] << "You must provide a title." 
+      #record.errors[:base] << "You must provide a title."
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     elsif record.title == "new" && (record.type == "page" || record.type == "place" || record.type == "tool")
       record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
@@ -108,13 +108,13 @@ class DrupalNode < ActiveRecord::Base
   def path(type = :default)
     if type == :question
       self[:path].gsub("/notes/", "/questions/")
-    else 
+    else
       # default path
       self[:path]
     end
   end
 
-  # should only be run at actual creation time -- 
+  # should only be run at actual creation time --
   # or, we should refactor to us node.created instead of Time.now
   def generate_path
     if self.type == 'note'
@@ -172,8 +172,8 @@ class DrupalNode < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span-week] = DrupalNode.select(:created)
-                                   .where(type:    type, 
-                                          status:  1, 
+                                   .where(type:    type,
+                                          status:  1,
                                           created: time.to_i - week.weeks.to_i..time.to_i - (week-1).weeks.to_i)
                                    .count
     end
@@ -306,8 +306,8 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def gallery
-    if self.drupal_content_field_image_gallery.length > 0 && self.drupal_content_field_image_gallery.first.field_image_gallery_fid 
-      return self.drupal_content_field_image_gallery 
+    if self.drupal_content_field_image_gallery.length > 0 && self.drupal_content_field_image_gallery.first.field_image_gallery_fid
+      return self.drupal_content_field_image_gallery
     else
       return []
     end
@@ -443,14 +443,14 @@ class DrupalNode < ActiveRecord::Base
 
   # increment view count
   def view
-    DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil? 
+    DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil?
     self.drupal_node_counter.totalcount += 1
     self.drupal_node_counter.save
   end
 
   # view count
   def totalcount
-    DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil? 
+    DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil?
     self.drupal_node_counter.totalcount
   end
 
@@ -475,7 +475,7 @@ class DrupalNode < ActiveRecord::Base
 
   def lat
     if self.has_power_tag("lat")
-      self.power_tag("lat").to_f 
+      self.power_tag("lat").to_f
     else
       false
     end
@@ -483,14 +483,14 @@ class DrupalNode < ActiveRecord::Base
 
   def lon
     if self.has_power_tag("lon")
-      self.power_tag("lon").to_f 
+      self.power_tag("lon").to_f
     else
       false
     end
   end
 
   # these should eventually displace the above means of finding locations
-  # ...they may already be redundant after tagged_map_coord migration 
+  # ...they may already be redundant after tagged_map_coord migration
   def tagged_lat
     self.power_tags('lat')[0]
   end
@@ -546,7 +546,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   # handle creating a new note with attached revision and main image
-  # this is kind of egregiously bad... must revise after 
+  # this is kind of egregiously bad... must revise after
   # researching simultaneous creation of associated records
   def self.new_note(params)
     saved = false
@@ -562,7 +562,7 @@ class DrupalNode < ActiveRecord::Base
       saved = true
       revision = false
       ActiveRecord::Base.transaction do
-        node.save! 
+        node.save!
         revision = node.new_revision({
           nid:   node.id,
           uid:   author.uid,
@@ -600,7 +600,7 @@ class DrupalNode < ActiveRecord::Base
       revision = false
       saved = true
       ActiveRecord::Base.transaction do
-        node.save! 
+        node.save!
         revision = node.new_revision({
           :nid => node.id,
           :uid => params[:uid],
@@ -633,7 +633,7 @@ class DrupalNode < ActiveRecord::Base
       revision = false
       saved = true
       ActiveRecord::Base.transaction do
-        node.save! 
+        node.save!
         revision = node.new_revision({
           :nid => node.id,
           :uid => params[:uid],
