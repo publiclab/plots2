@@ -166,4 +166,23 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
     tag_names = associated_tags.map{|x| x.name}
     assert_true tag_names.count('hashtag') == 1
   end
+
+  test "should remove header from body for preview" do
+    revision = node(:one).latest
+    revision.body = "##Introduction\n\nThis is my post"
+    assert_nil revision.body_preview.match("Introduction")
+  end
+
+  test "should return body if no header for body_preview" do
+      revision = node(:one).latest
+      revision.body = "Some stuff about my post"
+      assert_true !!(revision.body_preview.match("Some stuff about my post"))
+  end
+
+  test "should remove header in between two normal paragraphs" do
+      revision = node(:one).latest
+      revision.body = "Some stuff about my post\n##A title\nsome more stuff about my post"
+      assert_nil revision.body_preview.match("A title")
+  end
+
 end

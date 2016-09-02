@@ -187,4 +187,5 @@ class DrupalNodeTest < ActiveSupport::TestCase
     expected = [node(:question), node(:question2), node(:first_timer_question)]
     assert_equal expected, questions
   end
+
 end
