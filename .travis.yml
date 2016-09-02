@@ -8,7 +8,7 @@ install:
   - cp db/schema.rb.example db/schema.rb
   - docker-compose build
   - docker-compose run web sleep 5
-  - docker-compose run web RAILS_ENV=test bundle exec rake sunspot:solr:start
+  - docker-compose run web bundle exec rake sunspot:solr:start
   - docker-compose run web rake db:setup
   - docker-compose run web rake db:migrate
   - docker-compose run web bower install --allow-root
