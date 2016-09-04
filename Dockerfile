@@ -12,6 +12,7 @@ ENV HOME /root
 
 # Install dependencies
 RUN apt-get update -qq && apt-get install -y bundler libmysqlclient-dev ruby-rmagick libfreeimage3 nodejs-legacy npm
+RUN apt-get install openjdk-7-jre openjdk-7-jdk --allow-root
 RUN npm install -g bower
 
 # Install bundle of gems
