@@ -49,7 +49,7 @@
           <div class="img-circle"></div> 
         <% end %>
       </div>
-      <div class="inline" id="comment-form">
+      <div class="inline" id="question-comment-form">
         <form id="answer-<%= answer.id %>-comment-form" class="form-horizontal" action="/comment/answer_create/<%= answer.id%>" data-remote="true">
           <%= render partial: "questions/form" %>  
         </form>
