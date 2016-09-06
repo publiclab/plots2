@@ -23,22 +23,27 @@ function sortGrid(type, selector, headerLink) {
 
       console.log(cellA.attr('data-timestamp'), cellB.attr('data-timestamp'));
 
-      if (desc) return cellA.attr('data-timestamp') > cellB.attr('data-timestamp');
-      else      return cellA.attr('data-timestamp') < cellB.attr('data-timestamp');
+      if (desc) return cellA.attr('data-timestamp') < cellB.attr('data-timestamp');
+      else      return cellA.attr('data-timestamp') > cellB.attr('data-timestamp');
       
     } else {
 
       console.log(cellA.text(), cellB.text());
 
-      if (desc) return cellA.text() > cellB.text();
-      else      return cellA.text() < cellB.text();
+      if (desc) return cellA.text() < cellB.text();
+      else      return cellA.text() > cellB.text();
 
     }
 
   });
 
-  table.append(header);
-  table.append(rows);
+  table.html(rows);
+  table.prepend(header);
+
+console.log('rows')
+rows.each(function(row) {
+  console.log(row,$(row).find('.' + type).text());
+});
 
   headerLink.toggleClass('desc');
 
