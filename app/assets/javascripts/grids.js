@@ -37,8 +37,8 @@ function sortGrid(type, selector, headerLink) {
 
   });
 
-  table.append(header);
-  table.append(rows);
+  table.html(rows);
+  table.prepend(header);
 
 console.log('rows')
 rows.each(function(row) {
