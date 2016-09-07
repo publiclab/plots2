@@ -454,7 +454,7 @@ class I18nTest < ActionDispatch::IntegrationTest
         follow_redirect!
         
         get '/talk/'+ node(:about).slug
-        assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', :page => 'topic', :url1 => '/wiki/'+'topic', :url2 => '/wiki/talk-pages'))
+        assert_select 'p.help-text', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', :page => node(:about).latest.title, :url1 => node(:about).path, :url2 => '/wiki/talk-pages'))
       end
     end
     
