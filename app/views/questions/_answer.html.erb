@@ -75,14 +75,17 @@
       title: $("#answer-like-button-<%= answer.id %>").attr("tooltip-title")
     })
 
-    var anchor_value;
     var stripped_url = document.location.toString().split("#");
-    if (stripped_url.length > 1){
-      anchor_value = stripped_url[1];
-      if(anchor_value.match('answer-<%= answer.id %>-comment')){
+    var check_matched = false;
+    if(stripped_url.length > 1){
+      var anchor_value = stripped_url[1];
+      if(anchor_value.match('answer-<%= answer.id %>-comment'))
+        check_matched = true;
+    }
+
+    if (check_matched){
         $("#answer-<%= answer.id %>-comment").toggle();
         $('.answer-<%= answer.id %>-comments').show();
-      }
     }
     else{
       $('.answer-<%= answer.id %>-comments').slice(0,3).show();

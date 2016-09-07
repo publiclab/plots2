@@ -1,7 +1,7 @@
 Hi! There's been a response to a discussion you're involved in. Do NOT reply to this email; click this link to respond:
 
 <% if @comment.parent.has_power_tag('question') %>
-<p>https://publiclab.org<%= @comment.parent.path(:question) %>#answer-comment-<%= @comment.cid %></p>
+<p>https://publiclab.org<%= @comment.parent.path(:question) %>#answer-<%= @comment.aid %>-comment-<%= @comment.cid %></p>
 <% else %>
 <p>https://publiclab.org<%= @comment.node.path %>#c<%= @comment.cid %></p>
 <% end %>
