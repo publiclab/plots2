@@ -6,6 +6,7 @@ class SearchesControllerTest < ActionController::TestCase
   def setup
     @normal_search = searches(:normal)
     @advanced_search = searches(:advanced_note)
+
     activate_authlogic
     @user = rusers(:newcomer)
     UserSession.create(@user)

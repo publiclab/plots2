@@ -13,6 +13,8 @@
                   <% if node.author.name.present? %>
                     | by <a href="/profile/<%= node.author.name %>"> <%= node.author.name %> </a>
                   <% end %>
+                  | <%= pluralize node.drupal_comments.count, 'comment' %>
+
                 </div>
                 <div class="panel-body">
                   <%= node.drupal_node_revision.first.body.first(350) %>...........

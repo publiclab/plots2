@@ -21,7 +21,7 @@ class SearchesController < ApplicationController
     if @search.save
       redirect_to search_url(@search)
     else
-      puts 'search failed !'
+      puts @search.errors
       render :new
     end
   end
@@ -41,7 +41,8 @@ class SearchesController < ApplicationController
 
   def show
     @title = @search.title
-    @nodes = @search.nodes
+    @nodes = @search.note_results(params[:month])
+    @solr_nodes = @search.notes(params[:month])
     set_sidebar :tags, @search.key_words
   end
 
@@ -82,7 +83,7 @@ class SearchesController < ApplicationController
     end
 
     def search_params
-      params.require(:search).permit(:key_words, :main_type, :note_type,
+      params.require(:search_record).permit(:key_words, :main_type, :note_type,
                                      :min_date, :max_date, :created_by, :language)
     end
 

@@ -81,6 +81,7 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'mocha', '~> 1.1'
 gem 'jasmine-rails'
 gem 'jasmine-jquery-rails'
+
 gem 'sunspot_rails'
 gem 'sunspot_solr'
 
@@ -92,5 +93,3 @@ gem 'http_accept_language'
 gem 'friendly_id'
 gem 'jbuilder'
 gem 'strong_parameters'
-
-
