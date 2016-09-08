@@ -16,7 +16,7 @@
     <div id="research-note-detail" class="hidden-sm">
       <h4><i class="fa fa-question-circle"></i> Use this form to ask Question about <b><%= params[:tags].split(':').last %></b></h4>
       <% if DrupalTag.follower_count(params[:tags]) > 0 %>
-        <p><%= DrupalTag.follower_count(params[:tags]) %> people have signed up to answer questions on this topic.</p>
+        <div class="alert alert-success" role="alert"><%= DrupalTag.follower_count(params[:tags]) %> people have signed up to answer questions on this topic.</div>
       <% end %>
       <p>Here you can ask a question to the Public Lab community to help you in your environmental exploration. This is a great space to ask whether a method exists for identifying a possible pollutant, or ask about details of a specific technique for identifying a pollutant.</p>
       <p>You can add more tags in the tags section below to further relate your question. You can also change the main tag of the question by renaming the part after <b><i>question:</i></b> tag</p>
@@ -27,7 +27,7 @@
   <% else %>
     <h3 class="visible-md"><i class="fa fa-file"></i> What's a <br />research note?</h3>
     <h4 class="hidden-md"><i class="fa fa-file"></i> What's a research note? <a onClick="$('#research-note-detail').toggleClass('visible-sm')">Learn more &raquo;</a><br /></h4>
-    
+
     <div id="research-note-detail" class="hidden-sm hidden-xs">
       <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work.</p>
       <p><b>Research notes can include:</b></p>
@@ -55,12 +55,12 @@
 </div>
 
 <div class="col-sm-9">
-  <% 
+  <%
   if @node && params[:action] != "create"
     url = { :controller => "notes", :action => "update", :id => params[:id] }
-  else 
+  else
     url = { :controller => "notes", :action => "create", :id => params[:id] }
-  end 
+  end
   %>
   <%= form_for @node, :as => :drupal_node, :url => url do |f| %>
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
@@ -79,8 +79,8 @@
       <% else %>
         <h3>Share your work</h3>
       <% end %>
-  
-      <!-- Notice: Temporary redirect. remove this after after questions show page is complete -->  
+
+      <!-- Notice: Temporary redirect. remove this after after questions show page is complete -->
       <% if params[:redirect] == 'question' %>
         <%= hidden_field_tag 'redirect', 'question' %>
       <% end %>
@@ -88,37 +88,37 @@
       <div class="form-group">
         <input id="title" tabindex="1" name="title" class="form-control" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %><%= "Question: " if params[:template] == "question" && params[:title].nil? %>"/>
       </div>
- 
+
       <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
       <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
       <input id="node_images" type="hidden" name="node_images" value="" />
- 
+
       <%= render :partial => 'editor/editor' %>
- 
+
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-tags"></i></span>
         <input autocomplete="off" class="form-control" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
       </div>
 
       <input name="remote" type="hidden" value="true" />
- 
+
       <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
       <br />
 
       <% if current_user.first_time_poster %>
         <p class="moderation-notice">Hi! Just letting you know ahead of time that everyone's first posts to this website are <a href='/wiki/moderation'>moderated</a> due to issues we've had with spam. Thanks for your patience!</p>
       <% end %>
- 
+
       <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
       <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
- 
+
       <span style="margin-top:12px;margin-left:8px;" class="checkbox">
         <label for="event-input">
           <input tabindex="7" onChange="$('#event-info').toggle()" id="event-input" type="checkbox" name="event">
           This is an event
         </label>
       </span>
- 
+
       <div id="event-info" style="display:none;clear:both;padding-top:4px;">
         <p><i>An RSVP feature will be added to your note. Please choose a date:</i></p>
         <span style="padding-right:0;" class="input-group date">
@@ -128,7 +128,7 @@
       </div>
 
     </div>
- 
+
     <div style="clear:both;">
       <br />
       <p class="col-md-12">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
