@@ -133,7 +133,7 @@ Plots2::Application.routes.draw do
   match 'questions_search/:id' => 'questions_search#index'
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
 
-  # Search Pages
+  #Search Pages
   # match 'search' => 'searches#new'
   # match 'search/advanced' => 'searches#new'
   match 'search/advanced/:id' => 'searches#new'
@@ -147,7 +147,6 @@ Plots2::Application.routes.draw do
   # Question Search capability--temporary until combined with full Search Capabilities
   match 'questions_search/:id' => 'questions_search#index'
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
-
 
   match 'widget/:id' => 'tag#widget'
   match 'blog' => 'tag#blog', :id => "blog"

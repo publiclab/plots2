@@ -11,7 +11,7 @@
 
 <div class="col-md-9">
 
-  <h3>Search results for <i style="color:#aaa;"><%= params[:id] %></i> <small>(<a href="/search/advanced/<%= params[:id] %>">advanced search</a>)</small></h3>
+  <h3>Search results for <i style="color:#aaa;"><%= params[:id] %></i> <small>(<%= link_to 'Advanced Search', new_search_path %>)</small></h3>
   <% if params[:controller] == 'questions_search' %>
     <% if @questions.length == 0 %>
 
@@ -32,7 +32,7 @@
 
       <%= render :partial => "searches/search" %>
 
-      <p>Or try an <a href="/searche/advanced/">advanced search</a></p>
+      <p>Or try an <%= link_to 'Advanced Search', new_search_path %></p>
 
     <% else %>
       <%= render :partial => "notes/notes" %>
