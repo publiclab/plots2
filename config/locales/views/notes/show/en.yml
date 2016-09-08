@@ -4,6 +4,10 @@ en:
   notes:
     show:
       note_no_tags: "This note has no tags yet; help connect it to other content by <a onClick=\"$('#taginput').focus()\">adding descriptive tags below</a>."
+      replication: "This is an attempt to replicate "
+      replication_link: "an activity"
+      build: "This is an attempt to build "
+      build_link: "an upgrade"
       question: "Question:"
       author_is_asking_about: |
         <a href='%{url1}'> %{author} </a>

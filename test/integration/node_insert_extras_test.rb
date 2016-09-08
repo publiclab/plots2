@@ -25,8 +25,8 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
     
     assert_select "h1", title
     assert_select "table.notes-grid-test"
-    assert_select "table.activity-grid"
-    assert_select "table.upgrades-grid"
+    assert_select "table.activity-grid-test"
+    assert_select "table.upgrades-grid-test"
     assert_select "table.notes-grid-shouldnt", false
 
     assert_select "table.notes-grid-replication-#{node.id}"
