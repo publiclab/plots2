@@ -11,7 +11,7 @@ RUN mkdir -p /app
 ENV HOME /root
 
 # Install dependencies
-RUN apt-get update -qq && apt-get install -y bundler libmysqlclient-dev ruby-rmagick libfreeimage3 nodejs-legacy npm
+RUN apt-get update -qq && apt-get install -y bundler libmysqlclient-dev ruby-rmagick libfreeimage3 nodejs-legacy npm openjdk-7-jre openjdk-7-jdk
 RUN npm install -g bower
 
 # Install bundle of gems
