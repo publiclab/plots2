@@ -134,8 +134,8 @@ Plots2::Application.routes.draw do
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
 
   #Search Pages
-  match 'search' => 'searches#new'
-  match 'search/advanced' => 'searches#new'
+  # match 'search' => 'searches#new'
+  # match 'search/advanced' => 'searches#new'
   match 'search/advanced/:id' => 'searches#new'
   match 'search/dynamic' => 'searches#dynamic'
   match 'search/dynamic/:id' => 'searches#dynamic'
