@@ -74,5 +74,13 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "browse redirected node" do
+    get node(:redirect).path
+    assert_response :redirect
+    assert_redirected_to node(:blog).path
+    request_via_redirect :get, node(:blog).path
+    assert_select 'h1', node(:blog).title
+  end
+
 end
 

@@ -155,3 +155,15 @@ blog:
   type: "note"
   cached_likes: 0
   slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-blog-post
+
+redirect:
+  nid: 14
+  uid: 2
+  title: "Blog post alias title"
+  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/blog-post-alias-title"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "redirect|13"
+  cached_likes: 0
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-blog-post-alias-title
