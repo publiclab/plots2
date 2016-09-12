@@ -13,7 +13,7 @@ class CommentMailerTest < ActionMailer::TestCase
     assert_equal ['do-not-reply@publiclab.org'], email.from
     assert_equal [user.email], email.to
     assert_equal "New comment on '" + comment.parent.title + "'", email.subject
-    assert email.body.include?("<p>https://publiclab.org#{comment.parent.path(:question)}#answer-comment-#{comment.cid}</p>")
+    assert email.body.include?("<p>https://publiclab.org#{comment.parent.path(:question)}#answer-#{comment.aid}-comment-#{comment.cid}</p>")
   end
 
   test "notify note author" do
