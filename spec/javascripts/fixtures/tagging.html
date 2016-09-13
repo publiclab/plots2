@@ -1,0 +1,11 @@
+<span id="tags">
+  <span id="tag_1" class="label label-primary" data-toggle="tooltip" data-html="true">
+    <a href="/tag/blog">blog</a>
+    <a class="tag-delete" data-remote="true" href="/tag/delete/2/1" data-tag-id="1">x</a>
+  </span>
+</span>
+
+<form id="tagform" class="form" data-remote="true" action="/tag/create/<%= @node.id %>">
+  <input name="remote" type="hidden" value="true" />
+  <input autocomplete="off" class="tag-input form-control" name="name" type="text" data-provide="typeahead" />
+</form>

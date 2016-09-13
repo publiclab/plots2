@@ -10,6 +10,18 @@ function addTag(tagname, selector) {
 
 }
 
+function setupTagDelete(el) {
+
+  el.click(function(e) {
+      $(this).css('opacity', 0.5)
+    })
+    .bind('ajax:success', function(e, tid){
+      $('#tag_' + tid).remove();
+    });
+  return el;
+
+}
+
 function initTagForm(node_id, selector) {
 
   selector = selector || '#tagform';
@@ -29,9 +41,7 @@ function initTagForm(node_id, selector) {
       el.find('.tag-input').val("")
       el.find('.control-group').removeClass('has-error')
       el.find('.control-group .help-block').remove()
-      $('#tag_' + tag_id).bind('ajax:success', function(e, tid){
-        $('#tag_' + tid).remove()
-      });
+      setupTagDelete($('#tag_' + tag_id + ' .tag-delete'));
     })
     if (response['errors'].length > 0) {
       el.find('.control-group').addClass('has-error')
@@ -48,11 +58,7 @@ function initTagForm(node_id, selector) {
     el.find('.control-group').append('<span class="help-block">' + response.responseText + '</span>')
   });
 
-  // add el.bind('ajax:send' ... (look up event name) and turn tag grey
-
-  $('.tag-delete').bind('ajax:success', function(e, tid){
-    $('#tag_' + tid).remove();
-  });
+  setupTagDelete($('.tag-delete'));
 
   el.find('.tag-input').typeahead({
     items: 8,
@@ -71,4 +77,3 @@ function initTagForm(node_id, selector) {
   return el;
 
 }
-
