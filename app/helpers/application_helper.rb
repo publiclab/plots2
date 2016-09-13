@@ -70,10 +70,7 @@ module ApplicationHelper
       output += '    <th><a data-type="difficulty">Difficulty</a></th>'
       output += '    <th><a data-type="replications">Replications</a></th>'
       output += '  </tr>'
-      nodes = DrupalNode.where(status: 1, type: 'note')
-                        .includes(:drupal_node_revision, :drupal_tag)
-                        .where('term_data.name LIKE ?', "activity:#{$1}")
-                        .page(params[:page])
+      nodes = DrupalNode.activities($1)
                         .order("node_revisions.timestamp DESC")
       nodes.each do |node|
         output += '<tr>'
@@ -103,10 +100,7 @@ module ApplicationHelper
       output += '    <th><a data-type="difficulty">Difficulty</a></th>'
       output += '    <th><a data-type="builds">Builds</a></th>'
       output += '  </tr>'
-      nodes = DrupalNode.where(status: 1, type: 'note')
-                        .includes(:drupal_node_revision, :drupal_tag)
-                        .where('term_data.name LIKE ?', "upgrade:#{$1}")
-                        .page(params[:page])
+      nodes = DrupalNode.upgrades($1)
                         .order("node.cached_likes DESC")
       nodes.each do |node|
         output += '<tr>'

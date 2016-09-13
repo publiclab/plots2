@@ -735,4 +735,16 @@ class DrupalNode < ActiveRecord::Base
     self.try(:latest).body_preview
   end
 
+  def self.activities(tagname)
+    DrupalNode.where(status: 1, type: 'note')
+              .includes(:drupal_node_revision, :drupal_tag)
+              .where('term_data.name LIKE ?', "activity:#{tagname}")
+  end
+
+  def self.upgrades(tagname)
+    DrupalNode.where(status: 1, type: 'note')
+              .includes(:drupal_node_revision, :drupal_tag)
+              .where('term_data.name LIKE ?', "upgrade:#{tagname}")
+  end
+
 end
