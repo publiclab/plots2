@@ -1,9 +1,11 @@
 <div class="col-md-3">
 
   <%= render :partial => "sidebar/post_button" %>
-
-  <%= feature('sidebar-feature') %>
-
+  
+  <% if params[:controller] != 'questions' %>
+    <%= feature('sidebar-feature') %>
+  <% end %>
+  
   <div class="hidden-xs hidden-sm">
     <p><i class="fa fa-envelope"></i> <a href="/lists"><%= t('sidebar._user.discussion_list') %> &raquo;</a></p>
     <p><%= t('sidebar._user.work_happens_on_discussion_lists') %> <a href="/lists"><%= t('sidebar._user.join_one_today') %></a></p>
