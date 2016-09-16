@@ -21,7 +21,6 @@ class Search < ActiveRecord::Base
       with(:updated_month, month) if month.present?
       paginate :page => 1, :per_page => 10
     end
-
   end
 
   def note_results(month)

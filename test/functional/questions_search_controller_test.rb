@@ -21,8 +21,8 @@ class QuestionsSearchControllerTest < ActionController::TestCase
   test "questions instance should be empty if no question match found" do
     UserSession.create(rusers(:bob))
     get :index, id: 'What'
-    assert_response :success
-    assert_empty assigns(:questions)
+    assert_response :redirect
+    assert_empty assigns(:notes)
   end
 
   test "get search/questions_typehead" do

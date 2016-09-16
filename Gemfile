@@ -45,6 +45,7 @@ group :test do
   gem 'rest-client' 
   gem 'rspec'
   gem 'json_expressions'
+  gem 'timecop'
 end
 
 # run with `bundle install --without production` to exclude these
@@ -93,8 +94,3 @@ gem 'http_accept_language'
 gem 'friendly_id'
 gem 'jbuilder'
 gem 'strong_parameters'
-
-gem 'sunspot_rails'
-gem 'sunspot_solr'
-
-gem 'http_accept_language'
