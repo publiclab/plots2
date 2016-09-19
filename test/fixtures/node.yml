@@ -167,3 +167,15 @@ redirect:
   type: "redirect|13"
   cached_likes: 0
   slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-blog-post-alias-title
+
+coauthored:
+  nid: 15
+  uid: 2
+  title: "Co-authored post"
+  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/co-authored-post"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-co-authored-post

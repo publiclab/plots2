@@ -33,3 +33,7 @@ map_lon:
 blog:
   tid: 9
   name: blog
+
+with:
+  tid: 10
+  name: with:lurker
