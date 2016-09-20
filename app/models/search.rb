@@ -5,6 +5,9 @@ class Search < ActiveRecord::Base
   attr_accessible :key_words, :title, :main_type, :note_type, :min_date, :created_by,
                   :language, :max_date
 
+  def initialize
+  end
+
   def date_i(date_param)
     Date.strptime(date_param, '%d-%m-%Y').to_time.to_i
   end
