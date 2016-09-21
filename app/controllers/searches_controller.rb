@@ -1,3 +1,5 @@
+require 'search'
+
 class SearchesController < ApplicationController
 
   before_filter :set_search_service
@@ -21,7 +23,7 @@ class SearchesController < ApplicationController
     if @search.save
       redirect_to search_url(@search)
     else
-      puts 'search failed !'
+      puts @search.errors
       render :new
     end
   end
@@ -40,9 +42,11 @@ class SearchesController < ApplicationController
   end
 
   def show
-    @title = @search.title
-    @nodes = @search.nodes
-    set_sidebar :tags, @search.key_words
+    @ssearch = SearchRecord.new
+    @title = @ssearch.title
+    @nodes = @ssearch.note_results(params[:month])
+    @solr_nodes = @ssearch.notes(params[:month])
+    set_sidebar :tags, @ssearch.key_words
   end
 
   def normal_search

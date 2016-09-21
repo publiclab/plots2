@@ -21,7 +21,12 @@ require 'test_helper'
 class NotesControllerTest < ActionController::TestCase
 
   def setup
+    Timecop.freeze # account for timestamp change
     activate_authlogic
+  end
+
+  def teardown
+    Timecop.return
   end
 
   test "redirect note short url" do

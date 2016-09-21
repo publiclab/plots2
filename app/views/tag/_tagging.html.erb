@@ -3,7 +3,7 @@
 <p>
   <span id="tags">
     <% @node.community_tags.each do |tag| %>
-      <span id="tag_<%= tag.id %>" class="label label-primary" data-toggle="tooltip" data-html="true" title="created by <strong><%= tag.try(:author).username %></strong> <%= time_ago_in_words(Time.at(tag.date)) %> ago">
+      <span id="tag_<%= tag.id %>" class="label label-primary" data-toggle="tooltip" data-html="true" title="created by <strong><%= tag.try(:author).try(:username) %></strong> <%= time_ago_in_words(Time.at(tag.date)) %> ago">
         <a href="<%= "/maps" if @node.type == "map" %>/tag/<%= tag.name %>"><%= tag.name %></a>
         <% if current_user && (tag.uid == @node.uid || current_user.role == "admin" || current_user.role == "moderator") %>
           <a class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.id %>" data-tag-id="<%= tag.id %>">x</a>

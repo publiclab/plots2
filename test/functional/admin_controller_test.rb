@@ -18,10 +18,12 @@ class AdminControllerTest < ActionController::TestCase
 
   def setup
     activate_authlogic
+    Timecop.freeze # account for timestamp change
   end
 
   def teardown
     UserSession.find.destroy if UserSession.find
+    Timecop.return
   end
 
   test "admin should promote user role to admin" do
