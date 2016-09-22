@@ -10,12 +10,20 @@ It features a Bootstrap-based UI and a variety of community and attribution feat
 Some key features include:
 
 * a Markdown-based research note and wiki editor
-* wiki editing and revision tracking
+* [wiki editing](https://publiclab.org/wiki) and revision tracking
 * tagging and tag-based content organization
 * email notification subscriptions for tags and comments
 * a barebones search interface
-* a user dashboard presenting recent activity
+* a user dashboard [presenting recent activity](https://publiclab.org/research)
+* a [Question and Answer system](https://publiclab.org/questions)
 
+## Contributing
+
+We welcome contributions, and are especially interested in welcoming [first time contributors](#first-time). Read more about [how to contribute](#developers) below!
+
+### Code of Conduct
+
+Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); our community aspires to be a respectful place both during online and in-­personinteractions.
 
 ====
 
@@ -42,6 +50,15 @@ Our production application runs on mysql, but for development, sqlite3 is suffic
 * Mac OS X: Macs ship with sqlite3 already installed.
 * Ubuntu/Debian: `sudo apt-get install sqlite3`
 * Fedora/Red Hat/CentOS: `sudo yum install sqlite` -- you may need `sqlite-devel` as well.
+
+
+### Search
+
+We use the [solr](https://lucene.apache.org/solr/) search engine via the [sunspot gem](https://github.com/sunspot/sunspot). Solr requires Java, which is therefore a requirement for running tests; on a Debian/Ubuntu system, you can install the necessary libraries with:
+
+`sudo apt-get install openjdk-7-jre openjdk-7-jdk icedtea-7-plugin`
+
+However, to ease installation, we're hoping to [make Java optional](https://github.com/publiclab/plots2/issues/832) for testing. If you get stuck on this step, you can _open a pull request with your changes_ -- please add the prefix `[testing]` to the title -- which will then be automatically tested by our TravisCI service. 
 
 
 ### Image libraries
