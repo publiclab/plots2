@@ -236,6 +236,17 @@ class NotesControllerTest < ActionController::TestCase
     assert_select ".alert"
   end
 
+  test "update note as co-author using with:coauthorname tag" do
+    user = UserSession.create(rusers(:lurker))
+    note = node(:coauthored) # by jeff
+    post :update,
+         id: note.nid,
+         title: note.title,
+         body: note.body + ' and my thought'
+
+    assert_redirected_to note.path(:coauthored) + "?_=" + Time.now.to_i.to_s
+  end
+
   #def test_cannot_delete_post_if_not_yours
 
   #end
