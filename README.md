@@ -23,7 +23,7 @@ We welcome contributions, and are especially interested in welcoming [first time
 
 ### Code of Conduct
 
-Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); our community aspires to be a respectful place both during online and in-­personinteractions.
+Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); our community aspires to be a respectful place both during online and in-­person interactions.
 
 ====
 
@@ -56,7 +56,7 @@ Our production application runs on mysql, but for development, sqlite3 is suffic
 
 We use the [solr](https://lucene.apache.org/solr/) search engine via the [sunspot gem](https://github.com/sunspot/sunspot). Solr requires Java, which is therefore a requirement for running tests; on a Debian/Ubuntu system, you can install the necessary libraries with:
 
-`sudo apt-get install openjdk-7-jre openjdk-7-jdk icedtea-7-plugin`
+`sudo apt-get install openjdk-7-jre openjdk-7-jdk`
 
 However, to ease installation, we're hoping to [make Java optional](https://github.com/publiclab/plots2/issues/832) for testing. If you get stuck on this step, you can _open a pull request with your changes_ -- please add the prefix `[testing]` to the title -- which will then be automatically tested by our TravisCI service. 
 
@@ -142,7 +142,7 @@ For some, it will be necessary to prepend your gem-related commands with `bundle
 
 ##Testing
 
-Run solr server in test environment `RAILS_ENV=test bundle exec rake sunspot:solr:start` (required)
+Run solr server in test environment `RAILS_ENV=test bundle exec rake sunspot:solr:start` (required). You might see the tests failing if you have the solr server running in your development as mentioned in [this issue comment](https://github.com/publiclab/plots2/issues/832#issuecomment-249695309). So ensure that the solr server is shutdown in development and thereafter run the tests.
 
 Run tests with `rake test:all` for running all tests. We are extremely interested in building our out test suite, so please consider helping us write tests! 
 
