@@ -167,3 +167,15 @@ redirect:
   type: "redirect|13"
   cached_likes: 0
   slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-blog-post-alias-title
+
+question3:
+  nid: 15
+  uid: 1
+  title: "Question by a moderated user"
+  path: "/notes/bob/<%= Time.now.strftime("%m-%d-%Y") %>/question-by-a-moderated-user"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: bob-<%= Time.now.strftime("%m-%d-%Y") %>-question-by-a-moderated-user

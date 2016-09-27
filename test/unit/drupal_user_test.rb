@@ -7,6 +7,15 @@ class DrupalUserTest < ActiveSupport::TestCase
     assert_equal user.notes, user.user.notes
   end
 
+  test "moderate and unmoderate user" do
+    user = users(:bob)
+    assert_equal 1, user.status
+    user.moderate
+    assert_equal 5, user.status
+    user.unmoderate
+    assert_equal 1, user.status
+  end
+
   test "ban and unban user" do
     user = users(:bob)
     assert_equal 1, user.status

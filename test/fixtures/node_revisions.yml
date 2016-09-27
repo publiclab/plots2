@@ -166,8 +166,14 @@ map:
   title: A map page
   body: This is a map
 
-one:
+blog:
   nid: 13
   uid: 2
   title: Blog post
   body: Introducing the Public Lab Blog!
+
+question3:
+  nid: 15
+  uid: 1
+  title: "Question by a moderated user"
+  body: I have a question but I'm moderated.

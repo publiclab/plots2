@@ -26,7 +26,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user.notes, user.drupal_user.notes
   end
 
-  test "first time user" do
+  test "user.notes and first time user" do
     assert        users(:jeff).notes.length > 0
     assert        !users(:jeff).first_time_poster
     assert_false  users(:bob).notes.length > 0

@@ -3,7 +3,7 @@
 de:
   users_controller:
     account_migrated_create_new_password: "Ihr Konto wurde von der alten PublicLaboratory.org Website migriert; bitte ein Passwort für den neuen Standort erstellen."
-    registration_successful: "Registrierung erfolgreich. Sie wurden in die <b>publiclaboratory</b> Mailingliste  hinzugefügt."
+    registration_successful: "Registrierung erfolgreich. Sie wurden in die <b>publiclaboratory</b> <a href='/lists'>Mailingliste</a> hinzugefügt."
     spectralworkbench_or_mapknitter: "<i class='icon icon-exclamation-sign'></i> Wenn Sie registriert, um zu verwenden <b>SpectralWorkbench.org</b> oder <b>MapKnitter.org</b>, <a href='%{url1}'>hier lecken, um fortzufahren &raquo;</a>"
     successful_updated_profile: "Erfolgreich sein Profil aktualisiert."
     return_dashboard: "Kehren Sie zu Ihrem Armaturenbrett"
