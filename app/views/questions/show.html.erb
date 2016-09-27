@@ -1,6 +1,13 @@
 <%= render :partial => "sidebar/question" %>
 <div class="col-md-9 note-show">
   
+   <% if @node.main_image %>
+    <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
+      <img style="max-height:600px;" class="img-rounded hidden-xs hidden-sm" src="<%= @node.main_image.path(:large) %>" />
+      <img style="width:100%;" class="img-rounded visible-xs visible-sm" src="<%= @node.main_image.path(:large) %>" />
+    </a>
+  <% end %>
+  
   <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
 
   <h1 style="margin-top: 20px;"><span class="question">Question:</span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
