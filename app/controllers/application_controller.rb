@@ -82,7 +82,6 @@ class ApplicationController < ActionController::Base
         # as anonymous (until the login process sets @current_user again):
         @current_user = nil
       elsif @current_user.try(:drupal_user).try(:status) == 5
-puts "STATUS 5 >>>>>>>>>>>>>>>>>>>>>>"
         # Tell the user they are banned. Fails b/c redirect to require below.
         flash[:warning] = "The user '#{@current_user.username}' has been placed in moderation; please see <a href='https://publiclab.org/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> if you believe this is in error."
         # Same effect as if the user clicked logout:
@@ -143,7 +142,7 @@ puts "STATUS 5 >>>>>>>>>>>>>>>>>>>>>>"
         # no notification; don't let people easily fish for existing draft titles; we should try to 404 it
         redirect_to "/"
       elsif @node.author.status == 5
-        flash[:warning] = "The user 'bob' has been placed <a href='https://publiclab.org/wiki/moderators'>in moderation</a> and will not be able to respond to comments."
+        flash.now[:warning] = "The user '#{@node.author.username}' has been placed <a href='https://publiclab.org/wiki/moderators'>in moderation</a> and will not be able to respond to comments."
       end
     end
     
