@@ -64,6 +64,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     get '/post' # dashboard is actually world-readable, but /post is not
 
+    assert_response :redirect
     follow_redirect!
     # in application_controller.rb:
     assert_equal "The user 'Bob' has been placed in moderation; please see <a href='https://publiclab.org/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> if you believe this is in error.", flash[:warning]
@@ -79,6 +80,11 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     # in application_controller.rb:
     assert_equal "The user 'Bob' has been placed <a href='https://publiclab.org/wiki/moderators'>in moderation</a> and will not be able to respond to comments.", flash[:warning]
 
+    get "/profile/#{u.username}"
+
+    assert_equal I18n.t('users_controller.user_has_been_banned'), flash[:error]
+    assert_response :success
+
     u.drupal_user.unmoderate
 
     get u.notes.first.path
@@ -88,7 +94,21 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
   end
 
-  #test "users are logged out and alerted when banned" do
-  #end
+  test "moderated user profiles are not visible when banned" do
+    u = rusers(:bob)
+    u.drupal_user.ban
+    admin = rusers(:admin)
+
+    post '/user_sessions', user_session: {
+      username: admin.username,
+      password: 'secret' 
+    }
+
+    get "/profile/#{u.username}"
+
+    assert_equal I18n.t('users_controller.user_has_been_banned'), flash[:error]
+    assert_response :success
+
+  end
 
 end
