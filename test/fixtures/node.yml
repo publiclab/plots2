@@ -170,12 +170,24 @@ redirect:
 
 question3:
   nid: 15
-  uid: 1
+  uid: 9
   title: "Question by a moderated user"
-  path: "/notes/bob/<%= Time.now.strftime("%m-%d-%Y") %>/question-by-a-moderated-user"
+  path: "/notes/rob/<%= Time.now.strftime("%m-%d-%Y") %>/question-by-a-moderated-user"
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
   type: "note"
   cached_likes: 0
-  slug: bob-<%= Time.now.strftime("%m-%d-%Y") %>-question-by-a-moderated-user
+  slug: rob-<%= Time.now.strftime("%m-%d-%Y") %>-question-by-a-moderated-user
+
+moderated_user_note:
+  nid: 16
+  uid: 9
+  title: "Note by a moderated user"
+  path: "/notes/rob/<%= Time.now.strftime("%m-%d-%Y") %>/note-by-a-moderated-user"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: rob-<%= Time.now.strftime("%m-%d-%Y") %>-note-by-a-moderated-user

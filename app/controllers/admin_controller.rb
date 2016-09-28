@@ -175,6 +175,28 @@ class AdminController < ApplicationController
     end
   end
 
+#  def moderate
+#    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+#      user = DrupalUsers.find params[:id]
+#      user.moderate
+#      flash[:notice] = "The user has been moderated."
+#    else
+#      flash[:error] = "Only moderators can moderate other users."
+#    end
+#    redirect_to "/profile/" + user.name + "?_=" + Time.now.to_i.to_s
+#  end
+
+#  def unmoderate
+#    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+#      user = DrupalUsers.find params[:id]
+#      user.unmoderate
+#      flash[:notice] = "The user has been unmoderated."
+#    else
+#      flash[:error] = "Only moderators can unmoderate other users."
+#    end
+#    redirect_to "/profile/" + user.name + "?_=" + Time.now.to_i.to_s
+#  end
+
   def ban
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
       user = DrupalUsers.find params[:id]
