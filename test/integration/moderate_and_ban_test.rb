@@ -86,7 +86,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     get "/profile/#{u.username}"
 
-    assert_equal I18n.t('users_controller.user_has_been_banned'), flash[:error]
+    assert_equal I18n.t('users_controller.user_has_been_banned'), flash[:warning]
     assert_response :success
 
     u.drupal_user.unmoderate
@@ -144,7 +144,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
   test "normal users can not moderate others" do
     u = rusers(:unmoderated_user)
-    normal_user = rusers(:jeff)
+    normal_user = rusers(:bob)
     u.drupal_user.unmoderate
     u.drupal_user.unban
 
@@ -158,7 +158,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     follow_redirect!
     assert_equal flash[:error], "Only moderators can moderate other users."
-    assert_not_equal u.drupal_user.status, 5
+    assert_equal u.drupal_user.status, 1
 
     u.drupal_user.moderate
 
@@ -167,7 +167,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     follow_redirect!
     assert_equal flash[:error], "Only moderators can unmoderate other users."
-    assert_equal u.drupal_user.status, 1
+    assert_equal u.drupal_user.status, 5
 
   end
 

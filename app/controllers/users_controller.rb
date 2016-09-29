@@ -137,7 +137,7 @@ class UsersController < ApplicationController
         redirect_to "/"
       end 
     elsif @user.status == 5
-      flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
+      flash.now[:warning] = I18n.t('users_controller.user_has_been_banned')
     end 
   end
 

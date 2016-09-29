@@ -176,9 +176,8 @@ class AdminController < ApplicationController
   end
 
   def moderate
-puts "MODERATE ============="
+    user = DrupalUsers.find params[:id]
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      user = DrupalUsers.find params[:id]
       user.moderate
       flash[:notice] = "The user has been moderated."
     else
@@ -188,8 +187,8 @@ puts "MODERATE ============="
   end
 
   def unmoderate
+    user = DrupalUsers.find params[:id]
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      user = DrupalUsers.find params[:id]
       user.unmoderate
       flash[:notice] = "The user has been unmoderated."
     else
@@ -199,9 +198,8 @@ puts "MODERATE ============="
   end
 
   def ban
-puts "BAN ============="
+    user = DrupalUsers.find params[:id]
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      user = DrupalUsers.find params[:id]
       user.ban
       flash[:notice] = "The user has been banned."
     else
@@ -211,8 +209,8 @@ puts "BAN ============="
   end
 
   def unban
+    user = DrupalUsers.find params[:id]
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      user = DrupalUsers.find params[:id]
       user.unban
       flash[:notice] = "The user has been unbanned."
     else
@@ -239,8 +237,7 @@ puts "BAN ============="
         node.spam
         nodes += 1
         user = node.author
-        user.status = 0
-        user.save({})
+        user.ban
         users << user.id
       end
       flash[:notice] = nodes.to_s+" nodes spammed and "+users.length.to_s+" users banned."
