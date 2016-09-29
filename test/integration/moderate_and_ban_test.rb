@@ -171,4 +171,19 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
   end
 
+  test "moderated users can not log in" do
+    u = rusers(:unmoderated_user)
+    u.drupal_user.moderate
+
+    post '/user_sessions', user_session: {
+      username: u.username,
+      password: 'secret' 
+    }
+
+    assert_response :redirect
+    follow_redirect!
+    assert_equal I18n.t('user_sessions_controller.user_has_been_moderated', :username => u.username), flash[:error]
+
+  end
+
 end
