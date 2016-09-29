@@ -45,3 +45,9 @@ lurker:
   name: lurker
   status: 1
   mail: lurker@publiclab.org
+
+unmoderated_user:
+  uid: 9
+  name: rob
+  status: 1
+  mail: rob@publiclab.org

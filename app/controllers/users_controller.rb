@@ -129,9 +129,15 @@ class UsersController < ApplicationController
                               .joins(:drupal_node)
                               .limit(20)
     @wikis = wikis.collect(&:parent).uniq
-    if @user.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
-      flash[:error] = I18n.t('users_controller.user_has_been_banned')
-      redirect_to "/"
+    if @user.status == 0
+      if current_user && (current_user.role == "admin" || current_user.role == "moderator")
+        flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
+      else
+        flash[:error] = I18n.t('users_controller.user_has_been_banned')
+        redirect_to "/"
+      end 
+    elsif @user.status == 5
+      flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
     end 
   end
 

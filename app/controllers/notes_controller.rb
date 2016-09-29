@@ -103,6 +103,7 @@ class NotesController < ApplicationController
 
     if @node.has_power_tag('question')
       redirect_to @node.path(:question)
+      return
     end
 
     return if check_and_redirect_node(@node)

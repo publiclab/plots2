@@ -69,3 +69,9 @@ blog:
   uid: 1
   nid: 13
   date: Time.now
+
+question3:
+  tid: 6
+  uid: 2
+  nid: 15
+  date: Time.now
