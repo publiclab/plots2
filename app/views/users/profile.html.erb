@@ -23,12 +23,15 @@
   <% if @user.user.nil? && current_user && current_user.role == "admin" %>
     <a href="/admin/migrate/<%= @user.uid %>" class="btn btn-block"><i class="fa fa-bolt"></i> <%= t('users.profile.migrate_new_site') %></a>
   <% end %>
+
   <% if @user.user && current_user && current_user.role == "admin" && @user.user.role != "admin" %>
     <a href="/admin/promote/admin/<%= @user.user.id %>" class="btn btn-default btn-block"><i class="fa fa-certificate"></i> <%= t('users.profile.make_admin') %></a>
   <% end %>
+
   <% if @user.user && current_user && current_user.role == "admin" && @user.role == "moderator" %>
     <a href="/admin/demote/basic/<%= @user.user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.revert_to_basic_user') %></a>
   <% end %>
+
   <% if @user.user && current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.role == "basic" %>
     <a href="/admin/promote/moderator/<%= @user.user.id %>" class="btn btn-default btn-block"><i class="fa fa-certificate"></i> <%= t('users.profile.make_moderator') %></a>
   <% end %>
@@ -37,6 +40,12 @@
     <a href="/unban/<%= @user.id %>" class="btn btn-default btn-block"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unban_user') %></a>
   <% elsif current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.status == 1 %>
     <a data-confirm="<%= t('users.profile.confirm_ban_user') %>" href="/ban/<%= @user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.ban_user') %></a>
+  <% end %>
+
+  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.status == 5 %>
+    <a href="/admin/unmoderate/<%= @user.id %>" class="btn btn-default btn-block"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unmoderate_user') %></a>
+  <% elsif current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.status == 1 %>
+    <a rel="tooltip" title="Prevent author from logging in, without hiding their work or profile." data-confirm="<%= t('users.profile.confirm_moderate_user') %>" href="/admin/moderate/<%= @user.id %>" class="btn btn-default btn-block"><i class="fa fa-ban"></i> <%= t('users.profile.moderate_user') %></a>
   <% end %>
 
   <% if @user.user && !@user.user.reset_key.nil? && current_user && current_user.role == "admin" %>
