@@ -6,5 +6,6 @@ en:
     create_password_for_new_site: "Your account has been migrated from the old PublicLaboratory.org website; please create a password for the new site."
     logged_in: "Successfully logged in."
     sign_up_to_join: "It looks like you're new here! Sign up below to join."
-    user_has_been_banned: "The user '%{username}' has been banned; please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
+    user_has_been_banned: "The user '%{username}' has been banned; please contact <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> if you believe this is in error."
+    user_has_been_moderated: "The user '%{username}' has been <a href='/wiki/moderation'>placed in moderation</a>; please contact <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> if you believe this is in error."
     logged_out: "Successfully logged out."

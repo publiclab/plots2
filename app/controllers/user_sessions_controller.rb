@@ -55,6 +55,9 @@ class UserSessionsController < ApplicationController
           redirect_to "/signup"
         end
       end
+    elsif params[:user_session].nil? || @user && @user.drupal_user.status == 5 || @user.nil?
+      flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', :username => @user.username).html_safe
+      redirect_to "/"
     else
       flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', :username => @user.username).html_safe
       redirect_to "/"
