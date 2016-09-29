@@ -175,33 +175,34 @@ class AdminController < ApplicationController
     end
   end
 
-#  def moderate
-#    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-#      user = DrupalUsers.find params[:id]
-#      user.moderate
-#      flash[:notice] = "The user has been moderated."
-#    else
-#      flash[:error] = "Only moderators can moderate other users."
-#    end
-#    redirect_to "/profile/" + user.name + "?_=" + Time.now.to_i.to_s
-#  end
-
-#  def unmoderate
-#    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-#      user = DrupalUsers.find params[:id]
-#      user.unmoderate
-#      flash[:notice] = "The user has been unmoderated."
-#    else
-#      flash[:error] = "Only moderators can unmoderate other users."
-#    end
-#    redirect_to "/profile/" + user.name + "?_=" + Time.now.to_i.to_s
-#  end
-
-  def ban
+  def moderate
+puts "MODERATE ============="
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
       user = DrupalUsers.find params[:id]
-      user.status = 0
-      user.save({})
+      user.moderate
+      flash[:notice] = "The user has been moderated."
+    else
+      flash[:error] = "Only moderators can moderate other users."
+    end
+    redirect_to "/profile/" + user.name + "?_=" + Time.now.to_i.to_s
+  end
+
+  def unmoderate
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+      user = DrupalUsers.find params[:id]
+      user.unmoderate
+      flash[:notice] = "The user has been unmoderated."
+    else
+      flash[:error] = "Only moderators can unmoderate other users."
+    end
+    redirect_to "/profile/" + user.name + "?_=" + Time.now.to_i.to_s
+  end
+
+  def ban
+puts "BAN ============="
+    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+      user = DrupalUsers.find params[:id]
+      user.ban
       flash[:notice] = "The user has been banned."
     else
       flash[:error] = "Only moderators can ban other users."
@@ -212,8 +213,7 @@ class AdminController < ApplicationController
   def unban
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
       user = DrupalUsers.find params[:id]
-      user.status = 1
-      user.save({})
+      user.unban
       flash[:notice] = "The user has been unbanned."
     else
       flash[:error] = "Only moderators can unban other users."

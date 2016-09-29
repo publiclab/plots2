@@ -118,52 +118,56 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
   test "moderators and admins can moderate others" do
     u = rusers(:unmoderated_user)
     admin = rusers(:admin)
+    u.drupal_user.unmoderate
+    u.drupal_user.unban
 
-#    post '/user_sessions', user_session: {
-#      username: admin.username,
-#      password: 'secret' 
-#    }
-#
-#    get "/admin/moderate/#{u.uid}"
+    post '/user_sessions', user_session: {
+      username: admin.username,
+      password: 'secret' 
+    }
 
-#    assert_response :redirect
-#    follow_redirect!
-#    assert_equal flash[:notice], "The user has been moderated."
-#    assert_equal u.status, 5
+    get "/admin/moderate/#{u.uid}"
 
-#    get "/admin/unmoderate/#{u.uid}"
+    assert_response :redirect
+    follow_redirect!
+    assert_equal flash[:notice], "The user has been moderated."
+    assert_equal u.drupal_user.status, 5
 
-#    assert_response :redirect
-#    follow_redirect!
-#    assert_equal flash[:notice], "The user has been unmoderated."
-#    assert_equal u.status, 1
+    get "/admin/unmoderate/#{u.uid}"
+
+    assert_response :redirect
+    follow_redirect!
+    assert_equal flash[:notice], "The user has been unmoderated."
+    assert_equal u.drupal_user.status, 1
 
   end
 
   test "normal users can not moderate others" do
     u = rusers(:unmoderated_user)
     normal_user = rusers(:jeff)
+    u.drupal_user.unmoderate
+    u.drupal_user.unban
 
-#    post '/user_sessions', user_session: {
-#      username: normal_user.username,
-#      password: 'secret' 
-#    }
-#
-#    get "/admin/moderate/#{u.uid}"
+    post '/user_sessions', user_session: {
+      username: normal_user.username,
+      password: 'secret' 
+    }
 
-#    assert_response :redirect
-#    follow_redirect!
-#    assert_equal flash[:error], "Only moderators can moderate other users."
-#    assert_not_equal u.status, 5
+    get "/admin/moderate/#{u.uid}"
 
-#    u.moderate
+    assert_response :redirect
+    follow_redirect!
+    assert_equal flash[:error], "Only moderators can moderate other users."
+    assert_not_equal u.drupal_user.status, 5
 
-#    get "/admin/unmoderate/#{u.uid}"
+    u.drupal_user.moderate
 
-#    assert_response :redirect
-#    follow_redirect!
-#    assert_equal flash[:error], "Only moderators can unmoderate other users."
-#    assert_equal u.status, 1
+    get "/admin/unmoderate/#{u.uid}"
+
+    assert_response :redirect
+    follow_redirect!
+    assert_equal flash[:error], "Only moderators can unmoderate other users."
+    assert_equal u.drupal_user.status, 1
 
   end
 
