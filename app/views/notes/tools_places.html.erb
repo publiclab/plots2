@@ -18,16 +18,16 @@
 <div class="row">
 <% end %>
 
-<%= render :partial => "sidebar/featured" %>
-<div class="col-md-9">
-
-  <%= render :partial => "notes/format_toggle" %>
+<div class="col-md-12">
 
   <% if params[:action] == 'tools' %>
-  <h2 style="margin-top:0;"><%= raw t('notes.tools_places.tools_and_techniques') %></h2>
-  <p>Public Lab's community collaboratively develops many different techniques and methods for DIY environmental monitoring. Browse many of them here and learn how to get involved.</p>
+    <div style="text-align:center;">
+      <h1 style="font-size:3.4em;margin-top:40px;"><%= raw t('notes.tools_places.tools_and_techniques') %></h1>
+      <h4 style="color:#888;"><%= raw t('notes.tools_places.subtitle') %></h4>
+      <p><i>Public Lab's community collaboratively develops many different techniques and methods for DIY environmental monitoring. Browse many of them here and learn how to get involved.</i></p>
+    </div>
   <% else %>
-  <h2><%= t('notes.tools_places.public_lab_chapters') %> <small><%= raw t('notes.tools_places.start_a_chapter', :url1 => "/wiki/start-a-chapter") %></small></h2>
+    <h2><%= t('notes.tools_places.public_lab_chapters') %> <small><%= raw t('notes.tools_places.start_a_chapter', :url1 => "/wiki/start-a-chapter") %></small></h2>
   <% end %>
   <hr />
   <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked") %>

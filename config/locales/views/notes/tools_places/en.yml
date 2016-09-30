@@ -3,7 +3,8 @@
 en:
   notes:
     tools_places:
-      tools_and_techniques: "Tools &amp; techniques <small>developed by Public Lab contributors</small>"
+      tools_and_techniques: "Tools &amp; Techniques"
+      subtitle: "developed by Public Lab contributors"
       public_lab_chapters: "Public Lab chapters"
       start_a_chapter: "local groups and gatherings around the world | <a href='%{url1}'>Start a chapter &raquo;</a>"
       tools: "Tools"

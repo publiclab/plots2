@@ -2,10 +2,10 @@
 <div id="notes">
     <div class="row">
     <% notes.each_with_index do |node,i| %>
-      <div class="<% if @widget %>col-xs-3 col-sm-3 <% end %>col-md-3 clearfix dashboard activity note note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>" style="overflow:hidden; text-align:center">
+      <div class="<% if @widget %>col-xs-3 col-sm-3 <% end %>col-md-3 clearfix note note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>" style="overflow:hidden; text-align:center">
 
         <% if node.main_image %>
-          <a class="img" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%; height: 150px;" /></a>
+          <a style="height:180px;" class="img" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
         <% end %>
 
         <% if node.status == 4 %>
@@ -20,11 +20,7 @@
           </p>
         <% end %>
 
-        <% if node.type == 'note' %>
-          <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= node.title %></a></h4>
-        <% else %>
-          <h4><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= node.latest.title %></a></h4>
-        <% end %>
+        <h3><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><%= (node.type == 'note') ? node.title : node.latest.title %></a></h3>
 
         <p class="meta"><small>
           <% if node.type == 'note' %>
@@ -42,15 +38,17 @@
         <div class="content">
           <% if @compact.nil? %>
             <% if params[:action] == "tools" %>
-              <p><small><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Activity+grid"><i class="fa fa-flask" style="color:green"></i> <%= DrupalNode.activities(node.title).count %> activities</a></small></p>
-              <!-- <p><i class="fa fa-users" style="color:blue"></i> contributors</p> -->
-              <p><small><a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Upgrade+grid"><i class="fa fa-level-up" style="color:red"></i> <%= DrupalNode.upgrades(node.title).count %> upgrades</a></small></p>
+              <p><small>
+                <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Activity+grid"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= DrupalNode.activities(node.title).count %> activities</a> &nbsp;
+                <!-- <p><i class="fa fa-users" style="color:blue"></i> contributors</p> -->
+                <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Upgrade+grid"><i class="fa fa-level-up" style="color:#db3a1e;"></i> <%= DrupalNode.upgrades(node.title).count %> upgrades</a>
+              </small></p>
             <% else %>
               <p><%= raw strip_tags(sanitize(RDiscount.new(node.body_preview).to_html)) if node.body %></p>
             <% end %>
             <p>
               <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
-              <a class="btn btn-default btn-xs" href="<%= node.path %>"><%= t('notes._notes.explore') %></a>
+              <a class="btn btn-default" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a>
             </p>
           <% end %>
           <% if params[:mod] %>

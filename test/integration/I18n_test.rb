@@ -527,7 +527,7 @@ class I18nTest < ActionDispatch::IntegrationTest
         follow_redirect!
         
         get '/tools'
-        assert_select "h2",  ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.tools_places.tools_and_techniques'))
+        assert_select "h1",  ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.tools_places.tools_and_techniques'))
       end
     end
 end

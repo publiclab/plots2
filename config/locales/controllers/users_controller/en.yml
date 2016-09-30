@@ -9,6 +9,7 @@ en:
     return_dashboard: "Return to your dashboard"
     only_user_edit_profile: "Only <b>%{user}</b> can edit their profile."
     user_has_been_banned: "That user has been banned."
+    user_has_been_moderated: "That user has been placed <a href='/wiki/moderation'>in moderation</a>."
     no_user_found: "No user by that name found"
     password_change_success: "Your password was successfully changed."
     password_reset_failed: "Password reset failed. Please <a href='/wiki/issues'>contact the web team</a> if you are having trouble."
