@@ -86,7 +86,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     get "/profile/#{u.username}"
 
-    assert_equal I18n.t('users_controller.user_has_been_banned'), flash[:warning]
+    assert_equal I18n.t('users_controller.user_has_been_moderated'), flash[:warning]
     assert_response :success
 
     u.drupal_user.unmoderate

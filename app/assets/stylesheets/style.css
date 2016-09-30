@@ -322,6 +322,17 @@ div.note .meta {
   color:#888;
 }
 
+#notes .note a.img {
+  max-height: 200px;
+  display: block;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+#notes .note h3 a {
+  color: #444;
+}
+
 div.note-show.moderated #content, 
 div.note.moderated .content, 
 div.note.moderated .meta, 
