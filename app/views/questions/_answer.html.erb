@@ -11,7 +11,7 @@
         <a href="/profile/<%= answer.author.name %>"><%= answer.author.name %></a>
       <% end %>
         <span class="hidden-xs">answered</span>
-        <span style="color:#aaa;"><%= time_ago_in_words(answer.created_at) %> ago</span>
+        <a style="color:#aaa;" href="#c<%= answer.id %>"><%= time_ago_in_words(answer.created_at) %> ago</a>
       </div>
       <div class="navbar-text pull-right">
         <% if current_user && answer.uid == current_user.uid %>
