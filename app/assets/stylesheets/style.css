@@ -350,6 +350,10 @@ div.note.moderated h4 {
   font-size: smaller;
 }
 
+.answer p img {
+  max-width:100%;
+}
+
 .note p.moderated .btn {
   color: #940;
   border-color: #eb8;
