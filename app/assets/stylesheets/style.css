@@ -324,6 +324,7 @@ div.note .meta {
 
 #notes .note a.img {
   max-height: 200px;
+  height:160px;
   display: block;
   overflow: hidden;
   margin-bottom: 10px;
