@@ -63,6 +63,7 @@ class DrupalUsers < ActiveRecord::Base
 
   def ban
     self.status = 0
+    decrease_likes_banned
     self.save
     # user is logged out next time they access current_user in a controller; see application controller
     self
@@ -70,6 +71,7 @@ class DrupalUsers < ActiveRecord::Base
 
   def unban
     self.status = 1
+    increase_likes_unbanned
     self.save
     self
   end
@@ -198,4 +200,19 @@ class DrupalUsers < ActiveRecord::Base
     end
   end
 
+  private
+
+  def decrease_likes_banned
+    node_selections.each do |node|
+      node.drupal_node.cached_likes = node.drupal_node.cached_likes - 1
+      node.drupal_node.save!
+    end
+  end
+
+  def increase_likes_unbanned
+    node_selections.each do |node|
+      node.drupal_node.cached_likes = node.drupal_node.cached_likes + 1
+      node.drupal_node.save!
+    end
+  end
 end
