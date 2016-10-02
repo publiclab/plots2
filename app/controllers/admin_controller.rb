@@ -63,7 +63,7 @@ class AdminController < ApplicationController
                          .order("nid DESC")
       if params[:type] == "wiki"
         @nodes = @nodes.where(type: "page", status: 1)
-      else 
+      else
         @nodes = @nodes.where(status: 0)
       end
     else
@@ -120,7 +120,11 @@ class AdminController < ApplicationController
           AdminMailer.notify_author_of_approval(@node, current_user)
           AdminMailer.notify_moderators_of_approval(@node, current_user)
           SubscriptionMailer.notify_node_creation(@node)
-          flash[:notice] = "Post approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
+          if @node.has_power_tag('question')
+            flash[:notice] = "Question approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
+          else
+            flash[:notice] = "Post approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
+          end
         else
           flash[:notice] = "Item published."
         end
@@ -253,7 +257,7 @@ class AdminController < ApplicationController
       du = DrupalUsers.find params[:id]
       if du.user
         flash[:error] = "The user has already been migrated."
-      else 
+      else
         if du.migrate
           flash[:notice] = "The user was migrated! Enthusiasm!"
         else

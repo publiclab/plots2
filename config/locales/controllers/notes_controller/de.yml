@@ -4,9 +4,12 @@ de:
   notes_controller:
     research_notes: "Research notes"
     thank_you_for_contribution: "Erfolg! Vielen Dank für die offene Forschung beitragen, und vielen Dank für Ihre Geduld, während die Post wird von <a href='/wiki/moderation'>Community-Moderatoren</a> genehmigt und wir werden Ihnen eine E-Mail, wenn es veröffentlicht wird. In der Zwischenzeit, wenn Sie mehr zu tragen haben, fühlen sich frei, dies zu tun."
+    thank_you_for_question: "Erfolg! Vielen Dank für eine Frage beitragen, und vielen Dank für Ihre Geduld, während die Post wird von <a href='/wiki/moderation'>Community-Moderatoren</a> genehmigt und wir werden Ihnen eine E-Mail, wenn es veröffentlicht wird. In der Zwischenzeit, wenn Sie mehr zu tragen haben, fühlen sich frei, dies zu tun."
+    question_note_published: "Frage veröffentlicht. In der Zwischenzeit, wenn Sie mehr zu tragen haben, fühlen sich frei, dies zu tun."
     research_note_published: "Research Note veröffentlicht. Holen Sie sich das Wort aus, auf <a href='/lists'>den Diskussionslisten</a>!"
     you_have_been_banned: "Sie wurden verboten. Bitte kontaktieren <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> if you believe this is in error."
     author_can_edit_note: "Nur so kann der Autor eine Research Note bearbeiten."
+    author_can_edit_question: "Nur so kann der Autor eine Frage bearbeiten."
     edits_saved: "Edits gespeichert."
     edit_not_saved: "Ihre Bearbeitung konnte nicht gespeichert werden."
     content_deleted: "Inhalt gelöscht."
