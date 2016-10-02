@@ -146,9 +146,17 @@ class NotesController < ApplicationController
         if current_user.first_time_poster
           AdminMailer.notify_node_moderators(@node)
           flash[:first_time_post] = true
-          flash[:notice] = I18n.t('notes_controller.thank_you_for_contribution').html_safe
+          if @node.has_power_tag('question')
+            flash[:notice] = I18n.t('notes_controller.thank_you_for_question').html_safe
+          else
+            flash[:notice] = I18n.t('notes_controller.thank_you_for_contribution').html_safe
+          end
         else
-          flash[:notice] = I18n.t('notes_controller.research_note_published').html_safe
+          if @node.has_power_tag('question')
+            flash[:notice] = I18n.t('notes_controller.question_note_published').html_safe
+          else
+            flash[:notice] = I18n.t('notes_controller.research_note_published').html_safe
+          end
         end
         # Notice: Temporary redirect.Remove this condition after questions show page is complete.
         #         Just keep @node.path(:question)
@@ -186,7 +194,11 @@ class NotesController < ApplicationController
         render :template => "editor/post"
       end
     else
-      prompt_login I18n.t('notes_controller.author_can_edit_note')
+      if @node.has_power_tag('question')
+        prompt_login I18n.t('notes_controller.author_can_edit_question')
+      else
+        prompt_login I18n.t('notes_controller.author_can_edit_note')
+      end
     end
   end
 
@@ -290,7 +302,7 @@ class NotesController < ApplicationController
     @wikis = DrupalNode.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
-    
+
     @notes = DrupalNode.research_notes
                        .where(status: 1)
                        .limit(20)

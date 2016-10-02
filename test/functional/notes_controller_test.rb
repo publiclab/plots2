@@ -59,8 +59,8 @@ class NotesControllerTest < ActionController::TestCase
 
   test "don't show note by spam author" do
     note = node(:spam) # spam fixture
-    
-    get :show, 
+
+    get :show,
         author: note.author.name,
         date: Time.at(note.created).strftime("%m-%d-%Y"),
         id: note.title.parameterize
@@ -287,6 +287,20 @@ class NotesControllerTest < ActionController::TestCase
          redirect: "question"
 
     assert_redirected_to "/questions/" + rusers(:bob).username + "/" + Time.now.strftime("%m-%d-%Y") + "/" + title.parameterize
+    assert_equal "Success! Thank you for contributing with a question, and thanks for your patience while your question is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published.", flash[:notice]
+  end
+
+  test "non-first-timer posts a question" do
+    UserSession.create(rusers(:jeff))
+    title = "My first question to Public Lab"
+    post :create,
+         title: title,
+         body: "Spectrometer question",
+         tags: "question:spectrometer",
+         redirect: "question"
+
+    assert_redirected_to "/questions/" + rusers(:jeff).username + "/" + Time.now.strftime("%m-%d-%Y") + "/" + title.parameterize
+    assert_equal flash[:notice], "Question published. In the meantime, if you have more to contribute, feel free to do so."
   end
 
   test "should redirect to questions show page when editing an existing question" do
@@ -363,24 +377,24 @@ class NotesControllerTest < ActionController::TestCase
     assert (notes & expected).present?
     assert !(notes & questions).present?
   end
-  
+
   test "should choose I18n for notes controller" do
     available_testing_locales.each do |lang|
         old_controller = @controller
         @controller = SettingsController.new
-        
+
         get :change_locale, :locale => lang.to_s
-        
+
         @controller = old_controller
-        
+
         UserSession.create(rusers(:jeff))
         title = "Some post to Public Lab"
-    
+
         post :create,
              title: title+lang.to_s,
              body: "Some text.",
              tags: "event"
-    
+
         assert_equal I18n.t('notes_controller.research_note_published'), flash[:notice]
     end
   end

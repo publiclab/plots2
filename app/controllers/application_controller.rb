@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   layout 'application'
 
   helper_method :current_user_session, :current_user, :prompt_login, :sidebar
-  
+
   before_filter :set_locale
 
   private
@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
         else
           @notes = @notes || DrupalTag.find_research_notes(data, args[:note_count])
         end
-        
+
         @notes = @notes.where('node.nid != (?)', @node.nid) if @node
         @wikis = DrupalTag.find_pages(data,10)
         @videos = DrupalTag.find_nodes_by_type_with_all_tags(['video']+data,'note',8) if args[:videos] && data.length > 1
@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
                            .order('node_revisions.timestamp DESC')
       end
     end
-    
+
     # non-Authlogic... homebrew
     def prompt_login(message = "You must be logged in to do that.")
       flash[:warning] = message
@@ -82,6 +82,7 @@ class ApplicationController < ActionController::Base
         # as anonymous (until the login process sets @current_user again):
         @current_user = nil
       elsif @current_user.try(:drupal_user).try(:status) == 5
+puts "STATUS 5 >>>>>>>>>>>>>>>>>>>>>>"
         # Tell the user they are banned. Fails b/c redirect to require below.
         flash[:warning] = "The user '#{@current_user.username}' has been placed in moderation; please see <a href='https://publiclab.org/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> if you believe this is in error."
         # Same effect as if the user clicked logout:
@@ -142,10 +143,10 @@ class ApplicationController < ActionController::Base
         # no notification; don't let people easily fish for existing draft titles; we should try to 404 it
         redirect_to "/"
       elsif @node.author.status == 5
-        flash.now[:warning] = "The user '#{@node.author.username}' has been placed <a href='https://publiclab.org/wiki/moderators'>in moderation</a> and will not be able to respond to comments."
+        flash[:warning] = "The user 'bob' has been placed <a href='https://publiclab.org/wiki/moderators'>in moderation</a> and will not be able to respond to comments."
       end
     end
-    
+
     # Check the locale set and adjust the locale accordingly
     def set_locale
       if cookies[:plots2_locale] && I18n.available_locales.include?(cookies[:plots2_locale].to_sym)
