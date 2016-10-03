@@ -98,7 +98,11 @@ You'll also need **bower** which is available through `npm`, part of `node.js`.
  
 Once NPM is installed, you should be able to run:
 
-`sudo npm install -g bower`
+`npm install -g bower`
+
+**NOTE:** If you're having permission issues, please see https://docs.npmjs.com/getting-started/fixing-npm-permissions
+
+**WARNING:** Please refrain from using `sudo npm` as it's not only a bad practice, but may also put your security at a risk. For more on this, read https://pawelgrzybek.com/fix-priviliges-and-never-again-use-sudo-with-npm/
 
 ### phantomjs for javascript tests
 
