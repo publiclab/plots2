@@ -2,6 +2,12 @@ require 'test_helper'
 
 class DrupalCommentTest < ActiveSupport::TestCase
 
+  test "should save comment" do
+    comment = DrupalComment.new
+    comment.comment = "My first thought is\n\nthat this is pretty good."
+    assert comment.save
+  end
+
   test "should not save comment without body" do
     comment = DrupalComment.new
     assert !comment.save, "Saved the comment without body text"

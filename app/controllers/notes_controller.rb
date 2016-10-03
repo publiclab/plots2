@@ -120,7 +120,12 @@ class NotesController < ApplicationController
 
   def image
     params[:size] = params[:size] || :large
-    redirect_to DrupalNode.find(params[:id]).main_image.path(params[:size])
+    node = DrupalNode.find(params[:id])
+    if node.main_image
+      redirect_to image.path(params[:size])
+    else
+      return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+    end
   end
 
   def create

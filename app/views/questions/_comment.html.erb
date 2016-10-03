@@ -20,7 +20,7 @@
     </span>
     <div class="content-form" style="display: none;">
       <form id="comment-<%= comment.id %>-edit-form" class="form-horizontal" action="/comment/update/<%= comment.id %>">
-        <%= render partial: "questions/form" %>
+        <%= render partial: "questions/form", locals: { comment: comment } %>
       </form>
     </div>
     
@@ -36,8 +36,9 @@
 </div>
 
 <script type="text/javascript">
-  $('#comment-<%= comment.id %>-edit-form textarea').val('<%= comment.comment %>');
-  $('.expandingArea').each(function(){
-    makeExpandingArea($(this));
-  })
+  $.ready(function() {
+    $('.expandingArea').each(function(){
+      makeExpandingArea($(this));
+    })
+  });
 </script>
