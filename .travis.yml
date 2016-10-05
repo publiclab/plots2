@@ -8,9 +8,9 @@ install:
   - cp db/schema.rb.example db/schema.rb
   - docker-compose build
   - docker-compose run web sleep 5
-  - docker-compose run web bash -c "rake sunspot:solr:start && sleep 5 && rake db:setup"
-  - docker-compose run web bash -c "rake sunspot:solr:start && sleep 5 && rake db:migrate"
+  - docker-compose run web bash -c "rake db:setup"
+  - docker-compose run web bash -c "rake db:migrate"
   - docker-compose run web bower install --allow-root
 
 script:
-  - docker-compose run web bash -c "rake sunspot:solr:start & rake test:all"
+  - docker-compose run web bash -c "rake test:all"
