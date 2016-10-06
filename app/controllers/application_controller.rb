@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   layout 'application'
 
   helper_method :current_user_session, :current_user, :prompt_login, :sidebar
-  
+
   before_filter :set_locale
 
   private
@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
         else
           @notes = @notes || DrupalTag.find_research_notes(data, args[:note_count])
         end
-        
+
         @notes = @notes.where('node.nid != (?)', @node.nid) if @node
         @wikis = DrupalTag.find_pages(data,10)
         @videos = DrupalTag.find_nodes_by_type_with_all_tags(['video']+data,'note',8) if args[:videos] && data.length > 1
@@ -58,9 +58,9 @@ class ApplicationController < ActionController::Base
                            .order('node_revisions.timestamp DESC')
       end
     end
-    
+
     # non-Authlogic... homebrew
-    def prompt_login(message = "You must be logged in to do that.")
+    def prompt_login(message = I18n.t('application_controller.must_be_logged_in'))
       flash[:warning] = message
       redirect_to "/login"
     end
@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
     def require_user
       unless current_user
         store_location
-        flash[:warning] ||= "You must be logged in to access this page"
+        flash[:warning] ||= I18n.t('application_controller.must_be_logged_in_to_access')
         redirect_to login_url
         return false
       end
@@ -105,7 +105,7 @@ class ApplicationController < ActionController::Base
     def require_no_user
       if current_user
         store_location
-        flash[:notice] = "You must be logged out to access this page"
+        flash[:notice] = I18n.t('application_controller.must_be_logged_out_to_access')
         redirect_to home_url+'?return_to=' + URI.encode(request.env['PATH_INFO'])
         return false
       end
@@ -131,7 +131,7 @@ class ApplicationController < ActionController::Base
 
     def alert_and_redirect_moderated
       if @node.author.status == 0 && !(current_user && (current_user.role == "admin" || current_user.role == "moderator"))
-        flash[:error] = "The author of that note has been banned."
+        flash[:error] = I18n.t('application_controller.author_has_been_banned')
         redirect_to "/"
       elsif @node.status == 4 && (current_user && (current_user.role == "admin" || current_user.role == "moderator"))
         flash[:warning] = "First-time poster <a href='#{@node.author.name}'>#{@node.author.name}</a> submitted this #{time_ago_in_words(@node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{@node.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{@node.id}'>Spam</a>"
@@ -145,7 +145,7 @@ class ApplicationController < ActionController::Base
         flash.now[:warning] = "The user '#{@node.author.username}' has been placed <a href='https://publiclab.org/wiki/moderators'>in moderation</a> and will not be able to respond to comments."
       end
     end
-    
+
     # Check the locale set and adjust the locale accordingly
     def set_locale
       if cookies[:plots2_locale] && I18n.available_locales.include?(cookies[:plots2_locale].to_sym)

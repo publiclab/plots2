@@ -1,0 +1,6 @@
+de:
+  application_controller:
+    must_be_logged_in: ""
+    must_be_logged_in_to_access: ""
+    must_be_logged_out_to_access: ""
+    author_has_been_banned: ""
