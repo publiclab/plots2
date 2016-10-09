@@ -8,8 +8,10 @@ class DrupalTag < ActiveRecord::Base
 
   # we're not really using the filter_by_type stuff here:
   has_many :drupal_node, :through => :drupal_node_tag do
-    def filter_by_type(type,limit = 10)
-      find(:all, :conditions => {:status => 1, :type => type}, :limit => limit, :order => "created DESC")
+    def filter_by_type(type, limit = 10)
+      self.where(status: 1, type: type)
+          .limit(limit)
+          .order("created DESC")
     end
   end
 
@@ -19,7 +21,9 @@ class DrupalTag < ActiveRecord::Base
   # also, we're not really using the filter_by_type stuff here:
   has_many :drupal_node, :through => :drupal_node_community_tag do
     def filter_by_type(type,limit = 10)
-      find(:all, :conditions => {:status => 1, :type => type}, :limit => limit, :order => "created DESC")
+      self.where(status: 1, type: type)
+      .limit(limit)
+      .order("created DESC")
     end
   end
 
@@ -32,7 +36,7 @@ class DrupalTag < ActiveRecord::Base
   end
 
   def run_count
-    self.count = DrupalNodeCommunityTag.where(:tid => self.tid).count
+    self.count = DrupalNodeCommunityTag.where(tid: self.tid).count
     self.save
   end
 
@@ -40,9 +44,9 @@ class DrupalTag < ActiveRecord::Base
     self.tag_selection
   end
 
-  # nodes this tag has been used on
+  # nodes this tag has been used on; no wildcards
   def nodes
-    DrupalNode.where(nid: self.drupal_node_community_tag.collect(&:nid))
+    nodes = DrupalNode.where(nid: self.drupal_node_community_tag.collect(&:nid))
   end
 
   def is_community_tag(nid)
@@ -56,40 +60,65 @@ class DrupalTag < ActiveRecord::Base
 
   # finds highest viewcount nodes
   def self.find_top_nodes_by_type(tagname, type = "wiki", limit = 10)
-    DrupalNode.find_all_by_type type, :conditions => ['term_data.name = ?', tagname], :order => "node_counter.totalcount DESC", :limit => limit, :include => [:drupal_node_counter, :drupal_node_community_tag, :drupal_tag]
+    DrupalNode.where(type: type)
+              .where('term_data.name = ?', tagname)
+              .order("node_counter.totalcount DESC")
+              .limit(limit)
+              .include(:drupal_node_counter, :drupal_node_community_tag, :drupal_tag)
   end
 
-  # finds recent nodes
+  # finds recent nodes - should drop "limit" and allow use of chainable .limit()
   def self.find_nodes_by_type(tagnames, type = "note", limit = 10)
-    DrupalNode.where(status: 1, type: type)
+    nodes = DrupalNode.where(status: 1, type: type)
+                      .includes(:drupal_node_revision, :drupal_tag)
+                      .where('term_data.name IN (?)', tagnames)
+                      # .where('term_data.name IN (?) OR term_data.parent in (?)', tagnames, tagnames) # greedily fetch children
+    tags = DrupalTag.where('term_data.name IN (?)', tagnames)
+    parents = DrupalNode.where(status: 1, type: type)
+                        .includes(:drupal_node_revision, :drupal_tag)
+                        .where('term_data.name IN (?)', tags.collect(&:parent))
+    DrupalNode.where('node.nid IN (?)', (nodes + parents).collect(&:nid))
               .includes(:drupal_node_revision, :drupal_tag)
-              .where('term_data.name IN (?)', tagnames)
               .order("node_revisions.timestamp DESC")
               .limit(limit)
   end
 
   # just like find_nodes_by_type, but searches wiki pages, places, and tools
   def self.find_pages(tagnames,limit = 10)
-    self.find_nodes_by_type(tagnames,['page','place','tool'],limit)
+    self.find_nodes_by_type(tagnames, ['page','place','tool'], limit)
   end
 
-  def self.find_nodes_by_type_with_all_tags(tagnames,type = "note",limit = 10)
-    nids = false
+  def self.find_nodes_by_type_with_all_tags(tagnames, type = "note", limit = 10)
+    nids = []
     tagnames.each do |tagname|
-      tids = DrupalTag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
-      tag_nids = DrupalNodeCommunityTag.find(:all, :conditions => ["tid IN (?)",tids]).collect(&:nid)
-      nids = tag_nids if nids == false
-      nids = nids & tag_nids
+      #tids = DrupalTag.where('term_data.name IN (?) OR term_data.parent IN (?)', tagnames, tagnames) # greedily fetch children
+      tids = DrupalTag.where('term_data.name IN (?)', tagnames)
+                      .collect(&:tid)
+      tag_nids = DrupalNodeCommunityTag.where("tid IN (?)", tids)
+                                       .collect(&:nid)
+      tag = DrupalTag.where(name: tagname).last
+      parents = DrupalNode.where(status: 1, type: type)
+                          .includes(:drupal_node_revision, :drupal_tag)
+                          .where('term_data.name LIKE ?', tag.parent)
+      nids += tag_nids + parents.collect(&:nid)
     end
-    DrupalNode.find :all, :conditions => ["nid IN (?)",nids], :order => "nid DESC", :limit => limit
+    DrupalNode.where("nid IN (?)", nids)
+              .order("nid DESC")
+              .limit(limit)
   end
 
-  def self.find_popular_notes(tagname,views = 20,limit = 10)
-    DrupalNode.find_all_by_type "note", :conditions => ['term_data.name = ? AND node_counter.totalcount > (?)', tagname, views], :order => "node.nid DESC", :limit => limit, :include => [:drupal_node_counter, :drupal_node_community_tag, :drupal_tag]
+  def self.find_popular_notes(tagname, views = 20, limit = 10)
+    DrupalNode.where(type: "note")
+              .where('term_data.name = ? AND node_counter.totalcount > (?)', tagname, views)
+              .order("node.nid DESC")
+              .limit(limit)
+              .include(:drupal_node_counter, :drupal_node_community_tag, :drupal_tag)
   end
 
   def self.exists?(tagname,nid)
-    DrupalNodeCommunityTag.find(:all, :conditions => ['nid = ? AND term_data.name = ?',nid,tagname], :joins => :drupal_tag).length != 0
+    DrupalNodeCommunityTag.where('nid = ? AND term_data.name = ?', nid, tagname)
+                          .joins(:drupal_tag)
+                          .length != 0
   end
 
   def self.is_powertag?(tagname)
@@ -97,14 +126,16 @@ class DrupalTag < ActiveRecord::Base
   end
 
   def self.follower_count(tagname)
-    TagSelection.joins(:drupal_tag).where(['term_data.name = ?',tagname]).count
+    TagSelection.joins(:drupal_tag)
+                .where('term_data.name = ?', tagname)
+                .count
   end
 
   def self.followers(tagname)
     uids = TagSelection.joins(:drupal_tag)
                        .where('term_data.name = ?', tagname)
                        .collect(&:user_id)
-    DrupalUsers.where(['uid in (?)', uids])
+    DrupalUsers.where('uid in (?)', uids)
                .collect(&:user)
   end
 

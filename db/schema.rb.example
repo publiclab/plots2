@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160818201147) do
+ActiveRecord::Schema.define(:version => 20161009024807) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -176,13 +176,15 @@ ActiveRecord::Schema.define(:version => 20160818201147) do
   create_table "location_tags", :force => true do |t|
     t.integer  "uid"
     t.string   "location"
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
-    t.decimal  "lat",        :precision => 15, :scale => 10
-    t.decimal  "lon",        :precision => 15, :scale => 10
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
+    t.decimal  "lat",              :precision => 15, :scale => 10
+    t.decimal  "lon",              :precision => 15, :scale => 10
     t.string   "country"
     t.string   "state"
     t.string   "city"
+    t.integer  "nid"
+    t.boolean  "location_privacy"
   end
 
   create_table "node", :primary_key => "nid", :force => true do |t|
@@ -357,24 +359,16 @@ ActiveRecord::Schema.define(:version => 20160818201147) do
 
   add_index "tag_selections", ["user_id", "tid"], :name => "index_tag_selections_on_user_id_and_tid", :unique => true
 
-  create_table "tags", :force => true do |t|
-    t.string   "key"
-    t.string   "value"
-    t.string   "user_id"
-    t.string   "type"
-    t.text     "body"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "term_data", :primary_key => "tid", :force => true do |t|
     t.integer "vid",                               :default => 0,  :null => false
     t.string  "name",                              :default => "", :null => false
     t.text    "description", :limit => 2147483647
     t.integer "weight",      :limit => 1,          :default => 0,  :null => false
     t.integer "count"
+    t.string  "parent"
   end
 
+  add_index "term_data", ["parent"], :name => "index_term_data_on_parent"
   add_index "term_data", ["vid", "name"], :name => "index_term_data_vid_name"
   add_index "term_data", ["vid", "weight", "name"], :name => "index_vid_weight_name"
 

@@ -27,16 +27,16 @@ class TagController < ApplicationController
     if params[:id][-1..-1] == "*" # wildcard tags
       @wildcard = true
       @tags = DrupalTag.where('name LIKE (?)', params[:id][0..-2] + '%')
-      nodes = DrupalNode.where(:status => 1, :type => node_type)
+      nodes = DrupalNode.where(status: 1, type: node_type)
                         .includes(:drupal_node_revision, :drupal_tag)
-                        .where('term_data.name LIKE (?)', params[:id][0..-2] + '%')
+                        .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
                         .page(params[:page])
                         .order("node_revisions.timestamp DESC")
     else
       @tags = DrupalTag.find_all_by_name params[:id]
       nodes = DrupalNode.where(status: 1, type: node_type)
                         .includes(:drupal_node_revision, :drupal_tag)
-                        .where('term_data.name = ?', params[:id])
+                        .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
                         .page(params[:page])
                         .order("node_revisions.timestamp DESC")
     end

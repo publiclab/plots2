@@ -81,7 +81,7 @@
       <% end %>
 
       <div class="form-group">
-        <input id="title" tabindex="1" name="title" class="form-control" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %>"/>
+        <input id="title" tabindex="1" name="title" class="form-control" placeholder="<% if params[:template] == "question" %>Ask a question as specifically as possible<% else %>Title your post descriptively<% end %>" value="<%= if @node then @node.title else params[:title] end %>"/>
       </div>
 
       <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
