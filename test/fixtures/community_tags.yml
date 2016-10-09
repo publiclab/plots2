@@ -99,3 +99,15 @@ upgrade2:
   uid: 9
   nid: 16
   date: Time.now
+
+spectrometer:
+  tid: 12
+  uid: 1
+  nid: 1
+  date: Time.now
+
+activity-spectrometer:
+  tid: 14
+  uid: 1
+  nid: 1
+  date: Time.now

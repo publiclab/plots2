@@ -1,8 +1,8 @@
 Make sure these boxes are checked before your pull request is ready to be reviewed and merged. Thanks!
 
-* [ ] All tests pass -- `rake test:all`
+* [ ] all tests pass -- `rake test:all`
 * [ ] code is in uniquely-named feature branch, and has been rebased on top of latest master (especially if you've been asked to make additional changes)
-* [ ] pull request are descriptively named
+* [ ] pull request is descriptively named with #number reference back to original issue
 * [ ] if possible, multiple commits squashed if they're smaller changes
 * [ ] reviewed/confirmed/tested by another contributor or maintainer
 * [ ] `schema.rb.example` has been updated if any database migrations were added

@@ -21,7 +21,7 @@
           <div class="col-xs-10">
             <select class="form-control input-lg">
               <option selected value="">a research note</option>
-              <option value="" <% if params[:tags].include?('question') %>selected='selected'<% end %>>a question or request</option>
+              <option value="" <% if params[:tags] && params[:tags].include?('question') %>selected='selected'<% end %>>a question or request</option>
               <option value="">an event</option>
             </select>
           </div>
@@ -194,7 +194,14 @@
       <% if params[:redirect] == 'question' %>
         redirect: 'redirect',
       <% end %>
-      format:      'publiclab'
+      format:      'publiclab',
+      richTextModule: {
+        authorsAutocomplete: false,
+        tagsAutocomplete: false
+      }
+      titleModule: {
+        suggestRelated: false
+      }
     });
 
   })();

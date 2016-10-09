@@ -37,7 +37,7 @@
     </script>
 
     <h3 style="margin-top:0;"><%= raw t('tag.contributors.contributors_for', :tag_name => params[:id]) %></h3>
-    <p><i><%= t('tag.contributors.contributions_over_past_year') %></p>
+    <p><i><%= t('tag.contributors.contributions_over_past_year') %></i></p>
     <% if @users %><p><%= raw t('tag.contributors-index.notes_and_wiki_contributions', :users => @users.length || 0, :notes => @notes.length, :wikis => @wikis.length, :tag_name => params[:id]) %></p><% end %>
   
     <% if current_user %>

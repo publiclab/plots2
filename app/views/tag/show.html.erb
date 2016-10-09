@@ -36,7 +36,7 @@
   </script>
   <% end %>
 
-  <h3><%= raw t('tag.show.notes_tagged', :tag => params[:id]) %></h3>
+  <h3><%= raw t('tag.show.notes_tagged', :tag => params[:id]) %><% unless @tags.try(:first).try(:parent).nil? %> <small>parent: <%= @tags.first.parent %></small><% end %></h3>
 
   <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
 
