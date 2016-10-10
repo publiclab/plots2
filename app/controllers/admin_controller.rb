@@ -147,7 +147,7 @@ class AdminController < ApplicationController
         @revision.spam
         @revision.author.ban
         flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam/revisions'>spam moderation page</a>."
-        redirect_to "/dashboard"
+        redirect_to "/revisions" + '?_=' + Time.now.to_i.to_s
       else
         flash[:notice] = "Item already marked as spam and author banned. You can undo this on the <a href='/spam/revisions'>spam moderation page</a>."
         redirect_to "/dashboard"
