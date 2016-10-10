@@ -1,0 +1,6 @@
+en:
+  application_controller:
+    must_be_logged_in: "You must be logged in to do that."
+    must_be_logged_in_to_access: "You must be logged in to access this page"
+    must_be_logged_out_to_access: "You must be logged out to access this page"
+    author_has_been_banned: "The author of that note has been banned."
