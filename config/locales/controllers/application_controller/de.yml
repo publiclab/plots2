@@ -1,6 +1,6 @@
 de:
   application_controller:
-    must_be_logged_in: ""
-    must_be_logged_in_to_access: ""
-    must_be_logged_out_to_access: ""
-    author_has_been_banned: ""
+    must_be_logged_in: "Sie müssen eingeloggt sein, um dies zu tun."
+    must_be_logged_in_to_access: "Sie müssen eingeloggt sein, um auf diese Seite zu kommen"
+    must_be_logged_out_to_access: "Sie müssen ausgeloggt sein, um auf diese Seite zu kommen"
+    author_has_been_banned: "Der Autor dieser Nachricht wurde gesperrt"
