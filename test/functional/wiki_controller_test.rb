@@ -222,14 +222,14 @@ class WikiControllerTest < ActionController::TestCase
     assert_nil flash[:error]
     assert_template "show"
     assert_response :success
+    UserSession.find.destroy
   end
 
-  test "user should be redirected from wiki page with redirect power tag" do
+  test "should redirect users if node has a redirect power tag when visiting show path" do
     wiki = node(:wiki_with_redirect_tag)
 
     get :show, id: wiki.nid
-
-    # assertions
+    assert_redirected_to wiki.path(:redirect)
   end
 
   test "user cannot revert wiki page" do
