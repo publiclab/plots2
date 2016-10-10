@@ -321,7 +321,7 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 0, revision.status
     assert_equal 0, revision.author.status
     assert_not_equal node(:spam_targeted_page).latest.vid, revision.vid
-    assert_redirected_to "/wiki/revisions/<%= @node.slug %>"
+    assert_redirected_to "/wiki/revisions/<%= @node.slug %>" + '?_=' + Time.now.to_i.to_s
   end
 
   test "admin user should be able to republish a revision" do
