@@ -78,7 +78,7 @@ question3:
 
 activity:
   tid: 10
-  uid: 1
+  uid: 10
   nid: 17
   date: Time.now
 
@@ -90,7 +90,7 @@ activity2:
 
 upgrade:
   tid: 11
-  uid: 1
+  uid: 10
   nid: 18
   date: Time.now
 

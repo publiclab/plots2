@@ -194,7 +194,7 @@ moderated_user_note:
 
 activity:
   nid: 17
-  uid: 1
+  uid: 10
   title: "Activity note"
   path: "/notes/rob/<%= Time.now.strftime("%m-%d-%Y") %>/note-by-a-moderated-user"
   created: <%= Time.now.to_i %>
@@ -202,16 +202,16 @@ activity:
   status: 1
   type: "note"
   cached_likes: 0
-  slug: bob-user
+  slug: test-user
 
 upgrade:
   nid: 18
-  uid: 1
-  title: "Activity note"
+  uid: 10
+  title: "Upgrade note"
   path: "/notes/rob/<%= Time.now.strftime("%m-%d-%Y") %>/note-by-a-moderated-user"
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
   type: "note"
   cached_likes: 0
-  slug: bob-user
+  slug: test-user

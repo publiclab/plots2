@@ -51,3 +51,9 @@ unmoderated_user:
   name: rob
   status: 1
   mail: rob@publiclab.org
+
+test_user:
+  uid: 10
+  name: rob
+  status: 1
+  mail: test@publiclab.org
