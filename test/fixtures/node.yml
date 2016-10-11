@@ -196,22 +196,22 @@ activity:
   nid: 17
   uid: 10
   title: "Activity note"
-  path: "/notes/rob/<%= Time.now.strftime("%m-%d-%Y") %>/note-by-a-moderated-user"
+  path: "/notes/test/<%= Time.now.strftime("%m-%d-%Y") %>/activity-note"
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
   type: "note"
   cached_likes: 0
-  slug: test-user
+  slug: test-<%= Time.now.strftime("%m-%d-%Y") %>-activity-note
 
 upgrade:
   nid: 18
   uid: 10
   title: "Upgrade note"
-  path: "/notes/rob/<%= Time.now.strftime("%m-%d-%Y") %>/note-by-a-moderated-user"
+  path: "/notes/test/<%= Time.now.strftime("%m-%d-%Y") %>/upgrade-note"
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 1
   type: "note"
   cached_likes: 0
-  slug: test-user
+  slug: test-<%= Time.now.strftime("%m-%d-%Y") %>-upgrade-note

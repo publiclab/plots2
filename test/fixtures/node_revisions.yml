@@ -183,3 +183,9 @@ moderated_user_note:
   uid: 9
   title: "Note by a moderated user"
   body: I have a note to share but I'm moderated.
+
+upgrade:
+  nid: 18
+  uid: 10
+  title: "Note by a test user"
+  body: This is upgrade node.
