@@ -191,3 +191,27 @@ moderated_user_note:
   type: "note"
   cached_likes: 0
   slug: rob-<%= Time.now.strftime("%m-%d-%Y") %>-note-by-a-moderated-user
+
+activity:
+  nid: 17
+  uid: 10
+  title: "Activity note"
+  path: "/notes/test/<%= Time.now.strftime("%m-%d-%Y") %>/activity-note"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: test-<%= Time.now.strftime("%m-%d-%Y") %>-activity-note
+
+upgrade:
+  nid: 18
+  uid: 10
+  title: "Upgrade note"
+  path: "/notes/test/<%= Time.now.strftime("%m-%d-%Y") %>/upgrade-note"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: test-<%= Time.now.strftime("%m-%d-%Y") %>-upgrade-note
