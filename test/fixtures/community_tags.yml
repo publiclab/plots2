@@ -75,3 +75,27 @@ question3:
   uid: 2
   nid: 15
   date: Time.now
+
+activity:
+  tid: 10
+  uid: 1
+  nid: 17
+  date: Time.now
+
+activity2:
+  tid: 10
+  uid: 9
+  nid: 16
+  date: Time.now
+
+upgrade:
+  tid: 11
+  uid: 1
+  nid: 18
+  date: Time.now
+
+upgrade2:
+  tid: 11
+  uid: 9
+  nid: 16
+  date: Time.now

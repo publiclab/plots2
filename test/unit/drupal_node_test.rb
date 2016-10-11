@@ -188,4 +188,16 @@ class DrupalNodeTest < ActiveSupport::TestCase
     assert_equal expected, questions
   end
 
+  test "should find all activity notes" do
+    activities = DrupalNode.activities("coding")
+    expected = [node(:moderated_user_note), node(:activity)]
+    assert_equal expected, activities
+  end
+
+  test "should find all upgrade notes" do
+    activities = DrupalNode.upgrades("latest")
+    expected = [node(:moderated_user_note), node(:upgrade)]
+    assert_equal expected, activities
+  end
+
 end
