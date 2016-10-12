@@ -78,6 +78,7 @@ class HomeController < ApplicationController
                                 .order('timestamp DESC')
                                 .where('type = (?)', 'page')
                                 .where('node.status = 1')
+                                .where('node_revisions.status = 1')
                                 .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
                                 .limit(10)
                                 .group('node.title')
