@@ -46,6 +46,14 @@ unmoderated_spam_revision:
   title: Bad spam title
   body: Lots of stuff for sale
 
+moderated_spam_revision:
+  timestamp: <%= Time.now.to_i %>
+  nid: 4
+  uid: 3
+  status: 0
+  title: Title moderated spam
+  body: body moderated spam
+
 first_timer_note:
   timestamp: <%= Time.now.to_i %>
   nid: 6
