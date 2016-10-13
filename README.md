@@ -54,11 +54,15 @@ Our production application runs on mysql, but for development, sqlite3 is suffic
 
 ### Search
 
-We use the [solr](https://lucene.apache.org/solr/) search engine via the [sunspot gem](https://github.com/sunspot/sunspot). Solr requires Java, which is therefore a requirement for running tests; on a Debian/Ubuntu system, you can install the necessary libraries with:
+We use the [solr](https://lucene.apache.org/solr/) search engine via the [sunspot gem](https://github.com/sunspot/sunspot). Solr requires Java, which is therefore a requirement for running the `rake test:solr` test suite (see [Testing](#testing), below), which runs tests of the search functionality using the files in `/test/solr/`; on a Debian/Ubuntu system, you can install the necessary libraries with:
 
 `sudo apt-get install openjdk-7-jre openjdk-7-jdk`
 
-However, to ease installation, we're hoping to [make Java optional](https://github.com/publiclab/plots2/issues/832) for testing. If you get stuck on this step, you can _open a pull request with your changes_ -- please add the prefix `[testing]` to the title -- which will then be automatically tested by our TravisCI service. 
+And start up solr with:
+
+`rake sunspot:solr:start` followed by `rake sunspot:reindex`
+
+However, to ease installation, we've [made Java optional](https://github.com/publiclab/plots2/issues/832) for basic testing using `rake test`. 
 
 
 ### Image libraries
@@ -106,11 +110,11 @@ Once NPM is installed, you should be able to run:
 
 ### phantomjs for javascript tests
 
-We are using `jasmine-rails` gem for javascript tests which require phantomjs for headless testing. Generally the **phantomjs gem** gets installed along with the `jasmine-rails` gem. If the package installation for the gem fails you can use [this script](https://github.com/codeship/scripts/blob/master/packages/phantomjs.sh) to install it.
+We are using `jasmine-rails` gem for the optional javascript tests (run with `rake spec:javascript`) which require `phantomjs` for headless testing (i.e. on the commandline, not with a browser). Generally the **phantomjs gem** gets installed along with the `jasmine-rails` gem. If the package installation for the gem fails you can use [this script](https://github.com/codeship/scripts/blob/master/packages/phantomjs.sh) to install it.
 
-But some architectures don't support the phantomjs gem. For those you have to run phantomjs via its binary.You can find the installation instructions in its official [build documentation](http://phantomjs.org/build.html). For Ubuntu/debian based system you can follow [these instructions](https://gist.github.com/julionc/7476620) or use the script mentioned there. On successful installation you can see the version number of phantomjs with the `phantomjs -v` command. For the binary to work properly with `jasmine-rails` change the line 52 on _spec/javascripts/support/jasmine.yml_ to `use_phantom_gem: false`.
+But some architectures (Linux!) aren't supported by the phantomjs gem. For those you have to run phantomjs via a native binary.You can find the installation instructions in its official [build documentation](http://phantomjs.org/build.html). For Ubuntu/debian based system you can follow [these instructions](https://gist.github.com/julionc/7476620) or use the script mentioned there. On successful installation you can see the version number of phantomjs with the `phantomjs -v` command. For the binary to work properly with `jasmine-rails` change the line 52 on _spec/javascripts/support/jasmine.yml_ to `use_phantom_gem: false`.
 
-Please report any error regarding phantomjs installation in the github issue tracker. We will try to solve it as fast as possible.
+Please report any error regarding phantomjs installation in the github issue tracker. We will try to help you out as soon as we can! 
 
 
 ### Solr search engine
@@ -130,12 +134,12 @@ Installation steps:
 5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 6. Run `rake db:setup` to set up the database
 7. Install static assets (like external javascript libraries, fonts) with `bower install`
-8. Install solr engine `rails generate sunspot_rails:install`
-9. Start the solr server in foreground by using `bundle exec rake sunspot:solr:start`
-10. Index your local relational database in solr server using  `bundle exec rake sunspot:reindex`
+8. (optional) Install solr engine `rails generate sunspot_rails:install`
+9. (optional) Start the solr server in foreground by using `bundle exec rake sunspot:solr:start`
+10. (optional) Index your search database in solr server using  `bundle exec rake sunspot:reindex`
 11. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-13. Run `rake test:all` to confirm that your install is working properly. For some setups, you may see warnings even if test pass; [see this issue](https://github.com/publiclab/plots2/issues/440) we're working to resolve.
+13. Run `rake test` to confirm that your install is working properly. For some setups, you may see warnings even if test pass; [see this issue](https://github.com/publiclab/plots2/issues/440) we're working to resolve.
 
 ### Bundle exec
 
@@ -146,13 +150,17 @@ For some, it will be necessary to prepend your gem-related commands with `bundle
 
 ##Testing
 
-Run solr server in test environment `RAILS_ENV=test bundle exec rake sunspot:solr:start` (required). You might see the tests failing if you have the solr server running in your development as mentioned in [this issue comment](https://github.com/publiclab/plots2/issues/832#issuecomment-249695309). So ensure that the solr server is shutdown in development and thereafter run the tests.
+Run all basic rails tests with `rake test`. This is required for submitting pull requests, and to confirm you have a working local environment.
 
-Run tests with `rake test:all` for running all tests. We are extremely interested in building our out test suite, so please consider helping us write tests! 
+`rake test:all` runs **all** tests. This includes Jasmine client-side tests and 
 
-Run only rails tests with `rake test`.
+**Client-side tests** (for JavaScript functions) are run using [Jasmine](https://jasmine.github.io/) in [jasmine-rails](https://github.com/searls/jasmine-rails). You can run tests by navigating to `/specs/` in the browser. Headless, or command-line test running may be possible with `rake spec:javascript` [if you have phantomjs installed](#phantomjs-for-javascript-tests) (see above). 
 
-Client-side code is tested using [Jasmine](https://jasmine.github.io/) in [jasmine-rails](https://github.com/searls/jasmine-rails). You can run tests by navigating to `/specs/` in the browser. Headless, or command-line test running may be possible with `rake spec:javascript` if you have phantomjs installed. 
+**Solr (search) tests** require [installing the Solr search engine](#solr-search-engine) (see above). Once you've done that, you still need to turn it off in develoment mode before running tests, with `rake sunspot:solr:stop`. Read more about [this issue here](https://github.com/publiclab/plots2/issues/832#issuecomment-249695309). 
+
+If you get stuck on testing at any point, you can _open a pull request with your changes_ -- please add the prefix `[testing]` to the title -- which will then be automatically tested by our TravisCI service -- which runs **all tests** with `rake test:all`. If your additions are pretty basic, and you write tests against them, this may be sufficient without actually running the whole environment yourself! 
+
+We are extremely interested in building our out test suite, so please consider helping us write tests! 
 
 
 ****
