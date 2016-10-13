@@ -1,5 +1,5 @@
 class CommentMailer < ActionMailer::Base
-  default from: "do-not-reply@publiclab.org"
+  default from: "do-not-reply@#{Rails.root}"
 
   # CommentMailer.notify_of_comment(user,self).deliver 
   def notify(user,comment)

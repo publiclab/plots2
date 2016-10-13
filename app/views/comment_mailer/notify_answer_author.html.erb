@@ -1,8 +1,8 @@
-Hi! There's been a new comment to your answer on '<a href='https://publiclab.org<%= @comment.parent.path(:question) %>#a<%= @comment.answer.id %>'><%= @comment.parent.title %></a>'. Do NOT reply to this email; click this link to see the comment:
+Hi! There's been a new comment to your answer on '<a href='https://<%= Rails.root %><%= @comment.parent.path(:question) %>#a<%= @comment.answer.id %>'><%= @comment.parent.title %></a>'. Do NOT reply to this email; click this link to see the comment:
 
-<p>https://publiclab.org<%= @comment.parent.path(:question) %>#answer-<%= @comment.aid %>-comment-<%= @comment.cid %></p>
+<p>https://<%= Rails.root %><%= @comment.parent.path(:question) %>#answer-<%= @comment.aid %>-comment-<%= @comment.cid %></p>
 
-<p><b><a href="https://publiclab.org/profile/<%= @comment.author.name %>"><%= @comment.author.name %> wrote:</b></p>
+<p><b><a href="https://<%= Rails.root %>/profile/<%= @comment.author.name %>"><%= @comment.author.name %> wrote:</b></p>
 
 <hr /> 
 
@@ -12,8 +12,8 @@ Hi! There's been a new comment to your answer on '<a href='https://publiclab.org
 
 <div style="color:#aaa;">
 
-<p>Reply at: https://publiclab.org<%= @comment.parent.path(:question) %>#answer-<%= @comment.answer.id %>-comment</p>
+<p>Reply at: https://<%= Rails.root %><%= @comment.parent.path(:question) %>#answer-<%= @comment.answer.id %>-comment</p>
 
-<p>Report abuse to: moderators@publiclab.org</p>
+<p>Report abuse to: moderators@<%= Rails.root %></p>
 
 </div>

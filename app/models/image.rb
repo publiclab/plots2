@@ -38,9 +38,9 @@ class Image < ActiveRecord::Base
       size = :original
     end
     if Rails.env == "production"
-      '//i.publiclab.org'+self.photo.url(size)
+      'https://i.' + Rails.root.to_s + self.photo.url(size)
     else
-      self.photo.url(size).gsub('//i.publiclab.org','')
+      self.photo.url(size).gsub('https://i.' + Rails.root.to_s,'')
     end
   end
 

@@ -21,10 +21,10 @@ class AdminMailerTest < ActionMailer::TestCase
 
     assert_not_nil email.to
     assert_not_nil email.bcc
-    assert_equal ["moderators@publiclab.org"], ActionMailer::Base.deliveries.last.to
+    assert_equal ["moderators@#{Rails.root}"], ActionMailer::Base.deliveries.last.to
     assert_equal moderators.collect(&:email), ActionMailer::Base.deliveries.last.bcc
     assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
-    assert email.body.include?("First-time poster <a href='https://publiclab.org/profile/#{node.author.name}'>#{node.author.name}</a> has submitted their first research note!")
+    assert email.body.include?("First-time poster <a href='https://#{Rails.root}/profile/#{node.author.name}'>#{node.author.name}</a> has submitted their first research note!")
     assert email.body.include?(node.latest.render_body_email)
   end
 
@@ -46,7 +46,7 @@ class AdminMailerTest < ActionMailer::TestCase
     assert_not_nil email.to
     assert_equal [node.author.mail], email.to
     assert_equal "[Public Lab] Your post was approved!", email.subject
-    assert email.body.include?("Hi! Your post was approved by <a href='https://publiclab.org/profile/#{moderator.username}'>#{moderator.username}</a> (a <a href='https://publiclab.org/wiki/moderation'>community moderator</a>) and is now visible in the <a href='https://publiclab.org/dashboard'>Public Lab research feed</a>. Thanks for contributing to open research!")
+    assert email.body.include?("Hi! Your post was approved by <a href='https://#{Rails.root}/profile/#{moderator.username}'>#{moderator.username}</a> (a <a href='https://#{Rails.root}/wiki/moderation'>community moderator</a>) and is now visible in the <a href='https://#{Rails.root}/dashboard'>Public Lab research feed</a>. Thanks for contributing to open research!")
   end
 
 
@@ -67,12 +67,12 @@ class AdminMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
     assert_not_nil email.bcc
-    assert_equal ["moderators@publiclab.org"], ActionMailer::Base.deliveries.last.to
+    assert_equal ["moderators@#{Rails.root}"], ActionMailer::Base.deliveries.last.to
     assert_equal moderators.collect(&:email), ActionMailer::Base.deliveries.last.bcc
     # title same as initial for email client threading
     assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
     time_ago = time_ago_in_words(node.created_at)
-    assert email.body.include?("Post was approved by <a href='https://publiclab.org/profile/#{moderator.username}'>#{moderator.username}</a> after entering moderation queue #{time_ago} ago and is now visible in the <a href='https://publiclab.org/dashboard'>Public Lab research feed</a>. Thanks for helping to keep Public Lab a welcoming and spam-free space!")
+    assert email.body.include?("Post was approved by <a href='https://#{Rails.root}/profile/#{moderator.username}'>#{moderator.username}</a> after entering moderation queue #{time_ago} ago and is now visible in the <a href='https://#{Rails.root}/dashboard'>Public Lab research feed</a>. Thanks for helping to keep Public Lab a welcoming and spam-free space!")
   end
 
 
@@ -95,12 +95,12 @@ class AdminMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
     assert_not_nil email.bcc
-    assert_equal ["moderators@publiclab.org"], ActionMailer::Base.deliveries.last.to
+    assert_equal ["moderators@#{Rails.root}"], ActionMailer::Base.deliveries.last.to
     assert_equal moderators.collect(&:email), ActionMailer::Base.deliveries.last.bcc
     # title same as initial for email client threading
     assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
     time_ago = time_ago_in_words(node.created_at)
-    assert email.body.include?("Post was marked as spam by <a href='https://publiclab.org/profile/#{moderator.username}'>#{moderator.username}</a> after entering moderation queue #{time_ago} ago.")
+    assert email.body.include?("Post was marked as spam by <a href='https://#{Rails.root}/profile/#{moderator.username}'>#{moderator.username}</a> after entering moderation queue #{time_ago} ago.")
   end
 
 end

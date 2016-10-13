@@ -10,10 +10,10 @@ class AnswerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     
     email = ActionMailer::Base.deliveries.last
-    assert_equal ['do-not-reply@publiclab.org'], email.from
+    assert_equal ["do-not-reply@#{Rails.root}"], email.from
     assert_equal [user.email], email.to
     assert_equal "[PublicLab] New answer to Question: " + answer.node.title, email.subject
-    assert email.body.include?("Hi! A new answer has been posted for your question '<a href='https://publiclab.org#{answer.node.path(:question)}'>#{answer.node.title}</a>'")
+    assert email.body.include?("Hi! A new answer has been posted for your question '<a href='https://#{Rails.root}#{answer.node.path(:question)}'>#{answer.node.title}</a>'")
   end
 
   test "notify other answer authors" do
@@ -25,10 +25,10 @@ class AnswerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     
     email = ActionMailer::Base.deliveries.last
-    assert_equal ['do-not-reply@publiclab.org'], email.from
+    assert_equal ["do-not-reply@#{Rails.root}"], email.from
     assert_equal [user.email], email.to
     assert_equal "[PublicLab] New answer to Question: " + answer.node.title, email.subject
-    assert email.body.include?("Hi! There's been a new answer posted for the question '<a href='https://publiclab.org#{answer.node.path(:question)}'>#{answer.node.title}</a>' that you also answered")
+    assert email.body.include?("Hi! There's been a new answer posted for the question '<a href='https://#{Rails.root}#{answer.node.path(:question)}'>#{answer.node.title}</a>' that you also answered")
   end
 
   test "notify user who liked the question" do
@@ -40,10 +40,10 @@ class AnswerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     
     email = ActionMailer::Base.deliveries.last
-    assert_equal ['do-not-reply@publiclab.org'], email.from
+    assert_equal ["do-not-reply@#{Rails.root}"], email.from
     assert_equal [user.email], email.to
     assert_equal "[PublicLab] New answer to Question: " + answer.node.title, email.subject
-    assert email.body.include?("Hi! There's been a new answer posted for the question '<a href='https://publiclab.org#{answer.node.path(:question)}'>#{answer.node.title}</a>' that you liked")
+    assert email.body.include?("Hi! There's been a new answer posted for the question '<a href='https://#{Rails.root}#{answer.node.path(:question)}'>#{answer.node.title}</a>' that you liked")
   end
 
   test "notify answer author when answer is accepted" do
@@ -55,10 +55,10 @@ class AnswerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     
     email = ActionMailer::Base.deliveries.last
-    assert_equal ['do-not-reply@publiclab.org'], email.from
+    assert_equal ["do-not-reply@#{Rails.root}"], email.from
     assert_equal [user.email], email.to
     assert_equal "[PublicLab] Your answer has been accepted", email.subject
-    assert email.body.include?("Your answer for the question <a href='https://publiclab.org#{answer.node.path(:question)}'>#{answer.node.title}</a> has been accepted")
+    assert email.body.include?("Your answer for the question <a href='https://#{Rails.root}#{answer.node.path(:question)}'>#{answer.node.title}</a> has been accepted")
   end
 
   test "notify answer author when answer is liked" do
@@ -70,9 +70,9 @@ class AnswerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     
     email = ActionMailer::Base.deliveries.last
-    assert_equal ['do-not-reply@publiclab.org'], email.from
+    assert_equal ["do-not-reply@#{Rails.root}"], email.from
     assert_equal [answer.author.email], email.to
     assert_equal "[PublicLab] #{user.username} liked your answer to: " + answer.node.title, email.subject
-    assert email.body.include?("Public Lab contributor <a href='https://publiclab.org/profile/#{user.username}'>#{user.username}</a> just liked your answer to the question <a href='https://publiclab.org#{answer.node.path(:question)}'>#{answer.node.title}</a>")
+    assert email.body.include?("Public Lab contributor <a href='https://#{Rails.root}/profile/#{user.username}'>#{user.username}</a> just liked your answer to the question <a href='https://#{Rails.root}#{answer.node.path(:question)}'>#{answer.node.title}</a>")
   end
 end

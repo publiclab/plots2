@@ -79,7 +79,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
 
   test "should render correct link for images in email" do
     revision = node_revisions(:email)
-    assert_includes revision.render_body_email, 'https://i.publiclab.org/system/images/photos/000/016/229/original/admin_tooltip.png'
+    assert_includes revision.render_body_email, '//i.publiclab.org/system/images/photos/000/016/229/original/admin_tooltip.png'
   end
 
   test "should add tags for hashtags" do

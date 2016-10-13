@@ -4,9 +4,9 @@ module CommentsShared
   extend ActiveSupport::Concern
 
   # filtered version additionally appending http/https
-  #   protocol to protocol-relative URLslike "//publiclab.org/foo"
+  #   protocol to protocol-relative URLslike "/foo"
   def body_email
-    self.body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?publiclab.org)/, '\1https://\3')
+    self.body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?#{Rails.root})/, '\1https://\3')
   end
 
   def author

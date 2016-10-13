@@ -67,12 +67,12 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     follow_redirect!
     # in application_controller.rb:
-    assert_equal "The user '#{u.username}' has been placed in moderation; please see <a href='https://publiclab.org/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@publiclab.org'>moderators@publiclab.org</a> if you believe this is in error.", flash[:warning]
+    assert_equal "The user '#{u.username}' has been placed in moderation; please see <a href='https://#{Rails.root}/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@#{Rails.root}'>moderators@#{Rails.root}</a> if you believe this is in error.", flash[:warning]
 
     get node(:moderated_user_note).path
 
     assert_response :success
-    assert_equal "The user '#{u.username}' has been placed <a href='https://publiclab.org/wiki/moderators'>in moderation</a> and will not be able to respond to comments.", flash[:warning]
+    assert_equal "The user '#{u.username}' has been placed <a href='https://#{Rails.root}/wiki/moderators'>in moderation</a> and will not be able to respond to comments.", flash[:warning]
 
     get node(:question3).path # a Q by unmoderated_user
 
@@ -82,7 +82,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     # in application_controller.rb:
-    assert_equal "The user '#{u.username}' has been placed <a href='https://publiclab.org/wiki/moderators'>in moderation</a> and will not be able to respond to comments.", flash[:warning]
+    assert_equal "The user '#{u.username}' has been placed <a href='https://#{Rails.root}/wiki/moderators'>in moderation</a> and will not be able to respond to comments.", flash[:warning]
 
     get "/profile/#{u.username}"
 

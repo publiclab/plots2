@@ -1,17 +1,17 @@
 <% if @comment.aid == 0 %>
 Hi! You were mentioned by <%= @comment.author.name %> in a comment on <% if @comment.parent.has_power_tag('question') %>the question <% else %>the research note <% end %><b><%= @comment.parent.title %></b>.
 <% else %>
-Hi! You were mentioned by <%= @comment.author.name %> in a comment on the answer about <a href='https://publiclab.org<%= @comment.parent.path(:question) %>#a<%= @comment.answer.id %>'><%= @comment.parent.title %></a>
+Hi! You were mentioned by <%= @comment.author.name %> in a comment on the answer about <a href='https://<%= Rails.root %><%= @comment.parent.path(:question) %>#a<%= @comment.answer.id %>'><%= @comment.parent.title %></a>
 <% end %>
 Do NOT reply to this email; click this link to respond:
 
 <% if @comment.parent.has_power_tag('question') %>
-<p>https://publiclab.org<%= @comment.parent.path(:question) %>#answer-comment-<%= @comment.cid %></p>
+<p>https://<%= Rails.root %><%= @comment.parent.path(:question) %>#answer-comment-<%= @comment.cid %></p>
 <% else %>
-<p>https://publiclab.org<%= @comment.node.path %>#c<%= @comment.cid %></p>
+<p>https://<%= Rails.root %><%= @comment.node.path %>#c<%= @comment.cid %></p>
 <% end %>
 
-<p><b><a href="https://publiclab.org/profile/<%= @comment.author.name %>"><%= @comment.author.name %></a> wrote:</b></p>
+<p><b><a href="https://<%= Rails.root %>/profile/<%= @comment.author.name %>"><%= @comment.author.name %></a> wrote:</b></p>
 
 <hr /> 
 
@@ -22,11 +22,11 @@ Do NOT reply to this email; click this link to respond:
 <div style="color:#aaa;">
 
 <% if @comment.parent.has_power_tag('question') %>
-<p>Reply at: https://publiclab.org<%= @comment.parent.path(:question) %>#answer-<%= @comment.aid %>-comment</p>
+<p>Reply at: https://<%= Rails.root %><%= @comment.parent.path(:question) %>#answer-<%= @comment.aid %>-comment</p>
 <% else %> 
-<p>Reply at: https://publiclab.org<%= @comment.node.path %>#comments</p>
+<p>Reply at: https://<%= Rails.root %><%= @comment.node.path %>#comments</p>
 <% end %>
 
-<p>Report abuse to: moderators@publiclab.org</p>
+<p>Report abuse to: moderators@<%= Rails.root %></p>
 
 </div>

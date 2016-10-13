@@ -215,9 +215,9 @@ class User < ActiveRecord::Base
 
   def photo_path(size = :medium)
     if Rails.env == "production"
-      '//i.publiclab.org'+self.photo.url(size)
+      '//i.' + Rails.root.to_s + self.photo.url(size)
     else
-      self.photo.url(size).gsub('//i.publiclab.org','')
+      self.photo.url(size).gsub("//i.#{Rails.root}",'')
     end
   end
 

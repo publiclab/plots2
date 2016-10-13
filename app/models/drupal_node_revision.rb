@@ -110,12 +110,12 @@ class DrupalNodeRevision < ActiveRecord::Base
     body
   end
 
-  # filtered version additionally appending http/https protocol to protocol-relative URLs like "//publiclab.org/foo"
+  # filtered version additionally appending http/https protocol to protocol-relative URLs like "/foo"
   # render_body plus making all relative links absolute
   def render_body_email
-    body = self.render_body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?publiclab.org)/, '\1https://\3')
-    body = body.gsub("href='/","href='https://publiclab.org/")
-    body = body.gsub('href="/','href="https://publiclab.org/')
+    body = self.render_body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?#{Rails.root})/, '\1https://\3')
+    body = body.gsub("href='/","href='https://#{Rails.root}/")
+    body = body.gsub('href="/','href="https://' + Rails.root.to_s + '/')
     body
   end
 
