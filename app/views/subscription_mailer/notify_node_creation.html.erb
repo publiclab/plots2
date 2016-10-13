@@ -1,11 +1,11 @@
 <p>Dear <%= @user.name %>,</p>
 
-<p>Public Lab contributor <a href='https://publiclab.org/profile/<%= @node.author.name %>'><%= @node.author.name %></a> just <% if @node.has_power_tag('question') %>asked a question<% else %>posted a new research note<% end %> entitled '<b><%= @node.title %></b>':</p>
+<p>Public Lab contributor <a href='https://<%= Rails.root %>/profile/<%= @node.author.name %>'><%= @node.author.name %></a> just <% if @node.has_power_tag('question') %>asked a question<% else %>posted a new research note<% end %> entitled '<b><%= @node.title %></b>':</p>
 
 <% if @node.has_power_tag('question') %>
-<p>Help him/her by posting an answer here: https://publiclab.org<%= @node.path(:question) %></p>
+<p>Help him/her by posting an answer here: https://<%= Rails.root %><%= @node.path(:question) %></p>
 <% else %>
-<p>Read and respond to the post here: https://publiclab.org<%= @node.path %></p>
+<p>Read and respond to the post here: https://<%= Rails.root %><%= @node.path %></p>
 <% end %>
 
 <hr /> 
@@ -16,14 +16,14 @@
 
 <hr /> 
 
-<% if @user.role == "admin" || @user.role == "moderator" %>Does this look like spam? <a class="btn btn-sm" href="https://publiclab.org/moderate/spam/<%= @node.id %>">Spam</a><% end %>
+<% if @user.role == "admin" || @user.role == "moderator" %>Does this look like spam? <a class="btn btn-sm" href="https://<%= Rails.root %>/moderate/spam/<%= @node.id %>">Spam</a><% end %>
 
 <div style="color:#aaa;">
 
 <p>You received this email because you are subscribed to the following tags: <%= @tags.to_a.collect(&:name).join(",") %>.</p>
 
-<p>To change your preferences, please visit https://publiclab.org/subscriptions.</p>
+<p>To change your preferences, please visit https://<%= Rails.root %>/subscriptions.</p>
 
-<p>Report spam and abuse to: <a href="mailto:moderators@publiclab.org">moderators@publiclab.org</a></p>
+<p>Report spam and abuse to: <a href="mailto:moderators@<%= Rails.root %>">moderators@<%= Rails.root %></a></p>
 
 </div>

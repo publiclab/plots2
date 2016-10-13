@@ -38,8 +38,7 @@ class LegacyController < ApplicationController
   end
 
   def file
-    #redirect_to "//old.publiclab.org/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
-    redirect_to "//publiclab.org/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
+    redirect_to "//#{Rails.root}/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
   end
 
 #  def image

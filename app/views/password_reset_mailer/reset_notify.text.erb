@@ -2,9 +2,9 @@ Dear <%= @user.username %>,
 
 Someone (probably you) has requested a reset of your password. To reset your password, click here:
 
-https://publiclab.org/reset/key/<%= @key %>
+https://<%= Rails.root %>/reset/key/<%= @key %>
 
 =========================
 
-This link may only be used once. If you believe you have received this in error, please ignore this email. Please contact web@publiclab.org if you believe your account is at risk.
+This link may only be used once. If you believe you have received this in error, please ignore this email. Please contact web@<%= Rails.root %> if you believe your account is at risk.
 

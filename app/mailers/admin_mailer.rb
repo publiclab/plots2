@@ -1,12 +1,12 @@
 class AdminMailer < ActionMailer::Base
-  default from: "do-not-reply@publiclab.org"
+  default from: "do-not-reply@#{Rails.root}"
 
   def notify_node_moderators(node)
     subject = "[New Public Lab poster needs moderation] " + node.title
     @node = node
     moderators = User.where(role: ['moderator', 'admin']).collect(&:email)
     mail(
-      to: "moderators@publiclab.org", 
+      to: "moderators@#{Rails.root}", 
       bcc: moderators, 
       subject: subject
     ).deliver
@@ -34,7 +34,7 @@ class AdminMailer < ActionMailer::Base
     @node = node
     moderators = User.where(role: ['moderator', 'admin']).collect(&:email)
     mail(
-      to: "moderators@publiclab.org", 
+      to: "moderators@#{Rails.root}", 
       bcc: moderators, 
       subject: subject
     ).deliver
@@ -47,7 +47,7 @@ class AdminMailer < ActionMailer::Base
     @node = node
     moderators = User.where(role: ['moderator', 'admin']).collect(&:email)
     mail(
-      to: "moderators@publiclab.org", 
+      to: "moderators@#{Rails.root}", 
       bcc: moderators, 
       subject: subject
     ).deliver

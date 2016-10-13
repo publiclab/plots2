@@ -1,8 +1,8 @@
-Hi! A new answer has been posted for your question '<a href='https://publiclab.org<%= @answer.node.path(:question) %>'><%= @answer.node.title %></a>'. Do NOT reply to this email; click this link to see the answer:
+Hi! A new answer has been posted for your question '<a href='https://<%= Rails.root %><%= @answer.node.path(:question) %>'><%= @answer.node.title %></a>'. Do NOT reply to this email; click this link to see the answer:
 
-<p>https://publiclab.org<%= @answer.node.path(:question) %>#a<%= @answer.id %></p>
+<p>https://<%= Rails.root %><%= @answer.node.path(:question) %>#a<%= @answer.id %></p>
 
-<p><b>Here is the answer that <a href="https://publiclab.org/profile/<%= @answer.author.name %>"><%= @answer.author.name %></a> wrote:</b></p>
+<p><b>Here is the answer that <a href="https://<%= Rails.root %>/profile/<%= @answer.author.name %>"><%= @answer.author.name %></a> wrote:</b></p>
 
 <hr /> 
 
@@ -14,8 +14,8 @@ Hi! A new answer has been posted for your question '<a href='https://publiclab.o
 
 <p>If you think this solves your question mark it accepted by logging in</p>
 
-<p>You can comment on the answer at: https://publiclab.org<%= @answer.node.path(:question) %>#answer-<%= @answer.id %>-comment</p>
+<p>You can comment on the answer at: https://<%= Rails.root %><%= @answer.node.path(:question) %>#answer-<%= @answer.id %>-comment</p>
 
-<p>Report abuse to: moderators@publiclab.org</p>
+<p>Report abuse to: moderators@<%= Rails.root %></p>
 
 </div>

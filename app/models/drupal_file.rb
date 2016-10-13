@@ -1,5 +1,4 @@
 class DrupalFile < ActiveRecord::Base
-  # attr_accessible :title, :body
   self.table_name = 'files'
   self.primary_key = 'fid'
 
@@ -13,24 +12,20 @@ class DrupalFile < ActiveRecord::Base
     (self.filetype == "jpg" || self.filetype == "jpeg" || self.filetype == "gif" || self.filetype == "png") 
   end
 
+  # swap legacy Drupal static routes
   def path(size = :default)
     if self.is_image?
       if size == :thumb
-        #return '//old.publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')
-        return '//publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')
+        "https://#{Rails.root}/#{self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')}"
       elsif size == :default
-        #return '//publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
-        return '//publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
+        "https://#{Rails.root}/#{self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')}"
       elsif size == :large
-        #return '//old.publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/big_but_downloadable/')
-        return '//publiclab.org/'+self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')
+        "https://#{Rails.root}/#{self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')}"
       elsif size == :original
-        #return '//old.publiclab.org/'+self.filepath
-        return '//publiclab.org/'+self.filepath
+        "https://#{Rails.root}/#{self.filepath}"
       end
     else
-      #"//old.publiclab.org/"+self.filepath
-      "//publiclab.org/"+self.filepath
+      "https://#{Rails.root}/#{self.filepath}"
     end
   end
 

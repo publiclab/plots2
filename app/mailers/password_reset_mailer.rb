@@ -1,5 +1,5 @@
 class PasswordResetMailer < ActionMailer::Base
-  default from: "do-not-reply@publiclab.org"
+  default from: "do-not-reply@#{Rails.root}"
 
   # PasswordResetMailer.reset_notify(user).deliver 
   def reset_notify(user, key)
