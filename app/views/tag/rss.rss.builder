@@ -3,7 +3,7 @@ xml.rss :version => "2.0" do
   xml.channel do
     xml.title "Research tagged '#{params[:tagname]}'"
     xml.description "Open source environmental science research at Public Lab"
-    xml.link "https://#{Rails.root}/feed/tag/"+params[:tagname]+".rss"
+    xml.link "https://#{request.host}/feed/tag/"+params[:tagname]+".rss"
 
     @notes.each do |node|
     
@@ -23,8 +23,8 @@ xml.rss :version => "2.0" do
           xml.pubDate     node.created_at.to_s(:rfc822)
         end
         #xml.link        url_for :only_path => false, :controller => 'notes', :action => 'show', :id => node.nid
-        xml.link        "https://" + Rails.root.to_s + node.path
-        #xml.image "//#{ Rails.root }/"+node.main_image.path(:default) if node.main_image
+        xml.link        "https://" + request.host.to_s + node.path
+        #xml.image "//#{ request.host }/"+node.main_image.path(:default) if node.main_image
         xml.description auto_link(node.latest.render_body, :sanitize => false)
         xml.guid        url_for :only_path => false, :controller => 'notes', :action => 'show', :id => node.nid
       end

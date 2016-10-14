@@ -1,32 +1,32 @@
 <% if @comment.parent.has_power_tag('question') %>
-Hi! There's been a comment to your question '<a href='https://<%= Rails.root %><%= @comment.parent.path(:question) %>'><%= @comment.parent.title %></a>'.
+Hi! There's been a comment to your question '<a href='https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.parent.path(:question) %>'><%= @comment.parent.title %></a>'.
 <% else %>
-Hi! There's been a response to your research note '<a href='https://<%= Rails.root %><%= @comment.parent.path %>'><%= @comment.parent.title %></a>'.
+Hi! There's been a response to your research note '<a href='https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.parent.path %>'><%= @comment.parent.title %></a>'.
 <% end %>
 Do NOT reply to this email; click this link to respond:
 
 <% if @comment.parent.has_power_tag('question') %>
-<p>https://<%= Rails.root %><%= @comment.node.path(:question) %>#answer-comment-<%= @comment.cid %></p>
+<p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.node.path(:question) %>#answer-comment-<%= @comment.cid %></p>
 <% else %>
-<p>https://<%= Rails.root %><%= @comment.node.path %>#c<%= @comment.cid %></p>
+<p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.node.path %>#c<%= @comment.cid %></p>
 <% end %>
 
-<p><b><a href="https://<%= Rails.root %>/profile/<%= @comment.author.name %>"><%= @comment.author.name %> wrote:</b></p>
+<p><b><a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @comment.author.name %>"><%= @comment.author.name %> wrote:</b></p>
 
 <hr /> 
 
-<p><%= raw auto_link(RDiscount.new(@comment.body_email).to_html) %></p>
+<p><%= raw auto_link(RDiscount.new(@comment.body_email(ActionMailer::Base.default_url_options[:host])).to_html) %></p>
 
 <hr />
 
 <div style="color:#aaa;">
 
 <% if @comment.parent.has_power_tag('question') %>
-<p>Reply at: https://<%= Rails.root %><%= @comment.node.path(:question) %>#answer-0-comment</p>
+<p>Reply at: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.node.path(:question) %>#answer-0-comment</p>
 <% else %>
-<p>Reply at: https://<%= Rails.root %><%= @comment.node.path %>#c<%= @comment.cid %></p>
+<p>Reply at: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.node.path %>#c<%= @comment.cid %></p>
 <% end %>
 
-<p>Report abuse to: moderators@<%= Rails.root %></p>
+<p>Report abuse to: moderators@<%= ActionMailer::Base.default_url_options[:host] %></p>
 
 </div>

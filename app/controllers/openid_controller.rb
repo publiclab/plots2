@@ -215,7 +215,7 @@ EOS
   def server
     if @server.nil?
       server_url = url_for :action => 'index', :only_path => false
-      dir = Pathname.new(Rails.root).join('db').join('openid-store')
+      dir = Pathname.new(request.host).join('db').join('openid-store')
       store = OpenID::Store::Filesystem.new(dir)
       @server = Server.new(store, server_url)
     end

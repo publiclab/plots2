@@ -1,5 +1,5 @@
 class SubscriptionMailer < ActionMailer::Base
-  default from: "do-not-reply@#{Rails.root}"
+  default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
 
   def notify_node_creation(node)
     subject = "[PublicLab] " + (node.has_power_tag('question') ? "Question: " : "") +

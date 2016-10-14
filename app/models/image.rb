@@ -37,11 +37,7 @@ class Image < ActiveRecord::Base
     else
       size = :original
     end
-    if Rails.env == "production"
-      'https://i.' + Rails.root.to_s + self.photo.url(size)
-    else
-      self.photo.url(size).gsub('https://i.' + Rails.root.to_s,'')
-    end
+    self.photo.url(size)
   end
 
   def filename

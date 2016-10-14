@@ -5,7 +5,7 @@
     <% @responses = DrupalTag.find_nodes_by_type("#{response_type}:#{@node.id}") %>
     <% @unpaginated = true %>
  
-    <p><a class='btn btn-primary btn-lg' href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0 %>"><%= t('notes._responses.post_' + response_type) %></a></p>
+    <p id="<%= response_type %>s"><a class='btn btn-primary btn-lg' href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0 %>"><%= t('notes._responses.post_' + response_type) %></a></p>
  
     <hr />
  

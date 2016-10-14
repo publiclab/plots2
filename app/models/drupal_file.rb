@@ -16,16 +16,16 @@ class DrupalFile < ActiveRecord::Base
   def path(size = :default)
     if self.is_image?
       if size == :thumb
-        "https://#{Rails.root}/#{self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')}"
+        "/#{self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')}"
       elsif size == :default
-        "https://#{Rails.root}/#{self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')}"
+        "/#{self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')}"
       elsif size == :large
-        "https://#{Rails.root}/#{self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')}"
+        "/#{self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')}"
       elsif size == :original
-        "https://#{Rails.root}/#{self.filepath}"
+        "/#{self.filepath}"
       end
     else
-      "https://#{Rails.root}/#{self.filepath}"
+      "/#{self.filepath}"
     end
   end
 

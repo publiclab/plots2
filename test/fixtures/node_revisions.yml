@@ -47,7 +47,7 @@ unmoderated_spam_revision:
   body: Lots of stuff for sale
 
 moderated_spam_revision:
-  timestamp: <%= Time.now.to_i %>
+  timestamp: <%= Time.now.to_i - 1 %>
   nid: 4
   uid: 3
   status: 0

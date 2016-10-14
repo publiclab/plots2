@@ -5,7 +5,7 @@ class WikiController < ApplicationController
   before_filter :require_user, :only => [:new, :create, :edit, :update, :delete]
 
   def subdomain
-    url = "//#{Rails.root}/wiki/"
+    url = "//#{request.host}/wiki/"
     case request.subdomain
     when "new-york-city", 
          "gulf-coast", 

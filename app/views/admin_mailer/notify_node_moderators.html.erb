@@ -1,23 +1,23 @@
-<p>First-time poster <a href='https://<%= Rails.root %>/profile/<%= @node.author.name %>'><%= @node.author.name %></a> has submitted their first research note!</p>
+<p>First-time poster <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>'><%= @node.author.name %></a> has submitted their first research note!</p>
 
-<p>Please help to approve it or mark it as spam: https://<%= Rails.root %><%= @node.path %></p>
+<p>Please help to approve it or mark it as spam: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p>
 
-<p><a href="https://<%= Rails.root %>/moderate/publish/<%= @node.id %>">Approve</a> or <a href="https://<%= Rails.root %>/moderate/spam/<%= @node.id %>">Spam</a></p>
+<p><a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/publish/<%= @node.id %>">Approve</a> or <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/spam/<%= @node.id %>">Spam</a></p>
 
 <hr /> 
 
 <% if @node.main_image %><a style="margin-bottom:10px;" href="https:<%= @node.main_image.path(:original) %>"><img src="https:<%= @node.main_image.path(:default) %>" /></a><% end %>
 
-<%= raw auto_link(@node.latest.render_body_email, :sanitize => false) %>
+<%= raw auto_link(@node.latest.render_body_email(ActionMailer::Base.default_url_options[:host]), :sanitize => false) %>
 
 <hr /> 
 
-<a href="https://<%= Rails.root %>/moderate/publish/<%= @node.id %>">Approve</a> or <a href="https://<%= Rails.root %>/moderate/spam/<%= @node.id %>">Spam</a>
+<a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/publish/<%= @node.id %>">Approve</a> or <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/spam/<%= @node.id %>">Spam</a>
 
 <div style="color:#aaa;">
 
-<p>You received this email because you are <a href="https://<%= Rails.root %>/wiki/moderation">a Public Lab community moderator</a></p>
+<p>You received this email because you are <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/wiki/moderation">a Public Lab community moderator</a></p>
 
-<p>To discuss spam/abuse, forward this to <a href="mailto:moderators@<%= Rails.root %>">moderators@<%= Rails.root %></a></p>
+<p>To discuss spam/abuse, forward this to <a href="mailto:moderators@<%= ActionMailer::Base.default_url_options[:host] %>">moderators@<%= ActionMailer::Base.default_url_options[:host] %></a></p>
 
 </div>

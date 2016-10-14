@@ -35,9 +35,9 @@
     </ul>
 
   </div> &nbsp; 
-  <span class="hidden-xs"><%= t('dashboard._activity.from_other') %> <a href=""><%= t('dashboard._activity.community_scientists') %></a></span> <%= t('dashboard._activity.past_week') %> <span class="hidden-xs">|
+  <span class="hidden-xs"><%= t('dashboard._activity.from_other') %> <a href=""><%= t('dashboard._activity.community_scientists') %></a></span> <%= t('dashboard._activity.past_week') %> 
   <% if current_user %>
-    <a href="/profile/<%= current_user.username %>"><%= t('dashboard._activity.your_work') %></a></span> 
+    <span class="hidden-xs">|<a href="/profile/<%= current_user.username %>"><%= t('dashboard._activity.your_work') %></a></span> 
   <% end %>
   <!-- (2 responses) -->
 </div>

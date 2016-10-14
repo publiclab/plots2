@@ -1,5 +1,5 @@
 class CommentMailer < ActionMailer::Base
-  default from: "do-not-reply@#{Rails.root}"
+  default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
 
   # CommentMailer.notify_of_comment(user,self).deliver 
   def notify(user,comment)

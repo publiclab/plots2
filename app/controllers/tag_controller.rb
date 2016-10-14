@@ -82,11 +82,11 @@ class TagController < ApplicationController
     else
       flash[:notice] = I18n.t('tag_controller.barnstar_awarded', :url1 => "/wiki/barnstars#"+params[:star].split('-').each{|w| w.capitalize!}.join('+')+"+Barnstar", :star => params[:star], :url2 => "/profile/"+node.author.name, :awardee => node.author.name).html_safe
       # on success add comment
-      barnstar_info_link = '<a href="//' + Rails.root.to_s + '/wiki/barnstars">barnstar</a>'
+      barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
       node.add_comment({
           :subject => 'barnstar',
           :uid => current_user.uid,
-          :body => "#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_users.name} for their awesome contribution!"
+          :body => "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_users.name} for their awesome contribution!"
         })
     end
     redirect_to node.path + "?_=" + Time.now.to_i.to_s
