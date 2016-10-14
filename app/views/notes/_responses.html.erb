@@ -1,10 +1,11 @@
 <% ['response', 'build', 'replication'].each do |response_type| %>
-  <% if @node.has_tag("seeks:#{response_type}s") %>
+
+  <% if @node.has_tag("seeks:#{response_type}s") || (response_type == "replication" && @node.has_power_tag("activity")) || (response_type == "build" && @node.has_power_tag("upgrade")) %>
 
     <% @responses = DrupalTag.find_nodes_by_type("#{response_type}:#{@node.id}") %>
     <% @unpaginated = true %>
  
-    <p><a class='btn btn-primary btn-lg' href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0%>"><%= t('notes._responses.post_' + response_type) %></a></p>
+    <p><a class='btn btn-primary btn-lg' href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0 %>"><%= t('notes._responses.post_' + response_type) %></a></p>
  
     <hr />
  
@@ -16,7 +17,9 @@
       <% if @node.response_count(response_type) > 0 %>
         <%= raw insert_extras("<p>[notes:#{response_type}:#{@node.id}]</p>") %>
       <% else %>
-        None yet. <a href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0%>"">Be the first to post one!</a>
+        <p>
+          None yet. <a href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0%>">Be the first to post one!</a>
+        </p>
       <% end %>
     <% end %>
  
