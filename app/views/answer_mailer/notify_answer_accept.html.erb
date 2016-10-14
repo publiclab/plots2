@@ -1,7 +1,7 @@
 <p>Dear <%= @answer.author.name %>,</p>
 
-<p>Your answer for the question <a href='https://<%= Rails.root %><%= @answer.node.path(:question) %>'><%= @answer.node.title %></a> has been accepted by the question author.</p>
+<p>Your answer for the question <a href='https://<%= ActionMailer::Base.default_url_options[:host] %><%= @answer.node.path(:question) %>'><%= @answer.node.title %></a> has been accepted by the question author.</p>
 
-<p>View your answer here: https://<%= Rails.root %><%= @answer.node.path(:question) %>#a<%= @answer.id %></p> 
+<p>View your answer here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @answer.node.path(:question) %>#a<%= @answer.id %></p> 
 
-<p>To change your email preferences, please visit https://<%= Rails.root %>/subscriptions.</p>
+<p>To change your email preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.</p>

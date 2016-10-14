@@ -25,6 +25,11 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+
+  def request_host
+    ActionMailer::Base.default_url_options[:host]
+  end
+
 end
 
 def available_testing_locales

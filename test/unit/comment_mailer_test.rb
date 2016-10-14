@@ -10,10 +10,10 @@ class CommentMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{Rails.root}"], email.from
+    assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal "New comment on '" + comment.parent.title + "'", email.subject
-    assert email.body.include?("<p>https://#{Rails.root}#{comment.parent.path(:question)}#answer-#{comment.aid}-comment-#{comment.cid}</p>")
+    assert email.body.include?("<p>https://#{request_host}#{comment.parent.path(:question)}#answer-#{comment.aid}-comment-#{comment.cid}</p>")
   end
 
   test "notify note author" do
@@ -25,10 +25,10 @@ class CommentMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{Rails.root}"], email.from
+    assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal "New comment on '" + comment.parent.title + "'", email.subject
-    assert email.body.include?("Hi! There's been a comment to your question '<a href='https://#{Rails.root}#{comment.parent.path(:question)}'>#{comment.parent.title}</a>'")
+    assert email.body.include?("Hi! There's been a comment to your question '<a href='https://#{request_host}#{comment.parent.path(:question)}'>#{comment.parent.title}</a>'")
   end
 
   test "notify callout" do
@@ -40,7 +40,7 @@ class CommentMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{Rails.root}"], email.from
+    assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal "You were mentioned in a comment.", email.subject
     assert email.body.include?("Hi! You were mentioned by #{comment.author.name} in a comment on the question <b>#{comment.parent.title}</b>")
@@ -55,9 +55,9 @@ class CommentMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{Rails.root}"], email.from
+    assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal "New comment on your answer on '" + comment.parent.title + "'", email.subject
-    assert email.body.include?("Hi! There's been a new comment to your answer on '<a href='https://#{Rails.root}#{comment.parent.path(:question)}#a#{comment.answer.id}'>#{comment.parent.title}</a>'")
+    assert email.body.include?("Hi! There's been a new comment to your answer on '<a href='https://#{request_host}#{comment.parent.path(:question)}#a#{comment.answer.id}'>#{comment.parent.title}</a>'")
   end
 end

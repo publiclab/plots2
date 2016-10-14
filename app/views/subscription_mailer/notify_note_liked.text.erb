@@ -1,12 +1,12 @@
 Dear <%= @node.author.name %>,
 
-Public Lab contributor <%= @user.username %> (https://<%= Rails.root %>/profile/<%= @user.username %>) just liked your <% if @node.has_power_tag('question') %>question<% else %>research note<% end %> entitled '<%= @node.title %>':
+Public Lab contributor <%= @user.username %> (https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @user.username %>) just liked your <% if @node.has_power_tag('question') %>question<% else %>research note<% end %> entitled '<%= @node.title %>':
 
 -------------------------
 
-View your post here: https://<%= Rails.root %><% if @node.has_power_tag('question') %><%= @node.path(:question) %><% else %><%= @node.path %><% end %> 
+View your post here: https://<%= ActionMailer::Base.default_url_options[:host] %><% if @node.has_power_tag('question') %><%= @node.path(:question) %><% else %><%= @node.path %><% end %> 
 
 =========================
 
-To change your email preferences, please visit https://<%= Rails.root %>/subscriptions.
+To change your email preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.
 

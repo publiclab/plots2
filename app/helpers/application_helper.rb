@@ -80,7 +80,7 @@ module ApplicationHelper
         output += '  <td class="author"><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
         output += '  <td class="time">' + (node.has_power_tag('time') ? node.power_tag('time') : '-') + '</td>'
         output += '  <td class="difficulty">' + (node.has_power_tag('difficulty') ? node.power_tag('difficulty') : '-') + '</td>'
-        output += '  <td class="replications">' + node.response_count('replication').to_s + ' replications</td>'
+        output += '  <td class="replications">' + node.response_count('replication').to_s + ' replications: <a href="' + node.path + '#replications">Try it &raquo;</a></td>'
         output += '</tr>'
       end
       output += '</table>'
@@ -109,7 +109,7 @@ module ApplicationHelper
         output += '  <td class="author"><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
         output += '  <td class="time">' + (node.has_power_tag('time') ? node.power_tag('time') : '-') + '</td>'
         output += '  <td class="difficulty">' + (node.has_power_tag('difficulty') ? node.power_tag('difficulty') : '-') + '</td>'
-        output += '  <td class="builds">' + node.response_count('build').to_s + ' builds</td>'
+        output += '  <td class="builds">' + node.response_count('build').to_s + ' builds: <a href="' + node.path + '#builds">Try it &raquo;</a></td>'
         output += '</tr>'
       end
       output += '</table>'

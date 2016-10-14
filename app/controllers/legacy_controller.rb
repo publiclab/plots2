@@ -38,7 +38,7 @@ class LegacyController < ApplicationController
   end
 
   def file
-    redirect_to "//#{Rails.root}/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
+    redirect_to "//#{request.host}/sites/default/files/"+params[:filename]+"."+params[:format], :status => 301
   end
 
 #  def image

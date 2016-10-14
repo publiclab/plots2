@@ -1,15 +1,15 @@
-<a href="https://<%= Rails.root %>/profile/<%= @giver.name %>"><%= @giver.name %></a> has awarded you a <a href="https://<%= Rails.root %>/wiki/barnstars">Barnstar</a> for your work in the research note "<a href="<%= @note.path %>"><%= @note.title %></a>". Do NOT reply to this email; click this link to respond:
+<a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @giver.name %>"><%= @giver.name %></a> has awarded you a <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/wiki/barnstars">Barnstar</a> for your work in the research note "<a href="<%= @note.path %>"><%= @note.title %></a>". Do NOT reply to this email; click this link to respond:
 
-<p>https://<%= Rails.root %><%= @note.path %></p>
+<p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @note.path %></p>
 
-The barnstar will appear on your profile, at https://<%= Rails.root %>/profile/<%= @note.author.name %>
+The barnstar will appear on your profile, at https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @note.author.name %>
 
 <hr /> 
 
 <div style="color:#aaa;">
 
-<p>Reply at: https://<%= Rails.root %><%= @note.path %>#comments</p>
+<p>Reply at: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @note.path %>#comments</p>
 
-<p>Report abuse to: moderators@<%= Rails.root %></p>
+<p>Report abuse to: moderators@<%= ActionMailer::Base.default_url_options[:host] %></p>
 
 </div>

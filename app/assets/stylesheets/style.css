@@ -491,3 +491,15 @@ table th a {
 table th a:hover {
   color: #aaa;
 }
+
+@media (max-width:768px) {
+  table {
+    font-size: 90%;
+  }
+}
+
+@media (max-width:400px) {
+  table {
+    font-size: 80%;
+  }
+}

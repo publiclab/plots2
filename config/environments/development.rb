@@ -40,4 +40,8 @@ Plots2::Application.configure do
   # force SSL
   #config.force_ssl = true
 
+  config.action_mailer.default_url_options = {
+    host: 'www.example.com'
+  }
+
 end

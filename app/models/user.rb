@@ -214,11 +214,7 @@ class User < ActiveRecord::Base
   end
 
   def photo_path(size = :medium)
-    if Rails.env == "production"
-      '//i.' + Rails.root.to_s + self.photo.url(size)
-    else
-      self.photo.url(size).gsub("//i.#{Rails.root}",'')
-    end
+    self.photo.url(size)
   end
 
   def first_time_poster

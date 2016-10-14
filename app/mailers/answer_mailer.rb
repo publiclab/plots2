@@ -1,5 +1,5 @@
 class AnswerMailer < ActionMailer::Base
-  default from: "do-not-reply@#{Rails.root}"
+  default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
 
   def notify_question_author(user, answer)
     subject = "[PublicLab] New answer to Question: " + answer.node.title
