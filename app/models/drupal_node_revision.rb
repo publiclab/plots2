@@ -120,8 +120,8 @@ class DrupalNodeRevision < ActiveRecord::Base
   end
 
   def body_preview
-	  newBody = self.body.gsub(/^#+.+/, "")
-	  newBody.truncate(100)
+    newBody = self.body.gsub(/^#+.+/, "")
+    newBody.truncate(100)
   end
 
 end
