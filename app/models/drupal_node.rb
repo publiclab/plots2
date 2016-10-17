@@ -22,7 +22,9 @@ class DrupalNode < ActiveRecord::Base
 
   searchable do
     text :title, boost: 5
-    text :body
+    text :body do
+      body.to_s.gsub!(/[[:cntrl:]]/,'')
+    end
     time :updated_at
     string :status
     string :updated_month
