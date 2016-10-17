@@ -37,7 +37,7 @@ class Image < ActiveRecord::Base
     else
       size = :original
     end
-    self.photo.url(size)
+    absolute_uri + self.photo.url(size)
   end
 
   def filename
@@ -45,6 +45,11 @@ class Image < ActiveRecord::Base
   end
 
 private
+
+  def absolute_uri
+    Rails.env == 'production' ? "https://publiclab.org" : ""
+  end
+
   # all subsequent code from http://trevorturk.com/2008/12/11/easy-upload-via-url-with-paperclip/
 
   def remote_url_provided?
