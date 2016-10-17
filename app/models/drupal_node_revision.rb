@@ -2,7 +2,10 @@ class DrupalNodeRevision < ActiveRecord::Base
 
   searchable do
     text :title, boost: 5
-    text :body, :teaser
+    text :body do
+      body.to_s.gsub!(/[[:cntrl:]]/,'')
+    end
+    text :teaser
   end
 
   attr_accessible :title, :body, :nid, :uid, :teaser, :log, :timestamp, :format
