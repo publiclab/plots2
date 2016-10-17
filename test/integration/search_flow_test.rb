@@ -25,6 +25,21 @@ class SearchFlowTest < ActionDispatch::IntegrationTest
     get '/search/advanced'
     assert_response :success
 
+    post '/search',
+         "search_record" => {
+           key_words: 'post', 
+           main_type: 'Notes or Wiki updates'
+         }
+
+    assert_response :success
+
+    # https://publiclab.org/searches?search=spec
+
+    post '/search',
+         search: 'spec'
+
+    assert_response :success
+
   end
 
 end
