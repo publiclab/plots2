@@ -122,9 +122,9 @@ class NotesController < ApplicationController
     params[:size] = params[:size] || :large
     node = DrupalNode.find(params[:id])
     if node.main_image
-      redirect_to image.path(params[:size])
+      redirect_to node.main_image.path(params[:size])
     else
-      return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+      redirect_to "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
     end
   end
 
