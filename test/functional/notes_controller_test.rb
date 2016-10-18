@@ -83,6 +83,15 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should show main image for node, returning blank image if it has none" do
+    node = node(:one)
+
+    get :image, id: node.id
+
+    assert_response :redirect
+    assert_redirected_to "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+  end
+
   test "should get tools" do
     get :tools
 
@@ -398,4 +407,5 @@ class NotesControllerTest < ActionController::TestCase
         assert_equal I18n.t('notes_controller.research_note_published'), flash[:notice]
     end
   end
+
 end
