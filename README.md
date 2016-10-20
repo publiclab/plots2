@@ -3,7 +3,7 @@ PublicLab.org
 
 [![Build Status](https://travis-ci.org/publiclab/plots2.svg)](https://travis-ci.org/publiclab/plots2)
 
-The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes," and a wiki. 
+The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes" and a wiki. 
 
 It features a Bootstrap-based UI and a variety of community and attribution features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails, and has since extended but not entirely replaced the legacy Drupal data model and database design. 
 
@@ -52,9 +52,11 @@ Our production application runs on mysql, but for development, sqlite3 is suffic
 * Fedora/Red Hat/CentOS: `sudo yum install sqlite` -- you may need `sqlite-devel` as well.
 
 
-### Search
+### Solr search engine
 
-We use the [solr](https://lucene.apache.org/solr/) search engine via the [sunspot gem](https://github.com/sunspot/sunspot). Solr requires Java, which is therefore a requirement for running the `rake test:solr` test suite (see [Testing](#testing), below), which runs tests of the search functionality using the files in `/test/solr/`; on a Debian/Ubuntu system, you can install the necessary libraries with:
+[Solr](https://lucene.apache.org/solr/) is a standalone search server. You put documents in it (called "indexing") via JSON, XML, CSV or binary over HTTP. You query it via HTTP GET and receive JSON, XML, CSV or binary results. Solr enables powerful matching capabilities including phrases, wildcards, joins, grouping and much more across any data type.
+We use the Solr search engine via the [sunspot gem](https://github.com/sunspot/sunspot) and using an adapter called [sunspot_rails](https://github.com/outoftime/sunspot_rails) to communicate to solr search server through our rails app.
+Solr requires Java, which is therefore a requirement for running the `rake test:solr` test suite (see [Testing](#testing), below), which runs tests of the search functionality using the files in `/test/solr/`; on a Debian/Ubuntu system, you can install the necessary libraries with:
 
 `sudo apt-get install openjdk-7-jre openjdk-7-jdk`
 
@@ -62,7 +64,7 @@ And start up solr with:
 
 `rake sunspot:solr:start` followed by `rake sunspot:reindex`
 
-However, to ease installation, we've [made Java optional](https://github.com/publiclab/plots2/issues/832) for basic testing using `rake test`. 
+However, to ease installation, we've [made Java optional](https://github.com/publiclab/plots2/issues/832) for basic testing using `rake test`. So if you are just starting out you can skip this step.
 
 
 ### Image libraries
@@ -112,15 +114,9 @@ Once NPM is installed, you should be able to run:
 
 We are using `jasmine-rails` gem for the optional javascript tests (run with `rake spec:javascript`) which require `phantomjs` for headless testing (i.e. on the commandline, not with a browser). Generally the **phantomjs gem** gets installed along with the `jasmine-rails` gem. If the package installation for the gem fails you can use [this script](https://github.com/codeship/scripts/blob/master/packages/phantomjs.sh) to install it.
 
-But some architectures (Linux!) aren't supported by the phantomjs gem. For those you have to run phantomjs via a native binary.You can find the installation instructions in its official [build documentation](http://phantomjs.org/build.html). For Ubuntu/debian based system you can follow [these instructions](https://gist.github.com/julionc/7476620) or use the script mentioned there. On successful installation you can see the version number of phantomjs with the `phantomjs -v` command. For the binary to work properly with `jasmine-rails` change the line 52 on _spec/javascripts/support/jasmine.yml_ to `use_phantom_gem: false`.
+But some architectures (Linux!) aren't supported by the phantomjs gem. For those you have to run phantomjs via a native binary, you can find the installation instructions in its official [build documentation](http://phantomjs.org/build.html). For Ubuntu/debian based system you can follow [these instructions](https://gist.github.com/julionc/7476620) or use the script mentioned there. On successful installation you can see the version number of phantomjs with the `phantomjs -v` command. For the binary to work properly with `jasmine-rails` change the line 52 on _spec/javascripts/support/jasmine.yml_ to `use_phantom_gem: false`.
 
-Please report any error regarding phantomjs installation in the github issue tracker. We will try to help you out as soon as we can! 
-
-
-### Solr search engine
-
-Solr is a standalone search server. You put documents in it (called "indexing") via JSON, XML, CSV or binary over HTTP. You query it via HTTP GET and receive JSON, XML, CSV or binary results. Solr enables powerful matching capabilities including phrases, wildcards, joins, grouping and much more across any data type.
-We are using an adapter called [sunspot_rails](https://github.com/outoftime/sunspot_rails) to communicate to solr search server through our rails app.
+Please report any error regarding phantomjs installation in the github issue tracker. We will try to help you out as soon as we can!
 
 
 ##Installation
@@ -152,11 +148,11 @@ For some, it will be necessary to prepend your gem-related commands with `bundle
 
 Run all basic rails tests with `rake test`. This is required for submitting pull requests, and to confirm you have a working local environment.
 
-`rake test:all` runs **all** tests. This includes Jasmine client-side tests and 
+`rake test:all` runs **all** tests. This includes Jasmine client-side tests and Solr-dependent tests.
 
 **Client-side tests** (for JavaScript functions) are run using [Jasmine](https://jasmine.github.io/) in [jasmine-rails](https://github.com/searls/jasmine-rails). You can run tests by navigating to `/specs/` in the browser. Headless, or command-line test running may be possible with `rake spec:javascript` [if you have phantomjs installed](#phantomjs-for-javascript-tests) (see above). 
 
-**Solr (search) tests** require [installing the Solr search engine](#solr-search-engine) (see above). Once you've done that, you still need to turn it off in develoment mode before running tests, with `rake sunspot:solr:stop`. Read more about [this issue here](https://github.com/publiclab/plots2/issues/832#issuecomment-249695309). 
+**Solr (search) tests** require [installing the Solr search engine](#solr-search-engine) (see above). Once you've done that, you still need to turn it off in development mode before running tests, with `rake sunspot:solr:stop`. Read more about [this issue here](https://github.com/publiclab/plots2/issues/832#issuecomment-249695309). 
 
 If you get stuck on testing at any point, you can _open a pull request with your changes_ -- please add the prefix `[testing]` to the title -- which will then be automatically tested by our TravisCI service -- which runs **all tests** with `rake test:all`. If your additions are pretty basic, and you write tests against them, this may be sufficient without actually running the whole environment yourself! 
 
