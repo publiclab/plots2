@@ -80,11 +80,6 @@
         <h3>Share your work</h3>
       <% end %>
 
-      <!-- Notice: Temporary redirect. remove this after after questions show page is complete -->
-      <% if params[:redirect] == 'question' %>
-        <%= hidden_field_tag 'redirect', 'question' %>
-      <% end %>
-
       <div class="form-group">
         <input id="title" tabindex="1" name="title" class="form-control" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %>"/>
       </div>
@@ -95,9 +90,9 @@
 
       <%= render :partial => 'editor/editor' %>
 
-      <div class="input-group">
+      <div class="input-group tags-input">
         <span class="input-group-addon"><i class="fa fa-tags"></i></span>
-        <input autocomplete="off" class="form-control" id="taginput" tabindex="3" name="tags" type="text" <% if (@node && @node.power_tag('question')) || (@node && @node.tagnames) %>value="<%= @node.power_tag('question') || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
+        <input autocomplete="off" class="form-control" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.power_tag('question')) || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %><%= ','+@node.power_tag('question') if @node && @node.power_tag('question') != '' %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
       </div>
 
       <input name="remote" type="hidden" value="true" />

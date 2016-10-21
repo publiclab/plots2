@@ -21,7 +21,7 @@
           <div class="col-xs-10">
             <select class="form-control input-lg">
               <option selected value="">a research note</option>
-              <option value="" <% if params[:redirect] == 'question' %>selected='selected'<% end %>>a question or request</option>
+              <option value="" <% if params[:tags].include?('question') %>selected='selected'<% end %>>a question or request</option>
               <option value="">an event</option>
             </select>
           </div>
@@ -36,10 +36,6 @@
     <!-- end selector module -->
 
   </div>
-
-  <% if params[:redirect] == 'question' %>
-    <%= hidden_field_tag 'redirect', 'question' %>
-  <% end %>
 
   <div class="ple-content">
 
