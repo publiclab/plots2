@@ -5,7 +5,7 @@ en:
     contributors:
       contributors_for: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i>"
       contributions_over_past_year: "Above: contributions over the past year."
-      notes_and_wiki_contributions: "%{users} people have contributed %{notes} research notes and %{wikis} wiki pages tagged with \"%{tag_name}\"</i>"
+      notes_and_wiki_contributions: "%{users} people have contributed %{notes} research notes and %{wikis} wiki pages tagged with \"%{tag_name}\""
       following: "Following"
       unfollow: "Click to unfollow"
       follow: "Follow"

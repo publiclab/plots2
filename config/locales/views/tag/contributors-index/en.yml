@@ -5,7 +5,7 @@ en:
     contributors-index:
       contributors_over_last_week: "Contributors for <i style=\"color:#aaa;\">%{tag_name}</i> over the past 52 weeks"
       read_more: "Read more"
-      notes_and_wiki_contributions: "%{users} people have contributed %{notes} research notes and %{wikis} wiki pages tagged with \"%{tag_name}\"</i>"
+      notes_and_wiki_contributions: "%{users} people have contributed %{notes} research notes and %{wikis} wiki pages tagged with \"%{tag_name}\""
       following: "Following"
       unfollow: "Click to unfollow"
       follow: "Follow"
