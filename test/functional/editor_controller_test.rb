@@ -13,10 +13,12 @@ class EditorControllerTest < ActionController::TestCase
 
   test "should get post form" do
     UserSession.create(rusers(:bob))
-    get :post
+    get :post,
+        tags: 'one,two'
     assert_response :success
     assert_select "h3", "Share your work"
     assert_select "span.moderation-notice", false
+    assert_select "#taginput[value=?]", "one,two"
   end
 
   test "newcomer should get post form" do
@@ -40,10 +42,11 @@ class EditorControllerTest < ActionController::TestCase
   test "should show question template in post form for questions" do
     UserSession.create(rusers(:bob))
     get :post,
-        tags: 'question:question',
+        tags: 'question:question,one',
         template: 'question',
         redirect: 'question'
     assert_select "h3", "Ask a question of the community"
+    assert_select "input#taginput[value=?]", "question:question,one"
   end
 
   test "should show title form input if title parameter present" do

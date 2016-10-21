@@ -244,8 +244,6 @@ class NotesController < ApplicationController
         end
         @node.save!
         flash[:notice] = I18n.t('notes_controller.edits_saved')
-        # Notice: Temporary redirect.Remove this condition after questions show page is complete.
-        #         Just keep @node.path(:question)
         format = false
         format = :question if params[:redirect] && params[:redirect] == 'question'
         if request.xhr?

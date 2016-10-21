@@ -312,6 +312,27 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal flash[:notice], "Question published. In the meantime, if you have more to contribute, feel free to do so."
   end
 
+  test "should display /post template when editing a note" do
+    user = UserSession.create(rusers(:jeff))
+    note = node(:blog)
+    post :edit,
+         id: note.nid
+
+    assert_response :success
+    assert_select "input#taginput[value=?]", note.tagnames.join(',')
+  end
+
+  test "should display /post template when editing a question" do
+    user = UserSession.create(rusers(:jeff))
+    note = node(:question)
+    note.add_tag('nice', rusers(:jeff))
+    post :edit,
+         id: note.nid
+
+    assert_response :success
+    assert_select "input#taginput[value=?]", note.tagnames.join(',') + ',spectrometer' # for now, question subject is appended to end of form
+  end
+
   test "should redirect to questions show page when editing an existing question" do
     user = UserSession.create(rusers(:jeff))
     note = node(:question)
@@ -389,22 +410,22 @@ class NotesControllerTest < ActionController::TestCase
 
   test "should choose I18n for notes controller" do
     available_testing_locales.each do |lang|
-        old_controller = @controller
-        @controller = SettingsController.new
+      old_controller = @controller
+      @controller = SettingsController.new
 
-        get :change_locale, :locale => lang.to_s
+      get :change_locale, :locale => lang.to_s
 
-        @controller = old_controller
+      @controller = old_controller
 
-        UserSession.create(rusers(:jeff))
-        title = "Some post to Public Lab"
+      UserSession.create(rusers(:jeff))
+      title = "Some post to Public Lab"
 
-        post :create,
-             title: title+lang.to_s,
-             body: "Some text.",
-             tags: "event"
+      post :create,
+           title: title+lang.to_s,
+           body: "Some text.",
+           tags: "event"
 
-        assert_equal I18n.t('notes_controller.research_note_published'), flash[:notice]
+      assert_equal I18n.t('notes_controller.research_note_published'), flash[:notice]
     end
   end
 
