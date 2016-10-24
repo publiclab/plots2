@@ -1,7 +1,4 @@
-# def barnstar
-# def create
 # def delete
-# def suggested
 # def contributors_index
 
 require 'test_helper'
@@ -13,12 +10,24 @@ class TagControllerTest < ActionController::TestCase
   end
 
   # create accepts comma-delimited list of tags
-  test "add tag" do
+  test "add one or two tags" do
     UserSession.create(rusers(:bob))
 
-    post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob).id
+    post :create, name: 'mytag', nid: node(:one).nid, uid: rusers(:bob).id
 
+    assert_equal 'mytag', assigns[:tags].last.name
     assert_redirected_to(node(:one).path)
+
+    post :create, name: 'mysecondtag,mythirdtag', nid: node(:one).nid, uid: rusers(:bob).id
+
+    assert_equal 'mysecondtag', assigns[:tags][assigns[:tags].length - 2].name
+    assert_equal 'mythirdtag', assigns[:tags].last.name
+    assert_redirected_to(node(:one).path)
+
+    xhr :post, :create, name: 'myfourthtag,myfifthtag', nid: node(:one).nid, uid: rusers(:bob).id
+
+    assert_response :success
+    assert_equal [["myfourthtag", DrupalTag.find_by_name("myfourthtag").tid], ["myfifthtag", DrupalTag.find_by_name("myfifthtag").tid]], JSON.parse(response.body)['saved']
   end
 
   test "validate unused tag" do
@@ -204,6 +213,15 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#questions.active', 1
   end
 
+  test "can create tag instance (community_tag) using a parent tag" do
+    UserSession.create(rusers(:bob))
+
+    post :create, name: 'spectrometry', nid: node(:one).nid, uid: rusers(:bob).id
+
+    assert_equal 'spectrometry', assigns[:tags].last.name
+    assert_redirected_to(node(:one).path)
+  end
+
   test "shows things tagged with child tag" do
     tag = tags(:spectrometer)
     tag.parent = "spectrometry"
@@ -241,20 +259,27 @@ class TagControllerTest < ActionController::TestCase
     assert_false assigns(:notes).first.has_tag_without_aliasing('spectrometry')
     assert       assigns(:notes).first.has_tag_without_aliasing('spectrometer')
   end
+
+  test "shows suggested tags" do
+    get :suggested, id: 'spectr'
+
+    assert_equal 3, assigns(:suggestions).length
+    assert_equal ["question:spectrometer","spectrometer","activity:spectrometer"], JSON.parse(response.body)
+  end
   
   test "should choose I18n for tag controller" do
     available_testing_locales.each do |lang|
-        old_controller = @controller
-        @controller = SettingsController.new
-        
-        get :change_locale, :locale => lang.to_s
-        
-        @controller = old_controller
-        
-        UserSession.create(rusers(:bob))
-        post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
-        post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
-        assert_equal I18n.t('tag_controller.tag_already_exists'), assigns['output']['errors'][0]
+      old_controller = @controller
+      @controller = SettingsController.new
+      
+      get :change_locale, :locale => lang.to_s
+      
+      @controller = old_controller
+      
+      UserSession.create(rusers(:bob))
+      post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
+      post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
+      assert_equal I18n.t('tag_controller.tag_already_exists'), assigns['output']['errors'][0]
     end
   end
 
