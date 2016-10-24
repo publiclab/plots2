@@ -27,7 +27,7 @@ class TagControllerTest < ActionController::TestCase
     xhr :post, :create, name: 'myfourthtag,myfifthtag', nid: node(:one).nid, uid: rusers(:bob).id
 
     assert_response :success
-    assert_equal [["myfourthtag", 19], ["myfifthtag", 20]], JSON.parse(response.body)['saved']
+    assert_equal [["myfourthtag", DrupalTag.find_by_name("myfourthtag").tid], ["myfifthtag", DrupalTag.find_by_name("myfifthtag").tid]], JSON.parse(response.body)['saved']
   end
 
   test "validate unused tag" do
