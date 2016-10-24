@@ -19,7 +19,7 @@ describe("Tagging", function() {
 
 
   // this should test addTag(tagname, selector) from tagging.js, which is an ajax request
-  xit("tests tag deletion", function() {
+  it("tests tag deletion", function() {
 
     $('tags.label:first a.tag-delete').trigger('click');
 
