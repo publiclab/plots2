@@ -700,13 +700,13 @@ class DrupalNode < ActiveRecord::Base
 
   def add_tag(tagname,user)
     tagname = tagname.downcase
-    unless self.has_tag(tagname)
+    unless self.has_tag_without_aliasing(tagname)
       saved = false
       tag = DrupalTag.find_by_name(tagname) || DrupalTag.new({
-        :vid => 3, # vocabulary id; 1
-        :name => tagname,
-        :description => "",
-        :weight => 0
+        vid:         3, # vocabulary id; 1
+        name:        tagname,
+        description: "",
+        weight:      0
       })
       ActiveRecord::Base.transaction do
         if tag.valid?

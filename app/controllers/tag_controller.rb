@@ -95,8 +95,9 @@ class TagController < ApplicationController
   def create
     params[:name] ||= ""
     tagnames = params[:name].split(',')
-    @output = { :errors => [],
-      :saved => [],
+    @output = { 
+      errors: [],
+      saved: []
     }
     @tags = [] # not used except in tests for now
 
@@ -105,7 +106,7 @@ class TagController < ApplicationController
 
       # this should all be done in the model:
 
-      if DrupalTag.exists?(tagname,params[:nid])
+      if DrupalTag.exists?(tagname, params[:nid])
         @output[:errors] << I18n.t('tag_controller.tag_already_exists')
       else
         # "with:foo" coauthorship powertag: by author only
@@ -119,12 +120,12 @@ class TagController < ApplicationController
         elsif tagname[0..4] == "rsvp:" && current_user.username != tagname.split(':')[1]
           @output[:errors] << I18n.t('tag_controller.only_RSVP_for_yourself')
         else
-          saved,tag = node.add_tag(tagname.strip,current_user)
+          saved, tag = node.add_tag(tagname.strip, current_user)
           if saved
             @tags << tag
-            @output[:saved] << [tag.name,tag.id]
+            @output[:saved] << [tag.name, tag.id]
           else
-            @output[:errors] << I18n.t('tag_controller.error_tags')+tag.errors[:name].first
+            @output[:errors] << I18n.t('tag_controller.error_tags') + tag.errors[:name].first
           end
         end
       end

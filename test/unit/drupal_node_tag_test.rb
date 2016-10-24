@@ -59,6 +59,11 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     assert_false DrupalTag.find_nodes_by_type_with_all_tags(['spectrometry']).to_a.include?(node)
     assert       DrupalTag.find_nodes_by_type('spectrometer').to_a.include?(node)
     assert       DrupalTag.find_nodes_by_type_with_all_tags(['spectrometer']).to_a.include?(node)
+
+    # test node.add_tag, which uses has_tag
+    saved, tag = node.add_tag('spectrometry', rusers(:bob))
+    assert saved
+    assert_not_nil tag
   end
 
   test "aliasing of tags which have parent matching initial tag" do

@@ -13,18 +13,18 @@ class TagControllerTest < ActionController::TestCase
   test "add one or two tags" do
     UserSession.create(rusers(:bob))
 
-    post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob).id
+    post :create, name: 'mytag', nid: node(:one).nid, uid: rusers(:bob).id
 
     assert_equal 'mytag', assigns[:tags].last.name
     assert_redirected_to(node(:one).path)
 
-    post :create, :name => 'mysecondtag,mythirdtag', :nid => node(:one).nid, :uid => rusers(:bob).id
+    post :create, name: 'mysecondtag,mythirdtag', nid: node(:one).nid, uid: rusers(:bob).id
 
     assert_equal 'mysecondtag', assigns[:tags][assigns[:tags].length - 2].name
     assert_equal 'mythirdtag', assigns[:tags].last.name
     assert_redirected_to(node(:one).path)
 
-    xhr :post, :create, :name => 'myfourthtag,myfifthtag', :nid => node(:one).nid, :uid => rusers(:bob).id
+    xhr :post, :create, name: 'myfourthtag,myfifthtag', nid: node(:one).nid, uid: rusers(:bob).id
 
     assert_response :success
     assert_equal [["myfourthtag", 19], ["myfifthtag", 20]], JSON.parse(response.body)['saved']
@@ -211,6 +211,15 @@ class TagControllerTest < ActionController::TestCase
       end
     end
     assert_select '#questions.active', 1
+  end
+
+  test "can create tag instance (community_tag) using a parent tag" do
+    UserSession.create(rusers(:bob))
+
+    post :create, name: 'spectrometry', nid: node(:one).nid, uid: rusers(:bob).id
+
+    assert_equal 'spectrometry', assigns[:tags].last.name
+    assert_redirected_to(node(:one).path)
   end
 
   test "shows things tagged with child tag" do
