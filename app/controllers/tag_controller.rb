@@ -166,15 +166,15 @@ class TagController < ApplicationController
 
   def suggested
     if params[:id].length > 2
-      suggestions = []
+      @suggestions = []
       # filtering out tag spam by requiring tags attached to a published node
       DrupalTag.where('name LIKE ?', "%" + params[:id] + "%")
                .includes(:drupal_node)
                .where('node.status = 1')
                .limit(10).each do |tag|
-        suggestions << tag.name.downcase
+        @suggestions << tag.name.downcase
       end
-      render :json => suggestions.uniq
+      render :json => @suggestions.uniq
     else
       render :json => []
     end
@@ -234,6 +234,8 @@ class TagController < ApplicationController
     render :template => "tag/contributors-index"
   end
 
+  # let's not use session for tags storage; deprecate these unless they're being used 
+  # to remember and persist recently searched for tags:
   def add_tag
     unless session[:tags]
       session[:tags] = {}

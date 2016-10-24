@@ -18,7 +18,7 @@ class DrupalUsers < ActiveRecord::Base
   has_many :drupal_comments, :foreign_key => 'uid'
   has_one :location_tag, :foreign_key => 'uid', :dependent => :destroy
 
-  searchable do
+  searchable :if => proc { |user| user.status == 1 } do
     string :name
     string :mail
     string :status
