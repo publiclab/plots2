@@ -253,7 +253,11 @@ class NotesController < ApplicationController
         end
       else
         flash[:error] = I18n.t('notes_controller.edit_not_saved')
-        render :action => :edit
+         if params[:rich]
+           render 'editor/rich'
+         else
+           render 'editor/post'
+        end
       end
     end
   end
