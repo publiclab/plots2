@@ -39,6 +39,15 @@
 
   <div class="ple-content">
 
+    <!-- errors module -->
+    <div class="ple-module container">
+
+      <div class="col-md-3"></div>
+      <div class="ple-errors col-md-9"></div>
+
+    </div>
+    <!-- end errors module -->
+
 
     <!-- title module -->
     <div class="ple-module-title ple-module container">
@@ -112,6 +121,7 @@
     <!-- end tags module -->
 
     <!-- multi module -->
+    <!--
     <div class="ple-module-multi ple-module container">
 
       <div class="ple-module-guide col-md-3">
@@ -141,7 +151,8 @@
       </div>
 
     </div>
-    <!-- end multi module -->    
+    -->
+    <!-- end multi module -->
   
 
   </div>
@@ -193,6 +204,9 @@
       <% end %>
       <% if params[:redirect] == 'question' %>
         redirect: 'redirect',
+      <% end %>
+      <% if (@node && @node.errors.size > 0) || (@revision && @revision.errors.size > 0) %>
+        errors: <%=raw (@node.errors.to_h.merge(@revision.errors.to_h)).to_json %>,
       <% end %>
       format:      'publiclab',
       mainImageModule: {
