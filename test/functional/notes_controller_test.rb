@@ -346,6 +346,17 @@ class NotesControllerTest < ActionController::TestCase
     assert_redirected_to note.path(:question) + "?_=" + Time.now.to_i.to_s
   end
 
+  test "should update a former note that has become a question by tagging" do
+    node = node(:blog)
+    node.add_tag('question:foo', rusers(:bob))
+
+    post :update,
+         id: node.nid,
+         title: node.title + ' amended'
+
+    assert_response :redirect
+  end
+
   test "should assign correct value to graph_comments on GET stats" do
     DrupalComment.delete_all
     DrupalComment.create!({comment: 'blah', timestamp: Time.now() - 1})
