@@ -69,7 +69,7 @@
     <% end %>
     </div>
     
-    <% @node.comments.each do |comment| %>
+    <% @node.comments('ASC').each do |comment| %>
       <%= render partial: "questions/comment", locals: { comment: comment, answer_id: 0 } %>
     <% end %>
     
