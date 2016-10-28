@@ -9,8 +9,8 @@ module NodeShared
     self.likers.collect(&:uid).include?(uid)
   end
 
-  def comments
+  def comments(direction = 'DESC')
     self.drupal_comments
-        .order('timestamp DESC')
+        .order("timestamp #{direction}")
   end
 end
