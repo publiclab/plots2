@@ -188,6 +188,8 @@ class ApplicationController < ActionController::Base
 
     def sort_question_by_tags
       if session[:tags] && !session[:tags].empty?
+puts "SESSION TAGS"
+puts session[:tags].inspect
         @session_tags = session[:tags]
         qids = @questions.collect(&:nid)
         @questions = DrupalNode.where(status: 1, type: 'note')
