@@ -104,4 +104,23 @@ class RestfulSearchTest < ActiveSupport::TestCase
     assert matcher =~ JSON.parse(last_response.body)
   end
 
+
+  test 'returns results from typeahead search functionality' do
+    get '/api/typeahead/all?srchString=use&seq=21'
+    assert last_response.ok?
+    # Expected tag pattern
+    pattern = {
+      # Need more/better understanding and data for the test database, so ignoring null results for now
+      # items: Array,
+      srchParams: {
+        srchString: 'use',
+        seq: 21
+      }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    assert matcher =~ JSON.parse(last_response.body)
+  end
+
 end

@@ -181,7 +181,15 @@ To add new languages or for additional support, please write to plots-dev@google
 
 ****
 
-##Developers
+## API
+
+Swagger-generated API documentation can be found at:
+
+https://publiclab.org/api/swagger_doc.json
+
+****
+
+## Developers
 
 Help improve Public Lab software!
 
@@ -194,7 +202,7 @@ Help improve Public Lab software!
 
 ****
 
-##First time?
+## First time?
 
 New to open source/free software? We've listed some "good for first timers" bugs to fix here: https://github.com/publiclab/plots2/labels/first-timers-only
 

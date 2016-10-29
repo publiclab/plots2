@@ -7,20 +7,11 @@ class TagResult
   end
 
   def self.fromSearch(tid, tval, ttype, tsrc)
-    obj = new
-    @tagid = tid
-    @tagVal = tval
-    @tagType = ttype
-    @tagSource = tsrc
-    obj
-  end
-
-  def self.fromSearch(tid, tval, ttype, tsrc)
-    obj = new
-    @tagid = tid
-    @tagVal = tval
-    @tagType = ttype
-    @tagSource = tsrc
+    obj = self.new
+    obj.tagId =     tid
+    obj.tagVal =    tval
+    obj.tagType =   ttype
+    obj.tagSource = tsrc
     obj
   end
   

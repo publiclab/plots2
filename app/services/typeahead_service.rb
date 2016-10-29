@@ -166,7 +166,12 @@ class TypeaheadService
                   .order('node.nid DESC')
                   .limit(limit)
     questions.each do |match|
-      tval = TagResult.fromTypeahead(match.nid,match.title,"question-circle")
+      tval = TagResult.fromSearch(
+               match.nid,
+               match.title,
+               "question-circle",
+               match.path
+      )
       sresult.addTag(tval)
     end
     return sresult
