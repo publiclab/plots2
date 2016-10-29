@@ -6,8 +6,8 @@ class DocResult
   def initialize
   end
 
-  def self.fromSearch(idval, typeval, urlval,titleval,sumval,scoreval)
-    obj = new
+  def self.fromSearch(idval, typeval, urlval, titleval, sumval, scoreval)
+    obj = self.new
     obj.docId = idval
     obj.docType = typeval
     obj.docUrl = urlval
