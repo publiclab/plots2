@@ -4,6 +4,7 @@ class EditorController < ApplicationController
 
   # main image via URL passed as GET param
   def post
+    redirect_to '/questions/new' if params[:tags].include?("question:")
     # /post/?i=http://myurl.com/image.jpg
     if params[:i]
       @image = Image.new({

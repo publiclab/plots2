@@ -235,6 +235,7 @@ Plots2::Application.routes.draw do
 
   match 'talk/:id' => 'talk#show'
 
+  match 'questions/new' => 'questions#new'
   match 'questions' => 'questions#index'
   match 'questions/:author/:date/:id' => 'questions#show'
   match 'questions/show/:id' => 'questions#show'
