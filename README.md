@@ -187,6 +187,13 @@ Swagger-generated API documentation can be found at:
 
 https://publiclab.org/api/swagger_doc.json
 
+Per-model API endpoints are:
+
+* Profiles: https://publiclab.org/api/srch/profiles?srchString=foo
+* Questions: https://publiclab.org/api/srch/questions?srchString=foo
+* Tags: https://publiclab.org/api/srch/tags?srchString=foo
+* Notes: https://publiclab.org/api/srch/notes?srchString=foo
+
 ****
 
 ## Developers

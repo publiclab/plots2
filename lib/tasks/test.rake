@@ -10,6 +10,12 @@ namespace :test do
     Rake::Task["spec:javascript"].execute
   end
 
+  desc "Run rails and jasmine tests"
+  task :javascript do
+    puts "Running jasmine tests headlessly"
+    Rake::Task["spec:javascript"].execute
+  end
+
   task :solr do
     require 'yaml'
     sunspot = YAML::load_file "config/sunspot.yml"

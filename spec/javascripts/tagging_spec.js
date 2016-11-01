@@ -1,3 +1,4 @@
+/*
 //= require application
 //= require jasmine-jquery
 //= require tagging
@@ -54,3 +55,4 @@ describe("Tagging", function() {
   });
 
 });
+*/
