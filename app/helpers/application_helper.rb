@@ -71,7 +71,7 @@ module ApplicationHelper
       output += '    <th><a data-type="replications">Replications</a></th>'
       output += '  </tr>'
       nodes = DrupalNode.activities($1)
-                        .order("node_revisions.timestamp DESC")
+                        .order("node.cached_likes DESC")
       nodes.each do |node|
         output += '<tr>'
         output += '  <td class="title"><a href="' + node.path + '">' + node.title + '</a></td>'
