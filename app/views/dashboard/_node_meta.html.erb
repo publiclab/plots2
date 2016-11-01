@@ -4,11 +4,8 @@
 <%= distance_of_time_in_words(node.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
 <% node = node.parent if node.is_a?(DrupalNodeRevision) %>
 <span class="">
-  <% if params[:controller] == 'questions' %>
     | <a href="<%= node.path(:question) %>#answers"><i class="fa fa-comments-o" style="color: #DAA583;"></i> <%= node.answers.length %></a>
-  <% else %> 
     | <a href="<%= node.path %>#comments"><i class="fa fa-comment-o"></i> <%= node.comment_count %></a>
-  <% end %>
     <span class="hidden-xs hidden-sm">| <i class="fa fa-eye"></i> <%= number_with_delimiter(node.totalcount) %></span>
     | <i style="<% if node.likes > 0 %>color:#db4;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
   <% if params[:mod] %>| <a href="#"><i class="fa fa-ban"></i></a><% end %>
