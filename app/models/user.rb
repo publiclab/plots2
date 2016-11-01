@@ -1,7 +1,7 @@
 class UniqueUsernameValidator < ActiveModel::Validator
   def validate(record)
     if DrupalUsers.find_by_name(record.username) && record.openid_identifier.nil?
-      record.errors[:base] << "That username is already taken. If this is your username, you can simply log in to this site."  
+      record.errors[:base] << "That username is already taken. If this is your username, you can simply log in to this site."
     end
   end
 end
@@ -74,9 +74,9 @@ class User < ActiveRecord::Base
   def destroy_drupal_user
     self.drupal_user.destroy
   end
- 
+
   # this is ridiculous. We need to store uid in this model.
-  # ...migration is in progress. start getting rid of these calls... 
+  # ...migration is in progress. start getting rid of these calls...
   def drupal_user
     DrupalUsers.find_by_name(self.username)
   end
@@ -113,7 +113,7 @@ class User < ActiveRecord::Base
     self.drupal_user.lon
   end
 
-  # we can revise/improve this for m2m later... 
+  # we can revise/improve this for m2m later...
   def has_role(r)
     self.role == r
   end
@@ -179,7 +179,7 @@ class User < ActiveRecord::Base
     streak = 0
     wiki_edit_count = 0
     (0..span).each do |day|
-      days[day] = DrupalNodeRevision.joins(:drupal_node).where(:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i).where("node.type != ?", 'note').count 
+      days[day] = DrupalNodeRevision.joins(:drupal_node).where(:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i).where("node.type != ?", 'note').count
       break if days[day] == 0
       streak+=1
       wiki_edit_count+=days[day]
@@ -240,6 +240,10 @@ class User < ActiveRecord::Base
     else
       "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(self.email)}"
     end
+  end
+
+  def questions
+    DrupalNode.questions.where(status: 1, uid: self.id)
   end
 
   private
