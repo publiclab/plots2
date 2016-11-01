@@ -8,6 +8,10 @@ class QuestionsController < ApplicationController
     @questions = @questions.order('node.nid DESC')
                            .paginate(:page => params[:page], :per_page => 30)
   end
+  
+  def new
+    render "editor/question"
+  end
 
   def show
     if params[:author] && params[:date]

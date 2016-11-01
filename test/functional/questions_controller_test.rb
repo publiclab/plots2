@@ -159,4 +159,10 @@ class QuestionsControllerTest < ActionController::TestCase
     assert (questions & expected).present?
     assert !(questions & [node(:question2)]).present?
   end
+  
+  test "/questions/new form loads" do
+    UserSession.create(rusers(:bob))
+    get :new
+    assert_response :success
+  end
 end
