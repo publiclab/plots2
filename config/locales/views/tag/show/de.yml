@@ -17,3 +17,4 @@ de:
       maps: "Karten"
       no_results_found: "Keine Ergebnisse gefunden; versuchen, für '<b>%{tag}</b>' Suche"
       try_advanced_search: "Oder versuchen Sie eine <a href='%{url1}'>erweiterte Suche</a>"
+      contributors: "Mitwirkende"
