@@ -24,7 +24,7 @@
           data: notes,
           hoverable: true,
  //         label: "Research Notes",
-          bars: { show: true, 
+          bars: { show: true,
                   lineWidth: 0,
                   fillColor: "#08f",
                   barWidth: 0.5
@@ -63,19 +63,20 @@
     <li<% if @node_type == "questions" %> class="active"<% end %>><a href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
     <li<% if @node_type == "wiki" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
     <li<% if @node_type == "maps" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
+     <li<% if @node_type == "contributors" %> class="active"<% end %>><li><a href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %></a></li>
   </ul>
 
   <br />
 
   <div class="tab-content">
 
-    <% if @node_type == "note" %> 
+    <% if @node_type == "note" %>
       <div class="tab-pane active" id="notes">
         <% if @notes.nil? || @notes.length == 0 %>
           <p><%= raw t('tag.show.no_results_found', :tag => params[:id]) %>:</p>
-   
+
           <%= render :partial => "searches/search" %>
-   
+
           <p><%= raw t('tag.show.try_advanced_search', :url1 => params[:id]) %></p>
         <% else %>
           <%= render :partial => "notes/notes" %>
@@ -83,19 +84,19 @@
       </div>
     <% end %>
 
-    <% if @node_type == "questions" %> 
+    <% if @node_type == "questions" %>
       <div class="tab-pane active" id="questions">
         <%= render :partial => "questions/questions" %>
       </div>
     <% end %>
 
-    <% if @node_type == "wiki" %> 
+    <% if @node_type == "wiki" %>
       <div class="tab-pane active" id="wikis">
         <%= render :partial => "wiki/wikis" %>
       </div>
     <% end %>
 
-    <% if @node_type == "maps" %> 
+    <% if @node_type == "maps" %>
       <div class="tab-pane active" id="wikis">
         <%= render :partial => "map/maps" %>
       </div>
