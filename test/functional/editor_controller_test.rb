@@ -48,7 +48,7 @@ class EditorControllerTest < ActionController::TestCase
         assert_response :redirect
     assert_redirected_to '/questions/new'
     assert_select "h3", "Ask a question of the community"
-    # assert_select "input#taginput[value=?]", "question:question,one"
+    assert_select "input#taginput[value=?]", "question:question,one"
   end
 
   test "should show title form input if title parameter present" do
