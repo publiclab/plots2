@@ -54,7 +54,7 @@
   <hr />
 
   <p>
-    <a class="btn btn-default btn-sm btn-block" href="/feed/<%= @user.name %>.rss"><i class="fa fa-rss" style="color:orange;"></i> <%= t('users.profile.rss_feed_for') %> <%= @user.name %></a> 
+    <a class="btn btn-default btn-sm btn-block" href="/feed/<%= @user.name %>.rss"><i class="fa fa-rss" style="color:orange;"></i> <%= t('users.profile.rss_feed_for') %> <%= @user.name %></a>
     <% if current_user && current_user.uid == @user.uid %>
       <a href="/profile/<%= @user.name %>/edit" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_profile') %></a>
     <% end %>
@@ -100,7 +100,7 @@
       <div class="col-md-3 col-md-offset-2">
         <h4>Following</h4>
       </div>
-      
+
       <br />
       <div class="col-md-3 col-md-offset-2">
         <h5><b><%= link_to @profile_user.followers.count, followers_path(id: @profile_user.username) %></b></h5>
@@ -136,7 +136,7 @@
 
   <div id="note-graph" style="height:100px;display:none;margin-bottom:16px;"></div>
 
-  <h3 style="margin-top:0;"><%= @user.name %> 
+  <h3 style="margin-top:0;"><%= @user.name %>
     <small>
       <%= @user.node_count %> <%= raw t('users.profile.notes_and_edits', :url1 => "/notes/author/"+@user.name) %>
       <% if current_user && current_user.role == "admin" %> | <%= @user.email %><% end %>
@@ -153,7 +153,7 @@
   <ul class="nav nav-tabs">
     <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words')) %></small></span>
     <li class="active"><a href="#research" data-toggle="tab"><%= t('users.profile.research') %></a></li>
-    <li><a href="#questions" data-toggle="tab"><i class="fa fa-comments"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %></span></a></li>
+  <li><a href="#questions" data-toggle="tab"><i class="fa fa-comments"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %> (<%= DrupalNode.questions.where(status: 1, uid: @user.id).count %>)</span></a></li>
     <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.comments') %></span></a></li>
     <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
     <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.barnstars') %></span> (<%= @user.user.barnstars.length %>)</a></li>
@@ -172,12 +172,12 @@
         <a href="#asked" class="btn btn-default active" data-toggle="tab">Asked</a>
         <a href="#answered" class="btn btn-default" data-toggle="tab">Answered</a>
       </div>
-      
+
       <div class="tab-content">
         <div class="tab-pane active" id="asked">
           <%= render :partial => "questions/questions" %>
         </div>
-      
+
         <div class="tab-pane" id="answered">
           <%= render :partial => "users/answered" %>
         </div>
@@ -206,7 +206,7 @@
         <hr />
       <% end %>
       <% end %>
-    </div>    
+    </div>
   </div>
 
   <hr />
@@ -236,4 +236,3 @@
 </script>
 <%= stylesheet_link_tag "dashboard" %>
 <%= javascript_include_tag "dashboard" %>
-
