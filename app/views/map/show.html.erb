@@ -57,7 +57,7 @@
 
   <hr />
 
-  <% unless @node.map.notes.empty? %>
+  <% unless @node.map.notes.nil? %>
   <h3>Notes</h3>
   <p><%= raw RDiscount.new(auto_link(@node.map.notes, :sanitize => false)).to_html %></p>
 

@@ -260,4 +260,9 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:comments)
     assert_template partial: 'comments/_comments'
   end
+
+  test "profiles for legacy users" do
+    user = users(:legacy_user)
+    assert_response :success
+  end
 end

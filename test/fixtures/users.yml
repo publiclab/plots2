@@ -57,3 +57,9 @@ test_user:
   name: testuser
   status: 1
   mail: testuser@publiclab.org
+
+legacy_user:
+  uid: 11
+  name: legacy
+  status: 1
+  mail: legacy@publiclab.org

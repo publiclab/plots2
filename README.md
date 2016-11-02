@@ -19,7 +19,7 @@ Some key features include:
 
 ## Contributing
 
-We welcome contributions, and are especially interested in welcoming [first time contributors](#first-time). Read more about [how to contribute](#developers) below!
+We welcome contributions, and are especially interested in welcoming [first time contributors](#first-time). Read more about [how to contribute](#developers) below! We especially welcome contributions from people from groups underrepresented in free and open source software!
 
 ### Code of Conduct
 
@@ -186,6 +186,13 @@ To add new languages or for additional support, please write to plots-dev@google
 Swagger-generated API documentation can be found at:
 
 https://publiclab.org/api/swagger_doc.json
+
+Per-model API endpoints are:
+
+* Profiles: https://publiclab.org/api/srch/profiles?srchString=foo
+* Questions: https://publiclab.org/api/srch/questions?srchString=foo
+* Tags: https://publiclab.org/api/srch/tags?srchString=foo
+* Notes: https://publiclab.org/api/srch/notes?srchString=foo
 
 ****
 

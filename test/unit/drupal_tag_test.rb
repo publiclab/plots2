@@ -26,6 +26,16 @@ class DrupalTagTest < ActiveSupport::TestCase
     assert (subscribers.to_a.collect(&:last).map { |o| o[:user]}).include?(tag_selection(:awesome).user)
   end
 
+  test "creating a tag with a bad uid" do
+    community_tag = DrupalNodeCommunityTag.new({
+      uid: 1343151513,
+      tid: tags(:awesome).tid,
+      nid: node(:one).nid
+    })
+    assert community_tag.save!
+    assert_nil community_tag.author
+  end
+
   test "tag weekly tallies" do
     tag = tags(:awesome)
     tallies = tag.weekly_tallies

@@ -26,4 +26,5 @@ class MapControllerTest < ActionController::TestCase
       date: map.created_at.strftime("%m-%d-%Y")
     assert_response :success
   end
+
 end
