@@ -25,7 +25,7 @@ class UsersController < ApplicationController
             @user.add_to_lists(['publiclaboratory'])
             flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
             flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
-            session[:openid_return_to] = nil 
+            session[:openid_return_to] = nil
             redirect_to "/dashboard"
           end
         else
@@ -116,8 +116,7 @@ class UsersController < ApplicationController
                        .page(params[:page])
                        .order("nid DESC")
                        .where(status: 1, uid: @user.uid)
-    @questions = DrupalNode.questions
-                           .where(status: 1, uid: @user.uid)
+    @questions = @user.user.questions
                            .order('node.nid DESC')
                            .paginate(:page => params[:page], :per_page => 30)
     questions = DrupalNode.questions
@@ -135,10 +134,10 @@ class UsersController < ApplicationController
       else
         flash[:error] = I18n.t('users_controller.user_has_been_banned')
         redirect_to "/"
-      end 
+      end
     elsif @user.status == 5
       flash.now[:warning] = I18n.t('users_controller.user_has_been_moderated')
-    end 
+    end
   end
 
   def likes
@@ -169,7 +168,7 @@ class UsersController < ApplicationController
         render :layout => false
         response.headers["Content-Type"] = "application/xml; charset=utf-8"
         response.headers["Access-Control-Allow-Origin"] = "*"
-      } 
+      }
     end
   end
 
@@ -199,7 +198,7 @@ class UsersController < ApplicationController
         flash[:error] = I18n.t('users_controller.password_reset_failed_no_user').html_safe
         redirect_to "/"
       end
-      
+
     elsif params[:email]
       user = User.find_by_email params[:email]
       if user
@@ -227,7 +226,7 @@ class UsersController < ApplicationController
       @user.photo = params[:photo]
       if @user.save!
         if request.xhr?
-          render :json => { :url => @user.photo_path } 
+          render :json => { :url => @user.photo_path }
         else
           flash[:notice] = I18n.t('users_controller.image_saved')
           redirect_to @node.path
