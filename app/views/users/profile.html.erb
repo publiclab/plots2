@@ -156,7 +156,7 @@
   <li><a href="#questions" data-toggle="tab"><i class="fa fa-comments"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %> (<%= DrupalNode.questions.where(status: 1, uid: @user.id).count %>)</span></a></li>
     <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.comments') %></span></a></li>
     <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
-    <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.barnstars') %></span> (<%= @user.user.barnstars.length %>)</a></li>
+    <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.barnstars') %></span> (<%= @user.user.try(:barnstars).try(:length) %>)</a></li>
   </ul>
 
   <br />

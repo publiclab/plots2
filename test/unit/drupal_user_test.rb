@@ -34,4 +34,11 @@ class DrupalUserTest < ActiveSupport::TestCase
     assert        users(:lurker).first_time_poster
   end
 
+  test "user.barnstars" do
+    user = users(:bob)
+    assert_equal 0, user.user.barnstars.length
+    user = users(:legacy_user)
+    assert_nil user.user
+  end
+
 end

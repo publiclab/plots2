@@ -19,7 +19,7 @@ Some key features include:
 
 ## Contributing
 
-We welcome contributions, and are especially interested in welcoming [first time contributors](#first-time). Read more about [how to contribute](#developers) below!
+We welcome contributions, and are especially interested in welcoming [first time contributors](#first-time). Read more about [how to contribute](#developers) below! We especially welcome contributions from people from groups underrepresented in free and open source software!
 
 ### Code of Conduct
 

@@ -29,7 +29,7 @@ class DrupalNodeCommunityTag < ActiveRecord::Base
   end
 
   def user
-    DrupalUsers.find(self.uid).user
+    DrupalUsers.find_by_uid(self.uid).try(:user)
   end
 
   def drupal_user
