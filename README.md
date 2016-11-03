@@ -35,10 +35,8 @@ This is a quick installation for use with the cloud environment https://c9.io - 
 2. Fork this repository to your own GitHub account, creating a `yourname/plots2` project.
 3. Name your project, then enter `yournameplots2` in the "Clone from Git or Mercurial URL" field, and press **Create Workspace** 
 4. In the command line prompt at the bottom of the page, type `. ./install_cloudnine.sh` and press enter.
-5. Enter your username when prompted, run bundle install.
-6. To set up the database run 'rake db:setup'.
-6. Run `rails s -b $IP -p $PORT` when it's done.
-7. You're done! Go to the URL shown!
+5. Enter your username when prompted, and let it set things up.
+6. Run `rails s -b $IP -p $PORT` when it's done, or `rake test` to run your tests!
 
 ====
 
