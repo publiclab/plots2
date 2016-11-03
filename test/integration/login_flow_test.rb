@@ -31,7 +31,9 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_equal '/post?tags=question%3Aquestion&template=question&title=What&redirect=question', request.fullpath
     assert_select "input#title" do
-      assert_select "[value=?]", "What"
+    assert_response :redirect
+    assert_redirected_to '/questions/new'
+    assert_select "[value=?]", "What"
     end
   end
 
