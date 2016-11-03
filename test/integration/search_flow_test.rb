@@ -33,10 +33,10 @@ class SearchFlowTest < ActionDispatch::IntegrationTest
 
     assert_response :success
 
-    # https://publiclab.org/searches?search=spec
+    # https://publiclab.org/searches?key_words=spec
 
     post '/search',
-         search: 'spec'
+         key_words: 'spectrom'
 
     assert_response :success
 
