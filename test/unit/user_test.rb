@@ -28,7 +28,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "user questions" do
     user = rusers(:jeff)
-    assert user.questions.count.count > 0
+    assert user.questions.length > 0
   end
 
   test "user.notes and first time user" do
