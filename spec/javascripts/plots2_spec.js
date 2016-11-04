@@ -36,7 +36,7 @@ describe("Plots2", function() {
       if   (object.url == '/likes/node/1/create') response = "4";
       else response = 'none';
 
-      // check this if you have trouble faking a server response: 
+      // check this if you have trouble faking a server response:
       if (response != 'none'){
         console.log('Faked response to:', object.url);
         console.log(response);
@@ -53,7 +53,7 @@ describe("Plots2", function() {
 
     $('#like-button-1').trigger('click');
 
-    // should trigger the following and our ajaxSpy should return a fake response of "4": 
+    // should trigger the following and our ajaxSpy should return a fake response of "4":
     // jQuery.getJSON("/likes/node/1/create", {}, function() { ...
     // then triggering like.js code
 
@@ -96,6 +96,10 @@ describe("Plots2", function() {
 
     $('#answer-0-expand').trigger('click');
     expect($('#answer-0-expand').css('display')).toEqual('none');
-  })
+  });
+
+  it("loads up i18n-js library properly", function() {
+    expect(I18n.t('js.dashboard.selected_updates')).toBe('Selected updates')
+  });
 
 });
