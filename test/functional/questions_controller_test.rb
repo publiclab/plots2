@@ -162,7 +162,6 @@ class QuestionsControllerTest < ActionController::TestCase
   
   test "/questions/new form loads" do
     get :new
-  
     assert_response :success
   end
 end
