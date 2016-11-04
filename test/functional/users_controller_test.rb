@@ -78,7 +78,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should get profile" do
-    get :profile, id: DrupalUsers.where(status: 1).last.name
+    get :profile, id: DrupalUsers.where(status: 1).first.name
     assert_response :success
   end
 
@@ -104,7 +104,7 @@ class UsersControllerTest < ActionController::TestCase
     user_attributes = user.attributes
     user_attributes[:password] = 'newpass'
 
-    get :reset, key: key, user: user_attributes 
+    get :reset, key: key, user: user_attributes
 
     saved_user = User.find(user.id)
 
@@ -159,20 +159,20 @@ class UsersControllerTest < ActionController::TestCase
     assert user.location_privacy
     assert_equal "Your preference has been saved", flash[:notice]
   end
-  
+
   test "should choose I18n for users controller" do
     available_testing_locales.each do |lang|
         old_controller = @controller
         @controller = SettingsController.new
-        
+
         get :change_locale, :locale => lang.to_s
-        
+
         @controller = old_controller
-        
+
         UserSession.create(rusers(:jeff))
         user = rusers(:jeff)
         post :privacy, location_privacy: true, :id => user.username
-    
+
         assert_equal I18n.t('users_controller.preference_saved'), flash[:notice]
     end
   end
