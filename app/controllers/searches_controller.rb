@@ -86,8 +86,13 @@ class SearchesController < ApplicationController
     end
 
     def search_params
-      params.require(:search).permit(:key_words, :main_type, :note_type,
-                                     :min_date, :max_date, :created_by, :language)
+      params.permit( :key_words,
+                     :main_type,
+                     :note_type,
+                     :min_date,
+                     :max_date,
+                     :created_by,
+                     :language )
     end
 
 end

@@ -64,7 +64,7 @@
   <hr />
   <% end %>
 
-  <% unless @node.map.notes.empty? %>
+  <% unless @node.map.notes.nil? %>
   <h3>Cartographer notes</h3>
   <p><%= raw RDiscount.new(auto_link(@node.map.cartographer_notes, :sanitize => false)).to_html %></p>
   <hr />
