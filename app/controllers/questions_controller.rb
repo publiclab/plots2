@@ -10,7 +10,7 @@ class QuestionsController < ApplicationController
   end
   
   def new
-    render "questions/new"
+    render "editor/question"
   end
 
   def show
