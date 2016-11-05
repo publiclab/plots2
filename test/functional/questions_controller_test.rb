@@ -161,6 +161,7 @@ class QuestionsControllerTest < ActionController::TestCase
   end
   
   test "/questions/new form loads" do
+    UserSession.create(rusers(:bob))
     get :new
     assert_response :success
   end
