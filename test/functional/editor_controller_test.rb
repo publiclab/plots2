@@ -45,8 +45,10 @@ class EditorControllerTest < ActionController::TestCase
         tags: 'question:question,one',
         template: 'question',
         redirect: 'question'
-    assert_select "h3", "Ask a question of the community"
-    assert_select "input#taginput[value=?]", "question:question,one"
+      assert_response :redirect
+      assert_redirected_to '/questions/new'
+      # assert_select "h3", "Ask a question of the community"
+      # assert_select "input#taginput[value=?]", "question:question,one"
   end
 
   test "should show title form input if title parameter present" do
@@ -55,7 +57,7 @@ class EditorControllerTest < ActionController::TestCase
         title: 'New Question'
     assert_response :success
     assert_select "input#title" do
-      assert_select "[value=?]", "New Question"
+    assert_select "[value=?]", "New Question"
     end
   end
 end
