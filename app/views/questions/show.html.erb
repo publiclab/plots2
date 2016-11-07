@@ -59,11 +59,7 @@
         <div class="img-circle"></div> 
       <% end %>
     </div>
-    <div class="inline" id="question-comment-form">
-      <form id="answer-0-comment-form" class="form-horizontal" action="/comment/create/<%= @node.id%>" data-remote="true">
-        <%= render partial: "questions/form" %>  
-      </form>
-    </div>
+    
     <% else %>
       <p><a href="/login">Log in</a> to comment</p>  
     <% end %>
@@ -73,6 +69,11 @@
       <%= render partial: "questions/comment", locals: { comment: comment, answer_id: 0 } %>
     <% end %>
     
+    <div class="inline" id="question-comment-form">
+      <form id="answer-0-comment-form" class="form-horizontal" action="/comment/create/<%= @node.id%>" data-remote="true">
+        <%= render partial: "questions/form" %>  
+      </form>
+    </div>
   </div>
 
   <%= render :partial => "questions/answers" %>
