@@ -51,7 +51,7 @@ Our production application runs on mysql, but for development, sqlite3 is suffic
 * Fedora/Red Hat/CentOS: `sudo yum install sqlite` -- you may need `sqlite-devel` as well.
 
 
-### Solr search engine
+### Solr search engine (optional)
 
 [Solr](https://lucene.apache.org/solr/) is a standalone search server. You put documents in it (called "indexing") via JSON, XML, CSV or binary over HTTP. You query it via HTTP GET and receive JSON, XML, CSV or binary results. Solr enables powerful matching capabilities including phrases, wildcards, joins, grouping and much more across any data type.
 We use the Solr search engine via the [sunspot gem](https://github.com/sunspot/sunspot) and using an adapter called [sunspot_rails](https://github.com/outoftime/sunspot_rails) to communicate to solr search server through our rails app.
@@ -66,7 +66,7 @@ And start up solr with:
 However, to ease installation, we've [made Java optional](https://github.com/publiclab/plots2/issues/832) for basic testing using `rake test`. So if you are just starting out you can skip this step.
 
 
-### Image libraries
+### Image libraries (optional)
 
 If you are just developing and don't plan to do work with image uploading, you may not need the following, but otherwise:
 
@@ -109,7 +109,7 @@ Once NPM is installed, you should be able to run:
 
 **WARNING:** Please refrain from using `sudo npm` as it's not only a bad practice, but may also put your security at a risk. For more on this, read https://pawelgrzybek.com/fix-priviliges-and-never-again-use-sudo-with-npm/
 
-### phantomjs for javascript tests
+### phantomjs for javascript tests (optional)
 
 We are using `jasmine-rails` gem for the optional javascript tests (run with `rake spec:javascript`) which require `phantomjs` for headless testing (i.e. on the commandline, not with a browser). Generally the **phantomjs gem** gets installed along with the `jasmine-rails` gem. If the package installation for the gem fails you can use [this script](https://github.com/codeship/scripts/blob/master/packages/phantomjs.sh) to install it.
 
