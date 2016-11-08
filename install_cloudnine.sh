@@ -6,7 +6,7 @@ sudo apt-get update
 sudo apt-get -y install imagemagick ruby-rmagick
 npm install -g bower
 bower install
-bundle install --without production
+bundle install --without production mysql
 cp db/schema.rb.example db/schema.rb
 cp config/database.yml.sqlite.example config/database.yml
 rake db:setup
