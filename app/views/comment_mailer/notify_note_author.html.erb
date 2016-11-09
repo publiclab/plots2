@@ -29,4 +29,8 @@ Do NOT reply to this email; click this link to respond:
 
 <p>Report abuse to: moderators@<%= ActionMailer::Base.default_url_options[:host] %></p>
 
+<% cache('feature_email-footer') do %> 
+  <%= feature('email-footer') %>
+<% end %>
+
 </div>

@@ -5,3 +5,7 @@
 <p>View your answer here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @answer.node.path(:question) %>#a<%= @answer.id %></p> 
 
 <p>To change your email preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.</p>
+
+<% cache('feature_email-footer') do %> 
+  <%= feature('email-footer') %>
+<% end %>

@@ -12,4 +12,8 @@ The barnstar will appear on your profile, at https://<%= ActionMailer::Base.defa
 
 <p>Report abuse to: moderators@<%= ActionMailer::Base.default_url_options[:host] %></p>
 
+<% cache('feature_email-footer') do %> 
+  <%= feature('email-footer') %>
+<% end %>
+
 </div>
