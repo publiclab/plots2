@@ -46,7 +46,11 @@ class EditorControllerTest < ActionController::TestCase
         template: 'question',
         redirect: 'question'
       assert_response :redirect
+<<<<<<< HEAD
       assert_redirected_to '/questions/new'
+=======
+      assert_redirected_to '/questions/new?redirect=question&tags=question%3Aquestion%2Cone&template=question'
+>>>>>>> 2e77bd95c9873daa8608b348e891c27daf34ac2f
       # assert_select "h3", "Ask a question of the community"
       # assert_select "input#taginput[value=?]", "question:question,one"
   end

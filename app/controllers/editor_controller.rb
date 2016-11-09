@@ -12,7 +12,11 @@ class EditorController < ApplicationController
       })
       flash[:error] = "The image could not be saved." unless @image.save!
     end
+<<<<<<< HEAD
     redirect_to '/questions/new' if params[:tags] && params[:tags].include?("question:")
+=======
+    redirect_to "/questions/new?#{request.env['QUERY_STRING']}" if params[:tags] && params[:tags].include?("question:")
+>>>>>>> 2e77bd95c9873daa8608b348e891c27daf34ac2f
   end
 
   def rich
