@@ -1,4 +1,4 @@
-<% unless node.is_a?(DrupalComment) || node.is_a?(DrupalNodeRevision) || node.type == 'page' %>
+<% unless node.is_a?(Comment) || node.is_a?(DrupalNodeRevision) || node.type == 'page' %>
   <%= t('dashboard.dashboard.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
 <% end %>
 <%= distance_of_time_in_words(node.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>

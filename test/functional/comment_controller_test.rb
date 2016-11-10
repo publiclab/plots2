@@ -14,7 +14,7 @@ class CommentControllerTest < ActionController::TestCase
 
   test "should create note comments" do
     UserSession.create(rusers(:bob))
-    assert_difference 'DrupalComment.count' do
+    assert_difference 'Comment.count' do
       xhr :post, :create,
                  id: node(:one).nid,
                  body: "Notes comment"
@@ -26,7 +26,7 @@ class CommentControllerTest < ActionController::TestCase
 
   test "should create question comments" do
     UserSession.create(rusers(:bob))
-    assert_difference 'DrupalComment.count' do
+    assert_difference 'Comment.count' do
       xhr :post, :create,
                  id: node(:question).nid,
                  body: "Questions comment",
@@ -39,7 +39,7 @@ class CommentControllerTest < ActionController::TestCase
 
   test "should show error if node comment not saved" do
     UserSession.create(rusers(:bob))
-    assert_no_difference 'DrupalComment.count' do
+    assert_no_difference 'Comment.count' do
       xhr :post, :create,
                  id: node(:one).nid
     end
@@ -49,7 +49,7 @@ class CommentControllerTest < ActionController::TestCase
 
   test "should create answer comments" do
     UserSession.create(rusers(:bob))
-    assert_difference 'DrupalComment.count' do
+    assert_difference 'Comment.count' do
       xhr :post, :answer_create,
                  aid: answers(:one).id,
                  body: "Answers comment"
@@ -61,7 +61,7 @@ class CommentControllerTest < ActionController::TestCase
 
   test "should show error if answer comment not saved" do
     UserSession.create(rusers(:bob))
-    assert_no_difference 'DrupalComment.count' do
+    assert_no_difference 'Comment.count' do
       xhr :post, :answer_create,
                  aid: answers(:one).id
     end
@@ -137,7 +137,7 @@ class CommentControllerTest < ActionController::TestCase
   test "should delete note comment if user is comment author" do
     UserSession.create(rusers(:bob))
     comment = comments(:first)
-    assert_difference 'DrupalComment.count', -1 do
+    assert_difference 'Comment.count', -1 do
       xhr :get, :delete,
                 id: comment.id
     end
@@ -148,7 +148,7 @@ class CommentControllerTest < ActionController::TestCase
   test "should delete note comment if user is note author" do
     UserSession.create(rusers(:bob))
     comment = comments(:second)
-    assert_difference 'DrupalComment.count', -1 do
+    assert_difference 'Comment.count', -1 do
       xhr :get, :delete,
                 id: comment.id
     end
@@ -159,7 +159,7 @@ class CommentControllerTest < ActionController::TestCase
   test "should delete note comment if user is admin" do
     UserSession.create(rusers(:admin))
     comment = comments(:first)
-    assert_difference 'DrupalComment.count', -1 do
+    assert_difference 'Comment.count', -1 do
       xhr :get, :delete,
                 id: comment.id
     end
@@ -170,7 +170,7 @@ class CommentControllerTest < ActionController::TestCase
   test "should delete note comment if user is comment moderator" do
     UserSession.create(rusers(:moderator))
     comment = comments(:first)
-    assert_difference 'DrupalComment.count', -1 do
+    assert_difference 'Comment.count', -1 do
       xhr :get, :delete,
                 id: comment.id
     end
@@ -181,7 +181,7 @@ class CommentControllerTest < ActionController::TestCase
   test "should not delete note comment if user is neither of the above" do
     UserSession.create(rusers(:newcomer))
     comment = comments(:first)
-    assert_no_difference 'DrupalComment.count' do
+    assert_no_difference 'Comment.count' do
       get :delete,
           id: comment.id
     end
@@ -192,7 +192,7 @@ class CommentControllerTest < ActionController::TestCase
   test "should delete question/answer comment if user is comment author" do
     UserSession.create(rusers(:bob))
     comment = comments(:first)
-    assert_difference 'DrupalComment.count', -1 do
+    assert_difference 'Comment.count', -1 do
       xhr :get, :delete,
                 id: comment.id,
                 type: 'question'

@@ -46,7 +46,7 @@ blog_post_revisions = DrupalNodeRevision.create! "nid"=>blog_post.nid,
 blog_post_tag = DrupalTag.create! "name"=>"blog", "description"=>"", "weight"=>0
 blog_post_community_tag = DrupalNodeCommunityTag.create! "tid"=>blog_post_tag.id,
   "nid"=>blog_post.id, "uid"=>admin.id
-blog_post_comment = DrupalComment.create! "nid"=>blog_post.id, "uid"=>admin.id,
+blog_post_comment = Comment.create! "nid"=>blog_post.id, "uid"=>admin.id,
   "subject"=>"", "comment"=>"Example Comment\r\n", "hostname"=>"", "status"=>0,
   "format"=>1, "thread"=>"01/"
 

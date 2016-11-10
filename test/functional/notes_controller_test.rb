@@ -264,7 +264,7 @@ class NotesControllerTest < ActionController::TestCase
   #end
 
   test "should load iframe url in comments" do
-    comment = DrupalComment.new({
+    comment = Comment.new({
       nid: node(:one).nid,
       uid: rusers(:bob).id,
       thread: "01/"
@@ -386,10 +386,10 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "should assign correct value to graph_comments on GET stats" do
-    DrupalComment.delete_all
-    DrupalComment.create!({comment: 'blah', timestamp: Time.now() - 1})
+    Comment.delete_all
+    Comment.create!({comment: 'blah', timestamp: Time.now() - 1})
     get :stats
-    assert_equal assigns(:graph_comments), DrupalComment.comment_weekly_tallies(52, Time.now()).to_a.sort.to_json
+    assert_equal assigns(:graph_comments), Comment.comment_weekly_tallies(52, Time.now()).to_a.sort.to_json
   end
 
   test "should redirect to question path if node is a question when visiting shortlink" do

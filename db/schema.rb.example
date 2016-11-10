@@ -199,7 +199,7 @@ ActiveRecord::Schema.define(:version => 20161122154603) do
     t.integer "tnid",                                      :default => 0,  :null => false
     t.integer "translate",                                 :default => 0,  :null => false
     t.integer "cached_likes",                              :default => 0
-    t.integer "drupal_comments_count",                     :default => 0
+    t.integer "comments_count",                     :default => 0
     t.integer "drupal_node_revisions_count",               :default => 0
     t.string  "path"
     t.integer "main_image_id"
