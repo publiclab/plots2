@@ -2,7 +2,7 @@ class MapController < ApplicationController
 
   def index
     @title = "Maps"
-    @nodes = DrupalNode.paginate(:page => params[:page])
+    @nodes = DrupalNode.paginate(:page => params[:page], :per_page => 32)
                        .order("nid DESC")
                        .where(type: 'map', status: 1)
 
