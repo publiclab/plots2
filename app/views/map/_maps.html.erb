@@ -14,7 +14,6 @@
           <i class="fa fa-trash"></i>
         <% end %><% end %>
    </small></p>
-   <p><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(100) %></p>
   </div>
   <hr class="visible-xs visible-sm" />
 <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
