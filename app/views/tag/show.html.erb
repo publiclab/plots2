@@ -58,6 +58,25 @@
 
   <% unless @wildcard %><p style="clear:both;padding-top:8px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:<%= params[:id] %>&template=question&redirect=question"><i class="fa fa-white icon-question-circle"></i> <%= raw t('tag.show.ask_question', :tag => params[:id]) %></a> <%= raw t('tag.show.or_subscribe_to_answer', :url1 => "/subscribe/tag/question:"+params[:id]) %></p><% end %>
 
+  <% if @wiki %>
+    <% if @wiki.main_image %>
+      <div class="row">
+        <div class="col-md-4">
+          <%= image_tag(@wiki.main_image.path, class: "img-responsive") %>
+        </div>
+        <div class="col-md-8">
+          <h2><%= @wiki.latest.title %></h2>
+          <%= @wiki.latest.render_body.split('\n').first.html_safe %>
+        </div>
+      </div>
+    <% else %>
+      <h2><%= @wiki.latest.title %></h2>
+      <%= @wiki.latest.render_body.split('\n').first.html_safe %>
+    <% end %>
+
+    
+  <% end %>
+ 
   <ul class="nav nav-tabs" style="margin-top:10px;">
     <% unless params[:id].match("question:") %><li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <%= raw t('tag.show.research_notes') %></a></li><% end %>
     <li<% if @node_type == "questions" %> class="active"<% end %>><a href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
