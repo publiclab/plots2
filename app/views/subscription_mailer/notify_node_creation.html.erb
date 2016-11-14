@@ -26,4 +26,8 @@
 
 <p>Report spam and abuse to: <a href="mailto:moderators@<%= ActionMailer::Base.default_url_options[:host] %>">moderators@<%= ActionMailer::Base.default_url_options[:host] %></a></p>
 
+<% cache('feature_email-footer') do %> // <== this caches and uses a cached version of the feature, which is expired when the feature is edited
+  <%= feature('email-footer') %>
+<% end %>
+
 </div>
