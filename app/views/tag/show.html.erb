@@ -45,7 +45,7 @@
         <div class="col-md-8">
           <h2><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h2>
           <%= (@wiki.latest.render_body.split('</p>').first + '</p>').html_safe %>
-          <%= link_to("Read More", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('</p>').length > 1 %>
+          <%= link_to("Read More", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('</p>').length > 2 %>
         </div>
       </div>
     <% else %>
