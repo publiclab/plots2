@@ -1,5 +1,25 @@
 <%= render :partial => "sidebar/related" %>
 <div class="col-md-9">
+
+  <% if @wiki %>
+    <% if @wiki.main_image %>
+      <div class="row">
+        <div class="col-md-4">
+          <%= image_tag(@wiki.main_image.path, class: "img-responsive") %>
+        </div>
+        <div class="col-md-8">
+          <h2><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h2>
+          <%= (@wiki.latest.render_body.split('</p>').first + '</p>').html_safe %>
+          <%= link_to("Read More", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('</p>').length > 2 %>
+        </div>
+      </div>
+    <% else %>
+      <h2><%= @wiki.latest.title %></h2>
+      <%= @wiki.latest.render_body.split('\n').first.html_safe %>
+      <%= link_to("Read More", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('\n').length > 1 %>
+    <% end %>
+  <% end %>
+
   <% if @tags.first %>
   <div id="note-graph" style="height:100px;"></div>
 
@@ -34,25 +54,6 @@
 
   })()
   </script>
-  <% end %>
-
-  <% if @wiki %>
-    <% if @wiki.main_image %>
-      <div class="row">
-        <div class="col-md-4">
-          <%= image_tag(@wiki.main_image.path, class: "img-responsive") %>
-        </div>
-        <div class="col-md-8">
-          <h2><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h2>
-          <%= (@wiki.latest.render_body.split('</p>').first + '</p>').html_safe %>
-          <%= link_to("Read More", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('</p>').length > 2 %>
-        </div>
-      </div>
-    <% else %>
-      <h2><%= @wiki.latest.title %></h2>
-      <%= @wiki.latest.render_body.split('\n').first.html_safe %>
-      <%= link_to("Read More", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('\n').length > 1 %>
-    <% end %>
   <% end %>
 
   <h3><%= raw t('tag.show.notes_tagged', :tag => params[:id]) %><% unless @tags.try(:first).try(:parent).nil? %> <small>parent: <%= @tags.first.parent %></small><% end %></h3>
