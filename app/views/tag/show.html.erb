@@ -3,7 +3,7 @@
 
   <% if @wiki %>
     <% if @wiki.main_image %>
-      <div class="row">
+      <div class="row" id="wiki-content">
         <div class="col-md-4">
           <%= image_tag(@wiki.main_image.path, class: "img-responsive") %>
         </div>

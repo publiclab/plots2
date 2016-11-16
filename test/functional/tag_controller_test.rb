@@ -97,6 +97,15 @@ class TagControllerTest < ActionController::TestCase
     end
 
     #assert_equal assigns['tags'].length, 1
+    assert_select '#wiki-content', 0
+  end
+
+  test "should show a featured wiki page at top, if it exists" do
+    tag = tags(:test)
+
+    get :show, id: node(:organizers).slug
+
+    assert_select '#wiki-content', 1
   end
 
   test "tag widget" do
