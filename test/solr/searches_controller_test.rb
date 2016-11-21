@@ -37,11 +37,10 @@ class SearchesControllerTest < ActionController::TestCase
 
   test 'should create new search' do
     assert_difference('SearchRecord.count') do
-      post :create, search: {
+      post :create, 
         title: 'advanced search',
         main_type: 'Notes or Wiki updates',
         key_words: 'blog'
-      }
     end
     assert_equal 'Advanced search', assigns(:search).title
     assert_equal @user.id, assigns(:search).user_id
@@ -56,10 +55,10 @@ class SearchesControllerTest < ActionController::TestCase
   end
 
   test 'should update advanced search' do
-    put :update, id: @advanced_search, search: {
+    put :update, 
+      id: @advanced_search,
       key_words: 'Ujitha',
       main_type: 'User Profiles'
-    }
     assert_equal 'Advanced search', assigns(:search).title
     assert_equal '2', assigns(:search).user_id
     assert_equal 'User Profiles', assigns(:search).main_type
