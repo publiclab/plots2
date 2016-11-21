@@ -168,14 +168,20 @@ class NotesController < ApplicationController
         if params[:redirect] && params[:redirect] == 'question'
           redirect_to @node.path(:question)
         else
-          if request.xhr?
+          if request.xhr? # rich editor!
             render text: @node.path
           else
             redirect_to @node.path
           end
         end
       else
-        render :template => "editor/post"
+        if request.xhr? # rich editor!
+          errors = @node.errors
+          errors = errors.merge(@revision.errors) if @revision && @revision.errors
+          render json: errors
+        else
+          render template: "editor/post"
+        end
       end
     else
       flash.keep[:error] = I18n.t('notes_controller.you_have_been_banned').html_safe
@@ -253,8 +259,10 @@ class NotesController < ApplicationController
         end
       else
         flash[:error] = I18n.t('notes_controller.edit_not_saved')
-         if params[:rich]
-           render 'editor/rich'
+         if request.xhr? || params[:rich]
+          errors = @node.errors
+          errors = errors.to_h.merge(@revision.errors.to_h) if @revision && @revision.errors
+          render json: errors
          else
            render 'editor/post'
         end

@@ -76,7 +76,18 @@ class WikiControllerTest < ActionController::TestCase
     assert_redirected_to "/wiki/" + title.parameterize
   end
 
-  test "update wiki" do
+  test "post wiki with bad title" do
+
+    post :create, 
+         uid:   rusers(:bob).id, 
+         title: "",
+         body:  "This is fascinating documentation about balloon mapping."
+
+    assert_template "wiki/edit"
+    assert_select ".alert"
+  end
+
+  test "updating wiki" do
     wiki = node(:organizers)
     newtitle = "New Title"
 
@@ -89,6 +100,17 @@ class WikiControllerTest < ActionController::TestCase
     wiki.reload
     assert_redirected_to wiki.path
     assert_equal flash[:notice], "Edits saved."
+  end
+
+  test "updating wiki with bad title" do
+
+    post :update, 
+         id:  node(:organizers).id, 
+         uid:   rusers(:bob).id, 
+         title: ""
+
+    assert_template "wiki/edit"
+    assert_select ".alert"
   end
 
   test "update root-path (/about) wiki" do

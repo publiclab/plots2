@@ -245,6 +245,20 @@ class NotesControllerTest < ActionController::TestCase
     assert_select ".alert"
   end
 
+  test "post_note_error_no_title_xhr" do
+    UserSession.create(rusers(:bob))
+
+    xhr :post, 
+        :create,
+        body: "This is a fascinating post about a balloon mapping event.",
+        tags: "balloon-mapping,event"
+
+    assert_response :success
+    assert_not_nil @response.body
+    json = JSON.parse(@response.body)
+    assert json['title'].length > 0
+  end
+
   #def test_cannot_delete_post_if_not_yours
 
   #end
@@ -355,6 +369,20 @@ class NotesControllerTest < ActionController::TestCase
          title: node.title + ' amended'
 
     assert_response :redirect
+  end
+
+  test "returning json errors on xhr note update" do
+    user = UserSession.create(rusers(:jeff))
+
+    xhr :post, 
+        :update,
+        id: node(:blog).id,
+        title: ""
+
+    assert_response :success
+    assert_not_nil @response.body
+    json = JSON.parse(@response.body)
+    assert json['title'].length > 0
   end
 
   test "should assign correct value to graph_comments on GET stats" do
