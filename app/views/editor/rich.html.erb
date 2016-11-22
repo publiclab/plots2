@@ -48,7 +48,6 @@
     </div>
     <!-- end errors module -->
 
-
     <!-- title module -->
     <div class="ple-module-title ple-module container">
 
@@ -198,9 +197,9 @@
         mainImageUrl:   '<%= @main_image %>',
       <% end %>
       <% if params[:action] == 'edit' %>
-        destination: '/notes/update/<%= @node.id %>',
+        destination: '/notes/update/<%= @node.id %>?rich=true',
       <% else %>
-        destination: '/notes/create',
+        destination: '/notes/create?rich=true',
       <% end %>
       <% if params[:redirect] == 'question' %>
         redirect: 'redirect',
@@ -209,6 +208,17 @@
         errors: <%=raw (@node.errors.to_h.merge(@revision.errors.to_h)).to_json %>,
       <% end %>
       format:      'publiclab',
+      publishCallback: function publishCallback(response) {
+        // parse and display errors!
+        if (response && Object.keys(response).length > 0) {
+          $('.ple-errors').html('<div class="alert alert-danger"></div>');
+          Object.keys(response).forEach(function(key, i) {
+            $('.ple-errors .alert').append('<p><b>' + key + '</b> </p>');
+            $('.ple-errors .alert p:last').append(response[key].join(', '));
+          });
+          window.scroll(0, 0);
+        }
+      },
       mainImageModule: {
         uid: <%= current_user.id %><% if @node && @node.id %>,
         nid: <%= @node.id %><% end %>
