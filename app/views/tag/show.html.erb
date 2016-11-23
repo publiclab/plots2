@@ -16,8 +16,8 @@
         </div>
       <% else %>
         <h2><%= @wiki.latest.title %></h2>
-      <p><%= @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %></p>
-        <p><%= link_to("Read More &raquo;", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('\n').length > 1 %></p>
+        <p><%= @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %></p>
+        <p><%= link_to("Read More &raquo;", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).length > 1 %></p>
       <% end %>
     </div>  
   <% end %>
