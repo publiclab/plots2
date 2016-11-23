@@ -210,6 +210,7 @@ Help improve Public Lab software!
 
 ## First time?
 
-New to open source/free software? We've listed some "good for first timers" bugs to fix here: https://github.com/publiclab/plots2/labels/first-timers-only
+New to open source/free software?, Here are a selection of issues we've made especially for first-timers. We're here to help, so just ask if one looks interesting : https://github.com/publiclab/plots2/projects/2
+
 
 We also have a slightly larger list of easy-ish but small and self contained issues: https://github.com/publiclab/plots2/labels/help-wanted
