@@ -94,6 +94,7 @@ $E = {
     else $E.textarea.val($E.templates[template])
   },
   templates: {
+    'blog': "###The beginning\n\n###What we did\n\n###Why it matters\n\n###How can you help", 
     'default': "###What I want to do\n\n###My attempt and results\n\n###Questions and next steps\n\n###Why I'm interested",
     'support': "###Details about the problem\n\n###A photo or screenshot of the setup",
     'event': "###Event details\n\nWhen, where, what\n\n###Background\n\nWho, why",
