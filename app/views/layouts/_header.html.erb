@@ -173,6 +173,10 @@
               <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
               <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li> 
               <li class="divider"></li>
+	       <% if current_user.role == 'admin' %>
+	        <li class="divider"></li>
+		<li><a href="/useremail">Email search</a></li> 
+	       <% end %>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                   <i class="fa fa-language" aria-hidden="true"></i>
