@@ -3,7 +3,7 @@ class EditorController < ApplicationController
   before_filter :require_user, :only => [:post, :rich]
 
   # main image via URL passed as GET param
-  def post
+  def legacy
     # /post/?i=http://myurl.com/image.jpg
     if params[:i]
       @image = Image.new({
@@ -13,6 +13,16 @@ class EditorController < ApplicationController
       flash[:error] = "The image could not be saved." unless @image.save!
     end
     redirect_to "/questions/new?#{request.env['QUERY_STRING']}" if params[:tags] && params[:tags].include?("question:")
+  end
+
+  def post
+    if params[:legacy] || params[:template] == "event"
+      flash.now[:notice] = "This is the legacy editor. For the new rich editor, <a href='/editor?#{request.env['QUERY_STRING']}'>click here</a>."
+      legacy
+    else
+      flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/post?#{request.env['QUERY_STRING']}&legacy=true'>click here</a>."
+      rich
+    end
   end
 
   def rich
