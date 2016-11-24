@@ -10,14 +10,14 @@
           </div>
           <div class="col-md-8">
             <h2><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h2>
-            <%= (@wiki.latest.render_body.split('</p>').first + '</p>').html_safe %>
+            <%= @wiki.latest.render_body.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %>
             <%= link_to("Read More", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('</p>').length > 2 %>
           </div>
         </div>
       <% else %>
         <h2><%= @wiki.latest.title %></h2>
-        <%= @wiki.latest.render_body.split('\n').first.html_safe %>
-        <%= link_to("Read More", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('\n').length > 1 %>
+        <p><%= @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %></p>
+        <p><%= link_to("Read More &raquo;", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).length > 1 %></p>
       <% end %>
     </div>  
   <% end %>
