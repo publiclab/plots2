@@ -6,7 +6,9 @@
     <% end %>
     <h4><a href="<%= node.path %>"><%= node.title %></a></h4>
     <p style="color:#888;"><small>
-      by <a href="/profile/<%= node.map.authorship %>"><%= node.map.authorship %></a> 
+      <% if node.map %>
+        by <a href="/profile/<%= node.map.authorship %>"><%= node.map.authorship %></a> 
+      <% end %>
       <% unless !node.map || node.map.captured_on == "" %> <%= time_ago_in_words(node.map.captured_on) %> ago<% end %>
       | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
       | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
