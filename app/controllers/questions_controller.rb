@@ -56,6 +56,18 @@ class QuestionsController < ApplicationController
     render :template => 'questions/index'
   end
 
+  def unanswered
+    @title = "Unanswered questions"
+    @questions = DrupalNode.questions.where(status: 1)
+    sort_question_by_tags
+    @questions = @questions.includes(:answers)
+                .where( answers: { id: nil } )
+                .order('answers.created_at ASC')
+                .group('node.nid')
+                .paginate(:page => params[:page], :per_page => 30)
+    render :template => 'questions/index'
+  end
+  
   def shortlink
     @node = DrupalNode.find params[:id]
     if @node.has_power_tag('question')
