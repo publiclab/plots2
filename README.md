@@ -27,11 +27,11 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 
 ====
 
-##Simple installation with Cloud9
+## Simple installation with Cloud9
 
 This is a quick installation for use with the cloud environment https://c9.io - for more standard, full instructions, see below. 
 
-1. If you have a GitHub account, visit https://c9.io and log in with the GitHub button.
+1. If you have a GitHub account, visit https://c9.io and log in with the GitHub button. (Cloud9 now requires an invite unless you enter a credit card. Email plots-dev@googlegroups.com to ask for a free invite!)
 2. Fork this repository to your own GitHub account, creating a `yourname/plots2` project.
 3. Name your project, then enter `yournameplots2` in the "Clone from Git or Mercurial URL" field, and press **Create Workspace** 
 4. In the command line prompt at the bottom of the page, type `. ./install_cloudnine.sh` and press enter.
@@ -118,7 +118,7 @@ But some architectures (Linux!) aren't supported by the phantomjs gem. For those
 Please report any error regarding phantomjs installation in the github issue tracker. We will try to help you out as soon as we can!
 
 
-##Installation
+## Installation
 
 Installation steps:
 
@@ -143,7 +143,7 @@ For some, it will be necessary to prepend your gem-related commands with `bundle
 ****
 
 
-##Testing
+## Testing
 
 Run all basic rails tests with `rake test`. This is required for submitting pull requests, and to confirm you have a working local environment.
 
@@ -160,7 +160,7 @@ We are extremely interested in building our out test suite, so please consider h
 
 ****
 
-##Bugs and support
+## Bugs and support
 
 To report bugs and request features, please use the GitHub issue tracker provided at https://github.com/publiclab/plots2/issues 
 
@@ -168,7 +168,7 @@ For additional support, join the Public Lab website and mailing list at http://p
 
 ****
 
-###Internationalization
+### Internationalization
 
 Publiclab.org now supports Internationalization and localization, though we are in the initial stages. This has been accomplished with [rails-I8n](https://github.com/svenfuchs/rails-i18n). 
 
