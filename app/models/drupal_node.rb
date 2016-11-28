@@ -6,14 +6,14 @@ class UniqueUrlValidator < ActiveModel::Validator
     elsif record.title == "new" && (record.type == "page" || record.type == "place" || record.type == "tool")
       record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     else
-      if !DrupalNode.where(path: record.generate_path).first.nil? && record.type == "note"
+      if !Node.where(path: record.generate_path).first.nil? && record.type == "note"
         record.errors[:base] << "You have already used this title today."
       end
     end
   end
 end
 
-class DrupalNode < ActiveRecord::Base
+class Node < ActiveRecord::Base
   include NodeShared # common methods for node-like models
 
   attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug
@@ -29,11 +29,11 @@ class DrupalNode < ActiveRecord::Base
     string :status
     string :updated_month
     text :comments do
-      drupal_comments.map { |comment| comment.comment }
+      comments.map { |comment| comment.comment }
     end
 
     string :user_name do
-      drupal_users.name
+      users.name
     end
   end
 
@@ -52,7 +52,7 @@ class DrupalNode < ActiveRecord::Base
   # friendly_id uses this method to set the slug column for nodes
   def friendly_id_string
     if self.type == 'note'
-      username = DrupalUsers.find_by_uid(self.uid).name
+      username = Users.find_by_uid(self.uid).name
       "#{username} #{Time.at(self.created).strftime("%m-%d-%Y")} #{self.title}"
     elsif self.type == 'page'
       "#{self.title}"
@@ -61,32 +61,32 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
-  has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
+  has_many :node_revision, :foreign_key => 'nid', :dependent => :destroy
   # wasn't working to tie it to .vid, manually defining below
-  #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
-  #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
-  has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_files, :through => :drupal_upload
-  has_many :drupal_node_community_tag, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_tag, :through => :drupal_node_community_tag
+  #  has_one :main_image, :foreign_key => 'vid', :dependent => :destroy
+  #  has_many :content_field_image_gallery, :foreign_key => 'nid'
+  has_one :node_counter, :foreign_key => 'nid', :dependent => :destroy
+  has_many :upload, :foreign_key => 'nid', :dependent => :destroy
+  has_many :files, :through => :upload
+  has_many :node_community_tag, :foreign_key => 'nid', :dependent => :destroy
+  has_many :tag, :through => :node_community_tag
   # these override the above... have to do it manually:
-  # has_many :drupal_tag, :through => :drupal_node_tag
-  has_many :drupal_comments, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_content_type_map, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_content_field_mappers, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_content_field_map_editor, :foreign_key => 'nid', :dependent => :destroy
+  # has_many :tag, :through => :node_tag
+  has_many :comments, :foreign_key => 'nid', :dependent => :destroy
+  has_many :content_type_map, :foreign_key => 'nid', :dependent => :destroy
+  has_many :content_field_mappers, :foreign_key => 'nid', :dependent => :destroy
+  has_many :content_field_map_editor, :foreign_key => 'nid', :dependent => :destroy
   has_many :images, :foreign_key => :nid
   has_many :node_selections, :foreign_key => :nid
   has_many :answers, :foreign_key => :nid
 
-  belongs_to :drupal_users, :foreign_key => 'uid'
+  belongs_to :users, :foreign_key => 'uid'
 
   validates :title, :presence => :true
   validates_with UniqueUrlValidator, :on => :create
   validates :path, :uniqueness => { :message => "This title has already been taken" }
 
-  # making drupal and rails database conventions play nice;
+  # making  and rails database conventions play nice;
   # 'changed' is a reserved word in rails
   class << self
     def instance_method_already_implemented?(method_name)
@@ -96,7 +96,7 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
-  # making drupal and rails database conventions play nice;
+  # making  and rails database conventions play nice;
   # 'type' is a reserved word in rails
   def self.inheritance_column
     "rails_type"
@@ -120,7 +120,7 @@ class DrupalNode < ActiveRecord::Base
   # or, we should refactor to us node.created instead of Time.now
   def generate_path
     if self.type == 'note'
-      username = DrupalUsers.find_by_uid(self.uid).name
+      username = Users.find_by_uid(self.uid).name
       "/notes/#{username}/#{Time.now.strftime("%m-%d-%Y")}/#{self.title.parameterize}"
     elsif self.type == 'page'
       "/wiki/" + self.title.parameterize
@@ -141,7 +141,7 @@ class DrupalNode < ActiveRecord::Base
 
 #  def update_path
 #    self.path = if self.type == 'note'
-#                  username = DrupalUsers.find_by_uid(self.uid).name
+#                  username = Users.find_by_uid(self.uid).name
 #                  "/notes/#{username}/#{Time.at(self.created).strftime("%m-%d-%Y")}/#{self.title.parameterize}"
 #                elsif self.type == 'page'
 #                  "/wiki/" + self.title.parameterize
@@ -165,7 +165,7 @@ class DrupalNode < ActiveRecord::Base
   def setup
     self['created'] = DateTime.now.to_i
     self.save
-    DrupalNodeCounter.new({:nid => self.id}).save
+    NodeCounter.new({:nid => self.id}).save
   end
 
   public
@@ -173,7 +173,7 @@ class DrupalNode < ActiveRecord::Base
   def self.weekly_tallies(type = "note", span = 52, time = Time.now)
     weeks = {}
     (0..span).each do |week|
-      weeks[span-week] = DrupalNode.select(:created)
+      weeks[span-week] = Node.select(:created)
                                    .where(type:    type,
                                           status:  1,
                                           created: time.to_i - week.weeks.to_i..time.to_i - (week-1).weeks.to_i)
@@ -203,13 +203,13 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def files
-    self.drupal_files
+    self.files
   end
 
   # users who like this node
   def likers
     self.node_selections
-        .joins(:drupal_users)
+        .joins(:users)
         .where(liking: true)
         .where('users.status = ?', 1)
         .collect(&:user)
@@ -222,22 +222,22 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def revisions
-    self.drupal_node_revision
+    self.node_revision
         .order("timestamp DESC")
   end
 
   def revision_count
-    self.drupal_node_revision
+    self.node_revision
         .count
   end
 
   def comment_count
-    self.drupal_comments
+    self.comments
         .count
   end
 
   def author
-    DrupalUsers.find_by_uid self.uid
+    Users.find_by_uid self.uid
   end
 
   def coauthors
@@ -280,13 +280,13 @@ class DrupalNode < ActiveRecord::Base
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
-  def drupal_main_image
-    DrupalMainImage.order('vid')
+  def main_image
+    MainImage.order('vid')
                    .where('nid = ? AND field_main_image_fid IS NOT NULL', self.nid)
                    .last
   end
 
-  # provide either a Drupally main_image or a Railsy one
+  # provide either a ly main_image or a Railsy one
   def main_image(node_type = :all)
     if self.images.length > 0 && node_type != :drupal
       if self.main_image_id.blank?
@@ -294,22 +294,22 @@ class DrupalNode < ActiveRecord::Base
       else
         self.images.where(id: self.main_image_id).first
       end
-    elsif self.drupal_main_image && node_type != :rails
-      self.drupal_main_image.drupal_file
+    elsif self.main_image && node_type != :rails
+      self.main_image.file
     else
       nil
     end
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
-  def drupal_content_field_image_gallery
-    DrupalContentFieldImageGallery.where(nid: self.nid)
+  def content_field_image_gallery
+    ContentFieldImageGallery.where(nid: self.nid)
                                   .order("field_image_gallery_fid")
   end
 
   def gallery
-    if self.drupal_content_field_image_gallery.length > 0 && self.drupal_content_field_image_gallery.first.field_image_gallery_fid
-      return self.drupal_content_field_image_gallery
+    if self.content_field_image_gallery.length > 0 && self.content_field_image_gallery.first.field_image_gallery_fid
+      return self.content_field_image_gallery
     else
       return []
     end
@@ -331,38 +331,38 @@ class DrupalNode < ActiveRecord::Base
   # Nodes this node is responding to with a `response:<nid>` power tag;
   # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
   def responded_to(key = 'response')
-    DrupalNode.find_all_by_nid(self.power_tags(key)) || []
+    Node.find_all_by_nid(self.power_tags(key)) || []
   end
 
   # Nodes that respond to this node with a `response:<nid>` power tag;
   # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
   def responses(key = 'response')
-    DrupalTag.find_nodes_by_type([key+":"+self.id.to_s])
+    Tag.find_nodes_by_type([key+":"+self.id.to_s])
   end
 
   # Nodes that respond to this node with a `response:<nid>` power tag;
   # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
   def response_count(key = 'response')
-    DrupalNode.where(status: 1, type: 'note')
-              .includes(:drupal_node_revision, :drupal_tag)
+    Node.where(status: 1, type: 'note')
+              .includes(:node_revision, :tag)
               .where('term_data.name = ?', "#{key}:#{self.id}")
               .count
   end
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
-    tids = DrupalTag.includes(:drupal_node_community_tag)
+    tids = Tag.includes(:node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, key + ":%")
                     .collect(&:tid)
-    DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids).length > 0
+    NodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids).length > 0
   end
 
   # returns the value for the most recent power tag of form key:value
   def power_tag(tag)
-    tids = DrupalTag.includes(:drupal_node_community_tag)
+    tids = Tag.includes(:node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
                     .collect(&:tid)
-    node_tag = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
+    node_tag = NodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
                                      .order('nid DESC')
     if node_tag && node_tag.first
       node_tag.first.tag.name.gsub(tag+':','')
@@ -373,10 +373,10 @@ class DrupalNode < ActiveRecord::Base
 
   # returns all tagnames for a given power tag
   def power_tags(tag)
-    tids = DrupalTag.includes(:drupal_node_community_tag)
+    tids = Tag.includes(:node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
                     .collect(&:tid)
-    node_tags = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
+    node_tags = NodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
     tags = []
     node_tags.each do |nt|
       tags << nt.name.gsub(tag+':','')
@@ -386,18 +386,18 @@ class DrupalNode < ActiveRecord::Base
 
   # returns all power tag results as whole community_tag objects
   def power_tag_objects(tag)
-    tids = DrupalTag.includes(:drupal_node_community_tag)
+    tids = Tag.includes(:node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
                     .collect(&:tid)
-    DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
+    NodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
   end
 
   # return whole community_tag objects but no powertags or "event"
   def normal_tags
-    tids = DrupalTag.includes(:drupal_node_community_tag)
+    tids = Tag.includes(:node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, "%:%")
                     .collect(&:tid)
-    DrupalNodeCommunityTag.where('nid = ? AND tid NOT IN (?)', self.id, tids)
+    NodeCommunityTag.where('nid = ? AND tid NOT IN (?)', self.id, tids)
   end
 
   # accests a tagname /or/ tagname ending in wildcard such as "tagnam*"
@@ -406,26 +406,26 @@ class DrupalNode < ActiveRecord::Base
   def has_tag(tagname)
     tags = self.get_matching_tags_without_aliasing(tagname)
     # search for tags with parent matching this
-    tags += DrupalTag.includes(:drupal_node_community_tag)
+    tags += Tag.includes(:node_community_tag)
                      .where("community_tags.nid = ? AND parent LIKE ?", self.id, tagname)
     # search for parent tag of this, if exists
-    #tag = DrupalTag.where(name: tagname).try(:first)
+    #tag = Tag.where(name: tagname).try(:first)
     #if tag && tag.parent
-    #  tags += DrupalTag.includes(:drupal_node_community_tag)
+    #  tags += Tag.includes(:node_community_tag)
     #                   .where("community_tags.nid = ? AND name LIKE ?", self.id, tag.parent)
     #end
     tids = tags.collect(&:tid).uniq
-    DrupalNodeCommunityTag.where('nid IN (?) AND tid IN (?)', self.id, tids).length > 0
+    NodeCommunityTag.where('nid IN (?) AND tid IN (?)', self.id, tids).length > 0
   end
 
-  # can return multiple DrupalTag records -- we don't yet hard-enforce uniqueness, but should soon
-  # then, this would just be replaced by DrupalTag.where(name: tagname).first
+  # can return multiple Tag records -- we don't yet hard-enforce uniqueness, but should soon
+  # then, this would just be replaced by Tag.where(name: tagname).first
   def get_matching_tags_without_aliasing(tagname)
-    tags = DrupalTag.includes(:drupal_node_community_tag)
+    tags = Tag.includes(:node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, tagname)
     # search for tags which end in wildcards
     if tagname[-1] == '*'
-      tags += DrupalTag.includes(:drupal_node_community_tag)
+      tags += Tag.includes(:node_community_tag)
                        .where("community_tags.nid = ? AND (name LIKE ? OR name LIKE ?)", self.id, tagname, tagname.gsub('*', '%'))
     end
     tags
@@ -434,7 +434,7 @@ class DrupalNode < ActiveRecord::Base
   def has_tag_without_aliasing(tagname)
     tags = self.get_matching_tags_without_aliasing(tagname)
     tids = tags.collect(&:tid).uniq
-    DrupalNodeCommunityTag.where('nid IN (?) AND tid IN (?)', self.id, tids).length > 0
+    NodeCommunityTag.where('nid IN (?) AND tid IN (?)', self.id, tids).length > 0
   end
 
   # has it been tagged with "list:foo" where "foo" is the name of a Google Group?
@@ -462,11 +462,11 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def tags
-    self.drupal_tag
+    self.tag
   end
 
   def community_tags
-    self.drupal_node_community_tag
+    self.node_community_tag
   end
 
   def tagnames
@@ -475,15 +475,15 @@ class DrupalNode < ActiveRecord::Base
 
   # increment view count
   def view
-    DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil?
-    self.drupal_node_counter.totalcount += 1
-    self.drupal_node_counter.save
+    NodeCounter.new({:nid => self.id}).save if self.node_counter.nil?
+    self.node_counter.totalcount += 1
+    self.node_counter.save
   end
 
   # view count
   def totalcount
-    DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil?
-    self.drupal_node_counter.totalcount
+    NodeCounter.new({:nid => self.id}).save if self.node_counter.nil?
+    self.node_counter.totalcount
   end
 
   def edit_path
@@ -496,13 +496,13 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_root_by_slug(title)
-    DrupalNode.where(path: ["/#{title}"]).first
+    Node.where(path: ["/#{title}"]).first
   end
 
   def map
     # This fires off a query that orders by vid DESC
     # and is quicker than doing .order(vid: :DESC) for some reason.
-    self.drupal_content_type_map.last
+    self.content_type_map.last
   end
 
   def lat
@@ -532,13 +532,13 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def next_by_author
-    DrupalNode.where('uid = ? and nid > ? and type = "note"', self.author.uid, self.nid)
+    Node.where('uid = ? and nid > ? and type = "note"', self.author.uid, self.nid)
               .order('nid')
               .first
   end
 
   def prev_by_author
-    DrupalNode.where('uid = ? and nid < ? and type = "note"', self.author.uid, self.nid)
+    Node.where('uid = ? and nid < ? and type = "note"', self.author.uid, self.nid)
               .order('nid desc')
               .first
   end
@@ -552,7 +552,7 @@ class DrupalNode < ActiveRecord::Base
     else
       thread = "01/"
     end
-    c = DrupalComment.new({
+    c = Comment.new({
       :pid => 0,
       :nid => self.nid,
       :uid => params[:uid],
@@ -569,7 +569,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def new_revision(params)
-    DrupalNodeRevision.new({
+    NodeRevision.new({
       :nid => params[:nid],
       :uid => params[:uid],
       :title => params[:title],
@@ -582,8 +582,8 @@ class DrupalNode < ActiveRecord::Base
   # researching simultaneous creation of associated records
   def self.new_note(params)
     saved = false
-    author = DrupalUsers.find(params[:uid])
-    node = DrupalNode.new({
+    author = Users.find(params[:uid])
+    node = Node.new({
       uid:     author.uid,
       title:   params[:title],
       comment: 2,
@@ -623,7 +623,7 @@ class DrupalNode < ActiveRecord::Base
 
   def self.new_wiki(params)
     saved = false
-    node = DrupalNode.new({
+    node = Node.new({
       :uid => params[:uid],
       :title => params[:title],
       :type => "page"
@@ -656,7 +656,7 @@ class DrupalNode < ActiveRecord::Base
   # same as new_note or new_wiki but with arbitrary type -- use for maps, DRY out new_note and new_wiki
   def self.new_node(params)
     saved = false
-    node = DrupalNode.new({
+    node = Node.new({
       :uid => params[:uid],
       :title => params[:title],
       :type => params[:type]
@@ -694,7 +694,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def add_barnstar(tagname,giver)
-    self.add_tag(tagname,giver.drupal_user)
+    self.add_tag(tagname,giver.user)
     CommentMailer.notify_barnstar(giver,self)
   end
 
@@ -702,7 +702,7 @@ class DrupalNode < ActiveRecord::Base
     tagname = tagname.downcase
     unless self.has_tag_without_aliasing(tagname)
       saved = false
-      tag = DrupalTag.find_by_name(tagname) || DrupalTag.new({
+      tag = Tag.find_by_name(tagname) || Tag.new({
         vid:         3, # vocabulary id; 1
         name:        tagname,
         description: "",
@@ -711,7 +711,7 @@ class DrupalNode < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         if tag.valid?
           tag.save!
-          node_tag = DrupalNodeCommunityTag.new({
+          node_tag = NodeCommunityTag.new({
             :tid => tag.id,
             :uid => user.uid,
             :date => DateTime.now.to_i,
@@ -735,30 +735,30 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_notes(author, date, title)
-    DrupalNode.where(path: "/notes/#{author}/#{date}/#{title}").first
+    Node.where(path: "/notes/#{author}/#{date}/#{title}").first
   end
 
   def self.find_map(name, date)
-    DrupalNode.where(path: "/map/#{name}/#{date}").first
+    Node.where(path: "/map/#{name}/#{date}").first
   end
 
   def self.find_wiki(title)
-    DrupalNode.where(path: ["/#{title}", "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
+    Node.where(path: ["/#{title}", "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
   end
 
   def self.research_notes
-    nids = DrupalNode.where(type: 'note')
-                     .joins(:drupal_tag)
+    nids = Node.where(type: 'note')
+                     .joins(:tag)
                      .where('term_data.name LIKE ?', 'question:%')
                      .group('node.nid')
                      .collect(&:nid)
-    notes = DrupalNode.where(type: 'note')
+    notes = Node.where(type: 'note')
                       .where('node.nid NOT IN (?)', nids)
   end
 
   def self.questions
-    questions = DrupalNode.where(type: 'note')
-                          .joins(:drupal_tag)
+    questions = Node.where(type: 'note')
+                          .joins(:tag)
                           .where('term_data.name LIKE ?', 'question:%')
                           .group('node.nid')
   end
@@ -768,14 +768,14 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.activities(tagname)
-    DrupalNode.where(status: 1, type: 'note')
-              .includes(:drupal_node_revision, :drupal_tag)
+    Node.where(status: 1, type: 'note')
+              .includes(:node_revision, :tag)
               .where('term_data.name LIKE ?', "activity:#{tagname}")
   end
 
   def self.upgrades(tagname)
-    DrupalNode.where(status: 1, type: 'note')
-              .includes(:drupal_node_revision, :drupal_tag)
+    Node.where(status: 1, type: 'note')
+              .includes(:node_revision, :tag)
               .where('term_data.name LIKE ?', "upgrade:#{tagname}")
   end
 
