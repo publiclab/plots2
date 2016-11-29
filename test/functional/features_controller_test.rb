@@ -9,6 +9,10 @@ require 'test_helper'
 
 class FeaturesControllerTest < ActionController::TestCase
 
+  def setup
+    activate_authlogic
+  end
+
   test "should not get features if not admin" do
     UserSession.create(rusers(:bob))
     get :index
@@ -31,13 +35,13 @@ class FeaturesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  # fix log in before this can work:
+  test "should get features if admin" do
+    UserSession.create(rusers(:admin))
 
-  #test "should get features if admin" do
-  #  session[:user_id] = rusers(:jeff).id # log in
-  #  get :index
-  #  assert_response :success
-  #  assert_not_nil :features
-  #end
+    get :index
+
+    assert_response :success
+    assert_not_nil :features
+  end
 
 end
