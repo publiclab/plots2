@@ -32,29 +32,29 @@ class FeaturesController < ApplicationController
       flash[:warning] = "Only admins may edit features."
       redirect_to "/features"
     else
-      node = DrupalNode.new({
-        :uid =>     current_user.id,
-        :title =>   params[:title],
-        :type =>    "feature"
+      @node = DrupalNode.new({
+        uid:   current_user.id,
+        title: params[:title],
+        type:  "feature"
       })
-      if node.valid?
+      if @node.valid?
         saved = true
-        revision = false
+        @revision = false
         ActiveRecord::Base.transaction do
-          node.save! 
-          revision = node.new_revision({
-            :nid => node.id,
-            :uid => current_user.id,
-            :title => params[:title],
-            :body => params[:body]
+          @node.save! 
+          @revision = @node.new_revision({
+            nid:   @node.id,
+            uid:   current_user.id,
+            title: params[:title],
+            body:  params[:body]
           })
-          if revision.valid?
-            revision.save!
-            node.vid = revision.vid
-            node.save!
+          if @revision.valid?
+            @revision.save!
+            @node.vid = @revision.vid
+            @node.save!
           else
             saved = false
-            node.destroy
+            @node.destroy
           end
         end
       end
@@ -62,7 +62,7 @@ class FeaturesController < ApplicationController
         flash[:notice] == "Feature saved."
         redirect_to "/features"
       else
-        render :template => "features/new"
+        render template: "features/new"
       end
     end
   end
