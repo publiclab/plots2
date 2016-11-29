@@ -5,3 +5,9 @@
 <p>See your post here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p> 
 
 <p>Thanks for your patience! We've had to moderate first time posters due to problems with spam. Your posts will no longer be moderated, as long as you follow our <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/wiki/moderation">content guidelines</a>.</p>
+
+<div>
+	<% cache('feature_email-footer') do %> 
+		<%= feature('email-footer') %>
+	<% end %>
+</div>

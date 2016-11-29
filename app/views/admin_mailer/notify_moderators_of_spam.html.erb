@@ -16,4 +16,8 @@
 
 <p>To discuss spam/abuse, forward this to <a href="mailto:moderators@<%= ActionMailer::Base.default_url_options[:host] %>">moderators@<%= ActionMailer::Base.default_url_options[:host] %></a></p>
 
+<% cache('feature_email-footer') do %> 
+  <%= feature('email-footer') %>
+<% end %>
+
 </div>
