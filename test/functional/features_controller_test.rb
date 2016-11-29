@@ -15,6 +15,22 @@ class FeaturesControllerTest < ActionController::TestCase
     assert_response :redirect
   end
 
+  test "should not get new feature form if not admin" do
+    UserSession.create(rusers(:bob))
+
+    get :new
+
+    assert_response :redirect
+  end
+
+  test "should get new feature form" do
+    UserSession.create(rusers(:admin))
+
+    get :new
+
+    assert_response :success
+  end
+
   # fix log in before this can work:
 
   #test "should get features if admin" do
