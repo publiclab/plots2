@@ -11,18 +11,18 @@
           <div class="col-md-8">
             <h2><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h2>
             <%= @wiki.latest.render_body.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %>
-            <%= link_to("Read More", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('</p>').length > 2 %>
+            <%= link_to("Read more", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('</p>').length > 2 %>
           </div>
         </div>
       <% else %>
         <h2><%= @wiki.latest.title %></h2>
         <p><%= @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %></p>
-        <p><%= link_to("Read More &raquo;", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).length > 1 %></p>
+        <p><%= link_to("Read more", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).length > 1 %></p>
       <% end %>
     </div> 
   <% else %>
     <p>This topic has no lead wiki page.</p>
-    <a class="btn btn-primary" href="/wiki/<%= params[:id] %>"><span class="fa fa-plus fa-white"></span> Add one now</a>
+    <p><a class="btn btn-primary" href="/wiki/<%= params[:id] %>"><span class="fa fa-plus fa-white"></span> Add one now</a></p>
   <% end %>
 
   <% if @tags.first %>
