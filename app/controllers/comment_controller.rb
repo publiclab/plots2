@@ -4,7 +4,7 @@ class CommentController < ApplicationController
   before_filter :require_user, :only => [:create, :update, :delete]
 
   def index
-    @comments = DrupalComment.paginate(page: params[:page], per_page: 30)
+    @comments = Comment.paginate(page: params[:page], per_page: 30)
                              .order('timestamp DESC')
     render template: 'comments/index'
   end
@@ -40,7 +40,7 @@ class CommentController < ApplicationController
   # create answer comments
   def answer_create
     @answer_id = params[:aid]
-    @comment = DrupalComment.new(
+    @comment = Comment.new(
       uid: current_user.uid,
       aid: params[:aid],
       comment: params[:body],
@@ -58,7 +58,7 @@ class CommentController < ApplicationController
   end
 
   def update
-    @comment = DrupalComment.find params[:id]
+    @comment = Comment.find params[:id]
     
     comments_node_and_path
 
@@ -79,7 +79,7 @@ class CommentController < ApplicationController
   end
 
   def delete
-    @comment = DrupalComment.find params[:id]
+    @comment = Comment.find params[:id]
 
     comments_node_and_path
 

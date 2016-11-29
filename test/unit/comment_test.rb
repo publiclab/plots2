@@ -1,20 +1,20 @@
 require 'test_helper'
 
-class DrupalCommentTest < ActiveSupport::TestCase
+class CommentTest < ActiveSupport::TestCase
 
   test "should save comment" do
-    comment = DrupalComment.new
+    comment = Comment.new
     comment.comment = "My first thought is\n\nthat this is pretty good."
     assert comment.save
   end
 
   test "should not save comment without body" do
-    comment = DrupalComment.new
+    comment = Comment.new
     assert !comment.save, "Saved the comment without body text"
   end
 
   test "should scan callouts out of body" do
-    comment = DrupalComment.new({
+    comment = Comment.new({
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
@@ -25,7 +25,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
   end
 
   test "should scan multiple callouts out of body" do
-    comment = DrupalComment.new({
+    comment = Comment.new({
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
@@ -36,7 +36,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
   end
 
   test "should scan multiple space-separated callouts out of body" do
-    comment = DrupalComment.new({
+    comment = Comment.new({
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
@@ -47,7 +47,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
   end
 
   test "should scan hashtags in comments and link them" do
-    comment = DrupalComment.new({
+    comment = Comment.new({
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
@@ -56,7 +56,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
   end
 
   test "should ignore Headers as hashtags in markdown" do
-    comment = DrupalComment.new({
+    comment = Comment.new({
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
@@ -65,7 +65,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
   end
 
   test "should ignore commas, exclamation, periods in hashtag" do
-    comment = DrupalComment.new({
+    comment = Comment.new({
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
@@ -77,7 +77,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
   end
 
   test "should link hashtags in headers" do
-    comment = DrupalComment.new({
+    comment = Comment.new({
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
@@ -86,7 +86,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
   end
 
   test "should ignore sub-headings as hashtags" do
-    comment = DrupalComment.new({
+    comment = Comment.new({
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
@@ -95,7 +95,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
   end
 
   test "should ignore Titles with spaces after hash as hashtags" do
-    comment = DrupalComment.new({
+    comment = Comment.new({
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
@@ -106,7 +106,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
   end
 
   test "should ignore hashtag in links as nesting of links is not allowed" do
-    comment = DrupalComment.new({
+    comment = Comment.new({
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
@@ -115,7 +115,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
   end
 
   test "should ignore hashtags in URLs" do
-    comment = DrupalComment.new({
+    comment = Comment.new({
       nid: node(:one).nid,
       uid: rusers(:bob).id
     })
@@ -125,7 +125,7 @@ class DrupalCommentTest < ActiveSupport::TestCase
 
   test "should create comments for answers" do
     answer = answers(:one)
-    comment = DrupalComment.new(
+    comment = Comment.new(
       uid: rusers(:bob).id,
       aid: answer.id,
       comment: 'Test comment'
@@ -136,28 +136,27 @@ class DrupalCommentTest < ActiveSupport::TestCase
   test "should relate answer comments to user and answer but not node" do
     answer = answers(:one)
     user = users(:bob)
-    comment = DrupalComment.new(comment: 'Test comment')
+    comment = Comment.new(comment: 'Test comment')
     comment.drupal_users = user
     comment.answer = answer
 
     assert comment.save
-    assert_equal user.drupal_comments.last, comment
-    assert_equal answer.drupal_comments.last, comment
-    assert_not_equal answer.node.drupal_comments.last, comment
+    assert_equal user.comments.last, comment
+ 
   end
 
   test "should return weekly tallies" do
-    DrupalComment.delete_all
+    Comment.delete_all
     seconds_to_two_weeks_ago = 1210000
     seconds_to_four_weeks_ago = seconds_to_two_weeks_ago * 2
     weeks_to_tally = 52
     # placing a comment right before Time.now places it in week 51 so two weeks later is week 49
     two_weeks_ago = weeks_to_tally - 3
     four_weeks_ago = two_weeks_ago - 2
-    DrupalComment.create!({comment: 'blah', timestamp: Time.now() - 1}) # place a comment right before now
-    DrupalComment.create!({comment: 'blah', timestamp: Time.now() - seconds_to_two_weeks_ago})
-    DrupalComment.create!({comment: 'blahblah', timestamp: Time.now() - seconds_to_four_weeks_ago})
-    weekly_tallies = DrupalComment.comment_weekly_tallies(52)
+    Comment.create!({comment: 'blah', timestamp: Time.now() - 1}) # place a comment right before now
+    Comment.create!({comment: 'blah', timestamp: Time.now() - seconds_to_two_weeks_ago})
+    Comment.create!({comment: 'blahblah', timestamp: Time.now() - seconds_to_four_weeks_ago})
+    weekly_tallies = Comment.comment_weekly_tallies(52)
     assert_equal weekly_tallies[weeks_to_tally - 1], 1
     assert_equal weekly_tallies[two_weeks_ago], 1
     assert_equal weekly_tallies[four_weeks_ago], 1

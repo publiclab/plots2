@@ -156,7 +156,7 @@ class User < ActiveRecord::Base
   def weekly_comment_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
-      weeks[span-week] = DrupalComment.count :all, :select => :timestamp, :conditions => {:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.to_i-week.weeks.to_i..Time.now.to_i-(week-1).weeks.to_i}
+      weeks[span-week] = Comment.count :all, :select => :timestamp, :conditions => {:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.to_i-week.weeks.to_i..Time.now.to_i-(week-1).weeks.to_i}
     end
     weeks
   end
@@ -192,7 +192,7 @@ class User < ActiveRecord::Base
     streak = 0
     comment_count = 0
     (0..span).each do |day|
-      days[day] = DrupalComment.count :all, :select => :timestamp, :conditions => {:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i}
+      days[day] = Comment.count :all, :select => :timestamp, :conditions => {:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i}
       break if days[day] == 0
       streak+=1
       comment_count+=days[day]
