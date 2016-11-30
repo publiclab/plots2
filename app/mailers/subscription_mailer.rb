@@ -1,4 +1,6 @@
 class SubscriptionMailer < ActionMailer::Base
+  helper :application
+  include ApplicationHelper
   default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
 
   def notify_node_creation(node)
@@ -8,6 +10,7 @@ class SubscriptionMailer < ActionMailer::Base
       @user = val[:user]
       @node = node
       @tags = val[:tags]
+      @footer = feature('email-footer')
       mail(:to => val[:user].email, :subject => subject).deliver
     end
   end

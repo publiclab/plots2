@@ -46,6 +46,6 @@ class AnswerTest < ActiveSupport::TestCase
 
   test "should list comments in descending order" do
     answer = answers(:one)
-    assert_equal answer.comments.first, DrupalComment.last
+    assert_equal answer.comments.last, Comment.last
   end
 end

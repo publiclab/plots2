@@ -111,6 +111,15 @@ class QuestionsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:questions)
     assert_template :index
   end
+  
+  test "should get unanswered" do
+    get :unanswered
+    assert_response :success
+    assert_equal assigns(:title), "Unanswered questions"
+    assert_not_nil assigns(:questions)
+    assert_equal assigns(:questions).first.answers.length, 0 
+    assert_template :index   
+  end
 
   test "should list questions with status 1 in index" do
     get :index

@@ -150,11 +150,11 @@ class TagControllerTest < ActionController::TestCase
 
   test "adds comment when awarding a barnstar" do
     ApplicationController.any_instance.stubs(:current_user).returns(User.first)
-    assert_difference 'DrupalComment.count' do
+    assert_difference 'Comment.count' do
 
       post :barnstar, :nid => DrupalNode.last.nid, :star => "basic"
 
-      assert_equal "[@#{User.first.username}](/profile/#{User.first.username}) awards a <a href=\"//#{request.host}/wiki/barnstars\">barnstar</a> to #{DrupalNode.last.drupal_users.name} for their awesome contribution!", DrupalComment.last.body
+      assert_equal "[@#{User.first.username}](/profile/#{User.first.username}) awards a <a href=\"//#{request.host}/wiki/barnstars\">barnstar</a> to #{DrupalNode.last.drupal_users.name} for their awesome contribution!", Comment.last.body
     end
   end
 

@@ -51,7 +51,7 @@
     <% activity.each_with_index do |node, i| %>
       <% if node.is_a?(DrupalNodeRevision) || node.type == 'page' %>
         <%= render partial: "dashboard/node_wiki",     locals: { node: node, index: i } %>
-      <% elsif node.is_a?(DrupalComment) %>
+      <% elsif node.is_a?(Comment) %>
         <%= render partial: "dashboard/node_comment",  locals: { node: node, index: i } %>
       <% elsif node.has_power_tag('question') %>
         <%= render partial: "dashboard/node_question", locals: { node: node, index: i } %>

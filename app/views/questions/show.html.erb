@@ -49,7 +49,7 @@
 
   <h4><span id="answer-0-comment-count"><%= @node.comments.length %></span> Comments</h4>
 
-    <% @node.comments('ASC').each do |comment| %>
+    <% @node.comments.order("timestamp ASC").each do |comment| %>
       <%= render partial: "questions/comment", locals: { comment: comment, answer_id: 0 } %>
     <% end %>
 

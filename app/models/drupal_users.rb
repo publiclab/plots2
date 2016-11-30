@@ -15,7 +15,7 @@ class DrupalUsers < ActiveRecord::Base
   has_many :node_selections, :foreign_key => :user_id
   has_many :answers, :foreign_key => :uid
   has_many :answer_selections, :foreign_key => :user_id
-  has_many :drupal_comments, :foreign_key => 'uid'
+  has_many :comments, :foreign_key => 'uid'
   has_one :location_tag, :foreign_key => 'uid', :dependent => :destroy
 
   searchable :if => proc { |user| user.status == 1 } do

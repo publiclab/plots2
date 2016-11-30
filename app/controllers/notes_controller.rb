@@ -42,7 +42,7 @@ class NotesController < ApplicationController
 
     @graph_notes = DrupalNode.weekly_tallies('note', 52, @time).to_a.sort.to_json
     @graph_wikis = DrupalNode.weekly_tallies('page', 52, @time).to_a.sort.to_json
-    @graph_comments = DrupalComment.comment_weekly_tallies(52, @time).to_a.sort.to_json
+    @graph_comments = Comment.comment_weekly_tallies(52, @time).to_a.sort.to_json
 
     users = []
     nids = []

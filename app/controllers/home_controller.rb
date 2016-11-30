@@ -86,7 +86,7 @@ class HomeController < ApplicationController
     revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
     @wikis = @wikis + revisions
     @wikis = @wikis.sort_by { |a| a.created_at }.reverse
-    @comments = DrupalComment.joins(:drupal_node, :drupal_users)
+    @comments = Comment.joins(:drupal_node, :drupal_users)
                              .order('timestamp DESC')
                              .where('timestamp - node.created > ?', 86400) # don't report edits within 1 day of page creation
                              .limit(20)
@@ -94,7 +94,7 @@ class HomeController < ApplicationController
 #                            .where('comments.status = (?)', 1)
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     @comments = @comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
-    @answer_comments = DrupalComment.joins(:answer, :drupal_users)
+    @answer_comments = Comment.joins(:answer, :drupal_users)
                              .order('timestamp DESC')
                              .where('timestamp - answers.created_at > ?', 86400)
                              .limit(20)

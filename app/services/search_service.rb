@@ -44,7 +44,7 @@ class SearchService
   end
 
   def find_comments(input, limit=5)
-    DrupalComment.limit(limit)
+    Comment.limit(limit)
         .order('nid DESC')
         .where('status = 1 AND comment LIKE ?', '%' + input + '%')
   end

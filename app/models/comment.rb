@@ -1,4 +1,4 @@
-class DrupalComment < ActiveRecord::Base
+class Comment < ActiveRecord::Base
   include CommentsShared # common methods for comment-like models
 
   attr_accessible :pid, :nid, :uid, :aid,
@@ -23,7 +23,7 @@ class DrupalComment < ActiveRecord::Base
   def self.comment_weekly_tallies(span = 52, time = Time.now)
     weeks = {}
     (0..span).each do |week|
-      weeks[span-week] = DrupalComment.select(:timestamp)
+      weeks[span-week] = Comment.select(:timestamp)
                                    .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week-1).weeks.to_i)
                                    .count
     end

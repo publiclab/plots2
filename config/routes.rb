@@ -242,6 +242,7 @@ Plots2::Application.routes.draw do
   match 'q/:id' => 'questions#shortlink'
   match 'questions/answered' => 'questions#answered'
   match 'questions/popular' => 'questions#popular'
+  match 'questions/unanswered' => 'questions#unanswered'
   match 'questions/liked' => 'questions#liked'
 
   match 'answers/create/:nid' => 'answers#create'
