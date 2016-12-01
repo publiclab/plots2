@@ -267,4 +267,8 @@ class TagController < ApplicationController
     end
     redirect_to params[:return_to]
   end
+
+  def location
+    render 'locations/form'
+  end
 end
