@@ -32,9 +32,9 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 
 This is a quick installation for use with the cloud environment https://c9.io - for more standard, full instructions, see below. 
 
-1. If you have a GitHub account, visit https://c9.io and log in with the GitHub button. (Cloud9 now requires an invite unless you enter a credit card. Email plots-dev@googlegroups.com to ask for a free invite!)
-2. Fork this repository to your own GitHub account, creating a `yourname/plots2` project.
-3. Name your project, then enter `yournameplots2` in the "Clone from Git or Mercurial URL" field, and press **Create Workspace** 
+1. Cloud9 now requires an invite unless you enter a credit card, but there's a workaround -- email plots-dev@googlegroups.com to ask for a free invite to get an account! 
+2. On GitHub, fork this repository to your own GitHub account, creating a `yourname/plots2` project.
+3. Name your project, then, on https://c9.io, enter `https://github.com/publiclab/plots2.git` in the "Clone from Git or Mercurial URL" field, and press **Create Workspace** 
 4. In the command line prompt at the bottom of the page, type `. ./install_cloudnine.sh` and press enter.
 5. Enter your username when prompted, and let it set things up.
 6. Run `rails s -b $IP -p $PORT` when it's done, or `rake test` to run your tests!
