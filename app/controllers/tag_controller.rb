@@ -14,7 +14,7 @@ class TagController < ApplicationController
   end
 
   def show
-    @wiki = DrupalNode.where(path: "/wiki/#{params[:id]}").first
+    @wiki = DrupalNode.where(slug: params[:id]).first
     if params[:id].match('question:')
       default_type = "questions"
     else
