@@ -34,6 +34,13 @@ class WikiControllerTest < ActionController::TestCase
     assert_not_nil :wikis
   end
 
+  test "should get wiki index in alphabetical order" do
+    get :index, order: 'alphabetic'
+
+    assert_response :success
+    assert_not_nil :wikis
+  end
+
   test "should get raw wiki markup" do
     get :raw, id: node_revisions(:one).id
 
