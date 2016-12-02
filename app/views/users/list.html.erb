@@ -1,10 +1,10 @@
-<div class='row'>
-	<div class='col-md-12'>
-  		<p> This page shows a list of all Public Lab contributors and is sorted by those who have posted most recently. Click the profile link to view their posting activity. </p>
-	</div>
-</div>
-<div class="col-md-3">
 
+<div class="col-md-3">
+	<div class='row'>
+		<div class='col-md-12'>
+			<p> This page shows a list of all Public Lab contributors and is sorted by those who have posted most recently. Click the profile link to view their posting activity. </p>
+		</div>
+	</div>
   <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
     <h2><%= t('users.list.user_moderation') %></h2>
     <p><%= t('users.list.admins_ban_spam') %> </p>
