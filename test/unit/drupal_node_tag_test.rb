@@ -119,4 +119,73 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     assert_nil node.tagged_lon
   end
 
+  test "can't powertag with: yourself" do
+    user = rusers(:bob)
+    node =  DrupalNode.new({
+      uid: user.id,
+      type: 'note',
+      title: 'My research note'
+    })
+    tagname = "with:#{user.username}"
+    assert_false node.can_tag(tagname, user)
+  end
+
+  test "can powertag with: another user" do
+    user = rusers(:bob)
+    jeff = rusers(:jeff)
+    node = DrupalNode.new({
+      uid: user.id,
+      type: 'note',
+      title: 'My research note'
+    })
+    tagname = "with:#{jeff.username}"
+    assert node.can_tag(tagname, user)
+  end
+
+  test "can't tag with: a nonexistent user" do
+    user = rusers(:bob)
+    node = DrupalNode.new({
+      uid: user.id,
+      type: 'note',
+      title: 'My research note'
+    })
+    tagname = "with:steven"
+    assert_false node.can_tag(tagname, user)
+  end
+
+  test "can't powertag if you're not author" do
+    user = rusers(:bob)
+    jeff = rusers(:jeff)
+    node = DrupalNode.new({
+      uid: jeff.id,
+      type: 'note',
+      title: 'My research note'
+    })
+    tagname = "with:#{jeff.username}"
+    assert_false node.can_tag(tagname, user)
+  end
+
+  test "can rsvp yourself" do
+    user = rusers(:bob)
+    node = DrupalNode.new({
+      uid: user.id,
+      type: 'note',
+      title: 'My research note'
+    })
+    tagname = "rsvp:#{user.username}"
+    assert node.can_tag(tagname, user)
+  end
+
+  test "can't rsvp someone else" do
+    user = rusers(:bob)
+    jeff = rusers(:jeff)
+    node = DrupalNode.new({
+      uid: user.id,
+      type: 'note',
+      title: 'My research note'
+    })
+    tagname = "rsvp:#{jeff.username}"
+    assert_false node.can_tag(tagname, user)
+  end
+
 end
