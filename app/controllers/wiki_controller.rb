@@ -261,9 +261,15 @@ class WikiController < ApplicationController
   def index
     @title = I18n.t('wiki_controller.wiki')
 
+    if params[:order] == 'alphabetic'
+      order_string = "node_revisions.title ASC"
+    else
+      order_string = "node_revisions.timestamp DESC"
+    end
+
     @wikis = DrupalNode.includes(:drupal_node_revision, :drupal_node_counter)
                        .group('node_revisions.nid')
-                       .order("node_revisions.timestamp DESC")
+                       .order(order_string)
                        .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
                        .page(params[:page])
 

@@ -25,7 +25,7 @@
     <p><a class="btn btn-primary" href="/wiki/<%= params[:id] %>"><span class="fa fa-plus fa-white"></span> Add one now</a></p>
   <% end %>
 
-  <% if @tags.first %>
+  <% if @tags.first && params[:id][-1..-1] != "*" %>
   <div id="note-graph" style="height:100px;"></div>
 
   <script type="text/javascript">
