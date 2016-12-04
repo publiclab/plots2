@@ -19,7 +19,7 @@ If you are submitting a bug, please include:
 * anything you can about the sequence of events which led to the bug 
 * any data you're attempting to upload, such as a photo, which can help us troubleshoot
 
-Thank you for your help!
+
 
 ##First Timers
 
@@ -40,4 +40,6 @@ Make sure you've reviewed our contribution guidelines at https://publiclab.org/w
 
 Also, make sure to reference the issue no as "fixes #<issueno>" in your PRs, so that they can be auto-closed on merging.
 
-We have a loose schedule of reviewing and pulling in changes every Tuesday and Friday, and publishing changes on Fridays. Please alert developers on plots-dev@googlegroups.com when your request is ready or if you need assistance.
+We have a loose schedule of reviewing and pulling in changes every Tuesday and Friday, and publishing changes on Fridays. Please alert developers on plots-dev@googlegroups.com when your request is ready or if you need assistance.i
+
+Thank you for your help!
