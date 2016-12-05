@@ -9,13 +9,13 @@ class DrupalUsers < ActiveRecord::Base
   self.table_name = 'users'
   self.primary_key = 'uid'
 
-  has_many :drupal_node, :foreign_key => 'uid'
+  has_many :node, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
   has_many :node_selections, :foreign_key => :user_id
   has_many :answers, :foreign_key => :uid
   has_many :answer_selections, :foreign_key => :user_id
-  has_many :drupal_comments, :foreign_key => 'uid'
+  has_many :comments, :foreign_key => 'uid'
   has_one :location_tag, :foreign_key => 'uid', :dependent => :destroy
 
   searchable :if => proc { |user| user.status == 1 } do
@@ -203,16 +203,16 @@ class DrupalUsers < ActiveRecord::Base
   private
 
   def decrease_likes_banned
-    node_selections.each do |node|
-      node.drupal_node.cached_likes = node.drupal_node.cached_likes - 1
-      node.drupal_node.save!
+    node_selections.each do |node1|
+      node1.node.cached_likes = node1.node.cached_likes - 1
+      node1.node.save!
     end
   end
 
   def increase_likes_unbanned
-    node_selections.each do |node|
-      node.drupal_node.cached_likes = node.drupal_node.cached_likes + 1
-      node.drupal_node.save!
+    node_selections.each do |node1|
+      node1.node.cached_likes = node1.node.cached_likes + 1
+      node1.node.save!
     end
   end
 end
