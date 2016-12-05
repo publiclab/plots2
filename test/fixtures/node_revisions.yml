@@ -197,3 +197,9 @@ upgrade:
   uid: 10
   title: "Note by a test user"
   body: This is upgrade node.
+
+fixture:
+  nid: 19
+  uid: 1
+  title: "email-footer"
+  body: Test
