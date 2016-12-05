@@ -708,6 +708,7 @@ class DrupalNode < ActiveRecord::Base
         description: "",
         weight:      0
       })
+
       ActiveRecord::Base.transaction do
         if tag.valid?
           tag.save!
