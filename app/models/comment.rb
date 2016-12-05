@@ -61,9 +61,9 @@ class Comment < ActiveRecord::Base
 
   def parent
     if self.aid == 0
-      self.drupal_node
+      self.node
     else
-      self.answer.drupal_node
+      self.answer.node
     end
   end
 
