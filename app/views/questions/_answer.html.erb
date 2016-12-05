@@ -36,8 +36,8 @@
     <% end %>
     <hr />
     <div style="padding: 0px 20px 10px 20px;">
-    <% if current_user && current_user.uid == answer.author.uid || answer.accepted %>
-      <a <% if current_user && current_user.uid == answer.author.uid %> href="/answers/accept/<%= answer.id %>" <% end %> data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm <% if answer.accepted %>btn-success<% else %>btn-default<% end%>"><% if answer.accepted %>Accepted<% else %>Accept this answer<% end %></a>
+    <% if current_user && current_user.uid == answer.node.uid || answer.accepted %>
+      <a <% if current_user && current_user.uid == answer.node.uid %> href="/answers/accept/<%= answer.id %>" <% end %> data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm <% if answer.accepted %>btn-success<% else %>btn-default<% end%>"><% if answer.accepted %>Accepted<% else %><% if current_user && current_user.uid == answer.node.uid %>Accept this answer<% end %><% end %></a>
     <% end %>
        <a href=<% if current_user %>"/answer_like/likes/<%= answer.id %>"<% else %>"#"<% end %>data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-default btn-sm btn-like" id="answer-like-button-<%= answer.id %>" <% unless current_user %> popover-content="You must be logged in to Like the answer" <% end %> ><span id="answer-like-star-<%= answer.id %>" class="fa fa-star<% if current_user && !answer.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="answer-like-count-<%= answer.id %>"><%= answer.likers.length %></span> Likes</a>
       <a href="#a<%= answer.id %>" class="btn btn-default btn-sm "><i class="fa fa-share-alt"></i></a> &nbsp;
