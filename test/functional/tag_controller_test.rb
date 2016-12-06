@@ -107,7 +107,7 @@ class TagControllerTest < ActionController::TestCase
     assert :success
     assert_not_nil :tags
 
-    json = ActiveSupport::JSON.decode(@response)
+    json = ActiveSupport::JSON.decode(@response.body)
 
     assert_not_nil json
     # assert more things to check this
