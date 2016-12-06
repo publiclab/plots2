@@ -75,10 +75,10 @@ class FeaturesController < ApplicationController
       @node = DrupalNode.find(params[:id])
       @revision = @node.new_revision({
         nid:   @node.id,
-        uid:   current_user.uid,
-        title: params[:title],
-        body:  params[:body]
+        uid:   current_user.uid
       })
+      @revision.title = params[:title] || @node.latest.title
+      @revision.body = params[:body] if params[:body]
       if @revision.valid?
         ActiveRecord::Base.transaction do
           @revision.save
@@ -91,7 +91,7 @@ class FeaturesController < ApplicationController
         redirect_to "/features?_=" + Time.now.to_i.to_s
       else
         flash[:error] = "Your edit could not be saved."
-        render :action => :edit
+        render action: 'edit'
       end
     end
   end

@@ -88,10 +88,13 @@ class FeaturesControllerTest < ActionController::TestCase
     UserSession.create(rusers(:admin))
 
     node = node(:feature)
+    assert_difference 'DrupalNodeRevision.count' do
 
-    get :update,
-        id: node.id,
-        body: "A new feature to <a href=''>display</a> with additions"
+      get :update,
+          id: node.id,
+          body: "A new feature to <a href=''>display</a> with additions"
+
+    end
 
     assert_equal  "A new feature to <a href=''>display</a> with additions", DrupalNode.find(node.id).latest.body
     assert_equal  "Edits saved and cache cleared.", flash[:notice]

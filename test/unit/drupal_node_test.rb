@@ -13,9 +13,24 @@ class DrupalNodeTest < ActiveSupport::TestCase
 
   test "create a node" do
     # in testing, uid and id should be matched, although this is not yet true in production db
-    node =  DrupalNode.new({:uid => rusers(:bob).id})
-    node.title = "My new node"
+    node =  DrupalNode.new({
+      uid: rusers(:bob).id,
+      type: 'note',
+      title: 'My new node for node creation testing'
+    })
+    assert node.save
+  end
+
+  test "create a feature" do
+    node =  DrupalNode.new({
+      uid: rusers(:admin).id,
+      type: 'feature',
+      title: 'header-feature'
+    })
     assert node.save!
+    username = rusers(:bob).username
+    assert_equal "/feature/#{node.title.parameterize}", node.path
+    assert_equal 'feature', node.type
   end
 
   test "create a research note" do

@@ -203,3 +203,4 @@ fixture:
   uid: 1
   title: "email-footer"
   body: Test
+  timestamp: <%= (Time.now - 1.week).to_i %>
