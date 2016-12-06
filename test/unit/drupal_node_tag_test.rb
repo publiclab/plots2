@@ -133,14 +133,14 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
 #    assert node(:blog).can_tag(tagname, user)
 #  end
 
-  test "can't tag with: a nonexistent user" do
-    user = rusers(:bob)
-    tagname = "with:steven"
-    assert_false node(:blog).can_tag(tagname, user)
-  end
+#  test "can't tag with: a nonexistent user" do
+#    user = rusers(:bob)
+#    tagname = "with:steven"
+#    assert_false node(:blog).can_tag(tagname, user)
+#  end
 
   test "can't powertag if you're not author" do
-    user = rusers(:bob)
+    bob = rusers(:bob)
     jeff = rusers(:jeff)
     node = DrupalNode.new({
       uid: jeff.id,
@@ -148,7 +148,7 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
       title: 'My research note'
     })
     tagname = "with:#{jeff.username}"
-    assert_false node.can_tag(tagname, user)
+    assert_false node.can_tag(tagname, bob)
   end
 
 #  test "can rsvp yourself" do
