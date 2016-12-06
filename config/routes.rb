@@ -166,6 +166,8 @@ Plots2::Application.routes.draw do
   match 'tag/remove_all_tags' => 'tag#remove_all_tags'
   match 'tag/:id' => 'tag#show'
 
+  match 'locations/form' => 'tag#location'
+
 
   match 'rsvp/:id' => 'notes#rsvp'
   match 'feed/liked' => 'notes#liked_rss'
@@ -242,6 +244,7 @@ Plots2::Application.routes.draw do
   match 'q/:id' => 'questions#shortlink'
   match 'questions/answered' => 'questions#answered'
   match 'questions/popular' => 'questions#popular'
+  match 'questions/unanswered' => 'questions#unanswered'
   match 'questions/liked' => 'questions#liked'
 
   match 'answers/create/:nid' => 'answers#create'

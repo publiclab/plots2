@@ -29,7 +29,7 @@ class DrupalNode < ActiveRecord::Base
     string :status
     string :updated_month
     text :comments do
-      drupal_comments.map { |comment| comment.comment }
+      comments.map { |comment| comment.comment }
     end
 
     string :user_name do
@@ -72,7 +72,7 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_tag, :through => :drupal_node_community_tag
   # these override the above... have to do it manually:
   # has_many :drupal_tag, :through => :drupal_node_tag
-  has_many :drupal_comments, :foreign_key => 'nid', :dependent => :destroy
+  has_many :comments, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_type_map, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_field_mappers, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_field_map_editor, :foreign_key => 'nid', :dependent => :destroy
@@ -232,7 +232,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def comment_count
-    self.drupal_comments
+    self.comments
         .count
   end
 
@@ -552,7 +552,7 @@ class DrupalNode < ActiveRecord::Base
     else
       thread = "01/"
     end
-    c = DrupalComment.new({
+    c = Comment.new({
       :pid => 0,
       :nid => self.nid,
       :uid => params[:uid],
@@ -708,6 +708,7 @@ class DrupalNode < ActiveRecord::Base
         description: "",
         weight:      0
       })
+
       ActiveRecord::Base.transaction do
         if tag.valid?
           tag.save!
@@ -777,6 +778,20 @@ class DrupalNode < ActiveRecord::Base
     DrupalNode.where(status: 1, type: 'note')
               .includes(:drupal_node_revision, :drupal_tag)
               .where('term_data.name LIKE ?', "upgrade:#{tagname}")
+  end
+
+  def can_tag(tagname, user)
+    if tagname[0..4] == "with:"
+      if self.author.uid != user.uid || User.find_by_username(tagname.split(':')[1]).nil? || tagname.split(':')[1] == user.username
+        return false
+      else
+        return true
+      end
+    elsif tagname[0..4] == "rsvp:" && user.username != tagname.split(":")[1]
+      return false
+    else
+      return true
+    end
   end
 
 end

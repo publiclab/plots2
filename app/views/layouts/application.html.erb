@@ -16,6 +16,12 @@
     <link rel="apple-touch-icon-precomposed" href="/images/pl-255.png">
     <link rel="apple-touch-icon-precomposed apple-touch-icon" href="/images/pl-255.png">
     <link rel="shortcut icon" href="/images/pl-255.png" />
+    <script type="text/javascript" async
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
 
     <%= stylesheet_link_tag "application", :media => "all" %>
     <link href="/lib/fontawesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
@@ -37,7 +43,7 @@
       <meta property="og:image" content="<%= @node.main_image.path(:default) %>" />
     <% end %>
 
-    <%= yield(:head) %> 
+    <%= yield(:head) %>
 
     <script type="text/javascript">
       I18n.defaultLocale = "<%= I18n.default_locale %>";
@@ -45,8 +51,8 @@
       I18n.fallbacks = true;
     </script>
 
-    <%= yield(:head) %> 
-    
+    <%= yield(:head) %>
+
   </head>
 
   <body>

@@ -2,6 +2,7 @@ PublicLab.org
 ======
 
 [![Build Status](https://travis-ci.org/publiclab/plots2.svg)](https://travis-ci.org/publiclab/plots2)
+[![badge](http://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://github.com/publiclab/plots2/projects/2)
 
 The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes" and a wiki. 
 
@@ -27,100 +28,16 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 
 ====
 
-##Simple installation with Cloud9
+## Table of Contents
 
-This is a quick installation for use with the cloud environment https://c9.io - for more standard, full instructions, see below. 
+1. [Simple Installation with Cloud9](https://github.com/publiclab/plots2/wiki/Simple-Installation-for-Cloud9)
+2. [Prerequisites](https://github.com/publiclab/plots2/wiki/Prerequisites)
+3. [Testing](https://github.com/publiclab/plots2/wiki/Testing)
+4. [API](https://github.com/publiclab/plots2/wiki/API)
+5. [Bugs and Support](https://github.com/publiclab/plots2/wiki/Bugs-and-Support)
 
-1. If you have a GitHub account, visit https://c9.io and log in with the GitHub button.
-2. Fork this repository to your own GitHub account, creating a `yourname/plots2` project.
-3. Name your project, then enter `yournameplots2` in the "Clone from Git or Mercurial URL" field, and press **Create Workspace** 
-4. In the command line prompt at the bottom of the page, type `. ./install_cloudnine.sh` and press enter.
-5. Enter your username when prompted, and let it set things up.
-6. Run `rails s -b $IP -p $PORT` when it's done, or `rake test` to run your tests!
-
-====
-
-## Prerequisites
-
-### Database
-
-Our production application runs on mysql, but for development, sqlite3 is sufficient.
-
-* Mac OS X: Macs ship with sqlite3 already installed.
-* Ubuntu/Debian: `sudo apt-get install sqlite3`
-* Fedora/Red Hat/CentOS: `sudo yum install sqlite` -- you may need `sqlite-devel` as well.
-
-
-### Solr search engine (optional)
-
-[Solr](https://lucene.apache.org/solr/) is a standalone search server. You put documents in it (called "indexing") via JSON, XML, CSV or binary over HTTP. You query it via HTTP GET and receive JSON, XML, CSV or binary results. Solr enables powerful matching capabilities including phrases, wildcards, joins, grouping and much more across any data type.
-We use the Solr search engine via the [sunspot gem](https://github.com/sunspot/sunspot) and using an adapter called [sunspot_rails](https://github.com/outoftime/sunspot_rails) to communicate to solr search server through our rails app.
-Solr requires Java, which is therefore a requirement for running the `rake test:solr` test suite (see [Testing](#testing), below), which runs tests of the search functionality using the files in `/test/solr/`; on a Debian/Ubuntu system, you can install the necessary libraries with:
-
-`sudo apt-get install openjdk-7-jre openjdk-7-jdk`
-
-And start up solr with:
-
-`rake sunspot:solr:start` followed by `rake sunspot:reindex`
-
-However, to ease installation, we've [made Java optional](https://github.com/publiclab/plots2/issues/832) for basic testing using `rake test`. So if you are just starting out you can skip this step.
-
-
-### Image libraries (optional)
-
-If you are just developing and don't plan to do work with image uploading, you may not need the following, but otherwise:
-
-`sudo apt-get install imagemagick ruby-rmagick`
-
-
-### Ruby
-
-Install rvm for Ruby management (http://rvm.io)
-
-`curl -L https://get.rvm.io | bash -s stable`
-
-**Note:** At this point during the process, you may want to log out and log back in, or open a new terminal window; RVM will then properly load in your environment.
-
-**Ubuntu users:** You may need to enable `Run command as a login shell` in Ubuntu's Terminal, under _Edit > Profile Preferences > Title and Command_. Then close the terminal and reopen it. You may also want to run `source ~/.rvm/scripts/rvm` to load RVM.
-
-Then, use RVM to install version 2.1.2 of Ruby. (v1.9.3+ should also work):
-
-`rvm install 2.1.2`
-
-
-### Gems with Bundler
-
-Ruby dependencies, or Gems, are managed with Bundler. 
-
-`gem install bundler` - if it's not already installed, but it should be in a basic RVM ruby. 
-
-
-### Assets with Bower
-
-You'll also need **bower** which is available through `npm`, part of `node.js`.
-
-[This wiki page from the nodejs repository](https://github.com/nodejs/node/wiki) has comprehensive and up to date installation guides for many systems. 
- 
-Once NPM is installed, you should be able to run:
-
-`npm install -g bower`
-
-**NOTE:** If you're having permission issues, please see https://docs.npmjs.com/getting-started/fixing-npm-permissions
-
-**WARNING:** Please refrain from using `sudo npm` as it's not only a bad practice, but may also put your security at a risk. For more on this, read https://pawelgrzybek.com/fix-priviliges-and-never-again-use-sudo-with-npm/
-
-### phantomjs for javascript tests (optional)
-
-We are using `jasmine-rails` gem for the optional javascript tests (run with `rake spec:javascript`) which require `phantomjs` for headless testing (i.e. on the commandline, not with a browser). Generally the **phantomjs gem** gets installed along with the `jasmine-rails` gem. If the package installation for the gem fails you can use [this script](https://github.com/codeship/scripts/blob/master/packages/phantomjs.sh) to install it.
-
-But some architectures (Linux!) aren't supported by the phantomjs gem. For those you have to run phantomjs via a native binary, you can find the installation instructions in its official [build documentation](http://phantomjs.org/build.html). For Ubuntu/debian based system you can follow [these instructions](https://gist.github.com/julionc/7476620) or use the script mentioned there. On successful installation you can see the version number of phantomjs with the `phantomjs -v` command. For the binary to work properly with `jasmine-rails` change the line 52 on _spec/javascripts/support/jasmine.yml_ to `use_phantom_gem: false`.
-
-Please report any error regarding phantomjs installation in the github issue tracker. We will try to help you out as soon as we can!
-
-
-##Installation
-
-Installation steps:
+****
+## Installation
 
 1. In the console, download a copy of the source with `git clone https://github.com/publiclab/plots2.git`.
 2. Enter the new **plots2** directory with `cd plots2`.
@@ -140,35 +57,9 @@ Installation steps:
 
 For some, it will be necessary to prepend your gem-related commands with `bundle exec`, for example `bundle exec passenger start`; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler. `bundle exec rake db:setup`, `bundle exec rake db:seed` are other examples of where this might be necessary.
 
-****
+***
 
-
-##Testing
-
-Run all basic rails tests with `rake test`. This is required for submitting pull requests, and to confirm you have a working local environment.
-
-`rake test:all` runs **all** tests. This includes Jasmine client-side tests and Solr-dependent tests.
-
-**Client-side tests** (for JavaScript functions) are run using [Jasmine](https://jasmine.github.io/) in [jasmine-rails](https://github.com/searls/jasmine-rails). You can run tests by navigating to `/specs/` in the browser. Headless, or command-line test running may be possible with `rake spec:javascript` [if you have phantomjs installed](#phantomjs-for-javascript-tests) (see above). 
-
-**Solr (search) tests** require [installing the Solr search engine](#solr-search-engine) (see above). Once you've done that, you still need to turn it off in development mode before running tests, with `rake sunspot:solr:stop`. Read more about [this issue here](https://github.com/publiclab/plots2/issues/832#issuecomment-249695309). 
-
-If you get stuck on testing at any point, you can _open a pull request with your changes_ -- please add the prefix `[testing]` to the title -- which will then be automatically tested by our TravisCI service -- which runs **all tests** with `rake test:all`. If your additions are pretty basic, and you write tests against them, this may be sufficient without actually running the whole environment yourself! 
-
-We are extremely interested in building our out test suite, so please consider helping us write tests! 
-
-
-****
-
-##Bugs and support
-
-To report bugs and request features, please use the GitHub issue tracker provided at https://github.com/publiclab/plots2/issues 
-
-For additional support, join the Public Lab website and mailing list at http://publiclab.org/lists or for urgent requests, email web@publiclab.org
-
-****
-
-###Internationalization
+## Internationalization
 
 Publiclab.org now supports Internationalization and localization, though we are in the initial stages. This has been accomplished with [rails-I8n](https://github.com/svenfuchs/rails-i18n). 
 
@@ -177,23 +68,6 @@ To see it in action, click on the 'Language' dropdown located in the header/foot
 Translations are arranged in the yaml files [here](https://github.com/publiclab/plots2/tree/master/config/locales), which are organized in the similar way to [views](https://github.com/publiclab/plots2/tree/master/app/views) files. An example for adding translations can be found [here](http://guides.rubyonrails.org/i18n.html#adding-translations).
 
 To add new languages or for additional support, please write to plots-dev@googlegroups.com
-
-****
-
-## API
-
-Swagger-generated API documentation can be found at:
-
-https://publiclab.org/api/swagger_doc.json
-
-Per-model API endpoints are:
-
-* Profiles: https://publiclab.org/api/srch/profiles?srchString=foo
-* Questions: https://publiclab.org/api/srch/questions?srchString=foo
-* Tags: https://publiclab.org/api/srch/tags?srchString=foo
-* Notes: https://publiclab.org/api/srch/notes?srchString=foo
-
-****
 
 ## Developers
 
@@ -205,10 +79,9 @@ Help improve Public Lab software!
 * Find lots of info on contributing at http://publiclab.org/wiki/developers
 * Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software
 * Some devs hang out in http://publiclab.org/chat (irc webchat)
+* Join our gitter chat at https://gitter.im/publiclab/publiclab
 
-****
-
-## First time?
+## First Time?
 
 New to open source/free software?, Here are a selection of issues we've made especially for first-timers. We're here to help, so just ask if one looks interesting : https://github.com/publiclab/plots2/projects/2
 

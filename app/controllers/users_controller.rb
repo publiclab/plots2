@@ -143,7 +143,7 @@ class UsersController < ApplicationController
   def likes
     @user = DrupalUsers.find_by_name(params[:id])
     @title = "Liked by "+@user.name
-    @notes = @user.liked_notes.includes([:drupal_tag, :drupal_comments])
+    @notes = @user.liked_notes.includes([:drupal_tag, :comments])
                               .paginate(page: params[:page], per_page: 20)
     @wikis = @user.liked_pages
     @tagnames = []
@@ -213,7 +213,7 @@ class UsersController < ApplicationController
   end
 
   def comments
-    @comments = DrupalComment.limit(20)
+    @comments = Comment.limit(20)
                              .order("timestamp DESC")
                              .where(status: 0, uid: params[:id])
                              .paginate(page: params[:page], per_page: 30)
