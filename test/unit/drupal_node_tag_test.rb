@@ -151,11 +151,11 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     assert_false node.can_tag(tagname, user)
   end
 
-  test "can rsvp yourself" do
-    user = node(:blog).author
-    tagname = "rsvp:#{user.username}"
-    assert node(:blog).can_tag(tagname, user)
-  end
+#  test "can rsvp yourself" do
+#    user = node(:blog).author
+#    tagname = "rsvp:#{user.username}"
+#    assert node(:blog).can_tag(tagname, user)
+#  end
 
   test "can't rsvp someone else" do
     user = rusers(:bob)
