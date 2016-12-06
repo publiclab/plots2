@@ -100,6 +100,19 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#wiki-content', 0
   end
 
+  test "tag show JSON" do
+
+    get :show, id: tags(:spectrometer), format: 'json'
+
+    assert :success
+    assert_not_nil :tags
+
+    json = ActiveSupport::JSON.decode(@response)
+
+    assert_not_nil json
+    # assert more things to check this
+  end
+  
   test "wildcard tag show" do
     get :show, id: 'question:*'
     assert :success
