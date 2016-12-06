@@ -708,6 +708,7 @@ class DrupalNode < ActiveRecord::Base
         description: "",
         weight:      0
       })
+
       ActiveRecord::Base.transaction do
         if tag.valid?
           tag.save!
@@ -777,6 +778,20 @@ class DrupalNode < ActiveRecord::Base
     DrupalNode.where(status: 1, type: 'note')
               .includes(:drupal_node_revision, :drupal_tag)
               .where('term_data.name LIKE ?', "upgrade:#{tagname}")
+  end
+
+  def can_tag(tagname, user)
+    if tagname[0..4] == "with:"
+      if self.author.uid != user.uid || User.find_by_username(tagname.split(':')[1]).nil? || tagname.split(':')[1] == user.username
+        return false
+      else
+        return true
+      end
+    elsif tagname[0..4] == "rsvp:" && user.username != tagname.split(":")[1]
+      return false
+    else
+      return true
+    end
   end
 
 end
