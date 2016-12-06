@@ -126,6 +126,8 @@ class DrupalNode < ActiveRecord::Base
       "/wiki/" + self.title.parameterize
     elsif self.type == 'map'
       "/map/#{self.title.parameterize}/#{Time.now.strftime("%m-%d-%Y")}"
+    elsif self.type == 'feature'
+      "/feature/#{self.title.parameterize}"
     end
   end
 

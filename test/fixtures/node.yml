@@ -215,3 +215,13 @@ upgrade:
   type: "note"
   cached_likes: 0
   slug: test-<%= Time.now.strftime("%m-%d-%Y") %>-upgrade-note
+
+feature:
+  nid: 19
+  uid: 1
+  title: "email-footer"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "feature"
+  cached_likes: 0
