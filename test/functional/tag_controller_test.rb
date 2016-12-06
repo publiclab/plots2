@@ -247,6 +247,7 @@ class TagControllerTest < ActionController::TestCase
     tag2 = tags(:spectrometry)
     tag2.parent = ""
     tag2.save
+
     assert_equal 'spectrometry', tag.parent 
     assert_equal '',             tag2.parent
     node(:blog).add_tag('spectrometry', rusers(:bob))
