@@ -119,17 +119,12 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     assert_nil node.tagged_lon
   end
 
-#  test "can't powertag with: yourself" do
-#    user = rusers(:bob)
-#    node =  DrupalNode.new({
-#      uid: user.id,
-#      type: 'note',
-#      title: 'My research note'
-#    })
-#    tagname = "with:#{user.username}"
-#    assert_false node.can_tag(tagname, user)
-#  end
-#
+  test "can't powertag with: yourself" do
+    user = node(:blog).author
+    tagname = "with:#{user.username}"
+    assert_false node(:blog).can_tag(tagname, user)
+  end
+
 #  test "can powertag with: another user" do
 #    user = rusers(:bob)
 #    jeff = rusers(:jeff)
