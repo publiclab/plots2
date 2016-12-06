@@ -41,13 +41,18 @@ class TagController < ApplicationController
                         .page(params[:page])
                         .order("node_revisions.timestamp DESC")
     end
-
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == "note"
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == "questions"
     @wikis = nodes if @node_type == "wiki"
     @nodes = nodes if @node_type == "maps"
     @title = params[:id]
     set_sidebar :tags, [params[:id]]
+    
+    respond_with(@notes) do |format|
+      format.html { render 'tag/show' }
+      format.xml  { render :xml => @notes }
+      format.json  { render :json => @notes }
+    end
   end
 
   def widget
