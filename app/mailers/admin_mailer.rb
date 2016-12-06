@@ -1,9 +1,12 @@
 class AdminMailer < ActionMailer::Base
+  helper :application
+  include ApplicationHelper
   default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
 
   def notify_node_moderators(node)
     subject = "[New Public Lab poster needs moderation] " + node.title
     @node = node
+    @footer = feature('email-footer')
     moderators = User.where(role: ['moderator', 'admin']).collect(&:email)
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}", 
@@ -17,6 +20,7 @@ class AdminMailer < ActionMailer::Base
     @author = node.author
     @moderator = moderator
     @node = node
+    @footer = feature('email-footer')
     mail(:to => @author.mail, :subject => subject).deliver
   end
 
@@ -32,6 +36,7 @@ class AdminMailer < ActionMailer::Base
     @author = node.author
     @moderator = moderator
     @node = node
+    @footer = feature('email-footer')
     moderators = User.where(role: ['moderator', 'admin']).collect(&:email)
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}", 
@@ -45,6 +50,7 @@ class AdminMailer < ActionMailer::Base
     @author = node.author
     @moderator = moderator
     @node = node
+    @footer = feature('email-footer')
     moderators = User.where(role: ['moderator', 'admin']).collect(&:email)
     mail(
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}", 
