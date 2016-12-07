@@ -48,10 +48,10 @@ class TagController < ApplicationController
     @title = params[:id]
     set_sidebar :tags, [params[:id]]
     
-    respond_with(@notes) do |format|
+    respond_with(nodes) do |format|
       format.html { render 'tag/show' }
-      format.xml  { render :xml => @notes }
-      format.json  { render :json => @notes }
+      format.xml  { render xml: nodes }
+      format.json  { render json: nodes }
     end
   end
 
