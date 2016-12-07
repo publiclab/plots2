@@ -16,7 +16,7 @@ xml.rss :version => "2.0" do
        xml.pubDate     node.created_at.to_s(:rfc822)
        #xml.link        url_for :only_path => false, :controller => 'notes', :action => 'show', :id => node.nid
        xml.link        "https://" + request.host.to_s + node.path
-       xml.image "https://" + request.host.to_s + node.main_image.path(:default) if node.main_image
+       xml.image node.main_image.path(:default) if node.main_image
        xml.description auto_link(body, :sanitize => false)
        xml.guid        url_for :only_path => false, :controller => 'notes', :action => 'show', :id => node.nid
      end
