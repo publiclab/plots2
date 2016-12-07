@@ -1,6 +1,12 @@
 <div class="hidden-print btn-toolbar pull-right" style="margin-left:10px;margin-top:0;">
   <ul class="btn-group">
-
+        <% if current_user && (current_user.uid == node.uid || current_user.role == "moderator" || current_user.role == "admin") %>
+             <% if node.type == 'note' %>
+                <a <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing a post by another contributor, a privilege you have only because you are a moderator or admin.' <% end %> class='btn btn-default btn-sm' href='/notes/edit/<%= node.id %>?t=<%= Time.now.to_i %><% if params[:controller] == "questions" %>&redirect=question&template=question<% end %>'>
+                <i class='fa fa-pencil'></i><span class='hidden-xs hidden-sm'> Edit</span>
+                </a>
+            <% end %>
+        <% end %>
     <li class="btn btn-default btn-sm" data-html="true" rel="popover" data-content="<%= "No tags" if tagnames.nil? || tagnames.length == 0 %><% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-default btn-mini'><%= tagname %></a></p><% end %><% end %><hr /><a class='btn btn-sm'><i class='fa fa-user'></i> <%= node.author.name %></a>" title="Follow by tag or author" data-placement="left"><i class="fa fa-eye"></i><span class="hidden-xs hidden-sm"> Follow</span></li>
 
     <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>"><span id="like-star-<%= node.id %>" class="fa fa-star<% if current_user && !node.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="like-count-<%= node.id %>"><%= node.likers.length %> </span></li>
@@ -33,8 +39,7 @@
   <hr />
 
   <div class='btn-group'>
-    <% if node.type == 'note' %><a <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing a post by another contributor, a privilege you have only because you are a moderator or admin.' <% end %>class='btn btn-default btn-sm' href='/notes/edit/<%= node.id %>?t=<%= Time.now.to_i %><% if params[:controller] == "questions" %>&redirect=question&template=question<% end %>'><i class='fa fa-pencil'></i><span class='hidden-xs hidden-sm'> Edit</span></a><% end %>
-    <a href='/notes/delete/<%= node.id %>' class='btn btn-default btn-sm' data-confirm='Are you sure?'>
+     <a href='/notes/delete/<%= node.id %>' class='btn btn-default btn-sm' data-confirm='Are you sure?'>
       <i class='fa fa-trash'></i><span class='hidden-xs hidden-sm' Delete</span>
     </a>
     <a href='/notes/raw/<%= node.id %>' class='btn btn-default btn-sm'>
