@@ -21,6 +21,22 @@ class EditorControllerTest < ActionController::TestCase
     assert_select "#taginput[value=?]", "one,two"
   end
 
+  test "should use existing node body as template in post form based on param 'n'" do
+    UserSession.create(rusers(:bob))
+    get :post,
+        n: node(:blog).id
+    assert_response :success
+    assert_select "textarea#text-input", node(:blog).body
+  end
+
+  test "should use existing node body as template in post form based on param 'n' in rich editor" do
+    UserSession.create(rusers(:bob))
+    get :rich,
+        n: node(:blog).id
+    assert_response :success
+    assert_select "textarea#text-input", node(:blog).body
+  end
+
   test "newcomer should get post form" do
     UserSession.create(rusers(:newcomer))
     get :post

@@ -53,6 +53,8 @@
       <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
       <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
       <input id="images_input" type="hidden" name="images" value="" />
+
+      <input id="taginput" type="hidden" name="tags" value="<%= params[:tags] %>" />
  
       <div class="form-group">
         <input tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:id] %><% end %>">

@@ -85,6 +85,10 @@ class WikiController < ApplicationController
 
   def new
     @node = DrupalNode.new
+    if params[:n] && !params[:body] # use another node body as a template
+      node = DrupalNode.find(params[:n])
+      params[:body] = node.latest.body if node && node.latest
+    end
     @tags = []
     if params[:id]
       flash.now[:notice] = I18n.t('wiki_controller.page_does_not_exist_create')

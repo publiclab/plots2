@@ -12,12 +12,20 @@ class EditorController < ApplicationController
       })
       flash[:error] = "The image could not be saved." unless @image.save!
     end
+    if params[:n] && !params[:body] # use another node body as a template
+      node = DrupalNode.find(params[:n])
+      params[:body] = node.body if node
+    end
     redirect_to "/questions/new?#{request.env['QUERY_STRING']}" if params[:tags] && params[:tags].include?("question:")
   end
 
   def rich
     if params[:main_image] && Image.find_by_id(params[:main_image])
       @main_image = Image.find_by_id(params[:main_image]).path
+    end
+    if params[:n] && !params[:body] # use another node body as a template
+      node = DrupalNode.find(params[:n])
+      params[:body] = node.body if node
     end
   end
 

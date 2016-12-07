@@ -41,6 +41,18 @@ class WikiControllerTest < ActionController::TestCase
     assert_not_nil :wikis
   end
 
+  test "should use existing node body as template in post form based on param 'n'" do
+    UserSession.create(rusers(:bob))
+
+    get :new,
+        tags: 'one,two',
+        n: node(:blog).id
+
+    assert_response :success
+    assert_select "#taginput[value=?]", "one,two"
+    assert_select "textarea#text-input", node(:blog).body
+  end
+
   test "should get raw wiki markup" do
     get :raw, id: node_revisions(:one).id
 
