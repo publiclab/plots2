@@ -1,4 +1,6 @@
 class PasswordResetMailer < ActionMailer::Base
+	helper :application
+  include ApplicationHelper
   default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
 
   # PasswordResetMailer.reset_notify(user).deliver 
@@ -6,6 +8,7 @@ class PasswordResetMailer < ActionMailer::Base
     subject = "[Public Lab] Reset your password"
     @user = user
     @key = key
+    @footer = feature('email-footer')
     mail(:to => user.email, :subject => subject).deliver
   end
 
