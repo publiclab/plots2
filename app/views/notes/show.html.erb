@@ -2,6 +2,7 @@
 
 <div class="col-md-9 note-show<% if @node.status == 4 || @node.status == 0 %> moderated<% end %>">
   <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning"><%= raw t('notes.show.note_no_tags') %></div><% end %>
+  <% if @node.has_power_tag('status:candidate') %><div class="alert alert-info">This was marked as a candidate activity -- <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity" >read about how to adapt its content</a> into a fully-fledged, step-by-step activity that can be easily replicated.</div>
   <% if @node.has_power_tag('replication') %><div class="alert alert-info"><%= raw t('notes.show.replication') %> <a href="/n/<%= @node.power_tag('replication') %>"><%= raw t('notes.show.replication_link') %></a>.</div><% end %>
   <% if @node.has_power_tag('build') %><div class="alert alert-info"><%= raw t('notes.show.build') %> <a href="/n/<%= @node.power_tag('build') %>"><%= raw t('notes.show.build_link') %></a>.</div><% end %>
 
