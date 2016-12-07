@@ -20,6 +20,7 @@ class SubscriptionMailer < ActionMailer::Base
               (node.has_power_tag('question') ? "question" : "research note")
     @user = user
     @node = node
+    @footer = feature('email-footer')
     mail(:to => node.author.email, :subject => subject).deliver
   end
 

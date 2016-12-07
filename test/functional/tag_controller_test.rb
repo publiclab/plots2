@@ -100,6 +100,19 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#wiki-content', 0
   end
 
+  test "tag show JSON" do
+
+    get :show, id: tags(:spectrometer), format: 'json'
+
+    assert :success
+    assert_not_nil :tags
+
+    json = ActiveSupport::JSON.decode(@response.body)
+
+    assert_not_nil json
+    # assert more things to check this
+  end
+  
   test "wildcard tag show" do
     get :show, id: 'question:*'
     assert :success
@@ -160,10 +173,13 @@ class TagControllerTest < ActionController::TestCase
   test "adds comment when awarding a barnstar" do
     ApplicationController.any_instance.stubs(:current_user).returns(User.first)
     assert_difference 'Comment.count' do
+      node = DrupalNode.where(type: 'note').last
 
-      post :barnstar, :nid => DrupalNode.last.nid, :star => "basic"
+      post :barnstar, 
+           nid: node.nid,
+           star: "basic"
 
-      assert_equal "[@#{User.first.username}](/profile/#{User.first.username}) awards a <a href=\"//#{request.host}/wiki/barnstars\">barnstar</a> to #{DrupalNode.last.drupal_users.name} for their awesome contribution!", Comment.last.body
+      assert_equal "[@#{User.first.username}](/profile/#{User.first.username}) awards a <a href=\"//#{request.host}/wiki/barnstars\">barnstar</a> to #{node.author.name} for their awesome contribution!", Comment.last.body
     end
   end
 
@@ -247,6 +263,7 @@ class TagControllerTest < ActionController::TestCase
     tag2 = tags(:spectrometry)
     tag2.parent = ""
     tag2.save
+
     assert_equal 'spectrometry', tag.parent 
     assert_equal '',             tag2.parent
     node(:blog).add_tag('spectrometry', rusers(:bob))

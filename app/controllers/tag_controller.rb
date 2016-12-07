@@ -41,13 +41,18 @@ class TagController < ApplicationController
                         .page(params[:page])
                         .order("node_revisions.timestamp DESC")
     end
-
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == "note"
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == "questions"
     @wikis = nodes if @node_type == "wiki"
     @nodes = nodes if @node_type == "maps"
     @title = params[:id]
     set_sidebar :tags, [params[:id]]
+    
+    respond_with(nodes) do |format|
+      format.html { render 'tag/show' }
+      format.xml  { render xml: nodes }
+      format.json  { render json: nodes }
+    end
   end
 
   def widget
@@ -81,14 +86,14 @@ class TagController < ApplicationController
     elsif !node.add_barnstar(tagname.strip,current_user)
       flash[:error] = I18n.t('tag_controller.barnstar_not_created')
     else
-      flash[:notice] = I18n.t('tag_controller.barnstar_awarded', :url1 => "/wiki/barnstars#"+params[:star].split('-').each{|w| w.capitalize!}.join('+')+"+Barnstar", :star => params[:star], :url2 => "/profile/"+node.author.name, :awardee => node.author.name).html_safe
+      flash[:notice] = I18n.t('tag_controller.barnstar_awarded', url1: "/wiki/barnstars#"+params[:star].split('-').each{|w| w.capitalize!}.join('+')+"+Barnstar", star: params[:star], url2: "/profile/"+node.author.name, awardee: node.author.name).html_safe
       # on success add comment
       barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
       node.add_comment({
-          :subject => 'barnstar',
-          :uid => current_user.uid,
-          :body => "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_users.name} for their awesome contribution!"
-        })
+        subject: 'barnstar',
+        uid: current_user.uid,
+        body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_users.name} for their awesome contribution!"
+      })
     end
     redirect_to node.path + "?_=" + Time.now.to_i.to_s
   end
