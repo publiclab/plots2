@@ -1,5 +1,5 @@
 # def index
-# def tools
+# def methods
 # def places
 # def shortlink
 # def raw
@@ -92,8 +92,8 @@ class NotesControllerTest < ActionController::TestCase
     assert_redirected_to "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
   end
 
-  test "should get tools" do
-    get :tools
+  test "should get methods" do
+    get :methods
 
     assert_response :success
     assert_not_nil :notes
@@ -248,7 +248,7 @@ class NotesControllerTest < ActionController::TestCase
   test "post_note_error_no_title_xhr" do
     UserSession.create(rusers(:bob))
 
-    xhr :post, 
+    xhr :post,
         :create,
         body: "This is a fascinating post about a balloon mapping event.",
         tags: "balloon-mapping,event"
@@ -374,7 +374,7 @@ class NotesControllerTest < ActionController::TestCase
   test "returning json errors on xhr note update" do
     user = UserSession.create(rusers(:jeff))
 
-    xhr :post, 
+    xhr :post,
         :update,
         id: node(:blog).id,
         title: ""

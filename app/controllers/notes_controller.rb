@@ -68,7 +68,7 @@ class NotesController < ApplicationController
   end
 
   def tools
-    redirect_to '/methods', :status => :moved_permanently
+    redirect_to action:  'methods'
   end
 
   def places
