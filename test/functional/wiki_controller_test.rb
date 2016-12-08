@@ -106,6 +106,17 @@ class WikiControllerTest < ActionController::TestCase
     assert_select ".alert"
   end
 
+  test "viewing edit wiki page" do
+
+    get :edit, 
+         id: 'organizers'
+
+    assert_template "wiki/edit"
+    assert_not_nil assigns(:title)
+    assert_not_nil assigns(:node)
+    assert_response :success
+  end
+  
   test "updating wiki" do
     wiki = node(:organizers)
     newtitle = "New Title"
