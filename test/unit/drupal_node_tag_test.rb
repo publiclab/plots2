@@ -139,7 +139,7 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
 #    assert_false node(:blog).can_tag(tagname, user)
 #  end
 
-  test "can't powertag if you're not author" do
+  test "can't powertag with: if you're not author" do
     bob = rusers(:bob)
     jeff = rusers(:jeff)
     node = DrupalNode.new({
@@ -151,11 +151,11 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     assert_false node.can_tag(tagname, bob)
   end
 
-#  test "can rsvp yourself" do
-#    user = node(:blog).author
-#    tagname = "rsvp:#{user.username}"
-#    assert node(:blog).can_tag(tagname, user)
-#  end
+  test "can rsvp yourself" do
+    user = node(:blog).author
+    tagname = "rsvp:#{user.username}"
+    assert node(:blog).can_tag(tagname, user)
+  end
 
   test "can't rsvp someone else" do
     user = rusers(:bob)
