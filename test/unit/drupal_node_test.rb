@@ -217,8 +217,9 @@ class DrupalNodeTest < ActiveSupport::TestCase
 
   test "replacing content in a node with node.replace()" do
     node = node(:about)
-    node.replace("Public", "Private")
+    replaced = node.replace("Public", "Private", rusers(:bob))
 
+    assert replaced
     assert_equal "All about Private Lab", node.body
   end
 

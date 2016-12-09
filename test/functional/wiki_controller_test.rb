@@ -381,7 +381,7 @@ class WikiControllerTest < ActionController::TestCase
     assert_difference 'DrupalNodeRevision.count' do
       assert_difference "DrupalNode.find(#{node.id}).revisions.count" do
 
-        get :replace, before: "Public", after: "Private"
+        get :replace, id: node.id, before: "Public", after: "Private"
 
       end
     end

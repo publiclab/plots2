@@ -2,7 +2,7 @@ require 'rss'
 
 class WikiController < ApplicationController
 
-  before_filter :require_user, :only => [:new, :create, :edit, :update, :delete]
+  before_filter :require_user, :only => [:new, :create, :edit, :update, :delete, :replace]
 
   def subdomain
     url = "//#{request.host}/wiki/"
@@ -135,7 +135,6 @@ class WikiController < ApplicationController
   def update
     @node = DrupalNode.find(params[:id])
     @revision = @node.new_revision({
-      nid:   @node.id,
       uid:   current_user.uid,
       title: params[:title],
       body:  params[:body]
@@ -298,6 +297,20 @@ class WikiController < ApplicationController
                        .order("node.cached_likes DESC")
                        .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes > 0")
     render :template => "wiki/index"
+  end
+
+  def replace
+    @node = DrupalNode.find(params[:id])
+    if params[:before] && params[:after]
+      if @node.replace(params[:before], params[:after], current_user)
+        flash[:notice] = "New revision created with your additions."
+      else
+        flash[:error] = "There was a problem replacing that text."
+      end
+    else
+      flash[:error] = "You must specify 'before' and 'after' terms to replace content in a wiki page."
+    end
+    redirect_to @node.path
   end
 
 end
