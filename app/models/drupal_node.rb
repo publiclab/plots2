@@ -571,11 +571,12 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def new_revision(params)
+    title = params[:title] || self.title
     DrupalNodeRevision.new({
-      :nid => params[:nid],
-      :uid => params[:uid],
-      :title => params[:title],
-      :body => params[:body]
+      nid: self.id,
+      uid: params[:uid],
+      title: title,
+      body: params[:body]
     })
   end
 
@@ -598,7 +599,6 @@ class DrupalNode < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         node.save!
         revision = node.new_revision({
-          nid:   node.id,
           uid:   author.uid,
           title: params[:title],
           body:  params[:body]
@@ -794,6 +794,14 @@ class DrupalNode < ActiveRecord::Base
     else
       return true
     end
+  end
+
+  def replace(before, after, user)
+    revision = self.new_revision({
+      uid: user.id,
+      body: self.latest.body.gsub(before, after)
+    })
+    revision.save
   end
 
 end

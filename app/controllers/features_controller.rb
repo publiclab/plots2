@@ -43,7 +43,6 @@ class FeaturesController < ApplicationController
         ActiveRecord::Base.transaction do
           @node.save! 
           @revision = @node.new_revision({
-            nid:   @node.id,
             uid:   current_user.id,
             title: params[:title],
             body:  params[:body]
@@ -74,7 +73,6 @@ class FeaturesController < ApplicationController
     else
       @node = DrupalNode.find(params[:id])
       @revision = @node.new_revision({
-        nid:   @node.id,
         uid:   current_user.uid
       })
       @revision.title = params[:title] || @node.latest.title

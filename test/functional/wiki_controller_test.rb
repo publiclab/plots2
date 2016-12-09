@@ -349,25 +349,25 @@ class WikiControllerTest < ActionController::TestCase
   
   test "should choose I18n for wiki controller" do
     available_testing_locales.each do |lang|
-        old_controller = @controller
-        @controller = SettingsController.new
-        
-        get :change_locale, :locale => lang.to_s
-        
-        @controller = old_controller
-        
-        wiki = node(:organizers)
-        newtitle = "New Title"
-    
-        post :update, 
-             id:    wiki.nid, 
-             uid:   rusers(:bob).id,
-             title: newtitle,
-             body:  "Editing about Page"
-    
-        wiki.reload
-        assert_redirected_to wiki.path
-        assert_equal flash[:notice], I18n.t('wiki_controller.edits_saved')
+      old_controller = @controller
+      @controller = SettingsController.new
+      
+      get :change_locale, :locale => lang.to_s
+      
+      @controller = old_controller
+      
+      wiki = node(:organizers)
+      newtitle = "New Title"
+  
+      post :update, 
+           id:    wiki.nid, 
+           uid:   rusers(:bob).id,
+           title: newtitle,
+           body:  "Editing about Page"
+  
+      wiki.reload
+      assert_redirected_to wiki.path
+      assert_equal flash[:notice], I18n.t('wiki_controller.edits_saved')
     end
   end
 
@@ -384,4 +384,21 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
     assert_template 'wiki/edit'
   end
+
+  test "replacing content in a node with replace action" do
+    UserSession.create(rusers(:jeff))
+    node = node(:about)
+
+    assert_difference 'DrupalNodeRevision.count' do
+      assert_difference "DrupalNode.find(#{node.id}).revisions.count" do
+
+        get :replace, id: node.id, before: "Public", after: "Private"
+
+      end
+    end
+
+    assert_equal "All about Private Lab", DrupalNode.find(node.id).body
+    assert_redirected_to node.path
+  end
+
 end

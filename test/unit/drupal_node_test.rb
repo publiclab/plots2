@@ -215,4 +215,12 @@ class DrupalNodeTest < ActiveSupport::TestCase
     assert_equal expected, activities
   end
 
+  test "replacing content in a node with node.replace()" do
+    node = node(:about)
+    replaced = node.replace("Public", "Private", rusers(:bob))
+
+    assert replaced
+    assert_equal "All about Private Lab", node.body
+  end
+
 end
