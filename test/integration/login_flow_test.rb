@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class LoginFlowTest < ActionDispatch::IntegrationTest
-  test "redirect to login page if user is not logged in and then redirect back to desired page after login" do    
+  test "redirect to login page if user is not logged in and then redirect back to desired page after login" do
     get '/post?tags=question:question&template=question'
     follow_redirect!
     assert_equal '/login', path
@@ -28,7 +28,7 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
       username: rusers(:jeff).username,
       password: 'secret'
     }
-    
+
     follow_redirect!
     assert_response :redirect
     assert_redirected_to  '/questions/new?tags=question%3Aquestion&template=question&title=What&redirect=question'

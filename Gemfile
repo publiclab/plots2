@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.1.2'
+ruby '2.3.1'
 gem 'rails', '~> 3.2.20'
 gem 'passenger'
 
@@ -42,7 +42,7 @@ group :test do
   gem 'test-unit'
   gem 'rake',  '~> 10.5.0'
   # gems to test RESTful API
-  gem 'rest-client' 
+  gem 'rest-client'
   gem 'rspec'
   gem 'json_expressions'
   gem 'timecop'
@@ -90,7 +90,7 @@ gem 'geocoder'
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'http_accept_language'
 
-# The default friendly_id version compatible with Rails 3 is v4.0 
+# The default friendly_id version compatible with Rails 3 is v4.0
 gem 'friendly_id'
 gem 'jbuilder'
 gem 'strong_parameters'

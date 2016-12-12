@@ -3,8 +3,9 @@ class EditorController < ApplicationController
   before_filter :require_user, :only => [:post, :rich]
 
   # main image via URL passed as GET param
-  def post
+  def legacy
     # /post/?i=http://myurl.com/image.jpg
+    flash.now[:notice] = "This is the legacy editor. For the new rich editor, <a href='/editor'>click here</a>."
     if params[:i]
       @image = Image.new({
         :remote_url => params[:i],
@@ -17,9 +18,25 @@ class EditorController < ApplicationController
       params[:body] = node.body if node
     end
     redirect_to "/questions/new?#{request.env['QUERY_STRING']}" if params[:tags] && params[:tags].include?("question:")
+    return "/editor/post"
   end
 
+  def editor
+    redirect_to "/post"
+  end
+
+  def post
+
+  if params[:legacy] || params[:template] == "event"
+    legacy
+  else
+    rich
+    render "/editor/rich"
+  end
+end
+
   def rich
+    flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/post?#{request.env['QUERY_STRING']}&legacy=true'>click here</a>."
     if params[:main_image] && Image.find_by_id(params[:main_image])
       @main_image = Image.find_by_id(params[:main_image]).path
     end

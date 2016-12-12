@@ -11,9 +11,9 @@ class EditorControllerTest < ActionController::TestCase
     assert_redirected_to '/login'
   end
 
-  test "should get post form" do
+  test "should get legacy form" do
     UserSession.create(rusers(:bob))
-    get :post,
+    get :legacy,
         tags: 'one,two'
     assert_response :success
     assert_select "h3", "Share your work"
@@ -23,7 +23,7 @@ class EditorControllerTest < ActionController::TestCase
 
   test "should use existing node body as template in post form based on param 'n'" do
     UserSession.create(rusers(:bob))
-    get :post,
+    get :legacy,
         n: node(:blog).id
     assert_response :success
     assert_select "textarea#text-input", node(:blog).body
@@ -39,14 +39,14 @@ class EditorControllerTest < ActionController::TestCase
 
   test "newcomer should get post form" do
     UserSession.create(rusers(:newcomer))
-    get :post
+    get :legacy
     assert_response :success
     assert_select "h3", "Share your work"
     assert_select "p.moderation-notice", "Hi! Just letting you know ahead of time that everyone's first posts to this website are moderated due to issues we've had with spam. Thanks for your patience!"
   end
 
   test "should redirect to login page while posting  question" do
-    get :post,
+    get :legacy,
         tags: 'question:question',
         template: 'question',
         redirect: 'question'
@@ -57,7 +57,7 @@ class EditorControllerTest < ActionController::TestCase
 
   test "should show question template in post form for questions" do
     UserSession.create(rusers(:bob))
-    get :post,
+    get :legacy,
         tags: 'question:question,one',
         template: 'question',
         redirect: 'question'
@@ -69,7 +69,7 @@ class EditorControllerTest < ActionController::TestCase
 
   test "should show title form input if title parameter present" do
     UserSession.create(rusers(:bob))
-    get :post,
+    get :legacy,
         title: 'New Question'
     assert_response :success
     assert_select "input#title" do
