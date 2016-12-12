@@ -97,6 +97,7 @@ class NotesControllerTest < ActionController::TestCase
     get :tools
 
     assert_response :redirect
+    assert_redirected_to "/methods"
   end
 
   test "should get methods" do
