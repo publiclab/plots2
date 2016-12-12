@@ -7,8 +7,10 @@
  
     <p id="<%= response_type %>s"><a class='btn btn-primary btn-lg' href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0 %>"><%= t('notes._responses.post_' + response_type) %></a>&nbsp;
       <% if @node.power_tag('activity') %>
-        <% if DrupalTag.where(name: @node.power_tag('activity')).first.nodes %>
-          <%= DrupalTag.where(name: @node.power_tag('activity')).first.nodes.first.path %>
+        <% if DrupalTag.where(name: @node.power_tag('activity')).first %>
+          <% if DrupalTag.where(name: @node.power_tag('activity')).first.nodes %>
+            <%= DrupalTag.where(name: @node.power_tag('activity')).first.nodes.first.path %>
+          <% end %> 
         <% end %>
       <% end %>
     </p>
