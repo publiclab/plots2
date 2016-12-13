@@ -435,10 +435,7 @@ class DrupalNode < ActiveRecord::Base
 
   def has_tag_without_aliasing(tagname)
     tags = self.get_matching_tags_without_aliasing(tagname)
-puts tags.inspect
     tids = tags.collect(&:tid).uniq
-puts tids.inspect
-puts DrupalNodeCommunityTag.where('nid IN (?) AND tid IN (?)', self.id, tids).inspect
     DrupalNodeCommunityTag.where('nid IN (?) AND tid IN (?)', self.id, tids).length > 0
   end
 
