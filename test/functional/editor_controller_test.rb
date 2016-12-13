@@ -24,7 +24,7 @@ class EditorControllerTest < ActionController::TestCase
   test "should get post form" do
     UserSession.create(rusers(:bob))
     get :post
-      assert_response :redirect
+      assert_response :success
       assert_select "h1", "Share"
       assert_select "p.ple-help", "Select an optional main image for your post."
   end
