@@ -18,14 +18,12 @@ class EditorController < ApplicationController
       params[:body] = node.body if node
     end
     redirect_to "/questions/new?#{request.env['QUERY_STRING']}" if params[:tags] && params[:tags].include?("question:")
-    return "/editor/post"
+    render template: 'editor/post'
   end
-
 
   def editor
     redirect_to "/post"
   end
-
 
   def post
     if params[:legacy] || params[:template] == "event"
@@ -35,7 +33,6 @@ class EditorController < ApplicationController
       render "/editor/rich"
     end
   end
-
 
   def rich
     flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/post?#{request.env['QUERY_STRING']}&legacy=true'>click here</a>."

@@ -6,8 +6,8 @@ class EditorControllerTest < ActionController::TestCase
     activate_authlogic
   end
 
-  test "should not get post form if not logged in" do
-    get :post
+  test "should not get legacy form if not logged in" do
+    get :legacy
     assert_redirected_to '/login'
   end
 
@@ -21,7 +21,15 @@ class EditorControllerTest < ActionController::TestCase
     assert_select "#taginput[value=?]", "one,two"
   end
 
-  test "should use existing node body as template in post form based on param 'n'" do
+  test "should get post form" do
+    UserSession.create(rusers(:bob))
+    get :post
+      assert_response :redirect
+      assert_select "h1", "Share"
+      assert_select "p.ple-help", "Select an optional main image for your post."
+  end
+
+  test "should use existing node body as template in legacy form based on param 'n'" do
     UserSession.create(rusers(:bob))
     get :legacy,
         n: node(:blog).id
@@ -29,7 +37,7 @@ class EditorControllerTest < ActionController::TestCase
     assert_select "textarea#text-input", node(:blog).body
   end
 
-  test "should use existing node body as template in post form based on param 'n' in rich editor" do
+  test "should use existing node body as template in legacy form based on param 'n' in rich editor" do
     UserSession.create(rusers(:bob))
     get :rich,
         n: node(:blog).id
@@ -37,7 +45,7 @@ class EditorControllerTest < ActionController::TestCase
     assert_select "textarea#text-input", node(:blog).body
   end
 
-  test "newcomer should get post form" do
+  test "newcomer should get legacy form" do
     UserSession.create(rusers(:newcomer))
     get :legacy
     assert_response :success
@@ -52,10 +60,10 @@ class EditorControllerTest < ActionController::TestCase
         redirect: 'question'
     assert_redirected_to '/login'
     # uses ASCII format instead of utf-8
-    assert_equal "/post?redirect=question&tags=question%3Aquestion&template=question", session[:return_to]
+    assert_equal "/legacy?redirect=question&tags=question%3Aquestion&template=question", session[:return_to]
   end
 
-  test "should show question template in post form for questions" do
+  test "should show question template in legacy form for questions" do
     UserSession.create(rusers(:bob))
     get :legacy,
         tags: 'question:question,one',
