@@ -435,7 +435,10 @@ class DrupalNode < ActiveRecord::Base
 
   def has_tag_without_aliasing(tagname)
     tags = self.get_matching_tags_without_aliasing(tagname)
+puts tags.inspect
     tids = tags.collect(&:tid).uniq
+puts tids.inspect
+puts DrupalNodeCommunityTag.where('nid IN (?) AND tid IN (?)', self.id, tids).inspect
     DrupalNodeCommunityTag.where('nid IN (?) AND tid IN (?)', self.id, tids).length > 0
   end
 
@@ -782,15 +785,19 @@ class DrupalNode < ActiveRecord::Base
               .where('term_data.name LIKE ?', "upgrade:#{tagname}")
   end
 
-  def can_tag(tagname, user)
+  def can_tag(tagname, user, errors = false)
     if tagname[0..4] == "with:"
-      if self.author.uid != user.uid || User.find_by_username(tagname.split(':')[1]).nil? || tagname.split(':')[1] == user.username
-        return false
+      if User.find_by_username(tagname.split(':')[1]).nil?
+        return errors ? I18n.t('tag_controller.cannot_find_username') : false
+      elsif self.author.uid != user.uid
+        return errors ? I18n.t('tag_controller.only_author_use_powertag') : false
+      elsif tagname.split(':')[1] == user.username
+        return errors ? I18n.t('tag_controller.cannot_add_yourself_coauthor') : false
       else
         return true
       end
     elsif tagname[0..4] == "rsvp:" && user.username != tagname.split(":")[1]
-      return false
+      return errors ? I18n.t('tag_controller.only_RSVP_for_yourself') : false
     else
       return true
     end
