@@ -785,16 +785,18 @@ class DrupalNode < ActiveRecord::Base
   def can_tag(tagname, user, errors = false)
     if tagname[0..4] == "with:"
       if User.find_by_username(tagname.split(':')[1]).nil?
-        return errors ? I18n.t('tag_controller.cannot_find_username') : false
+        return errors ? I18n.t('drupal_node.cannot_find_username') : false
       elsif self.author.uid != user.uid
-        return errors ? I18n.t('tag_controller.only_author_use_powertag') : false
+        return errors ? I18n.t('drupal_node.only_author_use_powertag') : false
       elsif tagname.split(':')[1] == user.username
-        return errors ? I18n.t('tag_controller.cannot_add_yourself_coauthor') : false
+        return errors ? I18n.t('drupal_node.cannot_add_yourself_coauthor') : false
       else
         return true
       end
     elsif tagname[0..4] == "rsvp:" && user.username != tagname.split(":")[1]
-      return errors ? I18n.t('tag_controller.only_RSVP_for_yourself') : false
+      return errors ? I18n.t('drupal_node.only_RSVP_for_yourself') : false
+    elsif tagname == "locked" && user.role != "admin"
+      return errors ? I18n.t('drupal_node.only_admins_can_lock') : false
     else
       return true
     end
