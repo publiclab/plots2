@@ -144,7 +144,7 @@ class TagController < ApplicationController
   # should delete only the term_node/node_tag (instance), not the term_data (class)
   def delete
     node_tag = DrupalNodeCommunityTag.where(nid: params[:nid], tid: params[:tid]).first
-    # check for community tag too...
+    # only admins, mods, and tag authors can delete other peoples' tags
     if node_tag.uid == current_user.uid || current_user.role == "admin" || current_user.role == "moderator"
 
       node_tag.delete
