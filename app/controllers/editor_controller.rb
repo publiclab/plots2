@@ -17,12 +17,15 @@ class EditorController < ApplicationController
       node = DrupalNode.find(params[:n])
       params[:body] = node.body if node
     end
-    redirect_to "/questions/new?#{request.env['QUERY_STRING']}" if params[:tags] && params[:tags].include?("question:")
-    render template: 'editor/post'
+    if params[:tags] && params[:tags].include?("question:")
+      redirect_to "/questions/new?#{request.env['QUERY_STRING']}"
+    else
+      render template: 'editor/post'
+    end
   end
 
   def editor
-    redirect_to "/post"
+    redirect_to "/post?#{request.env['QUERY_STRING']}"
   end
 
   def post
