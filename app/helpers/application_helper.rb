@@ -21,7 +21,7 @@ module ApplicationHelper
       ""
     end
   end
-  
+
   def locale_name_pairs
     I18n.available_locales.map do |locale|
       [I18n.t('language', locale: locale), locale]
@@ -119,5 +119,16 @@ module ApplicationHelper
 
     body
   end
+
+  def render_map(lat, lon, items)
+    
+      var map = L.map('map').setView([lat,lon], 10);
+      L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+
+      @items.each do |item|
+        L.marker([item.lat, item.lon]).addTo(item).bindPopup("<a href='/item.path'+'item.title'</a>");
+      end
+  end
+
 
 end
