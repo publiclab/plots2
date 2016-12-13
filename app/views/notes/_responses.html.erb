@@ -9,7 +9,7 @@
       <% if @node.power_tag('activity') %>
         <% if DrupalTag.where(name: @node.power_tag('activity')).first %>
           <% if DrupalTag.where(name: @node.power_tag('activity')).first.nodes %>
-            <a href="<%= DrupalTag.where(name: @node.power_tag('activity')).first.nodes.first.path %>">Browse other activities for "<%= @node.power_tag('activity') %>"</a>
+            <a id="other-activities" href="<%= DrupalTag.where(name: @node.power_tag('activity')).first.nodes.first.path %>">Browse other activities for "<%= @node.power_tag('activity') %>"</a>
           <% end %> 
         <% end %>
       <% end %>
