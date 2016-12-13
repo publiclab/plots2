@@ -57,14 +57,18 @@ class NotesController < ApplicationController
     @all_contributors = users.uniq.length
   end
 
-  def tools
-    @title = "Tools"
+  def methods
+    @title = "Methods"
     @notes = DrupalNode.where(status: 1, type: ['page','tool'])
                        .includes(:drupal_node_revision, :drupal_tag)
                        .where('term_data.name = ?','tool')
                        .page(params[:page])
                        .order("node_revisions.timestamp DESC")
     render :template => "notes/tools_places"
+  end
+
+def tools
+    redirect_to '/methods', :status => 302
   end
 
   def places
