@@ -299,6 +299,7 @@ class WikiController < ApplicationController
     render :template => "wiki/index"
   end
 
+  # replace subsection of wiki body
   def replace
     @node = DrupalNode.find(params[:id])
     if params[:before] && params[:after]
