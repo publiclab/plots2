@@ -63,7 +63,7 @@ class TagControllerTest < ActionController::TestCase
          nid: node(:one).nid # authored by jeff, not bob
 
     assert_redirected_to(node(:one).path)
-    assert_equal I18n.t('tag_controller.only_author_use_powertag'), assigns['output']['errors'][0]
+    assert_equal I18n.t('drupal_node.only_author_use_powertag'), assigns['output']['errors'][0]
   end
 
   test "admins can add disallowed tags" do
