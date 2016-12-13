@@ -1,6 +1,6 @@
 class EditorController < ApplicationController
 
-  before_filter :require_user, :only => [:post, :rich]
+  before_filter :require_user, :only => [:post, :rich, :legacy, :editor]
 
   # main image via URL passed as GET param
   def legacy
@@ -21,19 +21,21 @@ class EditorController < ApplicationController
     return "/editor/post"
   end
 
+
   def editor
     redirect_to "/post"
   end
 
-  def post
 
-  if params[:legacy] || params[:template] == "event"
-    legacy
-  else
-    rich
-    render "/editor/rich"
+  def post
+    if params[:legacy] || params[:template] == "event"
+      legacy
+    else
+      rich
+      render "/editor/rich"
+    end
   end
-end
+
 
   def rich
     flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/post?#{request.env['QUERY_STRING']}&legacy=true'>click here</a>."
