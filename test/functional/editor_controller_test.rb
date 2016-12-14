@@ -10,6 +10,21 @@ class EditorControllerTest < ActionController::TestCase
     get :legacy
     assert_redirected_to '/login'
   end
+  
+  test "should not get post form if not logged in" do
+    get :post
+    assert_redirected_to '/login'
+  end
+
+  test "should not get editor form if not logged in" do
+    get :editor
+    assert_redirected_to '/login'
+  end
+
+  test "should not get rich form if not logged in" do
+    get :rich
+    assert_redirected_to '/login'
+  end
 
   test "should get legacy form" do
     UserSession.create(rusers(:bob))
@@ -21,6 +36,14 @@ class EditorControllerTest < ActionController::TestCase
     assert_select "#taginput[value=?]", "one,two"
   end
 
+  test "should get post form" do
+    UserSession.create(rusers(:bob))
+    get :post
+      assert_response :success
+      assert_select "h1", "Share"
+      assert_select "p.ple-help", "Select an optional main image for your post."
+  end
+  
   test "should get post form" do
     UserSession.create(rusers(:bob))
     get :post
@@ -45,12 +68,28 @@ class EditorControllerTest < ActionController::TestCase
     assert_select "textarea#text-input", node(:blog).body
   end
 
+  test "should use existing node body as template in post form based on param 'n'" do
+    UserSession.create(rusers(:bob))
+    get :post,
+        n: node(:blog).id
+    assert_response :success
+    assert_select "textarea#text-input", node(:blog).body
+  end
+  
   test "newcomer should get legacy form" do
     UserSession.create(rusers(:newcomer))
     get :legacy
     assert_response :success
     assert_select "h3", "Share your work"
     assert_select "p.moderation-notice", "Hi! Just letting you know ahead of time that everyone's first posts to this website are moderated due to issues we've had with spam. Thanks for your patience!"
+  end
+  
+  test "newcomer should get post form" do
+    UserSession.create(rusers(:newcomer))
+    get :post
+    assert_response :success
+    assert_select "h1", "Share"
+    assert_select "p.ple-help", "Select an optional main image for your post."
   end
 
   test "should redirect to login page while posting  question" do
