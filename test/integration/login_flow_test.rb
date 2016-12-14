@@ -32,9 +32,9 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :redirect
     assert_redirected_to  '/questions/new?tags=question%3Aquestion&template=question&title=What&redirect=question'
-    # assert_select "input#title" do
-    # assert_select "[value=?]", "What"
-    #end
+    assert_select "input#title" do
+    assert_select "[value=?]", "What"
+    end
   end
 
   test "should redirect to current page when logging in through the header login" do
