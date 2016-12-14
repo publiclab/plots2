@@ -1,4 +1,3 @@
-include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 class NotesController < ApplicationController
 
   respond_to :html
@@ -7,54 +6,6 @@ class NotesController < ApplicationController
   def index
     @title = I18n.t('notes_controller.research_notes')
     set_sidebar
-  end
-
-  def stats
-    if params[:time]
-      @time = Time.parse(params[:time])
-    else
-      @time = Time.now
-    end
-
-    @weekly_notes = DrupalNode.select([:created, :type, :status])
-                              .where(type: 'note', status: 1, created: @time.to_i - 1.weeks.to_i..@time.to_i)
-                              .count
-    @weekly_wikis = DrupalNodeRevision.select(:timestamp)
-                                      .where(timestamp: @time.to_i - 1.weeks.to_i..@time.to_i)
-                                      .count
-    @weekly_members = User.where(created_at: @time - 1.weeks..@time)
-                          .count
-    @monthly_notes = DrupalNode.select([:created, :type, :status])
-                               .where(type: 'note', status: 1, created: @time.to_i - 1.months.to_i..@time.to_i)
-                               .count
-    @monthly_wikis = DrupalNodeRevision.select(:timestamp)
-                                       .where(timestamp: @time.to_i - 1.months.to_i..@time.to_i)
-                                       .count
-    @monthly_members = User.where(created_at: @time - 1.months..@time)
-                           .count
-
-    @notes_per_week_past_year = DrupalNode.select([:created, :type, :status])
-                                          .where(type: 'note', status: 1, created: @time.to_i - 1.years.to_i..@time.to_i)
-                                          .count / 52.0
-    @edits_per_week_past_year = DrupalNodeRevision.select(:timestamp)
-                                                  .where(timestamp: @time.to_i - 1.years.to_i..@time.to_i)
-                                                  .count / 52.0
-
-    @graph_notes = DrupalNode.weekly_tallies('note', 52, @time).to_a.sort.to_json
-    @graph_wikis = DrupalNode.weekly_tallies('page', 52, @time).to_a.sort.to_json
-    @graph_comments = Comment.comment_weekly_tallies(52, @time).to_a.sort.to_json
-
-    users = []
-    nids = []
-    DrupalNode.find(:all, :conditions => {:type => 'note', :status => 1}).each do |note|
-      unless note.uid == 674 || note.uid == 671
-        users << note.uid
-        nids << note.nid
-      end
-    end
-
-    @all_notes = nids.uniq.length
-    @all_contributors = users.uniq.length
   end
 
   def methods
@@ -67,7 +18,7 @@ class NotesController < ApplicationController
     render :template => "notes/tools_places"
   end
 
-def tools
+  def tools
     redirect_to '/methods', :status => 302
   end
 
