@@ -51,7 +51,7 @@ class WikiController < ApplicationController
       end
       @tagnames = @tags.collect(&:name)
       set_sidebar :tags, @tagnames, {:videos => true}
-      @wikis = DrupalTag.find_pages(@node.slug,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
+      @wikis = DrupalTag.find_pages(@node.slug_from_path,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
 
       @node.view
       @revision = @node.latest
@@ -206,7 +206,7 @@ class WikiController < ApplicationController
 
   # wiki pages which have a root URL, like /about
   def root
-    @node = DrupalNode.find_root_by_slug(params[:id])
+    @node = DrupalNode.find_by_path(params[:id])
     return if check_and_redirect_node(@node)
     if @node
       @revision = @node.latest
