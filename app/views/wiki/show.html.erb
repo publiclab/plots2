@@ -26,7 +26,7 @@
   <h1 style="font-family: 'Junction Light';"><i class="fa fa-book"></i> <%= @revision.title %> <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a></h1>
 
 <% if @is_revision %>
-  <div class="alert alert-warning"><%= raw t('wiki.show.revision_from', :time => @revision.created_at.to_s(:long)) %> <a href="/wiki/revisions/<%= @node.slug_from_path %>"><%= t('wiki.show.view_all_revisions') %></a></div>
+  <div class="alert alert-warning"><%= raw t('wiki.show.revision_from', :time => @revision.created_at.to_s(:long)) %> <a href="/wiki/revisions/<%= @revision.node.slug_from_path %>"><%= t('wiki.show.view_all_revisions') %></a></div>
   
 <% end %>
 
@@ -44,8 +44,8 @@
         <li class="active"><a href="#"><span class="hidden-xs"><%= t('wiki.show.view') %></span><span class="visible-xs"><i class="fa fa-file-o"></i></span></a></li>
         <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="fa fa-pencil"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.edit') %></span></a></li>
         <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => I18n.t('wiki.show.are_you_sure_delete', :path => @node.path) do %><i class="fa fa-trash"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.delete') %></span><% end %></li><% end %>
-        <li><a href="/talk/<%= @node.slug_from_path %>"><i class="fa fa-comments-o"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.talk') %></span></a></li>
-        <li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><span class="hidden-xs"><%= @node.revisions.length %> </span><i class="fa fa-list"></i></a></li>
+        <li><a href="/talk/<%= @revision.node.slug_from_path %>"><i class="fa fa-comments-o"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.talk') %></span></a></li>
+        <li><a href="/wiki/revisions/<%= @revision.node.slug_from_path %>"><span class="hidden-xs"><%= @node.revisions.length %> </span><i class="fa fa-list"></i></a></li>
       </ul>
     </div>
   </div>
@@ -76,7 +76,7 @@
       <% if @node.power_tags('tabbed').include?("notes") %>
         <div class="tab-pane" id="tab-notes">
           <%= render :partial => "notes/notes" %>
-          <p><a href="/tag/<%= @node.slug_from_path %>"><%= raw t('wiki.show.more_research', :tag => @node.slug_from_path) %> &raquo;</a></p>
+          <p><a href="/tag/<%= @revision.node.slug_from_path %>"><%= raw t('wiki.show.more_research', :tag => @revision.node.slug_from_path) %> &raquo;</a></p>
           <br />
         </div>
       <% end %>

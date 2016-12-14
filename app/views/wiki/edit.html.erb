@@ -17,7 +17,7 @@
     <ul class="nav nav-list">
       <li class="nav-header"><%= t('wiki.edit.more') %></li>
       <li><a href="/wiki/getting-started"><%= t('wiki.edit.getting_started') %></a></li>
-      <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><%= t('wiki.edit.revisions_for_this_page') %></a></li><% end %>
+      <% if @node.path %><li><a href="/wiki/revisions/<%= @revision.node.slug_from_path %>"><%= t('wiki.edit.revisions_for_this_page') %></a></li><% end %>
       <li><a href="/wiki/posting-research"><%= t('wiki.edit.about_posting_research') %></a></li>
       <li><a href="/wiki/authoring-help#Advanced+formatting"><%= t('wiki.edit.advanced_formatting') %></a></li>
     </ul>
