@@ -21,7 +21,7 @@ module ApplicationHelper
       ""
     end
   end
-  
+
   def locale_name_pairs
     I18n.available_locales.map do |locale|
       [I18n.t('language', locale: locale), locale]
@@ -119,5 +119,10 @@ module ApplicationHelper
 
     body
   end
+
+  def render_map(lat, lon, items)
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, items: items }
+  end
+
 
 end
