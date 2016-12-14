@@ -29,7 +29,9 @@ class EditorController < ApplicationController
   end
 
   def post
-    if params[:legacy] || params[:template] == "event"
+    if params[:tags] && params[:tags].include?("question:")
+      redirect_to "/questions/new?#{request.env['QUERY_STRING']}"
+    elsif params[:legacy] || params[:template] == "event"
       legacy
     else
       rich
