@@ -32,8 +32,9 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :redirect
     assert_redirected_to  '/questions/new?tags=question%3Aquestion&template=question&title=What&redirect=question'
-    assert_select "h4.visible-sm", "Ask a question"
-    assert_select "span.moderation-notice", false
+    assert_template 'editor/question'
+    # assert_select "h4.visible-sm", "Ask a question"
+    # assert_select "span.moderation-notice", false
   end
 
   test "should redirect to current page when logging in through the header login" do
