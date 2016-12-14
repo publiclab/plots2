@@ -4,9 +4,9 @@
     <h3 id="wiki-title" style="margin-top:0;"><%= raw t('wiki.revisions.revisions_for', :wiki => @node.title) %></h3>
 
     <ul class="nav nav-tabs">
-      <li><a href="/wiki/<%= @revision.node.slug_from_path %>"><%= t('wiki.revisions.view') %></a></li>
-      <li><a href="/wiki/edit/<%= @revision.node.slug_from_path %>"><%= t('wiki.revisions.edit') %></a></li>
-      <li class="active"><a href="/wiki/revisions/<%= @revision.node.slug_from_path %>">Revisions (<%= @node.revisions.length %>)</a></li>
+      <li><a href="/wiki/<%= @revision.drupal_node.slug_from_path %>"><%= t('wiki.revisions.view') %></a></li>
+      <li><a href="/wiki/edit/<%= @revision.drupal_node.slug_from_path %>"><%= t('wiki.revisions.edit') %></a></li>
+      <li class="active"><a href="/wiki/revisions/<%= @revision.drupal_node.slug_from_path %>">Revisions (<%= @node.revisions.length %>)</a></li>
       <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
     </ul>
 
