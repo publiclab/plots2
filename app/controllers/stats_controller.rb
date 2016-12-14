@@ -1,4 +1,4 @@
-#include ActionView::Helpers::DateHelper # required for time_ago_in_words()
+include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 class StatsController < ApplicationController
 
   def subscriptions
