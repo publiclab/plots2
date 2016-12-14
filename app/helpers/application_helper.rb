@@ -121,13 +121,7 @@ module ApplicationHelper
   end
 
   def render_map(lat, lon, items)
-    
-      var map = L.map('map').setView([lat,lon], 10);
-      L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
-
-      @items.each do |item|
-        L.marker([item.lat, item.lon]).addTo(item).bindPopup("<a href='/item.path'+'item.title'</a>");
-      end
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, items: items }
   end
 
 
