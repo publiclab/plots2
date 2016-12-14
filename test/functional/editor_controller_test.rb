@@ -105,6 +105,18 @@ class EditorControllerTest < ActionController::TestCase
       # assert_select "h3", "Ask a question of the community"
       # assert_select "input#taginput[value=?]", "question:question,one"
   end
+  
+  test "should show question template in post form for questions" do
+    UserSession.create(rusers(:bob))
+    get :post,
+        tags: 'question:question,one',
+        template: 'question',
+        redirect: 'question'
+      assert_response :redirect
+      assert_redirected_to '/questions/new?redirect=question&tags=question%3Aquestion%2Cone&template=question'
+      # assert_select "h3", "Ask a question of the community"
+      # assert_select "input#taginput[value=?]", "question:question,one"
+  end
 
   test "should show title form input if title parameter present" do
     UserSession.create(rusers(:bob))
