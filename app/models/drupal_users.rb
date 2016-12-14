@@ -9,7 +9,7 @@ class DrupalUsers < ActiveRecord::Base
   self.table_name = 'users'
   self.primary_key = 'uid'
 
-  has_many :drupal_node, :foreign_key => 'uid'
+  has_many :node, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
   has_many :node_selections, :foreign_key => :user_id
@@ -99,7 +99,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def liked_pages
-    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = ? AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')",self.uid, true], :include => :drupal_node).collect(&:node).reverse
+    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = ? AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')",self.uid, true], :include => :node).collect(&:node).reverse
   end
 
   # last node
@@ -146,10 +146,10 @@ class DrupalUsers < ActiveRecord::Base
   def notes_for_tags(tagnames)
     all_nodes = DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid})
     node_ids = []
-    all_nodes.each do |node|
-      node.tags.each do |tag|
+    all_nodes.each do |node1|
+      node1.tags.each do |tag|
         tagnames.each do |tagname|
-          node_ids << node.nid if tag.name == tagname
+          node_ids << node1.nid if tag.name == tagname
         end
       end
     end
@@ -162,8 +162,8 @@ class DrupalUsers < ActiveRecord::Base
 
   def tagnames(limit = 20,defaults = true)
     tagnames = []
-    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => limit).each do |node|
-      tagnames += node.tags.collect(&:name)
+    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => limit).each do |node1|
+      tagnames += node1.tags.collect(&:name)
     end
     tagnames += ["balloon-mapping","spectrometer","near-infrared-camera","thermal-photography","newsletter"] if tagnames.length == 0 && defaults
     tagnames.uniq
@@ -171,8 +171,8 @@ class DrupalUsers < ActiveRecord::Base
 
   def tag_counts
     tags = {}
-    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => 20).each do |node|
-      node.tags.each do |tag|
+    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => 20).each do |node1|
+      node1.tags.each do |tag|
         if tags[tag.name]
           tags[tag.name] += 1
         else
@@ -203,16 +203,16 @@ class DrupalUsers < ActiveRecord::Base
   private
 
   def decrease_likes_banned
-    node_selections.each do |node|
-      node.drupal_node.cached_likes = node.drupal_node.cached_likes - 1
-      node.drupal_node.save!
+    node_selections.each do |node1|
+      node1.node.cached_likes = node1.node.cached_likes - 1
+      node1.node.save!
     end
   end
 
   def increase_likes_unbanned
-    node_selections.each do |node|
-      node.drupal_node.cached_likes = node.drupal_node.cached_likes + 1
-      node.drupal_node.save!
+    node_selections.each do |node1|
+      node1.node.cached_likes = node1.node.cached_likes + 1
+      node1.node.save!
     end
   end
 end
