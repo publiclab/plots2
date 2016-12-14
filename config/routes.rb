@@ -231,7 +231,8 @@ Plots2::Application.routes.draw do
   # This route can be invoked with purchase_url(:id => product.id)
 
   match 'post' => 'editor#post'
-  match 'editor' => 'editor#rich'
+  match 'legacy' => 'editor#legacy'
+  match 'editor' => 'editor#editor'
   match 'images/create' => 'images#create'
   match 'note/add' => 'legacy#note_add'
   match 'page/add' => 'legacy#page_add'
