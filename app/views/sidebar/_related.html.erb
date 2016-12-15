@@ -80,9 +80,9 @@
     <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
 
     <% if @node && @maps && @node.lat %>
-      <% render_map(@node.lat, @node.lon, @maps) %>
+      <%= render_map(@node.lat, @node.lon, @maps) %>
     <% elsif @maps && @maps.first %>
-      <% render_map(@maps.first.lat, @maps.first.lon, @maps) %>
+      <%= render_map(@maps.first.lat, @maps.first.lon, @maps) %>
     <% end %>
 
     <br style="clear:both;" />
