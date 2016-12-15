@@ -51,7 +51,7 @@ class WikiController < ApplicationController
       end
       @tagnames = @tags.collect(&:name)
       set_sidebar :tags, @tagnames, {:videos => true}
-      @wikis = DrupalTag.find_pages(@revision.drupal_node.slug_from_path,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
+      @wikis = DrupalTag.find_pages(@node.slug_from_path,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
 
       @node.view
       @revision = @node.latest
