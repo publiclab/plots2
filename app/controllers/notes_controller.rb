@@ -22,6 +22,10 @@ class NotesController < ApplicationController
     redirect_to '/methods', :status => 302
   end
 
+  def techniques
+    redirect_to '/methods', :status => 302
+  end
+
   def places
     @title = "Places"
     @notes = DrupalNode.where(status: 1, type: ['page','place'])
