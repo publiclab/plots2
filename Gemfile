@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
 
 ruby '2.1.2'
-gem 'rails', '~> 3.2.20'
+gem 'railties','~> 4.2.0'
+gem 'rails', '~> 4.2.0'
 gem 'passenger'
 
-gem 'rails-i18n', '~> 3.0.0'
+gem 'rails-i18n', '~> 4.0.9'
 
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
@@ -24,11 +25,11 @@ end
 
 # Gems used only for assets and not required in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails',   '~> 5.0'
+  gem 'coffee-rails', '~> 4.1.0'
   gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer'
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier', '>= 1.3.0'
 end
 
 # run with `bundle install --without development` to exclude these
@@ -92,5 +93,5 @@ gem 'http_accept_language'
 
 # The default friendly_id version compatible with Rails 3 is v4.0
 gem 'friendly_id'
-gem 'jbuilder'
+gem 'jbuilder', '~> 2.0'
 gem 'strong_parameters'
