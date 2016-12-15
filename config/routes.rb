@@ -202,8 +202,9 @@ Plots2::Application.routes.draw do
   match 'map/delete/:id' => 'map#delete'
   match 'map/:name/:date' => 'map#show'
   match 'archive' => 'map#index'
-  match 'stats' => 'notes#stats'
-  match 'stats/subscriptions' => 'subscription#stats'
+  match 'stats' => 'stats#index'
+  match 'stats/range/:start/:end' => 'stats#range'
+  match 'stats/subscriptions' => 'stats#subscription'
   match 'feed' => 'notes#rss'
   match 'rss.xml' => 'legacy#rss'
 

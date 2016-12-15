@@ -1,0 +1,29 @@
+<h1>Activity</h1>
+
+<p>From <%= @start.to_formatted_s(:long) %> to <%= @end.to_formatted_s(:long) %></p>
+
+<hr />
+
+<h4><%= @notes %> notes in this period</h4>
+
+<h4><%= @wikis %> wiki edits in this period</h4>
+
+<h4><%= @people %> new member registrations in this period</h4>
+
+<p><i>Member registration may include spam accounts</i></p>
+
+<p>
+  Back by: 
+  <a href="/stats/range/<%= (@start - 1.week).to_formatted_s(:long)   %>/<%= (@end - 1.week).to_formatted_s(:long)   %>">one week</a>,
+  <a href="/stats/range/<%= (@start - 1.month).to_formatted_s(:long)  %>/<%= (@end - 1.month).to_formatted_s(:long)  %>">one month</a>,
+  <a href="/stats/range/<%= (@start - 3.months).to_formatted_s(:long) %>/<%= (@end - 3.months).to_formatted_s(:long) %>">three months</a>,
+  <a href="/stats/range/<%= (@start - 1.year).to_formatted_s(:long)   %>/<%= (@end - 1.year).to_formatted_s(:long)   %>">one year</a>
+</p>
+
+<p>
+  Forward by: 
+  <a href="/stats/range/<%= (@start + 1.week).to_formatted_s(:long)   %>/<%= (@end + 1.week).to_formatted_s(:long)   %>">one week</a>,
+  <a href="/stats/range/<%= (@start + 1.month).to_formatted_s(:long)  %>/<%= (@end + 1.month).to_formatted_s(:long)  %>">one month</a>,
+  <a href="/stats/range/<%= (@start + 3.months).to_formatted_s(:long) %>/<%= (@end + 3.months).to_formatted_s(:long) %>">three months</a>,
+  <a href="/stats/range/<%= (@start + 1.year).to_formatted_s(:long)   %>/<%= (@end + 1.year).to_formatted_s(:long)   %>">one year</a>
+</p>

@@ -393,13 +393,6 @@ class NotesControllerTest < ActionController::TestCase
     assert json['title'].length > 0
   end
 
-  test "should assign correct value to graph_comments on GET stats" do
-    Comment.delete_all
-    Comment.create!({comment: 'blah', timestamp: Time.now() - 1})
-    get :stats
-    assert_equal assigns(:graph_comments), Comment.comment_weekly_tallies(52, Time.now()).to_a.sort.to_json
-  end
-
   test "should redirect to question path if node is a question when visiting shortlink" do
     node = node(:question)
     get :shortlink, id: node.id
