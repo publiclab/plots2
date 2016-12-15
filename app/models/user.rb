@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
   end
 
   def notes
-    DrupalNode.where(uid: self.uid)
+    Node.where(uid: self.uid)
               .where(type: 'note')
               .order("created DESC")
   end
@@ -148,7 +148,7 @@ class User < ActiveRecord::Base
   def weekly_note_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
-      weeks[span-week] = DrupalNode.count :all, :select => :created, :conditions => {:uid => self.drupal_user.uid, :type => 'note', :status => 1, :created => Time.now.to_i-week.weeks.to_i..Time.now.to_i-(week-1).weeks.to_i}
+      weeks[span-week] = Node.count :all, :select => :created, :conditions => {:uid => self.drupal_user.uid, :type => 'note', :status => 1, :created => Time.now.to_i-week.weeks.to_i..Time.now.to_i-(week-1).weeks.to_i}
     end
     weeks
   end
@@ -166,7 +166,7 @@ class User < ActiveRecord::Base
     streak = 0
     note_count = 0
     (0..span).each do |day|
-      days[day] = DrupalNode.count :all, :select => :created, :conditions => {:uid => self.drupal_user.uid, :type => 'note', :status => 1, :created => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i}
+      days[day] = Node.count :all, :select => :created, :conditions => {:uid => self.drupal_user.uid, :type => 'note', :status => 1, :created => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i}
       break if days[day] == 0
       streak+=1
       note_count+=days[day]
@@ -243,7 +243,7 @@ class User < ActiveRecord::Base
   end
 
   def questions
-    DrupalNode.questions.where(status: 1, uid: self.id)
+    Node.questions.where(status: 1, uid: self.id)
   end
 
   private

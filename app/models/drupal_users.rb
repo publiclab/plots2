@@ -93,7 +93,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def liked_notes
-    DrupalNode.includes(:node_selections)
+    Node.includes(:node_selections)
               .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, self.uid)
               .order('node_selections.nid DESC')
   end
@@ -104,7 +104,7 @@ class DrupalUsers < ActiveRecord::Base
 
   # last node
   def last
-    DrupalNode.limit(1)
+    Node.limit(1)
               .where(uid: self.uid)
               .order('changed DESC')
               .first
@@ -135,16 +135,16 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def note_count
-    DrupalNode.count(:all,:conditions => {:status => 1, :uid => self.uid, :type => "note"})
+    Node.count(:all,:conditions => {:status => 1, :uid => self.uid, :type => "note"})
   end
 
   def node_count
-    DrupalNode.count(:all,:conditions => {:status => 1, :uid => self.uid}) + DrupalNodeRevision.count(:all, :conditions => {:uid => self.uid})
+    Node.count(:all,:conditions => {:status => 1, :uid => self.uid}) + DrupalNodeRevision.count(:all, :conditions => {:uid => self.uid})
   end
 
   # accepts array of tag names (strings)
   def notes_for_tags(tagnames)
-    all_nodes = DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid})
+    all_nodes = Node.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid})
     node_ids = []
     all_nodes.each do |node1|
       node1.tags.each do |tag|
@@ -153,7 +153,7 @@ class DrupalUsers < ActiveRecord::Base
         end
       end
     end
-    DrupalNode.find(node_ids.uniq, :order => "nid DESC")
+    Node.find(node_ids.uniq, :order => "nid DESC")
   end
 
   def tags(limit = 10)
@@ -162,7 +162,7 @@ class DrupalUsers < ActiveRecord::Base
 
   def tagnames(limit = 20,defaults = true)
     tagnames = []
-    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => limit).each do |node1|
+    Node.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => limit).each do |node1|
       tagnames += node1.tags.collect(&:name)
     end
     tagnames += ["balloon-mapping","spectrometer","near-infrared-camera","thermal-photography","newsletter"] if tagnames.length == 0 && defaults
@@ -171,7 +171,7 @@ class DrupalUsers < ActiveRecord::Base
 
   def tag_counts
     tags = {}
-    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => 20).each do |node1|
+    Node.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => 20).each do |node1|
       node1.tags.each do |tag|
         if tags[tag.name]
           tags[tag.name] += 1
