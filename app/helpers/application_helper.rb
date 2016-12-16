@@ -53,8 +53,6 @@ module ApplicationHelper
         output += '</tr>'
       end
       output += '</table>'
-      output += '<p><a href="/post?tags=activity:#{tagname},#{tagname},seeks:replications&title=How%20to%20do%20X" class="btn btn-primary add-activity">Add an activity</a> <a href="/post?tags=#{tagname},question:#{tagname},request:activity&template=question&title=How%20do%20I...&redirect=question" class="btn btn-primary request-activity">Request an activity guide</a></p>'
-      output += '<p><i>Activities should include a materials list, costs and a step-by-step guide to construction with photos. Learn what [makes a good activity here](/notes/warren/09-17-2016/what-makes-a-good-activity).</i></p>'
       output += '<script>(function(){ setupGridSorters(".' + className + '-' + randomSeed + '"); })()</script>'
       output
     end
@@ -86,6 +84,8 @@ module ApplicationHelper
         output += '</tr>'
       end
       output += '</table>'
+      output += '<p><a href="/post?tags=activity:#{tagname},#{tagname},seeks:replications&title=How%20to%20do%20X" class="btn btn-primary add-activity">Add an activity</a> <a href="/post?tags=#{tagname},question:#{tagname},request:activity&template=question&title=How%20do%20I...&redirect=question" class="btn btn-primary request-activity">Request an activity guide</a></p>'
+      output += '<p><i>Activities should include a materials list, costs and a step-by-step guide to construction with photos. Learn what [makes a good activity here](/notes/warren/09-17-2016/what-makes-a-good-activity).</i></p>'
       output += '<script>(function(){ setupGridSorters(".' + className + '-' + randomSeed + '"); })()</script>'
       output
     end
