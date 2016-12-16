@@ -132,6 +132,21 @@ class WikiControllerTest < ActionController::TestCase
     assert_equal flash[:notice], "Edits saved."
   end
 
+  test "basic user blocked from updating a locked wiki page" do
+    node(:organizers).add_tag('locked', rusers(:admin)) # lock the page with a tag
+
+    # then try updating it
+    post :update,
+         id:  node(:organizers).id, 
+         uid:   rusers(:bob).id, 
+         title: ""
+
+    assert_template "wiki/show"
+    assert_select ".alert", "expected message"
+    assert_redirected_to wiki.path
+  end
+
+
   test "updating wiki with bad title" do
 
     post :update, 
