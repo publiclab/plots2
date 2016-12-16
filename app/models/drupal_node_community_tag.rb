@@ -2,7 +2,7 @@ class DrupalNodeCommunityTag < ActiveRecord::Base
   attr_accessible :nid, :tid, :uid, :date
   self.table_name = 'community_tags'
   self.primary_keys = :tid, :nid
-  belongs_to :drupal_node, :foreign_key => 'nid'
+  belongs_to :node, :foreign_key => 'nid'
   belongs_to :drupal_tag, :foreign_key => 'tid'
   belongs_to :drupal_users, :foreign_key => 'uid'
   accepts_nested_attributes_for :drupal_tag
@@ -17,7 +17,7 @@ class DrupalNodeCommunityTag < ActiveRecord::Base
   end
 
   def node
-    self.drupal_node
+    self.node
   end
 
   def tag

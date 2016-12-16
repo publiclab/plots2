@@ -6,14 +6,14 @@ class UniqueUrlValidator < ActiveModel::Validator
     elsif record.title == "new" && (record.type == "page" || record.type == "place" || record.type == "tool")
       record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     else
-      if !DrupalNode.where(path: record.generate_path).first.nil? && record.type == "note"
+      if !Node.where(path: record.generate_path).first.nil? && record.type == "note"
         record.errors[:base] << "You have already used this title today."
       end
     end
   end
 end
 
-class DrupalNode < ActiveRecord::Base
+class Node < ActiveRecord::Base
   include NodeShared # common methods for node-like models
 
   attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug
@@ -175,7 +175,7 @@ class DrupalNode < ActiveRecord::Base
   def self.weekly_tallies(type = "note", span = 52, time = Time.now)
     weeks = {}
     (0..span).each do |week|
-      weeks[span-week] = DrupalNode.select(:created)
+      weeks[span-week] = Node.select(:created)
                                    .where(type:    type,
                                           status:  1,
                                           created: time.to_i - week.weeks.to_i..time.to_i - (week-1).weeks.to_i)
@@ -333,7 +333,7 @@ class DrupalNode < ActiveRecord::Base
   # Nodes this node is responding to with a `response:<nid>` power tag;
   # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
   def responded_to(key = 'response')
-    DrupalNode.find_all_by_nid(self.power_tags(key)) || []
+    Node.find_all_by_nid(self.power_tags(key)) || []
   end
 
   # Nodes that respond to this node with a `response:<nid>` power tag;
@@ -345,7 +345,7 @@ class DrupalNode < ActiveRecord::Base
   # Nodes that respond to this node with a `response:<nid>` power tag;
   # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
   def response_count(key = 'response')
-    DrupalNode.where(status: 1, type: 'note')
+    Node.where(status: 1, type: 'note')
               .includes(:drupal_node_revision, :drupal_tag)
               .where('term_data.name = ?', "#{key}:#{self.id}")
               .count
@@ -498,7 +498,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_root_by_slug(title)
-    DrupalNode.where(path: ["/#{title}"]).first
+    Node.where(path: ["/#{title}"]).first
   end
 
   def map
@@ -534,13 +534,13 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def next_by_author
-    DrupalNode.where('uid = ? and nid > ? and type = "note"', self.author.uid, self.nid)
+    Node.where('uid = ? and nid > ? and type = "note"', self.author.uid, self.nid)
               .order('nid')
               .first
   end
 
   def prev_by_author
-    DrupalNode.where('uid = ? and nid < ? and type = "note"', self.author.uid, self.nid)
+    Node.where('uid = ? and nid < ? and type = "note"', self.author.uid, self.nid)
               .order('nid desc')
               .first
   end
@@ -586,105 +586,105 @@ class DrupalNode < ActiveRecord::Base
   def self.new_note(params)
     saved = false
     author = DrupalUsers.find(params[:uid])
-    node = DrupalNode.new({
+    node1 = Node.new({
       uid:     author.uid,
       title:   params[:title],
       comment: 2,
       type:    "note"
     })
-    node.status = 4 if author.first_time_poster
-    if node.valid? # is this not triggering title uniqueness validation?
+    node1.status = 4 if author.first_time_poster
+    if node1.valid? # is this not triggering title uniqueness validation?
       saved = true
       revision = false
       ActiveRecord::Base.transaction do
-        node.save!
-        revision = node.new_revision({
+        node1.save!
+        revision = node1.new_revision({
           uid:   author.uid,
           title: params[:title],
           body:  params[:body]
         })
         if revision.valid?
           revision.save!
-          node.vid = revision.vid
+          node1.vid = revision.vid
           # save main image
           if params[:main_image] and params[:main_image] != ''
             img = Image.find params[:main_image]
-            img.nid = node.id
+            img.nid = node1.id
             img.save
           end
-          node.save!
-          node.notify
+          node1.save!
+          node1.notify
         else
           saved = false
-          node.destroy
+          node1.destroy
         end
       end
     end
-    return [saved,node,revision]
+    return [saved,node1,revision]
   end
 
   def self.new_wiki(params)
     saved = false
-    node = DrupalNode.new({
+    node1 = Node.new({
       :uid => params[:uid],
       :title => params[:title],
       :type => "page"
     })
-    if node.valid?
+    if node1.valid?
       revision = false
       saved = true
       ActiveRecord::Base.transaction do
         node.save!
-        revision = node.new_revision({
-          :nid => node.id,
+        revision = node1.new_revision({
+          :nid => node1.id,
           :uid => params[:uid],
           :title => params[:title],
           :body => params[:body]
         })
         if revision.valid?
           revision.save!
-          node.vid = revision.vid
-          node.save!
-          #node.notify # we don't yet notify of wiki page creations
+          node1.vid = revision.vid
+          node1.save!
+          #node1.notify # we don't yet notify of wiki page creations
         else
           saved = false
           node.destroy # clean up
         end
       end
     end
-    return [saved,node,revision]
+    return [saved,node1,revision]
   end
 
   # same as new_note or new_wiki but with arbitrary type -- use for maps, DRY out new_note and new_wiki
   def self.new_node(params)
     saved = false
-    node = DrupalNode.new({
+    node1 = Node.new({
       :uid => params[:uid],
       :title => params[:title],
       :type => params[:type]
     })
-    if node.valid?
+    if node1.valid?
       revision = false
       saved = true
       ActiveRecord::Base.transaction do
-        node.save!
-        revision = node.new_revision({
-          :nid => node.id,
+        node1.save!
+        revision = node1.new_revision({
+          :nid => node1.id,
           :uid => params[:uid],
           :title => params[:title],
           :body => params[:body]
         })
         if revision.valid?
           revision.save!
-          node.vid = revision.vid
-          node.save!
+          node1.vid = revision.vid
+          node1.save!
         else
           saved = false
-          node.destroy # clean up
+          node1.destroy # clean up
         end
       end
     end
-    return [saved,node,revision]
+    return [saved,node1,revision]
   end
 
   def barnstar
@@ -738,29 +738,29 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_notes(author, date, title)
-    DrupalNode.where(path: "/notes/#{author}/#{date}/#{title}").first
+    Node.where(path: "/notes/#{author}/#{date}/#{title}").first
   end
 
   def self.find_map(name, date)
-    DrupalNode.where(path: "/map/#{name}/#{date}").first
+    Node.where(path: "/map/#{name}/#{date}").first
   end
 
   def self.find_wiki(title)
-    DrupalNode.where(path: ["/#{title}", "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
+    Node.where(path: ["/#{title}", "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
   end
 
   def self.research_notes
-    nids = DrupalNode.where(type: 'note')
+    nids = Node.where(type: 'note')
                      .joins(:drupal_tag)
                      .where('term_data.name LIKE ?', 'question:%')
                      .group('node.nid')
                      .collect(&:nid)
-    notes = DrupalNode.where(type: 'note')
+    notes = Node.where(type: 'note')
                       .where('node.nid NOT IN (?)', nids)
   end
 
   def self.questions
-    questions = DrupalNode.where(type: 'note')
+    questions = Node.where(type: 'note')
                           .joins(:drupal_tag)
                           .where('term_data.name LIKE ?', 'question:%')
                           .group('node.nid')
@@ -771,13 +771,13 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.activities(tagname)
-    DrupalNode.where(status: 1, type: 'note')
+    Node.where(status: 1, type: 'note')
               .includes(:drupal_node_revision, :drupal_tag)
               .where('term_data.name LIKE ?', "activity:#{tagname}")
   end
 
   def self.upgrades(tagname)
-    DrupalNode.where(status: 1, type: 'note')
+    Node.where(status: 1, type: 'note')
               .includes(:drupal_node_revision, :drupal_tag)
               .where('term_data.name LIKE ?', "upgrade:#{tagname}")
   end
@@ -785,18 +785,18 @@ class DrupalNode < ActiveRecord::Base
   def can_tag(tagname, user, errors = false)
     if tagname[0..4] == "with:"
       if User.find_by_username(tagname.split(':')[1]).nil?
-        return errors ? I18n.t('drupal_node.cannot_find_username') : false
+        return errors ? I18n.t('node.cannot_find_username') : false
       elsif self.author.uid != user.uid
-        return errors ? I18n.t('drupal_node.only_author_use_powertag') : false
+        return errors ? I18n.t('node.only_author_use_powertag') : false
       elsif tagname.split(':')[1] == user.username
-        return errors ? I18n.t('drupal_node.cannot_add_yourself_coauthor') : false
+        return errors ? I18n.t('node.cannot_add_yourself_coauthor') : false
       else
         return true
       end
     elsif tagname[0..4] == "rsvp:" && user.username != tagname.split(":")[1]
-      return errors ? I18n.t('drupal_node.only_RSVP_for_yourself') : false
+      return errors ? I18n.t('node.only_RSVP_for_yourself') : false
     elsif tagname == "locked" && user.role != "admin"
-      return errors ? I18n.t('drupal_node.only_admins_can_lock') : false
+      return errors ? I18n.t('node.only_admins_can_lock') : false
     else
       return true
     end

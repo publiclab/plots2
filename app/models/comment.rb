@@ -5,7 +5,7 @@ class Comment < ActiveRecord::Base
                   :subject, :hostname, :comment,
                   :status, :format, :thread, :timestamp
 
-  belongs_to :drupal_node, :foreign_key => 'nid', :touch => true,
+  belongs_to :node, :foreign_key => 'nid', :touch => true,
                            :dependent => :destroy, :counter_cache => true
   belongs_to :drupal_users, :foreign_key => 'uid'
   belongs_to :answer, :foreign_key => 'aid'
@@ -61,9 +61,9 @@ class Comment < ActiveRecord::Base
 
   def parent
     if self.aid == 0
-      self.drupal_node
+      self.node
     else
-      self.answer.drupal_node
+      self.answer.node
     end
   end
 
