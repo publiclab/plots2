@@ -321,12 +321,6 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
-  # base this on a tag!
-  def is_place?
-    # self.has_tag('chapter')
-    self.path[0..6] == '/wiki/place'
-  end
-
   # ============================================
   # Tag-related methods
 
