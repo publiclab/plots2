@@ -264,7 +264,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil @response.body
-    assert_equal '/notes/Bob/12-15-2016/a-completely-unique-snowflake', @response.body
+    assert_equal '/notes/Bob/' + Time.now.strftime("%m-%d-%Y") + '/a-completely-unique-snowflake', @response.body
   end
 
   test "post_note_error_no_title_xhr" do
