@@ -7,9 +7,9 @@ class WikiController < ApplicationController
   def subdomain
     url = "//#{request.host}/wiki/"
     case request.subdomain
-    when "new-york-city", 
-         "gulf-coast", 
-         "boston", 
+    when "new-york-city",
+         "gulf-coast",
+         "boston",
          "espana" then
       redirect_to url+request.subdomain
     when "nyc"
@@ -71,6 +71,10 @@ class WikiController < ApplicationController
       @node = DrupalNode.find_wiki(params[:lang]+"/"+params[:id])
     else
       @node = DrupalNode.find_wiki(params[:id])
+    end
+    if @node.has_power_tag('locked') && (current_user.role != "admin" && current_user.role != "moderator")
+      flash.now[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
+      redirect_to @node.path
     end
     if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
       flash.now[:warning] = I18n.t('wiki_controller.someone_clicked_edit_5_minutes_ago')
@@ -146,7 +150,7 @@ class WikiController < ApplicationController
         # update vid (version id) of main image
         if @node.drupal_main_image && params[:main_image].nil?
           i = @node.drupal_main_image
-          i.vid = @revision.vid 
+          i.vid = @revision.vid
           i.save
         end
         @node.title = @revision.title

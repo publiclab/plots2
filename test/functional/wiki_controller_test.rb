@@ -74,10 +74,10 @@ class WikiControllerTest < ActionController::TestCase
   test "post wiki no login" do
     UserSession.find.destroy
 
-    post :create, 
-         uid:   rusers(:bob).id, 
-         title: "All about balloon mapping", 
-         body:  "This is fascinating documentation about balloon mapping.", 
+    post :create,
+         uid:   rusers(:bob).id,
+         title: "All about balloon mapping",
+         body:  "This is fascinating documentation about balloon mapping.",
          tags:  "balloon-mapping,event"
 
     assert_redirected_to('/login')
@@ -86,10 +86,10 @@ class WikiControllerTest < ActionController::TestCase
   test "post wiki" do
     title = "All about balloon mapping"
 
-    post :create, 
-         uid:   rusers(:bob).id, 
-         title: title, 
-         body:  "This is fascinating documentation about balloon mapping.", 
+    post :create,
+         uid:   rusers(:bob).id,
+         title: title,
+         body:  "This is fascinating documentation about balloon mapping.",
          tags:  "balloon-mapping,event"
 
     assert_redirected_to "/wiki/" + title.parameterize
@@ -97,8 +97,8 @@ class WikiControllerTest < ActionController::TestCase
 
   test "post wiki with bad title" do
 
-    post :create, 
-         uid:   rusers(:bob).id, 
+    post :create,
+         uid:   rusers(:bob).id,
          title: "",
          body:  "This is fascinating documentation about balloon mapping."
 
@@ -108,7 +108,7 @@ class WikiControllerTest < ActionController::TestCase
 
   test "viewing edit wiki page" do
 
-    get :edit, 
+    get :edit,
          id: 'organizers'
 
     assert_template "wiki/edit"
@@ -116,13 +116,13 @@ class WikiControllerTest < ActionController::TestCase
     assert_not_nil assigns(:node)
     assert_response :success
   end
-  
+
   test "updating wiki" do
     wiki = node(:organizers)
     newtitle = "New Title"
 
-    post :update, 
-         id:    wiki.nid, 
+    post :update,
+         id:    wiki.nid,
          uid:   rusers(:bob).id,
          title: newtitle,
          body:  "Editing about Page"
@@ -134,24 +134,25 @@ class WikiControllerTest < ActionController::TestCase
 
   test "basic user blocked from updating a locked wiki page" do
     node(:organizers).add_tag('locked', rusers(:admin)) # lock the page with a tag
-
     # then try updating it
-    post :update,
-         id:  node(:organizers).id, 
-         uid:   rusers(:bob).id, 
-         title: ""
-
+    assert_difference 'DrupalNodeRevision.count', 0 do
+      post :update,
+          id:  node(:organizers).id,
+          uid:   rusers(:bob).id,
+          title: ""
+    end
+    
     assert_template "wiki/show"
-    assert_select ".alert", "expected message"
+    assert_select ".alert", "flash.now[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it.""
     assert_redirected_to wiki.path
   end
 
 
   test "updating wiki with bad title" do
 
-    post :update, 
-         id:  node(:organizers).id, 
-         uid:   rusers(:bob).id, 
+    post :update,
+         id:  node(:organizers).id,
+         uid:   rusers(:bob).id,
          title: ""
 
     assert_template "wiki/edit"
@@ -163,8 +164,8 @@ class WikiControllerTest < ActionController::TestCase
     newtitle = "New Title"
     assert_equal wiki.path, "/about"
 
-    post :update, 
-         id:    wiki.nid, 
+    post :update,
+         id:    wiki.nid,
          uid:   rusers(:bob).id,
          title: newtitle,
          body:  "Editing about Page"
@@ -178,13 +179,13 @@ class WikiControllerTest < ActionController::TestCase
     node = node(:about)
     image = fixture_file_upload 'rails.png'
 
-    post :update, 
-         id:    node.nid, 
+    post :update,
+         id:    node.nid,
          uid:   rusers(:bob).id,
          title: "New Title",
-         body:  "Editing about Page", 
+         body:  "Editing about Page",
          image: { :title => "new image",
-                  :photo => image 
+                  :photo => image
                 }
 
     node.reload
@@ -196,10 +197,10 @@ class WikiControllerTest < ActionController::TestCase
     node = node(:about)
     image = node.images.where(photo_file_name: 'filename-1.jpg').last
 
-    post :update, 
+    post :update,
          id:             node.nid,
          uid:            rusers(:bob).id,
-         title:          "New Title", 
+         title:          "New Title",
          body:           "Editing about Page",
          image_revision: image.path(:default)
 
@@ -254,7 +255,7 @@ class WikiControllerTest < ActionController::TestCase
 #    UserSession.create(rusers(:admin))
 #  end
 
-  # hmm, was this modified? 
+  # hmm, was this modified?
   test "should display wiki pages with slug in root" do
     UserSession.find.destroy
     UserSession.create(rusers(:admin))
@@ -351,7 +352,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template :index
-    assert_select "title", "Public Lab: Popular wiki pages" 
+    assert_select "title", "Public Lab: Popular wiki pages"
   end
 
   test  "should display well liked wiki pages" do
@@ -361,25 +362,25 @@ class WikiControllerTest < ActionController::TestCase
     assert_template :index
     assert_select "title", "Public Lab: Well-liked wiki pages"
   end
-  
+
   test "should choose I18n for wiki controller" do
     available_testing_locales.each do |lang|
       old_controller = @controller
       @controller = SettingsController.new
-      
+
       get :change_locale, :locale => lang.to_s
-      
+
       @controller = old_controller
-      
+
       wiki = node(:organizers)
       newtitle = "New Title"
-  
-      post :update, 
-           id:    wiki.nid, 
+
+      post :update,
+           id:    wiki.nid,
            uid:   rusers(:bob).id,
            title: newtitle,
            body:  "Editing about Page"
-  
+
       wiki.reload
       assert_redirected_to wiki.path
       assert_equal flash[:notice], I18n.t('wiki_controller.edits_saved')
