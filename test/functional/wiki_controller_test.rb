@@ -141,7 +141,6 @@ class WikiControllerTest < ActionController::TestCase
           uid:   rusers(:bob).id,
           title: ""
     end
-
     assert_template "wiki/show"
     assert_select ".alert", "flash.now[:warning] = 'This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it.'"
     assert_redirected_to wiki.path
