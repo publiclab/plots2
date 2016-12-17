@@ -4,8 +4,10 @@ en:
   users:
     new:
       sign_up: "Sign up to join the Public Lab community"
-      licensing_agreement: "Licensing agreement"
-      licensing_detail: 'As an open source community, we believe in open licensing of content so that other members of the community can leverage your work legally -- with attribution, of course. By joining the Public Lab site, <b>you agree to release the content you post here under a <a href="%{url1}">Creative Commons Attribution Sharealike license</a></b>, and the hardware designs you post under the <b><a href="%{url2}">CERN Open Hardware License 1.1</a> (<a href="%{url3}">fulltext</a>)</b>. This has the added benefit that others must share their improvements in turn with you.'
+      licensing_agreement: "Licensing Agreement"
+      licensing_detail: 'As an open source community, we believe in open licensing of content so that other members of the community can leverage your work legally -- with attribution, of course. By joining the Public Lab site, <b>you agree to release the content you post here under a <a href="%{url1}" target="_blank">Creative Commons Attribution Sharealike license</a></b>, and the hardware designs you post under the <b><a href="%{url2}" target="_blank">CERN Open Hardware License 1.1</a> (<a href="%{url3}" target="_blank">fulltext</a>)</b>. This has the added benefit that others must share their improvements in turn with you.'
+      code_of_conduct_agreement: "Code of Conduct Agreement"
+      code_of_conduct_detail: 'By signing up, <b>you agree to the <a href="%{url1}" target="_blank">Code of Conduct</a></b>, which applies to all online and in-person spaces managed by the Public Lab community and non-profit.'
       about_public_lab: |
 
         <h3>What is Public Lab?</h3>

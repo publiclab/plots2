@@ -25,7 +25,13 @@
   <%= render 'form' %>
 
   <div style="clear:both;padding-top:10px;">
-    <p><b><%= t('users.new.licensing_agreement') %></b> <%= raw t('users.new.licensing_detail', :url1 => "http://creativecommons.org/licenses/by-sa/3.0/", :url2 => "http://www.ohwr.org/cernohl", :url3 => "http://creativecommons.org/licenses/by-sa/3.0/") %></p>
+    <p><b><%= t('users.new.code_of_conduct_agreement') %></b></p>
+    <p><%= raw t('users.new.code_of_conduct_detail', :url1 => "http://publiclab.org/conduct") %></p>
+  </div>
+
+  <div style="clear:both;padding-top:10px;">
+    <p><b><%= t('users.new.licensing_agreement') %></b></p>
+    <p> <%= raw t('users.new.licensing_detail', :url1 => "http://creativecommons.org/licenses/by-sa/3.0/", :url2 => "http://www.ohwr.org/cernohl", :url3 => "http://creativecommons.org/licenses/by-sa/3.0/") %></p>
   </div>
 
   <br style="margin-bottom:20px;" />
