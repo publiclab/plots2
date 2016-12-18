@@ -137,8 +137,6 @@ class WikiControllerTest < ActionController::TestCase
     # then try editing it
     assert_difference 'DrupalNodeRevision.count', 0 do
       post :edit,
-          id:  node(:organizers).id,
-          uid:   rusers(:bob).id,
           title: ""
     end
     assert_template "wiki/show"
