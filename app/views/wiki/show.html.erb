@@ -42,7 +42,11 @@
  
       <ul class="nav nav-tabs">
         <li class="active"><a href="#"><span class="hidden-xs"><%= t('wiki.show.view') %></span><span class="visible-xs"><i class="fa fa-file-o"></i></span></a></li>
-        <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="fa fa-pencil"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.edit') %></span></a></li>
+        <% if @node.has_tag('locked') %>
+          <li><a href="/wiki/locked"><i class="fa fa-lock"></i></a></li>
+        <% else %>
+          <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="fa fa-pencil"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.edit') %></span></a></li>
+        <% end %>
         <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => I18n.t('wiki.show.are_you_sure_delete', :path => @node.path) do %><i class="fa fa-trash"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.delete') %></span><% end %></li><% end %>
         <li><a href="/talk/<%= @node.slug_from_path %>"><i class="fa fa-comments-o"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.talk') %></span></a></li>
         <li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><span class="hidden-xs"><%= @node.revisions.length %> </span><i class="fa fa-list"></i></a></li>
