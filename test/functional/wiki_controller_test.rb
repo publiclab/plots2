@@ -137,7 +137,7 @@ class WikiControllerTest < ActionController::TestCase
     # then try editing it
     assert_difference 'DrupalNodeRevision.count', 0 do
       post :edit,
-          title: ""
+          id: 'organizers'
     end
     assert_template "wiki/show"
     assert_select ".alert", "flash.now[:warning] = 'This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it.'"
