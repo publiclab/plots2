@@ -132,18 +132,18 @@ class WikiControllerTest < ActionController::TestCase
     assert_equal flash[:notice], "Edits saved."
   end
 
-  test "basic user blocked from updating a locked wiki page" do
+  test "basic user blocked from editing a locked wiki page" do
     node(:organizers).add_tag('locked', rusers(:admin)) # lock the page with a tag
-    # then try updating it
+    # then try editing it
     assert_difference 'DrupalNodeRevision.count', 0 do
-      post :update,
+      post :edit,
           id:  node(:organizers).id,
           uid:   rusers(:bob).id,
           title: ""
     end
     assert_template "wiki/show"
     assert_select ".alert", "flash.now[:warning] = 'This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it.'"
-    assert_redirected_to wiki.path
+    assert_redirected_to node.path
   end
 
 
