@@ -18,7 +18,10 @@ class TagControllerTest < ActionController::TestCase
     assert_equal 'mytag', assigns[:tags].last.name
     assert_redirected_to(node(:one).path)
 
-    post :create, name: 'mysecondtag,mythirdtag', nid: node(:one).nid, uid: rusers(:bob).id
+    post :create,
+         name: 'mysecondtag,mythirdtag',
+         nid: node(:one).nid,
+         uid: rusers(:bob).id
 
     assert_equal 'mysecondtag', assigns[:tags][assigns[:tags].length - 2].name
     assert_equal 'mythirdtag', assigns[:tags].last.name
@@ -33,32 +36,64 @@ class TagControllerTest < ActionController::TestCase
   test "validate unused tag" do
     UserSession.create(rusers(:bob))
 
-    get :contributors, :id => 'question:*'
+    get :contributors,
+        id: 'question:*'
 
     assert_template :contributors
-    assert_tag :tag => 'p', :child => /No contributors for that tag/
+    assert_tag tag: 'p', 
+               child: /No contributors for that tag/
   end
 
-  test "add invalid tag" do
+  test "won't add invalid tags" do
     UserSession.create(rusers(:bob))
 
-    post :create, :name => 'my invalid tag $_', :nid => node(:one).nid, :uid => rusers(:bob).id
+    post :create,
+         name: 'my invalid tag $_',
+         nid: node(:one).nid
 
     assert_redirected_to(node(:one).path)
     assert_equal "Error: tags can only include letters, numbers, and dashes", assigns['output']['errors'][0]
+  end
+
+  test "won't add disallowed tags" do
+    UserSession.create(rusers(:bob))
+
+    post :create,
+         name: 'with:bob',
+         nid: node(:one).nid # authored by jeff, not bob
+
+    assert_redirected_to(node(:one).path)
+    assert_equal I18n.t('drupal_node.only_author_use_powertag'), assigns['output']['errors'][0]
+  end
+
+  test "admins can add disallowed tags" do
+    UserSession.create(rusers(:admin))
+
+    post :create,
+         name: 'with:bob',
+         nid: node(:one).nid # authored by jeff, not bob
+
+    assert_redirected_to(node(:one).path)
+    assert_equal 0, assigns['output']['errors'].length
   end
 
   # create returns JSON list of errors in response[:errors]
   test "add duplicate tag" do
     UserSession.create(rusers(:bob))
 
-    post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
+    post :create,
+         name: 'mytag',
+         nid: node(:one).nid,
+         uid: rusers(:bob)
 
     assert_redirected_to(node(:one).path)
 
     # 2nd identical tag:
 
-    post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
+    post :create,
+         name: 'mytag',
+         nid: node(:one).nid,
+         uid: rusers(:bob)
 
     assert_redirected_to(node(:one).path)
     assert_equal "Error: that tag already exists.", assigns['output']['errors'][0]
@@ -66,7 +101,10 @@ class TagControllerTest < ActionController::TestCase
 
   test "add tag not logged in" do
 
-    post :create, :name => 'mytag', :nid => node(:one).nid, :uid => 1
+    post :create,
+         name: 'mytag',
+         nid: node(:one).nid,
+         uid: 1
 
     assert_redirected_to('/login')
   end

@@ -2,13 +2,13 @@ Plots2::Application.routes.draw do
 
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
-  
+
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
   mount Srch::API => '/api'
   mount GrapeSwaggerRails::Engine => '/api/d1ocs'
   #end
-  
+
 
   resources :rusers
   resources :user_sessions
@@ -53,7 +53,7 @@ Plots2::Application.routes.draw do
   #resources :users
 
   match 'openid' => 'openid#index'
-  # Try to get rails to accept params with periods in the keyname? 
+  # Try to get rails to accept params with periods in the keyname?
   # The following isn't right and it may be about param parsing rather than routing?
   # match 'openid' => 'openid#index', :constraints => { 'openid.mode' => /.*/ }
 # try this; http://jystewart.net/2007/10/24/a-ruby-on-rails-openid-server/
@@ -106,6 +106,8 @@ Plots2::Application.routes.draw do
 
   match 'places' => 'notes#places'
   match 'tools' => 'notes#tools'
+  match 'methods' => 'notes#methods'
+  match 'techniques' => 'notes#techniques'
 
   match 'report/:id' => 'legacy#report'
   match 'node/:id' => 'legacy#node'
@@ -129,7 +131,7 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/query' => 'like#liked?', :as => :is_liked
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
- 
+
   match 'questions_search/:id' => 'questions_search#index'
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
 
@@ -143,7 +145,7 @@ Plots2::Application.routes.draw do
   match 'search/:id' => 'searches#normal_search'
   match 'search/advanced' => 'searches#new'
   match 'search' => 'searches#new'
-  
+
   # Question Search capability--temporary until combined with full Search Capabilities
   match 'questions_search/:id' => 'questions_search#index'
   match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
@@ -201,8 +203,9 @@ Plots2::Application.routes.draw do
   match 'map/delete/:id' => 'map#delete'
   match 'map/:name/:date' => 'map#show'
   match 'archive' => 'map#index'
-  match 'stats' => 'notes#stats'
-  match 'stats/subscriptions' => 'subscription#stats'
+  match 'stats' => 'stats#index'
+  match 'stats/range/:start/:end' => 'stats#range'
+  match 'stats/subscriptions' => 'stats#subscription'
   match 'feed' => 'notes#rss'
   match 'rss.xml' => 'legacy#rss'
 
@@ -230,7 +233,8 @@ Plots2::Application.routes.draw do
   # This route can be invoked with purchase_url(:id => product.id)
 
   match 'post' => 'editor#post'
-  match 'editor' => 'editor#rich'
+  match 'legacy' => 'editor#legacy'
+  match 'editor' => 'editor#editor'
   match 'images/create' => 'images#create'
   match 'note/add' => 'legacy#note_add'
   match 'page/add' => 'legacy#page_add'

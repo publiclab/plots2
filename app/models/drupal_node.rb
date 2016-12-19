@@ -102,6 +102,10 @@ class DrupalNode < ActiveRecord::Base
     "rails_type"
   end
 
+  def slug_from_path
+  	self.path.split('/').last
+  end
+  
   before_save :set_changed_and_created
   after_create :setup
   before_validation :set_path, on: :create
@@ -317,12 +321,6 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
-  # base this on a tag!
-  def is_place?
-    # self.has_tag('chapter')
-    self.slug[0..5] == 'place/'
-  end
-
   # ============================================
   # Tag-related methods
 
@@ -497,7 +495,7 @@ class DrupalNode < ActiveRecord::Base
     path
   end
 
-  def self.find_root_by_slug(title)
+  def self.find_by_path(title)
     DrupalNode.where(path: ["/#{title}"]).first
   end
 
@@ -571,11 +569,12 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def new_revision(params)
+    title = params[:title] || self.title
     DrupalNodeRevision.new({
-      :nid => params[:nid],
-      :uid => params[:uid],
-      :title => params[:title],
-      :body => params[:body]
+      nid: self.id,
+      uid: params[:uid],
+      title: title,
+      body: params[:body]
     })
   end
 
@@ -598,7 +597,6 @@ class DrupalNode < ActiveRecord::Base
       ActiveRecord::Base.transaction do
         node.save!
         revision = node.new_revision({
-          nid:   node.id,
           uid:   author.uid,
           title: params[:title],
           body:  params[:body]
@@ -782,18 +780,32 @@ class DrupalNode < ActiveRecord::Base
               .where('term_data.name LIKE ?', "upgrade:#{tagname}")
   end
 
-  def can_tag(tagname, user)
+  def can_tag(tagname, user, errors = false)
     if tagname[0..4] == "with:"
-      if self.author.uid != user.uid || User.find_by_username(tagname.split(':')[1]).nil? || tagname.split(':')[1] == user.username
-        return false
+      if User.find_by_username(tagname.split(':')[1]).nil?
+        return errors ? I18n.t('drupal_node.cannot_find_username') : false
+      elsif self.author.uid != user.uid
+        return errors ? I18n.t('drupal_node.only_author_use_powertag') : false
+      elsif tagname.split(':')[1] == user.username
+        return errors ? I18n.t('drupal_node.cannot_add_yourself_coauthor') : false
       else
         return true
       end
     elsif tagname[0..4] == "rsvp:" && user.username != tagname.split(":")[1]
-      return false
+      return errors ? I18n.t('drupal_node.only_RSVP_for_yourself') : false
+    elsif tagname == "locked" && user.role != "admin"
+      return errors ? I18n.t('drupal_node.only_admins_can_lock') : false
     else
       return true
     end
+  end
+
+  def replace(before, after, user)
+    revision = self.new_revision({
+      uid: user.id,
+      body: self.latest.body.gsub(before, after)
+    })
+    revision.save
   end
 
 end

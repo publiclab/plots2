@@ -2,7 +2,7 @@ require 'rss'
 
 class WikiController < ApplicationController
 
-  before_filter :require_user, :only => [:new, :create, :edit, :update, :delete]
+  before_filter :require_user, :only => [:new, :create, :edit, :update, :delete, :replace]
 
   def subdomain
     url = "//#{request.host}/wiki/"
@@ -51,7 +51,7 @@ class WikiController < ApplicationController
       end
       @tagnames = @tags.collect(&:name)
       set_sidebar :tags, @tagnames, {:videos => true}
-      @wikis = DrupalTag.find_pages(@node.slug,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
+      @wikis = DrupalTag.find_pages(@node.slug_from_path,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
 
       @node.view
       @revision = @node.latest
@@ -85,6 +85,10 @@ class WikiController < ApplicationController
 
   def new
     @node = DrupalNode.new
+    if params[:n] && !params[:body] # use another node body as a template
+      node = DrupalNode.find(params[:n])
+      params[:body] = node.latest.body if node && node.latest
+    end
     @tags = []
     if params[:id]
       flash.now[:notice] = I18n.t('wiki_controller.page_does_not_exist_create')
@@ -131,7 +135,6 @@ class WikiController < ApplicationController
   def update
     @node = DrupalNode.find(params[:id])
     @revision = @node.new_revision({
-      nid:   @node.id,
       uid:   current_user.uid,
       title: params[:title],
       body:  params[:body]
@@ -203,7 +206,7 @@ class WikiController < ApplicationController
 
   # wiki pages which have a root URL, like /about
   def root
-    @node = DrupalNode.find_root_by_slug(params[:id])
+    @node = DrupalNode.find_by_path(params[:id])
     return if check_and_redirect_node(@node)
     if @node
       @revision = @node.latest
@@ -294,6 +297,21 @@ class WikiController < ApplicationController
                        .order("node.cached_likes DESC")
                        .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes > 0")
     render :template => "wiki/index"
+  end
+
+  # replace subsection of wiki body
+  def replace
+    @node = DrupalNode.find(params[:id])
+    if params[:before] && params[:after]
+      if @node.replace(params[:before], params[:after], current_user)
+        flash[:notice] = "New revision created with your additions."
+      else
+        flash[:error] = "There was a problem replacing that text."
+      end
+    else
+      flash[:error] = "You must specify 'before' and 'after' terms to replace content in a wiki page."
+    end
+    redirect_to @node.path
   end
 
 end

@@ -4,7 +4,7 @@
     <h3><%= t('wiki.edit.did_you_mean') %>:</h3>
     <ul class="nav bullet">
     <% @related[0..5].each do |wiki| %>
-      <li><a href="/wiki/<%= wiki.slug %>"><i class="fa fa-book"></i> <%= wiki.title %></a></li>
+      <li><a href="/wiki/<%= wiki.path %>"><i class="fa fa-book"></i> <%= wiki.title %></a></li>
     <% end %>
     </ul>
     <p><i class="fa fa-search"></i> <%= raw t('wiki.edit.try_searching_for', :url1 => "/search/"+params[:id], :wiki => params[:id]) %></p>
@@ -17,7 +17,7 @@
     <ul class="nav nav-list">
       <li class="nav-header"><%= t('wiki.edit.more') %></li>
       <li><a href="/wiki/getting-started"><%= t('wiki.edit.getting_started') %></a></li>
-      <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug %>"><%= t('wiki.edit.revisions_for_this_page') %></a></li><% end %>
+      <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><%= t('wiki.edit.revisions_for_this_page') %></a></li><% end %>
       <li><a href="/wiki/posting-research"><%= t('wiki.edit.about_posting_research') %></a></li>
       <li><a href="/wiki/authoring-help#Advanced+formatting"><%= t('wiki.edit.advanced_formatting') %></a></li>
     </ul>
@@ -53,6 +53,8 @@
       <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
       <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
       <input id="images_input" type="hidden" name="images" value="" />
+
+      <input id="taginput" type="hidden" name="tags" value="<%= params[:tags] %>" />
  
       <div class="form-group">
         <input tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:id] %><% end %>">

@@ -1,3 +1,4 @@
+include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 class ApplicationController < ActionController::Base
   protect_from_forgery
   layout 'application'

@@ -114,26 +114,16 @@ class TagController < ApplicationController
 
       if DrupalTag.exists?(tagname, params[:nid])
         @output[:errors] << I18n.t('tag_controller.tag_already_exists')
-      else
-        # "with:foo" coauthorship powertag: by author only
-        if tagname[0..4] == "with:" && node.author.uid != current_user.uid
-          @output[:errors] << I18n.t('tag_controller.only_author_use_powertag')
-        # "with:foo" coauthorship powertag: only for real users
-        elsif tagname[0..4] == "with:" && User.find_by_username(tagname.split(':')[1]).nil?
-          @output[:errors] << I18n.t('tag_controller.cannot_find_username')
-        elsif tagname[0..4] == "with:" && tagname.split(':')[1] == current_user.username
-          @output[:errors] << I18n.t('tag_controller.cannot_add_yourself_coauthor')
-        elsif tagname[0..4] == "rsvp:" && current_user.username != tagname.split(':')[1]
-          @output[:errors] << I18n.t('tag_controller.only_RSVP_for_yourself')
+      elsif node.can_tag(tagname, current_user) === true || current_user.role == "admin"# || current_user.role == "moderator"
+        saved, tag = node.add_tag(tagname.strip, current_user)
+        if saved
+          @tags << tag
+          @output[:saved] << [tag.name, tag.id]
         else
-          saved, tag = node.add_tag(tagname.strip, current_user)
-          if saved
-            @tags << tag
-            @output[:saved] << [tag.name, tag.id]
-          else
-            @output[:errors] << I18n.t('tag_controller.error_tags') + tag.errors[:name].first
-          end
+          @output[:errors] << I18n.t('tag_controller.error_tags') + tag.errors[:name].first
         end
+      else
+        @output[:errors] << node.can_tag(tagname, current_user, true)
       end
     end
     respond_with do |format|
@@ -141,7 +131,10 @@ class TagController < ApplicationController
         if request.xhr?
           render :json => @output
         else
-          flash[:notice] = I18n.t('tag_controller.tags_created_error', :tag_count => @output[:saved].length, :error_count => @output[:errors].length).html_safe
+          flash[:notice] = I18n.t('tag_controller.tags_created_error',
+                                  tag_count: @output[:saved].length,
+                                  error_count: @output[:errors].length
+                           ).html_safe
           redirect_to node.path
         end
       end
@@ -151,7 +144,7 @@ class TagController < ApplicationController
   # should delete only the term_node/node_tag (instance), not the term_data (class)
   def delete
     node_tag = DrupalNodeCommunityTag.where(nid: params[:nid], tid: params[:tid]).first
-    # check for community tag too...
+    # only admins, mods, and tag authors can delete other peoples' tags
     if node_tag.uid == current_user.uid || current_user.role == "admin" || current_user.role == "moderator"
 
       node_tag.delete

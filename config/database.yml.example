@@ -21,7 +21,10 @@ development:
 
 production:
   adapter: mysql2
-  username: 
-  password: 
+  username: plots
+  password: plots
+  database: plots
+  host: db
   encoding: utf8
-  database: publiclaboratory
+  pool: 5
+  timeout: 5000

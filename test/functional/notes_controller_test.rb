@@ -1,5 +1,6 @@
 # def index
 # def tools
+# def methods
 # def places
 # def shortlink
 # def raw
@@ -95,8 +96,15 @@ class NotesControllerTest < ActionController::TestCase
   test "should get tools" do
     get :tools
 
-    assert_response :success
-    assert_not_nil :notes
+    assert_response :redirect
+    assert_redirected_to "/methods"
+  end
+
+  test "should get methods" do
+  get :methods
+
+  assert_response :success
+  assert_not_nil :notes
   end
 
   test "should get places" do
@@ -245,10 +253,24 @@ class NotesControllerTest < ActionController::TestCase
     assert_select ".alert"
   end
 
+  test "posting note successfully with no errors using xhr (rich editor)" do
+    UserSession.create(rusers(:bob))
+
+    xhr :post,
+        :create,
+        body: "This is a fascinating post about a balloon mapping event.",
+        title: "A completely unique snowflake",
+        tags: "balloon-mapping,event"
+
+    assert_response :success
+    assert_not_nil @response.body
+    assert_equal '/notes/Bob/' + Time.now.strftime("%m-%d-%Y") + '/a-completely-unique-snowflake', @response.body
+  end
+
   test "post_note_error_no_title_xhr" do
     UserSession.create(rusers(:bob))
 
-    xhr :post, 
+    xhr :post,
         :create,
         body: "This is a fascinating post about a balloon mapping event.",
         tags: "balloon-mapping,event"
@@ -256,6 +278,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil @response.body
     json = JSON.parse(@response.body)
+    assert_equal ["can't be blank"], json['title']
     assert json['title'].length > 0
   end
 
@@ -374,7 +397,7 @@ class NotesControllerTest < ActionController::TestCase
   test "returning json errors on xhr note update" do
     user = UserSession.create(rusers(:jeff))
 
-    xhr :post, 
+    xhr :post,
         :update,
         id: node(:blog).id,
         title: ""
@@ -383,13 +406,6 @@ class NotesControllerTest < ActionController::TestCase
     assert_not_nil @response.body
     json = JSON.parse(@response.body)
     assert json['title'].length > 0
-  end
-
-  test "should assign correct value to graph_comments on GET stats" do
-    Comment.delete_all
-    Comment.create!({comment: 'blah', timestamp: Time.now() - 1})
-    get :stats
-    assert_equal assigns(:graph_comments), Comment.comment_weekly_tallies(52, Time.now()).to_a.sort.to_json
   end
 
   test "should redirect to question path if node is a question when visiting shortlink" do

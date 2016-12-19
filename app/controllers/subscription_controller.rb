@@ -17,15 +17,6 @@ class SubscriptionController < ApplicationController
     render :json => TagSelection.count(params[:tid], :conditions => {:following => true})
   end
 
-  def stats
-    @tags = {}
-    TagSelection.where(following: true).each do |tag|
-      @tags[tag.name] = @tags[tag.name] || 0
-      @tags[tag.name] += 1
-    end
-    render :text => @tags.inspect
-  end
-
   # for the current user, return whether is presently liked or not
   def followed
     # may be trouble: there can be multiple tags with the same name, no? We can eliminate that possibility in a migration if so.

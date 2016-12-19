@@ -98,7 +98,7 @@
       </div>
 
       <div class="ple-module-content col-md-9 container">
-        <textarea class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+        <textarea id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
       </div>
 
     </div>
@@ -210,7 +210,9 @@
       format:      'publiclab',
       publishCallback: function publishCallback(response) {
         // parse and display errors!
-        if (response && Object.keys(response).length > 0) {
+        if (typeof response === "string") {
+          window.location = response;
+        } else if (response && Object.keys(response).length > 0) {
           $('.ple-errors').html('<div class="alert alert-danger"></div>');
           Object.keys(response).forEach(function(key, i) {
             $('.ple-errors .alert').append('<p><b>' + key + '</b> </p>');
