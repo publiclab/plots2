@@ -43,8 +43,17 @@
           <a href="/answers/accept/<%= answer.id %>" data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm btn-default">Accept this answer</a>  
         <% end %>
       <% end %>
+    <% if answer.likers.length != 0 %>
+        <div class="btn btn-default btn-sm" rel="popover" data-placement="left" data-html="true" data-title="Users who like this" data-content="
+            <% answer.likers.each do |user| %>
+                <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/likes'><%= user.username %></a></br>
+            <% end %>
+        "><span class="caret"></span>
+        </div>
+    <% end %>
        <a href=<% if current_user %>"/answer_like/likes/<%= answer.id %>"<% else %>"#"<% end %>data-remote ="true" tooltip-title="Helpful? Like it" class="btn btn-default btn-sm btn-like" id="answer-like-button-<%= answer.id %>" <% unless current_user %> popover-content="You must be logged in to Like the answer" <% end %> ><span id="answer-like-star-<%= answer.id %>" class="fa fa-star<% if current_user && !answer.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="answer-like-count-<%= answer.id %>"><%= answer.likers.length %></span> Likes</a>
-      <a href="#a<%= answer.id %>" class="btn btn-default btn-sm "><i class="fa fa-share-alt"></i></a> &nbsp;
+
+        <a href="#a<%= answer.id %>" class="btn btn-default btn-sm "><i class="fa fa-share-alt"></i></a> &nbsp;
       <a id="answer-<%= answer.id %>-comment-button"  style="color: #006dcc;"><span id="answer-<%= answer.id %>-comment-count"><%= answer.comments.length %></span> Comments <i class="fa fa-caret-down"></i></a>
     </div>
 
