@@ -42,7 +42,8 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 
 1. In the console, download a copy of the source with `git clone https://github.com/publiclab/plots2.git`.
 2. Enter the new **plots2** directory with `cd plots2`.
-3. Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work. 
+3. Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work.
+	- If you encounter error with libv8 installation as, "Make sure that `gem install libv8 -v '3.16.14.15'` succeeds before bundling.", try doing `gem install libv8 -v '3.16.14.15' -- --with-system-v8`. Explanation can be found [here](http://stackoverflow.com/questions/19577759/installing-libv8-gem-on-os-x-10-9?noredirect=1&lq=1). 
 4. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
 5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 6. Run `rake db:setup` to set up the database
