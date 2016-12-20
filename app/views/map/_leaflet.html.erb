@@ -1,8 +1,10 @@
-<script>
-        var map = L.map('map').setView([<%= lat %>,<%= lon %>], 10);
-        L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+<div id="map">
+  <script>
+          var map = L.map('map').setView([<%= lat %>,<%= lon %>], 10);
+          L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
 
-        <% items.each do |item| %>
-          L.marker([<%= item.lat %>, <%= item.lon %>]).addTo(map).bindPopup("<a href='/<%= item.path %>'><%= item.title %></a>");
-        <% end %>
-</script>
+          <% items.each do |item| %>
+            L.marker([<%= item.lat %>, <%= item.lon %>]).addTo(map).bindPopup("<a href='/<%= item.path %>'><%= item.title %></a>");
+          <% end %>
+  </script>
+</div>
