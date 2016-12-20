@@ -73,7 +73,7 @@ class WikiController < ApplicationController
       @node = DrupalNode.find_wiki(params[:id])
     end
     if @node.has_power_tag('locked') && (current_user.role != "admin" && current_user.role != "moderator")
-      flash.now[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
+      flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
       redirect_to @node.path
     end
     if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
