@@ -19,8 +19,6 @@ If you are submitting a bug, please include:
 * anything you can about the sequence of events which led to the bug 
 * any data you're attempting to upload, such as a photo, which can help us troubleshoot
 
-
-
 ##First Timers
 
 New to open source/free software?, Here are a selection of issues we've made especially for first-timers. We're here to help, so just ask if one looks interesting : https://github.com/publiclab/plots2/projects/2
