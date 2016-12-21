@@ -11,7 +11,7 @@
 
     <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>"><span id="like-star-<%= node.id %>" class="fa fa-star<% if current_user && !node.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="like-count-<%= node.id %>"><%= node.likers.length %> </span></li>
 
-    <li class="btn btn-default btn-sm" rel="popover" data-placement="left" data-html="true" data-title="Tools" data-content="
+    <li class="btn btn-default btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-title="Tools" data-content="
 <p><b>Users who liked this</b></p>
 <% node.likers.each do |user| %>
   <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/likes'><%= user.username %></a><br />
