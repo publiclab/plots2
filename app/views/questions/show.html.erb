@@ -1,3 +1,5 @@
+<%= javascript_include_tag('comment_expand') %>
+
 <%= render :partial => "sidebar/question" %>
 <div class="col-md-9 note-show">
   
@@ -77,19 +79,22 @@
   <%= render :partial => "questions/answers" %>
 </div>
 
-<%= javascript_include_tag('comment_expand') %>
 <%= javascript_include_tag('textbox_expand') %>
-
 
 <script type="text/javascript">
   jQuery(document).ready(function(){
-    var anchor_value;
+
+    var check_matched = false;
     var stripped_url = document.location.toString().split("#");
     if (stripped_url.length > 1){
-      anchor_value = stripped_url[1];
+      var anchor_value = stripped_url[1];
       if(anchor_value.match('answer-0-comment')){
-        $('.answer-0-comments').show();
+        check_matched = true;
       }
+    }
+
+    if (check_matched){
+      $('.answer-0-comments').show();
     }
     else{
       $('.answer-0-comments').slice(0,3).show();
