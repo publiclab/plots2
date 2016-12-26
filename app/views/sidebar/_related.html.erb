@@ -77,7 +77,6 @@
   <% if @maps && @maps.length > 0 && params[:controller] != "search" %>
 
     <br />
-    <div style="width:100%;margin-left:0;height:300px;"></div>
 
     <% if @node && @maps && @node.lat %>
       <%= render_map(@node.lat, @node.lon, @maps) %>
