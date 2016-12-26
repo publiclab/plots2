@@ -111,3 +111,9 @@ activity-spectrometer:
   uid: 1
   nid: 1
   date: Time.now
+
+activities-spectrometer:
+  tid: 16
+  uid: 1
+  nid: 20
+  date: Time.now
