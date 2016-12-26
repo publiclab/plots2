@@ -119,8 +119,26 @@
   $("#answer-<%= answer.id %>-comment-button").click( function(){
     $("#answer-<%= answer.id %>-comment").toggle();
   });
-
+  
+  $('#answer-<%= answer.id %>-comment-form').bind('ajax:send', function(e){
+    $('#answer-<%= answer.id %>-comment-form #loading-spinner').removeClass('hidden');
+    $('#answer-<%= answer.id %>-comment-form #reply-comment').addClass('hidden');
+    $('#answer-<%= answer.id %>-comment-form #submit-comment').text(' Submitting');
+    $('#answer-<%= answer.id %>-comment-form #submit-comment-button').addClass('disabled');
+  })
+  
+  $('#answer-<%= answer.id %>-comment-form').bind('ajax:success', function(e, data, status, response){
+    $('#answer-<%= answer.id %>-comment-form #loading-spinner').addClass('hidden');
+    $('#answer-<%= answer.id %>-comment-form #reply-comment').removeClass('hidden');
+    $('#answer-<%= answer.id %>-comment-form #submit-comment').text(' Submit');
+    $('#answer-<%= answer.id %>-comment-form #submit-comment-button').removeClass('disabled');
+  })
+  
   $('#answer-<%= answer.id %>-comment-form').bind('ajax:error', function(e, response){
+    $('#answer-<%= answer.id %>-comment-form #loading-spinner').addClass('hidden');
+    $('#answer-<%= answer.id %>-comment-form #reply-comment').removeClass('hidden');
+    $('#answer-<%= answer.id %>-comment-form #submit-comment').text(' Submit');
+    $('#answer-<%= answer.id %>-comment-form #submit-comment-button').removeClass('disabled');
     $('#answer-<%= answer.id %>-comment-section .help-block').remove()
     $('#answer-<%= answer.id %>-comment-section .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
   })
