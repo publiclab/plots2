@@ -107,7 +107,7 @@
     else{
       $('.answer-<%= answer.id %>-comments').slice(0,3).show();
       if (<%= answer.comments.length %> > 3){
-        $('#answer-<%= answer.id %>-comment').append('<p id="answer-<%= answer.id %>-expand" style="color: #006dcc;">View ' + comment_select(<%= answer.id %>).length + ' more comments</p>');
+        $('#answer-<%= answer.id %>-comment').append('<p id="answer-<%= answer.id %>-expand" style="color: #006dcc;">Load ' + comment_select(<%= answer.id %>).length + ' previous comments</p>');
         $("#answer-<%= answer.id %>-expand").on('click',function(){
           expand_comments(<%= answer.id %>);
         });
