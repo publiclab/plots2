@@ -100,8 +100,17 @@
         });
       }
     }
-
+    
+    $('#answer-0-comment-form').bind('ajax:send', function(e){
+      $('#answer-0-comment-form #loading-spinner').removeClass('hidden');
+    })
+    
+    $('#answer-0-comment-form').bind('ajax:success', function(e, data, status, response){
+      $('#answer-0-comment-form #loading-spinner').addClass('hidden');
+    })
+    
     $('#answer-0-comment-form').bind('ajax:error', function(e, response){
+      $('#answer-0-comment-form #loading-spinner').addClass('hidden');
       $('#answer-0-comment-section .help-block').remove()
       $('#answer-0-comment-section .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
     })
