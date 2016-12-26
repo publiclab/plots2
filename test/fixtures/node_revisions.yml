@@ -204,3 +204,9 @@ fixture:
   title: "email-footer"
   body: Test
   timestamp: <%= (Time.now - 1.week).to_i %>
+
+method:
+  nid: 20
+  uid: 1
+  title: "Method page"
+  body: "[activities:spectrometer]"

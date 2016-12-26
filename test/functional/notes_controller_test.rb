@@ -48,7 +48,9 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note" do
-    note = DrupalNode.where(type: 'note', status: 1).first
+    note = node(:blog)
+    note.add_tag('activity:nonexistent', note.author) # testing responses display
+    assert_equal 'nonexistent', note.power_tag('activity')
 
     get :show,
         author: note.author.name,
@@ -56,6 +58,22 @@ class NotesControllerTest < ActionController::TestCase
         id: note.title.parameterize
 
     assert_response :success
+    assert_select "#other-activities", false
+  end
+
+  test "show note with Browse other activities link" do
+    note = DrupalNode.where(type: 'note', status: 1).first
+    note.add_tag('activity:spectrometer', note.author) # testing responses display
+    assert DrupalTag.where(name: 'activities:' + note.power_tag('activity')).length > 0
+
+    get :show,
+        author: note.author.name,
+        date: Time.at(note.created).strftime("%m-%d-%Y"),
+        id: note.title.parameterize
+
+    assert_response :success
+    assert_select "#other-activities"
+    assert_select "a#other-activities[href = '/wiki/spectrometer']", 1
   end
 
   test "don't show note by spam author" do
