@@ -139,6 +139,8 @@ class WikiControllerTest < ActionController::TestCase
       post :edit,
           id: 'organizers'
     end
+    assert_template "wiki/show"
+    assert_redirected_to node.path
   end
 
 
