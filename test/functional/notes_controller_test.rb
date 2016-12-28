@@ -388,6 +388,26 @@ class NotesControllerTest < ActionController::TestCase
     assert_select "input#taginput[value=?]", note.tagnames.join(',') + ',spectrometer' # for now, question subject is appended to end of form
   end
 
+  test "should display /post template when editing a note" do
+    user = UserSession.create(rusers(:jeff))
+    note = node(:blog)
+    post :edit,
+         id: note.nid
+    assert_response :success
+    assert_select "input.form-control.input-lg[value=?]", note.tagnames.join(',')
+  end
+
+  test "should display /post template when editing a question" do
+    user = UserSession.create(rusers(:jeff))
+    note = node(:question)
+    note.add_tag('nice', rusers(:jeff))
+    post :edit,
+         id: note.nid
+    assert_response :success
+    assert_select "input.form-control.input-lg[value=?]", note.tagnames.join(',') + ',spectrometer' # for now, question subject is appended to end of form
+  end
+
+
   test "should redirect to questions show page when editing an existing question" do
     user = UserSession.create(rusers(:jeff))
     note = node(:question)
