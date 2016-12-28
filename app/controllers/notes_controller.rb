@@ -151,7 +151,9 @@ class NotesController < ApplicationController
   def edit
     @node = DrupalNode.find(params[:id],:conditions => {:type => "note"})
     if current_user.uid == @node.uid || current_user.role == "admin"
-      if params[:rich]
+      if params[:legacy]
+        render :template => "editor/post"
+      else
         if @node.main_image
           @main_image = @node.main_image.path(:default)
         elsif params[:main_image] && Image.find_by_id(params[:main_image])
@@ -159,9 +161,8 @@ class NotesController < ApplicationController
         elsif @image
           @main_image = @image.path(:default)
         end
+        flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/notes/edit/#{@node.id}?#{request.env['QUERY_STRING']}&legacy=true'>click here</a>."
         render :template => "editor/rich"
-      else
-        render :template => "editor/post"
       end
     else
       if @node.has_power_tag('question')
