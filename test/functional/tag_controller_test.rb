@@ -148,7 +148,9 @@ class TagControllerTest < ActionController::TestCase
     json = ActiveSupport::JSON.decode(@response.body)
 
     assert_not_nil json
-    # assert more things to check this
+    assert :preview
+    assert :image
+      assert :tags
   end
   
   test "wildcard tag show" do
