@@ -72,7 +72,7 @@ class WikiController < ApplicationController
     else
       @node = DrupalNode.find_wiki(params[:id])
     end
-    if @node.has_power_tag('locked') && (current_user.role != "admin" && current_user.role != "moderator")
+    if @node.has_tag('locked') && (current_user.role != "admin" && current_user.role != "moderator")
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
       redirect_to @node.path
     end
