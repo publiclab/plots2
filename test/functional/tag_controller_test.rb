@@ -148,9 +148,12 @@ class TagControllerTest < ActionController::TestCase
     json = ActiveSupport::JSON.decode(@response.body)
 
     assert_not_nil json
-    assert :preview
-    assert :image
-      assert :tags
+    assert_equal tags(:spectrometer).notes.first.body_preview,
+    json.first[:preview]
+    assert_equal tags(:spectrometer).notes.first.main_image_url,
+    json.first[:image] 
+    assert_equal tags(:spectrometer).notes.first.tags,
+    json.first[:tags]
   end
   
   test "wildcard tag show" do
