@@ -404,7 +404,7 @@ class NotesControllerTest < ActionController::TestCase
     post :edit,
          id: note.nid
     assert_response :success
-    assert_select "input.form-control.input-lg[value=?]", note.tagnames.join(',') + ',spectrometer' # for now, question subject is appended to end of form
+    assert_select "input.form-control.input-lg[value=?]", note.tagnames.join(',')
   end
 
 
