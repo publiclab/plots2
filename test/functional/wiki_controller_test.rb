@@ -139,7 +139,6 @@ class WikiControllerTest < ActionController::TestCase
       post :edit,
           id: 'organizers'
     end
-    assert_equal flash[:warning] , "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
     assert_redirected_to node.path
   end
 
