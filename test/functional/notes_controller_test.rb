@@ -367,23 +367,23 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal flash[:notice], "Question published. In the meantime, if you have more to contribute, feel free to do so."
   end
 
-  test "should display /post template when editing a note" do
+  test "should display /post template when editing a note in legacy mode" do
     user = UserSession.create(rusers(:jeff))
     note = node(:blog)
     post :edit,
-         id: note.nid
-
+         id: note.nid,
+         legacy: true
     assert_response :success
     assert_select "input#taginput[value=?]", note.tagnames.join(',')
   end
 
-  test "should display /post template when editing a question" do
+  test "should display /post template when editing a question in legacy mode" do
     user = UserSession.create(rusers(:jeff))
     note = node(:question)
     note.add_tag('nice', rusers(:jeff))
     post :edit,
-         id: note.nid
-
+         id: note.nid,
+         legacy: true
     assert_response :success
     assert_select "input#taginput[value=?]", note.tagnames.join(',') + ',spectrometer' # for now, question subject is appended to end of form
   end
