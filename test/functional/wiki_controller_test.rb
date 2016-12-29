@@ -401,7 +401,7 @@ class WikiControllerTest < ActionController::TestCase
     assert_redirected_to node.path
   end
 
-  test "redirect normal user to tagged blog page" do
+  test "redirect normal user to tagged page" do
     wiki = node(:wiki_page)
     slug = wiki.path.gsub('/wiki/', '')
     blog = node(:blog)
@@ -416,10 +416,10 @@ class WikiControllerTest < ActionController::TestCase
     wiki = node(:wiki_page)
     slug = wiki.path.gsub('/wiki/', '')
     blog = node(:blog)
-    wiki.add_tag("redirect:#{blog.nid}", rusers(:bob))
+    wiki.add_tag("redirect:#{blog.nid}", rusers(:jeff))
     assert_equal "#{blog.nid}", wiki.power_tag("redirect")
     UserSession.find.destroy if UserSession.find
-    UserSession.create(rusers(:bob))
+    UserSession.create(rusers(:jeff))
 
     get :show, id: slug
 

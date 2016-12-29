@@ -28,7 +28,7 @@ class WikiController < ApplicationController
 
     if @node && @node.has_power_tag('redirect')
       if current_user == nil || (current_user.role != 'admin' && current_user.role != 'moderator')
-        # redirect_to DrupalNode.find(@node.power_tag('redirect')).path
+        redirect_to DrupalNode.find(@node.power_tag('redirect')).path
         return
       elsif (current_user.role == 'admin' || current_user.role == 'moderator')
         flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{DrupalNode.find(@node.power_tag('redirect')).title}.
