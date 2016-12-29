@@ -152,7 +152,7 @@ class TagControllerTest < ActionController::TestCase
     json.first[:preview]
     assert_equal tags(:spectrometer).notes.first.main_image_url,
     json.first[:image] 
-    assert_equal tags(:spectrometer).notes.first.tags,
+    assert_equal tags(:spectrometer).notes.first.tags.collect(&:name),
     json.first[:tags]
   end
   
