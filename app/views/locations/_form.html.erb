@@ -25,9 +25,9 @@
       <h3 class="font-size-small">On a map : </h3>
       <%= render_map(17.4472, 78.3488, []) %>
       <script>
-      L.marker(L.latLng(map.getCenter())).addTo(map)
-      </script>
-      <br/>
+        L.circle(map.getCenter(), 10).addTo(map);
+       </script>
+       <br/>
       <h3 class="font-size-small">In Text:</h3><br/>
       <input type="text" class="form-control"><br/>
     </div>

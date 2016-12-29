@@ -1,7 +1,7 @@
 <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
 <script>
     var map = L.map('map').setView([<%= lat %>,<%= lon %>], 10);
-    L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map)
+    L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
 
     <% items.each do |item| %>
     L.marker([<%= item.lat %>, <%= item.lon %>]).addTo(map).bindPopup("<a href='/<%= item.path %>'><%= item.title %></a>");
