@@ -6,6 +6,9 @@
       <li><a href="mailto:web@<%= request.host %>"> <%= t('layout._footer.getting_help.email_working_group') %> </a></li>
       <li> <%= raw t('layout._footer.getting_help.publiclab_oss', :url1 => 'https://github.com/publiclab/plots2', :url2 => '/wiki/developers') %> </li>
     </ul>
+    <% cache('feature_footer-notice') do %>
+      <%= feature('footer-notice') %>
+    <% end %>
   </div>
   <div class="col-md-3 hidden-print">
     <p><b>Links</b></p>
