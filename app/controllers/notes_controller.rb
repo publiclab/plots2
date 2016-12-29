@@ -65,6 +65,13 @@ class NotesController < ApplicationController
       return
     end
 
+    if @node.has_power_tag('redirect')
+      if current_user == nil || (current_user.role != 'admin' && current_user.role != 'moderator')
+        redirect_to DrupalNode.find(@node.power_tag('redirect')).path
+        return
+      end
+    end
+
     return if check_and_redirect_node(@node)
 
     alert_and_redirect_moderated

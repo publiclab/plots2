@@ -61,6 +61,20 @@ class NotesControllerTest < ActionController::TestCase
     assert_select "#other-activities", false
   end
 
+  test "redirect normal user to tagged blog page" do
+    note = node(:one)
+    blog = node(:blog)
+    note.add_tag("redirect:#{blog.nid}", rusers(:jeff))
+    assert_equal "#{blog.nid}", note.power_tag("redirect")
+
+    get :show,
+        author: note.author.name,
+        date: Time.at(note.created).strftime("%m-%d-%Y"),
+        id: note.title.parameterize
+
+    assert_redirected_to blog.path
+  end
+
   test "show note with Browse other activities link" do
     note = DrupalNode.where(type: 'note', status: 1).first
     note.add_tag('activity:spectrometer', note.author) # testing responses display
