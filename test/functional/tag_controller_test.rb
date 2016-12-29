@@ -148,11 +148,11 @@ class TagControllerTest < ActionController::TestCase
     json = ActiveSupport::JSON.decode(@response.body)
 
     assert_not_nil json
-    assert_equal tags(:spectrometer).notes.first.body_preview,
+    assert_equal tags(:spectrometer).nodes.first.body_preview,
     json.first[:preview]
-    assert_equal tags(:spectrometer).notes.first.main_image_url,
+    assert_equal tags(:spectrometer).nodes.first.main_image_url,
     json.first[:image] 
-    assert_equal tags(:spectrometer).notes.first.tags.collect(&:name),
+    assert_equal tags(:spectrometer).nodes.first.tags.collect(&:name),
     json.first[:tags]
   end
   
