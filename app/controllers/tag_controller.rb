@@ -47,7 +47,7 @@ class TagController < ApplicationController
     @nodes = nodes if @node_type == "maps"
     @title = params[:id]
     set_sidebar :tags, [params[:id]]
-    
+
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
       format.xml  { render xml: nodes }
@@ -101,7 +101,7 @@ class TagController < ApplicationController
   def create
     params[:name] ||= ""
     tagnames = params[:name].split(',')
-    @output = { 
+    @output = {
       errors: [],
       saved: []
     }
@@ -234,7 +234,7 @@ class TagController < ApplicationController
     render :template => "tag/contributors-index"
   end
 
-  # let's not use session for tags storage; deprecate these unless they're being used 
+  # let's not use session for tags storage; deprecate these unless they're being used
   # to remember and persist recently searched for tags:
   def add_tag
     unless session[:tags]
@@ -260,13 +260,13 @@ class TagController < ApplicationController
   end
 
   def remove_all_tags
-    if session[:tags] 
+    if session[:tags]
       session[:tags].clear
     end
     redirect_to params[:return_to]
   end
 
   def location
-    render 'locations/form'
+    render partial: 'locations/form'
   end
 end

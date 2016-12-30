@@ -48,7 +48,9 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note" do
-    note = DrupalNode.where(type: 'note', status: 1).first
+    note = node(:blog)
+    note.add_tag('activity:nonexistent', note.author) # testing responses display
+    assert_equal 'nonexistent', note.power_tag('activity')
 
     get :show,
         author: note.author.name,
@@ -56,6 +58,22 @@ class NotesControllerTest < ActionController::TestCase
         id: note.title.parameterize
 
     assert_response :success
+    assert_select "#other-activities", false
+  end
+
+  test "show note with Browse other activities link" do
+    note = DrupalNode.where(type: 'note', status: 1).first
+    note.add_tag('activity:spectrometer', note.author) # testing responses display
+    assert DrupalTag.where(name: 'activities:' + note.power_tag('activity')).length > 0
+
+    get :show,
+        author: note.author.name,
+        date: Time.at(note.created).strftime("%m-%d-%Y"),
+        id: note.title.parameterize
+
+    assert_response :success
+    assert_select "#other-activities"
+    assert_select "a#other-activities[href = '/wiki/spectrometer']", 1
   end
 
   test "don't show note by spam author" do
@@ -349,14 +367,34 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal flash[:notice], "Question published. In the meantime, if you have more to contribute, feel free to do so."
   end
 
+  test "should display /post template when editing a note in legacy mode" do
+    user = UserSession.create(rusers(:jeff))
+    note = node(:blog)
+    post :edit,
+         id: note.nid,
+         legacy: true
+    assert_response :success
+    assert_select "input#taginput[value=?]", note.tagnames.join(',')
+  end
+
+  test "should display /post template when editing a question in legacy mode" do
+    user = UserSession.create(rusers(:jeff))
+    note = node(:question)
+    note.add_tag('nice', rusers(:jeff))
+    post :edit,
+         id: note.nid,
+         legacy: true
+    assert_response :success
+    assert_select "input#taginput[value=?]", note.tagnames.join(',') + ',spectrometer' # for now, question subject is appended to end of form
+  end
+
   test "should display /post template when editing a note" do
     user = UserSession.create(rusers(:jeff))
     note = node(:blog)
     post :edit,
          id: note.nid
-
     assert_response :success
-    assert_select "input#taginput[value=?]", note.tagnames.join(',')
+    assert_select "input.form-control.input-lg[value=?]", note.tagnames.join(',')
   end
 
   test "should display /post template when editing a question" do
@@ -365,10 +403,10 @@ class NotesControllerTest < ActionController::TestCase
     note.add_tag('nice', rusers(:jeff))
     post :edit,
          id: note.nid
-
     assert_response :success
-    assert_select "input#taginput[value=?]", note.tagnames.join(',') + ',spectrometer' # for now, question subject is appended to end of form
+    assert_select "input.form-control.input-lg[value=?]", note.tagnames.join(',')
   end
+
 
   test "should redirect to questions show page when editing an existing question" do
     user = UserSession.create(rusers(:jeff))
