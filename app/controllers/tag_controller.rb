@@ -52,13 +52,15 @@ class TagController < ApplicationController
       format.html { render 'tag/show' }
       format.xml  { render xml: nodes }
       format.json  {
+        json = []
         nodes.each do |node|
-          node.path = "https://" + request.host.to_s + node.path
-          node['preview'] = node.body_preview
-          node['image'] = node.main_image_url if node.main_image
-          node['tags'] = node.tags.collect(&:name) if node.tags
+          json << node.as_json(except: [:path, :tags])
+          json.last['path'] = "https://" + request.host.to_s + node.path
+          json.last['preview'] = node.body_preview
+          json.last['image'] = node.main_image if node.main_image
+          json.last['tags'] = DrupalNode.find(node.id).tags.collect(&:name) if node.tags
         end
-        render json: nodes
+        render json: json
       }
     end
   end
