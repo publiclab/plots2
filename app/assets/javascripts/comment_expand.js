@@ -7,7 +7,7 @@ function comment_select(question_id){
 function expand_comments(question_id){
   if (comment_select(question_id).length > 0){
     comment_select(question_id).slice(-3).show();
-    $('#answer-' + question_id + '-expand').text('View ' + comment_select(question_id).length + ' more comments');
+    $('#answer-' + question_id + '-expand').text('View ' + comment_select(question_id).length + ' previous comments');
     if (comment_select(question_id).length == 0){
       $('#answer-' + question_id + '-expand').hide();
     }
