@@ -143,7 +143,7 @@ class WikiControllerTest < ActionController::TestCase
     assert_redirected_to node(:organizers).path
   end
 
-  test "basic user blocked from update a locked wiki page" do
+  test "basic user blocked from updating a locked wiki page" do
     node(:organizers).add_tag('locked', rusers(:admin)) # lock the page with a tag
     # then try editing it
     assert_difference 'DrupalNodeRevision.count', 0 do
