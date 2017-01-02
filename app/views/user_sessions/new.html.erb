@@ -20,8 +20,9 @@
     <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password' } %>
 
   </div>
- 
+
   <input type="hidden" name="return_to" value="<%= params[:return_to] %>" />
+  <!-- <%= hidden_field_tag :redirect_to, params[:redirect_to] %> -->
 
   <div class="checkbox">
     <label>
@@ -31,7 +32,7 @@
 
   <div class="input-group-inline">
 
-    <button class="btn btn-primary btn-lg" type="submit" tabindex="3"><%= t('user_sessions.new.log_in') %></button> 
+    <button class="btn btn-primary btn-lg" type="submit" tabindex="3"><%= t('user_sessions.new.log_in') %></button>
     <a class="btn btn-default btn-lg" href="/signup" tabindex="4"><%= t('user_sessions.new.sign_up') %></a>
 
   </div>
