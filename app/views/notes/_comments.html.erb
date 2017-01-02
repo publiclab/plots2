@@ -3,20 +3,20 @@
   <div id="comments" class="col-md-10 comments">
 
     <h3><span id="comment-count"><%= @node.comments.length %></span> <%= t('notes._comments.comments') %></h3>
- 
+
     <div id="comments-container">
       <% @node.comments.order('timestamp ASC').each do |comment| %>
         <% if comment.cid == @node.comments.first.cid %><a id="last" name="last"></a><% end %>
-  
+
         <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
-  
+
       <% end %>
     </div>
- 
+
     <% if current_user %>
       <%= render :partial => "comments/form", :locals => { title: I18n.t('notes._comments.post_comment'), comment: false, placeholder: I18n.t('notes._comments.post_placeholder') } %>
     <% else %>
-      <p><%= raw t('notes._comments.must_be_logged_in', :url1 => "/login") %></p>
+      <p><%= raw t('notes._comments.must_be_logged_in', :url1 => new_user_session_path( return_to: request.path )) %></p>
     <% end %>
 
   </div>
