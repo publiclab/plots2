@@ -71,6 +71,7 @@ gem "authlogic", "3.2.0"
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
 gem 'progress_bar'
+gem 'impressionist'
 
 # RESTful API Support
 gem 'grape'
