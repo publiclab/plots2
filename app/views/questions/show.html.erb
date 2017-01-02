@@ -71,7 +71,6 @@
       </form>
     </div>
     <% else %>
-      <!-- <p><a href="/login">Log in</a> to comment</p> -->
       <p><%= link_to "Log in", new_user_session_path( return_to: request.path )%> to comment</p>
     <% end %>
     </div>
