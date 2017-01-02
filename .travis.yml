@@ -1,4 +1,5 @@
 sudo: required
+before_install: sudo apt-get update
 
 services:
   - docker
