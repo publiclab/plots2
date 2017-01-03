@@ -315,8 +315,8 @@ class TagControllerTest < ActionController::TestCase
     get :show, id: 'spectrometry'
 
     assert_equal 2, assigns(:notes).length
-    assert_false assigns(:notes).first.has_tag_without_aliasing('spectrometer')
-    assert       assigns(:notes).first.has_tag_without_aliasing('spectrometry')
+    assert       assigns(:notes).first.has_tag_without_aliasing('spectrometer')
+    assert_false assigns(:notes).first.has_tag_without_aliasing('spectrometry')
     assert_false assigns(:notes).last.has_tag_without_aliasing('spectrometer')
     assert       assigns(:notes).last.has_tag_without_aliasing('spectrometry')
   end
