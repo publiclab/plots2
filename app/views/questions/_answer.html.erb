@@ -4,9 +4,9 @@
       <div class="navbar-text pull-left">
       <% if answer.author %>
         <% if answer.author.user && answer.author.user.photo_file_name %>
-        <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= answer.author.user.photo_path(:thumb) %>" /> 
+        <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= answer.author.user.photo_path(:thumb) %>" />
         <% else %>
-        <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="img-circle"></div> 
+        <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="img-circle"></div>
         <% end %>
         <a href="/profile/<%= answer.author.name %>"><%= answer.author.name %></a>
       <% end %>
@@ -40,7 +40,7 @@
         <a <% if current_user && current_user.uid == answer.node.uid %> href="/answers/accept/<%= answer.id %>" <% end %> data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm btn-success">Accepted</a>
       <% else %>
         <% if current_user && current_user.uid == answer.node.uid %>
-          <a href="/answers/accept/<%= answer.id %>" data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm btn-default">Accept this answer</a>  
+          <a href="/answers/accept/<%= answer.id %>" data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm btn-default">Accept this answer</a>
         <% end %>
       <% end %>
     <% if answer.likers.length != 0 %>
@@ -61,18 +61,19 @@
       <% if current_user %>
       <div class="inline hidden-xs" style="vertical-align: top;">
         <% if current_user.photo_file_name %>
-          <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" /> 
+          <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" />
         <% else %>
-          <div class="img-circle"></div> 
+          <div class="img-circle"></div>
         <% end %>
       </div>
       <div class="inline" id="question-comment-form">
         <form id="answer-<%= answer.id %>-comment-form" class="form-horizontal" action="/comment/answer_create/<%= answer.id%>" data-remote="true">
-          <%= render partial: "questions/form" %>  
+          <%= render partial: "questions/form" %>
         </form>
       </div>
       <% else %>
-        <p><a href="/login">Log in</a> to comment</p> 
+        <!-- <p><a href="/login">Log in</a> to comment</p>  -->
+        <p><%= link_to "Log in", new_user_session_path( return_to: request.path )%> to comment</p>
       <% end %>
       </div>
       <% answer.comments.each do |comment| %>
@@ -113,27 +114,27 @@
         });
       }
     }
-    
+
   })
 
   $("#answer-<%= answer.id %>-comment-button").click( function(){
     $("#answer-<%= answer.id %>-comment").toggle();
   });
-  
+
   $('#answer-<%= answer.id %>-comment-form').bind('ajax:send', function(e){
     $('#answer-<%= answer.id %>-comment-form #loading-spinner').removeClass('hidden');
     $('#answer-<%= answer.id %>-comment-form #reply-comment').addClass('hidden');
     $('#answer-<%= answer.id %>-comment-form #submit-comment').text(' Submitting');
     $('#answer-<%= answer.id %>-comment-form #submit-comment-button').addClass('disabled');
   })
-  
+
   $('#answer-<%= answer.id %>-comment-form').bind('ajax:success', function(e, data, status, response){
     $('#answer-<%= answer.id %>-comment-form #loading-spinner').addClass('hidden');
     $('#answer-<%= answer.id %>-comment-form #reply-comment').removeClass('hidden');
     $('#answer-<%= answer.id %>-comment-form #submit-comment').text(' Submit');
     $('#answer-<%= answer.id %>-comment-form #submit-comment-button').removeClass('disabled');
   })
-  
+
   $('#answer-<%= answer.id %>-comment-form').bind('ajax:error', function(e, response){
     $('#answer-<%= answer.id %>-comment-form #loading-spinner').addClass('hidden');
     $('#answer-<%= answer.id %>-comment-form #reply-comment').removeClass('hidden');
@@ -142,5 +143,5 @@
     $('#answer-<%= answer.id %>-comment-section .help-block').remove()
     $('#answer-<%= answer.id %>-comment-section .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
   })
-  
+
 </script>

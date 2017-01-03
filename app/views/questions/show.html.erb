@@ -2,14 +2,14 @@
 
 <%= render :partial => "sidebar/question" %>
 <div class="col-md-9 note-show">
-  
+
    <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
       <img style="max-height:600px;" class="img-rounded hidden-xs hidden-sm" src="<%= @node.main_image.path(:large) %>" />
       <img style="width:100%;" class="img-rounded visible-xs visible-sm" src="<%= @node.main_image.path(:large) %>" />
     </a>
   <% end %>
-  
+
   <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
 
   <h1 style="margin-top: 20px;"><span class="question">Question:</span><a href="<%= @node.path(:question) %>"><%= @node.title %></a></h1>
@@ -23,7 +23,7 @@
   </div>
   <div class="inline">
   <% if @node.author.user && @node.author.user.photo_file_name %>
-    <img class="img-circle" src="<%= @node.author.user.photo_path(:thumb) %>" /> 
+    <img class="img-circle" src="<%= @node.author.user.photo_path(:thumb) %>" />
    <% else %>
     <div class="img-circle"></div>
   <% end %>
@@ -44,7 +44,7 @@
   <%= render :partial => "home/social" %>
 
   <hr />
- 
+
   <%= render :partial => "tag/tagging" %>
 
   <hr />
@@ -60,18 +60,19 @@
     <% if current_user %>
     <div class="inline hidden-xs" style="vertical-align: top;">
       <% if current_user.photo_file_name %>
-        <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" /> 
+        <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" />
       <% else %>
-        <div class="img-circle"></div> 
+        <div class="img-circle"></div>
       <% end %>
     </div>
     <div class="inline" id="question-comment-form">
       <form id="answer-0-comment-form" class="form-horizontal" action="/comment/create/<%= @node.id%>" data-remote="true">
-        <%= render partial: "questions/form" %>  
+        <%= render partial: "questions/form" %>
       </form>
     </div>
     <% else %>
-      <p><a href="/login">Log in</a> to comment</p>  
+      <!-- <p><a href="/login">Log in</a> to comment</p> -->
+      <p><%= link_to "Log in", new_user_session_path( return_to: request.path )%> to comment</p>
     <% end %>
     </div>
   </div>
@@ -105,21 +106,21 @@
         });
       }
     }
-    
+
     $('#answer-0-comment-form').bind('ajax:send', function(e){
       $('#answer-0-comment-form #loading-spinner').removeClass('hidden');
       $('#answer-0-comment-form #reply-comment').addClass('hidden');
       $('#answer-0-comment-form #submit-comment-button').addClass('disabled');
       $('#answer-0-comment-form #submit-comment').text('Submitting');
     })
-    
+
     $('#answer-0-comment-form').bind('ajax:success', function(e, data, status, response){
       $('#answer-0-comment-form #loading-spinner').addClass('hidden');
       $('#answer-0-comment-form #reply-comment').removeClass('hidden');
       $('#answer-0-comment-form #submit-comment').text('Submit');
       $('#answer-0-comment-form #submit-comment-button').removeClass('disabled');
     })
-    
+
     $('#answer-0-comment-form').bind('ajax:error', function(e, response){
       $('#answer-0-comment-form #loading-spinner').addClass('hidden');
       $('#answer-0-comment-form #reply-comment').removeClass('hidden');
@@ -129,6 +130,6 @@
       $('#answer-0-comment-section .inline').last().append('<span class="help-block" style="color: red;">Error: there was a problem.</span>')
     })
   })
-  
+
 
 </script>
