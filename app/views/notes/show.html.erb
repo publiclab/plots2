@@ -34,17 +34,17 @@
 
     <span>
       <% if @node.status == 0 || @node.status == 4 %><span class="label label-danger"><%= t('notes.show.unpublished') %></span> | <% end %>
-      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> 
+      by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a>
       <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">
                 <%= coauthor.username%></a>
               <%= ',' if i < @node.coauthors.length-1 %><% end %><% end %> |
 
       <span class="hidden-xs hidden-sm">
-        <%= @node.created_at.to_s(:long) %> 
+        <%= @node.created_at.to_s(:long) %>
       </span>
       <span class="hidden-xs hidden-sm hidden-print">
-        | <%= number_with_delimiter(@node.totalcount) %> <%= t('notes.show.views') %> 
+        | <%= number_with_delimiter(@node.totalcount) %> <%= t('notes.show.views') %>
         <% if @node.comments %>
           | <i class="fa fa-comment"></i>
           <a href="#comments"> <%= @node.comments.length %> <%= t('notes.show.comments') %> </a>
@@ -71,7 +71,7 @@
         <img src="<%= image.image.path(:original) %>">
         <div class="lightbox-caption"><p><%= image.description %></p></div>
       </div>
-    </div> 
+    </div>
 
     <a data-toggle="lightbox" data-show="true" data-target="#lightbox-<%= image.fid %>"><img rel="tooltip" data-title="<%= image.description %>" style="margin-bottom:4px;" class="img-rounded" src="<%= image.image.path(:thumb) %>" /></a>
   <% end %>
@@ -109,8 +109,8 @@
         <i class="fa fa-calendar"></i> <%= raw t('notes.show.event_is_on', :date => @node.power_tag('date')) %> <% end %></b>
         <a class="label" onClick="cal.download()"><%= t('notes.show.ical') %></a>
       </p><br />
-      <p><% if !current_user %><%= raw t('notes.show.login_to', :url1 => "/login") %> <% end %><a class="btn-lg btn-primary" href="/rsvp/<%= @node.id %>">RSVP</a> 
-        <% attendees = @node.power_tags('rsvp').length %> 
+      <p><% if !current_user %><%= raw t('notes.show.login_to', :url1 => new_user_session_path( return_to: request.path )) %> <% end %><a class="btn-lg btn-primary" href="/rsvp/<%= @node.id %>">RSVP</a> 
+        <% attendees = @node.power_tags('rsvp').length %>
         <% if attendees > 1 %> (<%= raw t('notes.show.people_will_attend', :count => attendees) %>)<% end %>
       <hr />
     <% end %>
@@ -120,9 +120,9 @@
     <%= render :partial => "home/social" %>
 
     <hr />
- 
+
     <%= render :partial => "tag/tagging" %>
- 
+
     <div>
       <%= render :partial => "notes/comments" %>
     </div>
