@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
 ruby '2.1.2'
-gem 'rails', '~> 3.2.20'
+gem 'rails', '~> 4.0.0'
 gem 'passenger'
 
-gem 'rails-i18n', '~> 3.0.0'
+gem 'rails-i18n', '~> 4.0.0'
 
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
@@ -22,14 +22,11 @@ end
 #  gem "activerecord-postgresql-adapter"
 #end
 
-# Gems used only for assets and not required in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer'
-  gem 'uglifier', '>= 1.0.3'
-end
+gem 'sass-rails',   '~> 4.0.0'
+gem 'coffee-rails', '~> 4.0.0'
+gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem 'therubyracer'
+gem 'uglifier', '>= 1.0.3'
 
 # run with `bundle install --without development` to exclude these
 group :development do
@@ -55,7 +52,7 @@ group :production do
   gem "scrypt", "~> 1.2.1"
 end
 
-gem 'composite_primary_keys'
+# gem 'composite_primary_keys'
 gem 'jquery-rails'
 gem 'rdiscount', '1.6.8' # Markdown
 gem 'will_paginate', '>= 3.0.6'
@@ -64,7 +61,7 @@ gem 'georuby', '2.0'
 gem 'geokit-rails'
 gem 'rails_autolink'
 gem 'rb-readline'
-gem "paperclip", ">= 4.1.1"
+gem "paperclip", "< 4.2.0"
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
 gem "authlogic", "3.2.0"
