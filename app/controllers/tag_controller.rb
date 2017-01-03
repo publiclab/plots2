@@ -277,6 +277,6 @@ class TagController < ApplicationController
   end
 
   def location
-    render template: 'locations/form'
+    render template: 'locations/_form'
   end
 end
