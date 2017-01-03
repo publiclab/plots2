@@ -51,10 +51,20 @@ class TagController < ApplicationController
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
       format.xml  { render xml: nodes }
-      format.json  { render json: nodes }
+      format.json  {
+        json = []
+        nodes.each do |node|
+          json << node.as_json(except: [:path, :tags])
+          json.last['path'] = "https://" + request.host.to_s + node.path
+          json.last['preview'] = node.body_preview
+          json.last['image'] = node.main_image if node.main_image
+          json.last['tags'] = DrupalNode.find(node.id).tags.collect(&:name) if node.tags
+        end
+        render json: json
+      }
     end
   end
-
+    
   def widget
     num = params[:n] || 4
     nids = DrupalTag.find_nodes_by_type(params[:id],'note',num).collect(&:nid)

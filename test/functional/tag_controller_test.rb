@@ -122,16 +122,17 @@ class TagControllerTest < ActionController::TestCase
 
   test "tag show" do
 
-    get :show, id: tags(:spectrometer)
+    get :show, id: tags(:spectrometer).name
 
     assert :success
     assert_not_nil :tags
 
     assert_equal tags(:spectrometer).parent, 'spectrometry'
     # iterate through results
+    assert assigns['notes'].length > 0
     assigns['notes'].each do |node|
       assert node.has_tag('spectrometry') # should return false
-      assert node.has_tag_without_aliasing('spectrometry') # should return false
+      assert_false node.has_tag_without_aliasing('spectrometry') # should return false
     end
 
     #assert_equal assigns['tags'].length, 1
@@ -140,7 +141,7 @@ class TagControllerTest < ActionController::TestCase
 
   test "tag show JSON" do
 
-    get :show, id: tags(:spectrometer), format: 'json'
+    get :show, id: tags(:spectrometer).name, format: 'json'
 
     assert :success
     assert_not_nil :tags
@@ -148,7 +149,12 @@ class TagControllerTest < ActionController::TestCase
     json = ActiveSupport::JSON.decode(@response.body)
 
     assert_not_nil json
-    # assert more things to check this
+    assert assigns['notes'].length > 0
+    node = DrupalNode.find tags(:spectrometer).nodes.first.nid
+    assert_equal node.nid,                  json.first['nid']
+    assert_equal node.body_preview,         json.first['preview']
+    assert_equal node.main_image,           json.first['image'] # this won't check anything bc there is no main image
+    assert_equal node.tags.collect(&:name), json.first['tags']
   end
   
   test "wildcard tag show" do
