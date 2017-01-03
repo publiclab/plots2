@@ -5,7 +5,7 @@ PublicLab.org
 [![badge](http://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://github.com/publiclab/plots2/projects/2)
 [![Join the chat at https://gitter.im/publiclab/publiclab](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/publiclab/publiclab)
 
-The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes" and a wiki. 
+The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about [the data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
 
 It features a Bootstrap-based UI and a variety of community and attribution features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails, and has since extended but not entirely replaced the legacy Drupal data model and database design. 
 
@@ -36,6 +36,7 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 3. [Testing](https://github.com/publiclab/plots2/wiki/Testing)
 4. [API](https://github.com/publiclab/plots2/wiki/API)
 5. [Bugs and Support](https://github.com/publiclab/plots2/wiki/Bugs-and-Support)
+6. [Data model](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md)
 
 ****
 ## Installation
