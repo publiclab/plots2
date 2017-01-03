@@ -423,4 +423,32 @@ class WikiControllerTest < ActionController::TestCase
     assert_redirected_to node.path
   end
 
+  test "redirect normal user to tagged page" do
+    wiki = node(:wiki_page)
+    slug = wiki.path.gsub('/wiki/', '')
+    blog = node(:blog)
+    wiki.add_tag("redirect:#{blog.nid}", rusers(:bob))
+    assert_equal wiki.power_tag('redirect'), "#{blog.nid}"
+
+    get :show, id: slug
+    assert_redirected_to blog.path
+  end
+
+  test "admins and moderators view redirect-tagged wiki page with flash warning" do
+    wiki = node(:wiki_page)
+    slug = wiki.path.gsub('/wiki/', '')
+    blog = node(:blog)
+    wiki.add_tag("redirect:#{blog.nid}", rusers(:jeff))
+    assert_equal "#{blog.nid}", wiki.power_tag("redirect")
+    UserSession.find.destroy if UserSession.find
+    UserSession.create(rusers(:jeff))
+
+    get :show, id: slug
+
+    assert_response :success
+    assert_equal "Only moderators and admins see this page, as it is redirected to #{blog.title}.
+        To remove the redirect, delete the tag beginning with 'redirect:'", flash[:warning]
+    UserSession.find.destroy
+  end
+
 end

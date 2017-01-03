@@ -26,6 +26,16 @@ class WikiController < ApplicationController
       @node = DrupalNode.find_wiki(params[:id])
     end
 
+    if @node && @node.has_power_tag('redirect')
+      if current_user == nil || (current_user.role != 'admin' && current_user.role != 'moderator')
+        redirect_to DrupalNode.find(@node.power_tag('redirect')).path
+        return
+      elsif (current_user.role == 'admin' || current_user.role == 'moderator')
+        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{DrupalNode.find(@node.power_tag('redirect')).title}.
+        To remove the redirect, delete the tag beginning with 'redirect:'"
+      end
+    end
+
     # if request.path != @node.path && request.path != '/wiki/' + @node.nid.to_s
     #   return redirect_to @node.path, :status => :moved_permanently
     # end
