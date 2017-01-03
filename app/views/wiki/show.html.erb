@@ -27,23 +27,23 @@
 
 <% if @is_revision %>
   <div class="alert alert-warning"><%= raw t('wiki.show.revision_from', :time => @revision.created_at.to_s(:long)) %> <a href="/wiki/revisions/<%= @node.slug_from_path %>"><%= t('wiki.show.view_all_revisions') %></a></div>
-  
+
 <% end %>
 
   <div <% if @presentation || @node.has_tag('style:minimal') %>style="display:none" <% end %>id="wiki-toolbar">
     <div class="hidden-print">
       <div class="pull-right" style="padding-top:8px;">
         <span class="hidden-sm hidden-xs">
-          <%= number_with_delimiter(@node.totalcount) %> <%= t('wiki.show.views') %> | 
+          <%= number_with_delimiter(@node.totalcount) %> <%= t('wiki.show.views') %> |
           <%= raw t('wiki.show.last_edited', :url1 => "/profile/"+@node.latest.author.name, :author => @node.latest.author.name, :time => time_ago_in_words(@node.latest.created_at)) %>
           | <a href="/n/<%= @node.id %>"><%= t('wiki.show.shortlink') %></a>
         </span>
       </div>
- 
+
       <ul class="nav nav-tabs">
         <li class="active"><a href="#"><span class="hidden-xs"><%= t('wiki.show.view') %></span><span class="visible-xs"><i class="fa fa-file-o"></i></span></a></li>
-        <% if @node.has_tag('locked') %>
-          <li><a href="/wiki/edit/pagetitle"><i class="fa fa-lock"></i></a></li>
+        <% if @node.has_tag('locked') && current_user && (current_user.role != "moderator" && current_user.role != "admin")%>
+          <li><a href="/wiki/edit/locked"><i class="fa fa-lock"></i></a></li>
         <% else %>
           <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="fa fa-pencil"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.edit') %></span></a></li>
         <% end %>
@@ -108,7 +108,7 @@
       </div>
     </div>
 
-  </div> 
+  </div>
 
   <hr />
 
