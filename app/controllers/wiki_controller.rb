@@ -154,7 +154,11 @@ class WikiController < ApplicationController
       title: params[:title],
       body:  params[:body]
     })
-    if @revision.valid?
+    if @node.has_tag('locked') && (current_user.role != "admin" && current_user.role != "moderator")
+      flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can update it."
+      redirect_to @node.path
+    
+    elsif @revision.valid?
       ActiveRecord::Base.transaction do
         @revision.save
         @node.vid = @revision.vid
