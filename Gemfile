@@ -64,7 +64,7 @@ gem 'rb-readline'
 gem "paperclip", "< 4.2.0"
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
-gem "authlogic", "3.2.0"
+gem "authlogic", "~> 3.5.0"
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
 gem 'progress_bar'
