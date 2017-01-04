@@ -42,7 +42,7 @@
 
       <ul class="nav nav-tabs">
         <li class="active"><a href="#"><span class="hidden-xs"><%= t('wiki.show.view') %></span><span class="visible-xs"><i class="fa fa-file-o"></i></span></a></li>
-        <% if @node.has_tag('locked') && current_user && (current_user.role != "moderator" && current_user.role != "admin")%>
+                <% if @node.has_tag('locked') && (current_user ? (current_user.role != "moderator" && current_user.role != "admin") : true) %>
           <li><a href="/wiki/edit/locked"><i class="fa fa-lock"></i></a></li>
         <% else %>
           <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="fa fa-pencil"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.edit') %></span></a></li>
