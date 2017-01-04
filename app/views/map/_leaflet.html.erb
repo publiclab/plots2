@@ -1,4 +1,20 @@
-<div style="width:100%;margin-left:0;height:300px;" id="map"></div>
+<style>
+#map { width:100%; height:300px; margin: 0; position: relative;}
+
+#map:after {
+    width: 22px;
+    height: 40px;
+    display: block;
+    content: ' ';
+    position: absolute;
+    top: 50%; left: 50%;
+    margin: -40px 0 0 -11px;
+    background: url('https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi_hdpi.png');
+    background-size: 22px 40px;
+    pointer-events: none;
+}
+</style>
+<div id="map"></div>
 <script>
     var map = L.map('map').setView([<%= lat %>,<%= lon %>], 10);
     L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
