@@ -92,7 +92,7 @@ describe("Plots2", function() {
     loadFixtures('comment_expand.html');
 
     $('#answer-0-expand').trigger('click');
-    expect($('#answer-0-expand').html()).toEqual('View 2 more comments');
+    expect($('#answer-0-expand').html()).toEqual('View 2 previous comments');
 
     $('#answer-0-expand').trigger('click');
     expect($('#answer-0-expand').css('display')).toEqual('none');

@@ -50,12 +50,10 @@
   <hr />
 
   <h4><span id="answer-0-comment-count"><%= @node.comments.length %></span> Comments</h4>
-
-    <% @node.comments.order("timestamp ASC").each do |comment| %>
-      <%= render partial: "questions/comment", locals: { comment: comment, answer_id: 0 } %>
-    <% end %>
-
     <div id="answer-0-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee">
+        <% @node.comments.order("timestamp ASC").each do |comment| %>
+            <%= render partial: "questions/comment", locals: { comment: comment, answer_id: 0 } %>
+        <% end %>
     <div id="answer-0-comment-section">
     <% if current_user %>
     <div class="inline hidden-xs" style="vertical-align: top;">
@@ -97,9 +95,9 @@
       $('.answer-0-comments').show();
     }
     else{
-      $('.answer-0-comments').slice(0,3).show();
+      $('.answer-0-comments').slice(-3).show();
       if (<%= @node.comments.length %> > 3){
-        $('#answer-0-comment').append('<p id="answer-0-expand" style="color: #006dcc;">View ' + comment_select(0).length + ' more comments</p>');
+        $('#answer-0-comment').prepend('<p id="answer-0-expand" style="color: #006dcc;">View ' + comment_select(0).length + ' previous comments</p>');
         $("#answer-0-expand").on('click',function(){
           expand_comments(0);
         });

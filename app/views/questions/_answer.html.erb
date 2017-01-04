@@ -57,6 +57,9 @@
     </div>
 
     <div id="answer-<%= answer.id %>-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee; display: none;">
+      <% answer.comments.each do |comment| %>
+        <%= render partial: "questions/comment", locals: { comment: comment, answer_id: answer.id } %>
+      <% end %>
       <div id="answer-<%= answer.id %>-comment-section">
       <% if current_user %>
       <div class="inline hidden-xs" style="vertical-align: top;">
@@ -75,9 +78,6 @@
       <p><%= link_to "Log in", new_user_session_path( return_to: request.path )%> to comment</p>
       <% end %>
       </div>
-      <% answer.comments.each do |comment| %>
-        <%= render partial: "questions/comment", locals: { comment: comment, answer_id: answer.id } %>
-      <% end %>
     </div>
   </div>
 </div>
@@ -105,9 +105,9 @@
         $('.answer-<%= answer.id %>-comments').show();
     }
     else{
-      $('.answer-<%= answer.id %>-comments').slice(0,3).show();
+      $('.answer-<%= answer.id %>-comments').slice(-3).show();
       if (<%= answer.comments.length %> > 3){
-        $('#answer-<%= answer.id %>-comment').append('<p id="answer-<%= answer.id %>-expand" style="color: #006dcc;">View ' + comment_select(<%= answer.id %>).length + ' more comments</p>');
+        $('#answer-<%= answer.id %>-comment').prepend('<p id="answer-<%= answer.id %>-expand" style="color: #006dcc;">Load ' + comment_select(<%= answer.id %>).length + ' previous comments</p>');
         $("#answer-<%= answer.id %>-expand").on('click',function(){
           expand_comments(<%= answer.id %>);
         });
