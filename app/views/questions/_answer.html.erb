@@ -57,6 +57,9 @@
     </div>
 
     <div id="answer-<%= answer.id %>-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee; display: none;">
+      <% answer.comments.each do |comment| %>
+        <%= render partial: "questions/comment", locals: { comment: comment, answer_id: answer.id } %>
+      <% end %>
       <div id="answer-<%= answer.id %>-comment-section">
       <% if current_user %>
       <div class="inline hidden-xs" style="vertical-align: top;">
@@ -75,9 +78,6 @@
         <p><a href="/login">Log in</a> to comment</p> 
       <% end %>
       </div>
-      <% answer.comments.each do |comment| %>
-        <%= render partial: "questions/comment", locals: { comment: comment, answer_id: answer.id } %>
-      <% end %>
     </div>
   </div>
 </div>
