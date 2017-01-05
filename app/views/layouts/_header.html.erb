@@ -173,6 +173,7 @@
               <li class="divider"></li>
               <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
               <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
+              <li class="divider"></li>
 	       <% if current_user.role == 'admin' %>
 		       <li><a href="/useremail">Email search</a></li>
            <li class="divider"></li>
