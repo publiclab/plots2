@@ -10,27 +10,52 @@
 
     <h3 style="margin-top:0;"><%= raw t('wiki.index.wiki_pages_by', :url1 => "/people/"+@user.name, :user => @user.name, :note_length => @user.notes.length, :time => time_ago_in_words(@user.notes.first.created_at)) %></h3>
 
-  <% elsif params[:action] == "liked" %>
-
-    <h2><%= t('wiki.index.highly_liked_wiki_pages') %> <small><%= t('wiki.index.collaborative_documentation') %></small></h2>
-    <p>&nbsp;<a style="margin-bottom:4px;" href="/wiki/new" class="btn btn-default"><i class="fa fa-plus-circle"></i> <%= t('wiki.index.create_wiki_page') %></a> <span style="margin-top:4px;" class="pull-right"><a href="/wiki/"><%= t('wiki.index.by_recency') %></a> | <a href="/wiki/popular"><%= t('wiki.index.by_popularity') %></a> | <span style="color:#aaa"><%= t('wiki.index.by_number_of_likes') %></span></span></p>
-
-  <% elsif params[:action] == "popular" %>
-
-    <h2><%= t('wiki.index.popular_wiki_pages') %> <small><%= t('wiki.index.collaborative_documentation') %></small></h2>
-    <p>&nbsp;<a style="margin-bottom:4px;" href="/wiki/new" class="btn btn-default"><i class="fa fa-plus-circle"></i> <%= t('wiki.index.create_wiki_page') %></a> <span style="margin-top:4px;" class="pull-right"><a href="/wiki/"><%= t('wiki.index.by_recency') %></a> | <span style="color:#aaa"><%= t('wiki.index.by_popularity') %></span> | <a href="/wiki/liked"><%= t('wiki.index.by_number_of_likes') %></a></span></p>
-
-  <% else %>
-
-    <h2 style="font-family:Junction Light;"><%= t('wiki.index.public_lab_wiki') %> <small><%= t('wiki.index.collaborative_documentation') %></small></h2>
-    <p><%= t('wiki.index.about_collaboration') %> <%= raw t('wiki.index.about_wiki_pages') %></p>
-    <hr style="margin-bottom:10px;" />
-    <p class="hidden-xs hidden-sm">&nbsp;<a style="margin-bottom:4px;" href="/wiki/new" class="btn btn-default"><i class="fa fa-plus-circle"></i> <%= t('wiki.index.create_wiki_page') %></a> <span style="margin-top:4px;" class="pull-right"><span style="color:#aaa"><%= t('wiki.index.by_recency') %></span> | <a href="/wiki/popular/"><%= t('wiki.index.by_popularity') %></a> | <a href="/wiki/liked"><%= t('wiki.index.by_number_of_likes') %></a></span></p>
-
   <% end %>
+
+  <h2 style="font-family:Junction Light;"><%= t('wiki.index.public_lab_wiki') %>
+    <small><%= t('wiki.index.collaborative_documentation') %></small>
+  </h2>
+  <p><%= t('wiki.index.about_collaboration') %> <%= raw t('wiki.index.about_wiki_pages') %></p>
+  <hr style="margin-bottom:10px;" />
+
+  <p>&nbsp;
+     <a style="margin-bottom:4px;" href="/wiki/new" class="btn btn-default">
+       <i class="fa fa-plus-circle"></i> <%= t('wiki.index.create_wiki_page') %>
+     </a>
+    <span style="margin-top:4px;" class="pull-right"> <%= t('wiki.index.sort_by') %>
+
+      <% if params[:action] == "index" && params[:order] !="alphabetic" %>
+        <span style="color:#aaa"><%= t('wiki.index.by_recency') %></span> |
+      <% else %>
+        <a href="/wiki/"><%= t('wiki.index.by_recency') %></a> |
+      <% end %>
+
+      <% if params[:order] == "alphabetic" %>
+        <span style="color:#aaa"><%= t('wiki.index.by_alphabetic') %></span> |
+      <% else %>
+        <a href="/wiki/?order=alphabetic"><%= t('wiki.index.by_alphabetic') %></a> |
+      <% end %>
+
+      <% if params[:action] == "liked" %>
+        <span style="color:#aaa"><%= t('wiki.index.by_number_of_likes') %></span> |
+      <% else %>
+        <a href="/wiki/liked"><%= t('wiki.index.by_number_of_likes') %></a> |
+      <% end %>
+
+
+      <% if params[:action] == "popular" %>
+        <span style="color:#aaa"><%= t('wiki.index.by_popularity') %></span>
+      <% else %>
+        <a href="/wiki/popular"><%= t('wiki.index.by_popularity') %></a>
+      <% end %>
+
+    </span>
+  </p>
+
 
   <%= render :partial => "wiki/wikis" %>
 
   <hr />
-  
+
+
 </div><!--/span-->
