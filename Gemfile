@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 ruby '2.1.2'
 gem 'rails', '~> 4.0.0'
+gem 'activerecord-session_store'
+gem 'protected_attributes'
 gem 'passenger'
 
 gem 'rails-i18n', '~> 4.0.0'
@@ -65,6 +67,7 @@ gem "paperclip", "< 4.2.0"
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
 gem "authlogic", "~> 3.5.0"
+gem 'authlogic-oid'
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
 gem 'progress_bar'
