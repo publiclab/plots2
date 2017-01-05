@@ -175,12 +175,11 @@
               <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
               <li class="divider"></li>
 	       <% if current_user.role == 'admin' %>
-		       <li><a href="/useremail">Email search</a></li>
-           <li class="divider"></li>
-           <li><a href="/wiki/locked">Locked pages</a></li>
-           <li><a href="/spam">Spam moderation</a></li>
-           <li><a href="/people">Contributors</a></li>
-           <li class="divider"></li>
+    <li><a href="/useremail">Email search</a></li>
+    <li><a href="/wiki/locked">Locked pages</a></li>
+    <li><a href="/spam">Spam moderation</a></li>
+    <li><a href="/people">Contributors</a></li>
+	           <li class="divider"></li>
 	       <% end %>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
