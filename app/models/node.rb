@@ -22,10 +22,10 @@ class Node < ActiveRecord::Base
 
   searchable do
     text :title, boost: 5
-    text :body do
-      body.to_s.gsub!(/[[:cntrl:]]/, '')
+    string :body do
+      body.to_s.gsub!(/[[:cntrl:]]/,'')
     end
-    time :updated_at
+    #time :updated_at
     string :status
     string :updated_month
     text :comments do
