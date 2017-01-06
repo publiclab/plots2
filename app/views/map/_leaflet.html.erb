@@ -23,7 +23,8 @@
     <% items.each do |item| %>
     L.marker([<%= item.lat %>, <%= item.lon %>]).addTo(map).bindPopup("<a href='/<%= item.path %>'><%= item.title %></a>");
     <% end %>
-
+                                                                      
+                                                                      
     L.VirtualGrid = L.FeatureGroup.extend({
       include: L.Mixin.Events,
       options: {
