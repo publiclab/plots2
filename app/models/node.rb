@@ -21,7 +21,7 @@ class Node < ActiveRecord::Base
   self.primary_key = 'nid'
 
   searchable do
-    text :title, boost: 5
+    text :title #, boost: 5
     string :body do
       body.to_s.gsub!(/[[:cntrl:]]/,'')
     end
