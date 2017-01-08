@@ -1,17 +1,9 @@
 <%= render partial: 'tag/replication' %>
 
-<p>
-  <span id="tags">
-    <% @node.community_tags.each do |tag| %>
-      <span id="tag_<%= tag.tid %>" class="label label-primary" data-toggle="tooltip" data-html="true" title="created by <strong><%= tag.try(:author).try(:username) %></strong> <%= time_ago_in_words(Time.at(tag.date)) %> ago">
-        <a class="tag-name" href="<%= "/maps" if @node.type == "map" %>/tag/<%= tag.name %>"><%= tag.name %></a>
-        <% if current_user && (tag.uid == @node.uid || current_user.role == "admin" || current_user.role == "moderator") %>
-          <a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>">x</a>
-        <% end %>
-      </span>
-    <% end %>
-  </span>
-</p>
+<span id="tags">
+<%= render partial: 'tag/tags', locals: { power_tag: true, label_name: 'label-default' } %>
+<%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary' } %>
+</span>
 
 <script>
 $(function () {
@@ -29,9 +21,7 @@ $(function () {
     </div>
     <script>
       jQuery(document).ready(function() {
-
         initTagForm(<%= @node.id %>, '#tagform');
-
       });
     </script>
   </div>
