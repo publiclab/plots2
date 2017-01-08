@@ -102,10 +102,6 @@ class DrupalNode < ActiveRecord::Base
     "rails_type"
   end
 
-  def slug_from_path
-  	self.path.split('/').last
-  end
-  
   before_save :set_changed_and_created
   after_create :setup
   before_validation :set_path, on: :create
@@ -321,6 +317,12 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
+  # base this on a tag!
+  def is_place?
+    # self.has_tag('chapter')
+    self.slug[0..5] == 'place/'
+  end
+
   # ============================================
   # Tag-related methods
 
@@ -473,6 +475,13 @@ class DrupalNode < ActiveRecord::Base
     self.tags.collect(&:name)
   end
 
+  # increment view count
+  def view
+    DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil?
+    self.drupal_node_counter.totalcount += 1
+    self.drupal_node_counter.save
+  end
+
   # view count
   def totalcount
     DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil?
@@ -488,7 +497,7 @@ class DrupalNode < ActiveRecord::Base
     path
   end
 
-  def self.find_by_path(title)
+  def self.find_root_by_slug(title)
     DrupalNode.where(path: ["/#{title}"]).first
   end
 
@@ -776,18 +785,18 @@ class DrupalNode < ActiveRecord::Base
   def can_tag(tagname, user, errors = false)
     if tagname[0..4] == "with:"
       if User.find_by_username(tagname.split(':')[1]).nil?
-        return errors ? I18n.t('drupal_node.cannot_find_username') : false
+        return errors ? I18n.t('node.cannot_find_username') : false
       elsif self.author.uid != user.uid
-        return errors ? I18n.t('drupal_node.only_author_use_powertag') : false
+        return errors ? I18n.t('node.only_author_use_powertag') : false
       elsif tagname.split(':')[1] == user.username
-        return errors ? I18n.t('drupal_node.cannot_add_yourself_coauthor') : false
+        return errors ? I18n.t('node.cannot_add_yourself_coauthor') : false
       else
         return true
       end
     elsif tagname[0..4] == "rsvp:" && user.username != tagname.split(":")[1]
-      return errors ? I18n.t('drupal_node.only_RSVP_for_yourself') : false
+      return errors ? I18n.t('node.only_RSVP_for_yourself') : false
     elsif tagname == "locked" && user.role != "admin"
-      return errors ? I18n.t('drupal_node.only_admins_can_lock') : false
+      return errors ? I18n.t('node.only_admins_can_lock') : false
     else
       return true
     end

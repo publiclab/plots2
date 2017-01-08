@@ -19,7 +19,7 @@ class DrupalTag < ActiveRecord::Base
 
   # the following probably never gets used; tag.drupal_node will use the above definition.
   # also, we're not really using the filter_by_type stuff here:
-  has_many :drupal_node, :through => :drupal_node_community_tag do
+  has_many :node, :through => :drupal_node_community_tag do
     def filter_by_type(type,limit = 10)
       self.where(status: 1, type: type)
       .limit(limit)

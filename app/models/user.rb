@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   # this doesn't work... we should have a uid field on User
   #has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
   has_many :images, :foreign_key => :uid
-  has_many :drupal_node, :foreign_key => 'uid'
+  has_many :node, :foreign_key => 'uid'
   has_many :user_tags, :foreign_key => 'uid', :dependent => :destroy
   has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
@@ -179,7 +179,7 @@ class User < ActiveRecord::Base
     streak = 0
     wiki_edit_count = 0
     (0..span).each do |day|
-      days[day] = DrupalNodeRevision.joins(:drupal_node).where(:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i).where("node.type != ?", 'note').count
+      days[day] = DrupalNodeRevision.joins(:node).where(:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i).where("node.type != ?", 'note').count
       break if days[day] == 0
       streak+=1
       wiki_edit_count+=days[day]
@@ -210,7 +210,7 @@ class User < ActiveRecord::Base
   end
 
   def barnstars
-    DrupalNodeCommunityTag.includes(:drupal_node,:drupal_tag).where("type = ? AND term_data.name LIKE ? AND node.uid = ?",'note','barnstar:%',self.uid)
+    DrupalNodeCommunityTag.includes(:node,:drupal_tag).where("type = ? AND term_data.name LIKE ? AND node.uid = ?",'note','barnstar:%',self.uid)
   end
 
   def photo_path(size = :medium)

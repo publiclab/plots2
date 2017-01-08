@@ -14,6 +14,6 @@ module CommentsShared
   end
 
   def node
-    self.drupal_node
+    self.node
   end
 end
