@@ -1,4 +1,5 @@
 <%= unique_id = rand(10) %>
+<%= javascript_include_tag "locationForm" %>
 <style>
 #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
 
@@ -23,4 +24,6 @@
     <% items.each do |item| %>
     L.marker([<%= item.lat %>, <%= item.lon %>]).addTo(map).bindPopup("<a href='/<%= item.path %>'><%= item.title %></a>");
     <% end %>
+                                                                      
+    addGrid(map);
 </script>
