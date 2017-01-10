@@ -52,7 +52,7 @@
         <% end %>
       </div>
       <!-- AJAXify -->
-      &nbsp; <%= raw t('tag.contributors-index.people_watching_tag', :count => DrupalTag.follower_count(tag.name)) %>
+      &nbsp; <%= raw t('tag.contributors-index.people_watching_tag', :count => Tag.follower_count(tag.name)) %>
       
       <% end %>
 

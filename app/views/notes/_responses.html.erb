@@ -2,14 +2,14 @@
 
   <% if @node.has_tag("seeks:#{response_type}s") || (response_type == "replication" && @node.has_power_tag("activity")) || (response_type == "build" && @node.has_power_tag("upgrade")) %>
 
-    <% @responses = DrupalTag.find_nodes_by_type("#{response_type}:#{@node.id}", "note", 200) %>
+    <% @responses = Tag.find_nodes_by_type("#{response_type}:#{@node.id}", "note", 200) %>
     <% @unpaginated = true %>
  
     <p id="<%= response_type %>s"><a class='btn btn-primary btn-lg' href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0 %>"><%= t('notes._responses.post_' + response_type) %></a>&nbsp;
       <% if @node.power_tag('activity') %>
-        <% if DrupalTag.where(name: 'activities:' + @node.power_tag('activity')).first %>
-          <% if DrupalTag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.length > 0 %>
-            <a id="other-activities" href="<%= DrupalTag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.first.path %>">Browse other activities for "<%= @node.power_tag('activity') %>"</a>
+        <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first %>
+          <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.length > 0 %>
+            <a id="other-activities" href="<%= Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.first.path %>">Browse other activities for "<%= @node.power_tag('activity') %>"</a>
           <% end %> 
         <% end %>
       <% end %>

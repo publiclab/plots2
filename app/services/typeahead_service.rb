@@ -36,7 +36,7 @@ class TypeaheadService
   end
 
   def find_tags(input, limit=5)
-    DrupalTag.includes(:drupal_node)
+    Tag.includes(:drupal_node)
         .where('node.status = 1')
         .limit(limit)
         .where('name LIKE ?', '%' + input + '%')
@@ -139,7 +139,7 @@ class TypeaheadService
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
       # Tags
-       tlist= DrupalTag.includes(:drupal_node)
+       tlist= Tag.includes(:drupal_node)
         .where('node.status = 1')
         .limit(limit)
         .where('name LIKE ?', '%' + srchString + '%')
@@ -161,7 +161,7 @@ class TypeaheadService
                   'type = "note" AND node.status = 1 AND title LIKE ?',
                   "%" + srchString + "%"
                 )
-                  .joins(:drupal_tag)
+                  .joins(:tag)
                   .where('term_data.name LIKE ?', 'question:%')
                   .order('node.nid DESC')
                   .limit(limit)

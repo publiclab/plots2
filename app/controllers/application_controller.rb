@@ -14,15 +14,15 @@ class ApplicationController < ActionController::Base
       args[:note_count] ||= 8
       if type == :tags # accepts data of array of tag names as strings
         if params[:controller] == 'questions'
-          @notes = @notes || DrupalTag.find_nodes_by_type(data, 'note', args[:note_count])
+          @notes = @notes || Tag.find_nodes_by_type(data, 'note', args[:note_count])
         else
-          @notes = @notes || DrupalTag.find_research_notes(data, args[:note_count])
+          @notes = @notes || Tag.find_research_notes(data, args[:note_count])
         end
 
         @notes = @notes.where('node.nid != (?)', @node.nid) if @node
-        @wikis = DrupalTag.find_pages(data,10)
-        @videos = DrupalTag.find_nodes_by_type_with_all_tags(['video']+data,'note',8) if args[:videos] && data.length > 1
-        @maps = DrupalTag.find_nodes_by_type(data,'map',20)
+        @wikis = Tag.find_pages(data,10)
+        @videos = Tag.find_nodes_by_type_with_all_tags(['video']+data,'note',8) if args[:videos] && data.length > 1
+        @maps = Tag.find_nodes_by_type(data,'map',20)
       else # type is generic
         # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
         hidden_nids = DrupalNode.joins(:drupal_node_community_tag)
@@ -192,7 +192,7 @@ class ApplicationController < ActionController::Base
         @session_tags = session[:tags]
         qids = @questions.collect(&:nid)
         @questions = DrupalNode.where(status: 1, type: 'note')
-                               .joins(:drupal_tag)
+                               .joins(:tag)
                                .where('term_data.name IN (?)', @session_tags.values)
                                .where('node.nid IN (?)', qids)
                                .group('node.nid')
