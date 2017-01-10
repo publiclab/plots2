@@ -67,6 +67,6 @@ User `role` can be:
 
 ## Tagging
 
-Tags (`DrupalTag`) are unique tag names with primary key `tid`, which may be linked to Nodes via join table CommunityTag (`DrupalNodeCommunityTag`) via the latter's `nid` and `tid` fields.
+Tags (`Tag`) are unique tag names with primary key `tid`, which may be linked to Nodes via join table CommunityTag (`DrupalNodeCommunityTag`) via the latter's `nid` and `tid` fields.
 
 

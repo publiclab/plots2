@@ -30,7 +30,7 @@ class TagControllerTest < ActionController::TestCase
     xhr :post, :create, name: 'myfourthtag,myfifthtag', nid: node(:one).nid, uid: rusers(:bob).id
 
     assert_response :success
-    assert_equal [["myfourthtag", DrupalTag.find_by_name("myfourthtag").tid], ["myfifthtag", DrupalTag.find_by_name("myfifthtag").tid]], JSON.parse(response.body)['saved']
+    assert_equal [["myfourthtag", Tag.find_by_name("myfourthtag").tid], ["myfifthtag", Tag.find_by_name("myfifthtag").tid]], JSON.parse(response.body)['saved']
   end
 
   test "validate unused tag" do
@@ -175,14 +175,14 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "tag widget" do
-    get :widget, id: DrupalTag.last.name
+    get :widget, id: Tag.last.name
     assert :success
     assert_not_nil :notes
   end
 
   test "tag blog" do
 
-    get :blog, id: DrupalTag.last.name
+    get :blog, id: Tag.last.name
 
     assert :success
     assert_not_nil :notes
@@ -198,7 +198,7 @@ class TagControllerTest < ActionController::TestCase
 
   test "tag rss" do
 
-    get :rss, tagname: DrupalTag.last.name
+    get :rss, tagname: Tag.last.name
 
     assert :success
     assert_not_nil :notes
@@ -206,7 +206,7 @@ class TagControllerTest < ActionController::TestCase
 
   test "tag contributors" do
 
-    get :contributors, id: DrupalTag.last.name
+    get :contributors, id: Tag.last.name
 
     assert :success
     assert_not_nil :notes

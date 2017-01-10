@@ -69,9 +69,9 @@ class DrupalNode < ActiveRecord::Base
   has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_files, :through => :drupal_upload
   has_many :drupal_node_community_tag, :foreign_key => 'nid', :dependent => :destroy
-  has_many :drupal_tag, :through => :drupal_node_community_tag
+  has_many :tag, :through => :drupal_node_community_tag
   # these override the above... have to do it manually:
-  # has_many :drupal_tag, :through => :drupal_node_tag
+  # has_many :tag, :through => :drupal_node_tag
   has_many :comments, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_type_map, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_content_field_mappers, :foreign_key => 'nid', :dependent => :destroy
@@ -337,21 +337,21 @@ class DrupalNode < ActiveRecord::Base
   # Nodes that respond to this node with a `response:<nid>` power tag;
   # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
   def responses(key = 'response')
-    DrupalTag.find_nodes_by_type([key+":"+self.id.to_s])
+    Tag.find_nodes_by_type([key+":"+self.id.to_s])
   end
 
   # Nodes that respond to this node with a `response:<nid>` power tag;
   # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
   def response_count(key = 'response')
     DrupalNode.where(status: 1, type: 'note')
-              .includes(:drupal_node_revision, :drupal_tag)
+              .includes(:drupal_node_revision, :tag)
               .where('term_data.name = ?', "#{key}:#{self.id}")
               .count
   end
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
-    tids = DrupalTag.includes(:drupal_node_community_tag)
+    tids = Tag.includes(:drupal_node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, key + ":%")
                     .collect(&:tid)
     DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids).length > 0
@@ -359,7 +359,7 @@ class DrupalNode < ActiveRecord::Base
 
   # returns the value for the most recent power tag of form key:value
   def power_tag(tag)
-    tids = DrupalTag.includes(:drupal_node_community_tag)
+    tids = Tag.includes(:drupal_node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
                     .collect(&:tid)
     node_tag = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
@@ -373,7 +373,7 @@ class DrupalNode < ActiveRecord::Base
 
   # returns all tagnames for a given power tag
   def power_tags(tag)
-    tids = DrupalTag.includes(:drupal_node_community_tag)
+    tids = Tag.includes(:drupal_node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
                     .collect(&:tid)
     node_tags = DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
@@ -386,7 +386,7 @@ class DrupalNode < ActiveRecord::Base
 
   # returns all power tag results as whole community_tag objects
   def power_tag_objects(tag)
-    tids = DrupalTag.includes(:drupal_node_community_tag)
+    tids = Tag.includes(:drupal_node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, tag+":%")
                     .collect(&:tid)
     DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids)
@@ -394,7 +394,7 @@ class DrupalNode < ActiveRecord::Base
 
   # return whole community_tag objects but no powertags or "event"
   def normal_tags
-    tids = DrupalTag.includes(:drupal_node_community_tag)
+    tids = Tag.includes(:drupal_node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, "%:%")
                     .collect(&:tid)
     DrupalNodeCommunityTag.where('nid = ? AND tid NOT IN (?)', self.id, tids)
@@ -406,26 +406,26 @@ class DrupalNode < ActiveRecord::Base
   def has_tag(tagname)
     tags = self.get_matching_tags_without_aliasing(tagname)
     # search for tags with parent matching this
-    tags += DrupalTag.includes(:drupal_node_community_tag)
+    tags += Tag.includes(:drupal_node_community_tag)
                      .where("community_tags.nid = ? AND parent LIKE ?", self.id, tagname)
     # search for parent tag of this, if exists
-    #tag = DrupalTag.where(name: tagname).try(:first)
+    #tag = Tag.where(name: tagname).try(:first)
     #if tag && tag.parent
-    #  tags += DrupalTag.includes(:drupal_node_community_tag)
+    #  tags += Tag.includes(:drupal_node_community_tag)
     #                   .where("community_tags.nid = ? AND name LIKE ?", self.id, tag.parent)
     #end
     tids = tags.collect(&:tid).uniq
     DrupalNodeCommunityTag.where('nid IN (?) AND tid IN (?)', self.id, tids).length > 0
   end
 
-  # can return multiple DrupalTag records -- we don't yet hard-enforce uniqueness, but should soon
-  # then, this would just be replaced by DrupalTag.where(name: tagname).first
+  # can return multiple Tag records -- we don't yet hard-enforce uniqueness, but should soon
+  # then, this would just be replaced by Tag.where(name: tagname).first
   def get_matching_tags_without_aliasing(tagname)
-    tags = DrupalTag.includes(:drupal_node_community_tag)
+    tags = Tag.includes(:drupal_node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, tagname)
     # search for tags which end in wildcards
     if tagname[-1] == '*'
-      tags += DrupalTag.includes(:drupal_node_community_tag)
+      tags += Tag.includes(:drupal_node_community_tag)
                        .where("community_tags.nid = ? AND (name LIKE ? OR name LIKE ?)", self.id, tagname, tagname.gsub('*', '%'))
     end
     tags
@@ -462,7 +462,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def tags
-    self.drupal_tag
+    self.tag
   end
 
   def community_tags
@@ -695,7 +695,7 @@ class DrupalNode < ActiveRecord::Base
     tagname = tagname.downcase
     unless self.has_tag_without_aliasing(tagname)
       saved = false
-      tag = DrupalTag.find_by_name(tagname) || DrupalTag.new({
+      tag = Tag.find_by_name(tagname) || Tag.new({
         vid:         3, # vocabulary id; 1
         name:        tagname,
         description: "",
@@ -742,7 +742,7 @@ class DrupalNode < ActiveRecord::Base
 
   def self.research_notes
     nids = DrupalNode.where(type: 'note')
-                     .joins(:drupal_tag)
+                     .joins(:tag)
                      .where('term_data.name LIKE ?', 'question:%')
                      .group('node.nid')
                      .collect(&:nid)
@@ -752,7 +752,7 @@ class DrupalNode < ActiveRecord::Base
 
   def self.questions
     questions = DrupalNode.where(type: 'note')
-                          .joins(:drupal_tag)
+                          .joins(:tag)
                           .where('term_data.name LIKE ?', 'question:%')
                           .group('node.nid')
   end
@@ -763,13 +763,13 @@ class DrupalNode < ActiveRecord::Base
 
   def self.activities(tagname)
     DrupalNode.where(status: 1, type: 'note')
-              .includes(:drupal_node_revision, :drupal_tag)
+              .includes(:drupal_node_revision, :tag)
               .where('term_data.name LIKE ?', "activity:#{tagname}")
   end
 
   def self.upgrades(tagname)
     DrupalNode.where(status: 1, type: 'note')
-              .includes(:drupal_node_revision, :drupal_tag)
+              .includes(:drupal_node_revision, :tag)
               .where('term_data.name LIKE ?', "upgrade:#{tagname}")
   end
 

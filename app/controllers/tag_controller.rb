@@ -6,7 +6,7 @@ class TagController < ApplicationController
   def index
     @title = I18n.t('tag_controller.tags')
     @paginated = true
-    @tags = DrupalTag.joins(:drupal_node_community_tag, :drupal_node)
+    @tags = Tag.joins(:drupal_node_community_tag, :drupal_node)
                      .where('node.status = ?', 1)
                      .paginate(:page => params[:page])
                      .order('count DESC')
@@ -27,16 +27,16 @@ class TagController < ApplicationController
     qids = DrupalNode.questions.where(status: 1).collect(&:nid)
     if params[:id][-1..-1] == "*" # wildcard tags
       @wildcard = true
-      @tags = DrupalTag.where('name LIKE (?)', params[:id][0..-2] + '%')
+      @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
       nodes = DrupalNode.where(status: 1, type: node_type)
-                        .includes(:drupal_node_revision, :drupal_tag)
+                        .includes(:drupal_node_revision, :tag)
                         .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
                         .page(params[:page])
                         .order("node_revisions.timestamp DESC")
     else
-      @tags = DrupalTag.find_all_by_name params[:id]
+      @tags = Tag.find_all_by_name params[:id]
       nodes = DrupalNode.where(status: 1, type: node_type)
-                        .includes(:drupal_node_revision, :drupal_tag)
+                        .includes(:drupal_node_revision, :tag)
                         .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
                         .page(params[:page])
                         .order("node_revisions.timestamp DESC")
@@ -67,7 +67,7 @@ class TagController < ApplicationController
     
   def widget
     num = params[:n] || 4
-    nids = DrupalTag.find_nodes_by_type(params[:id],'note',num).collect(&:nid)
+    nids = Tag.find_nodes_by_type(params[:id],'note',num).collect(&:nid)
     @notes = DrupalNode.page(params[:page])
                        .where('status = 1 AND nid in (?)', nids)
                        .order("nid DESC")
@@ -75,11 +75,11 @@ class TagController < ApplicationController
   end
 
   def blog
-    nids = DrupalTag.find_nodes_by_type(params[:id],'note',20).collect(&:nid)
+    nids = Tag.find_nodes_by_type(params[:id],'note',20).collect(&:nid)
     @notes = DrupalNode.paginate(:page => params[:page], :per_page => 6)
                        .where('status = 1 AND nid in (?)', nids)
                        .order("nid DESC")
-    @tags = DrupalTag.find_all_by_name params[:id]
+    @tags = Tag.find_all_by_name params[:id]
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(',') + " Blog" if @tagnames
   end
@@ -91,7 +91,7 @@ class TagController < ApplicationController
   def barnstar
     node = DrupalNode.find params[:nid]
     tagname = "barnstar:"+params[:star]
-    if DrupalTag.exists?(tagname,params[:nid])
+    if Tag.exists?(tagname,params[:nid])
       flash[:error] = I18n.t('tag_controller.tag_already_exists')
     elsif !node.add_barnstar(tagname.strip,current_user)
       flash[:error] = I18n.t('tag_controller.barnstar_not_created')
@@ -122,7 +122,7 @@ class TagController < ApplicationController
 
       # this should all be done in the model:
 
-      if DrupalTag.exists?(tagname, params[:nid])
+      if Tag.exists?(tagname, params[:nid])
         @output[:errors] << I18n.t('tag_controller.tag_already_exists')
       elsif node.can_tag(tagname, current_user) === true || current_user.role == "admin"# || current_user.role == "moderator"
         saved, tag = node.add_tag(tagname.strip, current_user)
@@ -178,7 +178,7 @@ class TagController < ApplicationController
     if params[:id].length > 2
       @suggestions = []
       # filtering out tag spam by requiring tags attached to a published node
-      DrupalTag.where('name LIKE ?', "%" + params[:id] + "%")
+      Tag.where('name LIKE ?', "%" + params[:id] + "%")
                .includes(:drupal_node)
                .where('node.status = 1')
                .limit(10).each do |tag|
@@ -193,12 +193,12 @@ class TagController < ApplicationController
   def rss
     if params[:tagname][-1..-1] == "*"
       @notes = DrupalNode.where(:status => 1, :type => 'note')
-                         .includes(:drupal_node_revision,:drupal_tag)
+                         .includes(:drupal_node_revision,:tag)
                          .where('term_data.name LIKE (?)', params[:tagname][0..-2]+'%')
                          .limit(20)
                          .order("node_revisions.timestamp DESC")
     else
-      @notes = DrupalTag.find_nodes_by_type([params[:tagname]],'note',20)
+      @notes = Tag.find_nodes_by_type([params[:tagname]],'note',20)
     end
     respond_to do |format|
       format.rss {
@@ -217,9 +217,9 @@ class TagController < ApplicationController
   def contributors
     set_sidebar :tags, [params[:id]], {:note_count => 20}
     @tagnames = [params[:id]]
-    @tag = DrupalTag.find_by_name params[:id]
+    @tag = Tag.find_by_name params[:id]
     @notes = DrupalNode.where(:status => 1, :type => 'note')
-                       .includes(:drupal_node_revision,:drupal_tag)
+                       .includes(:drupal_node_revision,:tag)
                        .where('term_data.name = ?', params[:id])
                        .order("node_revisions.timestamp DESC")
     @users = @notes.collect(&:author).uniq
@@ -232,10 +232,10 @@ class TagController < ApplicationController
     @tags = []
 
     @tagnames.each do |tagname|
-      tag = DrupalTag.find_by_name(tagname)
+      tag = Tag.find_by_name(tagname)
       @tags << tag if tag
       @tagdata[tagname] = {}
-      t = DrupalTag.find :all, :conditions => {:name => tagname}
+      t = Tag.find :all, :conditions => {:name => tagname}
       nct = DrupalNodeCommunityTag.find :all, :conditions => ['tid in (?)',t.collect(&:tid)]
       @tagdata[tagname][:users] = DrupalNode.find(:all, :conditions => ['nid IN (?)',(nct).collect(&:nid)]).collect(&:author).uniq.length
       @tagdata[tagname][:wikis] = DrupalNode.count :all, :conditions => ["nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", (nct).collect(&:nid)]
@@ -252,7 +252,7 @@ class TagController < ApplicationController
     end
     tagnames = params[:name].split(',')
     tagnames.each do |tagname|
-      tag = DrupalTag.find_by_name(tagname)
+      tag = Tag.find_by_name(tagname)
       if tag
         session[:tags][tag.tid.to_s] = tagname
       else

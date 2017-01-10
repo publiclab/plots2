@@ -6,13 +6,13 @@ class MapController < ApplicationController
                        .order("nid DESC")
                        .where(type: 'map', status: 1)
 
-    # I'm not sure if this is actually eager loading the drupal_tags... 
-    @maps = DrupalNode.joins(:drupal_tag)
+    # I'm not sure if this is actually eager loading the tags... 
+    @maps = DrupalNode.joins(:tag)
                       .where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%')
                       .uniq
 
     # This is supposed to eager load the url_aliases, and seems to run, but doesn't actually eager load them...?
-    #@maps = DrupalNode.select("node.*,url_alias.dst AS dst").joins(:drupal_tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').joins("INNER JOIN url_alias ON url_alias.src = CONCAT('node/',node.nid)")
+    #@maps = DrupalNode.select("node.*,url_alias.dst AS dst").joins(:tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').joins("INNER JOIN url_alias ON url_alias.src = CONCAT('node/',node.nid)")
   end
 
   def show
@@ -206,7 +206,7 @@ class MapController < ApplicationController
     set_sidebar :tags, [params[:id]], {:note_count => 20}
 
     @tagnames = params[:id].split(',')
-    nids = DrupalTag.find_nodes_by_type(params[:id],'map',20).collect(&:nid)
+    nids = Tag.find_nodes_by_type(params[:id],'map',20).collect(&:nid)
     @notes = DrupalNode.paginate(page: params[:page])
                        .where('nid in (?)', nids)
                        .order("nid DESC")

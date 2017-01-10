@@ -6,7 +6,7 @@ class SubscriptionMailer < ActionMailer::Base
   def notify_node_creation(node)
     subject = "[PublicLab] " + (node.has_power_tag('question') ? "Question: " : "") +
               node.title
-    DrupalTag.subscribers(node.tags).each do |key,val|
+    Tag.subscribers(node.tags).each do |key,val|
       @user = val[:user]
       @node = node
       @tags = val[:tags]

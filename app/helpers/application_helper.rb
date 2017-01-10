@@ -40,7 +40,7 @@ module ApplicationHelper
       output += '    <th><a data-type="likes">Likes</a></th>'
       output += '  </tr>'
       nodes = DrupalNode.where(status: 1, type: 'note')
-                        .includes(:drupal_node_revision, :drupal_tag)
+                        .includes(:drupal_node_revision, :tag)
                         .where('term_data.name = ?', $1)
                         .page(params[:page])
                         .order("node_revisions.timestamp DESC")

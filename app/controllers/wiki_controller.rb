@@ -43,7 +43,7 @@ class WikiController < ApplicationController
     return if check_and_redirect_node(@node)
     if !@node.nil? # it's a place page!
       @tags = @node.tags
-      @tags += [DrupalTag.find_by_name(params[:id])] if DrupalTag.find_by_name(params[:id])
+      @tags += [Tag.find_by_name(params[:id])] if Tag.find_by_name(params[:id])
     else # it's a new wiki page!
       @title = I18n.t('wiki_controller.new_wiki_page')
       if current_user
@@ -61,7 +61,7 @@ class WikiController < ApplicationController
       end
       @tagnames = @tags.collect(&:name)
       set_sidebar :tags, @tagnames, {:videos => true}
-      @wikis = DrupalTag.find_pages(@node.slug_from_path,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
+      @wikis = Tag.find_pages(@node.slug_from_path,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
 
       impressionist(@node.drupal_node_counter)
       @revision = @node.latest
@@ -111,9 +111,9 @@ class WikiController < ApplicationController
                            .order("node.nid DESC")
                            .where('type = "page" AND node.status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', "%" + title + "%","%" + title + "%")
                            .includes(:drupal_node_revision)
-      tag = DrupalTag.find_by_name(params[:id]) # add page name as a tag, too
+      tag = Tag.find_by_name(params[:id]) # add page name as a tag, too
       @tags << tag if tag
-      @related += DrupalTag.find_nodes_by_type(@tags.collect(&:name),'page',10)
+      @related += Tag.find_nodes_by_type(@tags.collect(&:name),'page',10)
     end
     render :template => 'wiki/edit'
   end

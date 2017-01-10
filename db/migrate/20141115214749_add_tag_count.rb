@@ -1,7 +1,7 @@
 class AddTagCount < ActiveRecord::Migration
   def up
     add_column :term_data, :count, :integer
-    DrupalTag.all.each do |tag|
+    Tag.all.each do |tag|
       tag.run_count
     end
   end

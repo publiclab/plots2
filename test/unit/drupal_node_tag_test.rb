@@ -8,18 +8,18 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     assert node.has_tag('activi*')
     assert node.normal_tags.length < node.tags.length
     assert_equal node.tagnames, node.tags.collect(&:name)
-    assert DrupalTag.find_nodes_by_type('spectrometer').to_a.include?(node)
-    assert DrupalTag.find_nodes_by_type_with_all_tags(['spectrometer']).to_a.include?(node)
-    assert_not_nil DrupalTag.follower_count('spectrometer')
-    assert_not_nil DrupalTag.followers('spectrometer')
+    assert Tag.find_nodes_by_type('spectrometer').to_a.include?(node)
+    assert Tag.find_nodes_by_type_with_all_tags(['spectrometer']).to_a.include?(node)
+    assert_not_nil Tag.follower_count('spectrometer')
+    assert_not_nil Tag.followers('spectrometer')
     assert_not_nil tags(:spectrometer).weekly_tallies
-    assert_not_nil DrupalTag.subscribers([tags(:spectrometer)])
+    assert_not_nil Tag.subscribers([tags(:spectrometer)])
   end
 
   # as we eliminate legacy Drupal naming schemes, these can be removed:
   test "tag method aliases" do
     node = node(:one)
-    assert_equal node.tags, node.drupal_tag
+    assert_equal node.tags, node.tag
     assert_equal node.community_tags, node.drupal_node_community_tag
   end
 
@@ -36,7 +36,7 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
   # in unit tests:
   # 1. if a post is tagged with child tag like "balloon-mapping", 
   #   does it appear in a notes/activities/questions grid for its parent tag, like "aerial-photography"? Yes.
-  #   So, application_helper's insert_extras(body) should use a model method like DrupalTag.find_nodes_by_type
+  #   So, application_helper's insert_extras(body) should use a model method like Tag.find_nodes_by_type
   # 2. has_tag will return parent tags, but not child tags, for now. Not used a lot. 
   # 3. create an 'aliases = true' param for some of these
 
@@ -55,10 +55,10 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     assert_false node.has_tag_without_aliasing('spectrometry')
     assert_equal node.get_matching_tags_without_aliasing('spectrometer').length, 1
     assert_equal node.get_matching_tags_without_aliasing('spectrometry').length, 0
-    assert_false DrupalTag.find_nodes_by_type('spectrometry').to_a.include?(node)
-    assert_false DrupalTag.find_nodes_by_type_with_all_tags(['spectrometry']).to_a.include?(node)
-    assert       DrupalTag.find_nodes_by_type('spectrometer').to_a.include?(node)
-    assert       DrupalTag.find_nodes_by_type_with_all_tags(['spectrometer']).to_a.include?(node)
+    assert_false Tag.find_nodes_by_type('spectrometry').to_a.include?(node)
+    assert_false Tag.find_nodes_by_type_with_all_tags(['spectrometry']).to_a.include?(node)
+    assert       Tag.find_nodes_by_type('spectrometer').to_a.include?(node)
+    assert       Tag.find_nodes_by_type_with_all_tags(['spectrometer']).to_a.include?(node)
 
     # test node.add_tag, which uses has_tag
     saved, tag = node.add_tag('spectrometry', rusers(:bob))
@@ -76,10 +76,10 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     tag2.save
     assert       node.has_tag('spectrometer') # this is directly true
     assert_false node.has_tag('spectrometry') # should return false; <spectrometer>.parent == ""
-    assert DrupalTag.find_nodes_by_type('spectrometer').to_a.include?(node)
-    assert DrupalTag.find_nodes_by_type_with_all_tags(['spectrometer']).to_a.include?(node)
-    assert DrupalTag.find_nodes_by_type('spectrometry').to_a.include?(node)
-    assert DrupalTag.find_nodes_by_type_with_all_tags(['spectrometry']).to_a.include?(node)
+    assert Tag.find_nodes_by_type('spectrometer').to_a.include?(node)
+    assert Tag.find_nodes_by_type_with_all_tags(['spectrometer']).to_a.include?(node)
+    assert Tag.find_nodes_by_type('spectrometry').to_a.include?(node)
+    assert Tag.find_nodes_by_type_with_all_tags(['spectrometry']).to_a.include?(node)
   end
 
   test "aliasing of cross-parented tags" do
@@ -92,12 +92,12 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     tag2.save
     assert node.has_tag('spectrometer') # this is directly true
     assert node.has_tag('spectrometry') # should return true even if the node only has tag 'spectrometer'
-    assert DrupalTag.find_nodes_by_type('spectrometry').to_a.include?(node)
-    assert DrupalTag.find_nodes_by_type_with_all_tags(['spectrometry']).to_a.include?(node)
+    assert Tag.find_nodes_by_type('spectrometry').to_a.include?(node)
+    assert Tag.find_nodes_by_type_with_all_tags(['spectrometry']).to_a.include?(node)
   end
 
   test "power tag basics" do
-    assert DrupalTag.is_powertag?('activity:spectrometer')
+    assert Tag.is_powertag?('activity:spectrometer')
     node = node(:one)
     assert node.has_power_tag('activity')
     assert_equal 'spectrometer', node.power_tag('activity')

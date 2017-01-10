@@ -27,21 +27,21 @@ class ConsolidateTags < ActiveRecord::Migration
 
       # do some tallies to check success:
       summ =  "\n======= BEGIN TAG CONSOLIDATION ========"
-      drupaltags = DrupalTag.count(:all)
+      drupaltags = Tag.count(:all)
       summ += "\nTags:              "+drupaltags.to_s
       drupalnodetags = ActiveRecord::Base.connection.execute('select COUNT(*) from term_node;')
       summ += "\nNodeTags:          "+drupalnodetags.first[0].to_s
       drupalnodecommunitytags = DrupalNodeCommunityTag.count(:all)
       summ += "\nCommunityNodeTags: "+drupalnodecommunitytags.to_s
       summ += "\n========================================"
-      tags = DrupalTag.find(:all,:select => [:name])
+      tags = Tag.find(:all,:select => [:name])
       utags = tags.uniq.length
       summ += "\nDuplicate tags:    "+(tags.length-utags).to_s
       summ += "\n========================================"
       puts summ
    
       # remove spaces
-      DrupalTag.find(:all).each do |tag|
+      Tag.find(:all).each do |tag|
         tag.name = tag.name.downcase.gsub(' ','-')
         tag.save
       end
@@ -55,7 +55,7 @@ class ConsolidateTags < ActiveRecord::Migration
         node = DrupalNode.find(nt[0])
         if nt[2].nil? || nt[0].nil? || (node && node.status == 0)
           # nt - [nid, vid, tid]
-          tag = DrupalTag.find(nt[2])
+          tag = Tag.find(nt[2])
           deleted << tag.name 
           ActiveRecord::Base.connection.execute("delete from term_node where vid = #{nt[1]};")
         end
@@ -80,7 +80,7 @@ class ConsolidateTags < ActiveRecord::Migration
         if DrupalNodeCommunityTag.find_all_by_nid(ntag[0], :conditions => {:tid => ntag[2]}).length > 0
           dupes += 1
         elsif ctag.save
-          tag = DrupalTag.find(ntag[2])
+          tag = Tag.find(ntag[2])
           deleted << tag.name unless tag.nil?
           ActiveRecord::Base.connection.execute("delete from term_node where vid = #{ntag[1]};")
         else
@@ -96,15 +96,15 @@ class ConsolidateTags < ActiveRecord::Migration
       puts "deleted after migrating:"
       puts deleted.join(',')
  
-      # get rid of DrupalTag duplicates, ensure no new dupes are created
+      # get rid of Tag duplicates, ensure no new dupes are created
       failed = []
       dupes = 0
-      uniqtags = DrupalTag.find(:all).collect(&:name).uniq
+      uniqtags = Tag.find(:all).collect(&:name).uniq
       uniqtags.each do |uniqtag|
         # find the version with the earliest tid
-        origtag = DrupalTag.find_by_name uniqtag, :order => "tid"
-        DrupalTag.find_all_by_name(uniqtag).each do |tag_clone|
-          # re-assign all TagSelections to newly consolidated DrupalTag tids
+        origtag = Tag.find_by_name uniqtag, :order => "tid"
+        Tag.find_all_by_name(uniqtag).each do |tag_clone|
+          # re-assign all TagSelections to newly consolidated Tag tids
           TagSelection.find_all_by_tid(tag_clone.tid).each do |tsel|
             # ensure unique
             unless TagSelection.find(:first, :conditions => {:tid => origtag.tid, :user_id => tsel.user_id})
@@ -143,7 +143,7 @@ class ConsolidateTags < ActiveRecord::Migration
 
       # now find all orphaned tags and delete them: 
       deleted = []
-      DrupalTag.find(:all).each do |tag|
+      Tag.find(:all).each do |tag|
         # delete orphans
         related_drupal_node_tags = ActiveRecord::Base.connection.execute("select * from term_node where tid = #{tag.id};")
         if related_drupal_node_tags.size == 0 && tag.drupal_node_community_tag.length == 0 && tag.subscriptions.length == 0
@@ -159,7 +159,7 @@ class ConsolidateTags < ActiveRecord::Migration
       puts summ
       # new stats:
       summ =  "\n=======  END TAG CONSOLIDATION  ========"
-      drupaltags2 = DrupalTag.count(:all)
+      drupaltags2 = Tag.count(:all)
       summ += "\nTags:              "+drupaltags2.to_s
       drupalnodetags2 = ActiveRecord::Base.connection.execute('select COUNT(*) from term_node;')
       summ += "\nNodeTags:          "+drupalnodetags2.first[0].to_s
@@ -170,7 +170,7 @@ class ConsolidateTags < ActiveRecord::Migration
       summ += "\nFewer NodeTags:         "+(drupalnodetags.first[0]-drupalnodetags2.first[0]).to_s
       summ += "\nMore CommunityNodeTags: "+(drupalnodecommunitytags2-drupalnodecommunitytags).to_s
       summ += "\n========================================"
-      tags = DrupalTag.find(:all,:select => [:name])
+      tags = Tag.find(:all,:select => [:name])
       utags = tags.uniq.length
       summ += "\nDuplicate tags:    "+(tags.length-utags).to_s
       summ += "\n========================================"
