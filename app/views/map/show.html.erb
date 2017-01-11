@@ -38,7 +38,7 @@
         <p><b>Published by</b> <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a></p>
       <% end %>
       <p><a href="https://maps.google.com/maps?t=h&ll=<%= @node.lat %>,<%= @node.lon %>"><%= @node.lat %> N, <%= @node.lon %> E</a></p>
-      <p><%= @node.views %> views</p>
+      <p><%= @node.totalviews %> views</p>
       <% if @node.map.field_ground_resolution_value %><p><b>Ground resolution: </b><%= @node.map.field_ground_resolution_value %> cm/px</p><% end %>
       <p><b>Capture date:</b> <%= @node.map.captured_on.to_s %></p> 
       <p><b>Publication date:</b> <%= @node.map.published_on.to_s %></p> 

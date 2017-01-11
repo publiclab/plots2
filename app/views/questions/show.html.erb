@@ -30,7 +30,7 @@
   </div>
   <div class="inline">
   	<p><a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a> asked on <%= @node.created_at.to_s(:long) %> <% if @node.status == 0 || @node.status == 4 %>| <span class="label label-danger">UNPUBLISHED</span><% end %> <br />
-    <small><i class="fa fa-eye"></i> <%= number_with_delimiter(@node.views) %> <span class="hidden-xs hidden-sm hidden-print ">views</span> | <i class="fa fa-comments"></i> <a href="#answers"><span id="short-comment-count"><%= @node.answers.length %></span> answers</a> | <a href="/q/<%= @node.id %>">shortlink</a></small></p>
+    <small><i class="fa fa-eye"></i> <%= number_with_delimiter(@node.totalviews) %> <span class="hidden-xs hidden-sm hidden-print ">views</span> | <i class="fa fa-comments"></i> <a href="#answers"><span id="short-comment-count"><%= @node.answers.length %></span> answers</a> | <a href="/q/<%= @node.id %>">shortlink</a></small></p>
   </div>
 
   <hr style="margin-top:10px;" />

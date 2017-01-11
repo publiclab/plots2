@@ -41,7 +41,9 @@ class DrupalNode < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-
+  # FriendlyId is not being used; see 
+  # https://github.com/publiclab/plots2/pull/687 and 
+  # https://github.com/publiclab/plots2/pull/600
   extend FriendlyId
   friendly_id :friendly_id_string, use: [:slugged, :history]
 
@@ -60,6 +62,8 @@ class DrupalNode < ActiveRecord::Base
       "#{self.title} #{Time.at(self.created).strftime("%m-%d-%Y")}"
     end
   end
+
+  is_impressionable counter_cache: true, column_name: 'views', unique: :ip_address
 
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
   # wasn't working to tie it to .vid, manually defining below
@@ -173,6 +177,10 @@ class DrupalNode < ActiveRecord::Base
   end
 
   public
+
+  def totalviews
+    self.views + self.legacy_views
+  end
 
   def self.weekly_tallies(type = "note", span = 52, time = Time.now)
     weeks = {}
