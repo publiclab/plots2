@@ -3,7 +3,8 @@ class NodePageviews < ActiveRecord::Migration
     add_column :node, :legacy_views, :integer, default: 0
     add_column :node, :views, :integer, default: 0
     DrupalNodeCounter.all.each do |counter|
-      DrupalNode.find(counter.nid).update_attribute(views: counter.totalcount)
+      n = DrupalNode.find_by_nid(counter.nid)
+      n.update_attribute('views', counter.totalcount) if n
     end
     # later we'll need to: drop_table :node_counter
   end
