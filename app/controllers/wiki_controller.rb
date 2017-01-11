@@ -300,12 +300,11 @@ class WikiController < ApplicationController
   def popular
     @title = I18n.t('wiki_controller.popular_wiki_pages')
     @wikis = DrupalNode.limit(40)
-                       .order("node_counter.totalcount DESC")
+                       .order("views DESC")
                        .joins(:drupal_node_revision)
                        .group('node_revisions.nid')
                        .order("node_revisions.timestamp DESC")
                        .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-                       .includes(:drupal_node_counter)
     render :template => "wiki/index"
   end
 

@@ -471,11 +471,6 @@ class DrupalNode < ActiveRecord::Base
     self.tags.collect(&:name)
   end
 
-  # view count; deprecate in favor of just node.views
-  def totalcount
-    self.views
-  end
-
   def edit_path
     if self.type == "page" || self.type == "tool" || self.type == "place"
       path = "/wiki/edit/" + self.path.split("/").last

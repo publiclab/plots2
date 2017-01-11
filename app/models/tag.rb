@@ -62,9 +62,9 @@ class Tag < ActiveRecord::Base
   def self.find_top_nodes_by_type(tagname, type = "wiki", limit = 10)
     DrupalNode.where(type: type)
               .where('term_data.name = ?', tagname)
-              .order("node_counter.totalcount DESC")
+              .order("node.views DESC")
               .limit(limit)
-              .include(:drupal_node_counter, :drupal_node_community_tag, :tag)
+              .include(:drupal_node_community_tag, :tag)
   end
 
   # finds recent nodes - should drop "limit" and allow use of chainable .limit()
@@ -109,10 +109,10 @@ class Tag < ActiveRecord::Base
 
   def self.find_popular_notes(tagname, views = 20, limit = 10)
     DrupalNode.where(type: "note")
-              .where('term_data.name = ? AND node_counter.totalcount > (?)', tagname, views)
+              .where('term_data.name = ? AND node.views > (?)', tagname, views)
               .order("node.nid DESC")
               .limit(limit)
-              .include(:drupal_node_counter, :drupal_node_community_tag, :tag)
+              .include(:drupal_node_community_tag, :tag)
   end
 
   def self.exists?(tagname,nid)

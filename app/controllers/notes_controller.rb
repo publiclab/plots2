@@ -305,8 +305,7 @@ class NotesController < ApplicationController
     @notes = DrupalNode.research_notes
                        .limit(20)
                        .where(status: 1)
-                       .order("node_counter.totalcount DESC")
-                       .includes(:drupal_node_counter)
+                       .order("views DESC")
     @unpaginated = true
     render :template => 'notes/index'
   end
