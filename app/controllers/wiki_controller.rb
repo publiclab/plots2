@@ -63,7 +63,7 @@ class WikiController < ApplicationController
       set_sidebar :tags, @tagnames, {:videos => true}
       @wikis = Tag.find_pages(@node.slug_from_path,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
 
-      impressionist(@node.drupal_node_counter)
+      impressionist(@node.views)
       @revision = @node.latest
       @title = @revision.title
     end
@@ -288,7 +288,7 @@ class WikiController < ApplicationController
       order_string = "node_revisions.timestamp DESC"
     end
 
-    @wikis = DrupalNode.includes(:drupal_node_revision, :drupal_node_counter)
+    @wikis = DrupalNode.includes(:drupal_node_revision)
                        .group('node_revisions.nid')
                        .order(order_string)
                        .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
