@@ -65,7 +65,6 @@ class DrupalNode < ActiveRecord::Base
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
-  has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_files, :through => :drupal_upload
   has_many :drupal_node_community_tag, :foreign_key => 'nid', :dependent => :destroy
@@ -167,11 +166,10 @@ class DrupalNode < ActiveRecord::Base
     self['changed'] = DateTime.now.to_i
   end
 
-  # determines URL ("slug"), initializes the view counter, and sets up a created timestamp
+  # determines URL ("slug"), and sets up a created timestamp
   def setup
     self['created'] = DateTime.now.to_i
     self.save
-    DrupalNodeCounter.new({:nid => self.id}).save
   end
 
   public
@@ -473,10 +471,9 @@ class DrupalNode < ActiveRecord::Base
     self.tags.collect(&:name)
   end
 
-  # view count
+  # view count; deprecate in favor of just node.views
   def totalcount
-    DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil?
-    self.drupal_node_counter.totalcount
+    self.views
   end
 
   def edit_path

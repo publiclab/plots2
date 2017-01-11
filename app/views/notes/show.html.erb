@@ -45,7 +45,7 @@
         <%= @node.created_at.to_s(:long) %>
       </span>
       <span class="hidden-xs hidden-sm hidden-print">
-        | <%= number_with_delimiter(@node.totalcount) %> <%= t('notes.show.views') %>
+        | <%= number_with_delimiter(@node.views) %> <%= t('notes.show.views') %>
         <% if @node.comments %>
           | <i class="fa fa-comment"></i>
           <a href="#comments"> <%= @node.comments.length %> <%= t('notes.show.comments') %> </a>
