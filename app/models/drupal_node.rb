@@ -353,6 +353,7 @@ class DrupalNode < ActiveRecord::Base
   def has_power_tag(key)
     tids = Tag.includes(:drupal_node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, key + ":%")
+                    .references(:drupal_node_community_tag)
                     .collect(&:tid)
     DrupalNodeCommunityTag.where('nid = ? AND tid IN (?)', self.id, tids).length > 0
   end

@@ -94,3 +94,4 @@ gem 'http_accept_language'
 # The default friendly_id version compatible with Rails 3 is v4.0
 gem 'friendly_id'
 gem 'jbuilder'
+gem 'composite_primary_keys'
