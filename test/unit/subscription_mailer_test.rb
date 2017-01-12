@@ -4,7 +4,7 @@ require "test_helper"
 class SubscriptionMailerTest < ActionMailer::TestCase
   test "notify subscribers on creation of a research note" do
     node = node(:one)
-    subscribers = DrupalTag.subscribers(node.tags)
+    subscribers = Tag.subscribers(node.tags)
     assert_difference 'ActionMailer::Base.deliveries.size', subscribers.size do
       SubscriptionMailer.notify_node_creation(node)
     end
@@ -19,7 +19,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
   test "notify subscribers on creation of a question" do
     node = node(:question)
-    subscribers = DrupalTag.subscribers(node.tags)
+    subscribers = Tag.subscribers(node.tags)
     assert_difference 'ActionMailer::Base.deliveries.size', subscribers.size do
       SubscriptionMailer.notify_node_creation(node)
     end

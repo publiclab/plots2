@@ -48,7 +48,7 @@ class HomeController < ApplicationController
     @wiki_count = DrupalNodeRevision.select(:timestamp)
                                     .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                                     .count
-    @blog = DrupalTag.find_nodes_by_type('blog', 'note', 1).first
+    @blog = Tag.find_nodes_by_type('blog', 'note', 1).first
     # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
     hidden_nids = DrupalNode.joins(:drupal_node_community_tag)
                             .joins("LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid")

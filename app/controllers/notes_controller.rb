@@ -11,7 +11,7 @@ class NotesController < ApplicationController
   def methods
     @title = "Methods"
     @notes = DrupalNode.where(status: 1, type: ['page','tool'])
-                       .includes(:drupal_node_revision, :drupal_tag)
+                       .includes(:drupal_node_revision, :tag)
                        .where('term_data.name = ?','tool')
                        .page(params[:page])
                        .order("node_revisions.timestamp DESC")
@@ -29,7 +29,7 @@ class NotesController < ApplicationController
   def places
     @title = "Places"
     @notes = DrupalNode.where(status: 1, type: ['page','place'])
-                       .includes(:drupal_node_revision, :drupal_tag)
+                       .includes(:drupal_node_revision, :tag)
                        .where('term_data.name = ?','chapter')
                        .page(params[:page])
                        .order("node_revisions.timestamp DESC")

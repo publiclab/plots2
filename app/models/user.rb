@@ -125,7 +125,7 @@ class User < ActiveRecord::Base
   end
 
   def following(tagname)
-    tids = DrupalTag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
+    tids = Tag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
     TagSelection.find(:all, :conditions => {:following => true,:tid => tids, :user_id => self.uid}).length > 0
   end
 
@@ -210,7 +210,7 @@ class User < ActiveRecord::Base
   end
 
   def barnstars
-    DrupalNodeCommunityTag.includes(:drupal_node,:drupal_tag).where("type = ? AND term_data.name LIKE ? AND node.uid = ?",'note','barnstar:%',self.uid)
+    DrupalNodeCommunityTag.includes(:drupal_node,:tag).where("type = ? AND term_data.name LIKE ? AND node.uid = ?",'note','barnstar:%',self.uid)
   end
 
   def photo_path(size = :medium)

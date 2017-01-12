@@ -15,8 +15,8 @@
     <h4 class="visible-sm">Ask a question</h4>
     <div id="research-note-detail" class="hidden-sm">
       <h4><i class="fa fa-question-circle"></i> Use this form to ask Question about <b><%= @node.power_tag('question') if @node %></b></h4>
-      <% if @node && DrupalTag.follower_count(@node.power_tag('question')) > 0 %>
-        <div class="alert alert-success" role="alert"><%= DrupalTag.follower_count(@node.power_tag('question')) %> people have signed up to answer questions on this topic.</div>
+      <% if @node && Tag.follower_count(@node.power_tag('question')) > 0 %>
+        <div class="alert alert-success" role="alert"><%= Tag.follower_count(@node.power_tag('question')) %> people have signed up to answer questions on this topic.</div>
       <% end %>
       <p>Here you can ask a question to the Public Lab community to help you in your environmental exploration. This is a great space to ask whether a method exists for identifying a possible pollutant, or ask about details of a specific technique for identifying a pollutant.</p>
       <p>You can add more tags in the tags section below to further relate your question. You can also change the main tag of the question by renaming the part after <b><i>question:</i></b> tag</p>

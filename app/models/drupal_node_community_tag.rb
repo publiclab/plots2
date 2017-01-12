@@ -3,9 +3,9 @@ class DrupalNodeCommunityTag < ActiveRecord::Base
   self.table_name = 'community_tags'
   self.primary_keys = :tid, :nid
   belongs_to :drupal_node, :foreign_key => 'nid'
-  belongs_to :drupal_tag, :foreign_key => 'tid'
+  belongs_to :tag, :foreign_key => 'tid'
   belongs_to :drupal_users, :foreign_key => 'uid'
-  accepts_nested_attributes_for :drupal_tag
+  accepts_nested_attributes_for :tag
 
   after_create :increment_count
 
@@ -18,10 +18,6 @@ class DrupalNodeCommunityTag < ActiveRecord::Base
 
   def node
     self.drupal_node
-  end
-
-  def tag
-    self.drupal_tag
   end
 
   def author
@@ -37,7 +33,7 @@ class DrupalNodeCommunityTag < ActiveRecord::Base
   end
 
   def name
-    self.drupal_tag.name
+    self.tag.name
   end
 
 end

@@ -106,7 +106,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
   test "should add tags for hashtags" do
     revision = node_revisions(:hashtag_one)
     revision.save
-    associated_tags = revision.parent.drupal_tag
+    associated_tags = revision.parent.tag
     tag_names = associated_tags.map{|x| x.name}
     assert_includes tag_names, 'hashtag'
   end
@@ -114,7 +114,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
   test "should ignore hashtags in markdown" do
     revision = node_revisions(:hashtag_one)
     revision.save
-    associated_tags = revision.parent.drupal_tag
+    associated_tags = revision.parent.tag
     tag_names = associated_tags.map{|x| x.name}
     assert_false tag_names.include?('heading')
   end
@@ -122,7 +122,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
   test "should ignore commas, exclamation, and periods in hashtags" do
     revision = node_revisions(:hashtag_with_punctuation)
     revision.save
-    associated_tags = revision.parent.drupal_tag
+    associated_tags = revision.parent.tag
     tag_names = associated_tags.map{|x| x.name}
     expected_tags = ['hashtag1', 'hashtag2', 'hashtag3']
     ignore_tags = ['hashtag1,', 'hashtag2!', 'hashtag3.']
@@ -133,7 +133,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
   test "should tag hashtags in headers" do
     revision = node_revisions(:hashtag_in_header)
     revision.save
-    associated_tags = revision.parent.drupal_tag
+    associated_tags = revision.parent.tag
     tag_names = associated_tags.map{|x| x.name}
     assert_includes tag_names, 'hashtags'
   end
@@ -141,7 +141,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
   test "should ignore subheaders" do
     revision = node_revisions(:subheader)
     revision.save
-    associated_tags = revision.parent.drupal_tag
+    associated_tags = revision.parent.tag
     tag_names = associated_tags.map{|x| x.name}
     assert_false tag_names.include?('subheader') or tag_names.include?('#subheader')
   end
@@ -149,7 +149,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
   test "should ignore hashtags in links" do
     revision = node_revisions(:hashtag_in_link)
     revision.save
-    associated_tags = revision.parent.drupal_tag
+    associated_tags = revision.parent.tag
     tag_names = associated_tags.map{|x| x.name}
     assert_false tag_names.include?('hashtag')
   end
@@ -157,7 +157,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
   test "should ignore hashtags in URLs" do
     revision = node_revisions(:hashtag_in_url)
     revision.save
-    associated_tags = revision.parent.drupal_tag
+    associated_tags = revision.parent.tag
     tag_names = associated_tags.map{|x| x.name}
     assert_false tag_names.include?('hashtag')
   end
@@ -165,7 +165,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
   test "should not add duplicate tags" do
     revision = node_revisions(:hashtag_three)
     revision.save
-    associated_tags = revision.parent.drupal_tag
+    associated_tags = revision.parent.tag
     tag_names = associated_tags.map{|x| x.name}
     assert_false tag_names.count('hashtag') > 1
     assert_false tag_names.include?('heading')
@@ -174,7 +174,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
   test "should make the author the tag author" do
     revision = node_revisions(:hashtag_three)
     revision.save
-    author = revision.parent.drupal_tag.last.drupal_node_community_tag.first.drupal_users
+    author = revision.parent.tag.last.drupal_node_community_tag.first.drupal_users
     assert_equal revision.author, author
   end
 
@@ -183,7 +183,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
     revision.save
     revision.body = "another #hashtag"
     revision.save
-    associated_tags = revision.parent.drupal_tag
+    associated_tags = revision.parent.tag
     tag_names = associated_tags.map{|x| x.name}
     assert_true tag_names.count('hashtag') == 1
   end

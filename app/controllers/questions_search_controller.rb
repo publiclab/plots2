@@ -13,7 +13,7 @@ class QuestionsSearchController < ApplicationController
                'type = "note" AND node.status = 1 AND title LIKE ?',
                "%" + params[:id] + "%"
              )
-               .joins(:drupal_tag)
+               .joins(:tag)
                .where('term_data.name LIKE ?', 'question:%')
                .order('node.nid DESC')
                .page(params[:page])
@@ -32,7 +32,7 @@ class QuestionsSearchController < ApplicationController
                   'type = "note" AND node.status = 1 AND title LIKE ?',
                   "%" + params[:id] + "%"
                 )
-                  .joins(:drupal_tag)
+                  .joins(:tag)
                   .where('term_data.name LIKE ?', 'question:%')
                   .order('node.nid DESC')
                   .limit(25)

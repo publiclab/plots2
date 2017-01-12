@@ -157,7 +157,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def tags(limit = 10)
-    DrupalTag.find :all, :conditions => ['name in (?)',self.tagnames], :limit => limit
+    Tag.find :all, :conditions => ['name in (?)',self.tagnames], :limit => limit
   end
 
   def tagnames(limit = 20,defaults = true)

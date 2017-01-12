@@ -10,7 +10,7 @@
     <% 
       lat = false
       lon = false
-      map.drupal_tag.each do |tag|
+      map.tag.each do |tag|
         lat = tag.name.split(':').last if tag.name[0..2] == 'lat'
         lon = tag.name.split(':').last if tag.name[0..2] == 'lon'
       end

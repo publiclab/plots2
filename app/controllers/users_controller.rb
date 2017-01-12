@@ -143,7 +143,7 @@ class UsersController < ApplicationController
   def likes
     @user = DrupalUsers.find_by_name(params[:id])
     @title = "Liked by "+@user.name
-    @notes = @user.liked_notes.includes([:drupal_tag, :comments])
+    @notes = @user.liked_notes.includes([:tag, :comments])
                               .paginate(page: params[:page], per_page: 20)
     @wikis = @user.liked_pages
     @tagnames = []
