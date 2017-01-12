@@ -20,7 +20,7 @@ class MapController < ApplicationController
 
     # redirect_old_urls
 
-    impressionist(@node.views)
+    impressionist(@node)
     @title = @node.title
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)

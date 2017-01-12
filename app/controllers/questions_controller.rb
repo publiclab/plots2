@@ -30,7 +30,7 @@ class QuestionsController < ApplicationController
 
     alert_and_redirect_moderated
 
-    impressionist(@node.views)
+    impressionist(@node)
     @title = @node.latest.title
     @tags = @node.power_tag_objects('question')
     @tagnames = @tags.collect(&:name)
