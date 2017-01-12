@@ -155,7 +155,7 @@ class DrupalNodeTest < ActiveSupport::TestCase
   test "should have tags" do
     node = node(:one)
     assert node.tags.length > 0
-    assert_equal node.tags, node.drupal_tag
+    assert_equal node.tags, node.tag
     assert node.community_tags.length > 0
     assert_equal node.community_tags, node.drupal_node_community_tag
   end

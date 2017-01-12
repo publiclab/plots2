@@ -97,7 +97,7 @@ class NotesControllerTest < ActionController::TestCase
   test "show note with Browse other activities link" do
     note = DrupalNode.where(type: 'note', status: 1).first
     note.add_tag('activity:spectrometer', note.author) # testing responses display
-    assert DrupalTag.where(name: 'activities:' + note.power_tag('activity')).length > 0
+    assert Tag.where(name: 'activities:' + note.power_tag('activity')).length > 0
 
     get :show,
         author: note.author.name,

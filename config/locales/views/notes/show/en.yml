@@ -5,6 +5,7 @@ en:
     show:
       note_no_tags: "This note has no tags yet; help connect it to other content by <a onClick=\"$('#taginput').focus()\">adding descriptive tags below</a>."
       replication: "This is an attempt to replicate "
+      series: "This is part of a series on "
       replication_link: "an activity"
       build: "This is an attempt to build "
       build_link: "an upgrade"

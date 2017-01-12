@@ -1,9 +1,9 @@
 require 'test_helper'
 
-class DrupalTagTest < ActiveSupport::TestCase
+class TagTest < ActiveSupport::TestCase
 
   test "create a tag" do
-    tag = DrupalTag.new({
+    tag = Tag.new({
       name: "stick-mapping",
     })
     assert tag.save!
@@ -15,13 +15,13 @@ class DrupalTagTest < ActiveSupport::TestCase
   end
 
   test "tag followers" do
-    followers = DrupalTag.followers(community_tags(:awesome).name)
+    followers = Tag.followers(community_tags(:awesome).name)
     assert followers.length > 0
     assert followers.include?(tag_selection(:awesome).user.user)
   end
 
   test "tag subscribers" do
-    subscribers = DrupalTag.subscribers([tags(:awesome)])
+    subscribers = Tag.subscribers([tags(:awesome)])
     assert subscribers.length > 0
     assert (subscribers.to_a.collect(&:last).map { |o| o[:user]}).include?(tag_selection(:awesome).user)
   end
@@ -46,7 +46,7 @@ class DrupalTagTest < ActiveSupport::TestCase
   end
 
   test "tag nodes_in_week" do
-    nodes_in_week = DrupalTag.nodes_for_period(
+    nodes_in_week = Tag.nodes_for_period(
       'note', 
       [ node(:one).nid ],
       (Time.now.to_i - 1.weeks.to_i).to_s,
@@ -55,7 +55,7 @@ class DrupalTagTest < ActiveSupport::TestCase
     assert_not_nil nodes_in_week
     assert nodes_in_week.length > 0
 
-    nodes_in_year = DrupalTag.nodes_for_period(
+    nodes_in_year = Tag.nodes_for_period(
       'note', 
       [ node(:one).nid ],
       (Time.now.to_i - 52.weeks.to_i).to_s,
@@ -67,13 +67,13 @@ class DrupalTagTest < ActiveSupport::TestCase
 
   test "find all tagged research notes with status 1" do
     tagnames = ["test"]
-    notes = DrupalTag.find_research_notes(tagnames)
+    notes = Tag.find_research_notes(tagnames)
     expected = [node(:one)]
     assert_equal expected, notes
   end
 
   test "response power tagging" do
-    tag = DrupalTag.new({
+    tag = Tag.new({
       name: "response:#{node(:blog).id}"
     })
     assert tag.save!
@@ -88,7 +88,7 @@ class DrupalTagTest < ActiveSupport::TestCase
   end
 
   test "response power tagging with custom key" do
-    tag = DrupalTag.new({
+    tag = Tag.new({
       name: "replication:#{node(:blog).id}"
     })
     assert tag.save!

@@ -1,8 +1,8 @@
 class CreateLikeAndFollow < ActiveRecord::Migration
   def up
-    # dictionary of (user.id, drupal_tag.id) mapping to (following)
+    # dictionary of (user.id, tag.id) mapping to (following)
     # no need for wasteful primary key when the unique index recreates a
-    # composite PK using (user.id, drupal_tag.id).
+    # composite PK using (user.id, tag.id).
     # In English: track user follow tag
     unless table_exists? "tagselections"
       create_table :tagselections, :id => false do |t|

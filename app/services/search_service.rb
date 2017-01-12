@@ -37,7 +37,7 @@ class SearchService
   end
 
   def find_tags(input, limit=5)
-    DrupalTag.includes(:drupal_node)
+    Tag.includes(:drupal_node)
         .where('node.status = 1')
         .limit(limit)
         .where('name LIKE ?', '%' + input + '%')
@@ -174,7 +174,7 @@ class SearchService
     unless srchString.nil? || srchString == 0
       # Tags
       sterms = srchString.split(" ")
-      tlist= DrupalTag.where({ name: sterms })
+      tlist= Tag.where({ name: sterms })
         .joins(:drupal_node_community_tag)
         .joins(:drupal_node)
         .where('node.status = 1')
@@ -194,7 +194,7 @@ class SearchService
                   'type = "note" AND node.status = 1 AND title LIKE ?',
                   "%" + srchString + "%"
                 )
-                  .joins(:drupal_tag)
+                  .joins(:tag)
                   .where('term_data.name LIKE ?', 'question:%')
                   .order('node.nid DESC')
                   .limit(25)
