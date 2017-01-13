@@ -495,6 +495,31 @@ class NotesControllerTest < ActionController::TestCase
     assert_redirected_to note.path(:question)
   end
 
+  test "should redirect user to redirect path if node has a redirect power tag" do
+    note = node(:note_with_redirect_tag)
+
+    get :show,
+      author: note.author.name,
+      date: Time.at(note.created).strftime("%m-%d-%Y"),
+      id: note.title.parameterize
+    assert_redirected_to note.path(:redirect)
+  end
+
+  test "should show redirect-tagged page to admin" do
+    UserSession.create(rusers(:admin))
+    note = node(:note_with_redirect_tag)
+
+    get :show,
+      author: note.author.name,
+      date: Time.at(note.created).strftime("%m-%d-%Y"),
+      id: note.title.parameterize
+    assert_equal flash[:notice], "Only moderators and admins see this page, as it is redirected to another page. To remove the redirect, delete the tag beginning with 'redirect:'"
+    assert_nil flash[:error]
+    assert_template "show"
+    assert_response :success
+    UserSession.find.destroy
+  end
+
   test "should list only research notes with status 1 in index" do
     get :index
     notes = assigns(:notes)

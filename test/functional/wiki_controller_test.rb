@@ -285,6 +285,27 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
   end
 
+  test "admin should not be redirected from wiki page with redirect power tag" do
+    UserSession.find.destroy
+    UserSession.create(rusers(:admin))
+    wiki = node(:wiki_with_redirect_tag) # TODO: create fixture for redirect tag test
+
+    get :show, id: wiki.nid
+
+    assert_equal flash[:notice], "Only moderators and admins see this page, as it is redirected to another page. To remove the redirect, delete the tag beginning with 'redirect:'"
+    assert_nil flash[:error]
+    assert_template "show"
+    assert_response :success
+    UserSession.find.destroy
+  end
+
+  test "should redirect users if node has a redirect power tag when visiting show path" do
+    wiki = node(:wiki_with_redirect_tag)
+
+    get :show, id: wiki.nid
+    assert_redirected_to wiki.path(:redirect)
+  end
+
   test "user cannot revert wiki page" do
     wiki = node(:spam_targeted_page)
 
