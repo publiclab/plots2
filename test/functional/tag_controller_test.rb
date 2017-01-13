@@ -310,15 +310,16 @@ class TagControllerTest < ActionController::TestCase
 
     assert_equal 'spectrometry', tag.parent 
     assert_equal '',             tag2.parent
-    node(:blog).add_tag('spectrometry', rusers(:bob))
+    node(:blog).add_tag('spectrometer', rusers(:bob))
+    assert !node(:blog).has_tag('spectrometry')
 
     get :show, id: 'spectrometry'
 
     assert_equal 2, assigns(:notes).length
     assert_equal "Blog post", assigns(:notes).first.title
-    assert_equal ["spectrometry"], assigns(:notes).first.tags.collect(&:name)
-    assert_false assigns(:notes).first.has_tag_without_aliasing('spectrometer')
-    assert       assigns(:notes).first.has_tag_without_aliasing('spectrometry')
+    assert_equal ["spectrometer"], assigns(:notes).first.tags.collect(&:name)
+    assert       assigns(:notes).first.has_tag_without_aliasing('spectrometer')
+    assert_false assigns(:notes).first.has_tag_without_aliasing('spectrometry')
     assert_equal "Blog post", assigns(:notes).last.title
     assert_false assigns(:notes).last.has_tag_without_aliasing('spectrometer')
     assert       assigns(:notes).last.has_tag_without_aliasing('spectrometry')
