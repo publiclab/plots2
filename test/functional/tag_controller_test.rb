@@ -310,19 +310,29 @@ class TagControllerTest < ActionController::TestCase
 
     assert_equal 'spectrometry', tag.parent 
     assert_equal '',             tag2.parent
-    node(:blog).add_tag('spectrometer', rusers(:bob))
-    assert !node(:blog).has_tag_without_aliasing('spectrometry')
+    node(:blog).add_tag('spectrometry', rusers(:bob))
+    assert node(:blog).has_tag_without_aliasing('spectrometry')
 
     get :show, id: 'spectrometry'
 
-    assert_equal 2, assigns(:notes).length
-    assert_equal "Blog post", assigns(:notes).first.title
-    assert_equal ["spectrometer"], assigns(:notes).first.tags.collect(&:name)
-    assert       assigns(:notes).first.has_tag_without_aliasing('spectrometer')
-    assert_false assigns(:notes).first.has_tag_without_aliasing('spectrometry')
-    assert_equal "Blog post", assigns(:notes).last.title
-    assert_false assigns(:notes).last.has_tag_without_aliasing('spectrometer')
-    assert       assigns(:notes).last.has_tag_without_aliasing('spectrometry')
+    # order of timestamps during testing (almost same timestamps) was causing testing irregularities
+    notes = assigns(:notes).sort_by { |a| a.title }.reverse
+
+    assert_equal 2, notes.length
+    assert_equal [1,13], notes.collect(&:nid)
+    assert_equal [node(:one).title, "Blog post"], notes.collect(&:title)
+
+    # should be the first node, nid=1
+    assert_equal node(:one).title, notes.first.title
+    assert_equal ["spectrometer"], notes.first.tags.collect(&:name)
+    assert       notes.first.has_tag_without_aliasing('spectrometer')
+    assert_false notes.first.has_tag_without_aliasing('spectrometry')
+
+    # should be the blog node, nid=13
+    assert_equal "Blog post", notes.last.title
+    assert_equal ["spectrometry"], notes.last.tags.collect(&:name)
+    assert_false notes.last.has_tag_without_aliasing('spectrometer')
+    assert       notes.last.has_tag_without_aliasing('spectrometry')
   end
 
   test "does not show things tagged with parent tag" do
