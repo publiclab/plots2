@@ -127,4 +127,10 @@ class DrupalNodeRevision < ActiveRecord::Base
     newBody.truncate(100)
   end
 
+  # some adaptations for the new rich editor
+  def body_rich
+    # turn ##Headers into ## Headers
+    self.body.gsub(/(^|\n)(#+)([A-z]+)/, '\1\2 \3')
+  end
+
 end
