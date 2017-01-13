@@ -311,7 +311,7 @@ class TagControllerTest < ActionController::TestCase
     assert_equal 'spectrometry', tag.parent 
     assert_equal '',             tag2.parent
     node(:blog).add_tag('spectrometer', rusers(:bob))
-    assert !node(:blog).has_tag('spectrometry')
+    assert !node(:blog).has_tag_without_aliasing('spectrometry')
 
     get :show, id: 'spectrometry'
 
