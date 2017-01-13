@@ -16,7 +16,7 @@ end
 class DrupalNode < ActiveRecord::Base
   include NodeShared # common methods for node-like models
 
-  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug
+  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug, :views
   self.table_name = 'node'
   self.primary_key = 'nid'
 
