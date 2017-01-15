@@ -60,7 +60,11 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test "should get wiki page" do
-    get :show, id: node(:about).id
+    assert_difference 'node(:about).views', 1 do
+
+      get :show, id: node(:about).id
+
+    end
 
     assert_response :success
   end

@@ -52,10 +52,14 @@ class NotesControllerTest < ActionController::TestCase
     note.add_tag('activity:nonexistent', note.author) # testing responses display
     assert_equal 'nonexistent', note.power_tag('activity')
 
-    get :show,
-        author: note.author.name,
-        date: Time.at(note.created).strftime("%m-%d-%Y"),
-        id: note.title.parameterize
+    assert_difference 'note.views', 1 do
+
+      get :show,
+          author: note.author.name,
+          date: Time.at(note.created).strftime("%m-%d-%Y"),
+          id: note.title.parameterize
+
+    end
 
     assert_response :success
     assert_select "#other-activities", false
