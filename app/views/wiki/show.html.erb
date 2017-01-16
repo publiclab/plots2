@@ -105,6 +105,10 @@
     <div class="tab-pane active" id="tab-overview">
       <div<% unless @node.has_tag('style:wide') %> style="overflow:hidden;max-width:800px;"<% end %> id="content">
       <%= raw auto_link(insert_extras(@revision.render_body), :sanitize => false) %>
+      <div<% unless params[:raw] %> style="display:none;"<% end %> id="content-raw-markdown">
+        <%= raw auto_link(insert_extras(@revision.render_body), :sanitize => false) %>
+      </div>
+      </div>
       </div>
     </div>
 
