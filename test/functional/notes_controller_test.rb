@@ -48,9 +48,25 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note" do
+
     note = node(:blog)
     note.add_tag('activity:nonexistent', note.author) # testing responses display
     assert_equal 'nonexistent', note.power_tag('activity')
+
+    get :show,
+        author: note.author.name,
+        date: Time.at(note.created).strftime("%m-%d-%Y"),
+        id: note.title.parameterize
+
+    assert_response :success
+    assert_select "#other-activities", false
+  end
+
+  test "notes record views with unique ips" do
+    note = node(:blog)
+    # clear impressions so we get a unique view
+    Impression.delete_all
+    assert_equal 0, note.views
 
     assert_difference 'note.views', 1 do
 
@@ -61,8 +77,15 @@ class NotesControllerTest < ActionController::TestCase
 
     end
 
-    assert_response :success
-    assert_select "#other-activities", false
+    # same IP won't add to views twice
+    assert_difference 'note.views', 0 do
+
+      get :show,
+          author: note.author.name,
+          date: Time.at(note.created).strftime("%m-%d-%Y"),
+          id: note.title.parameterize
+
+    end
   end
 
   test "redirect normal user to tagged blog page" do
