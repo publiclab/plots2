@@ -214,6 +214,7 @@ Plots2::Application.routes.draw do
   get 'spam/:type' => 'admin#spam'
   get 'spam/batch/:ids' => 'admin#batch'
   get 'admin/users' => 'admin#users'
+  get 'admin/queue' => 'admin#queue'
   put 'ban/:id' => 'admin#ban'
   put 'unban/:id' => 'admin#unban'
   put 'moderate/revision/spam/:vid' => 'admin#mark_spam_revision'
