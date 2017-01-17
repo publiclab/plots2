@@ -279,4 +279,9 @@ class TagController < ApplicationController
   def location
     render template: 'locations/_form'
   end
+
+  def embed
+      render layout: false
+  end
+
 end
