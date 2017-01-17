@@ -256,7 +256,7 @@ Plots2::Application.routes.draw do
   delete 'answers/delete/:id' => 'answers#delete'
   put 'answers/accept/:id' => 'answers#accept'
 
-  get 'answer_like/show/:aid' => 'answer_like#show'
+  get 'answer_like/show/:id' => 'answer_like#show'
   get 'answer_like/likes/:aid' => 'answer_like#likes'
 
   post 'comment/answer_create/:aid' => 'comment#answer_create'
