@@ -80,9 +80,9 @@ class LocationTagsController < ApplicationController
         }
       else
         if @output[:errors].length > 0
-          flash[:error] = "#{@output[:errors].length} errors have occured"
+          format.any(:html, :json) { flash[:error] = "#{@output[:errors].length} errors have occured" }
         else
-          flash[:notice] = "Location saved successfully"
+          format.any(:html, :json) { flash[:notice] = "Location saved successfully" }
         end
         redirect_to info_path, :id => params[:id]
 
