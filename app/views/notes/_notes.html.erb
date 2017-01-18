@@ -25,7 +25,7 @@
         <p class="meta"><small>
           <% if node.type == 'note' %>
             by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a>
-            <%= distance_of_time_in_words(node.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
+            <%= distance_of_time_in_words(node.created_at, Time.current, :include_seconds => false, :scope => :'datetime.time_ago_in_words') %>
             | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
           <% else %>
             <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a>

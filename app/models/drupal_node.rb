@@ -409,6 +409,7 @@ class DrupalNode < ActiveRecord::Base
     # search for tags with parent matching this
     tags += Tag.includes(:drupal_node_community_tag)
                      .where("community_tags.nid = ? AND parent LIKE ?", self.id, tagname)
+                     .references(:community_tags)
     # search for parent tag of this, if exists
     #tag = Tag.where(name: tagname).try(:first)
     #if tag && tag.parent
@@ -424,10 +425,12 @@ class DrupalNode < ActiveRecord::Base
   def get_matching_tags_without_aliasing(tagname)
     tags = Tag.includes(:drupal_node_community_tag)
                     .where("community_tags.nid = ? AND name LIKE ?", self.id, tagname)
+                    .references(:community_tags)
     # search for tags which end in wildcards
     if tagname[-1] == '*'
       tags += Tag.includes(:drupal_node_community_tag)
                        .where("community_tags.nid = ? AND (name LIKE ? OR name LIKE ?)", self.id, tagname, tagname.gsub('*', '%'))
+                       .references(:community_tags)
     end
     tags
   end
