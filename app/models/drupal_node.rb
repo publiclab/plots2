@@ -63,7 +63,7 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
-  is_impressionable counter_cache: true, column_name: 'views', unique: :ip_address
+  is_impressionable counter_cache: true, column_name: :views
 
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
   # wasn't working to tie it to .vid, manually defining below

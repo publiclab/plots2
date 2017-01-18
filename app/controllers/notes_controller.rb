@@ -79,7 +79,7 @@ class NotesController < ApplicationController
 
     alert_and_redirect_moderated
 
-    impressionist(@node)
+    impressionist(@node, 'show', :unique => [:ip_address])
     @title = @node.latest.title
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)

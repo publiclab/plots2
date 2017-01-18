@@ -67,8 +67,9 @@ class NotesControllerTest < ActionController::TestCase
     # clear impressions so we get a unique view
     Impression.delete_all
     assert_equal 0, note.views
+    assert_equal 0, Impression.count
 
-    assert_difference 'note.views', 1 do
+    assert_difference 'Impression.count', 1 do
 
       get :show,
           author: note.author.name,
@@ -76,6 +77,18 @@ class NotesControllerTest < ActionController::TestCase
           id: note.title.parameterize
 
     end
+
+    assert_equal '0.0.0.0', Impression.last.ip_address
+    Impression.last.update_attribute('ip_address', '0.0.0.1')
+
+    assert_difference 'note.views', 1 do
+      get :show,
+          author: note.author.name,
+          date: Time.at(note.created).strftime("%m-%d-%Y"),
+          id: note.title.parameterize
+    end
+
+    assert_equal 2, note.views
 
     # same IP won't add to views twice
     assert_difference 'note.views', 0 do
