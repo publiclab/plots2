@@ -52,7 +52,7 @@ class TagControllerTest < ActionController::TestCase
          nid: node(:one).nid
 
     assert_redirected_to(node(:one).path)
-    assert_equal "Error: tags can only include letters, numbers, and dashes", assigns['output']['errors'][0]
+    assert_equal "Error: tags can only include letters, numbers, and dashes", assigns[:output][:errors][0]
   end
 
   test "won't add disallowed tags" do
@@ -63,7 +63,7 @@ class TagControllerTest < ActionController::TestCase
          nid: node(:one).nid # authored by jeff, not bob
 
     assert_redirected_to(node(:one).path)
-    assert_equal I18n.t('drupal_node.only_author_use_powertag'), assigns['output']['errors'][0]
+    assert_equal I18n.t('drupal_node.only_author_use_powertag'), assigns[:output][:errors][0]
   end
 
   test "admins can add disallowed tags" do
@@ -74,7 +74,7 @@ class TagControllerTest < ActionController::TestCase
          nid: node(:one).nid # authored by jeff, not bob
 
     assert_redirected_to(node(:one).path)
-    assert_equal 0, assigns['output']['errors'].length
+    assert_equal 0, assigns[:output][:errors].length
   end
 
   # create returns JSON list of errors in response[:errors]
@@ -96,7 +96,7 @@ class TagControllerTest < ActionController::TestCase
          uid: rusers(:bob)
 
     assert_redirected_to(node(:one).path)
-    assert_equal "Error: that tag already exists.", assigns['output']['errors'][0]
+    assert_equal "Error: that tag already exists.", assigns[:output][:errors][0]
   end
 
   test "add tag not logged in" do
@@ -116,7 +116,7 @@ class TagControllerTest < ActionController::TestCase
     assert :success
     assert_equal assigns['tags'].sort_by { |rev| rev.count }, assigns['tags']
     assert_equal assigns['tags'].collect(&:name), assigns['tags'].collect(&:name).uniq
-    assert_false assigns['tags'].collect(&:drupal_node).flatten.collect(&:status).include?(0)
+    assert_not assigns['tags'].collect(&:drupal_node).flatten.collect(&:status).include?(0)
     assert_not_nil :tags
   end
 
@@ -132,7 +132,7 @@ class TagControllerTest < ActionController::TestCase
     assert assigns['notes'].length > 0
     assigns['notes'].each do |node|
       assert node.has_tag('spectrometry') # should return false
-      assert_false node.has_tag_without_aliasing('spectrometry') # should return false
+      assert_not node.has_tag_without_aliasing('spectrometry') # should return false
     end
 
     #assert_equal assigns['tags'].length, 1
@@ -198,7 +198,7 @@ class TagControllerTest < ActionController::TestCase
 
   test "tag rss" do
 
-    get :rss, tagname: Tag.last.name
+    get :rss, tagname: Tag.last.name, format: 'rss'
 
     assert :success
     assert_not_nil :notes
@@ -316,8 +316,8 @@ class TagControllerTest < ActionController::TestCase
 
     assert_equal 2, assigns(:notes).length
     assert       assigns(:notes).first.has_tag_without_aliasing('spectrometer')
-    assert_false assigns(:notes).first.has_tag_without_aliasing('spectrometry')
-    assert_false assigns(:notes).last.has_tag_without_aliasing('spectrometer')
+    assert_not assigns(:notes).first.has_tag_without_aliasing('spectrometry')
+    assert_not assigns(:notes).last.has_tag_without_aliasing('spectrometer')
     assert       assigns(:notes).last.has_tag_without_aliasing('spectrometry')
   end
 
@@ -335,7 +335,7 @@ class TagControllerTest < ActionController::TestCase
     get :show, id: 'spectrometer'
 
     assert_equal 1, assigns(:notes).length
-    assert_false assigns(:notes).first.has_tag_without_aliasing('spectrometry')
+    assert_not assigns(:notes).first.has_tag_without_aliasing('spectrometry')
     assert       assigns(:notes).first.has_tag_without_aliasing('spectrometer')
   end
 
@@ -358,7 +358,7 @@ class TagControllerTest < ActionController::TestCase
       UserSession.create(rusers(:bob))
       post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
       post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
-      assert_equal I18n.t('tag_controller.tag_already_exists'), assigns['output']['errors'][0]
+      assert_equal I18n.t('tag_controller.tag_already_exists'), assigns[:output][:errors][0]
     end
   end
 

@@ -34,7 +34,8 @@ class TagController < ApplicationController
                         .page(params[:page])
                         .order("node_revisions.timestamp DESC")
     else
-      @tags = Tag.find_all_by_name params[:id]
+      # @tags = Tag.find_all_by_name params[:id]
+      @tags = Tag.where(tid: params[:id]).load
       nodes = DrupalNode.where(status: 1, type: node_type)
                         .includes(:drupal_node_revision, :tag)
                         .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
@@ -79,7 +80,8 @@ class TagController < ApplicationController
     @notes = DrupalNode.paginate(:page => params[:page], :per_page => 6)
                        .where('status = 1 AND nid in (?)', nids)
                        .order("nid DESC")
-    @tags = Tag.find_all_by_name params[:id]
+    # @tags = Tag.find_all_by_name params[:id]
+    @tags = Tag.where(tid: params[:id]).load
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(',') + " Blog" if @tagnames
   end
@@ -181,6 +183,7 @@ class TagController < ApplicationController
       Tag.where('name LIKE ?', "%" + params[:id] + "%")
                .includes(:drupal_node)
                .where('node.status = 1')
+               .references(:node)
                .limit(10).each do |tag|
         @suggestions << tag.name.downcase
       end

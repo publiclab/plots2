@@ -28,7 +28,7 @@ class Tag < ActiveRecord::Base
   end
 
   validates :name, :presence => :true
-  validates :name, :format => {:with => /^[\w\.:-]*$/, :message => "can only include letters, numbers, and dashes"}
+  validates :name, :format => {:with => /^[\w\.:-]*$/, :multiline => true, :message => "can only include letters, numbers, and dashes"}
   #validates :name, :uniqueness => { case_sensitive: false }
 
   def id
@@ -72,11 +72,13 @@ class Tag < ActiveRecord::Base
     nodes = DrupalNode.where(status: 1, type: type)
                       .includes(:drupal_node_revision, :tag)
                       .where('term_data.name IN (?)', tagnames)
+                      .references(:term_data)
                       # .where('term_data.name IN (?) OR term_data.parent in (?)', tagnames, tagnames) # greedily fetch children
     tags = Tag.where('term_data.name IN (?)', tagnames)
     parents = DrupalNode.where(status: 1, type: type)
                         .includes(:drupal_node_revision, :tag)
                         .where('term_data.name IN (?)', tags.collect(&:parent))
+                        .references(:term_data)
     DrupalNode.where('node.nid IN (?)', (nodes + parents).collect(&:nid))
               .includes(:drupal_node_revision, :tag)
               .order("node_revisions.timestamp DESC")

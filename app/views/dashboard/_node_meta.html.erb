@@ -1,7 +1,7 @@
 <% unless node.is_a?(Comment) || node.is_a?(DrupalNodeRevision) || node.type == 'page' %>
   <%= t('dashboard.dashboard.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
 <% end %>
-<%= distance_of_time_in_words(node.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
+<%= distance_of_time_in_words(node.created_at, Time.current, :include_seconds => false, :scope => :'datetime.time_ago_in_words') %>
 <% node = node.parent if node.is_a?(DrupalNodeRevision) %>
 <span class="">
   <% if params[:controller] == 'questions' %>
