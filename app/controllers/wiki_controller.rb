@@ -63,7 +63,7 @@ class WikiController < ApplicationController
       set_sidebar :tags, @tagnames, {:videos => true}
       @wikis = Tag.find_pages(@node.slug_from_path,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
 
-      impressionist(@node)
+      impressionist(@node, 'show', :unique => [:ip_address])
       @revision = @node.latest
       @title = @revision.title
     end

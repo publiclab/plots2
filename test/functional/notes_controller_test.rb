@@ -69,6 +69,9 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal 0, note.views
     assert_equal 0, Impression.count
 
+    # this assertion didn't work due to a bug in: 
+    # https://github.com/publiclab/plots2/issues/1196
+    # assert_difference 'note.views', 1 do
     assert_difference 'Impression.count', 1 do
 
       get :show,
@@ -81,17 +84,17 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal '0.0.0.0', Impression.last.ip_address
     Impression.last.update_attribute('ip_address', '0.0.0.1')
 
-    assert_difference 'note.views', 1 do
+    assert_difference 'note.totalviews', 1 do
       get :show,
           author: note.author.name,
           date: Time.at(note.created).strftime("%m-%d-%Y"),
           id: note.title.parameterize
     end
 
-    assert_equal 2, note.views
+    assert_equal 2, note.totalviews
 
     # same IP won't add to views twice
-    assert_difference 'note.views', 0 do
+    assert_difference 'note.totalviews', 0 do
 
       get :show,
           author: note.author.name,

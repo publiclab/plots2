@@ -63,8 +63,6 @@ class DrupalNode < ActiveRecord::Base
     end
   end
 
-  is_impressionable counter_cache: true, column_name: :views
-
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
@@ -178,8 +176,14 @@ class DrupalNode < ActiveRecord::Base
 
   public
 
+  # the counter_cache does not currently work: views column is not updated for some reason
+  # https://github.com/publiclab/plots2/issues/1196
+  is_impressionable counter_cache: true, column_name: :views
+
   def totalviews
-    self.views + self.legacy_views
+    # disabled as impressionist is not currently updating counter_cache; see above
+    #self.views + self.legacy_views
+    self.impressionist_count(:filter => :ip_address) + self.legacy_views
   end
 
   def self.weekly_tallies(type = "note", span = 52, time = Time.now)
