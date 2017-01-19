@@ -154,7 +154,7 @@ class AdminControllerTest < ActionController::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
     assert_not_nil email.bcc
-    assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+    assert_equal "moderators@#{request_host}", ActionMailer::Base.deliveries.last.to
     # title same as initial for email client threading
     assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
   end
@@ -174,7 +174,7 @@ class AdminControllerTest < ActionController::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
     assert_not_nil email.bcc
-    assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+    assert_equal "moderators@#{request_host}", ActionMailer::Base.deliveries.last.to
     # title same as initial for email client threading
     assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
   end
@@ -226,7 +226,7 @@ class AdminControllerTest < ActionController::TestCase
     # test the moderator notification
     email = ActionMailer::Base.deliveries[1]
     assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
-    assert_equal ["moderators@#{request_host}"], email.to
+    assert_equal "moderators@#{request_host}", email.to
 
     # test general subscription notices
     # (we test the final one, but there are many)
@@ -358,7 +358,7 @@ class AdminControllerTest < ActionController::TestCase
     # test the moderator notification
     email = ActionMailer::Base.deliveries.last
     assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
-    assert_equal ["moderators@#{request_host}"], email.to
+    assert_equal "moderators@#{request_host}", email.to
     assert_not_nil email.bcc
   end
 
