@@ -48,6 +48,7 @@ group :test do
   gem 'timecop'
   gem 'jasmine-rails'
   gem 'jasmine-jquery-rails'
+  gem 'coveralls', require: false
 end
 
 # run with `bundle install --without production` to exclude these
