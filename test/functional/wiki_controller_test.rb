@@ -60,7 +60,7 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test "should get wiki page" do
-    assert_difference 'node(:about).views', 1 do
+    assert_difference 'node(:about).totalviews', 1 do
 
       get :show, id: node(:about).id
 
