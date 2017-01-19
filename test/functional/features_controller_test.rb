@@ -10,7 +10,12 @@ require 'test_helper'
 class FeaturesControllerTest < ActionController::TestCase
 
   def setup
+    Timecop.freeze # account for timestamp change
     activate_authlogic
+  end
+
+  def teardown
+    Timecop.return
   end
 
   test "cannot see /features if not logged in" do
