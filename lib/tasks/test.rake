@@ -4,8 +4,8 @@ namespace :test do
   task :all do
     puts "Running Rails tests"
     Rake::Task["test"].execute
-    puts "Running Solr-dependent tests"
-    Rake::Task["test:solr"].execute
+    #puts "Running Solr-dependent tests"
+    #Rake::Task["test:solr"].execute
     puts "Running jasmine tests headlessly"
     Rake::Task["spec:javascript"].execute
   end
