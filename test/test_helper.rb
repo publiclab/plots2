@@ -14,7 +14,6 @@ class ActiveSupport::TestCase
   set_fixture_class :node => DrupalNode
   set_fixture_class :rusers => User
   set_fixture_class :users => DrupalUsers
-  set_fixture_class :node_counter => DrupalNodeCounter
   set_fixture_class :node_revisions => DrupalNodeRevision
   set_fixture_class :tag_selection => TagSelection
   set_fixture_class :tags => Tag
