@@ -34,7 +34,7 @@
     <div class="hidden-print">
       <div class="pull-right" style="padding-top:8px;">
         <span class="hidden-sm hidden-xs">
-          <%= number_with_delimiter(@node.totalcount) %> <%= t('wiki.show.views') %> |
+          <%= number_with_delimiter(@node.totalviews) %> <%= t('wiki.show.views') %> |
           <%= raw t('wiki.show.last_edited', :url1 => "/profile/"+@node.latest.author.name, :author => @node.latest.author.name, :time => time_ago_in_words(@node.latest.created_at)) %>
           | <a href="/n/<%= @node.id %>"><%= t('wiki.show.shortlink') %></a>
         </span>

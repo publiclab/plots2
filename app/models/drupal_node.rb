@@ -16,7 +16,7 @@ end
 class DrupalNode < ActiveRecord::Base
   include NodeShared # common methods for node-like models
 
-  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug
+  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug, :views
   self.table_name = 'node'
   self.primary_key = 'nid'
 
@@ -41,7 +41,9 @@ class DrupalNode < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-
+  # FriendlyId is not being used; see 
+  # https://github.com/publiclab/plots2/pull/687 and 
+  # https://github.com/publiclab/plots2/pull/600
   extend FriendlyId
   friendly_id :friendly_id_string, use: [:slugged, :history]
 
@@ -65,7 +67,6 @@ class DrupalNode < ActiveRecord::Base
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
-  has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_files, :through => :drupal_upload
   has_many :drupal_node_community_tag, :foreign_key => 'nid', :dependent => :destroy
@@ -167,14 +168,23 @@ class DrupalNode < ActiveRecord::Base
     self['changed'] = DateTime.now.to_i
   end
 
-  # determines URL ("slug"), initializes the view counter, and sets up a created timestamp
+  # determines URL ("slug"), and sets up a created timestamp
   def setup
     self['created'] = DateTime.now.to_i
     self.save
-    DrupalNodeCounter.new({:nid => self.id}).save
   end
 
   public
+
+  # the counter_cache does not currently work: views column is not updated for some reason
+  # https://github.com/publiclab/plots2/issues/1196
+  is_impressionable counter_cache: true, column_name: :views
+
+  def totalviews
+    # disabled as impressionist is not currently updating counter_cache; see above
+    #self.views + self.legacy_views
+    self.impressionist_count(:filter => :ip_address) + self.legacy_views
+  end
 
   def self.weekly_tallies(type = "note", span = 52, time = Time.now)
     weeks = {}
@@ -471,12 +481,6 @@ class DrupalNode < ActiveRecord::Base
 
   def tagnames
     self.tags.collect(&:name)
-  end
-
-  # view count
-  def totalcount
-    DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil?
-    self.drupal_node_counter.totalcount
   end
 
   def edit_path

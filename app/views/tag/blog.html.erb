@@ -47,7 +47,7 @@
             | <%= distance_of_time_in_words(node.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
             | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-alt"></i> <%= node.comment_count %></a>
             <% if params[:controller] == "notes" && params[:action] == "popular" %>
-            | <%= number_with_delimiter(node.totalcount) %> <%= t('tag.blog.views') %>
+            | <%= number_with_delimiter(node.totalviews) %> <%= t('tag.blog.views') %>
             <% else %>
             | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
             <% end %>

@@ -48,6 +48,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note" do
+
     note = node(:blog)
     note.add_tag('activity:nonexistent', note.author) # testing responses display
     assert_equal 'nonexistent', note.power_tag('activity')
@@ -59,6 +60,48 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select "#other-activities", false
+  end
+
+  test "notes record views with unique ips" do
+    note = node(:blog)
+    # clear impressions so we get a unique view
+    Impression.delete_all
+    assert_equal 0, note.views
+    assert_equal 0, Impression.count
+
+    # this assertion didn't work due to a bug in: 
+    # https://github.com/publiclab/plots2/issues/1196
+    # assert_difference 'note.views', 1 do
+    assert_difference 'Impression.count', 1 do
+
+      get :show,
+          author: note.author.name,
+          date: Time.at(note.created).strftime("%m-%d-%Y"),
+          id: note.title.parameterize
+
+    end
+
+    assert_equal '0.0.0.0', Impression.last.ip_address
+    Impression.last.update_attribute('ip_address', '0.0.0.1')
+
+    assert_difference 'note.totalviews', 1 do
+      get :show,
+          author: note.author.name,
+          date: Time.at(note.created).strftime("%m-%d-%Y"),
+          id: note.title.parameterize
+    end
+
+    assert_equal 2, note.totalviews
+
+    # same IP won't add to views twice
+    assert_difference 'note.totalviews', 0 do
+
+      get :show,
+          author: note.author.name,
+          date: Time.at(note.created).strftime("%m-%d-%Y"),
+          id: note.title.parameterize
+
+    end
   end
 
   test "redirect normal user to tagged blog page" do

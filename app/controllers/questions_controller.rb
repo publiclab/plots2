@@ -30,7 +30,7 @@ class QuestionsController < ApplicationController
 
     alert_and_redirect_moderated
 
-    impressionist(@node.drupal_node_counter)
+    impressionist(@node)
     @title = @node.latest.title
     @tags = @node.power_tag_objects('question')
     @tagnames = @tags.collect(&:name)
@@ -81,8 +81,7 @@ class QuestionsController < ApplicationController
     @title = "Popular Questions"
     @questions = DrupalNode.questions.where(status: 1)
     sort_question_by_tags
-    @questions = @questions.order('node_counter.totalcount DESC')
-                           .includes(:drupal_node_counter)
+    @questions = @questions.order('views DESC')
                            .limit(20)
 
     @wikis = DrupalNode.limit(10)

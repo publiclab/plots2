@@ -9,7 +9,7 @@
       <td><%= distance_of_time_in_words(Time.at(wiki.latest.created_at), Time.current, false, :scope => :'datetime.time_ago_in_words') %> <%= raw t('wiki._wikis.by') %> 
       <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></td>
       <td><%= wiki.revisions.length %></td>
-      <td class="hidden-xs"><%= number_with_delimiter(wiki.totalcount) %></td>
+      <td class="hidden-xs"><%= number_with_delimiter(wiki.totalviews) %></td>
       <td><%= number_with_delimiter(wiki.cached_likes) %></td>
     </tr>
   <% end %>

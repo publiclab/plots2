@@ -8,7 +8,7 @@
       <p style="color:#888;"><small>
         <%= raw t('notes._tagged_notes.by_author_time_ago', :url1 => "/notes/author/"+node.author.name, :author => node.author.name, :time => time_ago_in_words(node.created_at)) %>
         | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-alt"></i> <%= node.comment_count %></a>
-        | <%= number_with_delimiter(node.totalcount) %> <%= t('notes._tagged_notes.views') %>
+        | <%= number_with_delimiter(node.totalviews) %> <%= t('notes._tagged_notes.views') %>
         | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
       </small></p>
       <p class="hidden-lg"><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150) %></p>

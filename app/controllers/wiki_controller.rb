@@ -63,7 +63,7 @@ class WikiController < ApplicationController
       set_sidebar :tags, @tagnames, {:videos => true}
       @wikis = Tag.find_pages(@node.slug_from_path,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
 
-      impressionist(@node.drupal_node_counter)
+      impressionist(@node, 'show', :unique => [:ip_address])
       @revision = @node.latest
       @title = @revision.title
     end
@@ -288,7 +288,7 @@ class WikiController < ApplicationController
       order_string = "node_revisions.timestamp DESC"
     end
 
-    @wikis = DrupalNode.includes(:drupal_node_revision, :drupal_node_counter)
+    @wikis = DrupalNode.includes(:drupal_node_revision)
                        .group('node_revisions.nid')
                        .order(order_string)
                        .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
@@ -300,12 +300,11 @@ class WikiController < ApplicationController
   def popular
     @title = I18n.t('wiki_controller.popular_wiki_pages')
     @wikis = DrupalNode.limit(40)
-                       .order("node_counter.totalcount DESC")
+                       .order("views DESC")
                        .joins(:drupal_node_revision)
                        .group('node_revisions.nid')
                        .order("node_revisions.timestamp DESC")
                        .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-                       .includes(:drupal_node_counter)
     render :template => "wiki/index"
   end
 
