@@ -8,6 +8,19 @@
   font-size: 200%;
 }
 
+.leaflet-map:after {
+  width: 22px;
+  height: 40px;
+  display: block;
+  content: ' ';
+  position: absolute;
+  top: 50%; left: 50%;
+  margin: -40px 0 0 -11px;
+  background: url('https://publiclab.org/assets/leaflet/dist/images/marker-icon.png');
+  background-size: 22px 40px;
+  pointer-events: none;
+}
+
 </style>
 
 <div class="container" >
@@ -23,8 +36,12 @@
     </div>
     <div class="col-md-4">
       <h3 class="font-size-small">On a map : </h3>
-      <%= render_map(17.4472, 78.3488, []) %>
-       <br/>
+        <%= render_map(17.4472, 78.3488, []) %>
+        <script>
+
+          addGrid(map);
+        </script>
+        <br/>
       <h3 class="font-size-small">In Text:</h3><br/>
       <input type="text" class="form-control"><br/>
     </div>
