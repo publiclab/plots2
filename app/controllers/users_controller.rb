@@ -11,9 +11,10 @@ class UsersController < ApplicationController
   def create
     # craft a publiclaboratory OpenID URI around the PL username given:
     params[:user][:openid_identifier] = "https://old.publiclab.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
-    @spamaway = Spamaway.new(params[:spamaway]) if params[:spamaway] || Rails.env != "production"
+    using_recaptcha = !params[:spamaway] && Rails.env == "production"
+    @spamaway = Spamaway.new(params[:spamaway]) unless using_recaptcha
     @user = User.new(params[:user])
-    if ((@spamaway && @spamaway.valid?) || recaptcha = verify_recaptcha(model: @user)) && @user.save({})
+    if ((@spamaway && @spamaway.valid?) || (using_recaptcha && recaptcha = verify_recaptcha(model: @user))) && @user.save({})
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
@@ -31,6 +32,8 @@ class UsersController < ApplicationController
         @spamaway.errors.full_messages.each do |message|
           @user.errors.add(:spam_detection, message)
         end
+      elsif using_recaptcha && recaptcha == false
+        flash.now[:warning] = "If you're having trouble creating an account, try <a href='/signup?spamaway=true'>the alternative signup form</a>"
       end
       # send all errors to the page so the user can try again
       @action = "create"
