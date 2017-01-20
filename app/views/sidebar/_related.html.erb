@@ -73,8 +73,6 @@
     <%= render partial: 'sidebar/notes', locals: { notes: @notes, title: I18n.t('sidebar._related.related_research_notes'), node: @node } %>
   <% end %>
 
-      <%= render_map(41, -88, []) %>
-
   <% if @maps && @maps.length > 0 && params[:controller] != "search" %>
 
     <br />
