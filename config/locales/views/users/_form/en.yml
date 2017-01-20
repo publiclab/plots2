@@ -9,7 +9,7 @@ en:
       change_password: "Change your password"
       password: "password"
       confirmation: "Confirmation"
-      confirm_password: "Confirm your password"
+      confirm_password: "Retype your password to confirm"
       bio: "Bio"
       add_bio: "Add a short bio to appear on your profile page"
       are_you_human: "Are you human?"
