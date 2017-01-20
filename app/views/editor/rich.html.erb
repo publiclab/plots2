@@ -98,7 +98,7 @@
       </div>
 
       <div class="ple-module-content col-md-9 container">
-        <textarea id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+        <textarea id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
       </div>
 
     </div>

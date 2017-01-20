@@ -206,4 +206,10 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
       assert_nil revision.body_preview.match("A title")
   end
 
+  test "should change ##header into ## header" do
+      revision = node(:one).latest
+      revision.body = "Some stuff about my post\n##A title\nsome more stuff about my post"
+      assert_equal "Some stuff about my post\n## A title\nsome more stuff about my post", revision.body_rich
+  end
+
 end
