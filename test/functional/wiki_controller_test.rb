@@ -59,15 +59,18 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get wiki page" do
+  test "should get wiki page and record unique views" do
     Impression.delete_all # clear uniques
-    assert_difference 'node(:about).totalviews', 1 do
+    assert_equal 0, node(:about).views
+    assert_equal 0, Impression.count
 
-      get :show, id: node(:about).id
+    assert_difference 'Impression.count', 1 do
+
+      get :show, id: node(:about).slug
+
+      assert_response :success
 
     end
-
-    assert_response :success
   end
 
   test "should get root-level (/about) wiki page" do
