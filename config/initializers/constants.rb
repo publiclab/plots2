@@ -1,6 +1,6 @@
 module Callouts
   FINDER = /(^|\W)\@([\w-]+)/
-  HASHTAG = /(\s)\#([[a-zA-Z]_-]+)/
+  HASHTAG = /(\s)\#([a-zA-Z0-9_-]+)/
   PRETTYLINKMD = '\1[@\2](/profile/\2)'
   HASHLINKMD = '\1[#\2](/tag/\2)'
   PRETTYLINKHTML = '\1<a href="/profile/\2">@\2</a>'
