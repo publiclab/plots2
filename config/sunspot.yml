@@ -6,7 +6,7 @@ production:
     read_timeout: 120
     log_level: WARNING
     path: "/solr/default"
-    disabled: true
+  disabled: true
 development:
   solr:
     hostname: localhost
