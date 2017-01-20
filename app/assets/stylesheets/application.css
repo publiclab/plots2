@@ -8,9 +8,8 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- 
+
  *= require bootstrap/dist/css/bootstrap.min.css
- *= require bootstrap-lightbox/build/bootstrap-lightbox.min.css
  *= require bootstrap-datepicker/dist/css/bootstrap-datepicker3.css
  *= require jquery-file-upload/css/jquery.fileupload-ui.css
  *= require leaflet/dist/leaflet.css
