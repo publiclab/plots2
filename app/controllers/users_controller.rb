@@ -11,35 +11,26 @@ class UsersController < ApplicationController
   def create
     # craft a publiclaboratory OpenID URI around the PL username given:
     params[:user][:openid_identifier] = "https://old.publiclab.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
-    @spamaway = Spamaway.new(params[:spamaway])
+    @spamaway = Spamaway.new(params[:spamaway]) if params[:spamaway] || Rails.env != "production"
     @user = User.new(params[:user])
-    if @spamaway.valid?
-#    if params[:user]
-      @user.save({}) do |result| # <<<<< THIS LINE WAS THE PROBLEM FOR "Undefined [] for True" error...
-        if result
-          if current_user.crypted_password.nil? # the user has not created a pwd in the new site
-            flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
-            redirect_to "/profile/edit"
-          else
-            @user.drupal_user.set_bio(params[:drupal_user][:bio])
-            @user.add_to_lists(['publiclaboratory'])
-            flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
-            flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
-            session[:openid_return_to] = nil
-            redirect_to "/dashboard"
-          end
-        else
-          # didn't create a new user!
-          @action = "create"
-          render :action => 'new'
-        end
+    if ((@spamaway && @spamaway.valid?) || recaptcha = verify_recaptcha(model: @user)) && @user.save({})
+      if current_user.crypted_password.nil? # the user has not created a pwd in the new site
+        flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
+        redirect_to "/profile/edit"
+      else
+        @user.drupal_user.set_bio(params[:drupal_user][:bio])
+        @user.add_to_lists(['publiclaboratory'])
+        flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
+        flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
+        session[:openid_return_to] = nil
+        redirect_to "/dashboard"
       end
     else
-      # register any user errors
-      @user.valid?
       # pipe all spamaway errors into the user error display
-      @spamaway.errors.full_messages.each do |message|
+      if @spamaway
+        @spamaway.errors.full_messages.each do |message|
           @user.errors.add(:spam_detection, message)
+        end
       end
       # send all errors to the page so the user can try again
       @action = "create"
