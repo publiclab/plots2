@@ -44,9 +44,27 @@ function addGrid(map)
       _clearLayer: function(e) {
         this._cells = [];
       },
-      _moveHandler: function(e){
-        this._renderCells(e.target.getBounds());
-      },
+       _moveHandler: function(e){
+   	 var offset = this._map.project(bounds.getNorthWest());
+   	 var center = bounds.getCenter();
+   	 var offsetX = this._origin.x - offset.x;
+   	 var offsetY = this._origin.y - offset.y;
+   	 var offsetRows = Math.round(offsetX / this._cellSize);
+   	 var offsetCols = Math.round(offsetY / this._cellSize);
+   	 for (var i = 0; i <= this._rows; i++) {
+   	   for (var j = 0; j <= this._cols; j++) {
+   	     var row = i-offsetRows;
+   	     var col = j-offsetCols;
+   	     var cellBounds = this._cellExtent(row, col);
+   	     if(cellBounds.getCenter().distanceTo(center) < this._cellSize)
+   	     {
+   	       this.style:{
+   	         fill: true,
+   	       }
+   	     }
+   	   }
+   	 }
+  	},
       _zoomHandler: function(e){
         this.clearLayers();
         this._renderCells(e.target.getBounds());
