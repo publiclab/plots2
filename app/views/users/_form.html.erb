@@ -57,7 +57,7 @@
  
     <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
 
-      <% if !params[:spamaway] || Rails.env == "production" %>
+      <% if Rails.env == "production" && !params[:spamaway] %>
 
         <%= recaptcha_tags %>
 
