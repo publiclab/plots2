@@ -207,6 +207,8 @@ GEM
     rdiscount (1.6.8)
     rdoc (3.12.2)
       json (~> 1.4)
+    recaptcha (4.0.1)
+      json
     ref (2.0.0)
     rest-client (2.0.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -327,6 +329,7 @@ DEPENDENCIES
   rake (~> 10.5.0)
   rb-readline
   rdiscount (= 1.6.8)
+  recaptcha
   rest-client
   rspec
   ruby-openid
@@ -342,6 +345,9 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   will_paginate (>= 3.0.6)
   will_paginate-bootstrap (>= 1.0.1)
+
+RUBY VERSION
+   ruby 2.1.2p95
 
 BUNDLED WITH
    1.13.7
