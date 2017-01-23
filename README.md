@@ -37,6 +37,7 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 4. [API](https://github.com/publiclab/plots2/wiki/API)
 5. [Bugs and Support](https://github.com/publiclab/plots2/wiki/Bugs-and-Support)
 6. [Data model](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md)
+7. [Recaptcha](https://github.com/publiclab/plots2/blob/master/doc/RECAPTCHA.md)
 
 ****
 ## Installation

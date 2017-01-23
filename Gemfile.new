@@ -64,7 +64,7 @@ gem 'georuby', '2.0'
 gem 'geokit-rails'
 gem 'rails_autolink'
 gem 'rb-readline'
-gem "paperclip", ">= 4.1.1"
+gem "paperclip", "~> 4.1.1"
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
 gem "authlogic", "3.2.0"
@@ -72,7 +72,6 @@ gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
 gem 'progress_bar'
 gem 'impressionist'
-gem "recaptcha", require: "recaptcha/rails"
 
 # RESTful API Support
 gem 'grape'
