@@ -280,7 +280,7 @@ class TagController < ApplicationController
     render template: 'locations/_form'
   end
 
-  def embed
+  def gridsEmbed
       render layout: false
   end
 

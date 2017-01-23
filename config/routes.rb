@@ -309,6 +309,6 @@ Plots2::Application.routes.draw do
 
   match ':controller(/:action(/:id))(.:format)'
 
-  match 'embed/:tagname' => 'notes#embed
+  match 'gridsEmbed/:tagname' => 'notes#embed
 
 end
