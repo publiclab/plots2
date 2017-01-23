@@ -33,7 +33,7 @@ class UsersController < ApplicationController
           @user.errors.add(:spam_detection, message)
         end
       elsif using_recaptcha && recaptcha == false
-        flash.now[:warning] = "If you're having trouble creating an account, try <a href='/signup?spamaway=true'>the alternative signup form</a>"
+        flash.now[:warning] = "If you're having trouble creating an account, try <a href='/signup?spamaway=true'>the alternative signup form</a>, or <a href='mailto:staff@publiclab.org'>ask staff for help</a>"
       end
       # send all errors to the page so the user can try again
       @action = "create"
