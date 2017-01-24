@@ -3,6 +3,9 @@ sudo: required
 services:
   - docker
 
+before_install:
+  - echo -e "repo_token:\n  $COVERALLS_REPO_TOKEN" >> ./.coveralls.yml
+
 install:
   - cp config/database.yml.example config/database.yml
   - cp db/schema.rb.example db/schema.rb
@@ -13,4 +16,4 @@ install:
   - docker-compose run web bower install --allow-root
 
 script:
-  - docker-compose run web bash -c "rake test:all"
+  - docker-compose run -e CI=TRUE web bash -c "rake test:all"
