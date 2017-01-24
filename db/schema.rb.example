@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170111153001) do
+ActiveRecord::Schema.define(:version => 20170120160451) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -255,12 +255,6 @@ ActiveRecord::Schema.define(:version => 20170111153001) do
     t.integer "grant_view",   :limit => 1, :default => 0,  :null => false
     t.integer "grant_update", :limit => 1, :default => 0,  :null => false
     t.integer "grant_delete", :limit => 1, :default => 0,  :null => false
-  end
-
-  create_table "node_counter", :primary_key => "nid", :force => true do |t|
-    t.integer "totalcount", :limit => 8, :default => 0, :null => false
-    t.integer "daycount",   :limit => 3, :default => 0, :null => false
-    t.integer "timestamp",               :default => 0, :null => false
   end
 
   create_table "node_revisions", :primary_key => "vid", :force => true do |t|
