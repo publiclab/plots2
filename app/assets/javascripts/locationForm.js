@@ -58,7 +58,7 @@ function addGrid(map)
    	     var cellBounds = this._cellExtent(row, col);
    	     if(cellBounds.getCenter().distanceTo(center) < this._cellSize)
    	     {
-   	       this.style:{
+   	       style: {
    	         fill: true,
    	       }
    	     }
