@@ -15,6 +15,8 @@
 # def liked
 
 require 'test_helper'
+include ActionView::Helpers::TextHelper
+include ApplicationHelper
 
 class WikiControllerTest < ActionController::TestCase
 
@@ -346,6 +348,31 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:node)
     assert_not_nil assigns(:revision)
+    # we subselect because for some reason the view is not returning the `<p>` and `</p>\n` wrapped
+    # ... messy, but couldn't find a way to disable simple_format() on the second parameter here.
+    assert_select "div#content", auto_link(insert_extras(revision.render_body), :sanitize => false)[3..-6]
+  end
+
+  test "should display individual revision that is not the latest" do
+    revision = node_revisions(:about_rev_2)
+
+    get :revision, id: revision.parent.slug, vid: revision.vid
+
+    assert_template "show"
+    assert_response :success
+    assert_not_nil assigns(:node)
+    assert_not_nil assigns(:revision)
+    assert_select "div#content", auto_link(insert_extras(revision.render_body), :sanitize => false)[3..-6]
+  end
+
+  test "should display individual raw revision" do
+
+    revision = node_revisions(:about)
+
+    get :raw, id: revision.vid
+
+    assert_response :success
+    assert_equal @response.body, revision.body
   end
 
   test "should display error message for invalid revision" do
