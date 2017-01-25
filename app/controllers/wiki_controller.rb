@@ -64,7 +64,7 @@ class WikiController < ApplicationController
       @wikis = Tag.find_pages(@node.slug_from_path,30) if @node.has_tag('chapter') || @node.has_tag('tabbed:wikis')
 
       impressionist(@node, 'show', :unique => [:ip_address])
-      @revision = @node.latest
+      @revision = @node.latest # needed for template, so it can be used for past revisions too in the "revision" action
       @title = @revision.title
     end
     @unpaginated = true

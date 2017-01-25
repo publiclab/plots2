@@ -7,8 +7,16 @@ one:
 about:
   nid: 2
   uid: 2
+  vid: 1
   title: About
   body: All about Public Lab
+
+about_rev_2:
+  nid: 2
+  vid: 2
+  uid: 2
+  title: About
+  body: All about Public Lab, AGAIN
 
 three:
   nid: 3
