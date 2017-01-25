@@ -4,7 +4,6 @@ Make sure these boxes are checked before your pull request is ready to be review
 * [ ] code is in uniquely-named feature branch, and has been rebased on top of latest master (especially if you've been asked to make additional changes)
 * [ ] pull request is descriptively named with #number reference back to original issue
 * [ ] if possible, multiple commits squashed if they're smaller changes
-* [ ] reviewed/confirmed/tested by another contributor or maintainer
 * [ ] `schema.rb.example` has been updated if any database migrations were added
 
 Please be sure you've reviewed our contribution guidelines at https://publiclab.org/wiki/contributing-to-public-lab-software
