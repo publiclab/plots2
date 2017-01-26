@@ -1,5 +1,7 @@
 function addGrid(map)
- {function create_cell_style(fill) {
+ {
+   // A function to return the style of a cell
+   function create_cell_style(fill) {
    return {
        stroke: true,
        color: '#3ac1f0',
@@ -15,7 +17,7 @@ function addGrid(map)
 
        clickable: true
      }
- }
+   }
  L.VirtualGrid = L.FeatureGroup.extend({
    include: L.Mixin.Events,
    options: {
@@ -131,4 +133,4 @@ function addGrid(map)
  L.virtualGrid({
    cellSize: 64
  }).addTo(map);
- }
+}
