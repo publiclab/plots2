@@ -11,6 +11,12 @@ class SearchesControllerTest < ActionController::TestCase
     UserSession.create(@user)
   end
 
+  test 'should get search test action' do
+    get :test
+    assert_not_nil :search
+    assert_response :success
+  end
+
   test 'should get index' do
     get :index
     assert_response :success

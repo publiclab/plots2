@@ -8,6 +8,13 @@ class SearchesController < ApplicationController
     @searches = SearchRecord.all
   end
 
+  def test
+    @search = DrupalNode.search do
+      fulltext 'spectrometer'
+    end
+    render text: @search.inspect
+  end
+
   def new
     # Rendering advanced search form
     @title = 'Advanced search'
