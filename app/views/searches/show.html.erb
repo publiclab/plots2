@@ -28,7 +28,7 @@
                     <div class="panel panel-default">
                       <p> Your search - <strong><%= @search.key_words %> </strong> - </p>
                       <p>did not match any documents.</p>
-                      <a href="<%= search_dynamic_url + '/'+ @search.key_words %>">Try Dynamic search</a>
+                      <a href="<%= search_dynamic_url.to_s + '/'+ @search.key_words.to_s %>">Try Dynamic search</a>
                     </div>
                   </div>
                 </div>
