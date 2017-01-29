@@ -61,14 +61,12 @@ function addGrid(map)
      for (var i = cells.length - 1; i >= 0; i--) {
        var cell = cells[i];
 
-       if(this._loadedCells.indexOf(cell.id) === -1){
          var should_fill_cell = cell.id == this.focused_cell_id;
          (function(cell, i){
            var cur_style = create_cell_style(should_fill_cell);
            setTimeout(this.addLayer.bind(this, L.rectangle(cell.bounds, cur_style)), this.options.delayFactor*i);
          }.bind(this))(cell, i);
          this._loadedCells.push(cell.id);
-       }
      }
    },
    _resizeHandler: function(e) {
