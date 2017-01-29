@@ -48,6 +48,7 @@ function addGrid(map)
      this._cells = [];
    },
    _moveHandler: function(e){
+     this.clearLayers();
      this._renderCells(e.target.getBounds());
    },
    _zoomHandler: function(e){
