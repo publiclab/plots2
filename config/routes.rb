@@ -78,6 +78,7 @@ Plots2::Application.routes.draw do
   match 'subscriptions' => 'subscription#index'
 
   match 'wiki/new' => 'wiki#new'
+  match 'wiki/replace/:id' => 'wiki#replace'
   match 'wiki/popular' => 'wiki#popular'
   match 'wiki/liked' => 'wiki#liked'
   match 'wiki/create' => 'wiki#create'
