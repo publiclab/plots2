@@ -320,7 +320,7 @@ class WikiController < ApplicationController
   def replace
     @node = DrupalNode.find(params[:id])
     if params[:before] && params[:after]
-      if @node.replace(params[:before], params[:after], current_user)
+      if output = @node.replace(params[:before], params[:after], current_user)
         flash[:notice] = "New revision created with your additions."
       else
         flash[:error] = "There was a problem replacing that text."
@@ -328,7 +328,11 @@ class WikiController < ApplicationController
     else
       flash[:error] = "You must specify 'before' and 'after' terms to replace content in a wiki page."
     end
-    redirect_to @node.path
+    if request.xhr?
+      render json: output
+    else
+      redirect_to @node.path
+    end
   end
 
 end

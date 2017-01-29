@@ -119,8 +119,12 @@
   </div>
 
 </div><!--/span-->
-<% if @fancy %>
 <script>
-(function(){ $('#content img').addClass('img-rounded') })()
+(function(){
+  <% if @fancy %>
+    $('#content img').addClass('img-rounded');
+  <% end %>
+  // insert inline forms
+  $('#content').html(shortCodePrompt($('#content')[0], { submitUrl: '/wiki/replace/1' }));
+})()
 </script>
-<% end %>

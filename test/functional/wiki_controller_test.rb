@@ -458,6 +458,28 @@ class WikiControllerTest < ActionController::TestCase
     assert_redirected_to node.path
   end
 
+  test "replacing content in a node with replace action via JavaScript/AJAX" do
+    UserSession.create(rusers(:jeff))
+    node = node(:about)
+    assert !node.latest.body.include?("Private")
+    assert node.latest.body.include?("Public")
+
+    assert_difference 'DrupalNodeRevision.count' do
+      assert_difference "DrupalNode.find(#{node.id}).revisions.count" do
+
+        xhr :post, :replace, id: node.id, before: "Public", after: "Private"
+
+      end
+    end
+
+    assert node.latest.body.include?("Private")
+    assert !node.latest.body.include?("Public")
+
+    assert_equal 'true', response.body
+    assert_equal "All about Private Lab", DrupalNode.find(node.id).body
+    assert_response :success
+  end
+
   test "redirect normal user to tagged page" do
     wiki = node(:wiki_page)
     slug = wiki.path.gsub('/wiki/', '')
