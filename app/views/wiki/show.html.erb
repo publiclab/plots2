@@ -125,6 +125,6 @@
     $('#content img').addClass('img-rounded');
   <% end %>
   // insert inline forms
-  $('#content').html(shortCodePrompt($('#content')[0], { submitUrl: '/wiki/replace/1' }));
+  $('#content').html(shortCodePrompt($('#content')[0], { submitUrl: '/wiki/replace/<%= @node.id %>' }));
 })()
 </script>
