@@ -59,7 +59,7 @@ class CommentController < ApplicationController
 
   def update
     @comment = Comment.find params[:id]
-    
+
     comments_node_and_path
 
     if @comment.uid == current_user.uid
@@ -67,11 +67,11 @@ class CommentController < ApplicationController
       @comment.comment = params[:body]
       if @comment.save
         flash[:notice] = "Comment updated."
-        redirect_to @path
+        redirect_to @path + "?_=" + Time.now.to_i.to_s
       else
         flash[:error] = "The comment could not be updated."
         redirect_to @path
-      end 
+      end
     else
       flash[:error] = "Only the author of the comment can edit it."
       redirect_to @path
