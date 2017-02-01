@@ -17,6 +17,8 @@ class CommentMailerTest < ActionMailer::TestCase
   end
 
   test "notify tag followers" do
+    # users = userss_following_tag(:tag)
+    # comment = comments(:comment_tag)
     user = rusers(:bob)
     comment = comments(:comment_tag)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
