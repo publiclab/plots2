@@ -5,7 +5,7 @@ PublicLab.org
 [![badge](http://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://github.com/publiclab/plots2/projects/2)
 [![Join the chat at https://gitter.im/publiclab/publiclab](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/publiclab/publiclab)
 [![Code Climate](https://codeclimate.com/github/publiclab/plots2/badges/gpa.svg)](https://codeclimate.com/github/publiclab/plots2)
-[![Coverage Status](https://coveralls.io/repos/github/publiclab/plots2/badge.svg?branch=master)](https://coveralls.io/github/publiclab/plots2?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/publiclab/plots2/badge.svg?branch=HEAD)](https://coveralls.io/github/publiclab/plots2?branch=HEAD)
 
 The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about [the data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
 
