@@ -65,6 +65,8 @@ class WikiControllerTest < ActionController::TestCase
     Impression.delete_all # clear uniques
     assert_equal 0, node(:about).views
     assert_equal 0, Impression.count
+    node(:about).latest.body = "## Greetings!"
+    node(:about).save
 
     assert_difference 'Impression.count', 1 do
 
@@ -73,6 +75,7 @@ class WikiControllerTest < ActionController::TestCase
       assert_response :success
 
     end
+    assert_select "#content-raw-markdown", insert_extras(node(:about).body)
   end
 
   test "should get root-level (/about) wiki page" do

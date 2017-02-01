@@ -106,6 +106,9 @@
       <div<% unless @node.has_tag('style:wide') %> style="overflow:hidden;max-width:800px;"<% end %> id="content">
       <%= raw auto_link(insert_extras(@revision.render_body), :sanitize => false) %>
       </div>
+      <div<% unless params[:raw] %> style="display:none;"<% end %> id="content-raw-markdown">
+        <%= raw insert_extras(@revision.body) %>
+      </div>
     </div>
 
   </div>
