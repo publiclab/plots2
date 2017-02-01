@@ -78,7 +78,7 @@ class CommentControllerTest < ActionController::TestCase
          body: new_comment_body
     comment.reload
     assert_equal new_comment_body, comment.comment
-    assert_redirected_to comment.node.path
+    assert_redirected_to comment.node.path+ "?_=" + Time.now.to_i.to_s
     assert_equal flash[:notice], "Comment updated."
   end
 
@@ -92,7 +92,7 @@ class CommentControllerTest < ActionController::TestCase
          type: "question"
     comment.reload
     assert_equal new_comment_body, comment.comment
-    assert_redirected_to comment.node.path(:question)
+    assert_redirected_to comment.node.path(:question)+ "?_=" + Time.now.to_i.to_s
     assert_equal flash[:notice], "Comment updated."
   end
 
@@ -106,7 +106,7 @@ class CommentControllerTest < ActionController::TestCase
          type: "question"
     comment.reload
     assert_equal new_comment_body, comment.comment
-    assert_redirected_to comment.answer.node.path(:question)
+    assert_redirected_to comment.answer.node.path(:question)+ "?_=" + Time.now.to_i.to_s
     assert_equal flash[:notice], "Comment updated."
   end
 
@@ -129,7 +129,7 @@ class CommentControllerTest < ActionController::TestCase
          id: comment.id,
          body: new_comment_body
     comment.reload
-    assert_not_equal new_comment_body, comment.comment 
+    assert_not_equal new_comment_body, comment.comment
     assert_redirected_to comment.node.path
     assert_equal flash[:error], "Only the author of the comment can edit it."
   end
