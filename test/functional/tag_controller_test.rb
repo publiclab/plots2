@@ -375,5 +375,12 @@ class TagControllerTest < ActionController::TestCase
       assert_equal I18n.t('tag_controller.tag_already_exists'), assigns['output']['errors'][0]
     end
   end
+  
+  test "shows embeddable grid of tagged content" do
+    get :gridsEmbed, tagname: 'spectrometer'
+
+    assert_response :success
+    assert_select "table" # ensure a table is shown
+  end
 
 end
