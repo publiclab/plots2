@@ -281,7 +281,7 @@ class TagController < ApplicationController
   end
 
   def gridsEmbed
-      render layout: false
+    render layout: false
   end
 
 end
