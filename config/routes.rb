@@ -158,6 +158,7 @@ Plots2::Application.routes.draw do
   match 'contributors/:id' => 'tag#contributors'
   match 'contributors' => 'tag#contributors_index'
   match 'tags' => 'tag#index'
+  match 'embed/grid/:tagname' => 'tag#gridsEmbed'
   match 'tag/suggested/:id' => 'tag#suggested'
   match 'tag/author/:id.json' => 'tag#author'
   match 'tag/create/:nid' => 'tag#create'
@@ -309,7 +310,5 @@ Plots2::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
 
   match ':controller(/:action(/:id))(.:format)'
-
-  match 'gridsEmbed/:tagname' => 'notes#embed'
 
 end
