@@ -107,7 +107,7 @@
       <%= raw auto_link(insert_extras(@revision.render_body), :sanitize => false) %>
       </div>
       <div<% unless params[:raw] %> style="display:none;"<% end %> id="content-raw-markdown">
-        <%= raw insert_extras(@revision.render_body) %>
+        <%= raw insert_extras(@revision.body) %>
       </div>
     </div>
 
