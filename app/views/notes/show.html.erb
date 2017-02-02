@@ -50,7 +50,7 @@
           | <i class="fa fa-comment"></i>
           <a href="#comments"> <%= @node.comments.length %> <%= t('notes.show.comments') %> </a>
         <% end %>
-        | <a href="/n/<%= @node.id %>"><%= t('notes.show.shortlink') %> </a>
+          | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="hidden-xs hidden-sm hidden-md"><a href="/n/<%= @node.id %>">/n/<%= @node.id %></a></span>
       </span>
       <span class="hidden-lg">
         <%= @node.created_at.to_s(:short) %>
