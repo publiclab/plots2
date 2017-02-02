@@ -103,12 +103,10 @@
     <% end %>
 
     <div class="tab-pane active" id="tab-overview">
-      <div<% unless @node.has_tag('style:wide') %> style="overflow:hidden;max-width:800px;"<% end %> id="content">
-      <%= raw auto_link(insert_extras(@revision.render_body), :sanitize => false) %>
+      <div <% unless @node.has_tag('style:wide') %>style="overflow:hidden;max-width:800px;"<% end %> id="content">
+        <%= raw auto_link(insert_extras(@revision.render_body), :sanitize => false) %>
       </div>
-      <div<% unless params[:raw] %> style="display:none;"<% end %> id="content-raw-markdown">
-        <%= raw insert_extras(@revision.body) %>
-      </div>
+      <div style="display:none;" id="content-raw-markdown"><%= raw insert_extras(@revision.body) %></div>
     </div>
 
   </div>
@@ -122,12 +120,17 @@
   </div>
 
 </div><!--/span-->
+
+<script src="/assets/wikis.js" type="text/javascript"></script>
+
 <script>
 (function(){
+
   <% if @fancy %>
     $('#content img').addClass('img-rounded');
   <% end %>
-  // insert inline forms
-  $('#content').html(shortCodePrompt($('#content')[0], { submitUrl: '/wiki/replace/<%= @node.id %>' }));
+
+  setupWiki(<%= @node.id %>, <%= params[:raw] == 'true' %>);
+
 })()
 </script>

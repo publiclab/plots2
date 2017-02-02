@@ -24,6 +24,7 @@
 //= require flot/jquery.flot.crosshair.js
 //= require jsdiff.js
 //= require marked/lib/marked.js
+//= require megamark/dist/megamark.min.js
 //= require ics/ics.deps.min.js
 //= require ics/ics.min.js
 //= require leaflet/dist/leaflet
