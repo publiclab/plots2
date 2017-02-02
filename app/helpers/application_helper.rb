@@ -29,7 +29,7 @@ module ApplicationHelper
   end
 
   def insert_extras(body)
-    body = body.gsub(/\[notes\:(.+)\]/) do |tagname|
+    body = body.gsub(/[\<p\>]?\[notes\:(.+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
       className = 'notes-grid-' + $1.parameterize
       output  = '<p><table class="table inline-grid notes-grid ' + className + ' ' + className + '-' + randomSeed + '">'
@@ -57,7 +57,7 @@ module ApplicationHelper
       output
     end
 
-    body = body.gsub(/\[activities\:(.+)\]/) do |tagname|
+    body = body.gsub(/[\<p\>]?\[activities\:(.+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
       className = 'activity-grid-' + $1.parameterize
       output  = '<p><table class="table inline-grid activity-grid ' + className + ' ' + className + '-' + randomSeed + '">'
@@ -90,7 +90,7 @@ module ApplicationHelper
       output
     end
 
-    body = body.gsub(/\[upgrades\:(.+)\]/) do |tagname|
+    body = body.gsub(/[\<p\>]?\[upgrades\:(.+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
       className = 'upgrades-grid-' + $1.parameterize
       output  = '<p><table class="table inline-grid upgrades-grid ' + className + ' ' + className + '-' + randomSeed + '">'
