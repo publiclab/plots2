@@ -36,7 +36,7 @@
         <span class="hidden-sm hidden-xs">
           <%= number_with_delimiter(@node.totalviews) %> <%= t('wiki.show.views') %> |
           <%= raw t('wiki.show.last_edited', :url1 => "/profile/"+@revision.author.name, :author => @revision.author.name, :time => time_ago_in_words(@revision.created_at)) %>
-          | <a href="/n/<%= @node.id %>"><%= t('wiki.show.shortlink') %></a>
+          | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="hidden-xs hidden-sm hidden-md"><a href="/n/<%= @node.id %>">/n/<%= @node.id %></a></span>
         </span>
       </div>
 
@@ -45,10 +45,10 @@
         <% if @node.has_tag('locked') && (current_user ? (current_user.role != "moderator" && current_user.role != "admin") : true) %>
           <li><a href="/wiki/edit/locked"><i class="fa fa-lock"></i></a></li>
         <% else %>
-          <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="fa fa-pencil"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.edit') %></span></a></li>
+          <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="fa fa-pencil"></i><span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.edit') %></span></a></li>
         <% end %>
-        <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => I18n.t('wiki.show.are_you_sure_delete', :path => @node.path) do %><i class="fa fa-trash"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.delete') %></span><% end %></li><% end %>
-        <li><a href="/talk/<%= @node.slug_from_path %>"><i class="fa fa-comments-o"></i><span class="hidden-xs hidden-sm"> <%= t('wiki.show.talk') %></span></a></li>
+        <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => I18n.t('wiki.show.are_you_sure_delete', :path => @node.path) do %><i class="fa fa-trash"></i><span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.delete') %></span><% end %></li><% end %>
+        <li><a href="/talk/<%= @node.slug_from_path %>"><i class="fa fa-comments-o"></i><span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.talk') %></span></a></li>
         <li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><span class="hidden-xs"><%= @node.revisions.length %> </span><i class="fa fa-list"></i></a></li>
       </ul>
     </div>
