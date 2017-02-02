@@ -34,6 +34,7 @@ class EditorControllerTest < ActionController::TestCase
     assert_select "h3", "Share your work"
     assert_select "span.moderation-notice", false
     assert_select "#taginput[value=?]", "one,two"
+    assert_select "#event-info"
   end
 
   test "should get post form" do
