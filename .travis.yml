@@ -1,4 +1,6 @@
 sudo: required
+rvm:
+  - 2.1.2
 
 services:
   - docker
@@ -14,6 +16,8 @@ install:
   - docker-compose run web bash -c "rake db:setup"
   - docker-compose run web bash -c "rake db:migrate"
   - docker-compose run web bower install --allow-root
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger; fi'
 
 script:
   - docker-compose run -e CI=TRUE web bash -c "rake test:all"
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then danger --verbose; fi'
