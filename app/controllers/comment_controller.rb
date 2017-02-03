@@ -46,11 +46,16 @@ class CommentController < ApplicationController
       comment: params[:body],
       timestamp: Time.now.to_i
     )
+
     if @comment.save
       @comment.answer_comment_notify(current_user)
       respond_to do |format|
         format.js { render template: "comment/create" }
       end
+
+   ##!!!!   @comment.notify_tag_followers(current_user)
+
+
     else
       flash[:error] = "The comment could not be saved."
       render :text => "failure"

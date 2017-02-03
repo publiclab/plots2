@@ -130,4 +130,9 @@ class Comment < ActiveRecord::Base
     notify_users(uids, current_user)
   end
 
+  def notify_tag_followers(current_user)
+
+    notify_users(uids, current_user)
+  end
+
 end
