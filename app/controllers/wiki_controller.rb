@@ -335,4 +335,9 @@ class WikiController < ApplicationController
     end
   end
 
+  def methods
+    @notes = []
+    @unpaginated = true
+  end
+
 end

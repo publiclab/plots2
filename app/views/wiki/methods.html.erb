@@ -1,33 +1,61 @@
+<style>
+  h2 {
+    text-align: center;
+    margin-bottom: 0;
+    padding-top: 20px;
+  }
+  #methods {
+    columns: 3;
+    padding-left: 15%;
+    margin-bottom: 30px;
+  }
+</style>
+
 <div class="col-md-12">
 
-    <div style="text-align:center;">
-      <h1 style="font-size:3.4em;margin-top:40px;"><%= raw t('notes.tools_places.tools_and_techniques') %></h1>
-      <h4 style="color:#888;"><%= raw t('notes.tools_places.subtitle') %></h4>
-      <p><i>Public Lab's community collaboratively develops many different techniques and methods for DIY environmental monitoring. Browse many of them here and learn how to get involved.</i></p>
-    </div>
-
-  <hr />
+  <div style="text-align:center;">
+    <h1 style="font-size:3.4em;margin-top:40px;"><%= raw t('notes.tools_places.tools_and_techniques') %></h1>
+    <h4 style="color:#888;"><%= raw t('notes.tools_places.subtitle') %></h4>
+    <p><i>Public Lab's community collaboratively develops many different techniques and methods for DIY environmental monitoring.</i></p>
+    <p><i>Browse many of them here and learn how to get involved.</i></p>
+  </div>
 
   <div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-      <ul style="columns:3;">
- agriculture
- drinking-water
- fracking
- indoor-air
- chemicals
- industry
- land-use
- land-change
- mining
- oil-and-gas
- transportation
- urban-planning
- sensors
-      </ul>
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+<% topics = [
+ "agriculture",
+ "drinking-water",
+ "fracking",
+ "indoor-air",
+ "chemicals",
+ "industry",
+ "land-use",
+ "land-change",
+ "mining",
+ "oil-and-gas",
+ "transportation",
+ "urban-planning",
+ "sensors"
+] %>
+      <div id="methods">
+        <% topics.each do |topic| %>
+          <div><a><%= topic %></a></div>
+        <% end %>
+      </div>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-md-3"></div>
+    <form class="search col-md-6">
+      <input class="form-control input-lg" type="text" placeholder="Begin typing a topic" />
+    </form>
+  </div>
+
+  <p><center>Find methods by topic or choose from the categories above.</center></p>
+
+  <h2>Recently updated</h2>
 
   <%= render :partial => "notes/notes" %>
 

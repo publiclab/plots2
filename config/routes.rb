@@ -108,6 +108,7 @@ Plots2::Application.routes.draw do
   match 'places' => 'notes#places'
   match 'tools' => 'notes#tools'
   match 'methods' => 'notes#methods'
+  match 'methods2' => 'wiki#methods'
   match 'techniques' => 'notes#techniques'
 
   match 'report/:id' => 'legacy#report'
