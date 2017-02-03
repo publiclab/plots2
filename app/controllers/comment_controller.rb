@@ -52,10 +52,6 @@ class CommentController < ApplicationController
       respond_to do |format|
         format.js { render template: "comment/create" }
       end
-
-   ##!!!!   @comment.notify_tag_followers(current_user)
-
-
     else
       flash[:error] = "The comment could not be saved."
       render :text => "failure"

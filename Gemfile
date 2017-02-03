@@ -35,6 +35,7 @@ end
 group :development do
   gem "nifty-generators"
   gem 'byebug'
+  gem 'better_errors'
 end
 
 # run with `bundle install --without test` to exclude these

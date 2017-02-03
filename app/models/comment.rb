@@ -105,18 +105,26 @@ class Comment < ActiveRecord::Base
 
     already = self.mentioned_users.collect(&:uid) + [self.parent.uid]
     uids = []
+
+    hastag = self.comment.gsub(Callouts.const_get(:HASHTAG))
+    uids_tag_followers = Tag.followers(hastag)
+    puts "debugging the model"
+    puts "#{hastag}"
+    puts "debugging the model"
+         #CommentMailer.notify_tag_followers(self.answer.author,"ballon").deliver
+
     # notify other commenters, and likers, but not those already @called out
-    (self.parent.comments.collect(&:uid) + self.parent.likers.collect(&:uid)).uniq.each do |u|
+    (self.parent.comments.collect(&:uid) + self.parent.likers.collect(&:uid)+uids_tag_followers).uniq.each do |u|
       uids << u unless already.include?(u)
     end
 
-    uids_tag_followers()
 
     notify_users(uids, current_user)
   end
 
   def answer_comment_notify(current_user)
     # notify answer author
+
     if self.answer.uid != current_user.uid
       CommentMailer.notify_answer_author(self.answer.author,self).deliver
     end
@@ -131,14 +139,7 @@ class Comment < ActiveRecord::Base
       uids << u unless already.include?(u)
     end
 
-    #tag_followers(self.body)
-
     notify_users(uids, current_user)
-  end
-
-  def tag_followers(tag)
-
-    puts "hola"
   end
 
 end

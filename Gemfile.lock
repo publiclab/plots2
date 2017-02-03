@@ -36,12 +36,17 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
+    better_errors (2.1.1)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+      rack (>= 0.9.0)
     builder (3.0.4)
     byebug (9.0.5)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
+    coderay (1.1.1)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     coffee-rails (3.2.2)
@@ -306,6 +311,7 @@ PLATFORMS
 
 DEPENDENCIES
   authlogic (= 3.2.0)
+  better_errors
   byebug
   coffee-rails (~> 3.2.1)
   composite_primary_keys
@@ -366,4 +372,4 @@ RUBY VERSION
    ruby 2.1.2p95
 
 BUNDLED WITH
-   1.13.7
+   1.14.3
