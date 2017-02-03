@@ -94,7 +94,9 @@ class Comment < ActiveRecord::Base
 
   # email all users in this thread
   # plus all who've starred it
+  # plus followers of
   def notify(current_user)
+
     if self.parent.uid != current_user.uid
       CommentMailer.notify_note_author(self.parent.author,self).deliver
     end
@@ -107,6 +109,8 @@ class Comment < ActiveRecord::Base
     (self.parent.comments.collect(&:uid) + self.parent.likers.collect(&:uid)).uniq.each do |u|
       uids << u unless already.include?(u)
     end
+
+    uids_tag_followers()
 
     notify_users(uids, current_user)
   end
@@ -127,12 +131,14 @@ class Comment < ActiveRecord::Base
       uids << u unless already.include?(u)
     end
 
+    #tag_followers(self.body)
+
     notify_users(uids, current_user)
   end
 
-  def notify_tag_followers(current_user)
+  def tag_followers(tag)
 
-    notify_users(uids, current_user)
+    puts "hola"
   end
 
 end

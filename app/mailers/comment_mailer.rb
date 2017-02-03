@@ -40,10 +40,10 @@ class CommentMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "New comment on your answer on '" + comment.parent.title + "'")
   end
 
-  def notify_tag_followers(user, comment)
+  def notify_tag_followers(user, tag)
     @user = user
-    @comment = comment
+    @tag = tag
     @footer = feature('email-footer')
-    mail(:to => user.email, :subject => "New action on a tag you are following '" + comment.parent.title + "'")
+    mail(:to => user.email, :subject => "New action on a tag you are following '" + tag.name + "'")
   end
 end
