@@ -32,7 +32,9 @@ module ApplicationHelper
     body = body.gsub(/[\<p\>]?\[notes\:(.+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
       className = 'notes-grid-' + $1.parameterize
-      output  = '<p><table class="table inline-grid notes-grid ' + className + ' ' + className + '-' + randomSeed + '">'
+      output = ''
+      output += '<p>' if tagname[0..2] == '<p>'
+      output += '<table class="table inline-grid notes-grid ' + className + ' ' + className + '-' + randomSeed + '">'
       output += '  <tr>'
       output += '    <th><a data-type="title">Title</a></th>'
       output += '    <th><a data-type="author">Author</a></th>'
@@ -60,7 +62,9 @@ module ApplicationHelper
     body = body.gsub(/[\<p\>]?\[activities\:(.+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
       className = 'activity-grid-' + $1.parameterize
-      output  = '<p><table class="table inline-grid activity-grid ' + className + ' ' + className + '-' + randomSeed + '">'
+      output = ''
+      output += '<p>' if tagname[0..2] == '<p>'
+      output += '<table class="table inline-grid activity-grid ' + className + ' ' + className + '-' + randomSeed + '">'
       output += '  <tr>'
       output += '    <th><a data-type="title">Purpose</a></th>'
       output += '    <th><a data-type="category">Category</a></th>'
@@ -93,7 +97,9 @@ module ApplicationHelper
     body = body.gsub(/[\<p\>]?\[upgrades\:(.+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
       className = 'upgrades-grid-' + $1.parameterize
-      output  = '<p><table class="table inline-grid upgrades-grid ' + className + ' ' + className + '-' + randomSeed + '">'
+      output = ''
+      output += '<p>' if tagname[0..2] == '<p>'
+      output += '<table class="table inline-grid upgrades-grid ' + className + ' ' + className + '-' + randomSeed + '">'
       output += '  <tr>'
       output += '    <th><a data-type="title">Title</a></th>'
       output += '    <th><a data-type="status">Status</a></th>'
