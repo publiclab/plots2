@@ -511,4 +511,14 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
   end
 
+  test "Pages with invalid date formatting still render" do
+    @node = node(:wiki_page)
+    @node.add_tag('date:bad', rusers(:jeff))
+
+    assert_equal "anything goes", DateTime.strptime(@node.power_tag('date'),'%m- %d-%Y').to_date.to_s(:long)
+
+    get :show, id: @node.slug
+    assert_response :success
+  end
+
 end

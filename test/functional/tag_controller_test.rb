@@ -40,7 +40,7 @@ class TagControllerTest < ActionController::TestCase
         id: 'question:*'
 
     assert_template :contributors
-    assert_tag tag: 'p', 
+    assert_tag tag: 'p',
                child: /No contributors for that tag/
   end
 
@@ -59,7 +59,7 @@ class TagControllerTest < ActionController::TestCase
     UserSession.create(rusers(:bob))
 
     post :create,
-         name: 'with:bob',
+         name: 'with:Bob',
          nid: node(:one).nid # authored by jeff, not bob
 
     assert_redirected_to(node(:one).path)
@@ -156,7 +156,7 @@ class TagControllerTest < ActionController::TestCase
     assert_equal node.main_image,           json.first['image'] # this won't check anything bc there is no main image
     assert_equal node.tags.collect(&:name), json.first['tags']
   end
-  
+
   test "wildcard tag show" do
     get :show, id: 'question:*'
     assert :success
@@ -219,7 +219,7 @@ class TagControllerTest < ActionController::TestCase
     assert_difference 'Comment.count' do
       node = DrupalNode.where(type: 'note').last
 
-      post :barnstar, 
+      post :barnstar,
            nid: node.nid,
            star: "basic"
 
@@ -308,7 +308,7 @@ class TagControllerTest < ActionController::TestCase
     tag2.parent = ""
     tag2.save
 
-    assert_equal 'spectrometry', tag.parent 
+    assert_equal 'spectrometry', tag.parent
     assert_equal '',             tag2.parent
     node(:blog).add_tag('spectrometry', rusers(:bob))
     assert node(:blog).has_tag_without_aliasing('spectrometry')
@@ -359,16 +359,16 @@ class TagControllerTest < ActionController::TestCase
     assert_equal 4, assigns(:suggestions).length
     assert_equal ["question:spectrometer","spectrometer","activity:spectrometer","activities:spectrometer"], JSON.parse(response.body)
   end
-  
+
   test "should choose I18n for tag controller" do
     available_testing_locales.each do |lang|
       old_controller = @controller
       @controller = SettingsController.new
-      
+
       get :change_locale, :locale => lang.to_s
-      
+
       @controller = old_controller
-      
+
       UserSession.create(rusers(:bob))
       post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
       post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
