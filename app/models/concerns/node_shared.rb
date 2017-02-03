@@ -11,11 +11,10 @@ module NodeShared
 
   # rubular regex: http://rubular.com/r/DEDLmSCtDU
   def self.notes_grid(body, page = 1)
-    body.gsub(/[^`][\<p\>]?\[notes\:(\S+)\]/) do |tagname|
+    body.gsub(/[^\>`](\<p\>)?\[notes\:(\S+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
-      className = 'notes-grid-' + $1.parameterize
+      className = 'notes-grid-' + $2.parameterize
       output = ''
-      output += '<p>' if tagname[0..2] == '<p>'
       output += '<table class="table inline-grid notes-grid ' + className + ' ' + className + '-' + randomSeed + '">'
       output += '  <tr>'
       output += '    <th><a data-type="title">Title</a></th>'
@@ -42,9 +41,9 @@ module NodeShared
   end
 
   def self.activities_grid(body)
-    body.gsub(/[^`][\<p\>]?\[activities\:(\S+)\]/) do |tagname|
+    body.gsub(/[^\>`](\<p\>)?\[activities\:(\S+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
-      className = 'activity-grid-' + $1.parameterize
+      className = 'activity-grid-' + $2.parameterize
       output = ''
       output += '<p>' if tagname[0..2] == '<p>'
       output += '<table class="table inline-grid activity-grid ' + className + ' ' + className + '-' + randomSeed + '">'
@@ -79,9 +78,9 @@ module NodeShared
   end
 
   def self.upgrades_grid(body)
-    body.gsub(/[^`][\<p\>]?\[upgrades\:(\S+)\]/) do |tagname|
+    body.gsub(/[^\>`](\<p\>)?\[upgrades\:(\S+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
-      className = 'upgrades-grid-' + $1.parameterize
+      className = 'upgrades-grid-' + $2.parameterize
       output = ''
       output += '<p>' if tagname[0..2] == '<p>'
       output += '<table class="table inline-grid upgrades-grid ' + className + ' ' + className + '-' + randomSeed + '">'

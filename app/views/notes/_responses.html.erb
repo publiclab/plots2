@@ -23,7 +23,7 @@
       <%= render :partial => "notes/notes", locals: { notes: @responses } %>
     <% else %>
       <% if @node.response_count(response_type) > 0 %>
-        <%= raw insert_extras("<p>[notes:#{response_type}:#{@node.id}]</p>") %>
+        <%= raw insert_extras(" [notes:#{response_type}:#{@node.id}]") %>
       <% else %>
         <p>
           None yet. <a href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0%>">Be the first to post one!</a>
