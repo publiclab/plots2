@@ -40,7 +40,7 @@
 ] %>
       <div id="methods">
         <% topics.each do |topic| %>
-          <div><a><%= topic %></a></div>
+          <div><a href="/methods/<%= topic %>"><%= topic %></a></div>
         <% end %>
       </div>
     </div>
@@ -57,8 +57,9 @@
 
   <h2>Recently updated</h2>
 
-  <%= render :partial => "notes/notes" %>
-
   <hr />
+
+  <%= render partial: "notes/notes", locals: { notes: @nodes } %>
+
 
 </div>

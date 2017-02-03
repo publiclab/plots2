@@ -336,8 +336,12 @@ class WikiController < ApplicationController
   end
 
   def methods
-    @notes = []
+    @nodes = DrupalNode.where(status: 1, type: ['page'])
+                       .includes(:drupal_node_revision, :tag)
+                       .order("node_revisions.timestamp DESC")
+                       .where('term_data.name = ?','tool')
     @unpaginated = true
+    render template: "wiki/methods"
   end
 
 end
