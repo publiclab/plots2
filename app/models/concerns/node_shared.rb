@@ -9,7 +9,7 @@ module NodeShared
     self.likers.collect(&:uid).include?(uid)
   end
 
-  # rubular regex: http://rubular.com/r/DEDLmSCtDU
+  # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.notes_grid(body, page = 1)
     body.gsub(/[^\>`](\<p\>)?\[notes\:(\S+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
