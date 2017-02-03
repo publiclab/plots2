@@ -26,8 +26,9 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
     node(:blog).add_tag("replication:#{node.id}", rusers(:jeff))
 
     get node.path
-    
+
     assert_select "h1", title
+
     assert_select "table.notes-grid-test"
     assert_select "table.activity-grid-test"
     assert_select "table.upgrades-grid-test"
@@ -43,7 +44,7 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
     assert node.has_power_tag('activity')
 
     get node.path
-    
+
     assert_select "h1", title
     assert_select "table.notes-grid-test"
     assert_select "table.activity-grid-test"
