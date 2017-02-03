@@ -11,7 +11,7 @@ module NodeShared
 
   # rubular regex: http://rubular.com/r/DEDLmSCtDU
   def self.notes_grid(body, page = 1)
-    body.gsub(/[^`][\<p\>]?\[notes\:(.+)\]/) do |tagname|
+    body.gsub(/[^`][\<p\>]?\[notes\:(\S+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
       className = 'notes-grid-' + $1.parameterize
       output = ''
@@ -42,7 +42,7 @@ module NodeShared
   end
 
   def self.activities_grid(body)
-    body.gsub(/[^`][\<p\>]?\[activities\:(.+)\]/) do |tagname|
+    body.gsub(/[^`][\<p\>]?\[activities\:(\S+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
       className = 'activity-grid-' + $1.parameterize
       output = ''
@@ -79,7 +79,7 @@ module NodeShared
   end
 
   def self.upgrades_grid(body)
-    body.gsub(/[^`][\<p\>]?\[upgrades\:(.+)\]/) do |tagname|
+    body.gsub(/[^`][\<p\>]?\[upgrades\:(\S+)\]/) do |tagname|
       randomSeed = rand(1000).to_s
       className = 'upgrades-grid-' + $1.parameterize
       output = ''
