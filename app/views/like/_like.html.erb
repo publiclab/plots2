@@ -40,10 +40,10 @@
 
   <div class='btn-group'>
      <a href='/notes/delete/<%= node.id %>' class='btn btn-default btn-sm' data-confirm='Are you sure?'>
-      <i class='fa fa-trash'></i><span class='hidden-xs hidden-sm' Delete</span>
+      <i class='fa fa-trash'></i><span class='hidden-xs hidden-sm'> Delete</span>
     </a>
     <a href='/notes/raw/<%= node.id %>' class='btn btn-default btn-sm'>
-      <i class='fa fa-code'></i><span class='hidden-xs hidden-sm' Raw</span>
+      <i class='fa fa-code'></i><span class='hidden-xs hidden-sm'> Raw</span>
     </a>
     <% if current_user.role == "moderator" || current_user.role == "admin" %>
       <% if node.type == 'note' %>

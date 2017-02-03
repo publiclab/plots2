@@ -21,6 +21,7 @@
     "leaflet-d3": "^0.3.8",
     "woofmark": "~4.2.0",
     "horsey": "3.0.0",
+    "megamark": "~3.3.0",
     "i18n-js": "^2.1.2",
     "short-code-forms": "jywarren/short-code-forms#~0.0.1"
   },
