@@ -15,6 +15,7 @@ module NodeShared
       randomSeed = rand(1000).to_s
       className = 'notes-grid-' + $2.parameterize
       output = ''
+      output += '<p>' if $1 == '<p>'
       output += '<table class="table inline-grid notes-grid ' + className + ' ' + className + '-' + randomSeed + '">'
       output += '  <tr>'
       output += '    <th><a data-type="title">Title</a></th>'
@@ -45,7 +46,7 @@ module NodeShared
       randomSeed = rand(1000).to_s
       className = 'activity-grid-' + $2.parameterize
       output = ''
-      output += '<p>' if tagname[0..2] == '<p>'
+      output += '<p>' if $1 == '<p>'
       output += '<table class="table inline-grid activity-grid ' + className + ' ' + className + '-' + randomSeed + '">'
       output += '  <tr>'
       output += '    <th><a data-type="title">Purpose</a></th>'
@@ -82,7 +83,7 @@ module NodeShared
       randomSeed = rand(1000).to_s
       className = 'upgrades-grid-' + $2.parameterize
       output = ''
-      output += '<p>' if tagname[0..2] == '<p>'
+      output += '<p>' if $1 == '<p>'
       output += '<table class="table inline-grid upgrades-grid ' + className + ' ' + className + '-' + randomSeed + '">'
       output += '  <tr>'
       output += '    <th><a data-type="title">Title</a></th>'
