@@ -511,4 +511,19 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
   end
 
+  test "should get methods page" do
+    get :methods
+
+    assert_response :success
+    assert_not_nil :nodes
+    assert_not_nil :topics
+  end
+
+  test "should get methods page for given topic" do
+    get :methods, topic: 'mining'
+
+    assert_response :success
+    assert_not_nil :nodes
+  end
+
 end

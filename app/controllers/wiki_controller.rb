@@ -338,9 +338,31 @@ class WikiController < ApplicationController
   def methods
     @nodes = DrupalNode.where(status: 1, type: ['page'])
                        .includes(:drupal_node_revision, :tag)
-                       .order("node_revisions.timestamp DESC")
-                       .where('term_data.name = ?','tool')
+                       .where('term_data.name = ?', 'tool')
+    if params[:topic]
+      nids = @nodes.collect(&:nid) || []
+      @nodes = DrupalNode.where(status: 1, type: ['page'])
+                         .includes(:drupal_node_revision, :tag)
+                         .where('node.nid IN (?)', nids)
+                         .where('term_data.name = ?', params[:topic])
+                         .order("node_revisions.timestamp DESC")
+    end
     @unpaginated = true
+    @topics = [
+      "agriculture",
+      "drinking-water",
+      "fracking",
+      "indoor-air",
+      "chemicals",
+      "industry",
+      "land-use",
+      "land-change",
+      "mining",
+      "oil-and-gas",
+      "transportation",
+      "urban-planning",
+      "sensors"
+    ]
     render template: "wiki/methods"
   end
 

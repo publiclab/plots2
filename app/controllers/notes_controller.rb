@@ -8,6 +8,7 @@ class NotesController < ApplicationController
     set_sidebar
   end
 
+  # deprecate in favor of wiki#methods
   def methods
     @title = "Methods"
     @notes = DrupalNode.where(status: 1, type: ['page','tool'])

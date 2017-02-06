@@ -1,10 +1,12 @@
+<%= javascript_include_tag "methods" %>
+
 <style>
   h2 {
     text-align: center;
     margin-bottom: 0;
     padding-top: 20px;
   }
-  #methods {
+  #topics {
     columns: 3;
     padding-left: 15%;
     margin-bottom: 30px;
@@ -23,23 +25,8 @@
   <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-<% topics = [
- "agriculture",
- "drinking-water",
- "fracking",
- "indoor-air",
- "chemicals",
- "industry",
- "land-use",
- "land-change",
- "mining",
- "oil-and-gas",
- "transportation",
- "urban-planning",
- "sensors"
-] %>
-      <div id="methods">
-        <% topics.each do |topic| %>
+      <div id="topics">
+        <% @topics.each do |topic| %>
           <div><a href="/methods/<%= topic %>"><%= topic %></a></div>
         <% end %>
       </div>
@@ -48,18 +35,24 @@
 
   <div class="row">
     <div class="col-md-3"></div>
-    <form class="search col-md-6">
-      <input class="form-control input-lg" type="text" placeholder="Begin typing a topic" />
+    <form class="topic-search col-md-6 form-inline" style="text-align:center;">
+      <input tabindex="1" class="form-control input-lg" type="text" placeholder="Search for methods by topic" />
+      <button class="btn btn-lg btn-default" type="submit"><i class="fa fa-search"></i></button>
     </form>
   </div>
 
   <p><center>Find methods by topic or choose from the categories above.</center></p>
 
-  <h2>Recently updated</h2>
-
+  <div id="methods">
+    <% if params[:topic] %>
+      <h2>Methods related to "<%= params[:topic] %>"</h2>
+      <%= render partial: "notes/notes", locals: { notes: @nodes } %>
+      <% if @nodes.length == 0 %>
+        <p style="text-align:center;padding:10px;">No methods yet shared for this topic; <a href="">Reach out for help</a> or <a href="">learn how to share a relevant technique</a>.</p>
+      <% end %>
+    <% else %>
+      <h2>Recently updated</h2>
+    <% end %>
+  </div>
   <hr />
-
-  <%= render partial: "notes/notes", locals: { notes: @nodes } %>
-
-
 </div>
