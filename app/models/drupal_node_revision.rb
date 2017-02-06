@@ -17,7 +17,7 @@ class DrupalNodeRevision < ActiveRecord::Base
 
   validates :title,
     :presence => :true,
-    :length => { :minimum => 2, :maximum => 100 },
+    :length => { :minimum => 2, :maximum => 500 },
     :format => {:with => /[A-Z][\w\-_]*/i, :message => "can only include letters, numbers, and dashes"}
   validates :body, :presence => :true
   validates :uid, :presence => :true
@@ -124,7 +124,7 @@ class DrupalNodeRevision < ActiveRecord::Base
 
   def body_preview
     newBody = self.body.gsub(/^#+.+/, "")
-    newBody.truncate(100)
+    newBody.truncate(500)
   end
 
   # some adaptations for the new rich editor
