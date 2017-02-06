@@ -335,4 +335,40 @@ class WikiController < ApplicationController
     end
   end
 
+  def methods
+    @nodes = DrupalNode.where(status: 1, type: ['page'])
+                       .where('term_data.name = ?', 'tool')
+                       .includes(:drupal_node_revision, :tag)
+                       .order("node_revisions.timestamp DESC")
+    if params[:topic]
+      nids = @nodes.collect(&:nid) || []
+      @notes = DrupalNode.where(status: 1, type: ['page'])
+                         .where('node.nid IN (?)', nids)
+                         .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)', 
+                           "%"+params[:topic]+"%",
+                           "%"+params[:topic]+"%",
+                           "%"+params[:topic]+"%",
+                           params[:topic])
+                         .includes(:drupal_node_revision, :tag)
+                         .order("node_revisions.timestamp DESC")
+    end
+    @unpaginated = true
+    @topics = [
+      "agriculture",
+      "drinking-water",
+      "fracking",
+      "indoor-air",
+      "chemicals",
+      "industry",
+      "land-use",
+      "land-change",
+      "mining",
+      "oil-and-gas",
+      "transportation",
+      "urban-planning",
+      "sensors"
+    ]
+    render template: "wiki/methods"
+  end
+
 end
