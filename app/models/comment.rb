@@ -111,7 +111,6 @@ class Comment < ActiveRecord::Base
     puts "debugging the model"
     puts "#{hastag}"
     puts "debugging the model"
-         #CommentMailer.notify_tag_followers(self.answer.author,"ballon").deliver
 
     # notify other commenters, and likers, but not those already @called out
     (self.parent.comments.collect(&:uid) + self.parent.likers.collect(&:uid)+uids_tag_followers).uniq.each do |u|
@@ -120,6 +119,10 @@ class Comment < ActiveRecord::Base
 
 
     notify_users(uids, current_user)
+  end
+
+  def notify_tag_followers
+
   end
 
   def answer_comment_notify(current_user)

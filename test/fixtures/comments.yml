@@ -100,5 +100,6 @@ comment_tag:
   uid: 1
   nid: 8
   status: 1
-  comment: comment with tag
+  comment: 'comment with tag #ballom'
   timestamp: <%= Time.now.to_i + 100000 %>
+  name: ballon

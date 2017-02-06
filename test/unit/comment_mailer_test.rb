@@ -20,16 +20,18 @@ class CommentMailerTest < ActionMailer::TestCase
   test "notify tag follower" do
 
     user = rusers(:bob)
-    comment = comments(:comment_tag)
+    tag = tags(:comment_with_tag)
+
+    # if user is following tag then send the email.
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      CommentMailer.notify_tag_followers(user, comment).deliver
+      CommentMailer.notify_tag_followers(user, tag).deliver
     end
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal "New action on a tag you are following " +"'" + comment.parent.title + "'", email.subject
+    assert_equal "New action on a tag you are following " +"'" + tag.name + "'", email.subject
     # assert email.body.include?("New action on a tag you are following")
   end
 
