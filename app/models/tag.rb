@@ -79,6 +79,7 @@ class Tag < ActiveRecord::Base
                         .where('term_data.name IN (?)', tags.collect(&:parent))
     DrupalNode.where('node.nid IN (?)', (nodes + parents).collect(&:nid))
               .includes(:drupal_node_revision, :tag)
+              .where(status: 1)
               .order("node_revisions.timestamp DESC")
               .limit(limit)
   end
