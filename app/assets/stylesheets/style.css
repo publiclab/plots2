@@ -58,6 +58,7 @@ h4,h5,h6, h1 small, h3 small {
 #comments p img,
 #content p iframe {
   max-width: 100%;
+  border: none;
 }
 
 #profile-fileinput {
