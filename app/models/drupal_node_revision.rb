@@ -124,7 +124,7 @@ class DrupalNodeRevision < ActiveRecord::Base
 
   def body_preview
     newBody = self.body.gsub(/^#+.+/, "")
-    newBody.truncate(100)
+    newBody.truncate(500)
   end
 
   # some adaptations for the new rich editor
