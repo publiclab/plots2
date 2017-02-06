@@ -526,4 +526,12 @@ class WikiControllerTest < ActionController::TestCase
     assert_not_nil :nodes
   end
 
+  test "should get methods page for given topic, for non-existent topic" do
+    get :methods, topic: 'mining'
+
+    assert_response :success
+    assert_not_nil :nodes
+    assert_equal [], assigns(:nodes)
+  end
+
 end

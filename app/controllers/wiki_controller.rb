@@ -337,14 +337,19 @@ class WikiController < ApplicationController
 
   def methods
     @nodes = DrupalNode.where(status: 1, type: ['page'])
-                       .includes(:drupal_node_revision, :tag)
                        .where('term_data.name = ?', 'tool')
+                       .includes(:drupal_node_revision, :tag)
+                       .order("node_revisions.timestamp DESC")
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
-      @nodes = DrupalNode.where(status: 1, type: ['page'])
-                         .includes(:drupal_node_revision, :tag)
+      @notes = DrupalNode.where(status: 1, type: ['page'])
                          .where('node.nid IN (?)', nids)
-                         .where('term_data.name = ?', params[:topic])
+                         .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)', 
+                           "%"+params[:topic]+"%",
+                           "%"+params[:topic]+"%",
+                           "%"+params[:topic]+"%",
+                           params[:topic])
+                         .includes(:drupal_node_revision, :tag)
                          .order("node_revisions.timestamp DESC")
     end
     @unpaginated = true
