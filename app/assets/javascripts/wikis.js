@@ -6,6 +6,9 @@ function setupWiki(node_id, raw) {
 
     $('#content').html('');
 
+// THIS DOESN"T WORK BECAUSE IT"S NOT HTML YET
+
+
     var sections = $('#content-raw-markdown').find('h1,h2,h3,h4,p,ul');
     sections.each(forEachSection);
 
