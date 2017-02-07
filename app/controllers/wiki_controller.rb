@@ -321,9 +321,9 @@ class WikiController < ApplicationController
     @node = DrupalNode.find(params[:id])
     if params[:before] && params[:after]
       if output = @node.replace(params[:before], params[:after], current_user)
-        flash[:notice] = "New revision created with your additions."
+        flash[:notice] = "New revision created with your additions." unless request.xhr?
       else
-        flash[:error] = "There was a problem replacing that text."
+        flash[:error] = "There was a problem replacing that text." unless request.xhr?
       end
     else
       flash[:error] = "You must specify 'before' and 'after' terms to replace content in a wiki page."
