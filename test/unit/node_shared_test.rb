@@ -13,10 +13,10 @@ class NodeSharedTest < ActiveSupport::TestCase
   test "that NodeShared can be used to convert short codes like [activities:foo] into tables which list activity notes" do
     before = "Here are some activities in a table: \n\n[activities:spectrometer] \n\nThis is how you make it work:\n\n`[activities:tagname]`\n\nMake sense?"
     assert NodeShared.activities_grid(before)
-    assert_equal 1, NodeShared.activities_grid(before).scan('<table class="table inline-grid activity-grid activity-grid-test activity-grid-test-').length
-    assert_equal 1, NodeShared.activities_grid(before).scan('<td').length
+    assert_equal 1, NodeShared.activities_grid(before).scan('<table class="table inline-grid activity-grid activity-grid-spectrometer activity-grid-spectrometer-').length
+    assert_equal 7, NodeShared.activities_grid(before).scan('<td').length
     assert_equal 1, NodeShared.activities_grid(before).scan('<table').length
-    assert_equal 3, NodeShared.activities_grid(before).scan('activity-grid-test').length
+    assert_equal 3, NodeShared.activities_grid(before).scan('activity-grid-spectrometer').length
   end
 
   test "that NodeShared can be used to convert short codes like [upgrades:foo] into tables which list upgrade notes" do
