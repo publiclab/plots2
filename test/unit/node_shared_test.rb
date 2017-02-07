@@ -14,6 +14,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     before = "Here are some activities in a table: \n\n[activities:test] \n\nThis is how you make it work:\n\n`[activities:tagname]`\n\nMake sense?"
     assert NodeShared.activities_grid(before)
     assert_equal 1, NodeShared.activities_grid(before).scan('<table class="table inline-grid activity-grid activity-grid-test activity-grid-test-').length
+    assert_equal 1, NodeShared.activities_grid(before).scan('<td').length
     assert_equal 1, NodeShared.activities_grid(before).scan('<table').length
     assert_equal 3, NodeShared.activities_grid(before).scan('activity-grid-test').length
   end
