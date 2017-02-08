@@ -56,7 +56,7 @@ class TagController < ApplicationController
         nodes.each do |node|
           json << node.as_json(except: [:path, :tags])
           json.last['path'] = "https://" + request.host.to_s + node.path
-          json.last['preview'] = node.body_preview
+          json.last['preview'] = node.body_preview(500)
           json.last['image'] = node.main_image.path(:large) if node.main_image
           json.last['tags'] = DrupalNode.find(node.id).tags.collect(&:name) if node.tags
         end
