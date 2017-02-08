@@ -25,7 +25,7 @@ module NodeShared
       output += '  </tr>'
       nodes = DrupalNode.where(status: 1, type: 'note')
                         .includes(:drupal_node_revision, :tag)
-                        .where('term_data.name = ?', $1)
+                        .where('term_data.name = ?', $2)
                         .order("node_revisions.timestamp DESC")
       nodes.each do |node|
         output += '<tr>'
@@ -57,7 +57,7 @@ module NodeShared
       output += '    <th><a data-type="difficulty">Difficulty</a></th>'
       output += '    <th><a data-type="replications">Replications</a></th>'
       output += '  </tr>'
-      nodes = DrupalNode.activities($1)
+      nodes = DrupalNode.activities($2)
                         .order("node.cached_likes DESC")
       nodes.each do |node|
         output += '<tr>'
@@ -71,7 +71,7 @@ module NodeShared
         output += '</tr>'
       end
       output += '</table>'
-      output += "<p><a href='/post?tags=activity:#{$1},#{$1},seeks:replications&title=How%20to%20do%20X' class='btn btn-primary add-activity'>Add an activity</a> <a href='/post?tags=#{$1},question:#{$1},request:activity&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary request-activity'>Request an activity guide</a></p>"
+      output += "<p><a href='/post?tags=activity:#{$2},#{$2},seeks:replications&title=How%20to%20do%20X' class='btn btn-primary add-activity'>Add an activity</a> <a href='/post?tags=#{$1},question:#{$1},request:activity&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary request-activity'>Request an activity guide</a></p>"
       output += '<p><i>Activities should include a materials list, costs and a step-by-step guide to construction with photos. Learn what <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity">makes a good activity here</a>.</i></p>'
       output += '<script>(function(){ setupGridSorters(".' + className + '-' + randomSeed + '"); })()</script>'
       output
@@ -93,7 +93,7 @@ module NodeShared
       output += '    <th><a data-type="difficulty">Difficulty</a></th>'
       output += '    <th><a data-type="builds">Builds</a></th>'
       output += '  </tr>'
-      nodes = DrupalNode.upgrades($1)
+      nodes = DrupalNode.upgrades($2)
                         .order("node.cached_likes DESC")
       nodes.each do |node|
         output += '<tr>'
