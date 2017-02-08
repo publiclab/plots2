@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170120160451) do
+ActiveRecord::Schema.define(:version => 20170208174046) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -387,6 +387,7 @@ ActiveRecord::Schema.define(:version => 20170120160451) do
     t.string  "parent"
   end
 
+  add_index "term_data", ["name"], :name => "index_term_data_on_name"
   add_index "term_data", ["parent"], :name => "index_term_data_on_parent"
   add_index "term_data", ["vid", "name"], :name => "index_term_data_vid_name"
   add_index "term_data", ["vid", "weight", "name"], :name => "index_vid_weight_name"

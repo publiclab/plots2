@@ -1,6 +1,8 @@
 class DropDrupalCounter < ActiveRecord::Migration
   def up
-    drop_table :node_counter
+    if table_exists? "node_counter"
+      drop_table :node_counter
+    end
   end
 
   def down
