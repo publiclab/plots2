@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170120160451) do
+ActiveRecord::Schema.define(:version => 20170208174046) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -190,10 +190,10 @@ ActiveRecord::Schema.define(:version => 20170120160451) do
   add_index "impressions", ["controller_name", "action_name", "request_hash"], :name => "controlleraction_request_index"
   add_index "impressions", ["controller_name", "action_name", "session_hash"], :name => "controlleraction_session_index"
   add_index "impressions", ["impressionable_type", "impressionable_id", "ip_address"], :name => "poly_ip_index"
-  add_index "impressions", ["impressionable_type", "impressionable_id", "params"], :name => "poly_params_request_index", :unique => false, :length => { "params" => 255 }
+  add_index "impressions", ["impressionable_type", "impressionable_id", "params"], :name => "poly_params_request_index"
   add_index "impressions", ["impressionable_type", "impressionable_id", "request_hash"], :name => "poly_request_index"
   add_index "impressions", ["impressionable_type", "impressionable_id", "session_hash"], :name => "poly_session_index"
-  add_index "impressions", ["impressionable_type", "message", "impressionable_id"], :name => "impressionable_type_message_index", :unique => false, :length => { "message" => 255 }
+  add_index "impressions", ["impressionable_type", "message", "impressionable_id"], :name => "impressionable_type_message_index"
   add_index "impressions", ["user_id"], :name => "index_impressions_on_user_id"
 
   create_table "location_tags", :force => true do |t|
@@ -387,6 +387,7 @@ ActiveRecord::Schema.define(:version => 20170120160451) do
     t.string  "parent"
   end
 
+  add_index "term_data", ["name"], :name => "index_term_data_on_name"
   add_index "term_data", ["parent"], :name => "index_term_data_on_parent"
   add_index "term_data", ["vid", "name"], :name => "index_term_data_vid_name"
   add_index "term_data", ["vid", "weight", "name"], :name => "index_vid_weight_name"
