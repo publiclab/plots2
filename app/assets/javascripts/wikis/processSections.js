@@ -7,9 +7,12 @@ function processSections(sections, selector, node_id) {
 
 // selector is like "#content" -- the container to append the new content to
 function processSection(markdown, selector, node_id) {
-  var html        = replaceWithMarkdown(markdown),
+  var html,
       randomNum   = parseInt(Math.random() * 10000),
       uniqueId    = "section-form-" + randomNum;
+
+  markdown = preProcessMarkdown(markdown);
+  html = replaceWithMarkdown(markdown);
 
   $(selector).append(html);
   var el = $(selector + ' > *:last');
@@ -73,4 +76,8 @@ function insertEditLink(uniqueId, el, form) {
     e.preventDefault();
     form.toggle();
   });
+}
+
+function preProcessMarkdown(markdown) {
+  return markdown.replace(/$(#+)(\w)/, function(m) { return $1 + ' ' + $2 })
 }
