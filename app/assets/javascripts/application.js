@@ -15,7 +15,6 @@
 //= require bootstrap/dist/js/bootstrap.min.js
 //= require bootstrap-typeahead/bootstrap3-typeahead.min.js
 //= require bootstrap.custom.js
-//= require bootstrap-lightbox/js/bootstrap-lightbox.js
 //= require bootstrap-datepicker/dist/js/bootstrap-datepicker.js
 //= require jquery-file-upload/js/vendor/jquery.ui.widget.js
 //= require jquery-file-upload/js/jquery.fileupload.js
