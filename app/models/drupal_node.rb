@@ -761,8 +761,8 @@ class DrupalNode < ActiveRecord::Base
                           .group('node.nid')
   end
 
-  def body_preview
-    self.try(:latest).body_preview
+  def body_preview(length = 100)
+    self.try(:latest).body_preview(length)
   end
 
   def self.activities(tagname)
