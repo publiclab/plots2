@@ -41,8 +41,8 @@ class DrupalNode < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-  # FriendlyId is not being used; see 
-  # https://github.com/publiclab/plots2/pull/687 and 
+  # FriendlyId is not being used; see
+  # https://github.com/publiclab/plots2/pull/687 and
   # https://github.com/publiclab/plots2/pull/600
   extend FriendlyId
   friendly_id :friendly_id_string, use: [:slugged, :history]
@@ -106,7 +106,7 @@ class DrupalNode < ActiveRecord::Base
   def slug_from_path
   	self.path.split('/').last
   end
-  
+
   before_save :set_changed_and_created
   after_create :setup
   before_validation :set_path, on: :create
@@ -779,7 +779,11 @@ class DrupalNode < ActiveRecord::Base
 
   def can_tag(tagname, user, errors = false)
     if tagname[0..4] == "with:"
-      if User.find_by_username(tagname.split(':')[1]).nil?
+      # Assuming that only SQLite3 is being used in testing.
+      # We might need to enforce that more strongly.
+      if Rails.env.test? && User.find_by_username_case_insensitive(tagname.split(':')[1]).nil?
+        return errors ? I18n.t('drupal_node.cannot_find_username') : false
+      elsif Rails.env.product? && User.find_by_username(tagname.split(':')[1]).nil?
         return errors ? I18n.t('drupal_node.cannot_find_username') : false
       elsif self.author.uid != user.uid
         return errors ? I18n.t('drupal_node.only_author_use_powertag') : false
