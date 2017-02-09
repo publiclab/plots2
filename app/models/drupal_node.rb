@@ -779,11 +779,7 @@ class DrupalNode < ActiveRecord::Base
 
   def can_tag(tagname, user, errors = false)
     if tagname[0..4] == "with:"
-      # Assuming that only SQLite3 is being used in testing.
-      # We might need to enforce that more strongly.
-      if Rails.env.test? && User.find_by_username_case_insensitive(tagname.split(':')[1]).nil?
-        return errors ? I18n.t('drupal_node.cannot_find_username') : false
-      elsif Rails.env.product? && User.find_by_username(tagname.split(':')[1]).nil?
+      if User.find_by_username_case_insensitive(tagname.split(':')[1]).nil?
         return errors ? I18n.t('drupal_node.cannot_find_username') : false
       elsif self.author.uid != user.uid
         return errors ? I18n.t('drupal_node.only_author_use_powertag') : false
