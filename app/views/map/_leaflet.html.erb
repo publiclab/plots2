@@ -1,5 +1,6 @@
 <% unique_id = rand(10) %>
 <%= javascript_include_tag "locationForm" %>
+<%= javascript_include_tag "location_tags.js" %>
 <style>
   #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
 </style>
@@ -12,3 +13,4 @@
     L.marker([<%= item.lat %>, <%= item.lon %>]).addTo(map).bindPopup("<a href='/<%= item.path %>'><%= item.title %></a>");
     <% end %>
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>
