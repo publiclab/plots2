@@ -253,4 +253,8 @@ class User < ActiveRecord::Base
     self.username = registration["nickname"] if username.blank?
   end
 
+  def self.find_by_username_case_insensitive(username)
+    return User.where('lower(username) = ?', username.downcase).first
+  end
+
 end
