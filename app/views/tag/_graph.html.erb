@@ -1,0 +1,33 @@
+<div id="note-graph" style="height:100px;padding-top:10px;"></div>
+
+<script type="text/javascript">
+(function () {
+
+  flotoptions_minimal = {
+    yaxis: { show: true },
+    xaxis: { show: true },
+    grid: {
+      borderWidth: 0,
+      //color: "#444",
+      markers: []
+    },
+    colors: [ "#08f", "#80f" ]
+  }
+
+  var notes = <%=raw tags.first.weekly_tallies.to_a.sort.to_json %>
+
+  $.plot($("#note-graph"), [
+    {
+        data: notes,
+        hoverable: true,
+/         label: "Research Notes",
+        bars: { show: true,
+                lineWidth: 0,
+                fillColor: "#08f",
+                barWidth: 0.5
+              }
+    }
+  ],flotoptions_minimal)
+
+})()
+</script>
