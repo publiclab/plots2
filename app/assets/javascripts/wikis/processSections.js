@@ -20,6 +20,7 @@ function processSection(markdown, selector, node_id) {
   var formHtml = buildSectionForm(uniqueId, markdown);
 
   // filter? Only p,h1-5,ul?
+console.log(markdown)
   var isMarkdown = markdown.match(/</) === null; // has tags
       isMarkdown = isMarkdown && markdown.match(/\*\*\*\*/) === null; // no horizontal rules
 
