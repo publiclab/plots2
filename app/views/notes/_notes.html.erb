@@ -37,7 +37,7 @@
 
         <div class="content">
           <% if @compact.nil? %>
-            <% if params[:action] == "tools" %>
+            <% if params[:action].to_s.include?("methods") %>
               <p><small>
                 <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Activity+grid"><i class="fa fa-flask" style="color:#3da56a;"></i> <%= DrupalNode.activities(node.power_tag('activities')).count %> activities</a> &nbsp;
                 <!-- <p><i class="fa fa-users" style="color:blue"></i> contributors</p> -->
