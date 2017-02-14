@@ -118,7 +118,7 @@
     </div>
   </div>
   <br />
-  
+
 
   <div class="container">
     <div id="location_map" class="row"></div>
@@ -202,7 +202,7 @@
         },
         updater: function(text) {
           $(this).val(text)
-          
+
         }
       });
 
@@ -215,7 +215,7 @@
           $.ajax({
             url: "/profile/tags/create/<%= @user.name %>",
             type: 'POST',
-            data: { 
+            data: {
               'type': type,
               'value': value
             },
