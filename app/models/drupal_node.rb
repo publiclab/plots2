@@ -798,11 +798,15 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def replace(before, after, user)
-    revision = self.new_revision({
-      uid: user.id,
-      body: self.latest.body.gsub(before, after)
-    })
-    revision.save
+    if self.latest.body.include?(before)
+      revision = self.new_revision({
+        uid: user.id,
+        body: self.latest.body.gsub(before, after)
+      })
+      revision.save
+    else
+      false
+    end
   end
 
 end

@@ -223,4 +223,14 @@ class DrupalNodeTest < ActiveSupport::TestCase
     assert_equal "All about Private Lab", node.body
   end
 
+  test "not replacing content in a node with node.replace() if there is no matching 'before' text" do
+    node = node(:about)
+    assert !node.body.include?("Elephant")
+
+    replaced = node.replace("Elephant", "Tiger", rusers(:bob))
+
+    assert !replaced
+    assert_equal "All about Public Lab", node.body
+  end
+
 end
