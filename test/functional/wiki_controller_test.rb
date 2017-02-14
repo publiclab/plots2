@@ -483,6 +483,27 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "not replacing content in a node with replace action via JavaScript/AJAX if it doesn't exist" do
+    UserSession.create(rusers(:jeff))
+    node = node(:about)
+    assert node.latest.update_attribute('body', "Public Lab")
+
+    assert_difference 'DrupalNodeRevision.count', 0 do
+      assert_difference "DrupalNode.find(#{node.id}).revisions.count", 0 do
+
+        xhr :post, :replace, id: node.id, before: "Elephants", after: "Tigers"
+
+      end
+    end
+
+    assert !node.latest.body.include?("Tigers")
+    assert node.latest.body.include?("Public")
+
+    assert_equal 'false', response.body
+    assert_equal "Public Lab", DrupalNode.find(node.id).body
+    assert_response :success
+  end
+
   test "redirect normal user to tagged page" do
     wiki = node(:wiki_page)
     slug = wiki.path.gsub('/wiki/', '')
