@@ -1,8 +1,8 @@
 class DrupalNodeRevision < ActiveRecord::Base
   searchable do
-    text :title, boost: 5
+    text :title
     text :body do
-      body.to_s.gsub!(/[[:cntrl:]]/, '')
+      body.to_s.gsub!(/[[:cntrl:]]/,'').to_s.slice(0..10000)
     end
     text :teaser
   end

@@ -21,11 +21,11 @@ class Node < ActiveRecord::Base
   self.primary_key = 'nid'
 
   searchable do
-    text :title #, boost: 5
-    string :body do
-      body.to_s.gsub!(/[[:cntrl:]]/,'')
+    text :title
+    text :body do
+      body.to_s.gsub!(/[[:cntrl:]]/,'').to_s.slice!(0..32500)
     end
-    #time :updated_at
+    string :updated_at
     string :status
     string :updated_month
     text :comments do
