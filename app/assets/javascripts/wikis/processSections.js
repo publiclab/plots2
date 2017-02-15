@@ -20,7 +20,6 @@ function processSection(markdown, selector, node_id) {
   var formHtml = buildSectionForm(uniqueId, markdown);
 
   // filter? Only p,h1-5,ul?
-console.log(markdown)
   var isMarkdown = markdown.match(/</) === null; // has tags
       isMarkdown = isMarkdown && markdown.match(/\*\*\*\*/) === null; // no horizontal rules
 
@@ -46,6 +45,7 @@ console.log(markdown)
       // replace the section but reset our html and markdown
       html = replaceWithMarkdown(markdown);
       el.replaceWith(replaceWithMarkdown(markdown));
+      postProcessContent(el); // add #hashtag and @callout links, extra CSS and deep links
     } else {
       message.html('There was an error -- the wiki page may have changed while you were editing; save your content in the clipboard and try refreshing the page.');
     }
@@ -80,5 +80,7 @@ function insertEditLink(uniqueId, el, form) {
 }
 
 function preProcessMarkdown(markdown) {
-  return markdown.replace(/$(#+)(\w)/, function(m) { return $1 + ' ' + $2 })
+  return markdown.replace(/$(#+)(\w)/, function(m, p1, p2) {
+    return p1 + ' ' + p2;
+  })
 }

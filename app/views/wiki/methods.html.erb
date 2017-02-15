@@ -18,8 +18,8 @@
   <div style="text-align:center;">
     <h1 style="font-size:3.4em;margin-top:40px;"><%= raw t('notes.tools_places.tools_and_techniques') %></h1>
     <h4 style="color:#888;"><%= raw t('notes.tools_places.subtitle') %></h4>
-    <p><i>Public Lab's community collaboratively develops many different techniques and methods for DIY environmental monitoring.</i></p>
-    <p><i>Browse many of them here and learn how to get involved.</i></p>
+    <p><i>Public Lab's community collaboratively develops many different DIY environmental monitoring and advocacy methods.</i></p>
+    <p><i>Browse them here and learn how to get involved.</i></p>
   </div>
 
   <div class="row">
@@ -48,7 +48,7 @@
       <h2>Methods related to "<%= params[:topic] %>"</h2>
       <%= render partial: "notes/notes", locals: { notes: @nodes } %>
       <% if @nodes.length == 0 %>
-        <p style="text-align:center;padding:10px;">No methods yet shared for this topic; <a href="">Reach out for help</a> or <a href="">learn how to share a relevant technique</a>.</p>
+        <p style="text-align:center;padding:10px;">No methods yet shared for this topic; <a href="">Reach out for help</a> or <a href="">learn how to share a relevant method</a>.</p>
       <% end %>
     <% else %>
       <h2>Recently updated</h2>

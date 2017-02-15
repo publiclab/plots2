@@ -21,35 +21,42 @@ function setupWiki(node_id, raw) {
   } else {
     $('#content').html(shortCodePrompt($('#content')[0], { submitUrl: '/wiki/replace/' + node_id }));
   }
-  postProcessWiki($('#content'));
+  postProcessContent($('#content'));
 }
 
-function postProcessWiki() {
+// add #hashtag and @callout links, extra CSS and deep links
+function postProcessContent(element) {
 
   /* setup bootstrap behaviors */
-  $("[rel=tooltip]").tooltip()
-  $("[rel=popover]").popover({container: 'body'})
-  $('table').addClass('table')
+  element.find("[rel=tooltip]").tooltip()
+  element.find("[rel=popover]").popover({container: 'body'})
+  element.find('table').addClass('table')
 
-  
+  var html = element.html();
+  html = addCallouts(html);
+  html = addHashtags(html);
+  element.html(html);
 
-  /* add "link" icon to headers */
-  $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {
+  addDeepLinks(element);
+}
+
+/* add "link" icon to headers for example.com#Hash deep links */
+function addDeepLinks(element) {
+  element.find("h1,h2,h3,h4").append(function(i,html) {
     return " <small><a href='#" + this.innerHTML.replace(/ /g,'+') + "'><i class='icon fa fa-link'></i></a></small>";
   });
-
 }
 
 function addCallouts(html) {
   var pattern = /(^|\s)@([A-z\_]+)\b/g;
-  return html.replace(pattern, function replaceCallouts(m) {
-    return '<a href="/profile/' + $2 + '">@' + $2 + '</a>';
+  return html.replace(pattern, function replaceCallouts(m, p1, p2) {
+    return p1 + '<a href="/profile/' + p2 + '">@' + p2 + '</a>';
   });
 }
 
 function addHashtags(html) {
   var pattern = /(^|\s)#([A-z\-]+)\b/g;
-  return html.replace(pattern, function replaceCallouts(m) {
-    return '<a href="/tag/' + $2 + '">#' + $2 + '</a>';
+  return html.replace(pattern, function replaceHashtags(m, p1, p2) {
+    return p1 + '<a href="/tag/' + p2 + '">#' + p2 + '</a>';
   });
 }

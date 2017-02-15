@@ -98,10 +98,12 @@ class Tag < ActiveRecord::Base
       tag_nids = DrupalNodeCommunityTag.where("tid IN (?)", tids)
                                        .collect(&:nid)
       tag = Tag.where(name: tagname).last
-      parents = DrupalNode.where(status: 1, type: type)
-                          .includes(:drupal_node_revision, :tag)
-                          .where('term_data.name LIKE ?', tag.parent)
-      nids += tag_nids + parents.collect(&:nid)
+      if tag
+        parents = DrupalNode.where(status: 1, type: type)
+                            .includes(:drupal_node_revision, :tag)
+                            .where('term_data.name LIKE ?', tag.parent)
+        nids += tag_nids + parents.collect(&:nid)
+      end
     end
     DrupalNode.where("nid IN (?)", nids)
               .order("nid DESC")

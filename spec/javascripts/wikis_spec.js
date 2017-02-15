@@ -1,6 +1,6 @@
 //= require application
 //= require jasmine-jquery
-//= require comment_expand
+//= require wikis
 
 var editor;
 
@@ -44,6 +44,22 @@ describe("Wikis", function() {
     var html = "#timelapse and #balloon-mapping";
 
     expect(addCallouts(html)).toEqual('<a href="/tag/timelapse">@timelapse</a> and <a href="/tag/balloon-mapping">@balloon-mapping</a>');
+
+  });
+
+  it("adds deep links like example.com#Sub+section", function() {
+
+    loadFixtures('content.html');
+    addDeepLinks($('#content'));
+    expect($('#content h2 i.fa').length).not.toBe(0);
+
+  });
+
+  it("adds table CSS", function() {
+
+    loadFixtures('content.html');
+    postProcessContent($('#content'));
+    expect($('#content table.table').length).not.toBe(0);
 
   });
 
