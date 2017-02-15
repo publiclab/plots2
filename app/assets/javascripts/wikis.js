@@ -31,9 +31,25 @@ function postProcessWiki() {
   $("[rel=popover]").popover({container: 'body'})
   $('table').addClass('table')
 
+  
+
   /* add "link" icon to headers */
   $("#content h1, #content h2, #content h3, #content h4").append(function(i,html) {
     return " <small><a href='#" + this.innerHTML.replace(/ /g,'+') + "'><i class='icon fa fa-link'></i></a></small>";
   });
 
+}
+
+function addCallouts(html) {
+  var pattern = /(^|\s)@([A-z\_]+)\b/g;
+  return html.replace(pattern, function replaceCallouts(m) {
+    return '<a href="/profile/' + $2 + '">@' + $2 + '</a>';
+  });
+}
+
+function addHashtags(html) {
+  var pattern = /(^|\s)#([A-z\-]+)\b/g;
+  return html.replace(pattern, function replaceCallouts(m) {
+    return '<a href="/tag/' + $2 + '">#' + $2 + '</a>';
+  });
 }
