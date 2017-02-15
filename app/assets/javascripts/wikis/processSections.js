@@ -29,7 +29,7 @@ function processSection(markdown, selector, node_id) {
     insertEditLink(uniqueId, el, form);
     form.find('.cancel').click(function inlineEditCancelClick(e) {
       e.preventDefault();
-      form.hide();
+      $(form).hide();
     });
     form.find('button').click(submitSectionForm);
   }
@@ -73,14 +73,22 @@ function insertEditLink(uniqueId, el, form) {
   var editLink = "";
   editLink += "<a class='inline-edit-link inline-edit-link-" + uniqueId + "'><i class='fa fa-pencil'></i></a>";
   el.append(editLink);
-  $('.inline-edit-link-' + uniqueId).click(function inlineEditLinkClick(e) {
-    e.preventDefault();
-    form.toggle();
-  });
+  // drop priority:
+  setTimeout(function() {
+    $('.inline-edit-link-' + uniqueId).click(function inlineEditLinkClick(e) {
+      $(form).show();
+console.log('click', $(form), $(form).is(':visible'));
+      e.preventDefault();
+    });
+  },0);
 }
 
 function preProcessMarkdown(markdown) {
-  return markdown.replace(/$(#+)(\w)/, function(m, p1, p2) {
+  // to preserve blockquote markdown, as in "> a blockquote"
+  markdown = markdown.replace('&gt;', '>');
+  // insert space between "##Header" => "## Header" to deal with improper markdown header usage
+  markdown = markdown.replace(/$(#+)(\w)/, function(m, p1, p2) {
     return p1 + ' ' + p2;
   })
+  return markdown;
 }

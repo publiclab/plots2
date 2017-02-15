@@ -43,7 +43,7 @@ describe("Wikis", function() {
 
     var html = "#timelapse and #balloon-mapping";
 
-    expect(addCallouts(html)).toEqual('<a href="/tag/timelapse">@timelapse</a> and <a href="/tag/balloon-mapping">@balloon-mapping</a>');
+    expect(addCallouts(html)).toEqual('<a href="/tag/timelapse">#timelapse</a> and <a href="/tag/balloon-mapping">#balloon-mapping</a>');
 
   });
 
@@ -60,6 +60,19 @@ describe("Wikis", function() {
     loadFixtures('content.html');
     postProcessContent($('#content'));
     expect($('#content table.table').length).not.toBe(0);
+
+  });
+
+  xit("adds edit links", function() {
+
+    loadFixtures('content.html');
+
+    // insert edit links!!
+    processSection(markdown, selector, node_id);
+
+    $('#content .inline-edit-link:first').click()
+
+    expect($('#content form.inline-edit-form:visible').length).toBe(1);
 
   });
 
