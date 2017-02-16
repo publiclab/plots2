@@ -34,7 +34,7 @@ function processSection(markdown, selector, node_id) {
       el.replaceWith(html);
       postProcessContent(el); // add #hashtag and @callout links, extra CSS and deep links
       // rebuild the form (consider recursing?):
-      insertFormIfMarkdown(markdown, el, uniuqeId);
+      insertFormIfMarkdown(markdown, el, uniqueId);
     } else {
       message.html('There was an error -- the wiki page may have changed while you were editing; save your content in the clipboard and try refreshing the page.');
     }
