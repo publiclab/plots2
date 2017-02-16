@@ -3,11 +3,6 @@
 
 /*
 * [edit]
-* respond to ajax WITHOUT flash[:notice]
-* respond with "failed" if replacement doesn't work
-* repspond with "ambiguous" if two replacements possible
-* pre-screen for ambiguity
-* npm?
 */
 
 function setupWiki(node_id, raw) {
@@ -32,11 +27,6 @@ function postProcessContent(element) {
   element.find("[rel=popover]").popover({container: 'body'})
   element.find('table').addClass('table')
 
-  var html = element.html();
-  html = addCallouts(html);
-  html = addHashtags(html);
-  element.html(html);
-
   addDeepLinks(element);
 }
 
@@ -59,4 +49,14 @@ function addHashtags(html) {
   return html.replace(pattern, function replaceHashtags(m, p1, p2) {
     return p1 + '<a href="/tag/' + p2 + '">#' + p2 + '</a>';
   });
+}
+
+function preProcessMarkdown(markdown) {
+  // to preserve blockquote markdown, as in "> a blockquote"
+  markdown = markdown.replace('&gt;', '>');
+  // insert space between "##Header" => "## Header" to deal with improper markdown header usage
+  markdown = markdown.replace(/$(#+)(\w)/, function(m, p1, p2) {
+    return p1 + ' ' + p2;
+  })
+  return markdown;
 }

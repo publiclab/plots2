@@ -1,6 +1,6 @@
 // Runs megamark with default whitelist
 function replaceWithMarkdown(element) {
-  var markdown = megamark(
+  var html = megamark(
     element,
     { 
       sanitizer: {  
@@ -30,5 +30,7 @@ function replaceWithMarkdown(element) {
       }
     }
   );
-  return markdown;
+  html = addCallouts(html);
+  html = addHashtags(html);
+  return html;
 }
