@@ -27,7 +27,7 @@ module NodeShared
                         .includes(:drupal_node_revision, :tag)
                         .where('term_data.name = ?', $2)
                         .order("node_revisions.timestamp DESC")
-      nodes.each_with_index do |note, index|
+      nodes.each_with_index do |node, index|
         if index > 10
           output += '<tr>'
         else
