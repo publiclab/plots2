@@ -1,6 +1,4 @@
 sudo: required
-rvm:
-  - 2.1.2
 
 services:
   - docker
