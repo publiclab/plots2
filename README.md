@@ -51,9 +51,9 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 6. Run `rake db:setup` to set up the database
 7. Install static assets (like external javascript libraries, fonts) with `bower install`
-8. (optional) Install solr engine `rails generate sunspot_rails:install`
-9. (optional) Start the solr server in foreground by using `bundle exec rake sunspot:solr:start`
-10. (optional) Index your search database in solr server using  `bundle exec rake sunspot:reindex`
+8. (optional, not recommended) Install solr engine `rails generate sunspot_rails:install`
+9. (optional, not recommended) Start the solr server in foreground by using `bundle exec rake sunspot:solr:start`
+10. (optional, not recommended) Index your search database in solr server using  `bundle exec rake sunspot:reindex`
 11. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
 13. Run `rake test` to confirm that your install is working properly. For some setups, you may see warnings even if test pass; [see this issue](https://github.com/publiclab/plots2/issues/440) we're working to resolve.
