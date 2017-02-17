@@ -27,16 +27,21 @@ module NodeShared
                         .includes(:drupal_node_revision, :tag)
                         .where('term_data.name = ?', $2)
                         .order("node_revisions.timestamp DESC")
-      nodes.each do |node|
-        output += '<tr>'
+      nodes.each_with_index do |note, index|
+        if index > 10
+          output += '<tr>'
+        else
+          output += '<tr class="hide">'
+        end
         output += '  <td class="title"><a href="' + node.path + '">' + node.title + '</a></td>'
         output += '  <td class="author"><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
         output += '  <td class="updated" data-timestamp="' + node.latest.timestamp.to_s + '">' + distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, false, :scope => :'datetime.time_ago_in_words') + '</td>'
         output += '  <td class="likes">' + node.cached_likes.to_s + '</td>'
         output += '</tr>'
+        output += '<tr><td><a class="show-all">Show all</a></td></tr>' if index = 10
       end
       output += '</table>'
-      output += '<script>(function(){ setupGridSorters(".' + className + '-' + randomSeed + '"); })()</script>'
+      output += '<script>(function(){ $(".' + className + '-' + randomSeed + ' .show-all").click(function() { $(".' + className + '-' + randomSeed + ' tr.hide").removeClass("hide") }); setupGridSorters(".' + className + '-' + randomSeed + '"); })()</script>'
       output
     end
   end
