@@ -11,6 +11,10 @@ describe("Wikis", function() {
     // for phantomjs running
     jasmine.getFixtures().fixturesPath="../../spec/javascripts/fixtures";
 
+    // for in-browser running... still doesn't work
+    //jasmine.getFixtures().fixturesPath = 'assets/fixtures';
+    preloadFixtures('content.html');
+
     jasmine.Ajax.install();
 
   });
