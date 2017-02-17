@@ -38,7 +38,7 @@ module NodeShared
         output += '  <td class="updated" data-timestamp="' + node.latest.timestamp.to_s + '">' + distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, false, :scope => :'datetime.time_ago_in_words') + '</td>'
         output += '  <td class="likes">' + node.cached_likes.to_s + '</td>'
         output += '</tr>'
-        output += '<tr><td><a class="show-all">Show all</a></td></tr>' if index = 10
+        output += '<tr><td><a class="show-all">Show all</a></td><td></td><td></td><td></td></tr>' if index == 10
       end
       output += '</table>'
       output += '<script>(function(){ $(".' + className + '-' + randomSeed + ' .show-all").click(function() { $(".' + className + '-' + randomSeed + ' tr.hide").removeClass("hide") }); setupGridSorters(".' + className + '-' + randomSeed + '"); })()</script>'
