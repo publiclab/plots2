@@ -15,8 +15,8 @@ function setupWiki(node_id, raw) {
     processSections(sections, '#content', node_id);
   } else {
     $('#content').html(shortCodePrompt($('#content')[0], { submitUrl: '/wiki/replace/' + node_id }));
+    postProcessContent($('#content'));
   }
-  postProcessContent($('#content'));
 }
 
 // add #hashtag and @callout links, extra CSS and deep links
@@ -32,7 +32,7 @@ function postProcessContent(element) {
 
 /* add "link" icon to headers for example.com#Hash deep links */
 function addDeepLinks(element) {
-  element.find("h1,h2,h3,h4").append(function(i,html) {
+  element.find("h1,h2,h3,h4").append(function(i, html) {
     return " <small><a href='#" + this.innerHTML.replace(/ /g,'+') + "'><i class='icon fa fa-link'></i></a></small>";
   });
 }

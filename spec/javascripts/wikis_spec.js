@@ -51,7 +51,7 @@ describe("Wikis", function() {
 
     loadFixtures('content.html');
     addDeepLinks($('#content'));
-console.log($('#content h2 i.fa'))
+console.log($('#content h2').html())
     expect($('#content h2 i.fa').length).not.toBe(0);
 
   });
