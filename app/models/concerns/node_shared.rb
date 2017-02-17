@@ -27,16 +27,21 @@ module NodeShared
                         .includes(:drupal_node_revision, :tag)
                         .where('term_data.name = ?', $2)
                         .order("node_revisions.timestamp DESC")
-      nodes.each do |node|
-        output += '<tr>'
+      nodes.each_with_index do |node, index|
+        if index > 10
+          output += '<tr>'
+        else
+          output += '<tr class="hide">'
+        end
         output += '  <td class="title"><a href="' + node.path + '">' + node.title + '</a></td>'
         output += '  <td class="author"><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
         output += '  <td class="updated" data-timestamp="' + node.latest.timestamp.to_s + '">' + distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, false, :scope => :'datetime.time_ago_in_words') + '</td>'
         output += '  <td class="likes">' + node.cached_likes.to_s + '</td>'
         output += '</tr>'
+        output += '<tr><td><a class="show-all">Show all</a></td></tr>' if index = 10
       end
       output += '</table>'
-      output += '<script>(function(){ setupGridSorters(".' + className + '-' + randomSeed + '"); })()</script>'
+      output += '<script>(function(){ $(".' + className + '-' + randomSeed + ' .show-all").click(function() { $(".' + className + '-' + randomSeed + ' tr.hide").removeClass("hide") }); setupGridSorters(".' + className + '-' + randomSeed + '"); })()</script>'
       output
     end
   end
@@ -71,7 +76,7 @@ module NodeShared
         output += '</tr>'
       end
       output += '</table>'
-      output += "<p><a href='/post?tags=activity:#{$2},#{$2},seeks:replications&title=How%20to%20do%20X' class='btn btn-primary add-activity'>Add an activity</a> <a href='/post?tags=#{$1},question:#{$1},request:activity&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary request-activity'>Request an activity guide</a></p>"
+      output += "<p><a href='/post?tags=activity:#{$2},#{$2},seeks:replications&title=How%20to%20do%20X' class='btn btn-primary add-activity'>Add an activity</a> &nbsp;or <a href='/post?tags=#{$1},question:#{$1},request:activity&template=question&title=How%20do%20I...&redirect=question' class='request-activity'>request an activity<span class='hidden-xs hidden-sm'> guide you don't see listed</span></a></p>"
       output += '<p><i>Activities should include a materials list, costs and a step-by-step guide to construction with photos. Learn what <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity">makes a good activity here</a>.</i></p>'
       output += '<script>(function(){ setupGridSorters(".' + className + '-' + randomSeed + '"); })()</script>'
       output
