@@ -43,7 +43,7 @@ describe("Wikis", function() {
 
     var html = "#timelapse and #balloon-mapping";
 
-    expect(addCallouts(html)).toEqual('<a href="/tag/timelapse">#timelapse</a> and <a href="/tag/balloon-mapping">#balloon-mapping</a>');
+    expect(addHashtags(html)).toEqual('<a href="/tag/timelapse">#timelapse</a> and <a href="/tag/balloon-mapping">#balloon-mapping</a>');
 
   });
 
@@ -51,6 +51,7 @@ describe("Wikis", function() {
 
     loadFixtures('content.html');
     addDeepLinks($('#content'));
+console.log($('#content h2 i.fa'))
     expect($('#content h2 i.fa').length).not.toBe(0);
 
   });
