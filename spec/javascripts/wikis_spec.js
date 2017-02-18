@@ -54,10 +54,7 @@ describe("Wikis", function() {
   it("adds deep links like example.com#Sub+section", function() {
 
     loadFixtures('content.html');
-console.log($('#content').html())
-console.log($('#content h2').html())
     addDeepLinks($('#content'));
-console.log($('#content h2').html())
     expect($('#content h2 i.fa').length).not.toBe(0);
 
   });
