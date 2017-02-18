@@ -41,7 +41,7 @@ module NodeShared
         output += '<tr class="show-all"><td><a>Show all</a></td><td></td><td></td><td></td></tr>' if index == 10
       end
       output += '</table>'
-      output += '<script>(function(){ $(".' + className + '-' + randomSeed + ' .show-all a").click(function() { $(".' + className + '-' + randomSeed + ' tr.hide").removeClass("hide") });$(".' + className + '-' + randomSeed + ' tr.show-all").hide();setupGridSorters(".' + className + '-' + randomSeed + '"); })()</script>'
+      output += '<script>(function(){ $(".' + className + '-' + randomSeed + ' .show-all a").click(function() { $(".' + className + '-' + randomSeed + ' tr.hide").removeClass("hide");$(".' + className + '-' + randomSeed + ' tr.show-all").hide(); });setupGridSorters(".' + className + '-' + randomSeed + '"); })()</script>'
       output
     end
   end
