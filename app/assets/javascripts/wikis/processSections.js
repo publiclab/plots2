@@ -1,4 +1,5 @@
 //= require wikis/buildSectionForm.js
+//= require wikis/setupSectionForm.js
 //= require wikis/insertEditLink.js
 
 function processSections(sections, selector, node_id) {
@@ -16,8 +17,9 @@ function processSection(markdown, selector, node_id) {
   markdown = preProcessMarkdown(markdown);
   html = replaceWithMarkdown(markdown);
 
-  $(selector).append(html);
-  var el = $(selector + ' > *:last');
+  $(selector).append('<div class="inline-section"></div>');
+  var el = $(selector).find('.inline-section:last');
+  el.append(html);
 
   postProcessContent(el);
   var form = insertFormIfMarkdown(markdown, el, uniqueId);
@@ -32,7 +34,7 @@ function processSection(markdown, selector, node_id) {
       form.hide();
       // replace the section but reset our html and markdown
       html = replaceWithMarkdown(markdown);
-      el.replaceWith(html);
+      el.html(html);
       postProcessContent(el); // add #hashtag and @callout links, extra CSS and deep links
 // rebuild the form (consider recursing?):
 // NOT WORKING
@@ -55,13 +57,14 @@ function processSection(markdown, selector, node_id) {
     if (isMarkdown) {
       var formHtml = buildSectionForm(uniqueId, markdown);
       el.after(formHtml);
+      setupSectionForm(uniqueId);
       var form = $('#' + uniqueId);
       insertEditLink(uniqueId, el, form);
       form.find('.cancel').click(function inlineEditCancelClick(e) {
         e.preventDefault();
         form.hide();
       });
-      form.find('button').click(submitSectionForm);
+      form.find('button.submit').click(submitSectionForm);
     }
  
     function submitSectionForm(e) {
