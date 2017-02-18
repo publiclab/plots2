@@ -1,5 +1,5 @@
 function buildSectionForm(uniqueId, contents) {
-  var formHtml = "<form style='display:none;' class='well' id='" + uniqueId + "'>";
+  var formHtml = "<form style='display:none;' class='well inline-edit-form' id='" + uniqueId + "'>";
   formHtml += "<p><b>Edit this section:</b></p>";
   formHtml += "<p><textarea rows='6' class='form-control'>" 
   formHtml += contents + "</textarea></p>";

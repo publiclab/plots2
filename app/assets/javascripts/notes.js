@@ -18,14 +18,6 @@ jQuery(document).ready(function($) {
     $("#content").toggle();
   }
 
-  /* setup bootstrap behaviors */
-  $("[rel=tooltip]").tooltip();
-  $("[rel=popover]").popover({container: 'body'});
-  $('table').addClass('table');
-  
-  $('iframe').css('border','none')
-  
-  /* add "link" icon to headers */
-  $("#content").find('h1,h2,h3,h4').append(function(i,html) {return " <small><a href='#" + this.innerHTML.replace(/ /g,'+') + "'><i class='icon fa fa-link'></i></a></small>"})
+  postProcessContent($("#content"));
 
 });
