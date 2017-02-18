@@ -23,9 +23,9 @@ function setupWiki(node_id, raw) {
 function postProcessContent(element) {
 
   /* setup bootstrap behaviors */
-  element.find("[rel=tooltip]").tooltip()
-  element.find("[rel=popover]").popover({container: 'body'})
-  element.find('table').addClass('table')
+  element.find("[rel=tooltip]").tooltip();
+  element.find("[rel=popover]").popover({container: 'body'});
+  element.find('table').addClass('table');
 
   addDeepLinks(element);
 }
