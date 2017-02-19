@@ -62,7 +62,7 @@ module NodeShared
       output += '  </tr>'
       nodes = DrupalNode.where(status: 1, type: 'note')
                         .includes(:drupal_node_revision, :tag)
-                        .where('term_data.name = ?', $2)
+                        .where('term_data.name = ?', "question:#{$2}")
                         .order("node_revisions.timestamp DESC")
       nodes.each_with_index do |node, index|
         if index > 9
