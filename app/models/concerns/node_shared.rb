@@ -28,7 +28,7 @@ module NodeShared
                         .where('term_data.name = ?', $2)
                         .order("node_revisions.timestamp DESC")
       nodes.each_with_index do |node, index|
-        if index > 10
+        if index > 9
           output += '<tr class="hide">'
         else
           output += '<tr>'
@@ -65,7 +65,7 @@ module NodeShared
                         .where('term_data.name = ?', $2)
                         .order("node_revisions.timestamp DESC")
       nodes.each_with_index do |node, index|
-        if index > 10
+        if index > 9
           output += '<tr class="hide">'
         else
           output += '<tr>'
@@ -75,7 +75,7 @@ module NodeShared
         output += '  <td class="updated" data-timestamp="' + node.latest.timestamp.to_s + '">' + distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, false, :scope => :'datetime.time_ago_in_words') + '</td>'
         output += '  <td class="likes">' + node.cached_likes.to_s + '</td>'
         output += '</tr>'
-        output += '<tr class="show-all"><td><a>Show ' + (nodes.length - 10) + ' more <b class="caret"></b></a></td><td></td><td></td><td></td></tr>' if index == 9
+        output += '<tr class="show-all"><td><a>Show ' + (nodes.length - 10).to_s + ' more <b class="caret"></b></a></td><td></td><td></td><td></td></tr>' if index == 9
       end
       output += '</table>'
       output += "<p><a href='/post?tags=question:#{$2},#{$2}&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary add-activity'>Ask a question</a> &nbsp;or <a href='/subscribe/tag/question:#{$2}'>help answer future questions<span class='hidden-sm hidden-xs'> on this topic</span></a></p>"
