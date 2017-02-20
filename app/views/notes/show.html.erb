@@ -8,7 +8,7 @@
   <% if @node.has_power_tag('replication') %><div class="alert alert-info"><%= raw t('notes.show.replication') %> <a href="/n/<%= @node.power_tag('replication') %>"><%= raw t('notes.show.replication_link') %></a>.</div><% end %>
   <% if @node.has_power_tag('series') %><div class="alert alert-info"><%= raw t('notes.show.series') %> <a href="/tag/<%= @node.power_tag('series') %>"><%= @node.power_tag('series') %></a>.</div><% end %>
   <% if @node.has_power_tag('build') %><div class="alert alert-info"><%= raw t('notes.show.build') %> <a href="/n/<%= @node.power_tag('build') %>"><%= raw t('notes.show.build_link') %></a>.</div><% end %>
-  <% if @node.has_power_tag('with') && @node.coauthors.map {|c| c.username }.include?(current_user.username) %> <div class="alert alert-success"> You are a coauthor of this post. This attributes your contribution, and gives you edit access to the note. <a href="https://publiclab.org/wiki/power-tags#Coauthorship"> Learn more </a></div><% end %>
+  <% if @node.has_power_tag('with') && current_user && @node.coauthors.collect(&:username).include?(current_user.username) %> <div class="alert alert-success"> You are a coauthor of this post. This attributes your contribution, and gives you edit access to the note. <a href="https://publiclab.org/wiki/power-tags#Coauthorship"> Learn more </a></div><% end %>
 
   <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
