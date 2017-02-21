@@ -9,10 +9,12 @@ function insertEditLink(uniqueId, el, form, onEdit) {
   $('.inline-edit-link-' + uniqueId).click(function inlineEditLinkClick(e) {
     e.preventDefault();
     form.toggle();
-    // insert rich editor
-    var editor = new PL.Editor({
-      textarea: $('#' + uniqueId + ' textarea')[0]
-    });
-    onEdit(editor); // send it back for later use
+    if (onEdit) {
+      // insert rich editor
+      var editor = new PL.Editor({
+        textarea: $('#' + uniqueId + ' textarea')[0]
+      });
+      onEdit(editor); // send it back for later use
+    }
   });
 }
