@@ -41,7 +41,6 @@
 //= require main_image.js
 //= require restful_typeahead.js
 //= require searchform.js
-//= require location_tags.js
 //= require users.js
 //= require searchform.js
 //= require location_tags.js

@@ -134,17 +134,20 @@ function addGrid(map)
  }).addTo(map);
 }
 
-var input = document.getElementById("geo_location");
-input.addEventListener('blur', function () {
-  setTimeout(function () {
-        var str = input.value;
-        var loc = str.split(' ').join('+');
-        $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?address=" + loc + "&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE", function(data){
-          var lat = data.results[0].geometry.location.lat;
-          var lng = data.results[0].geometry.location.lng;
-          panMap(lat, lng);
-        });
-    }, 100)});
-function panMap(lat, lng) {
-  map.panTo(new L.LatLng(lat, lng));
+function geoLocateFromInput(selector) {
+  var input = document.getElementById(selector);
+  input.addEventListener('blur', function () {
+    setTimeout(function () {
+      var str = input.value;
+      var loc = str.split(' ').join('+');
+      $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?address=" + loc + "&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE", function(data){
+        var lat = data.results[0].geometry.location.lat;
+        var lng = data.results[0].geometry.location.lng;
+        panMap(lat, lng);
+      });
+    }, 100);
+  });
+  function panMap(lat, lng) {
+    map.panTo(new L.LatLng(lat, lng));
+  }
 }
