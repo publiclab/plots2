@@ -24,3 +24,21 @@
   color: #666;
   background: #dedede;
 }
+
+.inline-edit-form .wk-wysiwyg {
+  background: white;
+}
+.inline-edit-form .controls {
+  padding-top: 4px;
+  clear: both;
+}
+
+.pl-content .inline-section h1,
+.pl-content .inline-section h2,
+.pl-content .inline-section h3 {
+  padding-top: 0;
+}
+
+.wk-container textarea {
+  margin-bottom: 4px;
+}
