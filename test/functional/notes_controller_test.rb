@@ -48,7 +48,6 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note" do
-
     note = node(:blog)
     note.add_tag('activity:nonexistent', note.author) # testing responses display
     assert_equal 'nonexistent', note.power_tag('activity')

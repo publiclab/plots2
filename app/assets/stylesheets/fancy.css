@@ -10,28 +10,31 @@
 
 }
 
-#content hr {
+.pl-content hr {
   margin:60px 0;
 }
 
-#content {
+.pl-content {
   font-size:1.4em;
   font-family:'Helvetica Neue','Helvetica','Arial',sans-serif;
   font-weight: 200;
   line-height:1.4em;
 }
-#content h1, #content h2, #content h3, #content h4 {
+.pl-content h1,
+.pl-content h2,
+.pl-content h3,
+.pl-content h4 {
   font-family:'Junction Light';
   font-size:3em;
   line-height:1.4em;
 }
-#content h1 {
+.pl-content h1 {
   font-size:3em;
 }
-#content h2 {
+.pl-content h2 {
   font-size:2.4em;
 }
-#content h3 {
+.pl-content h3 {
   font-size:2em;
 }
 #main-image-presentation {
@@ -40,10 +43,10 @@
   margin-bottom:15px;
 }
 
-#content ul li {
+.pl-content ul li {
   line-height:1.7em;
 }
 
-#content p {
+.pl-content p {
   margin-bottom:30px;
 }

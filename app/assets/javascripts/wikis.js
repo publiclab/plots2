@@ -9,10 +9,12 @@ function setupWiki(node_id, raw) {
   // insert inline forms
   if (raw) {
     $('#content-raw-markdown').html(shortCodePrompt($('#content-raw-markdown')[0], { submitUrl: '/wiki/replace/' + node_id }));
-    $('#content').html('');
     // split by double-newline:
     var sections = $('#content-raw-markdown').html().split('\n\n');
-    processSections(sections, '#content', node_id);
+    $('#content-raw-markdown').html('');
+    processSections(sections, '#content-raw-markdown', node_id);
+    $('#content').hide();
+    $('#content-raw-markdown').show();
   } else {
     $('#content').html(shortCodePrompt($('#content')[0], { submitUrl: '/wiki/replace/' + node_id }));
     postProcessContent($('#content'));

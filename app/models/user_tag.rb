@@ -1,6 +1,6 @@
 class UserTag < ActiveRecord::Base
   attr_accessible :uid, :value
-  belongs_to :user, :foreign_key => :uid
+  belongs_to :user, foreign_key: :uid
   validates_format_of :value, with: /\A[a-z]*:[a-zA-Z0-9]*\Z/, message: 'field contains invalid input'
 
   def self.exists? uid, value

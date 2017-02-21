@@ -14,17 +14,12 @@ function replaceWithMarkdown(element) {
         allowedAttributes: {
           a: ['class', 'id', 'href'],
           button: ['class', 'id'],
-          div: ['class', 'id'],
+          div: ['class', 'id', 'style'],
+          p: ['class', 'id', 'style'],
           form: ['class', 'id'],
           input: ['class', 'id', 'name', 'placeholder'],
           textarea: ['class', 'id', 'name', 'placeholder'],
           iframe: ['class', 'id', 'src']
-        },
-        allowedClasses: {
-          button: ['class'],
-          input: ['class'],
-          a: ['class'] ,
-          div: ['class']
         }
         //"allowedClasses": "class"
       }

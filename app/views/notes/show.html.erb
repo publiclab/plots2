@@ -71,7 +71,7 @@
 
   <%= render :partial => "notes/gallery" %>
 
-  <div style="overflow:hidden;" id="content">
+  <div id="content" class="pl-content note">
   <%= raw auto_link(insert_extras(@node.latest.render_body), :sanitize => false) %>
   </div>
 

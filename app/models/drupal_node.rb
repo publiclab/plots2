@@ -3,7 +3,7 @@ class UniqueUrlValidator < ActiveModel::Validator
     if record.title == "" || record.title.nil?
       #record.errors[:base] << "You must provide a title."
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
-    elsif record.title == "new" && (record.type == "page" || record.type == "place" || record.type == "tool")
+    elsif record.title == "new" && record.type == "page"
       record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     else
       if !DrupalNode.where(path: record.generate_path).first.nil? && record.type == "note"
@@ -39,28 +39,6 @@ class DrupalNode < ActiveRecord::Base
 
   def updated_month
     updated_at.strftime('%B %Y')
-  end
-
-  # FriendlyId is not being used; see
-  # https://github.com/publiclab/plots2/pull/687 and
-  # https://github.com/publiclab/plots2/pull/600
-  extend FriendlyId
-  friendly_id :friendly_id_string, use: [:slugged, :history]
-
-  def should_generate_new_friendly_id?
-    slug.blank? || title_changed?
-  end
-
-  # friendly_id uses this method to set the slug column for nodes
-  def friendly_id_string
-    if self.type == 'note'
-      username = DrupalUsers.find_by_uid(self.uid).name
-      "#{username} #{Time.at(self.created).strftime("%m-%d-%Y")} #{self.title}"
-    elsif self.type == 'page'
-      "#{self.title}"
-    elsif self.type == 'map'
-      "#{self.title} #{Time.at(self.created).strftime("%m-%d-%Y")}"
-    end
   end
 
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
@@ -141,28 +119,6 @@ class DrupalNode < ActiveRecord::Base
   def set_path
     self.path = self.generate_path if self.path.blank? && !self.title.blank?
   end
-
-# These methods are used for updating node paths upon changing the title
-# friendly_id is being used for updating slugs and manage url redirects when an url changes
-# removed due to issues discussed in https://github.com/publiclab/plots2/issues/691
-
-#  def update_path
-#    self.path = if self.type == 'note'
-#                  username = DrupalUsers.find_by_uid(self.uid).name
-#                  "/notes/#{username}/#{Time.at(self.created).strftime("%m-%d-%Y")}/#{self.title.parameterize}"
-#                elsif self.type == 'page'
-#                  "/wiki/" + self.title.parameterize
-#                elsif self.type == 'map'
-#                  "/map/#{self.title.parameterize}/#{Time.at(self.created).strftime("%m-%d-%Y")}"
-#                end
-#  end
-
-#  def remove_slug
-#    if !FriendlyId::Slug.find_by_slug(self.title.parameterize).nil? && self.type == 'page'
-#      slug = FriendlyId::Slug.find_by_slug(self.title.parameterize)
-#      slug.delete
-#    end
-#  end
 
   def set_changed_and_created
     self['changed'] = DateTime.now.to_i
