@@ -118,6 +118,10 @@ class User < ActiveRecord::Base
     self.role == r
   end
 
+  def has_tag(tagname)
+    self.user_tags.collect(&:value).include?(tagname)
+  end
+
   def subscriptions(type = :tag)
     if type == :tag
       TagSelection.find_all_by_user_id self.uid, :conditions => {:following => true}
@@ -127,16 +131,6 @@ class User < ActiveRecord::Base
   def following(tagname)
     tids = Tag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
     TagSelection.find(:all, :conditions => {:following => true,:tid => tids, :user_id => self.uid}).length > 0
-  end
-
-  def mapknitter_maps
-    # http://mapknitter.org/feeds/author/hagitkeysar
-    #begin
-    #  RSS::Parser.parse(open('http://mapknitter.org/feeds/author/'+self.username).read, false).items
-    #rescue
-    #  []
-    #end
-    []
   end
 
   def add_to_lists(lists)

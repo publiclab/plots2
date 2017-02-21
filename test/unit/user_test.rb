@@ -64,4 +64,12 @@ class UserTest < ActiveSupport::TestCase
     assert_equal "https://www.gravatar.com/avatar/927536542991ac10fe2c546bc386a521", bob.profile_image
   end
 
+  test "can add a user_tag and use has_tag method" do
+    tag = rusers(:bob).user_tags.new
+    tag.value = "test:test"
+    assert tag.save
+    assert rusers(:bob).has_tag("test:test")
+    assert !rusers(:bob).has_tag("test:no")
+  end
+
 end
