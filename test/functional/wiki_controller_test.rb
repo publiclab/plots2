@@ -161,7 +161,7 @@ class WikiControllerTest < ActionController::TestCase
     # then try editing it
     assert_difference 'DrupalNodeRevision.count', 0 do
       post :update,
-          id: 'organizers'
+          id: node(:organizers).id
     end
     assert_equal flash[:warning] , "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can update it."
     assert_redirected_to node(:organizers).path

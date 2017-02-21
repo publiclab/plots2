@@ -1,7 +1,26 @@
-a.inline-edit-link {
+.inline-edit-btns {
   margin-left: 5px;
   font-size: 14px;
+  display: block;
+  font-size: 14px;
+  opacity: 0;
+  /* text-align: center; */
+  margin-top: 0;
+  margin-left: 0;
+  padding-bottom: 10px;
+  color: #888;
 }
-a.inline-edit-link .fa {
-  color: #bbb;
+.inline-section:hover .inline-edit-btns {
+  opacity: 1;
+}
+.inline-edit-btns .fa {
+  color: #888;
+  border-radius: 18px;
+  background: #efefef;
+  padding: 8px;
+  margin-right: 4px;
+}
+.inline-edit-btns .fa:hover {
+  color: #666;
+  background: #dedede;
 }

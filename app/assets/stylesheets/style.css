@@ -41,22 +41,24 @@ h4,h5,h6, h1 small, h3 small {
   line-height: 1.4em;
 }
 
-#content h1, #content h2, #content h3 {
+.pl-content h1,
+.pl-content h2,
+.pl-content h3 {
   font-family: "Junction Light",lucida grande,lucida sans console,sans-serif;
   padding-top: 0.4em;
 }
 
-#content h4 {
+.pl-content h4 {
   padding-top:1.2em;
 }
 
-#content img {
+.pl-content img {
   margin-top:8px;
 }
 
-#content p img,
+.pl-content p img,
 #comments p img,
-#content p iframe {
+.pl-content p iframe {
   max-width: 100%;
   border: none;
 }
@@ -203,23 +205,23 @@ body { padding-top: 70px; }
   padding-bottom:4px;
 }
 
-#content h1 i.fa-link,
-#content h2 i.fa-link,
-#content h3 i.fa-link,
-#content h4 i.fa-link,
-#content h5 i.fa-link {
+.pl-content h1 i.fa-link,
+.pl-content h2 i.fa-link,
+.pl-content h3 i.fa-link,
+.pl-content h4 i.fa-link,
+.pl-content h5 i.fa-link {
   color:#aaa;
 }
-#content h1 a:hover i.fa-link,
-#content h2 a:hover i.fa-link,
-#content h3 a:hover i.fa-link,
-#content h4 a:hover i.fa-link,
-#content h5 a:hover i.fa-link {
+.pl-content h1 a:hover i.fa-link,
+.pl-content h2 a:hover i.fa-link,
+.pl-content h3 a:hover i.fa-link,
+.pl-content h4 a:hover i.fa-link,
+.pl-content h5 a:hover i.fa-link {
   color:#888;
   text-decoration:none;
 }
 
-#content blockquote p {
+.pl-content blockquote p {
   padding: 8px 4px;
   margin-top: 8px;
 }
@@ -335,7 +337,7 @@ div.note .meta {
   color: #444;
 }
 
-div.note-show.moderated #content, 
+div.note-show.moderated .pl-content, 
 div.note.moderated .content, 
 div.note.moderated .meta, 
 div.note.moderated h4 {

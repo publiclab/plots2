@@ -10,7 +10,7 @@ function setupSectionForm(uniqueId) {
 
 function setupInsertMenuOption(uniqueId, type) {
   $('#' + uniqueId + ' .insert-' + type + '-grid').click(function insertNotesGrid() {
-    var tagname = prompt("Enter a tag name to collect content for this grid.");
+    var tagname = prompt("Enter a tag name to collect content for this grid, like 'balloon-mapping' or 'air-pollution'.");
     if (tagname) {
       var textarea = $('#' + uniqueId + ' textarea');
       var content = textarea.val();

@@ -1,81 +1,27 @@
 </div>
 <% @presentation = @node.has_tag('style:presentation') %>
 <% if @presentation && @node.main_image%>
-  <div id="main-image-presentation" style="margin-bottom:8px;"><a href="<%= @node.main_image.path(:original) %>"><img style="width:100%;" class="img-rounded" src="<%= @node.main_image.path(:original) %>" /></a></div>
+  <div id="main-image-presentation" style="margin-bottom:8px;">
+    <a href="<%= @node.main_image.path(:original) %>">
+      <img style="width:100%;" class="img-rounded" src="<%= @node.main_image.path(:original) %>" />
+    </a>
+  </div>
 <% end %>
+
 <div class="row">
+
 <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
-<%= render :partial => "sidebar/featured" %>
+  <%= render :partial => "sidebar/featured" %>
 <% else %>
-<%= render :partial => "sidebar/related" %>
+  <%= render :partial => "sidebar/related" %>
 <% end %>
 
 <div class="col-md-9">
 
-  <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning"><%= raw t('wiki.show.page_has_no_tags') %></div><% end %>
-
-  <% if @node.main_image && !@presentation %>
-    <a style="margin-bottom:10px;" href="<%= @node.main_image.path(:original) %>"><img style="max-width:100%;max-height:600px;margin-bottom:10px;" class="img-rounded" src="<%= @node.main_image.path(:large) %>" /></a>
-  <% end %>
-
-  <div style="margin-top:10px;" class="hidden-print">
-    <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
-  </div>
-
-  <br class="visible-xs visible-sm" style="clear:both;" />
-  <h1 style="font-family: 'Junction Light';"><i class="fa fa-book"></i> <%= @revision.title %> <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a></h1>
-
-<% if @is_revision %>
-  <div class="alert alert-warning"><%= raw t('wiki.show.revision_from', :time => @revision.created_at.to_s(:long)) %> <a href="/wiki/revisions/<%= @node.slug_from_path %>"><%= t('wiki.show.view_all_revisions') %></a></div>
-
-<% end %>
-
-  <div <% if @presentation || @node.has_tag('style:minimal') %>style="display:none" <% end %>id="wiki-toolbar">
-    <div class="hidden-print">
-      <div class="pull-right" style="padding-top:8px;">
-        <span class="hidden-sm hidden-xs">
-          <%= number_with_delimiter(@node.totalviews) %> <%= t('wiki.show.views') %> |
-          <%= raw t('wiki.show.last_edited', :url1 => "/profile/"+@revision.author.name, :author => @revision.author.name, :time => time_ago_in_words(@revision.created_at)) %>
-          | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="hidden-xs hidden-sm hidden-md"><a href="/n/<%= @node.id %>">/n/<%= @node.id %></a></span>
-        </span>
-      </div>
-
-      <ul class="nav nav-tabs">
-        <li class="active"><a href="#"><span class="hidden-xs"><%= t('wiki.show.view') %></span><span class="visible-xs"><i class="fa fa-file-o"></i></span></a></li>
-        <% if @node.has_tag('locked') && (current_user ? (current_user.role != "moderator" && current_user.role != "admin") : true) %>
-          <li><a href="/wiki/edit/locked"><i class="fa fa-lock"></i></a></li>
-        <% else %>
-          <li><a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>"><i class="fa fa-pencil"></i><span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.edit') %></span></a></li>
-        <% end %>
-        <% if current_user && current_user.role == "admin" %><li><%= link_to "/wiki/delete/"+@node.id.to_s, :confirm => I18n.t('wiki.show.are_you_sure_delete', :path => @node.path) do %><i class="fa fa-trash"></i><span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.delete') %></span><% end %></li><% end %>
-        <li><a href="/talk/<%= @node.slug_from_path %>"><i class="fa fa-comments-o"></i><span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.talk') %></span></a></li>
-        <li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><span class="hidden-xs"><%= @node.revisions.length %> </span><i class="fa fa-list"></i></a></li>
-      </ul>
-    </div>
-  </div>
-
-  <br />
-
-  <% if @node.has_power_tag('parent') %>
-    <% parent = DrupalNode.find_by_path("wiki/" + @node.power_tag('parent')) %>
-    <% if parent %>
-    <div class="alert alert-success" style="border-color:#eee;background:#f8f8f8;color:#aaa;">&laquo; <%= raw t('wiki.show.back_to_wiki', :url1 => parent.path, :title => parent.latest.title) %></a></div>
-    <% end %>
-  <% end %>
-
-  <% if @node.has_power_tag('tabbed') %>
-  <div class="navbar navbar-default">
-    <ul class="nav navbar-nav">
-      <li class="active"><a data-toggle="tab" href="#tab-overview"><%= t('wiki.show.overview') %></a></li>
-      <% if @node.power_tags('tabbed').include?("notes") %><li><a data-toggle="tab" href="#tab-notes"><%= t('wiki.show.research') %></a></li><% end %>
-      <% if @node.power_tags('tabbed').include?("wikis") %><li><a data-toggle="tab" href="#tab-wikis"><%= raw t('wiki.show.wiki_pages') %></a></li><% end %>
-    </ul>
-  </div>
-  <% end %>
-
-  <br />
+  <%= render :partial => "wiki/header" %>
 
   <div class="tab-content">
+
     <% if @node.has_power_tag('tabbed') %>
       <% if @node.power_tags('tabbed').include?("notes") %>
         <div class="tab-pane" id="tab-notes">
@@ -103,10 +49,10 @@
     <% end %>
 
     <div class="tab-pane active" id="tab-overview">
-      <div <% unless @node.has_tag('style:wide') %>style="max-width:800px;"<% end %> id="content">
-        <%= raw auto_link(insert_extras(@revision.render_body), :sanitize => false) %>
+      <div <% unless @node.has_tag('style:wide') %>style="max-width:800px;"<% end %> id="content" class="pl-content wiki">
+        <%= raw auto_link(insert_extras(@revision.render_body), sanitize: false) %>
       </div>
-      <div style="display:none;" id="content-raw-markdown"><%= raw insert_extras(@revision.body).gsub(/^(#+)(\w)/) { |m| $1 + ' ' + $2 } %></div>
+      <div style="display:none;" id="content-raw-markdown"><%= raw insert_extras(@revision.body_raw) %></div>
     </div>
 
   </div>
@@ -119,7 +65,7 @@
     <%= render :partial => "home/social" %>
   </div>
 
-</div><!--/span-->
+</div>
 
 <script src="/assets/wikis.js" type="text/javascript"></script>
 
