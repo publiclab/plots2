@@ -1,5 +1,7 @@
 </div>
+<% if @node.map %>
 <iframe style="width:100%;border:none;background:#ddd;margin-bottom:8px;" height="375" src="//archive.publiclab.org/leaflet/?tms=<%= @node.map.tms %>&lon=<%= @node.lon %>&lat=<%= @node.lat %>&zoom=<%= @node.map.min_zoom+1 %>"></iframe>
+<% end %>
 
 <div class="row">
   <%= render :partial => "sidebar/related" %>
