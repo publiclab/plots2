@@ -754,7 +754,8 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def replace(before, after, user)
-    if self.latest.body.include?(before)
+    matches = self.latest.body.scan(before)
+    if matches.length == 1
       revision = self.new_revision({
         uid: user.id,
         body: self.latest.body.gsub(before, after)

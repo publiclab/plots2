@@ -233,4 +233,16 @@ class DrupalNodeTest < ActiveSupport::TestCase
     assert_equal "All about Public Lab", node.body
   end
 
+  test "not replacing content in a node with node.replace() if there is more than one matching 'before' text" do
+    node = node(:about)
+    revision = node.latest
+    revision.body = "Jingle Jingle Bells"
+    assert revision.save
+
+    replaced = node.replace("Jingle", "Bells", rusers(:bob))
+
+    assert !replaced
+    assert_equal "Jingle Jingle Bells", node.body
+  end
+
 end
