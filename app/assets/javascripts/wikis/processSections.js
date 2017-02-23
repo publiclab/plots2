@@ -1,26 +1,32 @@
+//= require wikis/replaceWithMarkdown.js
 //= require wikis/buildSectionForm.js
 //= require wikis/insertEditLink.js
 
-function processSections(sections, selector, node_id) {
+function processSections(sections, o) {
   sections.forEach(function(markdown) {
-    processSection(markdown, selector, node_id);
+    processSection(markdown, {
+      replaceUrl: o.replaceUrl,
+      selector: o.selector, 
+      postProcessor: o.postProcessor,
+      preProcessor: o.preProcessor
+    });
   });
 }
 
 // selector is like "#content" -- the container to append the new content to
-function processSection(markdown, selector, node_id) {
+function processSection(markdown, o) {
   var html,
       randomNum   = parseInt(Math.random() * 10000),
       uniqueId    = "section-form-" + randomNum;
 
-  markdown = preProcessMarkdown(markdown);
+  if (o.preProcessor) markdown = o.preProcessor(markdown);
   html = replaceWithMarkdown(markdown);
 
-  $(selector).append('<div class="inline-section"></div>');
-  var el = $(selector).find('.inline-section:last');
+  $(o.selector).append('<div class="inline-section inline-section-' + uniqueId + '"></div>');
+  var el = $(o.selector).find('.inline-section:last');
   el.append(html);
 
-  postProcessContent();
+  if (o.postProcessor) o.postProcessor();
   var form = insertFormIfMarkdown(markdown, el, uniqueId);
 
   var message = $('#' + uniqueId + ' .section-message');
@@ -56,7 +62,7 @@ function processSection(markdown, selector, node_id) {
       } else {
         changes = form.find('textarea').val();
       }
-      $.post("/wiki/replace/" + node_id, {
+      $.post(o.replaceUrl, {
         before: markdown,
         after: changes
       })
@@ -74,7 +80,7 @@ function processSection(markdown, selector, node_id) {
           html = replaceWithMarkdown(markdown);
           el.html(html);
           insertEditLink(uniqueId, el, form);
-          postProcessContent(el); // add #hashtag and @callout links, extra CSS and deep links
+          if (o.postProcessor) o.postProcessor(el); // add #hashtag and @callout links, extra CSS and deep links
         } else {
           message.html('<b style="color:#a33">There was an error</b> -- the wiki page may have changed while you were editing; save your content in the clipboard and try refreshing the page.');
         }
