@@ -9,16 +9,24 @@ function setupWiki(node_id, raw, logged_in) {
   // insert inline forms
   if (raw && logged_in) {
     $('#content-raw-markdown').html(shortCodePrompt($('#content-raw-markdown')[0], { submitUrl: '/wiki/replace/' + node_id }));
-    // split by double-newline:
-    var sections = $('#content-raw-markdown').html().split('\n\n');
-    $('#content-raw-markdown').html('');
-    processSections(sections, '#content-raw-markdown', node_id);
+    inlineMarkdownEditor({
+      replaceUrl: '/wiki/replace/' + node_id,
+      selector: '#content-raw-markdown'
+    });
     $('#content').hide();
-    $('#content-raw-markdown').show();
   } else {
     $('#content').html(shortCodePrompt($('#content')[0], { submitUrl: '/wiki/replace/' + node_id }));
     postProcessContent($('#content'));
   }
+}
+
+function inlineMarkdownEditor(o) {
+  var el = $(o.selector);
+  // split by double-newline:
+  var sections = el.html().split('\n\n');
+  el.html('');
+  processSections(sections, o.selector, node_id);
+  el.show();
 }
 
 // add #hashtag and @callout links, extra CSS and deep links
