@@ -1,23 +1,18 @@
-//= require wikis/processSections.js
-//= require wikis/replaceWithMarkdown.js
-
-/*
-* [edit]
-*/
-
+//= require wikis/inlineMarkdownEditor.js
 function setupWiki(node_id, raw, logged_in) {
   // insert inline forms
   if (raw && logged_in) {
     $('#content-raw-markdown').html(shortCodePrompt($('#content-raw-markdown')[0], { submitUrl: '/wiki/replace/' + node_id }));
-    // split by double-newline:
-    var sections = $('#content-raw-markdown').html().split('\n\n');
-    $('#content-raw-markdown').html('');
-    processSections(sections, '#content-raw-markdown', node_id);
+    inlineMarkdownEditor({
+      replaceUrl: '/wiki/replace/' + node_id,
+      selector: '#content-raw-markdown',
+      preProcessor: preProcessMarkdown,
+      postProcessor: postProcessContent
+    });
     $('#content').hide();
-    $('#content-raw-markdown').show();
   } else {
     $('#content').html(shortCodePrompt($('#content')[0], { submitUrl: '/wiki/replace/' + node_id }));
-    postProcessContent($('#content'));
+    postProcessContent();
   }
 }
 
@@ -28,6 +23,7 @@ function postProcessContent(element) {
   /* setup bootstrap behaviors */
   element.find("[rel=tooltip]").tooltip();
   element.find("[rel=popover]").popover({container: 'body'});
+
   element.find('table').addClass('table');
 }
 
