@@ -5,9 +5,9 @@
 * [edit]
 */
 
-function setupWiki(node_id, raw) {
+function setupWiki(node_id, raw, logged_in) {
   // insert inline forms
-  if (raw) {
+  if (raw && logged_in) {
     $('#content-raw-markdown').html(shortCodePrompt($('#content-raw-markdown')[0], { submitUrl: '/wiki/replace/' + node_id }));
     // split by double-newline:
     var sections = $('#content-raw-markdown').html().split('\n\n');
@@ -23,13 +23,12 @@ function setupWiki(node_id, raw) {
 
 // add #hashtag and @callout links, extra CSS and deep links
 function postProcessContent(element) {
-
+  if (element) addDeepLinks(element);
+  element = element || $('body');
   /* setup bootstrap behaviors */
   element.find("[rel=tooltip]").tooltip();
   element.find("[rel=popover]").popover({container: 'body'});
   element.find('table').addClass('table');
-
-  addDeepLinks(element);
 }
 
 /* add "link" icon to headers for example.com#Hash deep links */

@@ -83,7 +83,7 @@
     $('#content img').addClass('img-rounded');
   <% end %>
 
-  setupWiki(<%= @node.id %>, <%= params[:raw] == 'true' %>);
+  setupWiki(<%= @node.id %>, <%= params[:raw] == 'true' %>, <%= current_user.nil? != true %>);
 
 })()
 </script>

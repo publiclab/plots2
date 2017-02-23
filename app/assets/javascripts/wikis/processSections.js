@@ -20,7 +20,7 @@ function processSection(markdown, selector, node_id) {
   var el = $(selector).find('.inline-section:last');
   el.append(html);
 
-  postProcessContent(el);
+  postProcessContent();
   var form = insertFormIfMarkdown(markdown, el, uniqueId);
 
   var message = $('#' + uniqueId + ' .section-message');
@@ -73,10 +73,10 @@ function processSection(markdown, selector, node_id) {
           // replace the section but reset our html and markdown
           html = replaceWithMarkdown(markdown);
           el.html(html);
+          insertEditLink(uniqueId, el, form);
           postProcessContent(el); // add #hashtag and @callout links, extra CSS and deep links
-          insertFormIfMarkdown(markdown, el, uniqueId);
         } else {
-          message.html('There was an error -- the wiki page may have changed while you were editing; save your content in the clipboard and try refreshing the page.');
+          message.html('<b style="color:#a33">There was an error</b> -- the wiki page may have changed while you were editing; save your content in the clipboard and try refreshing the page.');
         }
       }
   

@@ -8,7 +8,7 @@
   margin-top: 0;
   margin-left: 0;
   padding-bottom: 10px;
-  color: #888;
+  color: #aaa;
 }
 .inline-section:hover .inline-edit-btns {
   opacity: 1;
@@ -41,4 +41,23 @@
 
 .wk-container textarea {
   margin-bottom: 4px;
+}
+
+@media (min-width: 768px) {
+  .inline-edit-btns {
+    font-size: 11px;
+  }
+  .inline-edit-btns .fa {
+    color: #888;
+    border-radius: 18px;
+    background: #efefef;
+    padding: 6px;
+    margin-right: 4px;
+   }
+}
+
+@media (max-width: 768px) {
+  .inline-edit-btns {
+    opacity: 1;
+  }
 }
