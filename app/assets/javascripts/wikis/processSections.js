@@ -20,7 +20,7 @@ function processSection(markdown, selector, node_id) {
   var el = $(selector).find('.inline-section:last');
   el.append(html);
 
-  postProcessContent(el);
+  postProcessContent();
   var form = insertFormIfMarkdown(markdown, el, uniqueId);
 
   var message = $('#' + uniqueId + ' .section-message');

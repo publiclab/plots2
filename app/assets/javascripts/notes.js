@@ -18,6 +18,6 @@ jQuery(document).ready(function($) {
     $("#content").toggle();
   }
 
-  postProcessContent($("#content"));
+  postProcessContent();
 
 });
