@@ -664,6 +664,13 @@ class DrupalNode < ActiveRecord::Base
 
       ActiveRecord::Base.transaction do
         if tag.valid?
+          if tag.name.split(':')[0] == 'date'
+            begin
+              DateTime.strptime(tag.name.split(':')[1],'%m-%d-%Y').to_date.to_s(:long)
+            rescue
+              return [false, tag.destroy]
+            end
+          end
           tag.save!
           node_tag = DrupalNodeCommunityTag.new({
             :tid => tag.id,
