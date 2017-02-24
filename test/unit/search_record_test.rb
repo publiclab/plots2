@@ -18,4 +18,26 @@ class SearchRecordTest < ActiveSupport::TestCase
 
   end
 
+  test "search record solr_search run" do
+
+    search = SearchRecord.new({
+      key_words: 'spectrometer'
+    })
+
+    assert search.save
+
+    assert_not_nil search.notes(nil)
+
+  end
+
+  test "DrupalNode.search" do
+    solr_search = DrupalNode.search do
+      fulltext 'spectro'
+      with(:updated_at).less_than(Time.zone.now)
+      facet(:updated_month)
+      with(:updated_month, month) if month.present?
+      #paginate :page => 1, :per_page => 10
+    end
+  end
+
 end

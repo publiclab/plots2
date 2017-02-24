@@ -36,7 +36,7 @@ class SearchRecord < ActiveRecord::Base
       with(:updated_at).less_than(Time.zone.now)
       facet(:updated_month)
       with(:updated_month, month) if month.present?
-      paginate page: 1, per_page: 10
+      #paginate :page => 1, :per_page => 10
     end
   end
 
