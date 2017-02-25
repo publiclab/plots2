@@ -1,4 +1,4 @@
-//= require wikis/inlineMarkdownEditor.js
+//= require inline-markdown-editor/dist/inlineMarkdownEditor.js
 function setupWiki(node_id, raw, logged_in) {
   // insert inline forms
   if (raw && logged_in) {
@@ -6,6 +6,7 @@ function setupWiki(node_id, raw, logged_in) {
     inlineMarkdownEditor({
       replaceUrl: '/wiki/replace/' + node_id,
       selector: '#content-raw-markdown',
+      wysiwyg: true,
       preProcessor: preProcessMarkdown,
       postProcessor: postProcessContent
     });
