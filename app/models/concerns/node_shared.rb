@@ -27,7 +27,7 @@ module NodeShared
                         .includes(:drupal_node_revision, :tag)
                         .where('term_data.name = ?', $2)
                         .order("node_revisions.timestamp DESC")
-      output += '<tr><td>No matching content.</a></td><td></td><td></td><td></td></tr>' if nodes.length == 0
+      output += '<tr><td>No matching content.</td><td></td><td></td><td></td></tr>' if nodes.length == 0
       nodes.each_with_index do |node, index|
         if index > 9
           output += '<tr class="hide">'
@@ -65,7 +65,7 @@ module NodeShared
                         .includes(:drupal_node_revision, :tag)
                         .where('term_data.name = ?', "question:#{$2}")
                         .order("node_revisions.timestamp DESC")
-      output += '<tr><td>No matching content.</a></td><td></td><td></td><td></td></tr>' if nodes.length == 0
+      output += '<tr><td>No matching content.</td><td></td><td></td><td></td></tr>' if nodes.length == 0
       nodes.each_with_index do |node, index|
         if index > 9
           output += '<tr class="hide">'
@@ -140,7 +140,7 @@ module NodeShared
       output += '  </tr>'
       nodes = DrupalNode.upgrades($2)
                         .order("node.cached_likes DESC")
-      output += '<tr><td>No matching content.</a></td><td></td><td></td><td></td><td></td><td></td></tr>' if nodes.length == 0
+      output += '<tr><td>No matching content.</td><td></td><td></td><td></td><td></td><td></td></tr>' if nodes.length == 0
       nodes.each do |node|
         output += '<tr>'
         output += '  <td class="title"><a href="' + node.path + '">' + node.title + '</a></td>'

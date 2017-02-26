@@ -36,18 +36,6 @@ function alert_set(aclass, msg, options) {
   }
 }
 
-/* iOS fix for dropdowns in menubar in Bootstrap v2: 
- * https://github.com/publiclab/plots2/issues/17
- */
-$('.dropdown-toggle').click(function(e) {
-  e.preventDefault();
-  setTimeout($.proxy(function() {
-    if ('ontouchstart' in document.documentElement) {
-      $(this).siblings('.dropdown-backdrop').off().remove();
-    }
-  }, this), 0);
-});
-
 /* window scroll trick for header */
 function adjust_anchor_for_banner(offset) {
   offset = offset || 50; // how much to scroll to account for the banner
@@ -93,13 +81,6 @@ jQuery(document).ready(function($) {
     var title = $(this).attr('data-title');
     $('div[data-title="'+title+'"]').animate({height:'toggle'},'slow')
   })
-
-  $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    $(this).parent().siblings().removeClass('open');
-    $(this).parent().toggleClass('open');
-  });
 
 });
 
