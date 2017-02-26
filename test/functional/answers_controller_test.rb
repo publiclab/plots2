@@ -9,11 +9,15 @@ class AnswersControllerTest < ActionController::TestCase
   test "should get create if user is logged in" do
     UserSession.create(rusers(:bob))
     node = node(:question)
-    assert_difference 'Answer.count' do
-      xhr :post, :create,
-                 nid: node.nid,
-                 body: "Sample answer"
+    count = ActionMailer::Base.deliveries.length
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      assert_difference 'Answer.count' do
+        xhr :post, :create,
+                   nid: node.nid,
+                   body: "Sample answer"
+      end
     end
+    assert ActionMailer::Base.deliveries.collect(&:to).includes?('author@email.com')
     assert_response :success
     assert_not_nil assigns(:answer)
   end
