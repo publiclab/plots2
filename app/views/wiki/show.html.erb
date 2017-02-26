@@ -1,5 +1,6 @@
 </div>
 
+<% if params[:raw] == 'true' %>
 <link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
 <link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
 <link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
@@ -8,6 +9,8 @@
 <link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
 
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
+<% end %>
+
 <% @presentation = @node.has_tag('style:presentation') %>
 <% if @presentation && @node.main_image%>
   <div id="main-image-presentation" style="margin-bottom:8px;">
