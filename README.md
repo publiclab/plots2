@@ -21,6 +21,10 @@ Some key features include:
 * a user dashboard [presenting recent activity](https://publiclab.org/research)
 * a [Question and Answer system](https://publiclab.org/questions)
 
+![Diagram](https://publiclab.org/system/images/photos/000/019/219/large/diagram.png)
+
+_(Above: draft of our [Data model](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md))_
+
 ## Contributing
 
 We welcome contributions, and are especially interested in welcoming [first time contributors](#first-time). Read more about [how to contribute](#developers) below! We especially welcome contributions from people from groups underrepresented in free and open source software!
