@@ -1,13 +1,9 @@
-<div class="col-sm-3">
+<link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
+<link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
+<link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
+<link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
 
-  <script>
-    $D = {
-      uid: <%= current_user.uid %>,
-      type: 'note',
-      warn_image: <%= params[:template] == "question" %>
-    }
-  </script>
-  <link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
+<link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
 
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 
@@ -102,7 +98,7 @@
       </div>
 
       <div class="ple-module-content col-md-9 container">
-        <textarea id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+        <textarea id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
       </div>
 
     </div>
@@ -126,10 +122,13 @@
     <!-- multi module -->
     <!--
     <div class="ple-module-multi ple-module container">
+
       <div class="ple-module-guide col-md-3">
         <p>Extras</p>
       </div>
+
       <div class="ple-module-content col-md-9">
+
         <div class="btn-group">
           <a class="btn btn-lg btn-default">
             <i class="fa fa-comment-o"></i> Invite responses <i class="fa fa-caret-down"></i>
@@ -147,7 +146,9 @@
             More <i class="fa fa-caret-down"></i>
           </a>
         </div>
+
       </div>
+
     </div>
     -->
     <!-- end multi module -->
@@ -182,124 +183,58 @@
   </div>
 
 </div>
-  <%= javascript_include_tag "post" %>
-  <%= javascript_include_tag "dragdrop" %>
 
-  <% if params[:template] == "question" %>
-    <h4 class="visible-sm">Ask a question</h4>
-    <div id="research-note-detail" class="hidden-sm">
-      <h4><i class="fa fa-question-circle"></i> Use this form to ask Question about <b><%= @node.power_tag('question') if @node %></b></h4>
-      <% if @node && DrupalTag.follower_count(@node.power_tag('question')) > 0 %>
-        <div class="alert alert-success" role="alert"><%= DrupalTag.follower_count(@node.power_tag('question')) %> people have signed up to answer questions on this topic.</div>
+
+<script>
+
+  var editor;
+
+  (function() {
+
+    editor = new PL.Editor({
+      textarea:    $('.ple-textarea')[0],
+      <% if @main_image %>
+        mainImageUrl:   '<%= @main_image %>',
       <% end %>
-      <p>Here you can ask a question to the Public Lab community to help you in your environmental exploration. This is a great space to ask whether a method exists for identifying a possible pollutant, or ask about details of a specific technique for identifying a pollutant.</p>
-      <p>You can add more tags in the tags section below to further relate your question. You can also change the main tag of the question by renaming the part after <b><i>question:</i></b> tag</p>
-      <p>New to Public Lab? Take a minute to read the Q &amp; A wiki before posting your question</p>
-      <h4><a href="//<%= request.host %>/wiki/public-lab-q-and-a">Learn more &raquo;</a></h4>
-    </div>
-
-  <% else %>
-    <h3 class="visible-md"><i class="fa fa-file"></i> What's a <br />research note?</h3>
-    <h4 class="hidden-md"><i class="fa fa-file"></i> What's a research note? <a onClick="$('#research-note-detail').toggleClass('visible-sm')">Learn more &raquo;</a><br /></h4>
-
-    <div id="research-note-detail" class="hidden-sm hidden-xs">
-      <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Research notes</b> are the primary way we share what we learn, ask questions, pose challenges, and critique one another's work.</p>
-      <p><b>Research notes can include:</b></p>
-      <ul>
-        <li>photos of what you've made</li>
-        <li>requests for troubleshooting</li>
-        <li>proposals for new projects</li>
-        <li>announcements of events</li>
-        <li>reports from a field test or meetup</li>
-        <li>etc!</li>
-      </ul>
-      <hr />
-      <p><b><a href="//www.youtube.com/watch?v=rsy__zTTh8c" target="_blank"><i class="fa fa-film"></i> Watch a 30 second video on posting research notes &raquo;</a></b></p>
-      <hr />
-      <div class="sidebar-nav">
-        <ul class="nav nav-list">
-          <li class="nav-header">More</li>
-          <li><a href="/getting-started">Getting started with Public Lab</a></li>
-          <li><a href="/wiki/posting-research">About posting research</a></li>
-          <li><a href="/wiki/authoring-help#Advanced+formatting">Advanced formatting</a></li>
-        </ul>
-      </div>
-    </div>
-  <% end %>
-</div>
-
-<div class="col-sm-9">
-  <%
-  if @node && params[:action] != "create"
-    url = { :controller => "notes", :action => "update", :id => params[:id] }
-  else
-    url = { :controller => "notes", :action => "create", :id => params[:id] }
-  end
-  %>
-
-  <%= form_for @revision, :as => :drupal_node_revision, :url => url, :html => {:class => "form well"} do |f| %>
-
-    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
-
-    <%= render :partial => "editor/main_image" %>
-
-    <div class="col-md-9 col-md-pull-3">
-
-      <% if params[:template] == "question" %>
-        <h3>Ask a question of the community</h3>
+      <% if params[:action] == 'edit' %>
+        destination: '/notes/update/<%= @node.id %>?rich=true',
       <% else %>
-        <h3>Share your work</h3>
+        destination: '/notes/create?rich=true',
       <% end %>
-
-      <div class="form-group">
-        <input id="title" tabindex="1" name="title" class="form-control" placeholder="<% if params[:template] == "question" %>Ask a question as specifically as possible<% else %>Title your post descriptively<% end %>" value="<%= if @node then @node.title else params[:title] end %>"/>
-      </div>
-
-      <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
-      <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
-      <input id="node_images" type="hidden" name="node_images" value="" />
-
-      <%= render :partial => 'editor/editor' %>
-
-      <div class="input-group tags-input">
-        <span class="input-group-addon"><i class="fa fa-tags"></i></span>
-        <input autocomplete="off" class="form-control" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.power_tag('question')) || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %><%= ','+@node.power_tag('question') if @node && @node.power_tag('question') != '' %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
-      </div>
-
-      <input name="remote" type="hidden" value="true" />
-
-      <p class="hide alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
-      <br />
-
-      <% if current_user.first_time_poster %>
-        <p class="moderation-notice">Hi! Just letting you know ahead of time that everyone's first posts to this website are <a href='/wiki/moderation'>moderated</a> due to issues we've had with spam. Thanks for your patience!</p>
+      <% if params[:redirect] == 'question' %>
+        redirect: 'redirect',
       <% end %>
+      <% if (@node && @node.errors.size > 0) || (@revision && @revision.errors.size > 0) %>
+        errors: <%=raw (@node.errors.to_h.merge(@revision.errors.to_h)).to_json %>,
+      <% end %>
+      format:      'publiclab',
+      publishCallback: function publishCallback(response) {
+        // parse and display errors!
+        if (typeof response === "string") {
+          window.location = response;
+        } else if (response && Object.keys(response).length > 0) {
+          $('.ple-errors').html('<div class="alert alert-danger"></div>');
+          Object.keys(response).forEach(function(key, i) {
+            $('.ple-errors .alert').append('<p><b>' + key + '</b> </p>');
+            $('.ple-errors .alert p:last').append(response[key].join(', '));
+          });
+          window.scroll(0, 0);
+        }
+      },
+      mainImageModule: {
+        uid: <%= current_user.id %><% if @node && @node.id %>,
+        nid: <%= @node.id %><% end %>
+      },
+      richTextModule: {
+        authorsAutocomplete: false,
+        tagsAutocomplete: false,
+        formats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json']
+      },
+      titleModule: {
+        suggestRelated: false
+      }
+    });
 
-      <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
-      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
+  })();
 
-      <span style="margin-top:12px;margin-left:8px;" class="checkbox">
-        <label for="event-input">
-          <input tabindex="7" onChange="$('#event-info').toggle()" id="event-input" type="checkbox" name="event">
-          This is an event
-        </label>
-      </span>
-
-      <div id="event-info" style="display:none;clear:both;padding-top:4px;">
-        <p><i>An RSVP feature will be added to your note. Please choose a date:</i></p>
-        <span style="padding-right:0;" class="input-group date">
-          <input data-provide="datepicker" data-date="<%= DateTime.now.strftime("%m-%d-%Y") %>" data-date-format="mm-dd-yyyy" class="col-md-8 form-control" size="16" type="text" name="date" value="<%= DateTime.now.strftime("%m-%d-%Y") %>" />
-          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-        </span>
-      </div>
-
-    </div>
-
-    <div style="clear:both;">
-      <br />
-      <p class="col-md-12">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
-      <br />
-    </div>
-
-  <% end %>
-</div>
+</script>
