@@ -361,3 +361,9 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   will_paginate (>= 3.0.6)
   will_paginate-bootstrap (>= 1.0.1)
+-
+ -RUBY VERSION
+ -   ruby 2.1.2p95
+ -
+ -BUNDLED WITH
+ -   1.13.7
