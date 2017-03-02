@@ -4,13 +4,38 @@
 
 <p><a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/publish/<%= @node.id %>">Approve</a> or <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/spam/<%= @node.id %>">Spam</a></p>
 
-<hr /> 
+<hr />
 
 <% if @node.main_image %><a style="margin-bottom:10px;" href="https:<%= @node.main_image.path(:original) %>"><img src="https:<%= @node.main_image.path(:default) %>" /></a><% end %>
 
 <%= raw auto_link(@node.latest.render_body_email(ActionMailer::Base.default_url_options[:host]), :sanitize => false) %>
 
-<hr /> 
+<p>It has the following tags: </p>
+<ul>
+  <% @node.tags.each do |tag| %>
+    <li><%= tag.name %></li>
+  <% end %>
+</ul>
+
+<table border="1">
+  <thead>User Info</thead>
+  <tbody>
+    <tr>
+      <th>ID</th>
+      <td><%= @user.id %></td>
+    </tr>
+    <tr>
+      <th>Username</th>
+      <td><%= @user.username %></td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td><%= @user.email %></td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
 
 <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/publish/<%= @node.id %>">Approve</a> or <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/spam/<%= @node.id %>">Spam</a>
 
