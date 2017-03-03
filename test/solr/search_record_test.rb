@@ -45,7 +45,9 @@ class SearchRecordTest < ActiveSupport::TestCase
       #with(:updated_month, month) if month.present?
       #paginate :page => 1, :per_page => 10
     end
-    assert_not_equal solr_search_1.to_json, solr_search_2.to_json
+    assert_not_nil solr_search_1
+    assert_not_nil solr_search_2
+    assert_not_equal solr_search_1, solr_search_2
     assert_equal "test", solr_search_1
   end
 
