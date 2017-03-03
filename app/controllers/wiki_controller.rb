@@ -366,7 +366,8 @@ class WikiController < ApplicationController
       "oil-and-gas",
       "transportation",
       "urban-planning",
-      "sensors"
+      "sensors",
+      "community-organizing"
     ]
     render template: "wiki/methods"
   end
