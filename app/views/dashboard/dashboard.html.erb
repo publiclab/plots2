@@ -23,7 +23,19 @@
        
           </div>
         <% end %>
-  
+        <div>
+          <% if Time.now - current_user.created_at > 1.week %>
+          <p>HELLO, Welcome to Public Lab!</p>
+          <br/>
+          <p>
+            This is your dashboard, where recent updates from other community members show up. It's helpful to keep up to date with new progress, news, and recent developments.
+          </p>
+          <% end %>
+          <p>To get started at Public Lab<p>
+          <p>Ask a Questions</p>
+          <p>Explore Projects</p>
+          <p>
+        </div>  
         <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
  
       </div>
