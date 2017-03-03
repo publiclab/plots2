@@ -11,94 +11,32 @@
 
   <div class="ple-header">
 
-    <h1>Share</h1>
-
-    <!-- selector module -->
-    <div class="container ple-type">
-
-      <div class="col-md-5 col-md-push-4">
-        <div class="row">
-          <div class="col-xs-10">
-            <select class="form-control input-lg">
-              <option selected value="">a research note</option>
-              <option value="" <% if params[:tags] && params[:tags].include?('question') %>selected='selected'<% end %>>a question or request</option>
-              <option value="">an event</option>
-            </select>
-          </div>
-          <div class="col-xs-2" style="padding-top:10px;text-align:left;">
-            <a rel="tooltip" data-placement="bottom" title="Learn more about different posting types." class="ple-help-light" style="font-size:18px;"><i class="fa fa-question-circle"></i></a>
-            
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <!-- end selector module -->
-
+    <h1>Ask a question</h1>
   </div>
-
-  <div class="ple-content">
-
-    <!-- errors module -->
-    <div class="ple-module container">
-
-      <div class="col-md-3"></div>
-      <div class="ple-errors col-md-9"></div>
-
-    </div>
-    <!-- end errors module -->
-
+      <div class="ple-module-title ple-module container">
     <!-- title module -->
-    <div class="ple-module-title ple-module container">
-
-      <div class="ple-module-guide col-md-3">
+    <div class="ple-module-guide col-md-2">
         <h2>1</h2>
       </div>
-
+      <div class="ple-module-title col-md-1"><h3>Title</h3></div>
       <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="Title" value="<%= if @node then @node.title else params[:title] end %>" />
-      </div>
-
-    </div>
+        <input class="form-control input-lg" type="text" placeholder="What's your topic / question?" value="<%= if @node then @node.title else params[:title] end %>" />
+      </div>    
+</div>
     <!-- end title module -->
 
-
-    <!-- main_image module -->
-    <div class="ple-module-main_image ple-module container">
-
-      <div class="ple-module-guide col-md-3">
-        <h2>2</h2>
-      </div>
-
-      <div class="ple-module-content col-md-9 container">
-        <div class="ple-drag-drop col-md-6">
-          Drag an image here to upload.
-        </div>
-        <div class="col-md-6 help">
-
-          <div style="display:none;" class="progress">
-            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-          </div>
-
-          <p><input type="file" name="image[photo]" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" /></p>
-          <p class="ple-help"><span class="ple-help-minor">Select an optional main image for your post.</span></p>
-
-        </div>
-      </div>
-
-    </div>
-    <!-- end main_image module -->
+  <div class="ple-content">
 
 
     <!-- body module -->
     <div class="ple-module-body ple-module container">
 
       <div class="ple-module-guide col-md-3">
-        <h2>3</h2>
+        <h2>2</h2>
       </div>
 
-      <div class="ple-module-content col-md-9 container">
-        <textarea id="text-input" class="ple-textarea form-control"><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+      <div class="col-md-9 container">
+        <textarea id="text-input" class="ple-textarea form-control" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;Share background information like where and how you are working."><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
       </div>
 
     </div>
@@ -109,7 +47,7 @@
     <div class="ple-module-tags ple-module container">
 
       <div class="ple-module-guide col-md-3">
-        <h2>4</h2>
+        <h2>3</h2>
       </div>
 
       <div class="ple-module-content col-md-9">
