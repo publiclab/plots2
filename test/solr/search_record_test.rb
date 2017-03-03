@@ -47,8 +47,9 @@ class SearchRecordTest < ActiveSupport::TestCase
     end
     assert_not_nil solr_search_1
     assert_not_nil solr_search_2
-    assert_not_equal solr_search_1[0], solr_search_2[0]
-    assert_equal "test", solr_search_1[0].inspect
+    assert_not_equal solr_search_1.results.collect(&:nid), solr_search_2.results.collect(&:nid)
+    assert_equal 8, solr_search_1.results[0].nid
+    assert_equal 7, solr_search_2.results[0].nid
   end
 
 end
