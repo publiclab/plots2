@@ -15,6 +15,7 @@ class SearchesControllerTest < ActionController::TestCase
     get :test
     assert_not_nil :search
     assert_response :success
+    assert_not_nil JSON.parse(@response.body)
   end
 
   test 'should get index' do
