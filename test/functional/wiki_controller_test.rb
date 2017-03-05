@@ -182,11 +182,11 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test "update wiki uploading new image" do
-    node = node(:about)
+    node1 = node(:about)
     image = fixture_file_upload 'rails.png'
 
     post :update,
-         id:    node.nid,
+         id:    node1.nid,
          uid:   rusers(:bob).id,
          title: "New Title",
          body:  "Editing about Page",
@@ -194,24 +194,24 @@ class WikiControllerTest < ActionController::TestCase
                   :photo => image
                 }
 
-    node.reload
-    assert_redirected_to node.path
+    node1.reload
+    assert_redirected_to node1.path
     assert_equal flash[:notice], "Edits saved."
   end
 
   test "update wiki selecting previous image" do
-    node = node(:about)
-    image = node.images.where(photo_file_name: 'filename-1.jpg').last
+    node1 = node(:about)
+    image = node1.images.where(photo_file_name: 'filename-1.jpg').last
 
     post :update,
-         id:             node.nid,
+         id:             node1.nid,
          uid:            rusers(:bob).id,
          title:          "New Title",
          body:           "Editing about Page",
          image_revision: image.path(:default)
 
-    node.reload
-    assert_redirected_to node.path
+    node1.reload
+    assert_redirected_to node1.path
     assert_equal flash[:notice], "Edits saved."
   end
 
@@ -409,18 +409,18 @@ class WikiControllerTest < ActionController::TestCase
 
   test "replacing content in a node with replace action" do
     UserSession.create(rusers(:jeff))
-    node = node(:about)
+    node1 = node(:about)
 
     assert_difference 'DrupalNodeRevision.count' do
-      assert_difference "DrupalNode.find(#{node.id}).revisions.count" do
+      assert_difference "Node.find(#{node1.id}).revisions.count" do
 
-        get :replace, id: node.id, before: "Public", after: "Private"
+        get :replace, id: node1.id, before: "Public", after: "Private"
 
       end
     end
 
-    assert_equal "All about Private Lab", DrupalNode.find(node.id).body
-    assert_redirected_to node.path
+    assert_equal "All about Private Lab", Node.find(node1.id).body
+    assert_redirected_to node1.path
   end
 
   test "redirect normal user to tagged page" do

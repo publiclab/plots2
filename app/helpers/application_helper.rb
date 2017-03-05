@@ -14,7 +14,7 @@ module ApplicationHelper
   end
 
   def feature(title)
-    features = DrupalNode.where(type: 'feature', title: title)
+    features = Node.where(type: 'feature', title: title)
     if features.length > 0
       return features.last.body.html_safe
     else
@@ -39,17 +39,17 @@ module ApplicationHelper
       output += '    <th><a data-type="updated">Updated</a></th>'
       output += '    <th><a data-type="likes">Likes</a></th>'
       output += '  </tr>'
-      nodes = DrupalNode.where(status: 1, type: 'note')
+      nodes = Node.where(status: 1, type: 'note')
                         .includes(:drupal_node_revision, :tag)
                         .where('term_data.name = ?', $1)
                         .page(params[:page])
                         .order("node_revisions.timestamp DESC")
-      nodes.each do |node|
+      nodes.each do |node1|
         output += '<tr>'
-        output += '  <td class="title"><a href="' + node.path + '">' + node.title + '</a></td>'
-        output += '  <td class="author"><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
-        output += '  <td class="updated" data-timestamp="' + node.latest.timestamp.to_s + '">' + distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, false, :scope => :'datetime.time_ago_in_words') + '</td>'
-        output += '  <td class="likes">' + number_with_delimiter(node.cached_likes) + '</td>'
+        output += '  <td class="title"><a href="' + node1.path + '">' + node1.title + '</a></td>'
+        output += '  <td class="author"><a href="/profile/' + node1.author.username + '">@' + node1.author.username + '</a></td>'
+        output += '  <td class="updated" data-timestamp="' + node1.latest.timestamp.to_s + '">' + distance_of_time_in_words(Time.at(node1.latest.updated_at), Time.current, false, :scope => :'datetime.time_ago_in_words') + '</td>'
+        output += '  <td class="likes">' + number_with_delimiter(node1.cached_likes) + '</td>'
         output += '</tr>'
       end
       output += '</table>'
@@ -70,17 +70,17 @@ module ApplicationHelper
       output += '    <th><a data-type="difficulty">Difficulty</a></th>'
       output += '    <th><a data-type="replications">Replications</a></th>'
       output += '  </tr>'
-      nodes = DrupalNode.activities($1)
+      nodes = Node.activities($1)
                         .order("node.cached_likes DESC")
-      nodes.each do |node|
+      nodes.each do |node1|
         output += '<tr>'
-        output += '  <td class="title"><a href="' + node.path + '">' + node.title + '</a></td>'
-        output += '  <td class="category">' + (node.has_power_tag('category') ? node.power_tag('category') : '-') + '</td>'
-        output += '  <td class="status">' + (node.has_power_tag('status') ? node.power_tag('status') : '-') + '</td>'
-        output += '  <td class="author"><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
-        output += '  <td class="time">' + (node.has_power_tag('time') ? node.power_tag('time') : '-') + '</td>'
-        output += '  <td class="difficulty">' + (node.has_power_tag('difficulty') ? node.power_tag('difficulty') : '-') + '</td>'
-        output += '  <td class="replications">' + node.response_count('replication').to_s + ' replications: <a href="' + node.path + '#replications">Try it &raquo;</a></td>'
+        output += '  <td class="title"><a href="' + node1.path + '">' + node1.title + '</a></td>'
+        output += '  <td class="category">' + (node1.has_power_tag('category') ? node1.power_tag('category') : '-') + '</td>'
+        output += '  <td class="status">' + (node1.has_power_tag('status') ? node1.power_tag('status') : '-') + '</td>'
+        output += '  <td class="author"><a href="/profile/' + node1.author.username + '">@' + node1.author.username + '</a></td>'
+        output += '  <td class="time">' + (node1.has_power_tag('time') ? node1.power_tag('time') : '-') + '</td>'
+        output += '  <td class="difficulty">' + (node1.has_power_tag('difficulty') ? node1.power_tag('difficulty') : '-') + '</td>'
+        output += '  <td class="replications">' + node1.response_count('replication').to_s + ' replications: <a href="' + node1.path + '#replications">Try it &raquo;</a></td>'
         output += '</tr>'
       end
       output += '</table>'
@@ -102,16 +102,16 @@ module ApplicationHelper
       output += '    <th><a data-type="difficulty">Difficulty</a></th>'
       output += '    <th><a data-type="builds">Builds</a></th>'
       output += '  </tr>'
-      nodes = DrupalNode.upgrades($1)
+      nodes = Node.upgrades($1)
                         .order("node.cached_likes DESC")
-      nodes.each do |node|
+      nodes.each do |node1|
         output += '<tr>'
-        output += '  <td class="title"><a href="' + node.path + '">' + node.title + '</a></td>'
-        output += '  <td class="status">' + (node.has_power_tag('status') ? node.power_tag('status') : '-') + '</td>'
-        output += '  <td class="author"><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
-        output += '  <td class="time">' + (node.has_power_tag('time') ? node.power_tag('time') : '-') + '</td>'
-        output += '  <td class="difficulty">' + (node.has_power_tag('difficulty') ? node.power_tag('difficulty') : '-') + '</td>'
-        output += '  <td class="builds">' + node.response_count('build').to_s + ' builds: <a href="' + node.path + '#builds">Try it &raquo;</a></td>'
+        output += '  <td class="title"><a href="' + node1.path + '">' + node1.title + '</a></td>'
+        output += '  <td class="status">' + (node1.has_power_tag('status') ? node1.power_tag('status') : '-') + '</td>'
+        output += '  <td class="author"><a href="/profile/' + node1.author.username + '">@' + node1.author.username + '</a></td>'
+        output += '  <td class="time">' + (node1.has_power_tag('time') ? node1.power_tag('time') : '-') + '</td>'
+        output += '  <td class="difficulty">' + (node1.has_power_tag('difficulty') ? node1.power_tag('difficulty') : '-') + '</td>'
+        output += '  <td class="builds">' + node1.response_count('build').to_s + ' builds: <a href="' + node1.path + '#builds">Try it &raquo;</a></td>'
         output += '</tr>'
       end
       output += '</table>'

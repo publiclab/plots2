@@ -13,20 +13,20 @@ class AnswerTest < ActiveSupport::TestCase
 
   test "should relate answer to user and node" do
     answer = Answer.new(content: "a test answer")
-    node = node(:question)
+    node1 = node(:question)
     user = users(:bob)
-    answer.drupal_node = node
+    answer.node = node1
     answer.drupal_users = user
     answer.save
-    assert_equal node.answers.last, answer
+    assert_equal node1.answers.last, answer
     assert_equal user.answers.last, answer
   end
 
   test "should have node and author methods" do
     answer = answers(:one)
-    node = node(:question)
+    node1 = node(:question)
     user = users(:bob)
-    assert_equal answer.node, node
+    assert_equal answer.node, node1
     assert_equal answer.author, user
   end
 

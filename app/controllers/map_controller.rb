@@ -2,21 +2,21 @@ class MapController < ApplicationController
 
   def index
     @title = "Maps"
-    @nodes = DrupalNode.paginate(:page => params[:page], :per_page => 32)
+    @nodes = Node.paginate(:page => params[:page], :per_page => 32)
                        .order("nid DESC")
                        .where(type: 'map', status: 1)
 
     # I'm not sure if this is actually eager loading the tags... 
-    @maps = DrupalNode.joins(:tag)
+    @maps = Node.joins(:tag)
                       .where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%')
                       .uniq
 
     # This is supposed to eager load the url_aliases, and seems to run, but doesn't actually eager load them...?
-    #@maps = DrupalNode.select("node.*,url_alias.dst AS dst").joins(:tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').joins("INNER JOIN url_alias ON url_alias.src = CONCAT('node/',node.nid)")
+    #@maps = Node.select("node.*,url_alias.dst AS dst").joins(:tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').joins("INNER JOIN url_alias ON url_alias.src = CONCAT('node/',node.nid)")
   end
 
   def show
-    @node = DrupalNode.find_map(params[:name], params[:date])
+    @node = Node.find_map(params[:name], params[:date])
 
     # redirect_old_urls
 
@@ -29,7 +29,7 @@ class MapController < ApplicationController
   end
 
   def edit
-    @node = DrupalNode.find(params[:id],:conditions => {:type => "map"})
+    @node = Node.find(params[:id],:conditions => {:type => "map"})
     if current_user.uid == @node.uid || current_user.role == "admin" 
       render :template => "map/edit"
     else
@@ -38,7 +38,7 @@ class MapController < ApplicationController
   end
 
   def delete
-    @node = DrupalNode.find(params[:id],:conditions => {:type => "map"})
+    @node = Node.find(params[:id],:conditions => {:type => "map"})
     if current_user.uid == @node.uid || current_user.role == "admin" 
       @node.delete
       flash[:notice] = "Content deleted."
@@ -49,7 +49,7 @@ class MapController < ApplicationController
   end
 
   def update
-    @node = DrupalNode.find(params[:id],:conditions => {:type => "map"})
+    @node = Node.find(params[:id],:conditions => {:type => "map"})
     if current_user.uid == @node.uid || current_user.role == "admin" 
 
       @node.title = params[:title]
@@ -116,7 +116,7 @@ class MapController < ApplicationController
 
   def new
     if current_user && current_user.role == "admin" 
-      @node = DrupalNode.new({:type => "map"})
+      @node = Node.new({:type => "map"})
       render :template => "map/edit"
     else
       prompt_login "Only admins can publish maps at this time."
@@ -127,7 +127,7 @@ class MapController < ApplicationController
   # solving this by min_zoom default here, but need better solution
   def create
     if current_user && current_user.role == "admin" 
-      saved,@node,@revision = DrupalNode.new_node({
+      saved,@node,@revision = Node.new_node({
         :uid => current_user.uid,
         :title => params[:title],
         :body => params[:body],
@@ -207,7 +207,7 @@ class MapController < ApplicationController
 
     @tagnames = params[:id].split(',')
     nids = Tag.find_nodes_by_type(params[:id],'map',20).collect(&:nid)
-    @notes = DrupalNode.paginate(page: params[:page])
+    @notes = Node.paginate(page: params[:page])
                        .where('nid in (?)', nids)
                        .order("nid DESC")
 

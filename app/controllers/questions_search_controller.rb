@@ -9,7 +9,7 @@ class QuestionsSearchController < ApplicationController
                         .order("uid")
                         .limit(5)
     set_sidebar :tags, [params[:id]]
-    @notes = DrupalNode.where(
+    @notes = Node.where(
                'type = "note" AND node.status = 1 AND title LIKE ?',
                "%" + params[:id] + "%"
              )
@@ -28,7 +28,7 @@ class QuestionsSearchController < ApplicationController
 
   def typeahead
     matches = []
-    questions = DrupalNode.where(
+    questions = Node.where(
                   'type = "note" AND node.status = 1 AND title LIKE ?',
                   "%" + params[:id] + "%"
                 )

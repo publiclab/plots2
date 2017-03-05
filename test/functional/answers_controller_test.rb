@@ -8,10 +8,10 @@ class AnswersControllerTest < ActionController::TestCase
 
   test "should get create if user is logged in" do
     UserSession.create(rusers(:bob))
-    node = node(:question)
+    node1 = node(:question)
     assert_difference 'Answer.count' do
       xhr :post, :create,
-                 nid: node.nid,
+                 nid: node1.nid,
                  body: "Sample answer"
     end
     assert_response :success

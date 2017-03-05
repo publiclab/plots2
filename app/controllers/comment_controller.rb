@@ -12,7 +12,7 @@ class CommentController < ApplicationController
   # handle some errors!!!!!!
   # create node comments
   def create
-    @node = DrupalNode.find params[:id]
+    @node = Node.find params[:id]
     @comment = @node.add_comment({:uid => current_user.uid,:body => params[:body]})
     if current_user && @comment.save
       @comment.notify(current_user)

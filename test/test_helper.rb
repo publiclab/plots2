@@ -11,7 +11,7 @@ class ActiveSupport::TestCase
   # -- they do not yet inherit this setting
 
   # yay thanks: http://journal.missiondata.com/post/63405042042/rails-fixtures-with-models-using-settablename
-  set_fixture_class :node => DrupalNode
+  set_fixture_class :node => Node
   set_fixture_class :rusers => User
   set_fixture_class :users => DrupalUsers
   set_fixture_class :node_counter => DrupalNodeCounter

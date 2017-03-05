@@ -19,13 +19,13 @@ class NodeSeriesTagTest < ActionDispatch::IntegrationTest
     assert_equal "/notes/" + rusers(:bob).username + "/" +
                  Time.now.strftime("%m-%d-%Y") + "/" + title.parameterize, path
 
-    node = DrupalNode.where(title: title).first
-    assert_equal true, node.has_power_tag('series')
-    assert_equal 'balloons', node.power_tag('series')
+    node1 = Node.where(title: title).first
+    assert_equal true, node1.has_power_tag('series')
+    assert_equal 'balloons', node1.power_tag('series')
 
 
     # approve the first-timer's note:
-    node.publish
+    node1.publish
 
     # visiting note with original path
     get "/notes/" + rusers(:bob).username + "/" +

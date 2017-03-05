@@ -31,7 +31,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "redirect note short url" do
-    note = DrupalNode.where(type: 'note', status: 1).first
+    note = Node.where(type: 'note', status: 1).first
 
     get :shortlink, id: note.id
 
@@ -39,7 +39,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note by id" do
-    note = DrupalNode.where(type: 'note', status: 1).first
+    note = Node.where(type: 'note', status: 1).first
     assert_not_nil note.id
 
     get :show, id: note.id
@@ -95,7 +95,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note with Browse other activities link" do
-    note = DrupalNode.where(type: 'note', status: 1).first
+    note = Node.where(type: 'note', status: 1).first
     note.add_tag('activity:spectrometer', note.author) # testing responses display
     assert Tag.where(name: 'activities:' + note.power_tag('activity')).length > 0
 
@@ -128,7 +128,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "should get raw note markup" do
-    id = DrupalNode.where(type: 'note', status: 1).last.id
+    id = Node.where(type: 'note', status: 1).last.id
 
     get :raw, id: id
 
@@ -199,7 +199,7 @@ class NotesControllerTest < ActionController::TestCase
 
     email = ActionMailer::Base.deliveries.last
     assert_equal "[PublicLab] " + title, email.subject
-    assert_equal 1, DrupalNode.last.status
+    assert_equal 1, Node.last.status
     assert_redirected_to "/notes/"+rusers(:jeff).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
   end
 
@@ -215,82 +215,82 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_equal "Success! Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so.", flash[:notice]
     assert_nil flash[:warning] # no double notice
-    assert_equal 4, DrupalNode.last.status
-    assert_equal title, DrupalNode.last.title
+    assert_equal 4, Node.last.status
+    assert_equal title, Node.last.title
     assert_redirected_to "/notes/"+rusers(:lurker).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
   end
 
   test "first-timer moderated note (status=4) hidden to normal users on research note feed" do
-    node = node(:first_timer_note)
-    assert_equal 4, node.status
+    node1 = node(:first_timer_note)
+    assert_equal 4, node1.status
 
     get :index
 
-    assert_select ".note-nid-#{node.id}", false
+    assert_select ".note-nid-#{node1.id}", false
   end
 
   test "first-timer moderated note (status=4) hidden to normal users in full view" do
-    node = node(:first_timer_note)
-    assert_equal 4, node.status
+    node1 = node(:first_timer_note)
+    assert_equal 4, node1.status
 
     get :show,
-        author: node.author.username,
-        date: node.created_at.strftime("%m-%d-%Y"),
-        id: node.title.parameterize
+        author: node1.author.username,
+        date: node1.created_at.strftime("%m-%d-%Y"),
+        id: node1.title.parameterize
 
     assert_redirected_to "/"
   end
 
   test "first-timer moderated note (status=4) shown to author in full view with notice" do
-    node = node(:first_timer_note)
-    UserSession.create(node.author.user)
-    assert_equal 4, node.status
+    node1 = node(:first_timer_note)
+    UserSession.create(node1.author.user)
+    assert_equal 4, node1.status
 
     get :show,
-        author: node.author.username,
-        date: node.created_at.strftime("%m-%d-%Y"),
-        id: node.title.parameterize
+        author: node1.author.username,
+        date: node1.created_at.strftime("%m-%d-%Y"),
+        id: node1.title.parameterize
 
     assert_response :success
     assert_equal "Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so.", flash[:warning]
   end
 
   test "first-timer moderated note (status=4) shown to author in list view with notice" do
-    node = node(:first_timer_note)
-    UserSession.create(node.author.user)
-    assert_equal 4, node.status
+    node1 = node(:first_timer_note)
+    UserSession.create(node1.author.user)
+    assert_equal 4, node1.status
 
     get :index
 
     assert_response :success
     assert_select "div.note"
-    assert_select "div.note-nid-#{node.nid} p.moderated", "Pending approval by community moderators. Please be patient!"
+    assert_select "div.note-nid-#{node1.nid} p.moderated", "Pending approval by community moderators. Please be patient!"
   end
 
   test "first-timer moderated note (status=4) shown to moderator with notice and approval prompt in full view" do
     UserSession.create(rusers(:moderator))
-    node = node(:first_timer_note)
-    assert_equal 4, node.status
+    node1 = node(:first_timer_note)
+    assert_equal 4, node1.status
 
     get :show,
-        author: node.author.username,
-        date: node.created_at.strftime("%m-%d-%Y"),
-        id: node.title.parameterize
+        author: node1.author.username,
+        date: node1.created_at.strftime("%m-%d-%Y"),
+        id: node1.title.parameterize
 
     assert_response :success
-    assert_equal "First-time poster <a href='#{node.author.name}'>#{node.author.name}</a> submitted this #{time_ago_in_words(node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{node.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{node.id}'>Spam</a>", flash[:warning]
+    assert_equal "First-time poster <a href='#{node1.author.name}'>#{node1.author.name}</a> submitted this #{time_ago_in_words(node1.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{node1.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{node1.id}'>Spam</a>", flash[:warning]
   end
 
   test "first-timer moderated note (status=4) shown to moderator with notice and approval prompt in list view" do
     UserSession.create(rusers(:moderator))
-    node = node(:first_timer_note)
-    assert_equal 4, node.status
+    node1= node(:first_timer_note)
+    assert_equal 4, node1.status
 
     get :index
 
     assert_response :success
     assert_select "div.note"
-    assert_select "div.note-nid-#{node.nid} p.moderated", "Moderate first-time post: \n              Approve\n              Spam"
+    assert_select "div.note-nid-#{node1.nid} p.moderated", "Moderate first-time post: \n              Approve\n              Spam"
   end
 
   test "post_note_error_no_title" do
@@ -345,32 +345,32 @@ class NotesControllerTest < ActionController::TestCase
     })
     comment.comment = '<iframe src="http://mapknitter.org/embed/sattelite-imagery" style="border:0;"></iframe>'
     comment.save
-    node = node(:one).path.split("/")
+    node1 = node(:one).path.split("/")
 
-    get :show, id: node[4], author: node[2], date: node[3]
+    get :show, id: node1[4], author: node1[2], date: node1[3]
 
     assert_tag :tag => 'iframe', attributes: {src: 'http://mapknitter.org/embed/sattelite-imagery'}
   end
 
   # test "should mark admins and moderators with a special icon" do
-  #   node = node(:one)
+  #   node1 = node(:one)
   #   get :show,
-  #       author: node.author.username,
-  #       date: node.created_at.strftime("%m-%d-%Y"),
-  #       id: node.title.parameterize
+  #       author: node1.author.username,
+  #       date: node1.created_at.strftime("%m-%d-%Y"),
+  #       id: node1.title.parameterize
   #   assert_select "i[title='Admin']", 1
   #   assert_select "i[title='Moderator']", 1
   # end
 
   test "should display an icon for users with streak longer than 7 days" do
-    node = node(:one)
+    node1 = node(:one)
     User.any_instance.stubs(:note_streak).returns([8,10])
     User.any_instance.stubs(:wiki_edit_streak).returns([9,15])
     User.any_instance.stubs(:comment_streak).returns([10,30])
     get :show,
-        author: node.author.username,
-        date: node.created_at.strftime("%m-%d-%Y"),
-        id: node.title.parameterize
+        author: node1.author.username,
+        date: node1.created_at.strftime("%m-%d-%Y"),
+        id: node1.title.parameterize
     assert_select ".fa-fire", 3
   end
 
@@ -402,7 +402,7 @@ class NotesControllerTest < ActionController::TestCase
 
   test "should display /post template when editing a note in legacy mode" do
     user = UserSession.create(rusers(:jeff))
-    note = node(:blog)
+    note = node1(:blog)
     post :edit,
          id: note.nid,
          legacy: true
@@ -412,7 +412,7 @@ class NotesControllerTest < ActionController::TestCase
 
   test "should display /post template when editing a question in legacy mode" do
     user = UserSession.create(rusers(:jeff))
-    note = node(:question)
+    note = node1(:question)
     note.add_tag('nice', rusers(:jeff))
     post :edit,
          id: note.nid,
@@ -423,7 +423,7 @@ class NotesControllerTest < ActionController::TestCase
 
   test "should display /post template when editing a note" do
     user = UserSession.create(rusers(:jeff))
-    note = node(:blog)
+    note = node1(:blog)
     post :edit,
          id: note.nid
     assert_response :success
@@ -432,7 +432,7 @@ class NotesControllerTest < ActionController::TestCase
 
   test "should display /post template when editing a question" do
     user = UserSession.create(rusers(:jeff))
-    note = node(:question)
+    note = node1(:question)
     note.add_tag('nice', rusers(:jeff))
     post :edit,
          id: note.nid
@@ -443,7 +443,7 @@ class NotesControllerTest < ActionController::TestCase
 
   test "should redirect to questions show page when editing an existing question" do
     user = UserSession.create(rusers(:jeff))
-    note = node(:question)
+    note = node1(:question)
     post :update,
          id: note.nid,
          title: note.title,
@@ -455,12 +455,12 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "should update a former note that has become a question by tagging" do
-    node = node(:blog)
-    node.add_tag('question:foo', rusers(:bob))
+    node1 = node(:blog)
+    node1.add_tag('question:foo', rusers(:bob))
 
     post :update,
-         id: node.nid,
-         title: node.title + ' amended'
+         id: node1.nid,
+         title: node1.title + ' amended'
 
     assert_response :redirect
   end
@@ -480,9 +480,9 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "should redirect to question path if node is a question when visiting shortlink" do
-    node = node(:question)
-    get :shortlink, id: node.id
-    assert_redirected_to node.path(:question)
+    node1 = node(:question)
+    get :shortlink, id: node1.id
+    assert_redirected_to node1.path(:question)
   end
 
   test "should redirect to question path if node is a question when visiting show path" do

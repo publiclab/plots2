@@ -3,9 +3,9 @@ class AdminMailer < ActionMailer::Base
   include ApplicationHelper
   default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
 
-  def notify_node_moderators(node)
-    subject = "[New Public Lab poster needs moderation] " + node.title
-    @node = node
+  def notify_node_moderators(node1)
+    subject = "[New Public Lab poster needs moderation] " + node1.title
+    @node = node1
     @footer = feature('email-footer')
     moderators = User.where(role: ['moderator', 'admin']).collect(&:email)
     mail(
@@ -15,11 +15,11 @@ class AdminMailer < ActionMailer::Base
     ).deliver
   end
 
-  def notify_author_of_approval(node, moderator)
+  def notify_author_of_approval(node1, moderator)
     subject = "[Public Lab] Your post was approved!"
-    @author = node.author
+    @author = node1.author
     @moderator = moderator
-    @node = node
+    @node = node1
     @footer = feature('email-footer')
     mail(:to => @author.mail, :subject => subject).deliver
   end
@@ -31,11 +31,11 @@ class AdminMailer < ActionMailer::Base
   #def notify_author_of_spam(node)
   #end
 
-  def notify_moderators_of_approval(node, moderator)
-    subject = "[New Public Lab poster needs moderation] " + node.title
-    @author = node.author
+  def notify_moderators_of_approval(node1, moderator)
+    subject = "[New Public Lab poster needs moderation] " + node1.title
+    @author = node1.author
     @moderator = moderator
-    @node = node
+    @node = node1
     @footer = feature('email-footer')
     moderators = User.where(role: ['moderator', 'admin']).collect(&:email)
     mail(
@@ -45,11 +45,11 @@ class AdminMailer < ActionMailer::Base
     ).deliver
   end
 
-  def notify_moderators_of_spam(node, moderator)
-    subject = "[New Public Lab poster needs moderation] " + node.title
-    @author = node.author
+  def notify_moderators_of_spam(node1, moderator)
+    subject = "[New Public Lab poster needs moderation] " + node1.title
+    @author = node1.author
     @moderator = moderator
-    @node = node
+    @node = node1
     @footer = feature('email-footer')
     moderators = User.where(role: ['moderator', 'admin']).collect(&:email)
     mail(

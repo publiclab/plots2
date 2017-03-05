@@ -10,7 +10,7 @@ class NotesController < ApplicationController
 
   def methods
     @title = "Methods"
-    @notes = DrupalNode.where(status: 1, type: ['page','tool'])
+    @notes = Node.where(status: 1, type: ['page','tool'])
                        .includes(:drupal_node_revision, :tag)
                        .where('term_data.name = ?','tool')
                        .page(params[:page])
@@ -28,7 +28,7 @@ class NotesController < ApplicationController
 
   def places
     @title = "Places"
-    @notes = DrupalNode.where(status: 1, type: ['page','place'])
+    @notes = Node.where(status: 1, type: ['page','place'])
                        .includes(:drupal_node_revision, :tag)
                        .where('term_data.name = ?','chapter')
                        .page(params[:page])
@@ -37,7 +37,7 @@ class NotesController < ApplicationController
   end
 
   def shortlink
-    @node = DrupalNode.find params[:id]
+    @node = Node.find params[:id]
     if @node.has_power_tag('question')
       redirect_to @node.path(:question)
     else
@@ -48,16 +48,16 @@ class NotesController < ApplicationController
   # display a revision, raw
   def raw
     response.headers["Content-Type"] = "text/plain; charset=utf-8"
-    render :text => DrupalNode.find(params[:id]).latest.body
+    render :text => Node.find(params[:id]).latest.body
   end
 
   def show
     if params[:author] && params[:date]
-      @node = DrupalNode.find_notes(params[:author], params[:date], params[:id])
-      @node = @node || DrupalNode.where(path: "/report/#{params[:id]}").first
+      @node = Node.find_notes(params[:author], params[:date], params[:id])
+      @node = @node || Node.where(path: "/report/#{params[:id]}").first
       # redirect_old_urls
     else
-      @node = DrupalNode.find params[:id]
+      @node = Node.find params[:id]
     end
 
     if @node.has_power_tag('question')
@@ -67,10 +67,10 @@ class NotesController < ApplicationController
 
     if @node.has_power_tag('redirect')
       if current_user == nil || (current_user.role != 'admin' && current_user.role != 'moderator')
-        redirect_to DrupalNode.find(@node.power_tag('redirect')).path
+        redirect_to Node.find(@node.power_tag('redirect')).path
         return
       elsif (current_user.role == 'admin' || current_user.role == 'moderator')
-        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{DrupalNode.find(@node.power_tag('redirect')).title}.
+        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}.
         To remove the redirect, delete the tag beginning with 'redirect:'"
       end
     end
@@ -89,9 +89,9 @@ class NotesController < ApplicationController
 
   def image
     params[:size] = params[:size] || :large
-    node = DrupalNode.find(params[:id])
-    if node.main_image
-      redirect_to node.main_image.path(params[:size])
+    node1 = Node.find(params[:id])
+    if node1.main_image
+      redirect_to node1.main_image.path(params[:size])
     else
       redirect_to "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
     end
@@ -99,7 +99,7 @@ class NotesController < ApplicationController
 
   def create
     if current_user.drupal_user.status == 1
-      saved,@node,@revision = DrupalNode.new_note({
+      saved,@node,@revision = Node.new_note({
         :uid => current_user.uid,
         :title => params[:title],
         :body => params[:body],
@@ -159,7 +159,7 @@ class NotesController < ApplicationController
   end
 
   def edit
-    @node = DrupalNode.find(params[:id],:conditions => {:type => "note"})
+    @node = Node.find(params[:id],:conditions => {:type => "note"})
     if current_user.uid == @node.uid || current_user.role == "admin"
       if params[:legacy]
         render :template => "editor/post"
@@ -185,7 +185,7 @@ class NotesController < ApplicationController
 
   # at /notes/update/:id
   def update
-    @node = DrupalNode.find(params[:id])
+    @node = Node.find(params[:id])
     if current_user.uid == @node.uid || current_user.role == "admin"
       @revision = @node.latest
       @revision.title = params[:title]
@@ -243,7 +243,7 @@ class NotesController < ApplicationController
   # at /notes/delete/:id
   # only for notes
   def delete
-    @node = DrupalNode.find(params[:id])
+    @node = Node.find(params[:id])
     if current_user.uid == @node.uid && @node.type == "note" || current_user.role == "admin" || current_user.role == "moderator"
       @node.delete
       respond_with do |format|
@@ -265,7 +265,7 @@ class NotesController < ApplicationController
   def author
     @user = DrupalUsers.find_by_name params[:id]
     @title = @user.name
-    @notes = DrupalNode.page(params[:page])
+    @notes = Node.page(params[:page])
                        .order("nid DESC")
                        .where(type: 'note', status: 1, uid: @user.uid)
     render :template => 'notes/index'
@@ -284,11 +284,11 @@ class NotesController < ApplicationController
   # notes with high # of likes
   def liked
     @title = I18n.t('notes_controller.highly_liked_research_notes')
-    @wikis = DrupalNode.limit(10)
+    @wikis = Node.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
 
-    @notes = DrupalNode.research_notes
+    @notes = Node.research_notes
                        .where(status: 1)
                        .limit(20)
                        .order('nid DESC')
@@ -299,10 +299,10 @@ class NotesController < ApplicationController
   # notes with high # of views
   def popular
     @title = I18n.t('notes_controller.popular_research_notes')
-    @wikis = DrupalNode.limit(10)
+    @wikis = Node.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
-    @notes = DrupalNode.research_notes
+    @notes = Node.research_notes
                        .limit(20)
                        .where(status: 1)
                        .order("node_counter.totalcount DESC")
@@ -312,7 +312,7 @@ class NotesController < ApplicationController
   end
 
   def rss
-    @notes = DrupalNode.limit(20)
+    @notes = Node.limit(20)
                        .order("nid DESC")
                        .where("type = ? AND status = 1 AND created < ?", 'note', (Time.now.to_i - 30.minutes.to_i))
     respond_to do |format|
@@ -325,7 +325,7 @@ class NotesController < ApplicationController
   end
 
   def liked_rss
-    @notes = DrupalNode.limit(20)
+    @notes = Node.limit(20)
                        .order("created DESC")
                        .where('type = ? AND status = 1 AND cached_likes > 0', 'note')
     respond_to do |format|
@@ -337,7 +337,7 @@ class NotesController < ApplicationController
   end
 
   def rsvp
-    @node = DrupalNode.find params[:id]
+    @node = Node.find params[:id]
     # leave a comment
     @comment = @node.add_comment({:subject => 'rsvp', :uid => current_user.uid,:body =>
       "I will be attending!"

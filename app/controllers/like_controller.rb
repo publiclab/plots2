@@ -6,7 +6,7 @@ class LikeController < ApplicationController
   # return a count of likes for a given node
   # This does not support non-nodes very well
   def show
-    render :json => DrupalNode.find(params[:id]).cached_likes
+    render :json => Node.find(params[:id]).cached_likes
   end
 
   # for the current user, return whether is presently liked or not
@@ -47,22 +47,22 @@ class LikeController < ApplicationController
   
       # Check if the value changed.
       if like.liking_changed?
-        node = DrupalNode.find(params[:id])
+        node1 = Node.find(params[:id])
         if like.liking
           # it might be good to pull this out of the transaction to reduce
           # locking time, but all these vars will have to be rescoped
-          if node.type == "note"
-              SubscriptionMailer.notify_note_liked(node,like.user)
+          if node1.type == "note"
+              SubscriptionMailer.notify_note_liked(node1,like.user)
           end
           count = 1
-          node.cached_likes = node.cached_likes + 1
+          node1.cached_likes = node1.cached_likes + 1
         else
           count = -1
-          node.cached_likes = node.cached_likes - 1
+          node1.cached_likes = node1.cached_likes - 1
         end
         
         # Save the changes.
-        node.save!
+        node1.save!
         like.save!
       end
     end

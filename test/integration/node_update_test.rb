@@ -19,15 +19,15 @@ class NodeUpdateTest < ActionDispatch::IntegrationTest
     assert_equal "/notes/" + rusers(:bob).username + "/" +
                  Time.now.strftime("%m-%d-%Y") + "/" + title.parameterize, path
 
-    node = DrupalNode.where(title: title).first
+    node1 = Node.where(title: title).first
 
     # approve the first-timer's note:
-    node.publish
+    node1.publish
 
     # add a tag, and change the title and body
     newtitle = title + " which I amended"
 
-    post '/notes/update/' + node.id.to_s,
+    post '/notes/update/' + node1.id.to_s,
          title: newtitle, 
          body: "This is a fascinating post about a balloon mapping event. <span id='teststring'>added content</span>", 
          tags: "balloon-mapping,event,meetup"

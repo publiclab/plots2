@@ -52,7 +52,7 @@ class LegacyController < ApplicationController
 
   # http://publiclaboratory.org/node/5853
   def node
-    node = DrupalNode.find params[:id]
+    node = Node.find params[:id]
     redirect_to node.path, :status => 301
   end
 

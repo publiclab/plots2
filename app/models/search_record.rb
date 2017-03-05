@@ -14,7 +14,7 @@ class SearchRecord < ActiveRecord::Base
       @nodes += SearchService.new.find_notes(input, 25) if params[:notes] || all
       @nodes += SearchService.new.find_maps(input, 25) if params[:maps] || all
       @nodes += SearchService.new.find_comments(input, 25) if params[:comments] || all
-      @nodes += DrupalNode.limit(25)
+      @nodes += Node.limit(25)
                     .order("nid DESC")
                     .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', "%" + input + "%") if params[:wikis] || all
     end
@@ -29,7 +29,7 @@ class SearchRecord < ActiveRecord::Base
   end
 
   def notes(month)
-    solr_search = DrupalNode.search do
+    solr_search = Node.search do
       fulltext self.key_words
       with(:updated_at).less_than(Time.zone.now)
       facet(:updated_month)
@@ -46,7 +46,7 @@ class SearchRecord < ActiveRecord::Base
   private
 
   def find_nodes
-    DrupalNode.find(:all, :conditions => conditions)
+    Node.find(:all, :conditions => conditions)
   end
 
   def keyword_conditions

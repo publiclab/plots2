@@ -28,9 +28,9 @@ basic_user.save({})
 
 # set up some records, otherwise rails will throw errors on visiting these pages
 %w{about media events getting-started donate stats licenses}.each do |page|
-  web_page = DrupalNode.create! "type"=>"page", "title"=>page.capitalize, "uid"=>admin.id,
+  web_page = Node.create! "type"=>"page", "title"=>page.capitalize, "uid"=>admin.id,
     "status"=>1, "comment"=>0, "cached_likes"=>0
-  #web_node_counter = DrupalNodeCounter.create! "nid"=>web_page.nid,
+  #web_node_counter = NodeCounter.create! "nid"=>web_page.nid,
     #"totalcount"=>1
   web_node_revisions = DrupalNodeRevision.create! "nid"=>web_page.nid,
     "uid"=>admin.uid, "title"=>page.capitalize, "body"=>"#{page} - page", "teaser"=>"",
@@ -38,7 +38,7 @@ basic_user.save({})
 end
 
 # set up a blog entry with a comment and a like
-blog_post = DrupalNode.create! "type"=>"note", "title"=>"Blog Post", "uid"=>admin.id,
+blog_post = Node.create! "type"=>"note", "title"=>"Blog Post", "uid"=>admin.id,
   "status"=>1, "comment"=>1, "cached_likes"=>1
 blog_post_revisions = DrupalNodeRevision.create! "nid"=>blog_post.nid,
     "uid"=>admin.uid, "title"=>"Blog Post", "body"=>"Blog post body", "teaser"=>"",
@@ -52,7 +52,7 @@ blog_post_comment = Comment.create! "nid"=>blog_post.id, "uid"=>admin.id,
 
 # Create 35 maps for the /maps sections
 35.times do |t|
-  map_node = DrupalNode.create! "type"=>"map", "title"=>"test map #{t}", "uid"=>1,
+  map_node = Node.create! "type"=>"map", "title"=>"test map #{t}", "uid"=>1,
     "status"=>1
   DrupalNodeRevision.attr_accessible :nid, :vid
   map_node_revision =  DrupalNodeRevision.create! "nid" => map_node.nid, "vid" => map_node.nid,

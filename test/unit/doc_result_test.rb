@@ -3,19 +3,19 @@ require 'test_helper'
 class DocResultTest < ActiveSupport::TestCase
 
   test "should return fromSearch" do
-    node = node(:question)
+    node1 = node(:question)
     obj = DocResult.fromSearch(
-             node.nid,
+             node1.nid,
              'note',
-             node.path,
-             node.title,
+             node1.path,
+             node1.title,
              '',
              0
     )
-    assert_equal node.nid,   obj.docId
+    assert_equal node1.nid,   obj.docId
     assert_equal 'note',     obj.docType
-    assert_equal node.path,  obj.docUrl
-    assert_equal node.title, obj.docTitle
+    assert_equal node1.path,  obj.docUrl
+    assert_equal node1.title, obj.docTitle
     assert_equal '',         obj.docSummary
     assert_equal 0,          obj.docScore
   end

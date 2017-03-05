@@ -63,7 +63,7 @@ class TagControllerTest < ActionController::TestCase
          nid: node(:one).nid # authored by jeff, not bob
 
     assert_redirected_to(node(:one).path)
-    assert_equal I18n.t('drupal_node.only_author_use_powertag'), assigns['output']['errors'][0]
+    assert_equal I18n.t('node.only_author_use_powertag'), assigns['output']['errors'][0]
   end
 
   test "admins can add disallowed tags" do
@@ -116,7 +116,7 @@ class TagControllerTest < ActionController::TestCase
     assert :success
     assert_equal assigns['tags'].sort_by { |rev| rev.count }, assigns['tags']
     assert_equal assigns['tags'].collect(&:name), assigns['tags'].collect(&:name).uniq
-    assert_false assigns['tags'].collect(&:drupal_node).flatten.collect(&:status).include?(0)
+    assert_false assigns['tags'].collect(&:node).flatten.collect(&:status).include?(0)
     assert_not_nil :tags
   end
 
@@ -130,9 +130,9 @@ class TagControllerTest < ActionController::TestCase
     assert_equal tags(:spectrometer).parent, 'spectrometry'
     # iterate through results
     assert assigns['notes'].length > 0
-    assigns['notes'].each do |node|
-      assert node.has_tag('spectrometry') # should return false
-      assert_false node.has_tag_without_aliasing('spectrometry') # should return false
+    assigns['notes'].each do |node1|
+      assert node1.has_tag('spectrometry') # should return false
+      assert_false node1.has_tag_without_aliasing('spectrometry') # should return false
     end
 
     #assert_equal assigns['tags'].length, 1
@@ -150,11 +150,11 @@ class TagControllerTest < ActionController::TestCase
 
     assert_not_nil json
     assert assigns['notes'].length > 0
-    node = DrupalNode.find tags(:spectrometer).nodes.first.nid
-    assert_equal node.nid,                  json.first['nid']
-    assert_equal node.body_preview,         json.first['preview']
-    assert_equal node.main_image,           json.first['image'] # this won't check anything bc there is no main image
-    assert_equal node.tags.collect(&:name), json.first['tags']
+    node1 = Node.find tags(:spectrometer).nodes.first.nid
+    assert_equal node1.nid,                  json.first['nid']
+    assert_equal node1.body_preview,         json.first['preview']
+    assert_equal node1.main_image,           json.first['image'] # this won't check anything bc there is no main image
+    assert_equal node1.tags.collect(&:name), json.first['tags']
   end
   
   test "wildcard tag show" do
@@ -217,10 +217,10 @@ class TagControllerTest < ActionController::TestCase
   test "adds comment when awarding a barnstar" do
     ApplicationController.any_instance.stubs(:current_user).returns(User.first)
     assert_difference 'Comment.count' do
-      node = DrupalNode.where(type: 'note').last
+      node1 = Node.where(type: 'note').last
 
       post :barnstar, 
-           nid: node.nid,
+           nid: node1.nid,
            star: "basic"
 
       assert_equal "[@#{User.first.username}](/profile/#{User.first.username}) awards a <a href=\"//#{request.host}/wiki/barnstars\">barnstar</a> to #{node.author.name} for their awesome contribution!", Comment.last.body

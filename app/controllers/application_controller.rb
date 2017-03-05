@@ -25,17 +25,17 @@ class ApplicationController < ActionController::Base
         @maps = Tag.find_nodes_by_type(data,'map',20)
       else # type is generic
         # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
-        hidden_nids = DrupalNode.joins(:drupal_node_community_tag)
+        hidden_nids = Node.joins(:drupal_node_community_tag)
                                 .joins("LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid")
                                 .select('node.*, term_data.*, community_tags.*')
                                 .where(type: 'note', status: 1)
                                 .where('term_data.name = (?)', 'hidden:response')
                                 .collect(&:nid)
         if params[:controller] == 'questions'
-          @notes = DrupalNode.questions
+          @notes = Node.questions
                              .joins(:drupal_node_revision)
         else
-          @notes = DrupalNode.research_notes
+          @notes = Node.research_notes
                            .joins(:drupal_node_revision)
                            .order('node.nid DESC')
                            .paginate(page: params[:page])
@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
           @notes = @notes.where('node.status = 1')
         end
 
-        @wikis = DrupalNode.order("changed DESC")
+        @wikis = Node.order("changed DESC")
                            .joins(:drupal_node_revision)
                            .where('node_revisions.status = 1 AND node.status = 1 AND type = "page"')
                            .limit(10)
@@ -121,10 +121,10 @@ class ApplicationController < ActionController::Base
       session[:return_to] = nil
     end
 
-    def check_and_redirect_node(node)
-      if !node.nil? && node.type[/^redirect\|/]
-        node = DrupalNode.find(node.type[/\|\d+/][1..-1])
-        redirect_to node.path, status: 301
+    def check_and_redirect_node(node1)
+      if !node1.nil? && node1.type[/^redirect\|/]
+        node1 = Node.find(node1.type[/\|\d+/][1..-1])
+        redirect_to node1.path, status: 301
         return true
       end
       false
@@ -191,7 +191,7 @@ class ApplicationController < ActionController::Base
       if session[:tags] && !session[:tags].empty?
         @session_tags = session[:tags]
         qids = @questions.collect(&:nid)
-        @questions = DrupalNode.where(status: 1, type: 'note')
+        @questions = Node.where(status: 1, type: 'note')
                                .joins(:tag)
                                .where('term_data.name IN (?)', @session_tags.values)
                                .where('node.nid IN (?)', qids)

@@ -49,8 +49,8 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   end
 
   test "browse /wiki/foo" do
-    node = node(:about)
-    get node.path
+    node1 = node(:about)
+    get node1.path
     assert_response :success
   end
 

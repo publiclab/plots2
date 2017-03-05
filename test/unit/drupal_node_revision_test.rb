@@ -3,12 +3,12 @@ require 'test_helper'
 class DrupalNodeRevisionsTest < ActiveSupport::TestCase
 
   test "create a node_revision" do
-    node =  DrupalNode.new({
+    node1 =  Node.new({
       uid: rusers(:bob).id,
       type: 'page'
     })
-    node.title = "My new node for revision testing"
-    assert node.save!
+    node1.title = "My new node for revision testing"
+    assert node1.save!
     # in testing, uid and id should be matched, although this is not yet true in production db
     node_revision =  DrupalNodeRevision.new({
       title: "My new node",
@@ -22,21 +22,21 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
   end
 
   test "create a feature's node_revision" do
-    node =  DrupalNode.new({
+    node1 =  Node.new({
       uid: rusers(:admin).id,
       type: 'feature',
       title: 'footer-feature'
     })
-    assert node.save!
-    revision = node.new_revision({
-      nid:   node.id,
+    assert node1.save!
+    revision = node1.new_revision({
+      nid:   node1.id,
       uid:   rusers(:admin).uid,
       title: 'footer-feature',
       body: 'Testing' 
     })
     assert revision.save!
     assert_equal 'Testing', revision.body
-    assert_equal revision.body, node.latest.body
+    assert_equal revision.body, node1.latest.body
   end
 
   test "spam and republish a revision" do
