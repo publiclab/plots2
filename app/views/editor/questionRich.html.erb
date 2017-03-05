@@ -16,7 +16,6 @@
       <div class="ple-module-title ple-module container">
     <!-- title module -->
     <div class="ple-module-guide col-md-2">
-        <h2>1</h2>
       </div>
       <div class="ple-module-title col-md-1"><h3>Title</h3></div>
       <div class="ple-module-content col-md-9">
@@ -27,12 +26,10 @@
 
   <div class="ple-content">
 
-
     <!-- body module -->
-    <div class="ple-module-body ple-module container">
+    <div class="ple-module container">
 
       <div class="ple-module-guide col-md-3">
-        <h2>2</h2>
       </div>
 
       <div class="col-md-9 container">
@@ -47,11 +44,10 @@
     <div class="ple-module-tags ple-module container">
 
       <div class="ple-module-guide col-md-3">
-        <h2>3</h2>
       </div>
 
       <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="balloon-mapping, water-quality..." value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
+        <input class="form-control input-lg" type="text" placeholder="Add tags like balloon-mapping, water-quality, etc. to make your work more visible." value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
       </div>
     </div>
     <!-- end tags module -->
@@ -60,13 +56,12 @@
       <div class="ple-module-multi ple-module container">
 
       <div class="ple-module-guide col-md-3">
-        <h2>4</h2>
       </div>
 
       <div class="ple-module-content col-md-9">
 
-       <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
-      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
+       <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>&nbsp;&nbsp;
+      <a tabindex="6" href="https://publiclab.org/wiki/questions">Help</a>
           </div>
       </div>
       
@@ -106,34 +101,6 @@
   
 
   </div>
-
-  <div class="ple-footer">
-
-    <div class="ple-menu-more" style="display:none;">
-      <b>History</b>
-      <div class="ple-history">
-      </div>
-      <hr />
-      <!--
-      <div class="form-control input-md ple-history">
-        <option selected value="">recent edits</option>
-      </div>
-      -->
-    </div>
-
-    <button class="btn btn-lg btn-default btn-more">...</button>
-
-    <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="hidden-xs"> so that others may use it.</span></span>
-
-    <button class="ple-publish btn btn-lg btn-primary pull-right disabled">Publish</button>
-    <span class="ple-help pull-right">
-      <span class="ple-steps-left">2</span>
-      <span class="hidden-xs"> steps left</span>
-    </span>
-    
-  </div>
-
-</div>
 
 
 <script>
