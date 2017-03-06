@@ -13,13 +13,13 @@
 
     <h1>Ask a question</h1>
   </div>
-      <div class="ple-module-title ple-module container">
+      <div class="ple-module container">
     <!-- title module -->
     <div class="ple-module-guide col-md-2">
       </div>
       <div class="ple-module-title col-md-1"><h3>Title</h3></div>
       <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="What's your topic / question?" value="<%= if @node then @node.title else params[:title] end %>" />
+        <input class="form-control input-lg" type="text" placeholder="What's your topic question? Be specific." value="<%= if @node then @node.title else params[:title] end %>" />
       </div>    
 </div>
     <!-- end title module -->
@@ -33,7 +33,21 @@
       </div>
 
       <div class="col-md-9 container">
-        <textarea id="text-input" class="ple-textarea form-control" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;Share background information like where and how you are working."><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+        <textarea id="text-input" class="ple-textarea form-control" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;Share some background information. You may upload an image if you need."><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+      </div>
+      <div class="row"></div>
+      <br/>
+      <div class="row">
+        <div class="ple-module-guide col-md-3">
+        </div>
+        <div class="col-md-9 container">
+          Consider sharing:
+          <ul style="list-style-type:disk ;">
+            <li>Where you are working</li>
+            <li>Why you are interested</li>
+            <li>What resources you need</li>
+          </ul>
+        </div>
       </div>
 
     </div>
@@ -41,13 +55,13 @@
 
 
     <!-- tags module -->
-    <div class="ple-module-tags ple-module container">
+    <div class="ple-module container">
 
       <div class="ple-module-guide col-md-3">
       </div>
 
       <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="Add tags like balloon-mapping, water-quality, etc. to make your work more visible." value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
+        <input class="form-control input-lg" type="text" placeholder="Type some keywords related to your question (i.e. water, lead)" value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
       </div>
     </div>
     <!-- end tags module -->
@@ -60,7 +74,7 @@
 
       <div class="ple-module-content col-md-9">
 
-       <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>&nbsp;&nbsp;
+       <a id="ask" tabindex="5" class="btn btn-primary btn-lg">Ask</a>&nbsp;&nbsp;
       <a tabindex="6" href="https://publiclab.org/wiki/questions">Help</a>
           </div>
       </div>
