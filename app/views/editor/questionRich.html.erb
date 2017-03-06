@@ -21,13 +21,12 @@
       <div class="ple-module-content col-md-9">
         <input class="form-control input-lg" type="text" placeholder="What's your topic question? Be specific." value="<%= if @node then @node.title else params[:title] end %>" />
       </div>    
-</div>
     <!-- end title module -->
+      <div class="row"></div>
 
   <div class="ple-content">
 
     <!-- body module -->
-    <div class="ple-module container">
 
       <div class="ple-module-guide col-md-3">
       </div>
@@ -50,12 +49,11 @@
         </div>
       </div>
 
-    </div>
     <!-- end body module -->
 
 
     <!-- tags module -->
-    <div class="ple-module container">
+      <div class="row"></div>
 
       <div class="ple-module-guide col-md-3">
       </div>
@@ -63,11 +61,11 @@
       <div class="ple-module-content col-md-9">
         <input class="form-control input-lg" type="text" placeholder="Type some keywords related to your question (i.e. water, lead)" value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
       </div>
-    </div>
     <!-- end tags module -->
 
       <!--button module-->
-      <div class="ple-module-multi ple-module container">
+      <div class="row"></div>
+      <br/>
 
       <div class="ple-module-guide col-md-3">
       </div>
