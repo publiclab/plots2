@@ -14,7 +14,7 @@ module ApplicationHelper
   end
 
   def feature(title)
-    features = DrupalNode.where(type: 'feature', title: title)
+    features = Node.where(type: 'feature', title: title)
     if features.length > 0
       return features.last.body.html_safe
     else

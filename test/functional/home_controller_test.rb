@@ -32,8 +32,8 @@ class HomeControllerTest < ActionController::TestCase
   end
 
   test "should show only unmoderated spam" do
-    @wikis = DrupalNode.where(type: 'page')
-    revisions = DrupalNodeRevision.joins(:drupal_node)
+    @wikis = Node.where(type: 'page')
+    revisions = DrupalNodeRevision.joins(:node)
                                 .where('type = (?)', 'page')
                                 .where('node_revisions.status = 1')
     @wikis = @wikis + revisions

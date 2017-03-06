@@ -23,7 +23,7 @@ module NodeShared
       output += '    <th><a data-type="updated">Updated</a></th>'
       output += '    <th><a data-type="likes">Likes</a></th>'
       output += '  </tr>'
-      nodes = DrupalNode.where(status: 1, type: 'note')
+      nodes = Node.where(status: 1, type: 'note')
                         .includes(:drupal_node_revision, :tag)
                         .where('term_data.name = ?', $2)
                         .order("node_revisions.timestamp DESC")
@@ -61,7 +61,7 @@ module NodeShared
       output += '    <th><a data-type="updated">Updated</a></th>'
       output += '    <th><a data-type="likes">Likes</a></th>'
       output += '  </tr>'
-      nodes = DrupalNode.where(status: 1, type: 'note')
+      nodes = Node.where(status: 1, type: 'note')
                         .includes(:drupal_node_revision, :tag)
                         .where('term_data.name = ?', "question:#{$2}")
                         .order("node_revisions.timestamp DESC")
@@ -102,7 +102,7 @@ module NodeShared
       output += '    <th><a data-type="difficulty">Difficulty</a></th>'
       output += '    <th><a data-type="replications">Replications</a></th>'
       output += '  </tr>'
-      nodes = DrupalNode.activities($2)
+      nodes = Node.activities($2)
                         .order("node.cached_likes DESC")
       nodes.each do |node|
         output += '<tr>'
@@ -138,7 +138,7 @@ module NodeShared
       output += '    <th><a data-type="difficulty">Difficulty</a></th>'
       output += '    <th><a data-type="builds">Builds</a></th>'
       output += '  </tr>'
-      nodes = DrupalNode.upgrades($2)
+      nodes = Node.upgrades($2)
                         .order("node.cached_likes DESC")
       output += '<tr><td>No matching content.</td><td></td><td></td><td></td><td></td><td></td></tr>' if nodes.length == 0
       nodes.each do |node|

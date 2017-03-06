@@ -15,13 +15,13 @@ class QuestionsController < ApplicationController
 
   def show
     if params[:author] && params[:date]
-      @node = DrupalNode.find_notes(params[:author], params[:date], params[:id])
-      @node = @node || DrupalNode.where(path: "/report/#{params[:id]}").first
+      @node =   Node.find_notes(params[:author], params[:date], params[:id])
+      @node = @node || Node.where(path: "/report/#{params[:id]}").first
       # if request.path != @node.path(:question)
       #   return redirect_to @node.path(:question), :status => :moved_permanently
       # end
     else
-      @node = DrupalNode.find params[:id]
+      @node = Node.find params[:id]
     end
 
     unless @node.has_power_tag('question')
@@ -43,14 +43,14 @@ class QuestionsController < ApplicationController
 
   def answered
     @title = "Recently answered"
-    @questions = DrupalNode.questions.where(status: 1)
+    @questions = Node.questions.where(status: 1)
     sort_question_by_tags
     @questions = @questions.joins(:answers)
                           .order('answers.created_at DESC')
                           .group('node.nid')
                           .paginate(:page => params[:page], :per_page => 30)
 
-    @wikis = DrupalNode.limit(10)
+    @wikis = Node.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
     render :template => 'questions/index'
@@ -58,7 +58,7 @@ class QuestionsController < ApplicationController
 
   def unanswered
     @title = "Unanswered questions"
-    @questions = DrupalNode.questions.where(status: 1)
+    @questions = Node.questions.where(status: 1)
     sort_question_by_tags
     @questions = @questions.includes(:answers)
                 .where( answers: { id: nil } )
@@ -69,7 +69,7 @@ class QuestionsController < ApplicationController
   end
   
   def shortlink
-    @node = DrupalNode.find params[:id]
+    @node = Node.find params[:id]
     if @node.has_power_tag('question')
       redirect_to @node.path(:question)
     else
@@ -79,12 +79,12 @@ class QuestionsController < ApplicationController
 
   def popular
     @title = "Popular Questions"
-    @questions = DrupalNode.questions.where(status: 1)
+    @questions = Node.questions.where(status: 1)
     sort_question_by_tags
     @questions = @questions.order('views DESC')
                            .limit(20)
 
-    @wikis = DrupalNode.limit(10)
+    @wikis = Node.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
     @unpaginated = true
@@ -93,12 +93,12 @@ class QuestionsController < ApplicationController
 
   def liked
     @title = "Highly liked Questions"
-    @questions = DrupalNode.questions.where(status: 1)
+    @questions = Node.questions.where(status: 1)
     sort_question_by_tags
     @questions = @questions.order("cached_likes DESC")
                            .limit(20)
 
-    @wikis = DrupalNode.limit(10)
+    @wikis = Node.limit(10)
                        .where(type: 'page', status: 1)
                        .order("nid DESC")
     @unpaginated = true

@@ -9,7 +9,7 @@ class DrupalUsers < ActiveRecord::Base
   self.table_name = 'users'
   self.primary_key = 'uid'
 
-  has_many :drupal_node, :foreign_key => 'uid'
+  has_many :node, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
   has_many :node_selections, :foreign_key => :user_id
   has_many :answers, :foreign_key => :uid
@@ -92,18 +92,18 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def liked_notes
-    DrupalNode.includes(:node_selections)
+    Node.includes(:node_selections)
               .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, self.uid)
               .order('node_selections.nid DESC')
   end
 
   def liked_pages
-    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = ? AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')",self.uid, true], :include => :drupal_node).collect(&:node).reverse
+    NodeSelection.find(:all, :conditions => ["status = 1 AND user_id = ? AND liking = ? AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')",self.uid, true], :include => :node).collect(&:node).reverse
   end
 
   # last node
   def last
-    DrupalNode.limit(1)
+    Node.limit(1)
               .where(uid: self.uid)
               .order('changed DESC')
               .first
@@ -134,16 +134,16 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def note_count
-    DrupalNode.count(:all,:conditions => {:status => 1, :uid => self.uid, :type => "note"})
+    Node.count(:all,:conditions => {:status => 1, :uid => self.uid, :type => "note"})
   end
 
   def node_count
-    DrupalNode.count(:all,:conditions => {:status => 1, :uid => self.uid}) + DrupalNodeRevision.count(:all, :conditions => {:uid => self.uid})
+    Node.count(:all,:conditions => {:status => 1, :uid => self.uid}) + DrupalNodeRevision.count(:all, :conditions => {:uid => self.uid})
   end
 
   # accepts array of tag names (strings)
   def notes_for_tags(tagnames)
-    all_nodes = DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid})
+    all_nodes = Node.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid})
     node_ids = []
     all_nodes.each do |node|
       node.tags.each do |tag|
@@ -152,7 +152,7 @@ class DrupalUsers < ActiveRecord::Base
         end
       end
     end
-    DrupalNode.find(node_ids.uniq, :order => "nid DESC")
+    Node.find(node_ids.uniq, :order => "nid DESC")
   end
 
   def tags(limit = 10)
@@ -161,7 +161,7 @@ class DrupalUsers < ActiveRecord::Base
 
   def tagnames(limit = 20,defaults = true)
     tagnames = []
-    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => limit).each do |node|
+    Node.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => limit).each do |node|
       tagnames += node.tags.collect(&:name)
     end
     tagnames += ["balloon-mapping","spectrometer","near-infrared-camera","thermal-photography","newsletter"] if tagnames.length == 0 && defaults
@@ -170,7 +170,7 @@ class DrupalUsers < ActiveRecord::Base
 
   def tag_counts
     tags = {}
-    DrupalNode.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => 20).each do |node|
+    Node.find(:all,:order => "nid DESC", :conditions => {:type => 'note', :status => 1, :uid => self.uid}, :limit => 20).each do |node|
       node.tags.each do |tag|
         if tags[tag.name]
           tags[tag.name] += 1
@@ -207,15 +207,15 @@ class DrupalUsers < ActiveRecord::Base
 
   def decrease_likes_banned
     node_selections.each do |node|
-      node.drupal_node.cached_likes = node.drupal_node.cached_likes - 1
-      node.drupal_node.save!
+      node.node.cached_likes = node.node.cached_likes - 1
+      node.node.save!
     end
   end
 
   def increase_likes_unbanned
     node_selections.each do |node|
-      node.drupal_node.cached_likes = node.drupal_node.cached_likes + 1
-      node.drupal_node.save!
+      node.node.cached_likes = node.node.cached_likes + 1
+      node.node.save!
     end
   end
 end

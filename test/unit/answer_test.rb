@@ -15,7 +15,7 @@ class AnswerTest < ActiveSupport::TestCase
     answer = Answer.new(content: "a test answer")
     node = node(:question)
     user = users(:bob)
-    answer.drupal_node = node
+    answer.node = node
     answer.drupal_users = user
     answer.save
     assert_equal node.answers.last, answer

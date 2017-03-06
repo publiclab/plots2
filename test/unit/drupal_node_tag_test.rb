@@ -122,7 +122,7 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
   test "can't powertag with: yourself" do
     user = node(:blog).author
     tagname = "with:#{user.username}"
-    assert_equal I18n.t('drupal_node.cannot_add_yourself_coauthor'), node(:blog).can_tag(tagname, user, true)
+    assert_equal I18n.t('node.cannot_add_yourself_coauthor'), node(:blog).can_tag(tagname, user, true)
     assert_false node(:blog).can_tag(tagname, user)
   end
 
@@ -136,20 +136,20 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
   test "can't tag with: a nonexistent user" do
     user = rusers(:bob)
     tagname = "with:steven"
-    assert_equal I18n.t('drupal_node.cannot_find_username'), node(:blog).can_tag(tagname, user, true)
+    assert_equal I18n.t('node.cannot_find_username'), node(:blog).can_tag(tagname, user, true)
     assert_false node(:blog).can_tag(tagname, user)
   end
 
   test "can't powertag with: if you're not author" do
     bob = rusers(:bob)
     jeff = rusers(:jeff)
-    node = DrupalNode.new({
+    node = Node.new({
       uid: jeff.id,
       type: 'note',
       title: 'My research note'
     })
     tagname = "with:#{jeff.username}"
-    assert_equal I18n.t('drupal_node.only_author_use_powertag'), node.can_tag(tagname, bob, true)
+    assert_equal I18n.t('node.only_author_use_powertag'), node.can_tag(tagname, bob, true)
     assert_false node.can_tag(tagname, bob)
   end
 
@@ -163,7 +163,7 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
   test "can't rsvp someone else" do
     user = rusers(:bob)
     jeff = rusers(:jeff)
-    node = DrupalNode.new({
+    node = Node.new({
       uid: user.id,
       type: 'note',
       title: 'My research note'
@@ -171,14 +171,14 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     tagname = "rsvp:#{jeff.username}"
     assert_not_equal true,  node.can_tag(tagname, user, true) # return errors with optional 3rd parameter
     assert_not_equal false, node.can_tag(tagname, user, true)
-    assert_equal I18n.t('drupal_node.only_RSVP_for_yourself'), node.can_tag(tagname, user, true)
+    assert_equal I18n.t('node.only_RSVP_for_yourself'), node.can_tag(tagname, user, true)
     assert_false node.can_tag(tagname, user) # default is true/false
   end
 
   test "only admins can lock pages" do
     assert_false node(:blog).can_tag('locked', rusers(:bob))
     assert node(:blog).can_tag('locked', rusers(:admin))
-    assert_equal I18n.t('drupal_node.only_admins_can_lock'), node(:blog).can_tag('locked', rusers(:bob), true)
+    assert_equal I18n.t('node.only_admins_can_lock'), node(:blog).can_tag('locked', rusers(:bob), true)
   end
 
 end

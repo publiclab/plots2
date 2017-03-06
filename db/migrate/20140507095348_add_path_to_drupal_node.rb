@@ -1,15 +1,15 @@
 class AddPathToDrupalNode < ActiveRecord::Migration
   def up
     add_column :node, :path, :string
-    DrupalNode.reset_column_information
+    Node.reset_column_information
 
     # used to first delete url_alias records that do not correspond to any node
     # or are replaced by a route + controller
     @first_filter = ActiveRecord::Base.connection.execute('select pid, src, dst from url_alias where src not like "users/%" and src not like "people/%" and src not like "user/%" and src not like "taxonomy/%" and src not like "blog/%" and src not like "%/feed" and src not like "%/add%";')
     puts "Size after first filter: #{@first_filter.size}"
-    puts "Should be #{DrupalNode.count}"
+    puts "Should be #{Node.count}"
 
-    puts "Quick break to set up DrupalNode redirects:"
+    puts "Quick break to set up Node redirects:"
     # url_a[1] is the node id in the form of 'node/123'
     # url_a[2] is the actual url
     duplicate_node_ids = (@first_filter.to_a - @first_filter.to_a.uniq { |url_a| url_a[1] })
@@ -17,10 +17,10 @@ class AddPathToDrupalNode < ActiveRecord::Migration
     puts "There were #{cleaned_node_ids.size} duplicate node ids in url_alias"
     cleaned_node_ids.each do |redirect_node|
       path = redirect_node[2]
-      DrupalNode.transaction do
+      Node.transaction do
         ActiveRecord::Base.connection.execute(
           "insert into node (title, type, path) values('REDIRECT-#{redirect_node[2]}-#{Random.rand}', 'redirect|#{redirect_node[1].split('/').last}', '/#{path}');")
-        tmp_node = DrupalNode.last
+        tmp_node = Node.last
         ActiveRecord::Base.connection.execute(
           "insert into node_revisions (nid, uid) values(#{tmp_node.nid}, 1);")
         ActiveRecord::Base.connection.execute(
@@ -33,7 +33,7 @@ class AddPathToDrupalNode < ActiveRecord::Migration
     third_filter = []
     second_filter.each do |item|
       node_id = item[1].match(/\d+/)
-      if !node_id.nil? && DrupalNode.where(nid: node_id[0]).first != []
+      if !node_id.nil? && Node.where(nid: node_id[0]).first != []
         third_filter << item + [node_id[0]]
       end
     end
@@ -41,7 +41,7 @@ class AddPathToDrupalNode < ActiveRecord::Migration
 
     fourth_filter = []
     third_filter.each do |item|
-      if DrupalNode.where(nid: item.last.to_i) != []
+      if Node.where(nid: item.last.to_i) != []
         fourth_filter << item
       end
     end
@@ -55,7 +55,7 @@ class AddPathToDrupalNode < ActiveRecord::Migration
 
     dsts = ActiveRecord::Base.connection.execute('select dst, src from url_alias;')
     dsts.each do |dst, src|
-      node = DrupalNode.where(:nid => src.split('/').last).first
+      node = Node.where(:nid => src.split('/').last).first
       if node
         node.path = "/#{dst}"
         if node.valid?

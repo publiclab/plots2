@@ -36,7 +36,7 @@ class TypeaheadService
   end
 
   def find_tags(input, limit=5)
-    Tag.includes(:drupal_node)
+    Tag.includes(:node)
         .where('node.status = 1')
         .limit(limit)
         .where('name LIKE ?', '%' + input + '%')
@@ -51,13 +51,13 @@ class TypeaheadService
   ## search for node title only
   ## FIXme with solr
   def find_notes(input, limit=5)
-    DrupalNode.limit(limit)
+    Node.limit(limit)
         .order('nid DESC')
         .where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
   end
 
   def find_maps(input, limit=5)
-    DrupalNode.limit(limit)
+    Node.limit(limit)
         .order('nid DESC')
         .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
   end
@@ -139,7 +139,7 @@ class TypeaheadService
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
       # Tags
-       tlist= Tag.includes(:drupal_node)
+       tlist= Tag.includes(:node)
         .where('node.status = 1')
         .limit(limit)
         .where('name LIKE ?', '%' + srchString + '%')
@@ -157,7 +157,7 @@ class TypeaheadService
   # Search question entries for matching text
   def textSearch_questions(srchString, limit=5)
     sresult = TagList.new
-    questions = DrupalNode.where(
+    questions = Node.where(
                   'type = "note" AND node.status = 1 AND title LIKE ?',
                   "%" + srchString + "%"
                 )

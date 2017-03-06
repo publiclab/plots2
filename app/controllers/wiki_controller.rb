@@ -21,17 +21,17 @@ class WikiController < ApplicationController
 
   def show
     if params[:lang]
-      @node = DrupalNode.find_wiki(params[:lang]+"/"+params[:id])
+      @node = Node.find_wiki(params[:lang]+"/"+params[:id])
     else
-      @node = DrupalNode.find_wiki(params[:id])
+      @node = Node.find_wiki(params[:id])
     end
 
     if @node && @node.has_power_tag('redirect')
       if current_user == nil || (current_user.role != 'admin' && current_user.role != 'moderator')
-        redirect_to DrupalNode.find(@node.power_tag('redirect')).path
+        redirect_to Node.find(@node.power_tag('redirect')).path
         return
       elsif (current_user.role == 'admin' || current_user.role == 'moderator')
-        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{DrupalNode.find(@node.power_tag('redirect')).title}.
+        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}.
         To remove the redirect, delete the tag beginning with 'redirect:'"
       end
     end
@@ -78,9 +78,9 @@ class WikiController < ApplicationController
 
   def edit
     if params[:lang]
-      @node = DrupalNode.find_wiki(params[:lang]+"/"+params[:id])
+      @node = Node.find_wiki(params[:lang]+"/"+params[:id])
     else
-      @node = DrupalNode.find_wiki(params[:id])
+      @node = Node.find_wiki(params[:id])
     end
     if @node.has_tag('locked') && (current_user.role != "admin" && current_user.role != "moderator")
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
@@ -98,16 +98,16 @@ class WikiController < ApplicationController
   end
 
   def new
-    @node = DrupalNode.new
+    @node = Node.new
     if params[:n] && !params[:body] # use another node body as a template
-      node = DrupalNode.find(params[:n])
+      node = Node.find(params[:n])
       params[:body] = node.latest.body if node && node.latest
     end
     @tags = []
     if params[:id]
       flash.now[:notice] = I18n.t('wiki_controller.page_does_not_exist_create')
       title = params[:id].gsub('-',' ')
-      @related = DrupalNode.limit(10)
+      @related = Node.limit(10)
                            .order("node.nid DESC")
                            .where('type = "page" AND node.status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', "%" + title + "%","%" + title + "%")
                            .includes(:drupal_node_revision)
@@ -124,7 +124,7 @@ class WikiController < ApplicationController
       #slug = params[:title].parameterize
       #slug = params[:id].parameterize if params[:id] != "" && !params[:id].nil?
       #slug = params[:url].parameterize if params[:url] != "" && !params[:url].nil?
-      saved,@node,@revision = DrupalNode.new_wiki({
+      saved,@node,@revision = Node.new_wiki({
         uid:   current_user.uid,
         title: params[:title],
         body:  params[:body]
@@ -147,7 +147,7 @@ class WikiController < ApplicationController
   end
 
   def update
-    @node = DrupalNode.find(params[:id])
+    @node = Node.find(params[:id])
     @revision = @node.new_revision({
       uid:   current_user.uid,
       title: params[:title],
@@ -192,7 +192,7 @@ class WikiController < ApplicationController
   end
 
   def delete
-    @node = DrupalNode.find(params[:id])
+    @node = Node.find(params[:id])
     if current_user && current_user.role == "admin"
       @node.transaction do
         @node.destroy
@@ -224,7 +224,7 @@ class WikiController < ApplicationController
 
   # wiki pages which have a root URL, like /about
   def root
-    @node = DrupalNode.find_by_path(params[:id])
+    @node = Node.find_by_path(params[:id])
     return if check_and_redirect_node(@node)
     if @node
       @revision = @node.latest
@@ -238,7 +238,7 @@ class WikiController < ApplicationController
   end
 
   def revisions
-    @node = DrupalNode.find_wiki(params[:id])
+    @node = Node.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
       @revisions = @revisions.where(status: 1) unless current_user && (current_user.role == "moderator" || current_user.role == "admin")
@@ -250,7 +250,7 @@ class WikiController < ApplicationController
   end
 
   def revision
-    @node = DrupalNode.find_wiki(params[:id])
+    @node = Node.find_wiki(params[:id])
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)
     @unpaginated = true
@@ -288,7 +288,7 @@ class WikiController < ApplicationController
       order_string = "node_revisions.timestamp DESC"
     end
 
-    @wikis = DrupalNode.includes(:drupal_node_revision)
+    @wikis = Node.includes(:drupal_node_revision)
                        .group('node_revisions.nid')
                        .order(order_string)
                        .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
@@ -299,7 +299,7 @@ class WikiController < ApplicationController
 
   def popular
     @title = I18n.t('wiki_controller.popular_wiki_pages')
-    @wikis = DrupalNode.limit(40)
+    @wikis = Node.limit(40)
                        .order("views DESC")
                        .joins(:drupal_node_revision)
                        .group('node_revisions.nid')
@@ -310,7 +310,7 @@ class WikiController < ApplicationController
 
   def liked
     @title = I18n.t('wiki_controller.well_liked_wiki_pages')
-    @wikis = DrupalNode.limit(40)
+    @wikis = Node.limit(40)
                        .order("node.cached_likes DESC")
                        .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes > 0")
     render :template => "wiki/index"
@@ -318,7 +318,7 @@ class WikiController < ApplicationController
 
   # replace subsection of wiki body
   def replace
-    @node = DrupalNode.find(params[:id])
+    @node = Node.find(params[:id])
     if params[:before] && params[:after]
       if output = @node.replace(params[:before], params[:after], current_user)
         flash[:notice] = "New revision created with your additions." unless request.xhr?
@@ -336,14 +336,18 @@ class WikiController < ApplicationController
   end
 
   def methods
-    @nodes = DrupalNode.where(status: 1, type: ['page'])
+    @nodes = Node.where(status: 1, type: ['page'])
                        .where('term_data.name = ?', 'tool')
                        .includes(:drupal_node_revision, :tag)
                        .order("node_revisions.timestamp DESC")
     # deprecating the following in favor of javascript implementation in /app/assets/javascripts/methods.js
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
+<<<<<<< HEAD
       @nodes = DrupalNode.where(status: 1, type: ['page'])
+=======
+      @notes = Node.where(status: 1, type: ['page'])
+>>>>>>> DrupalNode to drupal_node
                          .where('node.nid IN (?)', nids)
                          .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)', 
                            "%"+params[:topic]+"%",

@@ -13,7 +13,7 @@ class DrupalNodeTest < ActiveSupport::TestCase
 
   test "create a node" do
     # in testing, uid and id should be matched, although this is not yet true in production db
-    node =  DrupalNode.new({
+    node =  Node.new({
       uid: rusers(:bob).id,
       type: 'note',
       title: 'My new node for node creation testing'
@@ -22,7 +22,7 @@ class DrupalNodeTest < ActiveSupport::TestCase
   end
 
   test "create a feature" do
-    node =  DrupalNode.new({
+    node =  Node.new({
       uid: rusers(:admin).id,
       type: 'feature',
       title: 'header-feature'
@@ -34,7 +34,7 @@ class DrupalNodeTest < ActiveSupport::TestCase
   end
 
   test "create a research note" do
-    node =  DrupalNode.new({
+    node =  Node.new({
       uid: rusers(:bob).id,
       type: 'note',
       title: 'My research note'
@@ -48,7 +48,7 @@ class DrupalNodeTest < ActiveSupport::TestCase
 
   test "edit a research note and check path" do
     original_title = 'My research note'
-    node =  DrupalNode.new({
+    node =  Node.new({
       uid: rusers(:bob).id,
       type: 'note',
       title: original_title
@@ -63,7 +63,7 @@ class DrupalNodeTest < ActiveSupport::TestCase
   # new_note also generates a revision
   test "create a research note with new_note" do
     assert !users(:jeff).first_time_poster
-    saved, node, revision = DrupalNode.new_note({
+    saved, node, revision = Node.new_note({
       uid: users(:jeff).uid,
       title: "Title",
       body: "New note body"
@@ -77,7 +77,7 @@ class DrupalNodeTest < ActiveSupport::TestCase
 
   test "first-time poster creates a research note with new_note" do
     assert users(:lurker).first_time_poster
-    saved, node, revision = DrupalNode.new_note({
+    saved, node, revision = Node.new_note({
       uid: users(:lurker).uid,
       title: "Title",
       body: "New note body"
@@ -98,7 +98,7 @@ class DrupalNodeTest < ActiveSupport::TestCase
   end
 
   test "create a wiki page" do
-    node =  DrupalNode.new({
+    node =  Node.new({
       uid: rusers(:bob).id,
       type: 'page',
       title: 'My wiki page'
@@ -107,8 +107,8 @@ class DrupalNodeTest < ActiveSupport::TestCase
     assert_equal 'page', node.type
   end
 
-  test "create a wiki page with DrupalNode.new_wiki" do
-    node = DrupalNode.new_wiki({
+  test "create a wiki page with Node.new_wiki" do
+    node = Node.new_wiki({
       uid: rusers(:bob).id,
       type: 'page',
       title: 'My wiki page',
@@ -176,14 +176,14 @@ class DrupalNodeTest < ActiveSupport::TestCase
   end
 
   #test "should not save node without title, or anything else" do
-    #node = DrupalNode.new
+    #node = Node.new
     #assert !node.save
   #end
 
   test "reports weekly_tallies" do
     node = node(:one)
-    assert_not_nil DrupalNode.weekly_tallies
-    assert_not_nil DrupalNode.weekly_tallies('page', 2, Time.now - 1.month)
+    assert_not_nil Node.weekly_tallies
+    assert_not_nil Node.weekly_tallies('page', 2, Time.now - 1.month)
   end
 
   test "should show normal tags" do
@@ -197,25 +197,25 @@ class DrupalNodeTest < ActiveSupport::TestCase
   end
 
   test "should find all research notes" do
-    notes = DrupalNode.research_notes
+    notes = Node.research_notes
     expected = [node(:one), node(:spam), node(:first_timer_note), node(:blog), node(:moderated_user_note), node(:activity), node(:upgrade)]
     assert_equal expected, notes
   end
 
   test "should find all questions" do
-    questions = DrupalNode.questions
+    questions = Node.questions
     expected = [node(:question), node(:question2), node(:first_timer_question), node(:question3)]
     assert_equal expected, questions
   end
 
   test "should find all activity notes" do
-    activities = DrupalNode.activities("coding")
+    activities = Node.activities("coding")
     expected = [node(:moderated_user_note), node(:activity)]
     assert_equal expected, activities
   end
 
   test "should find all upgrade notes" do
-    activities = DrupalNode.upgrades("latest")
+    activities = Node.upgrades("latest")
     expected = [node(:moderated_user_note), node(:upgrade)]
     assert_equal expected, activities
   end

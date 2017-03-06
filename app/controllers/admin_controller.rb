@@ -59,7 +59,7 @@ class AdminController < ApplicationController
 
   def spam
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      @nodes = DrupalNode.paginate(page: params[:page])
+      @nodes = Node.paginate(page: params[:page])
                          .order("nid DESC")
       if params[:type] == "wiki"
         @nodes = @nodes.where(type: "page", status: 1)
@@ -85,7 +85,7 @@ class AdminController < ApplicationController
   end
 
   def mark_spam
-    @node = DrupalNode.find params[:id]
+    @node = Node.find params[:id]
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
       if @node.status == 1 || @node.status == 4
         @node.spam
@@ -109,7 +109,7 @@ class AdminController < ApplicationController
 
   def publish
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      @node = DrupalNode.find params[:id]
+      @node = Node.find params[:id]
       if @node.status == 1
         flash[:notice] = "Item already published."
       else
@@ -237,7 +237,7 @@ class AdminController < ApplicationController
       nodes = 0
       users = []
       params[:ids].split(',').uniq.each do |nid|
-        node = DrupalNode.find nid
+        node = Node.find nid
         node.spam
         nodes += 1
         user = node.author
@@ -272,7 +272,7 @@ class AdminController < ApplicationController
 
   def queue
     if current_user && (current_user.role == "moderator" || current_user.role == "admin")
-      @notes = DrupalNode.where(status: 4)
+      @notes = Node.where(status: 4)
                          .paginate(page: params[:page])
       flash[:warning] = "These are notes requiring moderation. <a href='/wiki/moderation'>Community moderators</a> may approve or reject them."
       render template: 'notes/index'
