@@ -6,11 +6,12 @@ class AdminMailer < ActionMailer::Base
   def notify_node_moderators(node)
     subject = "[New Public Lab poster needs moderation] " + node.title
     @node = node
+    @user = node.author.user
     @footer = feature('email-footer')
     moderators = User.where(role: ['moderator', 'admin']).collect(&:email)
     mail(
-      to: "moderators@#{ActionMailer::Base.default_url_options[:host]}", 
-      bcc: moderators, 
+      to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
+      bcc: moderators,
       subject: subject
     ).deliver
   end
@@ -24,7 +25,7 @@ class AdminMailer < ActionMailer::Base
     mail(:to => @author.mail, :subject => subject).deliver
   end
 
-  # Will this further bait spammers? If we don't, 
+  # Will this further bait spammers? If we don't,
   # will non-spammers whose posts were moderated get confused?
   # Should: show explanation/appeal process to authors who visit again
   # Should: prompt moderators to reach out if it's not spam, but a guidelines violation
@@ -39,8 +40,8 @@ class AdminMailer < ActionMailer::Base
     @footer = feature('email-footer')
     moderators = User.where(role: ['moderator', 'admin']).collect(&:email)
     mail(
-      to: "moderators@#{ActionMailer::Base.default_url_options[:host]}", 
-      bcc: moderators, 
+      to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
+      bcc: moderators,
       subject: subject
     ).deliver
   end
@@ -53,8 +54,8 @@ class AdminMailer < ActionMailer::Base
     @footer = feature('email-footer')
     moderators = User.where(role: ['moderator', 'admin']).collect(&:email)
     mail(
-      to: "moderators@#{ActionMailer::Base.default_url_options[:host]}", 
-      bcc: moderators, 
+      to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
+      bcc: moderators,
       subject: subject
     ).deliver
   end

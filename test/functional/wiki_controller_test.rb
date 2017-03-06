@@ -555,4 +555,15 @@ class WikiControllerTest < ActionController::TestCase
     assert_equal [], assigns(:nodes)
   end
 
+  test "Invalid date tags aren't added" do
+    @node = node(:wiki_page)
+    @node.add_tag('date:bad', rusers(:jeff))
+
+    assert_equal false, @node.has_power_tag('date')
+    # assert_equal "anything goes", DateTime.strptime(@node.power_tag('date'),'%m- %d-%Y').to_date.to_s(:long)
+
+    get :show, id: @node.slug
+    assert_response :success
+  end
+
 end

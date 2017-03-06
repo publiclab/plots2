@@ -11,7 +11,6 @@ class DrupalUsers < ActiveRecord::Base
 
   has_many :drupal_node, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
-  has_many :drupal_profile_values, :foreign_key => 'uid'
   has_many :node_selections, :foreign_key => :user_id
   has_many :answers, :foreign_key => :uid
   has_many :answer_selections, :foreign_key => :user_id
@@ -198,6 +197,10 @@ class DrupalUsers < ActiveRecord::Base
     else
       return false
     end
+  end
+
+  def self.find_by_name_and_status(name, status)
+    where(name: name, status: status)
   end
 
   private

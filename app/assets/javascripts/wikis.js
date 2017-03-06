@@ -14,6 +14,7 @@ function setupWiki(node_id, raw, logged_in) {
   } else {
     $('#content').html(shortCodePrompt($('#content')[0], { submitUrl: '/wiki/replace/' + node_id }));
     postProcessContent();
+    addDeepLinks($('#content'));
   }
 }
 

@@ -136,7 +136,9 @@ function addGrid(map)
 
 function geoLocateFromInput(selector) {
   var input = document.getElementById(selector);
-  input.addEventListener('blur', function () {
+
+  var autocomplete = new google.maps.places.Autocomplete(input);
+  autocomplete.addListener('place_changed', function() {
     setTimeout(function () {
       var str = input.value;
       var loc = str.split(' ').join('+');
@@ -145,8 +147,10 @@ function geoLocateFromInput(selector) {
         var lng = data.results[0].geometry.location.lng;
         panMap(lat, lng);
       });
-    }, 100);
+    }, 10);
   });
+
+
   function panMap(lat, lng) {
     map.panTo(new L.LatLng(lat, lng));
   }

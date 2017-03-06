@@ -3,7 +3,7 @@ PublicLab.org's Data Model
 
 _This page attempts to explain the database model for the plots2 project._
 
-The following diagram is a rough sketch of how the applications various tables interconnect:
+The [following diagram](https://docs.google.com/presentation/d/1aquQKyih8vvtD7U-AI0NlbAcgT-BVu9G8hloYg-c-QI/edit#slide=id.p) is a rough sketch of how the applications various tables interconnect:
 
 ![data model diagram](https://publiclab.org/system/images/photos/000/019/147/original/scratchpad.png)
 
