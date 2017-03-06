@@ -15,8 +15,6 @@ class Tag < ActiveRecord::Base
     end
   end
 
-  has_many :drupal_node_community_tag, :foreign_key => 'tid'
-
   # the following probably never gets used; tag.drupal_node will use the above definition.
   # also, we're not really using the filter_by_type stuff here:
   has_many :drupal_node, :through => :drupal_node_community_tag do
