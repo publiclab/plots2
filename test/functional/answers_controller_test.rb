@@ -9,11 +9,15 @@ class AnswersControllerTest < ActionController::TestCase
   test "should get create if user is logged in" do
     UserSession.create(rusers(:bob))
     node = node(:question)
+    initial_mail_count = ActionMailer::Base.deliveries.size
     assert_difference 'Answer.count' do
       xhr :post, :create,
                  nid: node.nid,
                  body: "Sample answer"
     end
+    assert_not_equal initial_mail_count, ActionMailer::Base.deliveries.size
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([node.author.mail])
+    # Used ([node.author.mail]) here instead of just (node.author.mail) because .collect(:to) is an array of arrays
     assert_response :success
     assert_not_nil assigns(:answer)
   end
