@@ -46,6 +46,7 @@ class CommentController < ApplicationController
       comment: params[:body],
       timestamp: Time.now.to_i
     )
+
     if @comment.save
       @comment.answer_comment_notify(current_user)
       respond_to do |format|

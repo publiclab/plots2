@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'byebug'
 
 class CommentMailerTest < ActionMailer::TestCase
   test "notify other commenters" do
@@ -8,12 +9,30 @@ class CommentMailerTest < ActionMailer::TestCase
       CommentMailer.notify(user, comment).deliver
     end
     assert !ActionMailer::Base.deliveries.empty?
-    
+
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal "New comment on '" + comment.parent.title + "'", email.subject
     assert email.body.include?("<p>https://#{request_host}#{comment.parent.path(:question)}#answer-#{comment.aid}-comment-#{comment.cid}</p>")
+  end
+
+  test "notify tag follower" do
+
+    user = rusers(:bob)
+    tag = tags(:comment_with_tag)
+
+    # if user is following tag then send the email.
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      CommentMailer.notify_tag_followers(user, tag).deliver
+    end
+    assert !ActionMailer::Base.deliveries.empty?
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal [user.email], email.to
+    assert_equal "New action on a tag you are following " +"'" + tag.name + "'", email.subject
+    # assert email.body.include?("New action on a tag you are following")
   end
 
   test "notify note author" do
@@ -23,7 +42,7 @@ class CommentMailerTest < ActionMailer::TestCase
       CommentMailer.notify_note_author(user,comment).deliver
     end
     assert !ActionMailer::Base.deliveries.empty?
-    
+
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to
@@ -38,7 +57,7 @@ class CommentMailerTest < ActionMailer::TestCase
       CommentMailer.notify_callout(comment,user)
     end
     assert !ActionMailer::Base.deliveries.empty?
-    
+
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to
@@ -53,7 +72,7 @@ class CommentMailerTest < ActionMailer::TestCase
       CommentMailer.notify_answer_author(user, comment).deliver
     end
     assert !ActionMailer::Base.deliveries.empty?
-    
+
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to

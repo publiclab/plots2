@@ -17,3 +17,8 @@ question:
   user_id: 1
   tid: 6
   following: true
+
+comment_with_tag:
+  user_id: 1
+  tid: 17
+  following: true

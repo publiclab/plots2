@@ -64,13 +64,13 @@ question:
   comment: Question comment
   timestamp: <%= Time.now.to_i + 8 %>
   thread: /01
-  
+
 comment_status_0:
   uid: 1
   status: 0
   comment: I love a good comment!
   timestamp: <%= Time.now.to_i + 9 %>
-  
+
 comment_status_1:
   uid: 1
   nid: 8
@@ -95,3 +95,11 @@ question_callout:
   comment: Hey, @bob nice question
   timestamp: <%= Time.now.to_i + 11 %>
   thread: /03
+
+comment_tag:
+  uid: 1
+  nid: 8
+  status: 1
+  comment: 'comment with tag #ballom'
+  timestamp: <%= Time.now.to_i + 100000 %>
+  name: ballon
