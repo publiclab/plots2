@@ -26,17 +26,17 @@ class Answer < ActiveRecord::Base
 
   def answer_notify(current_user)
     # notify question author
-    if current_user.uid != self.author.uid
-      AnswerMailer.notify_question_author(self.author, self).deliver
+    if current_user.uid != self.node.author.uid
+      AnswerMailer.notify_question_author(self.node.author, self).deliver
     end
 
     uids =  (self.node.answers.collect(&:uid) + self.node.likers.collect(&:uid)).uniq
 
     # notify other answer authors and users who liked the question
     DrupalUsers.where("uid IN (?)", uids).each do |user|
-      if user.uid != (current_user.uid && self.author.uid)
+      if (user.uid != current_user.uid) && (user.uid != self.node.author.uid)
         AnswerMailer.notify_answer_likers_author(user.user, self).deliver
       end
     end
-  end 
+  end
 end
