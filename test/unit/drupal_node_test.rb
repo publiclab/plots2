@@ -152,12 +152,17 @@ class DrupalNodeTest < ActiveSupport::TestCase
     assert_equal 1, node.latest.status
   end
 
-  test "should have tags" do
+  test "should have tags, community_tags, and tagnames" do
     node = node(:one)
     assert node.tags.length > 0
     assert_equal node.tags, node.tag
     assert node.community_tags.length > 0
     assert_equal node.community_tags, node.drupal_node_community_tag
+    assert_not_nil node.tagnames
+    assert node.tagnames.first.is_a?(String)
+    assert_equal 'test awesome spectrometer activity:spectrometer', node.tagnames.join(' ')
+    # used to generate CSS classes:
+    assert_equal 'tag-test tag-awesome tag-spectrometer tag-activity-spectrometer', node.tagnames_as_classes
   end
 
   test "should have subscribers" do
