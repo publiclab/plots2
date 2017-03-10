@@ -32,7 +32,14 @@ class SearchRecord < ActiveRecord::Base
 
   def notes(month)
     solr_search = Node.search do
+<<<<<<< HEAD
       fulltext key_words
+=======
+      adjust_solr_params do |params|
+        params[:qf] = nil
+      end
+      fulltext self.key_words
+>>>>>>> Fix Solr query builder, got results now!
       with(:updated_at).less_than(Time.zone.now)
       facet(:updated_month)
       with(:updated_month, month) if month.present?
