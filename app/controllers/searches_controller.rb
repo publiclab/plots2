@@ -24,9 +24,13 @@ class SearchesController < ApplicationController
   end
 
   def create
-    @search = SearchRecord.new(search_params)
+    @search = SearchRecord.new(searches_params)
     @search.title = 'Advanced search'
-    @search.user_id = current_user.id
+
+    if current_user
+      @search.user_id = current_user.id
+    end
+
     if @search.save
       redirect_to search_url(@search)
     else
@@ -41,7 +45,7 @@ class SearchesController < ApplicationController
   end
 
   def update
-    if @search.update_attributes(search_params)
+    if @search.update_attributes(searches_params)
       redirect_to search_url(@search)
     else
       render :new
@@ -88,9 +92,16 @@ class SearchesController < ApplicationController
     @search = SearchRecord.find(params[:id])
   end
 
-  def set_search_service
-    @search_service = SearchService.new
-  end
+    def searches_params
+      params.require( :search_record)
+             .permit( :key_words,
+                     :main_type,
+                     :note_type,
+                     :min_date,
+                     :max_date,
+                     :created_by,
+                     :language )
+    end
 
   def search_params
     params.permit(:key_words,
