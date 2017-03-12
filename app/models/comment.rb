@@ -77,10 +77,22 @@ class Comment < ActiveRecord::Base
     User.find_all_by_username(usernames.map {|m| m[1] }).uniq
   end
 
+  def mentioned_tag_followers
+    tagnames = self.comment.scan(Callouts.const_get(:HASHTAG))
+    tagnames.map { |tagname| Tag.followers(tagname[1]) }.flatten.uniq
+  end
+
   def notify_callout_users
     # notify mentioned users
     self.mentioned_users.each do |user|
       CommentMailer.notify_callout(self,user) if user.username != self.author.username
+    end
+  end
+
+  def notify_tag_followers(already_mailed_uids = [])
+    # notify users who follow the tags mentioned in the comment
+    self.mentioned_tag_followers.each do |user|
+      CommentMailer.notify_tag_followers(self, user) if !already_mailed_uids.include?(user.uid)
     end
   end
 
@@ -109,6 +121,7 @@ class Comment < ActiveRecord::Base
     end
 
     notify_users(uids, current_user)
+    notify_tag_followers(already + uids)
   end
 
   def answer_comment_notify(current_user)
@@ -128,6 +141,7 @@ class Comment < ActiveRecord::Base
     end
 
     notify_users(uids, current_user)
+    notify_tag_followers(already + uids)
   end
 
 end
