@@ -11,7 +11,6 @@ class DrupalUsers < ActiveRecord::Base
 
   has_many :drupal_node, :foreign_key => 'uid'
   has_many :drupal_profile_values, :foreign_key => 'uid'
-  has_many :drupal_profile_values, :foreign_key => 'uid'
   has_many :node_selections, :foreign_key => :user_id
   has_many :answers, :foreign_key => :uid
   has_many :answer_selections, :foreign_key => :user_id

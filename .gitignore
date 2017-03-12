@@ -16,7 +16,6 @@ data
 .DS_Store
 .idea
 .ruby-version
-Gemfile.lock
 coverage*
 development.sqlite
 test.sqlite

@@ -27,7 +27,7 @@ _(Above: draft of our [Data model](https://github.com/publiclab/plots2/blob/mast
 
 ## Contributing
 
-We welcome contributions, and are especially interested in welcoming [first time contributors](#first-time). Read more about [how to contribute](#developers) below! We especially welcome contributions from people from groups underrepresented in free and open source software!
+We welcome contributions, and are especially interested in welcoming [first time contributors](#first-time). Read more about [how to contribute](#developers) below! We especially welcome contributions from people from groups under-represented in free and open source software!
 
 ### Code of Conduct
 
