@@ -26,11 +26,13 @@
 
 <div class="col-sm-9">
 
-  <% if @node && @node.path
-    url = { :controller => "wiki", :action => "update", :id => @node.id }
-  else 
-    url = { :controller => "wiki", :action => "create", :id => params[:id] }
-   end %>
+  <%
+    if @node.persisted?
+      url = { :controller => "wiki", :action => "update", :id => @node.id }
+    else
+      url = { :controller => "wiki", :action => "create", :id => params[:id] }
+    end
+  %>
 
   <%= form_for @node, :as => :drupal_node, :url => url do |f| %>
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
