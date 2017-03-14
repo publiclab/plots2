@@ -439,6 +439,17 @@ class Node < ActiveRecord::Base
     self.tags.collect(&:name)
   end
 
+  # Here we re-query to fetch /all/ tagnames; this is used in 
+  # /views/notes/_notes.html.erb in a way that would otherwise only
+  # return a single tag due to a join, yet select() keeps this efficient
+  def tagnames_as_classes
+    Node.select([:nid])
+              .find(self.id)
+              .tagnames
+              .map{|t| 'tag-' + t.gsub(':','-')}
+              .join(' ')
+  end
+
   def edit_path
     if self.type == "page" || self.type == "tool" || self.type == "place"
       path = "/wiki/edit/" + self.path.split("/").last
