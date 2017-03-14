@@ -288,7 +288,7 @@ class WikiController < ApplicationController
       order_string = "node_revisions.timestamp DESC"
     end
 
-    @wikis = Node.includes(:drupal_node_revision)
+    @wikis = DrupalNode.includes(:drupal_node_revision)
                        .group('node_revisions.nid')
                        .order(order_string)
                        .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
@@ -343,11 +343,7 @@ class WikiController < ApplicationController
     # deprecating the following in favor of javascript implementation in /app/assets/javascripts/methods.js
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
-<<<<<<< HEAD
-      @nodes = DrupalNode.where(status: 1, type: ['page'])
-=======
       @notes = Node.where(status: 1, type: ['page'])
->>>>>>> DrupalNode to drupal_node
                          .where('node.nid IN (?)', nids)
                          .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)', 
                            "%"+params[:topic]+"%",
