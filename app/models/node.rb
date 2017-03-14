@@ -3,7 +3,7 @@ class UniqueUrlValidator < ActiveModel::Validator
     if record.title == "" || record.title.nil?
       #record.errors[:base] << "You must provide a title."
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
-    elsif record.title == "new" && (record.type == "page" || record.type == "place" || record.type == "tool")
+    elsif record.title == "new" && record.type == "page"
       record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     else
       if !Node.where(path: record.generate_path).first.nil? && record.type == "note"
@@ -16,7 +16,7 @@ end
 class Node < ActiveRecord::Base
   include NodeShared # common methods for node-like models
 
-  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug
+  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug, :views
   self.table_name = 'node'
   self.primary_key = 'nid'
 
@@ -41,31 +41,10 @@ class Node < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-
-  extend FriendlyId
-  friendly_id :friendly_id_string, use: [:slugged, :history]
-
-  def should_generate_new_friendly_id?
-    slug.blank? || title_changed?
-  end
-
-  # friendly_id uses this method to set the slug column for nodes
-  def friendly_id_string
-    if self.type == 'note'
-      username = DrupalUsers.find_by_uid(self.uid).name
-      "#{username} #{Time.at(self.created).strftime("%m-%d-%Y")} #{self.title}"
-    elsif self.type == 'page'
-      "#{self.title}"
-    elsif self.type == 'map'
-      "#{self.title} #{Time.at(self.created).strftime("%m-%d-%Y")}"
-    end
-  end
-
   has_many :drupal_node_revision, :foreign_key => 'nid', :dependent => :destroy
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
-  has_one :drupal_node_counter, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_upload, :foreign_key => 'nid', :dependent => :destroy
   has_many :drupal_files, :through => :drupal_upload
   has_many :drupal_node_community_tag, :foreign_key => 'nid', :dependent => :destroy
@@ -103,9 +82,9 @@ class Node < ActiveRecord::Base
   end
 
   def slug_from_path
-  	self.path.split('/').last
+    self.path.split('/').last
   end
-  
+
   before_save :set_changed_and_created
   after_create :setup
   before_validation :set_path, on: :create
@@ -141,40 +120,27 @@ class Node < ActiveRecord::Base
     self.path = self.generate_path if self.path.blank? && !self.title.blank?
   end
 
-# These methods are used for updating node paths upon changing the title
-# friendly_id is being used for updating slugs and manage url redirects when an url changes
-# removed due to issues discussed in https://github.com/publiclab/plots2/issues/691
-
-#  def update_path
-#    self.path = if self.type == 'note'
-#                  username = DrupalUsers.find_by_uid(self.uid).name
-#                  "/notes/#{username}/#{Time.at(self.created).strftime("%m-%d-%Y")}/#{self.title.parameterize}"
-#                elsif self.type == 'page'
-#                  "/wiki/" + self.title.parameterize
-#                elsif self.type == 'map'
-#                  "/map/#{self.title.parameterize}/#{Time.at(self.created).strftime("%m-%d-%Y")}"
-#                end
-#  end
-
-#  def remove_slug
-#    if !FriendlyId::Slug.find_by_slug(self.title.parameterize).nil? && self.type == 'page'
-#      slug = FriendlyId::Slug.find_by_slug(self.title.parameterize)
-#      slug.delete
-#    end
-#  end
-
   def set_changed_and_created
     self['changed'] = DateTime.now.to_i
   end
 
-  # determines URL ("slug"), initializes the view counter, and sets up a created timestamp
+  # determines URL ("slug"), and sets up a created timestamp
   def setup
     self['created'] = DateTime.now.to_i
     self.save
-    DrupalNodeCounter.new({:nid => self.id}).save
   end
 
   public
+
+  # the counter_cache does not currently work: views column is not updated for some reason
+  # https://github.com/publiclab/plots2/issues/1196
+  is_impressionable counter_cache: true, column_name: :views
+
+  def totalviews
+    # disabled as impressionist is not currently updating counter_cache; see above
+    #self.views + self.legacy_views
+    self.impressionist_count(:filter => :ip_address) + self.legacy_views
+  end
 
   def self.weekly_tallies(type = "note", span = 52, time = Time.now)
     weeks = {}
@@ -473,12 +439,6 @@ class Node < ActiveRecord::Base
     self.tags.collect(&:name)
   end
 
-  # view count
-  def totalcount
-    DrupalNodeCounter.new({:nid => self.id}).save if self.drupal_node_counter.nil?
-    self.drupal_node_counter.totalcount
-  end
-
   def edit_path
     if self.type == "page" || self.type == "tool" || self.type == "place"
       path = "/wiki/edit/" + self.path.split("/").last
@@ -577,105 +537,105 @@ class Node < ActiveRecord::Base
   def self.new_note(params)
     saved = false
     author = DrupalUsers.find(params[:uid])
-    node1 = Node.new({
+    node = Node.new({
       uid:     author.uid,
       title:   params[:title],
       comment: 2,
       type:    "note"
     })
-    node1.status = 4 if author.first_time_poster
-    if node1.valid? # is this not triggering title uniqueness validation?
+    node.status = 4 if author.first_time_poster
+    if node.valid? # is this not triggering title uniqueness validation?
       saved = true
       revision = false
       ActiveRecord::Base.transaction do
-        node1.save!
-        revision = node1.new_revision({
+        node.save!
+        revision = node.new_revision({
           uid:   author.uid,
           title: params[:title],
           body:  params[:body]
         })
         if revision.valid?
           revision.save!
-          node1.vid = revision.vid
+          node.vid = revision.vid
           # save main image
           if params[:main_image] and params[:main_image] != ''
             img = Image.find params[:main_image]
-            img.nid = node1.id
+            img.nid = node.id
             img.save
           end
-          node1.save!
-          node1.notify
+          node.save!
+          node.notify
         else
           saved = false
-          node1.destroy
+          node.destroy
         end
       end
     end
-    return [saved,node1,revision]
+    return [saved,node,revision]
   end
 
   def self.new_wiki(params)
     saved = false
-    node1 = Node.new({
+    node = Node.new({
       :uid => params[:uid],
       :title => params[:title],
       :type => "page"
     })
-    if node1.valid?
+    if node.valid?
       revision = false
       saved = true
       ActiveRecord::Base.transaction do
-        node1.save!
-        revision = node1.new_revision({
-          :nid => node1.id,
+        node.save!
+        revision = node.new_revision({
+          :nid => node.id,
           :uid => params[:uid],
           :title => params[:title],
           :body => params[:body]
         })
         if revision.valid?
           revision.save!
-          node1.vid = revision.vid
-          node1.save!
-          #node1.notify # we don't yet notify of wiki page creations
+          node.vid = revision.vid
+          node.save!
+          #node.notify # we don't yet notify of wiki page creations
         else
           saved = false
-          node1.destroy # clean up
+          node.destroy # clean up
         end
       end
     end
-    return [saved,node1,revision]
+    return [saved,node,revision]
   end
 
   # same as new_note or new_wiki but with arbitrary type -- use for maps, DRY out new_note and new_wiki
   def self.new_node(params)
     saved = false
-    node1 = Node.new({
+    node = Node.new({
       :uid => params[:uid],
       :title => params[:title],
       :type => params[:type]
     })
-    if node1.valid?
+    if node.valid?
       revision = false
       saved = true
       ActiveRecord::Base.transaction do
-        node1.save!
-        revision = node1.new_revision({
-          :nid => node1.id,
+        node.save!
+        revision = node.new_revision({
+          :nid => node.id,
           :uid => params[:uid],
           :title => params[:title],
           :body => params[:body]
         })
         if revision.valid?
           revision.save!
-          node1.vid = revision.vid
-          node1.save!
+          node.vid = revision.vid
+          node.save!
         else
           saved = false
-          node1.destroy # clean up
+          node.destroy # clean up
         end
       end
     end
-    return [saved,node1,revision]
+    return [saved,node,revision]
   end
 
   def barnstar
@@ -704,6 +664,13 @@ class Node < ActiveRecord::Base
 
       ActiveRecord::Base.transaction do
         if tag.valid?
+          if tag.name.split(':')[0] == 'date'
+            begin
+              DateTime.strptime(tag.name.split(':')[1],'%m-%d-%Y').to_date.to_s(:long)
+            rescue
+              return [false, tag.destroy]
+            end
+          end
           tag.save!
           node_tag = DrupalNodeCommunityTag.new({
             :tid => tag.id,
@@ -741,7 +708,7 @@ class Node < ActiveRecord::Base
   end
 
   def self.research_notes
-    nids =  Node.where(type: 'note')
+    nids = Node.where(type: 'note')
                      .joins(:tag)
                      .where('term_data.name LIKE ?', 'question:%')
                      .group('node.nid')
@@ -757,8 +724,8 @@ class Node < ActiveRecord::Base
                           .group('node.nid')
   end
 
-  def body_preview
-    self.try(:latest).body_preview
+  def body_preview(length = 100)
+    self.try(:latest).body_preview(length)
   end
 
   def self.activities(tagname)
@@ -775,7 +742,7 @@ class Node < ActiveRecord::Base
 
   def can_tag(tagname, user, errors = false)
     if tagname[0..4] == "with:"
-      if User.find_by_username(tagname.split(':')[1]).nil?
+      if User.find_by_username_case_insensitive(tagname.split(':')[1]).nil?
         return errors ? I18n.t('node.cannot_find_username') : false
       elsif self.author.uid != user.uid
         return errors ? I18n.t('node.only_author_use_powertag') : false
@@ -794,12 +761,16 @@ class Node < ActiveRecord::Base
   end
 
   def replace(before, after, user)
-    revision = self.new_revision({
-      uid: user.id,
-      body: self.latest.body.gsub(before, after)
-    })
-    revision.save
+    matches = self.latest.body.scan(before)
+    if matches.length == 1
+      revision = self.new_revision({
+        uid: user.id,
+        body: self.latest.body.gsub(before, after)
+      })
+      revision.save
+    else
+      false
+    end
   end
 
 end
-
