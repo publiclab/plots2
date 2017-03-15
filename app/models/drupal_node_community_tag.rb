@@ -16,10 +16,6 @@ class DrupalNodeCommunityTag < ActiveRecord::Base
     tag.save
   end
 
-  def node
-    self.node
-  end
-
   def author
     self.user
   end
