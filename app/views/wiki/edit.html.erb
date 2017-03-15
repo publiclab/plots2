@@ -27,7 +27,7 @@
 <div class="col-sm-9">
 
   <%
-    if @node.persisted?
+    if @node && @node.persisted?
       url = { :controller => "wiki", :action => "update", :id => @node.id }
     else
       url = { :controller => "wiki", :action => "create", :id => params[:id] }
