@@ -355,7 +355,7 @@ class WikiController < ApplicationController
     end
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
-      @nodes = DrupalNode.where(status: 1, type: ['page'])
+      @nodes = Node.where(status: 1, type: ['page'])
                          .where('node.nid IN (?)', nids)
                          .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)', 
                            "%"+params[:topic]+"%",
