@@ -14,8 +14,8 @@ class NotesController < ApplicationController
     @notes = DrupalNode.where(status: 1, type: ['page','tool'])
                        .includes(:drupal_node_revision, :tag)
                        .where('term_data.name = ?','tool')
-                       .page(params[:page])
                        .order("node_revisions.timestamp DESC")
+                       .page(params[:page])
     render :template => "notes/tools_places"
   end
 
