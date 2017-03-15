@@ -766,6 +766,8 @@ class DrupalNode < ActiveRecord::Base
       return errors ? I18n.t('drupal_node.only_RSVP_for_yourself') : false
     elsif tagname == "locked" && user.role != "admin"
       return errors ? I18n.t('drupal_node.only_admins_can_lock') : false
+    elsif tagname.split(':')[0] == 'redirect' && DrupalNode.where(slug: tagname.split(':')[1]).length <= 0
+      return errors ? I18n.t('drupal_node.page_does_not_exist') : false
     else
       return true
     end

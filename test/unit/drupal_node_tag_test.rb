@@ -180,5 +180,12 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     assert node(:blog).can_tag('locked', rusers(:admin))
     assert_equal I18n.t('drupal_node.only_admins_can_lock'), node(:blog).can_tag('locked', rusers(:bob), true)
   end
+ 
+  test "redirect tags to non-existent pages should not be accepted" do
+    user = rusers(:bob)
+    tagname = "redirect:nonsense"
+    assert_false node(:blog).can_tag(tagname, user)
+    assert_equal I18n.t('drupal_node.page_does_not_exist'), node(:blog).can_tag(tagname, user, true)
+  end
 
 end

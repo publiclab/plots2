@@ -7,3 +7,4 @@ en:
     cannot_add_yourself_coauthor: "Error: you cannot add yourself as coauthor."
     only_RSVP_for_yourself: "Error: you can only RSVP for yourself."
     only_admins_can_lock: "Error: only admins can lock pages."
+    page_does_not_exist: "Error: page does not exist."
