@@ -53,8 +53,8 @@ class CommentTest < ActiveSupport::TestCase
     })
     comment.comment = 'Hey, #everything followers.'
     assert_not_nil comment
-    assert_equal 1, comment.mentioned_tag_followers.length
-    assert_equal comment.mentioned_tag_followers.first.id, rusers(:moderator).id
+    assert_equal 1, comment.followers_of_mentioned_tags.length
+    assert_equal comment.followers_of_mentioned_tags.first.id, rusers(:moderator).id
     # tag followers can be found in tag_selection.yml
   end
 
@@ -64,9 +64,9 @@ class CommentTest < ActiveSupport::TestCase
       uid: rusers(:bob).id
     })
     comment.comment = 'Hey, #everything, #awesome followers.'
-    assert_equal comment.mentioned_tag_followers.length, 2
-    assert comment.mentioned_tag_followers.collect(&:id).include?(rusers(:bob).id)
-    assert comment.mentioned_tag_followers.collect(&:id).include?(rusers(:moderator).id)
+    assert_equal comment.followers_of_mentioned_tags.length, 2
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:bob).id)
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:moderator).id)
   end
 
   test "should scan multiple space-separated hashtags out of body" do
@@ -75,9 +75,9 @@ class CommentTest < ActiveSupport::TestCase
       uid: rusers(:bob).id
     })
     comment.comment = 'Hey, #everything #awesome followers.'
-    # assert_equal comment.mentioned_tag_followers.length, 2
-    assert comment.mentioned_tag_followers.collect(&:id).include?(rusers(:bob).id)
-    assert comment.mentioned_tag_followers.collect(&:id).include?(rusers(:moderator).id)
+    # assert_equal comment.followers_of_mentioned_tags.length, 2
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:bob).id)
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:moderator).id)
   end
 
   test "should scan hashtags in comments and link them" do

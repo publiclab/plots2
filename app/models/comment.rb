@@ -77,7 +77,7 @@ class Comment < ActiveRecord::Base
     User.find_all_by_username(usernames.map {|m| m[1] }).uniq
   end
 
-  def mentioned_tag_followers
+  def followers_of_mentioned_tags
     tagnames = self.comment.scan(Callouts.const_get(:HASHTAG))
     tagnames.map { |tagname| Tag.followers(tagname[1]) }.flatten.uniq
   end
@@ -91,7 +91,7 @@ class Comment < ActiveRecord::Base
 
   def notify_tag_followers(already_mailed_uids = [])
     # notify users who follow the tags mentioned in the comment
-    self.mentioned_tag_followers.each do |user|
+    self.followers_of_mentioned_tags.each do |user|
       CommentMailer.notify_tag_followers(self, user) if !already_mailed_uids.include?(user.uid)
     end
   end
