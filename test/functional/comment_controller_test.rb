@@ -134,7 +134,7 @@ class CommentControllerTest < ActionController::TestCase
          id: comment.id,
          body: new_comment_body
     comment.reload
-    assert_not_equal new_comment_body, comment.comment 
+    assert_not_equal new_comment_body, comment.comment
     assert_redirected_to comment.node.path
     assert_equal flash[:error], "Only the author of the comment can edit it."
   end
@@ -204,5 +204,26 @@ class CommentControllerTest < ActionController::TestCase
     end
     assert_response :success
     assert_template "comment/delete"
+  end
+
+  test "should send mail to tag followers in the comment" do
+    UserSession.create(rusers(:jeff))
+    xhr :post, :create,
+               id: node(:question).nid,
+               body: "Question #awesome",
+               type: "question"
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([rusers(:bob).email])
+    # tag followers can be found in tag_selection.yml
+  end
+
+  test "should send mail to multiple tag followers in the comment" do
+    UserSession.create(rusers(:jeff))
+    xhr :post, :create,
+               id: node(:question).nid,
+               body: "Question #everything #awesome",
+               type: "question"
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([rusers(:bob).email])
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([rusers(:moderator).email])
+    # tag followers can be found in tag_selection.yml
   end
 end
