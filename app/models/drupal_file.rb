@@ -2,7 +2,7 @@ class DrupalFile < ActiveRecord::Base
   self.table_name = 'files'
   self.primary_key = 'fid'
 
-  belongs_to :drupal_node, :foreign_key => 'nid', :dependent => :destroy
+  belongs_to :node, :foreign_key => 'nid', :dependent => :destroy
 
   def filetype
     self.filename[-3..self.filename.length].downcase

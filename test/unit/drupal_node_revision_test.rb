@@ -3,7 +3,7 @@ require 'test_helper'
 class DrupalNodeRevisionsTest < ActiveSupport::TestCase
 
   test "create a node_revision" do
-    node =  DrupalNode.new({
+    node =  Node.new({
       uid: rusers(:bob).id,
       type: 'page'
     })
@@ -22,7 +22,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
   end
 
   test "create a feature's node_revision" do
-    node =  DrupalNode.new({
+    node =  Node.new({
       uid: rusers(:admin).id,
       type: 'feature',
       title: 'footer-feature'

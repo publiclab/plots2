@@ -19,7 +19,7 @@ class NodeUpdateTest < ActionDispatch::IntegrationTest
     assert_equal "/notes/" + rusers(:bob).username + "/" +
                  Time.now.strftime("%m-%d-%Y") + "/" + title.parameterize, path
 
-    node = DrupalNode.where(title: title).first
+    node = Node.where(title: title).first
 
     # approve the first-timer's note:
     node.publish
