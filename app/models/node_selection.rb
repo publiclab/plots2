@@ -5,10 +5,6 @@ class NodeSelection < ActiveRecord::Base
   belongs_to :node, :foreign_key => :nid
   belongs_to :drupal_users, :foreign_key => :user_id
 
-  def node
-    self.node
-  end
-
   def user
     User.find_by_username(DrupalUsers.find_by_uid(self.user_id).name)
   end
