@@ -5,12 +5,16 @@ class QuestionsController < ApplicationController
   def filter_questions_by_tag(questions, tagnames)
     tagnames ||= ""
     tagnames = tagnames.split(',')
-    qids = questions.collect(&:nid)
-    DrupalNode.where(status: 1, type: 'note')
-              .joins(:tag)
-              .where('term_data.name IN (?)', tagnames)
-              .where('node.nid IN (?)', qids)
-              .group('node.nid')
+    nids = questions.collect(&:nid)
+    questions = Node.where(status: 1, type: 'note')
+        .joins(:tag)
+        .where('node.nid IN (?)', nids)
+        .group('node.nid')
+    if tagnames.length > 0
+      questions.where('term_data.name IN (?)', tagnames)
+    else
+      questions
+    end
   end
 
   public
@@ -18,9 +22,10 @@ class QuestionsController < ApplicationController
   def index
     @title = "Questions and Answers"
     set_sidebar
-    @questions = DrupalNode.questions
-                           .order('node.nid DESC')
-                           .paginate(page: params[:page], per_page: 30)
+    @questions = Node.questions
+                     .where(status: 1)
+                     .order('node.nid DESC')
+                     .paginate(page: params[:page], per_page: 24)
   end
   
   def new
@@ -60,7 +65,7 @@ class QuestionsController < ApplicationController
                  .joins(:answers)
                  .order('answers.created_at DESC')
                  .group('node.nid')
-                 .paginate(page: params[:page], per_page: 30)
+                 .paginate(page: params[:page], per_page: 24)
     @wikis = Node.limit(10)
                  .where(type: 'page', status: 1)
                  .order("nid DESC")
@@ -75,7 +80,7 @@ class QuestionsController < ApplicationController
                      .where( answers: { id: nil } )
                      .order('answers.created_at ASC')
                      .group('node.nid')
-                     .paginate(page: params[:page], per_page: 30)
+                     .paginate(page: params[:page], per_page: 24)
     render template: 'questions/index'
   end
   
