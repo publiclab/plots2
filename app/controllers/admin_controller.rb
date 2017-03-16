@@ -147,7 +147,7 @@ class AdminController < ApplicationController
         @revision.spam
         @revision.author.ban
         flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam/revisions'>spam moderation page</a>."
-        redirect_to "/wiki/revisions/" + @revision.drupal_node.slug_from_path + '?_=' + Time.now.to_i.to_s
+        redirect_to "/wiki/revisions/" + @revision.node.slug_from_path + '?_=' + Time.now.to_i.to_s
       else
         flash[:notice] = "Item already marked as spam and author banned. You can undo this on the <a href='/spam/revisions'>spam moderation page</a>."
         redirect_to "/dashboard"
