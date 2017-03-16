@@ -1,0 +1,8 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  node:
+    only_author_use_powertag: "Fehler: nur der Autor kann diese PowerTag verwenden."
+    cannot_find_username: "Fehler: kann nicht, dass Benutzernamen finden."
+    cannot_add_yourself_coauthor: "Fehler: Sie selbst als Co-Autor nicht hinzufügen können."
+    only_RSVP_for_yourself: "Fehler: Sie können nur für sich selbst RSVP."

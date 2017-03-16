@@ -1,0 +1,9 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  node:
+    only_author_use_powertag: "Error: only the author may use that powertag."
+    cannot_find_username: "Error: cannot find that username."
+    cannot_add_yourself_coauthor: "Error: you cannot add yourself as coauthor."
+    only_RSVP_for_yourself: "Error: you can only RSVP for yourself."
+    only_admins_can_lock: "Error: only admins can lock pages."
