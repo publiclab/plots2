@@ -206,16 +206,16 @@ class DrupalUsers < ActiveRecord::Base
   private
 
   def decrease_likes_banned
-    node_selections.each do |node|
-      node.node.cached_likes = node.node.cached_likes - 1
-      node.node.save!
+    node_selections.each do |selection|
+      selection.node.cached_likes = selection.node.cached_likes - 1
+      selection.node.save!
     end
   end
 
   def increase_likes_unbanned
-    node_selections.each do |node|
-      node.node.cached_likes = node.node.cached_likes + 1
-      node.node.save!
+    node_selections.each do |selection|
+      selection.node.cached_likes = selection.node.cached_likes + 1
+      selection.node.save!
     end
   end
 end
