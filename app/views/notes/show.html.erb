@@ -22,17 +22,7 @@
     <%= render :partial => "like/like", :locals => {:node => @node, :tagnames => @tagnames } %>
   </div>
 
-  <h1 style="margin-top: 40px;"><% if @node.has_power_tag('question') %><span class="question"><%= t('notes.show.question') %></span> <% end %><%= @node.title %></h1>
-
-  <% if @node.has_power_tag('question') %>
-  <% pt = @node.power_tag('question') %>
-  <div class="alert alert-warning">
-    <%= raw t('notes.show.author_is_asking_about', :url1 => "/profile/"+@node.author.name, :author => @node.author.name, :tag => pt) %>
-    <a class="btn btn-default" target="_blank" href="/subscribe/tag/question:<%= pt %>">
-      <%= t('notes.show.sign_up_to_answer') %>
-    </a>
-  </div>
-  <% end %>
+  <h1 style="margin-top: 40px;"><%= @node.title %></h1>
 
   <div>
 

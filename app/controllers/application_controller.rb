@@ -187,16 +187,4 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    def sort_question_by_tags
-      if session[:tags] && !session[:tags].empty?
-        @session_tags = session[:tags]
-        qids = @questions.collect(&:nid)
-        @questions = Node.where(status: 1, type: 'note')
-                               .joins(:tag)
-                               .where('term_data.name IN (?)', @session_tags.values)
-                               .where('node.nid IN (?)', qids)
-                               .group('node.nid')
-      end
-    end
-
 end

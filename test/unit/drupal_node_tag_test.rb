@@ -185,7 +185,7 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     user = rusers(:bob)
     tagname = "redirect:nonsense"
     assert_false node(:blog).can_tag(tagname, user)
-    assert_equal I18n.t('drupal_node.page_does_not_exist'), node(:blog).can_tag(tagname, user, true)
+    assert_equal I18n.t('node.page_does_not_exist'), node(:blog).can_tag(tagname, user, true)
   end
 
 end
