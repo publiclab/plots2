@@ -1,7 +1,7 @@
 <div class="col-md-6 note-container-wiki">
   <div class="note note-pane note-wiki" data-index="<%= index %>">
 
-    <% if node.is_a?(DrupalNode) %>
+    <% if node.is_a?(Node) %>
       <div class="header-icon"><i class="fa fa-book"></i></div>
       <p class="meta"><span><%= t('dashboard._node_wiki.new_page_by') %></span> <a href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></p>
     <% else %>
@@ -15,7 +15,7 @@
  
     <h4>
       <a href="<%= node.path %>">
-        <% if node.is_a?(DrupalNode) %>
+        <% if node.is_a?(Node) %>
           <%= node.latest.title %>
         <% else %>
           <%= node.parent.latest.title %>

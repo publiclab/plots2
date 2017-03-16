@@ -7,7 +7,7 @@ class HomeController < ApplicationController
   #  { :n => node.updated_at.to_i }
   #end
 
-  #caches_action :index, :cache_path => { :last => DrupalNode.find(:last).updated_at.to_i }
+  #caches_action :index, :cache_path => { :last => Node.find(:last).updated_at.to_i }
 
   def home
     @title = I18n.t('home_controller.science_community')
