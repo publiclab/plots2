@@ -86,7 +86,7 @@ Plots2::Application.routes.draw do
   match 'wiki/:id' => 'wiki#show'
     # these need precedence for tag listings
     match 'feed/tag/:tagname' => 'tag#rss'
-    match ':node_type/tag/:id' => 'tag#show'
+    match ':node_type/tag(/:id)' => 'tag#show'
   match 'wiki/raw/:id' => 'wiki#raw'
   match 'wiki/revisions/:id' => 'wiki#revisions'
   match 'wiki/revert/:id' => 'wiki#revert'
