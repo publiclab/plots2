@@ -6,7 +6,7 @@ class NodeSelection < ActiveRecord::Base
   belongs_to :drupal_users, :foreign_key => :user_id
 
   def node
-    self.drupal_node
+    self.node
   end
 
   def user
