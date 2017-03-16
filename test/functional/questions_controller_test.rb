@@ -13,6 +13,16 @@ class QuestionsControllerTest < ActionController::TestCase
     assert assigns(:questions).first.has_power_tag('question')
   end
 
+  test "should get index with malformed session" do
+    session[:tags] = {
+      tags(:spectrometry).tid => tags(:spectrometry).name
+    }
+    get :index
+    assert_response :success
+    assert_not_nil assigns(:questions)
+    assert assigns(:questions).first.has_power_tag('question')
+  end
+
   test "should get show" do
     note = node(:question)
     get :show,
