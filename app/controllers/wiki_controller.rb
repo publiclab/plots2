@@ -288,7 +288,7 @@ class WikiController < ApplicationController
       order_string = "node_revisions.timestamp DESC"
     end
 
-    @wikis = DrupalNode.includes(:drupal_node_revision)
+    @wikis = Node.includes(:drupal_node_revision)
                        .group('node_revisions.nid')
                        .order(order_string)
                        .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
