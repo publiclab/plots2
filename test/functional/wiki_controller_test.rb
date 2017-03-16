@@ -450,14 +450,14 @@ class WikiControllerTest < ActionController::TestCase
     node = node(:about)
 
     assert_difference 'DrupalNodeRevision.count' do
-      assert_difference "DrupalNode.find(#{node.id}).revisions.count" do
+      assert_difference "Node.find(#{node.id}).revisions.count" do
 
         get :replace, id: node.id, before: "Public", after: "Private"
 
       end
     end
 
-    assert_equal "All about Private Lab", DrupalNode.find(node.id).body
+    assert_equal "All about Private Lab", Node.find(node.id).body
     assert_redirected_to node.path
   end
 
@@ -468,7 +468,7 @@ class WikiControllerTest < ActionController::TestCase
     assert node.latest.body.include?("Public")
 
     assert_difference 'DrupalNodeRevision.count' do
-      assert_difference "DrupalNode.find(#{node.id}).revisions.count" do
+      assert_difference "Node.find(#{node.id}).revisions.count" do
 
         xhr :post, :replace, id: node.id, before: "Public", after: "Private"
 
@@ -479,7 +479,7 @@ class WikiControllerTest < ActionController::TestCase
     assert !node.latest.body.include?("Public")
 
     assert_equal 'true', response.body
-    assert_equal "All about Private Lab", DrupalNode.find(node.id).body
+    assert_equal "All about Private Lab", Node.find(node.id).body
     assert_response :success
   end
 
@@ -489,7 +489,7 @@ class WikiControllerTest < ActionController::TestCase
     assert node.latest.update_attribute('body', "Public Lab")
 
     assert_difference 'DrupalNodeRevision.count', 0 do
-      assert_difference "DrupalNode.find(#{node.id}).revisions.count", 0 do
+      assert_difference "Node.find(#{node.id}).revisions.count", 0 do
 
         xhr :post, :replace, id: node.id, before: "Elephants", after: "Tigers"
 
@@ -500,7 +500,7 @@ class WikiControllerTest < ActionController::TestCase
     assert node.latest.body.include?("Public")
 
     assert_equal 'false', response.body
-    assert_equal "Public Lab", DrupalNode.find(node.id).body
+    assert_equal "Public Lab", Node.find(node.id).body
     assert_response :success
   end
 
