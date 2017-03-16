@@ -33,7 +33,7 @@ class WikiCreationTest < ActionDispatch::IntegrationTest
 
     # Check we get the corresponding error
 
-    node = DrupalNode.where(title: title).first
+    node = Node.where(title: title).first
 
     assert_equal node, nil
     assert_equal "/wiki/create", path
