@@ -14,7 +14,7 @@ jQuery(document).ready(function(){
   }
   else{
     $('.answer-0-comments').slice(-3).show();
-    if (<%= @node.comments.length %> > 3){
+    if (comments_length > 3){
       $('#answer-0-comment').prepend('<p id="answer-0-expand" style="color: #006dcc;">View ' + comment_select(0).length + ' previous comments</p>');
       $("#answer-0-expand").on('click',function(){
         expand_comments(0);

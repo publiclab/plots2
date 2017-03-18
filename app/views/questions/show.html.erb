@@ -1,6 +1,7 @@
 <%= javascript_include_tag('comment_expand') %>
 <%= javascript_include_tag('notes') %>
 <%= javascript_include_tag('textbox_expand') %>
+<script> var comments_length = <%= @node.comments.length %>; </script>
 <%= javascript_include_tag('question') %>
 
 <%= render :partial => "sidebar/question" %>
