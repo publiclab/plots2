@@ -7,8 +7,13 @@ class UserSessionsController < ApplicationController
   def create
     params[:user_session][:username] = params[:openid] if params[:openid] # second runthrough must preserve username 
     username = params[:user_session][:username] if params[:user_session]
-
     @user = User.find_by_username(username)
+    
+    if @user.nil? 
+     @user = User.find_by_email(username) 
+     params[:user_session][:username] = @user.username
+    end 
+    
     if params[:user_session].nil? || @user && @user.drupal_user.status == 1 || @user.nil?
     # an existing native user
       if params[:user_session].nil? || @user

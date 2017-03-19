@@ -71,7 +71,7 @@ en:
       logout: "Logout"
       login:
         login_title: "Login"
-        username: "Username"
+        username: "Username or Email"
         password: "Password"
         remember_me: "Remember me"
         sign_up: "Sign up"

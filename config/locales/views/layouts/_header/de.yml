@@ -70,7 +70,7 @@ de:
       logout: "Ausloggen"
       login:
         login_title: "Einloggen"
-        username: "Benutzername"
+        username: "Benutzername or Email"
         password: "Passwort"
         remember_me: "Erinnere dich an mich"
         sign_up: "Anmelden"
