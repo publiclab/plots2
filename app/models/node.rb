@@ -6,14 +6,14 @@ class UniqueUrlValidator < ActiveModel::Validator
     elsif record.title == "new" && record.type == "page"
       record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     else
-      if !DrupalNode.where(path: record.generate_path).first.nil? && record.type == "note"
+      if !Node.where(path: record.generate_path).first.nil? && record.type == "note"
         record.errors[:base] << "You have already used this title today."
       end
     end
   end
 end
 
-class DrupalNode < ActiveRecord::Base
+class Node < ActiveRecord::Base
   include NodeShared # common methods for node-like models
 
   attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug, :views
@@ -82,7 +82,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def slug_from_path
-  	self.path.split('/').last
+    self.path.split('/').last
   end
 
   before_save :set_changed_and_created
@@ -145,7 +145,7 @@ class DrupalNode < ActiveRecord::Base
   def self.weekly_tallies(type = "note", span = 52, time = Time.now)
     weeks = {}
     (0..span).each do |week|
-      weeks[span-week] = DrupalNode.select(:created)
+      weeks[span-week] = Node.select(:created)
                                    .where(type:    type,
                                           status:  1,
                                           created: time.to_i - week.weeks.to_i..time.to_i - (week-1).weeks.to_i)
@@ -297,7 +297,7 @@ class DrupalNode < ActiveRecord::Base
   # Nodes this node is responding to with a `response:<nid>` power tag;
   # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
   def responded_to(key = 'response')
-    DrupalNode.find_all_by_nid(self.power_tags(key)) || []
+    Node.find_all_by_nid(self.power_tags(key)) || []
   end
 
   # Nodes that respond to this node with a `response:<nid>` power tag;
@@ -309,7 +309,7 @@ class DrupalNode < ActiveRecord::Base
   # Nodes that respond to this node with a `response:<nid>` power tag;
   # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
   def response_count(key = 'response')
-    DrupalNode.where(status: 1, type: 'note')
+    Node.where(status: 1, type: 'note')
               .includes(:drupal_node_revision, :tag)
               .where('term_data.name = ?', "#{key}:#{self.id}")
               .count
@@ -443,7 +443,7 @@ class DrupalNode < ActiveRecord::Base
   # /views/notes/_notes.html.erb in a way that would otherwise only
   # return a single tag due to a join, yet select() keeps this efficient
   def tagnames_as_classes
-    DrupalNode.select([:nid])
+    Node.select([:nid])
               .find(self.id)
               .tagnames
               .map{|t| 'tag-' + t.gsub(':','-')}
@@ -460,7 +460,7 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_by_path(title)
-    DrupalNode.where(path: ["/#{title}"]).first
+    Node.where(path: ["/#{title}"]).first
   end
 
   def map
@@ -496,13 +496,13 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def next_by_author
-    DrupalNode.where('uid = ? and nid > ? and type = "note"', self.author.uid, self.nid)
+    Node.where('uid = ? and nid > ? and type = "note"', self.author.uid, self.nid)
               .order('nid')
               .first
   end
 
   def prev_by_author
-    DrupalNode.where('uid = ? and nid < ? and type = "note"', self.author.uid, self.nid)
+    Node.where('uid = ? and nid < ? and type = "note"', self.author.uid, self.nid)
               .order('nid desc')
               .first
   end
@@ -548,7 +548,7 @@ class DrupalNode < ActiveRecord::Base
   def self.new_note(params)
     saved = false
     author = DrupalUsers.find(params[:uid])
-    node = DrupalNode.new({
+    node = Node.new({
       uid:     author.uid,
       title:   params[:title],
       comment: 2,
@@ -587,7 +587,7 @@ class DrupalNode < ActiveRecord::Base
 
   def self.new_wiki(params)
     saved = false
-    node = DrupalNode.new({
+    node = Node.new({
       :uid => params[:uid],
       :title => params[:title],
       :type => "page"
@@ -620,7 +620,7 @@ class DrupalNode < ActiveRecord::Base
   # same as new_note or new_wiki but with arbitrary type -- use for maps, DRY out new_note and new_wiki
   def self.new_node(params)
     saved = false
-    node = DrupalNode.new({
+    node = Node.new({
       :uid => params[:uid],
       :title => params[:title],
       :type => params[:type]
@@ -707,29 +707,29 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.find_notes(author, date, title)
-    DrupalNode.where(path: "/notes/#{author}/#{date}/#{title}").first
+    Node.where(path: "/notes/#{author}/#{date}/#{title}").first
   end
 
   def self.find_map(name, date)
-    DrupalNode.where(path: "/map/#{name}/#{date}").first
+    Node.where(path: "/map/#{name}/#{date}").first
   end
 
   def self.find_wiki(title)
-    DrupalNode.where(path: ["/#{title}", "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
+    Node.where(path: ["/#{title}", "/tool/#{title}", "/wiki/#{title}", "/place/#{title}"]).first
   end
 
   def self.research_notes
-    nids = DrupalNode.where(type: 'note')
+    nids = Node.where(type: 'note')
                      .joins(:tag)
                      .where('term_data.name LIKE ?', 'question:%')
                      .group('node.nid')
                      .collect(&:nid)
-    notes = DrupalNode.where(type: 'note')
+    notes = Node.where(type: 'note')
                       .where('node.nid NOT IN (?)', nids)
   end
 
   def self.questions
-    questions = DrupalNode.where(type: 'note')
+    questions = Node.where(type: 'note')
                           .joins(:tag)
                           .where('term_data.name LIKE ?', 'question:%')
                           .group('node.nid')
@@ -740,13 +740,13 @@ class DrupalNode < ActiveRecord::Base
   end
 
   def self.activities(tagname)
-    DrupalNode.where(status: 1, type: 'note')
+    Node.where(status: 1, type: 'note')
               .includes(:drupal_node_revision, :tag)
               .where('term_data.name LIKE ?', "activity:#{tagname}")
   end
 
   def self.upgrades(tagname)
-    DrupalNode.where(status: 1, type: 'note')
+    Node.where(status: 1, type: 'note')
               .includes(:drupal_node_revision, :tag)
               .where('term_data.name LIKE ?', "upgrade:#{tagname}")
   end
@@ -754,18 +754,20 @@ class DrupalNode < ActiveRecord::Base
   def can_tag(tagname, user, errors = false)
     if tagname[0..4] == "with:"
       if User.find_by_username_case_insensitive(tagname.split(':')[1]).nil?
-        return errors ? I18n.t('drupal_node.cannot_find_username') : false
+        return errors ? I18n.t('node.cannot_find_username') : false
       elsif self.author.uid != user.uid
-        return errors ? I18n.t('drupal_node.only_author_use_powertag') : false
+        return errors ? I18n.t('node.only_author_use_powertag') : false
       elsif tagname.split(':')[1] == user.username
-        return errors ? I18n.t('drupal_node.cannot_add_yourself_coauthor') : false
+        return errors ? I18n.t('node.cannot_add_yourself_coauthor') : false
       else
         return true
       end
     elsif tagname[0..4] == "rsvp:" && user.username != tagname.split(":")[1]
-      return errors ? I18n.t('drupal_node.only_RSVP_for_yourself') : false
+      return errors ? I18n.t('node.only_RSVP_for_yourself') : false
     elsif tagname == "locked" && user.role != "admin"
-      return errors ? I18n.t('drupal_node.only_admins_can_lock') : false
+      return errors ? I18n.t('node.only_admins_can_lock') : false
+    elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).length <= 0
+      return errors ? I18n.t('node.page_does_not_exist') : false
     else
       return true
     end

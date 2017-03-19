@@ -17,7 +17,7 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
 
     follow_redirect!
 
-    node = DrupalNode.last
+    node = Node.last
 
     node.add_tag("seeks:replications", rusers(:jeff))
     seeks_reps = DrupalNodeCommunityTag.last

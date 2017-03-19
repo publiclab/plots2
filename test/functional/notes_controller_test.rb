@@ -31,7 +31,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "redirect note short url" do
-    note = DrupalNode.where(type: 'note', status: 1).first
+    note = Node.where(type: 'note', status: 1).first
 
     get :shortlink, id: note.id
 
@@ -39,7 +39,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note by id" do
-    note = DrupalNode.where(type: 'note', status: 1).first
+    note = Node.where(type: 'note', status: 1).first
     assert_not_nil note.id
 
     get :show, id: note.id
@@ -137,7 +137,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "show note with Browse other activities link" do
-    note = DrupalNode.where(type: 'note', status: 1).first
+    note = Node.where(type: 'note', status: 1).first
     note.add_tag('activity:spectrometer', note.author) # testing responses display
     assert Tag.where(name: 'activities:' + note.power_tag('activity')).length > 0
 
@@ -170,7 +170,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "should get raw note markup" do
-    id = DrupalNode.where(type: 'note', status: 1).last.id
+    id = Node.where(type: 'note', status: 1).last.id
 
     get :raw, id: id
 
@@ -241,7 +241,7 @@ class NotesControllerTest < ActionController::TestCase
 
     email = ActionMailer::Base.deliveries.last
     assert_equal "[PublicLab] " + title, email.subject
-    assert_equal 1, DrupalNode.last.status
+    assert_equal 1, Node.last.status
     assert_redirected_to "/notes/"+rusers(:jeff).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
   end
 
@@ -257,8 +257,8 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_equal "Success! Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so.", flash[:notice]
     assert_nil flash[:warning] # no double notice
-    assert_equal 4, DrupalNode.last.status
-    assert_equal title, DrupalNode.last.title
+    assert_equal 4, Node.last.status
+    assert_equal title, Node.last.title
     assert_redirected_to "/notes/"+rusers(:lurker).username+"/"+Time.now.strftime("%m-%d-%Y")+"/"+title.parameterize
   end
 

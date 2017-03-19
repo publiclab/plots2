@@ -37,7 +37,7 @@ class SearchService
   end
 
   def find_tags(input, limit=5)
-    Tag.includes(:drupal_node)
+    Tag.includes(:node)
         .where('node.status = 1')
         .limit(limit)
         .where('name LIKE ?', '%' + input + '%')
@@ -52,13 +52,13 @@ class SearchService
   ## search for node title only
   ## FIXme with solr
   def find_notes(input, limit=5)
-    DrupalNode.limit(limit)
+    Node.limit(limit)
         .order('nid DESC')
         .where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
   end
 
   def find_maps(input, limit=5)
-    DrupalNode.limit(limit)
+    Node.limit(limit)
         .order('nid DESC')
         .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
   end
@@ -72,7 +72,7 @@ class SearchService
       matches << "<i data-url='"+match.path+"' class='fa fa-file'></i> "+match.title
     end
 
-    DrupalNode.limit(5)
+    Node.limit(5)
         .order("nid DESC")
         .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', "%" + id + "%")
         .select("title,type,nid,path").each do |match|
@@ -102,8 +102,8 @@ class SearchService
       noteList = textSearch_notes(srchString)
       sresult.addAll(noteList.items)
       
-      # DrupalNode search
-      DrupalNode.limit(5)
+      # Node search
+      Node.limit(5)
       .order("nid DESC")
       .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', "%" + srchString + "%")
       .select("title,type,nid,path").each do |match|
@@ -176,7 +176,7 @@ class SearchService
       sterms = srchString.split(" ")
       tlist= Tag.where({ name: sterms })
         .joins(:drupal_node_community_tag)
-        .joins(:drupal_node)
+        .joins(:node)
         .where('node.status = 1')
         .select('DISTINCT node.nid,node.title,node.path')
       tlist.each do |match|
@@ -190,7 +190,7 @@ class SearchService
   # Search question entries for matching text
   def textSearch_questions(srchString)
     sresult = DocList.new
-    questions = DrupalNode.where(
+    questions = Node.where(
                   'type = "note" AND node.status = 1 AND title LIKE ?',
                   "%" + srchString + "%"
                 )

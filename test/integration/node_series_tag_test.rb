@@ -19,7 +19,7 @@ class NodeSeriesTagTest < ActionDispatch::IntegrationTest
     assert_equal "/notes/" + rusers(:bob).username + "/" +
                  Time.now.strftime("%m-%d-%Y") + "/" + title.parameterize, path
 
-    node = DrupalNode.where(title: title).first
+    node = Node.where(title: title).first
     assert_equal true, node.has_power_tag('series')
     assert_equal 'balloons', node.power_tag('series')
 

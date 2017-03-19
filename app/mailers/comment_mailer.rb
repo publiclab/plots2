@@ -3,7 +3,7 @@ class CommentMailer < ActionMailer::Base
   include ApplicationHelper
   default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
 
-  # CommentMailer.notify_of_comment(user,self).deliver 
+  # CommentMailer.notify_of_comment(user,self).deliver
   def notify(user,comment)
     @user = user
     @comment = comment
@@ -31,6 +31,13 @@ class CommentMailer < ActionMailer::Base
     @comment = comment
     @footer = feature('email-footer')
     mail(:to => user.email, :subject => "You were mentioned in a comment.").deliver
+  end
+
+  def notify_tag_followers(comment, user)
+    @user = user
+    @comment = comment
+    @footer = feature('email-footer')
+    mail(:to => user.email, :subject => "A tag you follow was mentioned in a comment.").deliver
   end
 
   def notify_answer_author(user, comment)

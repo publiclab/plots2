@@ -2,7 +2,7 @@ class DrupalContentTypeMap < ActiveRecord::Base
   self.table_name = 'content_type_map'
   self.primary_key = 'vid'
 
-  belongs_to :drupal_node, :foreign_key => 'nid', :dependent => :destroy
+  belongs_to :node, :foreign_key => 'nid', :dependent => :destroy
 
   validates :field_zoom_min_value, :presence => :true
 
