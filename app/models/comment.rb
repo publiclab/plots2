@@ -5,7 +5,7 @@ class Comment < ActiveRecord::Base
                   :subject, :hostname, :comment,
                   :status, :format, :thread, :timestamp
 
-  belongs_to :drupal_node, :foreign_key => 'nid', :touch => true,
+  belongs_to :node, :foreign_key => 'nid', :touch => true,
                            :dependent => :destroy, :counter_cache => true
   belongs_to :drupal_users, :foreign_key => 'uid'
   belongs_to :answer, :foreign_key => 'aid'
@@ -61,9 +61,9 @@ class Comment < ActiveRecord::Base
 
   def parent
     if self.aid == 0
-      self.drupal_node
+      self.node
     else
-      self.answer.drupal_node
+      self.answer.node
     end
   end
 
@@ -77,10 +77,22 @@ class Comment < ActiveRecord::Base
     User.find_all_by_username(usernames.map {|m| m[1] }).uniq
   end
 
+  def followers_of_mentioned_tags
+    tagnames = self.comment.scan(Callouts.const_get(:HASHTAG))
+    tagnames.map { |tagname| Tag.followers(tagname[1]) }.flatten.uniq
+  end
+
   def notify_callout_users
     # notify mentioned users
     self.mentioned_users.each do |user|
       CommentMailer.notify_callout(self,user) if user.username != self.author.username
+    end
+  end
+
+  def notify_tag_followers(already_mailed_uids = [])
+    # notify users who follow the tags mentioned in the comment
+    self.followers_of_mentioned_tags.each do |user|
+      CommentMailer.notify_tag_followers(self, user) if !already_mailed_uids.include?(user.uid)
     end
   end
 
@@ -109,6 +121,7 @@ class Comment < ActiveRecord::Base
     end
 
     notify_users(uids, current_user)
+    notify_tag_followers(already + uids)
   end
 
   def answer_comment_notify(current_user)
@@ -128,6 +141,7 @@ class Comment < ActiveRecord::Base
     end
 
     notify_users(uids, current_user)
+    notify_tag_followers(already + uids)
   end
 
 end

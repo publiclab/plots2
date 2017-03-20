@@ -46,6 +46,40 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal comment.mentioned_users[1].id, rusers(:jeff).id
   end
 
+  test "should scan hashtags out of body" do
+    comment = Comment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = 'Hey, #everything followers.'
+    assert_not_nil comment
+    assert_equal 1, comment.followers_of_mentioned_tags.length
+    assert_equal comment.followers_of_mentioned_tags.first.id, rusers(:moderator).id
+    # tag followers can be found in tag_selection.yml
+  end
+
+  test "should scan multiple hashtags out of body" do
+    comment = Comment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = 'Hey, #everything, #awesome followers.'
+    assert_equal comment.followers_of_mentioned_tags.length, 2
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:bob).id)
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:moderator).id)
+  end
+
+  test "should scan multiple space-separated hashtags out of body" do
+    comment = Comment.new({
+      nid: node(:one).nid,
+      uid: rusers(:bob).id
+    })
+    comment.comment = 'Hey, #everything #awesome followers.'
+    # assert_equal comment.followers_of_mentioned_tags.length, 2
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:bob).id)
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:moderator).id)
+  end
+
   test "should scan hashtags in comments and link them" do
     comment = Comment.new({
       nid: node(:one).nid,
@@ -142,7 +176,7 @@ class CommentTest < ActiveSupport::TestCase
 
     assert comment.save
     assert_equal user.comments.last, comment
- 
+
   end
 
   test "should return weekly tallies" do

@@ -1,30 +1,10 @@
 <div>
-<h4>Refine Questions by tags</h4>
-<h4><small>Refine questions by entering tags to search or answer question on specific topics</small></h4>
-<p>
-  <span id="tags">
-    <% if @session_tags %>
-      <% @session_tags.each do |tag_id, tag_name| %>
-        <span id="tag_<%= tag_id %>" class="label label-primary">
-          <a href="/tag/<%= tag_name %>"><%= tag_name %></a>
-          <a class="tagdelete" href="/tag/remove_tag/<%= tag_id %>?return_to=<%= request.path %>">x</a>
-        </span>
-      <% end %>
-    <% end %>
-  </span>
-</p>
+<h4>Filter questions by topic</h4>
+<p>Refine questions by entering tags to search or answer questions on specific topics.</p>
 
-<% if @session_tags && !@session_tags.empty? %>
-  <p><a href="/tag/remove_all_tags?return_to=<%= request.path %>">Clear all tags</a></p>
-<% end %>
-
-<form id="tagform" class="form" action="/tag/add_tag">
+<form id="tagform" class="form" method="GET" action="/questions/tag/">
   <div class="control-group">
-    <input name="return_to" type="hidden" value="<%= request.path %>" />
-    <div class="input-group col-md-12">
-      <span class="input-group-addon"><i class="fa fa-tags"></i></span>
-      <input autocomplete="off" id="taginput" name="name" type="text" placeholder="enter tags" data-provide="typeahead" class="form-control" />
-    </div>
+    <input autocomplete="off" id="taginput" name="id" type="text" placeholder="water-quality,dust" data-provide="typeahead" class="form-control" />
     <script>
       jQuery(document).ready(function() {
  
@@ -32,16 +12,21 @@
           items: 8,
           minLength: 3,
           source: function (query, process) {
-            return $.post('/tag/suggested/'+query, {}, function (data) {
+            return $.post('/tag/suggested/' + query, {}, function (data) {
               return process(data)
             })
           },
           updater: function(text) { 
             $('#taginput').val(text)
-            $('#tagform').submit()
+            window.location = "/questions/tag/" + text;
           }
         });
- 
+
+        $('#tagform').submit(function(e) {
+          e.preventDefault();
+          window.location = "/questions/tag/" + $('#taginput').val();
+        });
+
       });
     </script>
   </div>

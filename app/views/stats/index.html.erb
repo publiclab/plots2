@@ -42,7 +42,7 @@
 
 
   <h4><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
-  :time => time_ago_in_words(DrupalNode.find(:first, :conditions => {:type => 'note', :status => 1}).created_at)) %></h4>
+  :time => time_ago_in_words(Node.find(:first, :conditions => {:type => 'note', :status => 1}).created_at)) %></h4>
   <p><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></p>
   
   <p><i><%= t('notes.stats.note_posting_52_weeks') %></i></p>
@@ -51,7 +51,7 @@
 
   <hr />
 
-  <h4><%= raw t('notes.stats.wiki_pages_posted', :count => DrupalNode.count(:all, :conditions => {:type => 'page', :status => 1})) %></h4>
+  <h4><%= raw t('notes.stats.wiki_pages_posted', :count => Node.count(:all, :conditions => {:type => 'page', :status => 1})) %></h4>
 
   <p><i><%= t('notes.stats.wiki_page_posting_52_weeks') %></i></p>
 
