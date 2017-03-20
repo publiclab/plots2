@@ -17,7 +17,7 @@ class Search < ActiveRecord::Base
   end
 
   def notes(month)
-    solr_search = DrupalNode.search do
+    solr_search = Node.search do
       fulltext self.key_words
       with(:updated_at).less_than(Time.zone.now)
       facet(:updated_month)
@@ -33,7 +33,7 @@ class Search < ActiveRecord::Base
   private
 
   def find_nodes
-    DrupalNode.find(:all, :conditions => conditions)
+    Node.find(:all, :conditions => conditions)
   end
 
   def keyword_conditions

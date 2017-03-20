@@ -3,11 +3,11 @@ class HomeController < ApplicationController
   before_filter :require_user, :only => [:subscriptions, :nearby]
 
   #caches_action :index, :cache_path => proc { |c|
-  #  node = DrupalNode.find :last #c.params[:id]
+  #  node = Node.find :last #c.params[:id]
   #  { :n => node.updated_at.to_i }
   #end
 
-  #caches_action :index, :cache_path => { :last => DrupalNode.find(:last).updated_at.to_i }
+  #caches_action :index, :cache_path => { :last => Node.find(:last).updated_at.to_i }
 
   def home
     @title = I18n.t('home_controller.science_community')
@@ -42,7 +42,7 @@ class HomeController < ApplicationController
   end
 
   def dashboard
-    @note_count = DrupalNode.select([:created, :type, :status])
+    @note_count = Node.select([:created, :type, :status])
                             .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                             .count
     @wiki_count = DrupalNodeRevision.select(:timestamp)
@@ -50,13 +50,13 @@ class HomeController < ApplicationController
                                     .count
     @blog = Tag.find_nodes_by_type('blog', 'note', 1).first
     # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
-    hidden_nids = DrupalNode.joins(:drupal_node_community_tag)
+    hidden_nids = Node.joins(:drupal_node_community_tag)
                             .joins("LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid")
                             .select('node.*, term_data.*, community_tags.*')
                             .where(type: 'note', status: 1)
                             .where('term_data.name = (?)', 'hidden:response')
                             .collect(&:nid)
-    @notes = DrupalNode.where(type: 'note')
+    @notes = Node.where(type: 'note')
                        .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
                        .order('nid DESC')
                        .page(params[:page])
@@ -71,10 +71,10 @@ class HomeController < ApplicationController
     end
 
     # include revisions, then mix with new pages:
-    @wikis = DrupalNode.where(type: 'page', status: 1)
+    @wikis = Node.where(type: 'page', status: 1)
                        .order('nid DESC')
                        .limit(10)
-    revisions = DrupalNodeRevision.joins(:drupal_node)
+    revisions = DrupalNodeRevision.joins(:node)
                                 .order('timestamp DESC')
                                 .where('type = (?)', 'page')
                                 .where('node.status = 1')
@@ -86,7 +86,7 @@ class HomeController < ApplicationController
     revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
     @wikis = @wikis + revisions
     @wikis = @wikis.sort_by { |a| a.created_at }.reverse
-    @comments = Comment.joins(:drupal_node, :drupal_users)
+    @comments = Comment.joins(:node, :drupal_users)
                              .order('timestamp DESC')
                              .where('timestamp - node.created > ?', 86400) # don't report edits within 1 day of page creation
                              .limit(20)
@@ -101,7 +101,7 @@ class HomeController < ApplicationController
                              .group('answers.id')
     @answer_comments = @answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
     @activity = (@notes + @wikis + @comments + @answer_comments).sort_by { |a| a.created_at }.reverse
-    @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
+    @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
     render template: 'dashboard/dashboard'
     @title = I18n.t('home_controller.community_research') unless current_user
   end

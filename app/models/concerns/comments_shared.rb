@@ -13,7 +13,4 @@ module CommentsShared
     DrupalUsers.find_by_uid self.uid
   end
 
-  def node
-    self.drupal_node
-  end
 end

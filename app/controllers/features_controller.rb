@@ -2,12 +2,12 @@ class FeaturesController < ApplicationController
   before_filter :require_user, :except => [ :embed ]
 
   def index
-    @features = DrupalNode.where(:type => 'feature')
+    @features = Node.where(:type => 'feature')
                           .paginate(:page => params[:page])
   end
 
   def embed
-    @node = DrupalNode.find_by_title params[:id]
+    @node = Node.find_by_title params[:id]
     render :layout => false
   end
 
@@ -23,7 +23,7 @@ class FeaturesController < ApplicationController
       flash[:warning] = "Only admins may edit features."
       redirect_to "/features"
     else
-      @node = DrupalNode.find params[:id]
+      @node = Node.find params[:id]
     end
   end
 
@@ -32,7 +32,7 @@ class FeaturesController < ApplicationController
       flash[:warning] = "Only admins may edit features."
       redirect_to "/features?_=" + Time.now.to_i.to_s
     else
-      @node = DrupalNode.new({
+      @node = Node.new({
         uid:   current_user.id,
         title: params[:title],
         type:  "feature"
@@ -71,7 +71,7 @@ class FeaturesController < ApplicationController
       flash[:warning] = "Only admins may edit features."
       redirect_to "/features?_=" + Time.now.to_i.to_s
     else
-      @node = DrupalNode.find(params[:id])
+      @node = Node.find(params[:id])
       @revision = @node.new_revision({
         uid:   current_user.uid
       })

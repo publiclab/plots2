@@ -93,7 +93,7 @@ class UsersController < ApplicationController
     else
       # recently active
       @users = DrupalUsers.select('*, MAX(node.changed) AS last_updated')
-                          .joins(:drupal_node)
+                          .joins(:node)
                           .group('users.uid')
                           .where('users.status = 1 AND node.status = 1')
                           .order("last_updated DESC")
@@ -106,20 +106,20 @@ class UsersController < ApplicationController
     @user = DrupalUsers.find_by_name(params[:id])
     @profile_user = User.find_by_username(params[:id])
     @title = @user.name
-    @notes = DrupalNode.research_notes
+    @notes = Node.research_notes
                        .page(params[:page])
                        .order("nid DESC")
                        .where(status: 1, uid: @user.uid)
     @questions = @user.user.questions
                            .order('node.nid DESC')
                            .paginate(:page => params[:page], :per_page => 30)
-    questions = DrupalNode.questions
+    questions = Node.questions
                           .where(status: 1)
                           .order('node.nid DESC')
     @answered_questions = questions.select{|q| q.answers.collect(&:author).include?(@user)}
     wikis = DrupalNodeRevision.order("nid DESC")
                               .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
-                              .joins(:drupal_node)
+                              .joins(:node)
                               .limit(20)
     @wikis = wikis.collect(&:parent).uniq
     if @user.status == 0
@@ -148,7 +148,7 @@ class UsersController < ApplicationController
     if params[:author]
       @author = DrupalUsers.find_by_name_and_status( params[:author], 1 )
       if @author
-        @notes = DrupalNode.order("nid DESC")
+        @notes = Node.order("nid DESC")
                            .where(type: 'note', status: 1, uid: @author.uid)
                            .limit(20)
       else

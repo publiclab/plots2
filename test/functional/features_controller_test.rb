@@ -62,7 +62,7 @@ class FeaturesControllerTest < ActionController::TestCase
   test "should not post new feature if not admin" do
     UserSession.create(rusers(:bob))
 
-    assert_difference 'DrupalNode.count', 0 do
+    assert_difference 'Node.count', 0 do
      
       get :create,
           title: "new-feature",
@@ -77,7 +77,7 @@ class FeaturesControllerTest < ActionController::TestCase
   test "should post new feature" do
     UserSession.create(rusers(:admin))
 
-#    assert_difference 'DrupalNode.where(type: "feature").count', 1 do
+#    assert_difference 'Node.where(type: "feature").count', 1 do
 
       get :create,
           title: "new-feature",
@@ -101,7 +101,7 @@ class FeaturesControllerTest < ActionController::TestCase
 
     end
 
-    assert_equal  "A new feature to <a href=''>display</a> with additions", DrupalNode.find(node.id).latest.body
+    assert_equal  "A new feature to <a href=''>display</a> with additions", Node.find(node.id).latest.body
     assert_equal  "Edits saved and cache cleared.", flash[:notice]
     assert_redirected_to "/features?_=" + Time.now.to_i.to_s
   end

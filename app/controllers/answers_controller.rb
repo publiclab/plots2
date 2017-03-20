@@ -2,7 +2,7 @@ class AnswersController < ApplicationController
   before_filter :require_user
 
   def create
-    @node = DrupalNode.find(params[:nid])
+    @node = Node.find(params[:nid])
     @answer = Answer.new(
       nid: @node.id,
       uid: current_user.uid,
