@@ -87,5 +87,10 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     assert_select 'h1', node(:blog).title
   end
 
+  test "browse a question" do
+    get node(:question).path(:question)
+    assert_response :success
+  end
+
 end
 
