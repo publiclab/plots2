@@ -1,7 +1,5 @@
 jQuery(document).ready(function(){
 
-
-<%= failure %>
   var check_matched = false;
   var stripped_url = document.location.toString().split("#");
   if (stripped_url.length > 1){
