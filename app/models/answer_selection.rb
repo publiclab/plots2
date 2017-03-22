@@ -5,11 +5,11 @@ class AnswerSelection < ActiveRecord::Base
   belongs_to :drupal_users, foreign_key: :user_id
 
   def user
-    User.find_by_username(DrupalUsers.find_by_uid(self.user_id).name)
+    User.find_by_username(DrupalUsers.find_by_uid(user_id).name)
   end
 
   def self.set_likes(uid, aid, value)
-    like = self.where(user_id: uid, aid: aid).first_or_create
+    like = where(user_id: uid, aid: aid).first_or_create
     like.liking = value
     if like.liking_changed?
       answer = Answer.find(aid)
@@ -21,6 +21,6 @@ class AnswerSelection < ActiveRecord::Base
       like.save
       answer.save
     end
-    return like.liking
+    like.liking
   end
 end

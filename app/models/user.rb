@@ -1,7 +1,7 @@
 class UniqueUsernameValidator < ActiveModel::Validator
   def validate(record)
     if DrupalUsers.find_by_name(record.username) && record.openid_identifier.nil?
-      record.errors[:base] << "That username is already taken. If this is your username, you can simply log in to this site."
+      record.errors[:base] << 'That username is already taken. If this is your username, you can simply log in to this site.'
     end
   end
 end
@@ -18,78 +18,76 @@ class User < ActiveRecord::Base
     c.openid_required_fields = [:nickname, :email]
   end
 
-  has_attached_file :photo, :styles => { :thumb => "200x200#", :medium => "500x500#", :large => "800x800#" },
-                  :url  => "/system/profile/photos/:id/:style/:basename.:extension"
-                  #:path => ":rails_root/public/system/images/photos/:id/:style/:basename.:extension"
+  has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
+                            url: '/system/profile/photos/:id/:style/:basename.:extension'
+  #:path => ":rails_root/public/system/images/photos/:id/:style/:basename.:extension"
   do_not_validate_attachment_file_type :photo_file_name
-  #validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
+  # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
 
   # this doesn't work... we should have a uid field on User
-  #has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
-  has_many :images, :foreign_key => :uid
-  has_many :node, :foreign_key => 'uid'
-  has_many :user_tags, :foreign_key => 'uid', :dependent => :destroy
+  # has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
+  has_many :images, foreign_key: :uid
+  has_many :node, foreign_key: 'uid'
+  has_many :user_tags, foreign_key: 'uid', dependent: :destroy
   has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
 
-  validates_with UniqueUsernameValidator, :on => :create
-  validates_format_of :username, :with => /^[A-Za-z\d_\-]+$/
+  validates_with UniqueUsernameValidator, on: :create
+  validates_format_of :username, with: /^[A-Za-z\d_\-]+$/
 
   before_create :create_drupal_user
   after_destroy :destroy_drupal_user
 
   def create_drupal_user
-    if self.drupal_user.nil?
-      drupal_user = DrupalUsers.new({
-        :name => self.username,
-        :pass => rand(100000000000000000000),
-        :mail => self.email,
-        :mode => 0,
-        :sort => 0,
-        :threshold => 0,
-        :theme => "",
-        :signature => "",
-        :signature_format => 0,
-        :created => DateTime.now.to_i,
-        :access => DateTime.now.to_i,
-        :login => DateTime.now.to_i,
-        :status => 1,
-        :timezone => nil,
-        :language => "",
-        :picture => "",
-        :init => "",
-        :data => nil,
-        :timezone_id => 0,
-        :timezone_name => ""
-      })
+    if drupal_user.nil?
+      drupal_user = DrupalUsers.new(name: username,
+                                    pass: rand(100_000_000_000_000_000_000),
+                                    mail: email,
+                                    mode: 0,
+                                    sort: 0,
+                                    threshold: 0,
+                                    theme: '',
+                                    signature: '',
+                                    signature_format: 0,
+                                    created: DateTime.now.to_i,
+                                    access: DateTime.now.to_i,
+                                    login: DateTime.now.to_i,
+                                    status: 1,
+                                    timezone: nil,
+                                    language: '',
+                                    picture: '',
+                                    init: '',
+                                    data: nil,
+                                    timezone_id: 0,
+                                    timezone_name: '')
       drupal_user.save!
       self.id = drupal_user.uid
     else
-      self.id = DrupalUsers.find_by_name(self.username).uid
+      self.id = DrupalUsers.find_by_name(username).uid
     end
   end
 
   def destroy_drupal_user
-    self.drupal_user.destroy
+    drupal_user.destroy
   end
 
   # this is ridiculous. We need to store uid in this model.
   # ...migration is in progress. start getting rid of these calls...
   def drupal_user
-    DrupalUsers.find_by_name(self.username)
+    DrupalUsers.find_by_name(username)
   end
 
   def notes
-    Node.where(uid: self.uid)
-              .where(type: 'note')
-              .order("created DESC")
+    Node.where(uid: uid)
+        .where(type: 'note')
+        .order('created DESC')
   end
 
   def generate_reset_key
     # invent a key and save it
-    key = ""
+    key = ''
     20.times do
       key += [*'a'..'z'].sample
     end
@@ -98,51 +96,51 @@ class User < ActiveRecord::Base
   end
 
   def bio
-    self.drupal_user.bio
+    drupal_user.bio
   end
 
   def uid
-    self.drupal_user.uid
+    drupal_user.uid
   end
 
   def lat
-    self.drupal_user.lat
+    drupal_user.lat
   end
 
   def lon
-    self.drupal_user.lon
+    drupal_user.lon
   end
 
   # we can revise/improve this for m2m later...
   def has_role(r)
-    self.role == r
+    role == r
   end
 
   def has_tag(tagname)
-    self.user_tags.collect(&:value).include?(tagname)
+    user_tags.collect(&:value).include?(tagname)
   end
 
   def subscriptions(type = :tag)
     if type == :tag
-      TagSelection.find_all_by_user_id self.uid, :conditions => {:following => true}
+      TagSelection.find_all_by_user_id uid, conditions: { following: true }
     end
   end
 
   def following(tagname)
-    tids = Tag.find(:all, :conditions => {:name => tagname}).collect(&:tid)
-    TagSelection.find(:all, :conditions => {:following => true,:tid => tids, :user_id => self.uid}).length > 0
+    tids = Tag.find(:all, conditions: { name: tagname }).collect(&:tid)
+    !TagSelection.find(:all, conditions: { following: true, tid: tids, user_id: uid }).empty?
   end
 
   def add_to_lists(lists)
     lists.each do |list|
-      WelcomeMailer.add_to_list(self,list)
+      WelcomeMailer.add_to_list(self, list)
     end
   end
 
   def weekly_note_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
-      weeks[span-week] = Node.count :all, :select => :created, :conditions => {:uid => self.drupal_user.uid, :type => 'note', :status => 1, :created => Time.now.to_i-week.weeks.to_i..Time.now.to_i-(week-1).weeks.to_i}
+      weeks[span - week] = Node.count :all, select: :created, conditions: { uid: drupal_user.uid, type: 'note', status: 1, created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i }
     end
     weeks
   end
@@ -150,7 +148,7 @@ class User < ActiveRecord::Base
   def weekly_comment_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
-      weeks[span-week] = Comment.count :all, :select => :timestamp, :conditions => {:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.to_i-week.weeks.to_i..Time.now.to_i-(week-1).weeks.to_i}
+      weeks[span - week] = Comment.count :all, select: :timestamp, conditions: { uid: drupal_user.uid, status: 1, timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i }
     end
     weeks
   end
@@ -160,10 +158,10 @@ class User < ActiveRecord::Base
     streak = 0
     note_count = 0
     (0..span).each do |day|
-      days[day] = Node.count :all, :select => :created, :conditions => {:uid => self.drupal_user.uid, :type => 'note', :status => 1, :created => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i}
+      days[day] = Node.count :all, select: :created, conditions: { uid: drupal_user.uid, type: 'note', status: 1, created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i }
       break if days[day] == 0
-      streak+=1
-      note_count+=days[day]
+      streak += 1
+      note_count += days[day]
     end
     [streak, note_count]
   end
@@ -173,10 +171,10 @@ class User < ActiveRecord::Base
     streak = 0
     wiki_edit_count = 0
     (0..span).each do |day|
-      days[day] = DrupalNodeRevision.joins(:node).where(:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i).where("node.type != ?", 'note').count
+      days[day] = DrupalNodeRevision.joins(:node).where(uid: drupal_user.uid, status: 1, timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i).where('node.type != ?', 'note').count
       break if days[day] == 0
-      streak+=1
-      wiki_edit_count+=days[day]
+      streak += 1
+      wiki_edit_count += days[day]
     end
     [streak, wiki_edit_count]
   end
@@ -186,10 +184,10 @@ class User < ActiveRecord::Base
     streak = 0
     comment_count = 0
     (0..span).each do |day|
-      days[day] = Comment.count :all, :select => :timestamp, :conditions => {:uid => self.drupal_user.uid, :status => 1, :timestamp => Time.now.midnight.to_i-day.days.to_i..Time.now.midnight.to_i-(day-1).days.to_i}
+      days[day] = Comment.count :all, select: :timestamp, conditions: { uid: drupal_user.uid, status: 1, timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i }
       break if days[day] == 0
-      streak+=1
-      comment_count+=days[day]
+      streak += 1
+      comment_count += days[day]
     end
     [streak, comment_count]
   end
@@ -204,23 +202,23 @@ class User < ActiveRecord::Base
   end
 
   def barnstars
-    DrupalNodeCommunityTag.includes(:node,:tag).where("type = ? AND term_data.name LIKE ? AND node.uid = ?",'note','barnstar:%',self.uid)
+    DrupalNodeCommunityTag.includes(:node, :tag).where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
   end
 
   def photo_path(size = :medium)
-    self.photo.url(size)
+    photo.url(size)
   end
 
   def first_time_poster
-    self.notes.where(status: 1).count == 0
+    notes.where(status: 1).count == 0
   end
 
   def follow(other_user)
-    self.active_relationships.create(followed_id: other_user.id)
+    active_relationships.create(followed_id: other_user.id)
   end
 
   def unfollow(other_user)
-    self.active_relationships.find_by_followed_id(other_user.id).destroy
+    active_relationships.find_by_followed_id(other_user.id).destroy
   end
 
   def following?(other_user)
@@ -228,27 +226,26 @@ class User < ActiveRecord::Base
   end
 
   def profile_image
-    if self.photo_file_name
-      puts self.photo_path(:thumb)
-      self.photo_path(:thumb)
+    if photo_file_name
+      puts photo_path(:thumb)
+      photo_path(:thumb)
     else
-      "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(self.email)}"
+      "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}"
     end
   end
 
   def questions
-    Node.questions.where(status: 1, uid: self.id)
+    Node.questions.where(status: 1, uid: id)
   end
 
   private
 
   def map_openid_registration(registration)
-    self.email = registration["email"] if email.blank?
-    self.username = registration["nickname"] if username.blank?
+    self.email = registration['email'] if email.blank?
+    self.username = registration['nickname'] if username.blank?
   end
 
   def self.find_by_username_case_insensitive(username)
-    return User.where('lower(username) = ?', username.downcase).first
+    User.where('lower(username) = ?', username.downcase).first
   end
-
 end
