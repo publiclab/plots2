@@ -43,6 +43,10 @@ group :test do
   # gems to test RESTful API
   gem 'rest-client'
   gem 'rspec'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'capybara'
+  gem 'guard-rspec'
   gem 'json_expressions'
   gem 'timecop'
   gem 'jasmine-rails'
