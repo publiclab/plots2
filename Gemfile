@@ -4,7 +4,6 @@ gem 'rails', '~> 3.2.20'
 gem 'passenger'
 
 gem 'rails-i18n', '~> 3.0.0'
-gem 'sqlite3'
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
   gem 'mysql2', '~> 0.3.20'
@@ -43,10 +42,6 @@ group :test do
   # gems to test RESTful API
   gem 'rest-client'
   gem 'rspec'
-  gem 'rspec-rails'
-  gem 'factory_girl_rails'
-  gem 'capybara'
-  gem 'guard-rspec'
   gem 'json_expressions'
   gem 'timecop'
   gem 'jasmine-rails'
