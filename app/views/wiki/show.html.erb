@@ -22,6 +22,10 @@
 
 <div class="row">
 
+<% if @node.latest.created_at < Time.now - 6.months %>
+  <div class="alert alert-info" role="alert">This wiki page hasn't been edited for quite long. Consider updating it if you are acquainted with it</div>
+<% end %>
+
 <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
   <%= render :partial => "sidebar/featured" %>
 <% else %>
