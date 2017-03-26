@@ -166,6 +166,15 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#note-graph', 0
   end
 
+  test "wildcard tag show wiki pages" do
+    get :show, id: 'question:*', node_type: 'wiki'
+    assert :success
+    assert_not_nil :tags
+    assert :wildcard
+
+    assert_select '#note-graph', 0
+  end
+
   test "should show a featured wiki page at top, if it exists" do
     tag = tags(:test)
 
