@@ -39,11 +39,11 @@ class WikiController < ApplicationController
     if @node && @node.has_power_tag('abtest')
       if current_user == nil || (current_user.role != 'admin' && current_user.role != 'moderator')
         if Random.rand(2) == 0
-          redirect_to DrupalNode.find(@node.power_tag('redirect')).path, notice: "You have been redirected to this page randomly for testing purposes. We apologize for any inconvenience caused."
+          redirect_to DrupalNode.find(@node.power_tag('redirect')).path
         end
         return
       elsif (current_user.role == 'admin' || current_user.role == 'moderator')
-        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{DrupalNode.find(@node.power_tag('abtest')).title}.
+        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{DrupalNode.find(@node.power_tag('abtest')).title} roughly around 50% of the time.
         To remove this behavior, delete the tag beginning with 'abtest:'"
       end
     end
