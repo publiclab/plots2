@@ -157,6 +157,8 @@ class TagControllerTest < ActionController::TestCase
     assert :success
     assert_not_nil :tags
     assert :wildcard
+    assert :wikis
+    assert assigns(:wikis).length > 0
 
     assert_select '#note-graph', 0
   end
