@@ -9,6 +9,15 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_redirected_to '/dashboard'
   end
 
+test "login user with an email" do 
+  post :create, user_session: 
+  {
+    username: rusers(:jeff).email , 
+    password: 'secret'
+  }
+  assert_redirected_to '/dashboard'
+end
+
   test "should login and redirect to corresct url" do
     session[:return_to] = '/post?tags=question:question&template=question'
     post :create, user_session: {
