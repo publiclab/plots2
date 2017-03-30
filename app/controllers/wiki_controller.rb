@@ -38,7 +38,7 @@ class WikiController < ApplicationController
 
     if @node && @node.has_power_tag('abtest')
       if current_user == nil || (current_user.role != 'admin' && current_user.role != 'moderator')
-        if Random.rand(2) == 0
+        if Random.rand(2) == 0 and DrupalNode.where(id: @node.power_tag('abtest')).length > 0
           redirect_to DrupalNode.find(@node.power_tag('abtest')).path
         end
         return
