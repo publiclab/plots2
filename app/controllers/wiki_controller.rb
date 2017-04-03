@@ -35,6 +35,18 @@ class WikiController < ApplicationController
       end
     end
 
+    if @node && @node.has_power_tag('abtest')
+      if current_user == nil || (current_user.role != 'admin' && current_user.role != 'moderator')
+        if Random.rand(2) == 0 and DrupalNode.where(id: @node.power_tag('abtest')).length > 0
+          redirect_to DrupalNode.find(@node.power_tag('abtest')).path
+        end
+        return
+      elsif (current_user.role == 'admin' || current_user.role == 'moderator')
+        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{DrupalNode.find(@node.power_tag('abtest')).title} roughly around 50% of the time.
+        To remove this behavior, delete the tag beginning with 'abtest:'"
+      end
+    end
+
     # if request.path != @node.path && request.path != '/wiki/' + @node.nid.to_s
     #   return redirect_to @node.path, :status => :moved_permanently
     # end
