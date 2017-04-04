@@ -30,8 +30,8 @@ class SearchRecordTest < ActiveSupport::TestCase
 
   end
 
-  test "DrupalNode.search for two different key words returns different results" do
-    solr_search = DrupalNode.search do
+  test "Node.search for two different key words returns different results" do
+    solr_search = Node.search do
       fulltext 'spectro'
       with(:updated_at).less_than(Time.zone.now)
       #paginate :page => 1, :per_page => 10
