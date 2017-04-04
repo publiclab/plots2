@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :location_privacy
 
   include SolrToggle
-  searchable if: :shouldIndexSolr do
+  searchable if: :solr_available? do
     text :username, :email
   end
 

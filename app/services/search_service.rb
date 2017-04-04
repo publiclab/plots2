@@ -7,6 +7,8 @@
 
 class SearchService
 
+  include SolrToggle
+
   def initialize
   end
 
@@ -50,14 +52,20 @@ class SearchService
   end
 
   ## search for node title only
-  ## FIXme with solr
-  def find_notes(input, limit=5)
-    Node.limit(limit)
-        .order('nid DESC')
-        .where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+  def find_notes(input, limit = 5)
+    if solr_available?
+      Node.search do
+        fulltext input
+        #paginate :page => 1, :per_page => 10
+      end
+    else
+      Node.limit(limit)
+          .order('nid DESC')
+          .where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+    end
   end
 
-  def find_maps(input, limit=5)
+  def find_maps(input, limit = 5)
     Node.limit(limit)
         .order('nid DESC')
         .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')

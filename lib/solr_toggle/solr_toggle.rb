@@ -1,6 +1,6 @@
 module SolrToggle
 
-  def shouldIndexSolr
+  def solr_available?
     if ENV["DISABLE_SOLR"]
       false
     else
