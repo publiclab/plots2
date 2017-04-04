@@ -30,15 +30,15 @@ class SearchRecordTest < ActiveSupport::TestCase
 
   end
 
-  test "DrupalNode.search for two different key words returns different results" do
-    solr_search_1 = DrupalNode.search do
+  test "Node.search for two different key words returns different results" do
+    solr_search_1 = Node.search do
       fulltext 'spectro'
       with(:updated_at).less_than(Time.zone.now)
       #facet(:updated_month)
       #with(:updated_month, month) if month.present?
       #paginate :page => 1, :per_page => 10
     end
-    solr_search_2 = DrupalNode.search do
+    solr_search_2 = Node.search do
       fulltext 'Chicago'
       with(:updated_at).less_than(Time.zone.now)
       #facet(:updated_month)
