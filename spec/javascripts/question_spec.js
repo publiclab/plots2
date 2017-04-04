@@ -1,6 +1,7 @@
 //= require application
 //= require question
 
+/*
 var editor;
 
 describe("Question", function() {
@@ -24,3 +25,4 @@ describe("Question", function() {
   });
 
 });
+*/
