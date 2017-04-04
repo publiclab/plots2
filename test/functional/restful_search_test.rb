@@ -87,17 +87,22 @@ class RestfulSearchTest < ActiveSupport::TestCase
 
 
   test 'returns results from search tags functionality' do
-    get '/api/srch/tags?srchString=lon:24.484315929497463&seq=7'
+    get '/api/srch/tags?srchString=blog'
     assert last_response.ok?
     # Expected tag pattern
     pattern = {
-      # Need more/better understanding and data for the test database, so ignoring null results for now
-      # items: Array,
-      srchParams: {
-        srchString: 'lon:24.484315929497463',
-        seq: 7
+      items: [{
+        docId: 8,
+        docType: 'tag',
+        docUrl: '/notes/admin/03-14-2017/blog-post',
+        docTitle: 'Blog Post',
+        docSummary: '',
+        docScore: 0
+      }],
+      srchString: {
+        srchString: 'blog'
       }.ignore_extra_keys!
-    }.ignore_extra_keys!
+    }
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
