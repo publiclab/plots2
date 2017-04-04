@@ -25,7 +25,7 @@ class WikiController < ApplicationController
               Node.find_wiki(params[:id])
             end
 
-    if @node && @node.has_power_tag('redirect')
+    if @node && @node.has_power_tag('redirect') && Node.where(nid: @node.power_tag('redirect')).exists?
       if current_user.nil? || (current_user.role != 'admin' && current_user.role != 'moderator')
         redirect_to Node.find(@node.power_tag('redirect')).path
         return
