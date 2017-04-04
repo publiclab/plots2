@@ -512,7 +512,7 @@ class WikiControllerTest < ActionController::TestCase
     assert_equal wiki.power_tag("abtest"), blog.nid.to_s
 
     get :show, id: slug
-    assert_response :success
+    # assert_response :success # we can't assert this since ~50% of the time it'll redirect
   end
 
   test "redirect to non-existent page fails gracefully; no redirect" do
