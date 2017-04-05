@@ -1,11 +1,7 @@
 class DrupalNodeRevision < ActiveRecord::Base
-<<<<<<< HEAD
-  searchable do
-=======
 
   include SolrToggle
   searchable if: :shouldIndexSolr do
->>>>>>> added toggle to not depend on solr for indexable models
     text :title
     text :body do
       body.to_s.gsub!(/[[:cntrl:]]/,'').to_s.slice(0..10000)
