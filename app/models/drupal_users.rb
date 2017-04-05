@@ -26,7 +26,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def internalShouldIndexSolr
-    shouldIndexSolr && status == 1
+    solr_available? && status == 1
   end
 
   def user

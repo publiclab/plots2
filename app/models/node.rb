@@ -21,7 +21,7 @@ class Node < ActiveRecord::Base
   self.primary_key = 'nid'
 
   include SolrToggle
-  searchable if: :shouldIndexSolr do
+  searchable if: :solr_available? do
     text :title
     text :body do
       body.to_s.gsub!(/[[:cntrl:]]/,'').to_s.slice!(0..32500)
