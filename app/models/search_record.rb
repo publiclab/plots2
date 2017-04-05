@@ -32,6 +32,7 @@ class SearchRecord < ActiveRecord::Base
 
   def notes(month)
     solr_search = Node.search do
+      fulltext key_words
       adjust_solr_params do |params|
         params[:qf] = nil
       end
