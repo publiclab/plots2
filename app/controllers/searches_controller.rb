@@ -91,6 +91,10 @@ class SearchesController < ApplicationController
     @search = SearchRecord.find(params[:id])
   end
 
+  def set_search_service
+    @search_service = SearchService.new
+  end
+
   def searches_params
     params.require( :search_record)
            .permit( :key_words,
