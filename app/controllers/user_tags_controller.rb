@@ -1,12 +1,14 @@
 class UserTagsController < ApplicationController
+  include UserTagsHelper
   respond_to :html, :xml, :json, :js
   def create
-    tags = ['skill', 'gear', 'role', 'tool']
+    tags = ['skill', 'gear', 'role', 'tool', 'language']
     @output = {
       errors: [],
       saved: []
     }
     exist = false
+    isLanguage = false
 
     user = User.find_by_username(params[:id])
 
@@ -18,8 +20,29 @@ class UserTagsController < ApplicationController
             @output[:errors] << I18n.t('user_tags_controller.tag_already_exists')
             exist = true
           end
-
-          if !exist
+          
+          if !exist && params[:type] == "language"
+            locale_array = locale_name_pairs.keys.map!(&:downcase)
+            
+            if locale_array.include?(params[:value].downcase)
+              value = params[:type] + ":" + params[:value].capitalize
+              user_tag = user.user_tags.build(value: value)
+              if user_tag.save
+                @output[:saved] = [user_tag.id, value.split(":")[0], value.split(":")[1]]
+                lang = locale_name_pairs[params[:value].capitalize]
+                cookies.permanent[:plots2_locale] = lang
+                I18n.locale = lang
+              else
+                @output[:errors] << "Error: Cannot save value. Try Again"
+              end
+            else
+              locale_string = locale_array.map { |locale| locale.capitalize }.join(", ")
+              @output[:errors] << "Error: Unsupported language. [Supported languages: " + locale_string.to_s + "]"
+            end
+            isLanguage=true
+          end
+          
+          if !exist && !isLanguage
             user_tag = user.user_tags.build(value: value)
             if user_tag.save
               @output[:saved] = [user_tag.id, value.split(":")[0], value.split(":")[1]]

@@ -8,6 +8,7 @@ de:
       gears: "Getriebe"
       tools: "Werkzeuge"
       roles: "Partie"
+      language: "Sprache"
       location: "Stelle"
       type_location: "Typ Ort"
       map: "Karte"

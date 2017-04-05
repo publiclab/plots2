@@ -8,6 +8,7 @@ en:
       gears: "Gears"
       tools: "Tools"
       roles: "Roles"
+      language: "Language"
       location: "Location"
       type_location: "Type location"
       map: "Map"

@@ -69,6 +69,7 @@
     <%= render partial: 'user_tags/tags', locals: { type: 'gear', data: fetch_tags(@user.id, 'gear') } %>
     <%= render partial: 'user_tags/tags', locals: { type: 'tool', data: fetch_tags(@user.id, 'tool') } %>
     <%= render partial: 'user_tags/tags', locals: { type: 'role', data: fetch_tags(@user.id, 'role') } %>
+    <%= render partial: 'user_tags/tags', locals: { type: 'language', data: fetch_tags(@user.id, 'language') } %>
 
     <% if @user.location_tag %>
       <div class="row">

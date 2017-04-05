@@ -2,7 +2,7 @@ include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 class ApplicationController < ActionController::Base
   protect_from_forgery
   layout 'application'
-
+  include UserTagsHelper
   helper_method :current_user_session, :current_user, :prompt_login, :sidebar
 
   before_filter :set_locale
@@ -149,8 +149,13 @@ class ApplicationController < ActionController::Base
 
     # Check the locale set and adjust the locale accordingly
     def set_locale
+      
       if cookies[:plots2_locale] && I18n.available_locales.include?(cookies[:plots2_locale].to_sym)
         lang = cookies[:plots2_locale].to_sym
+      elsif current_user && fetch_tags(current_user.id, 'language')
+        tags = fetch_tags(current_user.id, 'language')
+        lang = locale_name_pairs[tags[-1].value.split(":")[1]]
+        cookies.permanent[:plots2_locale] = lang
       else
         lang = http_accept_language.compatible_language_from(I18n.available_locales) || I18n.default_locale
         cookies.permanent[:plots2_locale] = lang
