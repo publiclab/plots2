@@ -91,15 +91,15 @@ class SearchesController < ApplicationController
     @search = SearchRecord.find(params[:id])
   end
 
-    def searches_params
-      params.require( :search_record)
-             .permit( :key_words,
-                     :main_type,
-                     :note_type,
-                     :min_date,
-                     :max_date,
-                     :created_by,
-                     :language )
-    end
+  def searches_params
+    params.require( :search_record)
+           .permit( :key_words,
+                   :main_type,
+                   :note_type,
+                   :min_date,
+                   :max_date,
+                   :created_by,
+                   :language )
+  end
 
 end
