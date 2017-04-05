@@ -11,30 +11,30 @@ class Answer < ActiveRecord::Base
   validates :content, presence: true
 
   def body
-    finder = self.content.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
+    finder = content.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
     finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
   end
 
   # users who like this answer
   def likers
-    self.answer_selections
-        .joins(:drupal_users)
-        .where(liking: true)
-        .where('users.status = ?', 1)
-        .collect(&:user)
+    answer_selections
+      .joins(:drupal_users)
+      .where(liking: true)
+      .where('users.status = ?', 1)
+      .collect(&:user)
   end
 
   def answer_notify(current_user)
     # notify question author
-    if current_user.uid != self.node.author.uid
-      AnswerMailer.notify_question_author(self.node.author, self).deliver
+    if current_user.uid != node.author.uid
+      AnswerMailer.notify_question_author(node.author, self).deliver
     end
 
-    uids =  (self.node.answers.collect(&:uid) + self.node.likers.collect(&:uid)).uniq
+    uids = (node.answers.collect(&:uid) + node.likers.collect(&:uid)).uniq
 
     # notify other answer authors and users who liked the question
-    DrupalUsers.where("uid IN (?)", uids).each do |user|
-      if (user.uid != current_user.uid) && (user.uid != self.node.author.uid)
+    DrupalUsers.where('uid IN (?)', uids).each do |user|
+      if (user.uid != current_user.uid) && (user.uid != node.author.uid)
         AnswerMailer.notify_answer_likers_author(user.user, self).deliver
       end
     end

@@ -232,7 +232,7 @@ class NotesController < ApplicationController
         flash[:error] = I18n.t('notes_controller.edit_not_saved')
          if request.xhr? || params[:rich]
           errors = @node.errors
-          errors = errors.to_h.merge(@revision.errors.to_h) if @revision && @revision.errors
+          errors = errors.to_hash.merge(@revision.errors.to_hash) if @revision && @revision.errors
           render json: errors
          else
            render 'editor/post'

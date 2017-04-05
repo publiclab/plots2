@@ -1,20 +1,19 @@
 require 'pathname'
 
-require "openid"
-require "openid/consumer/discovery"
+require 'openid'
+require 'openid/consumer/discovery'
 require 'openid/extensions/sreg'
 require 'openid/extensions/pape'
 require 'openid/store/filesystem'
 
 class OpenidController < ApplicationController
-  #protect_from_forgery :except => [:index]
+  # protect_from_forgery :except => [:index]
 
   include OpenidHelper
   include OpenID::Server
   layout nil
 
   def index
-
     begin
       if params['openid.mode']
         oidreq = server.decode_request(params)
@@ -23,20 +22,20 @@ class OpenidController < ApplicationController
       end
     rescue ProtocolError => e
       # invalid openid request, so just display a page with an error message
-      render :text => e.to_s, :status => 500
+      render text: e.to_s, status: 500
       return
     end
 
     # no openid.mode was given
     unless oidreq
-      render :text => "This is an OpenID server endpoint."
+      render text: 'This is an OpenID server endpoint.'
       return
     end
 
     if current_user.nil? && !params['openid.mode']
       session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-      flash[:warning] = "Please log in first."
-      redirect_to "/login"
+      flash[:warning] = 'Please log in first.'
+      redirect_to '/login'
       return
     else
 
@@ -45,20 +44,20 @@ class OpenidController < ApplicationController
         requested_username = ''
         if request.env['ORIGINAL_FULLPATH'] && request.env['ORIGINAL_FULLPATH'].split('?')[1]
           request.env['ORIGINAL_FULLPATH'].split('?')[1].split('&').each do |param|
-            requested_username = param.split('=')[1].split('%2F').last if param.split('=')[0] == "openid.claimed_id"
+            requested_username = param.split('=')[1].split('%2F').last if param.split('=')[0] == 'openid.claimed_id'
           end
         end
 
-        if current_user && requested_username.downcase != current_user.username.downcase
-            flash[:error] = "You are requesting access to an account that's not yours. Please <a href='/logout'>log out</a> and use the correct account, or <a href='"+oidreq.trust_root+"'>try to login with the correct username</a>"
-            redirect_to "/dashboard"
+        if current_user && !requested_username.casecmp(current_user.username.downcase).zero?
+          flash[:error] = "You are requesting access to an account that's not yours. Please <a href='/logout'>log out</a> and use the correct account, or <a href='" + oidreq.trust_root + "'>try to login with the correct username</a>"
+          redirect_to '/dashboard'
         else
           oidresp = nil
-  
-          if oidreq.kind_of?(CheckIDRequest)
-  
+
+          if oidreq.is_a?(CheckIDRequest)
+
             identity = oidreq.identity
-  
+
             if oidreq.id_select
               if oidreq.immediate
                 oidresp = oidreq.answer(false)
@@ -66,42 +65,42 @@ class OpenidController < ApplicationController
                 # The user hasn't logged in.
                 # show_decision_page(oidreq) # this doesnt make sense... it was in the example though
                 session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-                redirect_to "/login"
+                redirect_to '/login'
               else
                 # Else, set the identity to the one the user is using.
                 identity = url_for_user
               end
-    
+
             end
-  
+
             if oidresp
               nil
-            elsif self.is_authorized(identity, oidreq.trust_root)
+            elsif is_authorized(identity, oidreq.trust_root)
               oidresp = oidreq.answer(true, nil, identity)
-           
+
               # add the sreg response if requested
               add_sreg(oidreq, oidresp)
               # ditto pape
               add_pape(oidreq, oidresp)
-           
+
             elsif oidreq.immediate
-              server_url = url_for :action => 'index'
+              server_url = url_for action: 'index'
               oidresp = oidreq.answer(false, server_url)
-           
+
             else
               show_decision_page(oidreq)
               return
             end
-  
+
           else
             oidresp = server.handle_request(oidreq)
           end
-    
-          self.render_response(oidresp)
+
+          render_response(oidresp)
         end
       else
         session[:openid_return_to] = request.env['ORIGINAL_FULLPATH']
-        redirect_to "/login"
+        redirect_to '/login'
       end
     end
   end
@@ -115,15 +114,13 @@ class OpenidController < ApplicationController
     end
   end
 
-  def show_decision_page(oidreq, message="Do you trust this site with your identity?")
+  def show_decision_page(oidreq, message = 'Do you trust this site with your identity?')
     session[:last_oidreq] = oidreq
     @oidreq = oidreq
 
-    if message
-      flash[:notice] = message
-    end
+    flash[:notice] = message if message
 
-    render :template => 'openid/decide'
+    render template: 'openid/decide'
   end
 
   def user_page
@@ -133,17 +130,17 @@ class OpenidController < ApplicationController
     # This is not technically correct, and should eventually be updated
     # to do real Accept header parsing and logic.  Though I expect it will work
     # 99% of the time.
-    if accept and accept.include?('application/xrds+xml')
+    if accept && accept.include?('application/xrds+xml')
       user_xrds
       return
     end
 
     # content negotiation failed, so just render the user page
-    xrds_url = url_for(:controller=>'user',:action=>params[:username])+'/xrds'
+    xrds_url = url_for(controller: 'user', action: params[:username]) + '/xrds'
     identity_page = <<EOS
 <html><head>
 <meta http-equiv="X-XRDS-Location" content="#{xrds_url}" />
-<link rel="openid.server" href="#{url_for :action => 'index'}" />
+<link rel="openid.server" href="#{url_for action: 'index'}" />
 </head><body><p>OpenID identity page for #{params[:username]}</p>
 </body></html>
 EOS
@@ -151,23 +148,23 @@ EOS
     # Also add the Yadis location header, so that they don't have
     # to parse the html unless absolutely necessary.
     response.headers['X-XRDS-Location'] = xrds_url
-    render :text => identity_page
+    render text: identity_page
   end
 
   def user_xrds
     types = [
-             OpenID::OPENID_2_0_TYPE,
-             OpenID::OPENID_1_0_TYPE,
-             OpenID::SREG_URI,
-            ]
+      OpenID::OPENID_2_0_TYPE,
+      OpenID::OPENID_1_0_TYPE,
+      OpenID::SREG_URI
+    ]
 
     render_xrds(types)
   end
 
   def idp_xrds
     types = [
-             OpenID::OPENID_IDP_2_0_TYPE,
-            ]
+      OpenID::OPENID_IDP_2_0_TYPE
+    ]
 
     render_xrds(types)
   end
@@ -184,13 +181,13 @@ EOS
 
       identity = oidreq.identity
       if oidreq.id_select
-        if id_to_send and id_to_send != ""
+        if id_to_send && (id_to_send != '')
           session[:username] = id_to_send
           session[:approvals] = []
           identity = url_for_user
         else
-          msg = "You must enter a username to in order to send " +
-            "an identifier to the Relying Party."
+          msg = 'You must enter a username to in order to send ' \
+                'an identifier to the Relying Party.'
           show_decision_page(oidreq, msg)
           return
         end
@@ -206,7 +203,7 @@ EOS
       oidresp = oidreq.answer(true, nil, identity)
       add_sreg(oidreq, oidresp)
       add_pape(oidreq, oidresp)
-      return self.render_response(oidresp)
+      return render_response(oidresp)
     end
   end
 
@@ -214,29 +211,29 @@ EOS
 
   def server
     if @server.nil?
-      server_url = url_for :action => 'index', :only_path => false
+      server_url = url_for action: 'index', only_path: false
       dir = Pathname.new(request.host).join('db').join('openid-store')
       store = OpenID::Store::Filesystem.new(dir)
       @server = Server.new(store, server_url)
     end
-    return @server
+    @server
   end
 
   def approved(trust_root)
     return false if session[:approvals].nil?
-    return session[:approvals].member?(trust_root)
+    session[:approvals].member?(trust_root)
   end
 
   def is_authorized(identity_url, trust_root)
-    return (session[:username] and (identity_url == url_for_user) and self.approved(trust_root))
+    (session[:username] && (identity_url == url_for_user) && approved(trust_root))
   end
 
   def render_xrds(types)
-    type_str = ""
+    type_str = ''
 
-    types.each { |uri|
+    types.each do |uri|
       type_str += "<Type>#{uri}</Type>\n      "
-    }
+    end
 
     yadis = <<EOS
 <?xml version="1.0" encoding="UTF-8"?>
@@ -246,14 +243,14 @@ EOS
   <XRD>
     <Service priority="0">
       #{type_str}
-      <URI>#{url_for(:controller => 'openid', :only_path => false)}</URI>
+      <URI>#{url_for(controller: 'openid', only_path: false)}</URI>
     </Service>
   </XRD>
 </xrds:XRDS>
 EOS
 
     response.headers['content-type'] = 'application/xrds+xml'
-    render :text => yadis
+    render text: yadis
   end
 
   def add_sreg(oidreq, oidresp)
@@ -265,7 +262,7 @@ EOS
     # and the user should be asked for permission to release
     # it.
     sreg_data = {
-      'nickname' => current_user.username, #session[:username],
+      'nickname' => current_user.username, # session[:username],
       'email' => current_user.email
     }
 
@@ -282,21 +279,17 @@ EOS
   end
 
   def render_response(oidresp)
-    if oidresp.needs_signing
-      signed_response = server.signatory.sign(oidresp)
-    end
+    signed_response = server.signatory.sign(oidresp) if oidresp.needs_signing
     web_response = server.encode_response(oidresp)
     case web_response.code
     when HTTP_OK
-      render :text => web_response.body, :status => 200
+      render text: web_response.body, status: 200
 
     when HTTP_REDIRECT
       redirect_to web_response.headers['location']
 
     else
-      render :text => web_response.body, :status => 400
+      render text: web_response.body, status: 400
     end
   end
-
-
 end
