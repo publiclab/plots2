@@ -40,8 +40,8 @@ class WikiController < ApplicationController
       if current_user == nil || (current_user.role != 'admin' && current_user.role != 'moderator')
         if Random.rand(2) == 0
           redirect_to Node.find(@node.power_tag('abtest')).path
+          return
         end
-        return
       elsif (current_user.role == 'admin' || current_user.role == 'moderator')
         flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('abtest')).title} roughly around 50% of the time. 
         To remove this behavior, delete the tag beginning with 'abtest:'"
