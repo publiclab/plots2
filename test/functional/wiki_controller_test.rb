@@ -504,6 +504,17 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "abtest: redirects to another page" do
+    wiki = node(:wiki_page)
+    slug = wiki.path.gsub('/wiki/', '')
+    place = node(:place)
+    wiki.add_tag("abtest:#{place.nid}", rusers(:bob))
+    assert_equal wiki.power_tag("abtest"), place.nid.to_s
+
+    get :show, id: slug
+    # assert_response :success # we can't assert this since ~50% of the time it'll redirect
+  end
+
   test "redirect to non-existent page fails gracefully; no redirect" do
     wiki = node(:wiki_page)
     slug = wiki.path.gsub('/wiki/', '')

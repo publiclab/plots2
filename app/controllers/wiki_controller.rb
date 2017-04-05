@@ -36,7 +36,7 @@ class WikiController < ApplicationController
       end
     end
 
-    if @node and @node.has_power_tag('abtest') and Node.where(id: @node.power_tag('abtest')).length > 0
+    if @node and @node.has_power_tag('abtest') and Node.where(nid: @node.power_tag('abtest')).length > 0
       if current_user == nil || (current_user.role != 'admin' && current_user.role != 'moderator')
         if Random.rand(2) == 0
           redirect_to Node.find(@node.power_tag('abtest')).path
