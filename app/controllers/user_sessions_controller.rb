@@ -8,8 +8,9 @@ class UserSessionsController < ApplicationController
     params[:user_session][:username] = params[:openid] if params[:openid] # second runthrough must preserve username 
     username = params[:user_session][:username] if params[:user_session]
     @user = User.find_by_username(username)
-    
-    if @user.nil? 
+
+    # try finding by email, if that exists
+    if @user.nil? and User.where(email: username).length > 0
      @user = User.find_by_email(username) 
      params[:user_session][:username] = @user.username
     end 
