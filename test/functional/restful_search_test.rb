@@ -92,16 +92,19 @@ class RestfulSearchTest < ActiveSupport::TestCase
     # Expected tag pattern
     pattern = {
       items: [{
-        docId: 8,
+        docId: 13,
         docType: 'tag',
-        docUrl: '/notes/admin/03-14-2017/blog-post',
-        docTitle: 'Blog Post',
+        docUrl: '/notes/jeff/'+Time.now.strftime("%m-%d-%Y")+'/blog-post',
+        docTitle: 'Blog post',
         docSummary: '',
         docScore: 0
       }],
-      srchString: {
-        srchString: 'blog'
-      }.ignore_extra_keys!
+      srchParams: {
+        srchString: 'blog',
+        seq: nil,
+        showCount: nil,
+        pageNum: nil
+      }
     }
 
     matcher = JsonExpressions::Matcher.new(pattern)
