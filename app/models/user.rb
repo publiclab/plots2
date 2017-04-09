@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   end
 
   acts_as_authentic do |c|
-    c.openid_required_fields = [:nickname, :email]
+    c.openid_required_fields = %i[nickname email]
   end
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },

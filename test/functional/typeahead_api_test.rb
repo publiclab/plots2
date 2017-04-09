@@ -21,7 +21,7 @@ class TypeaheadApiTest < ActiveSupport::TestCase
   test 'typeahead all functionality' do
     get '/api/typeahead/all?srchString=lat&seq=7'
     assert last_response.ok?
-    
+
     # Expected typeahead pattern
     pattern = {
       # TODO:  Need more/better understanding and data for the test database
@@ -61,7 +61,7 @@ class TypeaheadApiTest < ActiveSupport::TestCase
   test 'typeahead notes functionality' do
     get '/api/typeahead/notes?srchString=lat&seq=7'
     assert last_response.ok?
-    
+
     # Expected notes pattern
     pattern = {
       # TODO:  Need more/better understanding and data for the test database
@@ -81,7 +81,7 @@ class TypeaheadApiTest < ActiveSupport::TestCase
   test 'typeahead questions functionality' do
     get '/api/typeahead/questions?srchString=lat&seq=7'
     assert last_response.ok?
-    
+
     # Expected question pattern
     #  Returns null right now for test--need to set a better search sequence on demo seed data
     pattern = {
@@ -102,7 +102,7 @@ class TypeaheadApiTest < ActiveSupport::TestCase
   test 'typeahead tags functionality' do
     get '/api/typeahead/tags?srchString=everything&seq=7'
     assert last_response.ok?
-    
+
     # Expected tag pattern
     pattern = {
       # TODO:  Need more/better understanding and data for the test database
@@ -118,5 +118,4 @@ class TypeaheadApiTest < ActiveSupport::TestCase
 
     assert matcher =~ JSON.parse(last_response.body)
   end
-
 end

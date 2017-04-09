@@ -1,12 +1,11 @@
 require 'test_helper'
 
 class ModerateAndBanTest < ActionDispatch::IntegrationTest
-
-  test "users are logged out and alerted when banned, and notes are not accessible" do
+  test 'users are logged out and alerted when banned, and notes are not accessible' do
     u = rusers(:unmoderated_user)
     post '/user_sessions', user_session: {
       username: u.username,
-      password: 'secret' 
+      password: 'secret'
     }
 
     get '/post' # dashboard is actually world-readable, but /post is not
@@ -19,21 +18,21 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     follow_redirect!
     # in application_controller.rb; normal logged out message to deter spammers:
-    assert_equal "You must be logged in to access this page", flash[:warning]
+    assert_equal 'You must be logged in to access this page', flash[:warning]
 
     get node(:moderated_user_note).path
 
     assert_response :redirect
     follow_redirect!
     # in application_controller.rb:
-    assert_equal "The author of that note has been banned.", flash[:error]
+    assert_equal 'The author of that note has been banned.', flash[:error]
 
     get node(:question3).path # a Q by unmoderated_user
 
     assert_response :redirect
     follow_redirect!
     # in application_controller.rb:
-    assert_equal "The author of that note has been banned.", flash[:error]
+    assert_equal 'The author of that note has been banned.', flash[:error]
 
     get "/profile/#{u.username}"
 
@@ -47,14 +46,13 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     get node(:moderated_user_note).path
 
     assert_response :success
-
   end
 
-  test "users are logged out and alerted when moderated, and notes are not accessible" do
+  test 'users are logged out and alerted when moderated, and notes are not accessible' do
     u = rusers(:unmoderated_user)
     post '/user_sessions', user_session: {
       username: u.username,
-      password: 'secret' 
+      password: 'secret'
     }
 
     get '/post' # dashboard is actually world-readable, but /post is not
@@ -95,27 +93,25 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_nil flash[:warning]
-
   end
 
-  test "moderated user profiles are not visible when banned" do
+  test 'moderated user profiles are not visible when banned' do
     u = rusers(:unmoderated_user)
     u.drupal_user.ban
     admin = rusers(:admin)
 
     post '/user_sessions', user_session: {
       username: admin.username,
-      password: 'secret' 
+      password: 'secret'
     }
 
     get "/profile/#{u.username}"
 
     assert_equal I18n.t('users_controller.user_has_been_banned'), flash[:error]
     assert_response :success
-
   end
 
-  test "moderators and admins can moderate others" do
+  test 'moderators and admins can moderate others' do
     u = rusers(:unmoderated_user)
     admin = rusers(:admin)
     u.drupal_user.unmoderate
@@ -123,26 +119,25 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     post '/user_sessions', user_session: {
       username: admin.username,
-      password: 'secret' 
+      password: 'secret'
     }
 
     get "/admin/moderate/#{u.uid}"
 
     assert_response :redirect
     follow_redirect!
-    assert_equal flash[:notice], "The user has been moderated."
+    assert_equal flash[:notice], 'The user has been moderated.'
     assert_equal u.drupal_user.status, 5
 
     get "/admin/unmoderate/#{u.uid}"
 
     assert_response :redirect
     follow_redirect!
-    assert_equal flash[:notice], "The user has been unmoderated."
+    assert_equal flash[:notice], 'The user has been unmoderated.'
     assert_equal u.drupal_user.status, 1
-
   end
 
-  test "normal users can not moderate others" do
+  test 'normal users can not moderate others' do
     u = rusers(:unmoderated_user)
     normal_user = rusers(:bob)
     u.drupal_user.unmoderate
@@ -150,14 +145,14 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     post '/user_sessions', user_session: {
       username: normal_user.username,
-      password: 'secret' 
+      password: 'secret'
     }
 
     get "/admin/moderate/#{u.uid}"
 
     assert_response :redirect
     follow_redirect!
-    assert_equal flash[:error], "Only moderators can moderate other users."
+    assert_equal flash[:error], 'Only moderators can moderate other users.'
     assert_equal u.drupal_user.status, 1
 
     u.drupal_user.moderate
@@ -166,24 +161,21 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     assert_response :redirect
     follow_redirect!
-    assert_equal flash[:error], "Only moderators can unmoderate other users."
+    assert_equal flash[:error], 'Only moderators can unmoderate other users.'
     assert_equal u.drupal_user.status, 5
-
   end
 
-  test "moderated users can not log in" do
+  test 'moderated users can not log in' do
     u = rusers(:unmoderated_user)
     u.drupal_user.moderate
 
     post '/user_sessions', user_session: {
       username: u.username,
-      password: 'secret' 
+      password: 'secret'
     }
 
     assert_response :redirect
     follow_redirect!
-    assert_equal I18n.t('user_sessions_controller.user_has_been_moderated', :username => u.username), flash[:error]
-
+    assert_equal I18n.t('user_sessions_controller.user_has_been_moderated', username: u.username), flash[:error]
   end
-
 end

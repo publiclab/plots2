@@ -4,13 +4,12 @@
 require 'test_helper'
 
 class TagControllerTest < ActionController::TestCase
-
   def setup
     activate_authlogic
   end
 
   # create accepts comma-delimited list of tags
-  test "add one or two tags" do
+  test 'add one or two tags' do
     UserSession.create(rusers(:bob))
 
     post :create, name: 'mytag', nid: node(:one).nid, uid: rusers(:bob).id
@@ -30,17 +29,17 @@ class TagControllerTest < ActionController::TestCase
     xhr :post, :create, name: 'myfourthtag,myfifthtag', nid: node(:one).nid, uid: rusers(:bob).id
 
     assert_response :success
-    assert_equal [["myfourthtag", Tag.find_by_name("myfourthtag").tid], ["myfifthtag", Tag.find_by_name("myfifthtag").tid]], JSON.parse(response.body)['saved']
+    assert_equal [['myfourthtag', Tag.find_by_name('myfourthtag').tid], ['myfifthtag', Tag.find_by_name('myfifthtag').tid]], JSON.parse(response.body)['saved']
   end
 
-  test "validate unused tag" do
+  test 'validate unused tag' do
     UserSession.create(rusers(:bob))
 
     get :contributors,
         id: 'question:*'
 
     assert_template :contributors
-    assert_tag tag: 'p', 
+    assert_tag tag: 'p',
                child: /No contributors for that tag/
   end
 
@@ -52,7 +51,7 @@ class TagControllerTest < ActionController::TestCase
          nid: node(:one).nid
 
     assert_redirected_to(node(:one).path)
-    assert_equal "Error: tags can only include letters, numbers, and dashes", assigns['output']['errors'][0]
+    assert_equal 'Error: tags can only include letters, numbers, and dashes', assigns['output']['errors'][0]
   end
 
   test "won't add disallowed tags" do
@@ -66,7 +65,7 @@ class TagControllerTest < ActionController::TestCase
     assert_equal I18n.t('node.only_author_use_powertag'), assigns['output']['errors'][0]
   end
 
-  test "admins can add disallowed tags" do
+  test 'admins can add disallowed tags' do
     UserSession.create(rusers(:admin))
 
     post :create,
@@ -78,7 +77,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   # create returns JSON list of errors in response[:errors]
-  test "add duplicate tag" do
+  test 'add duplicate tag' do
     UserSession.create(rusers(:bob))
 
     post :create,
@@ -96,11 +95,10 @@ class TagControllerTest < ActionController::TestCase
          uid: rusers(:bob)
 
     assert_redirected_to(node(:one).path)
-    assert_equal "Error: that tag already exists.", assigns['output']['errors'][0]
+    assert_equal 'Error: that tag already exists.', assigns['output']['errors'][0]
   end
 
-  test "add tag not logged in" do
-
+  test 'add tag not logged in' do
     post :create,
          name: 'mytag',
          nid: node(:one).nid,
@@ -109,19 +107,17 @@ class TagControllerTest < ActionController::TestCase
     assert_redirected_to('/login')
   end
 
-  test "tag index" do
-
+  test 'tag index' do
     get :index
 
     assert :success
-    assert_equal assigns['tags'].sort_by { |rev| rev.count }, assigns['tags']
+    assert_equal assigns['tags'].sort_by(&:count), assigns['tags']
     assert_equal assigns['tags'].collect(&:name), assigns['tags'].collect(&:name).uniq
     assert_false assigns['tags'].collect(&:node).flatten.collect(&:status).include?(0)
     assert_not_nil :tags
   end
 
-  test "tag show" do
-
+  test 'tag show' do
     get :show, id: tags(:spectrometer).name
 
     assert :success
@@ -129,18 +125,17 @@ class TagControllerTest < ActionController::TestCase
 
     assert_equal tags(:spectrometer).parent, 'spectrometry'
     # iterate through results
-    assert assigns['notes'].length > 0
+    assert !assigns['notes'].empty?
     assigns['notes'].each do |node|
       assert node.has_tag('spectrometry') # should return false
       assert_false node.has_tag_without_aliasing('spectrometry') # should return false
     end
 
-    #assert_equal assigns['tags'].length, 1
+    # assert_equal assigns['tags'].length, 1
     assert_select '#wiki-content', 0
   end
 
-  test "tag show JSON" do
-
+  test 'tag show JSON' do
     get :show, id: tags(:spectrometer).name, format: 'json'
 
     assert :success
@@ -149,15 +144,15 @@ class TagControllerTest < ActionController::TestCase
     json = ActiveSupport::JSON.decode(@response.body)
 
     assert_not_nil json
-    assert assigns['notes'].length > 0
+    assert !assigns['notes'].empty?
     node = Node.find tags(:spectrometer).nodes.first.nid
     assert_equal node.nid,                  json.first['nid']
     assert_equal node.body_preview,         json.first['preview']
     assert_equal node.main_image,           json.first['image'] # this won't check anything bc there is no main image
     assert_equal node.tags.collect(&:name), json.first['tags']
   end
-  
-  test "wildcard tag show" do
+
+  test 'wildcard tag show' do
     get :show, id: 'question:*'
     assert :success
     assert_not_nil :tags
@@ -166,7 +161,7 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#note-graph', 0
   end
 
-  test "should show a featured wiki page at top, if it exists" do
+  test 'should show a featured wiki page at top, if it exists' do
     tag = tags(:test)
 
     get :show, id: node(:organizers).slug
@@ -174,14 +169,13 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#wiki-content', 1
   end
 
-  test "tag widget" do
+  test 'tag widget' do
     get :widget, id: Tag.last.name
     assert :success
     assert_not_nil :notes
   end
 
-  test "tag blog" do
-
+  test 'tag blog' do
     get :blog, id: Tag.last.name
 
     assert :success
@@ -189,23 +183,20 @@ class TagControllerTest < ActionController::TestCase
     assert_not_nil :tags
   end
 
-  test "tag author" do
-
+  test 'tag author' do
     get :author, id: User.last.username
 
     assert :success
   end
 
-  test "tag rss" do
-
+  test 'tag rss' do
     get :rss, tagname: Tag.last.name
 
     assert :success
     assert_not_nil :notes
   end
 
-  test "tag contributors" do
-
+  test 'tag contributors' do
     get :contributors, id: Tag.last.name
 
     assert :success
@@ -214,36 +205,36 @@ class TagControllerTest < ActionController::TestCase
     assert_not_nil :tag
   end
 
-  test "adds comment when awarding a barnstar" do
+  test 'adds comment when awarding a barnstar' do
     ApplicationController.any_instance.stubs(:current_user).returns(User.first)
     assert_difference 'Comment.count' do
       node = Node.where(type: 'note').last
 
-      post :barnstar, 
+      post :barnstar,
            nid: node.nid,
-           star: "basic"
+           star: 'basic'
 
       assert_equal "[@#{User.first.username}](/profile/#{User.first.username}) awards a <a href=\"//#{request.host}/wiki/barnstars\">barnstar</a> to #{node.author.name} for their awesome contribution!", Comment.last.body
     end
   end
 
-  test "should take node type as question if tag is a question tag" do
+  test 'should take node type as question if tag is a question tag' do
     tag = tags(:question)
 
     get :show, id: tag.name
 
-    assert_equal "questions", assigns(:node_type)
+    assert_equal 'questions', assigns(:node_type)
   end
 
-  test "should take node type as note if tag is not a question tag" do
+  test 'should take node type as note if tag is not a question tag' do
     tag = tags(:awesome)
 
     get :show, id: tag.name
 
-    assert_equal "note", assigns(:node_type)
+    assert_equal 'note', assigns(:node_type)
   end
 
-  test "should list only question in question view" do
+  test 'should list only question in question view' do
     tag = tags(:question)
 
     get :show, id: tag.name
@@ -254,7 +245,7 @@ class TagControllerTest < ActionController::TestCase
     assert (questions & expected).present?
   end
 
-  test "should list only notes in notes view" do
+  test 'should list only notes in notes view' do
     tag = tags(:test)
 
     get :show, id: tag.name
@@ -265,7 +256,7 @@ class TagControllerTest < ActionController::TestCase
     assert (notes & expected).present?
   end
 
-  test "should have active Research tab for notes" do
+  test 'should have active Research tab for notes' do
     tag = tags(:test)
 
     get :show, id: tag.name
@@ -278,7 +269,7 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#notes.active', 1
   end
 
-  test "should have active question tab for question" do
+  test 'should have active question tab for question' do
     tag = tags(:question)
 
     get :show, id: tag.name
@@ -291,7 +282,7 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#questions.active', 1
   end
 
-  test "can create tag instance (community_tag) using a parent tag" do
+  test 'can create tag instance (community_tag) using a parent tag' do
     UserSession.create(rusers(:bob))
 
     post :create, name: 'spectrometry', nid: node(:one).nid, uid: rusers(:bob).id
@@ -300,15 +291,15 @@ class TagControllerTest < ActionController::TestCase
     assert_redirected_to(node(:one).path)
   end
 
-  test "shows things tagged with child tag" do
+  test 'shows things tagged with child tag' do
     tag = tags(:spectrometer)
-    tag.parent = "spectrometry"
+    tag.parent = 'spectrometry'
     tag.save
     tag2 = tags(:spectrometry)
-    tag2.parent = ""
+    tag2.parent = ''
     tag2.save
 
-    assert_equal 'spectrometry', tag.parent 
+    assert_equal 'spectrometry', tag.parent
     assert_equal '',             tag2.parent
     node(:blog).add_tag('spectrometry', rusers(:bob))
     assert node(:blog).has_tag_without_aliasing('spectrometry')
@@ -316,31 +307,31 @@ class TagControllerTest < ActionController::TestCase
     get :show, id: 'spectrometry'
 
     # order of timestamps during testing (almost same timestamps) was causing testing irregularities
-    notes = assigns(:notes).sort_by { |a| a.title }.reverse
+    notes = assigns(:notes).sort_by(&:title).reverse
 
     assert_equal 2, notes.length
-    assert_equal [1,13], notes.collect(&:nid)
-    assert_equal [node(:one).title, "Blog post"], notes.collect(&:title)
+    assert_equal [1, 13], notes.collect(&:nid)
+    assert_equal [node(:one).title, 'Blog post'], notes.collect(&:title)
 
     # should be the first node, nid=1
     assert_equal node(:one).title, notes.first.title
-    assert_equal ["spectrometer"], notes.first.tags.collect(&:name)
+    assert_equal ['spectrometer'], notes.first.tags.collect(&:name)
     assert       notes.first.has_tag_without_aliasing('spectrometer')
     assert_false notes.first.has_tag_without_aliasing('spectrometry')
 
     # should be the blog node, nid=13
-    assert_equal "Blog post", notes.last.title
-    assert_equal ["spectrometry"], notes.last.tags.collect(&:name)
+    assert_equal 'Blog post', notes.last.title
+    assert_equal ['spectrometry'], notes.last.tags.collect(&:name)
     assert_false notes.last.has_tag_without_aliasing('spectrometer')
     assert       notes.last.has_tag_without_aliasing('spectrometry')
   end
 
-  test "does not show things tagged with parent tag" do
+  test 'does not show things tagged with parent tag' do
     tag = tags(:spectrometer)
-    tag.parent = "spectrometry"
+    tag.parent = 'spectrometry'
     tag.save
     tag2 = tags(:spectrometry)
-    tag2.parent = ""
+    tag2.parent = ''
     tag2.save
     assert_equal 'spectrometry', tags(:spectrometer).parent
     assert_equal '',             tags(:spectrometry).parent
@@ -353,34 +344,33 @@ class TagControllerTest < ActionController::TestCase
     assert       assigns(:notes).first.has_tag_without_aliasing('spectrometer')
   end
 
-  test "shows suggested tags" do
+  test 'shows suggested tags' do
     get :suggested, id: 'spectr'
 
     assert_equal 4, assigns(:suggestions).length
-    assert_equal ["question:spectrometer","spectrometer","activity:spectrometer","activities:spectrometer"], JSON.parse(response.body)
+    assert_equal ['question:spectrometer', 'spectrometer', 'activity:spectrometer', 'activities:spectrometer'], JSON.parse(response.body)
   end
-  
-  test "should choose I18n for tag controller" do
+
+  test 'should choose I18n for tag controller' do
     available_testing_locales.each do |lang|
       old_controller = @controller
       @controller = SettingsController.new
-      
-      get :change_locale, :locale => lang.to_s
-      
+
+      get :change_locale, locale: lang.to_s
+
       @controller = old_controller
-      
+
       UserSession.create(rusers(:bob))
-      post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
-      post :create, :name => 'mytag', :nid => node(:one).nid, :uid => rusers(:bob)
+      post :create, name: 'mytag', nid: node(:one).nid, uid: rusers(:bob)
+      post :create, name: 'mytag', nid: node(:one).nid, uid: rusers(:bob)
       assert_equal I18n.t('tag_controller.tag_already_exists'), assigns['output']['errors'][0]
     end
   end
-  
-  test "shows embeddable grid of tagged content" do
+
+  test 'shows embeddable grid of tagged content' do
     get :gridsEmbed, tagname: 'spectrometer'
 
     assert_response :success
-    assert_select "table" # ensure a table is shown
+    assert_select 'table' # ensure a table is shown
   end
-
 end

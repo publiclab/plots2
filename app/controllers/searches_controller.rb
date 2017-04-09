@@ -2,7 +2,7 @@ require 'search'
 
 class SearchesController < ApplicationController
   before_filter :set_search_service
-  before_filter :set_search, only: [:show, :update]
+  before_filter :set_search, only: %i[show update]
 
   def index
     @searches = SearchRecord.all

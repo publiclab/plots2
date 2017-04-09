@@ -1,7 +1,7 @@
 class UserTagsController < ApplicationController
   respond_to :html, :xml, :json, :js
   def create
-    tags = %w(skill gear role tool)
+    tags = %w[skill gear role tool]
     @output = {
       errors: [],
       saved: []
