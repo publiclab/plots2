@@ -33,6 +33,7 @@
 //= require leaflet-d3/dist/leaflet-d3
 //= require i18n
 //= require i18n/translations
+//= require MathJax/config/TeX-MML-AM_CHTML.js
 //  APPLICATION SCRIPTS:
 //= require setup.js
 //= require editor.js
