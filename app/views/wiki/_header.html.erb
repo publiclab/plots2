@@ -53,7 +53,7 @@
 
       <% if @node.has_tag('locked') && (current_user ? (current_user.role != "moderator" && current_user.role != "admin") : true) %>
         <li>
-          <a href="/wiki/edit/locked"><i class="fa fa-lock"></i></a>
+          <a href="/wiki/locked"><i class="fa fa-lock"></i></a>
         </li>
       <% else %>
         <li>

@@ -1,18 +1,17 @@
 class MapController < ApplicationController
-
   def index
-    @title = "Maps"
-    @nodes = Node.paginate(:page => params[:page], :per_page => 32)
-                       .order("nid DESC")
-                       .where(type: 'map', status: 1)
+    @title = 'Maps'
+    @nodes = Node.paginate(page: params[:page], per_page: 32)
+                 .order('nid DESC')
+                 .where(type: 'map', status: 1)
 
-    # I'm not sure if this is actually eager loading the tags... 
+    # I'm not sure if this is actually eager loading the tags...
     @maps = Node.joins(:tag)
-                      .where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%')
-                      .uniq
+                .where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%')
+                .uniq
 
     # This is supposed to eager load the url_aliases, and seems to run, but doesn't actually eager load them...?
-    #@maps = Node.select("node.*,url_alias.dst AS dst").joins(:tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').joins("INNER JOIN url_alias ON url_alias.src = CONCAT('node/',node.nid)")
+    # @maps = Node.select("node.*,url_alias.dst AS dst").joins(:tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').joins("INNER JOIN url_alias ON url_alias.src = CONCAT('node/',node.nid)")
   end
 
   def show
@@ -29,28 +28,28 @@ class MapController < ApplicationController
   end
 
   def edit
-    @node = Node.find(params[:id],:conditions => {:type => "map"})
-    if current_user.uid == @node.uid || current_user.role == "admin" 
-      render :template => "map/edit"
+    @node = Node.find(params[:id], conditions: { type: 'map' })
+    if current_user.uid == @node.uid || current_user.role == 'admin'
+      render template: 'map/edit'
     else
-      prompt_login "Only admins can edit maps at this time."
+      prompt_login 'Only admins can edit maps at this time.'
     end
   end
 
   def delete
-    @node = Node.find(params[:id],:conditions => {:type => "map"})
-    if current_user.uid == @node.uid || current_user.role == "admin" 
+    @node = Node.find(params[:id], conditions: { type: 'map' })
+    if current_user.uid == @node.uid || current_user.role == 'admin'
       @node.delete
-      flash[:notice] = "Content deleted."
-      redirect_to "/archive"
+      flash[:notice] = 'Content deleted.'
+      redirect_to '/archive'
     else
-      prompt_login "Only admins can edit maps at this time."
+      prompt_login 'Only admins can edit maps at this time.'
     end
   end
 
   def update
-    @node = Node.find(params[:id],:conditions => {:type => "map"})
-    if current_user.uid == @node.uid || current_user.role == "admin" 
+    @node = Node.find(params[:id], conditions: { type: 'map' })
+    if current_user.uid == @node.uid || current_user.role == 'admin'
 
       @node.title = params[:title]
       @revision = @node.latest
@@ -59,12 +58,12 @@ class MapController < ApplicationController
 
       if params[:tags]
         params[:tags].split(',').each do |tagname|
-          @node.add_tag(tagname,current_user)
+          @node.add_tag(tagname, current_user)
         end
       end
 
       # save main image
-      if params[:main_image] && params[:main_image] != ""
+      if params[:main_image] && params[:main_image] != ''
         img = Image.find params[:main_image]
         unless img.nil?
           img.nid = @node.id
@@ -72,8 +71,8 @@ class MapController < ApplicationController
         end
       end
 
-      @node.add_tag('lat:'+params[:lat],current_user)
-      @node.add_tag('lon:'+params[:lon],current_user)
+      @node.add_tag('lat:' + params[:lat], current_user)
+      @node.add_tag('lon:' + params[:lon], current_user)
 
       map = @node.map
       map.field_publication_date_value    = params[:map][:field_publication_date_value]
@@ -97,53 +96,51 @@ class MapController < ApplicationController
       map.field_zoom_max_value            = params[:map][:field_zoom_max_value]
 
       # need to create/delete these. Maybe best just make a new field, no need to store individual records
-      #@node.drupal_content_field_map_editor
-      #@node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ')
-      # combined record as string: 
+      # @node.drupal_content_field_map_editor
+      # @node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ')
+      # combined record as string:
       map.authorship                      = params[:map][:authorship]
 
       if @node.save && @revision.save && map.save
-        flash[:notice] = "Edits saved."
+        flash[:notice] = 'Edits saved.'
         redirect_to @node.path
       else
-        flash[:error] = "Your edit could not be saved."
-        render :action => :edit
+        flash[:error] = 'Your edit could not be saved.'
+        render action: :edit
       end
     else
-      prompt_login "Only admins can edit maps at this time."
+      prompt_login 'Only admins can edit maps at this time.'
     end
   end
 
   def new
-    if current_user && current_user.role == "admin" 
-      @node = Node.new({:type => "map"})
-      render :template => "map/edit"
+    if current_user && current_user.role == 'admin'
+      @node = Node.new(type: 'map')
+      render template: 'map/edit'
     else
-      prompt_login "Only admins can publish maps at this time."
+      prompt_login 'Only admins can publish maps at this time.'
     end
   end
 
   # must require min_zoom and lat/lon location, and TMS URL
   # solving this by min_zoom default here, but need better solution
   def create
-    if current_user && current_user.role == "admin" 
-      saved,@node,@revision = Node.new_node({
-        :uid => current_user.uid,
-        :title => params[:title],
-        :body => params[:body],
-        :type => "map",
-        :main_image => params[:main_image]
-      })
+    if current_user && current_user.role == 'admin'
+      saved, @node, @revision = Node.new_node(uid: current_user.uid,
+                                              title: params[:title],
+                                              body: params[:body],
+                                              type: 'map',
+                                              main_image: params[:main_image])
 
       if saved
         if params[:tags]
           params[:tags].split(',').each do |tagname|
-            @node.add_tag(tagname,current_user)
+            @node.add_tag(tagname, current_user)
           end
         end
- 
+
         # save main image
-        if params[:main_image] && params[:main_image] != ""
+        if params[:main_image] && params[:main_image] != ''
           img = Image.find params[:main_image]
           unless img.nil?
             img.nid = @node.id
@@ -151,9 +148,9 @@ class MapController < ApplicationController
           end
         end
 
-        @node.add_tag('lat:'+params[:lat],current_user)
-        @node.add_tag('lon:'+params[:lon],current_user)
- 
+        @node.add_tag('lat:' + params[:lat], current_user)
+        @node.add_tag('lon:' + params[:lon], current_user)
+
         map = DrupalContentTypeMap.new
         map.nid = @node.nid
         map.vid = @node.nid
@@ -180,40 +177,39 @@ class MapController < ApplicationController
         map.field_zoom_max_value            = params[:map][:field_zoom_max_value]
 
         # need to create/delete these. Maybe best just make a new field, no need to store individual records
-        #@node.drupal_content_field_map_editor
-        #@node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ')
+        # @node.drupal_content_field_map_editor
+        # @node.drupal_content_field_mappers.collect(&:field_mappers_value).uniq.join(', ')
         map.authorship                      = params[:map][:authorship]
- 
+
         ActiveRecord::Base.transaction do # in case only part of this completes
           if @node.save && @revision.save && map.save
-            flash[:notice] = "Edits saved."
+            flash[:notice] = 'Edits saved.'
             redirect_to @node.path
           else
-            flash[:error] = "Your edit could not be saved."
-            render :action => :edit
+            flash[:error] = 'Your edit could not be saved.'
+            render action: :edit
           end
         end
       else
-        flash[:error] = "Your edit could not be saved."
-        render :template => "map/edit"
+        flash[:error] = 'Your edit could not be saved.'
+        render template: 'map/edit'
       end
     else
-      prompt_login "Only admins can publish maps at this time."
+      prompt_login 'Only admins can publish maps at this time.'
     end
   end
 
   def tag
-    set_sidebar :tags, [params[:id]], {:note_count => 20}
+    set_sidebar :tags, [params[:id]], note_count: 20
 
     @tagnames = params[:id].split(',')
-    nids = Tag.find_nodes_by_type(params[:id],'map',20).collect(&:nid)
+    nids = Tag.find_nodes_by_type(params[:id], 'map', 20).collect(&:nid)
     @notes = Node.paginate(page: params[:page])
-                       .where('nid in (?)', nids)
-                       .order("nid DESC")
+                 .where('nid in (?)', nids)
+                 .order('nid DESC')
 
     @title = @tagnames.join(', ') if @tagnames
     @unpaginated = true
-    render :template => 'tag/show'
+    render template: 'tag/show'
   end
-
 end
