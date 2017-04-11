@@ -1,13 +1,13 @@
 $(document).ready(function() {
 
-  if (window.hasOwnProperty('google')) { 
- 
+  if (window.hasOwnProperty('google')) {
+
     var geo_location = document.getElementById('geo_location');
     var autocomplete = new google.maps.places.Autocomplete(geo_location);
- 
+
     autocomplete.addListener('place_changed', function() {
       var place = autocomplete.getPlace();
- 
+
       var user = $('#infoform').data('user');
       $.ajax({
         url: "/profile/location/create/" + user,
@@ -26,18 +26,18 @@ $(document).ready(function() {
             if (response.location_privacy) {
               var lat = response.location.lat;
               var long = response.location.lon;
- 
+
               L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
                 attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
               }).addTo(mymap);
- 
+
               var marker = L.marker([lat, long]).addTo(mymap);
               marker.bindPopup("<b>" + response.name + "</b>").openPopup();
- 
+
             } else {
               var lat  = parseFloat(response.location.lat).toFixed(4);
               var long = parseFloat(response.location.lon).toFixed(4);
- 
+
               var options = {
                 radius : 20,                            // Size of the hexagons/bins
                 opacity: 0.5,                           // Opacity of the hexagonal layer
@@ -52,14 +52,14 @@ $(document).ready(function() {
                 onmouseout: function(d, node, layer) {},
                 onclick: function(d, node, layer) {}
               }
- 
+
               L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
                 attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
               }).addTo(mymap);
- 
+
               var hexlayer = L.hexbinLayer(options).addTo(mymap);
               hexlayer.colorScale().range(["white", "grey"]);
- 
+
               hexlayer.data([[lat, long]]);
             }
           }
@@ -69,13 +69,13 @@ $(document).ready(function() {
         }
       })
     })
- 
- 
+
+
     $('#location_privacy').click(function(e) {
       e.preventDefault();
       that = this
       var status = $(this).is(':checked')
- 
+
       $.ajax({
         url: '/profile/user/privacy',
         type: 'POST',
@@ -84,22 +84,22 @@ $(document).ready(function() {
           id: $('#infoform').data('user')
         },
         success: function(data) {
- 
+
           if (data.status) {
             $(that).prop('checked', data.model.location_privacy);
             if (data.model.location_privacy) {
               if (data.lat && data.long) {
                 $("#location_map").html("<div class='col-md-8' id='map' style='height: 300px;'></div>");
                 var mymap = new L.map('map').setView([data.lat, data.long], 15);
- 
+
                 L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
                   attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
                 }).addTo(mymap);
- 
+
                 var marker = L.marker([data.lat, data.long]).addTo(mymap);
                 marker.bindPopup("<b>" + data.model.username + "</b>").openPopup();
               }
- 
+
             }
             else {
               if (data.lat && data.long) {
@@ -107,7 +107,7 @@ $(document).ready(function() {
                 var lat = parseFloat(data.lat).toFixed(4);
                 var long = parseFloat(data.long).toFixed(4);
                 var mymap = new L.map('map').setView([lat, long], 15);
- 
+
                 var options = {
                   radius : 20,                            // Size of the hexagons/bins
                   opacity: 0.5,                           // Opacity of the hexagonal layer
@@ -122,25 +122,25 @@ $(document).ready(function() {
                   onmouseout: function(d, node, layer) {},
                   onclick: function(d, node, layer) {}
                 }
- 
+
                 L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png",{
                   attribution: "<a href='http://openstreetmap.org'>OSM</a> tiles by <a href='http://mapbox.com'>MapBox</a>",
                 }).addTo(mymap);
- 
- 
+
+
                 var hexlayer = L.hexbinLayer(options).addTo(mymap);
                 hexlayer.colorScale().range(["white", "grey"]);
- 
+
                 hexlayer.data([[lat, long]]);
               }
- 
+
             }
           }
- 
+
         }
- 
+
       })
- 
+
     });
 
   }
