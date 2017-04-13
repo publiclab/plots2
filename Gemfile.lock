@@ -211,7 +211,7 @@ GEM
       thor (>= 0.14.6, < 2.0)
     rake (10.5.0)
     rb-readline (0.5.3)
-    rdiscount (1.6.8)
+    rdiscount (2.2.0.1)
     rdoc (3.12.2)
       json (~> 1.4)
     recaptcha (4.0.1)
@@ -344,7 +344,7 @@ DEPENDENCIES
   rails_autolink
   rake (~> 10.5.0)
   rb-readline
-  rdiscount (= 1.6.8)
+  rdiscount (~> 2.2, >= 2.2.0.1)
   recaptcha
   rest-client
   rspec
@@ -363,4 +363,4 @@ DEPENDENCIES
   will_paginate-bootstrap (>= 1.0.1)
 
 BUNDLED WITH
-   1.13.7
+   1.14.5

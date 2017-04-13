@@ -56,7 +56,7 @@ end
 
 gem 'composite_primary_keys'
 gem 'jquery-rails'
-gem 'rdiscount', '1.6.8' # Markdown
+gem 'rdiscount', '~> 2.2', '>= 2.2.0.1' # Markdown
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
 gem 'georuby', '2.0'
