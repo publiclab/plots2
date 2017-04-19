@@ -11,11 +11,11 @@ class SwaggerDocTest < ActiveSupport::TestCase
   test 'Swagger doc functionality' do
     get '/api/swagger_doc.json'
     assert last_response.ok?
-    
+
     # Expected swagger doc patter
     pattern = {
-      basePath: "/api",
-      swagger: "2.0",
+      basePath: '/api',
+      swagger: '2.0',
       info: {
         title: String,
         description: String,
@@ -31,6 +31,4 @@ class SwaggerDocTest < ActiveSupport::TestCase
     matcher = JsonExpressions::Matcher.new(pattern)
     assert matcher =~ JSON.parse(last_response.body)
   end
-
 end
-
