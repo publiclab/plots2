@@ -17,7 +17,7 @@ class AnswersControllerTest < ActionController::TestCase
                    body: "Sample answer"
       end
     end
-    assert ActionMailer::Base.deliveries.collect(&:to).includes?('author@email.com')
+    assert ActionMailer::Base.deliveries.collect(&:to).includes?(node(:question).author.email)
     assert_response :success
     assert_not_nil assigns(:answer)
   end
