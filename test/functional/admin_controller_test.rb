@@ -15,7 +15,6 @@ require 'test_helper'
 include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 
 class AdminControllerTest < ActionController::TestCase
-
   def setup
     activate_authlogic
     Timecop.freeze # account for timestamp change
@@ -26,79 +25,79 @@ class AdminControllerTest < ActionController::TestCase
     Timecop.return
   end
 
-  test "admin should promote user role to admin" do
+  test 'admin should promote user role to admin' do
     UserSession.create(rusers(:jeff))
     user = rusers(:bob)
     get :promote_admin, id: user.id
     assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now an admin.", flash[:notice]
-    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+    assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
-  test "admin should promote user role to moderator" do
+  test 'admin should promote user role to moderator' do
     UserSession.create(rusers(:jeff))
     user = rusers(:bob)
     get :promote_moderator, id: user.id
     assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now a moderator.", flash[:notice]
-    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+    assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
-  test "moderator should promote user role to moderator" do
+  test 'moderator should promote user role to moderator' do
     UserSession.create(rusers(:moderator))
     user = rusers(:jeff)
     get :promote_moderator, id: user.id
     assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now a moderator.", flash[:notice]
-    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+    assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
-  test "user should not promote other user role to moderator" do
+  test 'user should not promote other user role to moderator' do
     UserSession.create(rusers(:bob))
     user = rusers(:jeff)
     get :promote_moderator, id: user.id
-    assert_equal "Only moderators can promote other users.", flash[:error]
-    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+    assert_equal 'Only moderators can promote other users.', flash[:error]
+    assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
-  test "user should not promote other user role to admin" do
+  test 'user should not promote other user role to admin' do
     UserSession.create(rusers(:bob))
     user = rusers(:moderator)
     get :promote_admin, id: user.id
-    assert_equal "Only admins can promote other users to admins.", flash[:error]
-    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+    assert_equal 'Only admins can promote other users to admins.', flash[:error]
+    assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
-  test "admin should demote moderator role to basic" do
+  test 'admin should demote moderator role to basic' do
     UserSession.create(rusers(:admin))
     user = rusers(:moderator)
     get :demote_basic, id: user.id
     assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is no longer a moderator.", flash[:notice]
-    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+    assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
-  test "user should not demote other moderator role to basic" do
+  test 'user should not demote other moderator role to basic' do
     UserSession.create(rusers(:bob))
     user = rusers(:moderator)
     get :demote_basic, id: user.id
-    assert_equal "Only admins and moderators can demote other users.", flash[:error]
-    assert_redirected_to "/profile/" + user.username + "?_=" + Time.now.to_i.to_s
+    assert_equal 'Only admins and moderators can demote other users.', flash[:error]
+    assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
-  test "non-registered user should not be able to see spam page" do
+  test 'non-registered user should not be able to see spam page' do
     get :spam
 
-    assert_equal "You must be logged in to access this page", flash[:warning]
-    assert_redirected_to "/login"
+    assert_equal 'You must be logged in to access this page', flash[:warning]
+    assert_redirected_to '/login'
   end
 
-  test "normal user should not be able to see spam page" do
+  test 'normal user should not be able to see spam page' do
     UserSession.create(rusers(:bob))
 
     get :spam
 
-    assert_equal "Only moderators can moderate posts.", flash[:error]
-    assert_redirected_to "/dashboard"
+    assert_equal 'Only moderators can moderate posts.', flash[:error]
+    assert_redirected_to '/dashboard'
   end
 
-  test "moderator user should be able to see spam page" do
+  test 'moderator user should be able to see spam page' do
     UserSession.create(rusers(:moderator))
 
     get :spam
@@ -107,7 +106,7 @@ class AdminControllerTest < ActionController::TestCase
     assert_not_nil assigns(:nodes)
   end
 
-  test "admin user should be able to see spam page" do
+  test 'admin user should be able to see spam page' do
     UserSession.create(rusers(:admin))
 
     get :spam
@@ -116,30 +115,30 @@ class AdminControllerTest < ActionController::TestCase
     assert_not_nil assigns(:nodes)
   end
 
-  test "non-registered user should not be able to mark a node as spam" do
+  test 'non-registered user should not be able to mark a node as spam' do
     UserSession.create(rusers(:bob))
     UserSession.find.destroy
 
     get :mark_spam, id: node(:one).id
 
-    assert_equal "Only moderators can moderate posts.", flash[:error]
+    assert_equal 'Only moderators can moderate posts.', flash[:error]
     node = assigns(:node)
     assert_equal 1, node.status
     assert_redirected_to node.path
   end
 
-  test "normal user should not be able to mark a node as spam" do
+  test 'normal user should not be able to mark a node as spam' do
     UserSession.create(rusers(:bob))
 
     get :mark_spam, id: node(:one).id
 
-    assert_equal "Only moderators can moderate posts.", flash[:error]
+    assert_equal 'Only moderators can moderate posts.', flash[:error]
     node = assigns(:node)
     assert_equal 1, node.status
     assert_redirected_to node.path
   end
 
-  test "moderator user should be able to mark a node as spam" do
+  test 'moderator user should be able to mark a node as spam' do
     UserSession.create(rusers(:moderator))
     node = node(:spam).publish
 
@@ -149,17 +148,17 @@ class AdminControllerTest < ActionController::TestCase
     node = assigns(:node)
     assert_equal 0, node.status
     assert_equal 0, node.author.status
-    assert_redirected_to "/dashboard"
+    assert_redirected_to '/dashboard'
 
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
     assert_not_nil email.bcc
     assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
     # title same as initial for email client threading
-    assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
+    assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
   end
 
-  test "admin user should be able to mark a node as spam" do
+  test 'admin user should be able to mark a node as spam' do
     UserSession.create(rusers(:admin))
     node = node(:spam).publish
 
@@ -169,14 +168,14 @@ class AdminControllerTest < ActionController::TestCase
     node = assigns(:node)
     assert_equal 0, node.status
     assert_equal 0, node.author.status
-    assert_redirected_to "/dashboard"
+    assert_redirected_to '/dashboard'
 
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
     assert_not_nil email.bcc
     assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
     # title same as initial for email client threading
-    assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
+    assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
   end
 
   test "admin user should not be able to mark a node as spam if it's already spammed" do
@@ -187,17 +186,17 @@ class AdminControllerTest < ActionController::TestCase
 
     assert_equal "Item already marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
     assert_equal 0, node(:spam).status
-    assert_redirected_to "/dashboard"
+    assert_redirected_to '/dashboard'
   end
 
-  test "normal user should not be able to unspam a note" do
+  test 'normal user should not be able to unspam a note' do
     UserSession.create(rusers(:bob))
 
     get :publish, id: node(:spam).id
 
-    assert_equal "Only moderators can publish posts.", flash[:error]
+    assert_equal 'Only moderators can publish posts.', flash[:error]
     assert_equal 0, node(:spam).status
-    assert_redirected_to "/dashboard"
+    assert_redirected_to '/dashboard'
   end
 
   test "moderator user should be able to publish a moderated first timer's note" do
@@ -214,24 +213,24 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 1, node.author.status
     assert_redirected_to node.path
 
-#    assert_equal 2 + node.subscribers.length, ActionMailer::Base.deliveries.length
+    #    assert_equal 2 + node.subscribers.length, ActionMailer::Base.deliveries.length
 
     # emails are currently in this order, but we should make tests order-independent
 
     # test the author notification
     email = ActionMailer::Base.deliveries.first
-    assert_equal "[Public Lab] Your post was approved!", email.subject
+    assert_equal '[Public Lab] Your post was approved!', email.subject
     assert_equal [node.author.mail], email.to
 
     # test the moderator notification
     email = ActionMailer::Base.deliveries[1]
-    assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
+    assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
     assert_equal ["moderators@#{request_host}"], email.to
 
     # test general subscription notices
     # (we test the final one, but there are many)
     email = ActionMailer::Base.deliveries.last
-    assert_equal "[PublicLab] " + node.title, email.subject
+    assert_equal '[PublicLab] ' + node.title, email.subject
   end
 
   test "moderator user should not be able to publish a note if it's already published" do
@@ -241,57 +240,57 @@ class AdminControllerTest < ActionController::TestCase
 
     get :publish, id: node.id
 
-    assert_equal "Item already published.", flash[:notice]
+    assert_equal 'Item already published.', flash[:notice]
     assert_equal 1, node.status
     assert_redirected_to node.path
   end
 
-  test "moderator user should be able to unspam a note" do
+  test 'moderator user should be able to unspam a note' do
     UserSession.create(rusers(:moderator))
     node = node(:spam)
     assert_equal 0, node.status
 
     get :publish, id: node.id
 
-    assert_equal "Item published.", flash[:notice]
+    assert_equal 'Item published.', flash[:notice]
     node = assigns(:node)
     assert_equal 1, node.status
     assert_equal 1, node.author.status
     assert_redirected_to node.path
   end
 
-  test "admin user should be able to unspam a note" do
+  test 'admin user should be able to unspam a note' do
     UserSession.create(rusers(:admin))
 
     get :publish, id: node(:spam).id
 
-    assert_equal "Item published.", flash[:notice]
+    assert_equal 'Item published.', flash[:notice]
     node = assigns(:node)
     assert_equal 1, node.status
     assert_equal 1, node.author.status
     assert_redirected_to node.path
   end
 
-  test "non-registered user should not be able to see spam_revisions page" do
+  test 'non-registered user should not be able to see spam_revisions page' do
     UserSession.create(rusers(:admin))
     UserSession.find.destroy
 
     get :spam_revisions
 
-    assert_equal "You must be logged in to access this page", flash[:warning]
-    assert_redirected_to "/login"
+    assert_equal 'You must be logged in to access this page', flash[:warning]
+    assert_redirected_to '/login'
   end
 
-  test "normal user should not be able to see spam_revisions page" do
+  test 'normal user should not be able to see spam_revisions page' do
     UserSession.create(rusers(:bob))
 
     get :spam_revisions
 
-    assert_equal "Only moderators can moderate revisions.", flash[:error]
-    assert_redirected_to "/dashboard"
+    assert_equal 'Only moderators can moderate revisions.', flash[:error]
+    assert_redirected_to '/dashboard'
   end
 
-  test "moderator user should be able to see spam_revisions page" do
+  test 'moderator user should be able to see spam_revisions page' do
     UserSession.create(rusers(:moderator))
 
     get :spam_revisions
@@ -300,7 +299,7 @@ class AdminControllerTest < ActionController::TestCase
     assert_not_nil assigns(:revisions)
   end
 
-  test "admin user should be able to see spam_revisions page" do
+  test 'admin user should be able to see spam_revisions page' do
     UserSession.create(rusers(:admin))
 
     get :spam_revisions
@@ -309,7 +308,7 @@ class AdminControllerTest < ActionController::TestCase
     assert_not_nil assigns(:revisions)
   end
 
-  test "admin user should be able to spam a revision" do
+  test 'admin user should be able to spam a revision' do
     UserSession.create(rusers(:admin))
     revision = node_revisions(:unmoderated_spam_revision)
     assert_equal node(:spam_targeted_page).latest.vid, revision.vid
@@ -321,10 +320,10 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 0, revision.status
     assert_equal 0, revision.author.status
     assert_not_equal node(:spam_targeted_page).latest.vid, revision.vid
-    assert_redirected_to "/wiki/revisions/" + revision.drupal_node.slug_from_path + '?_=' + Time.now.to_i.to_s
+    assert_redirected_to '/wiki/revisions/' + revision.node.slug_from_path + '?_=' + Time.now.to_i.to_s
   end
 
-  test "admin user should be able to republish a revision" do
+  test 'admin user should be able to republish a revision' do
     UserSession.create(rusers(:admin))
     revision = node_revisions(:unmoderated_spam_revision)
     assert_equal node(:spam_targeted_page).latest.vid, revision.vid
@@ -333,7 +332,7 @@ class AdminControllerTest < ActionController::TestCase
 
     get :publish_revision, vid: revision.vid
 
-    assert_equal "Item published.", flash[:notice]
+    assert_equal 'Item published.', flash[:notice]
     revision = assigns(:revision)
     assert_equal 1, revision.status
     assert_equal 1, revision.author.status
@@ -341,7 +340,7 @@ class AdminControllerTest < ActionController::TestCase
     assert_redirected_to revision.parent.path
   end
 
-  test "first-timer moderated note (status=4) can be spammed by moderator with notice and emails" do
+  test 'first-timer moderated note (status=4) can be spammed by moderator with notice and emails' do
     UserSession.create(rusers(:admin))
     node = node(:first_timer_note)
     ActionMailer::Base.deliveries.clear
@@ -357,18 +356,18 @@ class AdminControllerTest < ActionController::TestCase
 
     # test the moderator notification
     email = ActionMailer::Base.deliveries.last
-    assert_equal "[New Public Lab poster needs moderation] " + node.title, email.subject
+    assert_equal '[New Public Lab poster needs moderation] ' + node.title, email.subject
     assert_equal ["moderators@#{request_host}"], email.to
     assert_not_nil email.bcc
   end
 
-  test "should not get /admin/queue if not logged in" do
+  test 'should not get /admin/queue if not logged in' do
     get :queue
 
     assert_redirected_to '/dashboard'
   end
 
-  test "should get /admin/queue if moderator" do
+  test 'should get /admin/queue if moderator' do
     UserSession.create(rusers(:moderator))
     get :queue
 
@@ -376,7 +375,7 @@ class AdminControllerTest < ActionController::TestCase
     assert_not_nil :notes
   end
 
-  test "first timer question should redirect to question path when approved by admin" do
+  test 'first timer question should redirect to question path when approved by admin' do
     UserSession.create(rusers(:admin))
     node = node(:first_timer_question)
     assert_equal 4, node.status
@@ -389,5 +388,4 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 1, node.author.status
     assert_redirected_to node.path(:question)
   end
-
 end

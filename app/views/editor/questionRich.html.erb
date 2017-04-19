@@ -1,0 +1,170 @@
+<link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
+<link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
+<link href="/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
+<link href="/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
+
+<link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
+
+<script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
+
+<div class="pl-editor">
+
+  <div class="ple-header">
+
+    <h1>Ask a question of the PublicLab community</h1>
+  </div>
+      <div class="ple-module container">
+    <!-- title module -->
+    <div class="ple-module-guide col-md-2">
+      </div>
+      <div class="ple-module-title col-md-1"><h3>Title</h3></div>
+      <div class="ple-module-content col-md-9">
+        <input class="form-control input-lg" type="text" placeholder="What's your topic question? Be specific." value="<%= if @node then @node.title else params[:title] end %>" />
+      </div>    
+    <!-- end title module -->
+      <div class="row"></div>
+
+  <div class="ple-content">
+
+    <!-- body module -->
+
+      <div class="ple-module-guide col-md-3">
+      </div>
+
+      <div class="col-md-9 container">
+        <textarea id="text-input" class="ple-textarea form-control" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;Share some background information. You may upload an image if you need."><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
+      </div>
+      <div class="row"></div>
+      <br/>
+      <div class="row">
+        <div class="ple-module-guide col-md-3">
+        </div>
+        <div class="col-md-9 container">
+          Consider sharing:
+          <ul style="list-style-type:disk ;">
+            <li>Where you are working</li>
+            <li>Why you are interested</li>
+            <li>What resources you need</li>
+          </ul>
+        </div>
+      </div>
+
+    <!-- end body module -->
+
+
+    <!-- tags module -->
+      <div class="row"></div>
+
+      <div class="ple-module-guide col-md-3">
+      </div>
+
+      <div class="ple-module-content col-md-9">
+        <input class="form-control input-lg" type="text" placeholder="Type some keywords related to your question (i.e. water, lead)" value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
+      </div>
+    <!-- end tags module -->
+
+      <!--button module-->
+      <div class="row"></div>
+      <br/>
+
+      <div class="ple-module-guide col-md-3">
+      </div>
+
+      <div class="ple-module-content col-md-9">
+
+       <a id="ask" tabindex="5" class="btn btn-primary btn-lg">Ask</a>&nbsp;&nbsp;
+      <a tabindex="6" href="https://publiclab.org/wiki/questions">Help</a>
+          </div>
+      </div>
+      
+    <!-- multi module -->
+    <!--
+    <div class="ple-module-multi ple-module container">
+
+      <div class="ple-module-guide col-md-3">
+        <p>Extras</p>
+      </div>
+
+      <div class="ple-module-content col-md-9">
+
+        <div class="btn-group">
+          <a class="btn btn-lg btn-default">
+            <i class="fa fa-comment-o"></i> Invite responses <i class="fa fa-caret-down"></i>
+          </a>
+          <a class="btn btn-lg btn-default">
+            <i class="fa fa-envelope-o"></i> Event <i class="fa fa-caret-down"></i>
+          </a>
+          <a class="btn btn-lg btn-default">
+            <i class="fa fa-map-o"></i> Map
+          </a>
+          <a class="btn btn-lg btn-default">
+            <i class="fa fa-line-chart"></i> Chart
+          </a>
+          <a class="btn btn-lg btn-default">
+            More <i class="fa fa-caret-down"></i>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+    -->
+    <!-- end multi module -->
+  
+
+  </div>
+
+
+<script>
+
+  var editor;
+
+  (function() {
+
+    editor = new PL.Editor({
+      textarea:    $('.ple-textarea')[0],
+      <% if @main_image %>
+        mainImageUrl:   '<%= @main_image %>',
+      <% end %>
+      <% if params[:action] == 'edit' %>
+        destination: '/notes/update/<%= @node.id %>?rich=true',
+      <% else %>
+        destination: '/notes/create?rich=true',
+      <% end %>
+      <% if params[:redirect] == 'question' %>
+        redirect: 'redirect',
+      <% end %>
+      <% if (@node && @node.errors.size > 0) || (@revision && @revision.errors.size > 0) %>
+        errors: <%=raw (@node.errors.to_h.merge(@revision.errors.to_h)).to_json %>,
+      <% end %>
+      format:      'publiclab',
+      publishCallback: function publishCallback(response) {
+        // parse and display errors!
+        if (typeof response === "string") {
+          window.location = response;
+        } else if (response && Object.keys(response).length > 0) {
+          $('.ple-errors').html('<div class="alert alert-danger"></div>');
+          Object.keys(response).forEach(function(key, i) {
+            $('.ple-errors .alert').append('<p><b>' + key + '</b> </p>');
+            $('.ple-errors .alert p:last').append(response[key].join(', '));
+          });
+          window.scroll(0, 0);
+        }
+      },
+      mainImageModule: {
+        uid: <%= current_user.id %><% if @node && @node.id %>,
+        nid: <%= @node.id %><% end %>
+      },
+      richTextModule: {
+        authorsAutocomplete: false,
+        tagsAutocomplete: false,
+        formats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json']
+      },
+      titleModule: {
+        suggestRelated: false
+      }
+    });
+
+  })();
+
+</script>

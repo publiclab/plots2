@@ -25,7 +25,7 @@
     <div class="wiki" data-index="<%= index %>">
       <p>
         <small style="color:#888;">
-          <% if wiki.is_a?(DrupalNode) %>
+          <% if wiki.is_a?(Node) %>
             <i class="fa fa-book"></i>
             <%= t('dashboard._wiki.new_page_by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a>
           <% else %>
@@ -44,7 +44,7 @@
 
       <h4>
         <a href="<%= wiki.path %>">
-          <% if wiki.is_a?(DrupalNode) %>
+          <% if wiki.is_a?(Node) %>
             <%= wiki.latest.title %>
           <% else %>
             <%= wiki.parent.latest.title %>

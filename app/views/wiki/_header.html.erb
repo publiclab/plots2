@@ -53,7 +53,7 @@
 
       <% if @node.has_tag('locked') && (current_user ? (current_user.role != "moderator" && current_user.role != "admin") : true) %>
         <li>
-          <a href="/wiki/edit/locked"><i class="fa fa-lock"></i></a>
+          <a href="/wiki/locked"><i class="fa fa-lock"></i></a>
         </li>
       <% else %>
         <li>
@@ -94,7 +94,7 @@
 <br />
 
 <% if @node.has_power_tag('parent') %>
-  <% parent = DrupalNode.find_by_path("wiki/" + @node.power_tag('parent')) %>
+  <% parent = Node.find_by_path("wiki/" + @node.power_tag('parent')) %>
   <% if parent %>
   <div class="alert alert-success" style="border-color:#eee;background:#f8f8f8;color:#aaa;">&laquo; <%= raw t('wiki.show.back_to_wiki', :url1 => parent.path, :title => parent.latest.title) %></a></div>
   <% end %>

@@ -2,31 +2,30 @@ class DrupalFile < ActiveRecord::Base
   self.table_name = 'files'
   self.primary_key = 'fid'
 
-  belongs_to :drupal_node, :foreign_key => 'nid', :dependent => :destroy
+  belongs_to :node, foreign_key: 'nid', dependent: :destroy
 
   def filetype
-    self.filename[-3..self.filename.length].downcase
+    filename[-3..filename.length].downcase
   end
 
   def is_image?
-    (self.filetype == "jpg" || self.filetype == "jpeg" || self.filetype == "gif" || self.filetype == "png") 
+    (filetype == 'jpg' || filetype == 'jpeg' || filetype == 'gif' || filetype == 'png')
   end
 
   # swap legacy Drupal static routes
   def path(size = :default)
-    if self.is_image?
+    if is_image?
       if size == :thumb
-        "/#{self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/thumb/')}"
+        "/#{filepath.gsub('sites/default/files/', 'sites/default/files/imagecache/thumb/')}"
       elsif size == :default
-        "/#{self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')}"
+        "/#{filepath.gsub('sites/default/files/', 'sites/default/files/imagecache/default/')}"
       elsif size == :large
-        "/#{self.filepath.gsub('sites/default/files/','sites/default/files/imagecache/default/')}"
+        "/#{filepath.gsub('sites/default/files/', 'sites/default/files/imagecache/default/')}"
       elsif size == :original
-        "/#{self.filepath}"
+        "/#{filepath}"
       end
     else
-      "/#{self.filepath}"
+      "/#{filepath}"
     end
   end
-
 end

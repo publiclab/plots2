@@ -1,9 +1,9 @@
 class AddCommentsCountToDrupalNode < ActiveRecord::Migration
   def up
     add_column :node, :drupal_comments_count, :integer, default: 0
-    DrupalNode.reset_column_information
-    DrupalNode.all.each do |node|
-      DrupalNode.reset_counters(node.id, :drupal_comments)
+    Node.reset_column_information
+    Node.all.each do |node|
+      Node.reset_counters(node.id, :drupal_comments)
     end
   end
 

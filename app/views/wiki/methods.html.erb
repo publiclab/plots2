@@ -3,7 +3,6 @@
 <style>
   h2 {
     text-align: center;
-    margin-bottom: 0;
     padding-top: 20px;
   }
   #topics {
@@ -27,7 +26,7 @@
     <div class="col-md-6">
       <div id="topics">
         <% @topics.each do |topic| %>
-          <div><a href="/methods/<%= topic %>"><%= topic %></a></div>
+          <div><a data-topic="<%= topic %>" href="/methods/<%= topic %>"><%= topic %></a></div>
         <% end %>
       </div>
     </div>
@@ -51,7 +50,12 @@
         <p style="text-align:center;padding:10px;">No methods yet shared for this topic; <a href="">Reach out for help</a> or <a href="">learn how to share a relevant method</a>.</p>
       <% end %>
     <% else %>
-      <h2>Recently updated</h2>
+      <h2 class="recent">
+        <span class="no-results" style="display:none;text-align:center;">No matches / </span>
+        Recently updated
+      </h2>
+      <h2 class="related" style="display:none;">Related to "<span class="topic-title"></span>"</h2>
+      <%= render partial: "notes/notes", locals: { notes: @nodes } %>
     <% end %>
   </div>
   <hr />

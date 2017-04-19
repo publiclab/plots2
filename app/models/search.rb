@@ -5,8 +5,7 @@ class Search < ActiveRecord::Base
   attr_accessible :key_words, :title, :main_type, :note_type, :min_date, :created_by,
                   :language, :max_date
 
-  def initialize
-  end
+  def initialize; end
 
   def date_i(date_param)
     Date.strptime(date_param, '%d-%m-%Y').to_time.to_i
@@ -17,12 +16,12 @@ class Search < ActiveRecord::Base
   end
 
   def notes(month)
-    solr_search = DrupalNode.search do
-      fulltext self.key_words
+    solr_search = Node.search do
+      fulltext key_words
       with(:updated_at).less_than(Time.zone.now)
       facet(:updated_month)
       with(:updated_month, month) if month.present?
-      paginate :page => 1, :per_page => 10
+      paginate page: 1, per_page: 10
     end
   end
 
@@ -33,7 +32,7 @@ class Search < ActiveRecord::Base
   private
 
   def find_nodes
-    DrupalNode.find(:all, :conditions => conditions)
+    Node.find(:all, conditions: conditions)
   end
 
   def keyword_conditions
@@ -58,7 +57,7 @@ class Search < ActiveRecord::Base
   end
 
   def conditions_clauses
-    conditions_parts.map { |condition| condition.first }
+    conditions_parts.map(&:first)
   end
 
   def conditions_options

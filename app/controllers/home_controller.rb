@@ -1,30 +1,29 @@
 class HomeController < ApplicationController
+  before_filter :require_user, only: %i[subscriptions nearby]
 
-  before_filter :require_user, :only => [:subscriptions, :nearby]
-
-  #caches_action :index, :cache_path => proc { |c|
-  #  node = DrupalNode.find :last #c.params[:id]
+  # caches_action :index, :cache_path => proc { |c|
+  #  node = Node.find :last #c.params[:id]
   #  { :n => node.updated_at.to_i }
-  #end
+  # end
 
-  #caches_action :index, :cache_path => { :last => DrupalNode.find(:last).updated_at.to_i }
+  # caches_action :index, :cache_path => { :last => Node.find(:last).updated_at.to_i }
 
   def home
     @title = I18n.t('home_controller.science_community')
     if current_user
-      redirect_to "/dashboard"
+      redirect_to '/dashboard'
     else
-      render :template => "home/home"
+      render template: 'home/home'
     end
   end
 
   # proxy to enable AJAX loading of RSS feeds, which requires same-origin
   def fetch
-    if true #Rails.env.production?
-      if params[:url][0..24] == "https://groups.google.com" || params[:url] == "https://feeds.feedburner.com/rssmixer/ZvcX"
+    if true # Rails.env.production?
+      if params[:url][0..24] == 'https://groups.google.com' || params[:url] == 'https://feeds.feedburner.com/rssmixer/ZvcX'
         url = URI.parse(params[:url])
         result = Net::HTTP.get_response(url)
-        send_data result.body, :type => result.content_type, :disposition => 'inline'
+        send_data result.body, type: result.content_type, disposition: 'inline'
       end
     else
       redirect_to params[:url]
@@ -34,7 +33,7 @@ class HomeController < ApplicationController
   # route for seeing the front page even if you are logged in
   def front
     @title = I18n.t('home_controller.environmental_investigation')
-    render :template => "home/home"
+    render template: 'home/home'
   end
 
   def dashboard2
@@ -42,27 +41,27 @@ class HomeController < ApplicationController
   end
 
   def dashboard
-    @note_count = DrupalNode.select([:created, :type, :status])
-                            .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-                            .count
+    @note_count = Node.select(%i[created type status])
+                      .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                      .count
     @wiki_count = DrupalNodeRevision.select(:timestamp)
                                     .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                                     .count
     @blog = Tag.find_nodes_by_type('blog', 'note', 1).first
     # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
-    hidden_nids = DrupalNode.joins(:drupal_node_community_tag)
-                            .joins("LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid")
-                            .select('node.*, term_data.*, community_tags.*')
-                            .where(type: 'note', status: 1)
-                            .where('term_data.name = (?)', 'hidden:response')
-                            .collect(&:nid)
-    @notes = DrupalNode.where(type: 'note')
-                       .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
-                       .order('nid DESC')
-                       .page(params[:page])
+    hidden_nids = Node.joins(:drupal_node_community_tag)
+                      .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
+                      .select('node.*, term_data.*, community_tags.*')
+                      .where(type: 'note', status: 1)
+                      .where('term_data.name = (?)', 'hidden:response')
+                      .collect(&:nid)
+    @notes = Node.where(type: 'note')
+                 .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
+                 .order('nid DESC')
+                 .page(params[:page])
     @notes = @notes.where('nid != (?)', @blog.nid) if @blog
 
-    if current_user && (current_user.role == "moderator" || current_user.role == "admin")
+    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       @notes = @notes.where('(node.status = 1 OR node.status = 4)')
     elsif current_user
       @notes = @notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
@@ -71,37 +70,37 @@ class HomeController < ApplicationController
     end
 
     # include revisions, then mix with new pages:
-    @wikis = DrupalNode.where(type: 'page', status: 1)
-                       .order('nid DESC')
-                       .limit(10)
-    revisions = DrupalNodeRevision.joins(:drupal_node)
-                                .order('timestamp DESC')
-                                .where('type = (?)', 'page')
-                                .where('node.status = 1')
-                                .where('node_revisions.status = 1')
-                                .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
-                                .limit(10)
-                                .group('node.title')
+    @wikis = Node.where(type: 'page', status: 1)
+                 .order('nid DESC')
+                 .limit(10)
+    revisions = DrupalNodeRevision.joins(:node)
+                                  .order('timestamp DESC')
+                                  .where('type = (?)', 'page')
+                                  .where('node.status = 1')
+                                  .where('node_revisions.status = 1')
+                                  .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
+                                  .limit(10)
+                                  .group('node.title')
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
-    revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
-    @wikis = @wikis + revisions
-    @wikis = @wikis.sort_by { |a| a.created_at }.reverse
-    @comments = Comment.joins(:drupal_node, :drupal_users)
-                             .order('timestamp DESC')
-                             .where('timestamp - node.created > ?', 86400) # don't report edits within 1 day of page creation
-                             .limit(20)
-                             .group('title') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
-#                            .where('comments.status = (?)', 1)
+    revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
+    @wikis += revisions
+    @wikis = @wikis.sort_by(&:created_at).reverse
+    @comments = Comment.joins(:node, :drupal_users)
+                       .order('timestamp DESC')
+                       .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
+                       .limit(20)
+                       .group('title') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
+    #                            .where('comments.status = (?)', 1)
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
-    @comments = @comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
+    @comments = @comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     @answer_comments = Comment.joins(:answer, :drupal_users)
-                             .order('timestamp DESC')
-                             .where('timestamp - answers.created_at > ?', 86400)
-                             .limit(20)
-                             .group('answers.id')
-    @answer_comments = @answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == "production"
-    @activity = (@notes + @wikis + @comments + @answer_comments).sort_by { |a| a.created_at }.reverse
-    @user_note_count = DrupalNode.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
+                              .order('timestamp DESC')
+                              .where('timestamp - answers.created_at > ?', 86_400)
+                              .limit(20)
+                              .group('answers.id')
+    @answer_comments = @answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
+    @activity = (@notes + @wikis + @comments + @answer_comments).sort_by(&:created_at).reverse
+    @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
     render template: 'dashboard/dashboard'
     @title = I18n.t('home_controller.community_research') unless current_user
   end
@@ -115,8 +114,7 @@ class HomeController < ApplicationController
       maxlat = current_user.lat + dist
       minlon = current_user.lon - dist
       maxlon = current_user.lon + dist
-      @users = DrupalUsers.where("lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?", minlat, maxlat, minlon, maxlon)
+      @users = DrupalUsers.where('lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?', minlat, maxlat, minlon, maxlon)
     end
   end
-
 end

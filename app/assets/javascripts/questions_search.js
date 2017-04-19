@@ -2,9 +2,8 @@
 // To be removed or modified accordingly by Advanced Search Project
 
 jQuery(document).ready(function(){
-
-	$('.typeahead.dropdown-menu li').addClass('col-xs-12');
-	$('#questions_searchform_input').submit(function(e){ 
+  $('.typeahead.dropdown-menu li').addClass('col-xs-12');
+  $('#questions_searchform_input').submit(function(e){ 
     e.preventDefault()
     window.location = '/questions_search/' + $('#questions_searchform_input').val()
   })

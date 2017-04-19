@@ -52,7 +52,7 @@ class ConsolidateTags < ActiveRecord::Migration
       puts "node_tags:"
       puts ntags.size
       ntags.each do |nt|
-        node = DrupalNode.find(nt[0])
+        node = Node.find(nt[0])
         if nt[2].nil? || nt[0].nil? || (node && node.status == 0)
           # nt - [nid, vid, tid]
           tag = Tag.find(nt[2])

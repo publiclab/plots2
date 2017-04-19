@@ -1,0 +1,117 @@
+.question-show h1 .question {
+  color: #aaa;
+  font-style: italic;
+}
+.question-show .question + a {
+  text-decoration: none;
+}
+
+.question-show .inline {
+  display: inline-block;
+}
+
+.question-show .inline img.img-circle {
+  vertical-align: baseline;
+  width: 35px;
+  margin-right: 6px;
+}
+
+.question-show .inline div.img-circle {
+  vertical-align: middle;
+  height: 35px;
+  width: 35px;
+  margin-right: 6px;
+  background: #ccc;
+}
+
+#questions_searchform .dropdown-menu {
+  width: 95%;
+}
+
+.answer p img {
+  max-width:100%;
+}
+
+.answer-accept {
+  font-weight: bold;
+}
+
+.answer-accept.btn-success {
+  color: #fff;
+}
+
+.accepted {
+  background: #76e276;
+}
+
+.user-answer {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  padding: 10px;
+  display:none;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+table th a {
+  color: #333;
+  text-decoration: underline;
+}
+
+table th a:hover {
+  color: #aaa;
+}
+
+.expandingArea {
+  position: relative;
+  margin-top: 2px;
+  border: 1px solid #ccc;
+  border-radius: 4px; 
+  background: #fff;
+}
+.expandingArea > textarea,
+.expandingArea > pre {
+  padding: 6px 12px;
+  background: transparent;
+  border: 0;
+  /* Make the text soft-wrap */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.expandingArea > textarea {
+  /* The border-box box model is used to allow
+   * padding whilst still keeping the overall width
+   * at exactly that of the containing element.
+   */
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+}
+.expandingArea.active > textarea {
+  /* Hide any scrollbars */
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  /* Remove WebKit user-resize widget */
+  resize: none;
+}
+.expandingArea > pre {
+  display: none;
+}
+.expandingArea.active > pre {
+  display: block;
+  /* Hide the text; just using it for sizing */
+  visibility: hidden;
+}
+
+.question-show textarea, 
+.question-show pre {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  border: 0;
+}

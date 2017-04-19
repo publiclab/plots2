@@ -7,12 +7,12 @@ class RestfulSearchTest < ActiveSupport::TestCase
     Rails.application
   end
 
-  #def setup
+  # def setup
   #  @stxt = 'l'
   #  @sprofile = 'a'
   #  @stags = 'lon:24.484315929497463'
   #  @sseq = 7
-  #end
+  # end
 
   test 'returns a list of results from search all functionality' do
     get '/api/srch/all?srchString=l&seq=7'
@@ -29,7 +29,6 @@ class RestfulSearchTest < ActiveSupport::TestCase
 
     assert matcher =~ JSON.parse(last_response.body)
   end
-
 
   test 'returns results from search profile functionality' do
     get '/api/srch/profiles?srchString=a&seq=7'
@@ -49,7 +48,6 @@ class RestfulSearchTest < ActiveSupport::TestCase
     assert matcher =~ JSON.parse(last_response.body)
   end
 
-
   test 'returns result from search notes functionality' do
     get '/api/srch/notes?srchString=l&seq=7'
     assert last_response.ok?
@@ -67,7 +65,6 @@ class RestfulSearchTest < ActiveSupport::TestCase
     assert matcher =~ JSON.parse(last_response.body)
   end
 
-
   test 'returns results from search questions functionality' do
     get '/api/srch/questions?srchString=l&seq=7'
     assert last_response.ok?
@@ -84,7 +81,6 @@ class RestfulSearchTest < ActiveSupport::TestCase
 
     assert matcher =~ JSON.parse(last_response.body)
   end
-
 
   test 'returns results from search tags functionality' do
     get '/api/srch/tags?srchString=lon:24.484315929497463&seq=7'
@@ -104,7 +100,6 @@ class RestfulSearchTest < ActiveSupport::TestCase
     assert matcher =~ JSON.parse(last_response.body)
   end
 
-
   test 'returns results from typeahead search functionality' do
     get '/api/typeahead/all?srchString=use&seq=21'
     assert last_response.ok?
@@ -122,5 +117,4 @@ class RestfulSearchTest < ActiveSupport::TestCase
 
     assert matcher =~ JSON.parse(last_response.body)
   end
-
 end

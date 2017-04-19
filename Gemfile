@@ -1,11 +1,9 @@
 source 'https://rubygems.org'
 
-ruby '2.1.2'
 gem 'rails', '~> 3.2.20'
 gem 'passenger'
 
 gem 'rails-i18n', '~> 3.0.0'
-
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
   gem 'mysql2', '~> 0.3.20'
@@ -58,7 +56,7 @@ end
 
 gem 'composite_primary_keys'
 gem 'jquery-rails'
-gem 'rdiscount', '1.6.8' # Markdown
+gem 'rdiscount', '~> 2.2', '>= 2.2.0.1' # Markdown
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
 gem 'georuby', '2.0'

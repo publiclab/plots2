@@ -1,6 +1,6 @@
 class TaggifyMapCoords < ActiveRecord::Migration
   def up
-    @maps = DrupalNode.find(:all, :conditions => {:type => 'map', :status => 1})
+    @maps = Node.find(:all, :conditions => {:type => 'map', :status => 1})
     @maps.each do |map|
       unless map.has_power_tag("lon")
         map.add_tag("lon:"+map.location[:x].to_s,map.author)

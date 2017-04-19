@@ -5,15 +5,11 @@ module CommentsShared
 
   # filtered version additionally appending http/https
   #   protocol to protocol-relative URLslike "/foo"
-  def body_email(host = "publiclab.org")
-    self.body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?#{host})/, '\1https://\3')
+  def body_email(host = 'publiclab.org')
+    body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?#{host})/, '\1https://\3')
   end
 
   def author
-    DrupalUsers.find_by_uid self.uid
-  end
-
-  def node
-    self.drupal_node
+    DrupalUsers.find_by_uid uid
   end
 end

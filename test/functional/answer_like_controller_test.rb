@@ -1,18 +1,17 @@
 require 'test_helper'
 
 class AnswerLikeControllerTest < ActionController::TestCase
-
   def setup
     activate_authlogic
   end
 
-  test "should get show" do
+  test 'should get show' do
     answer = answers(:one)
     get :show, id: answer.id
     assert_response :success
   end
 
-  test "should get likes" do
+  test 'should get likes' do
     UserSession.create(rusers(:admin))
     answer = answers(:one)
     xhr :get, :likes, aid: answer.id
@@ -20,7 +19,7 @@ class AnswerLikeControllerTest < ActionController::TestCase
     assert_not_nil assigns(:answer)
   end
 
-  test "should increase cached likes if liked" do
+  test 'should increase cached likes if liked' do
     UserSession.create(rusers(:admin))
     answer = answers(:one)
     assert_difference 'answer.cached_likes' do
@@ -29,7 +28,7 @@ class AnswerLikeControllerTest < ActionController::TestCase
     end
   end
 
-  test "should decrease cached likes if unliked" do
+  test 'should decrease cached likes if unliked' do
     UserSession.create(rusers(:bob))
     answer = answers(:one)
     assert_difference 'answer.cached_likes', -1 do
@@ -37,5 +36,4 @@ class AnswerLikeControllerTest < ActionController::TestCase
       answer.reload
     end
   end
-
 end

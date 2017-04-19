@@ -1,8 +1,8 @@
 class AnswerLikeController < ApplicationController
-  before_filter :require_user, :only => :likes
+  before_filter :require_user, only: :likes
 
   def show
-    render :json => Answer.find(params[:id]).cached_likes
+    render json: Answer.find(params[:id]).cached_likes
   end
 
   def likes
@@ -16,7 +16,7 @@ class AnswerLikeController < ApplicationController
     end
     @answer.reload
     respond_to do |format|
-      format.js{}
+      format.js {}
     end
   end
 end

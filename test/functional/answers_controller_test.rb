@@ -1,42 +1,45 @@
 require 'test_helper'
 
 class AnswersControllerTest < ActionController::TestCase
-
   def setup
     activate_authlogic
   end
 
-  test "should get create if user is logged in" do
+  test 'should get create if user is logged in' do
     UserSession.create(rusers(:bob))
     node = node(:question)
+    initial_mail_count = ActionMailer::Base.deliveries.size
     assert_difference 'Answer.count' do
       xhr :post, :create,
-                 nid: node.nid,
-                 body: "Sample answer"
+          nid: node.nid,
+          body: 'Sample answer'
     end
+    assert_not_equal initial_mail_count, ActionMailer::Base.deliveries.size
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([node.author.mail])
+    # Used ([node.author.mail]) here instead of just (node.author.mail) because .collect(:to) is an array of arrays
     assert_response :success
     assert_not_nil assigns(:answer)
   end
 
-  test "should get update if user is logged in" do
+  test 'should get update if user is logged in' do
     UserSession.create(rusers(:bob))
     answer = answers(:one)
     get :update, id: answer.id,
-                 body: "Some changes in answer"
+                 body: 'Some changes in answer'
     assert_redirected_to answer.node.path(:question)
     assert_equal 'Answer updated', flash[:notice]
   end
 
-  test "should show error if user is not the author of post" do
+  test 'should show error if user is not the author of post' do
     UserSession.create(rusers(:jeff))
     answer = answers(:one)
     get :update, id: answer.id,
-                 body: "Some changes"
+                 body: 'Some changes'
     assert_redirected_to answer.node.path(:question)
     assert_equal 'Only the author of the answer can edit it.', flash[:error]
   end
 
-  test "should delete answer if logged in user is question author" do
+  test 'should delete answer if logged in user is question author' do
     UserSession.create(rusers(:jeff))
     answer = answers(:one)
     assert_difference 'Answer.count', -1 do
@@ -45,7 +48,7 @@ class AnswersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should delete answer if logged in user is answer author" do
+  test 'should delete answer if logged in user is answer author' do
     UserSession.create(rusers(:bob))
     answer = answers(:one)
     assert_difference 'Answer.count', -1 do
@@ -54,7 +57,7 @@ class AnswersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should delete answer if logged in user is admin" do
+  test 'should delete answer if logged in user is admin' do
     UserSession.create(rusers(:admin))
     answer = answers(:one)
     assert_difference 'Answer.count', -1 do
@@ -63,7 +66,7 @@ class AnswersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should delete answer if logged in user is moderator" do
+  test 'should delete answer if logged in user is moderator' do
     UserSession.create(rusers(:moderator))
     answer = answers(:one)
     assert_difference 'Answer.count', -1 do
@@ -72,7 +75,7 @@ class AnswersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should redirect to login page if user is neither of the above" do
+  test 'should redirect to login page if user is neither of the above' do
     UserSession.create(rusers(:newcomer))
     answer = answers(:one)
     assert_no_difference 'Answer.count' do
@@ -82,7 +85,7 @@ class AnswersControllerTest < ActionController::TestCase
     assert_equal 'Only the answer or question author can delete this answer', flash[:warning]
   end
 
-  test "should accept an answer which the question author approves" do
+  test 'should accept an answer which the question author approves' do
     UserSession.create(rusers(:jeff))
     answer = answers(:one)
     assert !answer.accepted
@@ -92,7 +95,7 @@ class AnswersControllerTest < ActionController::TestCase
     assert answer.accepted
   end
 
-  test "should not accept an answer by an user other than the question author" do
+  test 'should not accept an answer by an user other than the question author' do
     UserSession.create(rusers(:bob))
     answer = answers(:one)
     assert !answer.accepted
