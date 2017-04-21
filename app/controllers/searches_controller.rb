@@ -10,7 +10,7 @@ class SearchesController < ApplicationController
 
   def test
     term = params[:q] || "spectrometer"
-    @search = DrupalNode.search do
+    @search = Node.search do
       fulltext term
     end
     render json: @search.results[0]

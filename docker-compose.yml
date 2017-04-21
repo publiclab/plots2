@@ -25,7 +25,7 @@ services:
       - default
   web:
     build: .
-    image: plots_branch1:fix_solr
+    #image: plots_branch1:fix_solr
     command: /bin/bash -c "sleep 5 && bundle exec rails s -p 4000 -b '0.0.0.0'"
     environment:
       - RAILS_ENV=${RAILS_ENV}
