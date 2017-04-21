@@ -39,3 +39,10 @@ module ApplicationHelper
     render partial: 'map/leaflet', locals: { lat: lat, lon: lon, items: items }
   end
 end
+
+module render_map(lat, lon, items)
+  def .lat
+  end
+
+  def .lon
+  end
