@@ -36,6 +36,16 @@ class EditorController < ApplicationController
     end
   end
 
+  def post
+    if params[:legacy] || params[:template] == "event"
+      flash.now[:notice] = "This is the legacy editor. For the new rich editor, <a href='/editor?#{request.env['QUERY_STRING']}'>click here</a>."
+      legacy
+    else
+      flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/post?#{request.env['QUERY_STRING']}&legacy=true'>click here</a>."
+      rich
+    end
+  end
+
   def rich
     flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/post?#{request.env['QUERY_STRING']}&legacy=true'>click here</a>."
     if params[:main_image] && Image.find_by_id(params[:main_image])
