@@ -1,12 +1,12 @@
 ---
 production:
   solr:
-    hostname: solr
+    hostname: pad.publiclab.org
     port: 8983
     read_timeout: 120
     log_level: WARNING
     path: "/solr/default"
-  disabled: true
+  disabled: false
 development:
   solr:
     hostname: localhost
