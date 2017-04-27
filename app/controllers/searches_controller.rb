@@ -8,6 +8,14 @@ class SearchesController < ApplicationController
     @searches = SearchRecord.all
   end
 
+  def test
+    term = params[:q] || "spectrometer"
+    @search = Node.search do
+      fulltext term
+    end
+    render json: @search.results[0]
+  end
+
   def new
     # Rendering advanced search form
     @title = 'Advanced search'
@@ -16,9 +24,13 @@ class SearchesController < ApplicationController
   end
 
   def create
-    @search = SearchRecord.new(search_params)
+    @search = SearchRecord.new(searches_params)
     @search.title = 'Advanced search'
-    @search.user_id = current_user.id
+
+    if current_user
+      @search.user_id = current_user.id
+    end
+
     if @search.save
       redirect_to search_url(@search)
     else
@@ -33,7 +45,7 @@ class SearchesController < ApplicationController
   end
 
   def update
-    if @search.update_attributes(search_params)
+    if @search.update_attributes(searches_params)
       redirect_to search_url(@search)
     else
       render :new
@@ -41,11 +53,10 @@ class SearchesController < ApplicationController
   end
 
   def show
-    @ssearch = SearchRecord.new
-    @title = @ssearch.title
-    @nodes = @ssearch.note_results(params[:month])
-    @solr_nodes = @ssearch.notes(params[:month])
-    set_sidebar :tags, @ssearch.key_words
+    @title = @search.title
+    @solr_nodes = @search.notes(params[:month])
+    @nodes = @search.note_results(params[:month])
+    set_sidebar :tags, @search.key_words
   end
 
   def normal_search
@@ -84,13 +95,15 @@ class SearchesController < ApplicationController
     @search_service = SearchService.new
   end
 
-  def search_params
-    params.permit(:key_words,
-                  :main_type,
-                  :note_type,
-                  :min_date,
-                  :max_date,
-                  :created_by,
-                  :language)
+  def searches_params
+    params.require( :search_record)
+           .permit( :key_words,
+                   :main_type,
+                   :note_type,
+                   :min_date,
+                   :max_date,
+                   :created_by,
+                   :language )
   end
+
 end

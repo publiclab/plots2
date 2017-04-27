@@ -16,6 +16,8 @@ Plots2::Application.routes.draw do
   resources :features
   resources :searches
 
+  get 'searches/test' => 'searches#test'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

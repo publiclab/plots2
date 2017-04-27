@@ -10,7 +10,8 @@ class User < ActiveRecord::Base
   self.table_name = 'rusers'
   attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :location_privacy
 
-  searchable do
+  include SolrToggle
+  searchable if: :shouldIndexSolr do
     text :username, :email
   end
 
