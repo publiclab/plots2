@@ -6,8 +6,8 @@ namespace :test do
     Coveralls::RakeTask.new
     puts "Running Rails tests"
     Rake::Task["test"].execute
-    puts "Running Solr-dependent tests"
-    Rake::Task["test:solr"].execute
+    #puts "Running Solr-dependent tests"
+    #Rake::Task["test:solr"].execute
     puts "Running jasmine tests headlessly"
     Rake::Task["spec:javascript"].execute
     Rake::Task["coveralls:push"].execute
