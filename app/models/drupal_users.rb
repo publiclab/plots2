@@ -17,10 +17,16 @@ class DrupalUsers < ActiveRecord::Base
   has_many :comments, foreign_key: 'uid'
   has_one :location_tag, foreign_key: 'uid', dependent: :destroy
 
-  searchable if: proc { |user| user.status == 1 } do
+
+  include SolrToggle
+  searchable if: :internalShouldIndexSolr do
     string :name
     string :mail
     string :status
+  end
+
+  def internalShouldIndexSolr
+    shouldIndexSolr && status == 1
   end
 
   def user

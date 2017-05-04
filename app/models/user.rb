@@ -10,12 +10,13 @@ class User < ActiveRecord::Base
   self.table_name = 'rusers'
   attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :location_privacy
 
-  searchable do
+  include SolrToggle
+  searchable if: :shouldIndexSolr do
     text :username, :email
   end
 
   acts_as_authentic do |c|
-    c.openid_required_fields = [:nickname, :email]
+    c.openid_required_fields = %i[nickname email]
   end
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },

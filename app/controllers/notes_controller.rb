@@ -1,7 +1,6 @@
 class NotesController < ApplicationController
-
   respond_to :html
-  before_filter :require_user, :only => [:create, :edit, :update, :delete, :rsvp]
+  before_filter :require_user, only: %i[create edit update delete rsvp]
 
   def index
     @title = I18n.t('notes_controller.research_notes')
@@ -10,31 +9,31 @@ class NotesController < ApplicationController
 
   # deprecate in favor of wiki#methods
   def methods
-    @title = "Methods"
-    @notes = Node.where(status: 1, type: ['page','tool'])
-                       .includes(:drupal_node_revision, :tag)
-                       .where('term_data.name = ?','tool')
-                       .order("node_revisions.timestamp DESC")
-                       .page(params[:page])
-    render :template => "notes/tools_places"
+    @title = 'Methods'
+    @notes = Node.where(status: 1, type: %w[page tool])
+                 .includes(:drupal_node_revision, :tag)
+                 .where('term_data.name = ?', 'tool')
+                 .order('node_revisions.timestamp DESC')
+                 .page(params[:page])
+    render template: 'notes/tools_places'
   end
 
   def tools
-    redirect_to '/methods', :status => 302
+    redirect_to '/methods', status: 302
   end
 
   def techniques
-    redirect_to '/methods', :status => 302
+    redirect_to '/methods', status: 302
   end
 
   def places
-    @title = "Places"
-    @notes = Node.where(status: 1, type: ['page','place'])
-                       .includes(:drupal_node_revision, :tag)
-                       .where('term_data.name = ?','chapter')
-                       .page(params[:page])
-                       .order("node_revisions.timestamp DESC")
-    render :template => "notes/tools_places"
+    @title = 'Places'
+    @notes = Node.where(status: 1, type: %w[page place])
+                 .includes(:drupal_node_revision, :tag)
+                 .where('term_data.name = ?', 'chapter')
+                 .page(params[:page])
+                 .order('node_revisions.timestamp DESC')
+    render template: 'notes/tools_places'
   end
 
   def shortlink
@@ -48,14 +47,14 @@ class NotesController < ApplicationController
 
   # display a revision, raw
   def raw
-    response.headers["Content-Type"] = "text/plain; charset=utf-8"
-    render :text => Node.find(params[:id]).latest.body
+    response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+    render text: Node.find(params[:id]).latest.body
   end
 
   def show
     if params[:author] && params[:date]
       @node = Node.find_notes(params[:author], params[:date], params[:id])
-      @node = @node || Node.where(path: "/report/#{params[:id]}").first
+      @node ||= Node.where(path: "/report/#{params[:id]}").first
       # redirect_old_urls
     else
       @node = Node.find params[:id]
@@ -67,10 +66,10 @@ class NotesController < ApplicationController
     end
 
     if @node.has_power_tag('redirect')
-      if current_user == nil || (current_user.role != 'admin' && current_user.role != 'moderator')
+      if current_user.nil? || (current_user.role != 'admin' && current_user.role != 'moderator')
         redirect_to Node.find(@node.power_tag('redirect')).path
         return
-      elsif (current_user.role == 'admin' || current_user.role == 'moderator')
+      elsif current_user.role == 'admin' || current_user.role == 'moderator'
         flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}.
         To remove the redirect, delete the tag beginning with 'redirect:'"
       end
@@ -80,7 +79,7 @@ class NotesController < ApplicationController
 
     alert_and_redirect_moderated
 
-    impressionist(@node, 'show', :unique => [:ip_address])
+    impressionist(@node, 'show', unique: [:ip_address])
     @title = @node.latest.title
     @tags = @node.tags
     @tagnames = @tags.collect(&:name)
@@ -94,29 +93,27 @@ class NotesController < ApplicationController
     if node.main_image
       redirect_to node.main_image.path(params[:size])
     else
-      redirect_to "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+      redirect_to 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
     end
   end
 
   def create
     if current_user.drupal_user.status == 1
-      saved,@node,@revision = Node.new_note({
-        :uid => current_user.uid,
-        :title => params[:title],
-        :body => params[:body],
-        :main_image => params[:main_image]
-      })
+      saved, @node, @revision = Node.new_note(uid: current_user.uid,
+                                              title: params[:title],
+                                              body: params[:body],
+                                              main_image: params[:main_image])
 
       if saved
         if params[:tags]
-          params[:tags].gsub(' ',',').split(',').each do |tagname|
-            @node.add_tag(tagname.strip,current_user)
+          params[:tags].tr(' ', ',').split(',').each do |tagname|
+            @node.add_tag(tagname.strip, current_user)
           end
         end
-        if params[:event] == "on"
-          @node.add_tag("event",current_user)
-          @node.add_tag("event:rsvp",current_user)
-          @node.add_tag("date:"+params[:date],current_user) if params[:date]
+        if params[:event] == 'on'
+          @node.add_tag('event', current_user)
+          @node.add_tag('event:rsvp', current_user)
+          @node.add_tag('date:' + params[:date], current_user) if params[:date]
         end
         if current_user.first_time_poster
           AdminMailer.notify_node_moderators(@node)
@@ -150,20 +147,20 @@ class NotesController < ApplicationController
           errors = errors.merge(@revision.errors) if @revision && @revision.errors
           render json: errors
         else
-          render template: "editor/post"
+          render template: 'editor/post'
         end
       end
     else
       flash.keep[:error] = I18n.t('notes_controller.you_have_been_banned').html_safe
-      redirect_to "/logout"
+      redirect_to '/logout'
     end
   end
 
   def edit
-    @node = Node.find(params[:id],:conditions => {:type => "note"})
-    if current_user.uid == @node.uid || current_user.role == "admin"
+    @node = Node.find(params[:id], conditions: { type: 'note' })
+    if current_user.uid == @node.uid || current_user.role == 'admin'
       if params[:legacy]
-        render :template => "editor/post"
+        render template: 'editor/post'
       else
         if @node.main_image
           @main_image = @node.main_image.path(:default)
@@ -173,7 +170,7 @@ class NotesController < ApplicationController
           @main_image = @image.path(:default)
         end
         flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/notes/edit/#{@node.id}?#{request.env['QUERY_STRING']}&legacy=true'>click here</a>."
-        render :template => "editor/rich"
+        render template: 'editor/rich'
       end
     else
       if @node.has_power_tag('question')
@@ -187,13 +184,13 @@ class NotesController < ApplicationController
   # at /notes/update/:id
   def update
     @node = Node.find(params[:id])
-    if current_user.uid == @node.uid || current_user.role == "admin"
+    if current_user.uid == @node.uid || current_user.role == 'admin'
       @revision = @node.latest
       @revision.title = params[:title]
       @revision.body = params[:body]
       if params[:tags]
-        params[:tags].gsub(' ',',').split(',').each do |tagname|
-          @node.add_tag(tagname,current_user)
+        params[:tags].tr(' ', ',').split(',').each do |tagname|
+          @node.add_tag(tagname, current_user)
         end
       end
       if @revision.valid?
@@ -211,7 +208,7 @@ class NotesController < ApplicationController
         end
         @node.title = @revision.title
         # save main image
-        if params[:main_image] && params[:main_image] != ""
+        if params[:main_image] && params[:main_image] != ''
           img = Image.find params[:main_image]
           unless img.nil?
             img.nid = @node.id
@@ -224,19 +221,19 @@ class NotesController < ApplicationController
         format = false
         format = :question if params[:redirect] && params[:redirect] == 'question'
         if request.xhr?
-          render text: @node.path(format) + "?_=" + Time.now.to_i.to_s
+          render text: @node.path(format) + '?_=' + Time.now.to_i.to_s
         else
-          redirect_to @node.path(format) + "?_=" + Time.now.to_i.to_s
+          redirect_to @node.path(format) + '?_=' + Time.now.to_i.to_s
         end
       else
         flash[:error] = I18n.t('notes_controller.edit_not_saved')
-         if request.xhr? || params[:rich]
+        if request.xhr? || params[:rich]
           errors = @node.errors
           errors = errors.to_hash.merge(@revision.errors.to_hash) if @revision && @revision.errors
           render json: errors
-         else
-           render 'editor/post'
-        end
+        else
+          render 'editor/post'
+       end
       end
     end
   end
@@ -245,15 +242,15 @@ class NotesController < ApplicationController
   # only for notes
   def delete
     @node = Node.find(params[:id])
-    if current_user.uid == @node.uid && @node.type == "note" || current_user.role == "admin" || current_user.role == "moderator"
+    if current_user.uid == @node.uid && @node.type == 'note' || current_user.role == 'admin' || current_user.role == 'moderator'
       @node.delete
       respond_with do |format|
         format.html do
           if request.xhr?
-            render :text => I18n.t('notes_controller.content_deleted')
+            render text: I18n.t('notes_controller.content_deleted')
           else
             flash[:notice] = I18n.t('notes_controller.content_deleted')
-            redirect_to "/dashboard" + "?_=" + Time.now.to_i.to_s
+            redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
           end
         end
       end
@@ -267,84 +264,81 @@ class NotesController < ApplicationController
     @user = DrupalUsers.find_by_name params[:id]
     @title = @user.name
     @notes = Node.page(params[:page])
-                       .order("nid DESC")
-                       .where(type: 'note', status: 1, uid: @user.uid)
-    render :template => 'notes/index'
+                 .order('nid DESC')
+                 .where(type: 'note', status: 1, uid: @user.uid)
+    render template: 'notes/index'
   end
 
   # notes for given comma-delimited tags params[:topic] for author
   def author_topic
     @user = DrupalUsers.find_by_name params[:author]
     @tagnames = params[:topic].split('+')
-    @title = @user.name+" on '"+@tagnames.join(', ')+"'"
+    @title = @user.name + " on '" + @tagnames.join(', ') + "'"
     @notes = @user.notes_for_tags(@tagnames)
     @unpaginated = true
-    render :template => 'notes/index'
+    render template: 'notes/index'
   end
 
   # notes with high # of likes
   def liked
     @title = I18n.t('notes_controller.highly_liked_research_notes')
     @wikis = Node.limit(10)
-                       .where(type: 'page', status: 1)
-                       .order("nid DESC")
+                 .where(type: 'page', status: 1)
+                 .order('nid DESC')
 
     @notes = Node.research_notes
-                       .where(status: 1)
-                       .limit(20)
-                       .order('nid DESC')
+                 .where(status: 1)
+                 .limit(20)
+                 .order('nid DESC')
     @unpaginated = true
-    render :template => 'notes/index'
+    render template: 'notes/index'
   end
 
   # notes with high # of views
   def popular
     @title = I18n.t('notes_controller.popular_research_notes')
     @wikis = Node.limit(10)
-                       .where(type: 'page', status: 1)
-                       .order("nid DESC")
+                 .where(type: 'page', status: 1)
+                 .order('nid DESC')
     @notes = Node.research_notes
-                       .limit(20)
-                       .where(status: 1)
-                       .order("views DESC")
+                 .limit(20)
+                 .where(status: 1)
+                 .order('views DESC')
     @unpaginated = true
-    render :template => 'notes/index'
+    render template: 'notes/index'
   end
 
   def rss
     @notes = Node.limit(20)
-                       .order("nid DESC")
-                       .where("type = ? AND status = 1 AND created < ?", 'note', (Time.now.to_i - 30.minutes.to_i))
+                 .order('nid DESC')
+                 .where('type = ? AND status = 1 AND created < ?', 'note', (Time.now.to_i - 30.minutes.to_i))
     respond_to do |format|
-      format.rss {
-        render :layout => false
-        response.headers["Content-Type"] = "application/xml; charset=utf-8"
-        response.headers["Access-Control-Allow-Origin"] = "*"
-      }
+      format.rss do
+        render layout: false
+        response.headers['Content-Type'] = 'application/xml; charset=utf-8'
+        response.headers['Access-Control-Allow-Origin'] = '*'
+      end
     end
   end
 
   def liked_rss
     @notes = Node.limit(20)
-                       .order("created DESC")
-                       .where('type = ? AND status = 1 AND cached_likes > 0', 'note')
+                 .order('created DESC')
+                 .where('type = ? AND status = 1 AND cached_likes > 0', 'note')
     respond_to do |format|
-      format.rss {
-        render :layout => false, :template => "notes/rss"
-        response.headers["Content-Type"] = "application/xml; charset=utf-8"
-      }
+      format.rss do
+        render layout: false, template: 'notes/rss'
+        response.headers['Content-Type'] = 'application/xml; charset=utf-8'
+      end
     end
   end
 
   def rsvp
     @node = Node.find params[:id]
     # leave a comment
-    @comment = @node.add_comment({:subject => 'rsvp', :uid => current_user.uid,:body =>
-      "I will be attending!"
-    })
+    @comment = @node.add_comment(subject: 'rsvp', uid: current_user.uid, body: 'I will be attending!')
     # make a tag
-    @node.add_tag("rsvp:"+current_user.username,current_user)
-    redirect_to @node.path+"#comments"
+    @node.add_tag('rsvp:' + current_user.username, current_user)
+    redirect_to @node.path + '#comments'
   end
-
 end

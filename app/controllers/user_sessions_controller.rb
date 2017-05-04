@@ -9,11 +9,11 @@ class UserSessionsController < ApplicationController
     @user = User.find_by_username(username)
 
     # try finding by email, if that exists
-    if @user.nil? and User.where(email: username).length > 0
-     @user = User.find_by_email(username) 
-     params[:user_session][:username] = @user.username
-    end 
-    
+    if @user.nil? && !User.where(email: username).empty?
+      @user = User.find_by_email(username)
+      params[:user_session][:username] = @user.username
+    end
+
     if params[:user_session].nil? || @user && @user.drupal_user.status == 1 || @user.nil?
       # an existing native user
       if params[:user_session].nil? || @user
@@ -75,5 +75,4 @@ class UserSessionsController < ApplicationController
     flash[:notice] = I18n.t('user_sessions_controller.logged_out')
     redirect_to root_url
   end
-
 end

@@ -1,7 +1,7 @@
 require 'rss'
 
 class WikiController < ApplicationController
-  before_filter :require_user, only: [:new, :create, :edit, :update, :delete, :replace]
+  before_filter :require_user, only: %i[new create edit update delete replace]
 
   def subdomain
     url = "//#{request.host}/wiki/"
@@ -35,14 +35,14 @@ class WikiController < ApplicationController
       end
     end
 
-    if @node and @node.has_power_tag('abtest') and Node.where(nid: @node.power_tag('abtest')).length > 0
-      if current_user == nil || (current_user.role != 'admin' && current_user.role != 'moderator')
+    if @node && @node.has_power_tag('abtest') && !Node.where(nid: @node.power_tag('abtest')).empty?
+      if current_user.nil? || (current_user.role != 'admin' && current_user.role != 'moderator')
         if Random.rand(2) == 0
           redirect_to Node.find(@node.power_tag('abtest')).path
           return
         end
-      elsif (current_user.role == 'admin' || current_user.role == 'moderator')
-        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('abtest')).title} roughly around 50% of the time. 
+      elsif current_user.role == 'admin' || current_user.role == 'moderator'
+        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('abtest')).title} roughly around 50% of the time.
         To remove this behavior, delete the tag beginning with 'abtest:'"
       end
     end
