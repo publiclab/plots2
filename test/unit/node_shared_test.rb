@@ -31,7 +31,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert NodeShared.upgrades_grid(before)
     assert_equal 1, NodeShared.upgrades_grid(before).scan('<table class="table inline-grid upgrades-grid upgrades-grid-test upgrades-grid-test-').length
     assert_equal 1, NodeShared.upgrades_grid(before).scan('<table').length
-    assert_equal 3, NodeShared.upgrades_grid(before).scan('upgrades-grid-test').length
+    assert_equal 5, NodeShared.upgrades_grid(before).scan('upgrades-grid-test').length
   end
 
   test 'that NodeShared can be used to convert short codes like [notes:foo] into tables which list notes, even after text has been markdown-ified' do
