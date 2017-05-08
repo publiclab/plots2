@@ -1,4 +1,4 @@
-<table class="table inline-grid notes-grid <%= className %> <%= className %>-<%= randomSeed %>">
+<table class="table inline-grid <%= question ? "questions" : "notes" %>-grid <%= className %> <%= className %>-<%= randomSeed %>">
   <tr>
     <th><a data-type="title">Title</a></th>
     <th><a data-type="author">Author</a></th>
@@ -34,6 +34,9 @@
   <% end %>
 <% end %>
 </table>
+<% if question %>
+  <p><a href='/post?tags=question:<%= tagname %>,<%= tagname %>&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary add-activity'>Ask a question</a> &nbsp;or <a href='/subscribe/tag/question:<%= tagname %>'>help answer future questions<span class='hidden-sm hidden-xs'> on this topic</span></a></p>"
+<% end %>
 <script>
 (function(){
   $(".<%= className %>-<%= randomSeed %> .show-all a").click(function() { 

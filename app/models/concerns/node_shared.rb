@@ -12,8 +12,9 @@ module NodeShared
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.notes_grid(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
+      tagname = Regexp.last_match(2).parameterize
       randomSeed = rand(1000).to_s
-      className = 'notes-grid-' + Regexp.last_match(2).parameterize
+      className = 'notes-grid-' + tagname
       nodes = Node.where(status: 1, type: 'note')
                   .includes(:drupal_node_revision, :tag)
                   .where('term_data.name = ?', Regexp.last_match(2))
@@ -24,9 +25,11 @@ module NodeShared
       output += a.render_to_string(template: "grids/_notes", 
                                    layout:   false, 
                                    locals:   {
+                                     tagname: tagname,
                                      randomSeed: randomSeed,
                                      className: className,
-                                     nodes: nodes
+                                     nodes: nodes,
+                                     question: false
                                    }
                   )
       output
@@ -36,38 +39,26 @@ module NodeShared
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.questions_grid(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
+      tagname = Regexp.last_match(2).parameterize
       randomSeed = rand(1000).to_s
-      className = 'questions-grid-' + Regexp.last_match(2).parameterize
-      output = ''
-      output += '<p>' if Regexp.last_match(1) == '<p>'
-      output += '<table class="table inline-grid questions-grid ' + className + ' ' + className + '-' + randomSeed + '">'
-      output += '  <tr>'
-      output += '    <th><a data-type="title">Title</a></th>'
-      output += '    <th><a data-type="author">Author</a></th>'
-      output += '    <th><a data-type="updated">Updated</a></th>'
-      output += '    <th><a data-type="likes">Likes</a></th>'
-      output += '  </tr>'
+      className = 'questions-grid-' + tagname
       nodes = Node.where(status: 1, type: 'note')
                   .includes(:drupal_node_revision, :tag)
-                  .where('term_data.name = ?', "question:#{Regexp.last_match(2)}")
+                  .where('term_data.name = ?', "question:#{tagname}")
                   .order('node_revisions.timestamp DESC')
-      output += '<tr><td>No matching content.</td><td></td><td></td><td></td></tr>' if nodes.empty?
-      nodes.each_with_index do |node, index|
-        output += if index > 9
-                    '<tr class="hide">'
-                  else
-                    '<tr>'
-                  end
-        output += '  <td class="title"><a href="' + node.path + '">' + node.title + '</a></td>'
-        output += '  <td class="author"><a href="/profile/' + node.author.username + '">@' + node.author.username + '</a></td>'
-        output += '  <td class="updated" data-timestamp="' + node.latest.timestamp.to_s + '">' + distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, false, scope: :'datetime.time_ago_in_words') + '</td>'
-        output += '  <td class="likes">' + node.cached_likes.to_s + '</td>'
-        output += '</tr>'
-        output += '<tr class="show-all"><td><a>Show ' + (nodes.length - 10).to_s + ' more <b class="caret"></b></a></td><td></td><td></td><td></td></tr>' if index == 9
-      end
-      output += '</table>'
-      output += "<p><a href='/post?tags=question:#{Regexp.last_match(2)},#{Regexp.last_match(2)}&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary add-activity'>Ask a question</a> &nbsp;or <a href='/subscribe/tag/question:#{Regexp.last_match(2)}'>help answer future questions<span class='hidden-sm hidden-xs'> on this topic</span></a></p>"
-      output += '<script>(function(){ $(".' + className + '-' + randomSeed + ' .show-all a").click(function() { $(".' + className + '-' + randomSeed + ' tr.hide").toggleClass("hide");});setupGridSorters(".' + className + '-' + randomSeed + '"); })()</script>'
+      output = ''
+      output += '<p>' if Regexp.last_match(1) == '<p>'
+      a = ActionController::Base.new()
+      output += a.render_to_string(template: "grids/_notes", 
+                                   layout:   false, 
+                                   locals:   {
+                                     tagname: tagname,
+                                     randomSeed: randomSeed,
+                                     className: className,
+                                     nodes: nodes,
+                                     question: true
+                                   }
+                  )
       output
     end
   end
