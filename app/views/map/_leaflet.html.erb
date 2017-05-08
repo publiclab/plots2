@@ -1,16 +1,13 @@
-<% unique_id = rand(10) %>
-<%= javascript_include_tag "locationForm" %>
-<%= javascript_include_tag "location_tags.js" %>
+<% unique_id = rand(100) %>
 <style>
   #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
 </style>
 <div class="leaflet-map" id="map<%= unique_id %>"></div>
 <script>
-    var map = L.map('map<%= unique_id %>').setView([<%= lat %>,<%= lon %>], 10);
-    L.tileLayer("https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
+  var map = L.map('map<%= unique_id %>').setView([<%= lat %>,<%= lon %>], 10);
+  L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
 
-    <% items.each do |item| %>
+  <% items.each do |item| %>
     L.marker([<%= item.lat %>, <%= item.lon %>]).addTo(map).bindPopup("<a href='/<%= item.path %>'><%= item.title %></a>");
-    <% end %>
+  <% end %>
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>

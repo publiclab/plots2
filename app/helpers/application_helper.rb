@@ -32,6 +32,7 @@ module ApplicationHelper
     body = NodeShared.questions_grid(body)
     body = NodeShared.activities_grid(body)
     body = NodeShared.upgrades_grid(body)
+    body = NodeShared.notes_map(body)
     body
   end
 

@@ -15,7 +15,7 @@ module NodeShared
       tagname = Regexp.last_match(2).parameterize
       nodes = Node.where(status: 1, type: 'note')
                   .includes(:drupal_node_revision, :tag)
-                  .where('term_data.name = ?', Regexp.last_match(2))
+                  .where('term_data.name = ?', tagname)
                   .order('node_revisions.timestamp DESC')
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
@@ -28,8 +28,7 @@ module NodeShared
                                      className: 'notes-grid-' + tagname,
                                      nodes: nodes,
                                      type: "notes"
-                                   }
-                  )
+                                   })
       output
     end
   end
@@ -53,8 +52,7 @@ module NodeShared
                                      className: 'questions-grid-' + tagname,
                                      nodes: nodes,
                                      type: "questions"
-                                   }
-                  )
+                                   })
       output
     end
   end
@@ -75,8 +73,7 @@ module NodeShared
                                      className: 'activity-grid-' + tagname,
                                      nodes: nodes,
                                      type: "activity"
-                                   }
-                  )
+                                   })
       output
     end
   end
@@ -84,7 +81,7 @@ module NodeShared
   def self.upgrades_grid(body)
     body.gsub(/[^\>`](\<p\>)?\[upgrades\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2).parameterize
-      nodes = Node.upgrades(Regexp.last_match(2))
+      nodes = Node.upgrades(tagname)
                   .order('node.cached_likes DESC')
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
@@ -97,9 +94,34 @@ module NodeShared
                                      className: 'upgrades-grid-' + tagname,
                                      nodes: nodes,
                                      type: "upgrades"
-                                   }
-                  )
+                                   })
       output
     end
   end
+
+  def self.notes_map(body)
+    body.gsub(/[^\>`](\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |_tagname|
+      lat = Regexp.last_match(2)
+      lon = Regexp.last_match(3)
+      nids = DrupalNodeCommunityTag.joins(:tag)
+                                   .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
+                                   .collect(&:nid)
+      nids = nids || []
+      items = Node.includes(:tag)
+                  .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
+                  .limit(200)
+                  .order('node.nid DESC')
+      a = ActionController::Base.new()
+      output = a.render_to_string(template: "map/_leaflet", 
+                                  layout:   false, 
+                                  locals:   {
+                                    lat:   lat,
+                                    lon:   lon,
+                                    items: items
+                                  }
+               )
+      output
+    end
+  end
+
 end
