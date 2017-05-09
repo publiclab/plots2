@@ -124,4 +124,34 @@ module NodeShared
     end
   end
 
+  def self.notes_map_by_tag(body)
+    body.gsub(/[^\>`](\<p\>)?\[map\:tag\:(\S+)\:(\S+)\:(\S+)\]/) do |_tagname|
+      tagname = Regexp.last_match(2)
+      lat = Regexp.last_match(3)
+      lon = Regexp.last_match(4)
+      nids = DrupalNodeCommunityTag.joins(:tag)
+                                   .where('term_data.name = ?', tagname)
+                                   .collect(&:nid)
+      nids = DrupalNodeCommunityTag.joins(:tag)
+                                   .where(nid: nids)
+                                   .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
+                                   .collect(&:nid)
+      nids = nids || []
+      items = Node.includes(:tag)
+                  .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
+                  .limit(200)
+                  .order('node.nid DESC')
+      a = ActionController::Base.new()
+      output = a.render_to_string(template: "map/_leaflet", 
+                                  layout:   false, 
+                                  locals:   {
+                                    lat:   lat,
+                                    lon:   lon,
+                                    items: items
+                                  }
+               )
+      output
+    end
+  end
+
 end
