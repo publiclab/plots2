@@ -13,9 +13,9 @@ gem 'rails-i18n', '~> 3.0.0'
 
 # ships with sqlite set up for easy setup during development
 # run with `bundle install --without development` or `bundle install --without sqlite` to exclude this
-group :sqlite, :development do
-  gem 'sqlite3'
-end
+# group :sqlite, :development do
+#   gem 'sqlite3'
+# end
 
 #group :postgresql do
 #  gem "activerecord-postgresql-adapter"
