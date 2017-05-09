@@ -1,6 +1,6 @@
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
-  before_filter :require_user, only: [:create, :delete]
+  before_filter :require_user, only: %i[create delete]
 
   def index
     @title = I18n.t('tag_controller.tags')
@@ -53,7 +53,7 @@ class TagController < ApplicationController
       format.json do
         json = []
         nodes.each do |node|
-          json << node.as_json(except: [:path, :tags])
+          json << node.as_json(except: %i[path tags])
           json.last['path'] = 'https://' + request.host.to_s + node.path
           json.last['preview'] = node.body_preview(500)
           json.last['image'] = node.main_image.path(:large) if node.main_image

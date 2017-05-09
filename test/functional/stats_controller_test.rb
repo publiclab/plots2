@@ -1,16 +1,15 @@
 require 'test_helper'
 
 class StatsControllerTest < ActionController::TestCase
-
-  test "should assign correct value to graph_comments on GET stats" do
+  test 'should assign correct value to graph_comments on GET stats' do
     Comment.delete_all
-    Comment.create!({comment: 'blah', timestamp: Time.now() - 1})
+    Comment.create!(comment: 'blah', timestamp: Time.now - 1)
     get :index
-    assert_equal assigns(:graph_comments), Comment.comment_weekly_tallies(52, Time.now()).to_a.sort.to_json
+    assert_equal assigns(:graph_comments), Comment.comment_weekly_tallies(52, Time.now).to_a.sort.to_json
     assert_response :success
   end
 
-  test "should load stats range query" do
+  test 'should load stats range query' do
     get :range
     assert_response :success
     assert_not_nil assigns(:notes)
@@ -20,5 +19,4 @@ class StatsControllerTest < ActionController::TestCase
     assert_not_equal 0, assigns(:wikis)
     assert_not_equal 0, assigns(:people)
   end
-
 end

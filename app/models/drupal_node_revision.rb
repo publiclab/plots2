@@ -1,8 +1,10 @@
 class DrupalNodeRevision < ActiveRecord::Base
-  searchable do
-    text :title, boost: 5
+
+  include SolrToggle
+  searchable if: :shouldIndexSolr do
+    text :title
     text :body do
-      body.to_s.gsub!(/[[:cntrl:]]/, '')
+      body.to_s.gsub!(/[[:cntrl:]]/,'').to_s.slice(0..10000)
     end
     text :teaser
   end
@@ -98,7 +100,7 @@ class DrupalNodeRevision < ActiveRecord::Base
   # filtered version of node content
   def render_body
     body = self.body || ''
-    body = RDiscount.new(body, :generate_toc)
+    body = RDiscount.new(body)
     body = body.to_html
     body = body.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKHTML))

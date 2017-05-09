@@ -84,7 +84,7 @@ class Tag < ActiveRecord::Base
 
   # just like find_nodes_by_type, but searches wiki pages, places, and tools
   def self.find_pages(tagnames, limit = 10)
-    find_nodes_by_type(tagnames, %w(page place tool), limit)
+    find_nodes_by_type(tagnames, %w[page place tool], limit)
   end
 
   def self.find_nodes_by_type_with_all_tags(tagnames, type = 'note', limit = 10)
@@ -157,7 +157,7 @@ class Tag < ActiveRecord::Base
   end
 
   def self.nodes_for_period(type, nids, start, finish)
-    Node.select([:created, :status, :type, :nid])
+    Node.select(%i[created status type nid])
         .where(
           'type = ? AND status = 1 AND nid IN (?) AND created > ? AND created <= ?',
           type,
