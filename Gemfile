@@ -4,11 +4,12 @@ gem 'rails', '~> 3.2.20'
 gem 'passenger'
 
 gem 'rails-i18n', '~> 3.0.0'
+
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
-group :mysql, :production do
-  gem 'mysql2', '~> 0.3.20'
-  # mysql 0.4.3+ causes a version mismatch, apparently, and demands 'activerecord-mysql2-adapter'
-end
+# group :mysql, :production do
+#   gem 'mysql2', '~> 0.3.20'
+#   # mysql 0.4.3+ causes a version mismatch, apparently, and demands 'activerecord-mysql2-adapter'
+# end
 
 # ships with sqlite set up for easy setup during development
 # run with `bundle install --without development` or `bundle install --without sqlite` to exclude this
