@@ -117,3 +117,15 @@ activities-spectrometer:
   uid: 1
   nid: 20
   date: Time.now
+
+map_lat:
+  tid: 7
+  uid: 1
+  nid: 13
+  date: Time.now
+
+map_lon:
+  tid: 8
+  uid: 1
+  nid: 13
+  date: Time.now
