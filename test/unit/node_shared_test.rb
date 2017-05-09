@@ -61,9 +61,9 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('L.marker').length
   end
 
-  test 'that NodeShared can be used to convert short codes like [map:content:lat:lon] into maps which display notes, but only those tagged with "blog"' do
+  test 'that NodeShared can be used to convert short codes like [map:tag:blog:lat:lon] into maps which display notes, but only those tagged with "blog"' do
     before = "Here are some notes in a map: \n\n[map:tag:blog:71.00:52.00] \n\nThis is how you make it work:\n\n`[map:tag:blog:71.00:52.00]`\n\n `[map:tag:blog:71.00:52.00]`\n\nMake sense?"
-    html = NodeShared.notes_map(before)
+    html = NodeShared.notes_map_by_tag(before)
     assert_equal 1, html.scan('<div class="leaflet-map"').length
     assert_equal 1, html.scan('L.marker').length
   end
