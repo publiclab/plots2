@@ -4,10 +4,10 @@
 </style>
 <div class="leaflet-map" id="map<%= unique_id %>"></div>
 <script>
-  var map = L.map('map<%= unique_id %>').setView([<%= lat %>,<%= lon %>], 10);
+  var map = L.map('map<%= unique_id %>').setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
   L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
 
   <% items.each do |item| %>
-    L.marker([<%= item.lat %>, <%= item.lon %>]).addTo(map).bindPopup("<a href='/<%= item.path %>'><%= item.title %></a>");
+    L.marker([<%= item.lat %>, <%= item.lon %>]).addTo(map).bindPopup("<a href='<%= item.path %>'><%= item.title %></a>");
   <% end %>
 </script>
