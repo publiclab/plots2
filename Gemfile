@@ -4,18 +4,17 @@ gem 'rails', '~> 3.2.20'
 gem 'passenger'
 
 gem 'rails-i18n', '~> 3.0.0'
-
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
-# group :mysql, :production do
-#   gem 'mysql2', '~> 0.3.20'
-#   # mysql 0.4.3+ causes a version mismatch, apparently, and demands 'activerecord-mysql2-adapter'
-# end
+group :mysql, :production do
+  gem 'mysql2', '~> 0.3.20'
+  # mysql 0.4.3+ causes a version mismatch, apparently, and demands 'activerecord-mysql2-adapter'
+end
 
 # ships with sqlite set up for easy setup during development
 # run with `bundle install --without development` or `bundle install --without sqlite` to exclude this
-# group :sqlite, :development do
-#   gem 'sqlite3'
-# end
+group :sqlite, :development do
+  gem 'sqlite3'
+end
 
 #group :postgresql do
 #  gem "activerecord-postgresql-adapter"
@@ -77,8 +76,8 @@ gem "recaptcha", require: "recaptcha/rails"
 # RESTful API Support
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger'
-gem 'grape-swagger-entity'
+gem 'grape-swagger', '~> 0.25.3' # later versions require
+gem 'grape-swagger-entity', '= 0.1.5' # Ruby 2.2 or later
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'rack-cors', :require => 'rack/cors'
@@ -96,3 +95,6 @@ gem 'http_accept_language'
 gem 'friendly_id'
 gem 'jbuilder'
 gem 'strong_parameters'
+
+# Pin mustermann to Ruby 2.1 compatible
+gem 'mustermann' , '~> 0.4'
