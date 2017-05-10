@@ -51,7 +51,7 @@ end
 
 # run with `bundle install --without production` to exclude these
 group :production do
-  gem "scrypt", "~> 3"
+  gem "scrypt", "~> 1.2.1"
 end
 
 gem 'composite_primary_keys'
