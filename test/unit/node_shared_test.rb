@@ -7,7 +7,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-test notes-grid-test-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('notes-grid-test').length
+    assert_equal 6, html.scan('notes-grid-test').length
   end
 
   test 'that NodeShared can be used to convert short codes like [questions:foo] into tables which list questions' do
@@ -16,7 +16,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid questions-grid questions-grid-test questions-grid-test-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('questions-grid-test').length
+    assert_equal 6, html.scan('questions-grid-test').length
   end
 
   test 'that NodeShared can be used to convert short codes like [activities:foo] into tables which list activity notes' do
@@ -26,7 +26,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<table class="table inline-grid activity-grid activity-grid-spectrometer activity-grid-spectrometer-').length
     assert_equal 7, html.scan('<td').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('activity-grid-spectrometer').length
+    assert_equal 6, html.scan('activity-grid-spectrometer').length
   end
 
   test 'that NodeShared can be used to convert short codes like [upgrades:foo] into tables which list upgrade notes' do
@@ -35,7 +35,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid upgrades-grid upgrades-grid-test upgrades-grid-test-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('upgrades-grid-test').length
+    assert_equal 6, html.scan('upgrades-grid-test').length
   end
 
   test 'that NodeShared can be used to convert short codes like [notes:foo] into tables which list notes, even after text has been markdown-ified' do
