@@ -1,8 +1,8 @@
 module SolrToggle
 
   def shouldIndexSolr
-    if ENV["DISABLE_SOLR"]
-      false
+    if ENV["DISABLE_SOLR_CHECK"]
+      true
     else
       begin
         if !Sunspot::Rails.configuration.disabled?
