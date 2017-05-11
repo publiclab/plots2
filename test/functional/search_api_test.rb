@@ -15,7 +15,7 @@ class SearchApiTest < ActiveSupport::TestCase
     pattern = {
       srchParams: {
         srchString: 'Blog',
-        seq: false,
+        seq: nil,
       }.ignore_extra_keys!
     }.ignore_extra_keys!
 
