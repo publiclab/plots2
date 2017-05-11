@@ -23,13 +23,6 @@ class SearchApiTest < ActiveSupport::TestCase
 
     puts JSON.parse(last_response.body)
     assert matcher =~ JSON.parse(last_response.body)
-    
-
-    # check for actual Blog note, too
-    # assert_equal ___, node(:blog)
-    
-    
-    
 
   end
 
