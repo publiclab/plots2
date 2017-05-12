@@ -19,7 +19,7 @@ namespace :test do
     Rake::Task["spec:javascript"].execute
   end
 
-  desc "Start Solr, turn off Solr 'disabled=true' config and run solr-specific tests"
+  desc "Start embedded Solr engine, turn off Solr 'disabled=true' config and run solr-specific tests"
   task :solr do
     require 'yaml'
     sunspot = YAML::load_file "config/sunspot.yml"
@@ -32,6 +32,9 @@ namespace :test do
     # puts sunspot.to_yaml
     `rake sunspot:solr:start RAILS_ENV=test`
     sleep(40)
+    # do a re-index
+    `RAILS_ENV=test docker-compose run web rake SOLR_DISABLE_CHECK=1 sunspot:reindex`
+    # need more sleep?
     Rake::Task["test:solr_tests"].invoke
     `rake sunspot:solr:stop RAILS_ENV=test`
     # restore "disabled" to true in test for sunspot.yml
