@@ -29,18 +29,18 @@ namespace :test do
       file.write sunspot.to_yaml
     end
     puts "turning on solr dependence at config/sunspot.yml"
-    puts sunspot.to_yaml
-    puts `rake sunspot:solr:start RAILS_ENV=test`
+    # puts sunspot.to_yaml
+    `rake sunspot:solr:start RAILS_ENV=test`
     sleep(40)
     Rake::Task["test:solr_tests"].invoke
-    puts `rake sunspot:solr:stop RAILS_ENV=test`
+    `rake sunspot:solr:stop RAILS_ENV=test`
     # restore "disabled" to true in test for sunspot.yml
     sunspot['test']['disabled'] = true
     File.open("config/sunspot.yml", "w") do |file|
       file.write sunspot.to_yaml
     end
     puts "turning off solr dependence at config/sunspot.yml"
-    puts sunspot.to_yaml
+    #puts sunspot.to_yaml
   end
 
   desc "Run solr-specific tests"
