@@ -33,7 +33,7 @@ namespace :test do
     `rake sunspot:solr:start RAILS_ENV=test`
     sleep(40)
     # do a re-index
-    `RAILS_ENV=test docker-compose run web rake SOLR_DISABLE_CHECK=1 sunspot:reindex`
+    `RAILS_ENV=test rake SOLR_DISABLE_CHECK=1 sunspot:reindex`
     # need more sleep?
     Rake::Task["test:solr_tests"].invoke
     `rake sunspot:solr:stop RAILS_ENV=test`
