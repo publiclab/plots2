@@ -22,7 +22,7 @@ class SearchesControllerTest < ActionController::TestCase
     assert_not_nil @response.body
     result = JSON.parse(@response.body)
     assert_not_nil result
-    assert result != []
+    assert_not_equal result, []
   end
 
   test 'should get index' do
