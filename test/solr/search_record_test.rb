@@ -30,6 +30,12 @@ class SearchRecordTest < ActiveSupport::TestCase
 
   end
 
+  test "plain Node.search returns something"
+    search = Node.search
+    assert_not_nil search.results
+    assert search.results.length > 0
+  end
+
   test "Node.search for two different key words returns different results" do
     solr_search_1 = Node.search do
       fulltext 'spectro'
@@ -45,14 +51,11 @@ class SearchRecordTest < ActiveSupport::TestCase
       #with(:updated_month, month) if month.present?
       #paginate :page => 1, :per_page => 10
     end
-# not working yet
-    #assert_not_nil solr_search_1
-    #assert_not_nil solr_search_2
-    #assert_not_nil solr_search_1
-    #assert_not_nil solr_search_2
-    #assert_not_equal solr_search_1.results.collect(&:nid), solr_search_2.results.collect(&:nid)
-    #assert_equal 8, solr_search_1.results[0].nid
-    #assert_equal 7, solr_search_2.results[0].nid
+    assert_not_nil solr_search_1.results.length > 0
+    assert_not_nil solr_search_2.results.length > 0
+    assert_not_equal solr_search_1.results.collect(&:nid), solr_search_2.results.collect(&:nid)
+    assert_equal 8, solr_search_1.results[0].nid
+    assert_equal 7, solr_search_2.results[0].nid
   end
 
 end
