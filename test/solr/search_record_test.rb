@@ -39,7 +39,7 @@ class SearchRecordTest < ActiveSupport::TestCase
   test "Node.search for two different key words returns different results" do
     solr_search_1 = Node.search do
       fulltext 'spectro'
-      with(:updated_at).less_than(Time.zone.now)
+      #with(:updated_at).less_than(Time.zone.now)
       # this is required to get results to return: 
       adjust_solr_params do |params|
         params[:qf] = nil
@@ -50,7 +50,7 @@ class SearchRecordTest < ActiveSupport::TestCase
     end
     solr_search_2 = Node.search do
       fulltext 'Chicago'
-      with(:updated_at).less_than(Time.zone.now)
+      #with(:updated_at).less_than(Time.zone.now)
       # this is required to get results to return: 
       adjust_solr_params do |params|
         params[:qf] = nil
@@ -59,6 +59,8 @@ class SearchRecordTest < ActiveSupport::TestCase
       #with(:updated_month, month) if month.present?
       #paginate :page => 1, :per_page => 10
     end
+puts solr_search_1.results
+puts solr_search_2.results
     assert solr_search_1.results.length > 0
     assert solr_search_2.results.length > 0
     assert_not_equal solr_search_1.results.collect(&:nid), solr_search_2.results.collect(&:nid)
