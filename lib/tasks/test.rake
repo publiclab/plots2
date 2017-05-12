@@ -31,7 +31,11 @@ namespace :test do
     puts sunspot.to_yaml
     puts `rake sunspot:solr:start RAILS_ENV=test`
     sleep(40)
-    puts `rake test TEST=test/solr/*_test.rb`
+    Rake::TestTask.new(:lib) do |t|
+      t.libs << "test"
+      t.pattern = 'test/solr/*_test.rb'
+      t.verbose = true
+    end
     puts `rake sunspot:solr:stop RAILS_ENV=test`
     # restore "disabled" to true in test for sunspot.yml
     sunspot['test']['disabled'] = true
