@@ -14,7 +14,7 @@ class SearchApiTest < ActiveSupport::TestCase
     # Expected search pattern
   pattern = {
       items: [{
-        docUrl: "/notes/jeff/05-10-2017/blog-post"
+        docUrl: "/notes/jeff/05-10-2017/blog-post",
         docTitle: "Blog post"
       }],
       srchParams: {
