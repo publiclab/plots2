@@ -12,6 +12,9 @@ class SearchesController < ApplicationController
     term = params[:q] || "spectrometer"
     @search = Node.search do
       fulltext term
+      adjust_solr_params do |params|
+        params[:qf] = nil
+      end
     end
     render json: @search.results[0]
   end
