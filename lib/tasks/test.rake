@@ -19,6 +19,7 @@ namespace :test do
     Rake::Task["spec:javascript"].execute
   end
 
+  desc "Start Solr, turn off Solr 'disabled=true' config and run solr-specific tests"
   task :solr do
     require 'yaml'
     sunspot = YAML::load_file "config/sunspot.yml"
@@ -31,11 +32,7 @@ namespace :test do
     puts sunspot.to_yaml
     puts `rake sunspot:solr:start RAILS_ENV=test`
     sleep(40)
-    Rake::TestTask.new(:lib) do |t|
-      t.libs << "test"
-      t.pattern = 'test/solr/*_test.rb'
-      t.verbose = true
-    end
+    Rake::Task["test:lib"].invoke
     puts `rake sunspot:solr:stop RAILS_ENV=test`
     # restore "disabled" to true in test for sunspot.yml
     sunspot['test']['disabled'] = true
@@ -44,5 +41,12 @@ namespace :test do
     end
     puts "turning off solr dependence at config/sunspot.yml"
     puts sunspot.to_yaml
+  end
+
+  desc "Run solr-specific tests"
+  Rake::TestTask.new(:solr_tests) do |t|
+    t.libs << "test"
+    t.pattern = 'test/solr/*_test.rb'
+    t.verbose = true
   end
 end
