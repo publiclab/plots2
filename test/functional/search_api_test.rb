@@ -12,10 +12,14 @@ class SearchApiTest < ActiveSupport::TestCase
     assert last_response.ok?
 
     # Expected search pattern
-    pattern = {
+  pattern = {
+      items: [{
+        docUrl: "/notes/jeff/05-10-2017/blog-post"
+        docTitle: "Blog post"
+      }],
       srchParams: {
         srchString: 'Blog',
-        seq: nil,
+        seq: false,
       }.ignore_extra_keys!
     }.ignore_extra_keys!
 
