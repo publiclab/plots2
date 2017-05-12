@@ -40,6 +40,10 @@ class SearchRecordTest < ActiveSupport::TestCase
     solr_search_1 = Node.search do
       fulltext 'spectro'
       with(:updated_at).less_than(Time.zone.now)
+      # this is required to get results to return: 
+      adjust_solr_params do |params|
+        params[:qf] = nil
+      end
       #facet(:updated_month)
       #with(:updated_month, month) if month.present?
       #paginate :page => 1, :per_page => 10
@@ -47,6 +51,10 @@ class SearchRecordTest < ActiveSupport::TestCase
     solr_search_2 = Node.search do
       fulltext 'Chicago'
       with(:updated_at).less_than(Time.zone.now)
+      # this is required to get results to return: 
+      adjust_solr_params do |params|
+        params[:qf] = nil
+      end
       #facet(:updated_month)
       #with(:updated_month, month) if month.present?
       #paginate :page => 1, :per_page => 10
@@ -54,8 +62,6 @@ class SearchRecordTest < ActiveSupport::TestCase
     assert solr_search_1.results.length > 0
     assert solr_search_2.results.length > 0
     assert_not_equal solr_search_1.results.collect(&:nid), solr_search_2.results.collect(&:nid)
-puts solr_search_1.results[0].inspect
-puts solr_search_2.results[0].inspect
     assert_equal 8, solr_search_1.results[0].nid
     assert_equal 7, solr_search_2.results[0].nid
   end
