@@ -16,7 +16,7 @@ class SearchesController < ApplicationController
         params[:qf] = nil
       end
     end
-    render text: JSON.encode(@search.results[0])
+    render text: JSON.generate(@search.results[0])
   end
 
   def new
