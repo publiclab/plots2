@@ -20,8 +20,7 @@ class SearchApiTest < ActiveSupport::TestCase
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
-
-    puts JSON.parse(last_response.body)
+    
     assert matcher =~ JSON.parse(last_response.body)
 
   end
