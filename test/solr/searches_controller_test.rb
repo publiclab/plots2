@@ -20,6 +20,9 @@ class SearchesControllerTest < ActionController::TestCase
     assert_not_nil :search
     assert_response :success
     assert_not_nil @response.body
+    puts "#################################"
+    puts @response.body
+    puts "#################################"
     assert_not_nil JSON.parse(@response.body)
   end
 
