@@ -16,7 +16,7 @@ class SearchApiTest < ActiveSupport::TestCase
       items: [{
         docUrl: "/notes/jeff/05-10-2017/blog-post",
         docTitle: "Blog post"
-      }],
+      }.ignore_extra_keys!],
       srchParams: {
         srchString: 'Blog',
         seq: false,
