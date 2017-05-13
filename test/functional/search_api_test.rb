@@ -13,10 +13,6 @@ class SearchApiTest < ActiveSupport::TestCase
 
     # Expected search pattern
     pattern = {
-      items: [{
-        docUrl: "/notes/jeff/05-10-2017/blog-post",
-        docTitle: "Blog post"
-      }.ignore_extra_keys!],
       srchParams: {
         srchString: 'Blog',
         seq: false,
@@ -24,8 +20,14 @@ class SearchApiTest < ActiveSupport::TestCase
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+
+    assert_equal "/notes/jeff/05-10-2017/blog-post", json['items'][0]['docUrl']
+    assert_equal "Blog post",                        json['items'][0]['docTitle']
+    assert_equal 13,                                 json['items'][0]['docId']
     
-    assert matcher =~ JSON.parse(last_response.body)
+    assert matcher =~ json
 
   end
 
