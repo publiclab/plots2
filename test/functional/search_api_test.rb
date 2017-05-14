@@ -15,7 +15,7 @@ class SearchApiTest < ActiveSupport::TestCase
     pattern = {
       srchParams: {
         srchString: 'Blog',
-        seq: false,
+        seq: nil,
       }.ignore_extra_keys!
     }.ignore_extra_keys!
 
@@ -23,9 +23,9 @@ class SearchApiTest < ActiveSupport::TestCase
 
     json = JSON.parse(last_response.body)
 
-    assert_equal "/notes/jeff/05-10-2017/blog-post", json['items'][0]['docUrl']
-    assert_equal "Blog post",                        json['items'][0]['docTitle']
-    assert_equal 13,                                 json['items'][0]['docId']
+    assert_equal node(:blog).path, json['items'][0]['docUrl']
+    assert_equal "Blog post",       json['items'][0]['docTitle']
+    assert_equal 13,                json['items'][0]['docId']
     
     assert matcher =~ json
 
