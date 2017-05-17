@@ -100,7 +100,7 @@ class DrupalNodeRevision < ActiveRecord::Base
   # filtered version of node content
   def render_body
     body = self.body || ''
-    body = RDiscount.new(body, :generate_toc)
+    body = RDiscount.new(body)
     body = body.to_html
     body = body.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKHTML))
