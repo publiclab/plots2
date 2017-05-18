@@ -1,7 +1,7 @@
 require 'grape'
 require 'grape-entity'
 
-module Srch
+module Search
   class Search < Grape::API
     # Endpoint definitions
     resource :srch do
