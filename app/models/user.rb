@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   do_not_validate_attachment_file_type :photo_file_name
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
 
-  has_one :drupal_users, foreign_key: :uid
+  has_one :users, foreign_key: :uid
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
@@ -71,6 +71,10 @@ class User < ActiveRecord::Base
 
   def destroy_drupal_user
     drupal_user.destroy
+  end
+  
+  def drupal_user
+    self.user
   end
 
   def notes
