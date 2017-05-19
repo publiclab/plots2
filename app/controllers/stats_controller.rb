@@ -19,7 +19,7 @@ class StatsController < ApplicationController
                                .count - @notes # because notes each have one revision
     @people = User.where(created_at: @start..@end)
                   .joins('INNER JOIN users ON users.uid = rusers.id')
-                  .where(status: 1)
+                  .where('users.status = 1')
                   .count
   end
 
@@ -38,7 +38,7 @@ class StatsController < ApplicationController
                                       .count
     @weekly_members = User.where(created_at: @time - 1.weeks..@time)
                           .joins('INNER JOIN users ON users.uid = rusers.id')
-                          .where(status: 1)
+                          .where('users.status = 1')
                           .count
     @monthly_notes = Node.select(%i[created type status])
                          .where(type: 'note', status: 1, created: @time.to_i - 1.months.to_i..@time.to_i)
@@ -48,7 +48,7 @@ class StatsController < ApplicationController
                                        .count
     @monthly_members = User.where(created_at: @time - 1.months..@time)
                            .joins('INNER JOIN users ON users.uid = rusers.id')
-                           .where(status: 1)
+                           .where('users.status = 1')
                            .count
 
     @notes_per_week_past_year = Node.select(%i[created type status])
