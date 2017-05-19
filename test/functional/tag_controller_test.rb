@@ -162,14 +162,20 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "wildcard tag show wiki pages" do
-    get :show, id: 'question:*', node_type: 'wiki'
+    get :show, id: 'activities:*', node_type: 'wiki'
     assert :success
     assert_not_nil :tags
     assert :wildcard
     assert :wikis
+
     assert assigns(:wikis).length > 0
 
     assert_select '#note-graph', 0
+  end
+
+  test "wildcard does not show wiki" do
+    get :show, id: 'question:*', node_type: 'wiki'
+    assert_equal true, assigns(:wikis).empty?
   end
 
   test "should show a featured wiki page at top, if it exists" do

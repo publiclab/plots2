@@ -19,7 +19,11 @@ class TagController < ApplicationController
                    else
                      'note'
                    end
+
+    # params[:node_type] - this is an optional param
+    # if params[:node_type] is nil - use @default_type
     @node_type = params[:node_type] || default_type
+    
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
     node_type = 'map' if @node_type == 'maps'
@@ -40,12 +44,16 @@ class TagController < ApplicationController
                   .page(params[:page])
                   .order('node_revisions.timestamp DESC')
     end
+
+      # breaks the parameter after its rub
+    # sets everything to an empty array
+    set_sidebar :tags, [params[:id]]
+
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
-    set_sidebar :tags, [params[:id]]
 
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
