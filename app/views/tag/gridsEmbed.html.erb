@@ -1,5 +1,8 @@
 <link href="/assets/application.css" media="all" rel="stylesheet" type="text/css" />
 <script src="/assets/application.js" type="text/javascript"></script>
 <link href="/lib/fontawesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
-
-<%= raw auto_link(insert_extras(" [notes:#{params[:tagname]}]"), :sanitize => false) %>
+<style>
+  body { padding: 0; }
+  div.leaflet-map { height:100% !important; }
+</style>
+<%= raw auto_link(insert_extras(" [#{params[:t] || "notes:"}#{params[:tagname]}]"), :sanitize => false) %>

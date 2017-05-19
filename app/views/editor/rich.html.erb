@@ -231,7 +231,34 @@
         formats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json']
       },
       titleModule: {
-        suggestRelated: false
+        suggestRelated: true,
+        fetchRelated: function(show) {
+          $.getJSON("/api/srch/notes?srchString=" + editor.titleModule.value(), function(response) {
+            /* API provides: 
+            {"items":[{
+              "docId":14022,
+              "docType":"file",
+              "docUrl":"/notes/liz/03-15-2017/host-a-balloon-mapping-workshop",
+              "docTitle":"Host a balloon mapping workshop",
+              "docSummary":"...",
+              "docScore":0}
+            ]}
+            */
+            // But we need: [{ id: 1, title: 'A related post',       url: '/', author: 'eustatic'}, ... ]
+            var formatted = [];
+            if (response['items']) {
+              response['items'].forEach(function(item) {
+                var formattedItem = {};
+                formattedItem.id = item.docId;
+                formattedItem.title = item.docTitle;
+                formattedItem.url = item.docUrl;
+                formattedItem.author = item.docUrl.split('/')[2];
+                formatted.push(formattedItem);
+              });
+              show(formatted);
+            }
+          });
+        }
       }
     });
 

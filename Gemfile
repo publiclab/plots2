@@ -51,7 +51,7 @@ end
 
 # run with `bundle install --without production` to exclude these
 group :production do
-  gem "scrypt", "~> 1.2.1"
+  gem "scrypt", "~> 3"
 end
 
 gem 'composite_primary_keys'
@@ -76,8 +76,8 @@ gem "recaptcha", require: "recaptcha/rails"
 # RESTful API Support
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger'
-gem 'grape-swagger-entity'
+gem 'grape-swagger', '~> 0.25.3' # later versions require
+gem 'grape-swagger-entity', '= 0.1.5' # Ruby 2.2 or later
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'rack-cors', :require => 'rack/cors'
@@ -95,3 +95,6 @@ gem 'http_accept_language'
 gem 'friendly_id'
 gem 'jbuilder'
 gem 'strong_parameters'
+
+# Pin mustermann to Ruby 2.1 compatible
+gem 'mustermann' , '~> 0.4'

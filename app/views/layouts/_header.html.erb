@@ -135,7 +135,6 @@
             <li><a href="//mapknitter.org"><%= t('layout._header.data.web_tools.mapknitter') %></a></li>
             <li><a href="//spectralworkbench.org"><%= t('layout._header.data.web_tools.spectralworkbench') %></a></li>
             <li><a href="//infragram.org"><%= t('layout._header.data.web_tools.infragram') %></a></li>
-            <li><a href="//openwaterproject.io"><%= t('layout._header.data.web_tools.open_water') %></a></li>
           </ul>
         </li>
 
@@ -145,7 +144,7 @@
       </ul>
 
       <div id="chat" class="chat-popover" data-placement="bottom" style="display:none;">
-        <a style="margin-right:4px;" class="pull-right btn btn-sm" href="https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>" target="_blank"><%= t('layout._header.chatroom.pop_out') %></a>
+        <a style="margin-right:4px;" class="pull-right btn btn-sm" href="https://chat.publiclab.org" target="_blank"><%= t('layout._header.chatroom.pop_out') %></a>
         <p class="popover-title"><%= t('layout._header.chatroom.chatroom_title') %></p>
 
       </div>
@@ -155,7 +154,7 @@
       <% unless params[:action] == "register" || params[:action] == "signup" %>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-            <a onClick="$('#chat').toggle();$('#chat').append('<iframe width=\'400px\' height=\'300px\' style=\'border:0;\' src=\'https://webchat.oftc.net/?channels=publiclab<% if current_user %>&nick=<%= current_user.username %><% end %>\'></iframe>');">
+            <a onClick="$('#chat').toggle();$('#chat').append('<iframe width=\'400px\' height=\'500px\' style=\'border:0;\' src=\'https://chat.publiclab.org\'></iframe>');">
               <i class="fa fa-white fa fa-comments"></i>
             </a>
           </li>
@@ -181,17 +180,6 @@
     <li><a href="/people">Contributors</a></li>
 	           <li class="divider"></li>
 	       <% end %>
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                  <i class="fa fa-language" aria-hidden="true"></i>
-                  <%= t('layout._footer.language.language_title') %> <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <% locale_name_pairs.each do |locale_name, locale| %>
-                    <li><%= link_to locale_name, change_locale_path(locale) %></li>
-                  <% end %>
-                </ul>
-              </li>
               <li><%= link_to t('layout._header.logout'), logout_path %></li>
             </ul>
             <% else %>

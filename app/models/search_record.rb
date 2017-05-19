@@ -33,10 +33,13 @@ class SearchRecord < ActiveRecord::Base
   def notes(month)
     solr_search = Node.search do
       fulltext key_words
+      adjust_solr_params do |params|
+        params[:qf] = nil
+      end
       with(:updated_at).less_than(Time.zone.now)
       facet(:updated_month)
       with(:updated_month, month) if month.present?
-      paginate page: 1, per_page: 10
+      #paginate :page => 1, :per_page => 10
     end
   end
 

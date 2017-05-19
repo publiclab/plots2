@@ -2,7 +2,7 @@ require 'open-uri'
 
 class ImagesController < ApplicationController
   respond_to :html, :xml, :json
-  before_filter :require_user, only: [:create, :new, :update, :delete]
+  before_filter :require_user, only: %i[create new update delete]
 
   def create
     if params[:i]

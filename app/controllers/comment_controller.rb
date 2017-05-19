@@ -1,6 +1,6 @@
 class CommentController < ApplicationController
   respond_to :html, :xml, :json
-  before_filter :require_user, only: [:create, :update, :delete]
+  before_filter :require_user, only: %i[create update delete]
 
   def index
     @comments = Comment.paginate(page: params[:page], per_page: 30)
