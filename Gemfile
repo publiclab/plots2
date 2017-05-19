@@ -61,6 +61,7 @@ gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
 gem 'georuby', '2.0'
 gem 'geokit-rails'
+gem 'json'
 gem 'rails_autolink'
 gem 'rb-readline'
 gem "paperclip", ">= 4.1.1"
