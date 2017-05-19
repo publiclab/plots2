@@ -1,7 +1,7 @@
 version: "2"
 services:
   db:
-    image: mysql:5.5
+    image: mysql:5.6
     environment:
       - MYSQL_DATABASE=plots
       - MYSQL_USER=plots
