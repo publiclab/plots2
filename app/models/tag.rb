@@ -68,12 +68,14 @@ class Tag < ActiveRecord::Base
   # finds recent nodes - should drop "limit" and allow use of chainable .limit()
   def self.find_nodes_by_type(tagnames, type = 'note', limit = 10)
     nodes = Node.where(status: 1, type: type)
-                .includes(:drupal_node_revision, :tag)
+                .includes(:tag)
                 .where('term_data.name IN (?)', tagnames)
+                #.select(%i[node.nid node.status node.type community_tags.nid community_tags.tid term_data.name term_data.tid])
+                # above select could be added later for further optimization
     # .where('term_data.name IN (?) OR term_data.parent in (?)', tagnames, tagnames) # greedily fetch children
     tags = Tag.where('term_data.name IN (?)', tagnames)
     parents = Node.where(status: 1, type: type)
-                  .includes(:drupal_node_revision, :tag)
+                  .includes(:tag)
                   .where('term_data.name IN (?)', tags.collect(&:parent))
     Node.where('node.nid IN (?)', (nodes + parents).collect(&:nid))
         .includes(:drupal_node_revision, :tag)
