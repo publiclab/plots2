@@ -1,12 +1,12 @@
 require 'test_helper'
 
 class AnswerSelectionTest < ActiveSupport::TestCase
-  test "should create answer_selection" do 
+  test 'should create answer_selection' do
     answer_selection = AnswerSelection.new
     assert answer_selection.save
   end
 
-  test "should relate answer_selection with answer and node" do
+  test 'should relate answer_selection with answer and node' do
     answer_selection = AnswerSelection.new
     user = users(:bob)
     answer = answers(:one)
@@ -17,13 +17,13 @@ class AnswerSelectionTest < ActiveSupport::TestCase
     assert_equal answer.answer_selections.last, answer_selection
   end
 
-  test "should have user method" do
+  test 'should have user method' do
     answer_selection = answer_selections(:one)
     user = rusers(:bob)
     assert_equal answer_selection.user, user
   end
 
-  test "should create answer_selection if not present" do
+  test 'should create answer_selection if not present' do
     user = users(:admin)
     answer = answers(:one)
     assert_difference 'AnswerSelection.count' do
@@ -31,7 +31,7 @@ class AnswerSelectionTest < ActiveSupport::TestCase
     end
   end
 
-  test "should set liking false if value is false" do
+  test 'should set liking false if value is false' do
     user = users(:bob)
     answer = answers(:one)
     assert_no_difference 'AnswerSelection.count' do
@@ -39,7 +39,7 @@ class AnswerSelectionTest < ActiveSupport::TestCase
     end
   end
 
-  test "should not create new answer_selection if present" do
+  test 'should not create new answer_selection if present' do
     user = users(:jeff)
     answer = answers(:one)
     assert_no_difference 'AnswerSelection.count' do
@@ -47,7 +47,7 @@ class AnswerSelectionTest < ActiveSupport::TestCase
     end
   end
 
-  test "should increase cached likes if liked" do
+  test 'should increase cached likes if liked' do
     user = users(:admin)
     answer = answers(:one)
     assert_difference 'answer.cached_likes' do
@@ -56,7 +56,7 @@ class AnswerSelectionTest < ActiveSupport::TestCase
     end
   end
 
-  test "should decrease cached likes if unliked" do
+  test 'should decrease cached likes if unliked' do
     user = users(:bob)
     answer = answers(:one)
     assert_difference 'answer.cached_likes', -1 do

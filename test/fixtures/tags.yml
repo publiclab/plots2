@@ -24,11 +24,11 @@ question:
 
 map_lat:
   tid: 7
-  name: lat:71
+  name: lat:71.0
 
 map_lon:
   tid: 8
-  name: lon:52
+  name: lon:52.0
 
 blog:
   tid: 9

@@ -11,7 +11,7 @@ class StatsController < ApplicationController
   def range
     @start = params[:start] ? Time.parse(params[:start]) : Time.now - 1.month
     @end = params[:end] ? Time.parse(params[:end]) : Time.now
-    @notes = Node.select([:created, :type, :status])
+    @notes = Node.select(%i[created type status])
                  .where(type: 'note', status: 1, created: @start.to_i..@end.to_i)
                  .count
     @wikis = DrupalNodeRevision.select(:timestamp)
@@ -28,7 +28,7 @@ class StatsController < ApplicationController
               Time.now
             end
 
-    @weekly_notes = Node.select([:created, :type, :status])
+    @weekly_notes = Node.select(%i[created type status])
                         .where(type: 'note', status: 1, created: @time.to_i - 1.weeks.to_i..@time.to_i)
                         .count
     @weekly_wikis = DrupalNodeRevision.select(:timestamp)
@@ -36,7 +36,7 @@ class StatsController < ApplicationController
                                       .count
     @weekly_members = User.where(created_at: @time - 1.weeks..@time)
                           .count
-    @monthly_notes = Node.select([:created, :type, :status])
+    @monthly_notes = Node.select(%i[created type status])
                          .where(type: 'note', status: 1, created: @time.to_i - 1.months.to_i..@time.to_i)
                          .count
     @monthly_wikis = DrupalNodeRevision.select(:timestamp)
@@ -45,7 +45,7 @@ class StatsController < ApplicationController
     @monthly_members = User.where(created_at: @time - 1.months..@time)
                            .count
 
-    @notes_per_week_past_year = Node.select([:created, :type, :status])
+    @notes_per_week_past_year = Node.select(%i[created type status])
                                     .where(type: 'note', status: 1, created: @time.to_i - 1.years.to_i..@time.to_i)
                                     .count / 52.0
     @edits_per_week_past_year = DrupalNodeRevision.select(:timestamp)

@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :require_user, only: [:subscriptions, :nearby]
+  before_filter :require_user, only: %i[subscriptions nearby]
 
   # caches_action :index, :cache_path => proc { |c|
   #  node = Node.find :last #c.params[:id]
@@ -41,7 +41,7 @@ class HomeController < ApplicationController
   end
 
   def dashboard
-    @note_count = Node.select([:created, :type, :status])
+    @note_count = Node.select(%i[created type status])
                       .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                       .count
     @wiki_count = DrupalNodeRevision.select(:timestamp)

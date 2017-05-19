@@ -16,7 +16,7 @@ services:
   solr:
     image: solr:5.3
     ports:
-      - "127.0.0.1:8983:8983"
+      - "127.0.0.1:8984:8983"
     volumes:
       - solr:/opt/solr/server/solr/mycores
     entrypoint:
@@ -25,13 +25,14 @@ services:
       - default
   web:
     build: .
+    #image: plots_branch1:fix_solr
     command: /bin/bash -c "sleep 5 && bundle exec rails s -p 4000 -b '0.0.0.0'"
     environment:
       - RAILS_ENV=${RAILS_ENV}
     volumes:
       - .:/app
     ports:
-      - "127.0.0.1:4000:4000"
+      - "127.0.0.1:4001:4000"
     links:
       - db
       - solr

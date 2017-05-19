@@ -1,5 +1,5 @@
 class EditorController < ApplicationController
-  before_filter :require_user, only: [:post, :rich, :legacy, :editor]
+  before_filter :require_user, only: %i[post rich legacy editor]
 
   # main image via URL passed as GET param
   def legacy
