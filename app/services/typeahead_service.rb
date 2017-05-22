@@ -19,6 +19,10 @@ class TypeaheadService
     @notes ||= find_notes(params)
   end
 
+  def wikis(params, _limit)
+    @wikis ||= find_wikis(params)
+  end
+
   def maps(params, limit)
     @maps ||= find_maps(params, limit)
   end
@@ -54,6 +58,12 @@ class TypeaheadService
         .where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
   end
 
+  def find_wikis(input, limit = 5)
+    Node.limit(limit)
+        .order('nid DESC')
+        .where('type = "page" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+  end
+
   def find_maps(input, limit = 5)
     Node.limit(limit)
         .order('nid DESC')
@@ -67,6 +77,9 @@ class TypeaheadService
       # notes
       notesrch = textSearch_notes(srchString, limit)
       sresult.addAll(notesrch.getTags)
+      # wikis
+      wikisrch = textSearch_wikis(srchString, limit)
+      sresult.addAll(wikisrch.getTags)
       # User profiles
       usersrch = textSearch_profiles(srchString, limit)
       sresult.addAll(usersrch.getTags)
@@ -93,6 +106,7 @@ class TypeaheadService
         tval.tagId = 0
         tval.tagType = 'user'
         tval.tagVal = match.name
+        tval.tagSource = '/profile/' + match.name
         sresult.addTag(tval)
       end
     end
@@ -103,12 +117,28 @@ class TypeaheadService
   def textSearch_notes(srchString, limit = 5)
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
-      # notes
-      notes(srchString, limit).select('title,type,nid').each do |match|
+      notes(srchString, limit).select('title,type,nid,path').each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
         tval.tagType = 'file'
+        tval.tagSource = match.path
+        sresult.addTag(tval)
+      end
+    end
+    sresult
+  end
+
+  # Search wikis for matching strings
+  def textSearch_wikis(srchString, limit = 5)
+    sresult = TagList.new
+    unless srchString.nil? || srchString == 0
+      wikis(srchString, limit).select('title,type,nid,path').each do |match|
+        tval = TagResult.new
+        tval.tagId = match.nid
+        tval.tagVal = match.title
+        tval.tagType = 'file'
+        tval.tagSource = match.path
         sresult.addTag(tval)
       end
     end
@@ -120,11 +150,12 @@ class TypeaheadService
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
       # maps
-      maps(srchString, limit).select('title,type,nid').each do |match|
+      maps(srchString, limit).select('title,type,nid,path').each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
         tval.tagType = match.icon
+        tval.tagSource = match.path
         sresult.addTag(tval)
       end
     end
