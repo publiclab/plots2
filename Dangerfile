@@ -28,3 +28,6 @@ if github.pr_body.include?("* [ ]") && !github.pr_title.include?("[WIP]")
 end
 
 message "Pull Request is marked as Work in Progress" if github.pr_title.include? "[WIP]"
+
+junit.parse "output.xml"
+junit.report
