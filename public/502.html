@@ -69,13 +69,13 @@
 
           <script>
             chatroom = function() {
-              $('#chat').append('<iframe width="100%" height="300px" style="border:none;" src="https://webchat.oftc.net/?channels=publiclab"></iframe>')
+              $('#chat-error').append('<iframe width="100%" height="500px" style="border:none;" src="https://chat.publiclab.org"></iframe>').show();
             }
           </script>
 
           <p><a class="btn btn-primary" onClick="chatroom()">Open chatroom</a></p>
 
-          <div id="chat"></div>
+          <div id="chat-error"></div>
 
         </div>
 

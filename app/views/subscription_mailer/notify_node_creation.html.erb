@@ -3,7 +3,7 @@
 <p>Public Lab contributor <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>'><%= @node.author.name %></a> just <% if @node.has_power_tag('question') %>asked a question<% else %>posted a new research note<% end %> entitled '<b><%= @node.title %></b>':</p>
 
 <% if @node.has_power_tag('question') %>
-<p>Help him/her by posting an answer here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path(:question) %></p>
+<p>Help them by posting an answer here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path(:question) %></p>
 <% else %>
 <p>Read and respond to the post here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p>
 <% end %>
