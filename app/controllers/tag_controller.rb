@@ -45,7 +45,7 @@ class TagController < ApplicationController
                   .order('node_revisions.timestamp DESC')
     end
 
-      # breaks the parameter after its rub
+    # breaks the parameter 
     # sets everything to an empty array
     set_sidebar :tags, [params[:id]]
 
