@@ -1,7 +1,7 @@
 <p>
   <% @node.community_tags.each do |tag| %>
     <% if power_tag^tag.name.include?(':') %>
-      <span id="tag_<%= tag.tid %>" class="label <%= label_name %>" data-toggle="tooltip" data-html="true" title="created by <strong><%= tag.try(:author).try(:username) %></strong> <%= time_ago_in_words(Time.at(tag.date)) %> ago">
+      <span id="tag_<%= tag.tid %>" class="label <%= label_name %>" data-toggle="tooltip" data-html="true" title="<% unless tag.tag.description.empty? %> <%= tag.tag.description %> |<% end %> created by <strong><%= tag.try(:author).try(:username) %></strong> <%= time_ago_in_words(Time.at(tag.date)) %> ago">
         <a class="tag-name" href="<%= "/maps" if @node.type == "map" %>/tag/<%= tag.name %>"><%= tag.name %></a>
         <% if current_user && (tag.uid == @node.uid || current_user.role == "admin" || current_user.role == "moderator") %>
           <% if tag.name.include? ':' %>
