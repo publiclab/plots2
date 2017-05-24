@@ -266,6 +266,11 @@ Plots2::Application.routes.draw do
   match 'answer_like/likes/:aid' => 'answer_like#likes'
 
   match 'comment/answer_create/:aid' => 'comment#answer_create'
+
+  #Swagger UI
+  match 'web_api' => 'web_api#index'
+
+
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
