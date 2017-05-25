@@ -9,7 +9,7 @@ end
 message "You have added multiple commits. It's helpful to [squash them](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html) if the individual changes are small." if git.commits.size > 1
 
 if git.added_files.include?("Gemfile.lock") && !git.added_files.include?("Gemfile")
-  warn "You have added your Gemfile.lock file -- which is most likely not necessary, since you have not changed the Gemfile. Please remove your changes to this file to leave it as it was, thank you! If you really do mean to add Gemfile.lock, just leave a note explaining why. Thanks!"
+  warn "You have added your Gemfile.lock file -- which is most likely not necessary, since you have not changed the Gemfile. Please [remove your changes to this file](https://stackoverflow.com/questions/215718/reset-or-revert-a-specific-file-to-a-specific-revision-using-git) to leave it as it was, thank you! If you really do mean to add Gemfile.lock, just leave a note explaining why. Thanks!"
 end
 
 if git.added_files.any? { |files| files.start_with? "db/migrate/" } && !git.added_files.include?("schema.rb.example")
