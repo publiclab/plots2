@@ -3,13 +3,11 @@ message "@#{github.pr_author} Thank you for your pull request! I'm here to help 
 message "Your pull request is on the `master` branch. Please [make a separate feature branch](https://publiclab.org/wiki/contributing-to-public-lab-software#A+sample+git+workflow)) with a descriptive name like `new-blog-design` while making PRs in the future." if github.branch_for_head == 'master'
 
 unless git.commits.any? { |c| c.message =~ /#[\d]+/ }
-  message "This pull request doesn't link to a issue number. Please refer to the issue it fixes (if any) in the format: `Fixes #123`."
+  message "This pull request doesn't link to a issue number. Please refer to the issue it fixes (if any) in the body of your PR, in the format: `Fixes #123`."
 end
 
-message "You have added multiple commits. It's helpful to [squash them](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html) if the individual changes are small." if git.commits.size > 1
-
 if git.added_files.include?("Gemfile.lock") && !git.added_files.include?("Gemfile")
-  warn "You have added your Gemfile.lock file -- which is most likely not necessary, since you have not changed the Gemfile. Please [remove your changes to this file](https://stackoverflow.com/questions/215718/reset-or-revert-a-specific-file-to-a-specific-revision-using-git) to leave it as it was, thank you! If you really do mean to add Gemfile.lock, just leave a note explaining why. Thanks!"
+  warn "You have added your `Gemfile.lock` file -- which is most likely not necessary, since you have not changed the Gemfile. Please [remove your changes to this file](https://stackoverflow.com/questions/215718/reset-or-revert-a-specific-file-to-a-specific-revision-using-git) to leave it as it was, thank you! If you really do mean to add Gemfile.lock, just leave a note explaining why. Thanks!"
 end
 
 if git.added_files.any? { |files| files.start_with? "db/migrate/" } && !git.added_files.include?("schema.rb.example")
