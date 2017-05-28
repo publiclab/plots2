@@ -88,7 +88,7 @@ class HomeController < ApplicationController
     @comments = Comment.joins(:node, :drupal_users)
                        .order('timestamp DESC')
                        .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
-                       .limit(20)
+                       .page(params[:page])
                        .group('title') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     #                            .where('comments.status = (?)', 1)
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
