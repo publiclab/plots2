@@ -154,7 +154,7 @@
       <% unless params[:action] == "register" || params[:action] == "signup" %>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-            <a onClick="$('#chat').toggle();$('#chat').append('<iframe width=\'400px\' height=\'500px\' style=\'border:0;\' src=\'https://chat.publiclab.org\'></iframe>');">
+            <a id="chat-button">
               <i class="fa fa-white fa fa-comments"></i>
             </a>
           </li>

@@ -82,6 +82,15 @@ jQuery(document).ready(function($) {
     $('div[data-title="'+title+'"]').animate({height:'toggle'},'slow')
   })
 
+  var chatWindow = false;
+  $('#chat-button').click(function(){
+    $('#chat').toggle();
+    if(chatWindow == false){
+      $('#chat').append('<iframe width="400px" height="500px" style="border:0;" src="https://chat.publiclab.org"></iframe>');
+      chatWindow = true;
+    }
+  })
+
 });
 
 function print_linkless() {
