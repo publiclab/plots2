@@ -42,6 +42,29 @@ class CommentControllerTest < ActionController::TestCase
     assert_template partial: 'questions/_comment'
   end
 
+  test 'should create wiki comments' do
+    UserSession.create(rusers(:bob))
+    assert_difference 'Comment.count' do
+      xhr :post, :create,
+          id: node(:wiki_page).nid,
+          body: 'Wiki comment'
+    end
+    assert_response :success
+    assert_not_nil :comment
+    #assert_template partial: 'wiki/_comment' 
+    #should uncomment above once comment displaying partial is implemented for wikis.
+  end
+
+  test 'should show error if wiki comment not saved' do
+    UserSession.create(rusers(:bob))
+    assert_no_difference 'Comment.count' do
+      xhr :post, :create,
+          id: node(:wiki_page).nid
+    end
+    assert_equal flash[:error], 'The comment could not be saved.'
+    assert_template text: 'failure'
+  end
+
   test 'should show error if node comment not saved' do
     UserSession.create(rusers(:bob))
     assert_no_difference 'Comment.count' do
