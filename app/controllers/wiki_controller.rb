@@ -240,7 +240,7 @@ class WikiController < ApplicationController
       @tagnames = @tags.collect(&:name)
       render template: 'wiki/show'
     else
-      render file: 'public/404'
+      redirect_to '/404'
     end
   end
 
