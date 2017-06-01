@@ -38,7 +38,7 @@ class SearchRecordTest < ActiveSupport::TestCase
 
   test "Node.search for two different key words returns different results" do
     solr_search_1 = Node.search do
-      fulltext 'spectro'
+      fulltext 'Chicago'
       #with(:updated_at).less_than(Time.zone.now)
       # this is required to get results to return: 
       adjust_solr_params do |params|
@@ -49,7 +49,7 @@ class SearchRecordTest < ActiveSupport::TestCase
       #paginate :page => 1, :per_page => 10
     end
     solr_search_2 = Node.search do
-      fulltext 'Chicago'
+      fulltext 'pectro' # intending case-insensitive search for "spectrometer" or similar
       #with(:updated_at).less_than(Time.zone.now)
       # this is required to get results to return: 
       adjust_solr_params do |params|
