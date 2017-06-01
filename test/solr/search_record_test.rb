@@ -33,6 +33,7 @@ class SearchRecordTest < ActiveSupport::TestCase
   test "plain Node.search returns something" do
     search = Node.search
     assert_not_nil search.results
+puts assert_not_nil search.results.inspect
     assert search.results.length > 0
   end
 
