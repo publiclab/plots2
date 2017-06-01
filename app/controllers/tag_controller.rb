@@ -54,6 +54,11 @@ class TagController < ApplicationController
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
+    
+    @all_notes = Node.where(status: 1, type: 'note')
+            .includes(:drupal_node_revision, :tag)
+            .where('term_data.name = ?', params[:id])
+            .order('node_revisions.timestamp DESC')
 
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
