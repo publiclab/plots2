@@ -9,7 +9,7 @@ de:
       following: "Folgende"
       unfollow: "Klicken Sie hier um unfollow"
       follow: "Folgen"
-      people_watching_tag: "%[count} Personen beobachten Diesen Tag"
+      people_watching_tag: "%{count} Personen beobachten Diesen Tag"
       no_contributors: "Keine Mitwirkenden für diesen Tag ; versuchen, für '<b>%{tag}</b>' Suche"
       contributor: "Beiträger"
       notes: "Notizen"
