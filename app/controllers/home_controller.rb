@@ -96,7 +96,7 @@ class HomeController < ApplicationController
     @answer_comments = Comment.joins(:answer, :drupal_users)
                               .order('timestamp DESC')
                               .where('timestamp - answers.created_at > ?', 86_400)
-                              .limit(20)
+                              .page(params[:page])
                               .group('answers.id')
     @answer_comments = @answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     @activity = (@notes + @wikis + @comments + @answer_comments).sort_by(&:created_at).reverse
