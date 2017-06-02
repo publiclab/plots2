@@ -45,9 +45,11 @@ class CommentControllerTest < ActionController::TestCase
   test 'should create wiki comments' do
     UserSession.create(rusers(:bob))
     assert_difference 'Comment.count' do
-      xhr :post, :create,
-          id: node(:wiki_page).nid,
-          body: 'Wiki comment'
+      assert_difference "node(:wiki_page).comments.count" do
+        xhr :post, :create,
+            id: node(:wiki_page).nid,
+            body: 'Wiki comment'
+      end
     end
     assert_response :success
     assert_not_nil :comment
