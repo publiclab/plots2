@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DrupalNodeTest < ActiveSupport::TestCase
+class NodeTest < ActiveSupport::TestCase
   test 'basic node attributes' do
     node = node(:one)
     assert_equal 'note', node.type

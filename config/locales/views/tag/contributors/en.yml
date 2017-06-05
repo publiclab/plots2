@@ -9,7 +9,7 @@ en:
       following: "Following"
       unfollow: "Click to unfollow"
       follow: "Follow"
-      people_watching_tag: "%[count} people are watching this tag"
+      people_watching_tag: "%{count} people are watching this tag"
       no_contributors: "No contributors for that tag; try searching for '<b>%{tag}</b>'"
       contributor: "Contributor"
       notes: "Notes"
