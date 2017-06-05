@@ -1,0 +1,17 @@
+development:
+  adapter: mysql2
+  username: 
+  password: 
+  database: publiclab_dev
+
+test:
+  adapter: mysql2
+  username: 
+  password: 
+  database: publiclab_test
+
+production:
+  adapter: mysql2
+  username: 
+  password: 
+  database: publiclab_production
