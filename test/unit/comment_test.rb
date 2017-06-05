@@ -165,4 +165,14 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal weekly_tallies[two_weeks_ago], 1
     assert_equal weekly_tallies[four_weeks_ago], 1
   end
+
+  test 'should create comments for wiki pages' do
+    wiki = node(:wiki_page)
+    comment = Comment.new(
+      uid: rusers(:bob).id,
+      nid: wiki.id,
+      comment: 'Test comment for wiki'
+    )
+    assert comment.save
+  end
 end
