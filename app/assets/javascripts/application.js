@@ -44,7 +44,6 @@
 //= require users.js
 //= require searchform.js
 //= require location_tags.js
-//= require users.js
 //= require tagging.js
 //= require grids.js
 //= require short-code-forms/dist/short-code-prompts.js
