@@ -1,13 +1,17 @@
 version: "2"
 services:
   db:
+    ports:
+      - "127.0.0.1:3307:3306"
     image: mysql:5.5
     environment:
-      - MYSQL_DATABASE=plots
+      - MYSQL_DATABASE=plots_$RAILS_ENV
       - MYSQL_USER=plots
       - MYSQL_PASSWORD=plots
       - MYSQL_RANDOM_ROOT_PASSWORD=true
     volumes:
+      - ./config/my.cnf:/etc/mysql/my.cnf
+      # for configuration
       - ../mysql:/var/lib/mysql
       # for persistence
       - ../dump:/docker-entrypoint-initdb.d

@@ -5,7 +5,7 @@ test:
   adapter: mysql2
   username: plots
   password: plots
-  database: plots
+  database: plots_test
   host: db
   encoding: utf8
   pool: 5
@@ -17,14 +17,15 @@ development:
   username: 
   password: 
   encoding: utf8
-  database: publiclaboratory
+  database: plots
 
 production:
   adapter: mysql2
   username: plots
   password: plots
-  database: plots
+  database: plots_production
   host: db
+  port: 3307
   encoding: utf8
   pool: 5
   timeout: 5000
