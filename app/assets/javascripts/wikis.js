@@ -8,7 +8,8 @@ function setupWiki(node_id, raw, logged_in) {
       selector: '#content-raw-markdown',
       wysiwyg: true,
       preProcessor: preProcessMarkdown,
-      postProcessor: postProcessContent
+      postProcessor: postProcessContent,
+      extraButtons: {"fa-comment": true}
     });
     $('#content').hide();
   } else {
