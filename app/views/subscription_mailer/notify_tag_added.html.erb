@@ -1,0 +1,15 @@
+<p>Dear <%= @user.name %>,</p>
+
+<p>Public Lab contributor <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>'>
+    <%= @node.author.name %></a> just added a new tag
+<div style="color:#aaa;">
+    //add link to new tag
+    <p>You received this email because you are subscribed to the following tags: <%= @tags.to_a.collect(&:name).join(",") %>.</p>
+
+    <p>To change your preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.</p>
+
+    <p>Report spam and abuse to: <a href="mailto:moderators@<%= ActionMailer::Base.default_url_options[:host] %>">moderators@<%= ActionMailer::Base.default_url_options[:host] %></a></p>
+
+    <%= @footer %>
+
+</div>

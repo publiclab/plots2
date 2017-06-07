@@ -1,3 +1,14 @@
-SubscriptionMailer#notify_tag_added
+Dear <%= @user.name %>,
 
-<%= @greeting %>, find me in app/views/app/views/subscription_mailer/notify_tag_added.text.erb
+    Public Lab contributor <%= @node.author.name %> (https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>)
+    just added a new tag entitled entitled '<%= @node.title %>':
+
+-------------------------
+
+You can follow it here:
+//link to like tag
+=========================
+
+<%= @footer %>
+
+To change your email preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.
