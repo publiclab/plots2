@@ -25,10 +25,9 @@ class SubscriptionMailer < ActionMailer::Base
   end
 
   def notify_tag_added(user, node)
-    subject = "[PublicLab] #{user.username} added new tag"
       @user = user
       @node = node
       @footer = feature('email-footer')
-      mail(to: iuser.email, subject: subject).deliver
+      mail(to: user.email, subject: 'New Tag Added').deliver
   end
 end

@@ -1,12 +1,10 @@
-Dear <%= @user.name %>,
+Dear <%= @user.username %>,
 
     Public Lab contributor <%= @node.author.name %> (https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>)
-    just added a new tag entitled entitled '<%= @node.title %>':
+    just added a new tag entitled entitled '<%= @node.tag.name %>':
 
 -------------------------
 
-You can follow it here:
-//link to like tag
 =========================
 
 <%= @footer %>
