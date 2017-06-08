@@ -39,7 +39,9 @@ puts assert_not_nil search.results.inspect
 
   test "Node.search for two different key words returns different results" do
     solr_search_1 = Node.search do
-      fulltext 'Chicago'
+      fulltext 'Chicago' do
+        fields(:title, :body) # can later add username, other fields, comments, maybe tags
+      end
       #with(:updated_at).less_than(Time.zone.now)
       # this is required to get results to return: 
       adjust_solr_params do |params|
@@ -50,7 +52,9 @@ puts assert_not_nil search.results.inspect
       #paginate :page => 1, :per_page => 10
     end
     solr_search_2 = Node.search do
-      fulltext 'pectro' # intending case-insensitive search for "spectrometer" or similar
+      fulltext 'pectro' do # intending case-insensitive search for "spectrometer" or similar
+        fields(:title, :body) # can later add username, other fields, comments, maybe tags
+      end
       #with(:updated_at).less_than(Time.zone.now)
       # this is required to get results to return: 
       adjust_solr_params do |params|
@@ -60,8 +64,6 @@ puts assert_not_nil search.results.inspect
       #with(:updated_month, month) if month.present?
       #paginate :page => 1, :per_page => 10
     end
-puts solr_search_1.results
-puts solr_search_2.results
     assert solr_search_1.results.length > 0
     assert solr_search_2.results.length > 0
     assert_not_equal solr_search_1.results.collect(&:nid), solr_search_2.results.collect(&:nid)

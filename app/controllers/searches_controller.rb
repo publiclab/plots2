@@ -11,7 +11,9 @@ class SearchesController < ApplicationController
   def test
     term = params[:q] || "spectrometer"
     @search = Node.search do
-      fulltext term
+      fulltext term do 
+        fields(:title, :body) # can later add username, other fields, comments, maybe tags
+      end
       adjust_solr_params do |params|
         params[:qf] = nil
       end
