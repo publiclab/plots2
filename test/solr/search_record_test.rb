@@ -58,8 +58,8 @@ class SearchRecordTest < ActiveSupport::TestCase
     assert solr_search_1.results.length > 0
     assert solr_search_2.results.length > 0
     assert_not_equal solr_search_1.results.collect(&:nid), solr_search_2.results.collect(&:nid)
-    assert_equal 8, solr_search_1.results[0].nid
-    assert_equal 7, solr_search_2.results[0].nid
+    assert_equal node(:place).nid, solr_search_1.results[0].nid
+    assert_equal node(:question).nid, solr_search_2.results[0].nid
   end
 
 end
