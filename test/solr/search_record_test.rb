@@ -33,7 +33,6 @@ class SearchRecordTest < ActiveSupport::TestCase
   test "plain Node.search returns something" do
     search = Node.search
     assert_not_nil search.results
-puts assert_not_nil search.results.inspect
     assert search.results.length > 0
   end
 
@@ -48,7 +47,7 @@ puts assert_not_nil search.results.inspect
       #paginate :page => 1, :per_page => 10
     end
     solr_search_2 = Node.search do
-      fulltext 'pectro' do # intending case-insensitive search for "spectrometer" or similar
+      fulltext 'Spectrometer' do # intending case-insensitive search for "spectrometer" or similar
         fields(:title, :body) # can later add username, other fields, comments, maybe tags
       end
       #with(:updated_at).less_than(Time.zone.now)

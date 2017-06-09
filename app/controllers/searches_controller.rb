@@ -15,7 +15,7 @@ class SearchesController < ApplicationController
         fields(:title, :body) # can later add username, other fields, comments, maybe tags
       end
     end
-    render text: JSON.generate(@search.results)
+    render text: @search.results.to_json
   end
 
   def new
