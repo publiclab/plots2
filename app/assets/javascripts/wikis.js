@@ -9,7 +9,7 @@ function setupWiki(node_id, raw, logged_in) {
       wysiwyg: true,
       preProcessor: preProcessMarkdown,
       postProcessor: postProcessContent,
-      extraButtons: {"fa-question": true}
+      extraButtons: {"fa-question": questionForm}
     });
     $('#content').hide();
   } else {
@@ -45,4 +45,10 @@ function preProcessMarkdown(markdown) {
     return p1 + ' ' + p2;
   })
   return markdown;
+}
+
+function questionForm(qbutton, uniqueId){
+  qbutton.click(function inlineQuestionClick(e){
+    alert("question clicked");
+  }); 
 }
