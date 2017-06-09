@@ -35,9 +35,6 @@ class SearchRecord < ActiveRecord::Base
       fulltext key_words do
         fields(:title, :body) # can later add username, other fields, comments, maybe tags
       end
-      adjust_solr_params do |params|
-        params[:qf] = nil
-      end
       with(:updated_at).less_than(Time.zone.now)
       facet(:updated_month)
       with(:updated_month, month) if month.present?

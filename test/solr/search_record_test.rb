@@ -43,10 +43,6 @@ puts assert_not_nil search.results.inspect
         fields(:title, :body) # can later add username, other fields, comments, maybe tags
       end
       #with(:updated_at).less_than(Time.zone.now)
-      # this is required to get results to return: 
-      adjust_solr_params do |params|
-        params[:qf] = nil
-      end
       #facet(:updated_month)
       #with(:updated_month, month) if month.present?
       #paginate :page => 1, :per_page => 10
@@ -56,10 +52,6 @@ puts assert_not_nil search.results.inspect
         fields(:title, :body) # can later add username, other fields, comments, maybe tags
       end
       #with(:updated_at).less_than(Time.zone.now)
-      # this is required to get results to return: 
-      adjust_solr_params do |params|
-        params[:qf] = nil
-      end
       #facet(:updated_month)
       #with(:updated_month, month) if month.present?
       #paginate :page => 1, :per_page => 10

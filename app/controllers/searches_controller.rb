@@ -14,9 +14,6 @@ class SearchesController < ApplicationController
       fulltext term do 
         fields(:title, :body) # can later add username, other fields, comments, maybe tags
       end
-      adjust_solr_params do |params|
-        params[:qf] = nil
-      end
     end
     render text: JSON.generate(@search.results)
   end
