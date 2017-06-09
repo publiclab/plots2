@@ -9,7 +9,7 @@ class SearchesController < ApplicationController
   end
 
   def test
-    term = params[:q] || "spectrometer"
+    term = params[:q] || "Chicago"
     @search = Node.search do
       fulltext term do 
         fields(:title, :body) # can later add username, other fields, comments, maybe tags
