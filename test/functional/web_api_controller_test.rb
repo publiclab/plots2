@@ -1,4 +1,4 @@
-# def index
+# Test for WebApiController pages
 
 
 require 'test_helper'

@@ -48,6 +48,4 @@
 //= require grids.js
 //= require short-code-forms/dist/short-code-prompts.js
 //= require wikis.js
-//= require swagger-ui.js
-//= require swagger-ui-bundle.js
-//= require swagger-ui-standalone-preset.js
+

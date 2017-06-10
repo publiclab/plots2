@@ -23,7 +23,10 @@
     "horsey": "3.0.0",
     "megamark": "~3.3.0",
     "i18n-js": "^2.1.2",
-    "short-code-forms": "jywarren/short-code-forms#~0.0.1"
+    "short-code-forms": "jywarren/short-code-forms#~0.0.1",
+    "swagger-ui": "^3.0.14",
+    "swagger-js": "^3.0.14",
+    "swagger-parser": "^3.4.1"
   },
   "resolutions": {
     "jquery": "~2.1.0",
