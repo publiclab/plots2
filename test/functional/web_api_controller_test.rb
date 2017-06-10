@@ -15,8 +15,6 @@ class WebApiControllerTest < ActionController:: TestCase
     get :index
     assert_response :success
   end
-<<<<<<< HEAD
+
 end
-=======
-end
->>>>>>> b5a7285cc30049763de259409059f36e3d6e93b3
+
