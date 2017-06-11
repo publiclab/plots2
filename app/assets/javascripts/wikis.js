@@ -48,7 +48,5 @@ function preProcessMarkdown(markdown) {
 }
 
 function questionForm(qbutton, uniqueId){
-  qbutton.click(function inlineQuestionClick(e){
-    alert("question clicked");
-  }); 
+  qbutton.attr('href','/questions/new?tags=question%3Ageneral&template=question&redirect=question').attr('target', '_blank'); 
 }
