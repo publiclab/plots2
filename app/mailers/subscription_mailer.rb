@@ -12,6 +12,7 @@ class SubscriptionMailer < ActionMailer::Base
       @tags = val[:tags]
       @footer = feature('email-footer')
       mail(to: val[:user].email, subject: subject).deliver
+      @user.update_attribute(:email_sent_at, Time.zone.now)
     end
   end
 
@@ -29,5 +30,6 @@ class SubscriptionMailer < ActionMailer::Base
       @node = node
       @footer = feature('email-footer')
       mail(to: user.email, subject: 'New Tag Added').deliver
+      @user.update_attribute(:email_sent_at, Time.zone.now)
   end
 end
