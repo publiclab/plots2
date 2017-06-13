@@ -240,7 +240,14 @@ class User < ActiveRecord::Base
   end
 
   def followers_who_dont_follow_tags(tags)
-    
+  # list the tags in a node  
+  node_tags = Node.all.each { |node| node.tag }
+
+    #list of all the tag subscriptions
+    tag_subscriptions = Tag.all.each { |tag| tag.subscriptions }
+
+    #get users following a tag
+
   end
 
   private
