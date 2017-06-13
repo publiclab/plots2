@@ -243,8 +243,10 @@ class User < ActiveRecord::Base
     # list the tags in a node  
     node_tags = Node.all.each { |node| node.tag }
 
-    #list of all the tag subscriptions
-    tag_subscriptions = Tag.all.each { |tag| tag.subscriptions }
+    #list of all the tag subscriptions by their ids
+    tag_subscriptions = Tag.all.each { |tag| tag.subscriptions.pluck :user_id }
+
+    ids = tag_subscriptions.map {|id| User.find_by_id id}
 
   end
 
