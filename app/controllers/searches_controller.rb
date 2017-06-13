@@ -10,12 +10,17 @@ class SearchesController < ApplicationController
 
   def test
     term = params[:q] || "Chicago"
-    @search = Node.search do
-      fulltext term do 
-        fields(:title, :body) # can later add username, other fields, comments, maybe tags
+    include SolrToggle
+    if shouldIndexSolr # lets rename this toggle
+      @search = Node.search do
+        fulltext term do 
+          fields(:title, :body) # can later add username, other fields, comments, maybe tags
+        end
       end
+      render text: @search.results.to_json
+    else
+      render text: 'Solr search service offline'
     end
-    render text: @search.results.to_json
   end
 
   def new
