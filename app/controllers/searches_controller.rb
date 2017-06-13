@@ -10,7 +10,7 @@ class SearchesController < ApplicationController
 
   def test
     term = params[:q] || "Chicago"
-    include SolrToggle
+    #include SolrToggle
     if shouldIndexSolr # lets rename this toggle
       @search = Node.search do
         fulltext term do 
