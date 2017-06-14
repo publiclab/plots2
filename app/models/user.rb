@@ -239,7 +239,7 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def followers_who_dont_follow_tags(tags)
+  def followers_who_dont_follow_tags
     # list the tags in a node  
     node_tags = Node.all.each { |node| node.tag }
 
