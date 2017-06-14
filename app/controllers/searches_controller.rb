@@ -11,7 +11,7 @@ class SearchesController < ApplicationController
 
   def test
     term = params[:q] || "Chicago"
-    if shouldIndexSolr # lets rename this toggle
+    if solrAvailable
       @search = Node.search do
         fulltext term do 
           fields(:title, :body) # can later add username, other fields, comments, maybe tags
