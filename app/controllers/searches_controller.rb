@@ -3,6 +3,7 @@ require 'search'
 class SearchesController < ApplicationController
   before_filter :set_search_service
   before_filter :set_search, only: %i[show update]
+  include SolrToggle
 
   def index
     @searches = SearchRecord.all
@@ -10,7 +11,6 @@ class SearchesController < ApplicationController
 
   def test
     term = params[:q] || "Chicago"
-    #include SolrToggle
     if shouldIndexSolr # lets rename this toggle
       @search = Node.search do
         fulltext term do 
