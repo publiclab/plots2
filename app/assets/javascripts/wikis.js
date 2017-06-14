@@ -1,14 +1,18 @@
 //= require inline-markdown-editor/dist/inlineMarkdownEditor.js
-function setupWiki(node_id, raw, logged_in) {
+var wiki_title;
+
+function setupWiki(node_id, title, raw, logged_in) {
   // insert inline forms
   if (raw && logged_in) {
     $('#content-raw-markdown').html(shortCodePrompt($('#content-raw-markdown')[0], { submitUrl: '/wiki/replace/' + node_id }));
+    wiki_title = title;
     inlineMarkdownEditor({
       replaceUrl: '/wiki/replace/' + node_id,
       selector: '#content-raw-markdown',
       wysiwyg: true,
       preProcessor: preProcessMarkdown,
-      postProcessor: postProcessContent
+      postProcessor: postProcessContent,
+      extraButtons: {"fa-question": questionForm}
     });
     $('#content').hide();
   } else {
@@ -25,7 +29,6 @@ function postProcessContent(element) {
   /* setup bootstrap behaviors */
   element.find("[rel=tooltip]").tooltip();
   element.find("[rel=popover]").popover({container: 'body'});
-
   element.find('table').addClass('table');
 }
 
@@ -44,4 +47,9 @@ function preProcessMarkdown(markdown) {
     return p1 + ' ' + p2;
   })
   return markdown;
+}
+
+function questionForm(qbutton, uniqueId){
+  wiki_title = wiki_title.replace(/ /g, "-");
+  qbutton.attr('href','/questions/new?tags=question%3A'+wiki_title+', '+wiki_title+'-'+uniqueId+', a-wiki-question&template=question&redirect=question').attr('target', '_blank'); 
 }
