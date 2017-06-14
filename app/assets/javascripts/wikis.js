@@ -1,7 +1,7 @@
 //= require inline-markdown-editor/dist/inlineMarkdownEditor.js
 var wiki_title;
+
 function setupWiki(node_id, title, raw, logged_in) {
-  console.log(title);
   // insert inline forms
   if (raw && logged_in) {
     $('#content-raw-markdown').html(shortCodePrompt($('#content-raw-markdown')[0], { submitUrl: '/wiki/replace/' + node_id }));
@@ -15,7 +15,6 @@ function setupWiki(node_id, title, raw, logged_in) {
       extraButtons: {"fa-question": questionForm}
     });
     $('#content').hide();
-    console.log(wiki_title);
   } else {
     $('#content').html(shortCodePrompt($('#content')[0], { submitUrl: '/wiki/replace/' + node_id }));
     postProcessContent();
@@ -30,7 +29,6 @@ function postProcessContent(element) {
   /* setup bootstrap behaviors */
   element.find("[rel=tooltip]").tooltip();
   element.find("[rel=popover]").popover({container: 'body'});
-
   element.find('table').addClass('table');
 }
 
