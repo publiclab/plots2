@@ -5,21 +5,29 @@
 **/
 
 jQuery(document).ready(function() {
-  var typeahead = $('input.search-query.typeahead').typeahead({
+  var el = $('input.search-query.typeahead');
+  var typeahead = el.typeahead({
     items: 8,
     minLength: 3,
     source: function (query, process) {
-      return $.get('/api/typeahead/all?srchString=' + query, function (data) {
+      return $.getJSON('/api/typeahead/all?srchString=' + query, function (data) {
         return process(data.items);
       },'json');
+    },
+    highlighter: function (text, item) {
+      return '<i class="fa fa-' + item.tagType + '"></i> ' + item.tagVal;
     },
     displayText: function(item) {
       return item.tagVal;
     },
-    updater: function(text) { 
-console.log(text);
-      el.find('input.search-query.typeahead').val(text);
-      el.submit();
+    updater: function(item) { 
+      if (item.hasOwnProperty('tagSource') && item.tagSource) {
+        window.location = window.location.origin + item.tagSource;
+      } else {
+        window.location = window.location.origin + '/tag/' + item.tagVal;
+      }
+      item = item.tagVal;
+      return item;
     }
   });
 });
