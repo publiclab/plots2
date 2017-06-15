@@ -13,10 +13,14 @@ services:
       - ../dump:/docker-entrypoint-initdb.d
       # for importing a dump
       # if you want to re-import simply put away ../mysql/*
+#
+#  # You can enable a Solr container by uncommenting the following section
+#  # and enable Solr in config/sunspot.yml. Also, uncomment the 'solr' link 
+#  # at the end of this file.
 #  solr:
 #    image: solr:5.3
 #    ports:
-#      - "127.0.0.1:8984:8983"
+#      - "127.0.0.1:8982:8983"
 #    volumes:
 #      - solr:/opt/solr/server/solr/mycores
 #    entrypoint:
