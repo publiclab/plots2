@@ -13,9 +13,7 @@ class SearchesController < ApplicationController
     term = params[:q] || "Chicago"
     if solrAvailable
       @search = Node.search do
-        fulltext term do 
-          fields(:title, :body) # can later add username, other fields, comments, maybe tags
-        end
+        fulltext term
       end
       render text: @search.results.to_json
     else
