@@ -4,8 +4,6 @@ class SearchesControllerTest < ActionController::TestCase
   tests SearchesController
 
   def setup
-    @normal_search = searches(:normal)
-    @advanced_search = searches(:advanced_note)
     activate_authlogic
     @user = rusers(:newcomer)
     UserSession.create(@user)
@@ -25,32 +23,13 @@ class SearchesControllerTest < ActionController::TestCase
     assert_not_equal result, []
   end
 
-  test 'should get index' do
-    get :index
-    assert_response :success
-  end
-
   test 'should get dynamic' do
     get :dynamic
     assert_response :success
   end
 
-  test 'should get show' do
-    get :show, id: @advanced_search
-    assert_response :success
-    assert_equal 'Advanced search', @advanced_search.title
-  end
-
-  # initial advanced search page
-  test 'should get new' do
-    get :new
-    assert_response :success
-    assert_not_nil :search
-    assert_template :new
-  end
-
-  test 'should get normal search' do
-    get :normal_search, id: 'ujitha'
+  test 'should get results' do
+    get :results, id: 'Chicago'
     assert_response :success
   end
 
