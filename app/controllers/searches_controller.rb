@@ -30,7 +30,7 @@ class SearchesController < ApplicationController
   def results
     @title = 'Search'
     @tagnames = params[:id].split(',')
-    @users = @search_service.users(params[:id])
+    @users = SearchService.new.users(params[:id])
     set_sidebar :tags, [params[:id]]
 
     # Adapt to SearchService:
