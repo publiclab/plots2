@@ -3,17 +3,24 @@ require 'search'
 class SearchesController < ApplicationController
   before_filter :set_search_service
   before_filter :set_search, only: %i[show update]
+  include SolrToggle
 
   def index
     @searches = SearchRecord.all
   end
 
   def test
-    term = params[:q] || "spectrometer"
-    @search = Node.search do
-      fulltext term
+    term = params[:q] || "Chicago"
+    if solrAvailable
+      @search = Node.search do
+        fulltext term do 
+          fields(:title, :body) # can later add username, other fields, comments, maybe tags
+        end
+      end
+      render text: @search.results.to_json
+    else
+      render text: 'Solr search service offline'
     end
-    render json: @search.results[0]
   end
 
   def new

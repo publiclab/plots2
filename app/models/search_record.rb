@@ -2,6 +2,7 @@ class SearchRecord < ActiveRecord::Base
   self.table_name = 'searches'
   require 'date'
   include ActiveModel::ForbiddenAttributesProtection
+  include SolrToggle
 
   attr_accessible :key_words, :title, :main_type, :note_type, :min_date, :created_by,
                   :language, :max_date
@@ -31,15 +32,17 @@ class SearchRecord < ActiveRecord::Base
   end
 
   def notes(month)
-    solr_search = Node.search do
-      fulltext key_words
-      adjust_solr_params do |params|
-        params[:qf] = nil
+    if solrAvailable
+      solr_search = Node.search do
+        fulltext key_words do
+          fields(:title, :body) # can later add username, other fields, comments, maybe tags
+        end
+        with(:updated_at).less_than(Time.zone.now)
+        facet(:updated_month)
+        with(:updated_month, month) if month.present?
       end
-      with(:updated_at).less_than(Time.zone.now)
-      facet(:updated_month)
-      with(:updated_month, month) if month.present?
-      #paginate :page => 1, :per_page => 10
+    else
+      []
     end
   end
 
