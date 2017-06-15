@@ -4,9 +4,19 @@ require 'test_helper'
 
 class SearchesControllerTest < ActionController::TestCase
 
-  #test "should load stats range query" do
-  #  get :searches
-  #  assert_response :success
-  #end
+  test "new search page at /search" do
+    get :new
+    assert_response :success
+  end
+
+  test "search results page at /search/foo" do
+    get :results, id: 'About'
+    assert_response :success
+  end
+
+  test "search dynamic search page at /search/dynamic" do
+    get :dynamic
+    assert_response :success
+  end
 
 end

@@ -16,8 +16,6 @@ Plots2::Application.routes.draw do
   resources :features
   resources :searches
 
-  get 'searches/test' => 'searches#test'
-
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -137,24 +135,13 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
-  match 'questions_search/:id' => 'questions_search#index'
-  match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
-
   #Search Pages
-  match 'search/advanced/:id' => 'searches#new'
+
+  get 'searches/test' => 'searches#test'
   match 'search/dynamic' => 'searches#dynamic'
   match 'search/dynamic/:id' => 'searches#dynamic'
-  match 'search/typeahead/:id' => 'searches#typeahead'
-  match 'search/questions/:id' => 'searches#questions'
-  match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
-  match 'search/:id' => 'searches#normal_search'
-  match 'search/advanced' => 'searches#new'
+  match 'search/:id' => 'searches#results'
   match 'search' => 'searches#new'
-
-  # Question Search capability--temporary until combined with full Search Capabilities
-  match 'questions_search/:id' => 'questions_search#index'
-  match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
-
 
   match 'widget/:id' => 'tag#widget'
   match 'blog' => 'tag#blog', :id => "blog"
