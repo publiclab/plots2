@@ -31,9 +31,8 @@
   <% if @notes.nil? || @notes.length == 0 %>
     <p><%= raw t('tag.blog.no_results', :search => params[:id]) %>:</p>
 
-    <%= render :partial => "searches/search" %>
+    <%= render template: "searches/new" %>
 
-    <p><%= raw t('tag.blog.advanced_search', :url => "/search/advanced/") %></p>
   <% else %>
 
       <% @notes.each_with_index do |node,i| %>

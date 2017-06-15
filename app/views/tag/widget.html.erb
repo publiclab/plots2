@@ -11,14 +11,15 @@
 </style>
 
 <% if @notes.nil? || @notes.length == 0 %>
+
   <p><%= raw t('tag.show.no_results_found', :tag => params[:id]) %>:</p>
 
-  <%= render :partial => "searches/search" %>
+  <%= render template: "searches/new" %>
 
-  <p><%= raw t('tag.show.try_advanced_search', :url1 => params[:id]) %></p>
 <% else %>
+
   <% @compact = true %>
   <% @widget = true %>
   <%= render :partial => "notes/notes" %>
-<% end %>
 
+<% end %>
