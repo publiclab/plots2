@@ -22,7 +22,6 @@ class ActiveSupport::TestCase
   set_fixture_class tags: Tag
   set_fixture_class community_tags: DrupalNodeCommunityTag
   set_fixture_class comments: Comment
-  set_fixture_class searches: SearchRecord
 
   fixtures :all
 
