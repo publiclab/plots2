@@ -8,10 +8,12 @@
 
     <p>No results found; try looking for <a href="/tag/<%= params[:id] %>">items tagged with '<b><%= params[:id] %></b>'</a> or broadening your search:</p>
 
-    <%= render :partial => "searches/search" %>
+    <%= render template: "searches/new" %>
 
   <% else %>
+
     <%= render :partial => "notes/notes" %>
+
   <% end %>
   
 </div>
