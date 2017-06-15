@@ -2,6 +2,8 @@
   The restful_typeahead.js script provides generic typeahead functionality for the plots2 Rails app.
   The set of functions here are intended to provide a link between the data available through the RESTful 
   search API and the UI components.  
+  
+  Documentation here: https://github.com/bassjobsen/Bootstrap-3-Typeahead
 **/
 
 jQuery(document).ready(function() {
