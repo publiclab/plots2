@@ -61,37 +61,6 @@ class SearchService
         .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
   end
 
-  # DEPRECATED
-  def type_ahead(id)
-    warn '[DEPRECATED] SearchService.type_ahead is deprecated.  Use the TypeaheadService methods instead.'
-    matches = []
-
-    notes(id).select('title,type,nid,path').each do |match|
-      matches << "<i data-url='" + match.path + "' class='fa fa-file'></i> " + match.title
-    end
-
-    Node.limit(5)
-        .order('nid DESC')
-        .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + id + '%')
-        .select('title,type,nid,path').each do |match|
-      matches << "<i data-url='" + match.path + "' class='fa fa-" + match.icon + "'></i> " + match.title
-    end
-
-    maps(id).select('title,type,nid,path').each do |match|
-      matches << "<i data-url='" + match.path + "' class='fa fa-" + match.icon + "'></i> " + match.title
-    end
-
-    users(id).each do |match|
-      matches << "<i data-url='/profile/" + match.name + "' class='fa fa-user'></i> " + match.name
-    end
-
-    tags(id).each do |match|
-      matches << "<i data-url='/tag/" + match.name + "' class='fa fa-tag'></i> " + match.name
-    end
-
-    matches
-  end
-
   # Run a search in any of the associated systems for references that contain the search string
   def textSearch_all(srchString)
     sresult = DocList.new
