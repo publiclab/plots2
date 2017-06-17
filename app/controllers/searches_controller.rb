@@ -31,11 +31,7 @@ class SearchesController < ApplicationController
     @users = SearchService.new.users(params[:id])
     set_sidebar :tags, [params[:id]]
 
-<<<<<<< cb9e547c568156167e82839f8f39fc129ec207ba
     @nodes = SearchService.new.nodes(params[:id])
-=======
-    @notes = SearchService.new.textSearch_notes(params[:id]).getDocs
->>>>>>> .getDocs
   end
 
 end
