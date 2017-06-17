@@ -14,7 +14,7 @@
     <li class="btn btn-default btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-title="Tools" data-content="
 <p><b>Users who liked this</b></p>
 <% node.likers.each do |user| %>
-  <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/likes'><%= user.username %></a><br />
+  <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />
 <% end %>
 <% if node.likers.length == 0 %><i>None</i><% end %>
 <% if node.type == 'note' && current_user && node.uid != current_user.uid%>
