@@ -239,17 +239,6 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def followers_who_dont_follow_tags
-    # list the tags in a node  
-    node_tags = Node.all.each { |node| node.tag }
-
-    #list of all the tag subscriptions by their ids
-    tag_subscriptions = Tag.all.each { |tag| tag.subscriptions.pluck :user_id }
-
-    ids = tag_subscriptions.map {|id| User.find_by_id id}
-
-  end
-
   private
 
   def map_openid_registration(registration)
