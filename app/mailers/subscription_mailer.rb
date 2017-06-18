@@ -5,13 +5,14 @@ class SubscriptionMailer < ActionMailer::Base
 
   def notify_node_creation(node)
     subject = '[PublicLab] ' + (node.has_power_tag('question') ? 'Question: ' : '') +
-              node.title
+      node.title
     Tag.subscribers(node.tags).each do |_key, val|
       @user = val[:user]
       @node = node
       @tags = val[:tags]
       @footer = feature('email-footer')
       mail(to: val[:user].email, subject: subject).deliver
+      @user.update_attribute(:email_sent_at, Time.zone.now)
     end
   end
 
@@ -22,5 +23,9 @@ class SubscriptionMailer < ActionMailer::Base
     @node = node
     @footer = feature('email-footer')
     mail(to: node.author.email, subject: subject).deliver
+  end
+
+  def already_notified?(user)
+    ((user.email_sent_at - Time.zone.now)/1.hour).floor.abs < 1.hour
   end
 end
