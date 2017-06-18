@@ -31,7 +31,7 @@ class SearchesController < ApplicationController
     @users = SearchService.new.users(params[:id])
     set_sidebar :tags, [params[:id]]
 
-    @notes = SearchService.new.notes(params[:id])
+    @nodes = SearchService.new.nodes(params[:id])
   end
 
 end
