@@ -16,6 +16,10 @@ class SearchService
     @tags ||= find_tags(params)
   end
 
+  def nodes(params)
+    @nodes ||= find_nodes(params)
+  end
+
   def notes(params)
     @notes ||= find_notes(params)
   end
@@ -45,6 +49,12 @@ class SearchService
     Comment.limit(limit)
            .order('nid DESC')
            .where('status = 1 AND comment LIKE ?', '%' + input + '%')
+  end
+
+  def find_nodes(input, limit = 5)
+    Node.limit(limit)
+        .order('nid DESC')
+        .where('node.status = 1 AND title LIKE ?', '%' + input + '%')
   end
 
   ## search for node title only
