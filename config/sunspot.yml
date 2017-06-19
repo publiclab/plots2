@@ -17,8 +17,8 @@ development:
 test:
   solr:
     hostname: localhost
-    port: 8981
+    port: 8983
     read_timeout: 120
     log_level: WARNING
-    path: "/solr/test"
+    #path: "/solr/test"
   disabled: true
