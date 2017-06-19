@@ -12,7 +12,7 @@ function setupWiki(node_id, title, raw, logged_in) {
       wysiwyg: true,
       preProcessor: preProcessMarkdown,
       postProcessor: postProcessContent,
-      extraButtons: {"fa-question": questionForm}
+      extraButtons: { "fa-question": questionForm }
     });
     $('#content').hide();
   } else {
@@ -20,6 +20,12 @@ function setupWiki(node_id, title, raw, logged_in) {
     postProcessContent();
     addDeepLinks($('#content'));
   }
+
+  function questionForm(qbutton, uniqueId) {
+    wiki_title = wiki_title.replace(/ /g, "-");
+    qbutton.attr('href','/questions/new?tags=response:' + node_id + '&question%3A' + wiki_title + ', ' + wiki_title + '-' + uniqueId+', a-wiki-question&template=question&redirect=question').attr('target', '_blank'); 
+  }
+
 }
 
 // add #hashtag and @callout links, extra CSS and deep links
@@ -47,9 +53,4 @@ function preProcessMarkdown(markdown) {
     return p1 + ' ' + p2;
   })
   return markdown;
-}
-
-function questionForm(qbutton, uniqueId){
-  wiki_title = wiki_title.replace(/ /g, "-");
-  qbutton.attr('href','/questions/new?tags=question%3A'+wiki_title+', '+wiki_title+'-'+uniqueId+', a-wiki-question&template=question&redirect=question').attr('target', '_blank'); 
 }
