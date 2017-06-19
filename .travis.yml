@@ -10,7 +10,7 @@ install:
   - cp config/database.yml.example config/database.yml
   - cp db/schema.rb.example db/schema.rb
   - docker-compose -f docker-compose-solr.yml up 
-  - docker-compose run web sleep 5
+  - docker-compose run web sleep 45 
   - docker-compose run web bash -c "rake db:setup"
   - docker-compose run web bash -c "rake db:migrate"
   - docker-compose run web bower install --allow-root
