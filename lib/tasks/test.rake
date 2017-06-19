@@ -30,13 +30,13 @@ namespace :test do
     end
     puts "turning on solr dependence at config/sunspot.yml"
     # puts sunspot.to_yaml
-    `rake sunspot:solr:start RAILS_ENV=test`
+    `docker-compose run solr rake sunspot:solr:start RAILS_ENV=test`
     sleep(40)
     # do a re-index
-    `RAILS_ENV=test rake SOLR_DISABLE_CHECK=1 sunspot:reindex`
+    `docker-compose run solr RAILS_ENV=test rake SOLR_DISABLE_CHECK=1 sunspot:reindex`
     # need more sleep?
     Rake::Task["test:solr_tests"].invoke
-    `rake sunspot:solr:stop RAILS_ENV=test`
+    `docker-compose run solr rake sunspot:solr:stop RAILS_ENV=test`
     # restore "disabled" to true in test for sunspot.yml
     sunspot['test']['disabled'] = true
     File.open("config/sunspot.yml", "w") do |file|
