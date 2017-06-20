@@ -204,8 +204,8 @@ class Tag < ActiveRecord::Base
 
   def followers_who_dont_follow_tags(tags)
     tag_followers = self.subscriptions.map {|user| user.user_id}
-    following_given_tags = tags.map { |tag| tag.subscriptions  }.flatten
-    following_given_tags_ids = following_given_tags.map { |userid| userid.user_id }
-    tag_followers.reject { |userid| following_given_tags_ids.include? userid }
+    following_given_tags = tags.map { |tag| tag.subscriptions   }.flatten
+    following_given_tags_ids = following_given_tags.map { |userid| userid.user_id  }
+    tag_followers.reject { |userid| following_given_tags_ids.include? userid  }
   end
 end

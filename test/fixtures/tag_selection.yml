@@ -17,3 +17,48 @@ question:
   user_id: 1
   tid: 6
   following: true
+
+selection_one:
+  user_id: 1
+  tid: 1
+  following: true
+
+selection_two:
+  user_id: 4
+  tid: 1
+  following: true
+
+selection_three:
+  user_id: 5
+  tid: 1
+  following: true
+
+selection_four:
+  user_id: 4
+  tid: 2
+  following: true
+
+selection_four:
+  user_id: 4
+  tid: 2
+  following: true
+
+selection_five:
+  user_id: 3
+  tid: 3
+  following: true
+
+selection_six:
+  user_id: 7
+  tid: 3
+  following: true
+
+selection_seven:
+  user_id: 3
+  tid: 4
+  following: true
+
+selection_eight:
+  user_id: 7
+  tid: 4
+  following: true
