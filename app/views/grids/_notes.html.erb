@@ -63,7 +63,7 @@
 <% end %>
 </table>
 
-<a class="grid-embed" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
+<a class="grid-embed grid-embed-<%= randomSeed %>" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
 
 <% if type == "questions" %>
   <p><a href='/post?tags=question:<%= tagname %>,<%= tagname %>&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary add-activity'>Ask a question</a> &nbsp;or <a href='/subscribe/tag/question:<%= tagname %>'>help answer future questions<span class='hidden-sm hidden-xs'> on this topic</span></a></p>
@@ -78,7 +78,7 @@
   $(".<%= className %>-<%= randomSeed %> .show-all a").click(function() { 
     $(".<%= className %>-<%= randomSeed %> tr.hide").toggleClass("hide");
   });
-  $(".<%= className %>-<%= randomSeed %> .grid-embed").click(function() {
+  $(".grid-embed-<%= randomSeed %>").click(function() {
     prompt('Use this HTML code to embed this table on another site.', '<iframe border=0 width="100%" height="500px" src="//publiclab.org/embed/grid/&?t=<% if type != "notes" %><%= type %>:<% end %><%= tagname %>"></iframe>')
   });
   setupGridSorters(".<%= className %>-<%= randomSeed %>");
