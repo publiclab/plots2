@@ -7,7 +7,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-test notes-grid-test-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 6, html.scan('notes-grid-test').length
+    assert_equal 5, html.scan('notes-grid-test').length
   end
 
   test 'that NodeShared can be used to convert short codes like [questions:foo] into tables which list questions' do
