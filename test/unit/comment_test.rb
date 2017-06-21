@@ -53,7 +53,7 @@ class CommentTest < ActiveSupport::TestCase
     comment = Comment.new(nid: node(:one).nid,
                           uid: rusers(:bob).id)
     comment.comment = 'Hey, #everything, #awesome followers.'
-    assert_equal comment.followers_of_mentioned_tags.length, 2
+    assert_equal comment.followers_of_mentioned_tags.length, 3
     assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:bob).id)
     assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:moderator).id)
   end

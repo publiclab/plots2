@@ -38,11 +38,6 @@ selection_four:
   tid: 2
   following: true
 
-selection_four:
-  user_id: 4
-  tid: 2
-  following: true
-
 selection_five:
   user_id: 3
   tid: 3
@@ -55,10 +50,10 @@ selection_six:
 
 selection_seven:
   user_id: 3
-  tid: 4
+  tid: 5
   following: true
 
 selection_eight:
   user_id: 7
-  tid: 4
+  tid: 5
   following: true
