@@ -63,9 +63,8 @@
           </a>
         </li>
         <li>
-          <a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>">
-            <i rel="tooltip" title="Try the beta inline Rich Wiki editor." data-placement="top" style="color:#09f;" class="fa fa-pencil"></i>
-            <span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.edit') %></span>
+          <a rel="tooltip" title="Try the beta inline Rich Wiki editor." data-placement="top" href="<%= @node.path %>?raw=true">
+            <i style="color:#0c8;" class="fa fa-pencil"></i>
           </a>
         </li>
       <% end %>
