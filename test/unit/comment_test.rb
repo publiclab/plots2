@@ -56,6 +56,7 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal comment.followers_of_mentioned_tags.length, 3
     assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:bob).id)
     assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:moderator).id)
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:unbanned_spammer).id)
   end
 
   test 'should scan multiple space-separated hashtags out of body' do
