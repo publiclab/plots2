@@ -13,7 +13,7 @@ class TagController < ApplicationController
   end
 
   def show
-    @wiki = Node.where(slug: params[:id]).first
+    @wiki = Node.where(path: "/wiki/#{params[:id]").first
     default_type = if params[:id].match('question:')
                      'questions'
                    else
