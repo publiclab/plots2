@@ -4,7 +4,9 @@ var wiki_title;
 function setupWiki(node_id, title, raw, logged_in) {
   // insert inline forms
   if (raw && logged_in) {
-    $('#content-raw-markdown').html(shortCodePrompt($('#content-raw-markdown')[0], { submitUrl: '/wiki/replace/' + node_id }));
+    $('#content-raw-markdown').html(shortCodePrompt($('#content-raw-markdown')[0], {
+      submitUrl: '/wiki/replace/' + node_id
+    }));
     wiki_title = title;
     inlineMarkdownEditor({
       replaceUrl: '/wiki/replace/' + node_id,
@@ -12,18 +14,22 @@ function setupWiki(node_id, title, raw, logged_in) {
       wysiwyg: true,
       preProcessor: preProcessMarkdown,
       postProcessor: postProcessContent,
-      extraButtons: { "fa-question": questionForm }
+      extraButtons: {
+        "fa-question": questionForm
+      }
     });
     $('#content').hide();
   } else {
-    $('#content').html(shortCodePrompt($('#content')[0], { submitUrl: '/wiki/replace/' + node_id }));
+    $('#content').html(shortCodePrompt($('#content')[0], {
+      submitUrl: '/wiki/replace/' + node_id
+    }));
     postProcessContent();
     addDeepLinks($('#content'));
   }
 
   function questionForm(qbutton, uniqueId) {
     wiki_title = wiki_title.replace(/ /g, "-");
-    qbutton.attr('href','/questions/new?tags=response:' + node_id + '&question%3A' + wiki_title + ', ' + wiki_title + '-' + uniqueId+', a-wiki-question&template=question&redirect=question').attr('target', '_blank'); 
+    qbutton.attr('href', '/questions/new?tags=response:' + node_id + '&question%3A' + wiki_title + ', ' + wiki_title + '-' + uniqueId + ', a-wiki-question&template=question&redirect=question').attr('target', '_blank');
   }
 
 }
@@ -34,14 +40,17 @@ function postProcessContent(element) {
   element = element || $('body');
   /* setup bootstrap behaviors */
   element.find("[rel=tooltip]").tooltip();
-  element.find("[rel=popover]").popover({container: 'body'});
+  element.find("[rel=popover]").popover({
+    container: 'body',
+    trigger: 'focus click'
+  });
   element.find('table').addClass('table');
 }
 
 /* add "link" icon to headers for example.com#Hash deep links */
 function addDeepLinks(element) {
   element.find("h1,h2,h3,h4").append(function(i, html) {
-    return " <small><a href='#" + this.innerHTML.replace(/ /g,'+') + "'><i class='icon fa fa-link'></i></a></small>";
+    return " <small><a href='#" + this.innerHTML.replace(/ /g, '+') + "'><i class='icon fa fa-link'></i></a></small>";
   });
 }
 
