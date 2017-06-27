@@ -201,4 +201,10 @@ class Tag < ActiveRecord::Base
         .order('node_revisions.timestamp DESC')
         .limit(limit)
   end
+
+  def followers_who_dont_follow_tags(tags)
+    tag_followers = User.find(self.subscriptions.collect(&:user_id))
+    following_given_tags = User.find(tags.collect { |tag| tag.subscriptions.collect(&:user_id)}).flatten
+    tag_followers.reject { |user| following_given_tags.include? user  }
+  end
 end

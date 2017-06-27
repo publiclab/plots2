@@ -31,11 +31,7 @@ class SearchesController < ApplicationController
     @users = SearchService.new.users(params[:id])
     set_sidebar :tags, [params[:id]]
 
-    # Adapt to SearchService:
-    @notes = Node.paginate(page: params[:page])
-                 .order('node.nid DESC')
-                 .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ?)', '%' + params[:id] + '%', '%' + params[:id] + '%', '%' + params[:id] + '%')
-                 .includes(:drupal_node_revision)
+    @nodes = SearchService.new.nodes(params[:id])
   end
 
 end

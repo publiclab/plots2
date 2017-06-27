@@ -14,8 +14,8 @@ class SearchesControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:tagnames)
     assert_not_nil assigns(:users)
-    assert_not_nil assigns(:notes)
-    assert_equal node(:about).id, assigns(:notes).first.id
+    assert_not_nil assigns(:nodes)
+    assert_equal node(:about).id, assigns(:nodes).first.id
   end
 
   test "search dynamic search page at /search/dynamic" do

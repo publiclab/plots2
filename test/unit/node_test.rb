@@ -148,7 +148,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should have subscribers' do
     node = tag_selection(:awesome).tag.nodes.first
-    assert_equal 4, node.subscribers.length
+    assert_equal 6, node.subscribers.length
   end
 
   test 'should have place node icon according to tagging' do

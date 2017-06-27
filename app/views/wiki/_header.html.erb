@@ -62,6 +62,11 @@
             <span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.edit') %></span>
           </a>
         </li>
+        <li>
+          <a rel="tooltip" title="Try the beta inline Rich Wiki editor." data-placement="top" href="<%= @node.path %>?raw=true">
+            <i style="color:#0c8;" class="fa fa-pencil"></i>
+          </a>
+        </li>
       <% end %>
 
       <% if current_user && current_user.role == "admin" %>
@@ -92,6 +97,10 @@
 </div>
 
 <br />
+
+<% if params[:raw] == 'true' %>
+  <div class="alert alert-warning" style="">This is the new (beta) Inline Rich Wikis system. Use the "pencil" buttons after different paragraphs to edit inline, and <a href="/wiki/issues">report problems here</a></div>
+<% end %>
 
 <% if @node.has_power_tag('parent') %>
   <% parent = Node.find_by_path("wiki/" + @node.power_tag('parent')) %>
