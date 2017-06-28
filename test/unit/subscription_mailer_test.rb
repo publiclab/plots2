@@ -77,5 +77,6 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert_equal [users_to_email.last.email], email.to
     # assert_equal users_to_email.collect {|user| user.email}, (emails.collect {|mail| mail.to}).flatten
     assert_equal "New tag added on #{node.title}", email.subject
+    assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{node.author.name}'>#{node.author.name}</a> just added a new tag")
   end
 end
