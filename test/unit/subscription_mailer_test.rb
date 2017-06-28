@@ -71,11 +71,11 @@ class SubscriptionMailerTest < ActionMailer::TestCase
       SubscriptionMailer.notify_tag_added(node, new_tag)
     end
     assert !ActionMailer::Base.deliveries.empty?
-
     email = ActionMailer::Base.deliveries.last
+    # emails = ActionMailer::Base.deliveries
     assert_equal ["do-not-reply@#{request_host}"], email.from
-    assert_equal [users_to_email.map { |user| user.email}], email.to
+    assert_equal [users_to_email.last.email], email.to
+    # assert_equal users_to_email.collect {|user| user.email}, (emails.collect {|mail| mail.to}).flatten
     assert_equal "New tag added on #{node.title}", email.subject
-    assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{node.author.name}'>#{node.author.name}</a> just added a new tag")
   end
 end
