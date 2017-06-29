@@ -11,13 +11,13 @@ install:
   - cp db/schema.rb.example db/schema.rb
   - docker-compose build
   - docker-compose up -d
-  - docker-compose run web sleep 5
-  - docker-compose run web bash -c "rake db:setup"
-  - docker-compose run web bash -c "rake db:migrate"
-  - docker-compose run web bower install --allow-root
+  - docker-compose exec web sleep 5
+  - docker-compose exec web bash -c "rake db:setup"
+  - docker-compose exec web bash -c "rake db:migrate"
+  - docker-compose exec web bower install --allow-root
   - docker-compose logs
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger; fi'
 
 script:
-  - docker-compose run -e CI=TRUE web bash -c "rake test:all"
+  - docker-compose exec -e CI=TRUE web bash -c "rake test:all"
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then danger --verbose; fi'
