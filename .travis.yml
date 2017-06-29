@@ -19,5 +19,5 @@ install:
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger; fi'
 
 script:
-  - docker-compose exec -e CI=TRUE web bash -c "rake test:all"
+  - docker-compose run -e CI=TRUE web bash -c "rake test:all"
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then danger --verbose; fi'
