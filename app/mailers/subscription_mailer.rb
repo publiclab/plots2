@@ -24,7 +24,8 @@ class SubscriptionMailer < ActionMailer::Base
     mail(to: node.author.email, subject: subject).deliver
   end
 
-  def notify_tag_added(node,tag)
+  def notify_tag_added(node, tag)
+    @node = node
     given_tags = node.tags
     users_to_email = tag.followers_who_dont_follow_tags(given_tags)
     users_to_email.collect do |user|
