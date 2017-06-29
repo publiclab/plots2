@@ -79,7 +79,7 @@
     $(".<%= className %>-<%= randomSeed %> tr.hide").toggleClass("hide");
   });
   $(".grid-embed-<%= randomSeed %>").click(function() {
-    prompt('Use this HTML code to embed this table on another site.', '<iframe border=0 width="100%" height="500px" src="//publiclab.org/embed/grid/&?t=<% if type != "notes" %><%= type %>:<% end %><%= tagname %>"></iframe>')
+    prompt('Use this HTML code to embed this table on another site.', '<iframe style="border:none;" width="100%" height="900px" src="//publiclab.org/embed/grid/&?t=<% if type != "notes" %><%= type %>:<% end %><%= tagname %>"></iframe>')
   });
   setupGridSorters(".<%= className %>-<%= randomSeed %>");
 })()
