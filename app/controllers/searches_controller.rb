@@ -29,9 +29,8 @@ class SearchesController < ApplicationController
     @title = 'Search'
     @tagnames = params[:id].split(',')
     @users = SearchService.new.users(params[:id])
-    set_sidebar :tags, [params[:id]]
-
     @nodes = SearchService.new.nodes(params[:id])
+                              .paginate(page: params[:page])
   end
 
 end
