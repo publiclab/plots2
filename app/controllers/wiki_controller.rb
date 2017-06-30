@@ -342,6 +342,10 @@ class WikiController < ApplicationController
     end
   end
 
+  def techniques
+    redirect_to '/methods', status: 302
+  end
+
   def methods
     @nodes = Node.where(status: 1, type: ['page'])
                  .where('term_data.name = ?', 'tool')
