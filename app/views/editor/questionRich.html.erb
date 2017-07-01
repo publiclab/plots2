@@ -7,111 +7,92 @@
 
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 
+<style>
+
+
+</style>
+
 <div class="pl-editor">
-
-  <div class="ple-header">
-
-    <h1>Ask a question of the PublicLab community</h1>
-  </div>
-      <div class="ple-module container">
-    <!-- title module -->
-    <div class="ple-module-guide col-md-2">
-      </div>
-      <div class="ple-module-title col-md-1"><h3>Title</h3></div>
-      <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="What's your topic question? Be specific." value="<%= if @node then @node.title else params[:title] end %>" />
-      </div>    
-    <!-- end title module -->
-      <div class="row"></div>
 
   <div class="ple-content">
 
+    <!-- title module -->
+    <div class="ple-module-title ple-module container">
+
+      <div class="ple-module-guide col-md-3"></div>
+
+      <div class="ple-module-content col-md-9">
+
+        <h2>Ask a question of the PublicLab community</h2>
+
+        <br />
+        <div>
+          <input class="form-control input-lg" type="text" placeholder="What's your topic question? Be specific." value="<%= if @node then @node.title else params[:title] end %>" />
+        </div>    
+
+      </div>    
+
+    </div>    
+    <!-- end title module -->
+
     <!-- body module -->
 
-      <div class="ple-module-guide col-md-3">
-      </div>
+    <div class="ple-module-body ple-module container">
 
-      <div class="col-md-9 container">
-        <textarea id="text-input" class="ple-textarea form-control" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;Share some background information. You may upload an image if you need."><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
-      </div>
-      <div class="row"></div>
-      <br/>
-      <div class="row">
-        <div class="ple-module-guide col-md-3">
+      <div class="col-md-3"></div>
+
+      <div class="ple-module-content col-md-9">
+
+        <div>
+          <textarea id="text-input" class="ple-textarea form-control" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;Share some background information. You may drag in an image to illustrate your question."><% if @node && @node.latest && @node.latest.body_rich %><%= @node.latest.body %><% else %><%= params[:body] %><% end %></textarea>
         </div>
-        <div class="col-md-9 container">
-          Consider sharing:
+
+        <div style="color:#aaa;">
+          <br />
+          <br />
+          <p>Consider sharing:</p>
           <ul style="list-style-type:disk ;">
             <li>Where you are working</li>
             <li>Why you are interested</li>
             <li>What resources you need</li>
           </ul>
         </div>
-      </div>
-
-    <!-- end body module -->
-
-
-    <!-- tags module -->
-      <div class="row"></div>
-
-      <div class="ple-module-guide col-md-3">
-      </div>
-
-      <div class="ple-module-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="Type some keywords related to your question (i.e. water, lead)" value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
-      </div>
-    <!-- end tags module -->
-
-      <!--button module-->
-      <div class="row"></div>
-      <br/>
-
-      <div class="ple-module-guide col-md-3">
-      </div>
-
-      <div class="ple-module-content col-md-9">
-
-       <a id="ask" tabindex="5" class="btn btn-primary btn-lg">Ask</a>&nbsp;&nbsp;
-      <a tabindex="6" href="https://publiclab.org/wiki/questions">Help</a>
-          </div>
-      </div>
-      
-    <!-- multi module -->
-    <!--
-    <div class="ple-module-multi ple-module container">
-
-      <div class="ple-module-guide col-md-3">
-        <p>Extras</p>
-      </div>
-
-      <div class="ple-module-content col-md-9">
-
-        <div class="btn-group">
-          <a class="btn btn-lg btn-default">
-            <i class="fa fa-comment-o"></i> Invite responses <i class="fa fa-caret-down"></i>
-          </a>
-          <a class="btn btn-lg btn-default">
-            <i class="fa fa-envelope-o"></i> Event <i class="fa fa-caret-down"></i>
-          </a>
-          <a class="btn btn-lg btn-default">
-            <i class="fa fa-map-o"></i> Map
-          </a>
-          <a class="btn btn-lg btn-default">
-            <i class="fa fa-line-chart"></i> Chart
-          </a>
-          <a class="btn btn-lg btn-default">
-            More <i class="fa fa-caret-down"></i>
-          </a>
-        </div>
 
       </div>
 
     </div>
-    -->
-    <!-- end multi module -->
-  
 
+    <!-- end body module -->
+
+    <!-- tags module -->
+
+    <div class="ple-module-tags ple-module container">
+
+      <div class="ple-module-guide col-md-3"></div>
+
+      <div class="ple-module-content col-md-9">
+        <input class="form-control input-lg" type="text" placeholder="Type some keywords related to your question (i.e. water, lead)" value="<% if params[:tags] || (@node && @node.tagnames) %><%= params[:tags] || @node.tagnames.join(',') %><% end %>" />
+      </div>
+
+    </div>
+
+    <!-- end tags module -->
+
+    <!--button module-->
+
+    <div class="ple-module-submit ple-module container">
+
+      <div class="ple-module-guide col-md-3"></div>
+
+      <div class="ple-module-content col-md-9">
+
+        <button class="ple-publish btn btn-lg btn-primary disabled">Ask</button> &nbsp;&nbsp;
+        <a tabindex="6" href="https://publiclab.org/wiki/questions">Help</a>
+
+      </div>
+
+    </div>
+      
   </div>
 
 
@@ -161,7 +142,34 @@
         formats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json']
       },
       titleModule: {
-        suggestRelated: false
+        suggestRelated: true,
+        fetchRelated: function(show) {
+          $.getJSON("/api/srch/notes?srchString=" + editor.titleModule.value(), function(response) {
+            /* API provides: 
+            {"items":[{
+              "docId":14022,
+              "docType":"file",
+              "docUrl":"/notes/liz/03-15-2017/host-a-balloon-mapping-workshop",
+              "docTitle":"Host a balloon mapping workshop",
+              "docSummary":"...",
+              "docScore":0}
+            ]}
+            */
+            // But we need: [{ id: 1, title: 'A related post',       url: '/', author: 'eustatic'}, ... ]
+            var formatted = [];
+            if (response['items']) {
+              response['items'].forEach(function(item) {
+                var formattedItem = {};
+                formattedItem.id = item.docId;
+                formattedItem.title = item.docTitle;
+                formattedItem.url = item.docUrl;
+                formattedItem.author = item.docUrl.split('/')[2];
+                formatted.push(formattedItem);
+              });
+              show(formatted);
+            }
+          });
+        }
       }
     });
 
