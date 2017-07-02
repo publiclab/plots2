@@ -34,8 +34,18 @@ jQuery(document).ready(function($) {
       $('#methods h2.recent').hide();
       $('#methods h2.related').show();
       $('#methods h2 .topic-title').html(tagname);
-      $('#methods .node').hide();
-      $('#methods .node.tag-' + tagname).show();
+      // hide all
+      var allNodes = $('#methods .node').hide();
+      // take them out of rows
+      $('#methods .row .node').remove();
+      $('#methods').append(allNodes);
+      // show matching nodes and remove them for later adding to rows
+      var matchingNodes = $('#methods .node.tag-' + tagname).show().remove();
+      // re-establish rows
+      for (var i = 0; i < matchingNodes.length; i += 4) {
+        var row = $('#methods #notes').append('<div class="row"></div>');
+        row.append(matchingNodes.slice(i, i + 4));
+      }
     } else {
       $('#methods .node').show();
       $('#methods .no-results').show();

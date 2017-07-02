@@ -7,22 +7,7 @@ class NotesController < ApplicationController
     set_sidebar
   end
 
-  # deprecate in favor of wiki#methods
-  def methods
-    @title = 'Methods'
-    @notes = Node.where(status: 1, type: %w[page tool])
-                 .includes(:drupal_node_revision, :tag)
-                 .where('term_data.name = ?', 'tool')
-                 .order('node_revisions.timestamp DESC')
-                 .page(params[:page])
-    render template: 'notes/tools_places'
-  end
-
   def tools
-    redirect_to '/methods', status: 302
-  end
-
-  def techniques
     redirect_to '/methods', status: 302
   end
 
