@@ -140,6 +140,7 @@ class TagController < ApplicationController
       else
         @output[:errors] << node.can_tag(tagname, current_user, true)
       end
+
     end
     respond_with do |format|
       format.html do
@@ -246,32 +247,6 @@ class TagController < ApplicationController
       @tagdata[:notes] = Node.count :all, conditions: ["nid IN (?) AND type = 'note'", nct.collect(&:nid)]
     end
     render template: 'tag/contributors-index'
-  end
-
-  # let's not use session for tags storage; deprecate these unless they're being used
-  # to remember and persist recently searched for tags:
-  def add_tag
-    session[:tags] = {} unless session[:tags]
-    tagnames = params[:name].split(',')
-    tagnames.each do |tagname|
-      tag = Tag.find_by_name(tagname)
-      if tag
-        session[:tags][tag.tid.to_s] = tagname
-      else
-        session[:tags][tagname] = tagname
-      end
-    end
-    redirect_to params[:return_to]
-  end
-
-  def remove_tag
-    session[:tags].delete(params[:id]) if session[:tags]
-    redirect_to params[:return_to]
-  end
-
-  def remove_all_tags
-    session[:tags].clear if session[:tags]
-    redirect_to params[:return_to]
   end
 
   def location

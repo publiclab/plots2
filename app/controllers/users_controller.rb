@@ -237,48 +237,6 @@ class UsersController < ApplicationController
 
   def info
     @user = DrupalUsers.find_by_name(params[:id])
-    @location_tag = @user.location_tag
-  end
-
-  def privacy
-  # maintains location privacy functionality
-    status = params[:location_privacy]
-    @output = {
-      errors: [],
-      status: false
-    }
-
-    user = DrupalUsers.find_by_name(params[:id])
-    if current_user.update_attribute(:location_privacy, status)
-      @output[:status] = true
-    else
-      @output[:errors] << flash[:error]
-    end
-
-    if user.location_tag
-      @lat, @long =  user.location_tag.lat, user.location_tag.lon
-    end
-
-    respond_to do |format|
-      format.json {
-        render json: {
-          status: @output[:status],
-          model: current_user,
-          lat: @lat,
-          long: @long
-        }.to_json
-      }
-
-      format.html {
-        if @output[:status]
-          flash[:notice] = I18n.t('users_controller.preference_saved')
-        else
-          flash[:error] = I18n.t('users_controller.something_went_wrong')
-        end
-        redirect_to info_path(params[:id])
-      }
-    end
-
   end
 
   def following
