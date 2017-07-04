@@ -118,22 +118,6 @@ class DrupalUsers < ActiveRecord::Base
     drupal_profile_values
   end
 
-  def set_bio(text)
-    bio = DrupalProfileValue.find_by_uid(uid, conditions: { fid: 7 })
-    bio = DrupalProfileValue.new(fid: 7, uid: uid) if bio.nil?
-    bio.value = text
-    bio.save!
-  end
-
-  def bio
-    bio = DrupalProfileValue.find_by_uid(uid, conditions: { fid: 7 })
-    if bio
-      bio.value || ''
-    else
-      ''
-    end
-  end
-
   def notes
     user.notes
   end

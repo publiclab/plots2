@@ -96,10 +96,6 @@ class User < ActiveRecord::Base
     key
   end
 
-  def bio
-    drupal_user.bio
-  end
-
   def uid
     drupal_user.uid
   end
