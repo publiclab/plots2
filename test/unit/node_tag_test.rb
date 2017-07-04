@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DrupalNodeTagTest < ActiveSupport::TestCase
+class NodeTagTest < ActiveSupport::TestCase
   test 'tag basics' do
     node = node(:one)
     assert node.has_tag('activity:spectrometer')
@@ -19,7 +19,7 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
   test 'tag method aliases' do
     node = node(:one)
     assert_equal node.tags, node.tag
-    assert_equal node.community_tags, node.drupal_node_community_tag
+    assert_equal node.node_tags, node.node_tag
   end
 
   # Tag parenting guide, as this is complicated:
@@ -103,7 +103,7 @@ class DrupalNodeTagTest < ActiveSupport::TestCase
     assert_equal 'spectrometer', node.power_tag('activity')
     assert_equal ['spectrometer'], node.power_tags('activity')
     assert_equal 'String', node.power_tags('activity').first.class.to_s
-    assert_equal 'DrupalNodeCommunityTag', node.power_tag_objects('activity').first.class.to_s
+    assert_equal 'NodeTag', node.power_tag_objects('activity').first.class.to_s
   end
 
   test 'power tag based node features' do
