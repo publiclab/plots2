@@ -36,22 +36,6 @@ class UserTagsControllerTest < ActionController::TestCase
     assert_redirected_to info_path
   end
 
-  test 'should not create invalid tag' do
-    UserSession.create(rusers(:bob))
-    valid_tags = %w[skill gear role tool]
-    valid_tags.each do |tag|
-      post :create, id: rusers(:bob).username, type: tag, value: 'tagvalue'
-      assert_equal 'tagvalue tag created successfully', flash[:notice]
-      assert_redirected_to info_path
-    end
-
-    invalid_tags = %w[skills abc 123]
-    invalid_tags.each do |tag|
-      post :create, id: rusers(:bob).username, type: tag, value: 'tagvalue'
-      assert_equal "Error: Invalid value #{tag}", assigns['output']['errors'][0]
-    end
-  end
-
   test 'should not allow empty tag value' do
     UserSession.create(rusers(:bob))
     post :create, id: rusers(:bob).username, type: 'skill', value: ''
