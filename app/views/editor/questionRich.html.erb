@@ -170,6 +170,14 @@
             }
           });
         }
+      },
+      tagsModule: {
+        remote: {
+          url: "/tag/suggested/test",
+          prepare: function prepareRemote(x) {
+            return "/tag/suggested/" + x
+          }
+        }
       }
     });
 
