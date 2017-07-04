@@ -13,7 +13,7 @@ class Revision < ActiveRecord::Base
   self.table_name = 'node_revisions'
   self.primary_key = 'vid'
 
-  belongs_to :node, foreign_key: 'nid', dependent: :destroy, counter_cache: true
+  belongs_to :node, foreign_key: 'nid', dependent: :destroy, counter_cache: :drupal_node_revisions_count
   has_one :drupal_users, foreign_key: 'uid'
 
   validates :title,
