@@ -137,8 +137,7 @@ class NodeTest < ActiveSupport::TestCase
     node = node(:one)
     assert !node.tags.empty?
     assert_equal node.tags, node.tag
-    assert !node.community_tags.empty?
-    assert_equal node.community_tags, node.drupal_node_community_tag
+    assert !node.node_tags.empty?
     assert_not_nil node.tagnames
     assert node.tagnames.first.is_a?(String)
     assert_equal 'test awesome spectrometer activity:spectrometer', node.tagnames.join(' ')

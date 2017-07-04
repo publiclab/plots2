@@ -103,7 +103,7 @@ module NodeShared
     body.gsub(/[^\>`](\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
-      nids = DrupalNodeCommunityTag.joins(:tag)
+      nids = NodeTag.joins(:tag)
                                    .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
                                    .collect(&:nid)
       nids = nids || []
@@ -129,10 +129,10 @@ module NodeShared
       tagname = Regexp.last_match(2)
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
-      nids = DrupalNodeCommunityTag.joins(:tag)
+      nids = NodeTag.joins(:tag)
                                    .where('term_data.name = ?', tagname)
                                    .collect(&:nid)
-      nids = DrupalNodeCommunityTag.joins(:tag)
+      nids = NodeTag.joins(:tag)
                                    .where(nid: nids)
                                    .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
                                    .collect(&:nid)

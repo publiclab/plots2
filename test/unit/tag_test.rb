@@ -24,7 +24,7 @@ class TagTest < ActiveSupport::TestCase
   end
 
   test 'creating a tag with a bad uid' do
-    community_tag = DrupalNodeCommunityTag.new(uid: 1_343_151_513,
+    community_tag = NodeTag.new(uid: 1_343_151_513,
                                                tid: tags(:awesome).tid,
                                                nid: node(:one).nid)
     assert community_tag.save!
@@ -70,7 +70,7 @@ class TagTest < ActiveSupport::TestCase
   test 'response power tagging' do
     tag = Tag.new(name: "response:#{node(:blog).id}")
     assert tag.save!
-    community_tag = DrupalNodeCommunityTag.new(
+    community_tag = NodeTag.new(
       tid: tag.tid,
       nid: node(:one).nid,
       uid: rusers(:bob).uid
@@ -83,7 +83,7 @@ class TagTest < ActiveSupport::TestCase
   test 'response power tagging with custom key' do
     tag = Tag.new(name: "replication:#{node(:blog).id}")
     assert tag.save!
-    community_tag = DrupalNodeCommunityTag.new(
+    community_tag = NodeTag.new(
       tid: tag.tid,
       nid: node(:one).nid,
       uid: rusers(:bob).uid

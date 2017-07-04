@@ -5,7 +5,7 @@ class TagController < ApplicationController
   def index
     @title = I18n.t('tag_controller.tags')
     @paginated = true
-    @tags = Tag.joins(:drupal_node_community_tag, :node)
+    @tags = Tag.joins(:node_tag, :node)
                .where('node.status = ?', 1)
                .paginate(page: params[:page])
                .order('count DESC')
@@ -158,7 +158,7 @@ class TagController < ApplicationController
 
   # should delete only the term_node/node_tag (instance), not the term_data (class)
   def delete
-    node_tag = DrupalNodeCommunityTag.where(nid: params[:nid], tid: params[:tid]).first
+    node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
     if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator'
 
@@ -241,7 +241,7 @@ class TagController < ApplicationController
       @tags << tag if tag
       @tagdata[tagname] = {}
       t = Tag.find :all, conditions: { name: tagname }
-      nct = DrupalNodeCommunityTag.find :all, conditions: ['tid in (?)', t.collect(&:tid)]
+      nct = NodeTag.find :all, conditions: ['tid in (?)', t.collect(&:tid)]
       @tagdata[tagname][:users] = Node.find(:all, conditions: ['nid IN (?)', nct.collect(&:nid)]).collect(&:author).uniq.length
       @tagdata[tagname][:wikis] = Node.count :all, conditions: ["nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)]
       @tagdata[:notes] = Node.count :all, conditions: ["nid IN (?) AND type = 'note'", nct.collect(&:nid)]

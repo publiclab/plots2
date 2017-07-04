@@ -159,7 +159,7 @@ class DrupalNodeRevisionsTest < ActiveSupport::TestCase
   test 'should make the author the tag author' do
     revision = node_revisions(:hashtag_three)
     revision.save
-    author = revision.parent.tag.last.drupal_node_community_tag.first.drupal_users
+    author = revision.parent.tag.last.node_tag.first.drupal_users
     assert_equal revision.author, author
   end
 
