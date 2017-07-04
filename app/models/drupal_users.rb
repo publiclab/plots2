@@ -143,7 +143,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def node_count
-    Node.count(:all, conditions: { status: 1, uid: uid }) + DrupalNodeRevision.count(:all, conditions: { uid: uid })
+    Node.count(:all, conditions: { status: 1, uid: uid }) + Revision.count(:all, conditions: { uid: uid })
   end
 
   # accepts array of tag names (strings)

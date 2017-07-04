@@ -14,7 +14,7 @@ module NodeShared
     body.gsub(/[^\>`](\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2).parameterize
       nodes = Node.where(status: 1, type: 'note')
-                  .includes(:drupal_node_revision, :tag)
+                  .includes(:revision, :tag)
                   .where('term_data.name = ?', tagname)
                   .order('node_revisions.timestamp DESC')
       output = ''
@@ -38,7 +38,7 @@ module NodeShared
     body.gsub(/[^\>`](\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2).parameterize
       nodes = Node.where(status: 1, type: 'note')
-                  .includes(:drupal_node_revision, :tag)
+                  .includes(:revision, :tag)
                   .where('term_data.name = ?', "question:#{tagname}")
                   .order('node_revisions.timestamp DESC')
       output = ''

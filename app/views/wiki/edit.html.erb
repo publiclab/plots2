@@ -38,7 +38,7 @@
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
   <% end %>
 
-  <%= form_for @revision, :as => :drupal_node_revision, :url => url, :html => {:class => "form well"} do |f| %>
+  <%= form_for @revision, :as => :revision, :url => url, :html => {:class => "form well"} do |f| %>
 
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
   
@@ -88,7 +88,7 @@
     <script>
       (function(){
         publish = function(e) {
-            $('#new_drupal_node_revision').submit()
+            $('#new_revision').submit()
         }
         $(".publish").bind("click",publish)
       })()

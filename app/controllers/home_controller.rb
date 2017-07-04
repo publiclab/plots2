@@ -44,9 +44,9 @@ class HomeController < ApplicationController
     @note_count = Node.select(%i[created type status])
                       .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                       .count
-    @wiki_count = DrupalNodeRevision.select(:timestamp)
-                                    .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-                                    .count
+    @wiki_count = Revision.select(:timestamp)
+                          .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+                          .count
     @blog = Tag.find_nodes_by_type('blog', 'note', 1).first
     # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
     hidden_nids = Node.joins(:node_tag)
@@ -73,14 +73,14 @@ class HomeController < ApplicationController
     @wikis = Node.where(type: 'page', status: 1)
                  .order('nid DESC')
                  .limit(10)
-    revisions = DrupalNodeRevision.joins(:node)
-                                  .order('timestamp DESC')
-                                  .where('type = (?)', 'page')
-                                  .where('node.status = 1')
-                                  .where('node_revisions.status = 1')
-                                  .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
-                                  .limit(10)
-                                  .group('node.title')
+    revisions = Revision.joins(:node)
+                        .order('timestamp DESC')
+                        .where('type = (?)', 'page')
+                        .where('node.status = 1')
+                        .where('node_revisions.status = 1')
+                        .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
+                        .limit(10)
+                        .group('node.title')
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     @wikis += revisions

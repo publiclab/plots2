@@ -33,14 +33,14 @@ class TagController < ApplicationController
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
       nodes = Node.where(status: 1, type: node_type)
-                  .includes(:drupal_node_revision, :tag)
+                  .includes(:revision, :tag)
                   .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
                   .page(params[:page])
                   .order('node_revisions.timestamp DESC')
     else
       @tags = Tag.find_all_by_name params[:id]
       nodes = Node.where(status: 1, type: node_type)
-                  .includes(:drupal_node_revision, :tag)
+                  .includes(:revision, :tag)
                   .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
                   .page(params[:page])
                   .order('node_revisions.timestamp DESC')
@@ -198,7 +198,7 @@ class TagController < ApplicationController
   def rss
     if params[:tagname][-1..-1] == '*'
       @notes = Node.where(status: 1, type: 'note')
-                   .includes(:drupal_node_revision, :tag)
+                   .includes(:revision, :tag)
                    .where('term_data.name LIKE (?)', params[:tagname][0..-2] + '%')
                    .limit(20)
                    .order('node_revisions.timestamp DESC')
@@ -224,7 +224,7 @@ class TagController < ApplicationController
     @tagnames = [params[:id]]
     @tag = Tag.find_by_name params[:id]
     @notes = Node.where(status: 1, type: 'note')
-                 .includes(:drupal_node_revision, :tag)
+                 .includes(:revision, :tag)
                  .where('term_data.name = ?', params[:id])
                  .order('node_revisions.timestamp DESC')
     @users = @notes.collect(&:author).uniq
