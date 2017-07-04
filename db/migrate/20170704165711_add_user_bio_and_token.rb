@@ -1,6 +1,6 @@
 class AddUserBioAndToken < ActiveRecord::Migration
   def up
-    add_column :rusers, :bio, :text
+    add_column :rusers, :bio, :text, limit: 2147483647
     add_column :rusers, :token, :string
     add_column :rusers, :status, :integer, default: 0
     remove_column :rusers, :location_privacy
