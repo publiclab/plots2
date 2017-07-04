@@ -16,7 +16,7 @@ class DrupalUsers < ActiveRecord::Base
   has_many :answer_selections, foreign_key: :user_id
   has_many :comments, foreign_key: 'uid'
   has_one :location_tag, foreign_key: 'uid', dependent: :destroy
-
+  has_one :rusers, foreign_key: :id
 
   include SolrToggle
   searchable if: :internalShouldIndexSolr do
@@ -27,10 +27,6 @@ class DrupalUsers < ActiveRecord::Base
 
   def internalShouldIndexSolr
     shouldIndexSolr && status == 1
-  end
-
-  def user
-    User.find_by_username name
   end
 
   def username

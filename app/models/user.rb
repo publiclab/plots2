@@ -25,8 +25,7 @@ class User < ActiveRecord::Base
   do_not_validate_attachment_file_type :photo_file_name
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
 
-  # this doesn't work... we should have a uid field on User
-  # has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
+  has_one :user, foreign_key: :uid
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
@@ -73,11 +72,9 @@ class User < ActiveRecord::Base
   def destroy_drupal_user
     drupal_user.destroy
   end
-
-  # this is ridiculous. We need to store uid in this model.
-  # ...migration is in progress. start getting rid of these calls...
+  
   def drupal_user
-    DrupalUsers.find_by_name(username)
+    self.user
   end
 
   def notes
