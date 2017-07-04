@@ -117,10 +117,10 @@ class UsersController < ApplicationController
                           .where(status: 1)
                           .order('node.nid DESC')
     @answered_questions = questions.select{|q| q.answers.collect(&:author).include?(@user)}
-    wikis = DrupalNodeRevision.order("nid DESC")
-                              .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
-                              .joins(:node)
-                              .limit(20)
+    wikis = Revision.order("nid DESC")
+                    .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
+                    .joins(:node)
+                    .limit(20)
     @wikis = wikis.collect(&:parent).uniq
     if @user.status == 0
       if current_user && (current_user.role == "admin" || current_user.role == "moderator")

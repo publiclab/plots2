@@ -74,7 +74,7 @@ class Tag < ActiveRecord::Base
                   .includes(:tag)
                   .where('term_data.name IN (?)', tags.collect(&:parent))
     Node.where('node.nid IN (?)', (nodes + parents).collect(&:nid))
-        .includes(:drupal_node_revision, :tag)
+        .includes(:revision, :tag)
         .where(status: 1)
         .order('node_revisions.timestamp DESC')
         .limit(limit)
@@ -96,7 +96,7 @@ class Tag < ActiveRecord::Base
       tag = Tag.where(name: tagname).last
       next unless tag
       parents = Node.where(status: 1, type: type)
-                    .includes(:drupal_node_revision, :tag)
+                    .includes(:revision, :tag)
                     .where('term_data.name LIKE ?', tag.parent)
       nids += tag_nids + parents.collect(&:nid)
     end
@@ -192,7 +192,7 @@ class Tag < ActiveRecord::Base
 
   def self.find_research_notes(tagnames, limit = 10)
     Node.research_notes.where(status: 1)
-        .includes(:drupal_node_revision, :tag)
+        .includes(:revision, :tag)
         .where('term_data.name IN (?)', tagnames)
         .order('node_revisions.timestamp DESC')
         .limit(limit)

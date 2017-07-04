@@ -67,7 +67,7 @@
 
   <hr />
 
-  <h4><%= raw t('notes.stats.wiki_page_edits', :count => DrupalNodeRevision.count(:all)) %></h4>
+  <h4><%= raw t('notes.stats.wiki_page_edits', :count => Revision.count(:all)) %></h4>
   <p><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %></p>
 
 </div>

@@ -49,7 +49,7 @@
 
   <div class="row">
     <% activity.each_with_index do |node, i| %>
-      <% if node.is_a?(DrupalNodeRevision) || node.type == 'page' %>
+      <% if node.is_a?(Revision) || node.type == 'page' %>
         <%= render partial: "dashboard/node_wiki",     locals: { node: node, index: i } %>
       <% elsif node.is_a?(Comment) %>
         <%= render partial: "dashboard/node_comment",  locals: { node: node, index: i } %>

@@ -107,8 +107,8 @@ class NodeTest < ActiveSupport::TestCase
   test 'create a node_revision' do
     # in testing, uid and id should be matched, although this is not yet true in production db
     revision_count = node(:one).revisions.length
-    node_revision =  DrupalNodeRevision.new(uid: rusers(:bob).id,
-                                            nid: node(:one).nid)
+    node_revision =  Revision.new(uid: rusers(:bob).id,
+                                  nid: node(:one).nid)
     node_revision.title = 'My new node'
     node_revision.body = 'My new node'
     assert node_revision.save!
@@ -121,7 +121,7 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal node.revisions.first, node.latest
     assert node.revisions.first.timestamp.to_i > node.revisions.last.timestamp.to_i
     assert_not_equal node.revisions.last, node.latest
-    assert_equal node.drupal_node_revision.order('timestamp DESC').first, node.latest
+    assert_equal node.revision.order('timestamp DESC').first, node.latest
   end
 
   test 'latest revision not a moderated revision' do

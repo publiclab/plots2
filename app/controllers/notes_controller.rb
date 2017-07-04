@@ -14,7 +14,7 @@ class NotesController < ApplicationController
   def places
     @title = 'Places'
     @notes = Node.where(status: 1, type: %w[page place])
-                 .includes(:drupal_node_revision, :tag)
+                 .includes(:revision, :tag)
                  .where('term_data.name = ?', 'chapter')
                  .page(params[:page])
                  .order('node_revisions.timestamp DESC')

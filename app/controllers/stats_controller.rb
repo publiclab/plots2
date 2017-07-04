@@ -14,9 +14,9 @@ class StatsController < ApplicationController
     @notes = Node.select(%i[created type status])
                  .where(type: 'note', status: 1, created: @start.to_i..@end.to_i)
                  .count
-    @wikis = DrupalNodeRevision.select(:timestamp)
-                               .where(timestamp: @start.to_i..@end.to_i)
-                               .count - @notes # because notes each have one revision
+    @wikis = Revision.select(:timestamp)
+                     .where(timestamp: @start.to_i..@end.to_i)
+                     .count - @notes # because notes each have one revision
     @people = User.where(created_at: @start..@end)
                   .joins('INNER JOIN users ON users.uid = rusers.id')
                   .where('users.status = 1')
@@ -33,9 +33,9 @@ class StatsController < ApplicationController
     @weekly_notes = Node.select(%i[created type status])
                         .where(type: 'note', status: 1, created: @time.to_i - 1.weeks.to_i..@time.to_i)
                         .count
-    @weekly_wikis = DrupalNodeRevision.select(:timestamp)
-                                      .where(timestamp: @time.to_i - 1.weeks.to_i..@time.to_i)
-                                      .count
+    @weekly_wikis = Revision.select(:timestamp)
+                            .where(timestamp: @time.to_i - 1.weeks.to_i..@time.to_i)
+                            .count
     @weekly_members = User.where(created_at: @time - 1.weeks..@time)
                           .joins('INNER JOIN users ON users.uid = rusers.id')
                           .where('users.status = 1')
@@ -43,9 +43,9 @@ class StatsController < ApplicationController
     @monthly_notes = Node.select(%i[created type status])
                          .where(type: 'note', status: 1, created: @time.to_i - 1.months.to_i..@time.to_i)
                          .count
-    @monthly_wikis = DrupalNodeRevision.select(:timestamp)
-                                       .where(timestamp: @time.to_i - 1.months.to_i..@time.to_i)
-                                       .count
+    @monthly_wikis = Revision.select(:timestamp)
+                             .where(timestamp: @time.to_i - 1.months.to_i..@time.to_i)
+                             .count
     @monthly_members = User.where(created_at: @time - 1.months..@time)
                            .joins('INNER JOIN users ON users.uid = rusers.id')
                            .where('users.status = 1')
@@ -54,9 +54,9 @@ class StatsController < ApplicationController
     @notes_per_week_past_year = Node.select(%i[created type status])
                                     .where(type: 'note', status: 1, created: @time.to_i - 1.years.to_i..@time.to_i)
                                     .count / 52.0
-    @edits_per_week_past_year = DrupalNodeRevision.select(:timestamp)
-                                                  .where(timestamp: @time.to_i - 1.years.to_i..@time.to_i)
-                                                  .count / 52.0
+    @edits_per_week_past_year = Revision.select(:timestamp)
+                                        .where(timestamp: @time.to_i - 1.years.to_i..@time.to_i)
+                                        .count / 52.0
 
     @graph_notes = Node.weekly_tallies('note', 52, @time).to_a.sort.to_json
     @graph_wikis = Node.weekly_tallies('page', 52, @time).to_a.sort.to_json

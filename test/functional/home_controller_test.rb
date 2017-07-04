@@ -32,17 +32,17 @@ class HomeControllerTest < ActionController::TestCase
 
   test 'should show only unmoderated spam' do
     @wikis = Node.where(type: 'page')
-    revisions = DrupalNodeRevision.joins(:node)
-                                  .where('type = (?)', 'page')
-                                  .where('node_revisions.status = 1')
+    revisions = Revision.joins(:node)
+                        .where('type = (?)', 'page')
+                        .where('node_revisions.status = 1')
     @wikis += revisions
 
     get :dashboard
 
     @wikis.each do |obj|
-      if obj.class == DrupalNodeRevision && obj.status == 1
+      if obj.class == Revision && obj.status == 1
         assert_select '.wiki'
-      elsif obj.class == DrupalNodeRevision && obj.status != 1
+      elsif obj.class == Revision && obj.status != 1
         assert_select false, '.wiki'
       end
     end

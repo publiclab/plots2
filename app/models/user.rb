@@ -128,8 +128,8 @@ class User < ActiveRecord::Base
   end
 
   def following(tagname)
-    tids = Tag.find(:all, conditions: { name: tagname }).collect(&:tid)
-    !TagSelection.find(:all, conditions: { following: true, tid: tids, user_id: uid }).empty?
+    tids = Tag.where(name: tagname).collect(&:tid)
+    !TagSelection.where(following: true, tid: tids, user_id: uid).empty?
   end
 
   def add_to_lists(lists)
@@ -141,7 +141,12 @@ class User < ActiveRecord::Base
   def weekly_note_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
-      weeks[span - week] = Node.count :all, select: :created, conditions: { uid: drupal_user.uid, type: 'note', status: 1, created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i }
+      weeks[span - week] = Node.select(:created)
+                               .where( uid: drupal_user.uid,
+                                       type: 'note',
+                                       status: 1,
+                                       created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
+                               .count
     end
     weeks
   end
@@ -149,7 +154,11 @@ class User < ActiveRecord::Base
   def weekly_comment_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
-      weeks[span - week] = Comment.count :all, select: :timestamp, conditions: { uid: drupal_user.uid, status: 1, timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i }
+      weeks[span - week] = Comment.select(:timestamp)
+                                  .where( uid: drupal_user.uid,
+                                          status: 1,
+                                          timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
+                                  .count
     end
     weeks
   end
@@ -159,7 +168,12 @@ class User < ActiveRecord::Base
     streak = 0
     note_count = 0
     (0..span).each do |day|
-      days[day] = Node.count :all, select: :created, conditions: { uid: drupal_user.uid, type: 'note', status: 1, created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i }
+      days[day] = Node.select(:created)
+                      .where( uid: drupal_user.uid,
+                              type: 'note',
+                              status: 1,
+                              created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
+                      .count
       break if days[day] == 0
       streak += 1
       note_count += days[day]
@@ -172,7 +186,12 @@ class User < ActiveRecord::Base
     streak = 0
     wiki_edit_count = 0
     (0..span).each do |day|
-      days[day] = DrupalNodeRevision.joins(:node).where(uid: drupal_user.uid, status: 1, timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i).where('node.type != ?', 'note').count
+      days[day] = Revision.joins(:node)
+                          .where( uid: drupal_user.uid,
+                                  status: 1,
+                                  timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
+                          .where('node.type != ?', 'note')
+                          .count
       break if days[day] == 0
       streak += 1
       wiki_edit_count += days[day]
@@ -185,7 +204,11 @@ class User < ActiveRecord::Base
     streak = 0
     comment_count = 0
     (0..span).each do |day|
-      days[day] = Comment.count :all, select: :timestamp, conditions: { uid: drupal_user.uid, status: 1, timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i }
+      days[day] = Comment.select(:timestamp)
+                         .where( uid: drupal_user.uid,
+                                 status: 1,
+                                 timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
+                         .count
       break if days[day] == 0
       streak += 1
       comment_count += days[day]

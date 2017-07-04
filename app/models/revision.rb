@@ -1,4 +1,4 @@
-class DrupalNodeRevision < ActiveRecord::Base
+class Revision < ActiveRecord::Base
 
   include SolrToggle
   searchable if: :shouldIndexSolr do
@@ -82,17 +82,17 @@ class DrupalNodeRevision < ActiveRecord::Base
   end
 
   def is_initial?
-    parent.drupal_node_revision.count == 1
+    parent.revision.count == 1
   end
 
   def previous
-    parent.drupal_node_revision.order('timestamp DESC')
+    parent.revision.order('timestamp DESC')
           .where('timestamp < ?', timestamp)
           .first
   end
 
   def next
-    parent.drupal_node_revision.order('timestamp DESC')
+    parent.revision.order('timestamp DESC')
           .where('timestamp > ?', timestamp)
           .last
   end

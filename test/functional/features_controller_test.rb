@@ -90,7 +90,7 @@ class FeaturesControllerTest < ActionController::TestCase
     UserSession.create(rusers(:admin))
 
     node = node(:feature)
-    assert_difference 'DrupalNodeRevision.count' do
+    assert_difference 'Revision.count' do
       get :update,
           id: node.id,
           body: "A new feature to <a href=''>display</a> with additions"

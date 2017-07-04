@@ -33,10 +33,10 @@ class ApplicationController < ActionController::Base
                         .collect(&:nid)
       @notes = if params[:controller] == 'questions'
                  Node.questions
-                     .joins(:drupal_node_revision)
+                     .joins(:revision)
                else
                  Node.research_notes
-                     .joins(:drupal_node_revision)
+                     .joins(:revision)
                      .order('node.nid DESC')
                      .paginate(page: params[:page])
                end
@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
       end
 
       @wikis = Node.order('changed DESC')
-                   .joins(:drupal_node_revision)
+                   .joins(:revision)
                    .where('node_revisions.status = 1 AND node.status = 1 AND type = "page"')
                    .limit(10)
                    .group('node_revisions.nid')

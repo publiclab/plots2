@@ -42,7 +42,7 @@ class Node < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-  has_many :drupal_node_revision, foreign_key: 'nid', dependent: :destroy
+  has_many :revision, foreign_key: 'nid', dependent: :destroy
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
@@ -195,12 +195,12 @@ class Node < ActiveRecord::Base
   end
 
   def revisions
-    drupal_node_revision
+    revision
       .order('timestamp DESC')
   end
 
   def revision_count
-    drupal_node_revision
+    revision
       .count
   end
 
@@ -307,7 +307,7 @@ class Node < ActiveRecord::Base
   # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
   def response_count(key = 'response')
     Node.where(status: 1, type: 'note')
-        .includes(:drupal_node_revision, :tag)
+        .includes(:revision, :tag)
         .where('term_data.name = ?', "#{key}:#{id}")
         .count
   end
@@ -527,10 +527,10 @@ class Node < ActiveRecord::Base
 
   def new_revision(params)
     title = params[:title] || self.title
-    DrupalNodeRevision.new(nid: id,
-                           uid: params[:uid],
-                           title: title,
-                           body: params[:body])
+    Revision.new(nid: id,
+                 uid: params[:uid],
+                 title: title,
+                 body: params[:body])
   end
 
   # handle creating a new note with attached revision and main image
@@ -661,9 +661,9 @@ class Node < ActiveRecord::Base
           end
           tag.save!
           node_tag = NodeTag.new(tid: tag.id,
-                                                uid: user.uid,
-                                                date: DateTime.now.to_i,
-                                                nid: id)
+                                 uid: user.uid,
+                                 date: DateTime.now.to_i,
+                                 nid: id)
           if node_tag.save
             saved = true
           else
@@ -716,13 +716,13 @@ class Node < ActiveRecord::Base
 
   def self.activities(tagname)
     Node.where(status: 1, type: 'note')
-        .includes(:drupal_node_revision, :tag)
+        .includes(:revision, :tag)
         .where('term_data.name LIKE ?', "activity:#{tagname}")
   end
 
   def self.upgrades(tagname)
     Node.where(status: 1, type: 'note')
-        .includes(:drupal_node_revision, :tag)
+        .includes(:revision, :tag)
         .where('term_data.name LIKE ?', "upgrade:#{tagname}")
   end
 

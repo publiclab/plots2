@@ -73,9 +73,9 @@ class AdminController < ApplicationController
 
   def spam_revisions
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      @revisions = DrupalNodeRevision.paginate(page: params[:page])
-                                     .order('timestamp DESC')
-                                     .where(status: 0)
+      @revisions = Revision.paginate(page: params[:page])
+                           .order('timestamp DESC')
+                           .where(status: 0)
       render template: 'admin/spam'
     else
       flash[:error] = 'Only moderators can moderate revisions.'
@@ -140,7 +140,7 @@ class AdminController < ApplicationController
   end
 
   def mark_spam_revision
-    @revision = DrupalNodeRevision.find_by_vid params[:vid]
+    @revision = Revision.find_by_vid params[:vid]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       if @revision.status == 1
         @revision.spam
@@ -163,7 +163,7 @@ class AdminController < ApplicationController
 
   def publish_revision
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      @revision = DrupalNodeRevision.find params[:vid]
+      @revision = Revision.find params[:vid]
       @revision.publish
       @revision.author.unban
       flash[:notice] = 'Item published.'
