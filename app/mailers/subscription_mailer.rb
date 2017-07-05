@@ -24,13 +24,15 @@ class SubscriptionMailer < ActionMailer::Base
     mail(to: node.author.email, subject: subject).deliver
   end
 
-  def notify_tag_added(node, tag)
+  def notify_tag_added(node, tag, current_user)
     @node = node
-    given_tags = node.tags
+    given_tags = node.tags.reject { |t| t == tag}
     users_to_email = tag.followers_who_dont_follow_tags(given_tags)
-    users_to_email.collect do |user|
+    users_to_email.each do |user|
       @user = user
-      mail(to: user.email, subject: "New tag added on #{node.title}").deliver
+      unless user.id == current_user.id 
+        mail(to: user.email, subject: "New tag added on #{node.title}").deliver 
+      end
     end
     @footer = feature('email-footer')
   end

@@ -8,7 +8,7 @@ class TagTest < ActiveSupport::TestCase
 
   test " returns users following this tags but not given tags" do
     # users following tag are bob, unbanned_spammer, admin
-    # users following tag1 are bob, admin, obiwan
+    # users following tag1 are bob, moderator, unbanned_spammer
     # users following tag2 are spammer, newcomer
     tag = tags(:test)
     tag1 = tags(:awesome)
