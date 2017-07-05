@@ -137,26 +137,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_select 'a#user-reset-key'
   end
 
-  test 'should update true value of location privacy attribute' do
-    UserSession.create(rusers(:jeff))
-    user = rusers(:jeff)
-    post :privacy, location_privacy: true, id: user.username
-
-    assert_response 302
-    assert user.location_privacy
-    assert_equal 'Your preference has been saved', flash[:notice]
-  end
-
-  test 'should update false value location privacy attribute' do
-    UserSession.create(rusers(:jeff))
-    user = rusers(:jeff)
-    post :privacy, location_privacy: false, id: user.username
-
-    assert_response 302
-    assert user.location_privacy
-    assert_equal 'Your preference has been saved', flash[:notice]
-  end
-
   test 'should choose I18n for users controller' do
     available_testing_locales.each do |lang|
       old_controller = @controller
@@ -165,12 +145,6 @@ class UsersControllerTest < ActionController::TestCase
       get :change_locale, locale: lang.to_s
 
       @controller = old_controller
-
-      UserSession.create(rusers(:jeff))
-      user = rusers(:jeff)
-      post :privacy, location_privacy: true, id: user.username
-
-      assert_equal I18n.t('users_controller.preference_saved'), flash[:notice]
     end
   end
 
@@ -178,14 +152,6 @@ class UsersControllerTest < ActionController::TestCase
   #    UserSession.create(rusers(:jeff))
   #    get :map
   #    assert_response 200
-  #  end
-
-  #  test "should display map based on tags" do
-  #    UserSession.create(rusers(:jeff))
-  #    get :map, :tag => 'Skill', :country => "", :value => ""
-  #    assert_response 200
-  #    assert assigns[:location_tags]
-  #    assert assigns[:location_tags].is_a? Hash
   #  end
 
   #  test "should display users map based on location" do

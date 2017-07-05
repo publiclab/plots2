@@ -84,7 +84,7 @@ class WikiController < ApplicationController
   # display a revision, raw
   def raw
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
-    render text: DrupalNodeRevision.find(params[:id]).body
+    render text: Revision.find(params[:id]).body
   end
 
   def edit
@@ -121,7 +121,7 @@ class WikiController < ApplicationController
       @related = Node.limit(10)
                      .order('node.nid DESC')
                      .where('type = "page" AND node.status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', '%' + title + '%', '%' + title + '%')
-                     .includes(:drupal_node_revision)
+                     .includes(:revision)
       tag = Tag.find_by_name(params[:id]) # add page name as a tag, too
       @tags << tag if tag
       @related += Tag.find_nodes_by_type(@tags.collect(&:name), 'page', 10)
@@ -213,7 +213,7 @@ class WikiController < ApplicationController
   end
 
   def revert
-    revision = DrupalNodeRevision.find params[:id]
+    revision = Revision.find params[:id]
     node = revision.parent
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       new_rev = revision.dup
@@ -263,7 +263,7 @@ class WikiController < ApplicationController
     @unpaginated = true
     @is_revision = true
     set_sidebar :tags, @tagnames, videos: true
-    @revision = DrupalNodeRevision.find_by_nid_and_vid(@node.id, params[:vid])
+    @revision = Revision.find_by_nid_and_vid(@node.id, params[:vid])
     if @revision.nil?
       flash[:error] = I18n.t('wiki_controller.revision_not_found')
       redirect_to action: 'revisions'
@@ -277,8 +277,8 @@ class WikiController < ApplicationController
   end
 
   def diff
-    @a = DrupalNodeRevision.find_by_vid(params[:a])
-    @b = DrupalNodeRevision.find_by_vid(params[:b])
+    @a = Revision.find_by_vid(params[:a])
+    @b = Revision.find_by_vid(params[:b])
     if @a.body == @b.body
       render text: I18n.t('wiki_controller.lead_image_or_title_change').html_safe
     else
@@ -295,7 +295,7 @@ class WikiController < ApplicationController
                      'node_revisions.timestamp DESC'
                    end
 
-    @wikis = Node.includes(:drupal_node_revision)
+    @wikis = Node.includes(:revision)
                  .group('node_revisions.nid')
                  .order(order_string)
                  .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
@@ -308,7 +308,7 @@ class WikiController < ApplicationController
     @title = I18n.t('wiki_controller.popular_wiki_pages')
     @wikis = Node.limit(40)
                  .order('views DESC')
-                 .joins(:drupal_node_revision)
+                 .joins(:revision)
                  .group('node_revisions.nid')
                  .order('node_revisions.timestamp DESC')
                  .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
@@ -349,7 +349,7 @@ class WikiController < ApplicationController
   def methods
     @nodes = Node.where(status: 1, type: ['page'])
                  .where('term_data.name = ?', 'tool')
-                 .includes(:drupal_node_revision, :tag)
+                 .includes(:revision, :tag)
                  .order('node_revisions.timestamp DESC')
     # deprecating the following in favor of javascript implementation in /app/assets/javascripts/methods.js
     if params[:topic]
@@ -361,7 +361,7 @@ class WikiController < ApplicationController
                           '%' + params[:topic] + '%',
                           '%' + params[:topic] + '%',
                           params[:topic])
-                   .includes(:drupal_node_revision, :tag)
+                   .includes(:revision, :tag)
                    .order('node_revisions.timestamp DESC')
     end
     if params[:topic]
@@ -373,7 +373,7 @@ class WikiController < ApplicationController
                           '%' + params[:topic] + '%',
                           '%' + params[:topic] + '%',
                           params[:topic])
-                   .includes(:drupal_node_revision, :tag)
+                   .includes(:revision, :tag)
                    .order('node_revisions.timestamp DESC')
     end
 

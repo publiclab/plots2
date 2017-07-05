@@ -152,7 +152,7 @@ class SearchService
       # Tags
       sterms = srchString.split(' ')
       tlist = Tag.where(name: sterms)
-                 .joins(:drupal_node_community_tag)
+                 .joins(:node_tag)
                  .joins(:node)
                  .where('node.status = 1')
                  .select('DISTINCT node.nid,node.title,node.path')

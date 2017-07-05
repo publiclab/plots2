@@ -15,7 +15,7 @@
   end 
   %>
 
-  <%= form_for @revision, :as => :drupal_node_revision, :url => url, :html => {:class => "form"} do |f| %>
+  <%= form_for @revision, :as => :revision, :url => url, :html => {:class => "form"} do |f| %>
 
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your map couldn't be saved." %></div><% end %>
 

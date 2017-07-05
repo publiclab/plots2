@@ -4,7 +4,7 @@ class Tag < ActiveRecord::Base
   self.primary_key = 'tid'
 
   has_many :tag_selection, foreign_key: 'tid'
-  has_many :drupal_node_community_tag, foreign_key: 'tid'
+  has_many :node_tag, foreign_key: 'tid'
 
   # we're not really using the filter_by_type stuff here:
   has_many :node, through: :drupal_node_tag do
@@ -17,7 +17,7 @@ class Tag < ActiveRecord::Base
 
   # the following probably never gets used; tag.node will use the above definition.
   # also, we're not really using the filter_by_type stuff here:
-  has_many :node, through: :drupal_node_community_tag do
+  has_many :node, through: :node_tag do
     def filter_by_type(type, limit = 10)
       where(status: 1, type: type)
         .limit(limit)
@@ -34,7 +34,7 @@ class Tag < ActiveRecord::Base
   end
 
   def run_count
-    self.count = DrupalNodeCommunityTag.where(tid: tid).count
+    self.count = NodeTag.where(tid: tid).count
     save
   end
 
@@ -44,15 +44,11 @@ class Tag < ActiveRecord::Base
 
   # nodes this tag has been used on; no wildcards
   def nodes
-    nodes = Node.where(nid: drupal_node_community_tag.collect(&:nid))
-  end
-
-  def is_community_tag(nid)
-    !drupal_node_community_tag.find_by_nid(nid).nil?
+    nodes = Node.where(nid: node_tag.collect(&:nid))
   end
 
   def belongs_to(current_user, nid)
-    node_tag = drupal_node_community_tag.find_by_nid(nid)
+    node_tag = node_tag.find_by_nid(nid)
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
@@ -62,7 +58,7 @@ class Tag < ActiveRecord::Base
         .where('term_data.name = ?', tagname)
         .order('node.views DESC')
         .limit(limit)
-        .include(:drupal_node_community_tag, :tag)
+        .include(:node_tag, :tag)
   end
 
   # finds recent nodes - should drop "limit" and allow use of chainable .limit()
@@ -78,7 +74,7 @@ class Tag < ActiveRecord::Base
                   .includes(:tag)
                   .where('term_data.name IN (?)', tags.collect(&:parent))
     Node.where('node.nid IN (?)', (nodes + parents).collect(&:nid))
-        .includes(:drupal_node_revision, :tag)
+        .includes(:revision, :tag)
         .where(status: 1)
         .order('node_revisions.timestamp DESC')
         .limit(limit)
@@ -95,12 +91,12 @@ class Tag < ActiveRecord::Base
       # tids = Tag.where('term_data.name IN (?) OR term_data.parent IN (?)', tagnames, tagnames) # greedily fetch children
       tids = Tag.where('term_data.name IN (?)', tagnames)
                 .collect(&:tid)
-      tag_nids = DrupalNodeCommunityTag.where('tid IN (?)', tids)
+      tag_nids = NodeTag.where('tid IN (?)', tids)
                                        .collect(&:nid)
       tag = Tag.where(name: tagname).last
       next unless tag
       parents = Node.where(status: 1, type: type)
-                    .includes(:drupal_node_revision, :tag)
+                    .includes(:revision, :tag)
                     .where('term_data.name LIKE ?', tag.parent)
       nids += tag_nids + parents.collect(&:nid)
     end
@@ -114,11 +110,11 @@ class Tag < ActiveRecord::Base
         .where('term_data.name = ? AND node.views > (?)', tagname, views)
         .order('node.nid DESC')
         .limit(limit)
-        .include(:drupal_node_community_tag, :tag)
+        .include(:node_tag, :tag)
   end
 
   def self.exists?(tagname, nid)
-    !DrupalNodeCommunityTag.where('nid = ? AND term_data.name = ?', nid, tagname)
+    !NodeTag.where('nid = ? AND term_data.name = ?', nid, tagname)
                            .joins(:tag).empty?
   end
 
@@ -145,7 +141,7 @@ class Tag < ActiveRecord::Base
     weeks = {}
     tids = Tag.where('name IN (?)', [name])
               .collect(&:tid)
-    nids = DrupalNodeCommunityTag.where('tid IN (?)', tids)
+    nids = NodeTag.where('tid IN (?)', tids)
                                  .collect(&:nid)
     (1..span).each do |week|
       weeks[span - week] = Tag.nodes_for_period(
@@ -196,7 +192,7 @@ class Tag < ActiveRecord::Base
 
   def self.find_research_notes(tagnames, limit = 10)
     Node.research_notes.where(status: 1)
-        .includes(:drupal_node_revision, :tag)
+        .includes(:revision, :tag)
         .where('term_data.name IN (?)', tagnames)
         .order('node_revisions.timestamp DESC')
         .limit(limit)
