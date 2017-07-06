@@ -10,6 +10,7 @@ class AddUserBioAndToken < ActiveRecord::Migration
       user = u.user
       user.status = u.status
       user.bio = DrupalProfileValue.find_by_uid(user.id, conditions: { fid: 7 })
+      user.token = SecureRandom.uuid
       user.save({})
     end
   end
@@ -20,4 +21,7 @@ class AddUserBioAndToken < ActiveRecord::Migration
     remove_column :rusers, :status
     add_column :rusers, :location_privacy, :boolean
   end
+
+  drop_table: searches
+  drop_table: location_tags
 end
