@@ -13,6 +13,8 @@ class AddUserBioAndToken < ActiveRecord::Migration
       user.token = SecureRandom.uuid
       user.save({})
     end
+    drop_table :location_tags
+    drop_table :searches
   end
 
   def down
