@@ -32,6 +32,10 @@ class DrupalUsers < ActiveRecord::Base
     User.find_by_username name
   end
 
+  def bio
+    user.bio
+  end
+  
   def username
     name
   end
