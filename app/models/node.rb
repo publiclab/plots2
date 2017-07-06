@@ -659,18 +659,12 @@ class Node < ActiveRecord::Base
               return [false, tag.destroy]
             end
           end
-          puts "#" * 100
-          p tag
           tag.save!
           node_tag = NodeTag.new(tid: tag.id,
                                  uid: user.uid,
                                  date: DateTime.now.to_i,
                                  nid: id)
           if node_tag.save
-          puts "*" * 100
-          p self
-          puts "*" * 100
-          p self.tags
             saved = true
             SubscriptionMailer.notify_tag_added(self, tag, user) unless tag.subscriptions.empty?
           else

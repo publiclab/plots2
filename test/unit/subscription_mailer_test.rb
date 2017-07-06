@@ -66,17 +66,17 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     node = node(:one)
     node_tags = node.tags
     new_tag = tags(:spam)
-    users_to_email = new_tag.followers_who_dont_follow_tags(node_tags)
+    user = users(:spammer)
+    users_not_following_tags = new_tag.followers_who_dont_follow_tags(node_tags)
+    users_to_email = users_not_following_tags.reject { |u| u.uid == user.uid }
     assert_difference 'ActionMailer::Base.deliveries.size', users_to_email.count do
-      SubscriptionMailer.notify_tag_added(node, new_tag)
+      SubscriptionMailer.notify_tag_added(node, new_tag, user)
     end
     assert !ActionMailer::Base.deliveries.empty?
     email = ActionMailer::Base.deliveries.last
-    # emails = ActionMailer::Base.deliveries
     assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [users_to_email.last.email], email.to
-    # assert_equal users_to_email.collect {|user| user.email}, (emails.collect {|mail| mail.to}).flatten
     assert_equal "New tag added on #{node.title}", email.subject
-    assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{node.author.name}'>#{node.author.name}</a> just added a new tag")
+    assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{node.author.name}'>#{node.author.name}</a> just added a tag")
   end
 end

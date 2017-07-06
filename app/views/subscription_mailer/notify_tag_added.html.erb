@@ -1,6 +1,6 @@
 <p>Dear <%= @user.username %>,</p>
 
-<p>Public Lab contributor <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>'><%= @node.author.name %></a> just added a new tag
+<p>Public Lab contributor <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>'><%= @node.author.name %></a> just added a tag
 on  '<b><%= @node.title %></b>' entitled: <b> <%= @node.tag %></b></p>
 
 
