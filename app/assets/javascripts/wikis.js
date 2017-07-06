@@ -29,7 +29,7 @@ function setupWiki(node_id, title, raw, logged_in) {
 
   function questionForm(qbutton, uniqueId) {
     wiki_title = wiki_title.replace(/ /g, "-");
-    qbutton.attr('href', '/questions/new?tags=response:' + node_id + '&question%3A' + wiki_title + ', ' + wiki_title + '-' + uniqueId + ', a-wiki-question&template=question&redirect=question').attr('target', '_blank');
+    qbutton.attr('href', '/questions/new?tags=response:' + node_id + ', question%3A' + wiki_title + ', ' + wiki_title + '-' + uniqueId + ', a-wiki-question&template=question&redirect=question').attr('target', '_blank');
   }
 
 }
