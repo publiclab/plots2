@@ -21,7 +21,4 @@ class AddUserBioAndToken < ActiveRecord::Migration
     remove_column :rusers, :status
     add_column :rusers, :location_privacy, :boolean
   end
-
-  drop_table: searches
-  drop_table: location_tags
 end
