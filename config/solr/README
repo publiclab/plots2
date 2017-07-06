@@ -1,0 +1,3 @@
+These files come from the sunspot_solr-2.2.6 Gem which embeds Solr 5.3.1 and includes these files.
+
+They have been included here in order to be mounted and available for the containerized Solr.
