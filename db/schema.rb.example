@@ -336,7 +336,7 @@ ActiveRecord::Schema.define(:version => 20170704165711) do
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.string   "photo_file_size"
-    t.text     "bio",                :limit => 2147483647
+    t.text     "bio",                :limit => 2147483647, :default => ""
     t.string   "token"
     t.integer  "status",                                   :default => 0
   end
