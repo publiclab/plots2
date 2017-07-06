@@ -76,6 +76,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [users_to_email.last.email], email.to
+    assert_not_equal [user.email], email.to
     assert_equal "New tag added on #{node.title}", email.subject
     assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{user.username}'>#{user.username}</a> just added a tag")
   end
