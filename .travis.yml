@@ -12,10 +12,10 @@ install:
   - docker-compose build
   - docker-compose up -d
   - docker-compose exec web sleep 40
+  - docker-compose logs
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
   - docker-compose exec web bower install --allow-root
-  - docker-compose logs
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger; fi'
 
 script:
