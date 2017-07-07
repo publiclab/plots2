@@ -114,7 +114,7 @@ hashtag_in_header:
   uid: 1
   title: grabs hashtags in headers
   body: |+
-    # Heading 1 is about #hashtags
+    # Heading 1 is about #hashtags 
     Here is the message
 
 subheader:

@@ -107,8 +107,8 @@ class NodeTest < ActiveSupport::TestCase
   test 'create a node_revision' do
     # in testing, uid and id should be matched, although this is not yet true in production db
     revision_count = node(:one).revisions.length
-    node_revision =  DrupalNodeRevision.new(uid: rusers(:bob).id,
-                                            nid: node(:one).nid)
+    node_revision =  Revision.new(uid: rusers(:bob).id,
+                                  nid: node(:one).nid)
     node_revision.title = 'My new node'
     node_revision.body = 'My new node'
     assert node_revision.save!
@@ -121,7 +121,7 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal node.revisions.first, node.latest
     assert node.revisions.first.timestamp.to_i > node.revisions.last.timestamp.to_i
     assert_not_equal node.revisions.last, node.latest
-    assert_equal node.drupal_node_revision.order('timestamp DESC').first, node.latest
+    assert_equal node.revision.order('timestamp DESC').first, node.latest
   end
 
   test 'latest revision not a moderated revision' do
@@ -137,8 +137,7 @@ class NodeTest < ActiveSupport::TestCase
     node = node(:one)
     assert !node.tags.empty?
     assert_equal node.tags, node.tag
-    assert !node.community_tags.empty?
-    assert_equal node.community_tags, node.drupal_node_community_tag
+    assert !node.node_tags.empty?
     assert_not_nil node.tagnames
     assert node.tagnames.first.is_a?(String)
     assert_equal 'test awesome spectrometer activity:spectrometer', node.tagnames.join(' ')
@@ -148,7 +147,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should have subscribers' do
     node = tag_selection(:awesome).tag.nodes.first
-    assert_equal 4, node.subscribers.length
+    assert_equal 6, node.subscribers.length
   end
 
   test 'should have place node icon according to tagging' do

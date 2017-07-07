@@ -19,7 +19,7 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
     node = Node.last
 
     node.add_tag('seeks:replications', rusers(:jeff))
-    seeks_reps = DrupalNodeCommunityTag.last
+    seeks_reps = NodeTag.last
 
     # make the "blog" node a replication
     node(:blog).add_tag("replication:#{node.id}", rusers(:jeff))

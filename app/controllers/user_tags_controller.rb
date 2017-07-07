@@ -1,7 +1,8 @@
 class UserTagsController < ApplicationController
   respond_to :html, :xml, :json, :js
+
   def create
-    tags = %w[skill gear role tool]
+
     @output = {
       errors: [],
       saved: []
@@ -11,27 +12,23 @@ class UserTagsController < ApplicationController
     user = User.find_by_username(params[:id])
 
     if current_user.role == 'admin' || current_user == user
-      if params[:type] && tags.include?(params[:type])
-        if params[:value] != ''
-          value = params[:type] + ':' + params[:value]
-          if UserTag.exists?(user.id, value)
-            @output[:errors] << I18n.t('user_tags_controller.tag_already_exists')
-            exist = true
-          end
+      if params[:value] != ''
+        value = params[:value].downcase
+        if UserTag.exists?(user.id, value)
+          @output[:errors] << I18n.t('user_tags_controller.tag_already_exists')
+          exist = true
+        end
 
-          unless exist
-            user_tag = user.user_tags.build(value: value)
-            if user_tag.save
-              @output[:saved] = [user_tag.id, value.split(':')[0], value.split(':')[1]]
-            else
-              @output[:errors] << I18n.t('user_tags_controller.cannot_save_value')
-            end
+        unless exist
+          user_tag = user.user_tags.build(value: value)
+          if user_tag.save
+            @output[:saved] = [user_tag.id, value]
+          else
+            @output[:errors] << I18n.t('user_tags_controller.cannot_save_value')
           end
-        else
-          @output[:errors] << I18n.t('user_tags_controller.value_cannot_be_empty')
         end
       else
-        @output[:errors] << I18n.t('user_tags_controller.invalid_value', type: params[:type]).html_safe
+        @output[:errors] << I18n.t('user_tags_controller.value_cannot_be_empty')
       end
     else
       @output[:errors] << I18n.t('user_tags_controller.admin_user_manage_tags')
@@ -45,7 +42,7 @@ class UserTagsController < ApplicationController
           if !@output[:errors].empty?
             flash[:error] = I18n.t('user_tags_controller.errors_occured', count: @output[:errors].length).html_safe
           else
-            flash[:notice] = I18n.t('user_tags_controller.tag_created', tag_name: @output[:saved][2]).html_safe
+            flash[:notice] = I18n.t('user_tags_controller.tag_created', tag_name: @output[:saved][1]).html_safe
           end
           redirect_to info_path, id: params[:id]
         end
@@ -100,9 +97,8 @@ class UserTagsController < ApplicationController
   def suggested
     if !params[:value].empty?
       suggested = []
-
-      UserTag.where('value LIKE ?', params[:key] + ':' + '%' + params[:value] + '%').each do |tag|
-        suggested << tag.value.split(':')[1]
+      UserTag.where('value LIKE ?', params[:value] + '%').each do |tag|
+        suggested << tag.value
       end
       render json: suggested.uniq
     else

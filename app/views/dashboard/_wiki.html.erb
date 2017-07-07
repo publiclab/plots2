@@ -35,7 +35,7 @@
 
           <%= distance_of_time_in_words(wiki.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
 
-          <% if wiki.is_a?(DrupalNodeRevision) && wiki.previous %>
+          <% if wiki.is_a?(Revision) && wiki.previous %>
            - <a class="btn-diff btn-diff-<%= index %>"><%= t('dashboard._wiki.changes') %></a>
           <% end %>
 
@@ -52,7 +52,7 @@
         </a> 
       </h4>
 
-      <% if wiki.is_a?(DrupalNodeRevision) && wiki.previous %>
+      <% if wiki.is_a?(Revision) && wiki.previous %>
         <div data-diff-a="<%= wiki.previous.vid %>" 
              data-diff-b="<%= wiki.vid %>" 
              class="well wiki-diff wiki-diff-<%= index %>" 

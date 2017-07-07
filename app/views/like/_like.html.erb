@@ -52,7 +52,7 @@
         <a class='btn btn-default btn-sm' href='/moderate/revision/spam/<%= @revision.vid %>'><i class='fa fa-ban-circle'></i> Spam revision</a>
       <% end %>
     <% end %>
-  </div> 
+  </div>
 <% end %>
 
 <br />
@@ -70,16 +70,29 @@
       jQuery.ajaxSetup({
         cache: false
       });
-     
+
       // grab the like count for this node; "/likes/node/11278/count"
       jQuery.getJSON("<%= like_count_path(node) %>", function (json) {
-        // push like count into the Like button placeholder 
+        // push like count into the Like button placeholder
         $('#like-count-<%= node.id %>').html(json);
       });
-     
+
       <% if current_user %>
-        $('#like-button-<%= node.id %>').on('click',<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>) 
+        $('#like-button-<%= node.id %>').on('click',<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>)
       <% end %>
-    })
+    });
+    $('body').on('click', function (e) { // If there's a click event in the body
+      $('[rel=popover]').each(function () { // For each popover
+        /*
+        * The popover will only `hide` if all the conditions below are satisfied :
+        * 1. The target triggering the `click` event is not `this`
+        * 2. `this` doesn't have a child triggering the `click` event
+        * 3. Any element with `.popover` class doesn't have a child triggering the `click` event
+        */
+        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+          $(this).popover('hide');
+        }
+      });
+    });
   </script>
 </div>

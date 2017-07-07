@@ -132,7 +132,7 @@ class TagControllerTest < ActionController::TestCase
     end
 
     # assert_equal assigns['tags'].length, 1
-    assert_select '#wiki-content', 0
+    assert_select '#wiki-content', 1
   end
 
   test 'tag show JSON' do
