@@ -8,7 +8,7 @@ on  '<b><%= @node.title %></b>' entitled: <b> <%= @node.tag.name %></b></p>
 
 <div style="color:#aaa;">
 
-<p>You received this email because you are subscribed to the following tags: <%= @tags.to_a.collect(&:name).join(",") %>.</p>
+<p>You received this email because you are subscribed to the following tag: <%= @node.tag.name %>.</p>
 
 <p>To change your preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.</p>
 

@@ -62,7 +62,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert email.body.include?("Public Lab contributor #{user.username} (https://#{request_host}/profile/#{user.username}) just liked your question")
   end
 
-  test 'notify users who do not follow particular tag' do
+  test 'notify users who follow a newly added tag but were not previously notified based on the node existing tags' do
     node = node(:one)
     node_tags = node.tags
     new_tag = tags(:spam)
