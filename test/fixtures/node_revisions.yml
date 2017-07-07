@@ -113,8 +113,8 @@ hashtag_in_header:
   nid: 1
   uid: 1
   title: grabs hashtags in headers
-  body: |
-    # Heading 1 is about #hashtags
+  body: |+
+    # Heading 1 is about #hashtags 
     Here is the message
 
 subheader:
