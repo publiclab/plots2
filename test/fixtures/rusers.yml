@@ -6,6 +6,8 @@ bob:
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   last_request_at: <%= Time.now %>
+  bio: ''
+  token: abcdefg12345
 
 jeff:
   username: jeff
@@ -16,6 +18,7 @@ jeff:
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   last_request_at: <%= Time.now %>
+  bio: ''
 
 spammer:
   username: spammer
@@ -25,6 +28,7 @@ spammer:
   password_salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
+  bio: ''
 
 unbanned_spammer:
   username: unbanned_spammer
@@ -34,6 +38,7 @@ unbanned_spammer:
   password_salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
+  bio: ''
 
 admin:
   username: palpatine
@@ -44,6 +49,7 @@ admin:
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   role: admin
+  bio: ''
 
 moderator:
   username: obiwan
@@ -54,6 +60,7 @@ moderator:
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   role: moderator
+  bio: ''
 
 newcomer:
   username: newcomer
@@ -64,6 +71,7 @@ newcomer:
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   role: basic
+  bio: ''
 
 lurker:
   username: lurker
@@ -73,6 +81,7 @@ lurker:
   password_salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
+  bio: ''
 
 unmoderated_user:
   username: rob
@@ -82,6 +91,7 @@ unmoderated_user:
   password_salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
+  bio: ''
 
 test_user:
   username: testuser
@@ -91,3 +101,4 @@ test_user:
   password_salt: <%= salt = Authlogic::Random.hex_token %>
   crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
+  bio: ''

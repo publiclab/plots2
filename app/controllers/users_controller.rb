@@ -19,7 +19,7 @@ class UsersController < ApplicationController
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
       else
-        @user.drupal_user.set_bio(params[:drupal_user][:bio])
+        @user.update_attribute(:bio, params[:drupal_user][:bio])
         @user.add_to_lists(['publiclaboratory'])
         flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
     if current_user
     @user = current_user
       @user.attributes = params[:user]
-      @user.drupal_user.set_bio(params[:drupal_user][:bio])
+      @user.update_attribute(:bio, params[:drupal_user][:bio])
       @user.save({}) do |result|
         if result
           if session[:openid_return_to] # for openid login, redirects back to openid auth process
