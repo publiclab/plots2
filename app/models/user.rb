@@ -262,6 +262,9 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
+  def followers_who_dont_follow_tags(tags)
+  end
+
   private
 
   def map_openid_registration(registration)

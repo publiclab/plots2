@@ -1,0 +1,13 @@
+<p>Dear <%= @user.username %>,</p>
+
+<p>Public Lab contributor <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>'>
+    <%= @node.author.name %></a> just added a new tag entitled: '<%= @node.tag.name %>' </p>
+<div style="color:#aaa;">
+
+    <p>To change your preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.</p>
+
+    <p>Report spam and abuse to: <a href="mailto:moderators@<%= ActionMailer::Base.default_url_options[:host] %>">moderators@<%= ActionMailer::Base.default_url_options[:host] %></a></p>
+
+    <%= @footer %>
+
+</div>

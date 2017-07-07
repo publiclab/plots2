@@ -1,0 +1,12 @@
+Dear <%= @user.username %>,
+
+    Public Lab contributor <%= @node.author.name %> (https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>)
+    just added a new tag entitled entitled '<%= @node.tag.name %>':
+
+-------------------------
+
+=========================
+
+<%= @footer %>
+
+To change your email preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.
