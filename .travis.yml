@@ -12,7 +12,6 @@ install:
   - docker-compose build
   - docker-compose up -d
   - docker-compose exec web sleep 5
-  - docker cp config/solr/* "$(docker-compose ps -q solr)":/opt/solr/server/solr/mycores/default/conf/
   - docker-compose logs
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
