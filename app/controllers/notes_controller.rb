@@ -78,7 +78,7 @@ class NotesController < ApplicationController
     if node.main_image
       redirect_to node.main_image.path(params[:size])
     else
-      redirect_to 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+      redirect_to 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
     end
   end
 
