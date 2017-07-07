@@ -19,11 +19,12 @@ services:
 #  - "127.0.0.1:8982:8983"
     volumes:
       - solr:/opt/solr/server/solr/mycores
-#      - ./config/solr:/opt/solr/server/solr/mycores/default/conf
+      - ./config/solr:/opt/solr/server/solr/configsets/sunspot
     entrypoint:
       - docker-entrypoint.sh
       - solr-precreate
       - default
+      - /opt/solr/server/solr/configsets/sunspot
   web:
     build: .
     command: /bin/bash -c "sleep 5 && bundle exec rails s -p 4000 -b '0.0.0.0'"
