@@ -29,7 +29,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def user
-    User.where("username collate latin1_swedish_ci = '" + name + "'").first
+    User.where(username: name).first
   end
 
   def bio
