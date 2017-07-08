@@ -36,6 +36,22 @@ class CommentController < ApplicationController
     end
   end
 
+  def create_by_token
+    # Parse the user's token from the headers
+
+    # Use logic similar to the above create controller but with the user that
+    # the token belongs to instead of the `current_user`
+
+    # In order to avoid looking up the entire database for a user having a
+    # matching token, we could instead ask the user to pass username/id in the
+    # params along with the node id and comment body.
+    # This would also mean that if someone tries to bruteforce a token, they
+    # would to do so for each user individually.
+
+    # If the username/id and token do not match, send an error in the same
+    # format as the request (JSON/XML)
+  end
+
   # create answer comments
   def answer_create
     @answer_id = params[:aid]
