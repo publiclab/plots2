@@ -29,7 +29,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def user
-    User.find_by_username name
+    User.where(username: name).first
   end
 
   def bio
