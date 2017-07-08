@@ -13,11 +13,17 @@ class NotesController < ApplicationController
 
   def places
     @title = 'Places'
-    @notes = Node.where(status: 1, type: %w[page place])
+    @notes = Node.joins('LEFT OUTER JOIN node_revisions ON node_revisions.nid = node.nid 
+                         LEFT OUTER JOIN community_tags ON community_tags.nid = node.nid 
+                         LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
+                 .select('*, max(node_revisions.timestamp)')
+                 .where(status: 1, type:%w[page place])
                  .includes(:revision, :tag)
                  .where('term_data.name = ?', 'chapter')
+                 .group('node.nid')
+                 .order('max(node_revisions.timestamp) DESC, node.nid')
                  .page(params[:page])
-                 .order('node_revisions.timestamp DESC')
+
     render template: 'notes/tools_places'
   end
 
@@ -78,7 +84,7 @@ class NotesController < ApplicationController
     if node.main_image
       redirect_to node.main_image.path(params[:size])
     else
-      redirect_to 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+      redirect_to 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
     end
   end
 
