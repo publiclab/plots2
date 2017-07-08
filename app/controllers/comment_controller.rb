@@ -47,12 +47,12 @@ class CommentController < ApplicationController
       # TODO: Do the usual commenting stuff
     else
       msg = {
-        :status => :unauthorized
-        :message => "Unauthorized"
+        status: :unauthorized
+        message: "Unauthorized"
       }
       respond_to do |format|
-        format.xml { render :xml => msg.to_xml }
-        format.json { render :json => msg.to_json }
+        format.xml { render xml: msg.to_xml }
+        format.json { render json: msg.to_json }
       end
     end
   end
