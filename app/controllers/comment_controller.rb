@@ -37,19 +37,24 @@ class CommentController < ApplicationController
   end
 
   def create_by_token
-    # Parse the user's token from the headers
+    @username = params[:username]
+    @node_id = params[:id]
+    @body = pararms[:body]
+    @token = request.headers["token"]
 
-    # Use logic similar to the above create controller but with the user that
-    # the token belongs to instead of the `current_user`
-
-    # In order to avoid looking up the entire database for a user having a
-    # matching token, we could instead ask the user to pass username/id in the
-    # params along with the node id and comment body.
-    # This would also mean that if someone tries to bruteforce a token, they
-    # would to do so for each user individually.
-
-    # If the username/id and token do not match, send an error in the same
-    # format as the request (JSON/XML)
+    @user = Users.find_by_username @username
+    if @user && @user.token == @token
+      # TODO: Do the usual commenting stuff
+    else
+      msg = {
+        :status => :unauthorized
+        :message => "Unauthorized"
+      }
+      respond_to do |format|
+        format.xml { render :xml => msg.to_xml }
+        format.json { render :json => msg.to_json }
+      end
+    end
   end
 
   # create answer comments
