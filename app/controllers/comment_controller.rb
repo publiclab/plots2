@@ -47,7 +47,7 @@ class CommentController < ApplicationController
       # TODO: Do the usual commenting stuff
     else
       msg = {
-        status: :unauthorized
+        status: :unauthorized,
         message: "Unauthorized"
       }
       respond_to do |format|
