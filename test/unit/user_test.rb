@@ -14,6 +14,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil user.drupal_user
     assert_not_nil user.uid
     assert_not_nil user.email
+    assert_not_nil user.bio
   end
 
   test 'basic user attributes' do
