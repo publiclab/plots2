@@ -52,14 +52,32 @@ class CommentController < ApplicationController
   end
 
   def create_by_token
-    @username = params[:username]
-    @node_id = params[:id]
+    @node = Node.find params[:id]
+    @user = Users.find_by_username params[:username]
     @body = pararms[:body]
     @token = request.headers["token"]
 
-    @user = Users.find_by_username @username
     if @user && @user.token == @token
-      # TODO: Do the usual commenting stuff
+      begin
+        @comment = create_comment(@node, @user, @body)
+        msg = {
+          status: :created,
+          message: "Created"
+        }
+        respond_to do |format|
+          format.xml { render xml: msg.to_xml }
+          format.json { render json: msg.to_json }
+        end
+      rescue CommentError
+        msg = {
+          status: :bad_request,
+          message: "Bad Request"
+        }
+        respond_to do |format|
+          format.xml { render xml: msg.to_xml }
+          format.json { render json: msg.to_json }
+        end
+      end
     else
       msg = {
         status: :unauthorized,
