@@ -3,8 +3,14 @@ class AddUserBioAndToken < ActiveRecord::Migration
     add_column :rusers, :bio, :text, limit: 2147483647
     add_column :rusers, :token, :string
     add_column :rusers, :status, :integer, default: 0
-    remove_column :rusers, :location_privacy
 
+    # will only work in Ruby 1.9+:
+    class String
+      def multibyte?
+        chars.count < bytes.count
+      end
+    end
+    
     # copy bios into new fields for non-spam users
     DrupalUsers.where('status != 0').each do |u|
       unless u.name.multibyte? # exclude non-latin names
@@ -17,6 +23,7 @@ class AddUserBioAndToken < ActiveRecord::Migration
         end
       end
     end
+    remove_column :rusers, :location_privacy
     drop_table :location_tags
     drop_table :searches
   end
