@@ -1,17 +1,6 @@
-class CommentError < ArgumentError
-end
-
-def create_comment(node, user, body)
-  @comment = node.add_comment(uid: user.uid, body: body)
-  if user && @comment.save
-    @comment.notify user
-    return @comment
-  else
-    raise CommentError.new()
-  end
-end
-
 class CommentController < ApplicationController
+  include CommentHelper
+
   respond_to :html, :xml, :json
   before_filter :require_user, only: %i[create update delete]
 
