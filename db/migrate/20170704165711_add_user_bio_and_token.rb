@@ -7,7 +7,7 @@ class AddUserBioAndToken < ActiveRecord::Migration
 
     # copy bios into new fields for non-spam users
     DrupalUsers.where('status != 0').each do |u|
-      if u.name == u.name.encode('UTF-8') # exclude non-UTF-8 names
+      unless u.name.multibyte? # exclude non-latin names
         user = u.user
         if user and defined? :u.status then
           user.status = u.status
