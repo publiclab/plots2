@@ -9,6 +9,8 @@ Plots2::Application.routes.draw do
   mount GrapeSwaggerRails::Engine => '/api/d1ocs'
   #end
 
+  # Manually written API functions
+  get '/api/comment', to: 'comment#create_by_token'
 
   resources :rusers
   resources :user_sessions

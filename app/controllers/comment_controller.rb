@@ -42,9 +42,9 @@ class CommentController < ApplicationController
 
   def create_by_token
     @node = Node.find params[:id]
-    @user = Users.find_by_username params[:username]
-    @body = pararms[:body]
-    @token = request.headers["token"]
+    @user = User.find_by_username params[:username]
+    @body = params[:body]
+    @token = request.headers['Token']
 
     if @user && @user.token == @token
       begin

@@ -53,7 +53,7 @@ class CommentControllerTest < ActionController::TestCase
     end
     assert_response :success
     assert_not_nil :comment
-    #assert_template partial: 'wiki/_comment' 
+    #assert_template partial: 'wiki/_comment'
     #should uncomment above once comment displaying partial is implemented for wikis.
   end
 
@@ -250,5 +250,19 @@ class CommentControllerTest < ActionController::TestCase
     assert ActionMailer::Base.deliveries.collect(&:to).include?([rusers(:bob).email])
     assert ActionMailer::Base.deliveries.collect(&:to).include?([rusers(:moderator).email])
     # tag followers can be found in tag_selection.yml
+  end
+
+  test 'should post comment through token successfully' do
+    get :create_by_token,
+      {
+        id: 1,
+        body: 'Test Comment',
+        username: "Bob"
+      },{
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+        'Token' => 'abcdefg12345'
+      }
+    assert_response :success
   end
 end
