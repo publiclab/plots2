@@ -1,3 +1,12 @@
+def create_comment(node_id, user, body)
+  @node = Node.find node_id
+  @comment = @node.add_comment(uid: user.uid, body: body)
+  if user && @comment.save
+    @comment.notify user
+    return @comment
+  end
+end
+
 class CommentController < ApplicationController
   respond_to :html, :xml, :json
   before_filter :require_user, only: %i[create update delete]
