@@ -1,9 +1,13 @@
-def create_comment(node_id, user, body)
-  @node = Node.find node_id
-  @comment = @node.add_comment(uid: user.uid, body: body)
+class CommentError < ArgumentError
+end
+
+def create_comment(node, user, body)
+  @comment = node.add_comment(uid: user.uid, body: body)
   if user && @comment.save
     @comment.notify user
     return @comment
+  else
+    raise CommentError.new()
   end
 end
 
@@ -21,9 +25,11 @@ class CommentController < ApplicationController
   # create node comments
   def create
     @node = Node.find params[:id]
-    @comment = @node.add_comment(uid: current_user.uid, body: params[:body])
-    if current_user && @comment.save
-      @comment.notify(current_user)
+    @body = params[:body]
+    @user = current_user
+
+    begin
+      @comment = create_comment(@node, @user, @body)
       respond_with do |format|
         if params[:type] && params[:type] == 'question'
           @answer_id = 0
@@ -39,7 +45,7 @@ class CommentController < ApplicationController
           end
         end
       end
-    else
+    rescue CommentError
       flash[:error] = 'The comment could not be saved.'
       render text: 'failure'
     end
