@@ -252,7 +252,7 @@ class CommentControllerTest < ActionController::TestCase
     # tag followers can be found in tag_selection.yml
   end
 
-  test 'should post comment through valid token successfully' do
+  test 'should not post comment through invalid token successfully' do
     @params = {
       id: 1,
       body: 'Test Comment',
@@ -268,7 +268,7 @@ class CommentControllerTest < ActionController::TestCase
     assert_response :unauthorized
   end
 
-  test 'should not post comment through invalid token successfully' do
+  test 'should post comment through valid token successfully' do
     @params = {
       id: 1,
       body: 'Test Comment',
