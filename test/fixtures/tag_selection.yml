@@ -57,3 +57,14 @@ selection_eight:
   user_id: 7
   tid: 5
   following: true
+
+selection_nine:
+  user_id: 1
+  tid: 7
+  following: false
+
+selection_ten:
+  user_id: 5
+  tid: 8
+  following: false
+
