@@ -48,6 +48,9 @@ class CommentController < ApplicationController
 
     if @user && @user.token == @token
       begin
+        # The create_comment is a function that has been defined inside the
+        # CommentHelper module inside app/helpers/comment_helper.rb and can be
+        # used in here because the module was `include`d right at the beginning
         @comment = create_comment(@node, @user, @body)
         respond_to do |format|
           format.all { render :nothing => true, :status => :created }
