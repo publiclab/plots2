@@ -253,16 +253,18 @@ class CommentControllerTest < ActionController::TestCase
   end
 
   test 'should post comment through token successfully' do
-    get :create_by_token,
-      {
-        id: 1,
-        body: 'Test Comment',
-        username: "Bob"
-      },{
-        'Accept' => 'application/json',
-        'Content-Type' => 'application/json',
-        'Token' => 'abcdefg12345'
-      }
+    @params = {
+      id: 1,
+      body: "Test Comment",
+      username: "Bob",
+      format: 'json'
+    }
+
+    @headers = {
+      "token" => "abcdefg12345"
+    }
+
+    post :create_by_token, @params, @headers
     assert_response :success
   end
 end

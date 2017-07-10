@@ -44,14 +44,14 @@ class CommentController < ApplicationController
     @node = Node.find params[:id]
     @user = User.find_by_username params[:username]
     @body = params[:body]
-    @token = request.headers['Token']
+    @token = request.env['rack.session']['token']
 
     if @user && @user.token == @token
       begin
         @comment = create_comment(@node, @user, @body)
         msg = {
           status: :created,
-          message: "Created"
+          message: 'Created'
         }
         respond_to do |format|
           format.xml { render xml: msg.to_xml }
@@ -60,7 +60,7 @@ class CommentController < ApplicationController
       rescue CommentError
         msg = {
           status: :bad_request,
-          message: "Bad Request"
+          message: 'Bad Request'
         }
         respond_to do |format|
           format.xml { render xml: msg.to_xml }
@@ -70,7 +70,7 @@ class CommentController < ApplicationController
     else
       msg = {
         status: :unauthorized,
-        message: "Unauthorized"
+        message: 'Unauthorized'
       }
       respond_to do |format|
         format.xml { render xml: msg.to_xml }
