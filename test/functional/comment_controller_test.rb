@@ -252,19 +252,36 @@ class CommentControllerTest < ActionController::TestCase
     # tag followers can be found in tag_selection.yml
   end
 
-  test 'should post comment through token successfully' do
+  test 'should post comment through valid token successfully' do
     @params = {
       id: 1,
-      body: "Test Comment",
-      username: "Bob",
+      body: 'Test Comment',
+      username: 'Bob',
       format: 'json'
     }
 
     @headers = {
-      "token" => "abcdefg12345"
+      'token' => 'invalid-token'
+    }
+
+    post :create_by_token, @params, @headers
+    assert_response :unauthorized
+  end
+
+  test 'should not post comment through invalid token successfully' do
+    @params = {
+      id: 1,
+      body: 'Test Comment',
+      username: 'Bob',
+      format: 'json'
+    }
+
+    @headers = {
+      'token' => 'abcdefg12345'
     }
 
     post :create_by_token, @params, @headers
     assert_response :success
   end
+
 end

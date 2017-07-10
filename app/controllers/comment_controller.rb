@@ -49,32 +49,17 @@ class CommentController < ApplicationController
     if @user && @user.token == @token
       begin
         @comment = create_comment(@node, @user, @body)
-        msg = {
-          status: :created,
-          message: 'Created'
-        }
         respond_to do |format|
-          format.xml { render xml: msg.to_xml }
-          format.json { render json: msg.to_json }
+          format.all { render :nothing => true, :status => :created }
         end
       rescue CommentError
-        msg = {
-          status: :bad_request,
-          message: 'Bad Request'
-        }
         respond_to do |format|
-          format.xml { render xml: msg.to_xml }
-          format.json { render json: msg.to_json }
+          format.all { render :nothing => true, :status => :bad_request }
         end
       end
     else
-      msg = {
-        status: :unauthorized,
-        message: 'Unauthorized'
-      }
       respond_to do |format|
-        format.xml { render xml: msg.to_xml }
-        format.json { render json: msg.to_json }
+        format.all { render :nothing => true, :status => :unauthorized }
       end
     end
   end
