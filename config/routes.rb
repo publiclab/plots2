@@ -3,12 +3,14 @@ Plots2::Application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
+  # Manually written API functions
+  post '/comment/create/token/id.:format', to: 'comment#create_by_token'
+
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
   mount Srch::API => '/api'
   mount GrapeSwaggerRails::Engine => '/api/d1ocs'
   #end
-
 
   resources :rusers
   resources :user_sessions
