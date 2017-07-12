@@ -6,6 +6,7 @@ Plots2::Application.routes.draw do
   # Manually written API functions
   post '/comment/create/token/id.:format', to: 'comment#create_by_token'
 
+  get 'searches/test' => 'searches#test'
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
   mount Srch::API => '/api'
@@ -137,8 +138,6 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
   #Search Pages
-
-  get 'searches/test' => 'searches#test'
   match 'search/dynamic' => 'searches#dynamic'
   match 'search/dynamic/:id' => 'searches#dynamic'
   match 'search/:id' => 'searches#results'
