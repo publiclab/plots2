@@ -146,7 +146,7 @@
     </small>
   </h3>
 
-  <p><small><%= raw auto_link(RDiscount.new(@profile_user.bio).to_html, :sanitize => false) %></small></p>
+  <p><small><%= raw auto_link(RDiscount.new(@profile_user.bio || '').to_html, :sanitize => false) %></small></p>
 
   <br />
 
