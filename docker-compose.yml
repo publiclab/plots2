@@ -24,10 +24,10 @@ services:
       - docker-entrypoint.sh
       - solr-precreate
       - default
-      - /opt/solr/server/solr/configsets/sunspot
+      - /opt/solr/server/solr/configsets/sunspot  
   web:
     build: .
-    command: /bin/bash -c "sleep 5 && bundle exec rails s -p 4000 -b '0.0.0.0'"
+    command: /bin/bash -c "sleep 5 && rails s -p 4000 -b '0.0.0.0'"
     environment:
       - RAILS_ENV=${RAILS_ENV}
     volumes:

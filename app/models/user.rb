@@ -8,7 +8,7 @@ end
 
 class User < ActiveRecord::Base
   self.table_name = 'rusers'
-  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :location_privacy
+  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio
 
   include SolrToggle
   searchable if: :shouldIndexSolr do
@@ -42,6 +42,7 @@ class User < ActiveRecord::Base
   after_destroy :destroy_drupal_user
 
   def create_drupal_user
+    self.bio = "" # needed to set a default bio value of ""
     if drupal_user.nil?
       drupal_user = DrupalUsers.new(name: username,
                                     pass: rand(100_000_000_000_000_000_000),
@@ -94,10 +95,6 @@ class User < ActiveRecord::Base
     end
     self.reset_key = key
     key
-  end
-
-  def bio
-    drupal_user.bio
   end
 
   def uid

@@ -53,7 +53,7 @@ class CommentControllerTest < ActionController::TestCase
     end
     assert_response :success
     assert_not_nil :comment
-    #assert_template partial: 'wiki/_comment' 
+    #assert_template partial: 'wiki/_comment'
     #should uncomment above once comment displaying partial is implemented for wikis.
   end
 
@@ -251,4 +251,53 @@ class CommentControllerTest < ActionController::TestCase
     assert ActionMailer::Base.deliveries.collect(&:to).include?([rusers(:moderator).email])
     # tag followers can be found in tag_selection.yml
   end
+
+  test 'should not post comment through invalid token successfully' do
+    @params = {
+      id: 1,
+      body: 'Test Comment',
+      username: 'Bob',
+      format: 'json'
+    }
+
+    @headers = {
+      'token' => 'invalid-token'
+    }
+
+    post :create_by_token, @params, @headers
+    assert_response :unauthorized
+  end
+
+  test 'should not post an invalid comment successfully' do
+    @params = {
+      id: 1,
+      body: '',
+      username: 'Bob',
+      format: 'json'
+    }
+
+    @headers = {
+      'token' => 'abcdefg12345'
+    }
+
+    post :create_by_token, @params, @headers
+    assert_response :bad_request
+  end
+
+  test 'should post comment through valid token successfully' do
+    @params = {
+      id: 1,
+      body: 'Test Comment',
+      username: 'Bob',
+      format: 'json'
+    }
+
+    @headers = {
+      'token' => 'abcdefg12345'
+    }
+
+    post :create_by_token, @params, @headers
+    assert_response :success
+  end
+
 end

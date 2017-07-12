@@ -177,7 +177,7 @@ class NotesControllerTest < ActionController::TestCase
     get :image, id: node.id
 
     assert_response :redirect
-    assert_redirected_to 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+    assert_redirected_to 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
   end
 
   test 'should get tools' do

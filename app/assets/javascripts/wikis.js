@@ -29,7 +29,7 @@ function setupWiki(node_id, title, raw, logged_in) {
 
   function questionForm(qbutton, uniqueId) {
     wiki_title = wiki_title.replace(/ /g, "-");
-    qbutton.attr('href', '/questions/new?tags=response:' + node_id + '&question%3A' + wiki_title + ', ' + wiki_title + '-' + uniqueId + ', a-wiki-question&template=question&redirect=question').attr('target', '_blank');
+    qbutton.attr('href', '/questions/new?tags=response:' + node_id + ', question%3A' + wiki_title + ', ' + wiki_title + '-' + uniqueId + ', a-wiki-question&template=question&redirect=question').attr('target', '_blank');
   }
 
 }
@@ -58,7 +58,7 @@ function preProcessMarkdown(markdown) {
   // to preserve blockquote markdown, as in "> a blockquote"
   markdown = markdown.replace('&gt;', '>');
   // insert space between "##Header" => "## Header" to deal with improper markdown header usage
-  markdown = markdown.replace(/$(#+)(\w)/, function(m, p1, p2) {
+  markdown = markdown.replace(/($#+|##+)(\w)/, function(m, p1, p2) {
     return p1 + ' ' + p2;
   })
   return markdown;
