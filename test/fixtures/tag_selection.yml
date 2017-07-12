@@ -59,11 +59,11 @@ selection_eight:
   following: true
 
 selection_nine:
-  user_id: 1
-  tid: 7
+  user_id: 4
+  tid: 3
   following: false
 
 selection_ten:
-  user_id: 5
-  tid: 8
+  user_id: 2
+  tid: 1
   following: false
