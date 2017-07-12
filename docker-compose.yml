@@ -13,24 +13,21 @@ services:
       - ../dump:/docker-entrypoint-initdb.d
       # for importing a dump
       # if you want to re-import simply put away ../mysql/*
-#
-#  # You can enable a Solr container by uncommenting the following section
-#  # and enable Solr in config/sunspot.yml. Also, uncomment the 'solr' link 
-#  # at the end of this file.
-#  solr:
-#    image: solr:5.3
+  solr:
+    image: solr:5.3
 #    ports:
-#      - "127.0.0.1:8982:8983"
-#    volumes:
-#      - solr:/opt/solr/server/solr/mycores
-#    entrypoint:
-#      - docker-entrypoint.sh
-#      - solr-precreate
-#      - default
+#  - "127.0.0.1:8982:8983"
+    volumes:
+      - solr:/opt/solr/server/solr/mycores
+      - ./config/solr:/opt/solr/server/solr/configsets/sunspot/conf
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - default
+      - /opt/solr/server/solr/configsets/sunspot  
   web:
     build: .
-    #image: plots_branch1:fix_solr
-    command: /bin/bash -c "sleep 5 && bundle exec rails s -p 4000 -b '0.0.0.0'"
+    command: /bin/bash -c "sleep 5 && rails s -p 4000 -b '0.0.0.0'"
     environment:
       - RAILS_ENV=${RAILS_ENV}
     volumes:
@@ -39,7 +36,7 @@ services:
       - "127.0.0.1:4000:4000"
     links:
       - db
-#      - solr
+      - solr
 #    restart: unless-stopped
-#volumes:
-#  solr:
+volumes:
+  solr:
