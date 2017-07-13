@@ -2,7 +2,7 @@
 <html lang="<%= I18n.locale || 'en' %>">
   <head>
     <meta charset="utf-8" />
-    <title>Public Lab<%= ": "+(@title || params[:action].capitalize) %></title>
+    <title>&#127880; Public Lab<%= ": "+(@title || params[:action].capitalize) %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <% if @node && @node.body %>
       <meta name="description" content="<%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>" />
