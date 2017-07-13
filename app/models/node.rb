@@ -28,6 +28,7 @@ class Node < ActiveRecord::Base
     end
     string :updated_at
     string :status
+    string :type
     string :updated_month
     text :comments do
       comments.map(&:comment)
