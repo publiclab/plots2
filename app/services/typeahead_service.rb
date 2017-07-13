@@ -53,9 +53,12 @@ class TypeaheadService
   ## search for node title only
   ## FIXme with solr
   def find_notes(input, limit = 5)
-    Node.limit(limit)
-        .order('nid DESC')
-        .where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+    search = Node.search do
+      fulltext input
+    end
+    search.results
+          .order('nid DESC')
+          .where(type: "note", status: 1)
   end
 
   def find_wikis(input, limit = 5)
