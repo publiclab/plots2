@@ -100,14 +100,15 @@ class TagTest < ActiveSupport::TestCase
   end
 
   test " returns users following this tags but not given tags" do
-    # users following tag are bob, unbanned_spammer, admin
-    # users following tag1 are bob, ubanned_spammer, moderator
-    # users following tag2 are spammer, newcomer
-    tag = tags(:test)
-    tag1 = tags(:awesome)
-    tag2 = tags(:spam)
-    given_tags = [tag1, tag2]
-    assert_equal [rusers(:admin)], tag.followers_who_dont_follow_tags(given_tags)
+    test = tags(:test)       # users following tag are bob, unbanned_spammer, admin, and following: false for jeff
+    awesome = tags(:awesome) # users following tag1 are bob, unbanned_spammer, moderator
+    spam = tags(:spam)       # users following tag2 are spammer, newcomer, and following: false for unbanned_spammer
+    given_tags = [awesome, spam]
+    assert_equal [rusers(:admin)], test.followers_who_dont_follow_tags(given_tags)
+    # now make unbanned_spammer following: false for both 'awesome' and 'spam' tags:
+    tag_selection(:selection_four).update_attribute('following', false)
+    given_tags = [awesome, spam]
+    assert_equal [rusers(:admin), rusers(:unbanned_spammer)], test.followers_who_dont_follow_tags(given_tags)
   end
 
   test 'returns all users in this tag if none is following the given tags' do
