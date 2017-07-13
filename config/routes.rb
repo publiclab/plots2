@@ -30,7 +30,7 @@ Plots2::Application.routes.draw do
 
   # switch off subdomain matching when in development
   if Rails.env.test?
-  # or to skip www:
+    # or to skip www:
     match "", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
     match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
   end
@@ -59,7 +59,7 @@ Plots2::Application.routes.draw do
   # Try to get rails to accept params with periods in the keyname?
   # The following isn't right and it may be about param parsing rather than routing?
   # match 'openid' => 'openid#index', :constraints => { 'openid.mode' => /.*/ }
-# try this; http://jystewart.net/2007/10/24/a-ruby-on-rails-openid-server/
+  # try this; http://jystewart.net/2007/10/24/a-ruby-on-rails-openid-server/
 
   match 'openid/xrds' => 'openid#idp_xrds'
   match 'openid/decision' => 'openid#decision'
@@ -87,9 +87,9 @@ Plots2::Application.routes.draw do
   match 'wiki/create' => 'wiki#create'
   match 'wiki/diff' => 'wiki#diff'
   match 'wiki/:id' => 'wiki#show'
-    # these need precedence for tag listings
-    match 'feed/tag/:tagname' => 'tag#rss'
-    match ':node_type/tag(/:id)' => 'tag#show'
+  # these need precedence for tag listings
+  match 'feed/tag/:tagname' => 'tag#rss'
+  match ':node_type/tag(/:id)' => 'tag#show'
   match 'wiki/raw/:id' => 'wiki#raw'
   match 'wiki/revisions/:id' => 'wiki#revisions'
   match 'wiki/revert/:id' => 'wiki#revert'

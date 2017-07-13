@@ -61,6 +61,10 @@
     <a href="?preview=true" class="btn btn-default btn-sm btn-block"><%= t('users.profile.preview_profile_tag') %></a>
   </p>
 
+  <% if @profile_user && current_user && @profile_user == current_user %>
+    <button id="btn-token" class="btn btn-default btn-block">My Access Token</button>
+  <% end %>
+
   <hr />
 
   <% if params[:preview] %>
@@ -213,6 +217,9 @@
 </div>
 
 <script type="text/javascript">
+  $('#btn-token').click(function() {
+    alert("Your access token is: <%= @user.user.token %>");
+  });
 
   (function () {
     var profile = Object.create(Profile);
