@@ -22,6 +22,7 @@ namespace :test do
   desc "This is where you'd start the embedded Solr engine, and tweak config. Runs solr-specific tests."
   # Solr is assumed running from the container or otherwise available as in sunspot.yml.
   task :solr do
+    `RAILS_ENV=test rake SOLR_DISABLE_CHECK=1 sunspot:reindex`
     Rake::Task["test:solr_tests"].invoke
   end
 
