@@ -5,7 +5,7 @@ _This page attempts to explain the database model for the plots2 project._
 
 The [following diagram](https://docs.google.com/presentation/d/1aquQKyih8vvtD7U-AI0NlbAcgT-BVu9G8hloYg-c-QI/edit#slide=id.p) is a rough sketch of how the applications various tables interconnect:
 
-![data model diagram](https://publiclab.org/system/images/photos/000/019/147/original/scratchpad.png)
+![data model diagram](https://publiclab.org/system/images/photos/000/021/061/original/diagram.png)
 
 ****
 
@@ -26,14 +26,12 @@ There are several types of nodes, based on their `type` field:
 
 Nodes may also be redirects, though this use is legacy only. More documentation needed.
 
-Nodes also have a Counter (DrupalNodeCounter) child model which tracks pageviews. 
-
 Notes (type `note`) can also be a sub-type called Questions, if they have a tag starting with `question:` -- which gives them extra features such as the ability to have Answers (see below).
 
 
 ### Revisions
 
-Revisions, or `DrupalNodeRevisions`, are a child model to Nodes via `nid`, and contain a `title` and `body` field, along with an author as a `uid` field and a `vid` primary key. Revisions have `status` in addition to their parent Node `status`, following the same conventions. Wiki pages default to their latest Revision's `title`.
+`Revisions` are a child model to Nodes via `nid`, and contain a `title` and `body` field, along with an author as a `uid` field and a `vid` primary key. Revisions have `status` in addition to their parent Node `status`, following the same conventions. Wiki pages default to their latest Revision's `title`.
 
 ### Comments
 
@@ -67,6 +65,4 @@ User `role` can be:
 
 ## Tagging
 
-Tags (`Tag`) are unique tag names with primary key `tid`, which may be linked to Nodes via join table CommunityTag (`DrupalNodeCommunityTag`) via the latter's `nid` and `tid` fields.
-
-
+Tags (`Tag`) are unique tag names with primary key `tid`, which may be linked to Nodes via NodeTag (database table `community_tag`) via the latter's `nid` and `tid` fields.
