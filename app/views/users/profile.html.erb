@@ -7,8 +7,8 @@
   <% end %>
 
   <% if current_user && @profile_user %>
+    <hr />
     <% unless current_user == @profile_user %>
-      <hr />
       <div id="follow_form" class="col-md-offset-4">
       <% if current_user.following?(@profile_user) %>
         <%= render 'unfollow' %>
@@ -16,8 +16,10 @@
         <%= render 'follow' %>
       <% end %>
       </div>
-      <br />
+    <% else %>
+      <button class="btn btn-primary btn-block" id="btn-token">My Access Token</button>
     <% end %>
+    <br />
   <% end %>
 
   <% if @user.user.nil? && current_user && current_user.role == "admin" %>
@@ -213,6 +215,9 @@
 </div>
 
 <script type="text/javascript">
+  $('#btn-token').click(function() {
+    alert("Your access token is: <%= @user.user.token %>");
+  });
 
   (function () {
     var profile = Object.create(Profile);
