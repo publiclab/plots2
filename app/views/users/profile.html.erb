@@ -7,8 +7,8 @@
   <% end %>
 
   <% if current_user && @profile_user %>
-    <hr />
     <% unless current_user == @profile_user %>
+      <hr />
       <div id="follow_form" class="col-md-offset-4">
       <% if current_user.following?(@profile_user) %>
         <%= render 'unfollow' %>
@@ -16,10 +16,8 @@
         <%= render 'follow' %>
       <% end %>
       </div>
-    <% else %>
-      <button class="btn btn-primary btn-block" id="btn-token">My Access Token</button>
+      <br />
     <% end %>
-    <br />
   <% end %>
 
   <% if @user.user.nil? && current_user && current_user.role == "admin" %>
@@ -62,6 +60,10 @@
     <% end %>
     <a href="?preview=true" class="btn btn-default btn-sm btn-block"><%= t('users.profile.preview_profile_tag') %></a>
   </p>
+
+  <% if @profile_user && current_user && @profile_user == current_user %>
+    <button id="btn-token" class="btn btn-default btn-block">My Access Token</button>
+  <% end %>
 
   <hr />
 
