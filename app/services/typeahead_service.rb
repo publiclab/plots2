@@ -50,15 +50,18 @@ class TypeaheadService
            .where('status = 1 AND comment LIKE ?', '%' + input + '%')
   end
 
-  ## search for node title only
-  ## FIXme with solr
+
+
   def find_notes(input, limit = 5)
     search = Node.search do
       fulltext input
+      with :status, 1
+      with :type, "note"
+      order_by :nid, :desc
     end
     search.results
-          .order('nid DESC')
-          .where(type: "note", status: 1)
+
+
   end
 
   def find_wikis(input, limit = 5)
