@@ -50,12 +50,13 @@ class TypeaheadService
            .where('status = 1 AND comment LIKE ?', '%' + input + '%')
   end
 
-  def find_notes(input)
+  def find_notes(input, limit = 5)
     search = Node.search do
       fulltext input
       with :status, 1
       with :type, "note"
       order_by :nid, :desc
+      paginate page: 1, per_page: limit
     end
     search.results
   end
