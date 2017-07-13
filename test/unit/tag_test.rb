@@ -108,7 +108,7 @@ class TagTest < ActiveSupport::TestCase
     # now make unbanned_spammer following: false for both 'awesome' and 'spam' tags:
     tag_selection(:selection_four).update_attribute('following', false)
     given_tags = [awesome, spam]
-    assert_equal [rusers(:admin), rusers(:unbanned_spammer)], test.followers_who_dont_follow_tags(given_tags)
+    assert_equal [rusers(:unbanned_spammer), rusers(:admin)], test.followers_who_dont_follow_tags(given_tags)
   end
 
   test 'returns all users in this tag if none is following the given tags' do
