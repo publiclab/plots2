@@ -50,9 +50,7 @@ class TypeaheadService
            .where('status = 1 AND comment LIKE ?', '%' + input + '%')
   end
 
-
-
-  def find_notes(input, limit = 5)
+  def find_notes(input)
     search = Node.search do
       fulltext input
       with :status, 1
@@ -60,8 +58,6 @@ class TypeaheadService
       order_by :nid, :desc
     end
     search.results
-
-
   end
 
   def find_wikis(input, limit = 5)
