@@ -120,7 +120,7 @@ class TypeaheadService
   def textSearch_notes(srchString, limit = 5)
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
-      notes(srchString, limit).select('title,type,nid,path').each do |match|
+      notes(srchString, limit).each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
