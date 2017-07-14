@@ -63,7 +63,7 @@ class TypeaheadService
   end
 
   # Run a search in any of the associated systems for references that contain the search string
-  def all_results(srchString, limit = 5)
+  def search_all(srchString, limit = 5)
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
       # notes
