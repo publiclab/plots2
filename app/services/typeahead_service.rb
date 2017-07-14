@@ -14,9 +14,9 @@ class TypeaheadService
   # but perhaps could simply be renamed Result.
 
   def users(input, limit = 5)
-    DrupalUsers.limit(limit)
-               .order('uid DESC')
-               .where('username LIKE ? AND status = 1', '%' + input + '%')
+    User.limit(limit)
+        .order('uid DESC')
+        .where('username LIKE ? AND status = 1', '%' + input + '%')
   end
 
   def tags(input, limit = 5)
