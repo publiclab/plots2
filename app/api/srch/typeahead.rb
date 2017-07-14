@@ -22,7 +22,7 @@ module Srch
         sparms = SearchRequest.fromRequest(params)
         if sparms.valid?
           tservice = TypeaheadService.new
-          sresult = tservice.textSearch_all(params[:srchString], TYPEAHEAD_LIMIT)
+          sresult = tservice.search_all(params[:srchString], TYPEAHEAD_LIMIT)
         end
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
@@ -42,7 +42,7 @@ module Srch
         sparms = SearchRequest.fromRequest(params)
         if sparms.valid?
           tservice = TypeaheadService.new
-          sresult = tservice.textSearch_profiles(params[:srchString], TYPEAHEAD_LIMIT)
+          sresult = tservice.search_profiles(params[:srchString], TYPEAHEAD_LIMIT)
         end
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
@@ -62,7 +62,7 @@ module Srch
         sparms = SearchRequest.fromRequest(params)
         if sparms.valid?
           tservice = TypeaheadService.new
-          sresult = tservice.textSearch_notes(params[:srchString], TYPEAHEAD_LIMIT)
+          sresult = tservice.search_notes(params[:srchString], TYPEAHEAD_LIMIT)
         end
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
@@ -82,7 +82,7 @@ module Srch
         sparms = SearchRequest.fromRequest(params)
         if sparms.valid?
           tservice = TypeaheadService.new
-          sresult = tservice.textSearch_questions(params[:srchString], TYPEAHEAD_LIMIT)
+          sresult = tservice.search_questions(params[:srchString], TYPEAHEAD_LIMIT)
         end
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
@@ -102,7 +102,7 @@ module Srch
         sparms = SearchRequest.fromRequest(params)
         if sparms.valid?
           tservice = TypeaheadService.new
-          sresult = tservice.textSearch_tags(params[:srchString], TYPEAHEAD_LIMIT)
+          sresult = tservice.search_tags(params[:srchString], TYPEAHEAD_LIMIT)
         end
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
