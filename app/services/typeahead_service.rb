@@ -45,7 +45,7 @@ class TypeaheadService
     else 
       Node.limit(limit)
           .order('nid DESC')
-          .where(type: "page", status: 1)
+          .where(type: "note", status: 1)
           .where('title LIKE ?', '%' + input + '%')
     end
   end
