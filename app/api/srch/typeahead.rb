@@ -21,8 +21,7 @@ module Srch
         sresult = TagList.new
         sparms = SearchRequest.fromRequest(params)
         if sparms.valid?
-          tservice = TypeaheadService.new
-          sresult = tservice.search_all(params[:srchString], TYPEAHEAD_LIMIT)
+          tservice = TypeaheadService.search_all(params[:srchString], TYPEAHEAD_LIMIT)
         end
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
@@ -41,8 +40,7 @@ module Srch
         sresult = TagList.new
         sparms = SearchRequest.fromRequest(params)
         if sparms.valid?
-          tservice = TypeaheadService.new
-          sresult = tservice.search_profiles(params[:srchString], TYPEAHEAD_LIMIT)
+          tservice = TypeaheadService.search_profiles(params[:srchString], TYPEAHEAD_LIMIT)
         end
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
@@ -61,8 +59,7 @@ module Srch
         sresult = TagList.new
         sparms = SearchRequest.fromRequest(params)
         if sparms.valid?
-          tservice = TypeaheadService.new
-          sresult = tservice.search_notes(params[:srchString], TYPEAHEAD_LIMIT)
+          tservice = TypeaheadService.search_notes(params[:srchString], TYPEAHEAD_LIMIT)
         end
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
@@ -81,8 +78,7 @@ module Srch
         sresult = TagList.new
         sparms = SearchRequest.fromRequest(params)
         if sparms.valid?
-          tservice = TypeaheadService.new
-          sresult = tservice.search_questions(params[:srchString], TYPEAHEAD_LIMIT)
+          tservice = TypeaheadService.search_questions(params[:srchString], TYPEAHEAD_LIMIT)
         end
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
@@ -101,8 +97,7 @@ module Srch
         sresult = TagList.new
         sparms = SearchRequest.fromRequest(params)
         if sparms.valid?
-          tservice = TypeaheadService.new
-          sresult = tservice.search_tags(params[:srchString], TYPEAHEAD_LIMIT)
+          TypeaheadService.search_tags(params[:srchString], TYPEAHEAD_LIMIT)
         end
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity

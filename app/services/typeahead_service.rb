@@ -6,6 +6,7 @@
 # TODO: Refactor TypeaheadService and SearchService so that common functions come from a higher level class?
 class TypeaheadService
   def initialize; end
+  include SolrToggle
 
   # search_users() returns a standard TagResult; 
   # users() returns an array of User records
@@ -32,14 +33,21 @@ class TypeaheadService
   end
 
   def notes(input, limit = 5)
-    search = Node.search do
-      fulltext input
-      with :status, 1
-      with :type, "note"
-      order_by :updated_at, :desc
-      paginate page: 1, per_page: limit
+    if solrAvailable
+      search = Node.search do
+        fulltext input
+        with :status, 1
+        with :type, "note"
+        order_by :updated_at, :desc
+        paginate page: 1, per_page: limit
+      end
+      search.results
+    else 
+      Node.limit(limit)
+          .order('nid DESC')
+          .where(type: "page", status: 1)
+          .where('title LIKE ?', '%' + input + '%')
     end
-    search.results
   end
 
   def wikis(input, limit = 5)
