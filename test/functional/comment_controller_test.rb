@@ -300,4 +300,25 @@ class CommentControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should send mail to tag followers in the wiki comment' do
+    UserSession.create(rusers(:bob))
+    xhr :post, :create,
+        id: node(:wiki_page).nid,
+        body: 'Wiki page #selection_six',
+        type: 'page'
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([rusers(:newcomer).email])
+    # tag followers can be found in tag_selection.yml
+  end
+
+  test 'should send mail to multiple tag followers in the wiki comment' do
+    UserSession.create(rusers(:bob))
+    xhr :post, :create,
+        id: node(:question).nid,
+        body: 'Wiki page #everything #selection_six',
+        type: 'page'
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([rusers(:newcomer).email])
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([rusers(:moderator).email])
+    # tag followers can be found in tag_selection.yml
+  end
+
 end
