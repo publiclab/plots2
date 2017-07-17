@@ -39,7 +39,7 @@ class Tag < ActiveRecord::Base
   end
 
   def subscriptions
-    tag_selection
+    tag_selection.where(following: true)
   end
 
   # nodes this tag has been used on; no wildcards

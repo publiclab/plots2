@@ -1,0 +1,19 @@
+<p>Dear <%= @user.username %>,</p>
+
+<p>Public Lab contributor <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @current_user.username %>'><%= @current_user.username %></a> just added a tag
+on  '<b><%= @node.title %></b>' entitled: <b> <%= @node.tag.name %></b></p>
+
+
+<% if @user.role == "admin" || @user.role == "moderator" %>Does this look like spam? <a class="btn btn-sm" href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/spam/<%= @node.id %>">Spam</a><% end %>
+
+<div style="color:#aaa;">
+
+<p>You received this email because you are subscribed to the following tag: <%= @node.tag.name %>.</p>
+
+<p>To change your preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.</p>
+
+<p>Report spam and abuse to: <a href="mailto:moderators@<%= ActionMailer::Base.default_url_options[:host] %>">moderators@<%= ActionMailer::Base.default_url_options[:host] %></a></p>
+
+<%= @footer %>
+
+</div>
