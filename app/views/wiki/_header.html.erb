@@ -93,7 +93,8 @@
 
       <li class="<%= 'active' if params[:comments] == 'true' %>">
         <a href="<%= @node.path %>?comments=true" rel="tooltip" title="Read Comments regarding this wiki page" data-placement="top">
-          <i class="fa fa-comment"></i>
+          <span class="hidden-xs"> <%= @node.comments.count %></span>
+          <i class="fa fa-comment"></i>   
         </a>
       </li>
 
