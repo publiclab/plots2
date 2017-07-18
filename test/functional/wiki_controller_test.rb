@@ -572,4 +572,12 @@ class WikiControllerTest < ActionController::TestCase
     get :show, id: @node.slug
     assert_response :success
   end
+
+  test "should render comment template when a comment=true parameter is passed in the get request" do
+    wiki = node(:wiki_page)
+    slug = wiki.path.gsub('/wiki/', '')
+    get "/wiki/data-logging?comments=true"
+    assert_response :success
+    assert_select 'div#comments h3', /Comments/
+  end
 end
