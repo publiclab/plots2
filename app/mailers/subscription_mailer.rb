@@ -25,6 +25,7 @@ class SubscriptionMailer < ActionMailer::Base
   end
 
   def notify_tag_added(node, tag, current_user)
+    @tag = tag
     @node = node
     @current_user = current_user
     given_tags = node.tags.reject { |t| t == tag}
