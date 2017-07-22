@@ -278,6 +278,10 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
+  def content_followed_in_past_period(timePeriod)
+    self.subscriptions
+  end
+
   private
 
   def map_openid_registration(registration)
