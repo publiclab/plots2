@@ -300,4 +300,13 @@ class CommentControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should send notification email upon a new wiki comment' do
+    UserSession.create(rusers(:jeff))
+    xhr :post, :create,
+        id: node(:wiki_page).nid,
+        body: 'A comment by Jeff on a wiki page of author bob',
+        type: 'page'
+    assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on 'Wiki page title'")
+  end
+
 end
