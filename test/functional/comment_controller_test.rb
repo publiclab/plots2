@@ -306,5 +306,4 @@ class CommentControllerTest < ActionController::TestCase
         type: 'page'
     assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on 'Wiki page title'")
   end
-
 end

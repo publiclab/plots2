@@ -43,7 +43,7 @@
     </div>
 
     <ul class="nav nav-tabs">
-      <li class="<%= 'active' unless (params.key?(:comments) or params.key?(:raw)) %>" >
+      <li class="<%= 'active' unless (controller.action_name == 'comments' or params.key?(:raw)) %>" >
         <a href="<%= @node.path %>">
           <span class="hidden-xs"><%= t('wiki.show.view') %></span>
           <span class="visible-xs"><i class="fa fa-file-o"></i></span>
@@ -91,8 +91,8 @@
         </a>
       </li>
 
-      <li class="<%= 'active' if params[:comments] == 'true' %>">
-        <a href="<%= @node.path %>?comments=true" rel="tooltip" title="Read Comments regarding this wiki page" data-placement="top">
+      <li class="<%= 'active' if (controller.action_name == 'comments' )%>">
+        <a href="/wiki/<%= @node.slug_from_path %>/comments" rel="tooltip" title="Read Comments regarding this wiki page" data-placement="top">
           <span class="hidden-xs"> <%= @node.comments.count %></span>
           <i class="fa fa-comment"></i>   
         </a>

@@ -53,6 +53,8 @@ Plots2::Application.routes.draw do
   match 'home' => 'home#front'
   resources :relationships, only: [:create, :destroy]
 
+  get '/wiki/:id/comments', to: 'wiki#comments'
+
   #resources :users
 
   match 'openid' => 'openid#index'
