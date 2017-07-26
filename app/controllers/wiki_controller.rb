@@ -400,4 +400,9 @@ class WikiController < ApplicationController
     ]
     render template: 'wiki/methods'
   end
+
+  def comments
+    show
+    render :show
+  end
 end

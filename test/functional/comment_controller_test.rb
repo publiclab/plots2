@@ -53,8 +53,6 @@ class CommentControllerTest < ActionController::TestCase
     end
     assert_response :success
     assert_not_nil :comment
-    #assert_template partial: 'wiki/_comment'
-    #should uncomment above once comment displaying partial is implemented for wikis.
   end
 
   test 'should show error if wiki comment not saved' do
@@ -308,5 +306,4 @@ class CommentControllerTest < ActionController::TestCase
         type: 'page'
     assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on 'Wiki page title'")
   end
-
 end

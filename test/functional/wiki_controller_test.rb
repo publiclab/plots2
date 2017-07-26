@@ -572,4 +572,12 @@ class WikiControllerTest < ActionController::TestCase
     get :show, id: @node.slug
     assert_response :success
   end
+
+  test "should render comment template when comment icon is clicked" do
+    wiki = node(:wiki_page)
+    slug = wiki.path.gsub('/wiki/', '')
+    get :comments, id: slug
+    assert_response :success
+    assert_select 'div#comments h3', /Comments/
+  end
 end
