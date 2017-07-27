@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170727032223) do
+ActiveRecord::Schema.define(:version => 20170726174757) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -54,7 +54,6 @@ ActiveRecord::Schema.define(:version => 20170727032223) do
   add_index "comments", ["nid"], :name => "index_comments_nid"
   add_index "comments", ["pid"], :name => "index_comments_pid"
   add_index "comments", ["status"], :name => "index_comments_status"
-  add_index "comments", ["timestamp"], :name => "timestamp"
 
   create_table "community_tags", :id => false, :force => true do |t|
     t.integer "tid",  :default => 0, :null => false
@@ -191,10 +190,10 @@ ActiveRecord::Schema.define(:version => 20170727032223) do
   add_index "impressions", ["controller_name", "action_name", "request_hash"], :name => "controlleraction_request_index"
   add_index "impressions", ["controller_name", "action_name", "session_hash"], :name => "controlleraction_session_index"
   add_index "impressions", ["impressionable_type", "impressionable_id", "ip_address"], :name => "poly_ip_index"
-  add_index "impressions", ["impressionable_type", "impressionable_id", "params"], :name => "poly_params_request_index", :length => {"impressionable_type"=>nil, "impressionable_id"=>nil, "params"=>255}
+  add_index "impressions", ["impressionable_type", "impressionable_id", "params"], :name => "poly_params_request_index"
   add_index "impressions", ["impressionable_type", "impressionable_id", "request_hash"], :name => "poly_request_index"
   add_index "impressions", ["impressionable_type", "impressionable_id", "session_hash"], :name => "poly_session_index"
-  add_index "impressions", ["impressionable_type", "message", "impressionable_id"], :name => "impressionable_type_message_index", :length => {"impressionable_type"=>nil, "message"=>255, "impressionable_id"=>nil}
+  add_index "impressions", ["impressionable_type", "message", "impressionable_id"], :name => "impressionable_type_message_index"
   add_index "impressions", ["user_id"], :name => "index_impressions_on_user_id"
 
   create_table "node", :primary_key => "nid", :force => true do |t|
@@ -228,12 +227,12 @@ ActiveRecord::Schema.define(:version => 20170727032223) do
   add_index "node", ["promote", "status"], :name => "node_promote_status"
   add_index "node", ["slug"], :name => "index_node_on_slug"
   add_index "node", ["status", "type", "nid"], :name => "node_status_type"
-  add_index "node", ["title", "type"], :name => "node_title_type", :length => {"title"=>nil, "type"=>4}
+  add_index "node", ["title", "type"], :name => "node_title_type"
   add_index "node", ["tnid"], :name => "index_node_tnid"
   add_index "node", ["translate"], :name => "index_node_translate"
-  add_index "node", ["type"], :name => "node_type", :length => {"type"=>4}
+  add_index "node", ["type"], :name => "node_type"
   add_index "node", ["uid"], :name => "index_node_uid"
-  add_index "node", ["vid"], :name => "index_node_vid", :unique => true
+  add_index "node", ["vid"], :name => "index_node_vid"
 
   create_table "node_access", :id => false, :force => true do |t|
     t.integer "nid",                       :default => 0,  :null => false
@@ -257,7 +256,6 @@ ActiveRecord::Schema.define(:version => 20170727032223) do
   end
 
   add_index "node_revisions", ["nid"], :name => "index_node_revisions_nid"
-  add_index "node_revisions", ["timestamp"], :name => "timestamp"
   add_index "node_revisions", ["uid"], :name => "index_node_revisions_uid"
 
   create_table "node_selections", :id => false, :force => true do |t|
@@ -345,37 +343,6 @@ ActiveRecord::Schema.define(:version => 20170727032223) do
 
   add_index "rusers", ["username"], :name => "index_rusers_on_username"
 
-  create_table "rusers2", :force => true do |t|
-    t.string   "username"
-    t.string   "email"
-    t.string   "crypted_password"
-    t.string   "password_salt"
-    t.string   "persistence_token"
-    t.integer  "login_count",        :default => 0,       :null => false
-    t.integer  "failed_login_count", :default => 0,       :null => false
-    t.datetime "last_request_at"
-    t.datetime "current_login_at"
-    t.datetime "last_login_at"
-    t.string   "current_login_ip"
-    t.string   "last_login_ip"
-    t.datetime "created_at",                              :null => false
-    t.datetime "updated_at",                              :null => false
-    t.string   "openid_identifier"
-    t.string   "role",               :default => "basic"
-    t.string   "reset_key"
-    t.string   "photo_file_name"
-    t.string   "photo_content_type"
-    t.string   "photo_file_size"
-    t.boolean  "location_privacy",   :default => true
-  end
-
-  add_index "rusers2", ["location_privacy"], :name => "index_rusers_on_location_privacy"
-  add_index "rusers2", ["username"], :name => "index_rusers_on_username"
-
-  create_table "spammers", :id => false, :force => true do |t|
-    t.integer "uid", :default => 0, :null => false
-  end
-
   create_table "tag_selections", :id => false, :force => true do |t|
     t.integer "user_id"
     t.integer "tid"
@@ -462,13 +429,6 @@ ActiveRecord::Schema.define(:version => 20170727032223) do
   add_index "users", ["access"], :name => "index_users_access"
   add_index "users", ["created"], :name => "index_users_created"
   add_index "users", ["mail"], :name => "index_users_mail"
-  add_index "users", ["name"], :name => "index_users_name", :unique => true
-
-  create_table "view_node_like_count", :id => false, :force => true do |t|
-    t.integer "nid"
-    t.decimal "num_likes",    :precision => 25, :scale => 0
-    t.integer "cached_likes",                                :default => 0
-    t.string  "title",                                       :default => "", :null => false
-  end
+  add_index "users", ["name"], :name => "index_users_name"
 
 end

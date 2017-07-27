@@ -13,6 +13,8 @@ class RecoverBiosTokensStatuses < ActiveRecord::Migration
           user = u.user
           if user
             user.status = u.status unless u.nil?
+            profile = DrupalProfileValue.find_by_uid(user.id, conditions: { fid: 7 })
+            user.bio = profile.value || '' if profile
             user.token = SecureRandom.uuid
             user.save({})
           end
