@@ -8,7 +8,7 @@ end
 
 class RecoverBiosTokensStatuses < ActiveRecord::Migration
   def up
-      DrupalUsers.find(:all).each do |u|
+      DrupalUsers.where('status != 0').each do |u|
         unless u.name.multibyte?
           user = u.user
           if user
