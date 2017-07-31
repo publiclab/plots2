@@ -121,11 +121,10 @@ class TagTest < ActiveSupport::TestCase
 
   test 'returns all users in this tag if none is following a given tag (a new one with no followers)' do
     tag = tags(:spam)
-    tag2 = tags(:test)
-    tag1 = tags(:awesome)
     newtag = Tag.new({name: 'newtag'})
     newtag.save
     given_tags = [newtag]
+    assert_not_equal [], tag.collect(&:subscriptions).collect(&:user_id)
     assert_equal [rusers(:spammer), rusers(:newcomer)], tag.followers_who_dont_follow_tags(given_tags).sort
   end
 end

@@ -200,7 +200,8 @@ class Tag < ActiveRecord::Base
 
   def followers_who_dont_follow_tags(tags)
     tag_followers = User.find(self.subscriptions.collect(&:user_id))
-    following_given_tags = User.find(tags.collect { |tag| tag.subscriptions.collect(&:user_id)}).flatten
+    uids = tags.collect(&:subscriptions).collect(&:user_id)
+    following_given_tags = User.where(id: uids)
     tag_followers.reject { |user| following_given_tags.include? user  }
   end
 end
