@@ -77,6 +77,10 @@ class User < ActiveRecord::Base
     drupal_user.destroy
   end
 
+  def set_token
+    self.token = SecureRandom.uuid
+  end
+
   # this is ridiculous. We need to store uid in this model.
   # ...migration is in progress. start getting rid of these calls...
   def drupal_user
@@ -270,9 +274,5 @@ class User < ActiveRecord::Base
 
   def self.find_by_username_case_insensitive(username)
     User.where('lower(username) = ?', username.downcase).first
-  end
-
-  def set_token
-    token = SecureRandom.uuid
   end
 end
