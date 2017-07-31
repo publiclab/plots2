@@ -39,10 +39,8 @@ class User < ActiveRecord::Base
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /^[A-Za-z\d_\-]+$/
 
-  before_create do
-    create_drupal_user
-    set_token
-  end
+  before_create :create_drupal_user
+  before_save :set_token
   after_destroy :destroy_drupal_user
 
   def create_drupal_user
