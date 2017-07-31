@@ -39,7 +39,10 @@ class User < ActiveRecord::Base
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /^[A-Za-z\d_\-]+$/
 
-  before_create :create_drupal_user
+  before_create do
+    create_drupal_user
+    set_token
+  end
   after_destroy :destroy_drupal_user
 
   def create_drupal_user
@@ -269,5 +272,9 @@ class User < ActiveRecord::Base
 
   def self.find_by_username_case_insensitive(username)
     User.where('lower(username) = ?', username.downcase).first
+  end
+
+  def set_token
+    token = SecureRandom.uuid
   end
 end
