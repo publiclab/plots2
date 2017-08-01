@@ -40,6 +40,7 @@ class User < ActiveRecord::Base
   validates_format_of :username, with: /^[A-Za-z\d_\-]+$/
 
   before_create :create_drupal_user
+  before_save :set_token
   after_destroy :destroy_drupal_user
 
   def create_drupal_user
@@ -74,6 +75,10 @@ class User < ActiveRecord::Base
 
   def destroy_drupal_user
     drupal_user.destroy
+  end
+
+  def set_token
+    self.token = SecureRandom.uuid if self.token.nil?
   end
 
   # this is ridiculous. We need to store uid in this model.
