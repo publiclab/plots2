@@ -78,7 +78,7 @@ class User < ActiveRecord::Base
   end
 
   def set_token
-    self.token = SecureRandom.uuid if !self.token.nil?
+    self.token = SecureRandom.uuid if self.token.nil?
   end
 
   # this is ridiculous. We need to store uid in this model.
