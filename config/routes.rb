@@ -4,7 +4,7 @@ Plots2::Application.routes.draw do
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
   # Manually written API functions
-  post '/comment/create/token/id.:format', to: 'comment#create_by_token'
+  post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
 
   get 'searches/test' => 'searches#test'
   #Search RESTful endpoints
