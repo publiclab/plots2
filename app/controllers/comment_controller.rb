@@ -44,7 +44,7 @@ class CommentController < ApplicationController
     @node = Node.find params[:id]
     @user = User.find_by_username params[:username]
     @body = params[:body]
-    @token = request.env['rack.session']['token']
+    @token = request.headers["HTTP_TOKEN"]
 
     if @user && @user.token == @token
       begin
