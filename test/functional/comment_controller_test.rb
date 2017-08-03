@@ -259,7 +259,7 @@ class CommentControllerTest < ActionController::TestCase
     }
 
     @headers = {
-      'token' => 'invalid-token'
+      'HTTP_TOKEN' => 'invalid-token'
     }
 
     post :create_by_token, @params, @headers
@@ -275,7 +275,7 @@ class CommentControllerTest < ActionController::TestCase
     }
 
     @headers = {
-      'token' => 'abcdefg12345'
+      'HTTP_TOKEN' => 'abcdefg12345'
     }
 
     post :create_by_token, @params, @headers
@@ -291,7 +291,7 @@ class CommentControllerTest < ActionController::TestCase
     }
 
     @headers = {
-      'token' => 'abcdefg12345'
+      'HTTP_TOKEN' => 'abcdefg12345'
     }
 
     post :create_by_token, @params, @headers
