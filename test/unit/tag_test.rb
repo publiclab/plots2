@@ -125,6 +125,6 @@ class TagTest < ActiveSupport::TestCase
     newtag.save
     given_tags = [newtag]
     assert_not_equal [], tags.collect(&:subscriptions).flatten.collect(&:user_id)
-    assert_equal [rusers(:spammer), rusers(:newcomer)], tags.followers_who_dont_follow_tags(given_tags).sort
+    assert_equal [rusers(:spammer), rusers(:newcomer)], tags.first.followers_who_dont_follow_tags(given_tags).sort
   end
 end
