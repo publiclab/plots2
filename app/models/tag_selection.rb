@@ -12,6 +12,10 @@ class TagSelection < ActiveRecord::Base
     DrupalUsers.find_by_uid user_id
   end
 
+  def ruser
+    User.find_by_id user_id
+  end
+
   def tagname
     tag.name
   end
