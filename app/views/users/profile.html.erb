@@ -74,23 +74,6 @@
     <%= render partial: 'user_tags/tags', locals: { type: 'tool', data: fetch_tags(@user.id, 'tool') } %>
     <%= render partial: 'user_tags/tags', locals: { type: 'role', data: fetch_tags(@user.id, 'role') } %>
 
-    <% if @user.location_tag %>
-      <div class="row">
-        <div class="col-md-3">
-          <label class="" for="location"><%= t('users.profile.location') %></label>
-        </div>
-        <div class="col-md-9">
-          <span class="fa fa-map-marker"></span>
-          <%= @user.location_tag.state if @user.location_tag.state %>
-          <% if @user.location_tag.state && @user.location_tag.country %>
-            <%= "," + @user.location_tag.country %>
-          <% else %>
-            <%= @user.location_tag.country %>
-          <% end %>
-        </div>
-      </div>
-
-    <% end %>
     <br />
     <% if current_user && (current_user == @profile_user || current_user.role == 'admin' ) %>
       <a href="/profile/info/<%= @user.name %>" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_information') %></a>
