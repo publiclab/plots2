@@ -250,54 +250,6 @@ class CommentControllerTest < ActionController::TestCase
     # tag followers can be found in tag_selection.yml
   end
 
-  test 'should not post comment through invalid token successfully' do
-    @params = {
-      id: 1,
-      body: 'Test Comment',
-      username: 'Bob',
-      format: 'json'
-    }
-
-    @headers = {
-      'token' => 'invalid-token'
-    }
-
-    post :create_by_token, @params, @headers
-    assert_response :unauthorized
-  end
-
-  test 'should not post an invalid comment successfully' do
-    @params = {
-      id: 1,
-      body: '',
-      username: 'Bob',
-      format: 'json'
-    }
-
-    @headers = {
-      'token' => 'abcdefg12345'
-    }
-
-    post :create_by_token, @params, @headers
-    assert_response :bad_request
-  end
-
-  test 'should post comment through valid token successfully' do
-    @params = {
-      id: 1,
-      body: 'Test Comment',
-      username: 'Bob',
-      format: 'json'
-    }
-
-    @headers = {
-      'token' => 'abcdefg12345'
-    }
-
-    post :create_by_token, @params, @headers
-    assert_response :success
-  end
-
   test 'should send notification email upon a new wiki comment' do
     UserSession.create(rusers(:jeff))
     xhr :post, :create,
