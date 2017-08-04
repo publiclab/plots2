@@ -30,6 +30,7 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
 
     assert_select 'table.notes-grid-test'
     assert_select 'table.activity-grid-test'
+    assert_select 'table.activity-grid-test tr.title'
     assert_select 'table.upgrades-grid-test'
     assert_select 'table.notes-grid-shouldnt', false
 
