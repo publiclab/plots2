@@ -53,9 +53,10 @@ class CommentTest < ActiveSupport::TestCase
     comment = Comment.new(nid: node(:one).nid,
                           uid: rusers(:bob).id)
     comment.comment = 'Hey, #everything, #awesome followers.'
-    assert_equal comment.followers_of_mentioned_tags.length, 2
+    assert_equal comment.followers_of_mentioned_tags.length, 3
     assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:bob).id)
     assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:moderator).id)
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:unbanned_spammer).id)
   end
 
   test 'should scan multiple space-separated hashtags out of body' do
@@ -164,5 +165,15 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal weekly_tallies[weeks_to_tally - 1], 1
     assert_equal weekly_tallies[two_weeks_ago], 1
     assert_equal weekly_tallies[four_weeks_ago], 1
+  end
+
+  test 'should create comments for wiki pages' do
+    wiki = node(:wiki_page)
+    comment = Comment.new(
+      uid: rusers(:bob).id,
+      nid: wiki.id,
+      comment: 'Test comment for wiki'
+    )
+    assert comment.save
   end
 end

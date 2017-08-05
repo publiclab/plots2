@@ -8,7 +8,8 @@ end
 
 class User < ActiveRecord::Base
   self.table_name = 'rusers'
-  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :location_privacy
+  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio
+  alias_attribute :name, :username
 
   include SolrToggle
   searchable if: :shouldIndexSolr do
@@ -39,9 +40,11 @@ class User < ActiveRecord::Base
   validates_format_of :username, with: /^[A-Za-z\d_\-]+$/
 
   before_create :create_drupal_user
+  before_save :set_token
   after_destroy :destroy_drupal_user
 
   def create_drupal_user
+    self.bio = "" # needed to set a default bio value of ""
     if drupal_user.nil?
       drupal_user = DrupalUsers.new(name: username,
                                     pass: rand(100_000_000_000_000_000_000),
@@ -74,6 +77,10 @@ class User < ActiveRecord::Base
     drupal_user.destroy
   end
 
+  def set_token
+    self.token = SecureRandom.uuid if self.token.nil?
+  end
+
   # this is ridiculous. We need to store uid in this model.
   # ...migration is in progress. start getting rid of these calls...
   def drupal_user
@@ -94,10 +101,6 @@ class User < ActiveRecord::Base
     end
     self.reset_key = key
     key
-  end
-
-  def bio
-    drupal_user.bio
   end
 
   def uid
@@ -128,8 +131,8 @@ class User < ActiveRecord::Base
   end
 
   def following(tagname)
-    tids = Tag.find(:all, conditions: { name: tagname }).collect(&:tid)
-    !TagSelection.find(:all, conditions: { following: true, tid: tids, user_id: uid }).empty?
+    tids = Tag.where(name: tagname).collect(&:tid)
+    !TagSelection.where(following: true, tid: tids, user_id: uid).empty?
   end
 
   def add_to_lists(lists)
@@ -141,7 +144,12 @@ class User < ActiveRecord::Base
   def weekly_note_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
-      weeks[span - week] = Node.count :all, select: :created, conditions: { uid: drupal_user.uid, type: 'note', status: 1, created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i }
+      weeks[span - week] = Node.select(:created)
+                               .where( uid: drupal_user.uid,
+                                       type: 'note',
+                                       status: 1,
+                                       created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
+                               .count
     end
     weeks
   end
@@ -149,7 +157,11 @@ class User < ActiveRecord::Base
   def weekly_comment_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
-      weeks[span - week] = Comment.count :all, select: :timestamp, conditions: { uid: drupal_user.uid, status: 1, timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i }
+      weeks[span - week] = Comment.select(:timestamp)
+                                  .where( uid: drupal_user.uid,
+                                          status: 1,
+                                          timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
+                                  .count
     end
     weeks
   end
@@ -159,7 +171,12 @@ class User < ActiveRecord::Base
     streak = 0
     note_count = 0
     (0..span).each do |day|
-      days[day] = Node.count :all, select: :created, conditions: { uid: drupal_user.uid, type: 'note', status: 1, created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i }
+      days[day] = Node.select(:created)
+                      .where( uid: drupal_user.uid,
+                              type: 'note',
+                              status: 1,
+                              created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
+                      .count
       break if days[day] == 0
       streak += 1
       note_count += days[day]
@@ -172,7 +189,12 @@ class User < ActiveRecord::Base
     streak = 0
     wiki_edit_count = 0
     (0..span).each do |day|
-      days[day] = DrupalNodeRevision.joins(:node).where(uid: drupal_user.uid, status: 1, timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i).where('node.type != ?', 'note').count
+      days[day] = Revision.joins(:node)
+                          .where( uid: drupal_user.uid,
+                                  status: 1,
+                                  timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
+                          .where('node.type != ?', 'note')
+                          .count
       break if days[day] == 0
       streak += 1
       wiki_edit_count += days[day]
@@ -185,7 +207,11 @@ class User < ActiveRecord::Base
     streak = 0
     comment_count = 0
     (0..span).each do |day|
-      days[day] = Comment.count :all, select: :timestamp, conditions: { uid: drupal_user.uid, status: 1, timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i }
+      days[day] = Comment.select(:timestamp)
+                         .where( uid: drupal_user.uid,
+                                 status: 1,
+                                 timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
+                         .count
       break if days[day] == 0
       streak += 1
       comment_count += days[day]
@@ -203,7 +229,7 @@ class User < ActiveRecord::Base
   end
 
   def barnstars
-    DrupalNodeCommunityTag.includes(:node, :tag).where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
+    NodeTag.includes(:node, :tag).where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
   end
 
   def photo_path(size = :medium)

@@ -1,4 +1,6 @@
 class CommentController < ApplicationController
+  include CommentHelper
+
   respond_to :html, :xml, :json
   before_filter :require_user, only: %i[create update delete]
 
@@ -12,9 +14,11 @@ class CommentController < ApplicationController
   # create node comments
   def create
     @node = Node.find params[:id]
-    @comment = @node.add_comment(uid: current_user.uid, body: params[:body])
-    if current_user && @comment.save
-      @comment.notify(current_user)
+    @body = params[:body]
+    @user = current_user
+
+    begin
+      @comment = create_comment(@node, @user, @body)
       respond_with do |format|
         if params[:type] && params[:type] == 'question'
           @answer_id = 0
@@ -30,9 +34,36 @@ class CommentController < ApplicationController
           end
         end
       end
-    else
+    rescue CommentError
       flash[:error] = 'The comment could not be saved.'
       render text: 'failure'
+    end
+  end
+
+  def create_by_token
+    @node = Node.find params[:id]
+    @user = User.find_by_username params[:username]
+    @body = params[:body]
+    @token = request.headers["HTTP_TOKEN"]
+
+    if @user && @user.token == @token
+      begin
+        # The create_comment is a function that has been defined inside the
+        # CommentHelper module inside app/helpers/comment_helper.rb and can be
+        # used in here because the module was `include`d right at the beginning
+        @comment = create_comment(@node, @user, @body)
+        respond_to do |format|
+          format.all { render :nothing => true, :status => :created }
+        end
+      rescue CommentError
+        respond_to do |format|
+          format.all { render :nothing => true, :status => :bad_request }
+        end
+      end
+    else
+      respond_to do |format|
+        format.all { render :nothing => true, :status => :unauthorized }
+      end
     end
   end
 

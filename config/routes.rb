@@ -3,20 +3,21 @@ Plots2::Application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
+  # Manually written API functions
+  post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
+
+  get 'searches/test' => 'searches#test'
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
   mount Srch::API => '/api'
   mount GrapeSwaggerRails::Engine => '/api/d1ocs'
   #end
 
-
   resources :rusers
   resources :user_sessions
   resources :images
   resources :features
   resources :searches
-
-  get 'searches/test' => 'searches#test'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -29,7 +30,7 @@ Plots2::Application.routes.draw do
 
   # switch off subdomain matching when in development
   if Rails.env.test?
-  # or to skip www:
+    # or to skip www:
     match "", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
     match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
   end
@@ -52,13 +53,15 @@ Plots2::Application.routes.draw do
   match 'home' => 'home#front'
   resources :relationships, only: [:create, :destroy]
 
+  get '/wiki/:id/comments', to: 'wiki#comments'
+
   #resources :users
 
   match 'openid' => 'openid#index'
   # Try to get rails to accept params with periods in the keyname?
   # The following isn't right and it may be about param parsing rather than routing?
   # match 'openid' => 'openid#index', :constraints => { 'openid.mode' => /.*/ }
-# try this; http://jystewart.net/2007/10/24/a-ruby-on-rails-openid-server/
+  # try this; http://jystewart.net/2007/10/24/a-ruby-on-rails-openid-server/
 
   match 'openid/xrds' => 'openid#idp_xrds'
   match 'openid/decision' => 'openid#decision'
@@ -86,9 +89,9 @@ Plots2::Application.routes.draw do
   match 'wiki/create' => 'wiki#create'
   match 'wiki/diff' => 'wiki#diff'
   match 'wiki/:id' => 'wiki#show'
-    # these need precedence for tag listings
-    match 'feed/tag/:tagname' => 'tag#rss'
-    match ':node_type/tag(/:id)' => 'tag#show'
+  # these need precedence for tag listings
+  match 'feed/tag/:tagname' => 'tag#rss'
+  match ':node_type/tag(/:id)' => 'tag#show'
   match 'wiki/raw/:id' => 'wiki#raw'
   match 'wiki/revisions/:id' => 'wiki#revisions'
   match 'wiki/revert/:id' => 'wiki#revert'
@@ -109,10 +112,9 @@ Plots2::Application.routes.draw do
 
   match 'places' => 'notes#places'
   match 'tools' => 'notes#tools'
-  match 'methods' => 'notes#methods'
+  match 'methods' => 'wiki#methods'
   match 'methods/:topic' => 'wiki#methods'
-  match 'methods2' => 'wiki#methods'
-  match 'techniques' => 'notes#techniques'
+  match 'techniques' => 'wiki#techniques'
 
   match 'report/:id' => 'legacy#report'
   match 'node/:id' => 'legacy#node'
@@ -137,24 +139,11 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
-  match 'questions_search/:id' => 'questions_search#index'
-  match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
-
   #Search Pages
-  match 'search/advanced/:id' => 'searches#new'
   match 'search/dynamic' => 'searches#dynamic'
   match 'search/dynamic/:id' => 'searches#dynamic'
-  match 'search/typeahead/:id' => 'searches#typeahead'
-  match 'search/questions/:id' => 'searches#questions'
-  match 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
-  match 'search/:id' => 'searches#normal_search'
-  match 'search/advanced' => 'searches#new'
+  match 'search/:id' => 'searches#results'
   match 'search' => 'searches#new'
-
-  # Question Search capability--temporary until combined with full Search Capabilities
-  match 'questions_search/:id' => 'questions_search#index'
-  match 'questions_search/typeahead/:id' => 'questions_search#typeahead'
-
 
   match 'widget/:id' => 'tag#widget'
   match 'blog' => 'tag#blog', :id => "blog"

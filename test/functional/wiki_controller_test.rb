@@ -143,7 +143,7 @@ class WikiControllerTest < ActionController::TestCase
   test 'basic user blocked from editing a locked wiki page' do
     node(:organizers).add_tag('locked', rusers(:admin)) # lock the page with a tag
     # then try editing it
-    assert_difference 'DrupalNodeRevision.count', 0 do
+    assert_difference 'Revision.count', 0 do
       post :edit,
            id: 'organizers'
     end
@@ -154,7 +154,7 @@ class WikiControllerTest < ActionController::TestCase
   test 'basic user blocked from updating a locked wiki page' do
     node(:organizers).add_tag('locked', rusers(:admin)) # lock the page with a tag
     # then try editing it
-    assert_difference 'DrupalNodeRevision.count', 0 do
+    assert_difference 'Revision.count', 0 do
       post :update,
            id: node(:organizers).id
     end
@@ -259,7 +259,7 @@ class WikiControllerTest < ActionController::TestCase
   #  test "admin user should not delete wiki revision if its the only revision" do
   #    UserSession.create(rusers(:admin))
   ## this will require creating a wiki page with only one revision, to be sure
-  ## this could also be done in a unit test if we add a before_destroy filter on the DrupalNodeRevision model
+  ## this could also be done in a unit test if we add a before_destroy filter on the Revision model
   #    UserSession.find.destroy
   #  end
 
@@ -387,7 +387,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template :index
-    assert_select 'title', 'Public Lab: Popular wiki pages'
+    assert_select 'title', '&#127880; Public Lab: Popular wiki pages'
   end
 
   test  'should display well liked wiki pages' do
@@ -395,7 +395,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template :index
-    assert_select 'title', 'Public Lab: Well-liked wiki pages'
+    assert_select 'title', '&#127880; Public Lab: Well-liked wiki pages'
   end
 
   test 'should choose I18n for wiki controller' do
@@ -440,7 +440,7 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.create(rusers(:jeff))
     node = node(:about)
 
-    assert_difference 'DrupalNodeRevision.count' do
+    assert_difference 'Revision.count' do
       assert_difference "Node.find(#{node.id}).revisions.count" do
         get :replace, id: node.id, before: 'Public', after: 'Private'
       end
@@ -456,7 +456,7 @@ class WikiControllerTest < ActionController::TestCase
     assert !node.latest.body.include?('Private')
     assert node.latest.body.include?('Public')
 
-    assert_difference 'DrupalNodeRevision.count' do
+    assert_difference 'Revision.count' do
       assert_difference "Node.find(#{node.id}).revisions.count" do
         xhr :post, :replace, id: node.id, before: 'Public', after: 'Private'
       end
@@ -475,7 +475,7 @@ class WikiControllerTest < ActionController::TestCase
     node = node(:about)
     assert node.latest.update_attribute('body', 'Public Lab')
 
-    assert_difference 'DrupalNodeRevision.count', 0 do
+    assert_difference 'Revision.count', 0 do
       assert_difference "Node.find(#{node.id}).revisions.count", 0 do
         xhr :post, :replace, id: node.id, before: 'Elephants', after: 'Tigers'
       end
@@ -571,5 +571,13 @@ class WikiControllerTest < ActionController::TestCase
 
     get :show, id: @node.slug
     assert_response :success
+  end
+
+  test "should render comment template when comment icon is clicked" do
+    wiki = node(:wiki_page)
+    slug = wiki.path.gsub('/wiki/', '')
+    get :comments, id: slug
+    assert_response :success
+    assert_select 'div#comments h3', /Comments/
   end
 end

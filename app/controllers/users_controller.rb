@@ -19,7 +19,7 @@ class UsersController < ApplicationController
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
       else
-        @user.drupal_user.set_bio(params[:drupal_user][:bio])
+        @user.update_attribute(:bio, params[:drupal_user][:bio])
         @user.add_to_lists(['publiclaboratory'])
         flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
     if current_user
     @user = current_user
       @user.attributes = params[:user]
-      @user.drupal_user.set_bio(params[:drupal_user][:bio])
+      @user.update_attribute(:bio, params[:drupal_user][:bio])
       @user.save({}) do |result|
         if result
           if session[:openid_return_to] # for openid login, redirects back to openid auth process
@@ -117,10 +117,10 @@ class UsersController < ApplicationController
                           .where(status: 1)
                           .order('node.nid DESC')
     @answered_questions = questions.select{|q| q.answers.collect(&:author).include?(@user)}
-    wikis = DrupalNodeRevision.order("nid DESC")
-                              .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
-                              .joins(:node)
-                              .limit(20)
+    wikis = Revision.order("nid DESC")
+                    .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
+                    .joins(:node)
+                    .limit(20)
     @wikis = wikis.collect(&:parent).uniq
     if @user.status == 0
       if current_user && (current_user.role == "admin" || current_user.role == "moderator")
@@ -237,48 +237,6 @@ class UsersController < ApplicationController
 
   def info
     @user = DrupalUsers.find_by_name(params[:id])
-    @location_tag = @user.location_tag
-  end
-
-  def privacy
-  # maintains location privacy functionality
-    status = params[:location_privacy]
-    @output = {
-      errors: [],
-      status: false
-    }
-
-    user = DrupalUsers.find_by_name(params[:id])
-    if current_user.update_attribute(:location_privacy, status)
-      @output[:status] = true
-    else
-      @output[:errors] << flash[:error]
-    end
-
-    if user.location_tag
-      @lat, @long =  user.location_tag.lat, user.location_tag.lon
-    end
-
-    respond_to do |format|
-      format.json {
-        render json: {
-          status: @output[:status],
-          model: current_user,
-          lat: @lat,
-          long: @long
-        }.to_json
-      }
-
-      format.html {
-        if @output[:status]
-          flash[:notice] = I18n.t('users_controller.preference_saved')
-        else
-          flash[:error] = I18n.t('users_controller.something_went_wrong')
-        end
-        redirect_to info_path(params[:id])
-      }
-    end
-
   end
 
   def following
@@ -293,47 +251,6 @@ class UsersController < ApplicationController
     @user  = User.find_by_username(params[:id])
     @users = @user.followers.paginate(page: params[:page])
     render 'show_follow'
-  end
-
-  def map
-#    @title = "Maps"
-#    valid_tags = ["skill", "role", "gear", "tool"]
-#    tag = params[:tag].downcase if params[:tag]
-#
-#    value = params[:value]
-#    @country = params[:country]
-#
-#    if !tag.blank?
-#      if !valid_tags.include? tag
-#        flash[:error] = "#{tag} doesn't exitst"
-#      end
-#      @location_tags = Hash.new
-#      LocationTag.all.each do |location_tag|
-#        if !value.empty?
-#          @user_tags = location_tag.drupal_users.user.user_tags.select { |utag| utag if utag.value == "#{tag}:#{value}" }
-#        else
-#          @user_tags = location_tag.drupal_users.user.user_tags.select { |utag| utag if utag.value =~ /\A#{tag}:[A-Za-z0-9]*\z/ }
-#        end
-#
-#        if !@user_tags.empty?
-#          if @location_tags[[location_tag.lat, location_tag.lon]]
-#            @user_tags.each do |user_tag|
-#              @location_tags[[location_tag.lat, location_tag.lon]] << user_tag
-#            end
-#          else
-#            @location_tags[[location_tag.lat, location_tag.lon]] = []
-#            @user_tags.each do |user_tag|
-#              @location_tags[[location_tag.lat, location_tag.lon]] << user_tag
-#            end
-#          end
-#        end
-#      end
-#    elsif !@country.blank?
-#      @users = DrupalUsers.all.select {|user| user.location_tag if user.location_tag }
-#                .select {|user| user.location_tag if user.location_tag.country && user.location_tag.country == @country }
-#    else
-#      @users = DrupalUsers.all.select {|user| user.location_tag if !user.location_tag.nil? } if !@users
-#    end
   end
 
 end

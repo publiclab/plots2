@@ -1,4 +1,4 @@
-<p>Dear <%= @user.name %>,</p>
+<p>Dear <%= @user.username %>,</p>
 
 <p>Public Lab contributor <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>'><%= @node.author.name %></a> just <% if @node.has_power_tag('question') %>asked a question<% else %>posted a new research note<% end %> entitled '<b><%= @node.title %></b>':</p>
 

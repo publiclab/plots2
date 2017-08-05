@@ -16,6 +16,10 @@ class SearchService
     @tags ||= find_tags(params)
   end
 
+  def nodes(params)
+    @nodes ||= find_nodes(params)
+  end
+
   def notes(params)
     @notes ||= find_notes(params)
   end
@@ -47,6 +51,12 @@ class SearchService
            .where('status = 1 AND comment LIKE ?', '%' + input + '%')
   end
 
+  def find_nodes(input, limit = 5)
+    Node.limit(limit)
+        .order('nid DESC')
+        .where('node.status = 1 AND title LIKE ?', '%' + input + '%')
+  end
+
   ## search for node title only
   ## FIXme with solr
   def find_notes(input, limit = 5)
@@ -59,37 +69,6 @@ class SearchService
     Node.limit(limit)
         .order('nid DESC')
         .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
-  end
-
-  # DEPRECATED
-  def type_ahead(id)
-    warn '[DEPRECATED] SearchService.type_ahead is deprecated.  Use the TypeaheadService methods instead.'
-    matches = []
-
-    notes(id).select('title,type,nid,path').each do |match|
-      matches << "<i data-url='" + match.path + "' class='fa fa-file'></i> " + match.title
-    end
-
-    Node.limit(5)
-        .order('nid DESC')
-        .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + id + '%')
-        .select('title,type,nid,path').each do |match|
-      matches << "<i data-url='" + match.path + "' class='fa fa-" + match.icon + "'></i> " + match.title
-    end
-
-    maps(id).select('title,type,nid,path').each do |match|
-      matches << "<i data-url='" + match.path + "' class='fa fa-" + match.icon + "'></i> " + match.title
-    end
-
-    users(id).each do |match|
-      matches << "<i data-url='/profile/" + match.name + "' class='fa fa-user'></i> " + match.name
-    end
-
-    tags(id).each do |match|
-      matches << "<i data-url='/tag/" + match.name + "' class='fa fa-tag'></i> " + match.name
-    end
-
-    matches
   end
 
   # Run a search in any of the associated systems for references that contain the search string
@@ -173,7 +152,7 @@ class SearchService
       # Tags
       sterms = srchString.split(' ')
       tlist = Tag.where(name: sterms)
-                 .joins(:drupal_node_community_tag)
+                 .joins(:node_tag)
                  .joins(:node)
                  .where('node.status = 1')
                  .select('DISTINCT node.nid,node.title,node.path')

@@ -1,4 +1,4 @@
-class DrupalNodeCommunityTag < ActiveRecord::Base
+class NodeTag < ActiveRecord::Base
   attr_accessible :nid, :tid, :uid, :date
   self.table_name = 'community_tags'
   self.primary_keys = :tid, :nid

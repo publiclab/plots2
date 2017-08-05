@@ -1,9 +1,6 @@
-<%= render :partial => "sidebar/related" %>
-
-<div class="col-md-9">
-  <h3 style="margin-top:0;">Advanced search</h3>
-
-  <%= render 'form' %>
-
-  <hr />
-</div>
+<form id="inline_searchform" class="form" autocomplete="off">
+  <div class="form-group form-inline">
+    <input tabindex="1" id="inline_searchform_input" type="text" class="search-query typeahead form-control" data-provide="typeahead" value="<%= params[:id] %>">
+    <button type="submit" class="btn btn-primary"><i class="fa fa-search fa fa-white"></i></button>
+  </div>
+</form>

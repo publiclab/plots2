@@ -5,7 +5,7 @@ class TagController < ApplicationController
   def index
     @title = I18n.t('tag_controller.tags')
     @paginated = true
-    @tags = Tag.joins(:drupal_node_community_tag, :node)
+    @tags = Tag.joins(:node_tag, :node)
                .where('node.status = ?', 1)
                .paginate(page: params[:page])
                .order('count DESC')
@@ -13,13 +13,18 @@ class TagController < ApplicationController
   end
 
   def show
-    @wiki = Node.where(slug: params[:id]).first
+    # try for a matching /wiki/_TAGNAME_ or /_TAGNAME_
+    @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
     default_type = if params[:id].match('question:')
                      'questions'
                    else
                      'note'
                    end
+
+    # params[:node_type] - this is an optional param
+    # if params[:node_type] is nil - use @default_type
     @node_type = params[:node_type] || default_type
+    
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
     node_type = 'map' if @node_type == 'maps'
@@ -28,24 +33,28 @@ class TagController < ApplicationController
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
       nodes = Node.where(status: 1, type: node_type)
-                  .includes(:drupal_node_revision, :tag)
+                  .includes(:revision, :tag)
                   .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
                   .page(params[:page])
                   .order('node_revisions.timestamp DESC')
     else
       @tags = Tag.find_all_by_name params[:id]
       nodes = Node.where(status: 1, type: node_type)
-                  .includes(:drupal_node_revision, :tag)
+                  .includes(:revision, :tag)
                   .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
                   .page(params[:page])
                   .order('node_revisions.timestamp DESC')
     end
+
+    # breaks the parameter 
+    # sets everything to an empty array
+    set_sidebar :tags, [params[:id]]
+
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
-    set_sidebar :tags, [params[:id]]
 
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
@@ -131,6 +140,7 @@ class TagController < ApplicationController
       else
         @output[:errors] << node.can_tag(tagname, current_user, true)
       end
+
     end
     respond_with do |format|
       format.html do
@@ -148,7 +158,7 @@ class TagController < ApplicationController
 
   # should delete only the term_node/node_tag (instance), not the term_data (class)
   def delete
-    node_tag = DrupalNodeCommunityTag.where(nid: params[:nid], tid: params[:tid]).first
+    node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
     if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator'
 
@@ -188,7 +198,7 @@ class TagController < ApplicationController
   def rss
     if params[:tagname][-1..-1] == '*'
       @notes = Node.where(status: 1, type: 'note')
-                   .includes(:drupal_node_revision, :tag)
+                   .includes(:revision, :tag)
                    .where('term_data.name LIKE (?)', params[:tagname][0..-2] + '%')
                    .limit(20)
                    .order('node_revisions.timestamp DESC')
@@ -214,7 +224,7 @@ class TagController < ApplicationController
     @tagnames = [params[:id]]
     @tag = Tag.find_by_name params[:id]
     @notes = Node.where(status: 1, type: 'note')
-                 .includes(:drupal_node_revision, :tag)
+                 .includes(:revision, :tag)
                  .where('term_data.name = ?', params[:id])
                  .order('node_revisions.timestamp DESC')
     @users = @notes.collect(&:author).uniq
@@ -231,38 +241,12 @@ class TagController < ApplicationController
       @tags << tag if tag
       @tagdata[tagname] = {}
       t = Tag.find :all, conditions: { name: tagname }
-      nct = DrupalNodeCommunityTag.find :all, conditions: ['tid in (?)', t.collect(&:tid)]
+      nct = NodeTag.find :all, conditions: ['tid in (?)', t.collect(&:tid)]
       @tagdata[tagname][:users] = Node.find(:all, conditions: ['nid IN (?)', nct.collect(&:nid)]).collect(&:author).uniq.length
       @tagdata[tagname][:wikis] = Node.count :all, conditions: ["nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)]
       @tagdata[:notes] = Node.count :all, conditions: ["nid IN (?) AND type = 'note'", nct.collect(&:nid)]
     end
     render template: 'tag/contributors-index'
-  end
-
-  # let's not use session for tags storage; deprecate these unless they're being used
-  # to remember and persist recently searched for tags:
-  def add_tag
-    session[:tags] = {} unless session[:tags]
-    tagnames = params[:name].split(',')
-    tagnames.each do |tagname|
-      tag = Tag.find_by_name(tagname)
-      if tag
-        session[:tags][tag.tid.to_s] = tagname
-      else
-        session[:tags][tagname] = tagname
-      end
-    end
-    redirect_to params[:return_to]
-  end
-
-  def remove_tag
-    session[:tags].delete(params[:id]) if session[:tags]
-    redirect_to params[:return_to]
-  end
-
-  def remove_all_tags
-    session[:tags].clear if session[:tags]
-    redirect_to params[:return_to]
   end
 
   def location

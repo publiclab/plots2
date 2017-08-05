@@ -21,7 +21,7 @@ Some key features include:
 * a user dashboard [presenting recent activity](https://publiclab.org/research)
 * a [Question and Answer system](https://publiclab.org/questions)
 
-![Diagram](https://publiclab.org/system/images/photos/000/019/219/large/diagram.png)
+![Diagram](https://publiclab.org/system/images/photos/000/021/061/original/diagram.png)
 
 _(Above: draft of our [Data model](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md))_
 

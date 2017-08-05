@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
       @maps = Tag.find_nodes_by_type(data, 'map', 20)
     else # type is generic
       # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
-      hidden_nids = Node.joins(:drupal_node_community_tag)
+      hidden_nids = Node.joins(:node_tag)
                         .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
                         .select('node.*, term_data.*, community_tags.*')
                         .where(type: 'note', status: 1)
@@ -33,10 +33,10 @@ class ApplicationController < ActionController::Base
                         .collect(&:nid)
       @notes = if params[:controller] == 'questions'
                  Node.questions
-                     .joins(:drupal_node_revision)
+                     .joins(:revision)
                else
                  Node.research_notes
-                     .joins(:drupal_node_revision)
+                     .joins(:revision)
                      .order('node.nid DESC')
                      .paginate(page: params[:page])
                end
@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
       end
 
       @wikis = Node.order('changed DESC')
-                   .joins(:drupal_node_revision)
+                   .joins(:revision)
                    .where('node_revisions.status = 1 AND node.status = 1 AND type = "page"')
                    .limit(10)
                    .group('node_revisions.nid')

@@ -1,5 +1,4 @@
 </div>
-
 <% if params[:raw] == 'true' %>
 <link href="/lib/woofmark/dist/woofmark.min.css" rel="stylesheet">
 <link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
@@ -65,11 +64,15 @@
     <% end %>
 
     <div class="tab-pane active" id="tab-overview">
-      <div <% unless @node.has_tag('style:wide') %>style="max-width:800px;"<% end %> id="content" class="pl-content wiki">
-        <%= raw auto_link(insert_extras(@revision.render_body), sanitize: false) %>
-      </div>
-      <% if params[:raw] == 'true' %>
-        <div style="display:none;" id="content-raw-markdown" class="pl-content wiki"><%= raw insert_extras(@revision.body_raw) %></div>
+      <% if controller.action_name == 'comments' %>
+          <%= render :partial => "notes/comments", :locals => {:nodes => @nodes} %>
+      <% else %>
+        <div <% unless @node.has_tag('style:wide') %>style="max-width:800px;"<% end %> id="content" class="pl-content wiki">
+          <%= raw auto_link(insert_extras(@revision.render_body), sanitize: false) %>
+        </div>
+        <% if params[:raw] == 'true' %>
+          <div style="display:none;" id="content-raw-markdown" class="pl-content wiki"><%= raw insert_extras(@revision.body_raw) %></div>
+        <% end %>
       <% end %>
     </div>
 
@@ -92,7 +95,7 @@
     $('#content img').addClass('img-rounded');
   <% end %>
 
-  setupWiki(<%= @node.id %>, <%= params[:raw] == 'true' %>, <%= current_user.nil? != true %>);
+  setupWiki(<%= @node.id %>, "<%= @node.title %>", <%= params[:raw] == 'true' %>, <%= current_user.nil? != true %>);
 
 })()
 </script>

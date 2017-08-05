@@ -15,7 +15,6 @@ class DrupalUsers < ActiveRecord::Base
   has_many :answers, foreign_key: :uid
   has_many :answer_selections, foreign_key: :user_id
   has_many :comments, foreign_key: 'uid'
-  has_one :location_tag, foreign_key: 'uid', dependent: :destroy
 
 
   include SolrToggle
@@ -30,9 +29,13 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def user
-    User.find_by_username name
+    User.where(username: name).first
   end
 
+  def bio
+    user.bio
+  end
+  
   def username
     name
   end
@@ -119,22 +122,6 @@ class DrupalUsers < ActiveRecord::Base
     drupal_profile_values
   end
 
-  def set_bio(text)
-    bio = DrupalProfileValue.find_by_uid(uid, conditions: { fid: 7 })
-    bio = DrupalProfileValue.new(fid: 7, uid: uid) if bio.nil?
-    bio.value = text
-    bio.save!
-  end
-
-  def bio
-    bio = DrupalProfileValue.find_by_uid(uid, conditions: { fid: 7 })
-    if bio
-      bio.value || ''
-    else
-      ''
-    end
-  end
-
   def notes
     user.notes
   end
@@ -144,7 +131,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def node_count
-    Node.count(:all, conditions: { status: 1, uid: uid }) + DrupalNodeRevision.count(:all, conditions: { uid: uid })
+    Node.count(:all, conditions: { status: 1, uid: uid }) + Revision.count(:all, conditions: { uid: uid })
   end
 
   # accepts array of tag names (strings)

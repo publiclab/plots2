@@ -14,7 +14,7 @@ module NodeShared
     body.gsub(/[^\>`](\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2).parameterize
       nodes = Node.where(status: 1, type: 'note')
-                  .includes(:drupal_node_revision, :tag)
+                  .includes(:revision, :tag)
                   .where('term_data.name = ?', tagname)
                   .order('node_revisions.timestamp DESC')
       output = ''
@@ -38,7 +38,7 @@ module NodeShared
     body.gsub(/[^\>`](\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2).parameterize
       nodes = Node.where(status: 1, type: 'note')
-                  .includes(:drupal_node_revision, :tag)
+                  .includes(:revision, :tag)
                   .where('term_data.name = ?', "question:#{tagname}")
                   .order('node_revisions.timestamp DESC')
       output = ''
@@ -103,7 +103,7 @@ module NodeShared
     body.gsub(/[^\>`](\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
-      nids = DrupalNodeCommunityTag.joins(:tag)
+      nids = NodeTag.joins(:tag)
                                    .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
                                    .collect(&:nid)
       nids = nids || []
@@ -129,10 +129,10 @@ module NodeShared
       tagname = Regexp.last_match(2)
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
-      nids = DrupalNodeCommunityTag.joins(:tag)
+      nids = NodeTag.joins(:tag)
                                    .where('term_data.name = ?', tagname)
                                    .collect(&:nid)
-      nids = DrupalNodeCommunityTag.joins(:tag)
+      nids = NodeTag.joins(:tag)
                                    .where(nid: nids)
                                    .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
                                    .collect(&:nid)
