@@ -36,9 +36,9 @@ junit.failures.collect(&:nodes).flatten.each do |failure|
     line = match[2]
     if !source_path.nil? && !line.nil?
       f = f.gsub(source_path + ':' + line, "<a href='https://github.com/{github.pr_author}/plots2/tree/{github.branch_for_base}/#{source_path}#L#{line}'>#{source_path}:#{line}</a>")
-      error "Failure: #{f}"
+      fail("Failure at: #{f}")
     else
-      error "Failure: #{f.inspect}"
+      fail("Failure at: #{f.inspect}")
     end
   end
 end
