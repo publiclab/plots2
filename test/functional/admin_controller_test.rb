@@ -388,9 +388,4 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 1, node.author.status
     assert_redirected_to node.path(:question)
   end
-
-  test 'fail a test' do
-    assert_equal flash[:notice], "A bad message."
-    assert_redirected_to '/'
-  end
 end
