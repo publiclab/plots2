@@ -34,7 +34,7 @@ junit.failures.collect(&:nodes).flatten.each do |failure|
     source_path = match[1]
     line = match[2]
     if !source_path.nil? && !line.nil?
-      f = f.gsub(source_path + ':' + line, "<a href='https://github.com/#{github.pr_author}/plots2/tree/#{github.branch_for_base}/#{source_path}#L#{line}'>#{source_path}:#{line}</a>")
+      f = f.gsub(source_path + ':' + line, "<a href='https://github.com/#{github.pr_author}/plots2/tree/#{github.branch_for_head}/#{source_path}#L#{line}'>#{source_path}:#{line}</a>")
     end
     fail("There was a test failure at: #{f}")
   end
