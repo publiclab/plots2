@@ -390,6 +390,7 @@ class AdminControllerTest < ActionController::TestCase
   end
 
   test 'fail a test' do
-    assert false
+    assert_equal flash[:notice], "A bad message."
+    assert_redirected_to '/'
   end
 end
