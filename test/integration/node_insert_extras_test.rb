@@ -29,7 +29,7 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
     assert_select 'h1', title
 
     assert_not_nil NodeShared.notes_grid('test')
-    assert_nil     Node.activities('shouldnt')
+    assert_equal   [], Node.activities('shouldnt')
     assert_not_nil Node.upgrades('test')
 
     assert_select 'table.notes-grid-test'
