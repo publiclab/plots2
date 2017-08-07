@@ -30,7 +30,7 @@ class WikiController < ApplicationController
         redirect_to Node.find(@node.power_tag('redirect')).path
         return
       elsif current_user.role == 'admin' || current_user.role == 'moderator'
-        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}.
+        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to <a href='#{Node.find(@node.power_tag('redirect')).path}'>#{Node.find(@node.power_tag('redirect')).title}</a>.
         To remove the redirect, delete the tag beginning with 'redirect:'"
       end
     end
