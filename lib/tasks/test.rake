@@ -1,9 +1,13 @@
 # rake test:all
 namespace :test do
   desc "Run rails and jasmine tests"
-  task :all do
+  task :all => :environment do
     require 'coveralls/rake/task'
     Coveralls::RakeTask.new
+    if ENV['GENERATE_REPORT'] == 'true'
+      require 'ci/reporter/rake/test_unit'
+      Rake::Task["ci:setup:testunit"].execute
+    end
     puts "Running Rails tests"
     Rake::Task["test"].execute
     puts "Running Solr-dependent tests"

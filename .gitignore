@@ -44,6 +44,7 @@ public/assets/
 production.db
 test.db
 solr/*
+test/reports/
 
 # Ignore NPM
 node_modules
