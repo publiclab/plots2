@@ -50,7 +50,7 @@ function postProcessContent(element) {
 /* add "link" icon to headers for example.com#Hash deep links */
 function addDeepLinks(element) {
   element.find("h1,h2,h3,h4").append(function(i, html) {
-    return " <small><a href='#" + this.innerHTML.replace(/ /g, '+') + "'><i class='icon fa fa-link'></i></a></small>";
+    return " <small><a id='" + this.innerHTML.replace(/ /g, '+') + "' href='#" + this.innerHTML.replace(/ /g, '+') + "'><i class='icon fa fa-link'></i></a></small>";
   });
 }
 
