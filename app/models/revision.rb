@@ -132,6 +132,7 @@ class Revision < ActiveRecord::Base
   end
 
   def body_extras(content)
+    # insert space between ##Headers to make ## Headers
     content.gsub(/^(#+)(\w)/) { |_m| Regexp.last_match(1) + ' ' + Regexp.last_match(2) }
     # inline edit button
     content = content.gsub('[edit]', '<p class="well" style="padding:6px;"><a class="btn btn-primary" href="' + parent.edit_path + '"><i class="fa fa-white icon-pencil"></i> Edit this page</a> to help complete it!</p>')
