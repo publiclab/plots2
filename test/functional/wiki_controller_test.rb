@@ -1,19 +1,3 @@
-# def subdomain
-# def show
-# def raw
-# def edit
-# def new
-# def create
-# def update
-# def delete
-# def revert
-# def root
-# def revisions
-# def revision
-# def index
-# def popular
-# def liked
-
 require 'test_helper'
 include ActionView::Helpers::TextHelper
 include ApplicationHelper
@@ -534,7 +518,7 @@ class WikiControllerTest < ActionController::TestCase
     get :show, id: slug
 
     assert_response :success
-    assert_equal "Only moderators and admins see this page, as it is redirected to #{blog.title}.
+    assert_equal "Only moderators and admins see this page, as it is redirected to <a href='#{blog.path}'>#{blog.title}</a>.
         To remove the redirect, delete the tag beginning with 'redirect:'", flash[:warning]
     UserSession.find.destroy
   end
