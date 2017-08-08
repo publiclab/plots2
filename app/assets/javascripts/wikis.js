@@ -16,6 +16,11 @@ function setupWiki(node_id, title, raw, logged_in) {
       postProcessor: postProcessContent,
       extraButtons: {
         "fa-question": questionForm
+      },
+      editorOptions: {
+        history: {
+          prefix: "inline-"
+        }
       }
     });
     $('#content').hide();
