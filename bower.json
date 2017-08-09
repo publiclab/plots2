@@ -17,7 +17,7 @@
     "moment": "~2.10.6",
     "junction": "theleagueof/junction",
     "publiclab-editor": "~0.2.0",
-    "inline-markdown-editor": "~0.2.0",
+    "inline-markdown-editor": "~0.3.0",
     "leaflet-d3": "^0.3.8",
     "woofmark": "~4.2.0",
     "horsey": "3.0.0",
