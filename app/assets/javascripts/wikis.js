@@ -16,6 +16,11 @@ function setupWiki(node_id, title, raw, logged_in) {
       postProcessor: postProcessContent,
       extraButtons: {
         "fa-question": questionForm
+      },
+      editorOptions: {
+        history: {
+          prefix: "inline-"
+        }
       }
     });
     $('#content').hide();
@@ -57,9 +62,13 @@ function addDeepLinks(element) {
 function preProcessMarkdown(markdown) {
   // to preserve blockquote markdown, as in "> a blockquote"
   markdown = markdown.replace('&gt;', '>');
-  // insert space between "##Header" => "## Header" to deal with improper markdown header usage
-  markdown = markdown.replace(/($#+|##+)(\w)/, function(m, p1, p2) {
+  markdown = reformBadHeaders(markdown);
+  return markdown;
+}
+
+// insert space between "##Header" => "## Header" to deal with improper markdown header usage
+function reformBadHeaders(markdown) {
+  return markdown.replace(/($#+|##+)(\w)/g, function(m, p1, p2) {
     return p1 + ' ' + p2;
   })
-  return markdown;
 }
