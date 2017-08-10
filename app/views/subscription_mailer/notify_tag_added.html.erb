@@ -3,6 +3,7 @@
 <p>Public Lab contributor <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @current_user.username %>'><%= @current_user.username %></a> just added a tag
 on  '<b><%= @node.title %></b>' entitled: <b> <%= @tag.name %></b></p>
 
+<p>Read and respond to the post here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p>
 
 <% if @user.role == "admin" || @user.role == "moderator" %>Does this look like spam? <a class="btn btn-sm" href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/spam/<%= @node.id %>">Spam</a><% end %>
 
