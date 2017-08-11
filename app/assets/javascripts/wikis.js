@@ -1,6 +1,5 @@
 //= require inline-markdown-editor/dist/inlineMarkdownEditor.js
 var wiki_title;
-
 function setupWiki(node_id, title, raw, logged_in) {
   // insert inline forms
   if (raw && logged_in) {
@@ -15,7 +14,8 @@ function setupWiki(node_id, title, raw, logged_in) {
       preProcessor: preProcessMarkdown,
       postProcessor: postProcessContent,
       extraButtons: {
-        "fa-question": questionForm
+        "fa-question": questionForm,
+        "fa-comment": inlineCommenting
       },
       editorOptions: {
         history: {
@@ -35,6 +35,12 @@ function setupWiki(node_id, title, raw, logged_in) {
   function questionForm(qbutton, uniqueId) {
     wiki_title = wiki_title.replace(/ /g, "-");
     qbutton.attr('href', '/questions/new?tags=response:' + node_id + ', question%3A' + wiki_title + ', ' + wiki_title + '-' + uniqueId + ', a-wiki-question&template=question&redirect=question').attr('target', '_blank');
+  }
+
+  function inlineCommenting(cbutton, uniqueId){
+    cbutton.click(function(){
+      console.log(uniqueId);
+    });
   }
 
 }
