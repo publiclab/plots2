@@ -47,3 +47,4 @@
 //= require grids.js
 //= require short-code-forms/dist/short-code-prompts.js
 //= require wikis.js
+//= require buildSectionCommentForm.js
