@@ -10,6 +10,7 @@ class UserTagTest < ActiveSupport::TestCase
     assert_not_nil user_tag.id
     assert_not_nil user_tag.uid
     assert_not_nil user_tag.value
+    assert_not_nil user_tag.name # for compatibility with regular node_tags, but we should deprecate this
 
     # downcases:
     assert_equal 'skill:entrepreneur', user_tag.value

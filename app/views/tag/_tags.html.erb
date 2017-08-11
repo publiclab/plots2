@@ -1,16 +1,28 @@
 <p>
-  <% @node.node_tags.each do |tag| %>
-    <% if power_tag^tag.name.include?(':') %>
-      <span id="tag_<%= tag.tid %>" class="label <%= label_name %>" data-toggle="tooltip" data-html="true" title="<% if tag.try(:tag).try(:description) && !tag.try(:tag).try(:description).empty? %> <%= tag.try(:tag).try(:description) %> |<% end %> created by <strong><%= tag.try(:author).try(:username) %></strong> <%= time_ago_in_words(Time.at(tag.date)) %> ago">
-        <a class="tag-name" href="<%= "/maps" if @node.type == "map" %>/tag/<%= tag.name %>"><%= tag.name %></a>
-        <% if current_user && (tag.uid == @node.uid || current_user.role == "admin" || current_user.role == "moderator") %>
-          <% if tag.name.include? ':' %>
-            <a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>">x</a>
-          <% else %>
-            <a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>">x</a>
+  <% tags.each do |tag| %>
+    <% if tag.class == NodeTag %>
+
+      <% if power_tag ^ tag.name.include?(':') # XOR operator??? %>
+        <span id="tag_<%= tag.id %>" class="label <%= label_name %>" data-toggle="tooltip" data-html="true" title="<% if tag.description %><%= tag.description %> |<% end %> created by <strong><%= tag.try(:author).try(:username) %></strong> <%= time_ago_in_words(Time.at(tag.date)) %> ago">
+          <a class="tag-name" href="<%= "/maps" if @node.type == "map" %>/tag/<%= tag.name %>"><%= tag.name %></a>
+          <% if current_user && (tag.uid == @node.uid || current_user.role == "admin" || current_user.role == "moderator") %>
+            <% if tag.name.include? ':' %>
+              <a data-confirm="This is a power tag (see https://publiclab.org/wiki/power-tags) -- and may drive a specific function on this page. Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>">x</a>
+            <% else %>
+              <a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/tag/delete/<%= @node.id %>/<%= tag.tid %>" data-tag-id="<%= tag.tid %>">x</a>
+            <% end %>
           <% end %>
-        <% end %>
-      </span>
+        </span>
+      <% end %>
+
+    <% elsif tag.class == UserTag %>
+
+        <span id="tag_<%= tag.id %>" class="label <%= label_name %>">
+          <a class="tag-name" href="/tag/<%= tag.name %>"><%= tag.name %></a>
+          <a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tag/delete/<%= @user.id %>?name=<%= tag.name %>">x</a>
+        </span>
+    
     <% end %>
+
   <% end %>  
 </p>

@@ -148,17 +148,16 @@ class DrupalUsers < ActiveRecord::Base
     Node.find(node_ids.uniq, order: 'nid DESC')
   end
 
+  def user_tags
+    self.user.user_tags
+  end
+
   def tags(limit = 10)
-    Tag.find :all, conditions: ['name in (?)', tagnames], limit: limit
+    self.user.tags(limit)
   end
 
   def tagnames(limit = 20, defaults = true)
-    tagnames = []
-    Node.find(:all, order: 'nid DESC', conditions: { type: 'note', status: 1, uid: uid }, limit: limit).each do |node|
-      tagnames += node.tags.collect(&:name)
-    end
-    tagnames += ['balloon-mapping', 'spectrometer', 'near-infrared-camera', 'thermal-photography', 'newsletter'] if tagnames.empty? && defaults
-    tagnames.uniq
+    self.user.tagnames(limit, defaults)
   end
 
   def tag_counts

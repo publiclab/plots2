@@ -1,9 +1,15 @@
-<%= render partial: 'tag/replication' %>
+<% if @node %>
+  <%= render partial: 'tag/replication' %>
 
-<span id="tags">
-<%= render partial: 'tag/tags', locals: { power_tag: true, label_name: 'label-default' } %>
-<%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary' } %>
-</span>
+  <span id="tags">
+  <%= render partial: 'tag/tags', locals: { power_tag: true, label_name: 'label-default', tags: @node.node_tags } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @node.node_tags } %>
+  </span>
+<% else %>
+  <span id="tags">
+  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @user.user_tags } %>
+  </span>
+<% end %>
 
 <script>
 $(function () {
@@ -11,8 +17,10 @@ $(function () {
 })
 </script>
 
+<% url = url || "/tag/create/" + @node.id.to_s %>
+
 <% if current_user %>
-<form id="tagform" class="form" data-remote="true" action="/tag/create/<%= @node.id %>">
+<form id="tagform" class="form" data-remote="true" action="<%= url %>">
   <div class="control-group">
     <input name="remote" type="hidden" value="true" />
     <div class="input-group col-md-6">
@@ -26,7 +34,13 @@ $(function () {
     </div>
     <script>
       jQuery(document).ready(function() {
-        initTagForm(<%= @node.id %>, '#tagform');
+        <% if @node %>
+          // node tags:
+          initTagForm("/tag/delete/<%= @node.id %>", '#tagform');
+        <% else %>
+          // user tags:
+          initTagForm("/profile/tags/delete/<%= @user.id %>", '#tagform');
+        <% end %>
       });
     </script>
   </div>

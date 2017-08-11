@@ -31,4 +31,9 @@ class NodeTag < ActiveRecord::Base
   def name
     tag.name
   end
+
+  def description
+    self.tag.description if self.tag && self.tag.description && !self.tag.description.empty?
+  end
+
 end
