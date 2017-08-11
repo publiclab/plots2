@@ -3,12 +3,15 @@ Plots2::Application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
+  # Manually written API functions
+  post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
+
+  get 'searches/test' => 'searches#test'
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
   mount Srch::API => '/api'
   mount GrapeSwaggerRails::Engine => '/api/d1ocs'
   #end
-
 
   resources :rusers
   resources :user_sessions
@@ -27,7 +30,7 @@ Plots2::Application.routes.draw do
 
   # switch off subdomain matching when in development
   if Rails.env.test?
-  # or to skip www:
+    # or to skip www:
     match "", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
     match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
   end
@@ -50,13 +53,15 @@ Plots2::Application.routes.draw do
   match 'home' => 'home#front'
   resources :relationships, only: [:create, :destroy]
 
+  get '/wiki/:id/comments', to: 'wiki#comments'
+
   #resources :users
 
   match 'openid' => 'openid#index'
   # Try to get rails to accept params with periods in the keyname?
   # The following isn't right and it may be about param parsing rather than routing?
   # match 'openid' => 'openid#index', :constraints => { 'openid.mode' => /.*/ }
-# try this; http://jystewart.net/2007/10/24/a-ruby-on-rails-openid-server/
+  # try this; http://jystewart.net/2007/10/24/a-ruby-on-rails-openid-server/
 
   match 'openid/xrds' => 'openid#idp_xrds'
   match 'openid/decision' => 'openid#decision'
@@ -84,9 +89,9 @@ Plots2::Application.routes.draw do
   match 'wiki/create' => 'wiki#create'
   match 'wiki/diff' => 'wiki#diff'
   match 'wiki/:id' => 'wiki#show'
-    # these need precedence for tag listings
-    match 'feed/tag/:tagname' => 'tag#rss'
-    match ':node_type/tag(/:id)' => 'tag#show'
+  # these need precedence for tag listings
+  match 'feed/tag/:tagname' => 'tag#rss'
+  match ':node_type/tag(/:id)' => 'tag#show'
   match 'wiki/raw/:id' => 'wiki#raw'
   match 'wiki/revisions/:id' => 'wiki#revisions'
   match 'wiki/revert/:id' => 'wiki#revert'
@@ -135,8 +140,6 @@ Plots2::Application.routes.draw do
   match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
   #Search Pages
-
-  get 'searches/test' => 'searches#test'
   match 'search/dynamic' => 'searches#dynamic'
   match 'search/dynamic/:id' => 'searches#dynamic'
   match 'search/:id' => 'searches#results'

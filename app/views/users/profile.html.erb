@@ -61,6 +61,10 @@
     <a href="?preview=true" class="btn btn-default btn-sm btn-block"><%= t('users.profile.preview_profile_tag') %></a>
   </p>
 
+  <% if @profile_user && current_user && @profile_user == current_user %>
+    <button id="btn-token" class="btn btn-default btn-block">My Access Token</button>
+  <% end %>
+
   <hr />
 
   <% if params[:preview] %>
@@ -70,23 +74,6 @@
     <%= render partial: 'user_tags/tags', locals: { type: 'tool', data: fetch_tags(@user.id, 'tool') } %>
     <%= render partial: 'user_tags/tags', locals: { type: 'role', data: fetch_tags(@user.id, 'role') } %>
 
-    <% if @user.location_tag %>
-      <div class="row">
-        <div class="col-md-3">
-          <label class="" for="location"><%= t('users.profile.location') %></label>
-        </div>
-        <div class="col-md-9">
-          <span class="fa fa-map-marker"></span>
-          <%= @user.location_tag.state if @user.location_tag.state %>
-          <% if @user.location_tag.state && @user.location_tag.country %>
-            <%= "," + @user.location_tag.country %>
-          <% else %>
-            <%= @user.location_tag.country %>
-          <% end %>
-        </div>
-      </div>
-
-    <% end %>
     <br />
     <% if current_user && (current_user == @profile_user || current_user.role == 'admin' ) %>
       <a href="/profile/info/<%= @user.name %>" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_information') %></a>
@@ -146,7 +133,7 @@
     </small>
   </h3>
 
-  <p><small><%= raw auto_link(RDiscount.new(@user.bio).to_html, :sanitize => false) %></small></p>
+  <p><small><%= raw auto_link(RDiscount.new(@profile_user.bio || '').to_html, :sanitize => false) %></small></p>
 
   <br />
 
@@ -213,6 +200,9 @@
 </div>
 
 <script type="text/javascript">
+  $('#btn-token').click(function() {
+    alert("Your access token is: <%= @user.user.token %>");
+  });
 
   (function () {
     var profile = Object.create(Profile);

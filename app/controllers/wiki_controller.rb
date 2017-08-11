@@ -30,7 +30,7 @@ class WikiController < ApplicationController
         redirect_to Node.find(@node.power_tag('redirect')).path
         return
       elsif current_user.role == 'admin' || current_user.role == 'moderator'
-        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}.
+        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to <a href='#{Node.find(@node.power_tag('redirect')).path}'>#{Node.find(@node.power_tag('redirect')).title}</a>.
         To remove the redirect, delete the tag beginning with 'redirect:'"
       end
     end
@@ -327,7 +327,11 @@ class WikiController < ApplicationController
   def replace
     @node = Node.find(params[:id])
     if params[:before] && params[:after]
-      if output = @node.replace(params[:before], params[:after], current_user)
+      # during round trip, strings are getting "\r\n" newlines converted to "\n",
+      # so we're ensuring they remain "\r\n"; this may vary based on platform, unfortunately
+      before = params[:before].gsub("\n", "\r\n")
+      after  = params[:after]#.gsub( "\n", "\r\n")
+      if output = @node.replace(before, after, current_user)
         flash[:notice] = 'New revision created with your additions.' unless request.xhr?
       else
         flash[:error] = 'There was a problem replacing that text.' unless request.xhr?
@@ -395,5 +399,10 @@ class WikiController < ApplicationController
       'community-organizing'
     ]
     render template: 'wiki/methods'
+  end
+
+  def comments
+    show
+    render :show
   end
 end

@@ -29,9 +29,13 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def user
-    User.find_by_username name
+    User.where(username: name).first
   end
 
+  def bio
+    user.bio
+  end
+  
   def username
     name
   end
@@ -116,22 +120,6 @@ class DrupalUsers < ActiveRecord::Base
 
   def profile_values
     drupal_profile_values
-  end
-
-  def set_bio(text)
-    bio = DrupalProfileValue.find_by_uid(uid, conditions: { fid: 7 })
-    bio = DrupalProfileValue.new(fid: 7, uid: uid) if bio.nil?
-    bio.value = text
-    bio.save!
-  end
-
-  def bio
-    bio = DrupalProfileValue.find_by_uid(uid, conditions: { fid: 7 })
-    if bio
-      bio.value || ''
-    else
-      ''
-    end
   end
 
   def notes

@@ -16,6 +16,15 @@
 
   <div class="ple-content">
 
+    <!-- errors module -->
+    <div class="ple-module container">
+
+      <div class="col-md-3"></div>
+      <div class="ple-errors col-md-9"></div>
+
+    </div>
+    <!-- end errors module -->
+
     <!-- title module -->
     <div class="ple-module-title ple-module container">
 
@@ -121,8 +130,9 @@
       format:      'publiclab',
       publishCallback: function publishCallback(response) {
         // parse and display errors!
-        if (typeof response === "string") {
-          window.location = response;
+        if (typeof response == "string") {
+          if (response[0] == '<') $('.ple-errors').html('<div class="alert alert-danger">There was an error posting. Please contact web@publiclab.org for assistance - and note that your draft is saved under the "..." menu at the lower left.</div>');
+          else window.location = response;
         } else if (response && Object.keys(response).length > 0) {
           $('.ple-errors').html('<div class="alert alert-danger"></div>');
           Object.keys(response).forEach(function(key, i) {

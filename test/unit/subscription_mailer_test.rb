@@ -61,4 +61,23 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert_equal "[PublicLab] #{user.username} liked your question", email.subject
     assert email.body.include?("Public Lab contributor #{user.username} (https://#{request_host}/profile/#{user.username}) just liked your question")
   end
+
+  test 'notify users who follow a newly added tag but were not previously notified based on the node existing tags' do
+    node = node(:one)
+    node_tags = node.tags
+    new_tag = tags(:spam)
+    user = users(:spammer)
+    users_not_following_tags = new_tag.followers_who_dont_follow_tags(node_tags)
+    users_to_email = users_not_following_tags.reject { |u| u.uid == user.uid }
+    assert_difference 'ActionMailer::Base.deliveries.size', users_to_email.count do
+      SubscriptionMailer.notify_tag_added(node, new_tag, user)
+    end
+    assert !ActionMailer::Base.deliveries.empty?
+    email = ActionMailer::Base.deliveries.last
+    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal [users_to_email.last.email], email.to
+    assert_not_equal [user.email], email.to
+    assert_equal "New tag added on #{node.title}", email.subject
+    assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{user.username}'>#{user.username}</a> just added a tag")
+  end
 end

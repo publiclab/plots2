@@ -43,9 +43,8 @@
     </div>
 
     <ul class="nav nav-tabs">
-
-      <li class="active">
-        <a href="#">
+      <li class="<%= 'active' unless (controller.action_name == 'comments' or params.key?(:raw)) %>" >
+        <a href="<%= @node.path %>">
           <span class="hidden-xs"><%= t('wiki.show.view') %></span>
           <span class="visible-xs"><i class="fa fa-file-o"></i></span>
         </a>
@@ -62,7 +61,7 @@
             <span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.edit') %></span>
           </a>
         </li>
-        <li>
+        <li class="<%= 'active' if params[:raw] == 'true' %>">
           <a rel="tooltip" title="Try the beta inline Rich Wiki editor." data-placement="top" href="<%= @node.path %>?raw=true">
             <i style="color:#0c8;" class="fa fa-pencil"></i>
           </a>
@@ -89,6 +88,13 @@
         <a href="/wiki/revisions/<%= @node.slug_from_path %>">
           <span class="hidden-xs"><%= @node.revisions.length %> </span>
           <i class="fa fa-list"></i>
+        </a>
+      </li>
+
+      <li class="<%= 'active' if (controller.action_name == 'comments' )%>">
+        <a href="/wiki/<%= @node.slug_from_path %>/comments" rel="tooltip" title="Read Comments regarding this wiki page" data-placement="top">
+          <span class="hidden-xs"> <%= @node.comments.count %></span>
+          <i class="fa fa-comment"></i>   
         </a>
       </li>
 

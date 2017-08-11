@@ -36,7 +36,7 @@ group :development do
 end
 
 # run with `bundle install --without test` to exclude these
-group :test do
+group :test, :development do
   gem 'test-unit'
   gem 'rake',  '~> 10.5.0'
   # gems to test RESTful API
@@ -47,6 +47,7 @@ group :test do
   gem 'jasmine-rails'
   gem 'jasmine-jquery-rails'
   gem 'coveralls', require: false
+  gem 'ci_reporter_test_unit'
 end
 
 # run with `bundle install --without production` to exclude these

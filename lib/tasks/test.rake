@@ -1,9 +1,13 @@
 # rake test:all
 namespace :test do
   desc "Run rails and jasmine tests"
-  task :all do
+  task :all => :environment do
     require 'coveralls/rake/task'
     Coveralls::RakeTask.new
+    if ENV['GENERATE_REPORT'] == 'true'
+      require 'ci/reporter/rake/test_unit'
+      Rake::Task["ci:setup:testunit"].execute
+    end
     puts "Running Rails tests"
     Rake::Task["test"].execute
     puts "Running Solr-dependent tests"
@@ -19,31 +23,11 @@ namespace :test do
     Rake::Task["spec:javascript"].execute
   end
 
-  desc "Start embedded Solr engine, turn off Solr 'disabled=true' config and run solr-specific tests"
+  desc "This is where you'd start the embedded Solr engine, and tweak config. Runs solr-specific tests."
+  # Solr is assumed running from the container or otherwise available as in sunspot.yml.
   task :solr do
-    require 'yaml'
-    sunspot = YAML::load_file "config/sunspot.yml"
-    # overwrite "disabled" to false in test for sunspot.yml
-    sunspot['test']['disabled'] = false
-    File.open("config/sunspot.yml", "w") do |file|
-      file.write sunspot.to_yaml
-    end
-    puts "turning on solr dependence at config/sunspot.yml"
-    # puts sunspot.to_yaml
-    #`docker-compose run solr rake sunspot:solr:start RAILS_ENV=test`
-    sleep(40)
-    # do a re-index
-    `docker-compose run solr RAILS_ENV=test rake SOLR_DISABLE_CHECK=1 sunspot:reindex`
-    # need more sleep?
+    `RAILS_ENV=test rake SOLR_DISABLE_CHECK=1 sunspot:reindex`
     Rake::Task["test:solr_tests"].invoke
-    #`docker-compose run solr rake sunspot:solr:stop RAILS_ENV=test`
-    # restore "disabled" to true in test for sunspot.yml
-    sunspot['test']['disabled'] = true
-    File.open("config/sunspot.yml", "w") do |file|
-      file.write sunspot.to_yaml
-    end
-    puts "turning off solr dependence at config/sunspot.yml"
-    #puts sunspot.to_yaml
   end
 
   desc "Run solr-specific tests"

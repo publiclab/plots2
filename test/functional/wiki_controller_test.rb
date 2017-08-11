@@ -1,19 +1,3 @@
-# def subdomain
-# def show
-# def raw
-# def edit
-# def new
-# def create
-# def update
-# def delete
-# def revert
-# def root
-# def revisions
-# def revision
-# def index
-# def popular
-# def liked
-
 require 'test_helper'
 include ActionView::Helpers::TextHelper
 include ApplicationHelper
@@ -387,7 +371,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template :index
-    assert_select 'title', 'Public Lab: Popular wiki pages'
+    assert_select 'title', '&#127880; Public Lab: Popular wiki pages'
   end
 
   test  'should display well liked wiki pages' do
@@ -395,7 +379,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template :index
-    assert_select 'title', 'Public Lab: Well-liked wiki pages'
+    assert_select 'title', '&#127880; Public Lab: Well-liked wiki pages'
   end
 
   test 'should choose I18n for wiki controller' do
@@ -534,7 +518,7 @@ class WikiControllerTest < ActionController::TestCase
     get :show, id: slug
 
     assert_response :success
-    assert_equal "Only moderators and admins see this page, as it is redirected to #{blog.title}.
+    assert_equal "Only moderators and admins see this page, as it is redirected to <a href='#{blog.path}'>#{blog.title}</a>.
         To remove the redirect, delete the tag beginning with 'redirect:'", flash[:warning]
     UserSession.find.destroy
   end
@@ -571,5 +555,13 @@ class WikiControllerTest < ActionController::TestCase
 
     get :show, id: @node.slug
     assert_response :success
+  end
+
+  test "should render comment template when comment icon is clicked" do
+    wiki = node(:wiki_page)
+    slug = wiki.path.gsub('/wiki/', '')
+    get :comments, id: slug
+    assert_response :success
+    assert_select 'div#comments h3', /Comments/
   end
 end

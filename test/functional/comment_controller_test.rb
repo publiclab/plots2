@@ -53,8 +53,6 @@ class CommentControllerTest < ActionController::TestCase
     end
     assert_response :success
     assert_not_nil :comment
-    #assert_template partial: 'wiki/_comment' 
-    #should uncomment above once comment displaying partial is implemented for wikis.
   end
 
   test 'should show error if wiki comment not saved' do
@@ -250,5 +248,14 @@ class CommentControllerTest < ActionController::TestCase
     assert ActionMailer::Base.deliveries.collect(&:to).include?([rusers(:bob).email])
     assert ActionMailer::Base.deliveries.collect(&:to).include?([rusers(:moderator).email])
     # tag followers can be found in tag_selection.yml
+  end
+
+  test 'should send notification email upon a new wiki comment' do
+    UserSession.create(rusers(:jeff))
+    xhr :post, :create,
+        id: node(:wiki_page).nid,
+        body: 'A comment by Jeff on a wiki page of author bob',
+        type: 'page'
+    assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on 'Wiki page title'")
   end
 end

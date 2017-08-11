@@ -8,7 +8,8 @@ end
 
 class User < ActiveRecord::Base
   self.table_name = 'rusers'
-  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :location_privacy
+  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio
+  alias_attribute :name, :username
 
   include SolrToggle
   searchable if: :shouldIndexSolr do
@@ -39,9 +40,11 @@ class User < ActiveRecord::Base
   validates_format_of :username, with: /^[A-Za-z\d_\-]+$/
 
   before_create :create_drupal_user
+  before_save :set_token
   after_destroy :destroy_drupal_user
 
   def create_drupal_user
+    self.bio = "" # needed to set a default bio value of ""
     if drupal_user.nil?
       drupal_user = DrupalUsers.new(name: username,
                                     pass: rand(100_000_000_000_000_000_000),
@@ -74,6 +77,10 @@ class User < ActiveRecord::Base
     drupal_user.destroy
   end
 
+  def set_token
+    self.token = SecureRandom.uuid if self.token.nil?
+  end
+
   # this is ridiculous. We need to store uid in this model.
   # ...migration is in progress. start getting rid of these calls...
   def drupal_user
@@ -94,10 +101,6 @@ class User < ActiveRecord::Base
     end
     self.reset_key = key
     key
-  end
-
-  def bio
-    drupal_user.bio
   end
 
   def uid
