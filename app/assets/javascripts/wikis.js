@@ -1,6 +1,6 @@
 //= require inline-markdown-editor/dist/inlineMarkdownEditor.js
 var wiki_title;
-function setupWiki(node_id, title, raw, logged_in) {
+function setupWiki(node_id, title, raw, logged_in, current_user) {
   // insert inline forms
   if (raw && logged_in) {
     $('#content-raw-markdown').html(shortCodePrompt($('#content-raw-markdown')[0], {
@@ -39,7 +39,8 @@ function setupWiki(node_id, title, raw, logged_in) {
 
   function inlineCommenting(cbutton, uniqueId){
     cbutton.click(function(){
-      console.log(uniqueId);
+      var form = buildSectionCommentForm(uniqueId, wiki_title, current_user);
+      cbutton.parent().after(form);
     });
   }
 
