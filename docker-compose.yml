@@ -33,7 +33,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "127.0.0.1:4000:4000"
+      - "127.0.0.1:8000:4000"
     links:
       - db
       - solr
