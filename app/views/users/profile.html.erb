@@ -197,6 +197,13 @@
   </div>
 
   <hr />
+
+  <% if current_user && (current_user.id == @user.id || current_user.role == "admin") %>
+    <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }" } %>
+  <% end %>
+
+  <hr />
+
 </div>
 
 <script type="text/javascript">
@@ -226,7 +233,3 @@
 </script>
 <%= stylesheet_link_tag "dashboard" %>
 <%= javascript_include_tag "dashboard" %>
-
-<% if params[:harry] || current_user && current_user.role == "admin" %>
-<%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }" } %>
-<% end %>

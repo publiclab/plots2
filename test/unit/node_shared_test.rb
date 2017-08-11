@@ -41,17 +41,17 @@ class NodeSharedTest < ActiveSupport::TestCase
   test 'that NodeShared can be used to convert short codes like [notes:foo] into tables which list notes, even after text has been markdown-ified' do
     before = "This shouldn't actually produce a table:\n\n`[notes:tagname]`\n\nOr this:\n\n `[notes:tagname]`"
     html = NodeShared.notes_grid(before)
-    assert_equal 0, html.scan('<table class="table inline-grid notes-grid notes-grid-test notes-grid-test-').length
+    assert_equal 0, html.scan('<table class="table inline-grid notes-grid notes-grid').length
     assert_equal 0, html.scan('<table').length
-    assert_equal 0, html.scan('notes-grid-test').length
+    assert_equal 0, html.scan('notes-grid').length
   end
 
   test 'that NodeShared can be used to convert short codes like [notes:foo] into tables which list notes, even in code tags' do
     before = "This shouldn't actually produce a table:\n\n<code>[notes:tagname]</code>"
     html = NodeShared.notes_grid(before)
-    assert_equal 0, html.scan('<table class="table inline-grid notes-grid notes-grid-test notes-grid-test-').length
+    assert_equal 0, html.scan('<table class="table inline-grid notes-grid notes-grid').length
     assert_equal 0, html.scan('<table').length
-    assert_equal 0, html.scan('notes-grid-test').length
+    assert_equal 0, html.scan('notes-grid').length
   end
 
   test 'that NodeShared can be used to convert short codes like [map:content:lat:lon] into maps which display notes' do
@@ -66,5 +66,13 @@ class NodeSharedTest < ActiveSupport::TestCase
     html = NodeShared.notes_map_by_tag(before)
     assert_equal 1, html.scan('<div class="leaflet-map"').length
     assert_equal 1, html.scan('L.marker').length
+  end
+
+  test 'that NodeShared can be used to convert short codes like [people:organizer] into maps which display notes, but only those tagged with "organizer"' do
+    before = "Here are some people in a grid: \n\n[people:organizer] \n\nThis is how you make it work:\n\n`[people:organizer]`\n\nMake sense?"
+    html = NodeShared.people_grid(before)
+    assert_equal 1, html.scan('<table class="table inline-grid people-grid people-grid-organizer people-grid-organizer-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 6, html.scan('people-grid').length
   end
 end
