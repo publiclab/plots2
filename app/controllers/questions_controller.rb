@@ -28,7 +28,11 @@ class QuestionsController < ApplicationController
   end
 
   def new
-    render 'editor/question'
+    if params[:legacy]
+      render 'editor/question'
+    else 
+      render 'editor/questionRich'
+    end
   end
 
   def show
