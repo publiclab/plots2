@@ -35,9 +35,9 @@ function initTagForm(deletion_path, selector) {
   el.bind('ajax:success', function(e, response){
     if (typeof response == "string") response = JSON.parse(response)
     $.each(response['saved'], function(i,tag) {
-      var tag_name = tag[0]
-      var tag_id = tag[1]
-      $('#tags p:first').append("<span id='tag_"+tag_id+"' class='label label-primary' style='font-size:13px;'><a href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' data-remote='true' href='" + deletion_path +tag_id+"' data-tag-id='"+tag_id+"'>x</a></span> ")
+      var tag_name = tag[0];
+      var tag_id = tag[1];
+      $('#tags p:first').append("<span id='tag_"+tag_id+"' class='label label-primary' style='font-size:13px;'><a href='/tag/"+tag_name+"'>"+tag_name+"</a> <a class='tag-delete' data-remote='true' href='"+deletion_path+"/"+tag_id+"' data-tag-id='"+tag_id+"'>x</a></span> ")
       el.find('.tag-input').val("")
       el.find('.control-group').removeClass('has-error')
       el.find('.control-group .help-block').remove()
