@@ -21,6 +21,15 @@ class UserTest < ActiveSupport::TestCase
   test 'basic user attributes' do
     user = rusers(:jeff)
     assert_equal user.notes, user.drupal_user.notes
+    assert_not_nil user.tags
+    assert_not_nil user.drupal_user.tags
+    assert_equal user.tags, user.drupal_user.tags
+    assert_not_nil user.user_tags
+    assert_not_nil user.drupal_user.user_tags
+    assert_equal user.user_tags, user.drupal_user.user_tags
+    assert_not_nil user.tagnames
+    assert_not_nil user.drupal_user.tagnames
+    assert_equal user.tagnames, user.drupal_user.tagnames
   end
 
   test 'user questions' do

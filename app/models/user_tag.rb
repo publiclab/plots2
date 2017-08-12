@@ -14,4 +14,9 @@ class UserTag < ActiveRecord::Base
   def self.exists?(uid, value)
     UserTag.where(uid: uid, value: value).count > 0
   end
+
+  def name
+    self.value
+  end
+
 end

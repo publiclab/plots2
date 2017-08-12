@@ -1,0 +1,48 @@
+<table class="table inline-grid people-grid <%= className %> <%= className %>-<%= randomSeed %>">
+  <tr>
+      <th><a data-type="username">Username</a></th>
+  </tr>
+<% if users.empty? %>
+  <tr>
+    <td>No matching content.</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+<% end %>
+<% users.each_with_index do |user, index| %>
+  <% if index > 9 %>
+    <tr class="hide">
+  <% else %>
+    <tr>
+  <% end %>
+    <td class="username"><a href="/profile/<%= user.username %>"><%= user.username %></a></td>
+  </tr>
+  <% if index == 9 %>
+    <tr class="show-all">
+      <td><a>Show <%= nodes.length - 10 %> more <b class="caret"></b></a></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  <% end %>
+<% end %>
+</table>
+
+<script>
+(function(){
+  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function() { 
+    $(".<%= className %>-<%= randomSeed %> tr.hide").toggleClass("hide");
+  });
+  setupGridSorters(".<%= className %>-<%= randomSeed %>");
+})()
+</script>
+<style>
+  a.grid-embed {
+    float:right;
+    padding:8px;
+  }
+  a.grid-embed:hover {
+    color: #888;
+  }
+</style>

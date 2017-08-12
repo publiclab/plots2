@@ -154,4 +154,26 @@ module NodeShared
     end
   end
 
+  # in our interface, "users" are known as "people" because it's more human
+  def self.people_grid(body, _page = 1)
+    body.gsub(/[^\>`](\<p\>)?\[people\:(\S+)\]/) do |_tagname|
+      tagname = Regexp.last_match(2).parameterize
+      users = User.where(status: 1)
+                  .includes(:user_tags)
+                  .where('user_tags.value = ?', tagname)
+      output = ''
+      output += '<p>' if Regexp.last_match(1) == '<p>'
+      a = ActionController::Base.new()
+      output += a.render_to_string(template: "grids/_people", 
+                                   layout:   false, 
+                                   locals:   {
+                                     tagname: tagname,
+                                     randomSeed: rand(1000).to_s,
+                                     className: 'people-grid-' + tagname,
+                                     users: users
+                                   })
+      output
+    end
+  end
+
 end

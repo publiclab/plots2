@@ -9,20 +9,20 @@ class UserTagsController < ApplicationController
     }
     exist = false
 
-    user = User.find_by_username(params[:id])
+    user = User.find(params[:id])
 
-    if current_user.role == 'admin' || current_user == user
-      if params[:value] != ''
-        value = params[:value].downcase
-        if UserTag.exists?(user.id, value)
+    if current_user && (current_user.role == 'admin' || current_user == user)
+      if params[:name]
+        name = params[:name].to_s.downcase
+        if UserTag.exists?(user.id, name)
           @output[:errors] << I18n.t('user_tags_controller.tag_already_exists')
           exist = true
         end
 
         unless exist
-          user_tag = user.user_tags.build(value: value)
+          user_tag = user.user_tags.build(value: name)
           if user_tag.save
-            @output[:saved] = [user_tag.id, value]
+            @output[:saved] << [name, user_tag.id]
           else
             @output[:errors] << I18n.t('user_tags_controller.cannot_save_value')
           end
@@ -34,19 +34,15 @@ class UserTagsController < ApplicationController
       @output[:errors] << I18n.t('user_tags_controller.admin_user_manage_tags')
     end
 
-    respond_with do |format|
-      format.html do
-        if request.xhr?
-          render json: @output
-        else
-          if !@output[:errors].empty?
-            flash[:error] = I18n.t('user_tags_controller.errors_occured', count: @output[:errors].length).html_safe
-          else
-            flash[:notice] = I18n.t('user_tags_controller.tag_created', tag_name: @output[:saved][1]).html_safe
-          end
-          redirect_to info_path, id: params[:id]
-        end
+    if request.xhr?
+      render json: @output
+    else
+      if !@output[:errors].empty?
+        flash[:error] = I18n.t('user_tags_controller.errors_occured', count: @output[:errors].length).html_safe
+      else
+        flash[:notice] = I18n.t('user_tags_controller.tag_created', tag_name: @output[:saved][0][0]).html_safe
       end
+      redirect_to info_path, id: params[:id]
     end
   end
 
@@ -95,9 +91,9 @@ class UserTagsController < ApplicationController
   end
 
   def suggested
-    if !params[:value].empty?
+    if !params[:name].empty?
       suggested = []
-      UserTag.where('value LIKE ?', params[:value] + '%').each do |tag|
+      UserTag.where('value LIKE ?', params[:name] + '%').each do |tag|
         suggested << tag.value
       end
       render json: suggested.uniq
