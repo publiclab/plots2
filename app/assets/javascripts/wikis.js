@@ -15,7 +15,7 @@ function setupWiki(node_id, title, raw, logged_in, current_user) {
       postProcessor: postProcessContent,
       extraButtons: {
         "fa-question": questionForm,
-        "fa-comment": inlineCommenting
+        "fa-comment": setupCommentFunction
       },
       editorOptions: {
         history: {
@@ -37,13 +37,13 @@ function setupWiki(node_id, title, raw, logged_in, current_user) {
     qbutton.attr('href', '/questions/new?tags=response:' + node_id + ', question%3A' + wiki_title + ', ' + wiki_title + '-' + uniqueId + ', a-wiki-question&template=question&redirect=question').attr('target', '_blank');
   }
 
-  function inlineCommenting(cbutton, uniqueId){
+  function setupCommentFunction(cbutton, uniqueId){
+    var inline_comment_form = buildSectionCommentForm(uniqueId, wiki_title, current_user);
+    cbutton.parent().parent().after(inline_comment_form);  
     cbutton.click(function(){
-      var form = buildSectionCommentForm(uniqueId, wiki_title, current_user);
-      cbutton.parent().after(form);
+      $('#inline-comment-'+uniqueId).toggle();
     });
   }
-
 }
 
 // add #hashtag and @callout links, extra CSS and deep links
