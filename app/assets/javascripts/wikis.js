@@ -38,11 +38,13 @@ function setupWiki(node_id, title, raw, logged_in, current_user) {
   }
 
   function setupCommentFunction(cbutton, uniqueId){
-    var inline_comment_form = buildSectionCommentForm(uniqueId, wiki_title, current_user);
+    var subsection_string = $('.inline-section-'+uniqueId).find("p").text();
+    var inline_comment_form = buildSectionCommentForm(uniqueId, wiki_title, current_user, node_id, subsection_string);
     cbutton.parent().parent().after(inline_comment_form);  
     cbutton.click(function(){
       $('#inline-comment-'+uniqueId).toggle();
     });
+
   }
 }
 

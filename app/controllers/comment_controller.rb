@@ -87,6 +87,29 @@ class CommentController < ApplicationController
     end
   end
 
+  def create_inline_comment
+    @node_id = params[:id]
+    @body = params[:body]
+    @subsection_string = params[:subsection_string]
+
+    @comment = Comment.new(
+      nid: @node_id,
+      uid: current_user.uid,
+      comment: @body,
+      reference: @subsection_string,
+      timestamp: Time.now.to_i
+    )
+    if @comment.save
+      respond_to do |format|
+        format.js { render partial: 'wiki/comment' }
+      end
+    else
+      flash[:error] = 'The comment could not be saved.'
+      render text: 'failure'
+    end
+
+  end
+
   def update
     @comment = Comment.find params[:id]
 

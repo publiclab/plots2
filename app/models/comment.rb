@@ -3,7 +3,7 @@ class Comment < ActiveRecord::Base
 
   attr_accessible :pid, :nid, :uid, :aid,
                   :subject, :hostname, :comment,
-                  :status, :format, :thread, :timestamp
+                  :status, :format, :thread, :timestamp, :reference
 
   belongs_to :node, foreign_key: 'nid', touch: true,
                     dependent: :destroy, counter_cache: true
