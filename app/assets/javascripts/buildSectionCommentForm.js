@@ -1,5 +1,5 @@
 function buildSectionCommentForm(uniqueId, title, current_user) {
-  var formHtml = "<form id='inline-comment-section-form-"+uniqueId+"' data-remote='true' class='well' action='/comment/__action___/___node_id___'>";
+  var formHtml = "<form style='display:none;' id='inline-comment-"+uniqueId+"' data-remote='true' class='well' action='/comment/__action___/___node_id___'>";
   formHtml += "<h4 style='margin-top:0; padding-top:0;'>"+title+"</h4>";
   formHtml += "<style> #imagebar {width:100%;}</style>" 
   formHtml += "<div class='form-group dropzone'>";
