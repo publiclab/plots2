@@ -1,11 +1,13 @@
-function buildSectionCommentForm(uniqueId, title, current_user) {
-  var formHtml = "<form style='display:none;' id='inline-comment-"+uniqueId+"' data-remote='true' class='well' action='/comment/__action___/___node_id___'>";
+function buildSectionCommentForm(uniqueId, title, current_user, node_id, subsection_string) {
+  var formHtml = "<form style='display:none;' id='inline-comment-"+uniqueId+"' data-remote='true' class='well' action='/comment/create_inline_comment/"+node_id+"'>";
   formHtml += "<h4 style='margin-top:0; padding-top:0;'>"+title+"</h4>";
   formHtml += "<style> #imagebar {width:100%;}</style>" 
+ 
   formHtml += "<div class='form-group dropzone'>";
-
+  
   formHtml += "<textarea onFocus='editing=true' name='body' class='form-control' id='text-input' rows='6' cols='40' placeholder='Help" 
   formHtml += " the authors refine this wiki subsection, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email'></textarea>";
+  formHtml += "<input type='hidden' name='subsection_string' value='"+subsection_string+"'>"
   formHtml += "<div id='imagebar'>";
 
   formHtml += "<div id='create_progress' style='display:none;' class='progress progress-striped active pull-right'>"; 
