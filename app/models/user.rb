@@ -278,8 +278,9 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def content_followed_in_past_period(timePeriod)
-    self.subscriptions
+  def content_followed_in_past_period(time_period)
+    node_creation = self.node.each{ |time|  Time.at(Time.at(time.created) - time_period ).strftime "%H:%M:%S" }
+    
   end
 
   private
