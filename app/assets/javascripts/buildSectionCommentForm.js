@@ -32,6 +32,7 @@ function buildSectionCommentForm(uniqueId, title, current_user, node_id, subsect
   formHtml += "</span></label></span></p></div></div>";
   formHtml += "<div class='well col-md-11' id='preview' style='background:white;display: none'></div>";
 
+
   formHtml += "<div class='control-group'>";
   formHtml += "<button type='submit' class='btn btn-primary'>Publish</button> ";
   formHtml += "<a id='preview-btn' class='btn btn-default'>Preview</a>";
@@ -44,6 +45,32 @@ function buildSectionCommentForm(uniqueId, title, current_user, node_id, subsect
   formHtml += "<p id='who-is-notified-form' style='display:none;color:#888;'>";
   formHtml += "<%= t('comments._form.email_notifications') %>";
   formHtml += "</p>";
+
+  formHtml += "<script>";
+  formHtml += "$('#inline-comment-"+uniqueId+"').bind('ajax:beforeSend', function(event){ ";
+  formHtml += "$('#text-input').prop('disabled',true); ";
+  formHtml += "$('#inline-comment-"+uniqueId+" .btn-primary').button('loading',true);";
+  formHtml += "});";
+
+  formHtml += "$('#inline-comment-"+uniqueId+"').bind('ajax:success', function(e, data, status, xhr){";
+  formHtml += "console.log('success');";
+  formHtml += "$('#text-input').prop('disabled',false);  ";
+  formHtml += "$('#text-input').val('');";
+
+  formHtml += "$('#comments-container-"+uniqueId+"').append(xhr.responseText);";
+  formHtml += "$('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)+1;";
+  formHtml += "$('#inline-comment-"+uniqueId+" .btn-primary').button('reset');";
+  formHtml += "$('#preview').hide();";
+  formHtml += "$('#text-input').show(); ";
+  formHtml += "$('#preview-btn').button('toggle');";
+  formHtml += "});";
+  
+  formHtml += "$('#inline-comment-"+uniqueId+"').bind('ajax:error', function(e,response){";
+  formHtml += "$('#inline-comment-"+uniqueId+" .control-group').addClass('has-error');";
+  formHtml += "$('#inline-comment-"+uniqueId+" .control-group .help-block ').remove();";
+  formHtml += "$('#inline-comment-"+uniqueId+" .control-group').append('<span class=\"help-block\">Error: there was a problem.</span>')";
+  formHtml += "})";
+  formHtml += "</script>";
 
   formHtml += "</form>";
   return formHtml;

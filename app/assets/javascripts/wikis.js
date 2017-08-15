@@ -40,8 +40,31 @@ function setupWiki(node_id, title, raw, logged_in, current_user) {
   function setupCommentFunction(cbutton, uniqueId){
     var subsection_string = $('.inline-section-'+uniqueId).find("p").text();
     var inline_comment_form = buildSectionCommentForm(uniqueId, wiki_title, current_user, node_id, subsection_string);
-    cbutton.parent().parent().after(inline_comment_form);  
+    cbutton.parent().parent().after(inline_comment_form);
+    cbutton.parent().parent().after("<div id = 'comments-container-"+uniqueId+"' style='margin-bottom: 10px; padding:10px; border-radius: 5px; background-color: #eee; display:none;'> </div>");
+
+    $.ajax({
+      url: '/comment/inline_comments/',
+      type: "get",
+      data: {
+        reference: subsection_string
+      },
+      success: function(response){
+        var obj = $.parseJSON(response);
+        $.each(obj, function(key, value){
+          var inline_comment = showInlineComment(value.cid, value.comment );
+          //console.log(value);
+          $("#comments-container-"+uniqueId).append(inline_comment);
+        });
+        
+      },
+      error: function(xhr){
+        console.log("oh my got");
+      }
+    });
+
     cbutton.click(function(){
+      $('#comments-container-'+uniqueId).toggle();
       $('#inline-comment-'+uniqueId).toggle();
     });
 
