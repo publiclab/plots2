@@ -88,12 +88,12 @@ class CommentController < ApplicationController
   end
 
   def create_inline_comment
-    @node_id = params[:id]
+    @node = Node.find params[:id]
     @body = params[:body]
     @subsection_string = params[:subsection_string]
 
     @comment = Comment.new(
-      nid: @node_id,
+      nid: @node.id,
       uid: current_user.uid,
       comment: @body,
       reference: @subsection_string,
@@ -101,13 +101,20 @@ class CommentController < ApplicationController
     )
     if @comment.save
       respond_to do |format|
-        format.js { render partial: 'wiki/comment' }
+        format.js { render json: @comment }
       end
     else
       flash[:error] = 'The comment could not be saved.'
       render text: 'failure'
     end
+  end
 
+  def inline_comments
+    reference = params[:reference]
+    @inline_comments = Comment.where("reference = ?", reference)
+    respond_to do |format|
+      format.js { render json: @inline_comments }
+    end
   end
 
   def update
