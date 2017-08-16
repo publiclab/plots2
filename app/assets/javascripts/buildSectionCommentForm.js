@@ -7,7 +7,8 @@ function buildSectionCommentForm(uniqueId, title, current_user, node_id, subsect
   
   formHtml += "<textarea onFocus='editing=true' name='body' class='form-control' id='text-input' rows='6' cols='40' placeholder='Help" 
   formHtml += " the authors refine this wiki subsection, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email'></textarea>";
-  formHtml += "<input type='hidden' name='subsection_string' value='"+subsection_string+"'>"
+  formHtml += "<input type='hidden' name='subsection_string' value='"+subsection_string+"'>";
+  formHtml += "<input type='hidden' name='uniqueId' value='"+uniqueId+"'>";
   formHtml += "<div id='imagebar'>";
 
   formHtml += "<div id='create_progress' style='display:none;' class='progress progress-striped active pull-right'>"; 
@@ -47,12 +48,11 @@ function buildSectionCommentForm(uniqueId, title, current_user, node_id, subsect
   formHtml += "</p>";
 
   formHtml += "<script>";
-  formHtml += "$('#inline-comment-"+uniqueId+"').bind('ajax:beforeSend', function(event){ ";
+  formHtml += "$('#inline-comment-"+uniqueId+"').on('ajax:beforeSend', function(event){ ";
+  formHtml += "console.log('bbbsuccess');";
   formHtml += "$('#text-input').prop('disabled',true); ";
   formHtml += "$('#inline-comment-"+uniqueId+" .btn-primary').button('loading',true);";
-  formHtml += "});";
-
-  formHtml += "$('#inline-comment-"+uniqueId+"').bind('ajax:success', function(e, data, status, xhr){";
+  formHtml += "}).on('ajax:success', function(e, data, status, xhr){";
   formHtml += "console.log('success');";
   formHtml += "$('#text-input').prop('disabled',false);  ";
   formHtml += "$('#text-input').val('');";
@@ -63,9 +63,7 @@ function buildSectionCommentForm(uniqueId, title, current_user, node_id, subsect
   formHtml += "$('#preview').hide();";
   formHtml += "$('#text-input').show(); ";
   formHtml += "$('#preview-btn').button('toggle');";
-  formHtml += "});";
-  
-  formHtml += "$('#inline-comment-"+uniqueId+"').bind('ajax:error', function(e,response){";
+  formHtml += "}).on('ajax:error', function(e,response){";
   formHtml += "$('#inline-comment-"+uniqueId+" .control-group').addClass('has-error');";
   formHtml += "$('#inline-comment-"+uniqueId+" .control-group .help-block ').remove();";
   formHtml += "$('#inline-comment-"+uniqueId+" .control-group').append('<span class=\"help-block\">Error: there was a problem.</span>')";
