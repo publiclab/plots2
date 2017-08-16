@@ -91,6 +91,7 @@ class CommentController < ApplicationController
     @node = Node.find params[:id]
     @body = params[:body]
     @subsection_string = params[:subsection_string]
+    @uniqueId = params[:uniqueId]
 
     @comment = Comment.new(
       nid: @node.id,
@@ -101,7 +102,7 @@ class CommentController < ApplicationController
     )
     if @comment.save
       respond_to do |format|
-        format.js { render json: @comment }
+        format.js
       end
     else
       flash[:error] = 'The comment could not be saved.'
