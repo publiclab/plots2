@@ -279,8 +279,7 @@ class User < ActiveRecord::Base
   end
 
   def content_followed_in_past_period(time_period)
-    node_creation = self.node.each{ |time|  Time.at(Time.at(time.created) - time_period ).strftime "%H:%M:%S" }
-    
+     self.node.select {|node| Time.at(node.created) >= time_period }
   end
 
   private
