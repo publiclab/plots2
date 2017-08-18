@@ -92,14 +92,16 @@ class CommentController < ApplicationController
     @body = params[:body]
     @subsection_string = params[:subsection_string]
     @uniqueId = params[:uniqueId]
-
     @comment = Comment.new(
       nid: @node.id,
-      uid: current_user.uid,
+      uid: current_user.id,
       comment: @body,
       reference: @subsection_string,
       timestamp: Time.now.to_i
     )
+    @user = @comment.author.user
+    @user_photo_path = @comment.author.user.photo_path(:thumb)
+
     if @comment.save
       respond_to do |format|
         format.js
@@ -113,6 +115,15 @@ class CommentController < ApplicationController
   def inline_comments
     reference = params[:reference]
     @inline_comments = Comment.where("reference = ?", reference)
+
+    @inline_comments = @inline_comments.map do |iComment|
+      iComments_hash = iComment.attributes
+      iComments_hash[:author_name] = iComment.author.name
+      iComments_hash[:photo_file_name] = iComment.author.user.photo_file_name
+      iComments_hash[:author_photo_path] = iComment.author.user.photo_path(:thumb)
+      iComments_hash[:created_at] = iComment.created_at
+      iComments_hash
+    end
     respond_to do |format|
       format.js { render json: @inline_comments }
     end
