@@ -1,6 +1,6 @@
 //= require inline-markdown-editor/dist/inlineMarkdownEditor.js
 var wiki_title;
-function setupWiki(node_id, title, raw, logged_in, current_user) {
+function setupWiki(node_id, title, raw, logged_in) {
   // insert inline forms
   if (raw && logged_in) {
     $('#content-raw-markdown').html(shortCodePrompt($('#content-raw-markdown')[0], {
@@ -39,24 +39,23 @@ function setupWiki(node_id, title, raw, logged_in, current_user) {
 
   function setupCommentFunction(cbutton, uniqueId){
     var subsection_string = $('.inline-section-'+uniqueId).find("p").text();
-    var inline_comment_form = buildSectionCommentForm(uniqueId, wiki_title, current_user, node_id, subsection_string);
-    cbutton.parent().parent().after(inline_comment_form);
-    cbutton.parent().parent().after("<div id = 'comments-container-"+uniqueId+"' style='margin-bottom: 10px; padding:10px; border-radius: 5px; background-color: #eee; display:none;'> </div>");
+    var inline_comment_form = buildSectionCommentForm(uniqueId, wiki_title, node_id, subsection_string);
+    cbutton.parents('.inline-section-'+uniqueId).after(inline_comment_form);
+    cbutton.parents('.inline-section-'+uniqueId).after("<div id = 'comments-container-"+uniqueId+"' style='margin-bottom: 10px; padding:10px; border-radius: 5px; background-color: #eee; display:none;'> </div>");
 
     $.ajax({
       url: '/comment/inline_comments/',
       type: "get",
       data: {
-        reference: subsection_string
+        reference: subsection_string.toString()
       },
       success: function(response){
         var obj = $.parseJSON(response);
-        $.each(obj, function(key, value){
-          var inline_comment = showInlineComment(value.cid, value.comment );
+        $.each(obj, function(key, v){
+          var inline_comment = showInlineComment(v.cid, v.comment, v.photo_file_name, v.author_photo_path, v.author_name, v.created_at, v.uid  );
           //console.log(value);
           $("#comments-container-"+uniqueId).append(inline_comment);
-        });
-        
+        });    
       },
       error: function(xhr){
         console.log("oh my got");

@@ -1,3 +1,3 @@
 $('#inline-comment-<%= @uniqueId %>').find("textarea").val("");
-var inline_comment = showInlineComment('<%= @comment.id %>', '<%= @body %>' );
+var inline_comment = showInlineComment('<%= @comment.id %>', '<%= @body %>', '<%= @user.photo_file_name %>', '<%= @user_photo_path %>', '<%= @user.username %>', '<%= @comment.created_at %>','<%= @comment.uid %>');
 $('#comments-container-<%= @uniqueId %>').append(inline_comment);

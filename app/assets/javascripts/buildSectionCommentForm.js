@@ -1,4 +1,4 @@
-function buildSectionCommentForm(uniqueId, title, current_user, node_id, subsection_string) {
+function buildSectionCommentForm(uniqueId, title, node_id, subsection_string) {
   var formHtml = "<form style='display:none;' id='inline-comment-"+uniqueId+"' data-remote='true' class='well' action='/comment/create_inline_comment/"+node_id+"'>";
   formHtml += "<h4 style='margin-top:0; padding-top:0;'>"+title+"</h4>";
   formHtml += "<style> #imagebar {width:100%;}</style>" 
@@ -37,11 +37,6 @@ function buildSectionCommentForm(uniqueId, title, current_user, node_id, subsect
   formHtml += "<div class='control-group'>";
   formHtml += "<button type='submit' class='btn btn-primary'>Publish</button> ";
   formHtml += "<a id='preview-btn' class='btn btn-default'>Preview</a>";
-  formHtml += "<span style='color:#888;'> &nbsp; ";
-  formHtml += "<br class='visible-xs' />Logged in as "+current_user+" | ";
-  formHtml += "<a target='_blank' href='/wiki/authoring-help#Formatting'>Formatting</a> | ";
-  formHtml += "<a onClick='$('#who-is-notified-form').toggle()'>Notifications</a>";
-  formHtml += "</span>";
   formHtml += "</div>";
   formHtml += "<p id='who-is-notified-form' style='display:none;color:#888;'>";
   formHtml += "<%= t('comments._form.email_notifications') %>";
