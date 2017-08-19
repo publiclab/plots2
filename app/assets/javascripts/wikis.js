@@ -41,7 +41,7 @@ function setupWiki(node_id, title, raw, logged_in) {
     var subsection_string = $('.inline-section-'+uniqueId).find("p").text();
     var inline_comment_form = buildSectionCommentForm(uniqueId, wiki_title, node_id, subsection_string);
     cbutton.parents('.inline-section-'+uniqueId).after(inline_comment_form);
-    cbutton.parents('.inline-section-'+uniqueId).after("<div id = 'comments-container-"+uniqueId+"' style='margin-bottom: 10px; padding:10px; border-radius: 5px; background-color: #eee; display:none;'> </div>");
+    cbutton.parents('.inline-section-'+uniqueId).after("<div id = 'comments-container-"+uniqueId+"' style='margin-bottom: 10px; border-radius: 5px; background-color: #eee; display:none;'> </div>");
 
     $.ajax({
       url: '/comment/inline_comments/',

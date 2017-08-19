@@ -332,6 +332,7 @@ class WikiController < ApplicationController
       before = params[:before].gsub("\n", "\r\n")
       after  = params[:after]#.gsub( "\n", "\r\n")
       if output = @node.replace(before, after, current_user)
+        @node.update_comment_reference(before, after, params[:id])
         flash[:notice] = 'New revision created with your additions.' unless request.xhr?
       else
         flash[:error] = 'There was a problem replacing that text.' unless request.xhr?

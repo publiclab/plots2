@@ -1,5 +1,5 @@
 function showInlineComment(cid, comment, photo_file_name, author_photo_path, author_name, created_at, uid ) {
-  var iComment = "<div id='inline-comment-"+cid+"' style='padding-top: 10px;'>";
+  var iComment = "<div id='inline-comment-"+cid+"' style='padding-top: 10px; padding-left: 10px;'>";
   iComment += "<div class='inline' style='vertical-align: top;'>";
   if(photo_file_name){
     iComment += "<img class='img-circle' src='"+author_photo_path+"' />";

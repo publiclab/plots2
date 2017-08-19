@@ -759,4 +759,12 @@ class Node < ActiveRecord::Base
       false
     end
   end
+
+  def update_comment_reference(before, after, node_id)
+    related_comments = Comment.where("reference = ? AND nid = ?", before, node_id)
+    related_comments.each do |comment|
+      comment.reference = after
+      comment.save
+    end
+  end
 end
