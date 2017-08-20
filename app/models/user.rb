@@ -279,7 +279,8 @@ class User < ActiveRecord::Base
   end
 
   def content_followed_in_past_period(time_period)
-     self.node.select {|node| Time.at(node.created) >= time_period }
+     nodes_created = self.node.select {|node| Time.at(node.created) >= time_period }
+     nodes_edited = self.node.select {|node| Time.at(node.changed) >= time_period unless node.changed.empty?}
   end
 
   private
