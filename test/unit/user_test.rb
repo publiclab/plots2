@@ -77,4 +77,11 @@ class UserTest < ActiveSupport::TestCase
     assert rusers(:bob).has_tag('test:test')
     assert !rusers(:bob).has_tag('test:no')
   end
+
+  test 'returns nodes created in past given period of time' do
+    lurker = rusers(:lurker)
+    node1 = rusers(:lurker).node.find_by_nid(21)
+    node2 = rusers(:lurker).node.find_by_nid(22)
+     assert_equal [node2], lurker.content_followed_in_past_period(2.hours.ago)
+  end
 end
