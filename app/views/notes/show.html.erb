@@ -6,7 +6,7 @@
   <% if current_user && @node.tags.length == 0 %><div class="alert alert-warning"><%= raw t('notes.show.note_no_tags') %></div><% end %>
   <% if @node.has_power_tag('status:candidate') %><div class="alert alert-info">This was marked as a candidate activity -- <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity" >read about how to adapt its content</a> into a fully-fledged, step-by-step activity that can be easily replicated.</div><% end %>
   <% if @node.has_power_tag('replication') %><div class="alert alert-info"><%= raw t('notes.show.replication') %> <a href="/n/<%= @node.power_tag('replication') %>"><%= raw t('notes.show.replication_link') %></a>.</div><% end %>
-  <% if @node.has_power_tag('series') %><div class="alert alert-info"><%= raw t('notes.show.series') %> <a href="/tag/<%= @node.power_tag('series') %>"><%= @node.power_tag('series') %></a>.</div><% end %>
+  <% if @node.has_power_tag('series') %><div class="alert alert-info"><%= raw t('notes.show.series') %> <a href="/tag/series:<%= @node.power_tag('series') %>"><%= @node.power_tag('series') %></a>.</div><% end %>
   <% if @node.has_power_tag('build') %><div class="alert alert-info"><%= raw t('notes.show.build') %> <a href="/n/<%= @node.power_tag('build') %>"><%= raw t('notes.show.build_link') %></a>.</div><% end %>
   <% if @node.has_power_tag('with') && current_user && @node.coauthors.collect(&:username).include?(current_user.username) %> <div class="alert alert-success"> You are a coauthor of this post. This attributes your contribution, and gives you edit access to the note. <a href="https://publiclab.org/wiki/power-tags#Coauthorship"> Learn more </a></div><% end %>
 
