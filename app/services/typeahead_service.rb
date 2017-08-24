@@ -15,7 +15,7 @@ class TypeaheadService
 
   def users(input, limit = 5)
     User.limit(limit)
-        .order('uid DESC')
+        .order('id DESC')
         .where('username LIKE ? AND status = 1', '%' + input + '%')
   end
 
