@@ -341,6 +341,7 @@ ActiveRecord::Schema.define(:version => 20170726174757) do
     t.integer  "status",                                   :default => 0
   end
 
+  add_index "rusers", ["status"], :name => "index_rusers_on_status"
   add_index "rusers", ["username"], :name => "index_rusers_on_username"
 
   create_table "tag_selections", :id => false, :force => true do |t|
