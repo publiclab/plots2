@@ -1,3 +1,4 @@
+<%= javascript_include_tag 'leaflet-blurred-location/dist/Leaflet.BlurredLocation.js' %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -47,6 +48,8 @@
 
       <br />
       <input editable="false" id="placenameDisplay" type="text" class="form-control" />
+      <br />
+      <button class="btn btn-primary" onclick="addTag('location: blurred')">Save Location</button>
 
     </div>
 
