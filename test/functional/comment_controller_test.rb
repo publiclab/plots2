@@ -55,6 +55,18 @@ class CommentControllerTest < ActionController::TestCase
     assert_not_nil :comment
   end
 
+  test 'should create inline-wiki comments' do
+    UserSession.create(rusers(:bob))
+    assert_difference 'Comment.count' do
+      xhr :post, :create_inline_comment,
+          id: node(:wiki_page).nid,
+          body: 'Wiki comment',
+          subsection_string: node_revisions(:wiki_page).body
+    end
+     assert_response :success
+     assert_not_nil :comment
+  end
+
   test 'should show error if wiki comment not saved' do
     UserSession.create(rusers(:bob))
     assert_no_difference 'Comment.count' do
