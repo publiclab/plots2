@@ -1,21 +1,3 @@
-# def index
-# def tools
-# def places
-# def shortlink
-# def raw
-# def show
-# def create
-# def edit
-# def update
-# def delete
-# def author
-# def author_topic
-# def liked
-# def popular
-# def rss
-# def liked_rss
-# def rsvp
-
 require 'test_helper'
 
 class NotesControllerTest < ActionController::TestCase
@@ -344,7 +326,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_not_nil @response.body
     assert_equal '/notes/Bob/' + Time.now.strftime('%m-%d-%Y') + '/a-completely-unique-snowflake', @response.body
   end
-
+  
   test 'post_note_error_no_title_xhr' do
     UserSession.create(rusers(:bob))
 
@@ -358,6 +340,20 @@ class NotesControllerTest < ActionController::TestCase
     json = JSON.parse(@response.body)
     assert_equal ["can't be blank"], json['title']
     assert !json['title'].empty?
+  end
+
+  test 'posting note with an error using xhr (rich editor) returns a JSON error' do
+    UserSession.create(rusers(:bob))
+
+    xhr :post,
+        :create,
+        body: 'This is a fascinating post about a balloon mapping event.',
+        title: '',
+        tags: 'balloon-mapping,event'
+
+    assert_response :success
+    assert_not_nil @response.body
+    assert_equal { errors: [] }, @response.body
   end
 
   # def test_cannot_delete_post_if_not_yours
