@@ -353,7 +353,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil @response.body
-    assert_equal { errors: [] }, @response.body
+    assert_equal [], @response.body
   end
 
   # def test_cannot_delete_post_if_not_yours
