@@ -135,7 +135,7 @@ class NotesController < ApplicationController
       else
         if request.xhr? # rich editor!
           errors = @node.errors
-          errors = errors.merge(@revision.errors) if @revision && @revision.errors
+          errors = errors.to_hash.merge(@revision.errors.to_hash) if @revision && @revision.errors
           render json: errors
         else
           render template: 'editor/post'
