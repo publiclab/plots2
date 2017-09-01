@@ -353,7 +353,21 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil @response.body
-    assert_equal [], @response.body
+    assert_equal "{\"title\":[\"can't be blank\"],\"path\":[\"This title has already been taken\"]}", @response.body
+  end
+
+  test 'returning json errors on xhr note update' do
+    user = UserSession.create(rusers(:jeff))
+
+    xhr :post,
+        :update,
+        id: node(:blog).id,
+        title: ''
+
+    assert_response :success
+    assert_not_nil @response.body
+    json = JSON.parse(@response.body)
+    assert !json['title'].empty?
   end
 
   # def test_cannot_delete_post_if_not_yours
@@ -483,20 +497,6 @@ class NotesControllerTest < ActionController::TestCase
          title: node.title + ' amended'
 
     assert_response :redirect
-  end
-
-  test 'returning json errors on xhr note update' do
-    user = UserSession.create(rusers(:jeff))
-
-    xhr :post,
-        :update,
-        id: node(:blog).id,
-        title: ''
-
-    assert_response :success
-    assert_not_nil @response.body
-    json = JSON.parse(@response.body)
-    assert !json['title'].empty?
   end
 
   test 'should redirect to question path if node is a question when visiting shortlink' do
