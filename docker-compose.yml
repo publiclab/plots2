@@ -27,7 +27,7 @@ services:
       - /opt/solr/server/solr/configsets/sunspot  
   web:
     build: .
-    command: /bin/bash -c "sleep 5 && rails s -p 4000 -b '0.0.0.0'"
+    command: /bin/bash -c "sleep 5 && passenger start -p 4000"
     environment:
       - RAILS_ENV=${RAILS_ENV}
     volumes:
