@@ -1,9 +1,39 @@
-<div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Dropdown
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <li><a href="#" onClick="addTag('style:fancy')">Make it ~Fancy~</a></li>
-  </ul>
-</div>
+<div class="input-group-btn">
+	<button type="button" class="btn btn-default dropdown-toggle" id="pt-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></button>
+	<ul class="dropdown-menu" id="pt-list">
+		<li><a href="#" data-value="style:">Style</a></li>
+		<li><a href="#"  data-value="with:">Add Coauthor</a></li>
+		<li role="separator" class="divider"></li>
+		<li><a href="https://publiclab.org/wiki/power-tags" target="_blank">Learn About Powertags</a></li>
+	</ul>
+</div><!-- /btn-group -->
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+
+		$( "#pt-list > li " ).each(function() {
+		    $( this ).click(function(event){
+
+		    	var val = $(event.target).attr('data-value');
+
+		    	switch(val){
+
+		    		case "style:":	
+		    			var input = prompt("What kind of style? (minimal, fancy, presentation, wide, nobanner)", "Style");
+		    			if (input != null) {
+  							addTag(val + input);}
+		    			break;
+
+		    		case "with:":
+		    			var input = prompt("Who would you like to add as a coauthor?", "Username");
+		    			if (input != null) {
+  							addTag(val + input);}
+		    			break;
+
+		    	}
+				
+		    });
+		});
+	});
+</script>
