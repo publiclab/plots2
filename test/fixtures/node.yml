@@ -237,19 +237,8 @@ method:
   cached_likes: 0
   path: "/wiki/spectrometer"
 
-node1:
-  nid: 21
-  uid: 8
-  title: "Method page"
-  created: <%= 4.days.ago %>
-  changed: <%= 4.days.ago %>
-  status: 1
-  type: "page"
-  cached_likes: 0
-  path: "/wiki/spectrometer"
-
-node2:
-  nid: 22
+method:
+  nid: 20
   uid: 8
   title: "Method page"
   created: <%= Time.now.to_i %>
@@ -258,3 +247,4 @@ node2:
   type: "page"
   cached_likes: 0
   path: "/wiki/spectrometer"
+
