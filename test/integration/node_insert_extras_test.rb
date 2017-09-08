@@ -29,6 +29,7 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
     assert_select 'h1', title
 
     assert_not_nil NodeShared.notes_grid('test')
+    assert_equal   1, NodeShared.notes_grid('test').length
     assert_equal   [], Node.activities('shouldnt')
     assert_not_nil Node.upgrades('test')
 
