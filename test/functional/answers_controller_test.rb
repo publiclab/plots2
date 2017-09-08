@@ -104,4 +104,17 @@ class AnswersControllerTest < ActionController::TestCase
     assert !answer.accepted
     assert_template text: "Answer couldn't be accepted"
   end
+  
+  test 'should allow accepting answer if logged in user is moderator' do
+    UserSession.create(rusers(:moderator))
+    answer = answers(:one)
+    answer.accepted = false
+    answer.save
+    assert !answer.accepted
+    xhr :get, :accept, id: answer.id
+    answer.reload
+    assert_response :success
+    assert answer.accepted
+  end
+
 end
