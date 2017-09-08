@@ -7,16 +7,26 @@ function setupWiki(node_id, title, raw, logged_in) {
       submitUrl: '/wiki/replace/' + node_id
     }));
     wiki_title = title;
+
+    // hide inline comments behind a beta flag
+    if (getUrlParameter('inlineComments') == 'true') {
+      var extraButtons = {
+        "fa-question": questionForm,
+        "fa-comment": setupCommentFunction
+      }
+    } else {
+      var extraButtons = {
+        "fa-question": questionForm,
+      }
+    }
+
     inlineMarkdownEditor({
       replaceUrl: '/wiki/replace/' + node_id,
       selector: '#content-raw-markdown',
       wysiwyg: true,
       preProcessor: preProcessMarkdown,
       postProcessor: postProcessContent,
-      extraButtons: {
-        "fa-question": questionForm,
-        "fa-comment": setupCommentFunction
-      },
+      extraButtons: extraButtons,
       editorOptions: {
         history: {
           prefix: "inline-"
@@ -37,6 +47,7 @@ function setupWiki(node_id, title, raw, logged_in) {
     qbutton.attr('href', '/questions/new?tags=response:' + node_id + ', question%3A' + wiki_title + ', ' + wiki_title + '-' + uniqueId + ', a-wiki-question&template=question&redirect=question').attr('target', '_blank');
   }
 
+  // this could be moved into a sublibrary or other file for better testing
   function setupCommentFunction(cbutton, uniqueId){
     var subsection_string = $('.inline-section-'+uniqueId).find("p").text();
     var inline_comment_form = buildSectionCommentForm(uniqueId, wiki_title, node_id, subsection_string);
