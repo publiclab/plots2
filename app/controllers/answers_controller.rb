@@ -57,7 +57,7 @@ class AnswersController < ApplicationController
   def accept
     @answer = Answer.find(params[:id])
 
-    if current_user.uid == @answer.node.uid
+    if (current_user.role == "admin" || current_user.role == "moderator" || current_user.uid == @answer.node.uid)
       respond_to do |format|
         if @answer.accepted
           @answer.accepted = false
