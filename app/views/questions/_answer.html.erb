@@ -39,7 +39,7 @@
       <% if answer.accepted %>
         <a <% if current_user && current_user.uid == answer.node.uid %> href="/answers/accept/<%= answer.id %>" <% end %> data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm btn-success">Accepted</a>
       <% else %>
-        <% if current_user && current_user.uid == answer.node.uid %>
+        <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || current_user.uid == answer.node.uid) %>
           <a href="/answers/accept/<%= answer.id %>" data-remote="true" id="answer-<%= answer.id %>-accept" class="answer-accept btn btn-sm btn-default">Accept this answer</a>
         <% end %>
       <% end %>
