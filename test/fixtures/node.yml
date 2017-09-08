@@ -236,3 +236,15 @@ method:
   type: "page"
   cached_likes: 0
   path: "/wiki/spectrometer"
+
+method:
+  nid: 20
+  uid: 8
+  title: "Method page"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "page"
+  cached_likes: 0
+  path: "/wiki/spectrometer"
+
