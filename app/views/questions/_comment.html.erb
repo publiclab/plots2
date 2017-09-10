@@ -3,7 +3,7 @@
 <% else %>
   <% node = Answer.find(answer_id).node %>
 <% end %>
-<div id="answer-<%= answer_id %>-comment-<%= comment.id %>" class="answer-<%= answer_id %>-comments" style="padding-top: 10px; display:none;">
+<div id="answer-<%= answer_id %>-comment-<%= comment.id %>" class="answer-<%= answer_id %>-comments" style="padding-top: 10px;">
   <div class="inline" style="vertical-align: top;">
   <% if comment.author.user && comment.author.user.photo_file_name %>
     <img class="img-circle" src="<%= comment.author.user.photo_path(:thumb) %>" /> 
