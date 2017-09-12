@@ -8,6 +8,12 @@ class NodeTest < ActiveSupport::TestCase
     node = node(:about)
     assert_equal 'page', node.type
     assert_equal 1, node.status
+    assert !node.answered
+  end
+  
+  test 'basic question attributes' do
+    question = node(:question)
+    assert question.answered
   end
 
   test 'create a node' do
