@@ -55,6 +55,11 @@ class TagController < ApplicationController
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
+    notes = Node.where(status: 1, type: 'note')
+                 .includes(:revision, :tag)
+                 .where('term_data.name = ?', params[:id])
+    users = notes.collect(&:author).uniq
+    @length=users.length || 0
 
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
