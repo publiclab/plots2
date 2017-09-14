@@ -6,6 +6,12 @@ class TypeaheadServiceTest < ActiveSupport::TestCase
   test 'running TypeaheadService.notes' do
     result = TypeaheadService.new.notes('blog')
 assert_equal [], TypeaheadService.new.notes('')
+
+    search = Node.search
+    assert_not_nil search.results
+    assert search.results.length > 0
+    assert_equal [], search.results
+    
     assert_false solrAvailable
     assert_not_nil result
     assert_equal result.length, 2
