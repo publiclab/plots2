@@ -38,14 +38,15 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 ## Table of Contents
 
 1. [Simple Installation with Cloud9](https://github.com/publiclab/plots2/wiki/Simple-Installation-for-Cloud9)
-2. [Prerequisites](https://github.com/publiclab/plots2/wiki/Prerequisites)
-3. [Testing](https://github.com/publiclab/plots2/wiki/Testing)
-4. [API](https://github.com/publiclab/plots2/wiki/API)
-5. [Bugs and Support](https://github.com/publiclab/plots2/wiki/Bugs-and-Support)
+2. [Prerequisites](https://github.com/publiclab/plots2/blob/master/doc/PREREQUISITES.md)
+3. [Testing](https://github.com/publiclab/plots2/blob/master/doc/TESTING.md)
+4. [API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+5. [Bugs and Support](#bugs-and-support)
 6. [Data model](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md)
 7. [Recaptcha](https://github.com/publiclab/plots2/blob/master/doc/RECAPTCHA.md)
 
 ****
+
 ## Installation
 
 1. In the console, download a copy of the source with `git clone https://github.com/publiclab/plots2.git`.
@@ -65,6 +66,14 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 ### Bundle exec
 
 For some, it will be necessary to prepend your gem-related commands with `bundle exec`, for example, `bundle exec passenger start`; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler. `bundle exec rake db: setup`, `bundle exec rake db: seed` are other examples of where this might be necessary.
+
+***
+
+## Bugs and support
+
+To report bugs and request features, please use the GitHub issue tracker provided at https://github.com/publiclab/plots2/issues 
+
+For additional support, join the Public Lab website and mailing list at http://publiclab.org/lists or for urgent requests, email web@publiclab.org
 
 ***
 
