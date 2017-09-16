@@ -1,6 +1,9 @@
-<h3><i><%= t('dashboard._activity.activity') %></i></h3>
-<a href="/post" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i><span class="hidden-xs"> <%= t('dashboard._activity.share_work') %></span></a>
-<a style="margin-right:2px;" href="/dashboard" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-refresh"></i></a>
+<h3 id="activity-header"><i><%= t('dashboard._activity.activity') %></i></h3>
+
+<div class="activity-menu">
+  <a href="/post" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-plus-circle"></i><span class="hidden-xs"> <%= t('dashboard._activity.share_work') %></span></a>
+  <a style="margin-right:2px;" href="/dashboard" class="btn btn-sm btn-default pull-right" type="button"><i class="fa fa-refresh"></i></a>
+</div>
 
 <div class="meta activity-dropdown">
   <div class="btn-group">
