@@ -9,6 +9,7 @@ class HomeController < ApplicationController
   # caches_action :index, :cache_path => { :last => Node.find(:last).updated_at.to_i }
 
   def home
+    self.activity
     @title = I18n.t('home_controller.science_community')
     if current_user
       redirect_to '/dashboard'
@@ -33,6 +34,7 @@ class HomeController < ApplicationController
   # route for seeing the front page even if you are logged in
   def front
     @title = I18n.t('home_controller.environmental_investigation')
+    self.activity
     render template: 'home/home'
   end
 
@@ -47,6 +49,26 @@ class HomeController < ApplicationController
     @wiki_count = Revision.select(:timestamp)
                           .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                           .count
+    @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
+    self.activity
+    render template: 'dashboard/dashboard'
+    @title = I18n.t('home_controller.community_research') unless current_user
+  end
+
+  # trashy... clean this up!
+  # this will eventually be based on the profile_tags data where people can mark their location with "location:lat,lon"
+  def nearby
+    if current_user.lat
+      dist = 1.5
+      minlat = current_user.lat - dist
+      maxlat = current_user.lat + dist
+      minlon = current_user.lon - dist
+      maxlon = current_user.lon + dist
+      @users = DrupalUsers.where('lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?', minlat, maxlat, minlon, maxlon)
+    end
+  end
+
+  def activity
     @blog = Tag.find_nodes_by_type('blog', 'note', 1).first
     # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
     hidden_nids = Node.joins(:node_tag)
@@ -100,21 +122,6 @@ class HomeController < ApplicationController
                               .group('answers.id')
     @answer_comments = @answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     @activity = (@notes + @wikis + @comments + @answer_comments).sort_by(&:created_at).reverse
-    @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
-    render template: 'dashboard/dashboard'
-    @title = I18n.t('home_controller.community_research') unless current_user
   end
 
-  # trashy... clean this up!
-  # this will eventually be based on the profile_tags data where people can mark their location with "location:lat,lon"
-  def nearby
-    if current_user.lat
-      dist = 1.5
-      minlat = current_user.lat - dist
-      maxlat = current_user.lat + dist
-      minlon = current_user.lon - dist
-      maxlon = current_user.lon + dist
-      @users = DrupalUsers.where('lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?', minlat, maxlat, minlon, maxlon)
-    end
-  end
 end
