@@ -10,6 +10,15 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 5, html.scan('notes-grid-test').length
   end
 
+  test 'that NodeShared can be used to convert doubled short codes like [notes:activity:spectrometer] into tables which list notes with the tag `activity:spectrometer`' do
+    before = "Here are some notes in a table: \n\n[notes:activity:spectrometer] \n\nThis is how you make it work:\n\n`[notes:activity:spectrometer]`\n\nMake sense?"
+    html = NodeShared.notes_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-activity-spectrometer notes-grid-activity-spectrometer-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 5, html.scan('notes-grid-activity-spectrometer').length
+  end
+
   test 'that NodeShared can be used to convert short codes like [questions:foo] into tables which list questions' do
     before = "Here are some questions in a table: \n\n[questions:test] \n\nThis is how you make it work:\n\n`[questions:tagname]`\n\n `[questions:tagname]`\n\nMake sense?"
     html = NodeShared.questions_grid(before)
