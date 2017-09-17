@@ -65,7 +65,7 @@
       var blurredLocation = new BlurredLocation(options);
 
       // adapt this to accept an initial start location using a local 
-      // Ruby/erb template variable like <%= latitude %> and <%= longitude %>
+      // Ruby/erb template variable like <%= latitude || 0.1 %> and <%= longitude || 0.1 %>
       blurredLocation.panMapToGeocodedLocation("placenameInput");
 
     </script>
