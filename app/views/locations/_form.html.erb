@@ -49,7 +49,7 @@
       <br />
       <input editable="false" id="placenameDisplay" type="text" class="form-control" />
       <br />
-      <button class="btn btn-primary" onclick="addTag('location:blurred' + ' lat:' + blurredLocation.getLat() + ' lon:' + blurredLocation.getLon())">Save Location</button>
+      <button class="btn btn-primary" onclick="addTag('location:blurred');addTag('lat:' + blurredLocation.getLat() + ');addTag('lon:' + blurredLocation.getLon());">Save Location</button>
 
     </div>
 
@@ -64,6 +64,8 @@
 
       var blurredLocation = new BlurredLocation(options);
 
+      // adapt this to accept an initial start location using a local 
+      // Ruby/erb template variable like <%= latitude %> and <%= longitude %>
       blurredLocation.panMapToGeocodedLocation("placenameInput");
 
     </script>
