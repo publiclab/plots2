@@ -35,10 +35,7 @@
 
 <h3 style="text-align:center;color:#888;">
   <a href="https://twitter.com/intent/follow?original_referer=http%3A%2F%2Fpubliclab.org%2Fhome&region=follow_link&screen_name=PublicLab&tw_p=followbutton&variant=2.0"><i style="text-decoration:none;" class="fa fa-twitter"></i></a>
-  &nbsp;
   <a href="https://www.facebook.com/PublicLab"><i style="text-decoration:none;" class="fa fa-facebook"></i></a> 
-  &nbsp;
-  <a href="https://instagram.com/publiclab"><i style="text-decoration:none;" class="fa fa-instagram"></i></a>
 </h3>
 
 <br />
@@ -60,72 +57,71 @@
   h1, h2, h3, h4 {
     font-family:Junction Light;
   }
-  #bottom {
-    padding-bottom: 20px;
-  }
-  #bottom img {
-    width: 90%;
-    padding:5%;
-  }
-  #bottom h2 {
-    margin-bottom:14px;
-    padding:10px;
+  #bottom h1 {
+    font-size:4em;
+    line-height:1.2em;
   }
   #bottom h4 {
     color:#888;
     font-size:1.6em;
     line-height:1.2em;
-    padding:10px;
-  }
-  #bottom p {
-    padding:10px;
-  }
-  #activity-header {
-    display: none;
-  }
-  .activity-menu,
-  .activity-dropdown {
-    display: none;
   }
 </style>
 
 <div id="bottom">
+<div class="row" style="padding:40px 0;">
 
-  <div class="col-md-4">
-    <img class="img img-circle" src="//i.publiclab.org/system/images/photos/000/006/671/original/canoe.jpg"/>
-    <h2 class="the-problem"> <%= t('home.home.the_problem.title') %> </h2>
+  <img style="margin-bottom:30px;" class="hidden-lg col-xs-12 col-md-4 img img-circle" src="//i.publiclab.org/system/images/photos/000/006/671/original/canoe.jpg"/>
+  <img style="margin:0;" class="visible-lg col-md-4 img img-circle" src="//i.publiclab.org/system/images/photos/000/006/671/original/canoe.jpg"/>
+
+  <div class="visible-lg col-md-8" style="padding-top:30px;padding-left:20px;">
+    <h1> <%= t('home.home.the_problem.title') %> </h1>
     <h4><%= t('home.home.the_problem.lack_access') %> <a href="/tools"><%= t('home.home.the_problem.tools') %></a> <%= t('home.home.the_problem.need_participation') %></h4>
-    <p><a href="/blog" class="btn btn-primary btn-lg">Read stories &raquo;</a></p>
   </div>
 
-  <div class="col-md-4">
-    <img class="img img-circle" src="//i.publiclab.org/system/images/photos/000/006/672/original/ne-barn.jpg"/>
+  <div class="hidden-lg col-md-8" style="padding-top:30px;">
+    <h2> <%= t('home.home.the_problem.title') %> </h2>
+    <h4><%= t('home.home.the_problem.lack_access') %> <a href="/tools"><%= t('home.home.the_problem.tools') %></a> <%= t('home.home.the_problem.need_participation') %></h4>
+  </div>
+</div>
+
+<hr />
+<div class="row" style="padding:40px 0;">
+
+  <img style="margin-bottom:30px;" class="hidden-lg col-xs-12 col-md-4 img img-circle" src="//i.publiclab.org/system/images/photos/000/006/672/original/ne-barn.jpg"/>
+
+  <div class="visible-lg col-md-8" style="padding-top:30px;padding-right:50px;">
+    <h1> <%= t('home.home.the_collaboration.title') %> </h1>
+    <h4><%= t('home.home.the_collaboration.open_network') %> <a href="/wiki/organizers"><%= t('home.home.the_collaboration.organizers') %></a>, <%= t('home.home.the_collaboration.create_low_cost_solutions') %> <a href="/wiki/nonprofit-initiatives"><%= t('home.home.the_collaboration.monitoring') %></a>.</h4>
+    <h4><%= t('home.home.the_collaboration.discover') %> <a href="/places"><%= t('home.home.the_collaboration.locally_important_matters') %></a> <%= t('home.home.the_collaboration.global_community') %></h4>
+  </div>
+
+  <div class="hidden-lg col-md-8" style="padding-top:30px;">
     <h2> <%= t('home.home.the_collaboration.title') %> </h2>
     <h4><%= t('home.home.the_collaboration.open_network') %> <a href="/wiki/organizers"><%= t('home.home.the_collaboration.organizers') %></a>, <%= t('home.home.the_collaboration.create_low_cost_solutions') %> <a href="/wiki/initiatives"><%= t('home.home.the_collaboration.monitoring') %></a>.</h4>
     <h4><%= t('home.home.the_collaboration.discover') %> <a href="/places"><%= t('home.home.the_collaboration.locally_important_matters') %></a> <%= t('home.home.the_collaboration.global_community') %></h4>
-    <p><a href="/questions" class="btn btn-primary btn-lg">Ask a question &raquo;</a></p>
   </div>
 
-  <div class="col-md-4">
-    <img class="img img-circle" src="//i.publiclab.org/system/images/photos/000/006/673/large/LizBklnNRG.jpg"/>
-    <h2> <%= t('home.home.the_solution.title') %> </h2>
-    <h4><%= t('home.home.the_solution.join_us_today') %> <a href="/archive"><%= t('home.home.the_solution.growing_data') %></a> <%= t('home.home.the_solution.local_environments') %></h4>
-    <p><a href="/methods" class="btn btn-primary btn-lg">Browse methods &raquo;</a></p>
-  </div>
-
-  <br style="clear:both;" />
-
+  <img style="margin:0;" class="visible-lg col-xs-12 col-md-4 img img-circle" src="//i.publiclab.org/system/images/photos/000/006/672/original/ne-barn.jpg"/>
 </div>
 
-<hr style="clear:both;padding:20px;" />
+<hr />
+<div class="row" style="padding:40px 0;">
 
-<h2><center>Recent community activity</center></h2>
+  <img style="margin-bottom:30px;" class="hidden-lg col-xs-12 col-md-4 img img-circle" src="//i.publiclab.org/system/images/photos/000/006/673/large/LizBklnNRG.jpg"/>
+  <img style="margin:0;" class="visible-lg col-md-4 img img-circle" src="//i.publiclab.org/system/images/photos/000/006/673/large/LizBklnNRG.jpg"/>
 
-<p><center><a href="/research">See more &raquo;</a></center></p>
+  <div class="visible-lg col-md-8" style="padding-top:30px;padding-left:20px;padding-right:50px;">
+    <h1> <%= t('home.home.the_solution.title') %> </h1>
+    <h4><%= t('home.home.the_solution.join_us_today') %> <a href="/archive"><%= t('home.home.the_solution.growing_data') %></a> <%= t('home.home.the_solution.local_environments') %></h4>
+  </div>
 
-<%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
+  <div class="hidden-lg col-md-8" style="padding-top:30px;">
+    <h2> <%= t('home.home.the_solution.title') %> </h2>
+    <h4><%= t('home.home.the_solution.join_us_today') %> <a href="/archive"><%= t('home.home.the_solution.growing_data') %></a> <%= t('home.home.the_solution.local_environments') %></h4>
+  </div>
+</div>
 
-<%= stylesheet_link_tag "dashboard" %>
-<%= javascript_include_tag "dashboard" %>
+</div>
 
 </div>
