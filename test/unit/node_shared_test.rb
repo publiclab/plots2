@@ -8,6 +8,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-test notes-grid-test-').length
     assert_equal 1, html.scan('<table').length
     assert_equal 5, html.scan('notes-grid-test').length
+    assert html.scan('<tr>').length > 3
   end
 
   test 'that NodeShared can be used to convert doubled short codes like [notes:activity:spectrometer] into tables which list notes with the tag `activity:spectrometer`' do
@@ -17,6 +18,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-activity-spectrometer notes-grid-activity-spectrometer-').length
     assert_equal 1, html.scan('<table').length
     assert_equal 5, html.scan('notes-grid-activity-spectrometer').length
+    assert html.scan('<tr>').length > 2
   end
 
   test 'that NodeShared can be used to convert short codes like [questions:foo] into tables which list questions' do
