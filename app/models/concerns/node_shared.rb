@@ -36,7 +36,7 @@ module NodeShared
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.questions_grid(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2).parameterize
+      tagname = Regexp.last_match(2)
       nodes = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
                   .where('term_data.name = ?', "question:#{tagname}")
@@ -59,7 +59,7 @@ module NodeShared
 
   def self.activities_grid(body)
     body.gsub(/[^\>`](\<p\>)?\[activities\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2).parameterize
+      tagname = Regexp.last_match(2)
       nodes = Node.activities(tagname)
                   .order('node.cached_likes DESC')
       output = ''
@@ -80,7 +80,7 @@ module NodeShared
 
   def self.upgrades_grid(body)
     body.gsub(/[^\>`](\<p\>)?\[upgrades\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2).parameterize
+      tagname = Regexp.last_match(2)
       nodes = Node.upgrades(tagname)
                   .order('node.cached_likes DESC')
       output = ''
@@ -157,7 +157,7 @@ module NodeShared
   # in our interface, "users" are known as "people" because it's more human
   def self.people_grid(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[people\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2).parameterize
+      tagname = Regexp.last_match(2)
       users = User.where(status: 1)
                   .includes(:user_tags)
                   .where('user_tags.value = ?', tagname)
