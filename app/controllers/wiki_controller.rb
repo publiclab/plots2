@@ -352,7 +352,7 @@ class WikiController < ApplicationController
 
   def methods
     @nodes = Node.where(status: 1, type: ['page'])
-                 .where('term_data.name = ?', 'tool')
+                 .where('term_data.name = ?', 'method')
                  .includes(:revision, :tag)
                  .order('node_revisions.timestamp DESC')
     # deprecating the following in favor of javascript implementation in /app/assets/javascripts/methods.js
