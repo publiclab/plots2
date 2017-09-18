@@ -8,15 +8,27 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-test notes-grid-test-').length
     assert_equal 1, html.scan('<table').length
     assert_equal 5, html.scan('notes-grid-test').length
+    assert html.scan('<tr>').length > 3
+  end
+
+  test 'that NodeShared can be used to convert doubled short codes like [notes:activity:spectrometer] into tables which list notes with the tag `activity:spectrometer`' do
+    before = "Here are some notes in a table: \n\n[notes:activity:spectrometer] \n\nThis is how you make it work:\n\n`[notes:activity:spectrometer]`\n\nMake sense?"
+    html = NodeShared.notes_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-activity-spectrometer notes-grid-activity-spectrometer-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 5, html.scan('notes-grid-activity-spectrometer').length
+    assert html.scan('<tr>').length > 2
   end
 
   test 'that NodeShared can be used to convert short codes like [questions:foo] into tables which list questions' do
-    before = "Here are some questions in a table: \n\n[questions:test] \n\nThis is how you make it work:\n\n`[questions:tagname]`\n\n `[questions:tagname]`\n\nMake sense?"
+    before = "Here are some questions in a table: \n\n[questions:spectrometer] \n\nThis is how you make it work:\n\n`[questions:tagname]`\n\n `[questions:tagname]`\n\nMake sense?"
     html = NodeShared.questions_grid(before)
     assert html
-    assert_equal 1, html.scan('<table class="table inline-grid questions-grid questions-grid-test questions-grid-test-').length
+    assert_equal 1, html.scan('<table class="table inline-grid questions-grid questions-grid-spectrometer questions-grid-spectrometer-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('questions-grid-test').length
+    assert_equal 5, html.scan('questions-grid-spectrometer').length
+    assert html.scan('<tr>').length > 2
   end
 
   test 'that NodeShared can be used to convert short codes like [activities:foo] into tables which list activity notes' do
@@ -27,15 +39,17 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 7, html.scan('<td').length
     assert_equal 1, html.scan('<table').length
     assert_equal 5, html.scan('activity-grid-spectrometer').length
+    assert html.scan('<tr>').length > 2
   end
 
-  test 'that NodeShared can be used to convert short codes like [upgrades:foo] into tables which list upgrade notes' do
-    before = "Here are some upgrades in a table: \n\n[upgrades:test] \n\nThis is how you make it work:\n\n`[upgrades:tagname]`\n\nMake sense?"
+  test 'that NodeShared can be used to convert short codes like [upgrades:latest] into tables which list upgrade notes' do
+    before = "Here are some upgrades in a table: \n\n[upgrades:latest] \n\nThis is how you make it work:\n\n`[upgrades:tagname]`\n\nMake sense?"
     html = NodeShared.upgrades_grid(before)
     assert html
-    assert_equal 1, html.scan('<table class="table inline-grid upgrades-grid upgrades-grid-test upgrades-grid-test-').length
+    assert_equal 1, html.scan('<table class="table inline-grid upgrades-grid upgrades-grid-latest upgrades-grid-latest-').length
     assert_equal 1, html.scan('<table').length
-    assert_equal 5, html.scan('upgrades-grid-test').length
+    assert_equal 5, html.scan('upgrades-grid-latest').length
+    assert html.scan('<tr>').length > 2
   end
 
   test 'that NodeShared can be used to convert short codes like [notes:foo] into tables which list notes, even after text has been markdown-ified' do
