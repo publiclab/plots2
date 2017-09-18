@@ -95,20 +95,17 @@
 
         <li class="dropdown hidden-xs hidden-sm<%= ' hidden-md' unless current_user %>">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <%= t('layout._header.get_involved.get_involved_title') %> <b class="caret"></b>
+            Connect <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/getting-started"><%= t('layout._header.get_involved.getting_started') %></a></li>
-            <li class="divider"></li>
-            <li><a href="/signup"><%= t('layout._header.get_involved.join') %></a></li>
-            <li><a href="/lists"><%= t('layout._header.get_involved.discussion_lists') %></a></li>
-            <li><a href="/events"><%= t('layout._header.get_involved.attend_event') %></a></li>
-            <li><a href="/wiki/post-an-event"><%= t('layout._header.get_involved.post_event') %></a></li>
-            <li class="divider"></li>
-            <li><a href="/wiki/start-a-chapter"><%= t('layout._header.get_involved.new_chapters') %></a></li>
-            <li><a href="/wiki/new-projects"><%= t('layout._header.get_involved.new_projects') %></a></li>
-            <li class="divider"></li>
-            <li><a href="/wiki/organizers"><%= t('layout._header.get_involved.organizer') %></a></li>
+
+	    <!-- <li><a href="">Calls</a></li> -->
+            <li><a href="/events">Events</a></li>
+            <li><a href="/signup">Website</a></li>
+            <li><a href="/lists">Discussion lists</a></li>
+            <li><a href="/chat">Chat</a></li>
+	    <!-- <li><a href="">Start a project</a></li> -->
+
           </ul>
         </li>
 
