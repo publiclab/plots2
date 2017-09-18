@@ -12,7 +12,7 @@ class TagTest < ActiveSupport::TestCase
   end
 
   test 'tag followers' do
-    followers = Tag.followers(community_tags(:awesome).name)
+    followers = Tag.followers(node_tags(:awesome).name)
     assert !followers.empty?
     assert followers.include?(tag_selection(:awesome).user.user)
   end
@@ -24,11 +24,11 @@ class TagTest < ActiveSupport::TestCase
   end
 
   test 'creating a tag with a bad uid' do
-    community_tag = NodeTag.new(uid: 1_343_151_513,
+    node_tag = NodeTag.new(uid: 1_343_151_513,
                                                tid: tags(:awesome).tid,
                                                nid: node(:one).nid)
-    assert community_tag.save!
-    assert_nil community_tag.author
+    assert node_tag.save!
+    assert_nil node_tag.author
   end
 
   test 'tag weekly tallies' do
@@ -70,12 +70,12 @@ class TagTest < ActiveSupport::TestCase
   test 'response power tagging' do
     tag = Tag.new(name: "response:#{node(:blog).id}")
     assert tag.save!
-    community_tag = NodeTag.new(
+    node_tag = NodeTag.new(
       tid: tag.tid,
       nid: node(:one).nid,
       uid: rusers(:bob).uid
     )
-    assert community_tag.save!
+    assert node_tag.save!
     assert !node(:blog).responses.empty?
     assert node(:blog).response_count > 0
   end
@@ -83,12 +83,12 @@ class TagTest < ActiveSupport::TestCase
   test 'response power tagging with custom key' do
     tag = Tag.new(name: "replication:#{node(:blog).id}")
     assert tag.save!
-    community_tag = NodeTag.new(
+    node_tag = NodeTag.new(
       tid: tag.tid,
       nid: node(:one).nid,
       uid: rusers(:bob).uid
     )
-    assert community_tag.save!
+    assert node_tag.save!
     assert !node(:blog).responses('replication').empty?
     assert node(:blog).response_count('replication') > 0
   end

@@ -139,7 +139,7 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 1, node.latest.status
   end
 
-  test 'should have tags, community_tags, and tagnames' do
+  test 'should have tags, node_tags, and tagnames' do
     node = node(:one)
     assert !node.tags.empty?
     assert_equal node.tags, node.tag
@@ -174,7 +174,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should show normal tags' do
     node = node(:question)
-    assert_equal node.normal_tags, [community_tags(:test2)]
+    assert_equal node.normal_tags, [node_tags(:test2)]
   end
 
   test 'should show question icon for question node' do

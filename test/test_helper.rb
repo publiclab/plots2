@@ -20,7 +20,7 @@ class ActiveSupport::TestCase
   set_fixture_class node_revisions: Revision
   set_fixture_class tag_selection: TagSelection
   set_fixture_class tags: Tag
-  set_fixture_class community_tags: NodeTag
+  set_fixture_class node_tags: NodeTag
   set_fixture_class comments: Comment
 
   fixtures :all
