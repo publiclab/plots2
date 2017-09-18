@@ -12,7 +12,7 @@ module NodeShared
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.notes_grid(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2).parameterize
+      tagname = Regexp.last_match(2)
       nodes = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
                   .where('term_data.name = ?', tagname)
