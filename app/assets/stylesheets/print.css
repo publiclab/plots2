@@ -4,7 +4,8 @@
   margin:40pt 30pt;  /* this affects the margin in the printer settings */
 }
 
-.hidden-print {
+.hidden-print,
+#anniversary {
   display:none;
 }
 
