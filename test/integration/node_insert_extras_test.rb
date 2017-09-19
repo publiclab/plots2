@@ -28,11 +28,18 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
 
     assert_select 'h1', title
 
+    assert_not_nil NodeShared.notes_grid('test')
+    assert_equal   4, NodeShared.notes_grid('test').length
+    assert_equal   [], Node.activities('shouldnt')
+    assert_not_nil Node.upgrades('test')
+
     assert_select 'table.notes-grid-test'
     assert_select 'table.activity-grid-test'
     assert_select 'table.upgrades-grid-test'
     assert_select 'table.notes-grid-shouldnt', false
 
+    # here we test to see that the requested replications are shown on the bottom of the note
+    assert_equal 1, node.response_count('replication')
     assert_select "table.notes-grid-replication-#{node.id}"
 
     seeks_reps.destroy
