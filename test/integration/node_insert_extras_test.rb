@@ -41,7 +41,6 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
     # here we test to see that the requested replications are shown on the bottom of the note
     assert_equal 1, node.response_count('replication')
     assert_select "table.notes-grid-replication-#{node.id}"
-    assert_select "table.notes-grid-replication-#{node.id} tr.title"
 
     seeks_reps.destroy
 
