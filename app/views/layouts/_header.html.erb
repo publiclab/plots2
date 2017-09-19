@@ -48,30 +48,18 @@
 
           <ul class="dropdown-menu">
 
-            <li class="dropdown-header"><%= t('layout._header.projects.research.research_title') %></li>
+            <li class="dropdown-header">Take Action</li>
 
-            <li><a href="/research/"><%= t('layout._header.projects.research.research_notes') %></a></li>
-            <li><a href="/wiki/"><%= t('layout._header.projects.research.publiclab_wiki') %></a></li>
-            <li><a href="/questions"><%= t('layout._header.projects.research.questions') %></a></li>
-            <li><a href="/tools"><%= t('layout._header.projects.research.tools') %></a></li>
-            <li><a href="/places"><%= t('layout._header.projects.research.places') %></a></li>
-            <!-- <li><a href="/users/map"><%= t('layout._header.projects.research.users_map') %></a></li> -->
-            <!-- <li><a href="/people"><%= t('layout._header.projects.research.people') %></a></li> -->
-            <li><a href="/comments"><%= t('layout._header.projects.research.comments') %></a></li>
+            <li><a href="/dashboard">See the latest research</a></li>
+	    <!-- <li><a href="">Environmental issues</a></li> -->
+            <li><a href="/questions">Ask a question</a></li>
+            <li><a href="/people">Greet People</a></li>
+            <li><a href="/methods">Discover Methods</a></li>
+            <li><a href="/archive">Browse the Archive</a></li>
+            <!-- <li><a href="">Start a local investigation</a></li> -->
+            <!-- <li><a href="">Join a Working Group</a></li> -->
+            <!-- <li><a href="">Develop Tools</a></li> -->
 
-            <li class="divider"></li>
-
-            <li class="dropdown-header"><%= t('layout._header.projects.initiatives.initiatives_title') %></li>
-
-            <li><a href="/wiki/nonprofit-initiatives#Open+Land"><%= t('layout._header.projects.initiatives.open_land') %></a></li>
-            <li><a href="/wiki/nonprofit-initiatives#Open+Water"><%= t('layout._header.projects.initiatives.open_water') %></a></li>
-            <li><a href="/wiki/nonprofit-initiatives#Open+Air"><%= t('layout._header.projects.initiatives.open_air') %></a></li>
-            <li><a href="/wiki/kits"><%= t('layout._header.projects.initiatives.kits') %></a></li>
-
-            <li class="divider"></li>
-
-            <li><a href="/wiki/fellows"><%= t('layout._header.projects.fellows') %></a></li>
-            <li><a href="/wiki/lending-library"><%= t('layout._header.projects.lending_library') %></a></li>
           </ul>
 
         </li>
@@ -107,34 +95,17 @@
 
         <li class="dropdown hidden-xs hidden-sm<%= ' hidden-md' unless current_user %>">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <%= t('layout._header.get_involved.get_involved_title') %> <b class="caret"></b>
+            Connect <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/getting-started"><%= t('layout._header.get_involved.getting_started') %></a></li>
-            <li class="divider"></li>
-            <li><a href="/signup"><%= t('layout._header.get_involved.join') %></a></li>
-            <li><a href="/lists"><%= t('layout._header.get_involved.discussion_lists') %></a></li>
-            <li><a href="/events"><%= t('layout._header.get_involved.attend_event') %></a></li>
-            <li><a href="/wiki/post-an-event"><%= t('layout._header.get_involved.post_event') %></a></li>
-            <li class="divider"></li>
-            <li><a href="/wiki/start-a-chapter"><%= t('layout._header.get_involved.new_chapters') %></a></li>
-            <li><a href="/wiki/new-projects"><%= t('layout._header.get_involved.new_projects') %></a></li>
-            <li class="divider"></li>
-            <li><a href="/wiki/organizers"><%= t('layout._header.get_involved.organizer') %></a></li>
-          </ul>
-        </li>
 
-        <li class="dropdown hidden-xs hidden-sm<%= ' hidden-md' unless current_user %>">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <%= t('layout._header.data.data_title') %>
-            <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="/archive"><%= t('layout._header.data.archive') %></a></li>
-            <li class="dropdown-header"><%= t('layout._header.data.web_tools.web_tools_title') %></li>
-            <li><a href="//mapknitter.org"><%= t('layout._header.data.web_tools.mapknitter') %></a></li>
-            <li><a href="//spectralworkbench.org"><%= t('layout._header.data.web_tools.spectralworkbench') %></a></li>
-            <li><a href="//infragram.org"><%= t('layout._header.data.web_tools.infragram') %></a></li>
+	    <!-- <li><a href="">Calls</a></li> -->
+            <li><a href="/events">Events</a></li>
+            <li><a href="/signup">Website</a></li>
+            <li><a href="/lists">Discussion lists</a></li>
+            <li><a href="/chat">Chat</a></li>
+	    <!-- <li><a href="">Start a project</a></li> -->
+
           </ul>
         </li>
 
