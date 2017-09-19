@@ -189,10 +189,6 @@ class DrupalUsers < ActiveRecord::Base
     end
   end
 
-  def self.find_by_name_and_status(name, status)
-    where(name: name, status: status)[0]
-  end
-
   private
 
   def decrease_likes_banned
