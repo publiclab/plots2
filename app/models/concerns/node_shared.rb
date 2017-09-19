@@ -25,7 +25,7 @@ module NodeShared
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
-                                     className: 'notes-grid-' + tagname,
+                                     className: 'notes-grid-' + tagname.parameterize,
                                      nodes: nodes,
                                      type: "notes"
                                    })
@@ -49,7 +49,7 @@ module NodeShared
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
-                                     className: 'questions-grid-' + tagname,
+                                     className: 'questions-grid-' + tagname.parameterize,
                                      nodes: nodes,
                                      type: "questions"
                                    })
@@ -70,7 +70,7 @@ module NodeShared
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
-                                     className: 'activity-grid-' + tagname,
+                                     className: 'activity-grid-' + tagname.parameterize,
                                      nodes: nodes,
                                      type: "activity"
                                    })
@@ -91,7 +91,7 @@ module NodeShared
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
-                                     className: 'upgrades-grid-' + tagname,
+                                     className: 'upgrades-grid-' + tagname.parameterize,
                                      nodes: nodes,
                                      type: "upgrades"
                                    })
@@ -169,7 +169,7 @@ module NodeShared
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
-                                     className: 'people-grid-' + tagname,
+                                     className: 'people-grid-' + tagname.parameterize,
                                      users: users
                                    })
       output
