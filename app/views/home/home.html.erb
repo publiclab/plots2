@@ -123,7 +123,9 @@
 
 <p><center><a href="/research">See more &raquo;</a></center></p>
 
-<%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
+<div class="dashboard">
+  <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
+</div>
 
 <%= stylesheet_link_tag "dashboard" %>
 <%= javascript_include_tag "dashboard" %>
