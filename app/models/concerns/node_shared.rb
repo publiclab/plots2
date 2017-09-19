@@ -12,7 +12,7 @@ module NodeShared
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.notes_grid(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2).parameterize
+      tagname = Regexp.last_match(2)
       nodes = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
                   .where('term_data.name = ?', tagname)
@@ -25,7 +25,7 @@ module NodeShared
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
-                                     className: 'notes-grid-' + tagname,
+                                     className: 'notes-grid-' + tagname.parameterize,
                                      nodes: nodes,
                                      type: "notes"
                                    })
@@ -36,7 +36,7 @@ module NodeShared
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.questions_grid(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2).parameterize
+      tagname = Regexp.last_match(2)
       nodes = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
                   .where('term_data.name = ?', "question:#{tagname}")
@@ -49,7 +49,7 @@ module NodeShared
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
-                                     className: 'questions-grid-' + tagname,
+                                     className: 'questions-grid-' + tagname.parameterize,
                                      nodes: nodes,
                                      type: "questions"
                                    })
@@ -59,7 +59,7 @@ module NodeShared
 
   def self.activities_grid(body)
     body.gsub(/[^\>`](\<p\>)?\[activities\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2).parameterize
+      tagname = Regexp.last_match(2)
       nodes = Node.activities(tagname)
                   .order('node.cached_likes DESC')
       output = ''
@@ -70,7 +70,7 @@ module NodeShared
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
-                                     className: 'activity-grid-' + tagname,
+                                     className: 'activity-grid-' + tagname.parameterize,
                                      nodes: nodes,
                                      type: "activity"
                                    })
@@ -80,7 +80,7 @@ module NodeShared
 
   def self.upgrades_grid(body)
     body.gsub(/[^\>`](\<p\>)?\[upgrades\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2).parameterize
+      tagname = Regexp.last_match(2)
       nodes = Node.upgrades(tagname)
                   .order('node.cached_likes DESC')
       output = ''
@@ -91,7 +91,7 @@ module NodeShared
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
-                                     className: 'upgrades-grid-' + tagname,
+                                     className: 'upgrades-grid-' + tagname.parameterize,
                                      nodes: nodes,
                                      type: "upgrades"
                                    })
@@ -157,7 +157,7 @@ module NodeShared
   # in our interface, "users" are known as "people" because it's more human
   def self.people_grid(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[people\:(\S+)\]/) do |_tagname|
-      tagname = Regexp.last_match(2).parameterize
+      tagname = Regexp.last_match(2)
       users = User.where(status: 1)
                   .includes(:user_tags)
                   .where('user_tags.value = ?', tagname)
@@ -169,7 +169,7 @@ module NodeShared
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
-                                     className: 'people-grid-' + tagname,
+                                     className: 'people-grid-' + tagname.parameterize,
                                      users: users
                                    })
       output
