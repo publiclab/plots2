@@ -64,6 +64,8 @@
 
       var location = new BlurredLocation(options);
 
+      <% latitude ||= false %>
+      <% longitude ||= false %>
       <% if latitude && longitude %>
         location.location.goTo(<%= latitude %>, <%= longitude %>);
       <% end %>
