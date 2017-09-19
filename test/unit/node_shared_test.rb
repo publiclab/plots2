@@ -38,7 +38,7 @@ class NodeSharedTest < ActiveSupport::TestCase
   test 'that NodeShared can be used to convert short codes like [activities:foo] into tables which list activity notes' do
     before = "Here are some activities in a table: \n\n[activities:spectrometer] \n\nThis is how you make it work:\n\n`[activities:tagname]`\n\nMake sense?"
     html = NodeShared.activities_grid(before)
-    assert_equal 1, Node.activities('activity:spectrometer').length
+    assert_equal 1, Node.activities('spectrometer').length
     assert html
     assert_equal 1, html.scan('<table class="table inline-grid activity-grid activity-grid-spectrometer activity-grid-spectrometer-').length
     assert_equal 7, html.scan('<td').length
