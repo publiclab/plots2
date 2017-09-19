@@ -1,60 +1,87 @@
-<%= javascript_include_tag "locationForm" %>
-<%= javascript_include_tag "location_tags.js" %>
-<style>
+<%= javascript_include_tag 'leaflet-blurred-location/dist/Leaflet.BlurredLocation.js' %>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
 
-.font-size-small {
-  font-size: 150%;
-}
+    <title>Leaflet.BlurredLocation</title>
 
-.font-size-big {
-  font-size: 200%;
-}
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>
 
-.leaflet-map:after {
-  width: 22px;
-  height: 40px;
-  display: block;
-  content: ' ';
-  position: absolute;
-  top: 50%; left: 50%;
-  margin: -40px 0 0 -11px;
-  background: url('https://publiclab.org/assets/leaflet/dist/images/marker-icon.png');
-  background-size: 22px 40px;
-  pointer-events: none;
-}
+  </head>
 
-</style>
-<div class="container" >
-      <div class="row" >
-        <div class="col-md-8">
-          <label class="h2 font-size-big"><input type="radio" />&nbsp;&nbsp;Add location to your content</label>
-          <br/><br/>
-          <h4 class="font-size-small">Option 1 : By Placename</h4>
-          </br>
-          <input id="geo_location" type="text" class="form-control"><br/>
-          <h4 class="font-size-small">Option 2 : By dragging the map</h4></br>
-          <h4 class="font-size-small">Option 3 : By giving co-ordinates</h4></br>
+  <body>
+
+    <div class="container" >
+
+      <h3>Enter a location</h3>
+
+      <label>
+        <input id="browserLocation" type="checkbox" checked onchange='blurredLocation.geocodeWithBrowser(document.getElementById("browserLocation").checked);'>
+        Get my location
+      </label>
+      <br/>
+      <label>
+        <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
+        Blur my location
+      </label>
+
+      <hr />
+
+      <p><b>By place name</b></p>
+      <p><input id="placenameInput" type="text" class="form-control" /></p>
+
+      <p>
+        <b>By entering co-ordinates</b>
+        <div class="row">
           <div class="col-md-6">
-            <input id="lat" type="text" class="form-control" placeholder="Latitude"><br/>
+            <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
           </div>
           <div class="col-md-6">
-            <input id="lng" type="text" class="form-control" placeholder="Longitude"><br/>
+            <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
           </div>
-          <label class="h2 font-size-big"><input type="checkbox" onchange='getLocation(this);'>&nbsp;&nbsp;Obscure my exact location</label>
         </div>
-        <div class="col-md-4">
-          <h3 class="font-size-small">On a map : </h3>
-          <%= render_map(17.4472, 78.3488, []) %>
-          <script>
+      </p>
 
-            addGrid(map);
-            geoLocateFromInput('geo_location');
-            geoLocateFromLatLng('lat','lng');
+      <p><b>By dragging the map</b></p>
 
-          </script>
-          <h3 class="font-size-small">In Text:</h3><br/>
-          <input id="location" type="text" class="form-control"><br/>
-        </div>
-      </div>
-</div>
-<script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>
+      <div id="map" class="leaflet-map" style="width: 100%; height: 400px;"></div>
+
+      <br />
+      <input editable="false" id="placenameDisplay" type="text" class="form-control" />
+      <br />
+      <button class="btn btn-primary" onclick="saveLocation()">Save Location</button>
+
+    </div>
+
+    <script>
+      
+      var options = {
+        InterfaceOptions: {
+          latId: 'lat',
+          lngId: 'lng'
+        }
+      }
+
+      var location = new BlurredLocation(options);
+
+      <% latitude ||= false %>
+      <% longitude ||= false %>
+      <% if latitude && longitude %>
+        location.location.goTo(<%= latitude %>, <%= longitude %>);
+      <% end %>
+      
+      function saveLocation() {
+        if (location.isBlurred()) addTag('location:blurred');
+        addTag('lat:' + location.getLat());
+        addTag('lon:' + location.getLon());
+      }
+      
+    </script>
+
+    <style>
+      html { background: #f8f8f8; margin-bottom: 100px;}
+      body { background: none; }
+    </style>
+
+  </body>
+</html>
