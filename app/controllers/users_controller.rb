@@ -146,7 +146,7 @@ class UsersController < ApplicationController
 
   def rss
     if params[:author]
-      @author = DrupalUsers.find_by_name_and_status( params[:author], 1 )
+      @author = DrupalUsers.where(name: params[:author], status: 1).first
       if @author
         @notes = Node.order("nid DESC")
                            .where(type: 'note', status: 1, uid: @author.uid)
