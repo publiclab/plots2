@@ -510,7 +510,7 @@ class Node < ActiveRecord::Base
   # Automated constructors for associated models
 
   def add_comment(params = {})
-    thread = if !comments.empty?
+    thread = if !comments.empty? && !comments.last.nil?
                comments.last.next_thread
              else
                '01/'
