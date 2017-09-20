@@ -44,3 +44,23 @@ $(function () {
   </div>
 </form>
 <% end %>
+<% if params[:location] %>
+<br />
+<div class="blurred-location-container">
+  <p>
+    <a class="btn btn-default blurred-location-input">
+      <i class="fa fa-map-marker"></i> Add a location to this content
+    </a>
+  </p>
+</div>
+<script>
+  jQuery(document).ready(function() {
+    $('.blurred-location-input').click(function createBlurredLocationInput() {
+      $.ajax('/locations/form')
+       .done(function(response) {
+         $('.blurred-location-container').html(response);
+       });
+    });
+  });
+</script>
+<% end %>
