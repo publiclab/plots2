@@ -34,7 +34,7 @@
     <tr>
   <% end %>
     <% if type == "notes" || type == "questions" %>
-      <td class="title"><% if node.answered %><i class="fa fa-check-square" <i style="color:#0c8;"></i> <% end %><a href="<%= node.path %>"><%= node.title %></a></td>
+      <td class="title"><% if node.answered %><i class="fa fa-check-square" style="color:#0c8;"></i> <% end %><a href="<%= node.path %>"><%= node.title %></a></td>
       <td class="author"><a href="/profile/<%= node.author.username %>">@<%= node.author.username %></a></td>
       <td class="updated" data-timestamp="<%= node.latest.timestamp.to_s %>"><%= distance_of_time_in_words(Time.at(node.latest.updated_at), Time.current, false, scope: :'datetime.time_ago_in_words') %></td>
       <td class="likes"><%= node.cached_likes.to_s %></td>
