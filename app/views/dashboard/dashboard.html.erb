@@ -1,3 +1,32 @@
+<% if Time.now - current_user.created_at < 1.week %>
+    <!--<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button>-->
+
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <br><br>
+        <!--<div class="well col-md-12 col-lg-12" >-->
+        <h2>Hello, welcome to Public Lab!</h2>
+        <br><br>
+        This is your dashboard, where recent updates from other community members show up. It's helpful to keep up to date with new progress, news, and recent developments.
+        <br><br>
+        But to get started at Public Lab, try:
+        <br><br>
+        * asking a question (https://publiclab.org/questions)
+        <br>
+        * exploring projects (https://publiclab.org/methods)
+      </div>
+      <br><br>
+
+      <div class="clearfix">
+
+      </div>
+    </div>
+
+<% end %>
+
 <div class="dashboard container">
 
   <%= render partial: "dashboard/header" %>
