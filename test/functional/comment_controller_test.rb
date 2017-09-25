@@ -258,4 +258,12 @@ class CommentControllerTest < ActionController::TestCase
         type: 'page'
     assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on 'Wiki page title'")
   end
+
+  test 'should prompt user if comment includes question mark' do
+    UserSession.create(rusers(:jeff))
+    xhr :post, :create,
+        id: comment.id,
+        body: 'Test question?'
+    assert_select 'a[href=?]', '/questions', { :count => 1, :text => 'Questions page' }
+  end
 end
