@@ -8,7 +8,7 @@ before_install:
 
 install:
   - cp config/database.yml.example config/database.yml
-  - cp db/schema.rb db/schema.rb
+  - cp db/schema.rb.example db/schema.rb
   - docker-compose build
   - docker-compose up -d
   - docker-compose exec web sleep 5
