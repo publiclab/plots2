@@ -132,8 +132,8 @@ class Tag < ActiveRecord::Base
     uids = TagSelection.joins(:tag)
                        .where('term_data.name = ?', tagname)
                        .collect(&:user_id)
-    DrupalUsers.where('uid in (?)', uids)
-               .collect(&:user)
+    User.where(id: uids)
+        .where(status: [1, 4])
   end
 
   # OPTIMIZE: this too!
