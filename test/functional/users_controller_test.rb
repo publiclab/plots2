@@ -43,6 +43,12 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_nil :users
   end
 
+  test 'list users' do
+    get :list, new: true
+    assert_response :success
+    assert_not_nil :users
+  end
+
   test 'list users while logged in' do
     UserSession.create(rusers(:bob))
     get :list

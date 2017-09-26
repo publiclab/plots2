@@ -96,8 +96,13 @@ class UsersController < ApplicationController
                           .joins(:node)
                           .group('users.uid')
                           .where('users.status = 1 AND node.status = 1')
-                          .order("last_updated DESC")
-                          .page(params[:page])
+      if params[:new] # 
+        @users = @users.order("created_at DESC")
+                       .page(params[:page])
+      else
+        @users = @users.order("last_updated DESC")
+                       .page(params[:page])
+      end
     end
     @users = @users.where('users.status = 1') unless current_user && (current_user.role == "admin" || current_user.role == "moderator")
   end
