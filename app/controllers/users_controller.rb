@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  respond_to :html, :xml, :json, :rss
   before_filter :require_no_user, :only => [:new]
   before_filter :require_user, :only => [:update]
 
