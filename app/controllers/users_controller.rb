@@ -90,7 +90,6 @@ class UsersController < ApplicationController
       @users = DrupalUsers.joins('INNER JOIN rusers ON rusers.username = users.name')
                           .order("updated_at DESC")
                           .where('rusers.role = ?', params[:id])
-                          .page(params[:page])
     else
       # recently active
       @users = DrupalUsers.select('*, MAX(node.changed) AS last_updated')
@@ -99,13 +98,12 @@ class UsersController < ApplicationController
                           .where('users.status = 1 AND node.status = 1')
       if params[:new] # 
         @users.order("users.created DESC")
-              .page(params[:page])
       else
         @users.order("last_updated DESC")
-              .page(params[:page])
       end
     end
     @users.where('users.status = 1') unless current_user && (current_user.role == "admin" || current_user.role == "moderator")
+    @users.page(params[:page])
     respond_with do |format|
       format.html { render 'users/list' }
       format.xml  { render xml: @users }
