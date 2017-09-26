@@ -98,14 +98,14 @@ class UsersController < ApplicationController
                           .group('users.uid')
                           .where('users.status = 1 AND node.status = 1')
       if params[:new] # 
-        @users = @users.order("users.created DESC")
-                       .page(params[:page])
+        @users.order("users.created DESC")
+              .page(params[:page])
       else
-        @users = @users.order("last_updated DESC")
-                       .page(params[:page])
+        @users.order("last_updated DESC")
+              .page(params[:page])
       end
     end
-    @users = @users.where('users.status = 1') unless current_user && (current_user.role == "admin" || current_user.role == "moderator")
+    @users.where('users.status = 1') unless current_user && (current_user.role == "admin" || current_user.role == "moderator")
     respond_with do |format|
       format.html { render 'users/list' }
       format.xml  { render xml: @users }
