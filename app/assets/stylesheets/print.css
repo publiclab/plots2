@@ -5,6 +5,7 @@
 }
 
 .hidden-print,
+.popover,
 #anniversary {
   display:none;
 }
