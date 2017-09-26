@@ -43,8 +43,14 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_nil :users
   end
 
-  test 'list users' do
+  test 'list new users' do
     get :list, new: true
+    assert_response :success
+    assert_not_nil :users
+  end
+
+  test 'list new users in json' do
+    get :list, new: true, format: 'json'
     assert_response :success
     assert_not_nil :users
   end
