@@ -8,9 +8,10 @@ class TagController < ApplicationController
     @tags = Tag.joins(:node_tag, :node)
                .select('node.id, node.status, term_data.*, community_tags.*')
                .where('node.status = ?', 1)
-               .paginate(page: params[:page])
-               .order('count DESC')
+               .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                .group(:name)
+               .order('count DESC')
+               .paginate(page: params[:page])
   end
 
   def show
