@@ -106,7 +106,7 @@ class UsersController < ApplicationController
       end
     end
     @users = @users.where('users.status = 1') unless current_user && (current_user.role == "admin" || current_user.role == "moderator")
-    respond_with(@users) do |format|
+    respond_with do |format|
       format.html { render 'users/list' }
       format.xml  { render xml: @users }
       format.json { render json: @users }
