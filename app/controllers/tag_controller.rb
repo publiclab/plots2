@@ -6,6 +6,7 @@ class TagController < ApplicationController
     @title = I18n.t('tag_controller.tags')
     @paginated = true
     @tags = Tag.joins(:node_tag, :node)
+               .select('node.id, node.status, term_data.*, community_tags.*')
                .where('node.status = ?', 1)
                .paginate(page: params[:page])
                .order('count DESC')
