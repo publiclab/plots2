@@ -2,7 +2,7 @@
 
 Run all basic rails tests with `rake test`. This is **no longer required for submitting pull requests** (see [Pull Requests](#pull-requests), below), and to confirm you have a working local environment.
 
-`rake test:all` runs **all** tests. This includes Jasmine client-side tests and Solr-dependent tests.
+`rake test:all` runs **all** tests. This includes Jasmine client-side tests and Solr-dependent tests -- not recommended for everybody!
 
 ## Pull Requests
 
