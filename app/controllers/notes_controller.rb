@@ -2,7 +2,7 @@ class NotesController < ApplicationController
   respond_to :html
   before_filter :require_user, only: %i[create edit update delete rsvp]
 
-  sdef index
+  def index
     @title = I18n.t('notes_controller.research_notes')
     set_sidebar
   end
