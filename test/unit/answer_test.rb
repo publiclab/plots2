@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AnswerTest < ActiveSupport::TestCase
   test 'should not save answer without content' do
-    answer = TAnswer.new
+    answer = Answer.new
     assert !answer.save
   end
 
