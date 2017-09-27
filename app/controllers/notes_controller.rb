@@ -7,7 +7,7 @@ class NotesController < ApplicationController
     set_sidebar
   end
 
-  def tools
+  xdef tools
     redirect_to '/methods', status: 302
   end
 
