@@ -262,7 +262,7 @@ class CommentControllerTest < ActionController::TestCase
   test 'should prompt user if comment includes question mark' do
     UserSession.create(rusers(:jeff))
     xhr :post, :create,
-        id: comment.id,
+        id: node(:blog).id,
         body: 'Test question?'
     assert_select 'a[href=?]', '/questions', { :count => 1, :text => 'Questions page' }
   end
