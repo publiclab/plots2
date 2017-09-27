@@ -7,7 +7,7 @@ class TypeaheadServiceTest < ActiveSupport::TestCase
     result = TypeaheadService.new.notes('blog')
     assert_true solrAvailable
     assert_not_nil result
-    assert_equal result.length, 2
+    assert_equal result.length, 1
   end
 
 end
