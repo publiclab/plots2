@@ -40,8 +40,6 @@ junit.failures.collect(&:nodes).flatten.each do |failure|
   end
 end
 
-message junit.inspect
-
 junit.errors.collect(&:nodes).flatten.each do |error|
   error.nodes.each do |f|
     match = f.match(/(test[a-z_\/]+.rb):([0-9]+)/)
