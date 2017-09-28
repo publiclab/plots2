@@ -1,4 +1,4 @@
-message "@#{github.pr_author} Thank you for your pull request! I'm here to help with some tips and recommendations. Please take a look at the list provided and help us review and accept your contribution!"
+message "@#{github.pr_author} Thank you for your pull request! I'm here to help with some tips and recommendations. Please take a look at the list provided and help us review and accept your contribution! And **don't be discouraged if you see errors** -- we're here to help."
 
 message "Your pull request is on the `master` branch. Please [make a separate feature branch](https://publiclab.org/wiki/contributing-to-public-lab-software#A+sample+git+workflow)) with a descriptive name like `new-blog-design` while making PRs in the future." if github.branch_for_head == 'master'
 
@@ -37,5 +37,17 @@ junit.failures.collect(&:nodes).flatten.each do |failure|
       f = f.gsub(source_path + ':' + line, "<a href='https://github.com/#{github.pr_author}/plots2/tree/#{github.branch_for_head}/#{source_path}#L#{line}'>#{source_path}:#{line}</a>")
     end
     fail("There was a test failure at: #{f}")
+  end
+end
+
+junit.errors.collect(&:nodes).flatten.each do |error|
+  error.nodes.each do |f|
+    match = f.match(/(test[a-z_\/]+.rb):([0-9]+)/)
+    source_path = match[1]
+    line = match[2]
+    if !source_path.nil? && !line.nil?
+      f = f.gsub(source_path + ':' + line, "<a href='https://github.com/#{github.pr_author}/plots2/tree/#{github.branch_for_head}/#{source_path}#L#{line}'>#{source_path}:#{line}</a>")
+    end
+    fail("There was a test error at: #{f}")
   end
 end
