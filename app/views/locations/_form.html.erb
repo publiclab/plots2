@@ -3,43 +3,37 @@
 
 <div class="container blurred-location">
 
-  <h3>Enter a location</h3>
+  <div class="row">
 
-  <label>
-    <input id="browserLocation" type="checkbox" checked onchange='blurredLocation.geocodeWithBrowser(document.getElementById("browserLocation").checked);'>
-    Find my location using the browser
-  </label>
-  <br/>
-  <label>
-    <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
-    Blur my location
-  </label>
-
-  <hr />
-
-  <p><b>By place name</b></p>
+  <p><b>Search by place name</b></p>
   <p><input id="placenameInput" type="text" class="form-control" /></p>
 
+  <p><b>By dragging the map</b></p>
+
+  <div id="map" class="leaflet-map" style="width: 100%; height: 300px; margin-bottom:10px;"></div>
+
   <p>
-    <b>By entering co-ordinates</b>
+    <b>Or by co-ordinates</b>
     <div class="row">
       <div class="col-md-6">
-        <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
+        <p><input id="lat" type="text" class="form-control" value="<%= latitude ||= 0 %>"></p>
       </div>
       <div class="col-md-6">
-        <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
+        <p><input id="lng" type="text" class="form-control" value="<%= longitude ||= 0 %>"></p>
       </div>
     </div>
   </p>
 
-  <p><b>By dragging the map</b></p>
+  <p><b>Place name as it will be saved:</b></p>
+  <p><input editable="false" id="placenameDisplay" type="text" class="form-control" /></p>
 
-  <div id="map" class="leaflet-map" style="width: 100%; height: 400px;"></div>
+  <button data-dismiss="modal" class="btn btn-lg btn-primary" onclick="saveLocation()">Save Location</button>
 
-  <br />
-  <input editable="false" id="placenameDisplay" type="text" class="form-control" />
-  <br />
-  <button class="btn btn-primary" onclick="saveLocation()">Save Location</button>
+    <button id="browserLocation" class="btn btn-default btn-lg" onclick='blurredLocation.geocodeWithBrowser();'>Auto-locate me</button>
+    &nbsp; <label>
+      <input id="obscureLocation" type="checkbox" checked onchange='blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
+      Blur my location
+    </label>
 
 </div>
 
@@ -58,22 +52,27 @@
 
     blurredLocation = new BlurredLocation(options);
 
-    <% latitude ||= false %>
-    <% longitude ||= false %>
-    <% if latitude && longitude %>
-      blurredLocation.location.goTo(<%= latitude %>, <%= longitude %>);
-    <% end %>
-
   })();
     
   function saveLocation() {
     var tags = 'lat:' + blurredLocation.getLat() + ',lon:' + blurredLocation.getLon();
     if (blurredLocation.isBlurred()) tags = tags + ',' + 'location:blurred'
+    if ($('#placenameDisplay').val() != 'Location unavailable') tags = tags + ',' + 'place:' + parameterize($('#placenameDisplay').val());
     addTag(tags);
+  }
+
+  function parameterize(input) {
+    return input.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
   }
   
 </script>
 
 <style>
-  .blurred-location { background: #f8f8f8;}
+  .modal-body {
+    background: #f8f8f8;
+  }
+  .blurred-location { 
+    background: #f8f8f8;
+    width: 100%;
+  }
 </style>

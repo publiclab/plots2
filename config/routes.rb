@@ -164,6 +164,7 @@ Plots2::Application.routes.draw do
   match 'tag/:id' => 'tag#show'
 
   match 'locations/form' => 'tag#location'
+  match 'locations/modal' => 'tag#location_modal'
 
 
   match 'rsvp/:id' => 'notes#rsvp'

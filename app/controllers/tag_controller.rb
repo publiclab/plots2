@@ -260,6 +260,10 @@ class TagController < ApplicationController
     render template: 'locations/_form'
   end
 
+  def location_modal
+    render template: 'locations/_modal', layout: false
+  end
+
   def gridsEmbed
     render layout: false
   end
