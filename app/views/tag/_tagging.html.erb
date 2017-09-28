@@ -26,9 +26,14 @@ $(function () {
     <div class="input-group col-md-6">
       <span class="input-group-addon"><i class="fa fa-tags"></i></span>
       <input autocomplete="off" class="tag-input form-control" name="name" type="text" placeholder="<%= t('tag._tagging.enter_tags') %>" data-provide="typeahead" />
-      <% if params[:potter] %>
-      <%= render partial: 'tag/advanced_tagging' %>
-      <% end %>
+      <div class="input-group-btn">
+        <a class="btn btn-default blurred-location-input">
+          <i class="fa fa-map-marker"></i>
+        </a>
+        <% if params[:potter] %>
+          <%= render partial: 'tag/advanced_tagging' %>
+        <% end %>
+      </div>
     </div>
     <script>
       jQuery(document).ready(function() {
@@ -44,21 +49,19 @@ $(function () {
   </div>
 </form>
 <% end %>
+
 <% if params[:location] %>
 <br />
 <div class="blurred-location-container">
-  <p>
-    <a class="btn btn-default blurred-location-input">
-      <i class="fa fa-map-marker"></i> Add a location to this content
-    </a>
-  </p>
 </div>
+
 <script>
   jQuery(document).ready(function() {
     $('.blurred-location-input').click(function createBlurredLocationInput() {
-      $.ajax('/locations/form')
+      $.ajax('/locations/modal')
        .done(function(response) {
          $('.blurred-location-container').html(response);
+         $('.modal').modal();
        });
     });
   });
