@@ -30,9 +30,7 @@ $(function () {
         <a class="btn btn-default blurred-location-input">
           <i class="fa fa-map-marker"></i>
         </a>
-        <% if params[:potter] %>
-          <%= render partial: 'tag/advanced_tagging' %>
-        <% end %>
+        <%= render partial: 'tag/advanced_tagging' %>
       </div>
     </div>
     <script>
@@ -50,7 +48,6 @@ $(function () {
 </form>
 <% end %>
 
-<% if params[:location] %>
 <br />
 <div class="blurred-location-container">
 </div>
@@ -66,4 +63,3 @@ $(function () {
     });
   });
 </script>
-<% end %>
