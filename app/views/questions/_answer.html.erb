@@ -31,7 +31,9 @@
     <% end %>
     <% if current_user && current_user.uid == answer.author.uid %>
       <% if answer.accepted %>
-        <div class="alert alert-success">Your answer was accepted! If it would be helpful, consider expanding on this answer by <a href="/post?template=activity,tags=response:<%= answer.nid %>">posting a step-by-step activity</a></div>
+        <div class="alert alert-success">Your answer was accepted! Consider expanding on it by <a href="/post?template=activity,tags=response:<%= answer.nid %>,<%= answer.node.normal_tags.collect(&:name).join(',') %>">posting a step-by-step activity</a></div>
+      <% else %>
+        <div class="alert alert-info">Thanks for your answer! Consider expanding on it by <a href="/post?template=activity,tags=response:<%= answer.nid %>,<%= answer.node.normal_tags.collect(&:name).join(',') %>">posting a step-by-step activity</a></div>
       <% end %>
     <% end %>
     <hr />
