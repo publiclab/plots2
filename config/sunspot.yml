@@ -21,4 +21,4 @@ test:
     read_timeout: 120
     log_level: WARNING
     path: "/solr/default"
-  disabled: true
+  disabled: false
