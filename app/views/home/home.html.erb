@@ -124,7 +124,9 @@
 <p><center><a href="/research">See more &raquo;</a></center></p>
 
 <div class="dashboard">
-  <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
+  <% cache('home-activity', expires_in: 20.minutes) do %>
+    <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
+  <% end %>
 </div>
 
 <%= stylesheet_link_tag "dashboard" %>
