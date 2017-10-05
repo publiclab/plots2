@@ -182,7 +182,7 @@ class Node < ActiveRecord::Base
   def answered
     self.answers && self.answers.length > 0
   end
-  
+
   # users who like this node
   def likers
     node_selections

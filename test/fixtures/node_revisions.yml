@@ -18,6 +18,20 @@ about_rev_2:
   title: About
   body: All about Public Lab, AGAIN
 
+about_rev_3:
+  nid: 2
+  vid: 3
+  uid: 1
+  title: About
+  body: All about Public Lab, ONCE AGAIN
+
+about_rev_3:
+  nid: 2
+  vid: 3
+  uid: 1
+  title: About
+  body: All about Public Lab, ONCE MORE
+
 three:
   nid: 3
   uid: 3

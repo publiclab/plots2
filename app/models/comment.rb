@@ -110,12 +110,9 @@ class Comment < ActiveRecord::Base
 
     notify_callout_users
 
+    # notify other commenters, revisers, and likers, but not those already @called out
     already = mentioned_users.collect(&:uid) + [parent.uid]
-    uids = []
-    # notify other commenters, and likers, but not those already @called out
-    (parent.comments.collect(&:uid) + parent.likers.collect(&:uid)).uniq.each do |u|
-      uids << u unless already.include?(u)
-    end
+    uids = uids_to_notify - already
 
     notify_users(uids, current_user)
     notify_tag_followers(already + uids)
