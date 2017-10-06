@@ -124,7 +124,7 @@
 <p><center><a href="/research">See more &raquo;</a></center></p>
 
 <div class="dashboard">
-  <% cache('home-activity', expires_in: 20.minutes) do %>
+  <% cache('home-activity', expires_in: 60.minutes) do %>
     <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
   <% end %>
 </div>
