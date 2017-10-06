@@ -22,8 +22,22 @@ namespace :test do
   desc "This is where you'd start the embedded Solr engine, and tweak config. Runs solr-specific tests."
   # Solr is assumed running from the container or otherwise available as in sunspot.yml.
   task :solr do
+    # overwrite "diabled" in test for sunspot.yml
+    require 'yaml'
+    sunspot = YAML::load_file "config/sunspot.yml"
+    sunspot['test']['disabled'] = false
+    File.open("config/sunspot.yml", "w") do |file|
+      file.write sunspot.to_yaml
+    end
+    puts "turning on solr dependence at config/sunspot.yml"
+    puts sunspot.to_yaml
     `RAILS_ENV=test rake SOLR_DISABLE_CHECK=1 sunspot:reindex`
     Rake::Task["test:solr_tests"].invoke
+    # restore "diabled" to true in test for sunspot.yml
+    sunspot['test']['disabled'] = true
+    File.open("config/sunspot.yml", "w") do |file|
+      file.write sunspot.to_yaml
+    end
   end
 
   desc "Run solr-specific tests"
