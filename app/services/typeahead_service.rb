@@ -97,8 +97,8 @@ class TypeaheadService
         tval = TagResult.new
         tval.tagId = 0
         tval.tagType = 'user'
-        tval.tagVal = match.name
-        tval.tagSource = '/profile/' + match.name
+        tval.tagVal = match.username
+        tval.tagSource = '/profile/' + match.username
         sresult.addTag(tval)
       end
     end
