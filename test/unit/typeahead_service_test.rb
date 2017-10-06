@@ -11,7 +11,7 @@ class TypeaheadServiceTest < ActiveSupport::TestCase
   end
   
   test 'running TypeaheadService.new.profiles with no Solr' do
-    result = TypeaheadService.new.profiles('adm')
+    result = TypeaheadService.new.users('adm')
     assert_false solrAvailable
     assert_not_nil result
     assert_equal 1, result.length
