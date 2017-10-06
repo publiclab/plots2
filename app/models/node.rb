@@ -183,7 +183,7 @@ class Node < ActiveRecord::Base
     self.answers && self.answers.length > 0
   end
 
-  def accepted_answers
+  def has_accepted_answers
     self.answers.where(accepted: true).count > 0
   end
   

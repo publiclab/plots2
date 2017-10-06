@@ -238,10 +238,10 @@ class NodeTest < ActiveSupport::TestCase
 
   test "question has an accepted answer" do
     question2 = node(:question2)
-    assert !question2.accepted_answers
+    assert !question2.has_accepted_answers
 
     question = node(:question)
-    assert question.accepted_answers
+    assert question.has_accepted_answers
   end
 
 end
