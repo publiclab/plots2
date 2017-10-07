@@ -37,7 +37,7 @@ class EditorController < ApplicationController
   end
 
   def rich
-    flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/post?#{request.env['QUERY_STRING']}&legacy=true'>click here</a>."
+    flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/post?#{request.env['QUERY_STRING']}&legacy=true' class='legacy-button'>click here</a>."
     if params[:main_image] && Image.find_by_id(params[:main_image])
       @main_image = Image.find_by_id(params[:main_image]).path
     end
