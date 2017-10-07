@@ -21,6 +21,16 @@ class StatsController < ApplicationController
                   .joins('INNER JOIN users ON users.uid = rusers.id')
                   .where('users.status = 1')
                   .count
+    @questions = Node.questions
+                   .select(%i[created type status])
+                   .where(type: 'note', status: 1, created: @start.to_i..@end.to_i)
+                   .count   
+   @answers = Answer.where(type: 'note', status: 1, created: @start.to_i..@end.to_i)
+                     .count
+
+    @comments = Comment.where(type: 'note', status: 1, created: @start.to_i..@end.to_i)
+                        .count
+
   end
 
   def index
