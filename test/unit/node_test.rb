@@ -235,4 +235,13 @@ class NodeTest < ActiveSupport::TestCase
     assert !replaced
     assert_equal 'Jingle Jingle Bells', node.body
   end
+
+  test "question has an accepted answer" do
+    question2 = node(:question2)
+    assert !question2.has_accepted_answers
+
+    question = node(:question)
+    assert question.has_accepted_answers
+  end
+
 end
