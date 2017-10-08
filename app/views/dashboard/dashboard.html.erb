@@ -1,28 +1,18 @@
-<% if Time.now - current_user.created_at < 1.week %>
-    <!--<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button>-->
+<% if current_user && Time.now - current_user.created_at < 1.week %>
+    <div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button>
 
-    <div id="myModal" class="modal">
-
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <br><br>
         <!--<div class="well col-md-12 col-lg-12" >-->
-        <h2>Hello, welcome to Public Lab!</h2>
-        <br><br>
+        <h2 style="font-weight: 800">Hello, welcome to Public Lab!</h2>
+
         This is your dashboard, where recent updates from other community members show up. It's helpful to keep up to date with new progress, news, and recent developments.
-        <br><br>
+        <br>
         But to get started at Public Lab, try:
         <br><br>
-        * asking a question (https://publiclab.org/questions)
-        <br>
-        * exploring projects (https://publiclab.org/methods)
-      </div>
-      <br><br>
+      <p>
+      <a class="btn btn-sm btn-default" href="https://publiclab.org/questions" target="_blank">Asking a question</a>
 
-      <div class="clearfix">
-
-      </div>
+      <a class="btn btn-sm btn-default" href="https://publiclab.org/methods" target="_blank">Exploring projects</a>
+      </p>
     </div>
 
 <% end %>
