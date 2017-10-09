@@ -5,5 +5,4 @@
  Disallow: /subscribe/*
  Disallow: /wiki/revert/*
  Disallow: /stats/range/*
- Disallow: /questions/tag/*
 Host: publiclab.org
