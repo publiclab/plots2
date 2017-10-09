@@ -273,4 +273,9 @@
 
   })();
 
+  $('.legacy-button').click(function onLegacyClick(event) {
+      event.preventDefault();
+      window.location = "/post?legacy=true&body=" + editor.richTextModule.value() + "&tags=" + editor.tagsModule.value() + "&title=" + editor.titleModule.value();
+    });
+
 </script>
