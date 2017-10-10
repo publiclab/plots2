@@ -1,6 +1,6 @@
 <div class="hidden-print btn-toolbar pull-right" style="margin-left:10px;margin-top:0;">
   <ul class="btn-group">
-        <% if current_user && (current_user.uid == node.uid || current_user.role == "moderator" || current_user.role == "admin") || node.has_tag("with:#{current_user.username}") %>
+        <% if current_user && (current_user.uid == node.uid || current_user.role == "moderator" || current_user.role == "admin" || node.has_tag("with:#{current_user.username}")) %>
              <% if node.type == 'note' %>
                 <a <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing a post by another contributor, a privilege you have only because you are a moderator or admin or co-author.' <% end %> class='btn btn-default btn-sm' href='/notes/edit/<%= node.id %>?t=<%= Time.now.to_i %><% if params[:controller] == "questions" %>&redirect=question&template=question<% end %>'>
                 <i class='fa fa-pencil'></i><span class='hidden-xs hidden-sm'> Edit</span>
