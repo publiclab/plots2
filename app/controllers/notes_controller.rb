@@ -149,7 +149,7 @@ class NotesController < ApplicationController
 
   def edit
     @node = Node.find(params[:id], conditions: { type: 'note' })
-    if current_user.uid == @node.uid || current_user.role == 'admin'
+    if current_user.uid == @node.uid || current_user.role == 'admin' || @node.has_tag("with:#{current_user.username}")
       if params[:legacy]
         render template: 'editor/post'
       else
@@ -175,7 +175,7 @@ class NotesController < ApplicationController
   # at /notes/update/:id
   def update
     @node = Node.find(params[:id])
-    if current_user.uid == @node.uid || current_user.role == 'admin'
+    if current_user.uid == @node.uid || current_user.role == 'admin' || @node.has_tag("with:#{current_user.username}")
       @revision = @node.latest
       @revision.title = params[:title]
       @revision.body = params[:body]
