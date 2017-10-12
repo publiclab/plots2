@@ -176,4 +176,28 @@ class CommentTest < ActiveSupport::TestCase
     )
     assert comment.save
   end
+
+  test 'should return a list of node commenter uids' do
+    comment = comments(:third)
+
+    assert_equal [rusers(:spammer).uid, rusers(:jeff).uid], comment.parent_commenter_uids
+  end
+
+  test 'should return a list of node liker uids' do
+    comment = comments(:third)
+
+    assert_equal [rusers(:bob).uid], comment.parent_liker_uids
+  end
+
+  test 'should return a list of node reviser uids' do
+    comment = comments(:third)
+
+    assert_equal [rusers(:jeff).uid], comment.parent_reviser_uids
+  end
+
+  test 'should return a combined list of all commenter, liker, and reviser uids for node' do
+    comment = comments(:third)
+
+    assert_equal [rusers(:spammer).uid, rusers(:jeff).uid, rusers(:bob).uid], comment.uids_to_notify
+  end
 end

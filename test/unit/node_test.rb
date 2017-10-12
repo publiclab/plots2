@@ -10,7 +10,7 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 1, node.status
     assert !node.answered
   end
-  
+
   test 'basic question attributes' do
     question = node(:question)
     assert question.answered
@@ -153,7 +153,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should have subscribers' do
     node = tag_selection(:awesome).tag.nodes.first
-    assert_equal 7, node.subscribers.length
+    assert_equal 6, node.subscribers.length
   end
 
   test 'should have place node icon according to tagging' do
@@ -235,4 +235,13 @@ class NodeTest < ActiveSupport::TestCase
     assert !replaced
     assert_equal 'Jingle Jingle Bells', node.body
   end
+
+  test "question has an accepted answer" do
+    question2 = node(:question2)
+    assert !question2.has_accepted_answers
+
+    question = node(:question)
+    assert question.has_accepted_answers
+  end
+
 end

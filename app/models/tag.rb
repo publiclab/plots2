@@ -124,7 +124,7 @@ class Tag < ActiveRecord::Base
 
   def self.follower_count(tagname)
     TagSelection.joins(:tag)
-                .where('term_data.name = ?', tagname)
+                .where('term_data.name = ? AND following = ?', tagname, true)
                 .count
   end
 

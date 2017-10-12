@@ -12,4 +12,20 @@ module CommentsShared
   def author
     DrupalUsers.find_by_uid uid
   end
+
+  def parent_commenter_uids
+    parent.comments.collect(&:uid)
+  end
+
+  def parent_liker_uids
+    parent.likers.collect(&:uid)
+  end
+
+  def parent_reviser_uids
+    (parent.revision.collect(&:uid).uniq - [parent.author.uid])
+  end
+
+  def uids_to_notify
+    (parent_commenter_uids + parent_liker_uids + parent_reviser_uids).uniq
+  end
 end
