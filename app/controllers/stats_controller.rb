@@ -25,10 +25,14 @@ class StatsController < ApplicationController
                   .count
     @comments = Comment.select(:timestamp)
                   .where(status: 1, timestamp: @start.to_i..@end.to_i)
+<<<<<<< HEAD
                   .count
     @questions = Node.questions.where(status: 1 , created: @start.to_i..@end.to_i)
                   .count
 
+=======
+                  .count
+>>>>>>> answers and comments range added
 
   end
 
