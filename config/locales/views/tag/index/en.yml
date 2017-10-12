@@ -7,3 +7,5 @@ en:
       browse_popular_tags: "We use tags to group research by topic -- browse below to see the most popular tags over the past month."
       tag: "Tag"
       number_of_uses: "# of uses"
+      number_of_subscriptions: "# of people subscribed"
+      subscriptions: "Your subscriptions"

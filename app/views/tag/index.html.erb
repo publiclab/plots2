@@ -9,11 +9,25 @@
     <tr>
       <th><%= t('tag.index.tag') %></th>
       <th><%= t('tag.index.number_of_uses') %></th>
+      <th><%= t('tag.index.number_of_subscriptions')%></th>
+      <% if current_user %>
+        <th><%= t('tag.index.subscriptions') %></th>
+      <% end %>
     </tr>
     <% @tags.each do |tag| %>
       <tr>
         <td><i class="fa fa-tag"></i> <a href="/tag/<%= tag.name %>"><%= tag.name %></a></td>
         <td><%= tag.count %></td>
+        <td><%= Tag.follower_count(tag.name) %></td>
+        <% if current_user %>
+          <td>
+             <% if current_user.following(tag.name) %>
+                <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-eye"></i> <%= t('tag.show.following') %></a>
+                <% else %>
+                <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= tag.name %>"><i class="fa fa-eye"></i> <%= t('tag.show.follow') %></a>
+                <% end %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </table>
