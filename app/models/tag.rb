@@ -204,4 +204,14 @@ class Tag < ActiveRecord::Base
     following_given_tags = User.where(id: uids)
     tag_followers.reject { |user| following_given_tags.include? user  }
   end
+
+  def self.trending(limit = 5, time_ago = 1.month)
+   Tag.joins(:node_tag, :node)
+               .select('node.nid, node.status, term_data.*, community_tags.*')
+               .where('node.status = ?', 1)
+               .where('community_tags.date > ?', (DateTime.now - time_ago).to_i)
+               .group(:name)
+               .order('count DESC')
+               .limit(limit)
+  end
 end

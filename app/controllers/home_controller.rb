@@ -51,6 +51,7 @@ class HomeController < ApplicationController
                           .count
     @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
     self.activity
+    @trending_tags = Tag.trending 
     render template: 'dashboard/dashboard'
     @title = I18n.t('home_controller.community_research') unless current_user
   end
