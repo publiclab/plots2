@@ -12,15 +12,24 @@ class StatsController < ApplicationController
     @start = params[:start] ? Time.parse(params[:start]) : Time.now - 1.month
     @end = params[:end] ? Time.parse(params[:end]) : Time.now
     @notes = Node.select(%i[created type status])
-                 .where(type: 'note', status: 1, created: @start.to_i..@end.to_i)
-                 .count
+                  .where(type: 'note', status: 1, created: @start.to_i..@end.to_i)
+                  .count
     @wikis = Revision.select(:timestamp)
-                     .where(timestamp: @start.to_i..@end.to_i)
-                     .count - @notes # because notes each have one revision
+                  .where(timestamp: @start.to_i..@end.to_i)
+                  .count - @notes # because notes each have one revision
     @people = User.where(created_at: @start..@end)
                   .joins('INNER JOIN users ON users.uid = rusers.id')
                   .where('users.status = 1')
+                  .count                 
+    @answers = Answer.where(created_at: @start..@end)
                   .count
+    @comments = Comment.select(:timestamp)
+                  .where(status: 1, timestamp: @start.to_i..@end.to_i)
+                  .count
+    @questions = Node.questions.where(status: 1 , created: @start.to_i..@end.to_i)
+                  .count
+
+
   end
 
   def index
