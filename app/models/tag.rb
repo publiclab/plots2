@@ -206,13 +206,13 @@ class Tag < ActiveRecord::Base
   end
  
   def self.trending(limit = 5 , start_date = DateTime.now - 1.month , end_date = DateTime.now)
-   Tag.joins(:node_tag, :node)
-               .select('node.nid, node.status, term_data.*, community_tags.*')
-               .where('node.status = ?', 1)
-               .where('community_tags.date > ?', (start_date).to_i)
-               .where('community_tags.date < ?', (end_date).to_i)
-               .group(:name)
-               .order('count DESC')
-               .limit(limit)
+    Tag.joins(:node_tag, :node)
+       .select('node.nid, node.status, term_data.*, community_tags.*')
+       .where('node.status = ?', 1)
+       .where('community_tags.date > ?', start_date.to_i)
+       .where('community_tags.date <= ?', end_date.to_i)
+       .group(:name)
+       .order('count DESC')
+       .limit(limit)
   end
 end

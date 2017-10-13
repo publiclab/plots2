@@ -128,9 +128,11 @@ class TagTest < ActiveSupport::TestCase
     assert_equal [rusers(:spammer), rusers(:newcomer)], tags.first.followers_who_dont_follow_tags(given_tags).sort
   end
 
-  test 'tags trending' do
-    trending_tags = Tag.trending()
+  test 'Tag.trending(limit, start, end) returns most-used tags for a time period' do
+    trending_tags = Tag.trending
     assert_not_nil trending_tags
+    assert_not_equal [], trending_tags
     assert !trending_tags.empty?
+    assert_not_nil Tag.trending(2, Time.now - 1.year, Time.now - 1.month)
   end
 end

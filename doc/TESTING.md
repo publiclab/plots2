@@ -52,4 +52,10 @@ Likewise, for functional or integration tests:
 
 [Stack Overflow cites](https://stackoverflow.com/questions/15416171/rails-performance-test-run-one-test):
 
-`ruby -I test test/performance/some_file.rb --name=test_with_pet_care_job`
+To run one test file:
+
+`ruby -I test test/unit/some_file.rb`
+
+And to run just a single test within a file:
+
+`ruby -I test test/functional/some_file.rb --name=name_of_test`
