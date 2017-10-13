@@ -52,7 +52,7 @@
   <span style="color: #aaa ;">Trending topics:</span>
   <span style="font-size: 18px;">
    <% cache('trending-tags', expires_in: 24.hours) do %>
-      <% @trending_tags.each do |i| %>
+      <% Tag.trending.each do |i| %>
         <span class="label label-primary"><%= i.name %></span>
       <% end %>
     <% end %>
