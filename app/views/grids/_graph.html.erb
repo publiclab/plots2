@@ -1,0 +1,16 @@
+<canvas class="inline-graph" id="<%= idName %>"></canvas>
+<p class="graph-utils"><small><a href="<%= url %>"><i class="fa fa-download"></i> CSV</a></small></p>
+<style>
+.graph-utils {
+  text-align: right;
+}
+.graph-utils a,
+.graph-utils i {
+  color: #aaa;
+}
+</style>
+<script>
+(function(){
+  graphUrl("<%= url %>", "<%= idName %>");
+})()
+</script>

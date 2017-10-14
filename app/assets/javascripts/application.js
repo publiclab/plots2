@@ -45,5 +45,7 @@
 //= require location_tags.js
 //= require tagging.js
 //= require grids.js
+//= require graph.js
 //= require short-code-forms/dist/short-code-prompts.js
 //= require wikis.js
+//= require chart.js/dist/Chart.js
