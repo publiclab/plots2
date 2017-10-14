@@ -10,6 +10,24 @@ module NodeShared
   end
 
   # rubular regex: http://rubular.com/r/hBEThNL4qd
+  def self.graph_grid(body, _page = 1)
+    body.gsub(/[^\>`](\<p\>)?\[graph\:(\S+)\]/) do |_tagname|
+      url = Regexp.last_match(2)
+      a = ActionController::Base.new()
+      randomSeed = rand(1000).to_s
+      output = a.render_to_string(template: "grids/_graph", 
+                                  layout:   false, 
+                                  locals:   {
+                                    url: url,
+                                    randomSeed: randomSeed,
+                                    idName: 'graph-grid-' + randomSeed,
+                                    type: "graph"
+                                  })
+      output
+    end
+  end
+
+  # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.notes_grid(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
