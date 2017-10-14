@@ -68,8 +68,8 @@ function graph(data, el) {
       options: {
           responsive: true,
           title:{
-              display:true,
-              text:'Chart.js Line Chart'
+              display: false,
+              // text:'Chart.js Line Chart'
           },
           tooltips: {
               mode: 'index',
