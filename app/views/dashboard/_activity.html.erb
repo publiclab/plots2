@@ -53,7 +53,7 @@
   <span style="font-size: 18px;">
    <% cache('trending-tags', expires_in: 24.hours) do %>
       <% Tag.trending.each do |i| %>
-        <span class="label label-primary"><%= i.name %></span>
+        <span class="label label-primary"><a href="/tag/<%= i.name %>"><%= i.name %></a></span>
       <% end %>
     <% end %>
 </span>
