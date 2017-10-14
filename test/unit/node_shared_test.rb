@@ -94,4 +94,10 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<table').length
     assert_equal 6, html.scan('people-grid').length
   end
+
+  test 'that NodeShared can be used to convert short codes like [graph://example.com] into graphs which display csv data' do
+    before = "Here's an inline csv: \n\n[graph://localhost:3000/test.csv] \n\nThis is how you make it work:\n\n`[graph://localhost:3000/test.csv]`\n\nMake sense?"
+    html = NodeShared.graph_grid(before)
+    assert_equal 1, html.scan('<canvas class="inline-graph"').length
+  end
 end
