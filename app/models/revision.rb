@@ -18,7 +18,7 @@ class Revision < ActiveRecord::Base
 
   validates :title,
             presence: :true,
-            length: { minimum: 2, maximum: 100 },
+            length: { minimum: 2 },
             format: { with: /[A-Z][\w\-_]*/i, message: 'can only include letters, numbers, and dashes' }
   validates :body, presence: :true
   validates :uid, presence: :true

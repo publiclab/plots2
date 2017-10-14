@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170824172336) do
+ActiveRecord::Schema.define(:version => 20171013161520) do
 
   create_table "answer_selections", :force => true do |t|
     t.integer "user_id"
@@ -256,6 +256,7 @@ ActiveRecord::Schema.define(:version => 20170824172336) do
   end
 
   add_index "node_revisions", ["nid"], :name => "index_node_revisions_nid"
+  add_index "node_revisions", ["timestamp"], :name => "index_node_revisions_timestamp"
   add_index "node_revisions", ["uid"], :name => "index_node_revisions_uid"
 
   create_table "node_selections", :id => false, :force => true do |t|
@@ -341,8 +342,9 @@ ActiveRecord::Schema.define(:version => 20170824172336) do
     t.integer  "status",                                   :default => 0
   end
 
-  add_index "rusers", ["status"], :name => "index_rusers_on_status"
   add_index "rusers", ["created_at"], :name => "index_rusers_created_at"
+  add_index "rusers", ["email"], :name => "index_rusers_on_email"
+  add_index "rusers", ["status"], :name => "index_rusers_on_status"
   add_index "rusers", ["username"], :name => "index_rusers_on_username"
 
   create_table "tag_selections", :id => false, :force => true do |t|
@@ -432,5 +434,6 @@ ActiveRecord::Schema.define(:version => 20170824172336) do
   add_index "users", ["created"], :name => "index_users_created"
   add_index "users", ["mail"], :name => "index_users_mail"
   add_index "users", ["name"], :name => "index_users_name"
+  add_index "users", ["uid"], :name => "index_users_uid"
 
 end

@@ -2,8 +2,8 @@ $(document).ready(function() {
 
   if (window.hasOwnProperty('google')) {
 
-    var geo_location = document.getElementById('geo_location');
-    var autocomplete = new google.maps.places.Autocomplete(geo_location);
+    var geo_location = $('#geo_location');
+    if (geo_location) var autocomplete = new google.maps.places.Autocomplete(geo_location);
 
     autocomplete.addListener('place_changed', function() {
       var place = autocomplete.getPlace();
