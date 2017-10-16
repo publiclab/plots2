@@ -24,8 +24,8 @@ class StatsController < ApplicationController
     @answers = Answer.where(created_at: @start..@end)
                      .count
     @comments = Comment.select(:timestamp)
-                  .where(status: 1, timestamp: @start.to_i..@end.to_i)
-                  .count
+                       .where(timestamp: @start.to_i..@end.to_i)
+                       .count
     @questions = Node.questions.where(status: 1, created: @start.to_i..@end.to_i)
                      .count
   end
