@@ -29,8 +29,11 @@ class SubscriptionMailer < ActionMailer::Base
     @node = node
     @current_user = current_user
     given_tags = node.tags.reject { |t| t == tag}
-    users_to_email = tag.followers_who_dont_follow_tags(given_tags)
-    users_to_email.each do |user|
+    users_to_email = tag.followers_who_dont_follow_tags(given_tags).pluck(:id)
+    users_with_everything_tag = TagSelection.users_following_everything_tag.pluck(:user_id)
+    final_users_ids = users_to_mail - users_with_everything_tag
+    final_users_to_email = User.find(final_users_ids) 
+    final_users_to_email.each do |user|
       @user = user
       unless user.id == current_user.id 
         mail(to: user.email, subject: "New tag added on #{node.title}").deliver 
