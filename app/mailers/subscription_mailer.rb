@@ -29,7 +29,7 @@ class SubscriptionMailer < ActionMailer::Base
     @node = node
     @current_user = current_user
     given_tags = node.tags.reject { |t| t == tag}
-    users_to_email = tag.followers_who_dont_follow_tags(given_tags).pluck(:id)
+    users_to_email = tag.followers_who_dont_follow_tags(given_tags).pluck(:uid)
     users_with_everything_tag = TagSelection.users_following_everything_tag.pluck(:user_id)
     final_users_ids = users_to_mail - users_with_everything_tag
     final_users_to_email = User.find(final_users_ids) 
