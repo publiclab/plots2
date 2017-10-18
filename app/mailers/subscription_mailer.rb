@@ -29,16 +29,24 @@ class SubscriptionMailer < ActionMailer::Base
     @node = node
     @current_user = current_user
     given_tags = node.tags.reject { |t| t == tag}
-    users_to_email = tag.followers_who_dont_follow_tags(given_tags).pluck(:uid)
-    users_with_everything_tag = TagSelection.users_following_everything_tag.pluck(:user_id)
-    final_users_ids = users_to_mail - users_with_everything_tag
-    final_users_to_email = User.find(final_users_ids) 
-    final_users_to_email.each do |user|
-      @user = user
-      unless user.id == current_user.id 
-        mail(to: user.email, subject: "New tag added on #{node.title}").deliver 
-      end
+   
+    users_to_email = tag.followers_who_dont_follow_tags(given_tags)
+    users_with_everything_tag = Tag.followers('everything')
+    final_users_ids = nil 
+    if(!users_to_email.nil? && !users_with_everything_tag.nil?)
+      final_users_ids = users_to_mail.pluck(:uid) - users_with_everything_tag(:user_id)
+    elsif(!users_to_email.nil?) 
+      final_users_ids = users_to_mail.pluck(:uid)
     end
-    @footer = feature('email-footer')
+
+       final_users_to_email = User.find(final_users_ids) 
+       final_users_to_email.each do |user|
+        @user = user
+          unless user.id == current_user.id 
+             mail(to: user.email, subject: "New tag added on #{node.title}").deliver 
+          end
+        end
+     @footer = feature('email-footer')
+
   end
 end

@@ -215,8 +215,4 @@ class Tag < ActiveRecord::Base
        .order('count DESC')
        .limit(limit)
   end
-
-  def self.find_id_of_everything_tag
-      Tag.find_by_name('everything').tid 
-  end
 end

@@ -19,10 +19,4 @@ class TagSelection < ActiveRecord::Base
   def tagname
     tag.name
   end
-
-  def self.users_following_everything_tag
-    t = Tag.find_id_of_everything_tag
-    users = TagSelection.where(tid: t , following:true)
-  end
-
 end
