@@ -24,7 +24,7 @@ class SubscriptionMailer < ActionMailer::Base
     mail(to: node.author.email, subject: subject).deliver
   end
 
-def notify_tag_added(node, tag, current_user)
+ def notify_tag_added(node, tag, current_user)
     @tag = tag
     @node = node
     @current_user = current_user
@@ -33,9 +33,9 @@ def notify_tag_added(node, tag, current_user)
     users_with_everything_tag = Tag.followers('everything')
     final_users_ids = nil 
     if(!users_to_email.nil? && !users_with_everything_tag.nil?)
-      final_users_ids = users_to_email.pluck(:id) - users_with_everything_tag.pluck(:uid)
+      final_users_ids = users_to_email.collect(&:id) - users_with_everything_tag.collect(&:uid)
     elsif(!users_to_email.nil?) 
-      final_users_ids = users_to_email.pluck(:id)
+      final_users_ids = users_to_email.collect(&:id)
     end
     final_users_to_email = User.find(final_users_ids) 
     final_users_to_email.each do |user|
