@@ -40,6 +40,7 @@ Plots2::Application.routes.draw do
 
   match 'login' => "user_sessions#new",      :as => :login
   match 'logout' => "user_sessions#destroy", :as => :logout
+  match 'logoutRemotely' => 'user_sessions#logout_remotely'
   match 'register' => 'users#create'
   match 'reset' => 'users#reset'
   match 'reset/key/:key' => 'users#reset'
