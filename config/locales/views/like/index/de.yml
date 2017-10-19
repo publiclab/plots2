@@ -1,0 +1,9 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  like:
+    index:
+      recent_likes: "Neueste Likes"
+      user: "Benutzername"
+      liked: "Zufrieden"
+      action: "Aktion"

@@ -1,0 +1,44 @@
+<%= render :partial => "sidebar/featured" %>
+
+<div class="col-md-9">
+<h1> <%= t('like.index.recent_likes') %> </h1>
+<table class="table">
+	<tr>
+		<th><%= t('like.index.user') %></th>
+		<th><%= t('like.index.liked') %></th>
+		<% if current_user && current_user.role == "admin" %>
+			<th><%= t('like.index.action') %></th>
+		<% end %>
+	</tr>
+	<% @likes.each do |like| %>
+		<tr>
+			<td>
+				<% if like.drupal_users.status == 0 %>
+					<a href="/profile/<%= like.user.name %>" style = "color: red" ><i class="fa fa-user" aria-hidden="true" style="color: red"></i> <%= like.user.name %></a>
+				<% else %>
+					<a href="/profile/<%= like.user.name %>" style = "color: black"><i class="fa fa-user" aria-hidden="true"></i> <%= like.user.name %></a>
+				<% end %>
+			</td>
+
+			<td> <a href="/wiki/<%= like.node.title %>"><%= like.node.title %></a></td>
+
+			<% if current_user && current_user.role == "admin" %>
+				<td>
+					<% if like.user.role == "admin" %>
+						<b> - </b>
+					<% else %>
+						<% if like.drupal_users.status == 1 %> 
+							<a data-confirm="<%= t('users.profile.confirm_ban_user') %>" href="/ban/<%= like.user.id %>" class="btn btn-default"><i class="fa fa-ban"></i> <%= t('users.profile.ban_user') %></a>
+			          	<% else %>
+			          		<a href="/unban/<%= like.user.id %>" class="btn btn-default"><i class="fa fa-thumbs-up"></i> <%= t('users.profile.unban_user') %></a>
+			          	<% end %>
+		          <% end %>
+				</td>
+			<% end %>
+		</tr>
+	<% end %>
+</table>
+
+<%= will_paginate @likes, :renderer => BootstrapPagination::Rails if @paginated %>
+
+</div>
