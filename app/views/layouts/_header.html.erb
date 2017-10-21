@@ -91,10 +91,34 @@
           </ul>
         </li>
 
+<<<<<<< HEAD
         <li class="hidden-xs hidden-sm hidden-md"><a href="/donate"><%= t('layout._header.donate') %></a></li>
         <li class="hidden-xs hidden-sm hidden-md"><a href="//store.publiclab.org"><%= t('layout._header.store') %></a></li>
 
+=======
+        <li class="dropdown hidden-xs hidden-sm<%= ' hidden-md' unless current_user %>">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            Connect <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+
+	    <!-- <li><a href="">Calls</a></li> -->
+            <li><a href="/events">Events</a></li>
+            <li><a href="/signup">Website</a></li>
+            <li><a href="/lists">Discussion lists</a></li>
+            <li><a href="/chat">Chat</a></li>
+	    <!-- <li><a href="">Start a project</a></li> -->
+
+          </ul>
+        </li>
+        <li class="nav-button-wrapper hidden-xs hidden-sm hidden-md">
+          <button class="btn btn-sm align-middle nav-button-donate"><a href="/donate"><%= t('layout._header.donate') %></a></button>
+        </li>
+        <li class="nav-button-wrapper hidden-xs hidden-sm hidden-md">
+          <button class="btn btn-sm nav-button-store"><a href="//store.publiclab.org"><%= t('layout._header.store') %></a></button>
+        </li>
       </ul>
+      
 
       <div id="chat" class="chat-popover" data-placement="bottom" style="display:none;">
         <a style="margin-right:4px;" class="pull-right btn btn-sm" href="https://chat.publiclab.org" target="_blank"><%= t('layout._header.chatroom.pop_out') %></a>
