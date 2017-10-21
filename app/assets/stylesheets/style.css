@@ -368,6 +368,52 @@ div.note.moderated h4 {
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
+.nav-button-wrapper {
+  padding-top: 7.5px;
+}
+
+.nav-button-donate, .nav-button-store {
+  display: inline-block;
+  height: 35px;
+  background-color: transparent;
+  border-radius: 10px;
+  margin-left: 1em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.nav-button-donate {
+  border-color: #E2885B;
+}
+
+.nav-button-donate:hover {
+  background-color: #E2885B;
+}
+
+.nav-button-donate:hover a, .nav-button-store:hover a {
+  color: black;
+}
+
+.nav-button-store {
+  border-color: #ffdb3b;
+}
+
+.nav-button-store:hover {
+  background-color: #ffdb3b;
+}
+
+.nav-button-donate a {
+  color: #E2885B;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.nav-button-store a {
+  color: #ffdb3b;
+  text-decoration: none;
+  font-weight: 600;
+}
+
 @media (max-width:768px) {
   table {
     font-size: 90%;
