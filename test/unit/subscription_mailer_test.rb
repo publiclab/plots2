@@ -70,6 +70,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     users_not_following_tags = new_tag.followers_who_dont_follow_tags(node_tags)
     users_to_email = users_not_following_tags.reject { |u| u.uid == user.uid }
     u_e = Tag.followers('everything')
+    assert !u_e.empty?
     users_to_email_without_exception = users_to_email.reject { |u| u_e.include? u }
     assert_difference 'ActionMailer::Base.deliveries.size', users_to_email_without_exception.count do
       SubscriptionMailer.notify_tag_added(node, new_tag, user)
