@@ -18,7 +18,13 @@
       <tr>
         <td><i class="fa fa-tag"></i> <a href="/tag/<%= tag.name %>"><%= tag.name %></a></td>
         <td><%= tag.count %></td>
-        <td><%= Tag.follower_count(tag.name) %></td>
+        <td><a class="btn btn-default btn-sm" rel="popover" data-placement="right" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(tag.name).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(tag.name) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(tag.name) %> <i class="fa fa-user"></i> <span class="caret"></span></a></td>
+        <script type="text/javascript">
+          //show one popover at a time
+          $('.btn').on('click', function (e) {
+              $('.btn').not(this).popover('hide');
+          });
+        </script>
         <% if current_user %>
           <td>
              <% if current_user.following(tag.name) %>
