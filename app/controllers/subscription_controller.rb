@@ -111,6 +111,7 @@ class SubscriptionController < ApplicationController
   end
   
   def notes
+    User.content_followed_in_past_period(time_period)
     respond_to do |format|
       format.rss { render :layout => false  }
     end
