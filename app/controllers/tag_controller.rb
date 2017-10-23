@@ -3,8 +3,26 @@ class TagController < ApplicationController
   before_filter :require_user, only: %i[create delete]
 
   def index
+    if params[:format]
+      @toggle = params[:format].to_i
+    else 
+      @toggle = 1 
+    end 
+
+    byebug
     @title = I18n.t('tag_controller.tags')
     @paginated = true
+    if params[:search] 
+    prefix = params[:search]
+    @tags = Tag.joins(:node_tag, :node)
+               .select('node.nid, node.status, term_data.*, community_tags.*')
+               .where('node.status = ?', 1)
+               .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+               .where("name LIKE :prefix", prefix: "#{prefix}%")
+               .group(:name)
+               .order('count DESC')
+               .paginate(page: params[:page])  
+    elsif @toggle == 1 
     @tags = Tag.joins(:node_tag, :node)
                .select('node.nid, node.status, term_data.*, community_tags.*')
                .where('node.status = ?', 1)
@@ -12,6 +30,15 @@ class TagController < ApplicationController
                .group(:name)
                .order('count DESC')
                .paginate(page: params[:page])
+    else
+    @tags = Tag.joins(:node_tag, :node)
+               .select('node.nid, node.status, term_data.*, community_tags.*')
+               .where('node.status = ?', 1)
+               .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+               .group(:name)
+               .order('name')
+               .paginate(page: params[:page])    
+    end    
   end
 
   def show
