@@ -109,6 +109,12 @@ class SubscriptionController < ApplicationController
       end
     end
   end
+  
+  def notes
+    respond_to do |format|
+      format.rss { render :layout => false  }
+    end
+  end
 
   private
 
