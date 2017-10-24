@@ -153,6 +153,7 @@ Plots2::Application.routes.draw do
   match 'contributors/:id' => 'tag#contributors'
   match 'contributors' => 'tag#contributors_index'
   match 'tags' => 'tag#index'
+  match 'tags/:search' => 'tag#index'
   match 'embed/grid/:tagname' => 'tag#gridsEmbed'
   match 'tag/suggested/:id' => 'tag#suggested'
   match 'tag/author/:id.json' => 'tag#author'

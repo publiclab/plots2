@@ -1,9 +1,36 @@
 <%= render :partial => "sidebar/featured" %>
 
 <div class="col-md-9">
-  <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
+  <table style="width:100%">
+    <tr>
+     <th style="width: 50% ;">
+       <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
+     </th>
+     <th style="width: 50% ; text-align: right ;">
+      
 
+      <a class="btn btn-default" rel="popover" data-trigger="focus" data-placement="bottom" data-html="true" data-content=" <a href = <%= tags_path(1) %> >Number of uses</a> <br> <a href = <%= tags_path(2) %> >Alphabetically</a>">
+        <i class="fa fa-sort"></i> <%=t('tag.index.sort_by') %>
+      </a>
+    
+     </th>
+   </tr>
+ </table>
   <p><%= t('tag.index.browse_popular_tags') %></p>
+  <!-- Search Bar -->
+    <input class="form-control" type="text" id="myInput"  placeholder="Search for tags..">
+    <script>
+      $('#myInput').keypress(function (e) {
+           var key = e.which;
+           if(key == 13)  // the enter key code
+            {
+             var pre = document.getElementsByTagName("input")[1].value ;
+
+              window.location.href = " <%= tags_path %>"+"/"+pre  
+            }
+          });   
+    </script>
+    <br><br>
 
   <table class="table">
     <tr>
