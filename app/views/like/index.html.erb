@@ -6,25 +6,21 @@
 	<tr>
 		<th><%= t('like.index.user') %></th>
 		<th><%= t('like.index.liked') %></th>
-		<% if current_user && current_user.role == "admin" %>
+		<% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
 			<th><%= t('like.index.action') %></th>
 		<% end %>
 	</tr>
 	<% @likes.each do |like| %>
 		<tr>
-			<td>
-				<% if like.drupal_users.status == 0 %>
-					<a href="/profile/<%= like.user.name %>" style = "color: red" ><i class="fa fa-user" aria-hidden="true" style="color: red"></i> <%= like.user.name %></a>
-				<% else %>
-					<a href="/profile/<%= like.user.name %>" style = "color: black"><i class="fa fa-user" aria-hidden="true"></i> <%= like.user.name %></a>
-				<% end %>
+			<td>			
+					<a href="/profile/<%= like.user.name %>" style = "color: <%= like.drupal_users.status.zero? ? 'red' : 'black' %>"> <i class="fa fa-user" aria-hidden="true" style = "color: <%= like.drupal_users.status.zero? ? 'red' : 'black'%>"></i> <%= like.user.name %></a>
 			</td>
 
 			<td> <a href="/wiki/<%= like.node.title %>"><%= like.node.title %></a></td>
 
-			<% if current_user && current_user.role == "admin" %>
+			<% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
 				<td>
-					<% if like.user.role == "admin" %>
+					<% if like.user == current_user %>
 						<b> - </b>
 					<% else %>
 						<% if like.drupal_users.status == 1 %> 
