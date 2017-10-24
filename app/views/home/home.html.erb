@@ -113,4 +113,18 @@
 
 </div>
 
+<hr style="clear:both;padding:20px;" />
+
+<h2><center>Recent community activity</center></h2>
+
+<p><center><a href="/research">See more &raquo;</a></center></p>
+
+<div class="dashboard">
+  <% cache('home-activity', expires_in: 60.minutes) do %>
+    <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
+  <% end %>
+  <%= stylesheet_link_tag "dashboard" %>
+  <%= javascript_include_tag "dashboard" %>
+</div>
+
 </div>
