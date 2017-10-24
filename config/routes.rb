@@ -135,6 +135,7 @@ Plots2::Application.routes.draw do
   match 'notes/:author/:date/:id' => 'notes#show'
 
   # :id will be the node's id (like has no id)
+  match 'likes' => 'like#index'
   match 'likes/node/:id/count' => 'like#show', :as => :like_count
   match 'likes/node/:id/query' => 'like#liked?', :as => :is_liked
   match 'likes/node/:id/create' => 'like#create', :as => :add_like

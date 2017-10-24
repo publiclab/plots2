@@ -2,6 +2,12 @@ class LikeController < ApplicationController
   respond_to :html, :xml, :json
   before_filter :require_user, only: %i[create delete]
 
+  #list all recent likes
+  def index
+    @paginated = true
+    @likes = NodeSelection.all.reverse.paginate(page: params[:page])
+  end
+
   # return a count of likes for a given node
   # This does not support non-nodes very well
   def show
