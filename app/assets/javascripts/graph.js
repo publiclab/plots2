@@ -62,7 +62,7 @@ function graph(data, el) {
   var config = {
       type: 'line',
       data: {
-          //labels: ["January", "February", "March", "April", "May", "June", "July"],
+          labels: Array.from(Array(data[0].length).keys()),
           datasets: datasets
       },
       options: {
