@@ -2,6 +2,9 @@
 
 <div class="col-md-9">
 <h1> <%= t('like.index.recent_likes') %> </h1>
+<% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
+	<p>Users marked in <b>red</b> are banned</p>
+<% end %>
 <table class="table">
 	<tr>
 		<th><%= t('like.index.user') %></th>
@@ -13,7 +16,15 @@
 	<% @likes.each do |like| %>
 		<tr>
 			<td>			
-					<a href="/profile/<%= like.user.name %>" style = "color: <%= like.drupal_users.status.zero? ? 'red' : 'black' %>"> <i class="fa fa-user" aria-hidden="true" style = "color: <%= like.drupal_users.status.zero? ? 'red' : 'black'%>"></i> <%= like.user.name %></a>
+				<% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
+
+					<a rel="tooltip" title="<%= like.user.bio %>" class="user" href="/profile/<%= like.user.name %>" style = "color: <%= like.drupal_users.status.zero? ? 'red' : 'black' %>" > <i class="fa fa-user" aria-hidden="true" style = "color: <%= like.drupal_users.status.zero? ? 'red' : 'black' %>"></i><%= like.user.name %></a>
+
+				<% else %>
+
+					<a href="/profile/<%= like.user.name %>" style = "color: <%= like.drupal_users.status.zero? ? 'red' : 'black' %>"><i class="fa fa-user" aria-hidden="true" style = "color: <%= like.drupal_users.status.zero? ? 'red' : 'black' %>"></i><%= like.user.name %></a>
+
+				<% end %>
 			</td>
 
 			<td> <a href="/wiki/<%= like.node.title %>"><%= like.node.title %></a></td>
