@@ -1,23 +1,20 @@
-### ðð¥â First Timers Only.
+Hi, this is a [first-timers-only issue](https://github.com/publiclab/plots2/projects/2). This means we've worked to make it more legible to folks who either **haven't contributed to our codebase before, or even folks who haven't contributed to open source before**. 
 
-This issue is reserved for people who never contributed to Open Source before. We know that the process of creating a pull request is the biggest barrier for new contributors. This issue is for you ð
+If that's you, we're interested in helping you take the first step and can answer questions and help you out as you do. Note that we're especially interested in contributions from people from groups underrepresented in free and open source software!
 
-[About First Timers Only](http://www.firsttimersonly.com/).
+We know that the process of creating a pull request is the biggest barrier for new contributors. This issue is for you 💝
 
-### ðð»ð Hacktoberfest: Trick or Treat!
+If you have contributed before, **consider leaving this one for someone new**, and looking through our general [help wanted](https://github.com/publiclab/plots2/labels/help-wanted) issues. Thanks!
 
-If you havenât yet, sign up for [Hacktoberfest](https://hacktoberfest.digitalocean.com/) to earn an exclusive T-Shirt. Plus Iâm sure we can teach you a cool trick or two in the process
-
-
-### ð¤ What you will need to know.
+### 🤔 What you will need to know.
 
 Nothing. This issue is meant to welcome you to Open Source :) We are happy to walk you through the process.
 
-### ð Step by Step
+### 📋 Step by Step
 
-- [ ] ð **Claim this issue**: Comment below. If someone else has claimed it, ask if they've opened a pull request already and if they're stuck -- maybe you can help them solve a problem or move it along!
+- [ ] 🙋 **Claim this issue**: Comment below. If someone else has claimed it, ask if they've opened a pull request already and if they're stuck -- maybe you can help them solve a problem or move it along!
 
-- [ ] ð **Update** the file [$FILENAME]($BRANCH_URL) in the `$REPO` repository (press the little pen Icon) and edit the line as shown below.
+- [ ] 📝 **Update** the file [$FILENAME]($BRANCH_URL) in the `$REPO` repository (press the little pen Icon) and edit the line as shown below. [See this page](https://github.com/publiclab/plots2/projects/2) for some help in taking your first steps!
 
 
 ```diff
@@ -25,19 +22,20 @@ $DIFF
 ```
 
 
-- [ ] ð¾ **Commit** your changes
+- [ ] 💾 **Commit** your changes
 
-- [ ] ð **Start a Pull Request**. There are two ways how you can start a pull request:
+- [ ] 🔀 **Start a Pull Request**. There are two ways how you can start a pull request:
 
 1. If you are familiar with the terminal or would like to learn it, [here is a great tutorial](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github) on how to send a pull request using the terminal.
 
-2. You can [edit files directly in your browser](https://help.github.com/articles/editing-files-in-your-repository/)
+2. You can also [edit files directly in your browser](https://help.github.com/articles/editing-files-in-your-repository/) and open a pull request from there. 
 
-- [ ] ð **Done** Ask in comments for a review :)
+- [ ] 🏁 **Done** Ask in comments for a review :)
 
-### ð¤â Questions
+
+### 🤔❓ Questions?
 
 Leave a comment below!
 
 
-This issue was created by [First-Timers-Bot](https://github.com/hoodiehq/first-timers-bot).
+(This issue was created by [First-Timers-Bot](https://github.com/hoodiehq/first-timers-bot).)
