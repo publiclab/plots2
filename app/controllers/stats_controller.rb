@@ -2,10 +2,10 @@ class StatsController < ApplicationController
   def subscriptions
     @tags = {}
     TagSelection.where(following: true).each do |tag|
-      @tags[tag.name] = @tags[tag.name] || 0
-      @tags[tag.name] += 1
+      @tags[tag.tagname] = @tags[tag.tagname] || 0
+      @tags[tag.tagname] += 1
     end
-    render text: @tags.inspect
+    render text: @tags.inspect, status: 200
   end
 
   def range
