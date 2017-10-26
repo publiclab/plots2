@@ -200,7 +200,7 @@ Plots2::Application.routes.draw do
   match 'archive' => 'map#index'
   match 'stats' => 'stats#index'
   match 'stats/range/:start/:end' => 'stats#range'
-  match 'stats/subscriptions' => 'stats#subscription'
+  match 'stats/subscriptions' => 'stats#subscriptions'
   match 'feed' => 'notes#rss'
   match 'rss.xml' => 'legacy#rss'
 

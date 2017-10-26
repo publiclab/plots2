@@ -19,4 +19,10 @@ class StatsControllerTest < ActionController::TestCase
     assert_not_equal 0, assigns(:wikis)
     assert_not_equal 0, assigns(:people)
   end
+
+  test 'should subscriptions' do
+    get :subscriptions
+    assert_response :success
+  end
+
 end
