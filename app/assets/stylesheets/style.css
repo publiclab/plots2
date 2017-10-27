@@ -368,6 +368,42 @@ div.note.moderated h4 {
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
+.nav-button-wrapper {
+  padding-top: 7.5px;
+}
+
+.nav-button-donate, .nav-button-store {
+  display: inline-block;
+  height: 35px;
+  background-color: transparent;
+  margin-left: 1em;
+  text-transform: uppercase;
+}
+
+.nav-button-donate {
+  border-color: #3355ee;
+}
+
+.nav-button-donate:hover {
+  background-color: #3355ee;
+}
+
+.nav-button-donate:hover a, .nav-button-store:hover a {
+  color: black;
+}
+
+.nav-button-donate a {
+  color: #3355ee;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.nav-button-store a {
+  color: #ccc;
+  text-decoration: none;
+  font-weight: 600;
+}
+
 @media (max-width:768px) {
   table {
     font-size: 90%;
