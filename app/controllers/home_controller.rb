@@ -108,6 +108,7 @@ class HomeController < ApplicationController
                         .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
                         .limit(10)
                         .group('node.title')
+                        .to_a
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     wikis += revisions
@@ -117,7 +118,7 @@ class HomeController < ApplicationController
                       .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
                       .page(params[:page])
                       .group('title') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
-    #                 .where('comments.status = (?)', 1)
+                      .to_a
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     comments = comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     answer_comments = Comment.joins(:answer, :drupal_users)
@@ -125,6 +126,7 @@ class HomeController < ApplicationController
                              .where('timestamp - answers.created_at > ?', 86_400)
                              .limit(20)
                              .group('answers.id')
+                             .to_a
     answer_comments = answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     activity = (notes + wikis + comments + answer_comments).sort_by(&:created_at).reverse
     response = [
