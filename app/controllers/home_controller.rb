@@ -127,7 +127,7 @@ class HomeController < ApplicationController
                              .group('answers.id')
     answer_comments = answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     activity = (notes + wikis + comments + answer_comments).sort_by(&:created_at).reverse
-    [
+    response = [
       activity,
       blog,
       notes,
@@ -136,6 +136,7 @@ class HomeController < ApplicationController
       comments,
       answer_comments
     ]
+    response
   end
 
 end
