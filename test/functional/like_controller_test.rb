@@ -51,4 +51,11 @@ class LikeControllerTest < ActionController::TestCase
     assert_equal note.likers.length, note.cached_likes
     assert_equal cached_likes - 1, note.cached_likes
   end
+
+  test 'show recent likes' do
+    get :index
+    
+    assert_response :success
+    assert_template :index
+  end
 end

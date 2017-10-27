@@ -135,6 +135,7 @@ Plots2::Application.routes.draw do
   match 'notes/:author/:date/:id' => 'notes#show'
 
   # :id will be the node's id (like has no id)
+  match 'likes' => 'like#index'
   match 'likes/node/:id/count' => 'like#show', :as => :like_count
   match 'likes/node/:id/query' => 'like#liked?', :as => :is_liked
   match 'likes/node/:id/create' => 'like#create', :as => :add_like
@@ -152,6 +153,7 @@ Plots2::Application.routes.draw do
   match 'contributors/:id' => 'tag#contributors'
   match 'contributors' => 'tag#contributors_index'
   match 'tags' => 'tag#index'
+  match 'tags/:search' => 'tag#index'
   match 'embed/grid/:tagname' => 'tag#gridsEmbed'
   match 'tag/suggested/:id' => 'tag#suggested'
   match 'tag/author/:id.json' => 'tag#author'
@@ -198,7 +200,7 @@ Plots2::Application.routes.draw do
   match 'archive' => 'map#index'
   match 'stats' => 'stats#index'
   match 'stats/range/:start/:end' => 'stats#range'
-  match 'stats/subscriptions' => 'stats#subscription'
+  match 'stats/subscriptions' => 'stats#subscriptions'
   match 'feed' => 'notes#rss'
   match 'rss.xml' => 'legacy#rss'
 

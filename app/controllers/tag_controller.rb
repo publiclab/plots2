@@ -3,8 +3,25 @@ class TagController < ApplicationController
   before_filter :require_user, only: %i[create delete]
 
   def index
+    if params[:format]
+      @toggle = params[:format].to_i
+    else 
+      @toggle = 1 
+    end 
+
     @title = I18n.t('tag_controller.tags')
     @paginated = true
+    if params[:search] 
+    prefix = params[:search]
+    @tags = Tag.joins(:node_tag, :node)
+               .select('node.nid, node.status, term_data.*, community_tags.*')
+               .where('node.status = ?', 1)
+               .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+               .where("name LIKE :prefix", prefix: "#{prefix}%")
+               .group(:name)
+               .order('count DESC')
+               .paginate(page: params[:page])  
+    elsif @toggle == 1 
     @tags = Tag.joins(:node_tag, :node)
                .select('node.nid, node.status, term_data.*, community_tags.*')
                .where('node.status = ?', 1)
@@ -12,6 +29,15 @@ class TagController < ApplicationController
                .group(:name)
                .order('count DESC')
                .paginate(page: params[:page])
+    else
+    @tags = Tag.joins(:node_tag, :node)
+               .select('node.nid, node.status, term_data.*, community_tags.*')
+               .where('node.status = ?', 1)
+               .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+               .group(:name)
+               .order('name')
+               .paginate(page: params[:page])    
+    end    
   end
 
   def show
@@ -57,11 +83,12 @@ class TagController < ApplicationController
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
+    # the following could be refactored into a Tag.contributor_count method:
     notes = Node.where(status: 1, type: 'note')
-                 .includes(:revision, :tag)
-                 .where('term_data.name = ?', params[:id])
-    users = notes.collect(&:author).uniq
-    @length=users.length || 0
+                .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
+                .includes(:tag)
+                .where('term_data.name = ?', params[:id])
+    @length = notes.collect(&:uid).uniq.length || 0
 
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }

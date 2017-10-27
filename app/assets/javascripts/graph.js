@@ -8,7 +8,7 @@ console.log('graphUrl');
 function graphCsv(csv, el) {
 
   var data = [];
-  var rows = csv.split('\n');
+  var rows = csv.split('\n').slice(1);
 
   for (var i = 0; i < rows[0].split(',').length; i++) {
     data.push([]);
@@ -18,7 +18,7 @@ function graphCsv(csv, el) {
     if (row !== '') {
       var cols = row.split(',');
       cols.forEach(function(col, i) {
-        data[i].push(parseFloat(col));
+        data[i].push(col);
       });
     }
   });
@@ -62,7 +62,7 @@ function graph(data, el) {
   var config = {
       type: 'line',
       data: {
-          //labels: ["January", "February", "March", "April", "May", "June", "July"],
+          labels: Array.from(Array(data[0].length).keys()),
           datasets: datasets
       },
       options: {
@@ -98,8 +98,22 @@ function graph(data, el) {
       }
   };
 
+  if(isTimeColumn(data[0])) {
+    datasets.shift();
+    config.options.scales.xAxes[0].type = "time";
+    config.data.labels = data[0].map(function(x) {
+      return moment(x, "YYYY/MM/DD hh:mm:ss").toDate();
+    });
+  }
+
   var ctx = document.getElementById(el).getContext("2d");
 
   return new Chart(ctx, config);
 
+}
+
+function isTimeColumn(col) {
+  return col.every(function(x) {
+    return moment(x, "YYYY/MM/DD hh:mm:ss").isValid();
+  });
 }

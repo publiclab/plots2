@@ -43,21 +43,21 @@
         <li class="dropdown">
 
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Take Action <b class="caret"></b>
+            Get Involved <b class="caret"></b>
           </a>
 
           <ul class="dropdown-menu">
-
+            <li><a href="/events">Meet people</a></li>
+            <li><a href="/lists">Join the discussions</a></li>
+            <li><a href="/chat">Chat online</a></li>
+            <li><a href="/wiki/requests">Browse requests</a></li>
             <li><a href="/dashboard">See the latest research</a></li>
-	    <!-- <li><a href="">Environmental issues</a></li> -->
+            <li><a href="/methods">Discover methods</a></li>
+            <% if !current_user %>
+              <li><a href="/signup">Create an account</a></li>
+            <% end %>
             <li><a href="/questions">Ask a question</a></li>
-            <li><a href="/people">Greet People</a></li>
-            <li><a href="/methods">Discover Methods</a></li>
-            <li><a href="/archive">Browse the Archive</a></li>
-            <!-- <li><a href="">Start a local investigation</a></li> -->
-            <!-- <li><a href="">Join a Working Group</a></li> -->
-            <!-- <li><a href="">Develop Tools</a></li> -->
-
+            <li><a href="/post">Post your work</a></li>
           </ul>
 
         </li>
@@ -91,21 +91,6 @@
           </ul>
         </li>
 
-        <li class="dropdown hidden-xs hidden-sm<%= ' hidden-md' unless current_user %>">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Connect <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-
-	    <!-- <li><a href="">Calls</a></li> -->
-            <li><a href="/events">Events</a></li>
-            <li><a href="/signup">Website</a></li>
-            <li><a href="/lists">Discussion lists</a></li>
-            <li><a href="/chat">Chat</a></li>
-	    <!-- <li><a href="">Start a project</a></li> -->
-
-          </ul>
-        </li>
         <li class="nav-button-wrapper hidden-xs hidden-sm hidden-md">
           <button class="btn btn-sm btn-warning nav-button-donate"><a href="/donate"><%= t('layout._header.donate') %></a></button>
         </li>
