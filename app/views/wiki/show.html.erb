@@ -26,9 +26,11 @@
 <% end %>
 
 <% unless @node.has_tag('sidebar:none') %>
+  <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
     <%= render :partial => "sidebar/featured" %>
   <% else %>
     <%= render :partial => "sidebar/related" %>
+  <% end %>
 <% end %>
 
 <div class="col-md-9">
