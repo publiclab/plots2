@@ -109,9 +109,9 @@ class HomeController < ApplicationController
                         .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
                         .limit(10)
                         .group('node.title')
-                        .to_a # ensure it can be serialized for caching
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
+    revisions = revisions.to_a # ensure it can be serialized for caching
     wikis += revisions
     wikis = wikis.sort_by(&:created_at).reverse
     comments = Comment.joins(:node, :drupal_users)
@@ -119,9 +119,9 @@ class HomeController < ApplicationController
                       .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
                       .page(params[:page])
                       .group('title') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
-                      .to_a # ensure it can be serialized for caching
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     comments = comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
+    comments = comments.to_a # ensure it can be serialized for caching
     answer_comments = Comment.joins(:answer, :drupal_users)
                              .order('timestamp DESC')
                              .where('timestamp - answers.created_at > ?', 86_400)
