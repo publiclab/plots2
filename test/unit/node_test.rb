@@ -279,11 +279,12 @@ class NodeTest < ActiveSupport::TestCase
     note = Node.where(type: 'note', status: 1).first
   
     Node.like(note.nid , current_user)
+    note = Node.find note.id
     cached_likes = note.cached_likes
 
     Node.unlike(note.nid , current_user)
     note = Node.find note.id
     assert_equal note.likers.length, note.cached_likes
-    assert_equal cached_likes - 1, note.cached_likes
+    assert_equal cached_likes-1 , note.cached_likes
   end
 end
