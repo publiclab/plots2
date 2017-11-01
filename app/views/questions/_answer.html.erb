@@ -24,7 +24,7 @@
       </div>
     </div>
     <div id="c<%= answer.id %>show" style="padding:0px 20px">
-      <p><%= raw sanitize(auto_link(RDiscount.new(answer.body).to_html)) %></p>
+      <p><%= raw sanitize(auto_link(insert_extras(RDiscount.new(answer.body).to_html))) %></p>
     </div>
     <% if current_user %>
       <%=  render :partial => "comments/edit", :locals => { title: "Edit answer", comment: answer, placeholder: "Help users by posting an answer to this question" } %>

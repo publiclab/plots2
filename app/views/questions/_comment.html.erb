@@ -16,7 +16,7 @@
     <span class="hidden-xs">commented</span>
     <a style="color:#aaa;" href="#answer-<%= answer_id %>-comment-<%= comment.id %>"><%= time_ago_in_words(comment.created_at) %> ago</a><br/>
     <span class="content">
-      <%= raw sanitize(auto_link(RDiscount.new(comment.body).to_html)) %>
+      <%= raw sanitize(auto_link(insert_extras(RDiscount.new(comment.body).to_html))) %>
     </span>
     <div class="content-form" style="display: none;">
       <form id="comment-<%= comment.id %>-edit-form" class="form-horizontal" action="/comment/update/<%= comment.id %>">
