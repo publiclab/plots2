@@ -58,7 +58,6 @@
     <% if current_user && current_user.uid == @user.uid %>
       <a href="/profile/<%= @user.name %>/edit" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_profile') %></a>
     <% end %>
-    <a href="?preview=true" class="btn btn-default btn-sm btn-block"><%= t('users.profile.preview_profile_tag') %></a>
   </p>
 
   <% if @profile_user && current_user && @profile_user == current_user %>
