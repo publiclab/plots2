@@ -244,4 +244,46 @@ class NodeTest < ActiveSupport::TestCase
     assert question.has_accepted_answers
   end
 
+  test "user likes node or not" do
+    node = node(:one)
+    user = users(:jeff)
+    assert !node.is_liked_by(user)
+
+  end
+ 
+  test "should change the number of cache likes" do
+    node = node(:one)
+    user = users(:jeff)
+    current_cached_likes = node.cached_likes
+    
+    node.toggle_like(user)
+
+    cached_like = node.cached_likes
+    assert_equal cached_like-1 , current_cached_likes
+  end
+
+  test "should create a like" do
+    current_user = User.find 2
+    note = Node.where(type: 'note', status: 1).first
+    cached_likes = note.cached_likes
+
+    Node.like(note.nid , current_user)
+
+    note = Node.find note.id
+    assert_equal note.likers.length, note.cached_likes
+    assert_equal cached_likes + 1, note.cached_likes
+  end
+
+  test "should delete a like" do
+    current_user = User.find 2
+    note = Node.where(type: 'note', status: 1).first
+  
+    Node.like(note.nid , current_user)
+    cached_likes = note.cached_likes
+
+    Node.unlike(note.nid , current_user)
+    note = Node.find note.id
+    assert_equal note.likers.length, note.cached_likes
+    assert_equal cached_likes - 1, note.cached_likes
+  end
 end
