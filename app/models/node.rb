@@ -784,7 +784,7 @@ class Node < ActiveRecord::Base
   def self.like(nid , user)
      # scope like variable outside the transaction
     like = nil
-    count = nil
+    count = 1
   
     ActiveRecord::Base.transaction do
       # Create the entry if it isn't already created.
@@ -806,7 +806,7 @@ class Node < ActiveRecord::Base
 
   def self.unlike(nid , user)
     like = nil
-    count = nil
+    count = -1
   
     ActiveRecord::Base.transaction do
       like = NodeSelection.where(user_id: user.uid,
