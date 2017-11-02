@@ -203,23 +203,6 @@ class I18nTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should choose i18n for user/_tags_form + user/info' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-
-      post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
-        password: 'secret'
-      }
-      follow_redirect!
-
-      get '/profile/info/' + rusers(:jeff).username.to_s
-      assert_select 'label[for=skills]', I18n.t('users._tags_form.skills')
-      assert_select 'h2', I18n.t('users.info.additonal_information')
-    end
-  end
-
   test 'should choose i18n for user/likes' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
