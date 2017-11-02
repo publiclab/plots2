@@ -67,18 +67,8 @@
   <hr />
 
   <% if params[:preview] %>
-  <p>
-    <%= render partial: 'user_tags/tags', locals: { type: 'skill', data: fetch_tags(@user.id, 'skill') } %>
-    <%= render partial: 'user_tags/tags', locals: { type: 'gear', data: fetch_tags(@user.id, 'gear') } %>
-    <%= render partial: 'user_tags/tags', locals: { type: 'tool', data: fetch_tags(@user.id, 'tool') } %>
-    <%= render partial: 'user_tags/tags', locals: { type: 'role', data: fetch_tags(@user.id, 'role') } %>
-
-    <br />
-    <% if current_user && (current_user == @profile_user || current_user.role == 'admin' ) %>
-      <a href="/profile/info/<%= @user.name %>" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_information') %></a>
-    <% end %>
-  </p>
   <hr />
+
     <div class="row">
       <div class="col-md-3 col-md-offset-1">
         <h4>Followers</h4>
