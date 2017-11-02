@@ -13,18 +13,21 @@ class UserTagsController < ApplicationController
 
     if current_user && (current_user.role == 'admin' || current_user == user)
       if params[:name]
-        name = params[:name].to_s.downcase
-        if UserTag.exists?(user.id, name)
-          @output[:errors] << I18n.t('user_tags_controller.tag_already_exists')
-          exist = true
-        end
-
-        unless exist
-          user_tag = user.user_tags.build(value: name)
-          if user_tag.save
-            @output[:saved] << [name, user_tag.id]
-          else
-            @output[:errors] << I18n.t('user_tags_controller.cannot_save_value')
+        tagnames = params[:name].split(',')
+        tagnames.each do |tagname|
+          name = tagname.downcase
+          if UserTag.exists?(current_user.id, name)
+            @output[:errors] << I18n.t('user_tags_controller.tag_already_exists')
+            exist = true
+          end
+ 
+          unless exist
+            user_tag = user.user_tags.build(value: name)
+            if user_tag.save
+              @output[:saved] << [name, user_tag.id]
+            else
+              @output[:errors] << I18n.t('user_tags_controller.cannot_save_value')
+            end
           end
         end
       else
