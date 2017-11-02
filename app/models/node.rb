@@ -784,7 +784,7 @@ class Node < ActiveRecord::Base
   def self.like(nid , user)
      # scope like variable outside the transaction
     like = nil
-    count = 1
+    count = nil
   
     ActiveRecord::Base.transaction do
       # Create the entry if it isn't already created.
@@ -795,7 +795,7 @@ class Node < ActiveRecord::Base
       if node.type == 'note'
         SubscriptionMailer.notify_note_liked(node, like.user)
       end
-      
+      count = 1
       node.toggle_like(like.user)
       # Save the changes.
       node.save!
@@ -806,12 +806,13 @@ class Node < ActiveRecord::Base
 
   def self.unlike(nid , user)
     like = nil
-    count = -1
+    count = nil
   
     ActiveRecord::Base.transaction do
       like = NodeSelection.where(user_id: user.uid,
                                  nid: nid).first_or_create
       like.liking = false
+      count = -1 
       node = Node.find(nid)       
       node.toggle_like(like.user)
       node.save!
