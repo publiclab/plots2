@@ -9,7 +9,7 @@ class HomeController < ApplicationController
   # caches_action :index, :cache_path => { :last => Node.find(:last).updated_at.to_i }
 
   def home
-    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = Rails.cache.fetch("front-activity", expires_in: 10.minutes) do
+    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
       self.activity
     end
 
@@ -37,7 +37,7 @@ class HomeController < ApplicationController
   # route for seeing the front page even if you are logged in
   def front
     @title = I18n.t('home_controller.environmental_investigation')
-    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = Rails.cache.fetch("front-activity", expires_in: 10.minutes) do
+    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
       self.activity
     end
     render template: 'home/home'
