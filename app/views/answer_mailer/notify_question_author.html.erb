@@ -1,5 +1,4 @@
-Hi! <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @answer.author.name %>"><%= @answer.author.name %></a> responded :
-
+Hi! <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @answer.author.name %>'><%= @answer.author.name %></a> responded :
 <p><%= @answer.content.truncate(30) %></p>
 
 Do NOT reply to this email; click this link to see the answer:

@@ -39,6 +39,7 @@ end
 group :test, :development do
   gem 'test-unit'
   gem 'rake',  '~> 10.5.0'
+  gem 'byebug'
   # gems to test RESTful API
   gem 'rest-client'
   gem 'rspec'

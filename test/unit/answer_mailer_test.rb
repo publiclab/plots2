@@ -13,7 +13,8 @@ class AnswerMailerTest < ActionMailer::TestCase
     assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal '[PublicLab] Question: ' + answer.node.title.truncate(30,omission: '...?') + ' An answer has been posted on Public Lab', email.subject
-    assert email.body.include?("Hi! '<a href='https://#{ActionMailer::Base.default_url_options[:host]}/profile/#{answer.author.name}'>#{answer.author.name}</a>' responded :")
+    assert email.body.include?("Hi! <a href='https://#{request_host}/profile/#{ answer.author.name }'>#{ answer.author.name }</a> responded :
+<p>#{ answer.content.truncate(30) }</p>")
   end
 
   test 'notify other answer authors' do
