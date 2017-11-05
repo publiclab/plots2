@@ -16,6 +16,7 @@ class Image < ActiveRecord::Base
   validates :uid, presence: :true
   validates :photo, presence: :true, unless: :remote_url_provided?
   do_not_validate_attachment_file_type :photo_file_name
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png', 'image/jpg']
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
   # validates :title, :presence => :true, :format => {:with => /\A[a-zA-Z0-9\ -_]+\z/, :message => "Only letters, numbers, and spaces allowed"}, :length => { :maximum => 60 }
 
