@@ -91,6 +91,7 @@ Plots2::Application.routes.draw do
   get 'w/:id' => 'wiki#show'
 
   # these need precedence for tag listings
+<<<<<<< 70d84ba850c246ac3b809b03649f7d7dc36d639f
   get 'feed/tag/:tagname' => 'tag#rss'
   get ':node_type/tag(/:id)' => 'tag#show'
   get 'wiki/raw/:id' => 'wiki#raw'
@@ -134,6 +135,7 @@ Plots2::Application.routes.draw do
   get 'notes/author/:author/:topic' => 'notes#author_topic'
   get 'notes/show/:id' => 'notes#show'
   get 'notes/:author/:date/:id' => 'notes#show'
+  get 'notes/feeds' => 'subscription#notes'
 
   # :id will be the node's id (like has no id)
   get 'likes' => 'like#index'
