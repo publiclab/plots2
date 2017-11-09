@@ -1,5 +1,5 @@
 module Callouts
-  FINDER = /(^|\s)\@([\w-]+)/
+  FINDER = /(^|\s)?\@([\w-]+)/
   HASHTAG = /(\s)\#([:a-zA-Z0-9_-]+)/
   PRETTYLINKMD = '\1[@\2](/profile/\2)'
   HASHLINKMD = '\1[#\2](/tag/\2)'
