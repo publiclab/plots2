@@ -344,6 +344,7 @@ ActiveRecord::Schema.define(:version => 20171013161520) do
 
   add_index "rusers", ["created_at"], :name => "index_rusers_created_at"
   add_index "rusers", ["email"], :name => "index_rusers_on_email"
+  add_index "rusers", ["persistence_token"], :name => "index_rusers_on_persistence_token"
   add_index "rusers", ["status"], :name => "index_rusers_on_status"
   add_index "rusers", ["username"], :name => "index_rusers_on_username"
 
