@@ -3,6 +3,13 @@ require 'test_helper'
 class TypeaheadServiceTest < ActiveSupport::TestCase
   include SolrToggle
   
+  test 'running TypeaheadService.search_all' do
+    result = TypeaheadService.new.search_all('about')
+    assert_true solrAvailable
+    assert_not_nil result
+    assert_equal result.length, 1
+  end
+  
   test 'running TypeaheadService.notes' do
     result = TypeaheadService.new.notes('blog')
     assert_true solrAvailable
