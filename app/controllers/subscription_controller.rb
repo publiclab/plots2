@@ -111,7 +111,8 @@ class SubscriptionController < ApplicationController
   end
   
   def notes
-    User.content_followed_in_past_period(time_period)
+    user = User.find(params[:id])
+    @content = user.content_followed_in_past_period(time_period)
     respond_to do |format|
       format.rss { render :layout => false  }
     end
