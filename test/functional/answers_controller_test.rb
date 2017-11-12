@@ -33,7 +33,7 @@ class AnswersControllerTest < ActionController::TestCase
 
     user_with_everything_tag = rusers(:moderator)
     assert_not_equal initial_mail_count, ActionMailer::Base.deliveries.size
-    assert ActionMailer::Base.deliveries.collect(&:to).include?([user_with_everything_tag.mail])
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([user_with_everything_tag.email])
     assert_response :success
   end
 
