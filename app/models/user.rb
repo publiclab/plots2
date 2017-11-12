@@ -310,7 +310,7 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def self.content_followed_in_past_period(time_period)
+  def content_followed_in_past_period(time_period)
     self.node.where("created >= #{time_period.to_i}  AND changed >= #{time_period.to_i}")
   end
 
