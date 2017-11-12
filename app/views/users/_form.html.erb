@@ -46,8 +46,8 @@
 
 
     <div class="form-group">
-      <label for="drupal_user_bio"><%= t('users._form.bio') %></label>
-      <%= text_area :drupal_user, :bio, { placeholder: I18n.t('users._form.add_bio'), 
+      <label for="user_bio"><%= t('users._form.bio') %></label>
+      <%= f.text_area :bio, { placeholder: I18n.t('users._form.add_bio'), 
                                           rows: 8, 
                                           class: 'form-control',
                                           tabindex: 6 } 
