@@ -135,4 +135,14 @@ class TagTest < ActiveSupport::TestCase
     assert !trending_tags.empty?
     assert_not_nil Tag.trending(2, Time.now - 1.year, Time.now - 1.month)
   end
+
+  test 'Tag.find_popular_notes returns most viewed notes with specified tag' do
+    popular_notes = Tag.find_popular_notes('test')
+    assert_not_nil popular_notes
+  end
+
+  test 'Tag.top_nodes returns most viewed nodes with specified tag and node type' do
+    top_nodes = Tag.find_top_nodes_by_type(tagname:'awesome2', type:'page')
+    assert_not_nil top_nodes
+  end
 end
