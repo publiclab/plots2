@@ -10,7 +10,6 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
-    @user.bio ||= ''
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(params[:spamaway]) unless using_recaptcha
