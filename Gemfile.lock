@@ -28,6 +28,8 @@ GEM
     activesupport (3.2.22.4)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
     arel (3.0.3)
     authlogic (3.2.0)
       activerecord (>= 3.0.0)
@@ -137,11 +139,15 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.3)
     json_expressions (0.8.3)
+    launchy (2.4.3)
+      addressable (~> 2.3)
     less (2.6.0)
       commonjs (~> 0.2.7)
     less-rails (2.6.0)
       actionpack (>= 3.1)
       less (~> 2.6.0)
+    letter_opener (1.4.1)
+      launchy (~> 2.2)
     libv8 (3.16.14.15)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -183,6 +189,7 @@ GEM
     progress_bar (1.0.5)
       highline (~> 1.6)
       options (~> 2.3.0)
+    public_suffix (3.0.0)
     rack (1.4.7)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -338,6 +345,7 @@ DEPENDENCIES
   jquery-rails
   json_expressions
   less-rails (~> 2.6)
+  letter_opener
   mocha (~> 1.1)
   mustermann (~> 0.4)
   mysql2 (~> 0.3.20)
@@ -372,4 +380,4 @@ DEPENDENCIES
   will_paginate-bootstrap (>= 1.0.1)
 
 BUNDLED WITH
-   1.14.6
+   1.16.0.pre.3

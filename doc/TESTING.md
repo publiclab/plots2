@@ -59,3 +59,11 @@ To run one test file:
 And to run just a single test within a file:
 
 `ruby -I test test/functional/some_file.rb --name=name_of_test`
+
+### Testing mails in development envirmoment
+
+We are using 'letter_opener' gem to open the mails in development enviroment.
+Whenever a email is sent then it will automatically catch by letter_opener and it will open in new window in development enviroment, nothing is to be done to run it, it will be done automatically.
+Same links would work, no modification in links are required.
+It will also show us how our actual mail will look like.
+Mail will be same as actual mail we will get in production.
