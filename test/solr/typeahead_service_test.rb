@@ -4,7 +4,7 @@ class TypeaheadServiceTest < ActiveSupport::TestCase
   include SolrToggle
   
   test 'running TypeaheadService.search_all' do
-    result = TypeaheadService.new.search_all('about')
+    result = TypeaheadService.new.search_all('about').getTags()
     assert_true solrAvailable
     assert_not_nil result
     assert_equal result.length, 1
