@@ -767,4 +767,57 @@ class Node < ActiveRecord::Base
       false
     end
   end
+
+  def is_liked_by(user)
+     !NodeSelection.where(user_id: user.uid, nid: self.id , liking: true).empty?
+  end
+
+  def toggle_like(user)
+    nodes = NodeSelection.where(nid: self.id , liking: true).count
+    if is_liked_by(user)
+      self.cached_likes = nodes-1  
+    else
+      self.cached_likes = nodes+1  
+    end
+  end
+
+  def self.like(nid , user)
+     # scope like variable outside the transaction
+    like = nil
+    count = nil
+  
+    ActiveRecord::Base.transaction do
+      # Create the entry if it isn't already created.
+      like = NodeSelection.where(user_id: user.uid,
+                                 nid: nid).first_or_create
+      like.liking = true
+      node = Node.find(nid)       
+      if node.type == 'note'
+        SubscriptionMailer.notify_note_liked(node, like.user)
+      end
+      count = 1
+      node.toggle_like(like.user)
+      # Save the changes.
+      node.save!
+      like.save!
+    end
+      count
+  end
+
+  def self.unlike(nid , user)
+    like = nil
+    count = nil
+  
+    ActiveRecord::Base.transaction do
+      like = NodeSelection.where(user_id: user.uid,
+                                 nid: nid).first_or_create
+      like.liking = false
+      count = -1 
+      node = Node.find(nid)       
+      node.toggle_like(like.user)
+      node.save!
+      like.save!
+     end 
+      count
+  end
 end
