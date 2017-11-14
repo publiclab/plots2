@@ -58,7 +58,7 @@ class Tag < ActiveRecord::Base
         .where('term_data.name = ?', tagname)
         .order('node.views DESC')
         .limit(limit)
-        .include(:node_tag, :tag)
+        .includes(:node_tag, :tag)
   end
 
   # finds recent nodes - should drop "limit" and allow use of chainable .limit()
@@ -110,7 +110,7 @@ class Tag < ActiveRecord::Base
         .where('term_data.name = ? AND node.views > (?)', tagname, views)
         .order('node.nid DESC')
         .limit(limit)
-        .include(:node_tag, :tag)
+        .includes(:node_tag, :tag)
   end
 
   def self.exists?(tagname, nid)
