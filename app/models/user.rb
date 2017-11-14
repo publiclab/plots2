@@ -46,6 +46,7 @@ class User < ActiveRecord::Base
   after_destroy :destroy_drupal_user
 
   def create_drupal_user
+    self.bio ||= ''
     if drupal_user.nil?
       drupal_user = DrupalUsers.new(name: username,
                                     pass: rand(100_000_000_000_000_000_000),
