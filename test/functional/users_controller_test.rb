@@ -224,8 +224,51 @@ class UsersControllerTest < ActionController::TestCase
     assert_template partial: 'comments/_comments'
   end
 
+  # this isn't testing anything?
   test 'profiles for legacy users' do
     user = users(:legacy_user)
     assert_response :success
+  end
+
+  test 'creating new account' do
+    assert_difference 'User.count', 1 do
+      post :create, { 
+        user: { 
+          username: 'eleven',
+          password: 'demagorgon',
+          password_confirmation: 'demagorgon',
+          email: 'upside@down.today',
+          bio: 'From Hawkins' 
+        },
+        spamaway: {
+          statement1: I18n.t('spamaway.human.statement1'),
+          statement2: I18n.t('spamaway.human.statement2'),
+          statement3: I18n.t('spamaway.human.statement3'),
+          statement4: I18n.t('spamaway.human.statement4')
+        }
+      }
+    end
+    assert_response :redirect
+    # a success here would mean sent back to form with errors
+    assert_redirected_to '/dashboard'
+    assert_equal 'From Hawkins', User.last.bio
+    assert_equal 'upside@down.today', User.last.email
+  end
+
+  test 'updating profile' do
+    user = rusers(:bob)
+    UserSession.create(user)
+    post :update, { user: { bio: 'Hello, there!' } }
+    assert_response :redirect
+    assert_equal User.find(user.id).bio, 'Hello, there!'
+  end
+
+  test 'rejecting malformated email while updating profile' do
+    user = rusers(:bob)
+    email = rusers(:bob).email
+    UserSession.create(user)
+    post :update, { user: { email: 'not an address' } }
+    assert_response :success
+    assert_equal user.email, email
   end
 end

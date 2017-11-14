@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
 
   acts_as_authentic do |c|
     c.openid_required_fields = %i[nickname email]
+    c.validates_format_of_email_field_options = { with: /@/ }
   end
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
@@ -38,13 +39,14 @@ class User < ActiveRecord::Base
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /^[A-Za-z\d_\-]+$/
+  validates_format_of :email, with: /@/
 
   before_create :create_drupal_user
   before_save :set_token
   after_destroy :destroy_drupal_user
 
   def create_drupal_user
-    self.bio = "" # needed to set a default bio value of ""
+    self.bio ||= ''
     if drupal_user.nil?
       drupal_user = DrupalUsers.new(name: username,
                                     pass: rand(100_000_000_000_000_000_000),

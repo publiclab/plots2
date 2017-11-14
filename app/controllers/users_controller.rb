@@ -9,17 +9,15 @@ class UsersController < ApplicationController
   end
 
   def create
-    # craft a publiclaboratory OpenID URI around the PL username given:
-    params[:user][:openid_identifier] = "https://old.publiclab.org/people/"+params[:user][:openid_identifier]+"/identity" if params[:user] && params[:user][:openid_identifier]
-    using_recaptcha = !params[:spamaway] && Rails.env == "production"
-    @spamaway = Spamaway.new(params[:spamaway]) unless using_recaptcha
     @user = User.new(params[:user])
-    if ((@spamaway && @spamaway.valid?) || (using_recaptcha && recaptcha = verify_recaptcha(model: @user))) && @user.save({})
+    using_recaptcha = !params[:spamaway] && Rails.env == "production"
+    recaptcha = verify_recaptcha(model: @user) if using_recaptcha
+    @spamaway = Spamaway.new(params[:spamaway]) unless using_recaptcha
+    if ((@spamaway && @spamaway.valid?) || recaptcha) && @user.save({})
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
       else
-        @user.update_attribute(:bio, params[:drupal_user][:bio])
         @user.add_to_lists(['publiclaboratory'])
         flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
@@ -37,7 +35,7 @@ class UsersController < ApplicationController
       end
       # send all errors to the page so the user can try again
       @action = "create"
-      render :action => 'new'
+      render action: 'new'
     end
   end
 
@@ -45,7 +43,6 @@ class UsersController < ApplicationController
     if current_user
     @user = current_user
       @user.attributes = params[:user]
-      @user.update_attribute(:bio, params[:drupal_user][:bio])
       @user.save({}) do |result|
         if result
           if session[:openid_return_to] # for openid login, redirects back to openid auth process
