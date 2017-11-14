@@ -12,7 +12,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal '[PublicLab] Question: ' + answer.node.title.truncate(30,omission: '...?') + ' An answer has been posted on Public Lab', email.subject
+    assert_equal '[PLab] Question: ' + answer.node.title.truncate(30,omission: '...?') + ' An answer has been posted on Public Lab', email.subject
     assert email.body.include?("Hi! <a href='https://#{request_host}/profile/#{ answer.author.name }'>#{ answer.author.name }</a> responded :
 <hr /><p>#{ answer.content }</p><hr />")
   end
