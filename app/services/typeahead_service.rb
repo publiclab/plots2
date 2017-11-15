@@ -36,10 +36,10 @@ class TypeaheadService
     if solrAvailable
       search = Node.search do
         fulltext input
-        with :status, 1
-        with :type, "note"
-        order_by :updated_at, :desc
-        paginate page: 1, per_page: limit
+        #with :status, 1
+        #with :type, "note"
+        #order_by :updated_at, :desc
+        #paginate page: 1, per_page: limit
       end
       search.results
     else 
