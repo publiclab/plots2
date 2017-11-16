@@ -19,6 +19,9 @@ jQuery(document).ready(function() {
     highlighter: function (text, item) {
       return '<i class="fa fa-' + item.tagType + '"></i> ' + item.tagVal;
     },
+    matcher: function() {
+      return true;
+    },
     displayText: function(item) {
       return item.tagVal;
     },
