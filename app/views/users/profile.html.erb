@@ -124,7 +124,13 @@
 
   <p><small><%= raw auto_link(RDiscount.new(@profile_user.bio || '').to_html, :sanitize => false) %></small></p>
 
-  <br />
+  <hr />
+  <div class="row">
+    <div class="col-md-4 col-xs-12 col-sm-6"><%= Node.questions.where(status: 1, uid: @user.id).length %> questions asked</div>
+    <div class="col-md-4 col-xs-12 col-sm-6"><%= Answer.where(uid: @profile_user.id).count %> answers posted</div>
+    <div class="col-md-4 col-xs-12 col-sm-6"><%= Comment.where(uid: @profile_user.id).count %> comments posted</div>
+  </div>
+  <hr />
 
   <ul class="nav nav-tabs">
     <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words')) %></small></span>
