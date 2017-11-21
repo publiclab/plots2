@@ -107,6 +107,12 @@ class UsersController < ApplicationController
                        .page(params[:page])
                        .order("nid DESC")
                        .where(status: 1, uid: @user.uid)
+    coauthored_tag = "with:"+@user.name 
+    @coauthored = Node.where(status: 1, type: "note")
+                  .includes(:revision, :tag)
+                  .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s , coauthored_tag.to_s)
+                  .page(params[:page])
+                  .order('node_revisions.timestamp DESC')                   
     @questions = @user.user.questions
                            .order('node.nid DESC')
                            .paginate(:page => params[:page], :per_page => 30)
