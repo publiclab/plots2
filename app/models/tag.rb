@@ -130,7 +130,7 @@ class Tag < ActiveRecord::Base
 
   def self.followers(tagname)
     uids = TagSelection.joins(:tag)
-                       .where('term_data.name = ?', tagname)
+                       .where('term_data.name = ? AND following = ?', tagname, true)
                        .collect(&:user_id)
     DrupalUsers.where('uid in (?)', uids)
                .collect(&:user)
