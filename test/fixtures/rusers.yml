@@ -1,5 +1,6 @@
 bob:
   username: Bob
+  status: 1
   email: bob@publiclab.org
   id: 1
   password_salt: <%= salt = Authlogic::Random.hex_token %>
@@ -11,6 +12,7 @@ bob:
 
 jeff:
   username: jeff
+  status: 1
   email: jeff@pxlshp.com
   id: 2
   role: admin
@@ -22,6 +24,7 @@ jeff:
 
 spammer:
   username: spammer
+  status: 0 #spammer
   email: spam@spam.com
   id: 3
   last_request_at: <%= Time.now %>
@@ -32,6 +35,7 @@ spammer:
 
 unbanned_spammer:
   username: unbanned_spammer
+  status: 1
   email: uspam@spam.com
   id: 4
   last_request_at: <%= Time.now %>
@@ -42,6 +46,7 @@ unbanned_spammer:
 
 admin:
   username: palpatine
+  status: 1
   email: admin@publiclab.org
   id: 5
   last_request_at: <%= Time.now %>
@@ -53,6 +58,7 @@ admin:
 
 moderator:
   username: obiwan
+  status: 1
   email: obiwan@publiclab.org
   id: 6
   last_request_at: <%= Time.now %>
@@ -64,6 +70,7 @@ moderator:
 
 newcomer:
   username: newcomer
+  status: 1
   email: newcomer@publiclab.org
   id: 7
   last_request_at: <%= Time.now %>
@@ -75,6 +82,7 @@ newcomer:
 
 lurker:
   username: lurker
+  status: 1
   email: lurker@publiclab.org
   id: 8
   last_request_at: <%= Time.now %>
@@ -85,6 +93,7 @@ lurker:
 
 unmoderated_user:
   username: rob
+  status: 1
   email: rob@publiclab.org
   id: 9
   last_request_at: <%= Time.now %>
@@ -95,6 +104,7 @@ unmoderated_user:
 
 test_user:
   username: testuser
+  status: 1
   email: testuser@publiclab.org
   id: 10
   last_request_at: <%= Time.now %>
