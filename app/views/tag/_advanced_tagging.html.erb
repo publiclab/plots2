@@ -1,9 +1,11 @@
 <button type="button" class="btn btn-default dropdown-toggle" id="pt-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i></button>
 <ul class="dropdown-menu" id="pt-list">
+  <% if current_user %>
     <li class="dropdown-header">Recently used tags</li>
     <% NodeTag.where(uid: current_user.id).order('date DESC').limit(5).each do |tag| %>
       <li onClick="addTag('<%= tag.name %>')"><i><%= tag.name %></i></li>
     <% end %>
+  <% end %>
   <li><a href="#" data-value="style:">Style</a></li>
   <li><a href="#"  data-value="with:">Add Coauthor</a></li>
   <li role="separator" class="divider"></li>
