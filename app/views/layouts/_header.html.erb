@@ -208,7 +208,16 @@
     <% if params[:controller] == "wiki" %><h1>Public Lab <small><%= t('layout._header.wiki_doc') %></small></h1><% end %>
     <hr />
   </div>
-
+  <script>
+      $('#chat-button').click(function(e){
+              e.stopPropagation() ;
+      });
+      $('body').click(function(){
+          var c = $('#chat') ;
+          if($('#chat').is(':visible') == true)
+            c.hide() ;
+      });
+</script>	
   <%= render :partial => "layouts/alerts" %>
 
 </div>
