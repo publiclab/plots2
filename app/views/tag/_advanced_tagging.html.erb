@@ -1,5 +1,6 @@
 <button type="button" class="btn btn-default dropdown-toggle" id="pt-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i></button>
 <ul class="dropdown-menu" id="pt-list">
+  <li class="dropdown-header">Recently used tags</li>
   <li><a href="#" data-value="style:">Style</a></li>
   <li><a href="#"  data-value="with:">Add Coauthor</a></li>
   <li role="separator" class="divider"></li>
@@ -17,7 +18,7 @@
 
           switch(val){
 
-            case "style:":  
+            case "style:":
               var input = prompt("What kind of style? (minimal, fancy, presentation, wide, nobanner)", "Style");
               if (input != null) {
                 addTag(val + input);}
@@ -30,7 +31,7 @@
               break;
 
           }
-        
+
         });
     });
   });
