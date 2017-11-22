@@ -99,6 +99,13 @@ class User < ActiveRecord::Base
         .order('created DESC')
   end
 
+  def coauthored_notes
+    coauthored_tag = "with:"+self.name
+    Node.where(status: 1, type: "note")
+        .includes(:revision, :tag)
+        .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s , coauthored_tag.to_s)
+  end
+
   def generate_reset_key
     # invent a key and save it
     key = ''
