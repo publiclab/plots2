@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   has_many :followers, through: :passive_relationships, source: :follower
 
   validates_with UniqueUsernameValidator, on: :create
-  validates_format_of :username, with: /^[A-Za-z\d_\-]+\z/
+  validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
   validates_format_of :email, with: /@/
 
   before_create :create_drupal_user
