@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  respond_to :html, :xml, :json, :rss
   before_filter :require_no_user, :only => [:new]
   before_filter :require_user, :only => [:update]
 
@@ -86,17 +87,31 @@ class UsersController < ApplicationController
       @users = DrupalUsers.joins('INNER JOIN rusers ON rusers.username = users.name')
                           .order("updated_at DESC")
                           .where('rusers.role = ?', params[:id])
-                          .page(params[:page])
     else
       # recently active
       @users = DrupalUsers.select('*, MAX(node.changed) AS last_updated')
                           .joins(:node)
                           .group('users.uid')
                           .where('users.status = 1 AND node.status = 1')
-                          .order("last_updated DESC")
-                          .page(params[:page])
+      if params[:new] # 
+        @users.order("users.created DESC")
+      else
+        @users.order("last_updated DESC")
+      end
     end
-    @users = @users.where('users.status = 1') unless current_user && (current_user.role == "admin" || current_user.role == "moderator")
+    @users.where('users.status = 1') unless current_user && (current_user.role == "admin" || current_user.role == "moderator")
+    @users.page(params[:page])
+    respond_with do |format|
+      format.html { render 'users/list' }
+      format.xml  { render xml: @users }
+      format.json { render json: @users }
+    end
+  end
+
+  def recent_rss
+    render :layout => false
+    response.headers["Content-Type"] = "application/xml; charset=utf-8"
+    response.headers["Access-Control-Allow-Origin"] = "*"
   end
 
   def profile
