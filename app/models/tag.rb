@@ -26,7 +26,7 @@ class Tag < ActiveRecord::Base
   end
 
   validates :name, presence: :true
-  validates :name, format: { with: /^[\w\.:-]*\z/, message: 'can only include letters, numbers, and dashes' }
+  validates :name, format: { with: /\A[\w\.:-]*\z/, message: 'can only include letters, numbers, and dashes' }
   # validates :name, :uniqueness => { case_sensitive: false  }
                                                             
   def id
