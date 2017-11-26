@@ -688,7 +688,7 @@ class Node < ActiveRecord::Base
 
   def mentioned_users
     usernames = body.scan(Callouts.const_get(:FINDER))
-    User.where(username: usernames.map { |m| m[1] }).uniq)
+    User.where(username: usernames.map { |m| m[1] }).uniq
   end
 
   def self.find_notes(author, date, title)
