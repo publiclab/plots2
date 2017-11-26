@@ -127,7 +127,7 @@ class TagController < ApplicationController
   end
 
   def author
-    render json: DrupalUsers.find_by(name: params[:id]).tag_counts
+    render json: DrupalUser.find_by(name: params[:id]).tag_counts
   end
 
   def barnstar

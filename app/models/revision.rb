@@ -74,7 +74,7 @@ class Revision < ActiveRecord::Base
   end
 
   def author
-    DrupalUsers.find_by(uid: uid)
+    DrupalUser.find_by(uid: uid)
   end
 
   def parent

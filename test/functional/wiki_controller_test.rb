@@ -1,8 +1,12 @@
 require 'test_helper'
 include ActionView::Helpers::TextHelper
 include ApplicationHelper
+#require "authlogic/test_case"
+#include Authlogic::TestCase
 
 class WikiControllerTest < ActionController::TestCase
+  #Authlogic::Session::Base.controller = Authlogic::ControllerAdapters::RailsAdapter.new(self)
+
   def setup
     activate_authlogic
     UserSession.create(rusers(:bob))

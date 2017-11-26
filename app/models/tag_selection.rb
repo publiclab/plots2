@@ -9,7 +9,7 @@ class TagSelection < ActiveRecord::Base
   validates :tag, presence: :true
 
   def user
-    DrupalUsers.find_by(uid: user_id)
+    DrupalUser.find_by(uid: user_id)
   end
 
   def ruser
