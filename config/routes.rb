@@ -1,17 +1,16 @@
 Plots2::Application.routes.draw do
-
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
 
   # Manually written API functions
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
 
-  get 'searches/test' => 'searches#test'
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
   mount Srch::API => '/api'
   mount GrapeSwaggerRails::Engine => '/api/d1ocs'
   #end
+
 
   resources :rusers
   resources :user_sessions
@@ -30,231 +29,233 @@ Plots2::Application.routes.draw do
 
   # switch off subdomain matching when in development
   if Rails.env.test?
-    # or to skip www:
-    match "", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
-    match "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
+  # or to skip www:
+    get "", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
+    get "*all", to: 'wiki#subdomain', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' && r.subdomain != "i" && r.subdomain != "test" && r.subdomain != "new" && r.subdomain != "alpha"}
   end
 
   get '/change_locale/:locale', to: 'settings#change_locale', as: :change_locale
-  match 'ioby' => "legacy#ioby"
+  get 'ioby' => "legacy#ioby"
 
-  match 'login' => "user_sessions#new",      :as => :login
-  match 'logout' => "user_sessions#destroy", :as => :logout
-  match 'logoutRemotely' => 'user_sessions#logout_remotely'
-  match 'register' => 'users#create'
-  match 'reset' => 'users#reset'
-  match 'reset/key/:key' => 'users#reset'
+  get 'login' => "user_sessions#new",      :as => :login
+  delete 'logout' => "user_sessions#destroy", :as => :logout
+  post 'register' => 'users#create'
+  post 'reset' => 'users#reset'
+  post 'reset/key/:key' => 'users#reset'
   get 'profiles', to: redirect('/people')
   get 'people' => 'users#list'
   get 'users/role/:id' => 'users#list'
-  match 'users/update' => 'users#update'
-  match 'people/:id/following' => 'users#following', as: :following
-  match 'people/:id/followers' => 'users#followers', as: :followers
-  match 'signup' => 'users#new'
-  match 'home' => 'home#front'
+  put 'users/update' => 'users#update'
+  get 'people/:id/following' => 'users#following', as: :following
+  get 'people/:id/followers' => 'users#followers', as: :followers
+  get 'signup' => 'users#new'
+  get 'home' => 'home#front'
   resources :relationships, only: [:create, :destroy]
-
-  get '/wiki/:id/comments', to: 'wiki#comments'
 
   #resources :users
 
-  match 'openid' => 'openid#index'
+  get 'openid' => 'openid#index'
   # Try to get rails to accept params with periods in the keyname?
   # The following isn't right and it may be about param parsing rather than routing?
   # match 'openid' => 'openid#index', :constraints => { 'openid.mode' => /.*/ }
-  # try this; http://jystewart.net/2007/10/24/a-ruby-on-rails-openid-server/
+# try this; http://jystewart.net/2007/10/24/a-ruby-on-rails-openid-server/
 
-  match 'openid/xrds' => 'openid#idp_xrds'
-  match 'openid/decision' => 'openid#decision'
-  match 'openid/resume' => 'openid#resume'
-  match 'openid/:username' => 'openid#user_page'
-  match 'openid/:username/xrds' => 'openid#user_xrds'
-  match '/people/:username/identity' => 'legacy#openid_username'
-  match '/user/:id/identity' => 'legacy#openid'
-  match '/user/register' => 'legacy#register'
+  get 'openid/xrds' => 'openid#idp_xrds'
+  get 'openid/decision' => 'openid#decision'
+  get 'openid/resume' => 'openid#resume'
+  get 'openid/:username' => 'openid#user_page'
+  get 'openid/:username/xrds' => 'openid#user_xrds'
+  get '/people/:username/identity' => 'legacy#openid_username'
+  get '/user/:id/identity' => 'legacy#openid'
+  post '/user/register' => 'legacy#register'
 
   # Allow downloading Web Service WSDL as a file with an extension
   # instead of a file named 'wsdl'
-  match 'openid/service.wsdl' => 'openid#wsdl'
+  get 'openid/service.wsdl' => 'openid#wsdl'
 
-  match 'following/:type/:name' => 'subscription#following'
-  match 'unsubscribe/:type/:name' => 'subscription#delete'
-  match 'subscribe/:type' => 'subscription#add'
-  match 'subscribe/:type/:name' => 'subscription#add'
-  match 'subscriptions' => 'subscription#index'
+  get 'following/:type/:name' => 'subscription#following'
+  delete 'unsubscribe/:type/:name' => 'subscription#delete'
+  put 'subscribe/:type' => 'subscription#add'
+  put 'subscribe/:type/:name' => 'subscription#add'
+  get 'subscriptions' => 'subscription#index'
 
-  match 'wiki/new' => 'wiki#new'
-  match 'wiki/replace/:id' => 'wiki#replace'
-  match 'wiki/popular' => 'wiki#popular'
-  match 'wiki/liked' => 'wiki#liked'
-  match 'wiki/create' => 'wiki#create'
-  match 'wiki/diff' => 'wiki#diff'
-  match 'wiki/:id' => 'wiki#show'
-  # these need precedence for tag listings
-  match 'feed/tag/:tagname' => 'tag#rss'
-  match ':node_type/tag(/:id)' => 'tag#show'
-  match 'wiki/raw/:id' => 'wiki#raw'
-  match 'wiki/revisions/:id' => 'wiki#revisions'
-  match 'wiki/revert/:id' => 'wiki#revert'
-  match 'wiki/edit/:id' => 'wiki#edit'
-  match 'wiki/update/:id' => 'wiki#update'
-  match 'wiki/delete/:id' => 'wiki#delete'
-  match 'wiki/revisions/:id/:vid' => 'wiki#revision'
-  match 'wiki/:lang/:id' => 'wiki#show'
-  match 'wiki/edit/:lang/:id' => 'wiki#edit'
-  match 'wiki' => 'wiki#index'
+  get 'wiki/new' => 'wiki#new'
+  get 'wiki/popular' => 'wiki#popular'
+  get 'wiki/liked' => 'wiki#liked'
+  post 'wiki/create' => 'wiki#create'
+  get 'wiki/diff' => 'wiki#diff'
+  get 'wiki/:id' => 'wiki#show'
+    # these need precedence for tag listings
+    get 'feed/tag/:tagname' => 'tag#rss'
+    get ':node_type/tag/:id' => 'tag#show'
+  get 'wiki/raw/:id' => 'wiki#raw'
+  get 'wiki/revisions/:id' => 'wiki#revisions'
+  get 'wiki/revert/:id' => 'wiki#revert'
+  get 'wiki/edit/:id' => 'wiki#edit'
+  put 'wiki/update/:id' => 'wiki#update'
+  delete 'wiki/delete/:id' => 'wiki#delete'
+  get 'wiki/revisions/:id/:vid' => 'wiki#revision'
+  get 'wiki/:lang/:id' => 'wiki#show'
+  get 'wiki/edit/:lang/:id' => 'wiki#edit'
+  get 'wiki' => 'wiki#index'
 
-  match 'place/:id/feed' => 'place#feed'
-  match 'n/:id' => 'notes#shortlink'
-  match 'notes/raw/:id' => 'notes#raw'
-  match 'notes/popular' => 'notes#popular'
-  match 'notes/liked' => 'notes#liked'
-  match 'notes/create' => 'notes#create'
+  get 'place/:id/feed' => 'place#feed'
+  get 'n/:id' => 'notes#shortlink'
+  get 'notes/raw/:id' => 'notes#raw'
+  get 'notes/popular' => 'notes#popular'
+  get 'notes/liked' => 'notes#liked'
+  post 'notes/create' => 'notes#create'
 
-  match 'places' => 'notes#places'
-  match 'tools' => 'notes#tools'
-  match 'methods' => 'wiki#methods'
-  match 'methods/:topic' => 'wiki#methods'
-  match 'techniques' => 'wiki#techniques'
+  get 'places' => 'notes#places'
+  get 'tools' => 'notes#tools'
+  get 'methods' => 'notes#methods'
+  get 'techniques' => 'notes#techniques'
 
-  match 'report/:id' => 'legacy#report'
-  match 'node/:id' => 'legacy#node'
-  match 'es/node/:id/view' => 'legacy#node'
-  match 'place/:id' => 'legacy#place'
-  match 'tool/:id' => 'legacy#tool'
-  match 'people/:id' => 'legacy#people'
-  match 'notes/:id' => 'legacy#notes'
-  match 'sites/default/files/:filename.:format' => 'legacy#file'
-  match 'sites/default/files/imagecache/:size/:filename.:format' => 'legacy#image'
+  get 'report/:id' => 'legacy#report'
+  get 'node/:id' => 'legacy#node'
+  get 'es/node/:id/view' => 'legacy#node'
+  get 'place/:id' => 'legacy#place'
+  get 'tool/:id' => 'legacy#tool'
+  get 'people/:id' => 'legacy#people'
+  get 'notes/:id' => 'legacy#notes'
+  get 'sites/default/files/:filename.:format' => 'legacy#file'
+  get 'sites/default/files/imagecache/:size/:filename.:format' => 'legacy#image'
 
-  match 'research' => 'home#dashboard'
-  match 'notes' => 'legacy#notes'
-  match 'notes/author/:id' => 'notes#author'
-  match 'notes/author/:author/:topic' => 'notes#author_topic'
-  match 'notes/show/:id' => 'notes#show'
-  match 'notes/:author/:date/:id' => 'notes#show'
+  get 'research' => 'home#dashboard'
+  get 'notes' => 'legacy#notes'
+  get 'notes/author/:id' => 'notes#author'
+  get 'notes/author/:author/:topic' => 'notes#author_topic'
+  get 'notes/show/:id' => 'notes#show'
+  get 'notes/:author/:date/:id' => 'notes#show'
 
   # :id will be the node's id (like has no id)
-  match 'likes' => 'like#index'
-  match 'likes/node/:id/count' => 'like#show', :as => :like_count
-  match 'likes/node/:id/query' => 'like#liked?', :as => :is_liked
-  match 'likes/node/:id/create' => 'like#create', :as => :add_like
-  match 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
+  get 'likes' => 'like#index'
+  get 'likes/node/:id/count' => 'like#show', :as => :like_count
+  get 'likes/node/:id/query' => 'like#liked?', :as => :is_liked
+  post 'likes/node/:id/create' => 'like#create', :as => :add_like
+  delete 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
   #Search Pages
-  match 'search/dynamic' => 'searches#dynamic'
-  match 'search/dynamic/:id' => 'searches#dynamic'
-  match 'search/:id' => 'searches#results'
-  match 'search' => 'searches#new'
+  get 'search/advanced/:id' => 'searches#new'
+  get 'search/dynamic' => 'searches#dynamic'
+  get 'search/dynamic/:id' => 'searches#dynamic'
+  get 'search/typeahead/:id' => 'searches#typeahead'
+  get 'search/questions/:id' => 'searches#questions'
+  get 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
+  get 'search/:id' => 'searches#normal_search'
+  get 'search/advanced' => 'searches#new'
+  get 'search' => 'searches#new'
 
-  match 'widget/:id' => 'tag#widget'
-  match 'blog' => 'tag#blog', :id => "blog"
-  match 'blog/:id' => 'tag#blog'
-  match 'contributors/:id' => 'tag#contributors'
-  match 'contributors' => 'tag#contributors_index'
-  match 'tags' => 'tag#index'
-  match 'tags/:search' => 'tag#index'
-  match 'embed/grid/:tagname' => 'tag#gridsEmbed'
-  match 'tag/suggested/:id' => 'tag#suggested'
-  match 'tag/author/:id.json' => 'tag#author'
-  match 'tag/create/:nid' => 'tag#create'
-  match 'tag/delete/:nid/:tid' => 'tag#delete'
-  match 'barnstar/give/:nid/:star' => 'tag#barnstar'
-  match 'barnstar/give' => 'tag#barnstar'
-  match 'tag/add_tag' => 'tag#add_tag'
-  match 'tag/remove_tag/:id' => 'tag#remove_tag'
-  match 'tag/remove_all_tags' => 'tag#remove_all_tags'
-  match 'tag/:id' => 'tag#show'
+  get 'widget/:id' => 'tag#widget'
+  get 'blog' => 'tag#blog', :id => "blog"
+  get 'blog/:id' => 'tag#blog'
+  get 'contributors/:id' => 'tag#contributors'
+  get 'contributors' => 'tag#contributors_index'
+  get 'tags' => 'tag#index'
+  get 'tag/suggested/:id' => 'tag#suggested'
+  get 'tag/author/:id.json' => 'tag#author'
+  post 'tag/create/:nid' => 'tag#create'
+  delete 'tag/delete/:nid/:tid' => 'tag#delete'
+  get 'barnstar/give/:nid/:star' => 'tag#barnstar'
+  get 'barnstar/give' => 'tag#barnstar'
+  put 'tag/add_tag' => 'tag#add_tag'
+  put 'tag/remove_tag/:id' => 'tag#remove_tag'
+  put 'tag/remove_all_tags' => 'tag#remove_all_tags'
+  get 'tag/:id' => 'tag#show'
 
-  match 'locations/form' => 'tag#location'
-  match 'locations/modal' => 'tag#location_modal'
+  get 'locations/form' => 'tag#location'
 
 
-  match 'rsvp/:id' => 'notes#rsvp'
-  match 'feed/liked' => 'notes#liked_rss'
+  get 'rsvp/:id' => 'notes#rsvp'
+  get 'feed/liked' => 'notes#liked_rss'
 
-  match 'dashboard' => 'home#dashboard'
-  match 'dashboard2' => 'home#dashboard2'
-  match 'comments' => 'comment#index'
-  match 'profile/comments/:id' => 'users#comments'
-  match 'nearby' => 'home#nearby'
-  match 'profile/edit' => 'users#edit'
-  match 'profile/photo' => 'users#photo'
-  match 'profile/info/:id' => 'users#info', as: 'info'
-  match 'profile/:id' => 'users#profile'
-  match 'profile/:id/edit' => 'users#edit'
-  match 'profile/:id/likes' => 'users#likes'
-  match 'feed/:author' => 'users#rss'
+  get 'dashboard' => 'home#dashboard'
+  get 'dashboard2' => 'home#dashboard2'
+  get 'comments' => 'comment#index'
+  get 'profile/comments/:id' => 'users#comments'
+  get 'nearby' => 'home#nearby'
+  get 'profile/edit' => 'users#edit'
+  get 'profile/photo' => 'users#photo'
+  get 'profile/info/:id' => 'users#info', as: 'info'
+  get 'profile/:id' => 'users#profile'
+  get 'profile/:id/edit' => 'users#edit'
+  get 'profile/:id/likes' => 'users#likes'
+  get 'feed/:author' => 'users#rss'
 
-  match 'profile/tags/create/:id' => 'user_tags#create'
-  match 'profile/tags/delete/:id' => 'user_tags#delete'
+  get 'profile/suggested/:key/:value' => 'user_tags#suggested'
+  post 'profile/tags/create/:id' => 'user_tags#create'
+  delete 'profile/tags/delete/:id' => 'user_tags#delete'
+  post 'profile/location/create/:id' => 'location_tags#create'
+  get 'profile/user/privacy' => 'users#privacy'
 
-  match 'maps' => 'map#index'
-  match 'users/map' => 'users#map'
-  match 'map' => 'search#map'
-  match 'maps/:id' => 'map#tag'
-  match 'map/edit/:id' => 'map#edit'
-  match 'map/update/:id' => 'map#update'
-  match 'map/delete/:id' => 'map#delete'
-  match 'map/:name/:date' => 'map#show'
-  match 'archive' => 'map#index'
-  match 'stats' => 'stats#index'
-  match 'stats/range/:start/:end' => 'stats#range'
-  match 'stats/subscriptions' => 'stats#subscriptions'
-  match 'feed' => 'notes#rss'
-  match 'rss.xml' => 'legacy#rss'
 
-  match 'useremail' => 'admin#useremail'
-  match 'spam' => 'admin#spam'
-  match 'spam/revisions' => 'admin#spam_revisions'
-  match 'spam/:type' => 'admin#spam'
-  match 'spam/batch/:ids' => 'admin#batch'
-  match 'admin/users' => 'admin#users'
-  match 'ban/:id' => 'admin#ban'
-  match 'unban/:id' => 'admin#unban'
-  match 'moderate/revision/spam/:vid' => 'admin#mark_spam_revision'
-  match 'moderate/revision/publish/:vid' => 'admin#publish_revision'
-  match 'moderate/spam/:id' => 'admin#mark_spam'
-  match 'moderate/publish/:id' => 'admin#publish'
-  match 'admin/promote/moderator/:id' => 'admin#promote_moderator'
-  match 'admin/demote/basic/:id' => 'admin#demote_basic'
-  match 'admin/promote/admin/:id' => 'admin#promote_admin'
-  match 'admin/migrate/:id' => 'admin#migrate'
-  match 'admin/moderate/:id' => 'admin#moderate'
-  match 'admin/unmoderate/:id' => 'admin#unmoderate'
+  get 'maps' => 'map#index'
+  get 'users/map' => 'users#map'
+  get 'map' => 'search#map'
+  get 'maps/:id' => 'map#tag'
+  get 'map/edit/:id' => 'map#edit'
+  put 'map/update/:id' => 'map#update'
+  delete 'map/delete/:id' => 'map#delete'
+  get 'map/:name/:date' => 'map#show'
+  get 'archive' => 'map#index'
+  get 'stats' => 'stats#index'
+  get 'stats/range/:start/:end' => 'stats#range'
+  get 'stats/subscriptions' => 'stats#subscription'
+  get 'feed' => 'notes#rss'
+  get 'rss.xml' => 'legacy#rss'
+
+  get 'useremail' => 'admin#useremail'
+  get 'spam' => 'admin#spam'
+  get 'spam/revisions' => 'admin#spam_revisions'
+  get 'spam/:type' => 'admin#spam'
+  get 'spam/batch/:ids' => 'admin#batch'
+  get 'admin/users' => 'admin#users'
+  get 'admin/queue' => 'admin#queue'
+  put 'ban/:id' => 'admin#ban'
+  put 'unban/:id' => 'admin#unban'
+  put 'moderate/revision/spam/:vid' => 'admin#mark_spam_revision'
+  put 'moderate/revision/publish/:vid' => 'admin#publish_revision'
+  put 'moderate/spam/:id' => 'admin#mark_spam'
+  put 'moderate/publish/:id' => 'admin#publish'
+  put 'admin/promote/moderator/:id' => 'admin#promote_moderator'
+  put 'admin/demote/basic/:id' => 'admin#demote_basic'
+  put 'admin/promote/admin/:id' => 'admin#promote_admin'
+  put 'admin/migrate/:id' => 'admin#migrate'
+  put 'admin/moderate/:id' => 'admin#moderate'
+  put 'admin/unmoderate/:id' => 'admin#unmoderate'
 
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
 
-  match 'post' => 'editor#post'
-  match 'legacy' => 'editor#legacy'
-  match 'editor' => 'editor#editor'
-  match 'images/create' => 'images#create'
-  match 'note/add' => 'legacy#note_add'
-  match 'page/add' => 'legacy#page_add'
+  get 'post' => 'editor#post'
+  get 'legacy' => 'editor#legacy'
+  get 'editor' => 'editor#editor'
+  post 'images/create' => 'images#create'
+  put 'note/add' => 'legacy#note_add'
+  put 'page/add' => 'legacy#page_add'
 
-  match 'talk/:id' => 'talk#show'
+  get 'talk/:id' => 'talk#show'
 
-  match 'questions/new' => 'questions#new'
-  match 'questions' => 'questions#index'
-  match 'questions/:author/:date/:id' => 'questions#show'
-  match 'questions/show/:id' => 'questions#show'
-  match 'q/:id' => 'questions#shortlink'
-  match 'questions/answered(/:tagnames)' => 'questions#answered'
-  match 'questions/popular(/:tagnames)' => 'questions#popular'
-  match 'questions/unanswered(/:tagnames)' => 'questions#unanswered'
-  match 'questions/liked(/:tagnames)' => 'questions#liked'
+  get 'questions/new' => 'questions#new'
+  get 'questions' => 'questions#index'
+  get 'questions/:author/:date/:id' => 'questions#show'
+  get 'questions/show/:id' => 'questions#show'
+  get 'q/:id' => 'questions#shortlink'
+  get 'questions/answered' => 'questions#answered'
+  get 'questions/popular' => 'questions#popular'
+  get 'questions/unanswered' => 'questions#unanswered'
+  get 'questions/liked' => 'questions#liked'
 
-  match 'answers/create/:nid' => 'answers#create'
-  match 'answers/update/:id' => 'answers#update'
-  match 'answers/delete/:id' => 'answers#delete'
-  match 'answers/accept/:id' => 'answers#accept'
+  post 'answers/create/:nid' => 'answers#create'
+  put 'answers/update/:id' => 'answers#update'
+  delete 'answers/delete/:id' => 'answers#delete'
+  put 'answers/accept/:id' => 'answers#accept'
 
-  match 'answer_like/show/:aid' => 'answer_like#show'
-  match 'answer_like/likes/:aid' => 'answer_like#likes'
+  get 'answer_like/show/:id' => 'answer_like#show'
+  get 'answer_like/likes/:aid' => 'answer_like#likes'
 
-  match 'comment/answer_create/:aid' => 'comment#answer_create'
+  post 'comment/answer_create/:aid' => 'comment#answer_create'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
@@ -297,11 +298,10 @@ Plots2::Application.routes.draw do
 
   # See how all your routes lay out with "rake routes"
 
-  match ':id' => 'wiki#root'
+  get ':id' => 'wiki#root'
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
 
-  match ':controller(/:action(/:id))(.:format)'
-
+  match ':controller(/:action(/:id))(.:format)', via: [:get, :post]
 end

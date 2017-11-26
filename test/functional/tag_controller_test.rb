@@ -51,7 +51,7 @@ class TagControllerTest < ActionController::TestCase
          nid: node(:one).nid
 
     assert_redirected_to(node(:one).path)
-    assert_equal 'Error: tags can only include letters, numbers, and dashes', assigns['output']['errors'][0]
+    assert_equal 'Error: tags can only include letters, numbers, and dashes', assigns[:output][:errors][0]
   end
 
   test "won't add disallowed tags" do
@@ -62,7 +62,7 @@ class TagControllerTest < ActionController::TestCase
          nid: node(:one).nid # authored by jeff, not bob
 
     assert_redirected_to(node(:one).path)
-    assert_equal I18n.t('node.only_author_use_powertag'), assigns['output']['errors'][0]
+    assert_equal I18n.t('node.only_author_use_powertag'), assigns[:output][:errors][0]
   end
 
   test 'admins can add disallowed tags' do
@@ -73,7 +73,7 @@ class TagControllerTest < ActionController::TestCase
          nid: node(:one).nid # authored by jeff, not bob
 
     assert_redirected_to(node(:one).path)
-    assert_equal 0, assigns['output']['errors'].length
+    assert_equal 0, assigns[:output][:errors].length
   end
 
   # create returns JSON list of errors in response[:errors]
@@ -95,7 +95,7 @@ class TagControllerTest < ActionController::TestCase
          uid: rusers(:bob)
 
     assert_redirected_to(node(:one).path)
-    assert_equal 'Error: that tag already exists.', assigns['output']['errors'][0]
+    assert_equal 'Error: that tag already exists.', assigns[:output][:errors][0]
   end
 
   test 'add tag not logged in' do
@@ -206,7 +206,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'tag rss' do
-    get :rss, tagname: Tag.last.name
+    get :rss, tagname: Tag.last.name, format: 'rss'
 
     assert :success
     assert_not_nil :notes
@@ -379,7 +379,7 @@ class TagControllerTest < ActionController::TestCase
       UserSession.create(rusers(:bob))
       post :create, name: 'mytag', nid: node(:one).nid, uid: rusers(:bob)
       post :create, name: 'mytag', nid: node(:one).nid, uid: rusers(:bob)
-      assert_equal I18n.t('tag_controller.tag_already_exists'), assigns['output']['errors'][0]
+      assert_equal I18n.t('tag_controller.tag_already_exists'), assigns[:output][:errors][0]
     end
   end
 
