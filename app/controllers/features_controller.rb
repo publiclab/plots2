@@ -7,7 +7,7 @@ class FeaturesController < ApplicationController
   end
 
   def embed
-    @node = Node.find_by_title params[:id]
+    @node = Node.find_by(title: params[:id])
     render layout: false
   end
 

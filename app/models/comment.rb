@@ -71,7 +71,7 @@ class Comment < ActiveRecord::Base
 
   def mentioned_users
     usernames = comment.scan(Callouts.const_get(:FINDER))
-    User.find_all_by_username(usernames.map { |m| m[1] }).uniq
+    User.where(username: usernames.map { |m| m[1] }).uniq
   end
 
   def followers_of_mentioned_tags

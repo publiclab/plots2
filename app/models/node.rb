@@ -105,7 +105,7 @@ class Node < ActiveRecord::Base
   # or, we should refactor to us node.created instead of Time.now
   def generate_path
     if type == 'note'
-      username = DrupalUsers.find_by_uid(uid).name
+      username = DrupalUsers.find_by(uid: uid).name
       "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{title.parameterize}"
     elsif type == 'page'
       '/wiki/' + title.parameterize
@@ -219,11 +219,11 @@ class Node < ActiveRecord::Base
   end
 
   def author
-    DrupalUsers.find_by_uid uid
+    DrupalUsers.find_by(uid: uid)
   end
 
   def coauthors
-    User.find_all_by_username(power_tags('with')) if has_power_tag('with')
+    User.where(username: power_tags('with')) if has_power_tag('with')
   end
 
   # for wikis:
@@ -303,7 +303,7 @@ class Node < ActiveRecord::Base
   # Nodes this node is responding to with a `response:<nid>` power tag;
   # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
   def responded_to(key = 'response')
-    Node.find_all_by_nid(power_tags(key)) || []
+    Node.where(nid: power_tags(key)) || []
   end
 
   # Nodes that respond to this node with a `response:<nid>` power tag;
@@ -654,10 +654,10 @@ class Node < ActiveRecord::Base
     tagname = tagname.downcase
     unless has_tag_without_aliasing(tagname)
       saved = false
-      tag = Tag.find_by_name(tagname) || Tag.new(vid:         3, # vocabulary id; 1
-                                                 name:        tagname,
-                                                 description: '',
-                                                 weight:      0)
+      tag = Tag.find_by(name: tagname) || Tag.new(vid:         3, # vocabulary id; 1
+                                                  name:        tagname,
+                                                  description: '',
+                                                  weight:      0)
 
       ActiveRecord::Base.transaction do
         if tag.valid?
@@ -688,7 +688,7 @@ class Node < ActiveRecord::Base
 
   def mentioned_users
     usernames = body.scan(Callouts.const_get(:FINDER))
-    User.find_all_by_username(usernames.map { |m| m[1] }).uniq
+    User.where(username: usernames.map { |m| m[1] }).uniq)
   end
 
   def self.find_notes(author, date, title)

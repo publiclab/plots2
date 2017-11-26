@@ -66,7 +66,7 @@ class UsersController < ApplicationController
   def edit
     @action = "update" # sets the form url
     if params[:id] # admin only
-      @drupal_user = DrupalUsers.find_by_name(params[:id])
+      @drupal_user = DrupalUsers.find_by(name: params[:id])
       @user = @drupal_user.user
     else
       @user = current_user
@@ -100,8 +100,8 @@ class UsersController < ApplicationController
   end
 
   def profile
-    @user = DrupalUsers.find_by_name(params[:id])
-    @profile_user = User.find_by_username(params[:id])
+    @user = DrupalUsers.find_by(name: params[:id])
+    @profile_user = User.find_by(username: params[:id])
     @title = @user.name
     @notes = Node.research_notes
                        .page(params[:page])
@@ -154,7 +154,7 @@ class UsersController < ApplicationController
   end
 
   def likes
-    @user = DrupalUsers.find_by_name(params[:id])
+    @user = DrupalUsers.find_by(name: params[:id])
     @title = "Liked by "+@user.name
     @notes = @user.liked_notes.includes([:tag, :comments])
                               .paginate(page: params[:page], per_page: 20)
@@ -187,7 +187,7 @@ class UsersController < ApplicationController
 
   def reset
     if params[:key] && params[:key] != nil
-      @user = User.find_by_reset_key(params[:key])
+      @user = User.find_by(reset_key: params[:key])
       if @user
         if params[:user] && params[:user][:password]
           if @user.username.downcase == params[:user][:username].downcase
@@ -213,7 +213,7 @@ class UsersController < ApplicationController
       end
 
     elsif params[:email]
-      user = User.find_by_email params[:email]
+      user = User.find_by(email: params[:email])
       if user
         key = user.generate_reset_key
         user.save({})
@@ -234,7 +234,7 @@ class UsersController < ApplicationController
   end
 
   def photo
-    @user = DrupalUsers.find_by_uid(params[:uid]).user
+    @user = DrupalUsers.find_by(uid: params[:uid]).user
     if current_user.uid == @user.uid || current_user.role == "admin"
       @user.photo = params[:photo]
       if @user.save!
@@ -255,19 +255,19 @@ class UsersController < ApplicationController
   end
 
   def info
-    @user = DrupalUsers.find_by_name(params[:id])
+    @user = DrupalUsers.find_by(name: params[:id])
   end
 
   def following
     @title = "Following"
-    @user  = User.find_by_username(params[:id])
+    @user  = User.find_by(username: params[:id])
     @users = @user.following_users.paginate(page: params[:page])
     render 'show_follow'
   end
 
   def followers
     @title = "Followers"
-    @user  = User.find_by_username(params[:id])
+    @user  = User.find_by(username: params[:id])
     @users = @user.followers.paginate(page: params[:page])
     render 'show_follow'
   end

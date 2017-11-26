@@ -1,6 +1,6 @@
 class UniqueUsernameValidator < ActiveModel::Validator
   def validate(record)
-    if DrupalUsers.find_by_name(record.username) && record.openid_identifier.nil?
+    if DrupalUsers.find_by(name: record.username) && record.openid_identifier.nil?
       record.errors[:base] << 'That username is already taken. If this is your username, you can simply log in to this site.'
     end
   end
@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
       drupal_user.save!
       self.id = drupal_user.uid
     else
-      self.id = DrupalUsers.find_by_name(username).uid
+      self.id = DrupalUsers.find_by(name: username).uid
     end
   end
 
@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
   # this is ridiculous. We need to store uid in this model.
   # ...migration is in progress. start getting rid of these calls...
   def drupal_user
-    DrupalUsers.find_by_name(username)
+    DrupalUsers.find_by(name: username)
   end
 
   def notes
@@ -157,7 +157,8 @@ class User < ActiveRecord::Base
 
   def subscriptions(type = :tag)
     if type == :tag
-      TagSelection.find_all_by_user_id uid, conditions: { following: true }
+      TagSelection.where(user_id: uid,
+                         following: true)
     end
   end
 
@@ -276,7 +277,7 @@ class User < ActiveRecord::Base
   end
 
   def unfollow(other_user)
-    active_relationships.find_by_followed_id(other_user.id).destroy
+    active_relationships.where(followed_id: other_user.id).first.destroy
   end
 
   def following?(other_user)
