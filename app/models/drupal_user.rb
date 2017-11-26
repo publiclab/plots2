@@ -1,4 +1,4 @@
-class DrupalUsers < ActiveRecord::Base
+class DrupalUser < ActiveRecord::Base
   attr_accessible :title, :body, :name, :pass, :mail, :mode, :sort, :threshold, :theme, :signature, :signature_format, :created, :access, :login, :status, :timezone, :language, :picture, :init, :data, :timezone_id, :timezone_name
 
   ## User status can be:

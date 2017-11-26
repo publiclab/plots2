@@ -180,7 +180,7 @@ class AdminController < ApplicationController
   end
 
   def moderate
-    user = DrupalUsers.find params[:id]
+    user = DrupalUser.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       user.moderate
       flash[:notice] = 'The user has been moderated.'
@@ -191,7 +191,7 @@ class AdminController < ApplicationController
   end
 
   def unmoderate
-    user = DrupalUsers.find params[:id]
+    user = DrupalUser.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       user.unmoderate
       flash[:notice] = 'The user has been unmoderated.'
@@ -202,7 +202,7 @@ class AdminController < ApplicationController
   end
 
   def ban
-    user = DrupalUsers.find params[:id]
+    user = DrupalUser.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       user.ban
       flash[:notice] = 'The user has been banned.'
@@ -213,7 +213,7 @@ class AdminController < ApplicationController
   end
 
   def unban
-    user = DrupalUsers.find params[:id]
+    user = DrupalUser.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       user.unban
       flash[:notice] = 'The user has been unbanned.'
@@ -225,7 +225,7 @@ class AdminController < ApplicationController
 
   def users
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      @users = DrupalUsers.order('uid DESC').limit(200)
+      @users = DrupalUser.order('uid DESC').limit(200)
     else
       flash[:error] = 'Only moderators can moderate other users.'
       redirect_to '/dashboard'
@@ -254,7 +254,7 @@ class AdminController < ApplicationController
 
   def migrate
     if current_user && current_user.role == 'admin'
-      du = DrupalUsers.find params[:id]
+      du = DrupalUser.find params[:id]
       if du.user
         flash[:error] = 'The user has already been migrated.'
       else

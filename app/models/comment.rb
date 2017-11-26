@@ -94,7 +94,7 @@ class Comment < ActiveRecord::Base
   end
 
   def notify_users(uids, current_user)
-    DrupalUsers.find(:all, conditions: ['uid IN (?)', uids]).each do |user|
+    DrupalUser.find(:all, conditions: ['uid IN (?)', uids]).each do |user|
       if user.uid != current_user.uid
         CommentMailer.notify(user.user, self).deliver
       end

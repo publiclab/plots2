@@ -33,7 +33,7 @@ class SearchService
   end
 
   def find_users(input, limit = 5)
-    DrupalUsers.limit(limit)
+    DrupalUser.limit(limit)
                .order('uid DESC')
                .where('name LIKE ? AND access != 0', '%' + input + '%')
   end

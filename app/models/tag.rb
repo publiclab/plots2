@@ -132,7 +132,7 @@ class Tag < ActiveRecord::Base
     uids = TagSelection.joins(:tag)
                        .where('term_data.name = ? AND following = ?', tagname, true)
                        .collect(&:user_id)
-    DrupalUsers.where('uid in (?)', uids)
+    DrupalUser.where('uid in (?)', uids)
                .collect(&:user)
   end
 

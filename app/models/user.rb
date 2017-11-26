@@ -1,6 +1,6 @@
 class UniqueUsernameValidator < ActiveModel::Validator
   def validate(record)
-    if DrupalUsers.find_by(name: record.username) && record.openid_identifier.nil?
+    if DrupalUser.find_by(name: record.username) && record.openid_identifier.nil?
       record.errors[:base] << 'That username is already taken. If this is your username, you can simply log in to this site.'
     end
   end
@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   def create_drupal_user
     self.bio ||= ''
     if drupal_user.nil?
-      drupal_user = DrupalUsers.new(name: username,
+      	    drupal_user = DrupalUser.new(name: username,
                                     pass: rand(100_000_000_000_000_000_000),
                                     mail: email,
                                     mode: 0,
@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
       drupal_user.save!
       self.id = drupal_user.uid
     else
-      self.id = DrupalUsers.find_by(name: username).uid
+      self.id = DrupalUser.find_by(name: username).uid
     end
   end
 
@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
   # this is ridiculous. We need to store uid in this model.
   # ...migration is in progress. start getting rid of these calls...
   def drupal_user
-    DrupalUsers.find_by(name: username)
+    DrupalUser.find_by(name: username)
   end
 
   def notes

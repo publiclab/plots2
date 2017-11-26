@@ -52,7 +52,7 @@ class UserSessionsController < ApplicationController
           end
         end
       else # not a native user
-        if !DrupalUsers.find_by(name: username).nil?
+        if !DrupalUser.find_by(name: username).nil?
           # this is a user from the old site who hasn't registered on the new site
           redirect_to controller: :users, action: :create, user: { openid_identifier: username }
         else # totally new user!
