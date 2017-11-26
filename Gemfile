@@ -1,9 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 3.2.20'
+
+gem 'rails', '~> 4.0.0'
+gem 'activerecord-session_store'
+gem 'protected_attributes'
 gem 'passenger'
 
-gem 'rails-i18n', '~> 3.0.0'
+gem 'rails-i18n', '~> 4.0.0'
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
   gem 'mysql2', '~> 0.3.20'
@@ -24,13 +27,11 @@ end
 gem "letter_opener", :group => :development
 
 # Gems used only for assets and not required in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer'
-  gem 'uglifier', '>= 1.0.3'
-end
+gem 'sass-rails',   '~> 4.0.0'
+gem 'coffee-rails', '~> 4.0.0'
+gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem 'therubyracer'
+gem 'uglifier', '>= 1.0.3'
 
 # run with `bundle install --without development` to exclude these
 group :development do
@@ -67,10 +68,11 @@ gem 'georuby', '2.0'
 gem 'geokit-rails'
 gem 'rails_autolink'
 gem 'rb-readline'
-gem "paperclip", ">= 4.1.1"
+gem "paperclip", "< 4.2.0"
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
-gem "authlogic", "3.2.0"
+gem "authlogic", "~> 3.5.0"
+gem 'authlogic-oid'
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
 gem 'progress_bar'
@@ -97,7 +99,7 @@ gem 'http_accept_language'
 # The default friendly_id version compatible with Rails 3 is v4.0
 gem 'friendly_id'
 gem 'jbuilder'
-gem 'strong_parameters'
+#gem 'strong_parameters'
 
 # Pin mustermann to Ruby 2.1 compatible
 gem 'mustermann' , '~> 0.4'

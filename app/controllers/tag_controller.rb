@@ -61,14 +61,14 @@ class TagController < ApplicationController
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
       nodes = Node.where(status: 1, type: node_type)
-                  .includes(:revision, :tag)
+                  .references(:revision, :tag)
                   .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
                   .page(params[:page])
                   .order('node_revisions.timestamp DESC')
     else
       @tags = Tag.where(name: params[:id])
       nodes = Node.where(status: 1, type: node_type)
-                  .includes(:revision, :tag)
+                  .references(:revision, :tag)
                   .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
                   .page(params[:page])
                   .order('node_revisions.timestamp DESC')
@@ -86,7 +86,7 @@ class TagController < ApplicationController
     # the following could be refactored into a Tag.contributor_count method:
     notes = Node.where(status: 1, type: 'note')
                 .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
-                .includes(:tag)
+                .references(:tag)
                 .where('term_data.name = ?', params[:id])
     @length = notes.collect(&:uid).uniq.length || 0
 
@@ -218,7 +218,7 @@ class TagController < ApplicationController
       @suggestions = []
       # filtering out tag spam by requiring tags attached to a published node
       Tag.where('name LIKE ?', '%' + params[:id] + '%')
-         .includes(:node)
+         .references(:node)
          .where('node.status = 1')
          .limit(10).each do |tag|
         @suggestions << tag.name.downcase
@@ -232,7 +232,7 @@ class TagController < ApplicationController
   def rss
     if params[:tagname][-1..-1] == '*'
       @notes = Node.where(status: 1, type: 'note')
-                   .includes(:revision, :tag)
+                   .references(:revision, :tag)
                    .where('term_data.name LIKE (?)', params[:tagname][0..-2] + '%')
                    .limit(20)
                    .order('node_revisions.timestamp DESC')
@@ -258,7 +258,7 @@ class TagController < ApplicationController
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
     @notes = Node.where(status: 1, type: 'note')
-                 .includes(:revision, :tag)
+                 .references(:revision, :tag)
                  .where('term_data.name = ?', params[:id])
                  .order('node_revisions.timestamp DESC')
     @users = @notes.collect(&:author).uniq

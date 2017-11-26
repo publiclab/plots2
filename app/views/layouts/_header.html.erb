@@ -147,7 +147,7 @@
             </a>
             <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
               <li style="padding:6px;">
-                <%= form_for @user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
+                <%= form_for :user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
 
                   <div class="form-group">
 

@@ -20,7 +20,7 @@ class TypeaheadService
   end
 
   def tags(input, limit = 5)
-    Tag.includes(:node)
+    Tag.references(:node)
        .where('node.status = 1')
        .limit(limit)
        .where('name LIKE ?', '%' + input + '%')

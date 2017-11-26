@@ -109,7 +109,7 @@ class UsersController < ApplicationController
                        .where(status: 1, uid: @user.uid)
     coauthored_tag = "with:"+@user.name 
     @coauthored = Node.where(status: 1, type: "note")
-                  .includes(:revision, :tag)
+                  .references(:revision, :tag)
                   .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s , coauthored_tag.to_s)
                   .page(params[:page])
                   .order('node_revisions.timestamp DESC')                   
@@ -140,7 +140,7 @@ class UsersController < ApplicationController
   def likes
     @user = DrupalUsers.find_by(name: params[:id])
     @title = "Liked by "+@user.name
-    @notes = @user.liked_notes.includes([:tag, :comments])
+    @notes = @user.liked_notes.references([:tag, :comments])
                               .paginate(page: params[:page], per_page: 20)
     @wikis = @user.liked_pages
     @tagnames = []

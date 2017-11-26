@@ -18,7 +18,7 @@ class NotesController < ApplicationController
                          LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
                  .select('*, max(node_revisions.timestamp)')
                  .where(status: 1, type:%w[page place])
-                 .includes(:revision, :tag)
+                 .references(:revision, :tag)
                  .where('term_data.name = ?', 'chapter')
                  .group('node.nid')
                  .order('max(node_revisions.timestamp) DESC, node.nid')
