@@ -40,9 +40,9 @@ class UserTest < ActiveSupport::TestCase
   test 'user.notes and first time user' do
     assert        !users(:jeff).notes.empty?
     assert        !users(:jeff).first_time_poster
-    assert_false  !users(:bob).notes.empty?
+    assert_not  !users(:bob).notes.empty?
     assert        users(:bob).first_time_poster
-    assert_false  !users(:lurker).notes.empty?
+    assert_not  !users(:lurker).notes.empty?
     assert        users(:lurker).first_time_poster
   end
 
@@ -57,12 +57,12 @@ class UserTest < ActiveSupport::TestCase
   test 'should follow and unfollow user' do
     bob = rusers(:bob)
     jeff = rusers(:jeff)
-    assert_false bob.following?(jeff)
+    assert_not bob.following?(jeff)
     bob.follow(jeff)
     assert bob.following?(jeff)
     assert jeff.followers.include?(bob)
     bob.unfollow(jeff)
-    assert_false bob.following?(jeff)
+    assert_not bob.following?(jeff)
   end
 
   test "returns sha email for users who doesn't have image" do
