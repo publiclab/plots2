@@ -54,7 +54,7 @@ class WikiController < ApplicationController
     return if check_and_redirect_node(@node)
     if !@node.nil? # it's a place page!
       @tags = @node.tags
-      @tags += [Tag.find_by_name(params[:id])] if Tag.find_by_name(params[:id])
+      @tags += [Tag.find_by(name: params[:id])] if Tag.find_by(name: params[:id])
     else # it's a new wiki page!
       @title = I18n.t('wiki_controller.new_wiki_page')
       if current_user
@@ -122,7 +122,7 @@ class WikiController < ApplicationController
                      .order('node.nid DESC')
                      .where('type = "page" AND node.status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', '%' + title + '%', '%' + title + '%')
                      .includes(:revision)
-      tag = Tag.find_by_name(params[:id]) # add page name as a tag, too
+      tag = Tag.find_by(name: params[:id]) # add page name as a tag, too
       @tags << tag if tag
       @related += Tag.find_nodes_by_type(@tags.collect(&:name), 'page', 10)
     end
@@ -277,8 +277,8 @@ class WikiController < ApplicationController
   end
 
   def diff
-    @a = Revision.find_by_vid(params[:a])
-    @b = Revision.find_by_vid(params[:b])
+    @a = Revision.find_by(vid: params[:a])
+    @b = Revision.find_by(vid: params[:b])
     if @a.body == @b.body
       render text: I18n.t('wiki_controller.lead_image_or_title_change').html_safe
     else

@@ -48,7 +48,7 @@ class Tag < ActiveRecord::Base
   end
 
   def belongs_to(current_user, nid)
-    node_tag = node_tag.find_by_nid(nid)
+    node_tag = node_tag.find_by(nid: nid)
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
@@ -173,7 +173,7 @@ class Tag < ActiveRecord::Base
   def self.subscribers(tags)
     tids = tags.collect(&:tid)
     # include special tid for indiscriminant subscribers who want it all!
-    all_tag = Tag.find_by_name('everything')
+    all_tag = Tag.find_by(name: 'everything')
     tids += [all_tag.tid] if all_tag
     usertags = TagSelection.where('tid IN (?) AND following = ?', tids, true)
     d = {}

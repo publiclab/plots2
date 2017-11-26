@@ -10,7 +10,7 @@ module CommentsShared
   end
 
   def author
-    DrupalUsers.find_by_uid uid
+    DrupalUsers.find_by(uid: uid)
   end
 
   def parent_commenter_uids

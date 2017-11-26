@@ -5,7 +5,7 @@ class AnswerSelection < ActiveRecord::Base
   belongs_to :drupal_users, foreign_key: :user_id
 
   def user
-    User.find_by_username(DrupalUsers.find_by_uid(user_id).name)
+    User.find_by(username: DrupalUsers.find_by(uid: user_id).name)
   end
 
   def self.set_likes(uid, aid, value)
