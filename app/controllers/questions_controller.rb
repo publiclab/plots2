@@ -77,7 +77,7 @@ class QuestionsController < ApplicationController
     @title = 'Unanswered questions'
     @questions = Node.questions
                      .where(status: 1)
-                     .includes(:answers)
+                     .references(:answers)
                      .where(answers: { id: nil })
                      .order('answers.created_at DESC')
                      .group('node.nid')

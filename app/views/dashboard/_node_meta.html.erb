@@ -9,7 +9,7 @@
     <% end %>
   <% end %>
 <% end %>
-<%= distance_of_time_in_words(node.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
+<%= distance_of_time_in_words(node.created_at, Time.current, include_seconds: false, :scope => :'datetime.time_ago_in_words') %>
 <% node = node.parent if node.is_a?(Revision) %>
 <span class="">
   <% if params[:controller] == 'questions' %>

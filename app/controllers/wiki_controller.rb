@@ -121,7 +121,7 @@ class WikiController < ApplicationController
       @related = Node.limit(10)
                      .order('node.nid DESC')
                      .where('type = "page" AND node.status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', '%' + title + '%', '%' + title + '%')
-                     .includes(:revision)
+                     .references(:revision)
       tag = Tag.find_by(name: params[:id]) # add page name as a tag, too
       @tags << tag if tag
       @related += Tag.find_nodes_by_type(@tags.collect(&:name), 'page', 10)
@@ -295,7 +295,7 @@ class WikiController < ApplicationController
                      'node_revisions.timestamp DESC'
                    end
 
-    @wikis = Node.includes(:revision)
+    @wikis = Node.references(:revision)
                  .group('node_revisions.nid')
                  .order(order_string)
                  .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
@@ -353,7 +353,7 @@ class WikiController < ApplicationController
   def methods
     @nodes = Node.where(status: 1, type: ['page'])
                  .where('term_data.name = ?', 'method')
-                 .includes(:revision, :tag)
+                 .references(:revision, :tag)
                  .order('node_revisions.timestamp DESC')
     # deprecating the following in favor of javascript implementation in /app/assets/javascripts/methods.js
     if params[:topic]
@@ -365,7 +365,7 @@ class WikiController < ApplicationController
                           '%' + params[:topic] + '%',
                           '%' + params[:topic] + '%',
                           params[:topic])
-                   .includes(:revision, :tag)
+                   .references(:revision, :tag)
                    .order('node_revisions.timestamp DESC')
     end
     if params[:topic]
@@ -377,7 +377,7 @@ class WikiController < ApplicationController
                           '%' + params[:topic] + '%',
                           '%' + params[:topic] + '%',
                           params[:topic])
-                   .includes(:revision, :tag)
+                   .references(:revision, :tag)
                    .order('node_revisions.timestamp DESC')
     end
 
