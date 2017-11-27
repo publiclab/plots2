@@ -10,7 +10,7 @@ class AnswerSelectionTest < ActiveSupport::TestCase
     answer_selection = AnswerSelection.new
     user = drupal_users(:bob)
     answer = answers(:one)
-    answer_selection.drupal_users = user
+    answer_selection.drupal_user = user
     answer_selection.answer = answer
     answer_selection.save
     assert_equal user.answer_selections.last, answer_selection
