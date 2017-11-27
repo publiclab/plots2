@@ -118,7 +118,7 @@ class AnswersControllerTest < ActionController::TestCase
     xhr :get, :accept, id: answer.id
     answer.reload
     assert !answer.accepted
-    assert_template text: "Answer couldn't be accepted"
+    assert_equal "Answer couldn't be accepted", response.body
   end
   
   test 'should allow accepting answer if logged in user is moderator' do

@@ -14,7 +14,7 @@ class SubscriptionController < ApplicationController
 
   # return a count of subscriptions for a given tag
   def tag_count
-    render :json => TagSelection.count(params[:tid], :conditions => {:following => true})
+    render json: TagSelection.where(tid: params[:tid], following: true)
   end
 
   # for the current user, return whether is presently liked or not

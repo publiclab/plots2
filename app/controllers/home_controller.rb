@@ -114,7 +114,7 @@ class HomeController < ApplicationController
     revisions = revisions.to_a # ensure it can be serialized for caching
     wikis += revisions
     wikis = wikis.sort_by(&:created_at).reverse
-    comments = Comment.joins(:node, :drupal_users)
+    comments = Comment.joins(:node, :drupal_user)
                       .order('timestamp DESC')
                       .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
                       .page(params[:page])

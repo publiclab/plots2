@@ -71,7 +71,7 @@ class StatsController < ApplicationController
 
     users = []
     nids = []
-    Node.find(:all, conditions: { type: 'note', status: 1 }).each do |note|
+    Node.where(type: 'note', status: 1).each do |note|
       unless note.uid == 674 || note.uid == 671
         users << note.uid
         nids << note.nid

@@ -62,7 +62,7 @@ class CommentControllerTest < ActionController::TestCase
           id: nodes(:wiki_page).nid
     end
     assert_equal flash[:error], 'The comment could not be saved.'
-    assert_template text: 'failure'
+    assert_equal 'failure', @response.body
   end
 
   test 'should show error if node comment not saved' do
@@ -72,7 +72,7 @@ class CommentControllerTest < ActionController::TestCase
           id: nodes(:one).nid
     end
     assert_equal flash[:error], 'The comment could not be saved.'
-    assert_template text: 'failure'
+    assert_equal 'failure', @response.body
   end
 
   test 'should create answer comments' do
@@ -94,7 +94,7 @@ class CommentControllerTest < ActionController::TestCase
           aid: answers(:one).id
     end
     assert_equal flash[:error], 'The comment could not be saved.'
-    assert_template text: 'failure'
+    assert_equal 'failure', @response.body
   end
 
   test 'should update note comment if user is comment author' do
@@ -170,7 +170,7 @@ class CommentControllerTest < ActionController::TestCase
           id: comment.id
     end
     assert_response :success
-    assert_template text: 'success'
+    assert_equal 'success', @response.body
   end
 
   test 'should delete note comment if user is note author' do
@@ -181,7 +181,7 @@ class CommentControllerTest < ActionController::TestCase
           id: comment.id
     end
     assert_response :success
-    assert_template text: 'success'
+    assert_equal 'success', @response.body
   end
 
   test 'should delete note comment if user is admin' do
@@ -192,7 +192,7 @@ class CommentControllerTest < ActionController::TestCase
           id: comment.id
     end
     assert_response :success
-    assert_template text: 'success'
+    assert_equal 'success', @response.body
   end
 
   test 'should delete note comment if user is comment moderator' do
@@ -203,7 +203,7 @@ class CommentControllerTest < ActionController::TestCase
           id: comment.id
     end
     assert_response :success
-    assert_template text: 'success'
+    assert_equal 'success', @response.body
   end
 
   test 'should not delete note comment if user is neither of the above' do
