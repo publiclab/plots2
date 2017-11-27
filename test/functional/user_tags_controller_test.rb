@@ -50,14 +50,14 @@ class UserTagsControllerTest < ActionController::TestCase
     post :create, id: users(:bob).id, name: 'environment'
     # duplicate tag
     post :create, id: users(:bob).id, name: 'environment'
-    assert_equal 'Error: tag already exists.', assigns['output']['errors'][0]
+    assert_equal 'Error: tag already exists.', assigns[:output][:errors][0]
     assert_redirected_to info_path
   end
 
   test 'should not allow empty tag name' do
     UserSession.create(users(:bob))
     post :create, id: users(:bob).id, value: ''
-    assert_equal 'Error: value cannot be empty', assigns['output']['errors'][0]
+    assert_equal 'Error: value cannot be empty', assigns[:output][:errors][0]
     assert_redirected_to info_path
   end
 
@@ -82,7 +82,7 @@ class UserTagsControllerTest < ActionController::TestCase
   test 'Normal user should not create tag for other user' do
     UserSession.create(users(:bob))
     post :create, id: users(:jeff).id, name: 'role:organizer'
-    assert_equal 'Only admin (or) target user can manage tags', assigns['output']['errors'][0]
+    assert_equal 'Only admin (or) target user can manage tags', assigns[:output][:errors][0]
   end
 
   test 'Normal user should not delete tag for other user' do
