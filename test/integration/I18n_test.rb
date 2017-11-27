@@ -269,6 +269,8 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/reset'
+
+      assert_response :success
       assert_select 'h2', I18n.t('users.reset.reset_password')
     end
   end
