@@ -61,7 +61,7 @@ class Node < ActiveRecord::Base
   has_many :node_selections, foreign_key: :nid
   has_many :answers, foreign_key: :nid
 
-  belongs_to :drupal_users, foreign_key: 'uid'
+  belongs_to :drupal_user, foreign_key: 'uid'
 
   validates :title, presence: :true
   validates_with UniqueUrlValidator, on: :create
