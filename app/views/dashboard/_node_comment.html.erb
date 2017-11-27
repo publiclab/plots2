@@ -16,7 +16,7 @@
       <a href="<%= node.parent.path(:question) %>#answer-<%= node.answer.id %>-comment" class="btn btn-default pull-right btn-xs"><%= node.answer.comments.count %>
       <% end %> 
       <%= t('dashboard._node_comment.comments') %> &raquo;</a>
-      <%= distance_of_time_in_words(node.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
+      <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
     </p>
 
   </div>

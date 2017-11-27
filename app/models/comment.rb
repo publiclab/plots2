@@ -7,7 +7,7 @@ class Comment < ActiveRecord::Base
 
   belongs_to :node, foreign_key: 'nid', touch: true,
                     dependent: :destroy, counter_cache: true
-  belongs_to :drupal_users, foreign_key: 'uid'
+  belongs_to :drupal_user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
 
   validates :comment, presence: true

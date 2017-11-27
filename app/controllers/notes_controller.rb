@@ -149,7 +149,7 @@ class NotesController < ApplicationController
   end
 
   def edit
-    @node = Node.find_by(nid: params[:id]).where(type: 'note')
+    @node = Node.find_by(nid: params[:id], type: 'note')
     if current_user.uid == @node.uid || current_user.role == 'admin' || @node.has_tag("with:#{current_user.username}")
       if params[:legacy]
         render template: 'editor/post'
