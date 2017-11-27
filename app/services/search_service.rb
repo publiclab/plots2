@@ -40,6 +40,7 @@ class SearchService
 
   def find_tags(input, limit = 5)
     Tag.includes(:node)
+       .references(:node)
        .where('node.status = 1')
        .limit(limit)
        .where('name LIKE ?', '%' + input + '%')
