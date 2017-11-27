@@ -51,6 +51,7 @@ class UserSessionsController < ApplicationController
             render action: 'new'
           end
         end
+puts @user_session.errors.inspect
       else # not a native user
         if !DrupalUser.find_by(name: username).nil?
           # this is a user from the old site who hasn't registered on the new site

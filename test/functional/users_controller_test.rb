@@ -101,16 +101,19 @@ class UsersControllerTest < ActionController::TestCase
     user.save({})
 
     user_attributes = user.attributes
-    user_attributes[:password] = 'newpass'
+    user_attributes[:password] = 'newpassword'
+    user_attributes[:password_confirmation] = 'newpassword'
 
-    get :reset, key: key, user: user_attributes
+    get :reset, key: key,
+	        user: user_attributes
+
+    assert_response :redirect
+    assert_redirected_to '/dashboard'
 
     saved_user = User.find(user.id)
-
-    assert_equal 'Your password was successfully changed.', flash[:notice]
-    assert_response :success
     assert_nil saved_user.reset_key
     assert_not_equal crypted_password, saved_user.crypted_password
+    assert_equal 'Your password was successfully changed.', flash[:notice]
   end
 
   test 'confirm user reset key not visible on profile to non-admins' do

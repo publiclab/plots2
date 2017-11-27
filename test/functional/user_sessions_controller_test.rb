@@ -4,7 +4,7 @@ class UserSessionsControllerTest < ActionController::TestCase
   test 'should login an user' do
     post :create, user_session: {
       username: users(:jeff).username,
-      password: 'secret'
+      password: 'secretive'
     }
     assert_redirected_to '/dashboard'
   end
@@ -13,7 +13,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     post :create, user_session:
     {
       username: users(:jeff).email,
-      password: 'secret'
+      password: 'secretive'
     }
     assert_redirected_to '/dashboard'
   end
@@ -22,7 +22,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     session[:return_to] = '/post?tags=question:question&template=question'
     post :create, user_session: {
       username: users(:jeff).username,
-      password: 'secret'
+      password: 'secretive'
     }
     assert_redirected_to '/post?tags=question:question&template=question'
   end
@@ -38,7 +38,7 @@ class UserSessionsControllerTest < ActionController::TestCase
 
       post :create, user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
 
       assert_response :success

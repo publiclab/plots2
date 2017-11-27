@@ -4,7 +4,7 @@ class NodeSeriesTagTest < ActionDispatch::IntegrationTest
   test 'add series tag' do
     post '/user_sessions', user_session: {
       username: users(:bob).username,
-      password: 'secret'
+      password: 'secretiive'
     }
 
     title = 'My second post about balloon mapping'

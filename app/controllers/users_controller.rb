@@ -203,7 +203,7 @@ class UsersController < ApplicationController
               flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
               redirect_to "/"
             end
-          else
+	  else
             flash[:error] = I18n.t('users_controller.password_change_failed')
           end
         else

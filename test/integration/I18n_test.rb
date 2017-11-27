@@ -16,7 +16,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       assert_select 'p[class=facebook-summary]', I18n.t('layout._header.summary')
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
       get_via_redirect '/dashboard', locale: lang
@@ -45,7 +45,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
       get '/subscriptions'
@@ -58,7 +58,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
       assert_select 'h3', I18n.t('dashboard._activity.activity')
@@ -70,7 +70,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
       assert_select 'h1', I18n.t('dashboard._header.dashboard')
@@ -83,7 +83,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
       get '/dashboard'
@@ -97,7 +97,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
       post '/create',
@@ -116,7 +116,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
       post '/create',
@@ -134,7 +134,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
       post '/create',
@@ -153,7 +153,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
       get '/dashboard'
@@ -167,7 +167,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
       get '/dashboard'
@@ -193,7 +193,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
 
@@ -210,7 +210,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
 
@@ -248,7 +248,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
 
@@ -264,7 +264,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
 
@@ -290,7 +290,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
 
@@ -307,7 +307,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
 
@@ -344,7 +344,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
 
@@ -371,7 +371,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
 
@@ -447,7 +447,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
 
@@ -483,7 +483,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
-        password: 'secret'
+        password: 'secretive'
       }
       follow_redirect!
 

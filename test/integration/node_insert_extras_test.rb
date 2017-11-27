@@ -4,7 +4,7 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
   test 'note with inline tagged notes table via insert_extras() helper' do
     post '/user_sessions', user_session: {
       username: users(:jeff).username,
-      password: 'secret'
+      password: 'secretive'
     }
 
     title = 'One more post about balloon mapping'

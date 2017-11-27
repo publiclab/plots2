@@ -4,7 +4,7 @@ bob:
   email: bob@publiclab.org
   id: 1
   password_salt: <%= salt = Authlogic::Random.hex_token %>
-  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   last_request_at: <%= Time.now %>
   bio: ''
@@ -19,7 +19,7 @@ jeff:
   id: 2
   role: admin
   password_salt: <%= salt = Authlogic::Random.hex_token %>
-  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   last_request_at: <%= Time.now %>
   bio: ''
@@ -33,7 +33,7 @@ spammer:
   id: 3
   last_request_at: <%= Time.now %>
   password_salt: <%= salt = Authlogic::Random.hex_token %>
-  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   bio: ''
   created_at: <%= Time.now %>
@@ -46,7 +46,7 @@ unbanned_spammer:
   id: 4
   last_request_at: <%= Time.now %>
   password_salt: <%= salt = Authlogic::Random.hex_token %>
-  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   bio: ''
   created_at: <%= Time.now %>
@@ -59,7 +59,7 @@ admin:
   id: 5
   last_request_at: <%= Time.now %>
   password_salt: <%= salt = Authlogic::Random.hex_token %>
-  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   role: admin
   bio: ''
@@ -73,7 +73,7 @@ moderator:
   id: 6
   last_request_at: <%= Time.now %>
   password_salt: <%= salt = Authlogic::Random.hex_token %>
-  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   role: moderator
   bio: ''
@@ -87,7 +87,7 @@ newcomer:
   id: 7
   last_request_at: <%= Time.now %>
   password_salt: <%= salt = Authlogic::Random.hex_token %>
-  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   role: basic
   bio: ''
@@ -101,7 +101,7 @@ lurker:
   id: 8
   last_request_at: <%= Time.now %>
   password_salt: <%= salt = Authlogic::Random.hex_token %>
-  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   bio: ''
   created_at: <%= Time.now %>
@@ -114,7 +114,7 @@ unmoderated_user:
   id: 9
   last_request_at: <%= Time.now %>
   password_salt: <%= salt = Authlogic::Random.hex_token %>
-  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   bio: ''
   created_at: <%= Time.now %>
@@ -127,7 +127,7 @@ test_user:
   id: 10
   last_request_at: <%= Time.now %>
   password_salt: <%= salt = Authlogic::Random.hex_token %>
-  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secret" + salt) %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
   persistence_token: <%= Authlogic::Random.hex_token %>
   bio: ''
   created_at: <%= Time.now %>
