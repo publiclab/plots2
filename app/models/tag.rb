@@ -155,7 +155,7 @@ class Tag < ActiveRecord::Base
         nids,
         (Time.now.to_i - week.weeks.to_i).to_s,
         (Time.now.to_i - (week - 1).weeks.to_i).to_s
-      ).count
+      ).count(:all)
     end
     weeks
   end

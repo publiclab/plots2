@@ -310,7 +310,7 @@ class AdminControllerTest < ActionController::TestCase
 
   test 'admin user should be able to spam a revision' do
     UserSession.create(users(:admin))
-    revision = node_revisions(:unmoderated_spam_revision)
+    revision = revisions(:unmoderated_spam_revision)
     assert_equal nodes(:spam_targeted_page).latest.vid, revision.vid
 
     get :mark_spam_revision, vid: revision.vid
@@ -325,7 +325,7 @@ class AdminControllerTest < ActionController::TestCase
 
   test 'admin user should be able to republish a revision' do
     UserSession.create(users(:admin))
-    revision = node_revisions(:unmoderated_spam_revision)
+    revision = revisions(:unmoderated_spam_revision)
     assert_equal nodes(:spam_targeted_page).latest.vid, revision.vid
     revision.spam
     assert_not_equal nodes(:spam_targeted_page).latest.vid, revision.vid
