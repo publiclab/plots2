@@ -43,7 +43,7 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'should get raw wiki markup' do
-    get :raw, id: node_revisions(:one).id
+    get :raw, id: revisions(:one).id
 
     assert_response :success
   end
@@ -303,7 +303,7 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test "should not display individual revision if it's been moderated" do
-    revision = node_revisions(:unmoderated_spam_revision)
+    revision = revisions(:unmoderated_spam_revision)
     revision.spam
 
     get :revision, id: revision.parent.slug, vid: revision.vid
@@ -313,7 +313,7 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test "should display individual revision to moderators if it's been moderated" do
-    revision = node_revisions(:unmoderated_spam_revision)
+    revision = revisions(:unmoderated_spam_revision)
     revision.spam
 
     get :revision, id: revision.parent.slug, vid: revision.vid
@@ -323,7 +323,7 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'should display individual revision' do
-    revision = node_revisions(:unmoderated_spam_revision)
+    revision = revisions(:unmoderated_spam_revision)
 
     get :revision, id: revision.parent.slug, vid: revision.vid
 
@@ -337,7 +337,7 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'should display individual revision that is not the latest' do
-    revision = node_revisions(:about_rev_2)
+    revision = revisions(:about_rev_2)
 
     get :revision, id: revision.parent.slug, vid: revision.vid
 
@@ -349,7 +349,7 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'should display individual raw revision' do
-    revision = node_revisions(:about)
+    revision = revisions(:about)
 
     get :raw, id: revision.vid
 

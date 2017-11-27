@@ -122,7 +122,7 @@ class HomeController < ApplicationController
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     comments = comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     comments = comments.to_a # ensure it can be serialized for caching
-    answer_comments = Comment.joins(:answer, :drupal_users)
+    answer_comments = Comment.joins(:answer, :drupal_user)
                              .order('timestamp DESC')
                              .where('timestamp - answers.created_at > ?', 86_400)
                              .limit(20)

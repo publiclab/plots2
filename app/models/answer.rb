@@ -4,7 +4,7 @@ class Answer < ActiveRecord::Base
   attr_accessible :uid, :nid, :content, :cached_likes, :created_at, :updated_at
 
   belongs_to :node, foreign_key: 'nid', dependent: :destroy
-  belongs_to :drupal_users, foreign_key: 'uid'
+  belongs_to :drupal_user, foreign_key: 'uid'
   has_many :answer_selections, foreign_key: 'aid'
   has_many :comments, foreign_key: 'aid'
 
