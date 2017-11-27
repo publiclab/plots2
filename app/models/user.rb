@@ -245,7 +245,9 @@ class User < ActiveRecord::Base
   end
 
   def barnstars
-    NodeTag.references(:node, :tag).where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
+    NodeTag.includes(:node, :tag)
+           .references(:term_data)
+           .where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
   end
 
   def photo_path(size = :medium)

@@ -58,23 +58,27 @@ class Tag < ActiveRecord::Base
         .where('term_data.name = ?', tagname)
         .order('node.views DESC')
         .limit(limit)
-        .references(:community_tags, :tag)
+        .includes(:node_tag, :tag)
+	.references(:term_data)
   end
 
   # finds recent nodes - should drop "limit" and allow use of chainable .limit()
   def self.find_nodes_by_type(tagnames, type = 'note', limit = 10)
     nodes = Node.where(status: 1, type: type)
-                .references(:tag)
+                .includes(:tag)
+                .references(:term_data)
                 .where('term_data.name IN (?)', tagnames)
                 #.select(%i[node.nid node.status node.type community_tags.nid community_tags.tid term_data.name term_data.tid])
                 # above select could be added later for further optimization
     # .where('term_data.name IN (?) OR term_data.parent in (?)', tagnames, tagnames) # greedily fetch children
     tags = Tag.where('term_data.name IN (?)', tagnames)
     parents = Node.where(status: 1, type: type)
-                  .references(:tag)
+                  .includes(:tag)
+                  .references(:term_data)
                   .where('term_data.name IN (?)', tags.collect(&:parent))
     Node.where('node.nid IN (?)', (nodes + parents).collect(&:nid))
-        .references(:revision, :tag)
+        .includes(:revision, :tag)
+        .references(:node_revisions)
         .where(status: 1)
         .order('node_revisions.timestamp DESC')
         .limit(limit)
@@ -96,7 +100,8 @@ class Tag < ActiveRecord::Base
       tag = Tag.where(name: tagname).last
       next unless tag
       parents = Node.where(status: 1, type: type)
-                    .references(:revision, :tag)
+                    .includes(:revision, :tag)
+                    .references(:term_data)
                     .where('term_data.name LIKE ?', tag.parent)
       nids += tag_nids + parents.collect(&:nid)
     end
@@ -110,7 +115,8 @@ class Tag < ActiveRecord::Base
         .where('term_data.name = ? AND node.views > (?)', tagname, views)
         .order('node.nid DESC')
         .limit(limit)
-        .references(:community_tags, :tag)
+        .includes(:node_tag, :tag)
+        .references(:community_tags)
   end
 
   def self.exists?(tagname, nid)
@@ -192,7 +198,8 @@ class Tag < ActiveRecord::Base
 
   def self.find_research_notes(tagnames, limit = 10)
     Node.research_notes.where(status: 1)
-        .references(:revision, :tag)
+        .includes(:revision, :tag)
+        .references(:node_revisions)
         .where('term_data.name IN (?)', tagnames)
         .order('node_revisions.timestamp DESC')
         .limit(limit)
