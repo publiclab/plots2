@@ -18,7 +18,8 @@ class Answer < ActiveRecord::Base
   # users who like this answer
   def likers
     answer_selections
-      .joins(:users)
+      .joins(:drupal_user)
+      .references(:users)
       .where(liking: true)
       .where('users.status = ?', 1)
       .collect(&:user)
