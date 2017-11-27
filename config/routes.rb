@@ -108,7 +108,7 @@ Plots2::Application.routes.draw do
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
-  get 'methods' => 'notes#methods'
+  get 'methods' => 'wiki#methods'
   get 'techniques' => 'notes#techniques'
 
   get 'report/:id' => 'legacy#report'
@@ -142,9 +142,10 @@ Plots2::Application.routes.draw do
   get 'search/typeahead/:id' => 'searches#typeahead'
   get 'search/questions/:id' => 'searches#questions'
   get 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
-  get 'search/:id' => 'searches#normal_search'
+  get 'search/:id' => 'searches#results'
   get 'search/advanced' => 'searches#new'
   get 'search' => 'searches#new'
+  post 'search' => 'searches#new'
 
   get 'widget/:id' => 'tag#widget'
   get 'blog' => 'tag#blog', :id => "blog"
