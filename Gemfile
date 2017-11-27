@@ -41,7 +41,7 @@ end
 # run with `bundle install --without test` to exclude these
 group :test, :development do
   gem 'test-unit'
-#  gem 'minitest', '>= 5.0'
+  gem 'rails-perftest'
   gem 'minitest-reporters', '~> 1.1.19'
   gem 'rake',  '~> 10.5.0'
   # gems to test RESTful API

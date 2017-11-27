@@ -123,12 +123,12 @@ class User < ActiveRecord::Base
   end
 
   def tags(limit = 10)
-    Tag.find :all, conditions: ['name in (?)', tagnames], limit: limit
+    Tag.where('name in (?)', tagnames).limit(limit)
   end
 
   def tagnames(limit = 20, defaults = true)
     tagnames = []
-    Node.find(:all, order: 'nid DESC', conditions: { type: 'note', status: 1, uid: self.id }, limit: limit).each do |node|
+    Node.order('nid DESC').where(type: 'note', status: 1, uid: self.id).limit(limit).each do |node|
       tagnames += node.tags.collect(&:name)
     end
     tagnames += ['balloon-mapping', 'spectrometer', 'near-infrared-camera', 'thermal-photography', 'newsletter'] if tagnames.empty? && defaults

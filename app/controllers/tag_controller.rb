@@ -280,11 +280,11 @@ class TagController < ApplicationController
       tag = Tag.find_by(name: tagname)
       @tags << tag if tag
       @tagdata[tagname] = {}
-      t = Tag.find :all, conditions: { name: tagname }
-      nct = NodeTag.find :all, conditions: ['tid in (?)', t.collect(&:tid)]
-      @tagdata[tagname][:users] = Node.find(:all, conditions: ['nid IN (?)', nct.collect(&:nid)]).collect(&:author).uniq.length
-      @tagdata[tagname][:wikis] = Node.count :all, conditions: ["nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)]
-      @tagdata[:notes] = Node.count :all, conditions: ["nid IN (?) AND type = 'note'", nct.collect(&:nid)]
+      t = Tag.where(name: tagname)
+      nct = NodeTag.where('tid in (?)', t.collect(&:tid))
+      @tagdata[tagname][:users] = Node.where('nid IN (?)', nct.collect(&:nid)).collect(&:author).uniq.length
+      @tagdata[tagname][:wikis] = Node.where("nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')").count, nct.collect(&:nid)]
+      @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).count
     end
     render template: 'tag/contributors-index'
   end
