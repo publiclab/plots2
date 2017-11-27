@@ -35,7 +35,7 @@ class Node < ActiveRecord::Base
     end
 
     string :user_name do
-      drupal_users.name
+      drupal_user.name
     end
   end
 

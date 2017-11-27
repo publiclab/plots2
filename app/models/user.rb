@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   acts_as_authentic do |c|
     c.openid_required_fields = %i[nickname email]
     c.validates_format_of_email_field_options = { with: /@/ }
+    c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
