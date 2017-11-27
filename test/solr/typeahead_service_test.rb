@@ -24,7 +24,7 @@ end
 
 # Need to be tested:
 
-#  def users(input, limit = 5)
+#  def drupal_users(input, limit = 5)
 #  def tags(input, limit = 5)
 #  def comments(input, limit = 5)
 #  def wikis(input, limit = 5)

@@ -15,7 +15,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get_via_redirect '/change_locale/' + lang.to_s
       assert_select 'p[class=facebook-summary]', I18n.t('layout._header.summary')
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -44,7 +44,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -57,7 +57,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -69,7 +69,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -82,7 +82,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -96,7 +96,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -115,7 +115,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -133,7 +133,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -152,7 +152,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -166,7 +166,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -192,7 +192,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -209,12 +209,12 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
 
-      username = rusers(:jeff).username.to_s
+      username = users(:jeff).username.to_s
       get '/profile/' + username + '/likes'
       assert_template 'users/likes'
       assert_select 'h3', I18n.t('users.likes.liked_by') + ' ' + username
@@ -247,12 +247,12 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
 
-      get '/profile/' + rusers(:jeff).username
+      get '/profile/' + users(:jeff).username
       assert_select 'h4', I18n.t('users.profile.wiki_contributed_to')
     end
   end
@@ -263,7 +263,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -289,7 +289,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
@@ -306,12 +306,12 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
 
-      wiki = node(:about)
+      wiki = nodes(:about)
       get '/wiki/edit/' + wiki.title.parameterize
       assert_select 'a', I18n.t('wiki.edit.getting_started')
     end
@@ -322,7 +322,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      get '/wiki/revisions/' + node(:organizers).title.parameterize
+      get '/wiki/revisions/' + nodes(:organizers).title.parameterize
       assert_select 'a', I18n.t('wiki.revisions.view')
     end
   end
@@ -332,7 +332,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      get '/wiki/' + node(:organizers).title.parameterize
+      get '/wiki/' + nodes(:organizers).title.parameterize
       assert_select 'span', I18n.t('wiki.show.view')
     end
   end
@@ -343,13 +343,13 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
 
-      get '/notes/author/' + rusers(:jeff).username
-      assert_select 'h4', ActionView::Base.full_sanitizer.sanitize(I18n.t('sidebar._author.recent_tags_for_author', url1: '/people/' + rusers(:jeff).username, author: rusers(:jeff).username))
+      get '/notes/author/' + users(:jeff).username
+      assert_select 'h4', ActionView::Base.full_sanitizer.sanitize(I18n.t('sidebar._author.recent_tags_for_author', url1: '/people/' + users(:jeff).username, author: users(:jeff).username))
       assert_select 'a', I18n.t('sidebar._post_button.write_research_note')
     end
   end
@@ -359,7 +359,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      get '/wiki/' + node(:organizers).title.parameterize
+      get '/wiki/' + nodes(:organizers).title.parameterize
       assert_select 'a', I18n.t('sidebar._related.write_research_note')
     end
   end
@@ -370,12 +370,12 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
 
-      get node(:one).path
+      get nodes(:one).path
       assert_select 'a', I18n.t('comments._form.upload_image')
     end
   end
@@ -435,8 +435,8 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      get '/talk/' + node(:about).slug
-      assert_select 'p.help-text', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', page: node(:about).latest.title, url1: node(:about).path, url2: '/wiki/talk-pages'))
+      get '/talk/' + nodes(:about).slug
+      assert_select 'p.help-text', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', page: nodes(:about).latest.title, url1: nodes(:about).path, url2: '/wiki/talk-pages'))
     end
   end
 
@@ -446,12 +446,12 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
 
-      get node(:one).path
+      get nodes(:one).path
       assert_select 'span', I18n.t('notes._comment.commented')
     end
   end
@@ -461,7 +461,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      get node(:one).path
+      get nodes(:one).path
       assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('notes._comments.must_be_logged_in', url1: '/login'))
     end
   end
@@ -482,12 +482,12 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       post '/user_sessions', user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       follow_redirect!
 
-      get node(:first_timer_note).path
+      get nodes(:first_timer_note).path
       assert_template 'notes/show'
       assert_select 'div[class=alert alert-warning]', ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.show.note_no_tags'))
     end

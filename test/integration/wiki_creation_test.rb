@@ -3,7 +3,7 @@ require 'test_helper'
 class WikiCreationTest < ActionDispatch::IntegrationTest
   test 'create new wiki page' do
     post '/user_sessions', user_session: {
-      username: rusers(:bob).username,
+      username: users(:bob).username,
       password: 'secret'
     }
 
@@ -21,7 +21,7 @@ class WikiCreationTest < ActionDispatch::IntegrationTest
 
   test 'create new wiki page without body' do
     post '/user_sessions', user_session: {
-      username: rusers(:bob).username,
+      username: users(:bob).username,
       password: 'secret'
     }
 

@@ -2,27 +2,27 @@ require 'test_helper'
 
 class RevisionsTest < ActiveSupport::TestCase
   test 'create a node_revision' do
-    node = Node.new(uid: rusers(:bob).id,
+    node = Node.new(uid: users(:bob).id,
                     type: 'page')
     node.title = 'My new node for revision testing'
     assert node.save!
     # in testing, uid and id should be matched, although this is not yet true in production db
     node_revision = Revision.new(title: 'My new node',
                                  body: 'My new node',
-                                 uid: rusers(:bob).id,
-                                 nid: node(:one).nid)
+                                 uid: users(:bob).id,
+                                 nid: nodes(:one).nid)
     assert node_revision.save!
     assert_not_equal 0, node_revision.timestamp
     assert_not_nil node_revision.timestamp
   end
 
   test "create a feature's node_revision" do
-    node = Node.new(uid: rusers(:admin).id,
+    node = Node.new(uid: users(:admin).id,
                     type: 'feature',
                     title: 'footer-feature')
     assert node.save!
     revision = node.new_revision(nid:   node.id,
-                                 uid:   rusers(:admin).uid,
+                                 uid:   users(:admin).uid,
                                  title: 'footer-feature',
                                  body: 'Testing')
     assert revision.save!
@@ -44,7 +44,7 @@ class RevisionsTest < ActiveSupport::TestCase
     # does previous respect status = 1? no.
     new_revision = Revision.new(title: revision.title,
                                 body:  'New body',
-                                uid:   rusers(:bob).id,
+                                uid:   users(:bob).id,
                                 nid:   revision.nid)
 
     assert_difference 'revision.parent.revisions.length', 1 do
@@ -57,7 +57,7 @@ class RevisionsTest < ActiveSupport::TestCase
 
     new_revision_2 = Revision.new(title: revision.title,
                                   body:  'New body 2',
-                                  uid:   rusers(:bob).id,
+                                  uid:   users(:bob).id,
                                   nid:   revision.nid)
 
     assert_difference 'revision.parent.revisions.length', 1 do
@@ -174,25 +174,25 @@ class RevisionsTest < ActiveSupport::TestCase
   end
 
   test 'should remove header from body for preview' do
-    revision = node(:one).latest
+    revision = nodes(:one).latest
     revision.body = "##Introduction\n\nThis is my post"
     assert_nil revision.body_preview.match('Introduction')
   end
 
   test 'should return body if no header for body_preview' do
-    revision = node(:one).latest
+    revision = nodes(:one).latest
     revision.body = 'Some stuff about my post'
     assert_true !!revision.body_preview.match('Some stuff about my post')
   end
 
   test 'should remove header in between two normal paragraphs' do
-    revision = node(:one).latest
+    revision = nodes(:one).latest
     revision.body = "Some stuff about my post\n##A title\nsome more stuff about my post"
     assert_nil revision.body_preview.match('A title')
   end
 
   test 'should change ##header into ## header' do
-    revision = node(:one).latest
+    revision = nodes(:one).latest
     revision.body = "Some stuff about my post\n##A title\nsome more stuff about my post"
     assert_equal "Some stuff about my post\n## A title\nsome more stuff about my post", revision.body_rich
   end

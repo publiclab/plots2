@@ -3,7 +3,7 @@ require 'test_helper'
 class UserSessionsControllerTest < ActionController::TestCase
   test 'should login an user' do
     post :create, user_session: {
-      username: rusers(:jeff).username,
+      username: users(:jeff).username,
       password: 'secret'
     }
     assert_redirected_to '/dashboard'
@@ -12,7 +12,7 @@ class UserSessionsControllerTest < ActionController::TestCase
   test 'login user with an email' do
     post :create, user_session:
     {
-      username: rusers(:jeff).email,
+      username: users(:jeff).email,
       password: 'secret'
     }
     assert_redirected_to '/dashboard'
@@ -21,7 +21,7 @@ class UserSessionsControllerTest < ActionController::TestCase
   test 'should login and redirect to corresct url' do
     session[:return_to] = '/post?tags=question:question&template=question'
     post :create, user_session: {
-      username: rusers(:jeff).username,
+      username: users(:jeff).username,
       password: 'secret'
     }
     assert_redirected_to '/post?tags=question:question&template=question'
@@ -37,7 +37,7 @@ class UserSessionsControllerTest < ActionController::TestCase
       @controller = old_controller
 
       post :create, user_session: {
-        username: rusers(:jeff).username,
+        username: users(:jeff).username,
         password: 'secret'
       }
       assert_equal I18n.t('user_sessions_controller.logged_in'), flash[:notice]
