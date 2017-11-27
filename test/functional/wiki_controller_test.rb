@@ -255,14 +255,23 @@ class WikiControllerTest < ActionController::TestCase
   #    UserSession.create(users(:admin))
   #  end
 
-  # hmm, was this modified?
   test 'should display wiki pages with slug in root' do
+    UserSession.find.destroy
+    UserSession.create(users(:admin))
+
+    get :root, id: 'about'
+
+    assert_response :success
+    UserSession.find.destroy
+  end
+
+  test 'should return error for wiki pages that do not follow /slug format' do
     UserSession.find.destroy
     UserSession.create(users(:admin))
 
     get :root, id: 'invalid'
 
-    assert_template file: 'public/404'
+    assert_redirected_to '/404'
     UserSession.find.destroy
   end
 

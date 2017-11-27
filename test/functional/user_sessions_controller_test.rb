@@ -40,6 +40,8 @@ class UserSessionsControllerTest < ActionController::TestCase
         username: users(:jeff).username,
         password: 'secret'
       }
+
+      assert_response :success
       assert_equal I18n.t('user_sessions_controller.logged_in'), flash[:notice]
     end
   end
