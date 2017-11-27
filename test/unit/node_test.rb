@@ -152,7 +152,7 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'should have subscribers' do
-    node = tag_selection(:awesome).tag.nodes.first
+    node = tag_selections(:awesome).tag.nodes.first
     assert_equal 6, node.subscribers.length
   end
 

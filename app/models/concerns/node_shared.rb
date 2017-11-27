@@ -33,6 +33,8 @@ module NodeShared
       tagname = Regexp.last_match(2)
       nodes = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
+                  .references(:term_data, :node_revisions)
+                  .revisions(:term_data)
                   .where('term_data.name = ?', tagname)
                   .order('node_revisions.timestamp DESC')
       output = ''
@@ -57,6 +59,7 @@ module NodeShared
       tagname = Regexp.last_match(2)
       nodes = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
+                  .references(:node_revisions, :term_data)
                   .where('term_data.name = ?', "question:#{tagname}")
                   .order('node_revisions.timestamp DESC')
       output = ''
@@ -126,6 +129,7 @@ module NodeShared
                                    .collect(&:nid)
       nids = nids || []
       items = Node.includes(:tag)
+                  .references(:node, :term_data)
                   .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
                   .limit(200)
                   .order('node.nid DESC')
@@ -156,6 +160,7 @@ module NodeShared
                                    .collect(&:nid)
       nids = nids || []
       items = Node.includes(:tag)
+                  .references(:node, :term_data)
                   .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
                   .limit(200)
                   .order('node.nid DESC')
@@ -178,6 +183,7 @@ module NodeShared
       tagname = Regexp.last_match(2)
       users = User.where(status: 1)
                   .includes(:user_tags)
+                  .references(:user_tags)
                   .where('user_tags.value = ?', tagname)
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'

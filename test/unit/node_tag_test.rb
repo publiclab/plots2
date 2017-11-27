@@ -154,7 +154,7 @@ class NodeTagTest < ActiveSupport::TestCase
     user = nodes(:blog).author
     tagname = "rsvp:#{user.username}"
     assert nodes(:blog).can_tag(tagname, user)
-    assert_true nodes(:blog).can_tag(tagname, user)
+    assert nodes(:blog).can_tag(tagname, user)
   end
 
   test "can't rsvp someone else" do
