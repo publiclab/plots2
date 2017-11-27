@@ -101,7 +101,8 @@ class DrupalUser < ActiveRecord::Base
   end
 
   def liked_notes
-    Node.references(:node_selections)
+    Node.includes(:node_selections)
+        .references(:node_selections)
         .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, uid)
         .order('node_selections.nid DESC')
   end
