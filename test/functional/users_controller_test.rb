@@ -107,8 +107,9 @@ class UsersControllerTest < ActionController::TestCase
 
     saved_user = User.find(user.id)
 
-    assert_nil saved_user.reset_key
     assert_equal 'Your password was successfully changed.', flash[:notice]
+    assert_response :success
+    assert_nil saved_user.reset_key
     assert_not_equal crypted_password, saved_user.crypted_password
   end
 

@@ -43,20 +43,20 @@ class Node < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-  has_many :revision, foreign_key: 'nid', dependent: :destroy
+  has_many :revision, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
-  has_many :drupal_upload, foreign_key: 'nid', dependent: :destroy
+  has_many :drupal_upload, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :drupal_files, through: :drupal_upload
-  has_many :node_tag, foreign_key: 'nid', dependent: :destroy
+  has_many :node_tag, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :tag, through: :node_tag
   # these override the above... have to do it manually:
   # has_many :tag, :through => :drupal_node_tag
-  has_many :comments, foreign_key: 'nid', dependent: :destroy
-  has_many :drupal_content_type_map, foreign_key: 'nid', dependent: :destroy
-  has_many :drupal_content_field_mappers, foreign_key: 'nid', dependent: :destroy
-  has_many :drupal_content_field_map_editor, foreign_key: 'nid', dependent: :destroy
+  has_many :comments, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_content_type_map, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_content_field_mappers, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_content_field_map_editor, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :images, foreign_key: :nid
   has_many :node_selections, foreign_key: :nid
   has_many :answers, foreign_key: :nid
