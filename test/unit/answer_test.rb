@@ -16,7 +16,7 @@ class AnswerTest < ActiveSupport::TestCase
     node = nodes(:question)
     user = drupal_users(:bob)
     answer.node = node
-    answer.drupal_users = user
+    answer.drupal_user = user
     answer.save
     assert_equal node.answers.last, answer
     assert_equal user.answers.last, answer

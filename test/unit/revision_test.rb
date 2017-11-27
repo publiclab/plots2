@@ -111,8 +111,8 @@ class RevisionsTest < ActiveSupport::TestCase
     tag_names = associated_tags.map(&:name)
     expected_tags = %w[hashtag1 hashtag2 hashtag3]
     ignore_tags = ['hashtag1,', 'hashtag2!', 'hashtag3.']
-    assert_true (expected_tags - tag_names).empty?
-    assert_true (ignore_tags - tag_names).length == ignore_tags.length
+    assert (expected_tags - tag_names).empty?
+    assert (ignore_tags - tag_names).length == ignore_tags.length
   end
 
   test 'should tag hashtags in headers' do
@@ -128,7 +128,7 @@ class RevisionsTest < ActiveSupport::TestCase
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
-    assert_false(tag_names.include?('subheader')) || tag_names.include?('#subheader')
+    assert_not tag_names.include?('subheader') || tag_names.include?('#subheader')
   end
 
   test 'should ignore hashtags in links' do
@@ -159,7 +159,7 @@ class RevisionsTest < ActiveSupport::TestCase
   test 'should make the author the tag author' do
     revision = revisions(:hashtag_three)
     revision.save
-    author = revision.parent.tag.last.node_tag.first.drupal_users
+    author = revision.parent.tag.last.node_tag.first.drupal_user
     assert_equal revision.author, author
   end
 
@@ -170,7 +170,7 @@ class RevisionsTest < ActiveSupport::TestCase
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
-    assert_true tag_names.count('hashtag') == 1
+    assert tag_names.count('hashtag') == 1
   end
 
   test 'should remove header from body for preview' do
@@ -182,7 +182,7 @@ class RevisionsTest < ActiveSupport::TestCase
   test 'should return body if no header for body_preview' do
     revision = nodes(:one).latest
     revision.body = 'Some stuff about my post'
-    assert_true !!revision.body_preview.match('Some stuff about my post')
+    assert !!revision.body_preview.match('Some stuff about my post')
   end
 
   test 'should remove header in between two normal paragraphs' do

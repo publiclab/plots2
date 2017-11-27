@@ -14,13 +14,13 @@ class TagTest < ActiveSupport::TestCase
   test 'tag followers' do
     followers = Tag.followers(node_tags(:awesome).name)
     assert !followers.empty?
-    assert followers.include?(tag_selection(:awesome).user.user)
+    assert followers.include?(tag_selections(:awesome).user.user)
   end
 
   test 'tag subscribers' do
     subscribers = Tag.subscribers([tags(:awesome)])
     assert !subscribers.empty?
-    assert (subscribers.to_a.collect(&:last).map { |o| o[:user] }).include?(tag_selection(:awesome).user)
+    assert (subscribers.to_a.collect(&:last).map { |o| o[:user] }).include?(tag_selections(:awesome).user)
   end
 
   test 'creating a tag with a bad uid' do
@@ -106,7 +106,7 @@ class TagTest < ActiveSupport::TestCase
     given_tags = [awesome, spam]
     assert_equal [users(:admin)], test.followers_who_dont_follow_tags(given_tags)
     # now make unbanned_spammer following: false for both 'awesome' and 'spam' tags:
-    tag_selection(:selection_four).update_attribute('following', false)
+    tag_selections(:selection_four).update_attribute('following', false)
     given_tags = [awesome, spam]
     assert_equal [users(:unbanned_spammer), users(:admin)], test.followers_who_dont_follow_tags(given_tags)
   end

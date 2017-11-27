@@ -34,7 +34,6 @@ module NodeShared
       nodes = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
-                  .revisions(:term_data)
                   .where('term_data.name = ?', tagname)
                   .order('node_revisions.timestamp DESC')
       output = ''

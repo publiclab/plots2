@@ -143,7 +143,7 @@ class CommentTest < ActiveSupport::TestCase
     answer = answers(:one)
     user = drupal_users(:bob)
     comment = Comment.new(comment: 'Test comment')
-    comment.drupal_users = user
+    comment.drupal_user = user
     comment.answer = answer
 
     assert comment.save

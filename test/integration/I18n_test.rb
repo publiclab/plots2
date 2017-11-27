@@ -100,7 +100,7 @@ class I18nTest < ActionDispatch::IntegrationTest
         password: 'secretive'
       }
       follow_redirect!
-      post '/create',
+      post '/notes/create',
            title: 'Some post',
            body: 'Some post body',
            tags: 'Some-tag',
@@ -119,7 +119,7 @@ class I18nTest < ActionDispatch::IntegrationTest
         password: 'secretive'
       }
       follow_redirect!
-      post '/create',
+      post '/notes/create',
            title: 'Some question',
            tags: 'question',
            status: 1
@@ -137,7 +137,7 @@ class I18nTest < ActionDispatch::IntegrationTest
         password: 'secretive'
       }
       follow_redirect!
-      post '/create',
+      post '/notes/create',
            title: 'Some topic',
            tags: 'some-tag',
            type: 'page',

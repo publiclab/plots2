@@ -3,8 +3,8 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   test 'user creation' do
     user = User.new(username: 'chris',
-                    password: 'science',
-                    password_confirmation: 'science',
+                    password: 'godzillas',
+                    password_confirmation: 'godzillas',
                     email: 'test@publiclab.org')
 
     assert user.save({})
