@@ -40,6 +40,7 @@ Plots2::Application.routes.draw do
   get 'login' => "user_sessions#new",      :as => :login
   delete 'logout' => "user_sessions#destroy", :as => :logout
   post 'register' => 'users#create'
+  get 'reset' => 'users#reset'
   post 'reset' => 'users#reset'
   post 'reset/key/:key' => 'users#reset'
   get 'profiles', to: redirect('/people')
