@@ -7,9 +7,8 @@ require 'rails/test_help'
 require 'authlogic/test_case'
 require 'i18n'
 
-#ActiveSupport::Inflector.inflections(:en) do |inflect|
-#  inflect.irregular 'drupal_user', 'drupal_user'
-#end
+require "minitest/reporters"
+Minitest::Reporters.use!
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
@@ -17,7 +16,10 @@ class ActiveSupport::TestCase
   # Note: You'll currently still have to declare fixtures explicitly in integration tests
   # -- they do not yet inherit this setting
 
-  # yay thanks: http://journal.missiondata.com/post/63405042042/rails-fixtures-with-models-using-settablename
+  # These can be replaced in Rails 5 with this syntax, in the fixture files: 
+  # https://github.com/rails/rails/commit/2acec4657752d441ab87b9f5862d7918843d6409#diff-1ed2907b3b8f148c2533558a77673ffaR3
+  # _fixture:
+  #   model_class: 'DrupalUser'
   set_fixture_class rusers: "User"
   set_fixture_class users: "DrupalUser"
   set_fixture_class node_revisions: "Revision"

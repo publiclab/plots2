@@ -6,7 +6,7 @@
 # def require_no_user
 # def store_location
 # def redirect_back_or_default(default)
-# def check_and_redirect_node(node)
+# def check_and_redirect_nodes(node)
 
 require 'test_helper'
 

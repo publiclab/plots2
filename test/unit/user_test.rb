@@ -19,7 +19,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'basic user attributes' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     assert_equal user.notes, user.drupal_user.notes
     assert_not_nil user.tags
     assert_not_nil user.drupal_user.tags
@@ -33,21 +33,21 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user questions' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     assert !user.questions.empty?
   end
 
   test 'user.notes and first time user' do
-    assert        !users(:jeff).notes.empty?
-    assert        !users(:jeff).first_time_poster
-    assert_not  !users(:bob).notes.empty?
-    assert        users(:bob).first_time_poster
-    assert_not  !users(:lurker).notes.empty?
-    assert        users(:lurker).first_time_poster
+    assert        !drupal_users(:jeff).notes.empty?
+    assert        !drupal_users(:jeff).first_time_poster
+    assert_not  !drupal_users(:bob).notes.empty?
+    assert        drupal_users(:bob).first_time_poster
+    assert_not  !drupal_users(:lurker).notes.empty?
+    assert        drupal_users(:lurker).first_time_poster
   end
 
   test 'user reset key' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     assert_nil user.reset_key
 
     user.generate_reset_key
@@ -55,8 +55,8 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'should follow and unfollow user' do
-    bob = rusers(:bob)
-    jeff = rusers(:jeff)
+    bob = users(:bob)
+    jeff = users(:jeff)
     assert_not bob.following?(jeff)
     bob.follow(jeff)
     assert bob.following?(jeff)
@@ -66,21 +66,21 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "returns sha email for users who doesn't have image" do
-    bob = rusers(:bob)
+    bob = users(:bob)
     assert_equal 'https://www.gravatar.com/avatar/927536542991ac10fe2c546bc386a521', bob.profile_image
   end
 
   test 'can add a user_tag and use has_tag method' do
-    tag = rusers(:bob).user_tags.new
+    tag = users(:bob).user_tags.new
     tag.value = 'test:test'
     assert tag.save
-    assert rusers(:bob).has_tag('test:test')
-    assert !rusers(:bob).has_tag('test:no')
+    assert users(:bob).has_tag('test:test')
+    assert !users(:bob).has_tag('test:no')
   end
 
   test 'returns nodes created in past given period of time' do
-    lurker = rusers(:lurker)
-    node2 = rusers(:lurker).node.find_by_nid(20)
+    lurker = users(:lurker)
+    node2 = users(:lurker).node.find_by_nid(20)
      assert_equal [node2], lurker.content_followed_in_past_period(2.hours.ago)
   end
 end

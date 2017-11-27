@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AnswerMailerTest < ActionMailer::TestCase
   test 'notify question author' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     answer = answers(:one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       AnswerMailer.notify_question_author(user, answer).deliver
@@ -18,7 +18,7 @@ class AnswerMailerTest < ActionMailer::TestCase
   end
 
   test 'notify other answer authors' do
-    user = rusers(:bob)
+    user = users(:bob)
     answer = answers(:two)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       AnswerMailer.notify_answer_likers_author(user, answer).deliver
@@ -33,7 +33,7 @@ class AnswerMailerTest < ActionMailer::TestCase
   end
 
   test 'notify user who liked the question' do
-    user = rusers(:admin)
+    user = users(:admin)
     answer = answers(:two)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       AnswerMailer.notify_answer_likers_author(user, answer).deliver
@@ -48,7 +48,7 @@ class AnswerMailerTest < ActionMailer::TestCase
   end
 
   test 'notify answer author when answer is accepted' do
-    user = rusers(:bob)
+    user = users(:bob)
     answer = answers(:one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       AnswerMailer.notify_answer_accept(user, answer).deliver
@@ -63,7 +63,7 @@ class AnswerMailerTest < ActionMailer::TestCase
   end
 
   test 'notify answer author when answer is liked' do
-    user = rusers(:bob)
+    user = users(:bob)
     answer = answers(:one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       AnswerMailer.notify_answer_like(user, answer).deliver

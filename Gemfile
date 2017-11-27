@@ -1,12 +1,13 @@
 source 'https://rubygems.org'
 
 
-gem 'rails', '~> 4.0.0'
+gem 'rails', '~> 4.1.16'
 gem 'activerecord-session_store'
 gem 'protected_attributes'
 gem 'passenger'
 
 gem 'rails-i18n', '~> 4.0.0'
+
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
   gem 'mysql2', '~> 0.3.20'
@@ -23,9 +24,6 @@ end
 #  gem "activerecord-postgresql-adapter"
 #end
 
-#letter_opener
-gem "letter_opener", :group => :development
-
 # Gems used only for assets and not required in production environments by default.
 gem 'sass-rails',   '~> 4.0.0'
 gem 'coffee-rails', '~> 4.0.0'
@@ -35,6 +33,7 @@ gem 'uglifier', '>= 1.0.3'
 
 # run with `bundle install --without development` to exclude these
 group :development do
+  gem "letter_opener"
   gem "nifty-generators"
   gem 'byebug'
 end
@@ -42,6 +41,8 @@ end
 # run with `bundle install --without test` to exclude these
 group :test, :development do
   gem 'test-unit'
+#  gem 'minitest', '>= 5.0'
+  gem 'minitest-reporters', '~> 1.1.19'
   gem 'rake',  '~> 10.5.0'
   # gems to test RESTful API
   gem 'rest-client'
@@ -64,8 +65,10 @@ gem 'jquery-rails'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1' # Markdown
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
+# could be deprecated:
 gem 'georuby', '2.0'
 gem 'geokit-rails'
+
 gem 'rails_autolink'
 gem 'rb-readline'
 gem "paperclip", "< 4.2.0"

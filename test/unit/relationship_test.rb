@@ -2,8 +2,8 @@ require 'test_helper'
 
 class RelationshipTest < ActiveSupport::TestCase
   def setup
-    follower_user = users(:bob)
-    followed_user = users(:jeff)
+    follower_user = drupal_users(:bob)
+    followed_user = drupal_users(:jeff)
     @relationship = Relationship.new(followed_id: followed_user.uid, follower_id: follower_user.uid)
   end
 

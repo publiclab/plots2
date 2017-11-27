@@ -6,7 +6,7 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   end
 
   #  test "browse dashboard" do
-  #    @user_session = UserSession.create(rusers(:bob))
+  #    @user_session = UserSession.create(users(:bob))
   #    get "/dashboard"
   #    assert_response :success
   #    @user_session.destroy
@@ -23,7 +23,7 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   end
 
   test 'view notes for an author' do
-    get '/notes/author/' + rusers(:bob).username
+    get '/notes/author/' + users(:bob).username
     assert_response :success
   end
 
@@ -43,12 +43,12 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   end
 
   test 'browse /profile/*' do
-    get '/profile/' + rusers(:bob).username
+    get '/profile/' + users(:bob).username
     assert_response :success
   end
 
   test 'browse /wiki/foo' do
-    node = node(:about)
+    node = nodes(:about)
     get node.path
     assert_response :success
   end
@@ -79,15 +79,15 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   end
 
   test 'browse redirected node' do
-    get node(:redirect).path
+    get nodes(:redirect).path
     assert_response :redirect
-    assert_redirected_to node(:blog).path
-    request_via_redirect :get, node(:blog).path
-    assert_select 'h1', node(:blog).title
+    assert_redirected_to nodes(:blog).path
+    request_via_redirect :get, nodes(:blog).path
+    assert_select 'h1', nodes(:blog).title
   end
 
   test 'browse a question' do
-    get node(:question).path(:question)
+    get nodes(:question).path(:question)
     assert_response :success
   end
 end

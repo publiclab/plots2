@@ -44,28 +44,28 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'list users while logged in' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     get :list
     assert_response :success
     assert_not_nil :users
   end
 
   test 'list users while logged in as admin' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
     get :list
     assert_response :success
     assert_not_nil :users
   end
 
   test 'list users by moderator role' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     get :list, id: 'moderator'
     assert_response :success
     assert_not_nil :users
   end
 
   test 'list users by admin role' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     get :list, id: 'admin'
     assert_response :success
     assert_not_nil :users
@@ -82,7 +82,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'generate user reset key' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     assert_nil user.reset_key
 
     get :reset, email: user.email
@@ -95,7 +95,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'use user reset key to change password' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     crypted_password = user.crypted_password
     key = user.generate_reset_key
     user.save({})
@@ -113,7 +113,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'confirm user reset key not visible on profile to non-admins' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     assert_nil user.reset_key
     user.generate_reset_key
     user.save({})
@@ -126,8 +126,8 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'confirm user reset key visible to admins on profile' do
     activate_authlogic
-    UserSession.create(rusers(:admin))
-    user = rusers(:jeff)
+    UserSession.create(users(:admin))
+    user = users(:jeff)
     user.generate_reset_key
     user.save({})
     assert_not_nil User.find(user.id).reset_key
@@ -149,20 +149,20 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   #  test "should display map with success response" do
-  #    UserSession.create(rusers(:jeff))
+  #    UserSession.create(users(:jeff))
   #    get :map
   #    assert_response 200
   #  end
 
   #  test "should display users map based on location" do
-  #    UserSession.create(rusers(:jeff))
+  #    UserSession.create(users(:jeff))
   #    get :map, :country => 'United States', tag: "", value: ""
   #    assert_response 200
   #    assert assigns[:users]
   #  end
 
   #  test "should display user map on tag and value parameter" do
-  #    UserSession.create(rusers(:jeff))
+  #    UserSession.create(users(:jeff))
   #    get :map, :tag => 'Skill', :value => 'Developer', country: ''
   #    assert_response 200
   #    assert assigns[:location_tags]
@@ -170,7 +170,7 @@ class UsersControllerTest < ActionController::TestCase
   #  end
 
   #  test "should display flash error for invalid tag" do
-  #    UserSession.create(rusers(:jeff))
+  #    UserSession.create(users(:jeff))
   #    get :map, :tag => 'abc', value: '', country: ''
   #    assert_response 200
   #    assert_equal "abc doesn't exitst", flash[:error]
@@ -207,7 +207,7 @@ class UsersControllerTest < ActionController::TestCase
   #  end
 
   test 'should list notes and questions in user profile' do
-    user = users(:jeff)
+    user = drupal_users(:jeff)
     get :profile, id: user.name
     assert_not_nil assigns(:notes)
     assert_not_nil assigns(:questions)
@@ -217,7 +217,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should get comments' do
-    user = users(:jeff)
+    user = drupal_users(:jeff)
     get :comments, id: user.id
     assert_response :success
     assert_not_nil assigns(:comments)
@@ -226,7 +226,7 @@ class UsersControllerTest < ActionController::TestCase
 
   # this isn't testing anything?
   test 'profiles for legacy users' do
-    user = users(:legacy_user)
+    user = drupal_users(:legacy_user)
     assert_response :success
   end
 
@@ -256,7 +256,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'updating profile' do
-    user = rusers(:bob)
+    user = users(:bob)
     UserSession.create(user)
     post :update, { user: { bio: 'Hello, there!' } }
     assert_response :redirect
@@ -264,8 +264,8 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'rejecting malformated email while updating profile' do
-    user = rusers(:bob)
-    email = rusers(:bob).email
+    user = users(:bob)
+    email = users(:bob).email
     UserSession.create(user)
     post :update, { user: { email: 'not an address' } }
     assert_response :success

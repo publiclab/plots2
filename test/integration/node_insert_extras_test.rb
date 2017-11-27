@@ -3,7 +3,7 @@ require 'test_helper'
 class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
   test 'note with inline tagged notes table via insert_extras() helper' do
     post '/user_sessions', user_session: {
-      username: rusers(:jeff).username,
+      username: users(:jeff).username,
       password: 'secret'
     }
 
@@ -18,11 +18,11 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
 
     node = Node.last
 
-    node.add_tag('seeks:replications', rusers(:jeff))
+    node.add_tag('seeks:replications', users(:jeff))
     seeks_reps = NodeTag.last
 
     # make the "blog" node a replication
-    node(:blog).add_tag("replication:#{node.id}", rusers(:jeff))
+    nodes(:blog).add_tag("replication:#{node.id}", users(:jeff))
 
     get node.path
 
@@ -45,7 +45,7 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
     seeks_reps.destroy
 
     # should list blog with just "activity:" tag
-    node.add_tag('activity:test', rusers(:jeff))
+    node.add_tag('activity:test', users(:jeff))
 
     assert node.has_power_tag('activity')
 

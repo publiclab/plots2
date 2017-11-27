@@ -2,7 +2,7 @@ require 'test_helper'
 
 class TagResultTest < ActiveSupport::TestCase
   test 'should return fromSearch' do
-    node = node(:question)
+    node = nodes(:question)
     obj = TagResult.fromSearch(
       node.nid,
       node.title,

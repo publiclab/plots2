@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ModerateAndBanTest < ActionDispatch::IntegrationTest
   test 'users are logged out and alerted when banned, and notes are not accessible' do
-    u = rusers(:unmoderated_user)
+    u = users(:unmoderated_user)
     post '/user_sessions', user_session: {
       username: u.username,
       password: 'secret'
@@ -20,14 +20,14 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     # in application_controller.rb; normal logged out message to deter spammers:
     assert_equal 'You must be logged in to access this page', flash[:warning]
 
-    get node(:moderated_user_note).path
+    get nodes(:moderated_user_note).path
 
     assert_response :redirect
     follow_redirect!
     # in application_controller.rb:
     assert_equal 'The author of that note has been banned.', flash[:error]
 
-    get node(:question3).path # a Q by unmoderated_user
+    get nodes(:question3).path # a Q by unmoderated_user
 
     assert_response :redirect
     follow_redirect!
@@ -43,13 +43,13 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     u.drupal_user.unban
 
-    get node(:moderated_user_note).path
+    get nodes(:moderated_user_note).path
 
     assert_response :success
   end
 
   test 'users are logged out and alerted when moderated, and notes are not accessible' do
-    u = rusers(:unmoderated_user)
+    u = users(:unmoderated_user)
     post '/user_sessions', user_session: {
       username: u.username,
       password: 'secret'
@@ -67,12 +67,12 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     # in application_controller.rb:
     assert_equal "The user '#{u.username}' has been placed in moderation; please see <a href='https://#{request_host}/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@#{request_host}'>moderators@#{request_host}</a> if you believe this is in error.", flash[:warning]
 
-    get node(:moderated_user_note).path
+    get nodes(:moderated_user_note).path
 
     assert_response :success
     assert_equal "The user '#{u.username}' has been placed <a href='https://#{request_host}/wiki/moderators'>in moderation</a> and will not be able to respond to comments.", flash[:warning]
 
-    get node(:question3).path # a Q by unmoderated_user
+    get nodes(:question3).path # a Q by unmoderated_user
 
     # this node has path stored as /notes/... not /questions/... so there is a redirect to the questions controller
     assert_response :redirect
@@ -89,16 +89,16 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     u.drupal_user.unmoderate
 
-    get node(:moderated_user_note).path
+    get nodes(:moderated_user_note).path
 
     assert_response :success
     assert_nil flash[:warning]
   end
 
   test 'moderated user profiles are not visible when banned' do
-    u = rusers(:unmoderated_user)
+    u = users(:unmoderated_user)
     u.drupal_user.ban
-    admin = rusers(:admin)
+    admin = users(:admin)
 
     post '/user_sessions', user_session: {
       username: admin.username,
@@ -112,8 +112,8 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
   end
 
   test 'moderators and admins can moderate others' do
-    u = rusers(:unmoderated_user)
-    admin = rusers(:admin)
+    u = users(:unmoderated_user)
+    admin = users(:admin)
     u.drupal_user.unmoderate
     u.drupal_user.unban
 
@@ -138,8 +138,8 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
   end
 
   test 'normal users can not moderate others' do
-    u = rusers(:unmoderated_user)
-    normal_user = rusers(:bob)
+    u = users(:unmoderated_user)
+    normal_user = users(:bob)
     u.drupal_user.unmoderate
     u.drupal_user.unban
 
@@ -166,7 +166,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
   end
 
   test 'moderated users can not log in' do
-    u = rusers(:unmoderated_user)
+    u = users(:unmoderated_user)
     u.drupal_user.moderate
 
     post '/user_sessions', user_session: {
