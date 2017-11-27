@@ -5,7 +5,7 @@ class TypeaheadServiceTest < ActiveSupport::TestCase
   
   test 'running TypeaheadService.search_all' do
     result = TypeaheadService.new.search_all('about').getTags()
-    assert_true solrAvailable
+    assert solrAvailable
     assert_not_nil result
     assert_equal result.length, 2
     result = TypeaheadService.new.search_all('Canon').getTags() # searching for a node
@@ -15,7 +15,7 @@ class TypeaheadServiceTest < ActiveSupport::TestCase
 
   test 'running TypeaheadService.notes' do
     result = TypeaheadService.new.notes('blog')
-    assert_true solrAvailable
+    assert solrAvailable
     assert_not_nil result
     assert_equal result.length, 2
   end
