@@ -323,7 +323,7 @@ class Node < ActiveRecord::Base
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
-    tids = Tag.references(:node_tag)
+    tids = Tag.references(:community_tags)
               .where('community_tags.nid = ? AND name LIKE ?', id, key + ':%')
               .collect(&:tid)
     !NodeTag.where('nid = ? AND tid IN (?)', id, tids).empty?
@@ -331,7 +331,7 @@ class Node < ActiveRecord::Base
 
   # returns the value for the most recent power tag of form key:value
   def power_tag(tag)
-    tids = Tag.references(:node_tag)
+    tids = Tag.references(:community_tags)
               .where('community_tags.nid = ? AND name LIKE ?', id, tag + ':%')
               .collect(&:tid)
     node_tag = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
@@ -345,7 +345,7 @@ class Node < ActiveRecord::Base
 
   # returns all tagnames for a given power tag
   def power_tags(tag)
-    tids = Tag.references(:node_tag)
+    tids = Tag.references(:community_tags)
               .where('community_tags.nid = ? AND name LIKE ?', id, tag + ':%')
               .collect(&:tid)
     node_tags = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
@@ -358,7 +358,7 @@ class Node < ActiveRecord::Base
 
   # returns all power tag results as whole community_tag objects
   def power_tag_objects(tag)
-    tids = Tag.references(:node_tag)
+    tids = Tag.references(:community_tags)
               .where('community_tags.nid = ? AND name LIKE ?', id, tag + ':%')
               .collect(&:tid)
     NodeTag.where('nid = ? AND tid IN (?)', id, tids)
@@ -366,7 +366,7 @@ class Node < ActiveRecord::Base
 
   # return whole community_tag objects but no powertags or "event"
   def normal_tags
-    tids = Tag.references(:node_tag)
+    tids = Tag.references(:community_tags)
               .where('community_tags.nid = ? AND name LIKE ?', id, '%:%')
               .collect(&:tid)
     NodeTag.where('nid = ? AND tid NOT IN (?)', id, tids)
@@ -378,12 +378,12 @@ class Node < ActiveRecord::Base
   def has_tag(tagname)
     tags = get_matching_tags_without_aliasing(tagname)
     # search for tags with parent matching this
-    tags += Tag.references(:node_tag)
+    tags += Tag.references(:community_tags)
                .where('community_tags.nid = ? AND parent LIKE ?', id, tagname)
     # search for parent tag of this, if exists
     # tag = Tag.where(name: tagname).try(:first)
     # if tag && tag.parent
-    #  tags += Tag.references(:node_tag)
+    #  tags += Tag.references(:community_tags)
     #                   .where("community_tags.nid = ? AND name LIKE ?", self.id, tag.parent)
     # end
     tids = tags.collect(&:tid).uniq
@@ -393,11 +393,11 @@ class Node < ActiveRecord::Base
   # can return multiple Tag records -- we don't yet hard-enforce uniqueness, but should soon
   # then, this would just be replaced by Tag.where(name: tagname).first
   def get_matching_tags_without_aliasing(tagname)
-    tags = Tag.references(:node_tag)
+    tags = Tag.references(:community_tags)
               .where('community_tags.nid = ? AND name LIKE ?', id, tagname)
     # search for tags which end in wildcards
     if tagname[-1] == '*'
-      tags += Tag.references(:node_tag)
+      tags += Tag.references(:community_tags)
                  .where('community_tags.nid = ? AND (name LIKE ? OR name LIKE ?)', id, tagname, tagname.tr('*', '%'))
     end
     tags
