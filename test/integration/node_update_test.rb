@@ -4,7 +4,7 @@ class NodeUpdateTest < ActionDispatch::IntegrationTest
   test 'edit note after creating a new note' do
     post '/user_sessions', user_session: {
       username: users(:bob).username,
-      password: 'secret'
+      password: 'secretive'
     }
 
     title = 'My second post about balloon mapping'

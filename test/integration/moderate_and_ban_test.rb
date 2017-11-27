@@ -5,7 +5,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     u = users(:unmoderated_user)
     post '/user_sessions', user_session: {
       username: u.username,
-      password: 'secret'
+      password: 'secretive'
     }
 
     get '/post' # dashboard is actually world-readable, but /post is not
@@ -52,7 +52,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     u = users(:unmoderated_user)
     post '/user_sessions', user_session: {
       username: u.username,
-      password: 'secret'
+      password: 'secretive'
     }
 
     get '/post' # dashboard is actually world-readable, but /post is not
@@ -102,7 +102,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     post '/user_sessions', user_session: {
       username: admin.username,
-      password: 'secret'
+      password: 'secretive'
     }
 
     get "/profile/#{u.username}"
@@ -119,7 +119,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     post '/user_sessions', user_session: {
       username: admin.username,
-      password: 'secret'
+      password: 'secretive'
     }
 
     get "/admin/moderate/#{u.uid}"
@@ -145,7 +145,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     post '/user_sessions', user_session: {
       username: normal_user.username,
-      password: 'secret'
+      password: 'secretive'
     }
 
     get "/admin/moderate/#{u.uid}"
@@ -171,7 +171,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     post '/user_sessions', user_session: {
       username: u.username,
-      password: 'secret'
+      password: 'secretive'
     }
 
     assert_response :redirect

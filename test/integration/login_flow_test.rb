@@ -8,7 +8,7 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
 
     post '/user_sessions', user_session: {
       username: users(:jeff).username,
-      password: 'secret'
+      password: 'secretive'
     }
     follow_redirect!
     assert_equal '/post?tags=question:question&template=question', request.fullpath
@@ -26,7 +26,7 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
 
     post '/user_sessions', user_session: {
       username: users(:jeff).username,
-      password: 'secret'
+      password: 'secretive'
     }
 
     follow_redirect!
@@ -46,7 +46,7 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
          return_to: request.path,
          user_session: {
            username: users(:jeff).username,
-           password: 'secret'
+           password: 'secretive'
          }
     follow_redirect!
     assert_equal '/questions', path
