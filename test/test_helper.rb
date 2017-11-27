@@ -20,10 +20,10 @@ class ActiveSupport::TestCase
   # https://github.com/rails/rails/commit/2acec4657752d441ab87b9f5862d7918843d6409#diff-1ed2907b3b8f148c2533558a77673ffaR3
   # _fixture:
   #   model_class: 'DrupalUser'
-  set_fixture_class rusers: "User"
-  set_fixture_class users: "DrupalUser"
-  set_fixture_class node_revisions: "Revision"
-  set_fixture_class drupal_content_type_map: "DrupalContentTypeMap"
+  set_fixture_class users: User
+  set_fixture_class drupal_users: DrupalUser
+  set_fixture_class node_revisions: Revision
+  set_fixture_class drupal_content_type_map: DrupalContentTypeMap
 
   fixtures :all
 

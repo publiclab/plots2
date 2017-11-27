@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
-
 gem 'rails', '~> 4.1.16'
 gem 'activerecord-session_store'
 gem 'protected_attributes'
 gem 'passenger'
 
 gem 'rails-i18n', '~> 4.0.0'
+# gem 'responders', '~> 2.0' # for Rails 4.2
 
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
