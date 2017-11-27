@@ -146,7 +146,7 @@ class TagController < ApplicationController
       barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
       node.add_comment(subject: 'barnstar',
                        uid: current_user.uid,
-                       body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_users.name} for their awesome contribution!")
+                       body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_user.name} for their awesome contribution!")
     end
     redirect_to node.path + '?_=' + Time.now.to_i.to_s
   end

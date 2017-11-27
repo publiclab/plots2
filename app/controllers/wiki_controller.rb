@@ -202,9 +202,7 @@ class WikiController < ApplicationController
   def delete
     @node = Node.find(params[:id])
     if current_user && current_user.role == 'admin'
-      Node.transaction do
-        @node.destroy
-      end
+      @node.destroy
       flash[:notice] = I18n.t('wiki_controller.wiki_page_deleted')
       redirect_to '/dashboard'
     else
