@@ -191,7 +191,8 @@ class Node < ActiveRecord::Base
   # users who like this node
   def likers
     node_selections
-      .joins(:users)
+      .joins(:drupal_user)
+      .references(:users)
       .where(liking: true)
       .where('users.status = ?', 1)
       .collect(&:user)
