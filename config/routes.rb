@@ -137,6 +137,7 @@ Plots2::Application.routes.draw do
   delete 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
   #Search Pages
+  get 'searches/test' => 'searches#test'
   get 'search/advanced/:id' => 'searches#new'
   get 'search/dynamic' => 'searches#dynamic'
   get 'search/dynamic/:id' => 'searches#dynamic'
