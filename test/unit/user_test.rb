@@ -100,8 +100,8 @@ class UserTest < ActiveSupport::TestCase
     assert bob.coauthored_notes.empty?
 
     jeffs_note = nodes(:one)
-    jeffs_note.tag.create(name: "with:bob")
-
+    jeffs_note.add_tag('with:bob', jeff)
+    
     coauthored_note = bob.coauthored_notes.first
 
     assert_not_nil coauthored_note

@@ -100,10 +100,10 @@ class User < ActiveRecord::Base
   end
 
   def coauthored_notes
-    coauthored_tag = "with:"+self.name
+    coauthored_tag = "with:"+self.name.downcase
     Node.where(status: 1, type: "note")
         .includes(:revision, :tag)
-        .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s , coauthored_tag.to_s)
+        .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag , coauthored_tag)
   end
 
   def generate_reset_key
