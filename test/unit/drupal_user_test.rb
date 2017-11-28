@@ -27,9 +27,9 @@ class DrupalUserTest < ActiveSupport::TestCase
   test 'first time user' do
     assert        !users(:jeff).notes.empty?
     assert        !users(:jeff).first_time_poster
-    assert_false  !users(:bob).notes.empty?
+    assert_not  !users(:bob).notes.empty?
     assert        users(:bob).first_time_poster
-    assert_false  !users(:lurker).notes.empty?
+    assert_not  !users(:lurker).notes.empty?
     assert        users(:lurker).first_time_poster
   end
 

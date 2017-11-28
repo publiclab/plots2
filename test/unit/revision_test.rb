@@ -101,7 +101,7 @@ class RevisionsTest < ActiveSupport::TestCase
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
-    assert_false tag_names.include?('heading')
+    assert_not tag_names.include?('heading')
   end
 
   test 'should ignore commas, exclamation, and periods in hashtags' do
@@ -136,7 +136,7 @@ class RevisionsTest < ActiveSupport::TestCase
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
-    assert_false tag_names.include?('hashtag')
+    assert_not tag_names.include?('hashtag')
   end
 
   test 'should ignore hashtags in URLs' do
@@ -144,7 +144,7 @@ class RevisionsTest < ActiveSupport::TestCase
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
-    assert_false tag_names.include?('hashtag')
+    assert_not tag_names.include?('hashtag')
   end
 
   test 'should not add duplicate tags' do
@@ -152,8 +152,8 @@ class RevisionsTest < ActiveSupport::TestCase
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
-    assert_false tag_names.count('hashtag') > 1
-    assert_false tag_names.include?('heading')
+    assert_not tag_names.count('hashtag') > 1
+    assert_not tag_names.include?('heading')
   end
 
   test 'should make the author the tag author' do

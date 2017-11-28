@@ -41,7 +41,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def using_new_site?
-    !User.find_by_username(name).nil?
+    !User.find_by(username: name).nil?
   end
 
   # Rails-style adaptors:

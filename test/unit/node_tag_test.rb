@@ -51,11 +51,11 @@ class NodeTagTest < ActiveSupport::TestCase
     assert       node.has_tag('spectrometer') # this is directly true
     assert       node.has_tag('spectrometry') # this true via aliasing
     assert       node.has_tag_without_aliasing('spectrometer')
-    assert_false node.has_tag_without_aliasing('spectrometry')
+    assert_not node.has_tag_without_aliasing('spectrometry')
     assert_equal node.get_matching_tags_without_aliasing('spectrometer').length, 1
     assert_equal node.get_matching_tags_without_aliasing('spectrometry').length, 0
-    assert_false Tag.find_nodes_by_type('spectrometry').to_a.include?(node)
-    assert_false Tag.find_nodes_by_type_with_all_tags(['spectrometry']).to_a.include?(node)
+    assert_not Tag.find_nodes_by_type('spectrometry').to_a.include?(node)
+    assert_not Tag.find_nodes_by_type_with_all_tags(['spectrometry']).to_a.include?(node)
     assert       Tag.find_nodes_by_type('spectrometer').to_a.include?(node)
     assert       Tag.find_nodes_by_type_with_all_tags(['spectrometer']).to_a.include?(node)
 
@@ -74,7 +74,7 @@ class NodeTagTest < ActiveSupport::TestCase
     tag2.parent = ''
     tag2.save
     assert       node.has_tag('spectrometer') # this is directly true
-    assert_false node.has_tag('spectrometry') # should return false; <spectrometer>.parent == ""
+    assert_not node.has_tag('spectrometry') # should return false; <spectrometer>.parent == ""
     assert Tag.find_nodes_by_type('spectrometer').to_a.include?(node)
     assert Tag.find_nodes_by_type_with_all_tags(['spectrometer']).to_a.include?(node)
     assert Tag.find_nodes_by_type('spectrometry').to_a.include?(node)
@@ -122,7 +122,7 @@ class NodeTagTest < ActiveSupport::TestCase
     user = node(:blog).author
     tagname = "with:#{user.username}"
     assert_equal I18n.t('node.cannot_add_yourself_coauthor'), node(:blog).can_tag(tagname, user, true)
-    assert_false node(:blog).can_tag(tagname, user)
+    assert_not node(:blog).can_tag(tagname, user)
   end
 
   test 'can powertag with: another user' do
@@ -136,7 +136,7 @@ class NodeTagTest < ActiveSupport::TestCase
     user = rusers(:bob)
     tagname = 'with:steven'
     assert_equal I18n.t('node.cannot_find_username'), node(:blog).can_tag(tagname, user, true)
-    assert_false node(:blog).can_tag(tagname, user)
+    assert_not node(:blog).can_tag(tagname, user)
   end
 
   test "can't powertag with: if you're not author" do
@@ -147,7 +147,7 @@ class NodeTagTest < ActiveSupport::TestCase
                     title: 'My research note')
     tagname = "with:#{jeff.username}"
     assert_equal I18n.t('node.only_author_use_powertag'), node.can_tag(tagname, bob, true)
-    assert_false node.can_tag(tagname, bob)
+    assert_not node.can_tag(tagname, bob)
   end
 
   test 'can rsvp yourself' do
@@ -167,11 +167,11 @@ class NodeTagTest < ActiveSupport::TestCase
     assert_not_equal true,  node.can_tag(tagname, user, true) # return errors with optional 3rd parameter
     assert_not_equal false, node.can_tag(tagname, user, true)
     assert_equal I18n.t('node.only_RSVP_for_yourself'), node.can_tag(tagname, user, true)
-    assert_false node.can_tag(tagname, user) # default is true/false
+    assert_not node.can_tag(tagname, user) # default is true/false
   end
 
   test 'only admins can lock pages' do
-    assert_false node(:blog).can_tag('locked', rusers(:bob))
+    assert_not node(:blog).can_tag('locked', rusers(:bob))
     assert node(:blog).can_tag('locked', rusers(:admin))
     assert_equal I18n.t('node.only_admins_can_lock'), node(:blog).can_tag('locked', rusers(:bob), true)
   end
@@ -179,7 +179,7 @@ class NodeTagTest < ActiveSupport::TestCase
   test 'redirect tags to non-existent pages should not be accepted' do
     user = rusers(:bob)
     tagname = 'redirect:nonsense'
-    assert_false node(:blog).can_tag(tagname, user)
+    assert_not node(:blog).can_tag(tagname, user)
     assert_equal I18n.t('node.page_does_not_exist'), node(:blog).can_tag(tagname, user, true)
   end
 end

@@ -66,7 +66,7 @@ class TagController < ApplicationController
                   .page(params[:page])
                   .order('node_revisions.timestamp DESC')
     else
-      @tags = Tag.find_all_by_name params[:id]
+      @tags = Tag.where(name: params[:id])
       nodes = Node.where(status: 1, type: node_type)
                   .includes(:revision, :tag)
                   .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
@@ -121,13 +121,13 @@ class TagController < ApplicationController
     @notes = Node.paginate(page: params[:page], per_page: 6)
                  .where('status = 1 AND nid in (?)', nids)
                  .order('nid DESC')
-    @tags = Tag.find_all_by_name params[:id]
+    @tags = Tag.where(name: params[:id])
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(',') + ' Blog' if @tagnames
   end
 
   def author
-    render json: DrupalUsers.find_by_name(params[:id]).tag_counts
+    render json: DrupalUsers.find_by(name: params[:id]).tag_counts
   end
 
   def barnstar
@@ -209,7 +209,7 @@ class TagController < ApplicationController
       end
     else
       flash[:error] = I18n.t('tag_controller.must_own_tag_to_delete')
-      redirect_to Node.find_by_nid(params[:nid]).path
+      redirect_to Node.find_by(nid: params[:nid]).path
     end
   end
 
@@ -256,7 +256,7 @@ class TagController < ApplicationController
   def contributors
     set_sidebar :tags, [params[:id]], note_count: 20
     @tagnames = [params[:id]]
-    @tag = Tag.find_by_name params[:id]
+    @tag = Tag.find_by(name: params[:id])
     @notes = Node.where(status: 1, type: 'note')
                  .includes(:revision, :tag)
                  .where('term_data.name = ?', params[:id])
@@ -271,7 +271,7 @@ class TagController < ApplicationController
     @tags = []
 
     @tagnames.each do |tagname|
-      tag = Tag.find_by_name(tagname)
+      tag = Tag.find_by(name: tagname)
       @tags << tag if tag
       @tagdata[tagname] = {}
       t = Tag.find :all, conditions: { name: tagname }

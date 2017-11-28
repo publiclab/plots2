@@ -113,7 +113,7 @@ class TagControllerTest < ActionController::TestCase
     assert :success
     assert_equal assigns['tags'].sort_by(&:count).sort_by(&:tid) , assigns['tags'].sort_by(&:tid)
     assert_equal assigns['tags'].collect(&:name), assigns['tags'].collect(&:name).uniq
-    assert_false assigns['tags'].collect(&:node).flatten.collect(&:status).include?(0)
+    assert_not assigns['tags'].collect(&:node).flatten.collect(&:status).include?(0)
     assert_not_nil :tags
   end
 
@@ -128,7 +128,7 @@ class TagControllerTest < ActionController::TestCase
     assert !assigns['notes'].empty?
     assigns['notes'].each do |node|
       assert node.has_tag('spectrometry') # should return false
-      assert_false node.has_tag_without_aliasing('spectrometry') # should return false
+      assert_not node.has_tag_without_aliasing('spectrometry') # should return false
     end
 
     # assert_equal assigns['tags'].length, 1
@@ -333,12 +333,12 @@ class TagControllerTest < ActionController::TestCase
     assert_equal node(:one).title, notes.first.title
     assert_equal ['spectrometer'], notes.first.tags.collect(&:name)
     assert       notes.first.has_tag_without_aliasing('spectrometer')
-    assert_false notes.first.has_tag_without_aliasing('spectrometry')
+    assert_not notes.first.has_tag_without_aliasing('spectrometry')
 
     # should be the blog node, nid=13
     assert_equal 'Blog post', notes.last.title
     assert_equal ['spectrometry'], notes.last.tags.collect(&:name)
-    assert_false notes.last.has_tag_without_aliasing('spectrometer')
+    assert_not notes.last.has_tag_without_aliasing('spectrometer')
     assert       notes.last.has_tag_without_aliasing('spectrometry')
   end
 
@@ -356,7 +356,7 @@ class TagControllerTest < ActionController::TestCase
     get :show, id: 'spectrometer'
 
     assert_equal 1, assigns(:notes).length
-    assert_false assigns(:notes).first.has_tag_without_aliasing('spectrometry')
+    assert_not assigns(:notes).first.has_tag_without_aliasing('spectrometry')
     assert       assigns(:notes).first.has_tag_without_aliasing('spectrometer')
   end
 
