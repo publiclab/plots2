@@ -19,7 +19,7 @@ class MapControllerTest < ActionController::TestCase
   end
 
   test 'should get show' do
-    map = node(:map)
+    map = nodes(:map)
     get :show,
         name: map.title.parameterize,
         date: map.created_at.strftime('%m-%d-%Y')

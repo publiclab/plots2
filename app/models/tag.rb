@@ -26,9 +26,9 @@ class Tag < ActiveRecord::Base
   end
 
   validates :name, presence: :true
-  validates :name, format: { with: /^[\w\.:-]*$/, message: 'can only include letters, numbers, and dashes' }
-  # validates :name, :uniqueness => { case_sensitive: false }
-
+  validates :name, format: { with: /\A[\w\.:-]*\z/, message: 'can only include letters, numbers, and dashes' }
+  # validates :name, :uniqueness => { case_sensitive: false  }
+                                                            
   def id
     tid
   end
@@ -48,7 +48,7 @@ class Tag < ActiveRecord::Base
   end
 
   def belongs_to(current_user, nid)
-    node_tag = node_tag.find_by_nid(nid)
+    node_tag = node_tag.find_by(nid: nid)
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
@@ -59,12 +59,14 @@ class Tag < ActiveRecord::Base
         .order('node.views DESC')
         .limit(limit)
         .includes(:node_tag, :tag)
+	.references(:term_data)
   end
 
   # finds recent nodes - should drop "limit" and allow use of chainable .limit()
   def self.find_nodes_by_type(tagnames, type = 'note', limit = 10)
     nodes = Node.where(status: 1, type: type)
                 .includes(:tag)
+                .references(:term_data)
                 .where('term_data.name IN (?)', tagnames)
                 #.select(%i[node.nid node.status node.type community_tags.nid community_tags.tid term_data.name term_data.tid])
                 # above select could be added later for further optimization
@@ -72,9 +74,11 @@ class Tag < ActiveRecord::Base
     tags = Tag.where('term_data.name IN (?)', tagnames)
     parents = Node.where(status: 1, type: type)
                   .includes(:tag)
+                  .references(:term_data)
                   .where('term_data.name IN (?)', tags.collect(&:parent))
     Node.where('node.nid IN (?)', (nodes + parents).collect(&:nid))
         .includes(:revision, :tag)
+        .references(:node_revisions)
         .where(status: 1)
         .order('node_revisions.timestamp DESC')
         .limit(limit)
@@ -97,6 +101,7 @@ class Tag < ActiveRecord::Base
       next unless tag
       parents = Node.where(status: 1, type: type)
                     .includes(:revision, :tag)
+                    .references(:term_data)
                     .where('term_data.name LIKE ?', tag.parent)
       nids += tag_nids + parents.collect(&:nid)
     end
@@ -111,6 +116,7 @@ class Tag < ActiveRecord::Base
         .order('node.nid DESC')
         .limit(limit)
         .includes(:node_tag, :tag)
+        .references(:community_tags)
   end
 
   def self.exists?(tagname, nid)
@@ -132,7 +138,7 @@ class Tag < ActiveRecord::Base
     uids = TagSelection.joins(:tag)
                        .where('term_data.name = ? AND following = ?', tagname, true)
                        .collect(&:user_id)
-    DrupalUsers.where('uid in (?)', uids)
+    DrupalUser.where('uid in (?)', uids)
                .collect(&:user)
   end
 
@@ -149,7 +155,7 @@ class Tag < ActiveRecord::Base
         nids,
         (Time.now.to_i - week.weeks.to_i).to_s,
         (Time.now.to_i - (week - 1).weeks.to_i).to_s
-      ).count
+      ).count(:all)
     end
     weeks
   end
@@ -173,7 +179,7 @@ class Tag < ActiveRecord::Base
   def self.subscribers(tags)
     tids = tags.collect(&:tid)
     # include special tid for indiscriminant subscribers who want it all!
-    all_tag = Tag.find_by_name('everything')
+    all_tag = Tag.find_by(name: 'everything')
     tids += [all_tag.tid] if all_tag
     usertags = TagSelection.where('tid IN (?) AND following = ?', tids, true)
     d = {}
@@ -193,6 +199,7 @@ class Tag < ActiveRecord::Base
   def self.find_research_notes(tagnames, limit = 10)
     Node.research_notes.where(status: 1)
         .includes(:revision, :tag)
+        .references(:node_revisions)
         .where('term_data.name IN (?)', tagnames)
         .order('node_revisions.timestamp DESC')
         .limit(limit)

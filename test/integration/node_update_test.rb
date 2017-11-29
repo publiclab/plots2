@@ -3,8 +3,8 @@ require 'test_helper'
 class NodeUpdateTest < ActionDispatch::IntegrationTest
   test 'edit note after creating a new note' do
     post '/user_sessions', user_session: {
-      username: rusers(:bob).username,
-      password: 'secret'
+      username: users(:bob).username,
+      password: 'secretive'
     }
 
     title = 'My second post about balloon mapping'
@@ -15,7 +15,7 @@ class NodeUpdateTest < ActionDispatch::IntegrationTest
          tags: 'balloon-mapping,event'
 
     follow_redirect!
-    assert_equal '/notes/' + rusers(:bob).username + '/' +
+    assert_equal '/notes/' + users(:bob).username + '/' +
                  Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize, path
 
     node = Node.where(title: title).first
@@ -32,13 +32,13 @@ class NodeUpdateTest < ActionDispatch::IntegrationTest
          tags: 'balloon-mapping,event,meetup'
     follow_redirect!
     # path does not get updated
-    assert_equal '/notes/' + rusers(:bob).username + '/' +
+    assert_equal '/notes/' + users(:bob).username + '/' +
                  Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize, path
 
     assert_equal flash[:notice], 'Edits saved.'
 
     # visiting note with original path
-    get '/notes/' + rusers(:bob).username + '/' +
+    get '/notes/' + users(:bob).username + '/' +
         Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     assert_response :success
     assert_select 'h1', newtitle

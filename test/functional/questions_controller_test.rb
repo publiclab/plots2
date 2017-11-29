@@ -13,7 +13,7 @@ class QuestionsControllerTest < ActionController::TestCase
   end
 
   test 'should get show' do
-    note = node(:question)
+    note = nodes(:question)
     get :show,
         author: note.author.name,
         date: Time.at(note.created).strftime('%m-%d-%Y'),
@@ -23,13 +23,13 @@ class QuestionsControllerTest < ActionController::TestCase
   end
 
   test 'show note by id' do
-    note = node(:question)
+    note = nodes(:question)
     get :show, id: note.id
     assert_response :success
   end
 
   test 'should redirect notes other than question to note path' do
-    note = node(:one)
+    note = nodes(:one)
     get :show,
         author: note.author.name,
         date: Time.at(note.created).strftime('%m-%d-%Y'),
@@ -38,7 +38,7 @@ class QuestionsControllerTest < ActionController::TestCase
   end
 
   test 'redirect question to short url' do
-    note = node(:question)
+    note = nodes(:question)
     get :shortlink, id: note.id
     assert_redirected_to note.path(:question)
   end
@@ -54,7 +54,7 @@ class QuestionsControllerTest < ActionController::TestCase
   end
 
   test 'should show accepted label for accepted answers' do
-    note = node(:question)
+    note = nodes(:question)
     answer = answers(:two)
     get :show,
         author: note.author.name,
@@ -66,7 +66,7 @@ class QuestionsControllerTest < ActionController::TestCase
   end
 
   test 'should not show answer accept button to users if not logged in' do
-    note = node(:question)
+    note = nodes(:question)
     answer = answers(:one)
     get :show,
         author: note.author.name,
@@ -78,8 +78,8 @@ class QuestionsControllerTest < ActionController::TestCase
   end
 
   test 'should show accept answer button to author of the question' do
-    UserSession.create(rusers(:jeff))
-    note = node(:question)
+    UserSession.create(users(:jeff))
+    note = nodes(:question)
     answer = answers(:one)
     get :show,
         author: note.author.name,
@@ -91,8 +91,8 @@ class QuestionsControllerTest < ActionController::TestCase
   end
 
   test 'should not show accept answer button to user who is not the author of the question' do
-    UserSession.create(rusers(:bob))
-    note = node(:question)
+    UserSession.create(users(:bob))
+    note = nodes(:question)
     answer = answers(:one)
     get :show,
         author: note.author.name,
@@ -123,53 +123,53 @@ class QuestionsControllerTest < ActionController::TestCase
   test 'should list questions with status 1 in index' do
     get :index
     questions = assigns(:questions)
-    expected = [node(:question), node(:question2)]
-    notes = [node(:one), node(:first_timer_question)]
+    expected = [nodes(:question), nodes(:question2)]
+    notes = [nodes(:one), nodes(:first_timer_question)]
     assert (questions & expected).present?
     assert !(questions & notes).present?
   end
 
   test 'should list questions with status 1 & 4 in index to admin' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
     get :index
     questions = assigns(:questions)
-    expected = [node(:question), node(:question2), node(:first_timer_question)]
-    notes = [node(:one)]
+    expected = [nodes(:question), nodes(:question2), nodes(:first_timer_question)]
+    notes = [nodes(:one)]
     assert (questions & expected).present?
     assert !(questions & notes).present?
   end
 
   test 'should list questions with status 1 in popular' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
     get :popular
     questions = assigns(:questions)
-    expected = [node(:question), node(:question2)]
-    notes = [node(:one)]
+    expected = [nodes(:question), nodes(:question2)]
+    notes = [nodes(:one)]
     assert (questions & expected).present?
     assert !(questions & notes).present?
   end
 
   test 'should list questions with status 1 in liked' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
     get :liked
     questions = assigns(:questions)
-    expected = [node(:question), node(:question2)]
-    notes = [node(:one)]
+    expected = [nodes(:question), nodes(:question2)]
+    notes = [nodes(:one)]
     assert (questions & expected).present?
     assert !(questions & notes).present?
   end
 
   test 'should list only answered questions in answered' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
     get :answered
     questions = assigns(:questions)
-    expected = [node(:question)]
+    expected = [nodes(:question)]
     assert (questions & expected).present?
-    assert !(questions & [node(:question2)]).present?
+    assert !(questions & [nodes(:question2)]).present?
   end
 
   test '/questions/new form loads' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     get :new
     assert_response :success
   end

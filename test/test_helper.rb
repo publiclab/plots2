@@ -7,21 +7,24 @@ require 'rails/test_help'
 require 'authlogic/test_case'
 require 'i18n'
 
+require "minitest/reporters"
+Minitest::Reporters.use!
+
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
   #
   # Note: You'll currently still have to declare fixtures explicitly in integration tests
   # -- they do not yet inherit this setting
 
-  # yay thanks: http://journal.missiondata.com/post/63405042042/rails-fixtures-with-models-using-settablename
-  set_fixture_class node: Node
-  set_fixture_class rusers: User
-  set_fixture_class users: DrupalUsers
-  set_fixture_class node_revisions: Revision
-  set_fixture_class tag_selection: TagSelection
-  set_fixture_class tags: Tag
+  # These can be replaced in Rails 5 with this syntax, in the fixture files: 
+  # https://github.com/rails/rails/commit/2acec4657752d441ab87b9f5862d7918843d6409#diff-1ed2907b3b8f148c2533558a77673ffaR3
+  # _fixture:
+  #   model_class: 'DrupalUser'
+  set_fixture_class users: User
   set_fixture_class node_tags: NodeTag
-  set_fixture_class comments: Comment
+  set_fixture_class drupal_users: DrupalUser
+  set_fixture_class node_revisions: Revision
+  set_fixture_class drupal_content_type_map: DrupalContentTypeMap
 
   fixtures :all
 

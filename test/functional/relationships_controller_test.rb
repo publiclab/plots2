@@ -6,8 +6,8 @@ class RelationshipsControllerTest < ActionController::TestCase
   end
 
   test 'create will follow other user with followed_id param' do
-    user = rusers(:admin)
-    followed_user = rusers(:jeff)
+    user = users(:admin)
+    followed_user = users(:jeff)
     UserSession.create(user)
     assert_difference 'Relationship.count', 1 do
       post :create, followed_id: followed_user.id
@@ -17,9 +17,9 @@ class RelationshipsControllerTest < ActionController::TestCase
   end
 
   test 'destroy will remove follow relationship' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     UserSession.create(user)
-    followed_user = rusers(:bob)
+    followed_user = users(:bob)
     post :create, followed_id: followed_user.id
 
     assert_difference 'Relationship.count', -1 do
@@ -31,7 +31,7 @@ class RelationshipsControllerTest < ActionController::TestCase
   end
 
   test 'actions require authorization' do
-    followed_user = rusers(:bob)
+    followed_user = users(:bob)
     post :create, followed_id: followed_user.id
 
     assert_response :unprocessable_entity

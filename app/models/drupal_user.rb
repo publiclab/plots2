@@ -1,4 +1,4 @@
-class DrupalUsers < ActiveRecord::Base
+class DrupalUser < ActiveRecord::Base
   attr_accessible :title, :body, :name, :pass, :mail, :mode, :sort, :threshold, :theme, :signature, :signature_format, :created, :access, :login, :status, :timezone, :language, :picture, :init, :data, :timezone_id, :timezone_name
 
   ## User status can be:
@@ -41,7 +41,7 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def using_new_site?
-    !User.find_by_username(name).nil?
+    !User.find_by(username: name).nil?
   end
 
   # Rails-style adaptors:
@@ -93,21 +93,26 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def likes
-    NodeSelection.find(:all, conditions: { user_id: uid, liking: true })
+    NodeSelection.where(user_id: uid, liking: true)
   end
 
   def like_count
-    NodeSelection.count(:all, conditions: { user_id: uid, liking: true })
+    NodeSelection.where(user_id: uid, liking: true).count
   end
 
   def liked_notes
     Node.includes(:node_selections)
+        .references(:node_selections)
         .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, uid)
         .order('node_selections.nid DESC')
   end
 
   def liked_pages
-    NodeSelection.find(:all, conditions: ["status = 1 AND user_id = ? AND liking = ? AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')", uid, true], include: :node).collect(&:node).reverse
+    NodeSelection.where("status = 1 AND user_id = ? AND liking = ? AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')", uid, true)
+                 .includes(:node)
+                 .references(:node)
+                 .collect(&:node)
+                 .reverse
   end
 
   # last node
@@ -127,16 +132,16 @@ class DrupalUsers < ActiveRecord::Base
   end
 
   def note_count
-    Node.count(:all, conditions: { status: 1, uid: uid, type: 'note' })
+    Node.where(status: 1, uid: uid, type: 'note').count
   end
 
   def node_count
-    Node.count(:all, conditions: { status: 1, uid: uid }) + Revision.count(:all, conditions: { uid: uid })
+    Node.where(status: 1, uid: uid).count + Revision.where(uid: uid).count
   end
 
   # accepts array of tag names (strings)
   def notes_for_tags(tagnames)
-    all_nodes = Node.find(:all, order: 'nid DESC', conditions: { type: 'note', status: 1, uid: uid })
+    all_nodes = Node.order('nid DESC').where(type: 'note', status: 1, uid: uid)
     node_ids = []
     all_nodes.each do |node|
       node.tags.each do |tag|
@@ -162,7 +167,7 @@ class DrupalUsers < ActiveRecord::Base
 
   def tag_counts
     tags = {}
-    Node.find(:all, order: 'nid DESC', conditions: { type: 'note', status: 1, uid: uid }, limit: 20).each do |node|
+    Node.order('nid DESC').where(type: 'note', status: 1, uid: uid).limit(20).each do |node|
       node.tags.each do |tag|
         if tags[tag.name]
           tags[tag.name] += 1

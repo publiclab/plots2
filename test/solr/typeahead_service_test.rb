@@ -5,26 +5,26 @@ class TypeaheadServiceTest < ActiveSupport::TestCase
   
   test 'running TypeaheadService.search_all' do
     result = TypeaheadService.new.search_all('about').getTags()
-    assert_true solrAvailable
+    assert solrAvailable
     assert_not_nil result
     assert_equal result.length, 2
     result = TypeaheadService.new.search_all('Canon').getTags() # searching for a node
     assert_not_nil result
-    assert_equal result.length, 1
+    assert_equal 1, result.length
   end
 
   test 'running TypeaheadService.notes' do
     result = TypeaheadService.new.notes('blog')
-    assert_true solrAvailable
+    assert solrAvailable
     assert_not_nil result
-    assert_equal result.length, 2
+    assert_equal 2, result.length
   end
 
 end
 
 # Need to be tested:
 
-#  def users(input, limit = 5)
+#  def drupal_users(input, limit = 5)
 #  def tags(input, limit = 5)
 #  def comments(input, limit = 5)
 #  def wikis(input, limit = 5)

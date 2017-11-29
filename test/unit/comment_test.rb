@@ -13,78 +13,78 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   test 'should scan callouts out of body' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = 'Hey, @Bob, what do you think?'
     assert_not_nil comment
     assert_equal 1, comment.mentioned_users.length
-    assert_equal comment.mentioned_users.first.id, rusers(:bob).id
+    assert_equal comment.mentioned_users.first.id, users(:bob).id
   end
 
   test 'should scan multiple callouts out of body' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = 'Hey, @Bob, @jeff, @Bob, what do you think?'
     assert_equal comment.mentioned_users.length, 2 # one duplicate, removed
-    assert_equal comment.mentioned_users.first.id, rusers(:bob).id
-    assert_equal comment.mentioned_users[1].id, rusers(:jeff).id
+    assert_equal comment.mentioned_users.first.id, users(:bob).id
+    assert_equal comment.mentioned_users[1].id, users(:jeff).id
   end
 
   test 'should scan multiple space-separated callouts out of body' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = 'Hey, @Bob @jeff @Bob, what do you think?'
     assert_equal comment.mentioned_users.length, 2 # one duplicate, removed
-    assert_equal comment.mentioned_users[0].id, rusers(:bob).id
-    assert_equal comment.mentioned_users[1].id, rusers(:jeff).id
+    assert_equal comment.mentioned_users[0].id, users(:bob).id
+    assert_equal comment.mentioned_users[1].id, users(:jeff).id
   end
 
   test 'should scan hashtags out of body' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = 'Hey, #everything followers.'
     assert_not_nil comment
     assert_equal 1, comment.followers_of_mentioned_tags.length
-    assert_equal comment.followers_of_mentioned_tags.first.id, rusers(:moderator).id
+    assert_equal comment.followers_of_mentioned_tags.first.id, users(:moderator).id
     # tag followers can be found in tag_selection.yml
   end
 
   test 'should scan multiple hashtags out of body' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = 'Hey, #everything, #awesome followers.'
     assert_equal comment.followers_of_mentioned_tags.length, 3
-    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:bob).id)
-    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:moderator).id)
-    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:unbanned_spammer).id)
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(users(:bob).id)
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(users(:moderator).id)
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(users(:unbanned_spammer).id)
   end
 
   test 'should scan multiple space-separated hashtags out of body' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = 'Hey, #everything #awesome followers.'
     # assert_equal comment.followers_of_mentioned_tags.length, 2
-    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:bob).id)
-    assert comment.followers_of_mentioned_tags.collect(&:id).include?(rusers(:moderator).id)
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(users(:bob).id)
+    assert comment.followers_of_mentioned_tags.collect(&:id).include?(users(:moderator).id)
   end
 
   test 'should scan hashtags in comments and link them' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = 'This is a test #hashtag'
     assert_equal comment.body, 'This is a test [#hashtag](/tag/hashtag)'
   end
 
   test 'should ignore Headers as hashtags in markdown' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = '#This is a Heading'
     assert_not_equal comment.body, '[#This](/tag/This) is a Heading'
   end
 
   test 'should ignore commas, exclamation, periods in hashtag' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = 'Testing #tagnames with #commas, #exclamations! and #periods.'
     assert_includes comment.body, '[#tagnames](/tag/tagnames)'
     assert_not_includes comment.body, '[#commas,](/tag/commas,)'
@@ -93,22 +93,22 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   test 'should link hashtags in headers' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = '#Titles and #tagnames'
     assert_equal comment.body, '#Titles and [#tagnames](/tag/tagnames)'
   end
 
   test 'should ignore sub-headings as hashtags' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = '##Titles'
     assert_not_equal comment.body, '[##Titles](/tag/Titles)'
   end
 
   test 'should ignore Titles with spaces after hash as hashtags' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = '## Titles'
     assert_not_equal comment.body, '[## Titles](/tag/Titles)'
     comment.comment = '# Tagnames'
@@ -116,15 +116,15 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   test 'should ignore hashtag in links as nesting of links is not allowed' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = '[#tags in links](/)'
     assert_not_equal comment.body, '[[#tags](/tag/tags) in links](/)'
   end
 
   test 'should ignore hashtags in URLs' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id)
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
     comment.comment = '[tags in URLs](/mypage#tags)'
     assert_not_equal comment.body, '[tags in URLs](/mypage[#tags](/tags/tags))'
   end
@@ -132,7 +132,7 @@ class CommentTest < ActiveSupport::TestCase
   test 'should create comments for answers' do
     answer = answers(:one)
     comment = Comment.new(
-      uid: rusers(:bob).id,
+      uid: users(:bob).id,
       aid: answer.id,
       comment: 'Test comment'
     )
@@ -141,9 +141,9 @@ class CommentTest < ActiveSupport::TestCase
 
   test 'should relate answer comments to user and answer but not node' do
     answer = answers(:one)
-    user = users(:bob)
+    user = drupal_users(:bob)
     comment = Comment.new(comment: 'Test comment')
-    comment.drupal_users = user
+    comment.drupal_user = user
     comment.answer = answer
 
     assert comment.save
@@ -168,9 +168,9 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   test 'should create comments for wiki pages' do
-    wiki = node(:wiki_page)
+    wiki = nodes(:wiki_page)
     comment = Comment.new(
-      uid: rusers(:bob).id,
+      uid: users(:bob).id,
       nid: wiki.id,
       comment: 'Test comment for wiki'
     )
@@ -180,24 +180,24 @@ class CommentTest < ActiveSupport::TestCase
   test 'should return a list of node commenter uids' do
     comment = comments(:third)
 
-    assert_equal [rusers(:spammer).uid, rusers(:jeff).uid], comment.parent_commenter_uids
+    assert_equal [users(:spammer).uid, users(:jeff).uid], comment.parent_commenter_uids
   end
 
   test 'should return a list of node liker uids' do
     comment = comments(:third)
 
-    assert_equal [rusers(:bob).uid], comment.parent_liker_uids
+    assert_equal [users(:bob).uid], comment.parent_liker_uids
   end
 
   test 'should return a list of node reviser uids' do
     comment = comments(:third)
 
-    assert_equal [rusers(:jeff).uid], comment.parent_reviser_uids
+    assert_equal [users(:jeff).uid], comment.parent_reviser_uids
   end
 
   test 'should return a combined list of all commenter, liker, and reviser uids for node' do
     comment = comments(:third)
 
-    assert_equal [rusers(:spammer).uid, rusers(:jeff).uid, rusers(:bob).uid], comment.uids_to_notify
+    assert_equal [users(:spammer).uid, users(:jeff).uid, users(:bob).uid], comment.uids_to_notify
   end
 end

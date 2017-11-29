@@ -1,6 +1,6 @@
 <div class="container">
 
-<%= form_for @user_session, :as => :user_session, :url => { :action => "create" }, :html => {:class => "form col-md-6 offset-3"} do |f| %>
+<%= form_for :user_session, :as => :user_session, :url => { :action => "create" }, :html => {:class => "form col-md-6 offset-3"} do |f| %>
 
   <h2><%= raw t('user_sessions.new.log_in_or_sign_up', :url1 => "/signup") %></h2>
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>

@@ -19,6 +19,7 @@ class NotesController < ApplicationController
                  .select('*, max(node_revisions.timestamp)')
                  .where(status: 1, type:%w[page place])
                  .includes(:revision, :tag)
+                 .references(:term_data)
                  .where('term_data.name = ?', 'chapter')
                  .group('node.nid')
                  .order('max(node_revisions.timestamp) DESC, node.nid')
@@ -148,15 +149,15 @@ class NotesController < ApplicationController
   end
 
   def edit
-    @node = Node.find(params[:id], conditions: { type: 'note' })
+    @node = Node.find_by(nid: params[:id], type: 'note')
     if current_user.uid == @node.uid || current_user.role == 'admin' || @node.has_tag("with:#{current_user.username}")
       if params[:legacy]
         render template: 'editor/post'
       else
         if @node.main_image
           @main_image = @node.main_image.path(:default)
-        elsif params[:main_image] && Image.find_by_id(params[:main_image])
-          @main_image = Image.find_by_id(params[:main_image]).path
+        elsif params[:main_image] && Image.find_by(id: params[:main_image])
+          @main_image = Image.find_by(id: params[:main_image]).path
         elsif @image
           @main_image = @image.path(:default)
         end
@@ -252,7 +253,7 @@ class NotesController < ApplicationController
 
   # notes for a given author
   def author
-    @user = DrupalUsers.find_by_name params[:id]
+    @user = DrupalUser.find_by(name: params[:id])
     @title = @user.name
     @notes = Node.page(params[:page])
                  .order('nid DESC')
@@ -262,7 +263,7 @@ class NotesController < ApplicationController
 
   # notes for given comma-delimited tags params[:topic] for author
   def author_topic
-    @user = DrupalUsers.find_by_name params[:author]
+    @user = DrupalUser.find_by(name: params[:author])
     @tagnames = params[:topic].split('+')
     @title = @user.name + " on '" + @tagnames.join(', ') + "'"
     @notes = @user.notes_for_tags(@tagnames)

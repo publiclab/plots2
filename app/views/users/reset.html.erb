@@ -4,7 +4,7 @@
 
 <hr />
 
-<% if params[:key] && User.find_by_reset_key(params[:key]) %>
+<% if params[:key] && User.find_by(reset_key: params[:key]) %>
 
 <p><%= t('users.reset.enter_username_and_password') %>:</p>
 

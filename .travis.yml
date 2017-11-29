@@ -19,6 +19,7 @@ install:
 
 script:
   - docker-compose run -e CI=TRUE web bash -c "GENERATE_REPORT=true rake test:all"
+  - docker-compose logs solr
   - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml
   - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then danger --verbose; fi'

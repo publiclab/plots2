@@ -5,7 +5,7 @@ class SearchesControllerTest < ActionController::TestCase
 
   def setup
     activate_authlogic
-    @user = rusers(:newcomer)
+    @user = users(:newcomer)
     UserSession.create(@user)
   end
 
