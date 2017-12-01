@@ -6,6 +6,7 @@ production:
     read_timeout: 120
     log_level: WARNING
     path: "/solr/default"
+    auto_commit_after_request: false
   disabled: false
 development:
   solr:
