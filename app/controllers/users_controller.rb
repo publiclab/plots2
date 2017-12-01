@@ -125,6 +125,22 @@ class UsersController < ApplicationController
                     .joins(:node)
                     .limit(20)
     @wikis = wikis.collect(&:parent).uniq
+    @twitter = nil 
+    @facebook = nil
+    @github = nil 
+    if User.user_has_power_tag("twitter" , @profile_user.id) == true 
+      twitter_user_name = User.get_value_of_power_tag("twitter" , @profile_user.id)
+      @twitter = "https://twitter.com/" + twitter_user_name.to_s  
+    end
+    if User.user_has_power_tag("facebook" , @profile_user.id) == true 
+      facebook_user_name = User.get_value_of_power_tag("facebook" , @profile_user.id)
+      @facebook = "https://facebook.com/" + facebook_user_name.to_s
+    end
+    if User.user_has_power_tag("github" , @profile_user.id) == true 
+      github_user_name = User.get_value_of_power_tag("github" , @profile_user.id)
+      @github = "https://github.com/" + github_user_name.to_s
+    end
+
     if @user.status == 0
       if current_user && (current_user.role == "admin" || current_user.role == "moderator")
         flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
