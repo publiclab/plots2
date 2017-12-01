@@ -86,6 +86,7 @@ Plots2::Application.routes.draw do
   post 'wiki/create' => 'wiki#create'
   get 'wiki/diff' => 'wiki#diff'
   get 'wiki/:id' => 'wiki#show'
+  get 'w/:id' => 'wiki#show'
     # these need precedence for tag listings
     get 'feed/tag/:tagname' => 'tag#rss'
     get ':node_type/tag/:id' => 'tag#show'
