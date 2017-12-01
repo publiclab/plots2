@@ -4,8 +4,9 @@ en:
   notes:
     _responses:
       post_response: "Post your response"
-      post_build: "Document your attempt to build this"
-      post_replication: "Post your attempt to replicate this activity"
+      post_build: "I made this"
+      post_replication: "I did this"
       responses: "Responses"
-      builds: "Builds"
-      replications: "Replications"
+      builds: "People who made this"
+      replications: "People who did this"
+
