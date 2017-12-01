@@ -143,7 +143,7 @@ class User < ActiveRecord::Base
   def self.user_has_power_tag(key , user_id)
     all_key_tags_ids = Tag.where('name LIKE ?' , key + ':%').collect(&:tid)
     tids = TagSelection.where('user_id = ? AND tid IN (?)', user_id, all_key_tags_ids)
-    !tids.nil? 
+    !tids.blank? 
   end
 
   def self.get_value_of_power_tag(key , user_id)
