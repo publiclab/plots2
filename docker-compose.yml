@@ -14,7 +14,7 @@ services:
       # for importing a dump
       # if you want to re-import simply put away ../mysql/*
   solr:
-    image: solr:5.3
+    image: solr:5.5
 #    ports:
 #  - "127.0.0.1:8982:8983"
     volumes:
