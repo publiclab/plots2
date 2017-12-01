@@ -5,7 +5,25 @@
       <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.user.profile_image %>" />
     </div>
   <% end %>
-
+  
+  <div style="text-align: -webkit-center;">
+    <% if @twitter.nil? == false %>
+      <a href="<%= @twitter %>" >
+      <i class="fa fa-twitter-square fa-3x" aria-hidden="true"></i>
+      </a>
+    <% end %>
+    <% if @facebook.nil? == false %>
+        <a href="<%= @facebook %>" >
+       <i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i>
+       </a>
+    <% end %>
+    <% if @github.nil? == false %>
+        <a href="<%= @github %>" >
+       <i class="fa fa-github-square fa-3x" aria-hidden="true"></i>
+       </a>
+    <% end %>
+  </div>
+  <br>
   <% if current_user && @profile_user %>
     <% unless current_user == @profile_user %>
       <hr />
