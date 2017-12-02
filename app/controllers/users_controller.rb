@@ -128,16 +128,16 @@ class UsersController < ApplicationController
     @twitter = nil 
     @facebook = nil
     @github = nil 
-    if User.user_has_power_tag("twitter" , @user.uid) == true 
-      twitter_user_name = User.get_value_of_power_tag("twitter" , @user.uid)
+    if @profile_user.has_power_tag("twitter") == true 
+      twitter_user_name = @profile_user.get_value_of_power_tag("twitter")
       @twitter = "https://twitter.com/" + twitter_user_name.to_s  
     end
-    if User.user_has_power_tag("facebook" , @user.uid) == true 
-      facebook_user_name = User.get_value_of_power_tag("facebook" , @user.uid)
+    if @profile_user.has_power_tag("facebook") == true 
+      facebook_user_name = @profile_user.get_value_of_power_tag("facebook")
       @facebook = "https://facebook.com/" + facebook_user_name.to_s
     end
-    if User.user_has_power_tag("github" , @user.uid) == true 
-      github_user_name = User.get_value_of_power_tag("github" ,  @user.uid)
+    if @profile_user.has_power_tag("github") == true 
+      github_user_name = @profile_user.get_value_of_power_tag("github")
       @github = "https://github.com/" + github_user_name.to_s
     end
 
