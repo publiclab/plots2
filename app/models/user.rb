@@ -140,16 +140,16 @@ class User < ActiveRecord::Base
   end
 
    # power tags have "key:value" format, and should be searched with a "key:*" wildcard
-  def self.user_has_power_tag(key , user_id)
+  def has_power_tag(key)
     all_key_tags_ids = Tag.where('name LIKE ?' , key + ':%').collect(&:tid)
-    tids = TagSelection.where('user_id = ? AND tid IN (?)', user_id, all_key_tags_ids)
+    tids = TagSelection.where('user_id = ? AND tid IN (?)', self.id , all_key_tags_ids)
     !tids.blank? 
   end
 
-  def self.get_value_of_power_tag(key , user_id)
+  def get_value_of_power_tag(key)
     all_key_tags = Tag.where('name LIKE ?' , key + ':%') 
     all_key_tags_ids = all_key_tags.collect(&:tid)
-    tids = TagSelection.where('user_id = ? AND tid IN (?)', user_id, all_key_tags_ids).collect(&:tid) 
+    tids = TagSelection.where('user_id = ? AND tid IN (?)', self.id , all_key_tags_ids).collect(&:tid) 
     tname = Tag.find(tids.first)
     tvalue = tname.name.partition(':').last  
     tvalue
