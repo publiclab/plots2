@@ -83,4 +83,15 @@ class UserTest < ActiveSupport::TestCase
     node2 = rusers(:lurker).node.find_by_nid(20)
      assert_equal [node2], lurker.content_followed_in_past_period(2.hours.ago)
   end
+
+  test 'returns value of power tag' do
+    bob = rusers(:bob)
+    assert_equal bob.get_value_of_power_tag("question") , "spectrometer"
+  end
+
+  test 'has power tag' do
+    bob = rusers(:bob)
+    assert bob.has_power_tag("question")
+  end
+
 end
