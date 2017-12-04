@@ -3,8 +3,6 @@ require 'test_helper'
 class SearchesControllerTest < ActionController::TestCase
   tests SearchesController
 
-  Sunspot.index
-
   def setup
     activate_authlogic
     @user = users(:newcomer)
