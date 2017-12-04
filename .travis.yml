@@ -14,8 +14,8 @@ install:
   - docker-compose exec web sleep 5
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
+  - docker-compose exec web bash -c "rake sunspot:reindex"
   - docker-compose exec web bower install --allow-root
-  - docker-compose logs solr
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger danger-junit; fi'
 
 script:
