@@ -3,7 +3,7 @@ require 'test_helper'
 class SearchesControllerTest < ActionController::TestCase
   tests SearchesController
 
-  Sunspot.reindex
+  Sunspot.index
 
   def setup
     activate_authlogic
