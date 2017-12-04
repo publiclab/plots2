@@ -2,8 +2,6 @@ require 'test_helper'
 
 class NodeSearchTest < ActiveSupport::TestCase
 
-  Node.reindex
-
   test "plain Node.search returns something" do
     search = Node.search
     assert_not_nil search.results
