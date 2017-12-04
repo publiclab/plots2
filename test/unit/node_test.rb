@@ -177,6 +177,16 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal node.normal_tags, [node_tags(:test2)]
   end
 
+  test 'returns power tag' do
+    node = node(:blog)
+    assert_equal node.power_tag_objects("lat") , [node_tags(:map_lat)]
+  end
+
+  test 'has power tag' do
+    node = node(:blog) 
+    assert node.has_power_tag("lat")
+  end
+
   test 'should show question icon for question node' do
     node = node(:question)
     assert_equal 'question-circle', node.icon
