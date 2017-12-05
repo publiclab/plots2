@@ -17,21 +17,21 @@ namespace :test do
     Coveralls::RakeTask.new
     if ENV['GENERATE_REPORT'] == 'true'
       require 'ci/reporter/rake/test_unit'
-      Rake::Task["ci:setup:testunit"].execute
+      Rake::Task["ci:setup:testunit"].invoke
     end
     puts "Running Rails tests"
-    Rake::Task["test:run"].execute
+    Rake::Task["test:run"].invoke
     puts "Running Solr-dependent tests"
-    Rake::Task["test:solr"].execute
+    Rake::Task["test:solr"].invoke
     puts "Running jasmine tests headlessly"
-    Rake::Task["spec:javascript"].execute
-    Rake::Task["coveralls:push"].execute
+    Rake::Task["spec:javascript"].invoke
+    Rake::Task["coveralls:push"].invoke
   end
 
   desc "Run rails and jasmine tests"
   task :javascript do
     puts "Running jasmine tests headlessly"
-    Rake::Task["spec:javascript"].execute
+    Rake::Task["spec:javascript"].invoke
   end
 
   desc "This is where you'd start the embedded Solr engine, and tweak config. Runs solr-specific tests."
