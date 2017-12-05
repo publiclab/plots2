@@ -27,21 +27,21 @@ namespace :test do
     Coveralls::RakeTask.new
     if ENV['GENERATE_REPORT'] == 'true'
       require 'ci/reporter/rake/test_unit'
-      Rake::Task["ci:setup:testunit"].invoke
+      Rake::Task["ci:setup:testunit"].execute
     end
     puts "Running Rails tests"
-    Rake::Task["test:run"].invoke
+    Rake::Task["test:run"].execute
     puts "Preparing Solr-dependent tests"
-    Rake::Task["test:solr"].invoke
+    Rake::Task["test:solr"].execute
     puts "Running jasmine tests headlessly"
-    Rake::Task["spec:javascript"].invoke
-    Rake::Task["coveralls:push"].invoke
+    Rake::Task["spec:javascript"].execute
+    Rake::Task["coveralls:push"].execute
   end
 
   desc "Run rails and jasmine tests"
   task :javascript do
     puts "Running jasmine tests headlessly"
-    Rake::Task["spec:javascript"].invoke
+    Rake::Task["spec:javascript"].execute
   end
 
   desc "This is where you'd start the embedded Solr engine, and tweak config. Runs solr-specific tests."
@@ -57,7 +57,7 @@ namespace :test do
     puts "turning on solr dependence at config/sunspot.yml"
     puts sunspot.to_yaml
     `RAILS_ENV=test rake SOLR_DISABLE_CHECK=1 sunspot:reindex`
-    Rake::Task["test:solr_tests"].invoke
+    Rake::Task["test:solr_tests"].execute
     # restore "diabled" to true in test for sunspot.yml
     puts "turning solr dependence back off in tests at config/sunspot.yml"
     sunspot['test']['disabled'] = true
