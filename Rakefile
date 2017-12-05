@@ -6,10 +6,20 @@ require File.expand_path('../config/application', __FILE__)
 
 Plots2::Application.load_tasks
 
-#Rake::Task['test:run'].clear
+Rake::Task['test:run'].clear
 
 # rake test:all
 namespace :test do
+
+  # run normal rails tests but not solr tests
+  #Rake::TestTask.new(:_run) do |t|
+  Rake::TestTask.new(:run) do |t|
+    t.libs << "test"
+       t.test_files = FileList['test/**/*_test.rb'].exclude(
+       'test/solr/**/*_test.rb'
+    )
+  end
+  #task :run => ['test:_run']
 
   desc "Run rails and jasmine tests"
   task :all => :environment do
