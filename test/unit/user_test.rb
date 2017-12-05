@@ -85,12 +85,12 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'returns value of power tag' do
-    bob = rusers(:bob)
+    bob = users(:bob)
     assert_equal bob.get_value_of_power_tag("question") , "spectrometer"
   end
 
   test 'has power tag' do
-    bob = rusers(:bob)
+    bob = users(:bob)
     assert bob.has_power_tag("question")
   end
 

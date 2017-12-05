@@ -178,12 +178,12 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'returns power tag' do
-    node = node(:blog)
+    node = nodes(:blog)
     assert_equal node.power_tag_objects("lat") , [node_tags(:map_lat)]
   end
 
   test 'has power tag' do
-    node = node(:blog) 
+    node = nodes(:blog) 
     assert node.has_power_tag("lat")
   end
 
