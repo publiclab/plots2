@@ -10,6 +10,7 @@ Plots2::Application.load_tasks
 
 # rake test:all
 namespace :test do
+
   desc "Run rails and jasmine tests"
   task :all => :environment do
     require 'coveralls/rake/task'
