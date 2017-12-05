@@ -8,19 +8,19 @@ Plots2::Application.load_tasks
 
 Rake::Task['test:run'].clear
 
-# rake test:all
 namespace :test do
 
   # run normal rails tests but not solr tests
   #Rake::TestTask.new(:_run) do |t|
   Rake::TestTask.new(:run) do |t|
     t.libs << "test"
-       t.test_files = FileList['test/**/*_test.rb'].exclude(
-       'test/solr/**/*_test.rb'
+    t.test_files = FileList['test/**/*_test.rb'].exclude(
+      'test/solr/**/*_test.rb'
     )
   end
   #task :run => ['test:_run']
 
+  # rake test:all
   desc "Run rails and jasmine tests"
   task :all => :environment do
     require 'coveralls/rake/task'
@@ -32,7 +32,9 @@ namespace :test do
     puts "Running Rails tests"
     Rake::Task["test:run"].execute
     puts "Preparing Solr-dependent tests"
+    Rake::Task["test:solr_setup"].execute
     Rake::Task["test:solr"].execute
+    Rake::Task["test:solr_cleanup"].execute
     puts "Running jasmine tests headlessly"
     Rake::Task["spec:javascript"].execute
     Rake::Task["coveralls:push"].execute
@@ -44,9 +46,9 @@ namespace :test do
     Rake::Task["spec:javascript"].execute
   end
 
-  desc "This is where you'd start the embedded Solr engine, and tweak config. Runs solr-specific tests."
+  desc "Prepare for Solr-specific tests"
   # Solr is assumed running from the container or otherwise available as in sunspot.yml.
-  task :solr do
+  task :solr_setup do
     # overwrite "diabled" in test for sunspot.yml
     require 'yaml'
     sunspot = YAML::load_file "config/sunspot.yml"
@@ -57,7 +59,10 @@ namespace :test do
     puts "turning on solr dependence at config/sunspot.yml"
     puts sunspot.to_yaml
     `RAILS_ENV=test rake SOLR_DISABLE_CHECK=1 sunspot:reindex`
-    Rake::Task["test:solr_tests"].execute
+  end
+
+  desc "Clean up after solr-specific tests"
+  task :solr_cleanup do
     # restore "diabled" to true in test for sunspot.yml
     puts "turning solr dependence back off in tests at config/sunspot.yml"
     sunspot['test']['disabled'] = true
@@ -66,8 +71,8 @@ namespace :test do
     end
   end
 
-  desc "Run solr-specific tests"
-  Rake::TestTask.new(:solr_tests) do |t|
+  desc "Run Solr-specific tests"
+  Rake::TestTask.new(:solr) do |t|
     puts "Running Solr-dependent tests"
     t.libs << "test"
     t.pattern = 'test/solr/*_test.rb'
