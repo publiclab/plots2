@@ -31,7 +31,7 @@ namespace :test do
     end
     puts "Running Rails tests"
     Rake::Task["test:run"].invoke
-    puts "Running Solr-dependent tests"
+    puts "Preparing Solr-dependent tests"
     Rake::Task["test:solr"].invoke
     puts "Running jasmine tests headlessly"
     Rake::Task["spec:javascript"].invoke
@@ -59,6 +59,7 @@ namespace :test do
     `RAILS_ENV=test rake SOLR_DISABLE_CHECK=1 sunspot:reindex`
     Rake::Task["test:solr_tests"].invoke
     # restore "diabled" to true in test for sunspot.yml
+    puts "turning solr dependence back off in tests at config/sunspot.yml"
     sunspot['test']['disabled'] = true
     File.open("config/sunspot.yml", "w") do |file|
       file.write sunspot.to_yaml
@@ -67,6 +68,7 @@ namespace :test do
 
   desc "Run solr-specific tests"
   Rake::TestTask.new(:solr_tests) do |t|
+    puts "Running Solr-dependent tests"
     t.libs << "test"
     t.pattern = 'test/solr/*_test.rb'
     t.verbose = true
