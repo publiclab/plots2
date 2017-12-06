@@ -7,6 +7,7 @@ require File.expand_path('../config/application', __FILE__)
 Plots2::Application.load_tasks
 
 Rake::Task['test:run'].clear
+Rake::Task['test:all'].clear
 
 namespace :test do
 
