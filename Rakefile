@@ -65,6 +65,8 @@ namespace :test do
   task :solr_cleanup do
     # restore "diabled" to true in test for sunspot.yml
     puts "turning solr dependence back off in tests at config/sunspot.yml"
+    require 'yaml'
+    sunspot = YAML::load_file "config/sunspot.yml"
     sunspot['test']['disabled'] = true
     File.open("config/sunspot.yml", "w") do |file|
       file.write sunspot.to_yaml
