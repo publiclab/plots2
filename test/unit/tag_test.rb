@@ -14,19 +14,19 @@ class TagTest < ActiveSupport::TestCase
   test 'tag followers' do
     followers = Tag.followers(node_tags(:awesome).name)
     assert !followers.empty?
-    assert followers.include?(tag_selection(:awesome).user.user)
+    assert followers.include?(tag_selections(:awesome).user.user)
   end
 
   test 'tag subscribers' do
     subscribers = Tag.subscribers([tags(:awesome)])
     assert !subscribers.empty?
-    assert (subscribers.to_a.collect(&:last).map { |o| o[:user] }).include?(tag_selection(:awesome).user)
+    assert (subscribers.to_a.collect(&:last).map { |o| o[:user] }).include?(tag_selections(:awesome).user)
   end
 
   test 'creating a tag with a bad uid' do
     node_tag = NodeTag.new(uid: 1_343_151_513,
                                                tid: tags(:awesome).tid,
-                                               nid: node(:one).nid)
+                                               nid: nodes(:one).nid)
     assert node_tag.save!
     assert_nil node_tag.author
   end
@@ -43,7 +43,7 @@ class TagTest < ActiveSupport::TestCase
   test 'tag nodes_in_week' do
     nodes_in_week = Tag.nodes_for_period(
       'note',
-      [node(:one).nid],
+      [nodes(:one).nid],
       (Time.now.to_i - 1.weeks.to_i).to_s,
       Time.now.to_i.to_s
     )
@@ -52,7 +52,7 @@ class TagTest < ActiveSupport::TestCase
 
     nodes_in_year = Tag.nodes_for_period(
       'note',
-      [node(:one).nid],
+      [nodes(:one).nid],
       (Time.now.to_i - 52.weeks.to_i).to_s,
       Time.now.to_i.to_s
     )
@@ -63,34 +63,34 @@ class TagTest < ActiveSupport::TestCase
   test 'find all tagged research notes with status 1' do
     tagnames = ['test']
     notes = Tag.find_research_notes(tagnames)
-    expected = [node(:one)]
+    expected = [nodes(:one)]
     assert_equal expected, notes
   end
 
   test 'response power tagging' do
-    tag = Tag.new(name: "response:#{node(:blog).id}")
+    tag = Tag.new(name: "response:#{nodes(:blog).id}")
     assert tag.save!
     node_tag = NodeTag.new(
       tid: tag.tid,
-      nid: node(:one).nid,
-      uid: rusers(:bob).uid
+      nid: nodes(:one).nid,
+      uid: users(:bob).uid
     )
     assert node_tag.save!
-    assert !node(:blog).responses.empty?
-    assert node(:blog).response_count > 0
+    assert !nodes(:blog).responses.empty?
+    assert nodes(:blog).response_count > 0
   end
 
   test 'response power tagging with custom key' do
-    tag = Tag.new(name: "replication:#{node(:blog).id}")
+    tag = Tag.new(name: "replication:#{nodes(:blog).id}")
     assert tag.save!
     node_tag = NodeTag.new(
       tid: tag.tid,
-      nid: node(:one).nid,
-      uid: rusers(:bob).uid
+      nid: nodes(:one).nid,
+      uid: users(:bob).uid
     )
     assert node_tag.save!
-    assert !node(:blog).responses('replication').empty?
-    assert node(:blog).response_count('replication') > 0
+    assert !nodes(:blog).responses('replication').empty?
+    assert nodes(:blog).response_count('replication') > 0
   end
 
   test "returns empty array if users are  following both the given tags and this tag" do
@@ -104,11 +104,11 @@ class TagTest < ActiveSupport::TestCase
     awesome = tags(:awesome) # users following tag1 are bob, unbanned_spammer, moderator
     spam = tags(:spam)       # users following tag2 are spammer, newcomer, and following: false for unbanned_spammer
     given_tags = [awesome, spam]
-    assert_equal [rusers(:admin)], test.followers_who_dont_follow_tags(given_tags)
+    assert_equal [users(:admin)], test.followers_who_dont_follow_tags(given_tags)
     # now make unbanned_spammer following: false for both 'awesome' and 'spam' tags:
-    tag_selection(:selection_four).update_attribute('following', false)
+    tag_selections(:selection_four).update_attribute('following', false)
     given_tags = [awesome, spam]
-    assert_equal [rusers(:unbanned_spammer), rusers(:admin)], test.followers_who_dont_follow_tags(given_tags)
+    assert_equal [users(:unbanned_spammer), users(:admin)], test.followers_who_dont_follow_tags(given_tags)
   end
 
   test 'returns all users in this tag if none is following the given tags' do
@@ -116,7 +116,7 @@ class TagTest < ActiveSupport::TestCase
     tag2 = tags(:test)
     tag1 = tags(:awesome)
     given_tags = [tag1, tag2]
-    assert_equal [rusers(:spammer), rusers(:newcomer)], tag.followers_who_dont_follow_tags(given_tags).sort
+    assert_equal [users(:spammer), users(:newcomer)], tag.followers_who_dont_follow_tags(given_tags).sort
   end
 
   test 'returns all users in this tag if none is following a given tag (a new one with no followers)' do
@@ -125,7 +125,7 @@ class TagTest < ActiveSupport::TestCase
     newtag.save
     given_tags = [newtag]
     assert_not_equal [], tags.collect(&:subscriptions).flatten.collect(&:user_id)
-    assert_equal [rusers(:spammer), rusers(:newcomer)], tags.first.followers_who_dont_follow_tags(given_tags).sort
+    assert_equal [users(:spammer), users(:newcomer)], tags.first.followers_who_dont_follow_tags(given_tags).sort
   end
 
   test 'Tag.trending(limit, start, end) returns most-used tags for a time period' do

@@ -113,7 +113,7 @@
     <ul class="nav bullet">
       <% @wikis.each do |wiki| %>
         <% unless (!@node.nil? && wiki.nid == @node.nid) %>
-          <li><a href="<%= wiki.path %>"><i class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;"><%= t('users.profile.updated') %> <%= distance_of_time_in_words(wiki.updated_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %> <%= t('users.profile.by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+		<li><a href="<%= wiki.path %>"><i class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;"><%= t('users.profile.updated') %> <%= distance_of_time_in_words(wiki.updated_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= t('users.profile.by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
         <% end %>
       <% end %>
       <% if params[:controller] == "search" %>
@@ -151,7 +151,7 @@
   <hr />
 
   <ul class="nav nav-tabs">
-    <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words')) %></small></span>
+	  <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
     <li class="active"><a href="#research" data-toggle="tab"><%= t('users.profile.research') %></a></li>
     <li><a href="#coauthored" data-toggle="tab"><span class="hidden-sm hidden-xs"> <%= t('users.profile.Coauthored') %> (<%= @coauthored.size %>)</span></a></li>
   <li><a href="#questions" data-toggle="tab"><i class="fa fa-comments"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %> (<%= Node.questions.where(status: 1, uid: @user.id).length %>)</span></a></li>

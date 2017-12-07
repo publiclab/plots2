@@ -33,7 +33,7 @@
             <%= t('dashboard._wiki.new_edit_by') %> <a href="/profile/<%= wiki.author.name %>"><%= wiki.author.name %></a>
           <% end %>
 
-          <%= distance_of_time_in_words(wiki.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
+	  <%= distance_of_time_in_words(wiki.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
 
           <% if wiki.is_a?(Revision) && wiki.previous %>
            - <a class="btn-diff btn-diff-<%= index %>"><%= t('dashboard._wiki.changes') %></a>

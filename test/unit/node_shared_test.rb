@@ -16,6 +16,7 @@ class NodeSharedTest < ActiveSupport::TestCase
     html = NodeShared.notes_grid(before)
     assert_equal 1, Node.where(status: 1, type: 'note')
                         .includes(:revision, :tag)
+                        .references(:term_data)
                         .where('term_data.name = ?', 'activity:spectrometer')
                         .count
     assert html

@@ -28,7 +28,7 @@ class MapController < ApplicationController
   end
 
   def edit
-    @node = Node.find(params[:id], conditions: { type: 'map' })
+    @node = Node.find_by(id: params[:id])
     if current_user.uid == @node.uid || current_user.role == 'admin'
       render template: 'map/edit'
     else
@@ -37,7 +37,7 @@ class MapController < ApplicationController
   end
 
   def delete
-    @node = Node.find(params[:id], conditions: { type: 'map' })
+    @node = Node.find_by(id: params[:id])
     if current_user.uid == @node.uid || current_user.role == 'admin'
       @node.delete
       flash[:notice] = 'Content deleted.'
@@ -48,7 +48,7 @@ class MapController < ApplicationController
   end
 
   def update
-    @node = Node.find(params[:id], conditions: { type: 'map' })
+    @node = Node.find_by(id: params[:id])
     if current_user.uid == @node.uid || current_user.role == 'admin'
 
       @node.title = params[:title]

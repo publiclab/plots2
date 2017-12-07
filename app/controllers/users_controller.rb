@@ -66,7 +66,7 @@ class UsersController < ApplicationController
   def edit
     @action = "update" # sets the form url
     if params[:id] # admin only
-      @drupal_user = DrupalUsers.find_by_name(params[:id])
+      @drupal_user = DrupalUser.find_by(name: params[:id])
       @user = @drupal_user.user
     else
       @user = current_user
@@ -83,13 +83,13 @@ class UsersController < ApplicationController
   def list
     # allow admins to view recent users
     if params[:id]
-      @users = DrupalUsers.joins('INNER JOIN rusers ON rusers.username = users.name')
+      @users = DrupalUser.joins('INNER JOIN rusers ON rusers.username = users.name')
                           .order("updated_at DESC")
                           .where('rusers.role = ?', params[:id])
                           .page(params[:page])
     else
       # recently active
-      @users = DrupalUsers.select('*, MAX(node.changed) AS last_updated')
+      @users = DrupalUser.select('*, MAX(node.changed) AS last_updated')
                           .joins(:node)
                           .group('users.uid')
                           .where('users.status = 1 AND node.status = 1')
@@ -100,8 +100,8 @@ class UsersController < ApplicationController
   end
 
   def profile
-    @user = DrupalUsers.find_by_name(params[:id])
-    @profile_user = User.find_by_username(params[:id])
+    @user = DrupalUser.find_by(name: params[:id])
+    @profile_user = User.find_by(username: params[:id])
     @title = @user.name
     @notes = Node.research_notes
                        .page(params[:page])
@@ -110,6 +110,7 @@ class UsersController < ApplicationController
     coauthored_tag = "with:"+@user.name 
     @coauthored = Node.where(status: 1, type: "note")
                   .includes(:revision, :tag)
+                  .references(:term_data, :node_revisions)
                   .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s , coauthored_tag.to_s)
                   .page(params[:page])
                   .order('node_revisions.timestamp DESC')                   
@@ -154,10 +155,11 @@ class UsersController < ApplicationController
   end
 
   def likes
-    @user = DrupalUsers.find_by_name(params[:id])
+    @user = DrupalUser.find_by(name: params[:id])
     @title = "Liked by "+@user.name
-    @notes = @user.liked_notes.includes([:tag, :comments])
-                              .paginate(page: params[:page], per_page: 20)
+    @notes = @user.liked_notes
+                  .includes([:tag, :comments])
+                  .paginate(page: params[:page], per_page: 20)
     @wikis = @user.liked_pages
     @tagnames = []
     @unpaginated = false
@@ -165,7 +167,7 @@ class UsersController < ApplicationController
 
   def rss
     if params[:author]
-      @author = DrupalUsers.where(name: params[:author], status: 1).first
+      @author = DrupalUser.where(name: params[:author], status: 1).first
       if @author
         @notes = Node.order("nid DESC")
                            .where(type: 'note', status: 1, uid: @author.uid)
@@ -187,7 +189,7 @@ class UsersController < ApplicationController
 
   def reset
     if params[:key] && params[:key] != nil
-      @user = User.find_by_reset_key(params[:key])
+      @user = User.find_by(reset_key: params[:key])
       if @user
         if params[:user] && params[:user][:password]
           if @user.username.downcase == params[:user][:username].downcase
@@ -201,7 +203,7 @@ class UsersController < ApplicationController
               flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
               redirect_to "/"
             end
-          else
+	  else
             flash[:error] = I18n.t('users_controller.password_change_failed')
           end
         else
@@ -213,7 +215,7 @@ class UsersController < ApplicationController
       end
 
     elsif params[:email]
-      user = User.find_by_email params[:email]
+      user = User.find_by(email: params[:email])
       if user
         key = user.generate_reset_key
         user.save({})
@@ -234,7 +236,7 @@ class UsersController < ApplicationController
   end
 
   def photo
-    @user = DrupalUsers.find_by_uid(params[:uid]).user
+    @user = DrupalUser.find_by(uid: params[:uid]).user
     if current_user.uid == @user.uid || current_user.role == "admin"
       @user.photo = params[:photo]
       if @user.save!
@@ -255,19 +257,19 @@ class UsersController < ApplicationController
   end
 
   def info
-    @user = DrupalUsers.find_by_name(params[:id])
+    @user = DrupalUser.find_by(name: params[:id])
   end
 
   def following
     @title = "Following"
-    @user  = User.find_by_username(params[:id])
+    @user  = User.find_by(username: params[:id])
     @users = @user.following_users.paginate(page: params[:page])
     render 'show_follow'
   end
 
   def followers
     @title = "Followers"
-    @user  = User.find_by_username(params[:id])
+    @user  = User.find_by(username: params[:id])
     @users = @user.followers.paginate(page: params[:page])
     render 'show_follow'
   end

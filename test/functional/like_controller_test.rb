@@ -70,7 +70,7 @@ class LikeControllerTest < ActionController::TestCase
     note = Node.find note.id
     cached_likes =  note.cached_likes
 
-    drupal_current_user = DrupalUsers.find 2 
+    drupal_current_user = DrupalUser.find 2 
     drupal_current_user.ban    #banned user
 
     note = Node.find note.id

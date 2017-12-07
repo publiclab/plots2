@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UserTagTest < ActiveSupport::TestCase
   test 'should create UserTag' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     user_tag = UserTag.new(uid: user.id,
                            value: 'skill:Entrepreneur')
 
@@ -19,7 +19,7 @@ class UserTagTest < ActiveSupport::TestCase
   end
 
   test 'should not contains special characters in value' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     invalid_values = ['"', '""', "'", '$']
     invalid_values.each do |value|
       invalid_user_tag = UserTag.new(uid: user.id,

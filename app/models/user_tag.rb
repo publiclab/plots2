@@ -3,7 +3,7 @@ class UserTag < ActiveRecord::Base
   belongs_to :user, foreign_key: :uid
 
   validates :value, presence: :true
-  validates :value, format: { with: /^[\w\.:-]*$/, message: 'can only include letters, numbers, and dashes' }
+  validates :value, format: { with: /\A[\w\.:-]*\z/, message: 'can only include letters, numbers, and dashes' }
 
   before_save :preprocess
 
