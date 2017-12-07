@@ -28,7 +28,7 @@ class Tag < ActiveRecord::Base
   validates :name, presence: :true
   validates :name, format: { with: /\A[\w\.:-]*\z/, message: 'can only include letters, numbers, and dashes' }
   # validates :name, :uniqueness => { case_sensitive: false  }
-                                                            
+
   def id
     tid
   end
@@ -211,7 +211,7 @@ class Tag < ActiveRecord::Base
     following_given_tags = User.where(id: uids)
     tag_followers.reject { |user| following_given_tags.include? user  }
   end
- 
+
   def self.trending(limit = 5 , start_date = DateTime.now - 1.month , end_date = DateTime.now)
     Tag.joins(:node_tag, :node)
        .select('node.nid, node.created, node.status, term_data.*, community_tags.*')
@@ -222,4 +222,12 @@ class Tag < ActiveRecord::Base
        .order('count DESC')
        .limit(limit)
   end
+
+  #select nodes by tagname and user_id
+ def self.tagged_nodes_by_author(tagname, user_id)
+    Node.where('term_data.name = ?', tagname)
+        .includes(:node_tag, :tag)
+        .references(:term_data)
+        .where('node.uid = ?', user_id)
+ end
 end

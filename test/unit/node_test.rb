@@ -183,7 +183,7 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'has power tag' do
-    node = nodes(:blog) 
+    node = nodes(:blog)
     assert node.has_power_tag("lat")
   end
 
@@ -260,12 +260,12 @@ class NodeTest < ActiveSupport::TestCase
     assert !node.is_liked_by(user)
 
   end
- 
+
   test "should change the number of cache likes" do
     node = nodes(:one)
     user = drupal_users(:jeff)
     current_cached_likes = node.cached_likes
-    
+
     node.toggle_like(user)
 
     cached_like = node.cached_likes
@@ -287,7 +287,7 @@ class NodeTest < ActiveSupport::TestCase
   test "should delete a like" do
     current_user = User.find 2
     note = Node.where(type: 'note', status: 1).first
-  
+
     Node.like(note.nid , current_user)
     note = Node.find note.id
     cached_likes = note.cached_likes
@@ -297,4 +297,14 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal note.likers.length, note.cached_likes
     assert_equal cached_likes-1 , note.cached_likes
   end
+
+  test "return nodes tagged by author and user_id" do
+    jeff = users(:jeff)
+    jeff_notes = nodes(:one)
+    jeff_notes.add_tag('replication:123',jeff)
+    tagged_note = Tag.tagged_nodes_by_author('replication:123',2).first
+    assert_not_nil tagged_note
+    assert_equal jeff_notes, tagged_note
+  end
+
 end
