@@ -23,7 +23,7 @@ class SearchApiTest < ActiveSupport::TestCase
 
     json = JSON.parse(last_response.body)
 
-    assert_equal node(:blog).path, json['items'][0]['docUrl']
+    assert_equal nodes(:blog).path, json['items'][0]['docUrl']
     assert_equal "Blog post",       json['items'][0]['docTitle']
     assert_equal 13,                json['items'][0]['docId']
     

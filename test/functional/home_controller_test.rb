@@ -23,7 +23,7 @@ class HomeControllerTest < ActionController::TestCase
   end
 
   test 'should get dashboard' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
     get :dashboard
 
@@ -69,7 +69,7 @@ class HomeControllerTest < ActionController::TestCase
 
       @controller = old_controller
 
-      UserSession.create(rusers(:bob))
+      UserSession.create(users(:bob))
       session[:openid_return_to] = '/home'
       get :dashboard
       assert_select 'a[href=/openid/resume]', I18n.t('layout._alerts.approve_or_deny') + ' &raquo;'

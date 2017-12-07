@@ -1,5 +1,5 @@
 class SettingsController < ApplicationController
-  # Check the locale was passed and if it is a valid one, set the locale
+  # Check the locale was passed and if it is a valid one, set the locale in cookies
   def change_locale
     lang = params[:locale].to_s.strip.to_sym
     lang = I18n.default_locale unless I18n.available_locales.include?(lang)

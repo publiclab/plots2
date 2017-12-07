@@ -13,7 +13,7 @@ class StatsController < ApplicationController
     @end = params[:end] ? Time.parse(params[:end]) : Time.now
     @notes = Node.select(%i[created type status])
                  .where(type: 'note', status: 1, created: @start.to_i..@end.to_i)
-                 .count
+                 .count(:all)
     @wikis = Revision.select(:timestamp)
                      .where(timestamp: @start.to_i..@end.to_i)
                      .count - @notes # because notes each have one revision
@@ -39,7 +39,7 @@ class StatsController < ApplicationController
 
     @weekly_notes = Node.select(%i[created type status])
                         .where(type: 'note', status: 1, created: @time.to_i - 1.weeks.to_i..@time.to_i)
-                        .count
+                        .count(:all)
     @weekly_wikis = Revision.select(:timestamp)
                             .where(timestamp: @time.to_i - 1.weeks.to_i..@time.to_i)
                             .count
@@ -49,7 +49,7 @@ class StatsController < ApplicationController
                           .count
     @monthly_notes = Node.select(%i[created type status])
                          .where(type: 'note', status: 1, created: @time.to_i - 1.months.to_i..@time.to_i)
-                         .count
+                         .count(:all)
     @monthly_wikis = Revision.select(:timestamp)
                              .where(timestamp: @time.to_i - 1.months.to_i..@time.to_i)
                              .count
@@ -60,7 +60,7 @@ class StatsController < ApplicationController
 
     @notes_per_week_past_year = Node.select(%i[created type status])
                                     .where(type: 'note', status: 1, created: @time.to_i - 1.years.to_i..@time.to_i)
-                                    .count / 52.0
+                                    .count(:all) / 52.0
     @edits_per_week_past_year = Revision.select(:timestamp)
                                         .where(timestamp: @time.to_i - 1.years.to_i..@time.to_i)
                                         .count / 52.0
@@ -71,7 +71,7 @@ class StatsController < ApplicationController
 
     users = []
     nids = []
-    Node.find(:all, conditions: { type: 'note', status: 1 }).each do |note|
+    Node.where(type: 'note', status: 1).each do |note|
       unless note.uid == 674 || note.uid == 671
         users << note.uid
         nids << note.nid

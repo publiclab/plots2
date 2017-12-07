@@ -6,7 +6,7 @@
       <p class="meta"><span><%= t('dashboard._node_wiki.new_page_by') %></span> <a href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a></p>
     <% else %>
       <div class="header-icon"><i class="fa fa-pencil"></i></div>
-      <p class="meta"><%= t('dashboard._node_wiki.new_edit_by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a></p>
+      <p class="meta"><%= t('dashboard._node_wiki.new_edit_by') %> <a href="/profile/<%= node.author.try(:name) %>"><%= node.author.try(:name) %></a></p>
     <% end %>
  
     <% if false && node.main_image %>

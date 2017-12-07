@@ -2,7 +2,7 @@ require 'test_helper'
 
 class CommentMailerTest < ActionMailer::TestCase
   test 'notify other commenters' do
-    user = rusers(:bob)
+    user = users(:bob)
     comment = comments(:question_one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       CommentMailer.notify(user, comment).deliver
@@ -17,7 +17,7 @@ class CommentMailerTest < ActionMailer::TestCase
   end
 
   test 'notify note author' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     comment = comments(:question)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       CommentMailer.notify_note_author(user, comment).deliver
@@ -32,7 +32,7 @@ class CommentMailerTest < ActionMailer::TestCase
   end
 
   test 'notify callout' do
-    user = rusers(:bob)
+    user = users(:bob)
     comment = comments(:question_callout)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       CommentMailer.notify_callout(comment, user)
@@ -47,7 +47,7 @@ class CommentMailerTest < ActionMailer::TestCase
   end
 
   test 'notify tag followers' do
-    user = rusers(:bob)
+    user = users(:bob)
     comment = comments(:question_tag)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       CommentMailer.notify_tag_followers(comment, user)
@@ -62,7 +62,7 @@ class CommentMailerTest < ActionMailer::TestCase
   end
 
   test 'notify answer author' do
-    user = rusers(:bob)
+    user = users(:bob)
     comment = comments(:answer_comment_one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       CommentMailer.notify_answer_author(user, comment).deliver

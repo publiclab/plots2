@@ -28,7 +28,8 @@
   width: 95%;
 }
 
-.answer p img {
+.answer p img,
+.answers-container img {
   max-width:100%;
 }
 

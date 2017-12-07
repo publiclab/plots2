@@ -33,13 +33,14 @@ class SearchService
   end
 
   def find_users(input, limit = 5)
-    DrupalUsers.limit(limit)
+    DrupalUser.limit(limit)
                .order('uid DESC')
                .where('name LIKE ? AND access != 0', '%' + input + '%')
   end
 
   def find_tags(input, limit = 5)
     Tag.includes(:node)
+       .references(:node)
        .where('node.status = 1')
        .limit(limit)
        .where('name LIKE ?', '%' + input + '%')

@@ -26,7 +26,7 @@ If you are submitting a bug, please include:
 New to open source/free software?, Here are a selection of issues we've made especially for first-timers. We're here to help, so just ask if one looks interesting : https://github.com/publiclab/plots2/projects/2
 We also have a slightly larger list of easy-ish but small and self contained issues: https://github.com/publiclab/plots2/labels/help-wanted
 
-When you think you've solced the bug and are ready to submit a pull request, please keep in mind the following:
+When you think you've solved the bug and are ready to submit a pull request, please keep in mind the following:
 
 Make sure these boxes are checked before your pull request is ready to be reviewed and merged.
 * [ ] all tests pass -- `rake test:all`

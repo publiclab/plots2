@@ -5,7 +5,25 @@
       <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.user.profile_image %>" />
     </div>
   <% end %>
-
+  
+  <div style="text-align: -webkit-center;">
+    <% if @twitter.nil? == false %>
+      <a href="<%= @twitter %>" >
+      <i class="fa fa-twitter fa-3x" aria-hidden="true"></i>
+      </a>
+    <% end %>
+    <% if @facebook.nil? == false %>
+        <a href="<%= @facebook %>" >
+       <i class="fa fa-facebook fa-3x" aria-hidden="true"></i>
+       </a>
+    <% end %>
+    <% if @github.nil? == false %>
+        <a href="<%= @github %>" >
+       <i class="fa fa-github fa-3x" aria-hidden="true"></i>
+       </a>
+    <% end %>
+  </div>
+  <br>
   <% if current_user && @profile_user %>
     <% unless current_user == @profile_user %>
       <hr />
@@ -58,7 +76,6 @@
     <% if current_user && current_user.uid == @user.uid %>
       <a href="/profile/<%= @user.name %>/edit" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_profile') %></a>
     <% end %>
-    <a href="?preview=true" class="btn btn-default btn-sm btn-block"><%= t('users.profile.preview_profile_tag') %></a>
   </p>
 
   <% if @profile_user && current_user && @profile_user == current_user %>
@@ -68,18 +85,8 @@
   <hr />
 
   <% if params[:preview] %>
-  <p>
-    <%= render partial: 'user_tags/tags', locals: { type: 'skill', data: fetch_tags(@user.id, 'skill') } %>
-    <%= render partial: 'user_tags/tags', locals: { type: 'gear', data: fetch_tags(@user.id, 'gear') } %>
-    <%= render partial: 'user_tags/tags', locals: { type: 'tool', data: fetch_tags(@user.id, 'tool') } %>
-    <%= render partial: 'user_tags/tags', locals: { type: 'role', data: fetch_tags(@user.id, 'role') } %>
-
-    <br />
-    <% if current_user && (current_user == @profile_user || current_user.role == 'admin' ) %>
-      <a href="/profile/info/<%= @user.name %>" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_information') %></a>
-    <% end %>
-  </p>
   <hr />
+
     <div class="row">
       <div class="col-md-3 col-md-offset-1">
         <h4>Followers</h4>
@@ -106,7 +113,7 @@
     <ul class="nav bullet">
       <% @wikis.each do |wiki| %>
         <% unless (!@node.nil? && wiki.nid == @node.nid) %>
-          <li><a href="<%= wiki.path %>"><i class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;"><%= t('users.profile.updated') %> <%= distance_of_time_in_words(wiki.updated_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %> <%= t('users.profile.by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+		<li><a href="<%= wiki.path %>"><i class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;"><%= t('users.profile.updated') %> <%= distance_of_time_in_words(wiki.updated_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= t('users.profile.by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
         <% end %>
       <% end %>
       <% if params[:controller] == "search" %>
@@ -135,15 +142,22 @@
 
   <p><small><%= raw auto_link(RDiscount.new(@profile_user.bio || '').to_html, :sanitize => false) %></small></p>
 
-  <br />
+  <hr />
+  <div class="row" id="highlight" style=" text-align: center;">
+    <h3 class="col-md-4 col-xs-12 col-sm-4"><%= Node.questions.where(status: 1, uid: @user.id).length %> questions asked</h3>
+    <h3 class="col-md-4 col-xs-12 col-sm-4"><%= Answer.where(uid: @profile_user.id).count %> answers posted</h3>
+    <h3 class="col-md-4 col-xs-12 col-sm-4"><%= Comment.where(uid: @profile_user.id).count %> comments posted</h3>
+  </div>
+  <hr />
 
   <ul class="nav nav-tabs">
-    <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words')) %></small></span>
+	  <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
     <li class="active"><a href="#research" data-toggle="tab"><%= t('users.profile.research') %></a></li>
+    <li><a href="#coauthored" data-toggle="tab"><span class="hidden-sm hidden-xs"> <%= t('users.profile.Coauthored') %> (<%= @coauthored.size %>)</span></a></li>
   <li><a href="#questions" data-toggle="tab"><i class="fa fa-comments"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %> (<%= Node.questions.where(status: 1, uid: @user.id).length %>)</span></a></li>
-    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.comments') %></span></a></li>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"></span></a></li>
     <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
-    <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.barnstars') %></span> (<%= @user.user.try(:barnstars).try(:length) %>)</a></li>
+    <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> </span> (<%= @user.user.try(:barnstars).try(:length) %>)</a></li>
   </ul>
 
   <br />
@@ -152,6 +166,10 @@
 
     <div class="tab-pane active" id="research">
       <%= render :partial => "notes/notes" %>
+    </div>
+
+    <div class="tab-pane" id="coauthored">
+      <%= render :partial => "notes/coauthored_notes" %>
     </div>
 
     <div class="tab-pane" id="questions">

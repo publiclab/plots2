@@ -1,6 +1,6 @@
 class UniqueUsernameValidator < ActiveModel::Validator
   def validate(record)
-    if DrupalUsers.find_by_name(record.username) && record.openid_identifier.nil?
+    if DrupalUser.find_by(name: record.username) && record.openid_identifier.nil?
       record.errors[:base] << 'That username is already taken. If this is your username, you can simply log in to this site.'
     end
   end
@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
 
   acts_as_authentic do |c|
     c.openid_required_fields = %i[nickname email]
+    c.validates_format_of_email_field_options = { with: /@/ }
+    c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
 
   has_attached_file :photo, styles: { thumb: '200x200#', medium: '500x500#', large: '800x800#' },
@@ -37,16 +39,17 @@ class User < ActiveRecord::Base
   has_many :followers, through: :passive_relationships, source: :follower
 
   validates_with UniqueUsernameValidator, on: :create
-  validates_format_of :username, with: /^[A-Za-z\d_\-]+$/
+  validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
+  validates_format_of :email, with: /@/
 
   before_create :create_drupal_user
   before_save :set_token
   after_destroy :destroy_drupal_user
 
   def create_drupal_user
-    self.bio = "" # needed to set a default bio value of ""
+    self.bio ||= ''
     if drupal_user.nil?
-      drupal_user = DrupalUsers.new(name: username,
+      	    drupal_user = DrupalUser.new(name: username,
                                     pass: rand(100_000_000_000_000_000_000),
                                     mail: email,
                                     mode: 0,
@@ -69,7 +72,7 @@ class User < ActiveRecord::Base
       drupal_user.save!
       self.id = drupal_user.uid
     else
-      self.id = DrupalUsers.find_by_name(username).uid
+      self.id = DrupalUser.find_by(name: username).uid
     end
   end
 
@@ -84,7 +87,7 @@ class User < ActiveRecord::Base
   # this is ridiculous. We need to store uid in this model.
   # ...migration is in progress. start getting rid of these calls...
   def drupal_user
-    DrupalUsers.find_by_name(username)
+    DrupalUser.find_by(name: username)
   end
 
   def notes
@@ -121,12 +124,12 @@ class User < ActiveRecord::Base
   end
 
   def tags(limit = 10)
-    Tag.find :all, conditions: ['name in (?)', tagnames], limit: limit
+    Tag.where('name in (?)', tagnames).limit(limit)
   end
 
   def tagnames(limit = 20, defaults = true)
     tagnames = []
-    Node.find(:all, order: 'nid DESC', conditions: { type: 'note', status: 1, uid: self.id }, limit: limit).each do |node|
+    Node.order('nid DESC').where(type: 'note', status: 1, uid: self.id).limit(limit).each do |node|
       tagnames += node.tags.collect(&:name)
     end
     tagnames += ['balloon-mapping', 'spectrometer', 'near-infrared-camera', 'thermal-photography', 'newsletter'] if tagnames.empty? && defaults
@@ -137,9 +140,26 @@ class User < ActiveRecord::Base
     user_tags.collect(&:value).include?(tagname)
   end
 
+   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
+  def has_power_tag(key)
+    all_key_tags_ids = Tag.where('name LIKE ?' , key + ':%').collect(&:tid)
+    tids = TagSelection.where('user_id = ? AND tid IN (?)', self.id , all_key_tags_ids)
+    !tids.blank? 
+  end
+
+  def get_value_of_power_tag(key)
+    all_key_tags = Tag.where('name LIKE ?' , key + ':%') 
+    all_key_tags_ids = all_key_tags.collect(&:tid)
+    tids = TagSelection.where('user_id = ? AND tid IN (?)', self.id , all_key_tags_ids).collect(&:tid) 
+    tname = Tag.find(tids.first)
+    tvalue = tname.name.partition(':').last  
+    tvalue
+  end 
+
   def subscriptions(type = :tag)
     if type == :tag
-      TagSelection.find_all_by_user_id uid, conditions: { following: true }
+      TagSelection.where(user_id: uid,
+                         following: true)
     end
   end
 
@@ -242,7 +262,9 @@ class User < ActiveRecord::Base
   end
 
   def barnstars
-    NodeTag.includes(:node, :tag).where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
+    NodeTag.includes(:node, :tag)
+           .references(:term_data)
+           .where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
   end
 
   def photo_path(size = :medium)
@@ -258,7 +280,7 @@ class User < ActiveRecord::Base
   end
 
   def unfollow(other_user)
-    active_relationships.find_by_followed_id(other_user.id).destroy
+    active_relationships.where(followed_id: other_user.id).first.destroy
   end
 
   def following?(other_user)

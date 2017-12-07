@@ -28,13 +28,14 @@ class Node < ActiveRecord::Base
     end
     string :updated_at
     string :status
+    string :type
     string :updated_month
     text :comments do
       comments.map(&:comment)
     end
 
     string :user_name do
-      drupal_users.name
+      drupal_user.name
     end
   end
 
@@ -42,25 +43,25 @@ class Node < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-  has_many :revision, foreign_key: 'nid', dependent: :destroy
+  has_many :revision, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
-  has_many :drupal_upload, foreign_key: 'nid', dependent: :destroy
+  has_many :drupal_upload, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :drupal_files, through: :drupal_upload
-  has_many :node_tag, foreign_key: 'nid', dependent: :destroy
+  has_many :node_tag, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :tag, through: :node_tag
   # these override the above... have to do it manually:
   # has_many :tag, :through => :drupal_node_tag
-  has_many :comments, foreign_key: 'nid', dependent: :destroy
-  has_many :drupal_content_type_map, foreign_key: 'nid', dependent: :destroy
-  has_many :drupal_content_field_mappers, foreign_key: 'nid', dependent: :destroy
-  has_many :drupal_content_field_map_editor, foreign_key: 'nid', dependent: :destroy
+  has_many :comments, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_content_type_map, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_content_field_mappers, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_content_field_map_editor, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :images, foreign_key: :nid
   has_many :node_selections, foreign_key: :nid
   has_many :answers, foreign_key: :nid
 
-  belongs_to :drupal_users, foreign_key: 'uid'
+  belongs_to :drupal_user, foreign_key: 'uid'
 
   validates :title, presence: :true
   validates_with UniqueUrlValidator, on: :create
@@ -104,7 +105,7 @@ class Node < ActiveRecord::Base
   # or, we should refactor to us node.created instead of Time.now
   def generate_path
     if type == 'note'
-      username = DrupalUsers.find_by_uid(uid).name
+      username = DrupalUser.find_by(uid: uid).name
       "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{title.parameterize}"
     elsif type == 'page'
       '/wiki/' + title.parameterize
@@ -190,7 +191,8 @@ class Node < ActiveRecord::Base
   # users who like this node
   def likers
     node_selections
-      .joins(:drupal_users)
+      .joins(:drupal_user)
+      .references(:users)
       .where(liking: true)
       .where('users.status = ?', 1)
       .collect(&:user)
@@ -218,11 +220,11 @@ class Node < ActiveRecord::Base
   end
 
   def author
-    DrupalUsers.find_by_uid uid
+    DrupalUser.find_by(uid: uid)
   end
 
   def coauthors
-    User.find_all_by_username(power_tags('with')) if has_power_tag('with')
+    User.where(username: power_tags('with')) if has_power_tag('with')
   end
 
   # for wikis:
@@ -302,7 +304,7 @@ class Node < ActiveRecord::Base
   # Nodes this node is responding to with a `response:<nid>` power tag;
   # The key word "response" can be customized, i.e. `replication:<nid>` for other uses.
   def responded_to(key = 'response')
-    Node.find_all_by_nid(power_tags(key)) || []
+    Node.where(nid: power_tags(key)) || []
   end
 
   # Nodes that respond to this node with a `response:<nid>` power tag;
@@ -316,6 +318,7 @@ class Node < ActiveRecord::Base
   def response_count(key = 'response')
     Node.where(status: 1, type: 'note')
         .includes(:revision, :tag)
+        .references(:term_data)
         .where('term_data.name = ?', "#{key}:#{id}")
         .count
   end
@@ -323,6 +326,7 @@ class Node < ActiveRecord::Base
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
     tids = Tag.includes(:node_tag)
+              .references(:community_tags)
               .where('community_tags.nid = ? AND name LIKE ?', id, key + ':%')
               .collect(&:tid)
     !NodeTag.where('nid = ? AND tid IN (?)', id, tids).empty?
@@ -331,6 +335,7 @@ class Node < ActiveRecord::Base
   # returns the value for the most recent power tag of form key:value
   def power_tag(tag)
     tids = Tag.includes(:node_tag)
+              .references(:community_tags)
               .where('community_tags.nid = ? AND name LIKE ?', id, tag + ':%')
               .collect(&:tid)
     node_tag = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
@@ -345,6 +350,7 @@ class Node < ActiveRecord::Base
   # returns all tagnames for a given power tag
   def power_tags(tag)
     tids = Tag.includes(:node_tag)
+              .references(:community_tags)
               .where('community_tags.nid = ? AND name LIKE ?', id, tag + ':%')
               .collect(&:tid)
     node_tags = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
@@ -358,6 +364,7 @@ class Node < ActiveRecord::Base
   # returns all power tag results as whole community_tag objects
   def power_tag_objects(tag)
     tids = Tag.includes(:node_tag)
+              .references(:community_tags)
               .where('community_tags.nid = ? AND name LIKE ?', id, tag + ':%')
               .collect(&:tid)
     NodeTag.where('nid = ? AND tid IN (?)', id, tids)
@@ -366,6 +373,7 @@ class Node < ActiveRecord::Base
   # return whole community_tag objects but no powertags or "event"
   def normal_tags
     tids = Tag.includes(:node_tag)
+              .references(:community_tags)
               .where('community_tags.nid = ? AND name LIKE ?', id, '%:%')
               .collect(&:tid)
     NodeTag.where('nid = ? AND tid NOT IN (?)', id, tids)
@@ -378,12 +386,14 @@ class Node < ActiveRecord::Base
     tags = get_matching_tags_without_aliasing(tagname)
     # search for tags with parent matching this
     tags += Tag.includes(:node_tag)
+               .references(:community_tags)
                .where('community_tags.nid = ? AND parent LIKE ?', id, tagname)
     # search for parent tag of this, if exists
     # tag = Tag.where(name: tagname).try(:first)
     # if tag && tag.parent
     #  tags += Tag.includes(:node_tag)
-    #                   .where("community_tags.nid = ? AND name LIKE ?", self.id, tag.parent)
+    #             .references(:community_tags)
+    #             .where("community_tags.nid = ? AND name LIKE ?", self.id, tag.parent)
     # end
     tids = tags.collect(&:tid).uniq
     !NodeTag.where('nid IN (?) AND tid IN (?)', id, tids).empty?
@@ -393,10 +403,12 @@ class Node < ActiveRecord::Base
   # then, this would just be replaced by Tag.where(name: tagname).first
   def get_matching_tags_without_aliasing(tagname)
     tags = Tag.includes(:node_tag)
+              .references(:community_tags)
               .where('community_tags.nid = ? AND name LIKE ?', id, tagname)
     # search for tags which end in wildcards
     if tagname[-1] == '*'
       tags += Tag.includes(:node_tag)
+                 .references(:community_tags)
                  .where('community_tags.nid = ? AND (name LIKE ? OR name LIKE ?)', id, tagname, tagname.tr('*', '%'))
     end
     tags
@@ -546,7 +558,7 @@ class Node < ActiveRecord::Base
   # researching simultaneous creation of associated records
   def self.new_note(params)
     saved = false
-    author = DrupalUsers.find(params[:uid])
+    author = DrupalUser.find(params[:uid])
     node = Node.new(uid:     author.uid,
                     title:   params[:title],
                     comment: 2,
@@ -653,10 +665,10 @@ class Node < ActiveRecord::Base
     tagname = tagname.downcase
     unless has_tag_without_aliasing(tagname)
       saved = false
-      tag = Tag.find_by_name(tagname) || Tag.new(vid:         3, # vocabulary id; 1
-                                                 name:        tagname,
-                                                 description: '',
-                                                 weight:      0)
+      tag = Tag.find_by(name: tagname) || Tag.new(vid:         3, # vocabulary id; 1
+                                                  name:        tagname,
+                                                  description: '',
+                                                  weight:      0)
 
       ActiveRecord::Base.transaction do
         if tag.valid?
@@ -687,7 +699,7 @@ class Node < ActiveRecord::Base
 
   def mentioned_users
     usernames = body.scan(Callouts.const_get(:FINDER))
-    User.find_all_by_username(usernames.map { |m| m[1] }).uniq
+    User.where(username: usernames.map { |m| m[1] }).uniq
   end
 
   def self.find_notes(author, date, title)
@@ -726,12 +738,14 @@ class Node < ActiveRecord::Base
   def self.activities(tagname)
     Node.where(status: 1, type: 'note')
         .includes(:revision, :tag)
+        .references(:term_data)
         .where('term_data.name LIKE ?', "activity:#{tagname}")
   end
 
   def self.upgrades(tagname)
     Node.where(status: 1, type: 'note')
         .includes(:revision, :tag)
+        .references(:term_data)
         .where('term_data.name LIKE ?', "upgrade:#{tagname}")
   end
 
@@ -766,5 +780,58 @@ class Node < ActiveRecord::Base
     else
       false
     end
+  end
+
+  def is_liked_by(user)
+     !NodeSelection.where(user_id: user.uid, nid: self.id , liking: true).empty?
+  end
+
+  def toggle_like(user)
+    nodes = NodeSelection.where(nid: self.id , liking: true).count
+    if is_liked_by(user)
+      self.cached_likes = nodes-1  
+    else
+      self.cached_likes = nodes+1  
+    end
+  end
+
+  def self.like(nid , user)
+     # scope like variable outside the transaction
+    like = nil
+    count = nil
+  
+    ActiveRecord::Base.transaction do
+      # Create the entry if it isn't already created.
+      like = NodeSelection.where(user_id: user.uid,
+                                 nid: nid).first_or_create
+      like.liking = true
+      node = Node.find(nid)       
+      if node.type == 'note'
+        SubscriptionMailer.notify_note_liked(node, like.user)
+      end
+      count = 1
+      node.toggle_like(like.user)
+      # Save the changes.
+      node.save!
+      like.save!
+    end
+      count
+  end
+
+  def self.unlike(nid , user)
+    like = nil
+    count = nil
+  
+    ActiveRecord::Base.transaction do
+      like = NodeSelection.where(user_id: user.uid,
+                                 nid: nid).first_or_create
+      like.liking = false
+      count = -1 
+      node = Node.find(nid)       
+      node.toggle_like(like.user)
+      node.save!
+      like.save!
+     end 
+      count
   end
 end

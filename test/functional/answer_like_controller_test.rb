@@ -12,7 +12,7 @@ class AnswerLikeControllerTest < ActionController::TestCase
   end
 
   test 'should get likes' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
     answer = answers(:one)
     xhr :get, :likes, aid: answer.id
     assert_response :success
@@ -20,7 +20,7 @@ class AnswerLikeControllerTest < ActionController::TestCase
   end
 
   test 'should increase cached likes if liked' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
     answer = answers(:one)
     assert_difference 'answer.cached_likes' do
       xhr :get, :likes, aid: answer.id
@@ -29,7 +29,7 @@ class AnswerLikeControllerTest < ActionController::TestCase
   end
 
   test 'should decrease cached likes if unliked' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     answer = answers(:one)
     assert_difference 'answer.cached_likes', -1 do
       xhr :get, :likes, aid: answer.id

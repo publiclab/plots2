@@ -4,7 +4,7 @@ include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 
 class AdminMailerTest < ActionMailer::TestCase
   test 'notify_node_moderators' do
-    node = node(:one)
+    node = nodes(:one)
     moderators = User.where(role: %w[moderator admin])
     assert !moderators.empty?
 
@@ -27,8 +27,8 @@ class AdminMailerTest < ActionMailer::TestCase
   end
 
   test 'notify_author_of_approval' do
-    node = node(:one)
-    moderator = rusers(:moderator)
+    node = nodes(:one)
+    moderator = users(:moderator)
 
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       # send the email
@@ -47,8 +47,8 @@ class AdminMailerTest < ActionMailer::TestCase
   end
 
   test 'notify_moderators_of_approval' do
-    node = node(:one)
-    moderator = rusers(:moderator) # who actually approved the post
+    node = nodes(:one)
+    moderator = users(:moderator) # who actually approved the post
     moderators = User.where(role: %w[moderator admin])
     assert !moderators.empty?
 
@@ -73,8 +73,8 @@ class AdminMailerTest < ActionMailer::TestCase
 
   # Should: prompt moderators to reach out if it's not spam, but a guidelines violation
   test 'notify_moderators_of_spam' do
-    node = node(:one)
-    moderator = rusers(:moderator) # who actually approved the post
+    node = nodes(:one)
+    moderator = users(:moderator) # who actually approved the post
     moderators = User.where(role: %w[moderator admin])
     assert !moderators.empty?
 

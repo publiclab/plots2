@@ -4,7 +4,7 @@ class AnswerMailer < ActionMailer::Base
   default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
 
   def notify_question_author(user, answer)
-    subject = '[PublicLab] New answer to Question: ' + answer.node.title
+    subject = '[PLab] Question: ' + answer.node.title.truncate(30,omission: '...?') + ' An answer has been posted on Public Lab'
     @user = user
     @answer = answer
     @footer = feature('email-footer')

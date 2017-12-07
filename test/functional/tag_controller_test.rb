@@ -10,30 +10,30 @@ class TagControllerTest < ActionController::TestCase
 
   # create accepts comma-delimited list of tags
   test 'add one or two tags' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
-    post :create, name: 'mytag', nid: node(:one).nid, uid: rusers(:bob).id
+    post :create, name: 'mytag', nid: nodes(:one).nid, uid: users(:bob).id
 
     assert_equal 'mytag', assigns[:tags].last.name
-    assert_redirected_to(node(:one).path)
+    assert_redirected_to(nodes(:one).path)
 
     post :create,
          name: 'mysecondtag,mythirdtag',
-         nid: node(:one).nid,
-         uid: rusers(:bob).id
+         nid: nodes(:one).nid,
+         uid: users(:bob).id
 
     assert_equal 'mysecondtag', assigns[:tags][assigns[:tags].length - 2].name
     assert_equal 'mythirdtag', assigns[:tags].last.name
-    assert_redirected_to(node(:one).path)
+    assert_redirected_to(nodes(:one).path)
 
-    xhr :post, :create, name: 'myfourthtag,myfifthtag', nid: node(:one).nid, uid: rusers(:bob).id
+    xhr :post, :create, name: 'myfourthtag,myfifthtag', nid: nodes(:one).nid, uid: users(:bob).id
 
     assert_response :success
     assert_equal [['myfourthtag', Tag.find_by_name('myfourthtag').tid], ['myfifthtag', Tag.find_by_name('myfifthtag').tid]], JSON.parse(response.body)['saved']
   end
 
   test 'validate unused tag' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
     get :contributors,
         id: 'question:*'
@@ -44,64 +44,64 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "won't add invalid tags" do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
     post :create,
          name: 'my invalid tag $_',
-         nid: node(:one).nid
+         nid: nodes(:one).nid
 
-    assert_redirected_to(node(:one).path)
-    assert_equal 'Error: tags can only include letters, numbers, and dashes', assigns['output']['errors'][0]
+    assert_redirected_to(nodes(:one).path)
+    assert_equal 'Error: tags can only include letters, numbers, and dashes', assigns[:output][:errors][0]
   end
 
   test "won't add disallowed tags" do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
     post :create,
          name: 'with:bob',
-         nid: node(:one).nid # authored by jeff, not bob
+         nid: nodes(:one).nid # authored by jeff, not bob
 
-    assert_redirected_to(node(:one).path)
-    assert_equal I18n.t('node.only_author_use_powertag'), assigns['output']['errors'][0]
+    assert_redirected_to(nodes(:one).path)
+    assert_equal I18n.t('node.only_author_use_powertag'), assigns[:output][:errors][0]
   end
 
   test 'admins can add disallowed tags' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
 
     post :create,
          name: 'with:bob',
-         nid: node(:one).nid # authored by jeff, not bob
+         nid: nodes(:one).nid # authored by jeff, not bob
 
-    assert_redirected_to(node(:one).path)
-    assert_equal 0, assigns['output']['errors'].length
+    assert_redirected_to(nodes(:one).path)
+    assert_equal 0, assigns[:output][:errors].length
   end
 
   # create returns JSON list of errors in response[:errors]
   test 'add duplicate tag' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
     post :create,
          name: 'mytag',
-         nid: node(:one).nid,
-         uid: rusers(:bob)
+         nid: nodes(:one).nid,
+         uid: users(:bob)
 
-    assert_redirected_to(node(:one).path)
+    assert_redirected_to(nodes(:one).path)
 
     # 2nd identical tag:
 
     post :create,
          name: 'mytag',
-         nid: node(:one).nid,
-         uid: rusers(:bob)
+         nid: nodes(:one).nid,
+         uid: users(:bob)
 
-    assert_redirected_to(node(:one).path)
-    assert_equal 'Error: that tag already exists.', assigns['output']['errors'][0]
+    assert_redirected_to(nodes(:one).path)
+    assert_equal 'Error: that tag already exists.', assigns[:output][:errors][0]
   end
 
   test 'add tag not logged in' do
     post :create,
          name: 'mytag',
-         nid: node(:one).nid,
+         nid: nodes(:one).nid,
          uid: 1
 
     assert_redirected_to('/login')
@@ -113,7 +113,7 @@ class TagControllerTest < ActionController::TestCase
     assert :success
     assert_equal assigns['tags'].sort_by(&:count).sort_by(&:tid) , assigns['tags'].sort_by(&:tid)
     assert_equal assigns['tags'].collect(&:name), assigns['tags'].collect(&:name).uniq
-    assert_false assigns['tags'].collect(&:node).flatten.collect(&:status).include?(0)
+    assert_not assigns['tags'].collect(&:node).flatten.collect(&:status).include?(0)
     assert_not_nil :tags
   end
 
@@ -128,7 +128,7 @@ class TagControllerTest < ActionController::TestCase
     assert !assigns['notes'].empty?
     assigns['notes'].each do |node|
       assert node.has_tag('spectrometry') # should return false
-      assert_false node.has_tag_without_aliasing('spectrometry') # should return false
+      assert_not node.has_tag_without_aliasing('spectrometry') # should return false
     end
 
     # assert_equal assigns['tags'].length, 1
@@ -180,7 +180,7 @@ class TagControllerTest < ActionController::TestCase
   test "should show a featured wiki page at top, if it exists" do
     tag = tags(:test)
 
-    get :show, id: node(:organizers).slug
+    get :show, id: nodes(:organizers).slug
 
     assert_select '#wiki-content', 1
   end
@@ -206,7 +206,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'tag rss' do
-    get :rss, tagname: Tag.last.name
+    get :rss, tagname: Tag.last.name, format: 'rss'
 
     assert :success
     assert_not_nil :notes
@@ -256,7 +256,7 @@ class TagControllerTest < ActionController::TestCase
     get :show, id: tag.name
 
     questions = assigns(:questions)
-    expected = [node(:question), node(:question2)]
+    expected = [nodes(:question), nodes(:question2)]
     assert_not_nil assigns(:questions)
     assert (questions & expected).present?
   end
@@ -267,7 +267,7 @@ class TagControllerTest < ActionController::TestCase
     get :show, id: tag.name
 
     notes = assigns(:notes)
-    expected = [node(:one)]
+    expected = [nodes(:one)]
     assert_not_nil assigns(:notes)
     assert (notes & expected).present?
   end
@@ -299,12 +299,12 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'can create tag instance (community_tag) using a parent tag' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
-    post :create, name: 'spectrometry', nid: node(:one).nid, uid: rusers(:bob).id
+    post :create, name: 'spectrometry', nid: nodes(:one).nid, uid: users(:bob).id
 
     assert_equal 'spectrometry', assigns[:tags].last.name
-    assert_redirected_to(node(:one).path)
+    assert_redirected_to(nodes(:one).path)
   end
 
   test 'shows things tagged with child tag' do
@@ -317,8 +317,8 @@ class TagControllerTest < ActionController::TestCase
 
     assert_equal 'spectrometry', tag.parent
     assert_equal '',             tag2.parent
-    node(:blog).add_tag('spectrometry', rusers(:bob))
-    assert node(:blog).has_tag_without_aliasing('spectrometry')
+    nodes(:blog).add_tag('spectrometry', users(:bob))
+    assert nodes(:blog).has_tag_without_aliasing('spectrometry')
 
     get :show, id: 'spectrometry'
 
@@ -327,18 +327,18 @@ class TagControllerTest < ActionController::TestCase
 
     assert_equal 2, notes.length
     assert_equal [1, 13], notes.collect(&:nid)
-    assert_equal [node(:one).title, 'Blog post'], notes.collect(&:title)
+    assert_equal [nodes(:one).title, 'Blog post'], notes.collect(&:title)
 
     # should be the first node, nid=1
-    assert_equal node(:one).title, notes.first.title
+    assert_equal nodes(:one).title, notes.first.title
     assert_equal ['spectrometer'], notes.first.tags.collect(&:name)
     assert       notes.first.has_tag_without_aliasing('spectrometer')
-    assert_false notes.first.has_tag_without_aliasing('spectrometry')
+    assert_not notes.first.has_tag_without_aliasing('spectrometry')
 
     # should be the blog node, nid=13
     assert_equal 'Blog post', notes.last.title
     assert_equal ['spectrometry'], notes.last.tags.collect(&:name)
-    assert_false notes.last.has_tag_without_aliasing('spectrometer')
+    assert_not notes.last.has_tag_without_aliasing('spectrometer')
     assert       notes.last.has_tag_without_aliasing('spectrometry')
   end
 
@@ -351,12 +351,12 @@ class TagControllerTest < ActionController::TestCase
     tag2.save
     assert_equal 'spectrometry', tags(:spectrometer).parent
     assert_equal '',             tags(:spectrometry).parent
-    node(:blog).add_tag('spectrometry', rusers(:bob))
+    nodes(:blog).add_tag('spectrometry', users(:bob))
 
     get :show, id: 'spectrometer'
 
     assert_equal 1, assigns(:notes).length
-    assert_false assigns(:notes).first.has_tag_without_aliasing('spectrometry')
+    assert_not assigns(:notes).first.has_tag_without_aliasing('spectrometry')
     assert       assigns(:notes).first.has_tag_without_aliasing('spectrometer')
   end
 
@@ -376,10 +376,10 @@ class TagControllerTest < ActionController::TestCase
 
       @controller = old_controller
 
-      UserSession.create(rusers(:bob))
-      post :create, name: 'mytag', nid: node(:one).nid, uid: rusers(:bob)
-      post :create, name: 'mytag', nid: node(:one).nid, uid: rusers(:bob)
-      assert_equal I18n.t('tag_controller.tag_already_exists'), assigns['output']['errors'][0]
+      UserSession.create(users(:bob))
+      post :create, name: 'mytag', nid: nodes(:one).nid, uid: users(:bob)
+      post :create, name: 'mytag', nid: nodes(:one).nid, uid: users(:bob)
+      assert_equal I18n.t('tag_controller.tag_already_exists'), assigns[:output][:errors][0]
     end
   end
 

@@ -15,7 +15,7 @@ module ApplicationHelper
   def feature(title)
     features = Node.where(type: 'feature', title: title)
     if !features.empty?
-      return features.last.body.html_safe
+      return features.last.body.to_s.html_safe
     else
       ''
     end

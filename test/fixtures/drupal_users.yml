@@ -1,0 +1,76 @@
+bob:
+  uid: 1
+  name: Bob
+  status: 1
+  mail: bob@publiclab.org
+  created: <%= Time.now.to_i %>
+
+jeff:
+  uid: 2
+  name: jeff
+  status: 1
+  mail: jeff@pxlshp.com
+  created: <%= Time.now.to_i %>
+
+spammer:
+  uid: 3
+  name: spammer
+  status: 0 #spam
+  mail: spam@spam.com
+  created: <%= Time.now.to_i %>
+
+unbanned_spammer:
+  uid: 4
+  name: unbanned_spammer
+  status: 1
+  mail: uspam@spam.com
+  created: <%= Time.now.to_i %>
+
+admin:
+  uid: 5
+  name: palpatine
+  status: 1
+  mail: admin@publiclab.org
+  created: <%= Time.now.to_i %>
+
+moderator:
+  uid: 6
+  name: obiwan
+  status: 1
+  mail: obiwan@publiclab.org
+  created: <%= Time.now.to_i %>
+
+newcomer:
+  uid: 7
+  name: newcomer
+  status: 1
+  mail: newcomer@publiclab.org
+  created: <%= Time.now.to_i %>
+
+lurker:
+  uid: 8
+  name: lurker
+  status: 1
+  mail: lurker@publiclab.org
+  created: <%= Time.now.to_i %>
+
+unmoderated_user:
+  uid: 9
+  name: rob
+  status: 1
+  mail: rob@publiclab.org
+  created: <%= Time.now.to_i %>
+
+test_user:
+  uid: 10
+  name: testuser
+  status: 1
+  mail: testuser@publiclab.org
+  created: <%= Time.now.to_i %>
+
+legacy_user:
+  uid: 11
+  name: legacy
+  status: 1
+  mail: legacy@publiclab.org
+  created: <%= Time.now.to_i %>

@@ -9,7 +9,7 @@ class HomeController < ApplicationController
   # caches_action :index, :cache_path => { :last => Node.find(:last).updated_at.to_i }
 
   def home
-    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = Rails.cache.fetch("front-activity", expires_in: 10.minutes) do
+    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
       self.activity
     end
 
@@ -37,7 +37,7 @@ class HomeController < ApplicationController
   # route for seeing the front page even if you are logged in
   def front
     @title = I18n.t('home_controller.environmental_investigation')
-    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = Rails.cache.fetch("front-activity", expires_in: 10.minutes) do
+    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
       self.activity
     end
     render template: 'home/home'
@@ -50,7 +50,7 @@ class HomeController < ApplicationController
   def dashboard
     @note_count = Node.select(%i[created type status])
                       .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-                      .count
+                      .count(:all)
     @wiki_count = Revision.select(:timestamp)
                           .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
                           .count
@@ -69,7 +69,7 @@ class HomeController < ApplicationController
       maxlat = current_user.lat + dist
       minlon = current_user.lon - dist
       maxlon = current_user.lon + dist
-      @users = DrupalUsers.where('lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?', minlat, maxlat, minlon, maxlon)
+      @users = DrupalUser.where('lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?', minlat, maxlat, minlon, maxlon)
     end
   end
 
@@ -114,7 +114,7 @@ class HomeController < ApplicationController
     revisions = revisions.to_a # ensure it can be serialized for caching
     wikis += revisions
     wikis = wikis.sort_by(&:created_at).reverse
-    comments = Comment.joins(:node, :drupal_users)
+    comments = Comment.joins(:node, :drupal_user)
                       .order('timestamp DESC')
                       .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
                       .page(params[:page])
@@ -122,7 +122,7 @@ class HomeController < ApplicationController
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     comments = comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     comments = comments.to_a # ensure it can be serialized for caching
-    answer_comments = Comment.joins(:answer, :drupal_users)
+    answer_comments = Comment.joins(:answer, :drupal_user)
                              .order('timestamp DESC')
                              .where('timestamp - answers.created_at > ?', 86_400)
                              .limit(20)

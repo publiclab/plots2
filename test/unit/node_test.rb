@@ -2,44 +2,44 @@ require 'test_helper'
 
 class NodeTest < ActiveSupport::TestCase
   test 'basic node attributes' do
-    node = node(:one)
+    node = nodes(:one)
     assert_equal 'note', node.type
     assert_equal 1, node.status
-    node = node(:about)
+    node = nodes(:about)
     assert_equal 'page', node.type
     assert_equal 1, node.status
     assert !node.answered
   end
 
   test 'basic question attributes' do
-    question = node(:question)
+    question = nodes(:question)
     assert question.answered
   end
 
   test 'create a node' do
     # in testing, uid and id should be matched, although this is not yet true in production db
-    node = Node.new(uid: rusers(:bob).id,
+    node = Node.new(uid: users(:bob).id,
                     type: 'note',
                     title: 'My new node for node creation testing')
     assert node.save
   end
 
   test 'create a feature' do
-    node = Node.new(uid: rusers(:admin).id,
+    node = Node.new(uid: users(:admin).id,
                     type: 'feature',
                     title: 'header-feature')
     assert node.save!
-    username = rusers(:bob).username
+    username = users(:bob).username
     assert_equal "/feature/#{node.title.parameterize}", node.path
     assert_equal 'feature', node.type
   end
 
   test 'create a research note' do
-    node = Node.new(uid: rusers(:bob).id,
+    node = Node.new(uid: users(:bob).id,
                     type: 'note',
                     title: 'My research note')
     assert node.save!
-    username = rusers(:bob).username
+    username = users(:bob).username
     assert_equal "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{node.title.parameterize}", node.path
     assert_equal "/questions/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{node.title.parameterize}", node.path(:question)
     assert_equal 'note', node.type
@@ -47,20 +47,20 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'edit a research note and check path' do
     original_title = 'My research note'
-    node = Node.new(uid: rusers(:bob).id,
+    node = Node.new(uid: users(:bob).id,
                     type: 'note',
                     title: original_title)
     assert node.save!
     node.title = 'I changed my mind'
-    username = rusers(:bob).username
+    username = users(:bob).username
     assert_not_equal "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{node.title.parameterize}", node.path
     assert_equal "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{original_title.parameterize}", node.path
   end
 
   # new_note also generates a revision
   test 'create a research note with new_note' do
-    assert !users(:jeff).first_time_poster
-    saved, node, revision = Node.new_note(uid: users(:jeff).uid,
+    assert !drupal_users(:jeff).first_time_poster
+    saved, node, revision = Node.new_note(uid: drupal_users(:jeff).uid,
                                           title: 'Title',
                                           body: 'New note body')
     assert saved
@@ -71,8 +71,8 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'first-time poster creates a research note with new_note' do
-    assert users(:lurker).first_time_poster
-    saved, node, revision = Node.new_note(uid: users(:lurker).uid,
+    assert drupal_users(:lurker).first_time_poster
+    saved, node, revision = Node.new_note(uid: drupal_users(:lurker).uid,
                                           title: 'Title',
                                           body: 'New note body')
     assert saved
@@ -81,17 +81,17 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'spam a note' do
-    node = node(:one).spam
+    node = nodes(:one).spam
     assert_equal 0, node.status
   end
 
   test 'publish a note' do
-    node = node(:spam).publish
+    node = nodes(:spam).publish
     assert_equal 1, node.status
   end
 
   test 'create a wiki page' do
-    node = Node.new(uid: rusers(:bob).id,
+    node = Node.new(uid: users(:bob).id,
                     type: 'page',
                     title: 'My wiki page')
     assert node.save!
@@ -99,12 +99,12 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'create a wiki page with Node.new_wiki' do
-    node = Node.new_wiki(uid: rusers(:bob).id,
+    node = Node.new_wiki(uid: users(:bob).id,
                          type: 'page',
                          title: 'My wiki page',
                          body: 'Wiki page content/body')[1] # returns an array, oddly. refactor this API!
     assert node.save!
-    assert_equal rusers(:bob).id, node.uid
+    assert_equal users(:bob).id, node.uid
     assert_equal 'page', node.type
     assert_equal 'My wiki page', node.title
     assert_equal 'Wiki page content/body', node.body
@@ -112,17 +112,17 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'create a node_revision' do
     # in testing, uid and id should be matched, although this is not yet true in production db
-    revision_count = node(:one).revisions.length
-    node_revision =  Revision.new(uid: rusers(:bob).id,
-                                  nid: node(:one).nid)
+    revision_count = nodes(:one).revisions.length
+    node_revision =  Revision.new(uid: users(:bob).id,
+                                  nid: nodes(:one).nid)
     node_revision.title = 'My new node'
     node_revision.body = 'My new node'
     assert node_revision.save!
-    assert_equal revision_count + 1, node(:one).revisions.count
+    assert_equal revision_count + 1, nodes(:one).revisions.count
   end
 
   test 'latest revision based on timestamp' do
-    node = node(:spam_targeted_page)
+    node = nodes(:spam_targeted_page)
     assert node.revisions.count > 1
     assert_equal node.revisions.first, node.latest
     assert node.revisions.first.timestamp.to_i > node.revisions.last.timestamp.to_i
@@ -131,7 +131,7 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'latest revision not a moderated revision' do
-    node = node(:spam_targeted_page)
+    node = nodes(:spam_targeted_page)
     assert node.revisions.count > 1
     assert_equal node.revisions.first, node.latest
     node.latest.spam
@@ -140,7 +140,7 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'should have tags, node_tags, and tagnames' do
-    node = node(:one)
+    node = nodes(:one)
     assert !node.tags.empty?
     assert_equal node.tags, node.tag
     assert !node.node_tags.empty?
@@ -152,12 +152,12 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'should have subscribers' do
-    node = tag_selection(:awesome).tag.nodes.first
+    node = tag_selections(:awesome).tag.nodes.first
     assert_equal 6, node.subscribers.length
   end
 
   test 'should have place node icon according to tagging' do
-    node = node(:place)
+    node = nodes(:place)
     assert_equal node.icon, 'flag'
   end
 
@@ -167,81 +167,134 @@ class NodeTest < ActiveSupport::TestCase
   # end
 
   test 'reports weekly_tallies' do
-    node = node(:one)
+    node = nodes(:one)
     assert_not_nil Node.weekly_tallies
     assert_not_nil Node.weekly_tallies('page', 2, Time.now - 1.month)
   end
 
   test 'should show normal tags' do
-    node = node(:question)
+    node = nodes(:question)
     assert_equal node.normal_tags, [node_tags(:test2)]
   end
 
+  test 'returns power tag' do
+    node = nodes(:blog)
+    assert_equal node.power_tag_objects("lat") , [node_tags(:map_lat)]
+  end
+
+  test 'has power tag' do
+    node = nodes(:blog) 
+    assert node.has_power_tag("lat")
+  end
+
   test 'should show question icon for question node' do
-    node = node(:question)
+    node = nodes(:question)
     assert_equal 'question-circle', node.icon
   end
 
   test 'should find all research notes' do
     notes = Node.research_notes
-    expected = [node(:one), node(:spam), node(:first_timer_note), node(:blog), node(:moderated_user_note), node(:activity), node(:upgrade)]
+    expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog), nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade)]
     assert_equal expected, notes
   end
 
   test 'should find all questions' do
     questions = Node.questions
-    expected = [node(:question), node(:question2), node(:first_timer_question), node(:question3)]
+    expected = [nodes(:question), nodes(:question2), nodes(:first_timer_question), nodes(:question3)]
     assert_equal expected, questions
   end
 
   test 'should find all activity notes' do
     activities = Node.activities('coding')
-    expected = [node(:moderated_user_note), node(:activity)]
+    expected = [nodes(:moderated_user_note), nodes(:activity)]
     assert_equal expected, activities
   end
 
   test 'should find all upgrade notes' do
     activities = Node.upgrades('latest')
-    expected = [node(:moderated_user_note), node(:upgrade)]
+    expected = [nodes(:moderated_user_note), nodes(:upgrade)]
     assert_equal expected, activities
   end
 
   test 'replacing content in a node with node.replace()' do
-    node = node(:about)
-    replaced = node.replace('Public', 'Private', rusers(:bob))
+    node = nodes(:about)
+    replaced = node.replace('Public', 'Private', users(:bob))
 
     assert replaced
     assert_equal 'All about Private Lab', node.body
   end
 
   test "not replacing content in a node with node.replace() if there is no matching 'before' text" do
-    node = node(:about)
+    node = nodes(:about)
     assert !node.body.include?('Elephant')
 
-    replaced = node.replace('Elephant', 'Tiger', rusers(:bob))
+    replaced = node.replace('Elephant', 'Tiger', users(:bob))
 
     assert !replaced
     assert_equal 'All about Public Lab', node.body
   end
 
   test "not replacing content in a node with node.replace() if there is more than one matching 'before' text" do
-    node = node(:about)
+    node = nodes(:about)
     revision = node.latest
     revision.body = 'Jingle Jingle Bells'
     assert revision.save
 
-    replaced = node.replace('Jingle', 'Bells', rusers(:bob))
+    replaced = node.replace('Jingle', 'Bells', users(:bob))
 
     assert !replaced
     assert_equal 'Jingle Jingle Bells', node.body
   end
 
   test "question has an accepted answer" do
-    question2 = node(:question2)
+    question2 = nodes(:question2)
     assert !question2.has_accepted_answers
 
-    question = node(:question)
+    question = nodes(:question)
     assert question.has_accepted_answers
   end
 
+  test "user likes node or not" do
+    node = nodes(:one)
+    user = drupal_users(:jeff)
+    assert !node.is_liked_by(user)
+
+  end
+ 
+  test "should change the number of cache likes" do
+    node = nodes(:one)
+    user = drupal_users(:jeff)
+    current_cached_likes = node.cached_likes
+    
+    node.toggle_like(user)
+
+    cached_like = node.cached_likes
+    assert_equal cached_like-1 , current_cached_likes
+  end
+
+  test "should create a like" do
+    current_user = User.find 2
+    note = Node.where(type: 'note', status: 1).first
+    cached_likes = note.cached_likes
+
+    Node.like(note.nid , current_user)
+
+    note = Node.find note.id
+    assert_equal note.likers.length, note.cached_likes
+    assert_equal cached_likes + 1, note.cached_likes
+  end
+
+  test "should delete a like" do
+    current_user = User.find 2
+    note = Node.where(type: 'note', status: 1).first
+  
+    Node.like(note.nid , current_user)
+    note = Node.find note.id
+    cached_likes = note.cached_likes
+
+    Node.unlike(note.nid , current_user)
+    note = Node.find note.id
+    assert_equal note.likers.length, note.cached_likes
+    assert_equal cached_likes-1 , note.cached_likes
+  end
 end
