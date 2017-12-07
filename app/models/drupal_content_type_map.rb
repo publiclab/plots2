@@ -12,6 +12,10 @@ class DrupalContentTypeMap < ActiveRecord::Base
                    lat_column_name: :lat,
                    lng_column_name: :lng
 
+  def before_save
+    self.field_publication_date_value = self.field_publication_date_value.slice(0, 19)
+  end
+
   def tms
     field_tms_url_value
   end
