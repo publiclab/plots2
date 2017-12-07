@@ -94,4 +94,17 @@ class UserTest < ActiveSupport::TestCase
     assert bob.has_power_tag("question")
   end
 
+  test 'returns nodes coauthored by user with coauthored_notes method' do
+    jeff = users(:jeff)
+    bob = users(:bob)
+    assert bob.coauthored_notes.empty?
+
+    jeffs_note = nodes(:one)
+    jeffs_note.add_tag('with:bob', jeff)
+    
+    coauthored_note = bob.coauthored_notes.first
+
+    assert_not_nil coauthored_note
+    assert_equal jeffs_note, coauthored_note
+  end
 end
