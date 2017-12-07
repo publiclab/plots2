@@ -64,10 +64,9 @@
 </table>
 
 <a class="grid-embed grid-embed-<%= randomSeed %>" title="Embed this table on another site."><i class="fa fa-code" style="color:#aaa;"></i></a>
-
-<% if type == "questions" %>
+<% if type == "questions" || tagname.include?('question:') %>
   <p><a href='/post?tags=question:<%= tagname %>,<%= tagname %>&template=question&title=How%20do%20I...&redirect=question' class='btn btn-primary add-activity'>Ask a question</a> &nbsp;or <a href='/subscribe/tag/question:<%= tagname %>'>help answer future questions<span class='hidden-sm hidden-xs'> on this topic</span></a></p>
-<% elsif type == "activity" %>
+<% elsif type == "activity" || tagname.include?('activity:') %>
   <p><a href='/post?tags=activity:<%= tagname %>,<%= tagname %>,seeks:replications&title=How%20to%20do%20X' class='btn btn-primary add-activity'>Add an activity</a> &nbsp;or <a href='/post?tags=<%= tagname %>,question:<%= tagname %>,request:activity&template=question&title=How%20do%20I...&redirect=question' class='request-activity'>request an activity<span class='hidden-xs hidden-sm'> guide you don't see listed</span></a></p>
   <p><i>Activities should include a materials list, costs and a step-by-step guide to construction with photos. Learn what <a href="https://publiclab.org/notes/warren/09-17-2016/what-makes-a-good-activity">makes a good activity here</a>.</i>
   </p>
@@ -79,7 +78,7 @@
     $(".<%= className %>-<%= randomSeed %> tr.hide").toggleClass("hide");
   });
   $(".grid-embed-<%= randomSeed %>").click(function() {
-    prompt('Use this HTML code to embed this table on another site.', '<iframe style="border:none;" width="100%" height="900px" src="//publiclab.org/embed/grid/&?t=<% if type != "notes" %><%= type.gsub('activity', 'activities') %>:<% end %><%= tagname %>"></iframe>')
+    prompt('Use this HTML code to embed this table on another site.', '<iframe style="border:none;" width="100%" height="900px" src="//publiclab.org/embed/grid/<% if type != "notes" %><%= type.gsub('questions', 'question').gsub('activities', 'activity') %>:<% end %><%= tagname %>"></iframe>')
   });
   setupGridSorters(".<%= className %>-<%= randomSeed %>");
 })()
