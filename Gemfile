@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.1.16'
+gem 'rails', '~> 4.2.9'
 gem 'activerecord-session_store'
 gem 'protected_attributes'
 gem 'passenger'
 
 
 gem 'rails-i18n', '~> 4.0.0'
-# gem 'responders', '~> 2.0' # for Rails 4.2
+gem 'responders', '~> 2.0' # for Rails 4.2
 
 gem 'turbolinks'
 
@@ -37,6 +37,7 @@ gem 'uglifier', '>= 1.0.3'
 
 # run with `bundle install --without development` to exclude these
 group :development do
+  gem 'web-console', '~> 2.0'
   gem "letter_opener"
   gem "nifty-generators"
   gem 'byebug'
