@@ -226,8 +226,8 @@ class Tag < ActiveRecord::Base
   #select nodes by tagname and user_id
  def self.tagged_nodes_by_author(tagname, user_id)
     Node.where('term_data.name = ?', tagname)
-       .includes(:node_tag, :tag)
-       .references(:term_data)
-       .where('node.uid = ?', user_id)
+        .includes(:node_tag, :tag)
+        .references(:term_data)
+        .where('node.uid = ?', user_id)
  end
 end
