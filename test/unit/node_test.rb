@@ -302,7 +302,7 @@ class NodeTest < ActiveSupport::TestCase
     jeff = users(:jeff)
     jeff_notes = nodes(:one)
     jeff_notes.add_tag('replication:123',jeff)
-    tagged_note = Node.tagged_nodes_by_author('replication:123',2).first
+    tagged_note = Tag.tagged_nodes_by_author('replication:123',2).first
     assert_not_nil tagged_note
     assert_equal jeff_notes, tagged_note
   end
