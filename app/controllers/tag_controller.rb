@@ -160,11 +160,12 @@ class TagController < ApplicationController
     }
     @tags = [] # not used except in tests for now
 
-    node = Node.find params[:nid]
+    nid = params[:nid] || params[:id]
+    node = Node.find nid
     tagnames.each do |tagname|
       # this should all be done in the model:
 
-      if Tag.exists?(tagname, params[:nid])
+      if Tag.exists?(tagname, nid)
         @output[:errors] << I18n.t('tag_controller.tag_already_exists')
       elsif node.can_tag(tagname, current_user) === true || current_user.role == 'admin' # || current_user.role == "moderator"
         saved, tag = node.add_tag(tagname.strip, current_user)

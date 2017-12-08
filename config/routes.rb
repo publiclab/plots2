@@ -159,6 +159,7 @@ Plots2::Application.routes.draw do
   get 'tag/suggested/:id' => 'tag#suggested'
   get 'tag/author/:id.json' => 'tag#author'
   post 'tag/create/:nid' => 'tag#create'
+  get 'tag/create/:nid' => 'tag#create'
   delete 'tag/delete/:nid/:tid' => 'tag#delete'
   get 'barnstar/give/:nid/:star' => 'tag#barnstar'
   get 'barnstar/give' => 'tag#barnstar'
