@@ -117,6 +117,7 @@ Plots2::Application.routes.draw do
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
   get 'methods' => 'wiki#methods'
+  get 'methods/:topic' => 'wiki#methods'
   get 'techniques' => 'wiki#techniques'
 
   get 'report/:id' => 'legacy#report'
