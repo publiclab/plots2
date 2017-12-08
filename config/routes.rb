@@ -5,6 +5,8 @@ Plots2::Application.routes.draw do
   # Manually written API functions
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
 
+  get 'searches/test' => 'searches#test'
+
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
   mount Srch::API => '/api'
@@ -39,6 +41,7 @@ Plots2::Application.routes.draw do
 
   get 'login' => "user_sessions#new",      :as => :login
   delete 'logout' => "user_sessions#destroy", :as => :logout
+  get 'logoutRemotely' => 'user_sessions#logout_remotely'
   post 'register' => 'users#create'
   get 'reset' => 'users#reset'
   post 'reset' => 'users#reset'
@@ -53,6 +56,7 @@ Plots2::Application.routes.draw do
   get 'home' => 'home#front'
   resources :relationships, only: [:create, :destroy]
 
+  get '/wiki/:id/comments', to: 'wiki#comments'
   #resources :users
 
   get 'openid' => 'openid#index'
@@ -81,15 +85,17 @@ Plots2::Application.routes.draw do
   get 'subscriptions' => 'subscription#index'
 
   get 'wiki/new' => 'wiki#new'
+  get 'wiki/replace/:id' => 'wiki#replace'
   get 'wiki/popular' => 'wiki#popular'
   get 'wiki/liked' => 'wiki#liked'
   post 'wiki/create' => 'wiki#create'
   get 'wiki/diff' => 'wiki#diff'
   get 'wiki/:id' => 'wiki#show'
   get 'w/:id' => 'wiki#show'
-    # these need precedence for tag listings
-    get 'feed/tag/:tagname' => 'tag#rss'
-    get ':node_type/tag/:id' => 'tag#show'
+
+  # these need precedence for tag listings
+  get 'feed/tag/:tagname' => 'tag#rss'
+  get ':node_type/tag(/:id)' => 'tag#show'
   get 'wiki/raw/:id' => 'wiki#raw'
   get 'wiki/revisions/:id' => 'wiki#revisions'
   get 'wiki/revert/:id' => 'wiki#revert'
@@ -111,7 +117,7 @@ Plots2::Application.routes.draw do
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
   get 'methods' => 'wiki#methods'
-  get 'techniques' => 'notes#techniques'
+  get 'techniques' => 'wiki#techniques'
 
   get 'report/:id' => 'legacy#report'
   get 'node/:id' => 'legacy#node'
@@ -138,15 +144,9 @@ Plots2::Application.routes.draw do
   delete 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
 
   #Search Pages
-  get 'searches/test' => 'searches#test'
-  get 'search/advanced/:id' => 'searches#new'
   get 'search/dynamic' => 'searches#dynamic'
   get 'search/dynamic/:id' => 'searches#dynamic'
-  get 'search/typeahead/:id' => 'searches#typeahead'
-  get 'search/questions/:id' => 'searches#questions'
-  get 'search/questions_typeahead/:id' => 'searches#questions_typeahead'
   get 'search/:id' => 'searches#results'
-  get 'search/advanced' => 'searches#new'
   get 'search' => 'searches#new'
   post 'search' => 'searches#new'
 
@@ -156,6 +156,7 @@ Plots2::Application.routes.draw do
   get 'contributors/:id' => 'tag#contributors'
   get 'contributors' => 'tag#contributors_index'
   get 'tags' => 'tag#index'
+  get 'tags/:search' => 'tag#index'
   get 'tag/suggested/:id' => 'tag#suggested'
   get 'tag/author/:id.json' => 'tag#author'
   post 'tag/create/:nid' => 'tag#create'
@@ -169,7 +170,8 @@ Plots2::Application.routes.draw do
   get 'tag/:id' => 'tag#show'
 
   get 'locations/form' => 'tag#location'
-
+  get 'locations/modal' => 'tag#location_modal'
+  get 'embed/grid/:tagname' => 'tag#gridsEmbed'
 
   get 'rsvp/:id' => 'notes#rsvp'
   get 'feed/liked' => 'notes#liked_rss'
@@ -187,12 +189,9 @@ Plots2::Application.routes.draw do
   get 'profile/:id/likes' => 'users#likes'
   get 'feed/:author' => 'users#rss'
 
-  get 'profile/suggested/:key/:value' => 'user_tags#suggested'
   post 'profile/tags/create/:id' => 'user_tags#create'
   get 'profile/tags/create/:id' => 'user_tags#create'
   delete 'profile/tags/delete/:id' => 'user_tags#delete'
-  post 'profile/location/create/:id' => 'location_tags#create'
-  get 'profile/user/privacy' => 'users#privacy'
 
 
   get 'maps' => 'map#index'
@@ -206,7 +205,7 @@ Plots2::Application.routes.draw do
   get 'archive' => 'map#index'
   get 'stats' => 'stats#index'
   get 'stats/range/:start/:end' => 'stats#range'
-  get 'stats/subscriptions' => 'stats#subscription'
+  get 'stats/subscriptions' => 'stats#subscriptions'
   get 'feed' => 'notes#rss'
   get 'rss.xml' => 'legacy#rss'
 
@@ -248,12 +247,13 @@ Plots2::Application.routes.draw do
   get 'questions/:author/:date/:id' => 'questions#show'
   get 'questions/show/:id' => 'questions#show'
   get 'q/:id' => 'questions#shortlink'
-  get 'questions/answered' => 'questions#answered'
-  get 'questions/popular' => 'questions#popular'
-  get 'questions/unanswered' => 'questions#unanswered'
-  get 'questions/liked' => 'questions#liked'
+  get 'questions/answered(/:tagnames)' => 'questions#answered'
+  get 'questions/popular(/:tagnames)' => 'questions#popular'
+  get 'questions/unanswered(/:tagnames)' => 'questions#unanswered'
+  get 'questions/liked(/:tagnames)' => 'questions#liked'
 
   post 'answers/create/:nid' => 'answers#create'
+  get 'answers/create/:nid' => 'answers#create'
   put 'answers/update/:id' => 'answers#update'
   delete 'answers/delete/:id' => 'answers#delete'
   put 'answers/accept/:id' => 'answers#accept'
