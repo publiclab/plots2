@@ -148,6 +148,7 @@ Plots2::Application.routes.draw do
   get 'search/dynamic/:id' => 'searches#dynamic'
   get 'search/:id' => 'searches#results'
   get 'search' => 'searches#new'
+  post 'search' => 'searches#new'
 
   get 'widget/:id' => 'tag#widget'
   get 'blog' => 'tag#blog', :id => "blog"
@@ -252,6 +253,7 @@ Plots2::Application.routes.draw do
   get 'questions/liked(/:tagnames)' => 'questions#liked'
 
   post 'answers/create/:nid' => 'answers#create'
+  get 'answers/create/:nid' => 'answers#create'
   put 'answers/update/:id' => 'answers#update'
   delete 'answers/delete/:id' => 'answers#delete'
   put 'answers/accept/:id' => 'answers#accept'
