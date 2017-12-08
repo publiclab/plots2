@@ -5,7 +5,7 @@ class CommentMailerTest < ActionMailer::TestCase
     user = users(:bob)
     comment = comments(:question_one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      CommentMailer.notify(user, comment).deliver
+      CommentMailer.notify(user, comment).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
@@ -20,7 +20,7 @@ class CommentMailerTest < ActionMailer::TestCase
     user = users(:jeff)
     comment = comments(:question)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      CommentMailer.notify_note_author(user, comment).deliver
+      CommentMailer.notify_note_author(user, comment).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
@@ -65,7 +65,7 @@ class CommentMailerTest < ActionMailer::TestCase
     user = users(:bob)
     comment = comments(:answer_comment_one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      CommentMailer.notify_answer_author(user, comment).deliver
+      CommentMailer.notify_answer_author(user, comment).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
