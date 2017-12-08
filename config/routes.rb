@@ -102,6 +102,7 @@ Plots2::Application.routes.draw do
   get 'wiki/edit/:id' => 'wiki#edit'
   put 'wiki/update/:id' => 'wiki#update'
   delete 'wiki/delete/:id' => 'wiki#delete'
+  get 'wiki/delete/:id' => 'wiki#delete'
   get 'wiki/revisions/:id/:vid' => 'wiki#revision'
   get 'wiki/:lang/:id' => 'wiki#show'
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
