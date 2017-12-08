@@ -148,7 +148,7 @@ class TagControllerTest < ActionController::TestCase
     node = Node.find tags(:spectrometer).nodes.first.nid
     assert_equal node.nid,                  json.first['nid']
     assert_equal node.body_preview,         json.first['preview']
-    assert_equal node.main_image,           json.first['image'] # this won't check anything bc there is no main image
+    #assert_equal node.main_image,           json.first['image'] # this won't check anything bc there is no main image
     assert_equal node.tags.collect(&:name), json.first['tags']
   end
 
