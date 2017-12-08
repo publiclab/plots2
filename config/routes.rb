@@ -211,6 +211,7 @@ Plots2::Application.routes.draw do
   get 'rss.xml' => 'legacy#rss'
 
   get 'useremail' => 'admin#useremail'
+  post 'useremail' => 'admin#useremail'
   get 'spam' => 'admin#spam'
   get 'spam/revisions' => 'admin#spam_revisions'
   get 'spam/:type' => 'admin#spam'
