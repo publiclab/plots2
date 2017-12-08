@@ -82,6 +82,7 @@ Plots2::Application.routes.draw do
   delete 'unsubscribe/:type/:name' => 'subscription#delete'
   put 'subscribe/:type' => 'subscription#add'
   put 'subscribe/:type/:name' => 'subscription#add'
+  get 'subscribe/:type/:name' => 'subscription#add'
   get 'subscriptions' => 'subscription#index'
 
   get 'wiki/new' => 'wiki#new'
