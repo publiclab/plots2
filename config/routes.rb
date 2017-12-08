@@ -188,6 +188,7 @@ Plots2::Application.routes.draw do
 
   get 'profile/suggested/:key/:value' => 'user_tags#suggested'
   post 'profile/tags/create/:id' => 'user_tags#create'
+  get 'profile/tags/create/:id' => 'user_tags#create'
   delete 'profile/tags/delete/:id' => 'user_tags#delete'
   post 'profile/location/create/:id' => 'location_tags#create'
   get 'profile/user/privacy' => 'users#privacy'

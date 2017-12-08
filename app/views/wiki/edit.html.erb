@@ -38,7 +38,7 @@
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
   <% end %>
 
-  <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well"} do |f| %>
+  <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well wiki-form"} do |f| %>
 
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
   
@@ -88,9 +88,13 @@
     <script>
       (function(){
         publish = function(e) {
-            $('#new_revision').submit()
+          $('form.wiki-form').submit()
         }
-        $(".publish").bind("click",publish)
+        publishOnEnter = function(e) {
+          if (e && e.keyCode == 13) $('form.wiki-form').submit()
+        }
+        $(".publish").bind("click", publish)
+        $(".publish").bind("keypress", publishOnEnter)
       })()
     </script>
 
