@@ -389,4 +389,12 @@ class TagControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'table' # ensure a table is shown
   end
+
+  test 'shows embeddable grid of tagged content' do
+    get :nonsenseroute
+
+    assert_response :success
+    assert_select 'table' # ensure a table is shown
+  end
+
 end
