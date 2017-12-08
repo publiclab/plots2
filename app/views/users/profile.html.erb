@@ -69,6 +69,11 @@
   <% if @user.user && !@user.user.reset_key.nil? && current_user && current_user.role == "admin" %>
     <a id="user-reset-key" href="/reset/key/<%= @user.user.reset_key %>" class="btn btn-default btn-block"><i class="fa fa-info-sign"></i> <%= t('users.profile.reset_user') %>: <%= @user.user.reset_key %></a>
   <% end %>
+
+  <% if @user.user && current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.role == "basic" %>
+    <a href="/resetuserpassword/<%= @profile_user.id %>" class="btn btn-default btn-block">Reset User Password</a>
+  <% end %>
+
   <hr />
 
   <p>

@@ -38,11 +38,11 @@ Plots2::Application.routes.draw do
   get 'ioby' => "legacy#ioby"
 
   get 'login' => "user_sessions#new",      :as => :login
-  delete 'logout' => "user_sessions#destroy", :as => :logout
+  get 'logout' => "user_sessions#destroy", :as => :logout
   post 'register' => 'users#create'
   get 'reset' => 'users#reset'
   post 'reset' => 'users#reset'
-  post 'reset/key/:key' => 'users#reset'
+  get 'reset/key/:key' => 'users#reset'
   get 'profiles', to: redirect('/people')
   get 'people' => 'users#list'
   get 'users/role/:id' => 'users#list'
@@ -222,6 +222,7 @@ Plots2::Application.routes.draw do
   put 'moderate/spam/:id' => 'admin#mark_spam'
   put 'moderate/publish/:id' => 'admin#publish'
   put 'admin/promote/moderator/:id' => 'admin#promote_moderator'
+  get 'resetuserpassword/:id' => 'admin#reset_user_password'
   put 'admin/demote/basic/:id' => 'admin#demote_basic'
   put 'admin/promote/admin/:id' => 'admin#promote_admin'
   put 'admin/migrate/:id' => 'admin#migrate'
