@@ -153,20 +153,16 @@ class User < ActiveRecord::Base
 
    # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
-    all_key_tags_ids = Tag.where('name LIKE ?' , key + ':%').collect(&:tid)
-    tids = TagSelection.where('user_id = ? AND tid IN (?)', self.id , all_key_tags_ids)
-    !tids.blank?
+     tids = user_tags.where('value LIKE ?' , key + ':%').collect(&:id)
+     !tids.blank? 
   end
 
   def get_value_of_power_tag(key)
-    all_key_tags = Tag.where('name LIKE ?' , key + ':%')
-    all_key_tags_ids = all_key_tags.collect(&:tid)
-    tids = TagSelection.where('user_id = ? AND tid IN (?)', self.id , all_key_tags_ids).collect(&:tid)
-    tname = Tag.find(tids.first)
-    tvalue = tname.name.partition(':').last
+    tname = self.user_tags.where('value LIKE ?' , key + ':%') 
+    tvalue = tname.first.name.partition(':').last  
     tvalue
-  end
-
+  end 
+  
   def subscriptions(type = :tag)
     if type == :tag
       TagSelection.where(user_id: uid,
