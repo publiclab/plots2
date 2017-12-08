@@ -131,3 +131,7 @@ gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
 gem 'activerecord-tableless'
 gem 'figaro'
 gem 'sanitize'
+
+#Performance testing
+gem 'rails-perftest'
+gem 'ruby-prof', group: :test
