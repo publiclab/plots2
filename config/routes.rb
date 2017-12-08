@@ -102,6 +102,7 @@ Plots2::Application.routes.draw do
   get 'wiki/edit/:id' => 'wiki#edit'
   put 'wiki/update/:id' => 'wiki#update'
   delete 'wiki/delete/:id' => 'wiki#delete'
+  get 'wiki/delete/:id' => 'wiki#delete'
   get 'wiki/revisions/:id/:vid' => 'wiki#revision'
   get 'wiki/:lang/:id' => 'wiki#show'
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
@@ -117,6 +118,7 @@ Plots2::Application.routes.draw do
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
   get 'methods' => 'wiki#methods'
+  get 'methods/:topic' => 'wiki#methods'
   get 'techniques' => 'wiki#techniques'
 
   get 'report/:id' => 'legacy#report'
@@ -210,6 +212,7 @@ Plots2::Application.routes.draw do
   get 'rss.xml' => 'legacy#rss'
 
   get 'useremail' => 'admin#useremail'
+  post 'useremail' => 'admin#useremail'
   get 'spam' => 'admin#spam'
   get 'spam/revisions' => 'admin#spam_revisions'
   get 'spam/:type' => 'admin#spam'
