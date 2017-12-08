@@ -13,5 +13,5 @@ test:
 production:
   adapter: mysql2
   username:
-  password:
+  password: 
   database: publiclab_production
