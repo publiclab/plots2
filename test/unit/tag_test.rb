@@ -145,4 +145,11 @@ class TagTest < ActiveSupport::TestCase
     top_nodes = Tag.find_top_nodes_by_type(tagname:'awesome2', type:'page')
     assert_not_nil top_nodes
   end
+
+  test 'contributor_count with specific tag name' do
+    tag = tags(:test)
+    contributor_count = Tag.contributor_count(tag.name)
+    assert_equal 5,contributor_count
+  end
+
 end
