@@ -71,7 +71,7 @@
   <% end %>
 
   <% if @user.user && @profile_user.reset_key.nil? &&current_user && (current_user.role == "admin" || current_user.role == "moderator") && @user.role == "basic" %>
-    <a href="/admin/forcereset/<%= @profile_user.id %>" class="btn btn-default btn-block">Reset User Password</a>
+    <a href="/admin/force/reset/<%= @profile_user.id %>" class="btn btn-default btn-block">Reset User Password</a>
   <% end %>
 
   <hr />

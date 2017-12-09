@@ -81,6 +81,14 @@ class AdminControllerTest < ActionController::TestCase
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
+  test 'admin should be able to force reset user password' do
+    UserSession.create(users(:admin))
+    user = users(:bob)
+    get :reset_user_password, id: user.id 
+    assert_equal 'You should receive an email with instructions on how to reset your password. If you do not, please double check that you are using the email you registered with.', flash[:notice] 
+    assert_redirected_to '/profile/' + user.name
+  end
+
   test 'non-registered user should not be able to see spam page' do
     get :spam
 
