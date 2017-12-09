@@ -109,6 +109,9 @@
   (function() {
 
     editor = new PL.Editor({
+      data: {
+        token: $('meta[name="csrf-token"]').attr('content')
+      },
       textarea:    $('.ple-textarea')[0],
       <% if @main_image %>
         mainImageUrl:   '<%= @main_image %>',
