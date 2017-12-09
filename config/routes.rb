@@ -222,7 +222,7 @@ Plots2::Application.routes.draw do
   put 'moderate/spam/:id' => 'admin#mark_spam'
   put 'moderate/publish/:id' => 'admin#publish'
   put 'admin/promote/moderator/:id' => 'admin#promote_moderator'
-  get 'resetuserpassword/:id' => 'admin#reset_user_password'
+  get 'admin/forcereset/:id' => 'admin#reset_user_password'
   put 'admin/demote/basic/:id' => 'admin#demote_basic'
   put 'admin/promote/admin/:id' => 'admin#promote_admin'
   put 'admin/migrate/:id' => 'admin#migrate'
