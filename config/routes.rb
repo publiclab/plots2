@@ -23,12 +23,6 @@ Plots2::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
-
-  #match '', to: 'blogs#show', constraints: {subdomain: /.+/}
-
   # switch off subdomain matching when in development
   if Rails.env.test?
   # or to skip www:
@@ -220,22 +214,18 @@ Plots2::Application.routes.draw do
   get 'spam/batch/:ids' => 'admin#batch'
   get 'admin/users' => 'admin#users'
   get 'admin/queue' => 'admin#queue'
-  put 'ban/:id' => 'admin#ban'
-  put 'unban/:id' => 'admin#unban'
-  put 'moderate/revision/spam/:vid' => 'admin#mark_spam_revision'
-  put 'moderate/revision/publish/:vid' => 'admin#publish_revision'
-  put 'moderate/spam/:id' => 'admin#mark_spam'
-  put 'moderate/publish/:id' => 'admin#publish'
-  put 'admin/promote/moderator/:id' => 'admin#promote_moderator'
-  put 'admin/demote/basic/:id' => 'admin#demote_basic'
-  put 'admin/promote/admin/:id' => 'admin#promote_admin'
-  put 'admin/migrate/:id' => 'admin#migrate'
-  put 'admin/moderate/:id' => 'admin#moderate'
-  put 'admin/unmoderate/:id' => 'admin#unmoderate'
-
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
+  get 'ban/:id' => 'admin#ban'
+  get 'unban/:id' => 'admin#unban'
+  get 'moderate/revision/spam/:vid' => 'admin#mark_spam_revision'
+  get 'moderate/revision/publish/:vid' => 'admin#publish_revision'
+  get 'moderate/spam/:id' => 'admin#mark_spam'
+  get 'moderate/publish/:id' => 'admin#publish'
+  get 'admin/promote/moderator/:id' => 'admin#promote_moderator'
+  get 'admin/demote/basic/:id' => 'admin#demote_basic'
+  get 'admin/promote/admin/:id' => 'admin#promote_admin'
+  get 'admin/migrate/:id' => 'admin#migrate'
+  get 'admin/moderate/:id' => 'admin#moderate'
+  get 'admin/unmoderate/:id' => 'admin#unmoderate'
 
   get 'post' => 'editor#post'
   get 'legacy' => 'editor#legacy'
