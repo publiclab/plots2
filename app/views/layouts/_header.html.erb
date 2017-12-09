@@ -137,7 +137,7 @@
     <li><a href="/people">Contributors</a></li>
 	           <li class="divider"></li>
 	       <% end %>
-              <li><%= link_to t('layout._header.logout'), logout_path %></li>
+              <li><%= link_to t('layout._header.logout'), logout_path,method: :delete %></li>
               <li><a href="/logoutRemotely">Logout from all devices</a></li>
             </ul>
             <% else %>
