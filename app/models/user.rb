@@ -153,7 +153,7 @@ class User < ActiveRecord::Base
 
    # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
-     tids = user_tags.where('value LIKE ?' , key + ':%').collect(&:id)
+     tids = self.user_tags.where('value LIKE ?' , key + ':%').collect(&:id)
      !tids.blank? 
   end
 
