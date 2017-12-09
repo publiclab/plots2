@@ -52,6 +52,18 @@ class Tag < ActiveRecord::Base
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
+  def self.contributor_count(tagname)
+    tag = Tag.includes(:node).where(name: tagname).first
+    nodes = tag.node.includes(:comments,:answers).where(status: 1)
+    uids = nodes.collect(&:uid)
+    nodes.each do |n|
+      uids+=n.comments.collect(&:uid)
+      uids+=n.answers.collect(&:uid)
+    end
+    uids = uids.uniq
+    uids.length
+  end
+
   # finds highest viewcount nodes
   def self.find_top_nodes_by_type(tagname, type = 'wiki', limit = 10)
     Node.where(type: type)
