@@ -14,6 +14,9 @@ class User < ActiveRecord::Base
   include SolrToggle
   searchable if: :shouldIndexSolr do
     text :username, :email
+    text :bio do
+      bio.to_s.gsub!(/[[:cntrl:]]/,'').to_s.slice!(0..32500)
+    end
   end
 
   acts_as_authentic do |c|
@@ -96,6 +99,14 @@ class User < ActiveRecord::Base
         .order('created DESC')
   end
 
+  def coauthored_notes
+    coauthored_tag = "with:" + self.name.downcase
+    Node.where(status: 1, type: "note")
+        .includes(:revision, :tag)
+        .references(:term_data, :node_revisions)
+        .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s , coauthored_tag.to_s)
+  end
+
   def generate_reset_key
     # invent a key and save it
     key = ''
@@ -144,17 +155,17 @@ class User < ActiveRecord::Base
   def has_power_tag(key)
     all_key_tags_ids = Tag.where('name LIKE ?' , key + ':%').collect(&:tid)
     tids = TagSelection.where('user_id = ? AND tid IN (?)', self.id , all_key_tags_ids)
-    !tids.blank? 
+    !tids.blank?
   end
 
   def get_value_of_power_tag(key)
-    all_key_tags = Tag.where('name LIKE ?' , key + ':%') 
+    all_key_tags = Tag.where('name LIKE ?' , key + ':%')
     all_key_tags_ids = all_key_tags.collect(&:tid)
-    tids = TagSelection.where('user_id = ? AND tid IN (?)', self.id , all_key_tags_ids).collect(&:tid) 
+    tids = TagSelection.where('user_id = ? AND tid IN (?)', self.id , all_key_tags_ids).collect(&:tid)
     tname = Tag.find(tids.first)
-    tvalue = tname.name.partition(':').last  
+    tvalue = tname.name.partition(':').last
     tvalue
-  end 
+  end
 
   def subscriptions(type = :tag)
     if type == :tag

@@ -34,7 +34,7 @@ class WikiCreationTest < ActionDispatch::IntegrationTest
 
     node = Node.where(title: title).first
 
-    assert_equal node, nil
+    assert_nil node
     assert_equal '/wiki/create', path
     assert_select 'h2', '1 error prohibited this revision from being saved'
 

@@ -47,7 +47,7 @@ class NodeTagTest < ActiveSupport::TestCase
   test 'aliasing of tag specified in tag.parent' do
     node = nodes(:one)
     assert_equal tags(:spectrometer).parent, 'spectrometry'
-    assert_equal tags(:spectrometry).parent, nil
+    assert_nil tags(:spectrometry).parent
     assert       node.has_tag('spectrometer') # this is directly true
     assert       node.has_tag('spectrometry') # this true via aliasing
     assert       node.has_tag_without_aliasing('spectrometer')
