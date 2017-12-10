@@ -22,6 +22,12 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'redirect nonexistent routes in /____  format to /wiki/____' do
+    get '/chicago'
+    assert_response :redirect
+    assert_redirected_to '/wiki/chicago'
+  end
+
   test 'view notes for an author' do
     get '/notes/author/' + users(:bob).username
     assert_response :success

@@ -229,6 +229,7 @@ class WikiController < ApplicationController
   end
 
   # wiki pages which have a root URL, like /about
+  # also just redirect anything else matching /____ to /wiki/____
   def root
     @node = Node.find_by_path(params[:id])
     return if check_and_redirect_node(@node)
@@ -239,7 +240,8 @@ class WikiController < ApplicationController
       @tagnames = @tags.collect(&:name)
       render template: 'wiki/show'
     else
-      redirect_to '/404'
+      # redirects any uncaught requests to example.com/______ to /wiki/____
+      redirect_to '/wiki/' + params[:id]
     end
   end
 

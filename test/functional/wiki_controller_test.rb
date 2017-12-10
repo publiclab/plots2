@@ -265,13 +265,13 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
   end
 
-  test 'should return error for wiki pages that do not follow /slug format' do
+  test 'should redirect to /wiki/___ for requests that ask for /____' do
     UserSession.find.destroy
     UserSession.create(users(:admin))
 
-    get :root, id: 'invalid'
+    get :root, id: 'madeup'
 
-    assert_redirected_to '/404'
+    assert_redirected_to '/wiki/madeup'
     UserSession.find.destroy
   end
 

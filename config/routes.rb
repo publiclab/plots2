@@ -23,12 +23,6 @@ Plots2::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
-
-  #match '', to: 'blogs#show', constraints: {subdomain: /.+/}
-
   # switch off subdomain matching when in development
   if Rails.env.test?
   # or to skip www:
@@ -234,10 +228,6 @@ Plots2::Application.routes.draw do
   put 'admin/moderate/:id' => 'admin#moderate'
   put 'admin/unmoderate/:id' => 'admin#unmoderate'
 
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
-
   get 'post' => 'editor#post'
   get 'legacy' => 'editor#legacy'
   get 'editor' => 'editor#editor'
@@ -267,6 +257,7 @@ Plots2::Application.routes.draw do
   get 'answer_like/likes/:aid' => 'answer_like#likes'
 
   post 'comment/answer_create/:aid' => 'comment#answer_create'
+
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 

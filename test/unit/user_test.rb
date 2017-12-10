@@ -86,12 +86,12 @@ class UserTest < ActiveSupport::TestCase
 
   test 'returns value of power tag' do
     bob = users(:bob)
-    assert_equal bob.get_value_of_power_tag("question") , "spectrometer"
+    assert_equal bob.get_value_of_power_tag("skill") , "java"
   end
 
   test 'has power tag' do
     bob = users(:bob)
-    assert bob.has_power_tag("question")
+    assert bob.has_power_tag("skill")
   end
 
   test 'returns nodes coauthored by user with coauthored_notes method' do
