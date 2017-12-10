@@ -85,7 +85,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     user = users(:bob)
     get :reset_user_password, id: user.id 
-    assert_equal 'You should receive an email with instructions on how to reset your password. If you do not, please double check that you are using the email you registered with.', flash[:notice] 
+    assert_equal "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with.", flash[:notice] 
     assert_redirected_to '/profile/' + user.name
   end
 
