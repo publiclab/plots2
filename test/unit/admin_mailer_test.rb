@@ -17,7 +17,6 @@ class AdminMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
     email = ActionMailer::Base.deliveries.last
 
-    assert_not_nil nil # Put here to see if errors are being reported
     assert_not_nil email.to
     assert_not_nil email.bcc
     assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
