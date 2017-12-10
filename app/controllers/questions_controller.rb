@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  before_filter :require_user, only: %i[new]
   private
 
   def filter_questions_by_tag(questions, tagnames)
