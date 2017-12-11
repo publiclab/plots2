@@ -43,7 +43,7 @@ Plots2::Application.routes.draw do
   get 'profiles', to: redirect('/people')
   get 'people' => 'users#list'
   get 'users/role/:id' => 'users#list'
-  put 'users/update' => 'users#update'
+  post 'users/update' => 'users#update'
   get 'people/:id/following' => 'users#following', as: :following
   get 'people/:id/followers' => 'users#followers', as: :followers
   get 'signup' => 'users#new'
@@ -179,7 +179,7 @@ Plots2::Application.routes.draw do
   get 'profile/comments/:id' => 'users#comments'
   get 'nearby' => 'home#nearby'
   get 'profile/edit' => 'users#edit'
-  get 'profile/photo' => 'users#photo'
+  post 'profile/photo' => 'users#photo'
   get 'profile/info/:id' => 'users#info', as: 'info'
   get 'profile/:id' => 'users#profile'
   get 'profile/:id/edit' => 'users#edit'
