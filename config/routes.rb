@@ -255,7 +255,7 @@ Plots2::Application.routes.draw do
   get 'answer_like/show/:id' => 'answer_like#show'
   get 'answer_like/likes/:aid' => 'answer_like#likes'
 
-  post 'comment/answer_create/:aid' => 'comment#answer_create'
+  get 'comment/answer_create/:aid' => 'comment#answer_create'
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
