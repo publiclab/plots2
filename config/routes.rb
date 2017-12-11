@@ -34,7 +34,7 @@ Plots2::Application.routes.draw do
   get 'ioby' => "legacy#ioby"
 
   get 'login' => "user_sessions#new",      :as => :login
-  delete 'logout' => "user_sessions#destroy", :as => :logout
+  get 'logout' => "user_sessions#destroy", :as => :logout
   get 'logoutRemotely' => 'user_sessions#logout_remotely'
   post 'register' => 'users#create'
   get 'reset' => 'users#reset'
