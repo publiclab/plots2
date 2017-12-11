@@ -153,7 +153,14 @@ class Tag < ActiveRecord::Base
     DrupalUser.where('uid in (?)', uids)
                .collect(&:user)
   end
-
+  
+  #select nodes by tagname and user_id
+  def self.tagged_nodes_by_author(tagname, user_id)
+  	Node.where('term_data.name = ?', tagname)
+                .includes(:node_tag, :tag)
+	              .where('node.uid = ?', user_id)
+  end
+  
   # OPTIMIZE: this too!
   def weekly_tallies(type = 'note', span = 52)
     weeks = {}
