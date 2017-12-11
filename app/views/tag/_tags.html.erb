@@ -19,7 +19,7 @@
 
         <span id="tag_<%= tag.id %>" class="label <%= label_name %>">
           <a class="tag-name" href="/tag/<%= tag.name %>"><%= tag.name %></a>
-          <a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @user.id %>?name=<%= tag.name %>">x</a>
+          <a data-confirm="Are you sure you want to delete it?" class="tag-delete" data-remote="true" href="/profile/tags/delete/<%= @user.id %>?name=<%= tag.name %>" data-method="delete">x</a>
         </span>
     
     <% end %>
