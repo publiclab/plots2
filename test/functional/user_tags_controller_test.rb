@@ -33,14 +33,14 @@ class UserTagsControllerTest < ActionController::TestCase
   test 'should delete existing tag' do
     UserSession.create(users(:bob))
     user_tag = user_tags(:one)
-    get :delete, id: user_tag.id
+    delete :delete, id: user_tag.id
     assert_equal 'Tag deleted.', flash[:notice]
     assert_redirected_to info_path
   end
 
   test 'cannot delete non-existent tag' do
     UserSession.create(users(:bob))
-    get :delete, id: 9999
+    delete :delete, id: 9999
     assert_equal "Tag doesn't exist.", flash[:error]
     assert_redirected_to info_path
   end
@@ -68,7 +68,7 @@ class UserTagsControllerTest < ActionController::TestCase
     user_tags_count = UserTag.where(uid: users(:bob).id).count
     # Delete above tag
     UserSession.create(users(:jeff))
-    get :delete, id: user_tag.id
+    delete :delete, id: user_tag.id
     assert_equal user_tags_count - 1, UserTag.where(uid: users(:bob).id).count
   end
 
@@ -88,7 +88,7 @@ class UserTagsControllerTest < ActionController::TestCase
   test 'Normal user should not delete tag for other user' do
     user_tag = UserTag.where(uid: users(:jeff).id).last
     UserSession.create(users(:bob))
-    get :delete, id: user_tag.id
+    delete :delete, id: user_tag.id
     assert_equal 'Only admin (or) target user can manage tags', flash[:error]
   end
 
@@ -102,7 +102,7 @@ class UserTagsControllerTest < ActionController::TestCase
       @controller = old_controller
 
       UserSession.create(users(:bob))
-      get :delete, id: 9999
+      delete :delete, id: 9999
       assert_equal I18n.t('user_tags_controller.tag_doesnt_exist'), flash[:error]
     end
   end
