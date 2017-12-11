@@ -73,7 +73,7 @@ Plots2::Application.routes.draw do
   get 'openid/service.wsdl' => 'openid#wsdl'
 
   get 'following/:type/:name' => 'subscription#following'
-  get 'unsubscribe/:type/:name' => 'subscription#delete'
+  delete 'unsubscribe/:type/:name' => 'subscription#delete'
   put 'subscribe/:type' => 'subscription#add'
   put 'subscribe/:type/:name' => 'subscription#add'
   get 'subscribe/:type/:name' => 'subscription#add'
