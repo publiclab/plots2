@@ -22,6 +22,11 @@
        <i class="fa fa-github fa-3x" aria-hidden="true"></i>
        </a>
     <% end %>
+    <% if @instagram.nil? == false %>
+        <a href="<%= @instagram %>" >
+       <i class="fa fa-instagram fa-3x" aria-hidden="true"></i>
+       </a>
+    <% end %>
   </div>
   <br>
   <% if current_user && @profile_user %>
