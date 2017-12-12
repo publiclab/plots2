@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/ruby-prof/ruby-prof.git
+  revision: d6867cf1133bc6602058166a6c1d3301b9b0529c
+  branch: master
+  specs:
+    ruby-prof (0.16.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -94,7 +101,7 @@ GEM
       rake
     friendly_id (5.2.3)
       activerecord (>= 4.0.0)
-    geocoder (1.4.4)
+    geocoder (1.4.5)
     geokit (1.11.0)
     geokit-rails (2.3.0)
       geokit (~> 1.5)
@@ -300,7 +307,7 @@ GEM
       sunspot (= 2.2.7)
     term-ansicolor (1.6.0)
       tins (~> 1.0)
-    test-unit (3.2.6)
+    test-unit (3.2.7)
       power_assert
     therubyracer (0.12.3)
       libv8 (~> 3.16.14.15)
@@ -309,11 +316,11 @@ GEM
     thread_safe (0.3.6)
     tilt (1.4.1)
     timecop (0.9.1)
-    tins (1.15.1)
+    tins (1.16.3)
     tool (0.2.3)
     tzinfo (1.2.4)
       thread_safe (~> 0.1)
-    uglifier (3.2.0)
+    uglifier (4.0.2)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
@@ -383,6 +390,7 @@ DEPENDENCIES
   rest-client
   rspec
   ruby-openid
+  ruby-prof!
   sass-rails (~> 4.0.0)
   scrypt (~> 3)
   sqlite3
