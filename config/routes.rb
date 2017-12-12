@@ -43,7 +43,7 @@ Plots2::Application.routes.draw do
   get 'profiles', to: redirect('/people')
   get 'people' => 'users#list'
   get 'users/role/:id' => 'users#list'
-  post 'users/update' => 'users#update'
+  patch 'users/update' => 'users#update'
   get 'people/:id/following' => 'users#following', as: :following
   get 'people/:id/followers' => 'users#followers', as: :followers
   get 'signup' => 'users#new'
