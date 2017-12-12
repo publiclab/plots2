@@ -1,0 +1,43 @@
+<% if params[:controller] == "tag" || params[:controller] == "search" %>
+  <%= render :partial => "sidebar/related" %>
+<% elsif params[:action] == "author" || params[:action] == "author_topic" %>
+  <%= render :partial => "sidebar/author" %>
+<% else %>
+  <%= render :partial => "sidebar/user" %>
+<% end %>
+<div class="col-md-9">
+  <% if params[:controller] == "search" %>
+    <h3><%= raw t('notes.index.search_results_for', :params => params[:id]) %> <small>(<a href="/search/advanced/<%= params[:id] %>"><%= t('notes.index.advanced_search') %></a>)</h3>
+  <% elsif params[:controller] == "tag" %>
+    <h3><%= raw t('notes.index.research_on', :tags => @tagname.to_s, :url1 => "/people/"+@user.name, :user_name => @user.name) %> </h3>
+  <% elsif params[:action] == "popular" %>
+    <h2><%= t('notes.index.popular_research_notes') %></h2>
+  <% elsif params[:action] == "author_topic" %>
+    <h3><%= raw t('notes.index.research_on', :tags => @tagname.to_s, :url1 => "/people/"+@user.name, :user_name => @user.name) %> <br /><small><%= raw t('notes.index.research_notes_and_wiki_edits_with_time', :count => @user.node_count, :time => time_ago_in_words(@user.created_at)) %></small></h3>
+  <% elsif params[:action] == "author" %>
+    <h3><%= raw t('notes.index.research_by', :url1 => "/people/"+@user.name, :user_name => @user.name) %> <small><%= raw t('notes.index.research_notes_and_wiki_edits', :count => @user.node_count) %> <% if @user.notes.length > 0 %><%= raw t('notes.index.starting_time', :time => time_ago_in_words(@user.created_at)) %><% end %></small></h3>
+  <% else %>
+    <h2><%= raw t('notes.index.research_notes_ideas_and_documentation') %></h2>
+  <% end %>
+  <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked") %>
+
+    <%= render :partial => "notes/format_toggle" %>
+    <% if params[:action] == "liked" %><a style="margin-right:4px;" class="pull-right btn btn-default btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
+
+    <ul class="nav nav-tabs">
+        <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/notes/"><%= t('notes.index.recent') %></a></li>
+        <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/notes/popular/"><%= t('notes.index.popular') %></a></li>
+        <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="fa fa-star-o"></i><span class="hidden-sm"> <%= t('notes.index.liked') %></span></a></li>
+
+        <li><a href="/wiki/"><%= raw t('notes.index.wiki_pages') %></a></li>
+    </ul>
+
+  <% end %>
+
+  <br />
+
+  <%= render :partial => "notes/notes" %>
+
+  <hr />
+
+</div>

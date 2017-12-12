@@ -238,7 +238,6 @@ class Tag < ActiveRecord::Base
   #select nodes by tagname and user_id
   def self.tagged_nodes_by_author(tagname, user_id)
     if tagname[-1..-1] == '*'
-      @wildcard = true
       Node.where('term_data.name LIKE(?)', tagname[0..-2]+'%')
         .includes(:node_tag, :tag)
         .references(:term_data)

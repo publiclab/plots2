@@ -35,7 +35,7 @@ class DrupalUser < ActiveRecord::Base
   def bio
     user.bio
   end
-  
+
   def username
     name
   end

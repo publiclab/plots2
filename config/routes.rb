@@ -13,7 +13,6 @@ Plots2::Application.routes.draw do
   mount GrapeSwaggerRails::Engine => '/api/d1ocs'
   #end
 
-
   resources :rusers
   resources :user_sessions
   resources :images
@@ -102,7 +101,6 @@ Plots2::Application.routes.draw do
   get 'wiki/:lang/:id' => 'wiki#show'
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
   get 'wiki' => 'wiki#index'
-
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
   get 'notes/raw/:id' => 'notes#raw'
