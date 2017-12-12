@@ -39,7 +39,7 @@ Plots2::Application.routes.draw do
   post 'register' => 'users#create'
   get 'reset' => 'users#reset'
   post 'reset' => 'users#reset'
-  post 'reset/key/:key' => 'users#reset'
+  get 'reset/key/:key' => 'users#reset'
   get 'profiles', to: redirect('/people')
   get 'people' => 'users#list'
   get 'users/role/:id' => 'users#list'
@@ -221,6 +221,7 @@ Plots2::Application.routes.draw do
   get 'moderate/spam/:id' => 'admin#mark_spam'
   get 'moderate/publish/:id' => 'admin#publish'
   get 'admin/promote/moderator/:id' => 'admin#promote_moderator'
+  get 'admin/force/reset/:id' => 'admin#reset_user_password'
   get 'admin/demote/basic/:id' => 'admin#demote_basic'
   get 'admin/promote/admin/:id' => 'admin#promote_admin'
   get 'admin/migrate/:id' => 'admin#migrate'
