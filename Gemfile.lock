@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/ruby-prof/ruby-prof.git
+  revision: d6867cf1133bc6602058166a6c1d3301b9b0529c
+  specs:
+    ruby-prof (0.16.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -346,7 +352,6 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-openid (2.7.0)
-    ruby-prof (0.16.2)
     ruby-progressbar (1.9.0)
     sanitize (4.6.4)
       crass (~> 1.0.2)
@@ -483,11 +488,15 @@ DEPENDENCIES
   rspec
   rubocop (~> 0.52.1)
   ruby-openid
+<<<<<<< 59f260e3120e184c9376835dda5879118e6ba4d8
 <<<<<<< d5759ea4a5ffe7a59cf03091d29a1e22bccce10c
   sanitize
 =======
   ruby-prof
 >>>>>>> Added rails-perftest and ruby-prof gems, uncommented lines 9-11 in borwsing_test.rb
+=======
+  ruby-prof!
+>>>>>>> Updated gemfile to pull ruby prof from Github
   sass-rails (~> 4.0.0)
   scrypt (~> 3)
   sqlite3

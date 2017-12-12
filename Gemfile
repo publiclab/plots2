@@ -121,7 +121,6 @@ gem 'jbuilder'
 # Pin mustermann to Ruby 2.1 compatible
 gem 'mustermann' , '~> 0.4'
 
-<<<<<<< 3326f593e11ec51c6529431588ea4d7e705f1a4b
 #Gem for assertions used in testing
 gem 'rails-dom-testing'
 #OAuth Based login
@@ -138,6 +137,5 @@ gem 'sanitize'
 
 #Performance testing
 gem 'rails-perftest'
-=======
->>>>>>> Moved gem perftest to test block in gemfile
 gem 'ruby-prof', group: :test
+gem 'ruby-prof', :github => 'ruby-prof'
