@@ -54,11 +54,12 @@ class Tag < ActiveRecord::Base
 
   def self.contributor_count(tagname)
     tag = Tag.includes(:node).where(name: tagname).first
-    nodes = tag.node.includes(:comments,:answers).where(status: 1)
+    nodes = tag.node.includes(:revision, :comments,:answers).where(status: 1)
     uids = nodes.collect(&:uid)
     nodes.each do |n|
       uids+=n.comments.collect(&:uid)
       uids+=n.answers.collect(&:uid)
+      uids+=n.revision.collect(&:uid)
     end
     uids = uids.uniq
     uids.length
