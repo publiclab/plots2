@@ -44,7 +44,7 @@ class AdminController < ApplicationController
   end
 
   def reset_user_password
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if current_user && current_user.role == 'admin'
       user = User.find(params[:id])
       if user
         key = user.generate_reset_key
