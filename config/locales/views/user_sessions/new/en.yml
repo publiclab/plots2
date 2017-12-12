@@ -3,7 +3,7 @@
 en:
   user_sessions:
     new:
-      log_in_or_sign_up: "Log in <small> or <a href='%{url1}'>sign up to join</a> the Public Lab network</small>"
+      log_in_or_sign_up: "Log in <small> or <a href='%{url1}'>sign up to join</a> the Public Lab community</small>"
       username: "Username Or Email"
       password: "Password"
       remember_me: "Remember me"
