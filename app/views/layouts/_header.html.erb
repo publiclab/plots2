@@ -58,6 +58,7 @@
             <% end %>
             <li><a href="/questions">Ask a question</a></li>
             <li><a href="/post">Post your work</a></li>
+            <li class="hidden-lg hidden-xl"><a href="/donate">Donate</a></li>
           </ul>
 
         </li>
@@ -88,14 +89,12 @@
             <li class="divider"></li>
             <li><a href="/media"><%= t('layout._header.about.press_and_media') %></a></li>
             <li><a href="/wiki/contact"><%= t('layout._header.about.contact') %></a></li>
+            <li class="hidden-lg hidden-xl"><a href="//store.publiclab.org"><%= t('layout._header.store') %></a></li>
           </ul>
         </li>
 
         <li class="nav-button-wrapper hidden-xs hidden-sm hidden-md">
-          <a class="btn btn-sm nav-button-donate" href="/donate"><%= t('layout._header.donate') %></a>
-        </li>
-        <li class="nav-button-wrapper hidden-xs hidden-sm hidden-md">
-          <a class="btn btn-sm btn-default nav-button-store" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+          <button class="btn btn-sm btn-default nav-button-store"><a href="//store.publiclab.org"><%= t('layout._header.store') %></a></button>
         </li>
       </ul>
       
@@ -107,7 +106,9 @@
       </div>
 
       <% unless current_user %><a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" data-placement="bottom" style="margin-left:14px;" href="/signup" class="btn btn-primary navbar-btn navbar-right hidden-xs"><%= t('layout._header.join') %></a><% end %>
-
+      <div class="nav-button-wrapper hidden-xs hidden-sm hidden-md navbar-right">
+        <button class="btn btn-sm nav-button-donate"><a href="/donate"><%= t('layout._header.donate') %></a></button>
+      </div>
       <% unless params[:action] == "register" || params[:action] == "signup" %>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
@@ -197,7 +198,6 @@
         </ul>
       <% end %>
     </div>
-
   </div>
 </nav>
 

@@ -124,7 +124,8 @@ class UsersController < ApplicationController
     @wikis = wikis.collect(&:parent).uniq
     @twitter = nil 
     @facebook = nil
-    @github = nil 
+    @github = nil
+    @instagram = nil 
     if @profile_user.has_power_tag("twitter") == true 
       twitter_user_name = @profile_user.get_value_of_power_tag("twitter")
       @twitter = "https://twitter.com/" + twitter_user_name.to_s  
@@ -136,6 +137,10 @@ class UsersController < ApplicationController
     if @profile_user.has_power_tag("github") == true 
       github_user_name = @profile_user.get_value_of_power_tag("github")
       @github = "https://github.com/" + github_user_name.to_s
+    end
+    if @profile_user.has_power_tag("instagram") == true
+      instagram_user_name = @profile_user.get_value_of_power_tag("instagram")
+      @instagram = "https://instagram.com/" + instagram_user_name.to_s
     end
 
     if @user.status == 0
