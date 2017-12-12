@@ -1,6 +1,7 @@
 GIT
   remote: git://github.com/ruby-prof/ruby-prof.git
   revision: d6867cf1133bc6602058166a6c1d3301b9b0529c
+  branch: master
   specs:
     ruby-prof (0.16.2)
 
