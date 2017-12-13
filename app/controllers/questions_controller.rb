@@ -128,5 +128,4 @@ class QuestionsController < ApplicationController
     @unpaginated = true
     render template: 'questions/index'
   end
-  
 end
