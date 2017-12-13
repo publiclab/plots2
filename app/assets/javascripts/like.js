@@ -32,9 +32,9 @@ function clickliked() {
    $.ajax({
     url: "/likes/node/" + node_id + "/delete",
     type: 'DELETE',
-    success: function(result) {
+    success: function(response) {
      shownotliked(node_id);
-     changelikecount(parseInt(result), node_id);
+     changelikecount(parseInt(response), node_id);
      $('#like-button-' + node_id).on('click', clicknotliked);
      $('#like-button-' + node_id).off('click', clickliked);
     }
