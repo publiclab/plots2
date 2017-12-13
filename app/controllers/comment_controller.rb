@@ -69,10 +69,10 @@ class CommentController < ApplicationController
 
   # create answer comments
   def answer_create
-    @answer_id = params[:aid]
+    @answer_id = params[:id]
     @comment = Comment.new(
       uid: current_user.uid,
-      aid: params[:aid],
+      aid: params[:id],
       comment: params[:body],
       timestamp: Time.now.to_i
     )
