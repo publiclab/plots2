@@ -227,7 +227,8 @@
       },
       mainImageModule: {
         uid: <%= current_user.id %><% if @node && @node.id %>,
-        nid: <%= @node.id %><% end %>
+	nid: <%= @node.id %><% end %>,
+        token: $('meta[name="csrf-token"]').attr('content')
       },
       richTextModule: {
         authorsAutocomplete: false,
