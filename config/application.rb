@@ -72,6 +72,7 @@ module Plots2
     config.i18n.fallbacks = [:en]
 
     config.action_view.sanitized_allowed_tags = ['iframe', 'embed']
+    config.action_dispatch.default_headers.merge!({'X-Frame-Options' => 'ALLOWALL'})
 
     # Search API
     # Auto-load API and its subdirectories
