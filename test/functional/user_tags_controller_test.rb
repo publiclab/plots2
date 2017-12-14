@@ -68,7 +68,7 @@ class UserTagsControllerTest < ActionController::TestCase
     user_tags_count = UserTag.where(uid: users(:bob).id).count
     # Delete above tag
     UserSession.create(users(:jeff))
-    delete :delete, id: users(:jeff).id , name: user_tag.name
+    delete :delete, id: users(:bob).id , name: user_tag.name
     assert_equal user_tags_count - 1, UserTag.where(uid: users(:bob).id).count
   end
 
@@ -88,7 +88,7 @@ class UserTagsControllerTest < ActionController::TestCase
   test 'Normal user should not delete tag for other user' do
     user_tag = UserTag.where(uid: users(:jeff).id).last
     UserSession.create(users(:bob))
-    delete :delete, id: users(:bob).id , name: user_tag.name
+    delete :delete, id: users(:jeff).id , name: user_tag.name
     assert_equal 'Only admin (or) target user can manage tags', flash[:error]
   end
 
