@@ -33,7 +33,7 @@ class UserTagsControllerTest < ActionController::TestCase
   test 'should delete existing tag' do
     UserSession.create(users(:bob))
     user_tag = user_tags(:one)
-    delete :delete, params: { id: user_tag.id , name: user_tag.value }
+    delete :delete , id: user_tag.id , name: user_tag.name 
     assert_equal 'Tag deleted.', flash[:notice]
     assert_redirected_to info_path
   end
