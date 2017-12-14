@@ -33,14 +33,14 @@ class UserTagsControllerTest < ActionController::TestCase
   test 'should delete existing tag' do
     UserSession.create(users(:bob))
     user_tag = user_tags(:one)
-    delete :delete, params: { id: user_tag.id , name: user_tag.name }
+    delete :delete, params: { id: user_tag.id , name: user_tag.value }
     assert_equal 'Tag deleted.', flash[:notice]
     assert_redirected_to info_path
   end
 
   test 'cannot delete non-existent tag' do
     UserSession.create(users(:bob))
-    delete :delete, id: 9999 , name: user_tag.name
+    delete :delete, id: 9999 , name: "temp tag"
     assert_equal "Tag doesn't exist.", flash[:error]
     assert_redirected_to info_path
   end
@@ -102,7 +102,7 @@ class UserTagsControllerTest < ActionController::TestCase
       @controller = old_controller
 
       UserSession.create(users(:bob))
-      delete :delete, id: 9999 ,  name: user_tag.name
+      delete :delete, id: 9999 , name: "temp tag"
       assert_equal I18n.t('user_tags_controller.tag_doesnt_exist'), flash[:error]
     end
   end
