@@ -102,7 +102,7 @@ class UserTagsControllerTest < ActionController::TestCase
       @controller = old_controller
 
       UserSession.create(users(:bob))
-      delete :delete, id: 9999 , name: user_tag.name
+      delete :delete, id: 9999 ,  name: user_tag.name
       assert_equal I18n.t('user_tags_controller.tag_doesnt_exist'), flash[:error]
     end
   end
