@@ -57,8 +57,11 @@ class UserTagsController < ApplicationController
     message = ''
 
     begin  
-      @user_tag = UserTag.where(uid: params[:id], value: params[:name]).first
-      if current_user.role == 'admin' || @user_tag.user == current_user
+      @user_tag = UserTag.where(uid: params[:id], value: params[:name])
+      if(!@user_tag.nil?)
+          @user_tag = @user_tag.first 
+      end 
+      if current_user.role == 'admin' || (!@user_tag.nil? && @user_tag.user == current_user)
         if @user_tag
           UserTag.where(uid: params[:id] , value: params[:name]).destroy_all    
           message = I18n.t('user_tags_controller.tag_deleted')
