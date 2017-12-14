@@ -111,6 +111,9 @@ class TagController < ApplicationController
 
 
   def show_for_author
+    if params[:id][-1..-1] == '*'
+      @wildcard = true
+    end
     @tagname = params[:id]
     @user = DrupalUser.find_by(name: params[:author])
     @title = "'" + @tagname.to_s + "' by " +  params[:author]

@@ -185,6 +185,19 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#wiki-content', 1
   end
 
+  test 'show note with author and tagname without wildcard' do
+      get :show_for_author, id: 'replication:123', author: 'jeff'
+      assert_response :success
+      assert_not_nil :notes
+  end
+
+  test 'show note with author and tagname with wildcard' do
+      get :show_for_author, id: 'replication*', author: 'jeff'
+      assert_response :success
+      assert_not_nil :notes
+      assert :wildcard
+  end
+
   test 'tag widget' do
     get :widget, id: Tag.last.name
     assert :success
@@ -193,7 +206,6 @@ class TagControllerTest < ActionController::TestCase
 
   test 'tag blog' do
     get :blog, id: Tag.last.name
-
     assert :success
     assert_not_nil :notes
     assert_not_nil :tags
