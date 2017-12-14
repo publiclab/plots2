@@ -57,7 +57,7 @@ class UserTagsController < ApplicationController
     message = ''
 
     begin  
-      @user_tag =UserTag.where(uid: params[:id], value: params[:name])
+      @user_tag = UserTag.where(uid: params[:id], value: params[:name]).first
       if current_user.role == 'admin' || @user_tag.user == current_user
         if @user_tag
           UserTag.where(uid: params[:id] , value: params[:name]).destroy_all    
