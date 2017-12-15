@@ -36,6 +36,7 @@ group :development do
   gem "letter_opener"
   gem "nifty-generators"
   gem 'byebug'
+  gem 'rubocop', '~> 0.52.0', require: false
 end
 
 # run with `bundle install --without test` to exclude these
