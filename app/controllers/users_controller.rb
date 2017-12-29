@@ -122,26 +122,12 @@ class UsersController < ApplicationController
                     .joins(:node)
                     .limit(20)
     @wikis = wikis.collect(&:parent).uniq
-    @twitter = nil 
-    @facebook = nil
-    @github = nil
-    @instagram = nil 
-    if @profile_user.has_power_tag("twitter") == true 
-      twitter_user_name = @profile_user.get_value_of_power_tag("twitter")
-      @twitter = "https://twitter.com/" + twitter_user_name.to_s  
-    end
-    if @profile_user.has_power_tag("facebook") == true 
-      facebook_user_name = @profile_user.get_value_of_power_tag("facebook")
-      @facebook = "https://facebook.com/" + facebook_user_name.to_s
-    end
-    if @profile_user.has_power_tag("github") == true 
-      github_user_name = @profile_user.get_value_of_power_tag("github")
-      @github = "https://github.com/" + github_user_name.to_s
-    end
-    if @profile_user.has_power_tag("instagram") == true
-      instagram_user_name = @profile_user.get_value_of_power_tag("instagram")
-      @instagram = "https://instagram.com/" + instagram_user_name.to_s
-    end
+
+    # User's social links
+    @github = @profile_user.social_link("github")
+    @twitter = @profile_user.social_link("twitter") 
+    @facebook = @profile_user.social_link("facebook")
+    @instagram = @profile_user.social_link("instagram") 
 
     if @user.status == 0
       if current_user && (current_user.role == "admin" || current_user.role == "moderator")
