@@ -29,16 +29,15 @@ function clickliked() {
 
   var node_id = $(this).attr('node-id');
   // toggle liked to not liked.
-   $.ajax({
-    url: "/likes/node/" + node_id + "/delete",
-    type: 'DELETE',
-    success: function(response) {
+  $.getJSON("/likes/node/" + node_id + "/delete")
+   .done(function(response) {
+
      shownotliked(node_id);
      changelikecount(parseInt(response), node_id);
      $('#like-button-' + node_id).on('click', clicknotliked);
      $('#like-button-' + node_id).off('click', clickliked);
-    }
-});
+
+  });
 
 }
 
