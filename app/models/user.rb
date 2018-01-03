@@ -321,4 +321,14 @@ class User < ActiveRecord::Base
   def self.find_by_username_case_insensitive(username)
     User.where('lower(username) = ?', username.downcase).first
   end
+
+  def self.contributor_count_for(start_time,end_time)
+    notes = Node.where(type: 'note', status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
+    answers = Answer.where(created_at: start_time..end_time).pluck(:uid)
+    questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
+    comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
+    contributors = (notes+answers+questions+comments).compact.uniq.length
+    contributors
+  end
+
 end

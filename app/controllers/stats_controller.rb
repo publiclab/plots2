@@ -1,5 +1,4 @@
 class StatsController < ApplicationController
-  include StatsHelper
   def subscriptions
     @tags = {}
     TagSelection.where(following: true).each do |tag|
@@ -29,7 +28,7 @@ class StatsController < ApplicationController
                        .count
     @questions = Node.questions.where(status: 1, created: @start.to_i..@end.to_i)
                      .count
-    @contributors = contributor_count(@start,@end)
+    @contributors = User.contributor_count_for(@start,@end)
   end
 
   def index

@@ -396,7 +396,7 @@ DEPENDENCIES
   recaptcha
   rest-client
   rspec
-  rubocop
+  rubocop (~> 0.52.0)
   ruby-openid
   sass-rails (~> 4.0.0)
   scrypt (~> 3)
