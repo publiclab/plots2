@@ -39,6 +39,10 @@ class Node < ActiveRecord::Base
     end
   end
 
+  def search(term)
+    Revision.where('MATCH(body) against (?)', term)
+  end
+
   def updated_month
     updated_at.strftime('%B %Y')
   end

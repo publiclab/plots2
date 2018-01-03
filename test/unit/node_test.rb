@@ -16,6 +16,14 @@ class NodeTest < ActiveSupport::TestCase
     assert question.answered
   end
 
+  test 'node mysql native fulltext search' do
+    if ActiveRecord::Base.connection.adapter_name == 'MySQL'
+      nodes = Node.search('balloon')
+      assert_not_nil nodes
+      assert nodes.length > 0
+    end
+  end
+
   test 'create a node' do
     # in testing, uid and id should be matched, although this is not yet true in production db
     node = Node.new(uid: users(:bob).id,
