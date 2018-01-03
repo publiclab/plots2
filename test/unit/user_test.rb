@@ -107,4 +107,10 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil coauthored_note
     assert_equal jeffs_note, coauthored_note
   end
+
+  test 'contributor_count' do
+    contributor_count = User.contributor_count_for(Time.now-5.years, Time.now)
+    assert_equal contributor_count,4
+  end
+
 end
