@@ -311,6 +311,15 @@ class User < ActiveRecord::Base
     self.node.where("created >= #{time_period.to_i}  AND changed >= #{time_period.to_i}")
   end
 
+  def social_link(site)
+    if has_power_tag(site)
+      user_name = get_value_of_power_tag(site)
+      link = "https://#{site}.com/#{user_name}"
+      return link
+    end
+    nil
+  end
+
   private
 
   def map_openid_registration(registration)
