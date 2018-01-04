@@ -39,8 +39,8 @@ class Node < ActiveRecord::Base
     end
   end
 
-  def search(term)
-    Revision.where('MATCH(body) against (?)', term)
+  def self.search(query)
+    Revision.where('MATCH(body) AGAINST(?)', query)
   end
 
   def updated_month
