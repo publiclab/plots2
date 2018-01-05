@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20180103212804) do
     t.integer "aid",                          default: 0,  null: false
   end
 
+  add_index "comments", ["comment"], name: "index_comments_on_comment", type: :fulltext
   add_index "comments", ["nid"], name: "index_comments_nid", using: :btree
   add_index "comments", ["pid"], name: "index_comments_pid", using: :btree
   add_index "comments", ["status"], name: "index_comments_status", using: :btree
@@ -347,6 +348,7 @@ ActiveRecord::Schema.define(version: 20180103212804) do
   add_index "rusers", ["email"], name: "index_rusers_on_email", using: :btree
   add_index "rusers", ["persistence_token"], name: "index_rusers_on_persistence_token", using: :btree
   add_index "rusers", ["status"], name: "index_rusers_on_status", using: :btree
+  add_index "rusers", ["username", "bio"], name: "index_rusers_on_username_and_bio", type: :fulltext
   add_index "rusers", ["username"], name: "index_rusers_on_username", using: :btree
 
   create_table "tag_selections", id: false, force: true do |t|

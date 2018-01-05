@@ -145,7 +145,7 @@ class TypeaheadService
   def search_wikis(srchString, limit = 5)
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
-      wikis(srchString, limit).select('title,type,nid,path').each do |match|
+      wikis(srchString, limit).select('node.title,node.type,node.nid,node.path').each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title

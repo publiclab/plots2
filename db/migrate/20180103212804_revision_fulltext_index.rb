@@ -3,7 +3,7 @@ class RevisionFulltextIndex < ActiveRecord::Migration
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       add_index :node_revisions, [:body, :title], type: :fulltext
       add_index :comments, :comment, type: :fulltext
-      add_index :users, [:username, :bio], type: :fulltext
+      add_index :rusers, [:username, :bio], type: :fulltext
     end
   end
 
@@ -11,7 +11,7 @@ class RevisionFulltextIndex < ActiveRecord::Migration
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       remove_index :node_revisions, [:body, :title]
       remove_index :comments, :comment
-      remove_index :users, [:username, :bio]
+      remove_index :rusers, [:username, :bio]
     end
   end
 end
