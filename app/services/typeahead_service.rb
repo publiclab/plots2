@@ -36,9 +36,11 @@ class TypeaheadService
   def notes(input, limit = 5)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       Node.fulltext(input)
-          .where(type: "note", status: 1)
-          .order(updated_at: :desc)
+          .includes(:node)
+          .references(:node)
           .limit(limit)
+          #.order(timestamp: :desc)
+          #.where("node.type": "note", "node.status": 1)
     else 
       Node.limit(limit)
           .where(type: "note", status: 1)

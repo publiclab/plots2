@@ -40,7 +40,7 @@ class Node < ActiveRecord::Base
   end
 
   def self.fulltext(query)
-    Revision.where('MATCH(body, title) AGAINST(?)', query)
+    Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query)
   end
 
   def updated_month
