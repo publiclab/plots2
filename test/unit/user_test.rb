@@ -32,6 +32,15 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user.tagnames, user.drupal_user.tagnames
   end
 
+  test 'user mysql native fulltext search' do
+    assert User.count > 0
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      users = User.search('really interesting')
+      assert_not_nil users
+      assert users.length > 0
+    end
+  end
+
   test 'user questions' do
     user = users(:jeff)
     assert !user.questions.empty?

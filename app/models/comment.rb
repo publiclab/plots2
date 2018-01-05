@@ -19,6 +19,10 @@ class Comment < ActiveRecord::Base
     'rails_type'
   end
 
+  def self.search(query)
+    Comment.where('MATCH(comment) AGAINST(?)', query)
+  end
+
   def self.comment_weekly_tallies(span = 52, time = Time.now)
     weeks = {}
     (0..span).each do |week|

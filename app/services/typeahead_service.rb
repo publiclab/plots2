@@ -14,9 +14,15 @@ class TypeaheadService
   # but perhaps could simply be renamed Result.
 
   def users(input, limit = 5)
-    User.limit(limit)
-        .order('id DESC')
-        .where('username LIKE ? AND status = 1', '%' + input + '%')
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      User.search(input)
+          .limit(limit)
+          .where(status: 1)
+    else 
+      User.limit(limit)
+          .order('id DESC')
+          .where('username LIKE ? AND status = 1', '%' + input + '%')
+    end
   end
 
   def tags(input, limit = 5)
@@ -28,19 +34,26 @@ class TypeaheadService
   end
 
   def comments(input, limit = 5)
-    Comment.limit(limit)
-           .order('nid DESC')
-           .where('status = 1 AND comment LIKE ?', '%' + input + '%')
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      Comment.search(input)
+             .limit(limit)
+             .order('nid DESC')
+             .where(status: 1)
+    else 
+      Comment.limit(limit)
+             .order('nid DESC')
+             .where('status = 1 AND comment LIKE ?', '%' + input + '%')
+    end
   end
 
   def notes(input, limit = 5)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      Node.fulltext(input)
+      Node.search(input)
           .includes(:node)
           .references(:node)
           .limit(limit)
+          .where("node.type": "note", "node.status": 1)
           #.order(timestamp: :desc)
-          #.where("node.type": "note", "node.status": 1)
     else 
       Node.limit(limit)
           .where(type: "note", status: 1)
@@ -50,9 +63,17 @@ class TypeaheadService
   end
 
   def wikis(input, limit = 5)
-    Node.limit(limit)
-        .order('nid DESC')
-        .where('type = "page" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      Node.search(input)
+          .includes(:node)
+          .references(:node)
+          .limit(limit)
+          .where("node.type": "page", "node.status": 1)
+    else 
+      Node.limit(limit)
+          .order('nid DESC')
+          .where('type = "page" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+    end
   end
 
   def maps(input, limit = 5)

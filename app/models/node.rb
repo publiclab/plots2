@@ -20,26 +20,7 @@ class Node < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  include SolrToggle
-  searchable if: :shouldIndexSolr do
-    text :title
-    text :body do
-      body.to_s.gsub!(/[[:cntrl:]]/,'').to_s.slice!(0..32500)
-    end
-    string :updated_at
-    string :status
-    string :type
-    string :updated_month
-    text :comments do
-      comments.map(&:comment)
-    end
-
-    string :user_name do
-      drupal_user.name
-    end
-  end
-
-  def self.fulltext(query)
+  def self.search(query)
     Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query)
   end
 
