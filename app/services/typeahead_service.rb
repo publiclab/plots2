@@ -34,19 +34,15 @@ class TypeaheadService
   end
 
   def notes(input, limit = 5)
-    if solrAvailable
-      search = Node.search do
-        fulltext input
-        with :status, 1
-        #with :type, "note"
-        order_by :updated_at, :desc
-        paginate page: 1, per_page: limit
-      end
-      search.results
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      Node.fulltext(input)
+          .where(type: "note", status: 1)
+          .order(updated_at: :desc)
+          .page(page: 1, per_page: limit)
     else 
       Node.limit(limit)
-          .order('nid DESC')
           .where(type: "note", status: 1)
+          .order(updated_at: :desc)
           .where('title LIKE ?', '%' + input + '%')
     end
   end
