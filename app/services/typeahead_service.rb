@@ -38,7 +38,7 @@ class TypeaheadService
       Node.fulltext(input)
           .where(type: "note", status: 1)
           .order(updated_at: :desc)
-          .page(page: 1, per_page: limit)
+          .limit(limit)
     else 
       Node.limit(limit)
           .where(type: "note", status: 1)
