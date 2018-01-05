@@ -29,7 +29,7 @@ class QuestionsController < ApplicationController
 
   def new
     if current_user == nil
-      redirect_to '/login'
+      redirect_to new_user_session_path( return_to: request.path )
       flash[:notice] = "Your question is important and we want to hear from you! Please log in or sign up to post a question"
     else
       if params[:legacy]
