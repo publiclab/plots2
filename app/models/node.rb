@@ -39,7 +39,7 @@ class Node < ActiveRecord::Base
     end
   end
 
-  def search(term)
+  def fulltext(term)
     Revision.where('MATCH(body) against (?)', term)
   end
 

@@ -18,7 +18,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'node mysql native fulltext search' do
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      nodes = Node.search('balloon')
+      nodes = Node.fulltext('balloon')
       assert_not_nil nodes
       assert nodes.length > 0
     end
