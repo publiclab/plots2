@@ -39,7 +39,7 @@ class Node < ActiveRecord::Base
     end
   end
 
-  def fulltext(query)
+  def self.fulltext(query)
     Revision.where('MATCH(body) AGAINST(?)', query)
   end
 
