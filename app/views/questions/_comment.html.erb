@@ -18,6 +18,11 @@
     <span class="content">
       <%= raw sanitize(auto_link(insert_extras(RDiscount.new(comment.body).to_html))) %>
     </span>
+    <div class="content-form" >
+      <form class="form-horizontal" action="/comment/make_answer/<%= comment.id %>" method="post" data-remote="true">
+        <button type="submit">move</button>
+      </form>
+    </div>
     <div class="content-form" style="display: none;">
       <form id="comment-<%= comment.id %>-edit-form" class="form-horizontal" action="/comment/update/<%= comment.id %>">
         <%= render partial: "questions/form", locals: { comment: comment } %>

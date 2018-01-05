@@ -2,7 +2,7 @@ class CommentController < ApplicationController
   include CommentHelper
 
   respond_to :html, :xml, :json
-  before_filter :require_user, only: %i[create update delete]
+  before_filter :require_user, only: %i[create update make_answer delete]
 
   def index
     @comments = Comment.paginate(page: params[:page], per_page: 30)
@@ -142,4 +142,35 @@ class CommentController < ApplicationController
       prompt_login 'Only the comment or post author can delete this comment'
     end
   end
+
+  def make_answer
+    @comment = Comment.find params[:id]
+    comments_node_and_path
+
+    if @comment.uid == current_user.uid
+      @answer = Answer.new(
+          nid: @comment.nid,
+          uid: @comment.uid,
+          content: @comment.comment
+      )
+
+      if @answer.save && current_user
+        @answer.answer_notify(current_user)
+        @comment.delete
+      respond_to do |format|
+          format.html { redirect_to @node.path(:question), notice: 'Answer successfully posted' }
+          format.js {}
+          end
+        else
+          flash[:error] = 'The comment could not be moved to answers.'
+          redirect_to @path
+      end
+
+    else
+      flash[:error] = 'Only the author of the comment can edit it.'
+      redirect_to @path
+    end
+
+  end
+
 end
