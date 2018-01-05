@@ -53,7 +53,7 @@ class TypeaheadService
           .references(:node)
           .limit(limit)
           .where("node.type": "note", "node.status": 1)
-          #.order(timestamp: :desc)
+          .order(timestamp: :desc)
     else 
       Node.limit(limit)
           .where(type: "note", status: 1)
