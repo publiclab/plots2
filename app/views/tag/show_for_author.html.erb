@@ -1,43 +1,86 @@
-<% if params[:controller] == "tag" || params[:controller] == "search" %>
-  <%= render :partial => "sidebar/related" %>
-<% elsif params[:action] == "author" || params[:action] == "author_topic" %>
-  <%= render :partial => "sidebar/author" %>
-<% else %>
-  <%= render :partial => "sidebar/user" %>
-<% end %>
-<div class="col-md-9">
-  <% if params[:controller] == "search" %>
-    <h3><%= raw t('notes.index.search_results_for', :params => params[:id]) %> <small>(<a href="/search/advanced/<%= params[:id] %>"><%= t('notes.index.advanced_search') %></a>)</h3>
-  <% elsif params[:controller] == "tag" %>
-    <h3><%= raw t('notes.index.research_on', :tags => @tagname.to_s, :url1 => "/people/"+@user.name, :user_name => @user.name) %> </h3>
-  <% elsif params[:action] == "popular" %>
-    <h2><%= t('notes.index.popular_research_notes') %></h2>
-  <% elsif params[:action] == "author_topic" %>
-    <h3><%= raw t('notes.index.research_on', :tags => @tagname.to_s, :url1 => "/people/"+@user.name, :user_name => @user.name) %> <br /><small><%= raw t('notes.index.research_notes_and_wiki_edits_with_time', :count => @user.node_count, :time => time_ago_in_words(@user.created_at)) %></small></h3>
-  <% elsif params[:action] == "author" %>
-    <h3><%= raw t('notes.index.research_by', :url1 => "/people/"+@user.name, :user_name => @user.name) %> <small><%= raw t('notes.index.research_notes_and_wiki_edits', :count => @user.node_count) %> <% if @user.notes.length > 0 %><%= raw t('notes.index.starting_time', :time => time_ago_in_words(@user.created_at)) %><% end %></small></h3>
+<script src="/assets/wikis.js" type="text/javascript"></script>
+
+<div class="col-md-12">
+
+  <% if @wiki %>
+    <div id="wiki-content">
+      <% if @wiki.main_image %>
+        <div class="row">
+          <div class="col-md-6" style="margin-bottom:10px;">
+            <%= image_tag(@wiki.main_image.path, class: "img-responsive") %>
+          </div>
+          <div class="col-md-6">
+            <h1 style="color:#333;"><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h1>
+            <%= @wiki.latest.render_body.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %>
+            <%= link_to("Read more", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('</p>').length > 2 %>
+          </div>
+        </div>
+      <% else %>
+        <h1><%= @wiki.latest.title %></h1>
+        <p><%= @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %></p>
+        <p><%= link_to("Read more", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).length > 1 %></p>
+      <% end %>
+    </div>
   <% else %>
-    <h2><%= raw t('notes.index.research_notes_ideas_and_documentation') %></h2>
+    <p>This topic has no lead wiki page.</p>
+    <p><a class="btn btn-primary" href="/wiki/<%= params[:id] %>"><span class="fa fa-plus fa-white"></span> Add one now</a></p>
   <% end %>
-  <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked") %>
 
-    <%= render :partial => "notes/format_toggle" %>
-    <% if params[:action] == "liked" %><a style="margin-right:4px;" class="pull-right btn btn-default btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
-
-    <ul class="nav nav-tabs">
-        <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/notes/"><%= t('notes.index.recent') %></a></li>
-        <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/notes/popular/"><%= t('notes.index.popular') %></a></li>
-        <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="fa fa-star-o"></i><span class="hidden-sm"> <%= t('notes.index.liked') %></span></a></li>
-
-        <li><a href="/wiki/"><%= raw t('notes.index.wiki_pages') %></a></li>
-    </ul>
-
+  <% if @tags.first && params[:id][-1..-1] != "*" %>
+    <%= render :partial => "tag/graph", locals: { tags: @tags } %>
   <% end %>
+
+  <h3><%= raw t('tag.show.notes_tagged', :tag => params[:id]) %><% unless @tags.try(:first).try(:parent).nil? %> <small>parent: <%= @tags.first.parent %></small><% end %></h3>
+
+  <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
+
+  <% if current_user %>
+  <!-- AJAXify -->
+  <div class="btn-group">
+    <a class="btn btn-default btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
+    <% unless @wildcard %>
+      <% if current_user.following(params[:id]) %>
+      <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> <%= t('tag.show.following') %> <b><%= params[:id] %></b></a>
+      <% else %>
+      <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> <%= t('tag.show.follow') %> <b><%= params[:id] %></b></a>
+      <% end %>
+      <a class="btn btn-default btn-sm" rel="popover" data-placement="bottom" data-html="true" data-title="<%= t('tag.show.users_following_tag') %>" data-content="<% Tag.followers(params[:id]).each do |user| %><i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>'><%= user.username %></a><br /><% end %><% if Tag.follower_count(params[:id]) == 0 %><i><%= t('tag.show.none') %></i><% end %>"><%= Tag.follower_count(params[:id]) %> <i class="fa fa-user"></i> <span class="caret"></span></a>
+    <% end %>
+  </div>
+  <!-- AJAXify -->
+  <% end %>
+
+  <% unless @wildcard %><p style="clear:both;padding-top:8px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:<%= params[:id].gsub('question:', '') %>&template=question&redirect=question"><i class="fa fa-white icon-question-circle"></i> <%= raw t('tag.show.ask_question', :tag => params[:id].gsub('question:', '')) %></a> <%= raw t('tag.show.or_subscribe_to_answer', :url1 => "/subscribe/tag/question:"+params[:id].gsub('question:', '')) %></p><% end %>
+
+  <ul class="nav nav-tabs" style="margin-top:10px;">
+    <% unless params[:id].match("question:") %><li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <%= raw t('tag.show.research_notes') %></a></li><% end %>
+    <li<% if @node_type == "questions" %> class="active"<% end %>><a href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
+    <li<% if @node_type == "wiki" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
+    <li<% if @node_type == "maps" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
+     <li<% if @node_type == "contributors" %> class="active"<% end %>><a href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %> <span class="badge"><%=@length %></span></a></li>
+  </ul>
 
   <br />
 
-  <%= render :partial => "notes/notes" %>
+  <div class="tab-content">
 
-  <hr />
+    <% if @node_type == "note" %>
+      <div class="tab-pane active" id="notes">
+        <% if @notes.nil? || @notes.length == 0 %>
+          <p><%= raw t('tag.show.no_results_found', :tag => params[:id]) %>:</p>
+
+          <%= render template: "searches/new" %>
+
+          <p><%= raw t('tag.show.try_advanced_search', :url1 => params[:id]) %></p>
+        <% else %>
+          <%= render :partial => "notes/notes" %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <hr />
+  </div>
 
 </div>
+<%= stylesheet_link_tag "dashboard" %>
+<%= javascript_include_tag "dashboard" %>
