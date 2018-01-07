@@ -19,7 +19,8 @@
       <%= raw sanitize(auto_link(insert_extras(RDiscount.new(comment.body).to_html))) %>
     </span>
     <div class="content-form" >
-      <form class="form-horizontal" action="/comment/make_answer/<%= comment.id %>" method="post" data-remote="true">
+      <% byebug%>
+      <form class="form-horizontal" action="/comment/make_answer/<%= comment.id %>">
         <button type="submit">move</button>
       </form>
     </div>

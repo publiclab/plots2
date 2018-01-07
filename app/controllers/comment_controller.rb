@@ -154,23 +154,22 @@ class CommentController < ApplicationController
           content: @comment.comment
       )
 
-      if @answer.save && current_user
+      if current_user && @answer.save && @comment.delete
         @answer.answer_notify(current_user)
-        @comment.delete
-      respond_to do |format|
-          format.html { redirect_to @node.path(:question), notice: 'Answer successfully posted' }
-          format.js {}
-          end
-        else
-          flash[:error] = 'The comment could not be moved to answers.'
-          redirect_to @path
+        @answer_id = @comment.aid
+        flash[:message] = "hello"
+        respond_with do |format|
+            format.html { redirect_to @node.path(:question), notice: 'Answer successfully posted' }
+            format.js { render template: 'comment/make_answer' }
+        end
       end
-
     else
       flash[:error] = 'Only the author of the comment can edit it.'
       redirect_to @path
     end
-
   end
 
-end
+
+
+
+  end
