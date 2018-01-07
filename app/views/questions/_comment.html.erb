@@ -26,10 +26,10 @@
 
   </div>
   <div class="inline pull-xs-right" style="vertical-align: top">
-    <p><% if current_user && current_user.uid == comment.uid %>
-          <a class="btn btn-default btn-sm" id="answer-<%= answer_id %>-comment-<%= comment.id %>-delete-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in deleting/moderating others' comments; this cannot be undone.<% end %>" href="/comment/make_answer/<%= comment.id %>"><i class='icon fa fa-trash'></i></a>
-      <% end %>
-      <% if current_user && current_user.uid == comment.uid %>
+    <p><% if answer_id == 0 && current_user && current_user.uid == comment.uid %>
+    <a class="btn btn-default btn-sm" id="answer-<%= answer_id %>-comment-<%= comment.id %>-reorder-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in deleting/moderating others' comments; this cannot be undone.<% end %>" href="/comment/make_answer/<%= comment.id %>"><i class="fa fa-bars"></i></a>
+    <% end %>
+    <% if current_user && current_user.uid == comment.uid %>
     <a class="btn btn-default btn-sm" onClick="$('#answer-<%= answer_id %>-comment-<%= comment.id %> .content').toggle();$('#answer-<%= answer_id %>-comment-<%= comment.id %> .content-form').toggle();" ><i class="fa fa-pencil"></i></a>
     <% end %>
     <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid || node.uid == current_user.uid) %>

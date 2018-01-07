@@ -154,22 +154,19 @@ class CommentController < ApplicationController
           content: @comment.comment
       )
 
-      if current_user && @answer.save && @comment.delete
+      if @answer.save && @comment.delete
         @answer.answer_notify(current_user)
         @answer_id = @comment.aid
-        flash[:message] = "hello"
         respond_with do |format|
-            format.html { redirect_to @node.path(:question), notice: 'Answer successfully posted' }
-            format.js { render template: 'comment/make_answer' }
+          format.js { render template: 'comment/make_answer' }
         end
+      else
+        flash[:error] = 'The comment could not be deleted.'
+        render text: 'failure'
       end
     else
-      flash[:error] = 'Only the author of the comment can edit it.'
-      redirect_to @path
+      prompt_login 'Only the comment or post author can delete this comment'
     end
   end
 
-
-
-
-  end
+end
