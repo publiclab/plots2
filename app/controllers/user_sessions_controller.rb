@@ -78,6 +78,7 @@ class UserSessionsController < ApplicationController
 
   def logout_remotely
     current_user.reset_persistence_token!
+    flash[:notice] = I18n.t('user_sessions_controller.logged_out')
     redirect_to '/' + '?_=' + Time.now.to_i.to_s
   end
 end

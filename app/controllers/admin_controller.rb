@@ -43,6 +43,22 @@ class AdminController < ApplicationController
     redirect_to '/profile/' + @user.username + '?_=' + Time.now.to_i.to_s
   end
 
+  def reset_user_password
+    if current_user && current_user.role == 'admin'
+      user = User.find(params[:id])
+      if user
+        key = user.generate_reset_key
+        user.save({})
+        # send key to user email
+        PasswordResetMailer.reset_notify(user, key) unless user.nil? # respond the same to both successes and failures; security
+      end
+
+      flash[:notice] = "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with." 
+      redirect_to "/profile/" + user.name
+    end
+  end
+
+
   def useremail
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       if params[:address]
