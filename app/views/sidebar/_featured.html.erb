@@ -4,7 +4,7 @@
     <%= render :partial => "sidebar/post_button" %>
   <% end %>
 
-  <% cache('feature_sidebar-feature') do %>
+  <% cache('feature_sidebar-feature', skip_digest: true) do %>
     <%= feature('sidebar-feature') %>
   <% end %>
 
