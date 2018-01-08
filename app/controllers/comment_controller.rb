@@ -161,11 +161,11 @@ class CommentController < ApplicationController
           format.js { render template: 'comment/make_answer' }
         end
       else
-        flash[:error] = 'The comment could not be deleted.'
+        flash[:error] = 'The comment could not be moved.'
         render text: 'failure'
       end
     else
-      prompt_login 'Only the comment or post author can delete this comment'
+      prompt_login 'Only the comment or author can move this comment to answer'
     end
   end
 
