@@ -2,6 +2,13 @@ require 'test_helper'
 
 class NodeSearchTest < ActiveSupport::TestCase
 
+  test 'create a node' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note',
+                    title: 'My new node for node creation testing')
+    assert node.save
+  end
+  
   test "plain Node.search returns something" do
     search = Node.search
     assert_not_nil search.results
