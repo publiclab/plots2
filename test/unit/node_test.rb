@@ -307,4 +307,12 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal jeff_notes, tagged_note
   end
 
+  test "return nodes tagged by tagname and user_id with *" do
+    jeff = users(:jeff)
+    jeff_notes = nodes(:one)
+    jeff_notes.add_tag('balloon-mapping',jeff)
+    tagged_note = Tag.tagged_nodes_by_author('balloon*',2).first
+    assert_not_nil tagged_note
+    assert_equal jeff_notes, tagged_note
+  end
 end

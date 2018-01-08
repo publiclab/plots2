@@ -5,6 +5,7 @@ en:
     _header:
       share_work: "Share your work"
       dropdown:
+        share_activity: "Share a step-by-step activity"
         share_research_note: "Share a research note"
         ask_question: "Ask a question"
         post_event: "Post an event"
