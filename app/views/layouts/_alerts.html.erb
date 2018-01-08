@@ -25,6 +25,6 @@
   <div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert">×</button><i class="fa fa-exclamation-mark"></i><%= t('layout._alerts.request_access') %><a href="/openid/resume"><%= t('layout._alerts.approve_or_deny') %> &raquo;</a></div>
 <% end %>
 
-<% cache('feature_sitewide-alert') do %>
+<% cache('feature_sitewide-alert', skip_digest: true) do %>
   <%= feature('sitewide-alert') %>
 <% end %>
