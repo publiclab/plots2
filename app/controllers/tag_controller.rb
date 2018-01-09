@@ -115,7 +115,7 @@ class TagController < ApplicationController
       @wildcard = true
     end
     @tagname = params[:id]
-    @user = DrupalUser.find_by(name: params[:author])
+    @user = User.find_by(name: params[:author])
     @title = "'" + @tagname.to_s + "' by " +  params[:author]
     @notes = Tag.tagged_nodes_by_author(@tagname, @user)
     @unpaginated = true
