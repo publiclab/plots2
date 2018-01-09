@@ -81,7 +81,7 @@ For additional support, join the Public Lab website and mailing list at http://p
 
 Publiclab.org now supports Internationalization and localization, though we are in the initial stages. This has been accomplished with [rails-I8n](https://github.com/svenfuchs/rails-i18n). 
 
-To see it in action, click on the 'Language' drop-down located in the header/footer section of the page. All the guidelines and best practices for I18n can be found [here](http://guides.rubyonrails.org/i18n.html).
+To see it in action, click on the 'Language' drop-down located in the footer section of the page. All the guidelines and best practices for I18n can be found [here](http://guides.rubyonrails.org/i18n.html).
 
 Translations are arranged in the YAML files [here](https://github.com/publiclab/plots2/tree/master/config/locales), which are 
 zed in a similar way to [views](https://github.com/publiclab/plots2/tree/master/app/views) files. An example for adding translations can be found [here](http://guides.rubyonrails.org/i18n.html#adding-translations).
