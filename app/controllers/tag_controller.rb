@@ -109,7 +109,6 @@ class TagController < ApplicationController
     end
   end
 
-
   def show_for_author
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
@@ -122,10 +121,10 @@ class TagController < ApplicationController
     @title = "'" + @tagname.to_s + "' by " +  params[:author]
     @notes = Tag.tagged_nodes_by_author(@tagname, @user)
     @unpaginated = true
-    @node_type = 'note' ########
+    @node_type = 'note'
     @wiki = nil
     respond_with(@notes) do |format|
-      format.html { render 'tag/show_for_author' }
+      format.html { render 'tag/show' }
       format.xml  { render xml: @notes }
       format.json do
         json = []
