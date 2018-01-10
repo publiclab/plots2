@@ -5,7 +5,7 @@
 			<p> This page shows a list of all Public Lab contributors and is sorted by those who have posted most recently. Click the profile link to view their posting activity. </p>
 		</div>
 	</div>
-  <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
+  <% if current_user && current_user.role == "admin" && current_user.role == "moderator" %>
     <h2><%= t('users.list.user_moderation') %></h2>
     <p><%= t('users.list.admins_ban_spam') %> </p>
   <% end %>
@@ -29,7 +29,7 @@
       <td><%= time_ago_in_words(Time.at(user.last['changed'])) if user.last %></td>
       <td><%= user.node_count %> <%= t('users.list.notes_and_edits') %></td>
       <td><%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
-      <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
+      <% if current_user && current_user.role == "admin" && current_user.role == "moderator" %>
       <td>
         <% if user.status == 0 %>
           <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
