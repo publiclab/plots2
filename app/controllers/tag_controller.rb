@@ -64,7 +64,7 @@ class TagController < ApplicationController
   def show
     # try for a matching /wiki/_TAGNAME_ or /_TAGNAME_
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
-    @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki.has_powertag('redirect') # use a redirected wiki page if it exists
+    @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki && @wiki.has_power_tag('redirect') # use a redirected wiki page if it exists
 
     default_type = if params[:id].match('question:')
                      'questions'
