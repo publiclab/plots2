@@ -5,13 +5,13 @@ class TagController < ApplicationController
   def index
     if params[:format]
       @toggle = params[:format].to_i
-    else 
-      @toggle = 1 
-    end 
+    else
+      @toggle = 1
+    end
 
     @title = I18n.t('tag_controller.tags')
     @paginated = true
-    if params[:search] 
+    if params[:search]
     prefix = params[:search]
     @tags = Tag.joins(:node_tag, :node)
                .select('node.nid, node.status, term_data.*, community_tags.*')
@@ -20,15 +20,15 @@ class TagController < ApplicationController
                .where("name LIKE :prefix", prefix: "#{prefix}%")
                .group(:name)
                .order('count DESC')
-               .paginate(page: params[:page])  
-    elsif @toggle == 1 
+               .paginate(page: params[:page], per_page: 24)
+    elsif @toggle == 1
     @tags = Tag.joins(:node_tag, :node)
                .select('node.nid, node.status, term_data.*, community_tags.*')
                .where('node.status = ?', 1)
                .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                .group(:name)
                .order('count DESC')
-               .paginate(page: params[:page])
+               .paginate(page: params[:page], per_page: 24)
     else
     @tags = Tag.joins(:node_tag, :node)
                .select('node.nid, node.status, term_data.*, community_tags.*')
@@ -36,8 +36,8 @@ class TagController < ApplicationController
                .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                .group(:name)
                .order('name')
-               .paginate(page: params[:page])    
-    end    
+               .paginate(page: params[:page], per_page: 24)    
+    end
   end
 
   def show
@@ -52,7 +52,7 @@ class TagController < ApplicationController
     # params[:node_type] - this is an optional param
     # if params[:node_type] is nil - use @default_type
     @node_type = params[:node_type] || default_type
-    
+
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
     node_type = 'map' if @node_type == 'maps'
@@ -76,7 +76,7 @@ class TagController < ApplicationController
                   .order('node_revisions.timestamp DESC')
     end
 
-    # breaks the parameter 
+    # breaks the parameter
     # sets everything to an empty array
     set_sidebar :tags, [params[:id]]
 

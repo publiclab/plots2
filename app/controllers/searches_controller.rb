@@ -30,7 +30,7 @@ class SearchesController < ApplicationController
     @tagnames = params[:id].split(',')
     @users = SearchService.new.users(params[:id])
     @nodes = SearchService.new.nodes(params[:id])
-                              .paginate(page: params[:page])
+                              .paginate(page: params[:page], per_page: 24)
   end
 
 end
