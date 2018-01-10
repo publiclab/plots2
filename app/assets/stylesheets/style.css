@@ -378,11 +378,12 @@ div.note.moderated h4 {
   background-color: transparent;
   margin-left: 1em;
   text-transform: uppercase;
-  padding-top: 8px !important;
+  padding-top: 7px !important;
 }
 
 .nav-button-donate {
   border-color: #3355ee;
+  padding-top: 8px !important;
 }
 
 .nav-button-donate:hover {

@@ -28,6 +28,7 @@ class StatsController < ApplicationController
                        .count
     @questions = Node.questions.where(status: 1, created: @start.to_i..@end.to_i)
                      .count
+    @contributors = User.contributor_count_for(@start,@end)
   end
 
   def index
