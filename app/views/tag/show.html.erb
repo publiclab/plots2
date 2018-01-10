@@ -30,8 +30,12 @@
     <%= render :partial => "tag/graph", locals: { tags: @tags } %>
   <% end %>
 
-  <h3><%= raw t('tag.show.notes_tagged', :tag => params[:id]) %><% unless @tags.try(:first).try(:parent).nil? %> <small>parent: <%= @tags.first.parent %></small><% end %></h3>
-
+  <% if params[:action] == 'show' %>
+    <h3><%= raw t('tag.show.notes_tagged', tag: params[:id]) %>
+  <% elsif %>
+    <h3><%= raw t('tag.show.tagged_by', :tags => @tagname.to_s, :url1 => "/people/"+@user.name, :user_name => @user.name) %> </h3>
+  <% end %>
+  <% unless @tags.try(:first).try(:parent).nil? %> <small>parent: <%= @tags.first.parent %></small><% end %></h3>
   <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
 
   <% if current_user %>
