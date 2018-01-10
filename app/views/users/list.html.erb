@@ -19,7 +19,7 @@
       <th><%= t('users.list.last_activity') %></th>
       <th><%= t('users.list.history') %></th>
       <th><%= t('users.list.joined') %></th>
-      <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
+      <% if current_user && current_user.role == "admin" && current_user.role == "moderator" %>
         <th><%= t('users.list.moderation') %></th>
       <% end %>
     </tr>
