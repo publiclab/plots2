@@ -189,6 +189,7 @@ class TagControllerTest < ActionController::TestCase
       get :show_for_author, id: 'replication:123', author: 'jeff'
       assert_response :success
       assert_not_nil :notes
+      assert_template 'tag/show'
   end
 
   test 'show note with author and tagname with wildcard' do
@@ -196,6 +197,7 @@ class TagControllerTest < ActionController::TestCase
       assert_response :success
       assert_not_nil :notes
       assert :wildcard
+      assert_template 'tag/show'
   end
 
   test 'tag widget' do
