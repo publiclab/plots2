@@ -14,3 +14,13 @@ three:
   id: 3
   uid: 2
   value: skill:rails
+
+latitude:
+  id: 4
+  uid: 1
+  value: lat:41
+
+longitude:
+  id: 5
+  uid: 1
+  value: lon:-90
