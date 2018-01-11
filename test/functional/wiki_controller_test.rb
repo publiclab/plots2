@@ -29,6 +29,13 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil :wikis
   end
+  
+  test 'should get wiki stale pages' do
+    get :stale
+
+    assert_response :success
+    assert_not_nil :wikis
+  end
 
   test "should use existing node body as template in post form based on param 'n'" do
     UserSession.create(users(:bob))
