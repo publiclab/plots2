@@ -178,7 +178,7 @@ module NodeShared
 
   # in our interface, "users" are known as "people" because it's more human
   def self.people_map(body, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[map\:people\:(\S+)\:(\S+)]/) do |_tagname|
+    body.gsub(/[^\>`](\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
@@ -187,6 +187,7 @@ module NodeShared
                   .includes(:user_tags)
                   .references(:user_tags)
                   .where('user_tags.value LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
+      a = ActionController::Base.new()
       output = a.render_to_string(template: "map/_leaflet", 
                                   layout:   false, 
                                   locals:   {
