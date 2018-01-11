@@ -75,6 +75,7 @@ Plots2::Application.routes.draw do
   get 'following/:type/:name' => 'subscription#following'
   delete 'unsubscribe/:type/:name' => 'subscription#delete'
   put 'subscribe/:type' => 'subscription#add'
+  get 'subscribe/:type' => 'subscription#add'
   put 'subscribe/:type/:name' => 'subscription#add'
   get 'subscribe/:type/:name' => 'subscription#add'
   get 'subscriptions' => 'subscription#index'
