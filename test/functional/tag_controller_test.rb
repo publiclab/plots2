@@ -157,7 +157,6 @@ class TagControllerTest < ActionController::TestCase
     assert :success
     assert_not_nil :tags
     assert :wildcard
-
     assert_select '#note-graph', 0
   end
 
@@ -186,9 +185,16 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'show note with author and tagname without wildcard' do
-      get :show_for_author, id: 'replication:123', author: 'jeff'
+      get :show_for_author, id: 'spectrometer', author: 'jeff'
       assert_response :success
+      assert_not_nil :author
+      assert_not_nil :tags
       assert_not_nil :notes
+      assigns['notes'].each do |node|
+        assert node.has_tag('spectrometry') # should return false
+        assert_not node.has_tag_without_aliasing('spectrometry') # should return false
+        assert_equal 'jeff', node.author
+      end
       assert_template 'tag/show'
   end
 
