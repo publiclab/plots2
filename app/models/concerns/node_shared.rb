@@ -199,4 +199,28 @@ module NodeShared
     end
   end
 
+ def self.wikis_grid(body, _page = 1)
+    body.gsub(/[^\>`](\<p\>)?\[wikis\:(\S+)\]/) do |_tagname|
+      tagname = Regexp.last_match(2)
+      nodes = Node.where(status: 1, type: 'page')
+                  .includes(:revision, :tag)
+                  .references(:term_data, :node_revisions)
+                  .where('term_data.name = ?', tagname)
+                  .order('node_revisions.timestamp DESC')
+      output = ''
+      output += '<p>' if Regexp.last_match(1) == '<p>'
+      a = ActionController::Base.new()
+      output += a.render_to_string(template: "grids/_wikis", 
+                                   layout:   false, 
+                                   locals:   {
+                                     tagname: tagname,
+                                     randomSeed: rand(1000).to_s,
+                                     className: 'wikis-grid-' + tagname.parameterize,
+                                     nodes: nodes,
+                                     type: "wikis"
+                                   })
+      output
+    end
+  end
+
 end
