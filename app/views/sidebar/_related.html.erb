@@ -48,7 +48,7 @@
       </p>
     <% end %>
 
-    <% if params[:controller] == "tag" || (@node && @node.type == "page") %><a href="/contributors/<%= params[:id] %>"><i class="fa fa-list"></i> <%= t('sidebar._related.contributors_for_the_topic') %> &raquo;</a><% end %>
+    <% if params[:controller] == "tag" || (@node && @node.type == "page") %><a href="/contributors/<%= params[:id] %>"><i class="fa fa-list"></i> <%= t('sidebar._related.contributors_for_this_topic') %> &raquo;</a><% end %>
     <% end %>
 
     <% if @users && @users.length > 0 %>
@@ -59,7 +59,7 @@
         <a href="/profile/<%= author.name %>"><%= author.name %></a>
       </p>
       <% end %>
-      <p><a href="/contributors/<%= params[:id] %>"><i class="fa fa-list"></i> <%= t('sidebar._related.contributors_for_the_topic') %> &raquo;</a></p>
+      <p><a href="/contributors/<%= params[:id] %>"><i class="fa fa-list"></i> <%= t('sidebar._related.contributors_for_this_topic') %> &raquo;</a></p>
     <% end %>
   <% end %>
 
