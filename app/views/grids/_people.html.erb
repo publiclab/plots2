@@ -28,7 +28,9 @@
   <% end %>
 <% end %>
 </table>
-<p><a class="btn btn-primary" href="/profile/tags/create/<%=current_user%>?name=<%= tagname %>">Join this group's tag</a></p> 
+<% if current_user %>
+  <p><a class="btn btn-primary" href="/profile/tags/create/<%=current_user%>?name=<%= tagname %>">Join this group's tag</a></p> 
+<% end %>
 <script>
 (function(){
   $(".<%= className %>-<%= randomSeed %> .show-all a").click(function() { 
