@@ -178,7 +178,7 @@ module NodeShared
 
   # in our interface, "users" are known as "people" because it's more human
   def self.people_map(body, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[map\:people\:(\S+)\:(\S+)\:(\S+)\]/) do |_tagname|
+    body.gsub(/[^\>`](\<p\>)?\[map\:people\:(\S+)\:(\S+)]/) do |_tagname|
       tagname = Regexp.last_match(2)
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
