@@ -215,7 +215,7 @@ module NodeShared
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
-                                     className: 'notes-grid-' + tagname.parameterize,
+                                     className: 'wikis-grid-' + tagname.parameterize,
                                      nodes: nodes,
                                      type: "wikis"
                                    })
