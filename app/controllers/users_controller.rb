@@ -261,4 +261,8 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
+  def link_to_social_media
+    @user = DrupalUser.find_by(uid: params[:uid]).user
+  end  
+
 end
