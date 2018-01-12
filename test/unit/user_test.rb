@@ -17,6 +17,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil user.bio
     assert_not_nil user.token
     assert_not_nil user.path
+    assert_not_nil user.title
   end
 
   test 'basic user attributes' do
