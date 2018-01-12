@@ -88,6 +88,12 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('L.marker').length
   end
 
+  test 'that NodeShared can be used to convert short codes like [map:people:___:___] into maps which display peoples locations' do
+    before = "Here are some people in a map: \n\n[map:people:41.00:-90.01] \n\nThis is how you make it work:\n\n`[map:people:41:-90]`\n\nMake sense?"
+    html = NodeShared.people_map(before)
+    assert_equal 1, html.scan('<div class="leaflet-map"').length
+  end
+
   test 'that NodeShared can be used to convert short codes like [people:organizer] into maps which display notes, but only those tagged with "organizer"' do
     before = "Here are some people in a grid: \n\n[people:organizer] \n\nThis is how you make it work:\n\n`[people:organizer]`\n\nMake sense?"
     html = NodeShared.people_grid(before)
