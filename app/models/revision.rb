@@ -18,7 +18,7 @@ class Revision < ActiveRecord::Base
 
   validates :title,
             presence: :true,
-            length: { minimum: 2, maximum: 100 },
+            length: { minimum: 2 },
             format: { with: /[A-Z][\w\-_]*/i, message: 'can only include letters, numbers, and dashes' }
   validates :body, presence: :true
   validates :uid, presence: :true
@@ -74,7 +74,7 @@ class Revision < ActiveRecord::Base
   end
 
   def author
-    DrupalUsers.find_by_uid uid
+    DrupalUser.find_by(uid: uid)
   end
 
   def parent
@@ -103,6 +103,7 @@ class Revision < ActiveRecord::Base
     body = RDiscount.new(body)
     body = body.to_html
     body = body.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKHTML))
+    body = body.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKHTML))
     body_extras(body)
   end

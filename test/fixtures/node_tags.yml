@@ -2,130 +2,130 @@ test:
   tid: 1
   uid: 2
   nid: 1
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 awesome:
   tid: 2
   uid: 2
   nid: 1
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 awesome2:
   tid: 2
   uid: 2
   nid: 2
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 spam:
   tid: 3
   uid: 3
   nid: 3
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 chapter:
   tid: 5
   uid: 1
   nid: 7
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 question:
   tid: 6
   uid: 2
   nid: 8
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 test2:
   tid: 1
   uid: 2
   nid: 8
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 question2:
   tid: 6
   uid: 2
   nid: 9
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 first_timer_question:
   tid: 6
   uid: 7
   nid: 10
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 map_lat:
   tid: 7
   uid: 1
   nid: 12
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 map_lon:
   tid: 8
   uid: 1
   nid: 12
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 blog:
   tid: 9
   uid: 1
   nid: 13
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 question3:
   tid: 6
   uid: 2
   nid: 15
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 activity:
   tid: 10
   uid: 10
   nid: 17
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 activity2:
   tid: 10
   uid: 9
   nid: 16
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 upgrade:
   tid: 11
   uid: 10
   nid: 18
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 upgrade2:
   tid: 11
   uid: 9
   nid: 16
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 spectrometer:
   tid: 12
   uid: 1
   nid: 1
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 activity-spectrometer:
   tid: 14
   uid: 1
   nid: 1
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 activities-spectrometer:
   tid: 16
   uid: 1
   nid: 20
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 map_lat:
   tid: 7
   uid: 1
   nid: 13
-  date: Time.now
+  date: <%= DateTime.now.to_i %>
 
 map_lon:
   tid: 8
   uid: 1
   nid: 13
-  date: Time.now
+  date: <%= DateTime.now.to_i %>

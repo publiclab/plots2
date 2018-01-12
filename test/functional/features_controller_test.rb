@@ -24,7 +24,7 @@ class FeaturesControllerTest < ActionController::TestCase
   end
 
   test 'any user can see /features' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
     get :index
 
@@ -32,7 +32,7 @@ class FeaturesControllerTest < ActionController::TestCase
   end
 
   test 'should not get new feature form if not admin' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
     get :new
 
@@ -40,7 +40,7 @@ class FeaturesControllerTest < ActionController::TestCase
   end
 
   test 'should get new feature form' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
 
     get :new
 
@@ -49,7 +49,7 @@ class FeaturesControllerTest < ActionController::TestCase
   end
 
   test 'should get features if admin' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
 
     get :index
 
@@ -59,7 +59,7 @@ class FeaturesControllerTest < ActionController::TestCase
   end
 
   test 'should not post new feature if not admin' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
     assert_difference 'Node.count', 0 do
       get :create,
@@ -72,7 +72,7 @@ class FeaturesControllerTest < ActionController::TestCase
   end
 
   test 'should post new feature' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
 
     #    assert_difference 'Node.where(type: "feature").count', 1 do
 
@@ -87,9 +87,9 @@ class FeaturesControllerTest < ActionController::TestCase
   end
 
   test 'should update feature' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
 
-    node = node(:feature)
+    node = nodes(:feature)
     assert_difference 'Revision.count' do
       get :update,
           id: node.id,

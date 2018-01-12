@@ -1,17 +1,27 @@
 <div class="hidden-print btn-toolbar pull-right" style="margin-left:10px;margin-top:0;">
   <ul class="btn-group">
-        <% if current_user && (current_user.uid == node.uid || current_user.role == "moderator" || current_user.role == "admin") %>
+        <% if current_user && (current_user.uid == node.uid || current_user.role == "moderator" || current_user.role == "admin" || node.has_tag("with:#{current_user.username}")) %>
              <% if node.type == 'note' %>
-                <a <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing a post by another contributor, a privilege you have only because you are a moderator or admin.' <% end %> class='btn btn-default btn-sm' href='/notes/edit/<%= node.id %>?t=<%= Time.now.to_i %><% if params[:controller] == "questions" %>&redirect=question&template=question<% end %>'>
+                <a <% if current_user && current_user.uid != node.uid %>data-confirm='Please be aware that you are editing a post by another contributor, a privilege you have only because you are a moderator or admin or co-author.' <% end %> class='btn btn-default btn-sm' href='/notes/edit/<%= node.id %>?t=<%= Time.now.to_i %><% if params[:controller] == "questions" %>&redirect=question&template=question<% end %>'>
                 <i class='fa fa-pencil'></i><span class='hidden-xs hidden-sm'> Edit</span>
                 </a>
             <% end %>
         <% end %>
     <li class="btn btn-default btn-sm" data-html="true" rel="popover" data-content="<%= "No tags" if tagnames.nil? || tagnames.length == 0 %><% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-default btn-mini'><%= tagname %></a></p><% end %><% end %><hr /><a class='btn btn-sm'><i class='fa fa-user'></i> <%= node.author.name %></a>" title="Follow by tag or author" data-placement="left"><i class="fa fa-eye"></i><span class="hidden-xs hidden-sm"> Follow</span></li>
 
-    <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>"><span id="like-star-<%= node.id %>" class="fa fa-star<% if current_user && !node.liked_by(current_user.uid) %>-o<% end %>"></span> <span id="like-count-<%= node.id %>"><%= node.likers.length %> </span></li>
+  <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
+    <% if !current_user %>
+      <%= link_to  new_user_session_path( return_to: request.path ) do %>
+        <span id="like-star-<%= node.id %>" class="fa fa-star"></span>
+        <span id="like-count-<%= node.id %>"><%= node.likers.length %></span>
+      <% end %>
+    <% else %>
+      <span id="like-star-<%= node.id %>" class="fa fa-star<% if !node.liked_by(current_user.uid) %>-o<% end %>"></span>
+      <span id="like-count-<%= node.id %>"><%= node.likers.length %> </span>
+    <% end %>
+  </li>
 
-    <li class="btn btn-default btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-title="Tools" data-content="
+  <li class="btn btn-default btn-sm" rel="popover" data-placement="left" data-html="true" style="overflow: auto; max-height: 500px" data-title="Tools" data-content="
 <p><b>Users who liked this</b></p>
 <% node.likers.each do |user| %>
   <i class='fa fa-star-o'></i> <a href='/profile/<%= user.username %>/'><%= user.username %></a><br />
@@ -59,13 +69,21 @@
 <hr style='clear:both;' />
 
 <div>
-  <a onClick='print_linkless()'><i class='fa fa-print'></i> Print without page links</a>
-  <a onClick='$('body').css('column-count', 3).css('column-gap', '50px'); window.print();'><i class='fa fa-print'></i> Print in 3-column layout</a>
+  <p><a onClick='print_linkless()'><i class='fa fa-print'></i> Print without page links</a></p>
+  <p><a onClick='print_three_column();'><i class='fa fa-print'></i> Print in 3-column layout</a></p>
 </div>
 
 "><span class="caret"></span></li>
   </ul>
   <script>
+    function print_three_column() {
+      $('body').css('column-count', 3)
+               .css('column-gap', '50px');
+      $('.popover').popover('hide');
+      window.print();
+      $('body').css('column-count', 1)
+               .css('column-gap', 0);
+    }
     jQuery(document).ready(function() {
       // 304 cached response yields no data to insert, which is not useful
       jQuery.ajaxSetup({

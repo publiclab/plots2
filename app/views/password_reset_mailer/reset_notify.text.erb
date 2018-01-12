@@ -2,7 +2,7 @@ Dear <%= @user.username %>,
 
 Someone (probably you) has requested a reset of your password. To reset your password, click here:
 
-https://<%= ActionMailer::Base.default_url_options[:host] %>/reset/key/<%= @key %>
+http://<%= ActionMailer::Base.default_url_options[:host] %>/reset/key/<%= @key %>
 
 =========================
 

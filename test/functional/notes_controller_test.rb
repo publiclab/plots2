@@ -28,7 +28,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'show note' do
-    note = node(:blog)
+    note = nodes(:blog)
     note.add_tag('activity:nonexistent', note.author) # testing responses display
     assert_equal 'nonexistent', note.power_tag('activity')
 
@@ -42,7 +42,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'notes record views with unique ips' do
-    note = node(:blog)
+    note = nodes(:blog)
     # clear impressions so we get a unique view
     Impression.delete_all
     assert_equal 0, note.views
@@ -80,9 +80,9 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'redirect normal user to tagged blog page' do
-    note = node(:one)
-    blog = node(:blog)
-    note.add_tag("redirect:#{blog.nid}", rusers(:jeff))
+    note = nodes(:one)
+    blog = nodes(:blog)
+    note.add_tag("redirect:#{blog.nid}", users(:jeff))
     assert_equal blog.nid.to_s, note.power_tag('redirect')
 
     get :show,
@@ -94,12 +94,12 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'admins and moderators view redirect-tagged notes with flash warning' do
-    note = node(:one)
-    blog = node(:blog)
-    note.add_tag("redirect:#{blog.nid}", rusers(:jeff))
+    note = nodes(:one)
+    blog = nodes(:blog)
+    note.add_tag("redirect:#{blog.nid}", users(:jeff))
     assert_equal blog.nid.to_s, note.power_tag('redirect')
     UserSession.find.destroy if UserSession.find
-    UserSession.create(rusers(:jeff))
+    UserSession.create(users(:jeff))
 
     get :show,
         author: note.author.name,
@@ -128,7 +128,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "don't show note by spam author" do
-    note = node(:spam) # spam fixture
+    note = nodes(:spam) # spam fixture
 
     get :show,
         author: note.author.name,
@@ -154,7 +154,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should show main image for node, returning blank image if it has none' do
-    node = node(:one)
+    node = nodes(:one)
 
     get :image, id: node.id
 
@@ -178,12 +178,12 @@ class NotesControllerTest < ActionController::TestCase
 
   test 'post note no login' do
     # kind of weird, to successfully log out, we seem to have to first log in to get the UserSession...
-    user_session = UserSession.create(rusers(:bob))
+    user_session = UserSession.create(users(:bob))
     user_session.destroy
     title = 'My new post about balloon mapping'
 
     post :create,
-         id: rusers(:bob).id,
+         id: users(:bob).id,
          title: title,
          body: 'This is a fascinating post about a balloon mapping event.',
          tags: 'balloon-mapping,event'
@@ -193,9 +193,9 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'non-first-timer posts note' do
-    UserSession.create(rusers(:jeff))
+    UserSession.create(users(:jeff))
     title = 'My new post about balloon mapping'
-    assert !rusers(:jeff).first_time_poster
+    assert !users(:jeff).first_time_poster
     assert User.where(role: 'moderator').count > 0
 
     assert_difference 'ActionMailer::Base.deliveries.size', User.where(role: 'moderator').count do
@@ -209,11 +209,11 @@ class NotesControllerTest < ActionController::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal '[PublicLab] ' + title, email.subject
     assert_equal 1, Node.last.status
-    assert_redirected_to '/notes/' + rusers(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
+    assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
   end
 
   test 'first-timer posts note' do
-    UserSession.create(rusers(:lurker))
+    UserSession.create(users(:lurker))
     title = 'My first post to Public Lab'
 
     post :create,
@@ -226,11 +226,11 @@ class NotesControllerTest < ActionController::TestCase
     assert_nil flash[:warning] # no double notice
     assert_equal 4, Node.last.status
     assert_equal title, Node.last.title
-    assert_redirected_to '/notes/' + rusers(:lurker).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
+    assert_redirected_to '/notes/' + users(:lurker).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
   end
 
   test 'first-timer moderated note (status=4) hidden to normal users on research note feed' do
-    node = node(:first_timer_note)
+    node = nodes(:first_timer_note)
     assert_equal 4, node.status
 
     get :index
@@ -239,7 +239,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'first-timer moderated note (status=4) hidden to normal users in full view' do
-    node = node(:first_timer_note)
+    node = nodes(:first_timer_note)
     assert_equal 4, node.status
 
     get :show,
@@ -251,7 +251,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'first-timer moderated note (status=4) shown to author in full view with notice' do
-    node = node(:first_timer_note)
+    node = nodes(:first_timer_note)
     UserSession.create(node.author.user)
     assert_equal 4, node.status
 
@@ -265,7 +265,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'first-timer moderated note (status=4) shown to author in list view with notice' do
-    node = node(:first_timer_note)
+    node = nodes(:first_timer_note)
     UserSession.create(node.author.user)
     assert_equal 4, node.status
 
@@ -277,8 +277,8 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'first-timer moderated note (status=4) shown to moderator with notice and approval prompt in full view' do
-    UserSession.create(rusers(:moderator))
-    node = node(:first_timer_note)
+    UserSession.create(users(:moderator))
+    node = nodes(:first_timer_note)
     assert_equal 4, node.status
 
     get :show,
@@ -291,8 +291,8 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'first-timer moderated note (status=4) shown to moderator with notice and approval prompt in list view' do
-    UserSession.create(rusers(:moderator))
-    node = node(:first_timer_note)
+    UserSession.create(users(:moderator))
+    node = nodes(:first_timer_note)
     assert_equal 4, node.status
 
     get :index
@@ -303,7 +303,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'post_note_error_no_title' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
     post :create,
          body: 'This is a fascinating post about a balloon mapping event.',
@@ -314,7 +314,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'posting note successfully with no errors using xhr (rich editor)' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
     xhr :post,
         :create,
@@ -328,7 +328,7 @@ class NotesControllerTest < ActionController::TestCase
   end
   
   test 'post_note_error_no_title_xhr' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
     xhr :post,
         :create,
@@ -343,7 +343,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'posting note with an error using xhr (rich editor) returns a JSON error' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
 
     xhr :post,
         :create,
@@ -357,11 +357,11 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'returning json errors on xhr note update' do
-    user = UserSession.create(rusers(:jeff))
+    user = UserSession.create(users(:jeff))
 
     xhr :post,
         :update,
-        id: node(:blog).id,
+        id: nodes(:blog).id,
         title: ''
 
     assert_response :success
@@ -375,12 +375,12 @@ class NotesControllerTest < ActionController::TestCase
   # end
 
   test 'should load iframe url in comments' do
-    comment = Comment.new(nid: node(:one).nid,
-                          uid: rusers(:bob).id,
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id,
                           thread: '01/')
     comment.comment = '<iframe src="http://mapknitter.org/embed/sattelite-imagery" style="border:0;"></iframe>'
     comment.save
-    node = node(:one).path.split('/')
+    node = nodes(:one).path.split('/')
 
     get :show, id: node[4], author: node[2], date: node[3]
 
@@ -388,7 +388,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   # test "should mark admins and moderators with a special icon" do
-  #   node = node(:one)
+  #   node = nodes(:one)
   #   get :show,
   #       author: node.author.username,
   #       date: node.created_at.strftime("%m-%d-%Y"),
@@ -398,7 +398,7 @@ class NotesControllerTest < ActionController::TestCase
   # end
 
   test 'should display an icon for users with streak longer than 7 days' do
-    node = node(:one)
+    node = nodes(:one)
     User.any_instance.stubs(:note_streak).returns([8, 10])
     User.any_instance.stubs(:wiki_edit_streak).returns([9, 15])
     User.any_instance.stubs(:comment_streak).returns([10, 30])
@@ -410,7 +410,7 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should redirect to questions show page after creating a new question' do
-    user = UserSession.create(rusers(:bob))
+    user = UserSession.create(users(:bob))
     title = 'How to use Spectrometer'
     post :create,
          title: title,
@@ -418,12 +418,12 @@ class NotesControllerTest < ActionController::TestCase
          tags: 'question:spectrometer',
          redirect: 'question'
 
-    assert_redirected_to '/questions/' + rusers(:bob).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
+    assert_redirected_to '/questions/' + users(:bob).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     assert_equal "Success! Thank you for contributing with a question, and thanks for your patience while your question is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published.", flash[:notice]
   end
 
   test 'non-first-timer posts a question' do
-    UserSession.create(rusers(:jeff))
+    UserSession.create(users(:jeff))
     title = 'My first question to Public Lab'
     post :create,
          title: title,
@@ -431,13 +431,13 @@ class NotesControllerTest < ActionController::TestCase
          tags: 'question:spectrometer',
          redirect: 'question'
 
-    assert_redirected_to '/questions/' + rusers(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
+    assert_redirected_to '/questions/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     assert_equal flash[:notice], 'Question published. In the meantime, if you have more to contribute, feel free to do so.'
   end
 
   test 'should display /post template when editing a note in legacy mode' do
-    user = UserSession.create(rusers(:jeff))
-    note = node(:blog)
+    user = UserSession.create(users(:jeff))
+    note = nodes(:blog)
     post :edit,
          id: note.nid,
          legacy: true
@@ -446,9 +446,9 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should display /post template when editing a question in legacy mode' do
-    user = UserSession.create(rusers(:jeff))
-    note = node(:question)
-    note.add_tag('nice', rusers(:jeff))
+    user = UserSession.create(users(:jeff))
+    note = nodes(:question)
+    note.add_tag('nice', users(:jeff))
     post :edit,
          id: note.nid,
          legacy: true
@@ -457,8 +457,8 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should display /post template when editing a note' do
-    user = UserSession.create(rusers(:jeff))
-    note = node(:blog)
+    user = UserSession.create(users(:jeff))
+    note = nodes(:blog)
     post :edit,
          id: note.nid
     assert_response :success
@@ -466,9 +466,9 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should display /post template when editing a question' do
-    user = UserSession.create(rusers(:jeff))
-    note = node(:question)
-    note.add_tag('nice', rusers(:jeff))
+    user = UserSession.create(users(:jeff))
+    note = nodes(:question)
+    note.add_tag('nice', users(:jeff))
     post :edit,
          id: note.nid
     assert_response :success
@@ -476,8 +476,8 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should redirect to questions show page when editing an existing question' do
-    user = UserSession.create(rusers(:jeff))
-    note = node(:question)
+    user = UserSession.create(users(:jeff))
+    note = nodes(:question)
     post :update,
          id: note.nid,
          title: note.title,
@@ -489,8 +489,8 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should update a former note that has become a question by tagging' do
-    node = node(:blog)
-    node.add_tag('question:foo', rusers(:bob))
+    node = nodes(:blog)
+    node.add_tag('question:foo', users(:bob))
 
     post :update,
          id: node.nid,
@@ -500,13 +500,13 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test 'should redirect to question path if node is a question when visiting shortlink' do
-    node = node(:question)
+    node = nodes(:question)
     get :shortlink, id: node.id
     assert_redirected_to node.path(:question)
   end
 
   test 'should redirect to question path if node is a question when visiting show path' do
-    note = node(:question)
+    note = nodes(:question)
 
     get :show,
         author: note.author.name,
@@ -518,38 +518,38 @@ class NotesControllerTest < ActionController::TestCase
   test 'should list only research notes with status 1 in index' do
     get :index
     notes = assigns(:notes)
-    expected = [node(:one)]
-    questions = [node(:question)]
+    expected = [nodes(:one)]
+    questions = [nodes(:question)]
     assert (notes & expected).present?
     assert !(notes & questions).present?
   end
 
   test 'should list research notes with status 1 & 4 in index if admin is logged in' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
     get :index
     notes = assigns(:notes)
-    expected = [node(:one), node(:first_timer_note)]
-    questions = [node(:question)]
+    expected = [nodes(:one), nodes(:first_timer_note)]
+    questions = [nodes(:question)]
     assert (notes & expected).present?
     assert !(notes & questions).present?
   end
 
   test 'should list only research notes with status 1 in popular' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
     get :popular
     notes = assigns(:notes)
-    expected = [node(:one)]
-    questions = [node(:question)]
+    expected = [nodes(:one)]
+    questions = [nodes(:question)]
     assert (notes & expected).present?
     assert !(notes & questions).present?
   end
 
   test 'should list only research notes with status 1 in liked' do
-    UserSession.create(rusers(:admin))
+    UserSession.create(users(:admin))
     get :liked
     notes = assigns(:notes)
-    expected = [node(:one)]
-    questions = [node(:question)]
+    expected = [nodes(:one)]
+    questions = [nodes(:question)]
     assert (notes & expected).present?
     assert !(notes & questions).present?
   end
@@ -563,7 +563,7 @@ class NotesControllerTest < ActionController::TestCase
 
       @controller = old_controller
 
-      UserSession.create(rusers(:jeff))
+      UserSession.create(users(:jeff))
       title = 'Some post to Public Lab'
 
       post :create,

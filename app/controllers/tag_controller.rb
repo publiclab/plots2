@@ -3,13 +3,41 @@ class TagController < ApplicationController
   before_filter :require_user, only: %i[create delete]
 
   def index
+    if params[:format]
+      @toggle = params[:format].to_i
+    else
+      @toggle = 1
+    end
+
     @title = I18n.t('tag_controller.tags')
     @paginated = true
+    if params[:search]
+    prefix = params[:search]
     @tags = Tag.joins(:node_tag, :node)
+               .select('node.nid, node.status, term_data.*, community_tags.*')
                .where('node.status = ?', 1)
-               .paginate(page: params[:page])
-               .order('count DESC')
+               .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+               .where("name LIKE :prefix", prefix: "#{prefix}%")
                .group(:name)
+               .order('count DESC')
+               .paginate(page: params[:page], per_page: 24)
+    elsif @toggle == 1
+    @tags = Tag.joins(:node_tag, :node)
+               .select('node.nid, node.status, term_data.*, community_tags.*')
+               .where('node.status = ?', 1)
+               .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+               .group(:name)
+               .order('count DESC')
+               .paginate(page: params[:page], per_page: 24)
+    else
+    @tags = Tag.joins(:node_tag, :node)
+               .select('node.nid, node.status, term_data.*, community_tags.*')
+               .where('node.status = ?', 1)
+               .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+               .group(:name)
+               .order('name')
+               .paginate(page: params[:page], per_page: 24)    
+    end
   end
 
   def show
@@ -24,7 +52,7 @@ class TagController < ApplicationController
     # params[:node_type] - this is an optional param
     # if params[:node_type] is nil - use @default_type
     @node_type = params[:node_type] || default_type
-    
+
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
     node_type = 'map' if @node_type == 'maps'
@@ -34,19 +62,21 @@ class TagController < ApplicationController
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
       nodes = Node.where(status: 1, type: node_type)
                   .includes(:revision, :tag)
+                  .references(:term_data, :node_revisions)
                   .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
                   .page(params[:page])
                   .order('node_revisions.timestamp DESC')
     else
-      @tags = Tag.find_all_by_name params[:id]
+      @tags = Tag.where(name: params[:id])
       nodes = Node.where(status: 1, type: node_type)
                   .includes(:revision, :tag)
+                  .references(:term_data, :node_revisions)
                   .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
                   .page(params[:page])
                   .order('node_revisions.timestamp DESC')
     end
 
-    # breaks the parameter 
+    # breaks the parameter
     # sets everything to an empty array
     set_sidebar :tags, [params[:id]]
 
@@ -55,11 +85,13 @@ class TagController < ApplicationController
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
+    # the following could be refactored into a Tag.contributor_count method:
     notes = Node.where(status: 1, type: 'note')
-                 .includes(:revision, :tag)
-                 .where('term_data.name = ?', params[:id])
-    users = notes.collect(&:author).uniq
-    @length=users.length || 0
+                .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
+                .includes(:tag)
+                .references(:term_data)
+                .where('term_data.name = ?', params[:id])
+    @length = notes.collect(&:uid).uniq.length || 0
 
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
@@ -92,13 +124,13 @@ class TagController < ApplicationController
     @notes = Node.paginate(page: params[:page], per_page: 6)
                  .where('status = 1 AND nid in (?)', nids)
                  .order('nid DESC')
-    @tags = Tag.find_all_by_name params[:id]
+    @tags = Tag.where(name: params[:id])
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(',') + ' Blog' if @tagnames
   end
 
   def author
-    render json: DrupalUsers.find_by_name(params[:id]).tag_counts
+    render json: DrupalUser.find_by(name: params[:id]).tag_counts
   end
 
   def barnstar
@@ -114,7 +146,7 @@ class TagController < ApplicationController
       barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
       node.add_comment(subject: 'barnstar',
                        uid: current_user.uid,
-                       body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_users.name} for their awesome contribution!")
+                       body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_user.name} for their awesome contribution!")
     end
     redirect_to node.path + '?_=' + Time.now.to_i.to_s
   end
@@ -128,11 +160,12 @@ class TagController < ApplicationController
     }
     @tags = [] # not used except in tests for now
 
-    node = Node.find params[:nid]
+    nid = params[:nid] || params[:id]
+    node = Node.find nid
     tagnames.each do |tagname|
       # this should all be done in the model:
 
-      if Tag.exists?(tagname, params[:nid])
+      if Tag.exists?(tagname, nid)
         @output[:errors] << I18n.t('tag_controller.tag_already_exists')
       elsif node.can_tag(tagname, current_user) === true || current_user.role == 'admin' # || current_user.role == "moderator"
         saved, tag = node.add_tag(tagname.strip, current_user)
@@ -180,7 +213,7 @@ class TagController < ApplicationController
       end
     else
       flash[:error] = I18n.t('tag_controller.must_own_tag_to_delete')
-      redirect_to Node.find_by_nid(params[:nid]).path
+      redirect_to Node.find_by(nid: params[:nid]).path
     end
   end
 
@@ -190,6 +223,7 @@ class TagController < ApplicationController
       # filtering out tag spam by requiring tags attached to a published node
       Tag.where('name LIKE ?', '%' + params[:id] + '%')
          .includes(:node)
+         .references(:node)
          .where('node.status = 1')
          .limit(10).each do |tag|
         @suggestions << tag.name.downcase
@@ -204,6 +238,7 @@ class TagController < ApplicationController
     if params[:tagname][-1..-1] == '*'
       @notes = Node.where(status: 1, type: 'note')
                    .includes(:revision, :tag)
+                   .references(:term_data, :node_revisions)
                    .where('term_data.name LIKE (?)', params[:tagname][0..-2] + '%')
                    .limit(20)
                    .order('node_revisions.timestamp DESC')
@@ -227,9 +262,10 @@ class TagController < ApplicationController
   def contributors
     set_sidebar :tags, [params[:id]], note_count: 20
     @tagnames = [params[:id]]
-    @tag = Tag.find_by_name params[:id]
+    @tag = Tag.find_by(name: params[:id])
     @notes = Node.where(status: 1, type: 'note')
                  .includes(:revision, :tag)
+                 .references(:term_data, :node_revisions)
                  .where('term_data.name = ?', params[:id])
                  .order('node_revisions.timestamp DESC')
     @users = @notes.collect(&:author).uniq
@@ -242,20 +278,24 @@ class TagController < ApplicationController
     @tags = []
 
     @tagnames.each do |tagname|
-      tag = Tag.find_by_name(tagname)
+      tag = Tag.find_by(name: tagname)
       @tags << tag if tag
       @tagdata[tagname] = {}
-      t = Tag.find :all, conditions: { name: tagname }
-      nct = NodeTag.find :all, conditions: ['tid in (?)', t.collect(&:tid)]
-      @tagdata[tagname][:users] = Node.find(:all, conditions: ['nid IN (?)', nct.collect(&:nid)]).collect(&:author).uniq.length
-      @tagdata[tagname][:wikis] = Node.count :all, conditions: ["nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)]
-      @tagdata[:notes] = Node.count :all, conditions: ["nid IN (?) AND type = 'note'", nct.collect(&:nid)]
+      t = Tag.where(name: tagname)
+      nct = NodeTag.where('tid in (?)', t.collect(&:tid))
+      @tagdata[tagname][:users] = Node.where('nid IN (?)', nct.collect(&:nid)).collect(&:author).uniq.length
+      @tagdata[tagname][:wikis] = Node.where("nid IN (?) AND (type = 'page' OR type = 'tool' OR type = 'place')", nct.collect(&:nid)).count
+      @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).count
     end
     render template: 'tag/contributors-index'
   end
 
   def location
     render template: 'locations/_form'
+  end
+
+  def location_modal
+    render template: 'locations/_modal', layout: false
   end
 
   def gridsEmbed

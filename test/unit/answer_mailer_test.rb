@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AnswerMailerTest < ActionMailer::TestCase
   test 'notify question author' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     answer = answers(:one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       AnswerMailer.notify_question_author(user, answer).deliver
@@ -12,12 +12,13 @@ class AnswerMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal '[PublicLab] New answer to Question: ' + answer.node.title, email.subject
-    assert email.body.include?("Hi! A new answer has been posted for your question '<a href='https://#{request_host}#{answer.node.path(:question)}'>#{answer.node.title}</a>'")
+    assert_equal '[PLab] Question: ' + answer.node.title.truncate(30,omission: '...?') + ' An answer has been posted on Public Lab', email.subject
+    assert email.body.include?("Hi! <a href='https://#{request_host}/profile/#{ answer.author.name }'>#{ answer.author.name }</a> responded :
+<hr /><p>#{ answer.content }</p><hr />")
   end
 
   test 'notify other answer authors' do
-    user = rusers(:bob)
+    user = users(:bob)
     answer = answers(:two)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       AnswerMailer.notify_answer_likers_author(user, answer).deliver
@@ -32,7 +33,7 @@ class AnswerMailerTest < ActionMailer::TestCase
   end
 
   test 'notify user who liked the question' do
-    user = rusers(:admin)
+    user = users(:admin)
     answer = answers(:two)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       AnswerMailer.notify_answer_likers_author(user, answer).deliver
@@ -47,7 +48,7 @@ class AnswerMailerTest < ActionMailer::TestCase
   end
 
   test 'notify answer author when answer is accepted' do
-    user = rusers(:bob)
+    user = users(:bob)
     answer = answers(:one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       AnswerMailer.notify_answer_accept(user, answer).deliver
@@ -62,7 +63,7 @@ class AnswerMailerTest < ActionMailer::TestCase
   end
 
   test 'notify answer author when answer is liked' do
-    user = rusers(:bob)
+    user = users(:bob)
     answer = answers(:one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       AnswerMailer.notify_answer_like(user, answer).deliver

@@ -28,10 +28,15 @@ class QuestionsController < ApplicationController
   end
 
   def new
-    if params[:legacy]
-      render 'editor/question'
-    else 
-      render 'editor/questionRich'
+    if current_user == nil
+      redirect_to new_user_session_path( return_to: request.path )
+      flash[:notice] = "Your question is important and we want to hear from you! Please log in or sign up to post a question"
+    else
+      if params[:legacy]
+        render 'editor/question'
+      else
+        render 'editor/questionRich'
+      end
     end
   end
 
@@ -78,8 +83,9 @@ class QuestionsController < ApplicationController
     @questions = Node.questions
                      .where(status: 1)
                      .includes(:answers)
+                     .references(:answers)
                      .where(answers: { id: nil })
-                     .order('answers.created_at ASC')
+                     .order('answers.created_at DESC')
                      .group('node.nid')
                      .paginate(page: params[:page], per_page: 24)
     render template: 'questions/index'

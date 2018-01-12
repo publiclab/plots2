@@ -2,27 +2,27 @@ require 'test_helper'
 
 class RevisionsTest < ActiveSupport::TestCase
   test 'create a node_revision' do
-    node = Node.new(uid: rusers(:bob).id,
+    node = Node.new(uid: users(:bob).id,
                     type: 'page')
     node.title = 'My new node for revision testing'
     assert node.save!
     # in testing, uid and id should be matched, although this is not yet true in production db
     node_revision = Revision.new(title: 'My new node',
                                  body: 'My new node',
-                                 uid: rusers(:bob).id,
-                                 nid: node(:one).nid)
+                                 uid: users(:bob).id,
+                                 nid: nodes(:one).nid)
     assert node_revision.save!
     assert_not_equal 0, node_revision.timestamp
     assert_not_nil node_revision.timestamp
   end
 
   test "create a feature's node_revision" do
-    node = Node.new(uid: rusers(:admin).id,
+    node = Node.new(uid: users(:admin).id,
                     type: 'feature',
                     title: 'footer-feature')
     assert node.save!
     revision = node.new_revision(nid:   node.id,
-                                 uid:   rusers(:admin).uid,
+                                 uid:   users(:admin).uid,
                                  title: 'footer-feature',
                                  body: 'Testing')
     assert revision.save!
@@ -31,7 +31,7 @@ class RevisionsTest < ActiveSupport::TestCase
   end
 
   test 'spam and republish a revision' do
-    revision = node_revisions(:unmoderated_spam_revision)
+    revision = revisions(:unmoderated_spam_revision)
     assert_equal 1, revision.status
     revision.spam
     assert_equal 0, revision.status
@@ -40,11 +40,11 @@ class RevisionsTest < ActiveSupport::TestCase
   end
 
   test 'previous and next revisions' do
-    revision = node_revisions(:about)
+    revision = revisions(:about)
     # does previous respect status = 1? no.
     new_revision = Revision.new(title: revision.title,
                                 body:  'New body',
-                                uid:   rusers(:bob).id,
+                                uid:   users(:bob).id,
                                 nid:   revision.nid)
 
     assert_difference 'revision.parent.revisions.length', 1 do
@@ -57,7 +57,7 @@ class RevisionsTest < ActiveSupport::TestCase
 
     new_revision_2 = Revision.new(title: revision.title,
                                   body:  'New body 2',
-                                  uid:   rusers(:bob).id,
+                                  uid:   users(:bob).id,
                                   nid:   revision.nid)
 
     assert_difference 'revision.parent.revisions.length', 1 do
@@ -74,22 +74,22 @@ class RevisionsTest < ActiveSupport::TestCase
   end
 
   test 'should recognize hashtags and link them' do
-    revision = node_revisions(:hashtag_one)
+    revision = revisions(:hashtag_one)
     assert_includes revision.render_body, '<a href="/tag/hashtag">#hashtag</a>'
   end
 
   test 'should ignore Headers as hashtags in markdown' do
-    revision = node_revisions(:hashtag_two)
+    revision = revisions(:hashtag_two)
     assert_not_includes revision.render_body, '<a href="/tag/Heading 1">#Heading 1</a>'
   end
 
   test 'should render correct link for images in email' do
-    revision = node_revisions(:email)
+    revision = revisions(:email)
     assert_includes revision.render_body_email(request_host), '//i.publiclab.org/system/images/photos/000/016/229/original/admin_tooltip.png'
   end
 
   test 'should add tags for hashtags' do
-    revision = node_revisions(:hashtag_one)
+    revision = revisions(:hashtag_one)
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
@@ -97,26 +97,26 @@ class RevisionsTest < ActiveSupport::TestCase
   end
 
   test 'should ignore hashtags in markdown' do
-    revision = node_revisions(:hashtag_one)
+    revision = revisions(:hashtag_one)
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
-    assert_false tag_names.include?('heading')
+    assert_not tag_names.include?('heading')
   end
 
   test 'should ignore commas, exclamation, and periods in hashtags' do
-    revision = node_revisions(:hashtag_with_punctuation)
+    revision = revisions(:hashtag_with_punctuation)
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
     expected_tags = %w[hashtag1 hashtag2 hashtag3]
     ignore_tags = ['hashtag1,', 'hashtag2!', 'hashtag3.']
-    assert_true (expected_tags - tag_names).empty?
-    assert_true (ignore_tags - tag_names).length == ignore_tags.length
+    assert (expected_tags - tag_names).empty?
+    assert (ignore_tags - tag_names).length == ignore_tags.length
   end
 
   test 'should tag hashtags in headers' do
-    revision = node_revisions(:hashtag_in_header)
+    revision = revisions(:hashtag_in_header)
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
@@ -124,75 +124,75 @@ class RevisionsTest < ActiveSupport::TestCase
   end
 
   test 'should ignore subheaders' do
-    revision = node_revisions(:subheader)
+    revision = revisions(:subheader)
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
-    assert_false(tag_names.include?('subheader')) || tag_names.include?('#subheader')
+    assert_not tag_names.include?('subheader') || tag_names.include?('#subheader')
   end
 
   test 'should ignore hashtags in links' do
-    revision = node_revisions(:hashtag_in_link)
+    revision = revisions(:hashtag_in_link)
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
-    assert_false tag_names.include?('hashtag')
+    assert_not tag_names.include?('hashtag')
   end
 
   test 'should ignore hashtags in URLs' do
-    revision = node_revisions(:hashtag_in_url)
+    revision = revisions(:hashtag_in_url)
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
-    assert_false tag_names.include?('hashtag')
+    assert_not tag_names.include?('hashtag')
   end
 
   test 'should not add duplicate tags' do
-    revision = node_revisions(:hashtag_three)
+    revision = revisions(:hashtag_three)
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
-    assert_false tag_names.count('hashtag') > 1
-    assert_false tag_names.include?('heading')
+    assert_not tag_names.count('hashtag') > 1
+    assert_not tag_names.include?('heading')
   end
 
   test 'should make the author the tag author' do
-    revision = node_revisions(:hashtag_three)
+    revision = revisions(:hashtag_three)
     revision.save
-    author = revision.parent.tag.last.node_tag.first.drupal_users
+    author = revision.parent.tag.last.node_tag.first.drupal_user
     assert_equal revision.author, author
   end
 
   test 'should not add duplicate hashtags on update' do
-    revision = node_revisions(:hashtag_three)
+    revision = revisions(:hashtag_three)
     revision.save
     revision.body = 'another #hashtag'
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
-    assert_true tag_names.count('hashtag') == 1
+    assert tag_names.count('hashtag') == 1
   end
 
   test 'should remove header from body for preview' do
-    revision = node(:one).latest
+    revision = nodes(:one).latest
     revision.body = "##Introduction\n\nThis is my post"
     assert_nil revision.body_preview.match('Introduction')
   end
 
   test 'should return body if no header for body_preview' do
-    revision = node(:one).latest
+    revision = nodes(:one).latest
     revision.body = 'Some stuff about my post'
-    assert_true !!revision.body_preview.match('Some stuff about my post')
+    assert !!revision.body_preview.match('Some stuff about my post')
   end
 
   test 'should remove header in between two normal paragraphs' do
-    revision = node(:one).latest
+    revision = nodes(:one).latest
     revision.body = "Some stuff about my post\n##A title\nsome more stuff about my post"
     assert_nil revision.body_preview.match('A title')
   end
 
   test 'should change ##header into ## header' do
-    revision = node(:one).latest
+    revision = nodes(:one).latest
     revision.body = "Some stuff about my post\n##A title\nsome more stuff about my post"
     assert_equal "Some stuff about my post\n## A title\nsome more stuff about my post", revision.body_rich
   end

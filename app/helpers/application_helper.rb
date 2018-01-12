@@ -15,7 +15,7 @@ module ApplicationHelper
   def feature(title)
     features = Node.where(type: 'feature', title: title)
     if !features.empty?
-      return features.last.body.html_safe
+      return features.last.body.to_s.html_safe
     else
       ''
     end
@@ -35,6 +35,9 @@ module ApplicationHelper
     body = NodeShared.notes_map(body)
     body = NodeShared.notes_map_by_tag(body)
     body = NodeShared.people_grid(body)
+    body = NodeShared.people_map(body)
+    body = NodeShared.graph_grid(body)
+    body = NodeShared.wikis_grid(body)
     body
   end
 

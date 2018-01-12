@@ -1,6 +1,7 @@
 good_like:
   user_id: 1
-  nid: 1
+  nid: 2
+  liking: true
 
 unbanned_spammer_like:
   user_id: 3

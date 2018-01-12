@@ -2,10 +2,10 @@ class StatsController < ApplicationController
   def subscriptions
     @tags = {}
     TagSelection.where(following: true).each do |tag|
-      @tags[tag.name] = @tags[tag.name] || 0
-      @tags[tag.name] += 1
+      @tags[tag.tagname] = @tags[tag.tagname] || 0
+      @tags[tag.tagname] += 1
     end
-    render text: @tags.inspect
+    render text: @tags.inspect, status: 200
   end
 
   def range
@@ -13,14 +13,22 @@ class StatsController < ApplicationController
     @end = params[:end] ? Time.parse(params[:end]) : Time.now
     @notes = Node.select(%i[created type status])
                  .where(type: 'note', status: 1, created: @start.to_i..@end.to_i)
-                 .count
+                 .count(:all)
     @wikis = Revision.select(:timestamp)
                      .where(timestamp: @start.to_i..@end.to_i)
                      .count - @notes # because notes each have one revision
     @people = User.where(created_at: @start..@end)
                   .joins('INNER JOIN users ON users.uid = rusers.id')
                   .where('users.status = 1')
-                  .count
+                  .count                 
+    @answers = Answer.where(created_at: @start..@end)
+                     .count
+    @comments = Comment.select(:timestamp)
+                       .where(timestamp: @start.to_i..@end.to_i)
+                       .count
+    @questions = Node.questions.where(status: 1, created: @start.to_i..@end.to_i)
+                     .count
+    @contributors = User.contributor_count_for(@start,@end)
   end
 
   def index
@@ -32,7 +40,7 @@ class StatsController < ApplicationController
 
     @weekly_notes = Node.select(%i[created type status])
                         .where(type: 'note', status: 1, created: @time.to_i - 1.weeks.to_i..@time.to_i)
-                        .count
+                        .count(:all)
     @weekly_wikis = Revision.select(:timestamp)
                             .where(timestamp: @time.to_i - 1.weeks.to_i..@time.to_i)
                             .count
@@ -42,7 +50,7 @@ class StatsController < ApplicationController
                           .count
     @monthly_notes = Node.select(%i[created type status])
                          .where(type: 'note', status: 1, created: @time.to_i - 1.months.to_i..@time.to_i)
-                         .count
+                         .count(:all)
     @monthly_wikis = Revision.select(:timestamp)
                              .where(timestamp: @time.to_i - 1.months.to_i..@time.to_i)
                              .count
@@ -53,7 +61,7 @@ class StatsController < ApplicationController
 
     @notes_per_week_past_year = Node.select(%i[created type status])
                                     .where(type: 'note', status: 1, created: @time.to_i - 1.years.to_i..@time.to_i)
-                                    .count / 52.0
+                                    .count(:all) / 52.0
     @edits_per_week_past_year = Revision.select(:timestamp)
                                         .where(timestamp: @time.to_i - 1.years.to_i..@time.to_i)
                                         .count / 52.0
@@ -64,7 +72,7 @@ class StatsController < ApplicationController
 
     users = []
     nids = []
-    Node.find(:all, conditions: { type: 'note', status: 1 }).each do |note|
+    Node.where(type: 'note', status: 1).each do |note|
       unless note.uid == 674 || note.uid == 671
         users << note.uid
         nids << note.nid

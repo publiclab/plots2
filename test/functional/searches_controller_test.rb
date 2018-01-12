@@ -15,7 +15,7 @@ class SearchesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:tagnames)
     assert_not_nil assigns(:users)
     assert_not_nil assigns(:nodes)
-    assert_equal node(:about).id, assigns(:nodes).first.id
+    assert_equal nodes(:about).id, assigns(:nodes).first.id
   end
 
   test "search results page for no results at /search/somethingthathasnoresults" do

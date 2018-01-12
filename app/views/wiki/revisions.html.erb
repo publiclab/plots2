@@ -28,7 +28,7 @@
         <td>
           <a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a> 
           <i class="fa fa-external-link"></i>
-          | <%= distance_of_time_in_words(revision.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %>
+	  | <%= distance_of_time_in_words(revision.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
           <div style="display:none;" id="body_<%= @node.revisions.length-1-index %>"><%= raw RDiscount.new(revision.body).to_html %></div>
         </td>
         <td><small><a class="btn btn-xs btn-default" href="/wiki/revert/<%= revision.vid %>" data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class="fa fa-arrow-reload"></i> <%= t('wiki.revisions.revert') %></a></small></td>

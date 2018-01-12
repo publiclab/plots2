@@ -42,7 +42,7 @@ class CommentController < ApplicationController
 
   def create_by_token
     @node = Node.find params[:id]
-    @user = User.find_by_username params[:username]
+    @user = User.find_by(username: params[:username])
     @body = params[:body]
     @token = request.headers["HTTP_TOKEN"]
 

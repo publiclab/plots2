@@ -26,7 +26,7 @@ class EditorControllerTest < ActionController::TestCase
   end
 
   test 'should get legacy form' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     get :legacy,
         tags: 'one,two'
     assert_response :success
@@ -37,7 +37,7 @@ class EditorControllerTest < ActionController::TestCase
   end
 
   test 'should get post form' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     get :post
     assert_response :success
     assert_select 'h1', 'Share'
@@ -45,31 +45,31 @@ class EditorControllerTest < ActionController::TestCase
   end
 
   test "should use existing node body as template in legacy form based on param 'n'" do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     get :legacy,
-        n: node(:blog).id
+        n: nodes(:blog).id
     assert_response :success
-    assert_select 'textarea#text-input', node(:blog).body
+    assert_select 'textarea#text-input', nodes(:blog).body
   end
 
   test "should use existing node body as template in legacy form based on param 'n' in rich editor" do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     get :rich,
-        n: node(:blog).id
+        n: nodes(:blog).id
     assert_response :success
-    assert_select 'textarea#text-input', node(:blog).body
+    assert_select 'textarea#text-input', nodes(:blog).body
   end
 
   test "should use existing node body as template in post form based on param 'n'" do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     get :post,
-        n: node(:blog).id
+        n: nodes(:blog).id
     assert_response :success
-    assert_select 'textarea#text-input', node(:blog).body
+    assert_select 'textarea#text-input', nodes(:blog).body
   end
 
   test 'newcomer should get legacy form' do
-    UserSession.create(rusers(:newcomer))
+    UserSession.create(users(:newcomer))
     get :legacy
     assert_response :success
     assert_select 'h3', 'Share your work'
@@ -77,7 +77,7 @@ class EditorControllerTest < ActionController::TestCase
   end
 
   test 'newcomer should get post form' do
-    UserSession.create(rusers(:newcomer))
+    UserSession.create(users(:newcomer))
     get :post
     assert_response :success
     assert_select 'h1', 'Share'
@@ -95,7 +95,7 @@ class EditorControllerTest < ActionController::TestCase
   end
 
   test 'should show question template in legacy form for questions' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     get :legacy,
         tags: 'question:question,one',
         template: 'question',
@@ -107,7 +107,7 @@ class EditorControllerTest < ActionController::TestCase
   end
 
   test 'should show question template in post form for questions' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     get :post,
         tags: 'question:question,one',
         template: 'question',
@@ -119,7 +119,7 @@ class EditorControllerTest < ActionController::TestCase
   end
 
   test 'should show title form input if title parameter present' do
-    UserSession.create(rusers(:bob))
+    UserSession.create(users(:bob))
     get :legacy,
         title: 'New Question'
     assert_response :success

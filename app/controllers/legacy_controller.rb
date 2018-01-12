@@ -56,7 +56,7 @@ class LegacyController < ApplicationController
   end
 
   def report
-    @node = DrupalUrlAlias.find_by_dst('report/' + params[:id]).node
+    @node = DrupalUrlAlias.find_by(dst: 'report/' + params[:id]).node
     redirect_to '/notes/' + @node.author.name.downcase + '/' + Time.at(@node.created_at).strftime('%m-%d-%Y') + '/' + params[:id], status: 301
   end
 

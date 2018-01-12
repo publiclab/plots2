@@ -32,14 +32,16 @@ class SearchService
     @comments ||= find_comments(params)
   end
 
-  def find_users(input, limit = 5)
-    DrupalUsers.limit(limit)
-               .order('uid DESC')
-               .where('name LIKE ? AND access != 0', '%' + input + '%')
+  def find_users(input, limit = 10)
+    User.limit(limit)
+        .order('id DESC')
+        .where(status: 1)
+        .where('username LIKE ?', '%' + input + '%')
   end
 
   def find_tags(input, limit = 5)
     Tag.includes(:node)
+       .references(:node)
        .where('node.status = 1')
        .limit(limit)
        .where('name LIKE ?', '%' + input + '%')

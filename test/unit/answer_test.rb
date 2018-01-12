@@ -13,10 +13,10 @@ class AnswerTest < ActiveSupport::TestCase
 
   test 'should relate answer to user and node' do
     answer = Answer.new(content: 'a test answer')
-    node = node(:question)
-    user = users(:bob)
+    node = nodes(:question)
+    user = drupal_users(:bob)
     answer.node = node
-    answer.drupal_users = user
+    answer.drupal_user = user
     answer.save
     assert_equal node.answers.last, answer
     assert_equal user.answers.last, answer
@@ -24,21 +24,21 @@ class AnswerTest < ActiveSupport::TestCase
 
   test 'should have node and author methods' do
     answer = answers(:one)
-    node = node(:question)
-    user = users(:bob)
+    node = nodes(:question)
+    user = drupal_users(:bob)
     assert_equal answer.node, node
     assert_equal answer.author, user
   end
 
   test 'should return user objects who liked it' do
     answer = answers(:one)
-    user = rusers(:bob)
+    user = users(:bob)
     assert_equal answer.likers, [user]
   end
 
   test 'should assert users who liked it' do
-    bob = users(:bob)
-    jeff = users(:jeff)
+    bob = drupal_users(:bob)
+    jeff = drupal_users(:jeff)
     answer = answers(:one)
     assert answer.liked_by(bob.uid)
     assert !answer.liked_by(jeff.uid)

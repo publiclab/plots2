@@ -6,11 +6,11 @@ class UserSessionsController < ApplicationController
   def create
     params[:user_session][:username] = params[:openid] if params[:openid] # second runthrough must preserve username
     username = params[:user_session][:username] if params[:user_session]
-    @user = User.find_by_username(username)
+    @user = User.find_by(username: username)
 
     # try finding by email, if that exists
     if @user.nil? && !User.where(email: username).empty?
-      @user = User.find_by_email(username)
+      @user = User.find_by(email: username)
       params[:user_session][:username] = @user.username
     end
 
@@ -52,7 +52,7 @@ class UserSessionsController < ApplicationController
           end
         end
       else # not a native user
-        if !DrupalUsers.find_by_name(username).nil?
+        if !DrupalUser.find_by(name: username).nil?
           # this is a user from the old site who hasn't registered on the new site
           redirect_to controller: :users, action: :create, user: { openid_identifier: username }
         else # totally new user!
@@ -73,6 +73,12 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.find
     @user_session.destroy
     flash[:notice] = I18n.t('user_sessions_controller.logged_out')
-    redirect_to root_url
+    redirect_to '/' + '?_=' + Time.now.to_i.to_s
+  end
+
+  def logout_remotely
+    current_user.reset_persistence_token!
+    flash[:notice] = I18n.t('user_sessions_controller.logged_out')
+    redirect_to '/' + '?_=' + Time.now.to_i.to_s
   end
 end

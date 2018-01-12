@@ -14,7 +14,7 @@
         <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
       <% end %>
       <span class="hidden-xs"><%= t('notes._comment.commented') %></span>
-      <a style="color:#aaa;" href="#c<%= comment.cid %>"><%= distance_of_time_in_words(comment.created_at, Time.current, false, :scope => :'datetime.time_ago_in_words') %></a>
+      <a style="color:#aaa;" href="#c<%= comment.cid %>"><%= distance_of_time_in_words(comment.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a>
       <% if comment.author && comment.author.user %>
         <% streak = comment.author.user.streak %>
         <% if streak[0] > 7 %>
@@ -65,6 +65,10 @@
   
   <div id="c<%= comment.cid %>show">
     <p><%= raw sanitize(auto_link(RDiscount.new(comment.body).to_html)) %></p>
+    <% if comment.body.include?('?') %>
+      <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
+      </p>
+    <% end %>
   </div>
 
   <% if current_user %>

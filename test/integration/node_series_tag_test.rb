@@ -3,8 +3,8 @@ require 'test_helper'
 class NodeSeriesTagTest < ActionDispatch::IntegrationTest
   test 'add series tag' do
     post '/user_sessions', user_session: {
-      username: rusers(:bob).username,
-      password: 'secret'
+      username: users(:bob).username,
+      password: 'secretive'
     }
 
     title = 'My second post about balloon mapping'
@@ -15,7 +15,7 @@ class NodeSeriesTagTest < ActionDispatch::IntegrationTest
          tags: 'series:balloons'
 
     follow_redirect!
-    assert_equal '/notes/' + rusers(:bob).username + '/' +
+    assert_equal '/notes/' + users(:bob).username + '/' +
                  Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize, path
 
     node = Node.where(title: title).first
@@ -26,7 +26,7 @@ class NodeSeriesTagTest < ActionDispatch::IntegrationTest
     node.publish
 
     # visiting note with original path
-    get '/notes/' + rusers(:bob).username + '/' +
+    get '/notes/' + users(:bob).username + '/' +
         Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     assert_select '.alert', 'This is part of a series on  balloons.'
   end

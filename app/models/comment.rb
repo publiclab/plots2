@@ -7,7 +7,7 @@ class Comment < ActiveRecord::Base
 
   belongs_to :node, foreign_key: 'nid', touch: true,
                     dependent: :destroy, counter_cache: true
-  belongs_to :drupal_users, foreign_key: 'uid'
+  belongs_to :drupal_user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
 
   validates :comment, presence: true
@@ -39,7 +39,8 @@ class Comment < ActiveRecord::Base
 
   def body
     finder = comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
-    finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
+    finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD)) 
+    finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))  
   end
 
   def icon
@@ -71,7 +72,7 @@ class Comment < ActiveRecord::Base
 
   def mentioned_users
     usernames = comment.scan(Callouts.const_get(:FINDER))
-    User.find_all_by_username(usernames.map { |m| m[1] }).uniq
+    User.where(username: usernames.map { |m| m[1] }).uniq
   end
 
   def followers_of_mentioned_tags
@@ -94,7 +95,7 @@ class Comment < ActiveRecord::Base
   end
 
   def notify_users(uids, current_user)
-    DrupalUsers.find(:all, conditions: ['uid IN (?)', uids]).each do |user|
+    DrupalUser.where('uid IN (?)', uids).each do |user|
       if user.uid != current_user.uid
         CommentMailer.notify(user.user, self).deliver
       end
@@ -110,12 +111,9 @@ class Comment < ActiveRecord::Base
 
     notify_callout_users
 
+    # notify other commenters, revisers, and likers, but not those already @called out
     already = mentioned_users.collect(&:uid) + [parent.uid]
-    uids = []
-    # notify other commenters, and likers, but not those already @called out
-    (parent.comments.collect(&:uid) + parent.likers.collect(&:uid)).uniq.each do |u|
-      uids << u unless already.include?(u)
-    end
+    uids = uids_to_notify - already
 
     notify_users(uids, current_user)
     notify_tag_followers(already + uids)

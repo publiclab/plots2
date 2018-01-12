@@ -27,4 +27,11 @@ class ConstantsTest < ActiveSupport::TestCase
     string = 'this is a #tag #anotheRTag, #question:spectrometer'
     assert string.scan(Callouts.const_get(:HASHTAG)).length == 3
   end
+
+  test 'hashtagnumber regex should match non-initial hash' do 
+    string = "hello #123 #hello " ;
+    assert string.scan(Callouts.const_get(:HASHTAGNUMBER)).length == 1
+    expect = "hello REPLACE #hello " ;
+    assert_equal expect, string.gsub(Callouts.const_get(:HASHTAGNUMBER), ' REPLACE') ;
+  end
 end

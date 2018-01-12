@@ -4,7 +4,7 @@
     <div class="expandingArea">
       <pre><span></span><br/></pre>
       <% comment = comment || nil # messy, but fixes #797 %>
-      <textarea name="body" rows="1" placeholder="Leave a comment"><%= comment.try(:comment) %></textarea>
+      <textarea name="body" placeholder="Leave a comment"><%= comment.try(:comment) %></textarea>
     </div>  
   </div>
   <div class="col-xs-3 col-sm-2">

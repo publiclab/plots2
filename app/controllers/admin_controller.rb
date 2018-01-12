@@ -43,12 +43,29 @@ class AdminController < ApplicationController
     redirect_to '/profile/' + @user.username + '?_=' + Time.now.to_i.to_s
   end
 
+  def reset_user_password
+    if current_user && current_user.role == 'admin'
+      user = User.find(params[:id])
+      if user
+        key = user.generate_reset_key
+        user.save({})
+        # send key to user email
+        PasswordResetMailer.reset_notify(user, key) unless user.nil? # respond the same to both successes and failures; security
+      end
+
+      flash[:notice] = "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with." 
+      redirect_to "/profile/" + user.name
+    end
+  end
+
+
   def useremail
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       if params[:address]
         # address was submitted. find the username(s) and return.
         @address = params[:address]
-        @users = User.find_all_by_email(params[:address])
+        @users = User.where(email: params[:address])
+                 .where(status: [1,4])
       end
     else
       # unauthorized. instead of return ugly 403, just send somewhere else
@@ -140,7 +157,7 @@ class AdminController < ApplicationController
   end
 
   def mark_spam_revision
-    @revision = Revision.find_by_vid params[:vid]
+    @revision = Revision.find_by(vid: params[:vid])
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       if @revision.status == 1
         @revision.spam
@@ -179,7 +196,7 @@ class AdminController < ApplicationController
   end
 
   def moderate
-    user = DrupalUsers.find params[:id]
+    user = DrupalUser.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       user.moderate
       flash[:notice] = 'The user has been moderated.'
@@ -190,7 +207,7 @@ class AdminController < ApplicationController
   end
 
   def unmoderate
-    user = DrupalUsers.find params[:id]
+    user = DrupalUser.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       user.unmoderate
       flash[:notice] = 'The user has been unmoderated.'
@@ -201,7 +218,7 @@ class AdminController < ApplicationController
   end
 
   def ban
-    user = DrupalUsers.find params[:id]
+    user = DrupalUser.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       user.ban
       flash[:notice] = 'The user has been banned.'
@@ -212,7 +229,7 @@ class AdminController < ApplicationController
   end
 
   def unban
-    user = DrupalUsers.find params[:id]
+    user = DrupalUser.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       user.unban
       flash[:notice] = 'The user has been unbanned.'
@@ -224,7 +241,7 @@ class AdminController < ApplicationController
 
   def users
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      @users = DrupalUsers.order('uid DESC').limit(200)
+      @users = DrupalUser.order('uid DESC').limit(200)
     else
       flash[:error] = 'Only moderators can moderate other users.'
       redirect_to '/dashboard'
@@ -253,7 +270,7 @@ class AdminController < ApplicationController
 
   def migrate
     if current_user && current_user.role == 'admin'
-      du = DrupalUsers.find params[:id]
+      du = DrupalUser.find params[:id]
       if du.user
         flash[:error] = 'The user has already been migrated.'
       else

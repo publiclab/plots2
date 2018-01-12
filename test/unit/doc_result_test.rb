@@ -2,7 +2,7 @@ require 'test_helper'
 
 class DocResultTest < ActiveSupport::TestCase
   test 'should return fromSearch' do
-    node = node(:question)
+    node = nodes(:question)
     obj = DocResult.fromSearch(
       node.nid,
       'note',
