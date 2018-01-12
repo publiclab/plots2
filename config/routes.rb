@@ -13,7 +13,6 @@ Plots2::Application.routes.draw do
   mount GrapeSwaggerRails::Engine => '/api/d1ocs'
   #end
 
-
   resources :rusers
   resources :user_sessions
   resources :images
@@ -168,6 +167,7 @@ Plots2::Application.routes.draw do
   put 'tag/remove_tag/:id' => 'tag#remove_tag'
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
   get 'tag/:id' => 'tag#show'
+  get 'tag/:id/author/:author' => 'tag#show_for_author'
 
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'

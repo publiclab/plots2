@@ -47,8 +47,7 @@ class TagController < ApplicationController
                      'questions'
                    else
                      'note'
-                   end
-
+                  end
     # params[:node_type] - this is an optional param
     # if params[:node_type] is nil - use @default_type
     @node_type = params[:node_type] || default_type
@@ -99,6 +98,37 @@ class TagController < ApplicationController
       format.json do
         json = []
         nodes.each do |node|
+          json << node.as_json(except: %i[path tags])
+          json.last['path'] = 'https://' + request.host.to_s + node.path
+          json.last['preview'] = node.body_preview(500)
+          json.last['image'] = node.main_image.path(:large) if node.main_image
+          json.last['tags'] = Node.find(node.id).tags.collect(&:name) if node.tags
+        end
+        render json: json
+      end
+    end
+  end
+
+  def show_for_author
+    if params[:id][-1..-1] == '*' # wildcard tags
+      @wildcard = true
+      @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
+    else
+      @tags = Tag.where(name: params[:id])
+    end
+    @tagname = params[:id]
+    @user = User.find_by(name: params[:author])
+    @title = "'" + @tagname.to_s + "' by " +  params[:author]
+    @notes = Tag.tagged_nodes_by_author(@tagname, @user)
+    @unpaginated = true
+    @node_type = 'note'
+    @wiki = nil
+    respond_with(@notes) do |format|
+      format.html { render 'tag/show' }
+      format.xml  { render xml: @notes }
+      format.json do
+        json = []
+        @notes.each do |node|
           json << node.as_json(except: %i[path tags])
           json.last['path'] = 'https://' + request.host.to_s + node.path
           json.last['preview'] = node.body_preview(500)
