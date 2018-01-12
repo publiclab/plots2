@@ -27,6 +27,8 @@ end
 
 message "Pull Request is marked as Work in Progress" if github.pr_title.include? "[WIP]"
 
+puts `cat test/reports/*`
+
 begin
 
   junit.parse "output.xml"
