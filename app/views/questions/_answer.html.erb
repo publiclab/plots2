@@ -26,7 +26,7 @@
     <div id="c<%= answer.id %>show" style="padding:0px 20px">
       <p><%= raw sanitize(auto_link(insert_extras(RDiscount.new(answer.body).to_html))) %></p>
     </div>
-    <% if current_user %>
+    <% if current_user && params[:action]!="make_answer" %>
       <%=  render :partial => "comments/edit", :locals => { title: "Edit answer", comment: answer, placeholder: "Help users by posting an answer to this question" } %>
     <% end %>
     <% if current_user && current_user.uid == answer.author.uid %>

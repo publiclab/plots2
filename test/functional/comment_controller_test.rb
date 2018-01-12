@@ -266,4 +266,37 @@ class CommentControllerTest < ActionController::TestCase
         body: 'Test question?'
     assert_select 'a[href=?]', '/questions', { :count => 1, :text => 'Questions page' }
   end
+
+  test 'should delete comment while promoting if user is comment author' do
+    UserSession.create(users(:bob))
+    comment = comments(:first)
+    assert_difference 'Comment.count', -1 do
+      xhr :post, :make_answer,
+          id: comment.id
+    end
+  end
+
+  test 'should create answer while promoting answer if user is comment author' do
+    UserSession.create(users(:bob))
+    comment = comments(:first)
+    initial_mail_count = ActionMailer::Base.deliveries.size
+    assert_difference 'Answer.count', +1 do
+      xhr :post, :make_answer,
+          id: comment.id
+    end
+    assert_not_nil :answer
+    assert_not_equal initial_mail_count, ActionMailer::Base.deliveries.size
+  end
+
+  test 'should redirect to login if user is not comment author and trying to promote' do
+    UserSession.create(users(:newcomer))
+    comment = comments(:first)
+    assert_no_difference 'Comment.count' do
+      post :make_answer,
+          id: comment.id
+    end
+    assert_redirected_to '/login'
+    assert_equal flash[:warning], 'Only the comment author can promote this comment to answer'
+  end
+
 end
