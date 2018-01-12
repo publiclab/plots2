@@ -3,7 +3,7 @@
   #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
 </style>
 <div class="leaflet-map" id="map<%= unique_id %>"></div>
-<% if people %><p><i><small>Share your own location on <a href='/profile'>your profile</a>.</small></i></p><% end %>
+<% if defined? people %><p><i><small>Share your own location on <a href='/profile'>your profile</a>.</small></i></p><% end %>
 <script>
   var map = L.map('map<%= unique_id %>').setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
   L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
