@@ -19,7 +19,13 @@
  	map.touchZoom.disable() ;
  	map.scrollWheelZoom.disable();
  	<% if !(@map_blurred == "true") %>
-  		L.marker([17 , 77]).addTo(map).bindPopup(" <strong> Share your Location : </strong> <br><br> <form action='/profile/<%= @profile_user.username %>' method='get'> Lat: <input type='number' step='0.0001' name='lat' placeholder='17.231' required>  <br>  Lon:<input type='number' step='0.0001' name='lon' placeholder='77.231' required> <br><br><input type='submit' value='Submit'></form>" ).openPopup();;
+  		L.marker([17 , 77]).addTo(map).bindPopup("<button type='button' class='btn btn-info' onclick='myFunction()'> <strong> Share your Location </strong> </button>").openPopup();;
+  		function myFunction() {
+  		jQuery(document).ready(function() {
+  			$('.blurred-location-input').click() ;
+  		 });
+  		}
   	<% end %>
   <% end %>
+
 </script>
