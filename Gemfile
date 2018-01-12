@@ -94,8 +94,6 @@ gem 'rack-cors', :require => 'rack/cors'
 
 gem 'mocha', '~> 1.1'
 
-gem 'sunspot_rails'
-
 gem 'geocoder'
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'http_accept_language'
