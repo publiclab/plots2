@@ -185,25 +185,36 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'show note with author and tagname without wildcard' do
-      get :show_for_author, id: 'spectrometer', author: 'jeff'
-      assert_response :success
-      assert_not_nil :author
-      assert_not_nil :tags
-      assert_not_nil :notes
-      assigns['notes'].each do |node|
-        assert node.has_tag('spectrometry') # should return false
-        assert_not node.has_tag_without_aliasing('spectrometry') # should return false
-        assert_equal 'jeff', node.author
-      end
-      assert_template 'tag/show'
+    get :show_for_author, id: 'test', author: 'jeff'
+        assert_response :success
+        assert_not_nil :tags
+        assert_not_nil :authors
+        assert_not_nil :notes
+        assert_nil assigns(:wildcard)
+        assert  assigns['notes'].include?(nodes(:one))
+        assert  assigns['notes'].include?(nodes(:question))
+        assigns['notes'].each do |node|
+          assert_equal 2, node.uid
+          assert node.has_tag('test')
+        end
+        assert_template 'tag/show'
   end
 
   test 'show note with author and tagname with wildcard' do
-      get :show_for_author, id: 'replication*', author: 'jeff'
-      assert_response :success
-      assert_not_nil :notes
-      assert :wildcard
-      assert_template 'tag/show'
+    get :show_for_author, id: 'test*', author: 'jeff'
+        assert_response :success
+        assert_not_nil :tags
+        assert_not_nil :authors
+        assert_not_nil :notes
+        assert assigns(:wildcard)
+        assert  assigns['notes'].include?(nodes(:one))
+        assert  assigns['notes'].include?(nodes(:question))
+        assert  assigns['notes'].include?(nodes(:blog))
+        assigns['notes'].each do |node|
+          assert_equal 2, node.uid
+          assert node.has_tag('test*')
+        end
+        assert_template 'tag/show'
   end
 
   test 'tag widget' do

@@ -129,3 +129,9 @@ map_lon:
   uid: 1
   nid: 13
   date: <%= DateTime.now.to_i %>
+
+test_lego:
+  tid: 17
+  uid: 2
+  nid: 13
+  date: <%= DateTime.now.to_i %>
