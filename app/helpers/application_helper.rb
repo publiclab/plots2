@@ -37,6 +37,7 @@ module ApplicationHelper
     body = NodeShared.people_grid(body)
     body = NodeShared.people_map(body)
     body = NodeShared.graph_grid(body)
+    body = NodeShared.wikis_grid(body)
     body
   end
 

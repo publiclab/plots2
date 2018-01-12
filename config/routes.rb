@@ -75,10 +75,12 @@ Plots2::Application.routes.draw do
   get 'following/:type/:name' => 'subscription#following'
   delete 'unsubscribe/:type/:name' => 'subscription#delete'
   put 'subscribe/:type' => 'subscription#add'
+  get 'subscribe/:type' => 'subscription#add'
   put 'subscribe/:type/:name' => 'subscription#add'
   get 'subscribe/:type/:name' => 'subscription#add'
   get 'subscriptions' => 'subscription#index'
 
+  get 'wiki/stale' => 'wiki#stale'
   get 'wiki/new' => 'wiki#new'
   get 'wiki/replace/:id' => 'wiki#replace'
   get 'wiki/popular' => 'wiki#popular'
@@ -102,6 +104,7 @@ Plots2::Application.routes.draw do
   get 'wiki/:lang/:id' => 'wiki#show'
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
   get 'wiki' => 'wiki#index'
+  get 'wiki' => 'wiki#stale'
 
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'

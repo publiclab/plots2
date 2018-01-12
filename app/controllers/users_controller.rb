@@ -115,7 +115,7 @@ class UsersController < ApplicationController
                                  .order('node_revisions.timestamp DESC')
       @questions = @user.user.questions
                              .order('node.nid DESC')
-                             .paginate(:page => params[:page], :per_page => 30)
+                             .paginate(:page => params[:page], :per_page => 24)
       questions = Node.questions
                             .where(status: 1)
                             .order('node.nid DESC')
@@ -128,9 +128,9 @@ class UsersController < ApplicationController
      
       # User's social links
       @github = @profile_user.social_link("github")
-      @twitter = @profile_user.social_link("twitter") 
+      @twitter = @profile_user.social_link("twitter")
       @facebook = @profile_user.social_link("facebook")
-      @instagram = @profile_user.social_link("instagram") 
+      @instagram = @profile_user.social_link("instagram")
      
       if @user.status == 0
         if current_user && (current_user.role == "admin" || current_user.role == "moderator")
@@ -150,7 +150,7 @@ class UsersController < ApplicationController
     @title = "Liked by "+@user.name
     @notes = @user.liked_notes
                   .includes([:tag, :comments])
-                  .paginate(page: params[:page], per_page: 20)
+                  .paginate(page: params[:page], per_page: 24)
     @wikis = @user.liked_pages
     @tagnames = []
     @unpaginated = false
@@ -222,7 +222,7 @@ class UsersController < ApplicationController
     @comments = Comment.limit(20)
                              .order("timestamp DESC")
                              .where(status: 0, uid: params[:id])
-                             .paginate(page: params[:page], per_page: 30)
+                             .paginate(page: params[:page])
     render partial: 'comments/comments'
   end
 
@@ -254,14 +254,14 @@ class UsersController < ApplicationController
   def following
     @title = "Following"
     @user  = User.find_by(username: params[:id])
-    @users = @user.following_users.paginate(page: params[:page])
+    @users = @user.following_users.paginate(page: params[:page], per_page: 24)
     render 'show_follow'
   end
 
   def followers
     @title = "Followers"
     @user  = User.find_by(username: params[:id])
-    @users = @user.followers.paginate(page: params[:page])
+    @users = @user.followers.paginate(page: params[:page], per_page: 24)
     render 'show_follow'
   end
 

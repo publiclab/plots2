@@ -724,6 +724,26 @@ class Node < ActiveRecord::Base
                 .where('node.nid NOT IN (?)', nids)
   end
 
+  def body_preview(length = 100)
+    try(:latest).body_preview(length)
+  end
+
+  # so we can quickly fetch questions corresponding to this node
+  # with node.questions
+  def questions
+    # override with a tag like `questions:h2s`
+    if self.has_power_tag('questions')
+      tagname = node.power_tag('questions')
+    else
+      tagname = self.slug_from_path
+    end
+    Node.where(status: 1, type: 'note')
+        .includes(:revision, :tag)
+        .references(:term_data)
+        .where('term_data.name LIKE ?', "question:#{tagname}")
+  end
+
+  # all questions
   def self.questions
     questions = Node.where(type: 'note')
                     .joins(:tag)
@@ -731,10 +751,19 @@ class Node < ActiveRecord::Base
                     .group('node.nid')
   end
 
-  def body_preview(length = 100)
-    try(:latest).body_preview(length)
+  # so we can quickly fetch activities corresponding to this node
+  # with node.activities
+  def activities
+    # override with a tag like `activities:h2s`
+    if self.has_power_tag('activities')
+      tagname = node.power_tag('activities')
+    else
+      tagname = self.slug_from_path
+    end
+    Node.activities(tagname)
   end
 
+  # so we can call Node.activities('balloon-mapping')
   def self.activities(tagname)
     Node.where(status: 1, type: 'note')
         .includes(:revision, :tag)
@@ -742,6 +771,19 @@ class Node < ActiveRecord::Base
         .where('term_data.name LIKE ?', "activity:#{tagname}")
   end
 
+  # so we can quickly fetch upgrades corresponding to this node
+  # with node.upgrades
+  def upgrades
+    # override with a tag like `upgrades:h2s`
+    if self.has_power_tag('upgrades')
+      tagname = node.power_tag('upgrades')
+    else
+      tagname = self.slug_from_path
+    end
+    Node.upgrades(tagname)
+  end
+
+  # so we can call Node.upgrades('balloon-mapping')
   def self.upgrades(tagname)
     Node.where(status: 1, type: 'note')
         .includes(:revision, :tag)

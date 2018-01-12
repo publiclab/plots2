@@ -107,4 +107,12 @@ class NodeSharedTest < ActiveSupport::TestCase
     html = NodeShared.graph_grid(before)
     assert_equal 1, html.scan('<canvas class="inline-graph"').length
   end
+
+  test 'that NodeShared can be used to convert short codes like [wikis:_tagname_] into tables which list wikis tagged with given tagname' do
+    before = "Here are some wikis in a table: \n\n[wikis:test] \n\nThis is how you make it work:\n\n`[wikis:tagname]`\n\n `[wiksi:tagname]`\n\nMake sense?"
+    html = NodeShared.wikis_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid wikis-grid wikis-grid-test wikis-grid-test-').length
+    assert_equal 1, html.scan('<table').length
+  end
 end
