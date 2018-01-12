@@ -101,12 +101,6 @@ class UsersController < ApplicationController
 
   def profile
     @user = DrupalUser.find_by(name: params[:id])
-    if !params[:lat].nil? && !params[:lon].nil?
-      lat = "lat:"+params[:lat].to_s
-      lon = "lon:"+params[:lon].to_s
-      UserTag.new(uid: @user.id , value: lat).save! ;
-      UserTag.new(uid:  @user.id  , value: lon).save! ;
-    end
     @profile_user = User.find_by(username: params[:id])
     @title = @user.name
     @notes = Node.research_notes
