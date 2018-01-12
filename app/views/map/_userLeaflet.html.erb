@@ -1,0 +1,25 @@
+<% unique_id = rand(100) %>
+<style>
+  #map<%= unique_id %> {  height:300px; margin: 0; position: relative;}
+</style>
+<div class="leaflet-map" id="map<%= unique_id %>"></div>
+<script>
+  <% if flag == true %>
+  	var map = L.map('map<%= unique_id %>').setView([<%= @map_lat %>,<%= @map_lon %>], 7);
+  	L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
+
+  	<% if !(@map_blurred == "true") %>
+  	L.marker([<%= @map_lat %>, <%= @map_lon %>]).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= @profile_user.username  %>'><%= @profile_user.username  %> </a>");
+    <% end %>
+
+  <% else %>
+  	var map = L.map('map<%= unique_id %>' , { zoomControl: false }).setView([17 , 77], 7);
+  	L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
+ 	map.dragging.disable();
+ 	map.touchZoom.disable() ;
+ 	map.scrollWheelZoom.disable();
+ 	<% if !(@map_blurred == "true") %>
+  		L.marker([17 , 77]).addTo(map).bindPopup(" <strong> Share your Location : </strong> <br><br> <form action='/profile/<%= @profile_user.username %>' method='get'> Lat: <input type='number' step='0.0001' name='lat' placeholder='17.231' required>  <br>  Lon:<input type='number' step='0.0001' name='lon' placeholder='77.231' required> <br><br><input type='submit' value='Submit'></form>" ).openPopup();;
+  	<% end %>
+  <% end %>
+</script>
