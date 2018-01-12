@@ -11,14 +11,6 @@ class User < ActiveRecord::Base
   attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio
   alias_attribute :name, :username
 
-  include SolrToggle
-  searchable if: :shouldIndexSolr do
-    text :username, :email
-    text :bio do
-      bio.to_s.gsub!(/[[:cntrl:]]/,'').to_s.slice!(0..32500)
-    end
-  end
-
   acts_as_authentic do |c|
     c.openid_required_fields = %i[nickname email]
     c.validates_format_of_email_field_options = { with: /@/ }
@@ -48,6 +40,10 @@ class User < ActiveRecord::Base
   before_create :create_drupal_user
   before_save :set_token
   after_destroy :destroy_drupal_user
+
+  def self.search(query)
+    User.where('MATCH(username, bio) AGAINST(?)', query)
+  end
 
   def create_drupal_user
     self.bio ||= ''

@@ -6,7 +6,6 @@
 # TODO: Refactor TypeaheadService and SearchService so that common functions come from a higher level class?
 class TypeaheadService
   def initialize; end
-  include SolrToggle
 
   # search_users() returns a standard TagResult; 
   # users() returns an array of User records
@@ -14,9 +13,15 @@ class TypeaheadService
   # but perhaps could simply be renamed Result.
 
   def users(input, limit = 5)
-    User.limit(limit)
-        .order('id DESC')
-        .where('username LIKE ? AND status = 1', '%' + input + '%')
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      User.search(input)
+          .limit(limit)
+          .where(status: 1)
+    else 
+      User.limit(limit)
+          .order('id DESC')
+          .where('username LIKE ? AND status = 1', '%' + input + '%')
+    end
   end
 
   def tags(input, limit = 5)
@@ -28,33 +33,48 @@ class TypeaheadService
   end
 
   def comments(input, limit = 5)
-    Comment.limit(limit)
-           .order('nid DESC')
-           .where('status = 1 AND comment LIKE ?', '%' + input + '%')
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      Comment.search(input)
+             .limit(limit)
+             .order('nid DESC')
+             .where(status: 1)
+    else 
+      Comment.limit(limit)
+             .order('nid DESC')
+             .where('status = 1 AND comment LIKE ?', '%' + input + '%')
+    end
   end
 
   def notes(input, limit = 5)
-    if solrAvailable
-      search = Node.search do
-        fulltext input
-        with :status, 1
-        #with :type, "note"
-        order_by :updated_at, :desc
-        paginate page: 1, per_page: limit
-      end
-      search.results
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      Node.search(input)
+          .group(:nid)
+          .includes(:node)
+          .references(:node)
+          .limit(limit)
+          .where("node.type": "note", "node.status": 1)
+          .order(timestamp: :desc)
     else 
       Node.limit(limit)
-          .order('nid DESC')
+          .group(:nid)
           .where(type: "note", status: 1)
+          .order(updated_at: :desc)
           .where('title LIKE ?', '%' + input + '%')
     end
   end
 
   def wikis(input, limit = 5)
-    Node.limit(limit)
-        .order('nid DESC')
-        .where('type = "page" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      Node.search(input)
+          .includes(:node)
+          .references(:node)
+          .limit(limit)
+          .where("node.type": "page", "node.status": 1)
+    else 
+      Node.limit(limit)
+          .order('nid DESC')
+          .where('type = "page" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+    end
   end
 
   def maps(input, limit = 5)
@@ -110,7 +130,7 @@ class TypeaheadService
   def search_notes(srchString, limit = 5)
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
-      notes(srchString, limit).each do |match|
+      notes(srchString, limit).uniq.each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
@@ -126,7 +146,7 @@ class TypeaheadService
   def search_wikis(srchString, limit = 5)
     sresult = TagList.new
     unless srchString.nil? || srchString == 0
-      wikis(srchString, limit).select('title,type,nid,path').each do |match|
+      wikis(srchString, limit).select('node.title,node.type,node.nid,node.path').each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title

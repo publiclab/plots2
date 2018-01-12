@@ -184,6 +184,7 @@ Plots2::Application.routes.draw do
   get 'profile/edit' => 'users#edit'
   post 'profile/photo' => 'users#photo'
   get 'profile/info/:id' => 'users#info', as: 'info'
+  get 'profile' => 'users#profile'
   get 'profile/:id' => 'users#profile'
   get 'profile/:id/edit' => 'users#edit'
   get 'profile/:id/likes' => 'users#likes'
@@ -259,8 +260,9 @@ Plots2::Application.routes.draw do
   get 'answer_like/show/:id' => 'answer_like#show'
   get 'answer_like/likes/:aid' => 'answer_like#likes'
 
-  get 'comment/answer_create/:aid' => 'comment#answer_create'
 
+  get 'comment/answer_create/:aid' => 'comment#answer_create'
+  post 'comment/make_answer/:id' => 'comment#make_answer'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
