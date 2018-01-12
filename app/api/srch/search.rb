@@ -115,6 +115,27 @@ module Srch
         sresult
       end
 
+      desc 'Perform a search of particular latitude and longitude', hidden: false,
+                                                                                     is_array: false,
+                                                                                     nickname: 'srchGetLocations'
+      params do
+        requires :srchString, type: String, documentation: { example: 'Spec' }
+        optional :seq, type: Integer, documentation: { example: 995 }
+        optional :showCount, type: Integer, documentation: { example: 3 }
+        optional :pageNum, type: Integer, documentation: { example: 0 }
+      end
+      get :locations do
+        sresult = DocList.new
+        unless params[:srchString].nil? || params[:srchString] == 0 || !(params[:srchString].include? ",")
+          sservice = SearchService.new
+          sresult = sservice.search_nearbyLocations(params[:srchString])
+        end
+        sparms = SearchRequest.fromRequest(params)
+        sresult.srchParams = sparms
+        sresult
+      end
+
+
       # end endpoint definitions
     end
   end
