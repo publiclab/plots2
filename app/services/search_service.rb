@@ -200,7 +200,7 @@ class SearchService
                 .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
                 .limit(200)
                 .order('node.nid DESC')
-    
+
     items.each do |match|
       doc = DocResult.fromSearch(match.nid, 'coordinates', match.path(:items), match.title, 0, match.answers.length.to_i)
       sresult.addDoc(doc)
