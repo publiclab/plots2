@@ -18,4 +18,3 @@ de:
       no_results_found: "Keine Ergebnisse gefunden; versuchen, für '<b>%{tag}</b>' Suche"
       try_advanced_search: "Oder versuchen Sie eine <a href='%{url1}'>erweiterte Suche</a>"
       contributors: "Mitwirkende"
-      tagged_by: "Notities getagd met \"%{tags}\" door <a href='%{url1}'>%{user_name}</a>"
