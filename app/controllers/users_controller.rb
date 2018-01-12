@@ -261,8 +261,10 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
-  def link_to_social_media
-    @user = DrupalUser.find_by(uid: params[:uid]).user
+  def link
+     @profile_user = User.find_by(id: params[:id])
+     @profile_user.social_link(params[:sign])
+     redirect_to controller: 'users', action: 'profile', id: @profile_user.name 
   end  
 
 end

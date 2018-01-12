@@ -249,18 +249,15 @@
   });
 
   $('#link_social_media').click(function(){
-   var sign = prompt("What's your sign?");
-
+   var sign = prompt("Enter Your Social Media User name like twitter:jywarren or instagram:unterbahn");
     $.ajax({
-            type: 'POST',
-            url: 'http://localhost:3000/link_to_social_media',
-            success: function(data) {
-                console.log("removed image");
-            },
-            error: function(e) {
-                alert('Error' + e);
-            }
-        });
+       method: "POST",
+       url: "http://localhost:3000/users/link/<%=@user.uid %> ",
+       data: {"sign": sign,"id":<%=@user.uid %>}
+})
+  .done(function( msg ) {
+    alert( "Data Saved succesfully" );
+  });
   });
 
 
