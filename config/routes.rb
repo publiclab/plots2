@@ -104,7 +104,6 @@ Plots2::Application.routes.draw do
   get 'wiki/:lang/:id' => 'wiki#show'
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
   get 'wiki' => 'wiki#index'
-  get 'wiki' => 'wiki#stale'
 
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
