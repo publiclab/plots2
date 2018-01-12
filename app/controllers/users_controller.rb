@@ -100,44 +100,48 @@ class UsersController < ApplicationController
   end
 
   def profile
-    @user = DrupalUser.find_by(name: params[:id])
-    @profile_user = User.find_by(username: params[:id])
-    @title = @user.name
-    @notes = Node.research_notes
-                       .page(params[:page])
-                       .order("nid DESC")
-                       .where(status: 1, uid: @user.uid)
-    @coauthored = @profile_user.coauthored_notes
-                               .page(params[:page])
-                               .order('node_revisions.timestamp DESC')
-    @questions = @user.user.questions
-                           .order('node.nid DESC')
-                           .paginate(:page => params[:page], per_page: 24)
-    questions = Node.questions
-                          .where(status: 1)
-                          .order('node.nid DESC')
-    @answered_questions = questions.select{|q| q.answers.collect(&:author).include?(@user)}
-    wikis = Revision.order("nid DESC")
-                    .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
-                    .joins(:node)
-                    .limit(20)
-    @wikis = wikis.collect(&:parent).uniq
-
-    # User's social links
-    @github = @profile_user.social_link("github")
-    @twitter = @profile_user.social_link("twitter")
-    @facebook = @profile_user.social_link("facebook")
-    @instagram = @profile_user.social_link("instagram")
-
-    if @user.status == 0
-      if current_user && (current_user.role == "admin" || current_user.role == "moderator")
-        flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
-      else
-        flash[:error] = I18n.t('users_controller.user_has_been_banned')
-        redirect_to "/"
+    if current_user && params[:id].nil?
+      redirect_to "/profile/#{current_user.username}"
+    else
+      @user = DrupalUser.find_by(name: params[:id])
+      @profile_user = User.find_by(username: params[:id])
+      @title = @user.name
+      @notes = Node.research_notes
+                         .page(params[:page])
+                         .order("nid DESC")
+                         .where(status: 1, uid: @user.uid)
+      @coauthored = @profile_user.coauthored_notes
+                                 .page(params[:page])
+                                 .order('node_revisions.timestamp DESC')
+      @questions = @user.user.questions
+                             .order('node.nid DESC')
+                             .paginate(:page => params[:page], :per_page => 24)
+      questions = Node.questions
+                            .where(status: 1)
+                            .order('node.nid DESC')
+      @answered_questions = questions.select{|q| q.answers.collect(&:author).include?(@user)}
+      wikis = Revision.order("nid DESC")
+                      .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
+                      .joins(:node)
+                      .limit(20)
+      @wikis = wikis.collect(&:parent).uniq
+     
+      # User's social links
+      @github = @profile_user.social_link("github")
+      @twitter = @profile_user.social_link("twitter")
+      @facebook = @profile_user.social_link("facebook")
+      @instagram = @profile_user.social_link("instagram")
+     
+      if @user.status == 0
+        if current_user && (current_user.role == "admin" || current_user.role == "moderator")
+          flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
+        else
+          flash[:error] = I18n.t('users_controller.user_has_been_banned')
+          redirect_to "/"
+        end
+      elsif @user.status == 5
+        flash.now[:warning] = I18n.t('users_controller.user_has_been_moderated')
       end
-    elsif @user.status == 5
-      flash.now[:warning] = I18n.t('users_controller.user_has_been_moderated')
     end
   end
 
