@@ -6,7 +6,6 @@
 # TODO: Refactor TypeaheadService and SearchService so that common functions come from a higher level class?
 class TypeaheadService
   def initialize; end
-  include SolrToggle
 
   # search_users() returns a standard TagResult; 
   # users() returns an array of User records

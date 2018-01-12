@@ -16,18 +16,6 @@ class DrupalUser < ActiveRecord::Base
   has_many :answer_selections, foreign_key: :user_id
   has_many :comments, foreign_key: 'uid'
 
-
-  include SolrToggle
-  searchable if: :internalShouldIndexSolr do
-    string :name
-    string :mail
-    string :status
-  end
-
-  def internalShouldIndexSolr
-    shouldIndexSolr && status == 1
-  end
-
   def user
     User.where(username: name).first
   end
