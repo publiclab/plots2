@@ -261,4 +261,11 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
+ 
+  def link
+     @profile_user = User.find_by(id: params[:id])
+     @profile_user.social_link(params[:sign])
+     redirect_to controller: 'users', action: 'profile', id: @profile_user.name ,site: params[:sign]
+  end  
+
 end
