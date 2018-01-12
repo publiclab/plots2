@@ -193,7 +193,8 @@ module NodeShared
                                   locals:   {
                                     lat:   lat,
                                     lon:   lon,
-                                    items: users
+                                    items: users,
+                                    people: true
                                   }
                )
       output
