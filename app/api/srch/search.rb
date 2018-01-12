@@ -131,7 +131,7 @@ module Srch
         sresult = DocList.new
         unless params[:srchString].nil? || params[:srchString] == 0 || !(params[:srchString].include? ",")
           sservice = SearchService.new
-          sresult = sservice.search_nearbyLocations(params[:srchString])
+          sresult = sservice.nearbyNodes(params[:srchString])
         end
         sparms = SearchRequest.fromRequest(params)
         sresult.srchParams = sparms

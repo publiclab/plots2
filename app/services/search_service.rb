@@ -183,7 +183,7 @@ class SearchService
     sresult
   end
 
-  def search_nearbyLocations(srchString)
+  def nearbyNodes(srchString)
     sresult = DocList.new
     coordinates = srchString.split(",")
     lat = coordinates[0]
