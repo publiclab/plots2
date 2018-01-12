@@ -36,7 +36,7 @@ class TagController < ApplicationController
                .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                .group(:name)
                .order('name')
-               .paginate(page: params[:page], per_page: 24)    
+               .paginate(page: params[:page], per_page: 24)
     end
   end
 
@@ -197,8 +197,9 @@ class TagController < ApplicationController
   # should delete only the term_node/node_tag (instance), not the term_data (class)
   def delete
     node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
+    node = Node.where(nid: params[:nid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
-    if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator'
+    if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator' || node.uid == current_user.uid
 
       node_tag.delete
       respond_with do |format|
