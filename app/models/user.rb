@@ -116,6 +116,10 @@ class User < ActiveRecord::Base
     drupal_user.uid
   end
 
+  def path
+    "/profile/#{self.username}"
+  end
+
   def lat
     drupal_user.lat
   end
