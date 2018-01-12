@@ -33,16 +33,16 @@ Plots2::Application.routes.draw do
   get 'ioby' => "legacy#ioby"
 
   get 'login' => "user_sessions#new",      :as => :login
-  delete 'logout' => "user_sessions#destroy", :as => :logout
+  get 'logout' => "user_sessions#destroy", :as => :logout
   get 'logoutRemotely' => 'user_sessions#logout_remotely'
   post 'register' => 'users#create'
   get 'reset' => 'users#reset'
   post 'reset' => 'users#reset'
-  post 'reset/key/:key' => 'users#reset'
+  get 'reset/key/:key' => 'users#reset'
   get 'profiles', to: redirect('/people')
   get 'people' => 'users#list'
   get 'users/role/:id' => 'users#list'
-  put 'users/update' => 'users#update'
+  patch 'users/update' => 'users#update'
   get 'people/:id/following' => 'users#following', as: :following
   get 'people/:id/followers' => 'users#followers', as: :followers
   get 'signup' => 'users#new'
@@ -74,10 +74,12 @@ Plots2::Application.routes.draw do
   get 'following/:type/:name' => 'subscription#following'
   delete 'unsubscribe/:type/:name' => 'subscription#delete'
   put 'subscribe/:type' => 'subscription#add'
+  get 'subscribe/:type' => 'subscription#add'
   put 'subscribe/:type/:name' => 'subscription#add'
   get 'subscribe/:type/:name' => 'subscription#add'
   get 'subscriptions' => 'subscription#index'
 
+  get 'wiki/stale' => 'wiki#stale'
   get 'wiki/new' => 'wiki#new'
   get 'wiki/replace/:id' => 'wiki#replace'
   get 'wiki/popular' => 'wiki#popular'
@@ -101,6 +103,8 @@ Plots2::Application.routes.draw do
   get 'wiki/:lang/:id' => 'wiki#show'
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
   get 'wiki' => 'wiki#index'
+  get 'wiki' => 'wiki#stale'
+
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
   get 'notes/raw/:id' => 'notes#raw'
@@ -136,7 +140,7 @@ Plots2::Application.routes.draw do
   get 'likes/node/:id/count' => 'like#show', :as => :like_count
   get 'likes/node/:id/query' => 'like#liked?', :as => :is_liked
   get 'likes/node/:id/create' => 'like#create', :as => :add_like
-  delete 'likes/node/:id/delete' => 'like#delete', :as => :drop_like
+  get 'likes/node/:id/delete' => 'like#delete',  :as => :drop_like
 
   #Search Pages
   get 'search/dynamic' => 'searches#dynamic'
@@ -178,8 +182,9 @@ Plots2::Application.routes.draw do
   get 'profile/comments/:id' => 'users#comments'
   get 'nearby' => 'home#nearby'
   get 'profile/edit' => 'users#edit'
-  get 'profile/photo' => 'users#photo'
+  post 'profile/photo' => 'users#photo'
   get 'profile/info/:id' => 'users#info', as: 'info'
+  get 'profile' => 'users#profile'
   get 'profile/:id' => 'users#profile'
   get 'profile/:id/edit' => 'users#edit'
   get 'profile/:id/likes' => 'users#likes'
@@ -220,6 +225,7 @@ Plots2::Application.routes.draw do
   get 'moderate/spam/:id' => 'admin#mark_spam'
   get 'moderate/publish/:id' => 'admin#publish'
   get 'admin/promote/moderator/:id' => 'admin#promote_moderator'
+  get 'admin/force/reset/:id' => 'admin#reset_user_password'
   get 'admin/demote/basic/:id' => 'admin#demote_basic'
   get 'admin/promote/admin/:id' => 'admin#promote_admin'
   get 'admin/migrate/:id' => 'admin#migrate'
@@ -254,8 +260,9 @@ Plots2::Application.routes.draw do
   get 'answer_like/show/:id' => 'answer_like#show'
   get 'answer_like/likes/:aid' => 'answer_like#likes'
 
-  post 'comment/answer_create/:aid' => 'comment#answer_create'
 
+  get 'comment/answer_create/:aid' => 'comment#answer_create'
+  post 'comment/make_answer/:id' => 'comment#make_answer'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 

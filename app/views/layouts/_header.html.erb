@@ -1,4 +1,4 @@
-<% cache('feature_anniversary-banner') do %>
+<% cache('feature_anniversary-banner', skip_digest: true) do %>
   <%= feature('anniversary-banner') %>
 <% end %>
 
@@ -94,7 +94,7 @@
         </li>
 
         <li class="nav-button-wrapper hidden-xs hidden-sm hidden-md">
-          <button class="btn btn-sm btn-default nav-button-store"><a href="www.google.com"><%= t('layout._header.store') %></a></button>
+          <a class="btn btn-sm btn-default nav-button-store" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
         </li>
       </ul>
 
@@ -107,7 +107,7 @@
 
       <% unless current_user %><a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" data-placement="bottom" style="margin-left:14px;" href="/signup" class="btn btn-primary navbar-btn navbar-right hidden-xs"><%= t('layout._header.join') %></a><% end %>
       <div class="nav-button-wrapper hidden-xs hidden-sm hidden-md navbar-right">
-        <button class="btn btn-sm nav-button-donate"><a href="/donate"><%= t('layout._header.donate') %></a></button>
+        <a class="btn btn-sm nav-button-donate" href="/donate"><%= t('layout._header.donate') %></a>
       </div>
       <% unless params[:action] == "register" || params[:action] == "signup" %>
         <ul class="nav navbar-nav navbar-right">
@@ -180,17 +180,6 @@
                   <p><a href="/reset/"><%= t('layout._header.login.reset_password') %></a></p>
 
                 <% end %>
-              </li>
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                  <i class="fa fa-language" aria-hidden="true"></i>
-                  <%= t('layout._footer.language.language_title') %> <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <% locale_name_pairs.each do |locale_name, locale| %>
-                    <li><%= link_to locale_name, change_locale_path(locale) %></li>
-                  <% end %>
-                </ul>
               </li>
             </ul>
             <% end %>

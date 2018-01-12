@@ -22,6 +22,11 @@
        <i class="fa fa-github fa-3x" aria-hidden="true"></i>
        </a>
     <% end %>
+    <% if @instagram.nil? == false %>
+        <a href="<%= @instagram %>" >
+       <i class="fa fa-instagram fa-3x" aria-hidden="true"></i>
+       </a>
+    <% end %>
   </div>
   <br>
   <% if current_user && @profile_user %>
@@ -69,6 +74,11 @@
   <% if @user.user && !@user.user.reset_key.nil? && current_user && current_user.role == "admin" %>
     <a id="user-reset-key" href="/reset/key/<%= @user.user.reset_key %>" class="btn btn-default btn-block"><i class="fa fa-info-sign"></i> <%= t('users.profile.reset_user') %>: <%= @user.user.reset_key %></a>
   <% end %>
+
+  <% if @user.user && @profile_user.reset_key.nil? && current_user && (current_user.role == "admin" || current_user.role == "moderator") && (@user.role == "basic" || @user.role == "moderator") %>
+    <a href="/admin/force/reset/<%= @profile_user.id %>" class="btn btn-default btn-block">Reset User Password</a>
+  <% end %>
+
   <hr />
 
   <p>

@@ -3,7 +3,7 @@
 de:
   user_sessions:
     new:
-      log_in_or_sign_up: "Melden Sie sich an <small> oder <a href='%{url1}'>melden Sie sich an</a> das Public Lab Netzwerk beitreten</small>"
+      log_in_or_sign_up: "Melden Sie sich an <small> oder <a href='%{url1}'>melden Sie sich an</a> das Public Lab Gemeinschaft beitreten</small>"
       username: "Benutzername or Email"
       password: "Passwort"
       remember_me: "Erinnere dich an mich"

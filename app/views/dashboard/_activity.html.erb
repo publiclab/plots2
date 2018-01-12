@@ -49,9 +49,9 @@
 <%= feature('dashboard-activity-feature') %>
 
 <div>
-  <span style="color: #aaa ;">Trending topics:</span>
+  <small><a href="/tags" style="color: #888;">Trending topics:</a></small>
   <span style="font-size: 18px;">
-   <% cache('trending-tags', expires_in: 24.hours) do %>
+   <% cache('trending-tags', expires_in: 24.hours, skip_digest: true) do %>
       <% Tag.trending.each do |i| %>
         <span class="label label-primary"><a href="/tag/<%= i.name %>"><%= i.name %></a></span>
       <% end %>

@@ -198,16 +198,28 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal expected, notes
   end
 
+  test 'should find all questions associated with this node' do
+    assert_not_nil nodes(:one).questions
+  end
+
   test 'should find all questions' do
     questions = Node.questions
     expected = [nodes(:question), nodes(:question2), nodes(:first_timer_question), nodes(:question3)]
     assert_equal expected, questions
   end
 
+  test 'should find all activities associated with this node' do
+    assert_not_nil nodes(:one).activities
+  end
+
   test 'should find all activity notes' do
     activities = Node.activities('coding')
     expected = [nodes(:moderated_user_note), nodes(:activity)]
     assert_equal expected, activities
+  end
+
+  test 'should find all upgrades associated with this node' do
+    assert_not_nil nodes(:one).upgrades
   end
 
   test 'should find all upgrade notes' do

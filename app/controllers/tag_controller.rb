@@ -20,7 +20,7 @@ class TagController < ApplicationController
                .where("name LIKE :prefix", prefix: "#{prefix}%")
                .group(:name)
                .order('count DESC')
-               .paginate(page: params[:page])
+               .paginate(page: params[:page], per_page: 24)
     elsif @toggle == 1
     @tags = Tag.joins(:node_tag, :node)
                .select('node.nid, node.status, term_data.*, community_tags.*')
@@ -28,7 +28,7 @@ class TagController < ApplicationController
                .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                .group(:name)
                .order('count DESC')
-               .paginate(page: params[:page])
+               .paginate(page: params[:page], per_page: 24)
     else
     @tags = Tag.joins(:node_tag, :node)
                .select('node.nid, node.status, term_data.*, community_tags.*')
@@ -36,7 +36,7 @@ class TagController < ApplicationController
                .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                .group(:name)
                .order('name')
-               .paginate(page: params[:page])
+               .paginate(page: params[:page], per_page: 24)    
     end
   end
 

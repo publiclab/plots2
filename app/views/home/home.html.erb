@@ -1,6 +1,6 @@
 <div style="position:absolute;top:0;left:0;z-index:-1;height:380px;min-height:380px;overflow:hidden;">
 
-  <% cache('feature_home-carousel') do %>
+  <% cache('feature_home-carousel', skip_digest: true) do %>
     <%= feature("home-carousel") %>
   <% end %>
 
@@ -41,7 +41,7 @@
 
 <div class="row">
 
-  <% cache('feature_home-banners') do %>
+  <% cache('feature_home-banners', skip_digest: true) do %>
     <%= feature("home-banners") %>
   <% end %>
 
@@ -120,7 +120,7 @@
 <p><center><a href="/research">See more &raquo;</a></center></p>
 
 <div class="dashboard">
-  <% cache('home-activity', expires_in: 60.minutes) do %>
+  <% cache('home-activity', expires_in: 60.minutes, skip_digest: true) do %>
     <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
   <% end %>
   <%= stylesheet_link_tag "dashboard" %>
