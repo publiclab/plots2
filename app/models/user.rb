@@ -160,6 +160,8 @@ class User < ActiveRecord::Base
   def get_value_of_power_tag(key)
     tname = self.user_tags.where('value LIKE ?' , key + ':%') 
     tvalue = tname.first.name.partition(':').last  
+    puts "value"
+    puts tvalue
     tvalue
   end 
   

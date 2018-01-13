@@ -6,7 +6,7 @@
     </div>
   <% end %>
   
-  <div style="text-align: -webkit-center;">
+ <!--  <div style="text-align: -webkit-center;">
     <% if @twitter.nil? == false %>
       <a href="<%= @twitter %>" >
       <i class="fa fa-twitter fa-3x" aria-hidden="true"></i>
@@ -27,7 +27,7 @@
        <i class="fa fa-instagram fa-3x" aria-hidden="true"></i>
        </a>
     <% end %>
-  </div>
+  </div> -->
   <br>
   <% if current_user && @profile_user %>
     <% unless current_user == @profile_user %>
@@ -96,7 +96,21 @@
     <button id="link_social_media" class="btn btn-default btn-block">Link Social media</button>
   <% end %>
 
+  <% if @twitter.nil? == false %>
+     <a href="<%= @twitter %>" class="btn btn-default btn-sm btn-block"><i class="fa fa-twitter fa-3x" aria-hidden="true"></i></a>
+  <% end %>
 
+ <% if @instagram.nil? == false %>
+     <a href="<%= @instagram %>" class="btn btn-default btn-sm btn-block"><i class="fa fa-instagram fa-3x" aria-hidden="true"></i> </a>
+  <% end %>
+  
+  <% if @facebook.nil? == false %>
+     <a href="<%= @instagram %>" class="btn btn-default btn-sm btn-block">  <i class="fa fa-facebook fa-3x" aria-hidden="true"></i> </a>
+  <% end %>
+
+  <% if @github.nil? == false %>
+     <a href="<%= @instagram %>" class="btn btn-default btn-sm btn-block">   <i class="fa fa-github fa-3x" aria-hidden="true"></i> </a>
+  <% end %>
 
   <hr />
 
@@ -247,14 +261,11 @@
 
 $('#link_social_media').click(function(){
    var sign = prompt("Enter Your Social Media User name like twitter:jywarren or instagram:unterbahn");
-    $.ajax({
-       method: "POST",
-       url: "http://localhost:3000/users/link/<%=@user.uid %> ",
-       data: {"sign": sign,"id":<%=@user.uid %>}
-})
-  .done(function( msg ) {
-    alert( "Data Saved succesfully" );
+  $.post('/profile/tags/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {
+     alert(data);
+      window.location='/profile/<%=@user.name %> ';
   });
+ 
   });
 
   (function () {
