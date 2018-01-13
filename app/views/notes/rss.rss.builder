@@ -9,11 +9,10 @@ xml.rss :version => "2.0" do
 
      body = node.latest.render_body
      body = "<p><![CDATA[ <img src='"+node.main_images.path(:default)+"' alt='"+node.main_image.title+"' > ]]></p> " + node.body if node.main_image
-     author = node.author.mail+" ("+node.author.name+")"
 
      xml.item do
        xml.title       node.title
-       xml.author      author
+       xml.author      node.author.user.has_power_tag('twitter') ? "@" + node.author.user.get_value_of_power_tag('twitter') : node.author.username
        xml.pubDate     node.created_at.to_s(:rfc822)
        #xml.link        url_for :only_path => false, :controller => 'notes', :action => 'show', :id => node.nid
        xml.link        "https://" + request.host.to_s + node.path
