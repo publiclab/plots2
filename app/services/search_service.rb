@@ -183,4 +183,30 @@ class SearchService
     end
     sresult
   end
+
+  def nearbyNodes(srchString)
+    sresult = DocList.new
+    coordinates = srchString.split(",")
+    lat = coordinates[0]
+    lon = coordinates[1]
+
+    nids = NodeTag.joins(:tag)
+               .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
+               .collect(&:nid)
+
+    nids = nids || []
+
+    items = Node.includes(:tag)
+                .references(:node, :term_data)
+                .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
+                .limit(200)
+                .order('node.nid DESC')
+
+    items.each do |match|
+      doc = DocResult.fromSearch(match.nid, 'coordinates', match.path(:items), match.title, 0, match.answers.length.to_i)
+      sresult.addDoc(doc)
+    end
+    sresult
+  end
+
 end
