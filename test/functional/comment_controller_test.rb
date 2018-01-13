@@ -318,7 +318,7 @@ class CommentControllerTest < ActionController::TestCase
   end
 
   test 'should create answer while promoting comment if user is moderator' do
-    UserSession.create(users(:bob))
+    UserSession.create(users(:moderator))
     comment = comments(:first)
     initial_mail_count = ActionMailer::Base.deliveries.size
     assert_difference 'Answer.count', +1 do
@@ -330,7 +330,7 @@ class CommentControllerTest < ActionController::TestCase
   end
 
   test 'should create answer while promoting comment if user is admin' do
-    UserSession.create(users(:bob))
+    UserSession.create(users(:admin))
     comment = comments(:first)
     initial_mail_count = ActionMailer::Base.deliveries.size
     assert_difference 'Answer.count', +1 do
@@ -340,5 +340,5 @@ class CommentControllerTest < ActionController::TestCase
     assert_not_nil :answer
     assert_not_equal initial_mail_count, ActionMailer::Base.deliveries.size
   end
-  
+
 end
