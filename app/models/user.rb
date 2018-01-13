@@ -125,11 +125,11 @@ class User < ActiveRecord::Base
   end
 
   def lat
-    drupal_user.lat
+    self.get_value_of_power_tag('lat')
   end
 
   def lon
-    drupal_user.lon
+    self.get_value_of_power_tag('lon')
   end
 
   # we can revise/improve this for m2m later...
