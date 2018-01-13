@@ -44,4 +44,22 @@ module ApplicationHelper
   def render_map(lat, lon, items)
     render partial: 'map/leaflet', locals: { lat: lat, lon: lon, items: items }
   end
+  
+  def title_suggestion(body,user,nid,id)
+    body.gsub(/\{([^}]+)\}/) do |title_suggestion|
+      a = ActionController::Base.new()
+      is_creator = current_user.drupal_user == Node.find(nid).author
+      title = title_suggestion[1,title_suggestion.length-2] if title_suggestion.length>2
+      output = a.render_to_string(template: "notes/_title_suggestion",
+                                  layout:   false,
+                                  locals:   {
+                                    user: user,
+                                    nid: nid,
+                                    title: title,
+                                    is_creator: is_creator,
+                                  }
+               )
+      output
+    end
+  end
 end

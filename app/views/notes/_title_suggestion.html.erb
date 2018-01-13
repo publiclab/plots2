@@ -1,0 +1,6 @@
+<blockquote>
+	<a href="/profile/<%= user %>"><%= user %></a> is suggesting an alternative title, "<%= title %>".
+	<% if is_creator %> 
+	To accept this as a new title to your post, <a href="/request_title_change/<%= nid %>/<%= title %>" data-method='post'>click here</a>
+	<% end %> 
+</blockquote>

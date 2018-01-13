@@ -333,4 +333,10 @@ class NotesController < ApplicationController
     @node.add_tag('rsvp:' + current_user.username, current_user)
     redirect_to @node.path + '#comments'
   end
+
+  def request_title_change
+    node = Node.find params[:id].to_i
+    node.update(title: params[:title])
+    redirect_to node.path + "#comments"
+  end
 end
