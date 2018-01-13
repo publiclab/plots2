@@ -115,4 +115,14 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<table class="table inline-grid wikis-grid wikis-grid-test wikis-grid-test-').length
     assert_equal 1, html.scan('<table').length
   end
+
+  test 'about ability of power tags to exclude tags like [notes:test!awesome]' do
+    before = "Here are some notes in a table: \n\n[notes:test!awesome]"
+    html = NodeShared.notes_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-test notes-grid-test-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 5, html.scan('notes-grid-test').length
+    assert_equal 4, html.scan('<td').length
+  end
 end
