@@ -26,8 +26,8 @@
 
   </div>
   <div class="inline pull-xs-right" style="vertical-align: top">
-    <p><% if answer_id == 0 && current_user && current_user.uid == comment.uid %>
-    <a class="btn btn-default btn-sm" id="answer-<%= answer_id %>-comment-<%= comment.id %>-reorder-btn" data-remote="true" data-confirm="Are you sure? " rel="tooltip" title="<%= t('questions._comment.promotion') %>" data-placement="left" href="/comment/make_answer/<%= comment.id %>"><i class="fa fa-plus"></i></a>
+    <p><% if answer_id == 0 && current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid)%>
+    <a class="btn btn-default btn-sm" id="answer-<%= answer_id %>-comment-<%= comment.id %>-reorder-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in promoting others' comments; this cannot be undone.<% end %>" rel="tooltip" title="<%= t('questions._comment.promotion') %>" data-placement="left" href="/comment/make_answer/<%= comment.id %>"><i class="fa fa-plus"></i></a>
     <% end %>
     <% if current_user && current_user.uid == comment.uid %>
     <a class="btn btn-default btn-sm" onClick="$('#answer-<%= answer_id %>-comment-<%= comment.id %> .content').toggle();$('#answer-<%= answer_id %>-comment-<%= comment.id %> .content-form').toggle();" ><i class="fa fa-pencil"></i></a>

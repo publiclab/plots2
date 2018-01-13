@@ -147,7 +147,10 @@ class CommentController < ApplicationController
     @comment = Comment.find params[:id]
     comments_node_and_path
 
-    if @comment.uid == current_user.uid
+    if @comment.uid == current_user.uid ||
+        current_user.role == 'admin' ||
+        current_user.role == 'moderator'
+
       @answer = Answer.new(
           nid: @comment.nid,
           uid: @comment.uid,
