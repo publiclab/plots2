@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
-  valid_email_regex = /\A[\w+-.]+@[a-z\d-.]+.[a-z]+\z/i 
+  valid_email = /\A[\w+-.]+@[a-z\d-.]+.[a-z]+\z/i 
 
   before_create :create_drupal_user
   before_save :set_token
