@@ -96,22 +96,7 @@
     <button id="link_social_media" class="btn btn-default btn-block">Link Social media</button>
   <% end %>
 
-  <% if @twitter.nil? == false %>
-     <a href="<%= @twitter %>" class="btn btn-default btn-sm btn-block"><i class="fa fa-twitter fa-3x" aria-hidden="true"></i></a>
-  <% end %>
-
- <% if @instagram.nil? == false %>
-     <a href="<%= @instagram %>" class="btn btn-default btn-sm btn-block"><i class="fa fa-instagram fa-3x" aria-hidden="true"></i> </a>
-  <% end %>
-  
-  <% if @facebook.nil? == false %>
-     <a href="<%= @instagram %>" class="btn btn-default btn-sm btn-block">  <i class="fa fa-facebook fa-3x" aria-hidden="true"></i> </a>
-  <% end %>
-
-  <% if @github.nil? == false %>
-     <a href="<%= @instagram %>" class="btn btn-default btn-sm btn-block">   <i class="fa fa-github fa-3x" aria-hidden="true"></i> </a>
-  <% end %>
-
+ 
   <hr />
 
   <% if params[:preview] %>
