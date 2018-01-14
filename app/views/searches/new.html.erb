@@ -1,6 +1,6 @@
-<form id="inline_searchform" class="form" autocomplete="off">
+<form id="inline_searchform" action=<%= all_search_path %> method="post" class="form" autocomplete="off">
   <div class="form-group form-inline">
-    <input tabindex="1" id="inline_searchform_input" type="text" class="search-query typeahead form-control" data-provide="typeahead" value="<%= params[:id] %>">
+    <input tabindex="1" id="inline_searchform_input" name="id" type="text" class="search-query typeahead form-control" data-provide="typeahead" value="<%= params[:id] %>">
     <button type="submit" class="btn btn-primary"><i class="fa fa-search fa fa-white"></i></button>
   </div>
 </form>
