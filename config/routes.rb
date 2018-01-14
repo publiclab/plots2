@@ -148,8 +148,8 @@ Plots2::Application.routes.draw do
   get 'search/dynamic/:id' => 'searches#dynamic'
   get 'search/:id' => 'searches#results'
   get 'search' => 'searches#new'
-  post 'search' => 'searches#new'
   post 'search/all' => 'searches#results', as: 'all_search'
+  post 'search' => 'searches#results', as: 'all_search'
 
   get 'widget/:id' => 'tag#widget'
   get 'blog' => 'tag#blog', :id => "blog"
