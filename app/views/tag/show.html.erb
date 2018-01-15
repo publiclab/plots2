@@ -33,7 +33,7 @@
   <% if params[:action] == 'show' %>
     <h3><%= raw t('tag.show.notes_tagged', tag: params[:id]) %>
   <% elsif %>
-    <h3> Notes on <%= params[:id] %> by <%= link_to(@user.name,"/profile/@user.name") %> </h3>
+    <h3> Notes on <%= params[:id] %> by <%= link_to(@user.name,"/profile/"+@user.name) %> </h3>
   <% end %>
   <% unless @tags.try(:first).try(:parent).nil? %> <small>parent: <%= @tags.first.parent %></small><% end %></h3>
   <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
