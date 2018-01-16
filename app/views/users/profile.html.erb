@@ -231,7 +231,7 @@
   <hr />
 
   <% if current_user && (current_user.id == @user.id || current_user.role == "admin") %>
-    <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }" } %>
+     <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }" } %>
   <% end %>
 
   <hr />
