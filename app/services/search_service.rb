@@ -203,7 +203,14 @@ class SearchService
                 .limit(200)
                 .order('node.nid DESC')
 items.each do |match|
-      doc = DocResult.fromLocationSearch(match.nid, 'coordinates', match.path(:items), match.title, 0, match.answers.length.to_i,match.lat,match.lon)
+    blurred=false
+      match.node_tags.each do |tag|
+        if tag.name=="location:blurred"
+          blurred=true
+          break
+        end
+      end
+      doc = DocResult.fromLocationSearch(match.nid, 'coordinates', match.path(:items), match.title, 0, match.answers.length.to_i,match.lat,match.lon,blurred)
       sresult.addDoc(doc)
     end
     sresult

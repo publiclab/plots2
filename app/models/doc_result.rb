@@ -1,6 +1,6 @@
 # A DocResult is an individual return item for a document (web page) search
 class DocResult
-  attr_accessor :docId, :docType, :docUrl, :docTitle, :docSummary, :docScore, :latitude,:longitude
+  attr_accessor :docId, :docType, :docUrl, :docTitle, :docSummary, :docScore, :latitude, :longitude, :blurred
 
   def initialize; end
 
@@ -15,7 +15,7 @@ class DocResult
     obj
   end
 
-  def self.fromLocationSearch(idval, typeval, urlval, titleval, sumval, scoreval,latitude,longitude)
+  def self.fromLocationSearch(idval, typeval, urlval, titleval, sumval, scoreval,latitude,longitude,blurred)
     obj = new
     obj.docId = idval
     obj.docType = typeval
@@ -25,6 +25,7 @@ class DocResult
     obj.docScore = scoreval
     obj.latitude = latitude
     obj.longitude = longitude
+    obj.blurred = blurred
     obj
   end
 
