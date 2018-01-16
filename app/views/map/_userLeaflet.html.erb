@@ -1,31 +1,31 @@
-<% unique_id = rand(100) %>
-<style>
-  #map<%= unique_id %> {  height:300px; margin: 0; position: relative;}
-</style>
-<div class="leaflet-map" id="map<%= unique_id %>"></div>
-<script>
-  <% if flag == true %>
-  	var map = L.map('map<%= unique_id %>').setView([<%= @map_lat %>,<%= @map_lon %>], 7);
-  	L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
+<% if haslocation == true %>
+  <% unique_id = rand(100) %>
+  <style>
+    #map<%= unique_id %> {  height:300px; margin: 0; position: relative;}
+  </style>
+  <div class="leaflet-map" id="map<%= unique_id %>"></div>
+  <script>
+    
+    	var map = L.map('map<%= unique_id %>').setView([<%= @map_lat %>,<%= @map_lon %>], 7);
+    	L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
 
-  	<% if !(@map_blurred == "true") %>
-  	L.marker([<%= @map_lat %>, <%= @map_lon %>]).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= @profile_user.username  %>'><%= @profile_user.username  %> </a>");
-    <% end %>
+    	<% if !(@map_blurred == "true") %>
+    	L.marker([<%= @map_lat %>, <%= @map_lon %>]).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= @profile_user.username  %>'><%= @profile_user.username  %> </a>");
+      <% end %>
+  </script>
 
-  <% else %>
-  	var map = L.map('map<%= unique_id %>' , { zoomControl: false }).setView([17 , 77], 7);
-  	L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
- 	map.dragging.disable();
- 	map.touchZoom.disable() ;
- 	map.scrollWheelZoom.disable();
- 	<% if !(@map_blurred == "true") %>
-  		L.marker([17 , 77]).addTo(map).bindPopup("<button type='button' class='btn btn-info' onclick='myFunction()'> <strong> Share your Location </strong> </button>").openPopup();;
-  		function myFunction() {
-  		jQuery(document).ready(function() {
-  			$('.blurred-location-input').click() ;
-  		 });
-  		}
-  	<% end %>
-  <% end %>
+<% else %>
+    <div id="map_template" style="position: relative; display: inline-block;">
+      <img src="/images/maptemplate.png" style="height:300px; margin: 0; position: relative;">
+      
+      <button type='button' class='btn btn-primary btn-lg' onclick='myFunction()' style="position: absolute;    position: absolute;top: 41% ; left: 15% ;"> <strong> Share your Location </strong> </button>
+    </div>
 
-</script>
+    <script>
+      function myFunction() {
+      jQuery(document).ready(function() {
+        $('.blurred-location-input').click() ;
+       });
+      }
+    </script>
+<% end %>
