@@ -576,9 +576,9 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   def test_get_rss_feed
-  get :rss, :format => "rss"
-  assert_response :success   
-  assert_equal 'application/rss+xml', @response.content_type
-end
+    get :rss, :format => "rss"
+    assert_response :success   
+    assert_equal 'application/rss+xml', @response.content_type
+  end
 
 end
