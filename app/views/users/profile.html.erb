@@ -157,9 +157,9 @@
     <h3 class="col-md-4 col-xs-12 col-sm-4"><%= Node.questions.where(status: 1, uid: @user.id).length %> questions asked <br><br> <%= Answer.where(uid: @profile_user.id).count %> answers posted</h3>
     <h3 class="col-md-4 col-xs-12 col-sm-4"><%= Comment.where(uid: @profile_user.id).count %> comments posted</h3>
      <% if !@map_lat.nil? && !@map_lon.nil? %>
-      <%= render :partial => "map/userLeaflet" , locals: {flag: true} %>
+      <%= render :partial => "map/userLeaflet" , locals: {haslocation: true} %>
     <% elsif !current_user.nil? && current_user.id == @user.id %>
-    <%= render :partial => "map/userLeaflet" , locals: {flag: false} %>
+    <%= render :partial => "map/userLeaflet" , locals: {haslocation: false} %>
     <% end %>
   </div>
   <hr />
