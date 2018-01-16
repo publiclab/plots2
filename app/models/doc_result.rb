@@ -1,6 +1,6 @@
 # A DocResult is an individual return item for a document (web page) search
 class DocResult
-  attr_accessor :docId, :docType, :docUrl, :docTitle, :docSummary, :docScore
+  attr_accessor :docId, :docType, :docUrl, :docTitle, :docSummary, :docScore, :latitude,:longitude
 
   def initialize; end
 
@@ -15,6 +15,19 @@ class DocResult
     obj
   end
 
+  def self.fromLocationSearch(idval, typeval, urlval, titleval, sumval, scoreval,latitude,longitude)
+    obj = new
+    obj.docId = idval
+    obj.docType = typeval
+    obj.docUrl = urlval
+    obj.docTitle = titleval
+    obj.docSummary = sumval
+    obj.docScore = scoreval
+    obj.latitude = latitude
+    obj.longitude = longitude
+    obj
+  end
+
   # This subclass is used to auto-generate the RESTful data structure.  It is generally not useful for internal Ruby usage
   #  but must be included for full RESTful functionality.
   class Entity < Grape::Entity
@@ -24,5 +37,7 @@ class DocResult
     expose :docTitle, documentation: { type: 'String', desc: 'Title or primary descriptor of the linked result.' }
     expose :docSummary, documentation: { type: 'String', desc: 'If available, first paragraph or descriptor of the linked document.' }
     expose :docScore, documentation: { type: 'Float', desc: "If calculated, the relevance of the document result to the search request; i.e. the 'matching score'" }
+    expose :latitude, documentation: {type: 'String',desc: "Returns the latitude associated with node"}
+    expose :longitude, documentation: {type: 'String',desc: "Returns the longitude associated with node"}
   end
 end

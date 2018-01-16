@@ -184,6 +184,7 @@ class SearchService
     sresult
   end
 
+  #Search nearby nodes with respect to given latitude and longitude
   def nearbyNodes(srchString)
     sresult = DocList.new
     coordinates = srchString.split(",")
@@ -201,9 +202,8 @@ class SearchService
                 .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
                 .limit(200)
                 .order('node.nid DESC')
-
-    items.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'coordinates', match.path(:items), match.title, 0, match.answers.length.to_i)
+items.each do |match|
+      doc = DocResult.fromLocationSearch(match.nid, 'coordinates', match.path(:items), match.title, 0, match.answers.length.to_i,match.lat,match.lon)
       sresult.addDoc(doc)
     end
     sresult
