@@ -64,7 +64,7 @@
   </script>
   
   <div id="c<%= comment.cid %>show">
-    <p><%= raw sanitize (RDiscount.new(title_suggestion(comment)).to_html), attributes: %w(class style href data-method src) %></p>
+    <p><%= render_comment_body(comment) %></p>
     <% if comment.body.include?('?') %>
       <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
       </p>

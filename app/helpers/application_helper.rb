@@ -44,7 +44,13 @@ module ApplicationHelper
   def render_map(lat, lon, items)
     render partial: 'map/leaflet', locals: { lat: lat, lon: lon, items: items }
   end
+
+  # returns the comment body which is to be shown in the comments section
+  def render_comment_body(comment)
+    raw sanitize (RDiscount.new(title_suggestion(comment)).to_html), attributes: %w(class style href data-method src)
+  end
   
+  # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)
     comment.body.gsub(/\{([^}]+)\}/) do |title_suggestion|
       a = ActionController::Base.new()
