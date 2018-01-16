@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Tag - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">ActiveRecord::Base
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-contributor_count">::contributor_count</a>
+    
+    <li ><a href="#method-c-exists-3F">::exists?</a>
+    
+    <li ><a href="#method-c-find_nodes_by_type">::find_nodes_by_type</a>
+    
+    <li ><a href="#method-c-find_nodes_by_type_with_all_tags">::find_nodes_by_type_with_all_tags</a>
+    
+    <li ><a href="#method-c-find_pages">::find_pages</a>
+    
+    <li ><a href="#method-c-find_popular_notes">::find_popular_notes</a>
+    
+    <li ><a href="#method-c-find_research_notes">::find_research_notes</a>
+    
+    <li ><a href="#method-c-find_top_nodes_by_type">::find_top_nodes_by_type</a>
+    
+    <li ><a href="#method-c-follower_count">::follower_count</a>
+    
+    <li ><a href="#method-c-followers">::followers</a>
+    
+    <li ><a href="#method-c-is_powertag-3F">::is_powertag?</a>
+    
+    <li ><a href="#method-c-nodes_for_period">::nodes_for_period</a>
+    
+    <li ><a href="#method-c-subscribers">::subscribers</a>
+    
+    <li ><a href="#method-c-tagged_nodes_by_author">::tagged_nodes_by_author</a>
+    
+    <li ><a href="#method-c-trending">::trending</a>
+    
+    <li ><a href="#method-i-belongs_to">#belongs_to</a>
+    
+    <li ><a href="#method-i-filter_by_type">#filter_by_type</a>
+    
+    <li ><a href="#method-i-followers_who_dont_follow_tags">#followers_who_dont_follow_tags</a>
+    
+    <li ><a href="#method-i-id">#id</a>
+    
+    <li ><a href="#method-i-nodes">#nodes</a>
+    
+    <li ><a href="#method-i-run_count">#run_count</a>
+    
+    <li ><a href="#method-i-subscriptions">#subscriptions</a>
+    
+    <li ><a href="#method-i-weekly_tallies">#weekly_tallies</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Tag">
+  <h1 id="class-Tag" class="class">
+    class Tag
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-contributor_count" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">contributor_count</span><span
+            class="method-args">(tagname)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="contributor_count-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 55</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">contributor_count</span>(<span class="ruby-identifier">tagname</span>)
+  <span class="ruby-identifier">tag</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">includes</span>(<span class="ruby-value">:node</span>).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tagname</span>).<span class="ruby-identifier">first</span>
+  <span class="ruby-identifier">nodes</span> = <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">node</span>.<span class="ruby-identifier">includes</span>(<span class="ruby-value">:revision</span>, <span class="ruby-value">:comments</span>,<span class="ruby-value">:answers</span>).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+  <span class="ruby-identifier">uids</span> = <span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:uid</span>)
+  <span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">uids</span><span class="ruby-operator">+=</span><span class="ruby-identifier">n</span>.<span class="ruby-identifier">comments</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:uid</span>)
+    <span class="ruby-identifier">uids</span><span class="ruby-operator">+=</span><span class="ruby-identifier">n</span>.<span class="ruby-identifier">answers</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:uid</span>)
+    <span class="ruby-identifier">uids</span><span class="ruby-operator">+=</span><span class="ruby-identifier">n</span>.<span class="ruby-identifier">revision</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:uid</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">uids</span> = <span class="ruby-identifier">uids</span>.<span class="ruby-identifier">uniq</span>
+  <span class="ruby-identifier">uids</span>.<span class="ruby-identifier">length</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-exists-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">exists?</span><span
+            class="method-args">(tagname, nid)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="exists-3F-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 135</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">tagname</span>, <span class="ruby-identifier">nid</span>)
+  <span class="ruby-operator">!</span><span class="ruby-constant">NodeTag</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;nid = ? AND term_data.name = ?&#39;</span>, <span class="ruby-identifier">nid</span>, <span class="ruby-identifier">tagname</span>)
+                         .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:tag</span>).<span class="ruby-identifier">empty?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-find_nodes_by_type" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_nodes_by_type</span><span
+            class="method-args">(tagnames, type = 'note', limit = 10)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>finds recent nodes - should drop “limit” and allow use of chainable
+.limit()</p>
+          
+          
+
+          
+          <div class="method-source-code" id="find_nodes_by_type-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 79</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find_nodes_by_type</span>(<span class="ruby-identifier">tagnames</span>, <span class="ruby-identifier">type</span> = <span class="ruby-string">&#39;note&#39;</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">10</span>)
+  <span class="ruby-identifier">nodes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-identifier">type</span>)
+              .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:tag</span>)
+              .<span class="ruby-identifier">references</span>(<span class="ruby-value">:term_data</span>)
+              .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name IN (?)&#39;</span>, <span class="ruby-identifier">tagnames</span>)
+              <span class="ruby-comment">#.select(%i[node.nid node.status node.type community_tags.nid community_tags.tid term_data.name term_data.tid])</span>
+              <span class="ruby-comment"># above select could be added later for further optimization</span>
+  <span class="ruby-comment"># .where(&#39;term_data.name IN (?) OR term_data.parent in (?)&#39;, tagnames, tagnames) # greedily fetch children</span>
+  <span class="ruby-identifier">tags</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name IN (?)&#39;</span>, <span class="ruby-identifier">tagnames</span>)
+  <span class="ruby-identifier">parents</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-identifier">type</span>)
+                .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:tag</span>)
+                .<span class="ruby-identifier">references</span>(<span class="ruby-value">:term_data</span>)
+                .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name IN (?)&#39;</span>, <span class="ruby-identifier">tags</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:parent</span>))
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.nid IN (?)&#39;</span>, (<span class="ruby-identifier">nodes</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">parents</span>).<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:nid</span>))
+      .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:revision</span>, <span class="ruby-value">:tag</span>)
+      .<span class="ruby-identifier">references</span>(<span class="ruby-value">:node_revisions</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node_revisions.timestamp DESC&#39;</span>)
+      .<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-find_nodes_by_type_with_all_tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_nodes_by_type_with_all_tags</span><span
+            class="method-args">(tagnames, type = 'note', limit = 10)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="find_nodes_by_type_with_all_tags-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 105</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find_nodes_by_type_with_all_tags</span>(<span class="ruby-identifier">tagnames</span>, <span class="ruby-identifier">type</span> = <span class="ruby-string">&#39;note&#39;</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">10</span>)
+  <span class="ruby-identifier">nids</span> = []
+  <span class="ruby-identifier">tagnames</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tagname</span><span class="ruby-operator">|</span>
+    <span class="ruby-comment"># tids = Tag.where(&#39;term_data.name IN (?) OR term_data.parent IN (?)&#39;, tagnames, tagnames) # greedily fetch children</span>
+    <span class="ruby-identifier">tids</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name IN (?)&#39;</span>, <span class="ruby-identifier">tagnames</span>)
+              .<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:tid</span>)
+    <span class="ruby-identifier">tag_nids</span> = <span class="ruby-constant">NodeTag</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;tid IN (?)&#39;</span>, <span class="ruby-identifier">tids</span>)
+                                     .<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:nid</span>)
+    <span class="ruby-identifier">tag</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tagname</span>).<span class="ruby-identifier">last</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">tag</span>
+    <span class="ruby-identifier">parents</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-identifier">type</span>)
+                  .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:revision</span>, <span class="ruby-value">:tag</span>)
+                  .<span class="ruby-identifier">references</span>(<span class="ruby-value">:term_data</span>)
+                  .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name LIKE ?&#39;</span>, <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">parent</span>)
+    <span class="ruby-identifier">nids</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">tag_nids</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">parents</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:nid</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;nid IN (?)&#39;</span>, <span class="ruby-identifier">nids</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+      .<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-find_pages" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_pages</span><span
+            class="method-args">(tagnames, limit = 10)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>just like <a
+href="Tag.html#method-c-find_nodes_by_type">::find_nodes_by_type</a>, but
+searches wiki pages, places, and tools</p>
+          
+          
+
+          
+          <div class="method-source-code" id="find_pages-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 101</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find_pages</span>(<span class="ruby-identifier">tagnames</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">10</span>)
+  <span class="ruby-identifier">find_nodes_by_type</span>(<span class="ruby-identifier">tagnames</span>, <span class="ruby-node">%w[page place tool]</span>, <span class="ruby-identifier">limit</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-find_popular_notes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_popular_notes</span><span
+            class="method-args">(tagname, views = 20, limit = 10)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="find_popular_notes-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 126</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find_popular_notes</span>(<span class="ruby-identifier">tagname</span>, <span class="ruby-identifier">views</span> = <span class="ruby-value">20</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">10</span>)
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;note&#39;</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name = ? AND node.views &gt; (?)&#39;</span>, <span class="ruby-identifier">tagname</span>, <span class="ruby-identifier">views</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node.nid DESC&#39;</span>)
+      .<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+      .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:node_tag</span>, <span class="ruby-value">:tag</span>)
+      .<span class="ruby-identifier">references</span>(<span class="ruby-value">:community_tags</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-find_research_notes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_research_notes</span><span
+            class="method-args">(tagnames, limit = 10)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="find_research_notes-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 212</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find_research_notes</span>(<span class="ruby-identifier">tagnames</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">10</span>)
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">research_notes</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+      .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:revision</span>, <span class="ruby-value">:tag</span>)
+      .<span class="ruby-identifier">references</span>(<span class="ruby-value">:node_revisions</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name IN (?)&#39;</span>, <span class="ruby-identifier">tagnames</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node_revisions.timestamp DESC&#39;</span>)
+      .<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-find_top_nodes_by_type" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_top_nodes_by_type</span><span
+            class="method-args">(tagname, type = 'wiki', limit = 10)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>finds highest viewcount nodes</p>
+          
+          
+
+          
+          <div class="method-source-code" id="find_top_nodes_by_type-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 69</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find_top_nodes_by_type</span>(<span class="ruby-identifier">tagname</span>, <span class="ruby-identifier">type</span> = <span class="ruby-string">&#39;wiki&#39;</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">10</span>)
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-identifier">type</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name = ?&#39;</span>, <span class="ruby-identifier">tagname</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node.views DESC&#39;</span>)
+      .<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+      .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:node_tag</span>, <span class="ruby-value">:tag</span>)
+      .<span class="ruby-identifier">references</span>(<span class="ruby-value">:term_data</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-follower_count" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">follower_count</span><span
+            class="method-args">(tagname)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="follower_count-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 144</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">follower_count</span>(<span class="ruby-identifier">tagname</span>)
+  <span class="ruby-constant">TagSelection</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:tag</span>)
+              .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name = ? AND following = ?&#39;</span>, <span class="ruby-identifier">tagname</span>, <span class="ruby-keyword">true</span>)
+              .<span class="ruby-identifier">count</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-followers" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">followers</span><span
+            class="method-args">(tagname)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="followers-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 150</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">followers</span>(<span class="ruby-identifier">tagname</span>)
+  <span class="ruby-identifier">uids</span> = <span class="ruby-constant">TagSelection</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:tag</span>)
+                     .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name = ? AND following = ?&#39;</span>, <span class="ruby-identifier">tagname</span>, <span class="ruby-keyword">true</span>)
+                     .<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:user_id</span>)
+  <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">uids</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> [<span class="ruby-value">1</span>, <span class="ruby-value">4</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-is_powertag-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">is_powertag?</span><span
+            class="method-args">(tagname)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="is_powertag-3F-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 140</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">is_powertag?</span>(<span class="ruby-identifier">tagname</span>)
+  <span class="ruby-operator">!</span><span class="ruby-identifier">tagname</span>.<span class="ruby-identifier">match</span>(<span class="ruby-string">&#39;:&#39;</span>).<span class="ruby-identifier">nil?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-nodes_for_period" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">nodes_for_period</span><span
+            class="method-args">(type, nids, start, finish)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="nodes_for_period-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 176</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">nodes_for_period</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">nids</span>, <span class="ruby-identifier">start</span>, <span class="ruby-identifier">finish</span>)
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">select</span>(<span class="ruby-operator">%</span>[<span class="ruby-identifier">created</span> <span class="ruby-identifier">status</span> <span class="ruby-identifier">type</span> <span class="ruby-identifier">nid</span>])
+      .<span class="ruby-identifier">where</span>(
+        <span class="ruby-string">&#39;type = ? AND status = 1 AND nid IN (?) AND created &gt; ? AND created &lt;= ?&#39;</span>,
+        <span class="ruby-identifier">type</span>,
+        <span class="ruby-identifier">nids</span>.<span class="ruby-identifier">uniq</span>,
+        <span class="ruby-identifier">start</span>,
+        <span class="ruby-identifier">finish</span>
+      )
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-subscribers" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">subscribers</span><span
+            class="method-args">(tags)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Given a set of tags, return all users following those tags. Return a
+dictionary of tags indexed by user. Accepts array of Tags, outputs array of
+users as: {user: &lt;user&gt;, tags: [&lt;tags&gt;]} Used in
+subscription_mailer</p>
+          
+          
+
+          
+          <div class="method-source-code" id="subscribers-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 192</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">subscribers</span>(<span class="ruby-identifier">tags</span>)
+  <span class="ruby-identifier">tids</span> = <span class="ruby-identifier">tags</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:tid</span>)
+  <span class="ruby-comment"># include special tid for indiscriminant subscribers who want it all!</span>
+  <span class="ruby-identifier">all_tag</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;everything&#39;</span>)
+  <span class="ruby-identifier">tids</span> <span class="ruby-operator">+=</span> [<span class="ruby-identifier">all_tag</span>.<span class="ruby-identifier">tid</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">all_tag</span>
+  <span class="ruby-identifier">usertags</span> = <span class="ruby-constant">TagSelection</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;tid IN (?) AND following = ?&#39;</span>, <span class="ruby-identifier">tids</span>, <span class="ruby-keyword">true</span>)
+  <span class="ruby-identifier">d</span> = {}
+  <span class="ruby-identifier">usertags</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">usertag</span><span class="ruby-operator">|</span>
+    <span class="ruby-comment"># For each row of (user,tag), build a user&#39;s tag subscriptions</span>
+    <span class="ruby-keyword">if</span> (<span class="ruby-identifier">usertag</span>.<span class="ruby-identifier">tid</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">all_tag</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">usertag</span>.<span class="ruby-identifier">tag</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-string">&#39;WARNING: all_tag tid &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">String</span>(<span class="ruby-identifier">all_tag</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39; not found for Tag! Please correct this!&#39;</span>
+      <span class="ruby-keyword">next</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">d</span>[<span class="ruby-identifier">usertag</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">name</span>] = { <span class="ruby-identifier">user</span><span class="ruby-operator">:</span> <span class="ruby-identifier">usertag</span>.<span class="ruby-identifier">user</span> }
+    <span class="ruby-identifier">d</span>[<span class="ruby-identifier">usertag</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">name</span>][<span class="ruby-value">:tags</span>] = <span class="ruby-constant">Set</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">d</span>[<span class="ruby-identifier">usertag</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">name</span>][<span class="ruby-value">:tags</span>].<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">d</span>[<span class="ruby-identifier">usertag</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">name</span>][<span class="ruby-value">:tags</span>].<span class="ruby-identifier">add</span>(<span class="ruby-identifier">usertag</span>.<span class="ruby-identifier">tag</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">d</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-tagged_nodes_by_author" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tagged_nodes_by_author</span><span
+            class="method-args">(tagname, user_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>select nodes by tagname and user_id</p>
+          
+          
+
+          
+          <div class="method-source-code" id="tagged_nodes_by_author-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 240</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tagged_nodes_by_author</span>(<span class="ruby-identifier">tagname</span>, <span class="ruby-identifier">user_id</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">tagname</span>[<span class="ruby-value">-1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;*&#39;</span>
+    <span class="ruby-ivar">@wildcard</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name LIKE(?)&#39;</span>, <span class="ruby-identifier">tagname</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">-2</span>]<span class="ruby-operator">+</span><span class="ruby-string">&#39;%&#39;</span>)
+      .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:node_tag</span>, <span class="ruby-value">:tag</span>)
+      .<span class="ruby-identifier">references</span>(<span class="ruby-value">:term_data</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.uid = ?&#39;</span>, <span class="ruby-identifier">user_id</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name = ?&#39;</span>, <span class="ruby-identifier">tagname</span>)
+      .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:node_tag</span>, <span class="ruby-value">:tag</span>)
+      .<span class="ruby-identifier">references</span>(<span class="ruby-value">:term_data</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.uid = ?&#39;</span>, <span class="ruby-identifier">user_id</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-trending" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">trending</span><span
+            class="method-args">(limit = 5 , start_date = DateTime.now - 1.month , end_date = DateTime.now)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="trending-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 228</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">trending</span>(<span class="ruby-identifier">limit</span> = <span class="ruby-value">5</span> , <span class="ruby-identifier">start_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">month</span> , <span class="ruby-identifier">end_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span>)
+  <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:node_tag</span>, <span class="ruby-value">:node</span>)
+     .<span class="ruby-identifier">select</span>(<span class="ruby-string">&#39;node.nid, node.created, node.status, term_data.*, community_tags.*&#39;</span>)
+     .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.status = ?&#39;</span>, <span class="ruby-value">1</span>)
+     .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.created &gt; ?&#39;</span>, <span class="ruby-identifier">start_date</span>.<span class="ruby-identifier">to_i</span>)
+     .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.created &lt;= ?&#39;</span>, <span class="ruby-identifier">end_date</span>.<span class="ruby-identifier">to_i</span>)
+     .<span class="ruby-identifier">group</span>(<span class="ruby-value">:name</span>)
+     .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;count DESC&#39;</span>)
+     .<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-belongs_to" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">belongs_to</span><span
+            class="method-args">(current_user, nid)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="belongs_to-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 50</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">belongs_to</span>(<span class="ruby-identifier">current_user</span>, <span class="ruby-identifier">nid</span>)
+  <span class="ruby-identifier">node_tag</span> = <span class="ruby-identifier">node_tag</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">nid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">nid</span>)
+  <span class="ruby-identifier">node_tag</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">node_tag</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">node_tag</span>.<span class="ruby-identifier">node</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-filter_by_type" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">filter_by_type</span><span
+            class="method-args">(type, limit = 10)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="filter_by_type-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_by_type</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">10</span>)
+  <span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-identifier">type</span>)
+    .<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+    .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;created DESC&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-followers_who_dont_follow_tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">followers_who_dont_follow_tags</span><span
+            class="method-args">(tags)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="followers_who_dont_follow_tags-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 221</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">followers_who_dont_follow_tags</span>(<span class="ruby-identifier">tags</span>)
+  <span class="ruby-identifier">tag_followers</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">subscriptions</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:user_id</span>))
+  <span class="ruby-identifier">uids</span> = <span class="ruby-identifier">tags</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:subscriptions</span>).<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:user_id</span>)
+  <span class="ruby-identifier">following_given_tags</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">uids</span>)
+  <span class="ruby-identifier">tag_followers</span>.<span class="ruby-identifier">reject</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">user</span><span class="ruby-operator">|</span> <span class="ruby-identifier">following_given_tags</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">user</span>  }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">id</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>validates :name, :uniqueness =&gt; { case_sensitive: false  }</p>
+          
+          
+
+          
+          <div class="method-source-code" id="id-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">id</span>
+  <span class="ruby-identifier">tid</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-nodes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">nodes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>nodes this tag has been used on; no wildcards</p>
+          
+          
+
+          
+          <div class="method-source-code" id="nodes-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">nodes</span>
+  <span class="ruby-identifier">nodes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">nid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">node_tag</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:nid</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-run_count" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">run_count</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="run_count-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">run_count</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">count</span> = <span class="ruby-constant">NodeTag</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">tid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tid</span>).<span class="ruby-identifier">count</span>
+  <span class="ruby-identifier">save</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-subscriptions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">subscriptions</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="subscriptions-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">subscriptions</span>
+  <span class="ruby-identifier">tag_selection</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">following</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-weekly_tallies" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">weekly_tallies</span><span
+            class="method-args">(type = 'note', span = 52)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>OPTIMIZE: this too!</p>
+          
+          
+
+          
+          <div class="method-source-code" id="weekly_tallies-source">
+            <pre><span class="ruby-comment"># File app/models/tag.rb, line 159</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">weekly_tallies</span>(<span class="ruby-identifier">type</span> = <span class="ruby-string">&#39;note&#39;</span>, <span class="ruby-identifier">span</span> = <span class="ruby-value">52</span>)
+  <span class="ruby-identifier">weeks</span> = {}
+  <span class="ruby-identifier">tids</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;name IN (?)&#39;</span>, [<span class="ruby-identifier">name</span>])
+            .<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:tid</span>)
+  <span class="ruby-identifier">nids</span> = <span class="ruby-constant">NodeTag</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;tid IN (?)&#39;</span>, <span class="ruby-identifier">tids</span>)
+                               .<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:nid</span>)
+  (<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-identifier">span</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">week</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">weeks</span>[<span class="ruby-identifier">span</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">week</span>] = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">nodes_for_period</span>(
+      <span class="ruby-identifier">type</span>,
+      <span class="ruby-identifier">nids</span>,
+      (<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">week</span>.<span class="ruby-identifier">weeks</span>.<span class="ruby-identifier">to_i</span>).<span class="ruby-identifier">to_s</span>,
+      (<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">week</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">weeks</span>.<span class="ruby-identifier">to_i</span>).<span class="ruby-identifier">to_s</span>
+    ).<span class="ruby-identifier">count</span>(<span class="ruby-value">:all</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">weeks</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
