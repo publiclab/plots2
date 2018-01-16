@@ -13,7 +13,6 @@ Plots2::Application.routes.draw do
   mount GrapeSwaggerRails::Engine => '/api/d1ocs'
   #end
 
-
   resources :rusers
   resources :user_sessions
   resources :images
@@ -99,12 +98,11 @@ Plots2::Application.routes.draw do
   get 'wiki/edit/:id' => 'wiki#edit'
   put 'wiki/update/:id' => 'wiki#update'
   delete 'wiki/delete/:id' => 'wiki#delete'
-  get 'wiki/delete/:id' => 'wiki#delete'
+
   get 'wiki/revisions/:id/:vid' => 'wiki#revision'
   get 'wiki/:lang/:id' => 'wiki#show'
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
   get 'wiki' => 'wiki#index'
-  get 'wiki' => 'wiki#stale'
 
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
@@ -168,6 +166,7 @@ Plots2::Application.routes.draw do
   put 'tag/remove_tag/:id' => 'tag#remove_tag'
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
   get 'tag/:id' => 'tag#show'
+  get 'tag/:id/author/:author' => 'tag#show_for_author'
 
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'
@@ -177,7 +176,7 @@ Plots2::Application.routes.draw do
   get 'feed/liked' => 'notes#liked_rss'
 
   get 'dashboard' => 'home#dashboard'
-  get 'dashboard2' => 'home#dashboard2'
+  get 'dashboard2' => 'home#dashboard'
   get 'comments' => 'comment#index'
   get 'profile/comments/:id' => 'users#comments'
   get 'nearby' => 'home#nearby'

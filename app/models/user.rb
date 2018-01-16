@@ -35,7 +35,6 @@ class User < ActiveRecord::Base
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
-  validates_format_of :email, with: /@/
 
   before_create :create_drupal_user
   before_save :set_token
@@ -117,12 +116,20 @@ class User < ActiveRecord::Base
     drupal_user.uid
   end
 
+  def title
+    self.username
+  end
+
+  def path
+    "/profile/#{self.username}"
+  end
+
   def lat
-    drupal_user.lat
+    self.get_value_of_power_tag('lat')
   end
 
   def lon
-    drupal_user.lon
+    self.get_value_of_power_tag('lon')
   end
 
   # we can revise/improve this for m2m later...
@@ -150,15 +157,15 @@ class User < ActiveRecord::Base
    # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
      tids = self.user_tags.where('value LIKE ?' , key + ':%').collect(&:id)
-     !tids.blank? 
+     !tids.blank?
   end
 
   def get_value_of_power_tag(key)
-    tname = self.user_tags.where('value LIKE ?' , key + ':%') 
-    tvalue = tname.first.name.partition(':').last  
+    tname = self.user_tags.where('value LIKE ?' , key + ':%')
+    tvalue = tname.first.name.partition(':').last
     tvalue
-  end 
-  
+  end
+
   def subscriptions(type = :tag)
     if type == :tag
       TagSelection.where(user_id: uid,
