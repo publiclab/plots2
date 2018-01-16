@@ -574,4 +574,11 @@ class NotesControllerTest < ActionController::TestCase
       assert_equal I18n.t('notes_controller.research_note_published'), flash[:notice]
     end
   end
+
+  def test_get_rss_feed
+  get :rss, :format => "rss"
+  assert_response :success   
+  assert_equal 'application/rss+xml', @response.content_type
+end
+
 end
