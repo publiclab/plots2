@@ -25,7 +25,7 @@ class SearchApiTest < ActiveSupport::TestCase
     assert_equal nodes(:blog).path, json['items'][0]['docUrl']
     assert_equal "Blog post",       json['items'][0]['docTitle']
     assert_equal 13,                json['items'][0]['docId']
-    
+
     assert matcher =~ json
 
   end
@@ -33,25 +33,25 @@ class SearchApiTest < ActiveSupport::TestCase
   test 'search nearby nodes functionality' do
     get '/api/srch/locations?srchString=71.00,52.00'
     assert last_response.ok?
-    #
-    # # Expected search pattern
-    # pattern = {
-    #     srchParams: {
-    #         srchString: '71.00,52.00',
-    #         seq: nil,
-    #     }.ignore_extra_keys!
-    # }.ignore_extra_keys!
-    #
-    # matcher = JsonExpressions::Matcher.new(pattern)
-    #
-    # json = JSON.parse(last_response.body)
-    #
-    # assert_equal nodes(:map).path, json['items'][0]['docUrl']
-    # assert_equal "A map page",       json['items'][0]['docTitle']
-    # assert_equal 12,                json['items'][0]['docId']
-    #
-    # assert matcher =~ json
-    #
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+            srchString: '71.00,52.00',
+            seq: nil,
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+
+    assert_equal nodes(:blog).path, json['items'][0]['docUrl']
+    assert_equal "Blog post",       json['items'][0]['docTitle']
+    assert_equal 13,                json['items'][0]['docId']
+
+    assert matcher =~ json
+
   end
 
 end
