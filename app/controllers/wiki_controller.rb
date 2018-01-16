@@ -315,7 +315,7 @@ class WikiController < ApplicationController
                  .order('node_revisions.timestamp ASC')
                  .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
                  .page(params[:page])
-                 
+
     @paginated = true
     render template: 'wiki/index'
   end
