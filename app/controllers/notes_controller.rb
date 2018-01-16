@@ -334,7 +334,8 @@ class NotesController < ApplicationController
     redirect_to @node.path + '#comments'
   end
 
-  def request_title_change
+  # Updates title of a wiki page, takes id and title as query string params. maps to '/node/update/title'
+  def update_title
     node = Node.find params[:id].to_i
     unless current_user && current_user.drupal_user == node.author
       flash.keep[:error] = I18n.t('notes_controller.author_can_edit_note')
