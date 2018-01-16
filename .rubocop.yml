@@ -1,0 +1,18 @@
+# Start with Spotifys style guide as a base then customize from there
+inherit_from:
+  - http://shopify.github.io/ruby-style-guide/rubocop.yml
+  - .rubocop_todo.yml
+
+# Apply rule to all cops
+AllCops:
+  Include:
+    - '/Rakefile'
+    - '/config.ru'
+  Exclude:
+    - 'vendor/*'
+    - 'bin/*'
+    - 'doc/*'
+    - 'log/*'
+    - 'db/**/*'
+    - 'Gemfile'
+  TargetRubyVersion: '2.4'

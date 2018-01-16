@@ -383,7 +383,7 @@ DEPENDENCIES
   recaptcha
   rest-client
   rspec
-  rubocop (~> 0.52.0)
+  rubocop (~> 0.52.1)
   ruby-openid
   sass-rails (~> 4.0.0)
   scrypt (~> 3)
