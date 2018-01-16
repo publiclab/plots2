@@ -1,14 +1,15 @@
-xml.instruct! :xml, :version => "1.0" 
-xml.rss :version => "2.0" do
+xml.instruct!
+xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
   xml.channel do
     xml.title "Recent research notes on PublicLab.org"
     xml.description "Open source environmental science research at Public Lab"
     xml.link "https://#{ request.host }/feed.rss"
-
+    xml.tag! 'atom:link', :rel => 'self', :type => 'application/rss+xml', :href => request.host.to_s
+    
    @notes.each do |node|
 
      body = node.latest.render_body
-     body = "<p><![CDATA[ <img src='"+node.main_images.path(:default)+"' alt='"+node.main_image.title+"' > ]]></p> " + node.body if node.main_image
+     body = "<p><![CDATA[ <img src='"+node.main_image.path(:default)+"' alt='"+node.main_image.title+"' > ]]></p> " + node.body if node.main_image
 
      xml.item do
        xml.title       node.title
