@@ -13,8 +13,8 @@ class NotesController < ApplicationController
 
   def places
     @title = 'Places'
-    @notes = Node.joins('LEFT OUTER JOIN node_revisions ON node_revisions.nid = node.nid 
-                         LEFT OUTER JOIN community_tags ON community_tags.nid = node.nid 
+    @notes = Node.joins('LEFT OUTER JOIN node_revisions ON node_revisions.nid = node.nid
+                         LEFT OUTER JOIN community_tags ON community_tags.nid = node.nid
                          LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
                  .select('*, max(node_revisions.timestamp)')
                  .where(status: 1, type:%w[page place])
@@ -23,7 +23,7 @@ class NotesController < ApplicationController
                  .where('term_data.name = ?', 'chapter')
                  .group('node.nid')
                  .order('max(node_revisions.timestamp) DESC, node.nid')
-                 .page(params[:page])
+                 .paginate(page: params[:page], per_page: 24)
 
     render template: 'notes/tools_places'
   end
@@ -255,7 +255,7 @@ class NotesController < ApplicationController
   def author
     @user = DrupalUser.find_by(name: params[:id])
     @title = @user.name
-    @notes = Node.page(params[:page])
+    @notes = Node.paginate(page: params[:page], per_page: 24)
                  .order('nid DESC')
                  .where(type: 'note', status: 1, uid: @user.uid)
     render template: 'notes/index'
