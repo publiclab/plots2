@@ -15,7 +15,7 @@ class DocResult
     obj
   end
 
-  def self.fromLocationSearch(idval, typeval, urlval, titleval, sumval, scoreval,latitude,longitude,blurred)
+  def self.fromLocationSearch(idval, typeval, urlval, titleval, sumval, scoreval, latitude, longitude, blurred)
     obj = new
     obj.docId = idval
     obj.docType = typeval
@@ -38,7 +38,8 @@ class DocResult
     expose :docTitle, documentation: { type: 'String', desc: 'Title or primary descriptor of the linked result.' }
     expose :docSummary, documentation: { type: 'String', desc: 'If available, first paragraph or descriptor of the linked document.' }
     expose :docScore, documentation: { type: 'Float', desc: "If calculated, the relevance of the document result to the search request; i.e. the 'matching score'" }
-    expose :latitude, documentation: {type: 'String',desc: "Returns the latitude associated with node"}
-    expose :longitude, documentation: {type: 'String',desc: "Returns the longitude associated with node"}
+    expose :latitude, documentation: { type: 'String', desc: "Returns the latitude associated with the node." }
+    expose :longitude, documentation: { type: 'String', desc: "Returns the longitude associated with the node." }
   end
+
 end
