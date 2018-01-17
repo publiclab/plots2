@@ -4,7 +4,7 @@ require 'grape-entity'
 module Srch
   class Typeahead < Grape::API
     # Number of top values of each type to return
-    TYPEAHEAD_LIMIT = 5
+    TYPEAHEAD_LIMIT = 10
 
     # Endpoint definitions
     resource :typeahead do
