@@ -29,7 +29,7 @@ class TagController < ApplicationController
                .group(:name)
                .order('count DESC')
                .paginate(page: params[:page], per_page: 24)
-    else
+    elsif @toggle == 2
     @tags = Tag.joins(:node_tag, :node)
                .select('node.nid, node.status, term_data.*, community_tags.*')
                .where('node.status = ?', 1)
@@ -37,6 +37,27 @@ class TagController < ApplicationController
                .group(:name)
                .order('name')
                .paginate(page: params[:page], per_page: 24)
+    else
+      tags = Tag.joins(:node_tag, :node)
+                  .select('node.nid, node.status, term_data.*, community_tags.*')
+                  .where('node.status = ?', 1)
+                  .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+                  .group(:name)
+                  .order('name')
+                  .paginate(page: params[:page], per_page: 24)
+
+      followed = []
+      not_followed = []
+      tags.each do |tag|
+        if current_user.following(tag.name) == true
+          followed.append(tag.tid)
+        else
+          not_followed.append(tag.tid)
+        end
+      end
+
+      ids = followed + not_followed
+      @tags = Tag.where(tid: ids). sort_by{|p| ids.index(p.tid) }.paginate(page: params[:page], per_page: 24)
     end
   end
 
