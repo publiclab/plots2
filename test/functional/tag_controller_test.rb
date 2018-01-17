@@ -157,7 +157,6 @@ class TagControllerTest < ActionController::TestCase
     assert :success
     assert_not_nil :tags
     assert :wildcard
-
     assert_select '#note-graph', 0
   end
 
@@ -185,6 +184,39 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#wiki-content', 1
   end
 
+  test 'show note with author and tagname without wildcard' do
+    get :show_for_author, id: 'test', author: 'jeff'
+        assert_response :success
+        assert_not_nil :tags
+        assert_not_nil :authors
+        assert_not_nil :notes
+        assert_nil assigns(:wildcard)
+        assert  assigns['notes'].include?(nodes(:one))
+        assert  assigns['notes'].include?(nodes(:question))
+        assigns['notes'].each do |node|
+          assert_equal 2, node.uid
+          assert node.has_tag('test')
+        end
+        assert_template 'tag/show'
+  end
+
+  test 'show note with author and tagname with wildcard' do
+    get :show_for_author, id: 'test*', author: 'jeff'
+        assert_response :success
+        assert_not_nil :tags
+        assert_not_nil :authors
+        assert_not_nil :notes
+        assert assigns(:wildcard)
+        assert  assigns['notes'].include?(nodes(:one))
+        assert  assigns['notes'].include?(nodes(:question))
+        assert  assigns['notes'].include?(nodes(:blog))
+        assigns['notes'].each do |node|
+          assert_equal 2, node.uid
+          assert node.has_tag('test*')
+        end
+        assert_template 'tag/show'
+  end
+
   test 'tag widget' do
     get :widget, id: Tag.last.name
     assert :success
@@ -193,7 +225,6 @@ class TagControllerTest < ActionController::TestCase
 
   test 'tag blog' do
     get :blog, id: Tag.last.name
-
     assert :success
     assert_not_nil :notes
     assert_not_nil :tags

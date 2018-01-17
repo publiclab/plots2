@@ -7,6 +7,15 @@ class CommentTest < ActiveSupport::TestCase
     assert comment.save
   end
 
+  test 'comment mysql native fulltext search' do
+    assert Comment.count > 0
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      comments = Comment.search('Moderator')
+      assert_not_nil comments
+      assert comments.length > 0
+    end
+  end
+
   test 'should not save comment without body' do
     comment = Comment.new
     assert !comment.save, 'Saved the comment without body text'

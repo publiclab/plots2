@@ -5,6 +5,7 @@ gem 'activerecord-session_store'
 gem 'protected_attributes'
 gem 'passenger'
 
+
 gem 'rails-i18n', '~> 4.0.0'
 # gem 'responders', '~> 2.0' # for Rails 4.2
 
@@ -36,7 +37,7 @@ group :development do
   gem "letter_opener"
   gem "nifty-generators"
   gem 'byebug'
-  gem 'rubocop', '~> 0.52.0', require: false
+  gem 'rubocop', '~> 0.52.1', require: false
 end
 
 # run with `bundle install --without test` to exclude these
@@ -93,8 +94,6 @@ gem 'grape-swagger-ui'
 gem 'rack-cors', :require => 'rack/cors'
 
 gem 'mocha', '~> 1.1'
-
-gem 'sunspot_rails'
 
 gem 'geocoder'
 gem "i18n-js", ">= 3.0.0.rc11"

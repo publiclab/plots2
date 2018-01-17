@@ -30,8 +30,12 @@
     <%= render :partial => "tag/graph", locals: { tags: @tags } %>
   <% end %>
 
-  <h3><%= raw t('tag.show.notes_tagged', :tag => params[:id]) %><% unless @tags.try(:first).try(:parent).nil? %> <small>parent: <%= @tags.first.parent %></small><% end %></h3>
-
+  <% if params[:action] == 'show' %>
+    <h3><%= raw t('tag.show.notes_tagged', tag: params[:id]) %>
+  <% elsif %>
+    <h3> Notes on <%= params[:id] %> by <%= link_to(@user.name,"/profile/"+@user.name) %> </h3>
+  <% end %>
+  <% unless @tags.try(:first).try(:parent).nil? %> <small>parent: <%= @tags.first.parent %></small><% end %></h3>
   <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
 
   <% if current_user %>
@@ -40,7 +44,7 @@
     <a class="btn btn-default btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
     <% unless @wildcard %>
       <% if current_user.following(params[:id]) %>
-      <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> <%= t('tag.show.following') %> <b><%= params[:id] %></b></a>
+      <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>" data-method="delete"><i class="fa fa-eye"></i> <%= t('tag.show.following') %> <b><%= params[:id] %></b></a>
       <% else %>
       <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> <%= t('tag.show.follow') %> <b><%= params[:id] %></b></a>
       <% end %>
@@ -54,14 +58,20 @@
 
   <ul class="nav nav-tabs" style="margin-top:10px;">
     <% unless params[:id].match("question:") %><li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <%= raw t('tag.show.research_notes') %></a></li><% end %>
-    <li<% if @node_type == "questions" %> class="active"<% end %>><a href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
-    <li<% if @node_type == "wiki" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
-    <li<% if @node_type == "maps" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
-    <% if !@wildcard %>
+    <% if params[:action] == "show" %>
+      <li<% if @node_type == "questions" %> class="active"<% end %>><a href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
+      <li<% if @node_type == "wiki" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
+      <li<% if @node_type == "maps" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
+      <% if !@wildcard %>
         <li<% if @node_type == "contributors" %> class="active"<% end %>><a href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %> <span class="badge"><%=@length %></span></a></li>
-    <% else %>
+      <% else %>
         <li class="disabled"<% if @node_type == "contributors" %> class="active"<% end %>><a href="#" rel="tooltip" title="Contributors cannot be listed for wildcard tag searches" ><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %></a></li>
-    <% end %>
+      <% end %>
+    <% else %>
+      <li class="disabled"<% if @node_type == "questions" %> class="active"<% end %>><a href="#" rel="tooltip" title="Questions can't be listed for tag searches with Author"><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
+      <li class="disabled"<% if @node_type == "wiki" %> class="active"<% end %>><a href="#" rel="tooltip" title="Wikis can't be listed for tag searches with Authors"><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
+      <li class="disabled"<% if @node_type == "maps" %> class="active"<% end %>><a href="#" rel="tooltip" title="Maps can't be listed for tag searches with Authors"><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
+      <li class="disabled"<% if @node_type == "contributors" %> class="active"<% end %>><a href="#" rel="tooltip" title="Contributors can't be listed for tag searches with Authors" ><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %></a></li>    <% end %>
   </ul>
 
   <br />

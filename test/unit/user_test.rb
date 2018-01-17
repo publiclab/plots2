@@ -16,6 +16,8 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil user.email
     assert_not_nil user.bio
     assert_not_nil user.token
+    assert_not_nil user.path
+    assert_not_nil user.title
   end
 
   test 'basic user attributes' do
@@ -30,6 +32,15 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil user.tagnames
     assert_not_nil user.drupal_user.tagnames
     assert_equal user.tagnames, user.drupal_user.tagnames
+  end
+
+  test 'user mysql native fulltext search' do
+    assert User.count > 0
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      users = User.search('really interesting')
+      assert_not_nil users
+      assert users.length > 0
+    end
   end
 
   test 'user questions' do
@@ -101,7 +112,7 @@ class UserTest < ActiveSupport::TestCase
 
     jeffs_note = nodes(:one)
     jeffs_note.add_tag('with:bob', jeff)
-    
+
     coauthored_note = bob.coauthored_notes.first
 
     assert_not_nil coauthored_note
@@ -120,6 +131,15 @@ class UserTest < ActiveSupport::TestCase
     assert comment.save
     current_contributor_count = User.contributor_count_for(Time.now-5.years, Time.now+5.days)
     assert_equal current_contributor_count-contributor_count,1
+  end
+
+  test 'user with wrong email' do
+    user = User.new(username: 'chris',
+                    password: 'godzillas',
+                    password_confirmation: 'godzillas',
+                    email: 'testpubliclab.org')
+    assert_not user.save({})
+    assert_equal 1, user.errors[:email].count
   end
 
 end

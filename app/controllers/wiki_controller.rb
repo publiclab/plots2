@@ -306,14 +306,28 @@ class WikiController < ApplicationController
     @paginated = true
   end
 
+  def stale
+    @title = I18n.t('wiki_controller.wiki')
+
+    @wikis = Node.includes(:revision)
+                 .references(:node_revisions)
+                 .group('node_revisions.nid')
+                 .order('node_revisions.timestamp ASC')
+                 .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
+                 .page(params[:page])
+
+    @paginated = true
+    render template: 'wiki/index'
+  end
+
   def popular
     @title = I18n.t('wiki_controller.popular_wiki_pages')
     @wikis = Node.limit(40)
-                 .order('views DESC')
                  .joins(:revision)
                  .group('node_revisions.nid')
                  .order('node_revisions.timestamp DESC')
                  .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
+                 .sort_by(&:totalviews).reverse
     render template: 'wiki/index'
   end
 

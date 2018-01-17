@@ -9,7 +9,7 @@ PublicLab.org
 
 The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about [the data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
 
-It features a Bootstrap-based UI and a variety of community and attribution features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but not entirely replaced the legacy Drupal data model and database design. 
+It features a Bootstrap-based UI and a variety of community and attribution features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but not entirely replaced the legacy Drupal data model and database design.
 
 Some key features include:
 
@@ -33,7 +33,6 @@ We welcome contributions, and are especially interested in welcoming [first time
 
 Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); our community aspires to be a respectful place both during online and in-­person interactions.
 
-====
 
 ## Table of Contents
 
@@ -51,7 +50,7 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 
 1. In the console, download a copy of the source with `git clone https://github.com/publiclab/plots2.git`.
 2. Enter the new **plots2** directory with `cd plots2`.
-3. Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work. 
+3. Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work.
 4. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
 5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 6. Run `rake db:setup` to set up the database
@@ -71,7 +70,7 @@ For some, it will be necessary to prepend your gem-related commands with `bundle
 
 ## Bugs and support
 
-To report bugs and request features, please use the GitHub issue tracker provided at https://github.com/publiclab/plots2/issues 
+To report bugs and request features, please use the GitHub issue tracker provided at https://github.com/publiclab/plots2/issues
 
 For additional support, join the Public Lab website and mailing list at http://publiclab.org/lists or for urgent requests, email web@publiclab.org
 
@@ -79,12 +78,12 @@ For additional support, join the Public Lab website and mailing list at http://p
 
 ## Internationalization
 
-Publiclab.org now supports Internationalization and localization, though we are in the initial stages. This has been accomplished with [rails-I8n](https://github.com/svenfuchs/rails-i18n). 
+Publiclab.org now supports Internationalization and localization, though we are in the initial stages. This has been accomplished with [rails-I8n](https://github.com/svenfuchs/rails-i18n).
 
 To see it in action, click on the 'Language' drop-down located in the footer section of the page. All the guidelines and best practices for I18n can be found [here](http://guides.rubyonrails.org/i18n.html).
 
-Translations are arranged in the YAML files [here](https://github.com/publiclab/plots2/tree/master/config/locales), which are 
-zed in a similar way to [views](https://github.com/publiclab/plots2/tree/master/app/views) files. An example for adding translations can be found [here](http://guides.rubyonrails.org/i18n.html#adding-translations).
+Translations are arranged in the YAML files [here](https://github.com/publiclab/plots2/tree/master/config/locales), which are
+set in a similar way to [views](https://github.com/publiclab/plots2/tree/master/app/views) files. An example for adding translations can be found [here](http://guides.rubyonrails.org/i18n.html#adding-translations).
 
 To add new languages or for additional support, please write to plots-dev@googlegroups.com
 

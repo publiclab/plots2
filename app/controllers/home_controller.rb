@@ -43,10 +43,6 @@ class HomeController < ApplicationController
     render template: 'home/home'
   end
 
-  def dashboard2
-    redirect_to '/dashboard'
-  end
-
   def dashboard
     @note_count = Node.select(%i[created type status])
                       .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)

@@ -13,7 +13,6 @@ Plots2::Application.routes.draw do
   mount GrapeSwaggerRails::Engine => '/api/d1ocs'
   #end
 
-
   resources :rusers
   resources :user_sessions
   resources :images
@@ -75,10 +74,12 @@ Plots2::Application.routes.draw do
   get 'following/:type/:name' => 'subscription#following'
   delete 'unsubscribe/:type/:name' => 'subscription#delete'
   put 'subscribe/:type' => 'subscription#add'
+  get 'subscribe/:type' => 'subscription#add'
   put 'subscribe/:type/:name' => 'subscription#add'
   get 'subscribe/:type/:name' => 'subscription#add'
   get 'subscriptions' => 'subscription#index'
 
+  get 'wiki/stale' => 'wiki#stale'
   get 'wiki/new' => 'wiki#new'
   get 'wiki/replace/:id' => 'wiki#replace'
   get 'wiki/popular' => 'wiki#popular'
@@ -97,7 +98,7 @@ Plots2::Application.routes.draw do
   get 'wiki/edit/:id' => 'wiki#edit'
   put 'wiki/update/:id' => 'wiki#update'
   delete 'wiki/delete/:id' => 'wiki#delete'
-  get 'wiki/delete/:id' => 'wiki#delete'
+
   get 'wiki/revisions/:id/:vid' => 'wiki#revision'
   get 'wiki/:lang/:id' => 'wiki#show'
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
@@ -165,6 +166,7 @@ Plots2::Application.routes.draw do
   put 'tag/remove_tag/:id' => 'tag#remove_tag'
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
   get 'tag/:id' => 'tag#show'
+  get 'tag/:id/author/:author' => 'tag#show_for_author'
 
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'
@@ -174,13 +176,14 @@ Plots2::Application.routes.draw do
   get 'feed/liked' => 'notes#liked_rss'
 
   get 'dashboard' => 'home#dashboard'
-  get 'dashboard2' => 'home#dashboard2'
+  get 'dashboard2' => 'home#dashboard'
   get 'comments' => 'comment#index'
   get 'profile/comments/:id' => 'users#comments'
   get 'nearby' => 'home#nearby'
   get 'profile/edit' => 'users#edit'
   post 'profile/photo' => 'users#photo'
   get 'profile/info/:id' => 'users#info', as: 'info'
+  get 'profile' => 'users#profile'
   get 'profile/:id' => 'users#profile'
   get 'profile/:id/edit' => 'users#edit'
   get 'profile/:id/likes' => 'users#likes'
@@ -256,8 +259,9 @@ Plots2::Application.routes.draw do
   get 'answer_like/show/:id' => 'answer_like#show'
   get 'answer_like/likes/:aid' => 'answer_like#likes'
 
-  get 'comment/answer_create/:aid' => 'comment#answer_create'
 
+  get 'comment/answer_create/:aid' => 'comment#answer_create'
+  post 'comment/make_answer/:id' => 'comment#make_answer'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 

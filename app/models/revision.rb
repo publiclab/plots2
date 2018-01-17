@@ -1,14 +1,5 @@
 class Revision < ActiveRecord::Base
 
-  include SolrToggle
-  searchable if: :shouldIndexSolr do
-    text :title
-    text :body do
-      body.to_s.gsub!(/[[:cntrl:]]/,'').to_s.slice(0..10000)
-    end
-    text :teaser
-  end
-
   attr_accessible :title, :body, :nid, :uid, :teaser, :log, :timestamp, :format
   self.table_name = 'node_revisions'
   self.primary_key = 'vid'
