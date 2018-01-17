@@ -9,7 +9,7 @@ xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
    @notes.each do |node|
 
      body = node.latest.render_body
-     body = "<p><![CDATA[ <img src='"+node.main_image.path(:default)+"' alt='"+node.main_image.title+"' > ]]></p> " + node.body if node.main_image
+     body = "<p><![CDATA[ <img src='#{node.main_image.path(:default)}' alt='#{node.main_image.title}' > ]]></p>#{node.body}" if node.main_image
 
      xml.item do
        xml.title       node.title
