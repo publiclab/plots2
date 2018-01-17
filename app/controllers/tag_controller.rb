@@ -45,10 +45,11 @@ class TagController < ApplicationController
                   .group(:name)
                   .order('name')
                   .paginate(page: params[:page], per_page: 24)
-      followed=[]
-      not_followed=[]
+
+      followed = []
+      not_followed = []
       tags.each do |tag|
-        if current_user.following(tag.name)==true
+        if current_user.following(tag.name) == true
           followed.append(tag.tid)
         else
           not_followed.append(tag.tid)
@@ -57,7 +58,6 @@ class TagController < ApplicationController
 
       ids = followed + not_followed
       @tags = Tag.where(tid: ids). sort_by{|p| ids.index(p.tid) }.paginate(page: params[:page], per_page: 24)
-      byebug
     end
   end
 
