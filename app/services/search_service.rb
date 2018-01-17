@@ -32,10 +32,11 @@ class SearchService
     @comments ||= find_comments(params)
   end
 
-  def find_users(input, limit = 5)
-    DrupalUser.limit(limit)
-               .order('uid DESC')
-               .where('name LIKE ? AND access != 0', '%' + input + '%')
+  def find_users(input, limit = 10)
+    User.limit(limit)
+        .order('id DESC')
+        .where(status: 1)
+        .where('username LIKE ?', '%' + input + '%')
   end
 
   def find_tags(input, limit = 5)
@@ -182,4 +183,40 @@ class SearchService
     end
     sresult
   end
+
+  # Search nearby nodes with respect to given latitude and longitude
+  def nearbyNodes(srchString)
+    sresult = DocList.new
+    coordinates = srchString.split(",")
+    lat = coordinates[0]
+    lon = coordinates[1]
+
+    nids = NodeTag.joins(:tag)
+               .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
+               .collect(&:nid)
+
+    nids = nids || []
+
+    items = Node.includes(:tag)
+                .references(:node, :term_data)
+                .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
+                .limit(200)
+                .order('node.nid DESC')
+
+    items.each do |match|
+      blurred = false
+
+      match.node_tags.each do |tag|
+        if tag.name == "location:blurred"
+          blurred = true
+          break
+        end
+      end
+
+      doc = DocResult.fromLocationSearch(match.nid, 'coordinates', match.path(:items), match.title, 0, match.answers.length.to_i, match.lat, match.lon, blurred)
+      sresult.addDoc(doc)
+    end
+    sresult
+  end
+
 end

@@ -5,13 +5,13 @@ class TagController < ApplicationController
   def index
     if params[:format]
       @toggle = params[:format].to_i
-    else 
-      @toggle = 1 
-    end 
+    else
+      @toggle = 1
+    end
 
     @title = I18n.t('tag_controller.tags')
     @paginated = true
-    if params[:search] 
+    if params[:search]
     prefix = params[:search]
     @tags = Tag.joins(:node_tag, :node)
                .select('node.nid, node.status, term_data.*, community_tags.*')
@@ -20,15 +20,15 @@ class TagController < ApplicationController
                .where("name LIKE :prefix", prefix: "#{prefix}%")
                .group(:name)
                .order('count DESC')
-               .paginate(page: params[:page])  
-    elsif @toggle == 1 
+               .paginate(page: params[:page], per_page: 24)
+    elsif @toggle == 1
     @tags = Tag.joins(:node_tag, :node)
                .select('node.nid, node.status, term_data.*, community_tags.*')
                .where('node.status = ?', 1)
                .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                .group(:name)
                .order('count DESC')
-               .paginate(page: params[:page])
+               .paginate(page: params[:page], per_page: 24)
     else
     @tags = Tag.joins(:node_tag, :node)
                .select('node.nid, node.status, term_data.*, community_tags.*')
@@ -36,8 +36,8 @@ class TagController < ApplicationController
                .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                .group(:name)
                .order('name')
-               .paginate(page: params[:page])    
-    end    
+               .paginate(page: params[:page], per_page: 24)
+    end
   end
 
   def show
@@ -47,12 +47,11 @@ class TagController < ApplicationController
                      'questions'
                    else
                      'note'
-                   end
-
+                  end
     # params[:node_type] - this is an optional param
     # if params[:node_type] is nil - use @default_type
     @node_type = params[:node_type] || default_type
-    
+
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
     node_type = 'map' if @node_type == 'maps'
@@ -64,7 +63,7 @@ class TagController < ApplicationController
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
                   .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
-                  .page(params[:page])
+                  .paginate(page: params[:page], per_page: 24)
                   .order('node_revisions.timestamp DESC')
     else
       @tags = Tag.where(name: params[:id])
@@ -72,11 +71,11 @@ class TagController < ApplicationController
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
                   .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
-                  .page(params[:page])
+                  .paginate(page: params[:page], per_page: 24)
                   .order('node_revisions.timestamp DESC')
     end
 
-    # breaks the parameter 
+    # breaks the parameter
     # sets everything to an empty array
     set_sidebar :tags, [params[:id]]
 
@@ -110,10 +109,42 @@ class TagController < ApplicationController
     end
   end
 
+  def show_for_author
+    if params[:id][-1..-1] == '*' # wildcard tags
+      @wildcard = true
+      @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
+    else
+      @tags = Tag.where(name: params[:id])
+    end
+    @tagname = params[:id]
+    @user = User.find_by(name: params[:author])
+    @title = "'" + @tagname.to_s + "' by " +  params[:author]
+    @notes = Tag.tagged_nodes_by_author(@tagname, @user)
+                 .paginate(page: params[:page], per_page: 24)    
+    @unpaginated = true
+    @node_type = 'note'
+    @wiki = nil
+    respond_with(@notes) do |format|
+      format.html { render 'tag/show' }
+      format.xml  { render xml: @notes }
+      format.json do
+        json = []
+        @notes.each do |node|
+          json << node.as_json(except: %i[path tags])
+          json.last['path'] = 'https://' + request.host.to_s + node.path
+          json.last['preview'] = node.body_preview(500)
+          json.last['image'] = node.main_image.path(:large) if node.main_image
+          json.last['tags'] = Node.find(node.id).tags.collect(&:name) if node.tags
+        end
+        render json: json
+      end
+    end
+  end
+
   def widget
     num = params[:n] || 4
     nids = Tag.find_nodes_by_type(params[:id], 'note', num).collect(&:nid)
-    @notes = Node.page(params[:page])
+    @notes = Node.paginate(page: params[:page], per_page: 24)
                  .where('status = 1 AND nid in (?)', nids)
                  .order('nid DESC')
     render layout: false
@@ -197,8 +228,9 @@ class TagController < ApplicationController
   # should delete only the term_node/node_tag (instance), not the term_data (class)
   def delete
     node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
+    node = Node.where(nid: params[:nid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
-    if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator'
+    if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator' || node.uid == current_user.uid
 
       node_tag.delete
       respond_with do |format|

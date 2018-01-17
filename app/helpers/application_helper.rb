@@ -35,7 +35,9 @@ module ApplicationHelper
     body = NodeShared.notes_map(body)
     body = NodeShared.notes_map_by_tag(body)
     body = NodeShared.people_grid(body)
+    body = NodeShared.people_map(body)
     body = NodeShared.graph_grid(body)
+    body = NodeShared.wikis_grid(body)
     body
   end
 

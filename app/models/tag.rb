@@ -26,7 +26,7 @@ class Tag < ActiveRecord::Base
   end
 
   validates :name, presence: :true
-  validates :name, format: { with: /\A[\w\.:-]*\z/, message: 'can only include letters, numbers, and dashes' }
+  validates :name, format: { with: /\A[\w\.:-]*[\w\.!-]*\z/, message: 'can only include letters, numbers, and dashes' }
   # validates :name, :uniqueness => { case_sensitive: false  }
 
   def id
@@ -151,8 +151,8 @@ class Tag < ActiveRecord::Base
     uids = TagSelection.joins(:tag)
                        .where('term_data.name = ? AND following = ?', tagname, true)
                        .collect(&:user_id)
-    DrupalUser.where('uid in (?)', uids)
-               .collect(&:user)
+    User.where(id: uids)
+        .where(status: [1, 4])
   end
 
   # OPTIMIZE: this too!

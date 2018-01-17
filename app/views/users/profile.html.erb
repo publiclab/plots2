@@ -6,7 +6,7 @@
     </div>
   <% end %>
   
-  <div style="text-align: -webkit-center;">
+   <div style="text-align: -webkit-center;">
     <% if @twitter.nil? == false %>
       <a href="<%= @twitter %>" >
       <i class="fa fa-twitter fa-3x" aria-hidden="true"></i>
@@ -96,11 +96,6 @@
     <button id="link_social_media" class="btn btn-default btn-block">link social media</button>
   <% end %>
 
-
- <!--  <% if current_user && current_user.uid == @user.uid %>
-      <a href="/profile/<%= @user.name %>/link_to_social_media" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.link_social_media') %></a>
-    <% end %> 
-   -->
   <hr />
 
   <% if params[:preview] %>
@@ -209,7 +204,7 @@
     </div>
 
     <div class="tab-pane" id="maps">
-      <p><i><%= t('users.profile.view_these_maps', :url1 => "//mapknitter.org/profile/"+@user.name) %></i></p>
+      <p><i><%= raw t('users.profile.view_these_maps', :url1 => "//mapknitter.org/profile/"+@user.name) %></i></p>
       <table class="table">
         <tr>
           <th style="width:200px;"><%= t('users.profile.title') %></th>
@@ -249,6 +244,7 @@
   });
 
   $('#link_social_media').click(function(){
+<<<<<<< HEAD
    var sign = prompt("Enter Your Social Media User name like twitter:jywarren or instagram:unterbahn");
     $.ajax({
        method: "POST",
@@ -260,6 +256,13 @@
   });
   });
 
+=======
+    var sign = prompt("Enter Your Social Media User name like twitter:publiclab or instagram:publiclab");
+    $.post('/profile/tags/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {
+        window.location='/profile/<%=@user.name %> ';
+     });
+   });
+>>>>>>> 8e1a7a02091781a5cf572236befeb79bc5292e35
 
   (function () {
     var profile = Object.create(Profile);

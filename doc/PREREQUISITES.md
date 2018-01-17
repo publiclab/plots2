@@ -7,21 +7,6 @@ Our production application runs on mysql, but for development, sqlite3 is suffic
 * Fedora/Red Hat/CentOS: `sudo yum install sqlite` -- you may need `sqlite-devel` as well.
 
 
-### Solr search engine (optional)
-
-[Solr](https://lucene.apache.org/solr/) is a standalone search server. You put documents in it (called "indexing") via JSON, XML, CSV or binary over HTTP. You query it via HTTP GET and receive JSON, XML, CSV or binary results. Solr enables powerful matching capabilities including phrases, wildcards, joins, grouping and much more across any data type.
-We use the Solr search engine via the [sunspot gem](https://github.com/sunspot/sunspot) and using an adapter called [sunspot_rails](https://github.com/outoftime/sunspot_rails) to communicate to solr search server through our rails app.
-Solr requires Java, which is therefore a requirement for running the `rake test:solr` test suite (see [Testing](#testing), below), which runs tests of the search functionality using the files in `/test/solr/`; on a Debian/Ubuntu system, you can install the necessary libraries with:
-
-`sudo apt-get install openjdk-7-jre openjdk-7-jdk`
-
-And start up solr with:
-
-`rake sunspot:solr:start` followed by `rake sunspot:reindex`
-
-However, to ease installation, we've [made Java optional](https://github.com/publiclab/plots2/issues/832) for basic testing using `rake test`. So if you are just starting out you can skip this step.
-
-
 ### Image libraries (optional)
 
 If you are just developing and don't plan to do work with image uploading, you may not need the following, but otherwise:
