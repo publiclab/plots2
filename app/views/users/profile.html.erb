@@ -244,14 +244,12 @@
     alert("Your access token is: <%= @user.user.token %>");
   });
 
-$('#link_social_media').click(function(){
-   var sign = prompt("Enter Your Social Media User name like twitter:jywarren or instagram:unterbahn");
-  $.post('/profile/tags/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {
-     alert(data);
-      window.location='/profile/<%=@user.name %> ';
-  });
- 
-  });
+  $('#link_social_media').click(function(){
+    var sign = prompt("Enter Your Social Media User name like twitter:publiclab or instagram:publiclab");
+    $.post('/profile/tags/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {
+        window.location='/profile/<%=@user.name %> ';
+     });
+   });
 
   (function () {
     var profile = Object.create(Profile);
