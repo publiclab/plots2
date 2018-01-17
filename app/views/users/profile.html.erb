@@ -244,25 +244,11 @@
   });
 
   $('#link_social_media').click(function(){
-<<<<<<< HEAD
-   var sign = prompt("Enter Your Social Media User name like twitter:jywarren or instagram:unterbahn");
-    $.ajax({
-       method: "POST",
-       url: "http://localhost:3000/users/link/<%=@user.uid %> ",
-       data: {"sign": sign,"id":<%=@user.uid %>}
-})
-  .done(function( msg ) {
-    alert( "Data Saved succesfully" );
-  });
-  });
-
-=======
     var sign = prompt("Enter Your Social Media User name like twitter:publiclab or instagram:publiclab");
     $.post('/profile/tags/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {
         window.location='/profile/<%=@user.name %> ';
      });
    });
->>>>>>> 8e1a7a02091781a5cf572236befeb79bc5292e35
 
   (function () {
     var profile = Object.create(Profile);
