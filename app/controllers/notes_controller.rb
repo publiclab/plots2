@@ -235,6 +235,7 @@ class NotesController < ApplicationController
   def delete
     @node = Node.find(params[:id])
    if current_user && (current_user.uid == @node.uid || current_user.role == "moderator" || current_user.role == "admin")
+    if @node.authors.uniq.length == 1 
       @node.delete
       respond_with do |format|
         format.html do
@@ -246,6 +247,10 @@ class NotesController < ApplicationController
           end
         end
       end
+    else
+      flash[:error] = I18n.t('notes_controller.more_than_one_contributor')
+      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+    end
     else
       prompt_login
     end
