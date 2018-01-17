@@ -242,11 +242,13 @@ class Tag < ActiveRecord::Base
       @wildcard = true
       Node.where('term_data.name LIKE(?)', tagname[0..-2]+'%')
         .includes(:node_tag, :tag)
+        .order('node.nid DESC')
         .references(:term_data)
         .where('node.uid = ?', user_id)
     else
       Node.where('term_data.name = ?', tagname)
         .includes(:node_tag, :tag)
+        .order('node.nid DESC')
         .references(:term_data)
         .where('node.uid = ?', user_id)
     end
