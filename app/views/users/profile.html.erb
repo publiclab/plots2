@@ -205,7 +205,7 @@
     </div>
 
     <div class="tab-pane" id="maps">
-      <p><i><%= t('users.profile.view_these_maps', :url1 => "//mapknitter.org/profile/"+@user.name) %></i></p>
+      <p><i><%= raw t('users.profile.view_these_maps', :url1 => "//mapknitter.org/profile/"+@user.name) %></i></p>
       <table class="table">
         <tr>
           <th style="width:200px;"><%= t('users.profile.title') %></th>
