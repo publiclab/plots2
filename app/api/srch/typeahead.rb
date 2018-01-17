@@ -4,7 +4,7 @@ require 'grape-entity'
 module Srch
   class Typeahead < Grape::API
     # Number of top values of each type to return
-    TYPEAHEAD_LIMIT = 5
+    TYPEAHEAD_LIMIT = 10
 
     # Endpoint definitions
     resource :typeahead do
@@ -98,6 +98,25 @@ module Srch
         sparms = SearchRequest.fromRequest(params)
         if sparms.valid?
           TypeaheadService.new.search_tags(params[:srchString], TYPEAHEAD_LIMIT)
+        end
+        sresult.srchParams = sparms
+        present sresult, with: TagList::Entity
+      end
+
+      # Request URL should be /api/typeahead/comments?srchString=QRY&seq=KEYCOUNT
+      # Basic implementation from classic plots2 SearchController
+      desc 'Perform a search of comments within the system', hidden: false,
+                                                         is_array: false,
+                                                         nickname: 'typeaheadGetComments'
+      params do
+        requires :srchString, type: String, documentation: { example: 'Spec' }
+        optional :seq, type: Integer, documentation: { example: 995 }
+      end
+      get :comments do
+        sresult = TagList.new
+        sparms = SearchRequest.fromRequest(params)
+        if sparms.valid?
+          TypeaheadService.new.search_comments(params[:srchString], TYPEAHEAD_LIMIT)
         end
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity

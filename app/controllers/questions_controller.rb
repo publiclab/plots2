@@ -27,7 +27,12 @@ class QuestionsController < ApplicationController
                      .paginate(page: params[:page], per_page: 24)
   end
 
+  # a form for new questions, at /questions/new
   def new
+    if params[:n] && !params[:body] # use another node body as a template
+      node = Node.find(params[:n])
+      params[:body] = node.body if node
+    end
     if current_user == nil
       redirect_to new_user_session_path( return_to: request.path )
       flash[:notice] = "Your question is important and we want to hear from you! Please log in or sign up to post a question"
