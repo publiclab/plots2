@@ -37,7 +37,7 @@
 
       })()
       </script>
-      
+
       <h3 style="margin-top:0;"><%= raw t('tag.contributors-index.contributors_over_last_week', :tag_name => tag.name) %> <small><a href="/tag/<%= tag.name %>"><%= t('tag.contributors-index.read_more') %> &raquo;</a></small></h3>
       <p><%= raw t('tag.contributors-index.notes_and_wiki_contributions', :users => @tagdata[tag.name][:users] || 0, :notes => @tagdata[tag.name][:notes], :wikis => @tagdata[tag.name][:wikis], :tag_name => tag.name) %></p>
 
@@ -46,9 +46,9 @@
       <div class="btn-group">
         <a class="btn btn-sm" href="/feed/tag/<%= tag.name %>.rss"><i class="fa fa-rss"></i> RSS</a>
         <% if current_user.following(tag.name) %>
-        <a rel="tooltip" title="<%= t('tag.contributors-index.unfollow') %>" class="btn btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-eye"></i> <%= t('tag.contributors-index.following') %> <b><%= tag.name %></b></a>
+          <a rel="tooltip" title="<%= t('tag.contributors-index.unfollow') %>" class="btn btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-eye"></i> <%= t('tag.contributors-index.following') %> <b><%= tag.name %></b></a>
         <% else %>
-        <a class="btn btn-sm" href="/subscribe/tag/<%= tag.name %>"><i class="fa fa-eye"></i> <%= t('tag.contributors-index.follow') %> <b><%= tag.name %></b></a>
+          <a class="btn btn-sm" href="/subscribe/tag/<%= tag.name %>"><i class="fa fa-eye"></i> <%= t('tag.contributors-index.follow') %> <b><%= tag.name %></b></a>
         <% end %>
       </div>
       <!-- AJAXify -->
