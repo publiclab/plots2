@@ -10,6 +10,7 @@ Per-model API endpoints are:
 * Questions: https://publiclab.org/api/srch/questions?srchString=foo
 * Tags: https://publiclab.org/api/srch/tags?srchString=foo
 * Notes: https://publiclab.org/api/srch/notes?srchString=foo
+* Locations: https://publiclab.org/api/srch/locations?srchString=lat,lon
 
 We also provide RSS feeds for tags and authors, in the format:
 
