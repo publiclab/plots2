@@ -339,7 +339,7 @@ class NotesController < ApplicationController
     node = Node.find params[:id].to_i
     unless current_user && current_user.drupal_user == node.author
       flash.keep[:error] = I18n.t('notes_controller.author_can_edit_note')
-      redirect_to :back
+      return redirect_to node.path + "#comments"
     end
     node.update(title: params[:title])
     redirect_to node.path + "#comments"
