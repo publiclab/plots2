@@ -14,9 +14,9 @@ class TypeaheadService
 
   def users(input, limit = 5)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      DrupalUser.search(input)
-          .limit(limit)
-          .where(status: 1)
+      DrupalUser.limit(limit)
+          .order('uid DESC')
+          .where('name LIKE ? AND status = 1', '%' + input + '%')
     else 
       DrupalUser.limit(limit)
           .order('uid DESC')
