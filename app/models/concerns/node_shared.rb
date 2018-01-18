@@ -170,26 +170,17 @@ module NodeShared
     end
   end
 
+  #Blank map loaded only , markers will be loaded using API call .
   def self.notes_map(body)
     body.gsub(/[^\>`](\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
-      nids = NodeTag.joins(:tag)
-                                   .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
-                                   .collect(&:nid)
-      nids = nids || []
-      items = Node.includes(:tag)
-                  .references(:node, :term_data)
-                  .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
-                  .limit(200)
-                  .order('node.nid DESC')
       a = ActionController::Base.new()
       output = a.render_to_string(template: "map/_leaflet", 
                                   layout:   false, 
                                   locals:   {
                                     lat:   lat,
-                                    lon:   lon,
-                                    items: items
+                                    lon:   lon
                                   }
                )
       output
