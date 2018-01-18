@@ -57,8 +57,9 @@
   <% end %>
   <hr />
 
-  <% if @notes.nil? || @notes.length == 0 %>
-    <p><%= raw t('tag.contributors.no_contributors', :tag => params[:id]) %>:</p>
+  <% if @wildcard %>
+    <p>This is a <em>wildcard tag search.<em></p>
+    <p>Wildcard tag searches use the * asterisk in their URLs, and do not show contributor listings.<p>
   <% else %>
     <table class="table">
       <tr>
