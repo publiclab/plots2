@@ -11,7 +11,7 @@
 	 var lat = <%= lat %> ;
 	 var lon = <%= lon %> ;
 	 var s = lat+","+lon ;
- 	$.getJSON("http:"+"//publiclab.org/api/srch/locations?srchString="+s , function(data){
+ 	$.getJSON("https:"+"//publiclab.org/api/srch/locations?srchString="+s , function(data){
 	 			if (!!data.items){
 	 				for (i = 0; i < data.items.length ; i++) { 
 	 					var url = data.items[i].docUrl ;
