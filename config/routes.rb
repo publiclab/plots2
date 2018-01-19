@@ -10,7 +10,7 @@ Plots2::Application.routes.draw do
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
   mount Srch::API => '/api'
-  mount GrapeSwaggerRails::Engine => '/api/d1ocs'
+  mount GrapeSwaggerRails::Engine => '/api/docs'
   #end
 
   resources :rusers

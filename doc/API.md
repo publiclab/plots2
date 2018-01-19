@@ -1,6 +1,12 @@
 (Moved from https://github.com/publiclab/plots2/wiki/API/)
 
-Swagger-generated API documentation can be found at:
+## Swagger API
+
+Our Swagger-generated API is quite extensive and growing:
+
+### Web interface/guide
+
+https://publiclab.org/api/docs
 
 https://publiclab.org/api/swagger_doc.json
 
@@ -11,6 +17,10 @@ Per-model API endpoints are:
 * Tags: https://publiclab.org/api/srch/tags?srchString=foo
 * Notes: https://publiclab.org/api/srch/notes?srchString=foo
 * Locations: https://publiclab.org/api/srch/locations?srchString=lat,lon
+
+****
+
+## Legacy API
 
 We also provide RSS feeds for tags and authors, in the format:
 
