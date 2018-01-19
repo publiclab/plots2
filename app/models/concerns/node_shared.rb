@@ -44,13 +44,6 @@ module NodeShared
                   .order('node_revisions.timestamp DESC')
 
       if exclude.present?
-        if exclude.include?('answered')
-          answered = []
-          nodes.each do |n|
-            answered<<n if n.answered
-          end
-          nodes = nodes - answered
-        end
         exclude = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
@@ -88,13 +81,6 @@ module NodeShared
                   .where('term_data.name = ?', "question:#{tagname}")
                   .order('node_revisions.timestamp DESC')
       if exclude.present?
-        if exclude.include?('answered')
-          answered = []
-          nodes.each do |n|
-            answered<<n if n.answered
-          end
-          nodes = nodes - answered
-        end
         exclude = Node.where(status: 1, type: 'note')
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
