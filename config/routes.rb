@@ -310,4 +310,8 @@ Plots2::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
 
   match ':controller(/:action(/:id))(.:format)', via: [:get, :post]
+
+  #OmniAuth-facebook
+  get 'auth/facebook/callback', to: 'user_sessions#create'
+  get 'auth/failure', to: redirect('/')
 end

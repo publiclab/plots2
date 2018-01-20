@@ -9,6 +9,7 @@ end
 class User < ActiveRecord::Base
   self.table_name = 'rusers'
   attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio
+  attr_accessible :provider, :uid
   alias_attribute :name, :username
 
   acts_as_authentic do |c|
@@ -343,6 +344,21 @@ class User < ActiveRecord::Base
     revisions = Revision.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
     contributors = (notes+answers+questions+comments+revisions).compact.uniq.length
     contributors
+  end
+
+  #for facebook-omniauth login
+  def self.create_with_omniauth(auth)
+    user = find_or_create_by(uid: auth['uid'], provider:  auth['provider'])
+    user.email = auth['info']['email']
+    user.password = auth['uid']
+    user.username = auth['extra']['info']['username']
+
+    if User.exists?(user)
+      user
+    else
+      user.save!
+      user
+    end
   end
 
 end

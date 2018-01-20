@@ -49,3 +49,6 @@ test/reports/
 # Ignore NPM
 node_modules
 .byebug_history
+
+# Ignore application configuration
+/config/application.yml
