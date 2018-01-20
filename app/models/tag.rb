@@ -52,7 +52,7 @@ class Tag < ActiveRecord::Base
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
-  def self.contributor_count(tagname)
+  def self.contributors(tagname)
     tag = Tag.includes(:node).where(name: tagname).first
     nodes = tag.node.includes(:revision, :comments,:answers).where(status: 1)
     uids = nodes.collect(&:uid)
@@ -62,6 +62,11 @@ class Tag < ActiveRecord::Base
       uids+=n.revision.collect(&:uid)
     end
     uids = uids.uniq
+    uids
+  end
+
+  def self.contributor_count(tagname)
+    uids = Tag.contributors(tagname)
     uids.length
   end
 
