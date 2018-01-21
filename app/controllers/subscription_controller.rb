@@ -110,6 +110,11 @@ class SubscriptionController < ApplicationController
     end
   end
 
+  def digest
+    @wikis = current_user.content_followed_in_period(Time.now - 1.week, Time.now)
+    render :template => "subscriptions/digest"
+  end
+
   private
 
   def set_following(value,type,id)
