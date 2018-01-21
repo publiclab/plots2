@@ -310,8 +310,8 @@ class User < ActiveRecord::Base
     Node.questions.where(status: 1, uid: id)
   end
 
-  def content_followed_in_past_period(start_time, end_time)
-    Node.where("created >= #{start_time.to_i}  AND changed >= #{start_time.to_i} && created <= #{end_time.to_i}  AND changed <= #{end_time.to_i}")
+  def content_followed_in_period(start_time, end_time)
+    Node.where("created >= #{start_time.to_i}  AND changed >= #{start_time.to_i} AND created <= #{end_time.to_i}  AND changed <= #{end_time.to_i}")
   end
 
   def social_link(site)

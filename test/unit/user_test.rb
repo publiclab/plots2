@@ -89,10 +89,11 @@ class UserTest < ActiveSupport::TestCase
     assert !users(:bob).has_tag('test:no')
   end
 
-  test 'returns nodes created in past given period of time' do
+  test 'returns nodes created in given period of time' do
     lurker = users(:lurker)
-    node2 = users(:lurker).node.find_by_nid(20)
-     assert_equal [node2], lurker.content_followed_in_past_period(2.hours.ago)
+    node_count = Node.all.count
+    count_return = lurker.content_followed_in_period(2.hours.ago,Time.now).count
+    assert_equal node_count, count_return
   end
 
   test 'returns value of power tag' do
