@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class NotesController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-author">#author</a>
+    
+    <li ><a href="#method-i-author_topic">#author_topic</a>
+    
+    <li ><a href="#method-i-create">#create</a>
+    
+    <li ><a href="#method-i-delete">#delete</a>
+    
+    <li ><a href="#method-i-edit">#edit</a>
+    
+    <li ><a href="#method-i-image">#image</a>
+    
+    <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-liked">#liked</a>
+    
+    <li ><a href="#method-i-liked_rss">#liked_rss</a>
+    
+    <li ><a href="#method-i-places">#places</a>
+    
+    <li ><a href="#method-i-popular">#popular</a>
+    
+    <li ><a href="#method-i-raw">#raw</a>
+    
+    <li ><a href="#method-i-rss">#rss</a>
+    
+    <li ><a href="#method-i-rsvp">#rsvp</a>
+    
+    <li ><a href="#method-i-shortlink">#shortlink</a>
+    
+    <li ><a href="#method-i-show">#show</a>
+    
+    <li ><a href="#method-i-tools">#tools</a>
+    
+    <li ><a href="#method-i-update">#update</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-NotesController">
+  <h1 id="class-NotesController" class="class">
+    class NotesController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-author" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">author</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>notes for a given author</p>
+          
+          
+
+          
+          <div class="method-source-code" id="author-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 255</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">author</span>
+  <span class="ruby-ivar">@user</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@title</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">name</span>
+  <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>])
+               .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+               .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;note&#39;</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">uid</span>)
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;notes/index&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-author_topic" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">author_topic</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>notes for given comma-delimited tags <a href=":topic">params</a> for author</p>
+          
+          
+
+          
+          <div class="method-source-code" id="author_topic-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 265</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">author_topic</span>
+  <span class="ruby-ivar">@user</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:author</span>])
+  <span class="ruby-ivar">@tagnames</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:topic</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;+&#39;</span>)
+  <span class="ruby-ivar">@title</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; on &#39;&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@tagnames</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;, &#39;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;&#39;&quot;</span>
+  <span class="ruby-ivar">@notes</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">notes_for_tags</span>(<span class="ruby-ivar">@tagnames</span>)
+  <span class="ruby-ivar">@unpaginated</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;notes/index&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 92</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+    <span class="ruby-identifier">saved</span>, <span class="ruby-ivar">@node</span>, <span class="ruby-ivar">@revision</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">new_note</span>(<span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span>,
+                                            <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:title</span>],
+                                            <span class="ruby-identifier">body</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:body</span>],
+                                            <span class="ruby-identifier">main_image</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>])
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">saved</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:tags</span>]
+        <span class="ruby-identifier">params</span>[<span class="ruby-value">:tags</span>].<span class="ruby-identifier">tr</span>(<span class="ruby-string">&#39; &#39;</span>, <span class="ruby-string">&#39;,&#39;</span>).<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tagname</span><span class="ruby-operator">|</span>
+          <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-identifier">tagname</span>.<span class="ruby-identifier">strip</span>, <span class="ruby-identifier">current_user</span>)
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:event</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;on&#39;</span>
+        <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-string">&#39;event&#39;</span>, <span class="ruby-identifier">current_user</span>)
+        <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-string">&#39;event:rsvp&#39;</span>, <span class="ruby-identifier">current_user</span>)
+        <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-string">&#39;date:&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:date</span>], <span class="ruby-identifier">current_user</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:date</span>]
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">first_time_poster</span>
+        <span class="ruby-constant">AdminMailer</span>.<span class="ruby-identifier">notify_node_moderators</span>(<span class="ruby-ivar">@node</span>)
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:first_time_post</span>] = <span class="ruby-keyword">true</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">has_power_tag</span>(<span class="ruby-string">&#39;question&#39;</span>)
+          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.thank_you_for_question&#39;</span>).<span class="ruby-identifier">html_safe</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.thank_you_for_contribution&#39;</span>).<span class="ruby-identifier">html_safe</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">has_power_tag</span>(<span class="ruby-string">&#39;question&#39;</span>)
+          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.question_note_published&#39;</span>).<span class="ruby-identifier">html_safe</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.research_note_published&#39;</span>).<span class="ruby-identifier">html_safe</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-comment"># Notice: Temporary redirect.Remove this condition after questions show page is complete.</span>
+      <span class="ruby-comment">#         Just keep @node.path(:question)</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:redirect</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:redirect</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;question&#39;</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">path</span>(<span class="ruby-value">:question</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">xhr?</span> <span class="ruby-comment"># rich editor!</span>
+          <span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">path</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">path</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">xhr?</span> <span class="ruby-comment"># rich editor!</span>
+        <span class="ruby-identifier">errors</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">errors</span>
+        <span class="ruby-identifier">errors</span> = <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">to_hash</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">to_hash</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@revision</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">errors</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">errors</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;editor/post&#39;</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">keep</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.you_have_been_banned&#39;</span>).<span class="ruby-identifier">html_safe</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/logout&#39;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-delete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delete</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>at /notes/delete/:id only for notes</p>
+          
+          
+
+          
+          <div class="method-source-code" id="delete-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 235</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>
+  <span class="ruby-ivar">@node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;note&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;moderator&#39;</span>
+    <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">delete</span>
+    <span class="ruby-identifier">respond_with</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">xhr?</span>
+          <span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.content_deleted&#39;</span>)
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.content_deleted&#39;</span>)
+          <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/dashboard&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">prompt_login</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-edit" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edit</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="edit-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 151</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+  <span class="ruby-ivar">@node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">nid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>], <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;note&#39;</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">has_tag</span>(<span class="ruby-node">&quot;with:#{current_user.username}&quot;</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:legacy</span>]
+      <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;editor/post&#39;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">main_image</span>
+        <span class="ruby-ivar">@main_image</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">main_image</span>.<span class="ruby-identifier">path</span>(<span class="ruby-value">:default</span>)
+      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">Image</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>])
+        <span class="ruby-ivar">@main_image</span> = <span class="ruby-constant">Image</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>]).<span class="ruby-identifier">path</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@image</span>
+        <span class="ruby-ivar">@main_image</span> = <span class="ruby-ivar">@image</span>.<span class="ruby-identifier">path</span>(<span class="ruby-value">:default</span>)
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-node">&quot;This is the new rich editor. For the legacy editor, &lt;a href=&#39;/notes/edit/#{@node.id}?#{request.env[&#39;QUERY_STRING&#39;]}&amp;legacy=true&#39;&gt;click here&lt;/a&gt;.&quot;</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;editor/rich&#39;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">has_power_tag</span>(<span class="ruby-string">&#39;question&#39;</span>)
+      <span class="ruby-identifier">prompt_login</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.author_can_edit_question&#39;</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">prompt_login</span> <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.author_can_edit_note&#39;</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-image" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">image</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="image-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 82</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">image</span>
+  <span class="ruby-identifier">params</span>[<span class="ruby-value">:size</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-value">:size</span>] <span class="ruby-operator">||</span> <span class="ruby-value">:large</span>
+  <span class="ruby-identifier">node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">main_image</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">main_image</span>.<span class="ruby-identifier">path</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:size</span>])
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==&#39;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-ivar">@title</span> = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.research_notes&#39;</span>)
+  <span class="ruby-identifier">set_sidebar</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-liked" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">liked</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>notes with high # of likes</p>
+          
+          
+
+          
+          <div class="method-source-code" id="liked-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 275</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">liked</span>
+  <span class="ruby-ivar">@title</span> = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.highly_liked_research_notes&#39;</span>)
+  <span class="ruby-ivar">@wikis</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-value">10</span>)
+               .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;page&#39;</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+               .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+
+  <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">research_notes</span>
+               .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+               .<span class="ruby-identifier">limit</span>(<span class="ruby-value">20</span>)
+               .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+  <span class="ruby-ivar">@unpaginated</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;notes/index&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-liked_rss" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">liked_rss</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="liked_rss-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 316</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">liked_rss</span>
+  <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-value">20</span>)
+               .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;created DESC&#39;</span>)
+               .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;type = ? AND status = 1 AND cached_likes &gt; 0&#39;</span>, <span class="ruby-string">&#39;note&#39;</span>)
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">rss</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>, <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;notes/rss&#39;</span>
+      <span class="ruby-identifier">response</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&#39;Content-Type&#39;</span>] = <span class="ruby-string">&#39;application/xml; charset=utf-8&#39;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-places" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">places</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="places-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">places</span>
+  <span class="ruby-ivar">@title</span> = <span class="ruby-string">&#39;Places&#39;</span>
+  <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-string">&#39;LEFT OUTER JOIN node_revisions ON node_revisions.nid = node.nid 
+                       LEFT OUTER JOIN community_tags ON community_tags.nid = node.nid 
+                       LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid&#39;</span>)
+               .<span class="ruby-identifier">select</span>(<span class="ruby-string">&#39;*, max(node_revisions.timestamp)&#39;</span>)
+               .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">type</span><span class="ruby-value">:%</span><span class="ruby-identifier">w</span>[<span class="ruby-identifier">page</span> <span class="ruby-identifier">place</span>])
+               .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:revision</span>, <span class="ruby-value">:tag</span>)
+               .<span class="ruby-identifier">references</span>(<span class="ruby-value">:term_data</span>)
+               .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name = ?&#39;</span>, <span class="ruby-string">&#39;chapter&#39;</span>)
+               .<span class="ruby-identifier">group</span>(<span class="ruby-string">&#39;node.nid&#39;</span>)
+               .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;max(node_revisions.timestamp) DESC, node.nid&#39;</span>)
+               .<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>])
+
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;notes/tools_places&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-popular" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">popular</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>notes with high # of views</p>
+          
+          
+
+          
+          <div class="method-source-code" id="popular-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 290</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">popular</span>
+  <span class="ruby-ivar">@title</span> = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.popular_research_notes&#39;</span>)
+  <span class="ruby-ivar">@wikis</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-value">10</span>)
+               .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;page&#39;</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+               .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+  <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">research_notes</span>
+               .<span class="ruby-identifier">limit</span>(<span class="ruby-value">20</span>)
+               .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+               .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;views DESC&#39;</span>)
+  <span class="ruby-ivar">@unpaginated</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;notes/index&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-raw" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">raw</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>display a revision, raw</p>
+          
+          
+
+          
+          <div class="method-source-code" id="raw-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">raw</span>
+  <span class="ruby-identifier">response</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&#39;Content-Type&#39;</span>] = <span class="ruby-string">&#39;text/plain; charset=utf-8&#39;</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]).<span class="ruby-identifier">latest</span>.<span class="ruby-identifier">body</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-rss" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">rss</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="rss-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 303</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rss</span>
+  <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-value">20</span>)
+               .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+               .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;type = ? AND status = 1 AND created &lt; ?&#39;</span>, <span class="ruby-string">&#39;note&#39;</span>, (<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-value">30</span>.<span class="ruby-identifier">minutes</span>.<span class="ruby-identifier">to_i</span>))
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">rss</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+      <span class="ruby-identifier">response</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&#39;Content-Type&#39;</span>] = <span class="ruby-string">&#39;application/xml; charset=utf-8&#39;</span>
+      <span class="ruby-identifier">response</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&#39;Access-Control-Allow-Origin&#39;</span>] = <span class="ruby-string">&#39;*&#39;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-rsvp" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">rsvp</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="rsvp-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 328</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rsvp</span>
+  <span class="ruby-ivar">@node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
+  <span class="ruby-comment"># leave a comment</span>
+  <span class="ruby-ivar">@comment</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_comment</span>(<span class="ruby-identifier">subject</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;rsvp&#39;</span>, <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span>, <span class="ruby-identifier">body</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;I will be attending!&#39;</span>)
+  <span class="ruby-comment"># make a tag</span>
+  <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-string">&#39;rsvp:&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">username</span>, <span class="ruby-identifier">current_user</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">path</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;#comments&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-shortlink" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">shortlink</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="shortlink-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">shortlink</span>
+  <span class="ruby-ivar">@node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">has_power_tag</span>(<span class="ruby-string">&#39;question&#39;</span>)
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">path</span>(<span class="ruby-value">:question</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">path</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="show-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:author</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:date</span>]
+    <span class="ruby-ivar">@node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find_notes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:author</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:date</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+    <span class="ruby-ivar">@node</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">path</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;/report/#{params[:id]}&quot;</span>).<span class="ruby-identifier">first</span>
+    <span class="ruby-comment"># redirect_old_urls</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">has_power_tag</span>(<span class="ruby-string">&#39;question&#39;</span>)
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">path</span>(<span class="ruby-value">:question</span>)
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">has_power_tag</span>(<span class="ruby-string">&#39;redirect&#39;</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;admin&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;moderator&#39;</span>)
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find</span>(<span class="ruby-ivar">@node</span>.<span class="ruby-identifier">power_tag</span>(<span class="ruby-string">&#39;redirect&#39;</span>)).<span class="ruby-identifier">path</span>
+      <span class="ruby-keyword">return</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;moderator&#39;</span>
+      <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:warning</span>] = <span class="ruby-node">&quot;Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag(&#39;redirect&#39;)).title}.
+      To remove the redirect, delete the tag beginning with &#39;redirect:&#39;&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">check_and_redirect_node</span>(<span class="ruby-ivar">@node</span>)
+
+  <span class="ruby-identifier">alert_and_redirect_moderated</span>
+
+  <span class="ruby-identifier">impressionist</span>(<span class="ruby-ivar">@node</span>, <span class="ruby-string">&#39;show&#39;</span>, <span class="ruby-identifier">unique</span><span class="ruby-operator">:</span> [<span class="ruby-value">:ip_address</span>])
+  <span class="ruby-ivar">@title</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">latest</span>.<span class="ruby-identifier">title</span>
+  <span class="ruby-ivar">@tags</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">tags</span>
+  <span class="ruby-ivar">@tagnames</span> = <span class="ruby-ivar">@tags</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:name</span>)
+
+  <span class="ruby-identifier">set_sidebar</span> <span class="ruby-value">:tags</span>, <span class="ruby-ivar">@tagnames</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tools" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tools</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="tools-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tools</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/methods&#39;</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">302</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>at /notes/update/:id</p>
+          
+          
+
+          
+          <div class="method-source-code" id="update-source">
+            <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 177</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+  <span class="ruby-ivar">@node</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;admin&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">has_tag</span>(<span class="ruby-node">&quot;with:#{current_user.username}&quot;</span>)
+    <span class="ruby-ivar">@revision</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">latest</span>
+    <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">title</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:title</span>]
+    <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">body</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:body</span>]
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:tags</span>]
+      <span class="ruby-identifier">params</span>[<span class="ruby-value">:tags</span>].<span class="ruby-identifier">tr</span>(<span class="ruby-string">&#39; &#39;</span>, <span class="ruby-string">&#39;,&#39;</span>).<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tagname</span><span class="ruby-operator">|</span>
+        <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-identifier">tagname</span>, <span class="ruby-identifier">current_user</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">valid?</span>
+      <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">vid</span> = <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">vid</span>
+      <span class="ruby-comment"># update vid (version id) of main image</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">drupal_main_image</span>
+        <span class="ruby-identifier">i</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">drupal_main_image</span>
+        <span class="ruby-identifier">i</span>.<span class="ruby-identifier">vid</span> = <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">vid</span>
+        <span class="ruby-identifier">i</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">drupal_content_field_image_gallery</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">img</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">img</span>.<span class="ruby-identifier">vid</span> = <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">vid</span>
+        <span class="ruby-identifier">img</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">title</span> = <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">title</span>
+      <span class="ruby-comment"># save main image</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-identifier">img</span> = <span class="ruby-constant">Image</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:main_image</span>]
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">img</span>.<span class="ruby-identifier">nil?</span>
+          <span class="ruby-identifier">img</span>.<span class="ruby-identifier">nid</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">id</span>
+          <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">main_image_id</span> = <span class="ruby-identifier">img</span>.<span class="ruby-identifier">id</span>
+          <span class="ruby-identifier">img</span>.<span class="ruby-identifier">save</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">save!</span>
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.edits_saved&#39;</span>)
+      <span class="ruby-identifier">format</span> = <span class="ruby-keyword">false</span>
+      <span class="ruby-identifier">format</span> = <span class="ruby-value">:question</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:redirect</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:redirect</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;question&#39;</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">xhr?</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">path</span>(<span class="ruby-identifier">format</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">path</span>(<span class="ruby-identifier">format</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;notes_controller.edit_not_saved&#39;</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">xhr?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:rich</span>]
+        <span class="ruby-identifier">errors</span> = <span class="ruby-ivar">@node</span>.<span class="ruby-identifier">errors</span>
+        <span class="ruby-identifier">errors</span> = <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">to_hash</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">to_hash</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@revision</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@revision</span>.<span class="ruby-identifier">errors</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">errors</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;editor/post&#39;</span>
+     <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

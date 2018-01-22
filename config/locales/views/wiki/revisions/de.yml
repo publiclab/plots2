@@ -11,8 +11,7 @@ de:
         <th>#</th>
         <th>Benutzer</th>
         <th>Erstellt</th>
-        <th></th>
-        <th></th>
+        <th>Aktion</th>
         <th>Roh</th>
       moderated: "MODERIERTE"
       current: "STROM"

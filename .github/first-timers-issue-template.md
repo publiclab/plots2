@@ -1,4 +1,4 @@
-Hi, this is a [first-timers-only issue](https://github.com/publiclab/plots2/projects/2). This means we've worked to make it more legible to folks who either **haven't contributed to our codebase before, or even folks who haven't contributed to open source before**. 
+Hi, this is a [first-timers-only issue](https://publiclab.github.io/community-toolbox/#r=all). This means we've worked to make it more legible to folks who either **haven't contributed to our codebase before, or even folks who haven't contributed to open source before**. 
 
 If that's you, we're interested in helping you take the first step and can answer questions and help you out as you do. Note that we're especially interested in contributions from people from groups underrepresented in free and open source software!
 

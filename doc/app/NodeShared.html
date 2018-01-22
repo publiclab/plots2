@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>module NodeShared - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    <div id="extends-section" class="nav-section">
+  <h3>Extended With Modules</h3>
+
+  <ul class="link-list">
+    
+  
+    <li><span class="extend">ActiveSupport::Concern</span>
+  
+  
+  </ul>
+</div>
+
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-activities_grid">::activities_grid</a>
+    
+    <li ><a href="#method-c-graph_grid">::graph_grid</a>
+    
+    <li ><a href="#method-c-notes_grid">::notes_grid</a>
+    
+    <li ><a href="#method-c-notes_map">::notes_map</a>
+    
+    <li ><a href="#method-c-notes_map_by_tag">::notes_map_by_tag</a>
+    
+    <li ><a href="#method-c-people_grid">::people_grid</a>
+    
+    <li ><a href="#method-c-people_map">::people_map</a>
+    
+    <li ><a href="#method-c-questions_grid">::questions_grid</a>
+    
+    <li ><a href="#method-c-upgrades_grid">::upgrades_grid</a>
+    
+    <li ><a href="#method-c-wikis_grid">::wikis_grid</a>
+    
+    <li ><a href="#method-i-liked_by">#liked_by</a>
+    
+    <li ><a href="#method-i-likes">#likes</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-NodeShared">
+  <h1 id="module-NodeShared" class="module">
+    module NodeShared
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-activities_grid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">activities_grid</span><span
+            class="method-args">(body)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="activities_grid-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/node_shared.rb, line 80</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">activities_grid</span>(<span class="ruby-identifier">body</span>)
+  <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[^\&gt;`](\&lt;p\&gt;)?\[activities\:(\S+)\]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_tagname</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">tagname</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-identifier">nodes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">activities</span>(<span class="ruby-identifier">tagname</span>)
+                .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node.cached_likes DESC&#39;</span>)
+    <span class="ruby-identifier">output</span> = <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">output</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;&lt;p&gt;&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">1</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&#39;&lt;p&gt;&#39;</span>
+    <span class="ruby-identifier">a</span> = <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-identifier">output</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">render_to_string</span>(<span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;grids/_notes&quot;</span>, 
+                                 <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span>   <span class="ruby-keyword">false</span>, 
+                                 <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span>   {
+                                   <span class="ruby-identifier">tagname</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tagname</span>,
+                                   <span class="ruby-identifier">randomSeed</span><span class="ruby-operator">:</span> <span class="ruby-identifier">rand</span>(<span class="ruby-value">1000</span>).<span class="ruby-identifier">to_s</span>,
+                                   <span class="ruby-identifier">className</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;activity-grid-&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tagname</span>.<span class="ruby-identifier">parameterize</span>,
+                                   <span class="ruby-identifier">nodes</span><span class="ruby-operator">:</span> <span class="ruby-identifier">nodes</span>,
+                                   <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;activity&quot;</span>
+                                 })
+    <span class="ruby-identifier">output</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-graph_grid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">graph_grid</span><span
+            class="method-args">(body, _page = 1)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>rubular regex: <a
+href="http://rubular.com/r/hBEThNL4qd">rubular.com/r/hBEThNL4qd</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="graph_grid-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/node_shared.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">graph_grid</span>(<span class="ruby-identifier">body</span>, <span class="ruby-identifier">_page</span> = <span class="ruby-value">1</span>)
+  <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[^\&gt;`](\&lt;p\&gt;)?\[graph\:(\S+)\]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_tagname</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">url</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-identifier">a</span> = <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-identifier">randomSeed</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-value">1000</span>).<span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">output</span> = <span class="ruby-identifier">a</span>.<span class="ruby-identifier">render_to_string</span>(<span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;grids/_graph&quot;</span>, 
+                                <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span>   <span class="ruby-keyword">false</span>, 
+                                <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span>   {
+                                  <span class="ruby-identifier">url</span><span class="ruby-operator">:</span> <span class="ruby-identifier">url</span>,
+                                  <span class="ruby-identifier">randomSeed</span><span class="ruby-operator">:</span> <span class="ruby-identifier">randomSeed</span>,
+                                  <span class="ruby-identifier">idName</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;graph-grid-&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">randomSeed</span>,
+                                  <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;graph&quot;</span>
+                                })
+    <span class="ruby-identifier">output</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-notes_grid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">notes_grid</span><span
+            class="method-args">(body, _page = 1)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>rubular regex: <a
+href="http://rubular.com/r/hBEThNL4qd">rubular.com/r/hBEThNL4qd</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="notes_grid-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/node_shared.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">notes_grid</span>(<span class="ruby-identifier">body</span>, <span class="ruby-identifier">_page</span> = <span class="ruby-value">1</span>)
+  <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[^\&gt;`](\&lt;p\&gt;)?\[notes\:(\S+)\]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_tagname</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">tagname</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-identifier">nodes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;note&#39;</span>)
+                .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:revision</span>, <span class="ruby-value">:tag</span>)
+                .<span class="ruby-identifier">references</span>(<span class="ruby-value">:term_data</span>, <span class="ruby-value">:node_revisions</span>)
+                .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name = ?&#39;</span>, <span class="ruby-identifier">tagname</span>)
+                .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node_revisions.timestamp DESC&#39;</span>)
+    <span class="ruby-identifier">output</span> = <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">output</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;&lt;p&gt;&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">1</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&#39;&lt;p&gt;&#39;</span>
+    <span class="ruby-identifier">a</span> = <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-identifier">output</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">render_to_string</span>(<span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;grids/_notes&quot;</span>, 
+                                 <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span>   <span class="ruby-keyword">false</span>, 
+                                 <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span>   {
+                                   <span class="ruby-identifier">tagname</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tagname</span>,
+                                   <span class="ruby-identifier">randomSeed</span><span class="ruby-operator">:</span> <span class="ruby-identifier">rand</span>(<span class="ruby-value">1000</span>).<span class="ruby-identifier">to_s</span>,
+                                   <span class="ruby-identifier">className</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;notes-grid-&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tagname</span>.<span class="ruby-identifier">parameterize</span>,
+                                   <span class="ruby-identifier">nodes</span><span class="ruby-operator">:</span> <span class="ruby-identifier">nodes</span>,
+                                   <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;notes&quot;</span>
+                                 })
+    <span class="ruby-identifier">output</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-notes_map" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">notes_map</span><span
+            class="method-args">(body)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="notes_map-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/node_shared.rb, line 122</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">notes_map</span>(<span class="ruby-identifier">body</span>)
+  <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[^\&gt;`](\&lt;p\&gt;)?\[map\:content\:(\S+)\:(\S+)\]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_tagname</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">lat</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-identifier">lon</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">3</span>)
+    <span class="ruby-identifier">nids</span> = <span class="ruby-constant">NodeTag</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:tag</span>)
+                                 .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;name LIKE ?&#39;</span>, <span class="ruby-string">&#39;lat:&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">lat</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">lat</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>)
+                                 .<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:nid</span>)
+    <span class="ruby-identifier">nids</span> = <span class="ruby-identifier">nids</span> <span class="ruby-operator">||</span> []
+    <span class="ruby-identifier">items</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">includes</span>(<span class="ruby-value">:tag</span>)
+                .<span class="ruby-identifier">references</span>(<span class="ruby-value">:node</span>, <span class="ruby-value">:term_data</span>)
+                .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.nid IN (?) AND term_data.name LIKE ?&#39;</span>, <span class="ruby-identifier">nids</span>, <span class="ruby-string">&#39;lon:&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">lon</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">lon</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>)
+                .<span class="ruby-identifier">limit</span>(<span class="ruby-value">200</span>)
+                .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node.nid DESC&#39;</span>)
+    <span class="ruby-identifier">a</span> = <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-identifier">output</span> = <span class="ruby-identifier">a</span>.<span class="ruby-identifier">render_to_string</span>(<span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;map/_leaflet&quot;</span>, 
+                                <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span>   <span class="ruby-keyword">false</span>, 
+                                <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span>   {
+                                  <span class="ruby-identifier">lat</span><span class="ruby-operator">:</span>   <span class="ruby-identifier">lat</span>,
+                                  <span class="ruby-identifier">lon</span><span class="ruby-operator">:</span>   <span class="ruby-identifier">lon</span>,
+                                  <span class="ruby-identifier">items</span><span class="ruby-operator">:</span> <span class="ruby-identifier">items</span>
+                                }
+             )
+    <span class="ruby-identifier">output</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-notes_map_by_tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">notes_map_by_tag</span><span
+            class="method-args">(body)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="notes_map_by_tag-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/node_shared.rb, line 148</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">notes_map_by_tag</span>(<span class="ruby-identifier">body</span>)
+  <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[^\&gt;`](\&lt;p\&gt;)?\[map\:tag\:(\S+)\:(\S+)\:(\S+)\]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_tagname</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">tagname</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-identifier">lat</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">3</span>)
+    <span class="ruby-identifier">lon</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">4</span>)
+    <span class="ruby-identifier">nids</span> = <span class="ruby-constant">NodeTag</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:tag</span>)
+                                 .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name = ?&#39;</span>, <span class="ruby-identifier">tagname</span>)
+                                 .<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:nid</span>)
+    <span class="ruby-identifier">nids</span> = <span class="ruby-constant">NodeTag</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:tag</span>)
+                                 .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">nid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">nids</span>)
+                                 .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;name LIKE ?&#39;</span>, <span class="ruby-string">&#39;lat:&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">lat</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">lat</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>)
+                                 .<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:nid</span>)
+    <span class="ruby-identifier">nids</span> = <span class="ruby-identifier">nids</span> <span class="ruby-operator">||</span> []
+    <span class="ruby-identifier">items</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">includes</span>(<span class="ruby-value">:tag</span>)
+                .<span class="ruby-identifier">references</span>(<span class="ruby-value">:node</span>, <span class="ruby-value">:term_data</span>)
+                .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.nid IN (?) AND term_data.name LIKE ?&#39;</span>, <span class="ruby-identifier">nids</span>, <span class="ruby-string">&#39;lon:&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">lon</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">lon</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>)
+                .<span class="ruby-identifier">limit</span>(<span class="ruby-value">200</span>)
+                .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node.nid DESC&#39;</span>)
+    <span class="ruby-identifier">a</span> = <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-identifier">output</span> = <span class="ruby-identifier">a</span>.<span class="ruby-identifier">render_to_string</span>(<span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;map/_leaflet&quot;</span>, 
+                                <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span>   <span class="ruby-keyword">false</span>, 
+                                <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span>   {
+                                  <span class="ruby-identifier">lat</span><span class="ruby-operator">:</span>   <span class="ruby-identifier">lat</span>,
+                                  <span class="ruby-identifier">lon</span><span class="ruby-operator">:</span>   <span class="ruby-identifier">lon</span>,
+                                  <span class="ruby-identifier">items</span><span class="ruby-operator">:</span> <span class="ruby-identifier">items</span>
+                                }
+             )
+    <span class="ruby-identifier">output</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-people_grid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">people_grid</span><span
+            class="method-args">(body, _page = 1)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>in our interface, “users” are known as “people” because it&#39;s more human</p>
+          
+          
+
+          
+          <div class="method-source-code" id="people_grid-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/node_shared.rb, line 206</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">people_grid</span>(<span class="ruby-identifier">body</span>, <span class="ruby-identifier">_page</span> = <span class="ruby-value">1</span>)
+  <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[^\&gt;`](\&lt;p\&gt;)?\[people\:(\S+)\]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_tagname</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">tagname</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-identifier">users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+                .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:user_tags</span>)
+                .<span class="ruby-identifier">references</span>(<span class="ruby-value">:user_tags</span>)
+                .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;user_tags.value = ?&#39;</span>, <span class="ruby-identifier">tagname</span>)
+    <span class="ruby-identifier">output</span> = <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">output</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;&lt;p&gt;&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">1</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&#39;&lt;p&gt;&#39;</span>
+    <span class="ruby-identifier">a</span> = <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-identifier">output</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">render_to_string</span>(<span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;grids/_people&quot;</span>, 
+                                 <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span>   <span class="ruby-keyword">false</span>, 
+                                 <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span>   {
+                                   <span class="ruby-identifier">tagname</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tagname</span>,
+                                   <span class="ruby-identifier">randomSeed</span><span class="ruby-operator">:</span> <span class="ruby-identifier">rand</span>(<span class="ruby-value">1000</span>).<span class="ruby-identifier">to_s</span>,
+                                   <span class="ruby-identifier">className</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;people-grid-&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tagname</span>.<span class="ruby-identifier">parameterize</span>,
+                                   <span class="ruby-identifier">users</span><span class="ruby-operator">:</span> <span class="ruby-identifier">users</span>
+                                 })
+    <span class="ruby-identifier">output</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-people_map" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">people_map</span><span
+            class="method-args">(body, _page = 1)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>in our interface, “users” are known as “people” because it&#39;s more human</p>
+          
+          
+
+          
+          <div class="method-source-code" id="people_map-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/node_shared.rb, line 180</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">people_map</span>(<span class="ruby-identifier">body</span>, <span class="ruby-identifier">_page</span> = <span class="ruby-value">1</span>)
+  <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[^\&gt;`](\&lt;p\&gt;)?\[map\:people\:(\S+)\:(\S+)\]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_tagname</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">tagname</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-identifier">lat</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-identifier">lon</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">3</span>)
+    <span class="ruby-identifier">nids</span> = <span class="ruby-identifier">nids</span> <span class="ruby-operator">||</span> []
+    <span class="ruby-identifier">users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+                .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:user_tags</span>)
+                .<span class="ruby-identifier">references</span>(<span class="ruby-value">:user_tags</span>)
+                .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;user_tags.value LIKE ?&#39;</span>, <span class="ruby-string">&#39;lat:&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">lat</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">lat</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>)
+    <span class="ruby-identifier">a</span> = <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-identifier">output</span> = <span class="ruby-identifier">a</span>.<span class="ruby-identifier">render_to_string</span>(<span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;map/_leaflet&quot;</span>, 
+                                <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span>   <span class="ruby-keyword">false</span>, 
+                                <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span>   {
+                                  <span class="ruby-identifier">lat</span><span class="ruby-operator">:</span>   <span class="ruby-identifier">lat</span>,
+                                  <span class="ruby-identifier">lon</span><span class="ruby-operator">:</span>   <span class="ruby-identifier">lon</span>,
+                                  <span class="ruby-identifier">items</span><span class="ruby-operator">:</span> <span class="ruby-identifier">users</span>,
+                                  <span class="ruby-identifier">people</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>
+                                }
+             )
+    <span class="ruby-identifier">output</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-questions_grid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">questions_grid</span><span
+            class="method-args">(body, _page = 1)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>rubular regex: <a
+href="http://rubular.com/r/hBEThNL4qd">rubular.com/r/hBEThNL4qd</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="questions_grid-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/node_shared.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">questions_grid</span>(<span class="ruby-identifier">body</span>, <span class="ruby-identifier">_page</span> = <span class="ruby-value">1</span>)
+  <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[^\&gt;`](\&lt;p\&gt;)?\[questions\:(\S+)\]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_tagname</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">tagname</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-identifier">nodes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;note&#39;</span>)
+                .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:revision</span>, <span class="ruby-value">:tag</span>)
+                .<span class="ruby-identifier">references</span>(<span class="ruby-value">:node_revisions</span>, <span class="ruby-value">:term_data</span>)
+                .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name = ?&#39;</span>, <span class="ruby-node">&quot;question:#{tagname}&quot;</span>)
+                .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node_revisions.timestamp DESC&#39;</span>)
+    <span class="ruby-identifier">output</span> = <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">output</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;&lt;p&gt;&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">1</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&#39;&lt;p&gt;&#39;</span>
+    <span class="ruby-identifier">a</span> = <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-identifier">output</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">render_to_string</span>(<span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;grids/_notes&quot;</span>, 
+                                 <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span>   <span class="ruby-keyword">false</span>, 
+                                 <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span>   {
+                                   <span class="ruby-identifier">tagname</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tagname</span>,
+                                   <span class="ruby-identifier">randomSeed</span><span class="ruby-operator">:</span> <span class="ruby-identifier">rand</span>(<span class="ruby-value">1000</span>).<span class="ruby-identifier">to_s</span>,
+                                   <span class="ruby-identifier">className</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;questions-grid-&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tagname</span>.<span class="ruby-identifier">parameterize</span>,
+                                   <span class="ruby-identifier">nodes</span><span class="ruby-operator">:</span> <span class="ruby-identifier">nodes</span>,
+                                   <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;questions&quot;</span>
+                                 })
+    <span class="ruby-identifier">output</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-upgrades_grid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">upgrades_grid</span><span
+            class="method-args">(body)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="upgrades_grid-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/node_shared.rb, line 101</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">upgrades_grid</span>(<span class="ruby-identifier">body</span>)
+  <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[^\&gt;`](\&lt;p\&gt;)?\[upgrades\:(\S+)\]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_tagname</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">tagname</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-identifier">nodes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">upgrades</span>(<span class="ruby-identifier">tagname</span>)
+                .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node.cached_likes DESC&#39;</span>)
+    <span class="ruby-identifier">output</span> = <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">output</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;&lt;p&gt;&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">1</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&#39;&lt;p&gt;&#39;</span>
+    <span class="ruby-identifier">a</span> = <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-identifier">output</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">render_to_string</span>(<span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;grids/_notes&quot;</span>, 
+                                 <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span>   <span class="ruby-keyword">false</span>, 
+                                 <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span>   {
+                                   <span class="ruby-identifier">tagname</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tagname</span>,
+                                   <span class="ruby-identifier">randomSeed</span><span class="ruby-operator">:</span> <span class="ruby-identifier">rand</span>(<span class="ruby-value">1000</span>).<span class="ruby-identifier">to_s</span>,
+                                   <span class="ruby-identifier">className</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;upgrades-grid-&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tagname</span>.<span class="ruby-identifier">parameterize</span>,
+                                   <span class="ruby-identifier">nodes</span><span class="ruby-operator">:</span> <span class="ruby-identifier">nodes</span>,
+                                   <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;upgrades&quot;</span>
+                                 })
+    <span class="ruby-identifier">output</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-wikis_grid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">wikis_grid</span><span
+            class="method-args">(body, _page = 1)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="wikis_grid-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/node_shared.rb, line 228</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">wikis_grid</span>(<span class="ruby-identifier">body</span>, <span class="ruby-identifier">_page</span> = <span class="ruby-value">1</span>)
+   <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[^\&gt;`](\&lt;p\&gt;)?\[wikis\:(\S+)\]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_tagname</span><span class="ruby-operator">|</span>
+     <span class="ruby-identifier">tagname</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">2</span>)
+     <span class="ruby-identifier">nodes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;page&#39;</span>)
+                 .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:revision</span>, <span class="ruby-value">:tag</span>)
+                 .<span class="ruby-identifier">references</span>(<span class="ruby-value">:term_data</span>, <span class="ruby-value">:node_revisions</span>)
+                 .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name = ?&#39;</span>, <span class="ruby-identifier">tagname</span>)
+                 .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node_revisions.timestamp DESC&#39;</span>)
+     <span class="ruby-identifier">output</span> = <span class="ruby-string">&#39;&#39;</span>
+     <span class="ruby-identifier">output</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;&lt;p&gt;&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">last_match</span>(<span class="ruby-value">1</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&#39;&lt;p&gt;&#39;</span>
+     <span class="ruby-identifier">a</span> = <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">new</span>()
+     <span class="ruby-identifier">output</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">render_to_string</span>(<span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;grids/_wikis&quot;</span>, 
+                                  <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span>   <span class="ruby-keyword">false</span>, 
+                                  <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span>   {
+                                    <span class="ruby-identifier">tagname</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tagname</span>,
+                                    <span class="ruby-identifier">randomSeed</span><span class="ruby-operator">:</span> <span class="ruby-identifier">rand</span>(<span class="ruby-value">1000</span>).<span class="ruby-identifier">to_s</span>,
+                                    <span class="ruby-identifier">className</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;wikis-grid-&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tagname</span>.<span class="ruby-identifier">parameterize</span>,
+                                    <span class="ruby-identifier">nodes</span><span class="ruby-operator">:</span> <span class="ruby-identifier">nodes</span>,
+                                    <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;wikis&quot;</span>
+                                  })
+     <span class="ruby-identifier">output</span>
+   <span class="ruby-keyword">end</span>
+ <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-liked_by" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">liked_by</span><span
+            class="method-args">(uid)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="liked_by-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/node_shared.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">liked_by</span>(<span class="ruby-identifier">uid</span>)
+  <span class="ruby-identifier">likers</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:uid</span>).<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">uid</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-likes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">likes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="likes-source">
+            <pre><span class="ruby-comment"># File app/models/concerns/node_shared.rb, line 4</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">likes</span>
+  <span class="ruby-identifier">cached_likes</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
