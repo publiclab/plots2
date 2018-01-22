@@ -29,14 +29,35 @@ class TagController < ApplicationController
                .group(:name)
                .order('count DESC')
                .paginate(page: params[:page], per_page: 24)
-    else
+    elsif @toggle == 2
     @tags = Tag.joins(:node_tag, :node)
                .select('node.nid, node.status, term_data.*, community_tags.*')
                .where('node.status = ?', 1)
                .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                .group(:name)
                .order('name')
-               .paginate(page: params[:page], per_page: 24)    
+               .paginate(page: params[:page], per_page: 24)
+    else
+      tags = Tag.joins(:node_tag, :node)
+                  .select('node.nid, node.status, term_data.*, community_tags.*')
+                  .where('node.status = ?', 1)
+                  .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+                  .group(:name)
+                  .order('name')
+                  .paginate(page: params[:page], per_page: 24)
+
+      followed = []
+      not_followed = []
+      tags.each do |tag|
+        if current_user.following(tag.name) == true
+          followed.append(tag.tid)
+        else
+          not_followed.append(tag.tid)
+        end
+      end
+
+      ids = followed + not_followed
+      @tags = Tag.where(tid: ids). sort_by{|p| ids.index(p.tid) }.paginate(page: params[:page], per_page: 24)
     end
   end
 
@@ -64,7 +85,7 @@ class TagController < ApplicationController
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
                   .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
-                  .page(params[:page])
+                  .paginate(page: params[:page], per_page: 24)
                   .order('node_revisions.timestamp DESC')
     else
       @tags = Tag.where(name: params[:id])
@@ -72,7 +93,7 @@ class TagController < ApplicationController
                   .includes(:revision, :tag)
                   .references(:term_data, :node_revisions)
                   .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
-                  .page(params[:page])
+                  .paginate(page: params[:page], per_page: 24)
                   .order('node_revisions.timestamp DESC')
     end
 
@@ -131,6 +152,7 @@ class TagController < ApplicationController
     @user = User.find_by(name: params[:author])
     @title = "'" + @tagname.to_s + "' by " +  params[:author]
     @notes = Tag.tagged_nodes_by_author(@tagname, @user)
+                 .paginate(page: params[:page], per_page: 24)    
     @unpaginated = true
     @node_type = 'note'
     @wiki = nil
@@ -154,7 +176,7 @@ class TagController < ApplicationController
   def widget
     num = params[:n] || 4
     nids = Tag.find_nodes_by_type(params[:id], 'note', num).collect(&:nid)
-    @notes = Node.page(params[:page])
+    @notes = Node.paginate(page: params[:page], per_page: 24)
                  .where('status = 1 AND nid in (?)', nids)
                  .order('nid DESC')
     render layout: false
@@ -238,8 +260,9 @@ class TagController < ApplicationController
   # should delete only the term_node/node_tag (instance), not the term_data (class)
   def delete
     node_tag = NodeTag.where(nid: params[:nid], tid: params[:tid]).first
+    node = Node.where(nid: params[:nid]).first
     # only admins, mods, and tag authors can delete other peoples' tags
-    if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator'
+    if node_tag.uid == current_user.uid || current_user.role == 'admin' || current_user.role == 'moderator' || node.uid == current_user.uid
 
       node_tag.delete
       respond_with do |format|

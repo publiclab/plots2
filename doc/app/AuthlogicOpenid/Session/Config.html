@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>module AuthlogicOpenid::Session::Config - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-auto_register">#auto_register</a>
+    
+    <li ><a href="#method-i-auto_register-3D">#auto_register=</a>
+    
+    <li ><a href="#method-i-auto_register_value">#auto_register_value</a>
+    
+    <li ><a href="#method-i-find_by_openid_identifier_method">#find_by_openid_identifier_method</a>
+    
+    <li ><a href="#method-i-find_by_openid_identifier_method-3D">#find_by_openid_identifier_method=</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-AuthlogicOpenid::Session::Config">
+  <h1 id="module-AuthlogicOpenid::Session::Config" class="module">
+    module AuthlogicOpenid::Session::Config
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-auto_register" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">auto_register</span><span
+            class="method-args">(value=true)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Add this in your <a href="../Session.html">Session</a> object to Auto
+Register a new user using openid via sreg</p>
+          
+          
+
+          
+          <div class="method-source-code" id="auto_register-source">
+            <pre><span class="ruby-comment"># File lib/authlogic_openid/authlogic_openid/session.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">auto_register</span>(<span class="ruby-identifier">value</span>=<span class="ruby-keyword">true</span>)
+  <span class="ruby-identifier">auto_register_value</span>(<span class="ruby-identifier">value</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Config.html#method-i-auto_register-3D">auto_register=</a>
+        </div>
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-auto_register-3D" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">auto_register=</span><span
+            class="method-args">(value=true)</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="Config.html#method-i-auto_register">auto_register</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="method-i-auto_register_value" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">auto_register_value</span><span
+            class="method-args">(value=nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="auto_register_value-source">
+            <pre><span class="ruby-comment"># File lib/authlogic_openid/authlogic_openid/session.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">auto_register_value</span>(<span class="ruby-identifier">value</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">rw_config</span>(<span class="ruby-value">:auto_register</span>,<span class="ruby-identifier">value</span>,<span class="ruby-keyword">false</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-find_by_openid_identifier_method" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_by_openid_identifier_method</span><span
+            class="method-args">(value = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>What method should we call to find a record by the openid_identifier? This
+is useful if you want to store multiple openid_identifiers for a single
+record. You could do something like:</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">User</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">find_by_openid_identifier</span>(<span class="ruby-identifier">identifier</span>)
+    <span class="ruby-identifier">user</span>.<span class="ruby-identifier">first</span>(:<span class="ruby-identifier">conditions</span> =<span class="ruby-operator">&gt;</span> {:<span class="ruby-identifier">openid_identifiers</span> =<span class="ruby-operator">&gt;</span> {:<span class="ruby-identifier">identifier</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">identifier</span>}})
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>Obviously the above depends on what you are calling your assocition, etc.
+But you get the point.</p>
+<ul><li>
+<p><code>Default:</code> :find_by_openid_identifier</p>
+</li><li>
+<p><code>Accepts:</code> Symbol</p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="find_by_openid_identifier_method-source">
+            <pre><span class="ruby-comment"># File lib/authlogic_openid/authlogic_openid/session.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_by_openid_identifier_method</span>(<span class="ruby-identifier">value</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">rw_config</span>(<span class="ruby-value">:find_by_openid_identifier_method</span>, <span class="ruby-identifier">value</span>, <span class="ruby-value">:find_by_openid_identifier</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Config.html#method-i-find_by_openid_identifier_method-3D">find_by_openid_identifier_method=</a>
+        </div>
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-find_by_openid_identifier_method-3D" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">find_by_openid_identifier_method=</span><span
+            class="method-args">(value = nil)</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="Config.html#method-i-find_by_openid_identifier_method">find_by_openid_identifier_method</a>
+        </div>
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

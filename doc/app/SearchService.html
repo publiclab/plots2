@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class SearchService - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-comments">#comments</a>
+    
+    <li ><a href="#method-i-find_comments">#find_comments</a>
+    
+    <li ><a href="#method-i-find_maps">#find_maps</a>
+    
+    <li ><a href="#method-i-find_nodes">#find_nodes</a>
+    
+    <li ><a href="#method-i-find_notes">#find_notes</a>
+    
+    <li ><a href="#method-i-find_tags">#find_tags</a>
+    
+    <li ><a href="#method-i-find_users">#find_users</a>
+    
+    <li ><a href="#method-i-maps">#maps</a>
+    
+    <li ><a href="#method-i-nodes">#nodes</a>
+    
+    <li ><a href="#method-i-notes">#notes</a>
+    
+    <li ><a href="#method-i-tags">#tags</a>
+    
+    <li ><a href="#method-i-textSearch_all">#textSearch_all</a>
+    
+    <li ><a href="#method-i-textSearch_maps">#textSearch_maps</a>
+    
+    <li ><a href="#method-i-textSearch_notes">#textSearch_notes</a>
+    
+    <li ><a href="#method-i-textSearch_profiles">#textSearch_profiles</a>
+    
+    <li ><a href="#method-i-textSearch_questions">#textSearch_questions</a>
+    
+    <li ><a href="#method-i-textSearch_tags">#textSearch_tags</a>
+    
+    <li ><a href="#method-i-users">#users</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-SearchService">
+  <h1 id="class-SearchService" class="class">
+    class SearchService
+  </h1>
+
+  <section class="description">
+    
+<p>The <a href="SearchService.html">SearchService</a> class is a utility class
+whose purpose is to provide detailed responses to queries within different
+categories (record types, functionality, subsystems, etc). Though similar
+in operation to the <a href="TypeaheadService.html">TypeaheadService</a>,
+the implementation is separate, in that the goal of the response is to
+provide <em>detailed</em> results at a deep level.  In effect, <a
+href="TypeaheadService.html">TypeaheadService</a> provides pointers to
+better searches, while <a href="SearchService.html">SearchService</a>
+provides deep and detailed information. TODO: Refactor <a
+href="TypeaheadService.html">TypeaheadService</a> and <a
+href="SearchService.html">SearchService</a> so that common functions come
+from a higher level class?</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>; <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-comments" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">comments</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="comments-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">comments</span>
+  <span class="ruby-ivar">@comments</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">find_comments</span>(<span class="ruby-identifier">params</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-find_comments" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_comments</span><span
+            class="method-args">(input, limit = 5)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="find_comments-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 50</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_comments</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">5</span>)
+  <span class="ruby-constant">Comment</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+         .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+         .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;status = 1 AND comment LIKE ?&#39;</span>, <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">input</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-find_maps" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_maps</span><span
+            class="method-args">(input, limit = 5)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="find_maps-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_maps</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">5</span>)
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;type = &quot;map&quot; AND node.status = 1 AND title LIKE ?&#39;</span>, <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">input</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-find_nodes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_nodes</span><span
+            class="method-args">(input, limit = 5)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="find_nodes-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_nodes</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">5</span>)
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.status = 1 AND title LIKE ?&#39;</span>, <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">input</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-find_notes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_notes</span><span
+            class="method-args">(input, limit = 5)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>search for node title only FIXme with solr</p>
+          
+          
+
+          
+          <div class="method-source-code" id="find_notes-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 64</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_notes</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">5</span>)
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;type = &quot;note&quot; AND node.status = 1 AND title LIKE ?&#39;</span>, <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">input</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-find_tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_tags</span><span
+            class="method-args">(input, limit = 5)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="find_tags-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 42</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_tags</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">5</span>)
+  <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">includes</span>(<span class="ruby-value">:node</span>)
+     .<span class="ruby-identifier">references</span>(<span class="ruby-value">:node</span>)
+     .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.status = 1&#39;</span>)
+     .<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+     .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;name LIKE ?&#39;</span>, <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">input</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-find_users" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_users</span><span
+            class="method-args">(input, limit = 10)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="find_users-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_users</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">limit</span> = <span class="ruby-value">10</span>)
+  <span class="ruby-constant">User</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;id DESC&#39;</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;username LIKE ?&#39;</span>, <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">input</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-maps" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">maps</span><span
+            class="method-args">(params)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="maps-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">maps</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-ivar">@maps</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">find_maps</span>(<span class="ruby-identifier">params</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-nodes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">nodes</span><span
+            class="method-args">(params)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="nodes-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">nodes</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-ivar">@nodes</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">find_nodes</span>(<span class="ruby-identifier">params</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-notes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">notes</span><span
+            class="method-args">(params)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="notes-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">notes</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-ivar">@notes</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">find_notes</span>(<span class="ruby-identifier">params</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tags</span><span
+            class="method-args">(params)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="tags-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 15</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tags</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-ivar">@tags</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">find_tags</span>(<span class="ruby-identifier">params</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-textSearch_all" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">textSearch_all</span><span
+            class="method-args">(srchString)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Run a search in any of the associated systems for references that contain
+the search string</p>
+          
+          
+
+          
+          <div class="method-source-code" id="textSearch_all-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 77</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">textSearch_all</span>(<span class="ruby-identifier">srchString</span>)
+  <span class="ruby-identifier">sresult</span> = <span class="ruby-constant">DocList</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">srchString</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">srchString</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-comment"># notes</span>
+    <span class="ruby-identifier">noteList</span> = <span class="ruby-identifier">textSearch_notes</span>(<span class="ruby-identifier">srchString</span>)
+    <span class="ruby-identifier">sresult</span>.<span class="ruby-identifier">addAll</span>(<span class="ruby-identifier">noteList</span>.<span class="ruby-identifier">items</span>)
+
+    <span class="ruby-comment"># Node search</span>
+    <span class="ruby-constant">Node</span>.<span class="ruby-identifier">limit</span>(<span class="ruby-value">5</span>)
+        .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>)
+        .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;(type = &quot;page&quot; OR type = &quot;place&quot; OR type = &quot;tool&quot;) AND node.status = 1 AND title LIKE ?&#39;</span>, <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">srchString</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>)
+        .<span class="ruby-identifier">select</span>(<span class="ruby-string">&#39;title,type,nid,path&#39;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">doc</span> = <span class="ruby-constant">DocResult</span>.<span class="ruby-identifier">fromSearch</span>(<span class="ruby-identifier">match</span>.<span class="ruby-identifier">nid</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">icon</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">path</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">title</span>, <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-value">0</span>)
+      <span class="ruby-identifier">sresult</span>.<span class="ruby-identifier">addDoc</span>(<span class="ruby-identifier">doc</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># User profiles</span>
+    <span class="ruby-identifier">userList</span> = <span class="ruby-identifier">textSearch_profiles</span>(<span class="ruby-identifier">srchString</span>)
+    <span class="ruby-identifier">sresult</span>.<span class="ruby-identifier">addAll</span>(<span class="ruby-identifier">userList</span>.<span class="ruby-identifier">items</span>)
+
+    <span class="ruby-comment"># Tags</span>
+    <span class="ruby-identifier">tagList</span> = <span class="ruby-identifier">textSearch_tags</span>(<span class="ruby-identifier">srchString</span>)
+    <span class="ruby-identifier">sresult</span>.<span class="ruby-identifier">addAll</span>(<span class="ruby-identifier">tagList</span>.<span class="ruby-identifier">items</span>)
+    <span class="ruby-comment"># maps</span>
+    <span class="ruby-identifier">mapList</span> = <span class="ruby-identifier">textSearch_maps</span>(<span class="ruby-identifier">srchString</span>)
+    <span class="ruby-identifier">sresult</span>.<span class="ruby-identifier">addAll</span>(<span class="ruby-identifier">mapList</span>.<span class="ruby-identifier">items</span>)
+    <span class="ruby-comment"># questions</span>
+    <span class="ruby-identifier">qList</span> = <span class="ruby-identifier">textSearch_questions</span>(<span class="ruby-identifier">srchString</span>)
+    <span class="ruby-identifier">sresult</span>.<span class="ruby-identifier">addAll</span>(<span class="ruby-identifier">qList</span>.<span class="ruby-identifier">items</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">sresult</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-textSearch_maps" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">textSearch_maps</span><span
+            class="method-args">(srchString)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Search maps for matching text</p>
+          
+          
+
+          
+          <div class="method-source-code" id="textSearch_maps-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 136</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">textSearch_maps</span>(<span class="ruby-identifier">srchString</span>)
+  <span class="ruby-identifier">sresult</span> = <span class="ruby-constant">DocList</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">srchString</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">srchString</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-comment"># maps</span>
+    <span class="ruby-identifier">maps</span>(<span class="ruby-identifier">srchString</span>).<span class="ruby-identifier">select</span>(<span class="ruby-string">&#39;title,type,nid,path&#39;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">doc</span> = <span class="ruby-constant">DocResult</span>.<span class="ruby-identifier">fromSearch</span>(<span class="ruby-identifier">match</span>.<span class="ruby-identifier">nid</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">icon</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">path</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">title</span>, <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-value">0</span>)
+      <span class="ruby-identifier">sresult</span>.<span class="ruby-identifier">addDoc</span>(<span class="ruby-identifier">doc</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">sresult</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-textSearch_notes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">textSearch_notes</span><span
+            class="method-args">(srchString)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Search notes for matching strings</p>
+          
+          
+
+          
+          <div class="method-source-code" id="textSearch_notes-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 123</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">textSearch_notes</span>(<span class="ruby-identifier">srchString</span>)
+  <span class="ruby-identifier">sresult</span> = <span class="ruby-constant">DocList</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">srchString</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">srchString</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-comment"># notes</span>
+    <span class="ruby-identifier">find_notes</span>(<span class="ruby-identifier">srchString</span>, <span class="ruby-value">25</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">doc</span> = <span class="ruby-constant">DocResult</span>.<span class="ruby-identifier">fromSearch</span>(<span class="ruby-identifier">match</span>.<span class="ruby-identifier">nid</span>, <span class="ruby-string">&#39;file&#39;</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">path</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">title</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">body</span>.<span class="ruby-identifier">split</span>(<span class="ruby-node">/#+.+\n+/</span>, <span class="ruby-value">5</span>)[<span class="ruby-value">1</span>], <span class="ruby-value">0</span>)
+      <span class="ruby-identifier">sresult</span>.<span class="ruby-identifier">addDoc</span>(<span class="ruby-identifier">doc</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">sresult</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-textSearch_profiles" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">textSearch_profiles</span><span
+            class="method-args">(srchString)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Search profiles for matching text</p>
+          
+          
+
+          
+          <div class="method-source-code" id="textSearch_profiles-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 110</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">textSearch_profiles</span>(<span class="ruby-identifier">srchString</span>)
+  <span class="ruby-identifier">sresult</span> = <span class="ruby-constant">DocList</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">srchString</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">srchString</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-comment"># User profiles</span>
+    <span class="ruby-identifier">users</span>(<span class="ruby-identifier">srchString</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">doc</span> = <span class="ruby-constant">DocResult</span>.<span class="ruby-identifier">fromSearch</span>(<span class="ruby-value">0</span>, <span class="ruby-string">&#39;user&#39;</span>, <span class="ruby-string">&#39;/profile/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">match</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">name</span>, <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-value">0</span>)
+      <span class="ruby-identifier">sresult</span>.<span class="ruby-identifier">addDoc</span>(<span class="ruby-identifier">doc</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">sresult</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-textSearch_questions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">textSearch_questions</span><span
+            class="method-args">(srchString)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Search question entries for matching text</p>
+          
+          
+
+          
+          <div class="method-source-code" id="textSearch_questions-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 170</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">textSearch_questions</span>(<span class="ruby-identifier">srchString</span>)
+  <span class="ruby-identifier">sresult</span> = <span class="ruby-constant">DocList</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">questions</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(
+    <span class="ruby-string">&#39;type = &quot;note&quot; AND node.status = 1 AND title LIKE ?&#39;</span>,
+    <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">srchString</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>
+  )
+                  .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:tag</span>)
+                  .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name LIKE ?&#39;</span>, <span class="ruby-string">&#39;question:%&#39;</span>)
+                  .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;node.nid DESC&#39;</span>)
+                  .<span class="ruby-identifier">limit</span>(<span class="ruby-value">25</span>)
+  <span class="ruby-identifier">questions</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">doc</span> = <span class="ruby-constant">DocResult</span>.<span class="ruby-identifier">fromSearch</span>(<span class="ruby-identifier">match</span>.<span class="ruby-identifier">nid</span>, <span class="ruby-string">&#39;question-circle&#39;</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">path</span>(<span class="ruby-value">:question</span>), <span class="ruby-identifier">match</span>.<span class="ruby-identifier">title</span>, <span class="ruby-value">0</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">answers</span>.<span class="ruby-identifier">length</span>.<span class="ruby-identifier">to_i</span>)
+    <span class="ruby-identifier">sresult</span>.<span class="ruby-identifier">addDoc</span>(<span class="ruby-identifier">doc</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">sresult</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-textSearch_tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">textSearch_tags</span><span
+            class="method-args">(srchString)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Search documents with matching tag values The search string that is passed
+in is split into tokens, and the tag names are compared and chained to the
+notes that are tagged with those values</p>
+          
+          
+
+          
+          <div class="method-source-code" id="textSearch_tags-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 151</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">textSearch_tags</span>(<span class="ruby-identifier">srchString</span>)
+  <span class="ruby-identifier">sresult</span> = <span class="ruby-constant">DocList</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">srchString</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">srchString</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-comment"># Tags</span>
+    <span class="ruby-identifier">sterms</span> = <span class="ruby-identifier">srchString</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39; &#39;</span>)
+    <span class="ruby-identifier">tlist</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">sterms</span>)
+               .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:node_tag</span>)
+               .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:node</span>)
+               .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.status = 1&#39;</span>)
+               .<span class="ruby-identifier">select</span>(<span class="ruby-string">&#39;DISTINCT node.nid,node.title,node.path&#39;</span>)
+    <span class="ruby-identifier">tlist</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">match</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">tagdoc</span> = <span class="ruby-constant">DocResult</span>.<span class="ruby-identifier">fromSearch</span>(<span class="ruby-identifier">match</span>.<span class="ruby-identifier">nid</span>, <span class="ruby-string">&#39;tag&#39;</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">path</span>, <span class="ruby-identifier">match</span>.<span class="ruby-identifier">title</span>, <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-value">0</span>)
+      <span class="ruby-identifier">sresult</span>.<span class="ruby-identifier">addDoc</span>(<span class="ruby-identifier">tagdoc</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">sresult</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-users" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">users</span><span
+            class="method-args">(params)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="users-source">
+            <pre><span class="ruby-comment"># File app/services/search_service.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">users</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-ivar">@users</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">find_users</span>(<span class="ruby-identifier">params</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

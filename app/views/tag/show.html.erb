@@ -21,6 +21,9 @@
         <p><%= link_to("Read more", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).length > 1 %></p>
       <% end %>
     </div>
+  <% elsif @wildcard %>
+    <p><i>This is a wildcard tag search. Please enter a tag without wildcards to display lead wiki pages.</i></p>
+    <p>Wildcard tag searches use the * asterisk in their URLs</p>
   <% else %>
     <p>This topic has no lead wiki page.</p>
     <p><a class="btn btn-primary" href="/wiki/<%= params[:id] %>"><span class="fa fa-plus fa-white"></span> Add one now</a></p>
@@ -47,7 +50,7 @@
     <a class="btn btn-default btn-sm" href="/feed/tag/<%= params[:id] %>.rss"><i class="fa fa-rss"></i> RSS</a>
     <% unless @wildcard %>
       <% if current_user.following(params[:id]) %>
-        <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> <%= t('tag.show.following') %> <b><%= params[:id] %></b></a>
+        <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= params[:id] %>" data-method="delete"><i class="fa fa-eye"></i> <%= t('tag.show.following') %> <b><%= params[:id] %></b></a>
       <% else %>
         <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= params[:id] %>"><i class="fa fa-eye"></i> <%= t('tag.show.follow') %> <b><%= params[:id] %></b></a>
       <% end %>
@@ -72,6 +75,8 @@
       <li class="disabled"<% if @node_type == "maps" %> class="active"<% end %>><a href="#" rel="tooltip" title="Maps can't be listed for tag searches with Authors"><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
       <li class="disabled"<% if @node_type == "contributors" %> class="active"<% end %>><a href="#" rel="tooltip" title="Contributors can't be listed for tag searches with Authors" ><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %></a></li>    <% end %>
   </ul>
+
+  <br />
 
   <div class="tab-content">
 
