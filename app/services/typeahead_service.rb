@@ -105,6 +105,9 @@ class TypeaheadService
       # questions
       qsrch = search_questions(srchString, limit)
       sresult.addAll(qsrch.getTags)
+      #comments
+      commentsrch = search_comments(srchString, limit)
+      sresult.addAll(commentsrch.getTags)
     end
     sresult
   end
@@ -214,4 +217,21 @@ class TypeaheadService
     end
     sresult
   end
+
+  # Search comments for matching text
+  def search_comments(srchString, limit = 5)
+    sresult = TagList.new
+    unless srchString.nil? || srchString == 0
+      comments(srchString, limit).each do |match|
+        tval = TagResult.new
+        tval.tagId = match.pid
+        tval.tagVal = match.comment.truncate(20)
+        tval.tagType = 'comment'
+        tval.tagSource = match.parent.path
+        sresult.addTag(tval)
+      end
+    end
+    sresult
+  end
+
 end

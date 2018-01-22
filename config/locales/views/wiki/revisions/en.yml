@@ -11,8 +11,7 @@ en:
         <th>#</th>
         <th>User</th>
         <th>Created</th>
-        <th></th>
-        <th></th>
+        <th>Action</th>
         <th>Raw</th>
       moderated: "MODERATED"
       current: "CURRENT"

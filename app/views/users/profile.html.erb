@@ -6,7 +6,7 @@
     </div>
   <% end %>
   
-  <div style="text-align: -webkit-center;">
+   <div style="text-align: -webkit-center;">
     <% if @twitter.nil? == false %>
       <a href="<%= @twitter %>" >
       <i class="fa fa-twitter fa-3x" aria-hidden="true"></i>
@@ -92,6 +92,10 @@
     <button id="btn-token" class="btn btn-default btn-block">My Access Token</button>
   <% end %>
 
+  <% if @profile_user && current_user && @profile_user == current_user %>
+    <button id="link_social_media" class="btn btn-default btn-block">Link Social media</button>
+  <% end %>
+	
   <hr />
 
   <% if params[:preview] %>
@@ -200,7 +204,7 @@
     </div>
 
     <div class="tab-pane" id="maps">
-      <p><i><%= t('users.profile.view_these_maps', :url1 => "//mapknitter.org/profile/"+@user.name) %></i></p>
+      <p><i><%= raw t('users.profile.view_these_maps', :url1 => "//mapknitter.org/profile/"+@user.name) %></i></p>
       <table class="table">
         <tr>
           <th style="width:200px;"><%= t('users.profile.title') %></th>
@@ -238,6 +242,13 @@
   $('#btn-token').click(function() {
     alert("Your access token is: <%= @user.user.token %>");
   });
+
+  $('#link_social_media').click(function(){
+    var sign = prompt("Enter Your Social Media User name like twitter:publiclab or instagram:publiclab");
+    $.post('/profile/tags/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {
+        window.location='/profile/<%=@user.name %> ';
+     });
+   });
 
   (function () {
     var profile = Object.create(Profile);
