@@ -146,6 +146,12 @@ class TagTest < ActiveSupport::TestCase
     assert_not_nil top_nodes
   end
 
+  test 'contributors with specific tag name' do
+    tag = tags(:test)
+    contributors = Tag.contributors(tag.name)
+    assert_equal [2,5,1,0,6],contributors
+  end
+
   test 'contributor_count with specific tag name' do
     tag = tags(:test)
     contributor_count = Tag.contributor_count(tag.name)
