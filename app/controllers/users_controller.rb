@@ -132,6 +132,18 @@ class UsersController < ApplicationController
       @facebook = @profile_user.social_link("facebook")
       @instagram = @profile_user.social_link("instagram")
 
+      
+      @map_lat = nil
+      @map_lon = nil 
+      @map_blurred = nil 
+      if(@profile_user.has_power_tag("lat") && @profile_user.has_power_tag("lon"))
+       @map_lat = @profile_user.get_value_of_power_tag("lat").to_f
+       @map_lon = @profile_user.get_value_of_power_tag("lon").to_f
+        if(@profile_user.has_power_tag("blurred"))
+        @map_blurred = @profile_user.get_value_of_power_tag("blurred")
+        end
+      end
+
       if @user.status == 0
         if current_user && (current_user.role == "admin" || current_user.role == "moderator")
           flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
