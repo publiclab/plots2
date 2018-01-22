@@ -55,6 +55,7 @@ class TagController < ApplicationController
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
     node_type = 'map' if @node_type == 'maps'
+    node_type = 'contributor' if @node_type == 'contributors'
     qids = Node.questions.where(status: 1).collect(&:nid)
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
@@ -91,6 +92,16 @@ class TagController < ApplicationController
                 .references(:term_data)
                 .where('term_data.name = ?', params[:id])
     @length = notes.collect(&:uid).uniq.length || 0
+
+    @tagnames = [params[:id]]
+    @tag = Tag.find_by(name: params[:id])
+
+    @notes2 = Node.where(status: 1, type: 'note')
+                 .includes(:revision, :tag)
+                 .references(:term_data, :node_revisions)
+                 .where('term_data.name = ?', params[:id])
+                 .order('node_revisions.timestamp DESC')
+    @users = @notes2.collect(&:author).uniq
 
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
