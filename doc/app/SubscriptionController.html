@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class SubscriptionController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-add">#add</a>
+    
+    <li ><a href="#method-i-delete">#delete</a>
+    
+    <li ><a href="#method-i-followed">#followed</a>
+    
+    <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-tag_count">#tag_count</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-SubscriptionController">
+  <h1 id="class-SubscriptionController" class="class">
+    class SubscriptionController
+  </h1>
+
+  <section class="description">
+    
+<p>for now, adapting like_controller for just tag following.  We can create
+switches for different kinds of likes.  No route or view code as of yet.</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-add" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>for the current user, register as liking the given tag</p>
+          
+          
+
+          
+          <div class="method-source-code" id="add-source">
+            <pre><span class="ruby-comment"># File app/controllers/subscription_controller.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>
+    <span class="ruby-comment"># assume tag, for now</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;tag&quot;</span>
+      <span class="ruby-identifier">tag</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:name</span>])
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">nil?</span>
+        <span class="ruby-comment"># if the tag doesn&#39;t exist, we should create it!</span>
+        <span class="ruby-comment"># this could fail validations; error out if so... </span>
+        <span class="ruby-identifier">tag</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>({
+          <span class="ruby-value">:vid</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">3</span>, <span class="ruby-comment"># vocabulary id</span>
+          <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:name</span>],
+          <span class="ruby-value">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;&quot;</span>,
+          <span class="ruby-value">:weight</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>})
+        <span class="ruby-keyword">begin</span>
+          <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">save!</span>
+        <span class="ruby-keyword">rescue</span> <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">RecordInvalid</span>
+          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">full_messages</span>
+          <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&quot;/subscriptions&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;?_=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+          <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-comment"># test for uniqueness, handle it as a validation error if you like</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-constant">TagSelection</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">following</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>, <span class="ruby-identifier">user_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span>, <span class="ruby-identifier">tid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">tid</span>).<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-node">&quot;You are already subscribed to &#39;#{params[:name]}&#39;&quot;</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&quot;/subscriptions&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;?_=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">set_following</span>(<span class="ruby-keyword">true</span>,<span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>],<span class="ruby-identifier">tag</span>.<span class="ruby-identifier">tid</span>)
+          <span class="ruby-identifier">respond_with</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-keyword">do</span>
+              <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">xhr?</span>
+                <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>
+              <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-node">&quot;You are now following &#39;#{params[:name]}&#39;.&quot;</span>
+                <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&quot;/subscriptions&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;?_=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+              <span class="ruby-keyword">end</span>
+            <span class="ruby-keyword">end</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-string">&quot;Something went wrong!&quot;</span> <span class="ruby-comment"># silly </span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-comment"># user or node subscription</span>
+
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:warning</span>] = <span class="ruby-string">&quot;You must be logged in to subscribe for email updates; please &lt;a href=&#39;javascript:void()&#39; onClick=&#39;login()&#39;&gt;log in&lt;/a&gt; or &lt;a href=&#39;/signup&#39;&gt;create an account&lt;/a&gt;.&quot;</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&quot;/tag/&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">params</span>[<span class="ruby-value">:name</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-delete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delete</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>for the current user, remove the like from the given tag</p>
+          
+          
+
+          
+          <div class="method-source-code" id="delete-source">
+            <pre><span class="ruby-comment"># File app/controllers/subscription_controller.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>
+  <span class="ruby-comment"># assume tag, for now</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;tag&quot;</span>
+    <span class="ruby-identifier">id</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:name</span>]).<span class="ruby-identifier">tid</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-node">&quot;You are not subscribed to &#39;#{params[:name]}&#39;&quot;</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&quot;/subscriptions&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;?_=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">set_following</span>(<span class="ruby-keyword">false</span>,<span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>],<span class="ruby-identifier">id</span>) <span class="ruby-comment">#should return false if result is that following == false</span>
+      <span class="ruby-identifier">respond_with</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-keyword">do</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">xhr?</span>
+            <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>
+          <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">flash</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-node">&quot;You have stopped following &#39;#{params[:name]}&#39;.&quot;</span>
+            <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&quot;/subscriptions&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;?_=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-string">&quot;Something went wrong!&quot;</span> <span class="ruby-comment"># silly </span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&quot;/subscriptions&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;?_=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-followed" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">followed</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>for the current user, return whether is presently liked or not</p>
+          
+          
+
+          
+          <div class="method-source-code" id="followed-source">
+            <pre><span class="ruby-comment"># File app/controllers/subscription_controller.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">followed</span>
+  <span class="ruby-comment"># may be trouble: there can be multiple tags with the same name, no? We can eliminate that possibility in a migration if so.</span>
+  <span class="ruby-identifier">result</span> = <span class="ruby-constant">TagSelection</span>.<span class="ruby-identifier">find_by_user_id_and_tid</span>(<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span>, <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]) <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;tag&quot;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">result</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">result</span> = <span class="ruby-identifier">result</span>.<span class="ruby-identifier">following</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:json</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">result</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/subscription_controller.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;Subscriptions&quot;</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-value">:template</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;home/subscriptions&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tag_count" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tag_count</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>return a count of subscriptions for a given tag</p>
+          
+          
+
+          
+          <div class="method-source-code" id="tag_count-source">
+            <pre><span class="ruby-comment"># File app/controllers/subscription_controller.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tag_count</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">TagSelection</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">tid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:tid</span>], <span class="ruby-identifier">following</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
