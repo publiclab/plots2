@@ -323,7 +323,7 @@ class TagController < ApplicationController
                  .references(:term_data, :node_revisions)
                  .where('term_data.name = ?', params[:id])
                  .order('node_revisions.timestamp DESC')
-    @users = User.where(id: Tag.contributors(@tagnames[0]))
+    @users = Tag.contributors(@tagnames[0])
   end
 
   # /contributors

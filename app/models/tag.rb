@@ -63,7 +63,7 @@ class Tag < ActiveRecord::Base
       uids+=n.revision.collect(&:uid)
     end
     uids = uids.uniq
-    uids
+    User.where(id: uids)
   end
 
   def self.contributor_count(tagname)

@@ -68,7 +68,7 @@
 
   <% end %>
 
-  <% if @notes.nil? || @notes.length == 0 %>
+  <% if @users.nil? || @users.length == 0 %>
     <p><%= raw t('tag.contributors.no_contributors', :tag => params[:id]) %>:</p>
   <% else %>
     <table class="table">
@@ -78,9 +78,10 @@
       </tr>
       <% if @users %>
         <% @users.each do |user| %>
+        
         <tr>
-          <td><a href='/profile/<%= user.name %>'><i class="fa fa-user"></i> <%= user.name %></a></td>
-          <td><a href='/notes/author/<%= user.name %>/<%= params[:id] %>'><%= t('tag.contributors.notes') %> &raquo;</a></td>
+          <td><a href='/profile/<%= user.username %>'><i class="fa fa-user"></i> <%= user.username %></a></td>
+          <td><a href='/notes/author/<%= user.username %>/<%= params[:id] %>'><%= t('tag.contributors.notes') %> &raquo;</a></td>
         </tr>
         <% end %>
       <% end %>
