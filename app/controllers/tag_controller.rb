@@ -44,7 +44,6 @@ class TagController < ApplicationController
                   .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                   .group(:name)
                   .order('name')
-                  .paginate(page: params[:page], per_page: 24)
 
       followed = []
       not_followed = []
@@ -57,7 +56,7 @@ class TagController < ApplicationController
       end
 
       ids = followed + not_followed
-      @tags = Tag.where(tid: ids). sort_by{|p| ids.index(p.tid) }.paginate(page: params[:page], per_page: 24)
+      @tags = Tag.where(tid: ids).sort_by{|p| ids.index(p.tid) }.paginate(page: params[:page], per_page: 24)
     end
   end
 
