@@ -9,6 +9,9 @@ gem 'passenger'
 gem 'rails-i18n', '~> 4.0.0'
 # gem 'responders', '~> 2.0' # for Rails 4.2
 
+gem 'turbolinks'
+
+
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
   gem 'mysql2', '~> 0.3.20'
