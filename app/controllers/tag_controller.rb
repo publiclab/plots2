@@ -93,9 +93,9 @@ class TagController < ApplicationController
                 .where('term_data.name = ?', params[:id])
     @length = notes.collect(&:uid).uniq.length || 0
 
+    # fetching nodes with revisions for contributor tab data
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
-
     @notes2 = Node.where(status: 1, type: 'note')
                  .includes(:revision, :tag)
                  .references(:term_data, :node_revisions)

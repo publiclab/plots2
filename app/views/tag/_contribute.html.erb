@@ -1,38 +1,37 @@
+<div class="row">
+  <div class="col-md-9" style="padding-left: 46px">
 
-<div class="col-md-9">
-  <% if @tag %>
+    <% if @tag %>
 
-      <% if @users %>
-          <hr />
-          <div class="row" id="highlight" style=" text-align: center;">
-            <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @users.length || 0 %> contributors</h3>
-            <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @notes2.length %> research notes</h3>
-            <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @wikis.length %> wiki pages</h3>
-          </div>
-          <hr />
-      <% end %>
-
-  <% end %>
-
-  <% if @notes2.nil? || @notes2.length == 0 %>
-      <p><%= raw t('tag.contributors.no_contributors', :tag => params[:id]) %>:</p>
-  <% else %>
-      <table class="table">
-        <tr>
-          <th style="width:25%;"><%= t('tag.contributors.contributor') %></th>
-          <th><%= t('tag.contributors.notes') %></th>
-        </tr>
         <% if @users %>
-            <% @users.each do |user| %>
-                <tr>
-                  <td><a href='/profile/<%= user.name %>'><i class="fa fa-user"></i> <%= user.name %></a></td>
-                  <td><a href='/notes/author/<%= user.name %>/<%= params[:id] %>'><%= t('tag.contributors.notes') %> &raquo;</a></td>
-                </tr>
-            <% end %>
+            <br />
+            <div class="row" id="highlight" style=" text-align: center;">
+              <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @users.length || 0 %> contributors</h3>
+              <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @notes2.length %> research notes</h3>
+              <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @wikis.length %> wiki pages</h3>
+            </div>
         <% end %>
-      </table>
-  <% end %>
 
-  <hr />
+    <% end %>
 
+    <% if @notes2.nil? || @notes2.length == 0 %>
+        <p><%= raw t('tag.contributors.no_contributors', :tag => params[:id]) %>:</p>
+    <% else %>
+        <table class="table">
+          <tr>
+            <th style=" width:25%;  "><%= t('tag.contributors.contributor') %></th>
+            <th><%= t('tag.contributors.notes') %></th>
+          </tr>
+          <% if @users %>
+              <% @users.each do |user| %>
+                  <tr>
+                    <td><a href='/profile/<%= user.name %>'><i class="fa fa-user"></i> <%= user.name %></a></td>
+                    <td><a href='/notes/author/<%= user.name %>/<%= params[:id] %>'><%= t('tag.contributors.notes') %> &raquo;</a></td>
+                  </tr>
+              <% end %>
+          <% end %>
+        </table>
+        <br />
+    <% end %>
+  </div>
 </div>
