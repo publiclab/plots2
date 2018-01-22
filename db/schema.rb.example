@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180103212804) do
+ActiveRecord::Schema.define(version: 20180119204200) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20180103212804) do
     t.integer "aid",                          default: 0,  null: false
   end
 
-  add_index "comments", ["comment"], name: "index_comments_on_comment", type: :fulltext
+  add_index "comments", ["comment"], name: "index_comments_on_comment", type: :fulltext if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
   add_index "comments", ["nid"], name: "index_comments_nid", using: :btree
   add_index "comments", ["pid"], name: "index_comments_pid", using: :btree
   add_index "comments", ["status"], name: "index_comments_status", using: :btree
@@ -256,7 +256,7 @@ ActiveRecord::Schema.define(version: 20180103212804) do
     t.integer "status",                       default: 1
   end
 
-  add_index "node_revisions", ["body", "title"], name: "index_node_revisions_on_body_and_title", type: :fulltext
+  add_index "node_revisions", ["body", "title"], name: "index_node_revisions_on_body_and_title", type: :fulltext if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
   add_index "node_revisions", ["nid"], name: "index_node_revisions_nid", using: :btree
   add_index "node_revisions", ["timestamp"], name: "index_node_revisions_timestamp", using: :btree
   add_index "node_revisions", ["uid"], name: "index_node_revisions_uid", using: :btree
@@ -348,7 +348,7 @@ ActiveRecord::Schema.define(version: 20180103212804) do
   add_index "rusers", ["email"], name: "index_rusers_on_email", using: :btree
   add_index "rusers", ["persistence_token"], name: "index_rusers_on_persistence_token", using: :btree
   add_index "rusers", ["status"], name: "index_rusers_on_status", using: :btree
-  add_index "rusers", ["username", "bio"], name: "index_rusers_on_username_and_bio", type: :fulltext
+  add_index "rusers", ["username", "bio"], name: "index_rusers_on_username_and_bio", type: :fulltext if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
   add_index "rusers", ["username"], name: "index_rusers_on_username", using: :btree
 
   create_table "tag_selections", id: false, force: true do |t|

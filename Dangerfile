@@ -11,7 +11,7 @@ if git.added_files.include?("Gemfile.lock") && !git.added_files.include?("Gemfil
 end
 
 if git.added_files.any? { |files| files.start_with? "db/migrate/" } && !git.added_files.include?("schema.rb.example")
-  warn "New migrations added. Please update `schema.rb.example` by overwriting it with a copy of the up-to-date `db/schema.rb`."
+  warn "New migrations added. Please update `schema.rb.example` by overwriting it with a copy of the up-to-date `db/schema.rb`. Also, be aware to preserve the MySQL-specific conditions for full-text indices."
 end
 
 if git.commits.any? { |c| c.message =~ /^Merge branch 'master'/ }
