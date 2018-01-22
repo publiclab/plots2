@@ -275,4 +275,17 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success
     assert_equal user.email, email
   end
+
+  test 'rss feed when username is valid' do
+    user = drupal_users(:jeff)
+    get :rss, author: user.name, format: 'rss'
+    assert_response :success
+    assert_equal 'application/rss+xml', @response.content_type
+  end
+
+  test 'rss feed when username is not valid' do
+    get :rss, author: 'some hacker'
+    assert_response :redirect
+    assert_equal I18n.t('users_controller.no_user_found'), flash[:error]
+  end
 end
