@@ -316,6 +316,7 @@ class TagController < ApplicationController
 
   def contributors
     set_sidebar :tags, [params[:id]], note_count: 20
+    @wildcard = true if params[:id][-1..-1] == '*'
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
     @notes = Node.where(status: 1, type: 'note')
