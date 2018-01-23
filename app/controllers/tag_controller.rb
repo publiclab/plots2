@@ -327,12 +327,12 @@ class TagController < ApplicationController
     set_sidebar :tags, [params[:id]], note_count: 20
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
-    @notes = Node.where(status: 1, type: 'note')
+    @notes2 = Node.where(status: 1, type: 'note')
                  .includes(:revision, :tag)
                  .references(:term_data, :node_revisions)
                  .where('term_data.name = ?', params[:id])
                  .order('node_revisions.timestamp DESC')
-    @users = @notes.collect(&:author).uniq
+    @users = @notes2.collect(&:author).uniq
   end
 
   # /contributors

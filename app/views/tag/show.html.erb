@@ -114,7 +114,11 @@
 
     <% if @node_type == "contributors" %>
         <div class="tab-pane active" id="contributors">
-          <%= render :partial => "tag/contribute" %>
+          <div class="row">
+            <div class="col-md-9" style="padding-left: 46px">
+              <%= render :partial => "tag/contribute" %>
+            </div>
+          </div>
         </div>
     <% end %>
     <br />
