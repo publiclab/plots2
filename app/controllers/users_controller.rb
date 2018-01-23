@@ -175,18 +175,17 @@ class UsersController < ApplicationController
         @notes = Node.order("nid DESC")
                            .where(type: 'note', status: 1, uid: @author.uid)
                            .limit(20)
+        respond_to do |format|
+          format.rss do
+            render layout: false
+            response.headers['Content-Type'] = 'application/xml; charset=utf-8'
+            response.headers['Access-Control-Allow-Origin'] = '*'
+          end
+        end
       else
         flash[:error] = I18n.t('users_controller.no_user_found')
         redirect_to "/"
       end
-    else
-    end
-    respond_to do |format|
-      format.rss {
-        render :layout => false
-        response.headers["Content-Type"] = "application/xml; charset=utf-8"
-        response.headers["Access-Control-Allow-Origin"] = "*"
-      }
     end
   end
 

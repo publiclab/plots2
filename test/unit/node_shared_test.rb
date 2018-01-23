@@ -136,6 +136,16 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html.scan('<td class="title">').length > 1
   end
 
+  test 'about ability of power tags to exclude tags like [questions:foo!answered]' do
+    before = "Here are some questions in a table: \n\n[questions:spectrometer!answered] \n\nThis is how you make it work:\n\n`[questions:tagname!answered]`\n\n `[questions:tagname!answered]`\n\nMake sense?"
+    html = NodeShared.questions_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid questions-grid questions-grid-spectrometer questions-grid-spectrometer-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 5, html.scan('questions-grid-spectrometer').length
+    assert html.scan('<td class="title">').length > 1
+  end
+
   test 'about ability of power tags to exclude tags like [activities:foo!foo1]' do
     before = "Here are some activities in a table: \n\n[activities:spectrometer!test] \n\nThis is how you make it work:\n\n`[activities:tagname!tagname]`\n\nMake sense?"
     html = NodeShared.activities_grid(before)

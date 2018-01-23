@@ -44,7 +44,6 @@ class TagController < ApplicationController
                   .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                   .group(:name)
                   .order('name')
-                  .paginate(page: params[:page], per_page: 24)
 
       followed = []
       not_followed = []
@@ -57,13 +56,15 @@ class TagController < ApplicationController
       end
 
       ids = followed + not_followed
-      @tags = Tag.where(tid: ids). sort_by{|p| ids.index(p.tid) }.paginate(page: params[:page], per_page: 24)
+      @tags = Tag.where(tid: ids).sort_by{|p| ids.index(p.tid) }.paginate(page: params[:page], per_page: 24)
     end
   end
 
   def show
     # try for a matching /wiki/_TAGNAME_ or /_TAGNAME_
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
+    @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki && @wiki.has_power_tag('redirect') # use a redirected wiki page if it exists
+
     default_type = if params[:id].match('question:')
                      'questions'
                    else
@@ -112,7 +113,7 @@ class TagController < ApplicationController
                 .includes(:tag)
                 .references(:term_data)
                 .where('term_data.name = ?', params[:id])
-    @length = notes.collect(&:uid).uniq.length || 0
+    @length = Tag.contributor_count(params[:id]) || 0
 
     # fetching nodes with revisions for contributor tab data
     @tagnames = [params[:id]]
@@ -122,8 +123,8 @@ class TagController < ApplicationController
                  .references(:term_data, :node_revisions)
                  .where('term_data.name = ?', params[:id])
                  .order('node_revisions.timestamp DESC')
-    @users = @notes2.collect(&:author).uniq
-
+    @users = Tag.contributors(@tagnames[0])
+  
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
       format.xml  { render xml: nodes }
@@ -332,7 +333,8 @@ class TagController < ApplicationController
                  .references(:term_data, :node_revisions)
                  .where('term_data.name = ?', params[:id])
                  .order('node_revisions.timestamp DESC')
-    @users = @notes2.collect(&:author).uniq
+    
+    @users = Tag.contributors(@tagnames[0])
   end
 
   # /contributors

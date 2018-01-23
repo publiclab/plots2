@@ -53,12 +53,12 @@ class TypeaheadService
           .references(:node)
           .limit(limit)
           .where("node.type": "note", "node.status": 1)
-          .order(timestamp: :desc)
+          .order('node.changed DESC')
     else 
       Node.limit(limit)
           .group(:nid)
           .where(type: "note", status: 1)
-          .order(updated_at: :desc)
+          .order(changed: :desc)
           .where('title LIKE ?', '%' + input + '%')
     end
   end
