@@ -112,7 +112,7 @@ class TagController < ApplicationController
                 .includes(:tag)
                 .references(:term_data)
                 .where('term_data.name = ?', params[:id])
-    @length = notes.collect(&:uid).uniq.length || 0
+    @length = Tag.contributor_count(params[:id]) || 0
 
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
@@ -322,7 +322,7 @@ class TagController < ApplicationController
                  .references(:term_data, :node_revisions)
                  .where('term_data.name = ?', params[:id])
                  .order('node_revisions.timestamp DESC')
-    @users = @notes.collect(&:author).uniq
+    @users = Tag.contributors(@tagnames[0])
   end
 
   # /contributors

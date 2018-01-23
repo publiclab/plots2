@@ -146,10 +146,16 @@ class TagTest < ActiveSupport::TestCase
     assert_not_nil top_nodes
   end
 
+  test 'contributors with specific tag name' do
+    tag = tags(:test)
+    contributors = Tag.contributors(tag.name)
+    assert_equal [1,2,5,6],contributors.pluck(:id)
+  end
+
   test 'contributor_count with specific tag name' do
     tag = tags(:test)
     contributor_count = Tag.contributor_count(tag.name)
-    assert_equal 5,contributor_count
+    assert_equal 4,contributor_count
   end
 
 end
