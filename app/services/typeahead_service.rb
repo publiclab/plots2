@@ -30,6 +30,7 @@ class TypeaheadService
        .where('node.status = 1')
        .limit(limit)
        .where('name LIKE ?', '%' + input + '%')
+#       .group(:nid)
   end
 
   def comments(input, limit = 5)
