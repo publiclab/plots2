@@ -6,15 +6,13 @@
          <% end %>
             <div class="row" id="highlight" style=" text-align: center;">
               <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @users.length || 0 %> contributors</h3>
-              <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @notes2.length %> research notes</h3>
+              <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @noteCount %> research notes</h3>
               <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @wikis.length %> wiki pages</h3>
             </div>
          <% if params["action"] == "contributors"%>
              <hr />
          <% end %>
         <% end %>
-
-    <% end %>
 
   <% if current_user && params["action"] == "contributors" %>
       <!-- AJAXify -->
@@ -30,8 +28,9 @@
       <br /><br />
       <!-- AJAXify -->
   <% end %>
+ <% end %>
 
-  <% if @notes2.nil? || @notes2.length == 0 %>
+  <% if @noteCount.nil? || @noteCount == 0 %>
         <p><%= raw t('tag.contributors.no_contributors', :tag => params[:id]) %>:</p>
     <% else %>
         <table class="table">
@@ -49,4 +48,4 @@
           <% end %>
         </table>
         <br />
-    <% end %>
+  <% end %>

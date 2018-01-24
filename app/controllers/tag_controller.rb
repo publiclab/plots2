@@ -115,14 +115,9 @@ class TagController < ApplicationController
                 .where('term_data.name = ?', params[:id])
     @length = Tag.contributor_count(params[:id]) || 0
 
-    # fetching nodes with revisions for contributor tab data
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
-    @notes2 = Node.where(status: 1, type: 'note')
-                 .includes(:revision, :tag)
-                 .references(:term_data, :node_revisions)
-                 .where('term_data.name = ?', params[:id])
-                 .order('node_revisions.timestamp DESC')
+    @noteCount = Tag.taggedNodeCount(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
   
     respond_with(nodes) do |format|
@@ -328,12 +323,7 @@ class TagController < ApplicationController
     set_sidebar :tags, [params[:id]], note_count: 20
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
-    @notes2 = Node.where(status: 1, type: 'note')
-                 .includes(:revision, :tag)
-                 .references(:term_data, :node_revisions)
-                 .where('term_data.name = ?', params[:id])
-                 .order('node_revisions.timestamp DESC')
-    
+    @noteCount = Tag.taggedNodeCount(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
   end
 
