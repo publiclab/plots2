@@ -71,7 +71,7 @@ blog:
   date: <%= DateTime.now.to_i %>
 
 blog2:
-  tid: 9
+  tid: 18
   uid: 1
   nid: 13
   date: <%= DateTime.now.to_i %>
