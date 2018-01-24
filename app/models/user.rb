@@ -340,8 +340,8 @@ class User < ActiveRecord::Base
     answers = Answer.where(created_at: start_time..end_time).pluck(:uid)
     questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
     comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-    revisions = Revision.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-    contributors = (notes+answers+questions+comments+revisions).collect(&:uid).uniq.length
+    revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
+    contributors = (notes+answers+questions+comments+revisions).compact.uniq.length
     contributors
   end
 
