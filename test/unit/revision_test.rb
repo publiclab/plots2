@@ -42,10 +42,10 @@ class RevisionsTest < ActiveSupport::TestCase
   test 'previous and next revisions' do
     revision = revisions(:about_rev_4)
     # does previous respect status = 1? no.
-    new_revision = Revision.new(title: revision.title,
-                                body:  'New body',
-                                uid:   users(:bob).id,
-                                nid:   revision.nid)
+    new_revision = revision.parent.new_revision(title: revision.title,
+                                                body:  'New body',
+                                                uid:   users(:bob).id,
+                                                nid:   revision.nid)
 
     assert_difference 'revision.parent.revisions.length', 1 do
       assert new_revision.save
