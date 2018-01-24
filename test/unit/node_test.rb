@@ -155,7 +155,7 @@ class NodeTest < ActiveSupport::TestCase
     assert !node.node_tags.empty?
     assert_not_nil node.tagnames
     assert node.tagnames.first.is_a?(String)
-    assert_equal 'test awesome spectrometer activity:spectrometer', node.tagnames.join(' ')
+    assert_equal 'test awesome blog spectrometer activity:spectrometer', node.tagnames.join(' ')
     # used to generate CSS classes:
     assert_equal 'tag-test tag-awesome tag-spectrometer tag-activity-spectrometer', node.tagnames_as_classes
   end
