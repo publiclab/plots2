@@ -25,12 +25,12 @@ about_rev_3:
   title: About
   body: All about Public Lab, ONCE AGAIN
 
-about_rev_3:
+about_rev_4:
   nid: 2
-  vid: 3
+  vid: 4
   uid: 1
   title: About
-  body: All about Public Lab, ONCE MORE
+  body: All about Public Lab
 
 three:
   nid: 3
