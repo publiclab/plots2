@@ -311,7 +311,12 @@ class User < ActiveRecord::Base
   end
 
   def content_followed_in_period(start_time, end_time)
-    Node.where("created >= #{start_time.to_i}  AND changed >= #{start_time.to_i} AND created <= #{end_time.to_i}  AND changed <= #{end_time.to_i}")
+    tagnames = TagSelection.where(following: true, user_id: uid)
+    node_ids = []
+    tagnames.each do |tagname|
+      node_ids = node_ids + NodeTag.where(tid: tagname.tid).collect(&:nid)
+    end
+    Node.where(nid: node_ids).where("created >= #{start_time.to_i}  AND changed >= #{start_time.to_i} AND created <= #{end_time.to_i}  AND changed <= #{end_time.to_i}")
   end
 
   def social_link(site)
