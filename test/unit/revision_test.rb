@@ -40,7 +40,7 @@ class RevisionsTest < ActiveSupport::TestCase
   end
 
   test 'previous and next revisions' do
-    revision = revisions(:about)
+    revision = revisions(:about_rev_4)
     # does previous respect status = 1? no.
     new_revision = Revision.new(title: revision.title,
                                 body:  'New body',
