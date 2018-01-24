@@ -186,12 +186,13 @@ class Node < ActiveRecord::Base
   def latest
     revisions
       .where(status: 1)
+      .order(timestamp: :desc)
       .first
   end
 
   def revisions
     revision
-      .order('timestamp DESC')
+      .order(timestamp: :desc)
   end
 
   def revision_count
