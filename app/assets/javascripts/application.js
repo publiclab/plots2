@@ -50,4 +50,5 @@
 //= require wikis.js
 //= require chart.js/dist/Chart.js
 //= require turbolinks
+//= require google_analytics.js
 
