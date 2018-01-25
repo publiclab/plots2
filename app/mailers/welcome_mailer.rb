@@ -8,6 +8,6 @@ class WelcomeMailer < ActionMailer::Base
     subject = 'subscribe'
     @list = list
     @footer = feature('email-footer')
-    mail(to: list + '+subscribe@googlegroups.com', subject: subject, from: user.email).deliver
+    mail(to: list + '+subscribe@googlegroups.com', subject: subject, from: user.email).try(&:deliver)
   end
 end
