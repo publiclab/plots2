@@ -70,9 +70,9 @@
       <li<% if @node_type == "maps" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
       <li<% if @node_type == "contributors" %> class="active"<% end %>><a href="/contributors/tag/<%= params[:id] %>"><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %> <span class="badge"><%=@length %></span></a></li>
     <% else %>
-      <li class="disabled"<% if @node_type == "questions" %> class="active"<% end %>><a href="#" rel="tooltip" title="Questions can't be listed for tag searches with Author"><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
-      <li class="disabled"<% if @node_type == "wiki" %> class="active"<% end %>><a href="#" rel="tooltip" title="Wikis can't be listed for tag searches with Authors"><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
-      <li class="disabled"<% if @node_type == "maps" %> class="active"<% end %>><a href="#" rel="tooltip" title="Maps can't be listed for tag searches with Authors"><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
+      <li<% if @node_type == "questions" %> class="active"<% end %>><a href="/questions/tag/<%= params[:id] %>/author/<%= params[:author] %>" ><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
+      <li<% if @node_type == "wiki" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>/author/<%= params[:author] %>" ><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
+      <li<% if @node_type == "maps" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>/author/<%= params[:author] %>" ><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
       <li class="disabled"<% if @node_type == "contributors" %> class="active"<% end %>><a href="#" rel="tooltip" title="Contributors can't be listed for tag searches with Authors" ><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %></a></li>    <% end %>
   </ul>
 

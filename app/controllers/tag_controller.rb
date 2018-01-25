@@ -119,7 +119,7 @@ class TagController < ApplicationController
     @tag = Tag.find_by(name: params[:id])
     @noteCount = Tag.taggedNodeCount(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
-  
+
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
       format.xml  { render xml: nodes }
@@ -138,6 +138,8 @@ class TagController < ApplicationController
   end
 
   def show_for_author
+    @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
+    @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki && @wiki.has_power_tag('redirect')
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
@@ -145,21 +147,46 @@ class TagController < ApplicationController
       @tags = Tag.where(name: params[:id])
     end
     @tagname = params[:id]
+    default_type = if params[:id].match('question:')
+                     'questions'
+                   else
+                     'note'
+                  end
+
+    # params[:node_type] - this is an optional param
+    # if params[:node_type] is nil - use @default_type
+    @node_type = params[:node_type] || default_type
     @user = User.find_by(name: params[:author])
     @title = "'" + @tagname.to_s + "' by " +  params[:author]
-    @notes = Tag.tagged_nodes_by_author(@tagname, @user)
-                 .paginate(page: params[:page], per_page: 24)    
+
+    qids = Node.questions.where(status: 1).collect(&:nid)
+    nodes = Tag.tagged_nodes_by_author(@tagname, @user)
+              .paginate(page: params[:page], per_page: 24)
+
+    @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @unpaginated = true
-    @node_type = 'note'
-    @wiki = nil
-    respond_with(@notes) do |format|
+    node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
+    node_type = 'page' if @node_type == 'wiki'
+    node_type = 'map' if @node_type == 'maps'
+    @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    @wikis = nodes if @node_type == 'wiki'
+    @nodes = nodes if @node_type == 'maps'
+    # the following could be refactored into a Tag.contributor_count method:
+    notes = Node.where(status: 1, type: 'note')
+                .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
+                .includes(:tag)
+                .references(:term_data)
+                .where('term_data.name = ?', params[:id])
+    @length = Tag.contributor_count(params[:id]) || 0
+    respond_with(nodes) do |format|
       format.html { render 'tag/show' }
-      format.xml  { render xml: @notes }
+      format.xml  { render xml: nodes }
       format.json do
         json = []
-        @notes.each do |node|
+        nodes.each do |node|
           json << node.as_json(except: %i[path tags])
-          json.last['path'] = 'https://' + request.host.to_s + node.path
+          json.last['path'] = 'https://' + request.host.
+          to_s + node.path
           json.last['preview'] = node.body_preview(500)
           json.last['image'] = node.main_image.path(:large) if node.main_image
           json.last['tags'] = Node.find(node.id).tags.collect(&:name) if node.tags
@@ -167,7 +194,8 @@ class TagController < ApplicationController
         render json: json
       end
     end
-  end
+end
+
 
   def widget
     num = params[:n] || 4
