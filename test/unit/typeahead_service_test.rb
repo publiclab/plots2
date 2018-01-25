@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class TypeaheadServiceTest < ActiveSupport::TestCase
-  include SolrToggle
   
   test 'running TypeaheadService.new.notes' do
     result = TypeaheadService.new.notes('blog')
