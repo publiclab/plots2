@@ -40,12 +40,11 @@ class RevisionsTest < ActiveSupport::TestCase
   end
 
   test 'previous and next revisions' do
-    revision = revisions(:about)
+    revision = revisions(:about_rev_4)
     # does previous respect status = 1? no.
-    new_revision = Revision.new(title: revision.title,
-                                body:  'New body',
-                                uid:   users(:bob).id,
-                                nid:   revision.nid)
+    Timecop.travel(Time.now + 2.seconds) # revision sorting is by timestamp, so advance the time
+    new_revision = revision.parent.new_revision(body:  'New body',
+                                                uid:   users(:bob).id)
 
     assert_difference 'revision.parent.revisions.length', 1 do
       assert new_revision.save
@@ -55,10 +54,9 @@ class RevisionsTest < ActiveSupport::TestCase
     assert_equal new_revision.previous, revision
     assert_equal revision.next, new_revision
 
-    new_revision_2 = Revision.new(title: revision.title,
-                                  body:  'New body 2',
-                                  uid:   users(:bob).id,
-                                  nid:   revision.nid)
+    Timecop.travel(Time.now + 2.seconds) # revision sorting is by timestamp, so advance the time
+    new_revision_2 = revision.parent.new_revision(body:  'New body 2',
+                                                  uid:   users(:bob).id)
 
     assert_difference 'revision.parent.revisions.length', 1 do
       assert new_revision_2.save
