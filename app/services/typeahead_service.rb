@@ -30,6 +30,7 @@ class TypeaheadService
        .where('node.status = 1')
        .limit(limit)
        .where('name LIKE ?', '%' + input + '%')
+       .group('node.nid')
   end
 
   def comments(input, limit = 5)
@@ -66,6 +67,7 @@ class TypeaheadService
   def wikis(input, limit = 5)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       Node.search(input)
+          .group('node.nid')
           .includes(:node)
           .references(:node)
           .limit(limit)
