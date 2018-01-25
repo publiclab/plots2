@@ -2,7 +2,7 @@ message "@#{github.pr_author} Thank you for your pull request! I'm here to help 
 
 message "Your pull request is on the `master` branch. Please [make a separate feature branch](https://publiclab.org/wiki/contributing-to-public-lab-software#A+sample+git+workflow)) with a descriptive name like `new-blog-design` while making PRs in the future." if github.branch_for_head == 'master'
 
-unless git.commits.any? { |c| c.message =~ /#[\d]+/ } || github.pr_body.any?{ |c| c.message =~ /#[\d]+/ }
+unless git.commits.any? { |c| c.message =~ /#[\d]+/ }  || github.pr_body =~ /#[\d]+/
   message "This pull request doesn't link to a issue number. Please refer to the issue it fixes (if any) in the body of your PR, in the format: `Fixes #123`."
 end
 
