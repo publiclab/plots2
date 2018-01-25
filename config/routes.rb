@@ -6,6 +6,7 @@ Plots2::Application.routes.draw do
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
 
   get 'searches/test' => 'searches#test'
+  post '/node/update/title' => 'notes#update_title'
 
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
