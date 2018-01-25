@@ -77,6 +77,7 @@ class TagController < ApplicationController
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
     node_type = 'map' if @node_type == 'maps'
+    node_type = 'contributor' if @node_type == 'contributors'
     qids = Node.questions.where(status: 1).collect(&:nid)
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
@@ -113,10 +114,12 @@ class TagController < ApplicationController
                 .references(:term_data)
                 .where('term_data.name = ?', params[:id])
     @length = Tag.contributor_count(params[:id]) || 0
+
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
     @noteCount = Tag.taggedNodeCount(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
+
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
       format.xml  { render xml: nodes }
@@ -348,11 +351,7 @@ end
     set_sidebar :tags, [params[:id]], note_count: 20
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
-    @notes = Node.where(status: 1, type: 'note')
-                 .includes(:revision, :tag)
-                 .references(:term_data, :node_revisions)
-                 .where('term_data.name = ?', params[:id])
-                 .order('node_revisions.timestamp DESC')
+    @noteCount = Tag.taggedNodeCount(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
   end
 
