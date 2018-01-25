@@ -259,7 +259,13 @@ class UsersController < ApplicationController
   end
 
   def info
-    @user = DrupalUser.find_by(name: params[:id])
+    @user = User.find_by(username: params[:id])
+  end
+  
+  # content this person follows
+  def followed
+    user = User.find_by(username: params[:id])
+    render json: user.content_followed_in_past_period(time_period)
   end
 
   def following
