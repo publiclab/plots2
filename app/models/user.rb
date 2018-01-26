@@ -44,6 +44,20 @@ class User < ActiveRecord::Base
     User.where('MATCH(username, bio) AGAINST(?)', query)
   end
 
+  def self.create_with_omniauth(auth)
+    puts(auth)
+    create! do |user|
+      user.provider = auth["provider"]
+      user.uid = auth["uid"]
+      user.username = auth["info"]["first_name"]
+      user.email = auth["info"]["email"]
+      user.password = auth["uid"]
+      user.password_confirmation = auth["uid"]
+      user.save!
+
+    end
+  end
+
   def create_drupal_user
     self.bio ||= ''
     if drupal_user.nil?

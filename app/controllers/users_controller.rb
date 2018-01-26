@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   end
 
   def create
+
     @user = User.new(params[:user])
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
@@ -37,6 +38,7 @@ class UsersController < ApplicationController
       @action = "create"
       render action: 'new'
     end
+
   end
 
   def update
@@ -132,8 +134,9 @@ class UsersController < ApplicationController
       @facebook = @profile_user.social_link("facebook")
       @instagram = @profile_user.social_link("instagram")
 
-      
+
       @map_lat = nil
+
       @map_lon = nil 
       @map_blurred = nil 
       if @profile_user.has_power_tag("lat") && @profile_user.has_power_tag("lon")
@@ -193,7 +196,7 @@ class UsersController < ApplicationController
     if params[:key] && params[:key] != nil
       @user = User.find_by(reset_key: params[:key])
       if @user
-        if params[:user] && params[:user][:password]
+        if params[:user] && params[:user][:password] 
           if @user.username.downcase == params[:user][:username].downcase
             @user.password = params[:user][:password]
             @user.password_confirmation = params[:user][:password]
