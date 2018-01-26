@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   alias_attribute :name, :username
 
   acts_as_authentic do |c|
-    c.openid_required_fields = %i[nickname email]
+    c.openid_required_fields = %i(nickname email)
     c.validates_format_of_email_field_options = { with: /@/ }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
@@ -104,16 +104,16 @@ class User < ActiveRecord::Base
 
   def notes
     Node.where(uid: uid)
-        .where(type: 'note')
-        .order('created DESC')
+      .where(type: 'note')
+      .order('created DESC')
   end
 
   def coauthored_notes
     coauthored_tag = "with:" + self.name.downcase
     Node.where(status: 1, type: "note")
-        .includes(:revision, :tag)
-        .references(:term_data, :node_revisions)
-        .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s , coauthored_tag.to_s)
+      .includes(:revision, :tag)
+      .references(:term_data, :node_revisions)
+      .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s , coauthored_tag.to_s)
   end
 
   def generate_reset_key
@@ -202,11 +202,11 @@ class User < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Node.select(:created)
-                               .where( uid: drupal_user.uid,
+        .where( uid: drupal_user.uid,
                                        type: 'note',
                                        status: 1,
                                        created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
-                               .count
+        .count
     end
     weeks
   end
@@ -215,10 +215,10 @@ class User < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
-                                  .where( uid: drupal_user.uid,
+        .where( uid: drupal_user.uid,
                                           status: 1,
                                           timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
-                                  .count
+        .count
     end
     weeks
   end
@@ -229,11 +229,11 @@ class User < ActiveRecord::Base
     note_count = 0
     (0..span).each do |day|
       days[day] = Node.select(:created)
-                      .where( uid: drupal_user.uid,
+        .where( uid: drupal_user.uid,
                               type: 'note',
                               status: 1,
                               created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
-                      .count
+        .count
       break if days[day] == 0
       streak += 1
       note_count += days[day]
@@ -247,11 +247,11 @@ class User < ActiveRecord::Base
     wiki_edit_count = 0
     (0..span).each do |day|
       days[day] = Revision.joins(:node)
-                          .where( uid: drupal_user.uid,
+        .where( uid: drupal_user.uid,
                                   status: 1,
                                   timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
-                          .where('node.type != ?', 'note')
-                          .count
+        .where('node.type != ?', 'note')
+        .count
       break if days[day] == 0
       streak += 1
       wiki_edit_count += days[day]
@@ -265,10 +265,10 @@ class User < ActiveRecord::Base
     comment_count = 0
     (0..span).each do |day|
       days[day] = Comment.select(:timestamp)
-                         .where( uid: drupal_user.uid,
+        .where( uid: drupal_user.uid,
                                  status: 1,
                                  timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
-                         .count
+        .count
       break if days[day] == 0
       streak += 1
       comment_count += days[day]
@@ -287,8 +287,8 @@ class User < ActiveRecord::Base
 
   def barnstars
     NodeTag.includes(:node, :tag)
-           .references(:term_data)
-           .where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
+      .references(:term_data)
+      .where('type = ? AND term_data.name LIKE ? AND node.uid = ?', 'note', 'barnstar:%', uid)
   end
 
   def photo_path(size = :medium)
@@ -354,7 +354,7 @@ class User < ActiveRecord::Base
     answers = Answer.where(created_at: start_time..end_time).pluck(:uid)
     questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
     comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-    revisions = Revision.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
+    revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
     contributors = (notes+answers+questions+comments+revisions).compact.uniq.length
     contributors
   end

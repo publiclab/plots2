@@ -49,3 +49,6 @@
 //= require short-code-forms/dist/short-code-prompts.js
 //= require wikis.js
 //= require chart.js/dist/Chart.js
+//= require turbolinks
+//= require google_analytics.js
+
