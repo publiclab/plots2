@@ -1,10 +1,11 @@
-Plots2::Application.configure do
+Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs. Don't rely on the data there!
+
   config.cache_classes = true
 
   config.eager_load = false
@@ -34,6 +35,8 @@ Plots2::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  config.active_support.test_order = :sorted # or `:random` if you prefer
 
   config.action_mailer.default_url_options = {
     host: 'www.example.com'

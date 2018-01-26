@@ -3,11 +3,11 @@ class WelcomeMailer < ActionMailer::Base
   include ApplicationHelper
   # default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
 
-  # PasswordResetMailer.reset_notify(user).deliver
+  # PasswordResetMailer.reset_notify(user).deliver_now
   def add_to_list(user, list)
     subject = 'subscribe'
     @list = list
     @footer = feature('email-footer')
-    mail(to: list + '+subscribe@googlegroups.com', subject: subject, from: user.email).deliver
+    mail(to: list + '+subscribe@googlegroups.com', subject: subject, from: user.email).deliver_now
   end
 end

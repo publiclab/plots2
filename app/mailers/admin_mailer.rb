@@ -13,7 +13,7 @@ class AdminMailer < ActionMailer::Base
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
       subject: subject
-    ).deliver
+    ).deliver_now
   end
 
   def notify_author_of_approval(node, moderator)
@@ -22,7 +22,7 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @node = node
     @footer = feature('email-footer')
-    mail(to: @author.mail, subject: subject).deliver
+    mail(to: @author.mail, subject: subject).deliver_now
   end
 
   # Will this further bait spammers? If we don't,
@@ -43,7 +43,7 @@ class AdminMailer < ActionMailer::Base
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
       subject: subject
-    ).deliver
+    ).deliver_now
   end
 
   def notify_moderators_of_spam(node, moderator)
@@ -57,6 +57,6 @@ class AdminMailer < ActionMailer::Base
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
       subject: subject
-    ).deliver
+    ).deliver_now
   end
 end
