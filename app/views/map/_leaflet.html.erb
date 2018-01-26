@@ -5,21 +5,21 @@
 <div class="leaflet-map" id="map<%= unique_id %>"></div>
 <% if defined? people %><p><i><small>Share your own location on <a href='/profile'>your profile</a>.</small></i></p><% end %>
 <script>
-  var map = L.map('map<%= unique_id %>').on('load', onMapLoad).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
-  L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
+  var map<%= unique_id %> = L.map('map<%= unique_id %>').on('load', onMapLoad).setView([<%= lat %>,<%= lon %>], <%= lat.to_s.length.to_i %> + 6);
+  L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map<%= unique_id %>);
   function onMapLoad(e){
 	 var lat = <%= lat %> ;
 	 var lon = <%= lon %> ;
 	 var s = lat+","+lon ;
- 	$.getJSON("https:"+"//publiclab.org/api/srch/locations?srchString="+s , function(data){
+ 	$.getJSON("http:"+"//localhost:3000/api/srch/locations?srchString="+s , function(data){
 	 			if (!!data.items){
 	 				for (i = 0; i < data.items.length ; i++) { 
 	 					var url = data.items[i].docUrl ;
 	 					var title = data.items[i].docTitle ;
-    					L.marker([data.items[i].latitude , data.items[i].longitude]).addTo(map).bindPopup("<a href=" +  url + ">" + title + "</a>") ;
+    					L.marker([data.items[i].latitude , data.items[i].longitude]).addTo(map<%= unique_id %>).bindPopup("<a href=" +  url + ">" + title + "</a>") ;
 					}
 	 		}
 	 	});
-
   }
 </script>
+
