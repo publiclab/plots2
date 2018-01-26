@@ -24,8 +24,18 @@
 
   <%= render 'form' %>
 
-  <div class="loginbutton">
-    <%= link_to "Login with Google", "/auth/google_oauth2", class: "btn btn-primary" %>
+  <div class="row" style="display:flex;">
+    <div class="loginbutton" >
+      <%= link_to "Login with Google", "/auth/google_oauth2", class: "btn btn-primary" %>
+    </div>
+    &nbsp;
+    <div class="loginbutton" >
+      <%= link_to "Login with Facebook", "/auth/facebook", class: "btn btn-primary" %>
+    </div>
+    &nbsp;
+    <div class="loginbutton" >
+      <%= link_to "Login with Twitter", "/auth/twitter", class: "btn btn-primary" %>
+    </div>
   </div>
 
   <div style="clear:both;padding-top:10px;">

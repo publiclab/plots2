@@ -13,7 +13,7 @@ class UserSessionsController < ApplicationController
     else
       auth = request.env["omniauth.auth"]
       @user = User.find_by(provider:auth["provider"], uid:auth["uid"]) || User.create_with_omniauth(auth)
-      params[:user_session] = {"username"=>@user.username,"password"=>"12345678","remember_me"=>"0","provider"=>@user.provider}
+      params[:user_session] = {"username"=>@user.username,"password"=>auth["uid"],"remember_me"=>"0","provider"=>@user.provider}
     end
       # try finding by email, if that exists
     if @user.nil? && !User.where(email: username).empty?
@@ -23,8 +23,8 @@ class UserSessionsController < ApplicationController
 
     if params[:user_session].nil? || @user && @user.drupal_user.status == 1 || @user.nil?
       # an existing native user
-      if params[:user_session].nil? || @user && !@user.provider.nil?
-        if @user && @user.crypted_password.nil? # the user has not created a pwd in the new site
+      if params[:user_session].nil? || @user
+        if @user && @user.crypted_password.nil?  && @user.provider.nil? # the user has not created a pwd in the new site
           params[:user_session][:openid_identifier] = 'https://old.publiclab.org/people/' + username + '/identity' if username
           params[:user_session].delete(:password)
           params[:user_session].delete(:username)
@@ -35,7 +35,7 @@ class UserSessionsController < ApplicationController
           if result
             # replace this with temporarily saving pwd in session,
             # and automatically saving it in the user record after login is completed
-            if current_user.crypted_password.nil? && !current_user.provider.nil? # the user has not created a pwd in the new site
+            if current_user.crypted_password.nil? && current_user.provider.nil? # the user has not created a pwd in the new site
               flash[:warning] = I18n.t('user_sessions_controller.create_password_for_new_site')
               redirect_to '/profile/edit'
             else
