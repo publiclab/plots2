@@ -316,7 +316,7 @@ class User < ActiveRecord::Base
     tagnames.each do |tagname|
       node_ids = node_ids + NodeTag.where(tid: tagname.tid).collect(&:nid)
     end
-    Node.where(nid: node_ids).where("created >= #{start_time.to_i}  AND changed >= #{start_time.to_i} AND created <= #{end_time.to_i}  AND changed <= #{end_time.to_i}")
+    Node.where(nid: node_ids).where("created >= #{start_time.to_i}  OR changed >= #{start_time.to_i} AND created <= #{end_time.to_i}  AND changed <= #{end_time.to_i}")
   end
 
   def social_link(site)
