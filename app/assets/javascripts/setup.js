@@ -1,7 +1,7 @@
 /* Leaflet images directory setup */
 L.Icon.Default.imagePath = '/assets/leaflet/dist/images/';
 
-jQuery(document).ready(function() {
+$(document).on("ready turbolinks:load", function($) {
   $("[rel=popover]").popover({
     container: 'body',
     trigger: 'focus click'
@@ -55,7 +55,7 @@ $(window).load(function() { adjust_anchor_for_banner(); })
 $(window).on('hashchange', adjust_anchor_for_banner)
 
 
-jQuery(document).ready(function($) {
+$(document).on("ready turbolinks:load", function($) {
   
   /* facebook buttons ugh */
   (function(d, s, id) {

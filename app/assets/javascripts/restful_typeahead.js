@@ -6,7 +6,7 @@
   Documentation here: https://github.com/bassjobsen/Bootstrap-3-Typeahead
 **/
 
-jQuery(document).ready(function() {
+$(document).on("ready turbolinks:load", function() {
   var el = $('input.search-query.typeahead');
   var typeahead = el.typeahead({
     items: 8,

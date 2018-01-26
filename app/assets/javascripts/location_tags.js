@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).on("ready turbolinks:load", function($) {
 
   if (window.hasOwnProperty('google')) {
 

@@ -1,4 +1,4 @@
-jQuery(document).ready(function(){
+$(document).on("ready turbolinks:load", function($) {
 
   var check_matched = false;
   var stripped_url = document.location.toString().split("#");

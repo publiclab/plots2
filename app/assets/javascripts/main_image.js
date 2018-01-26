@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).on("ready turbolinks:load", function(){
     $('#image_revision').change(function(){
         console.log("inside sample");
         console.log($(this).val());
