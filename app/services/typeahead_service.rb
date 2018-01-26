@@ -198,7 +198,7 @@ class TypeaheadService
   end
 
   # Search question entries for matching text
-  def search_questions(srchString, limit = 5)
+  def search_questions(input, limit = 5)
     sresult = TagList.new
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       questions = Node.search(input)
@@ -211,7 +211,7 @@ class TypeaheadService
         .joins(:tag)
         .where('term_data.name LIKE ?', 'question:%')
     else 
-      questions = Node.where('title LIKE ?', '%' + srchString + '%')
+      questions = Node.where('title LIKE ?', '%' + input + '%')
         .joins(:tag)
         .where('term_data.name LIKE ?', 'question:%')
         .limit(limit)
