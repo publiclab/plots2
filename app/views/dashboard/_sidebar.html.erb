@@ -1,24 +1,5 @@
-  <br />
+<br />
 
-  <ul class="nav nav-tabs">
-    <li class="active">
-      <a class="wikis-tab" href="#wiki" data-toggle="tab">
-        <span class="visible-xs"><i class="fa fa-book"></i></span>
-        <span class="hidden-xs"><%= t('dashboard._sidebar.wiki') %></span>
-      </a>
-    </li>
-    <li>
-      <a class="lists-tab" href="#lists" data-toggle="tab">
-        <span class="visible-xs"><i class="fa fa-comment"></i></span>
-        <span class="hidden-xs"><%= t('dashboard._sidebar.discussion_list') %></span>
-      </a>
-    </li>
-  </ul>
-
-  <div class="tab-content">
-
-    <div class="tab-pane active" id="wiki">
-      <%= render partial: "dashboard/wiki", locals: { wikis: @wikis } %>
-    </div>
-
-  </div>
+<div id="wiki">
+  <%= render partial: "dashboard/wiki", locals: { wikis: @wikis } %>
+</div>

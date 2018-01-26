@@ -147,20 +147,6 @@ class I18nTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should choose i18n for dashboard/_sidebar' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
-      follow_redirect!
-      get '/dashboard'
-      assert_select 'span', I18n.t('dashboard._sidebar.wiki')
-    end
-  end
-
   test 'should choose i18n for dashboard/_wiki' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
