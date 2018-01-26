@@ -181,7 +181,7 @@ class NotesController < ApplicationController
       @revision.title = params[:title]
       @revision.body = params[:body]
       if params[:tags]
-        params[:tags].tr(' ', ',').split(',').each do |tagname|
+        params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
           @node.add_tag(tagname, current_user)
         end
       end
