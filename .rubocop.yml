@@ -15,4 +15,11 @@ AllCops:
     - 'log/*'
     - 'db/**/*'
     - 'Gemfile'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'lib/**/*'
+    - 'test/**/*'
   TargetRubyVersion: '2.4'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false

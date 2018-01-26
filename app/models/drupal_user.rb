@@ -41,7 +41,7 @@ class DrupalUser < ActiveRecord::Base
   # End rails-style adaptors
 
   def role
-    user.role if user
+    user&.role
   end
 
   def moderate
@@ -90,25 +90,25 @@ class DrupalUser < ActiveRecord::Base
 
   def liked_notes
     Node.includes(:node_selections)
-        .references(:node_selections)
-        .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, uid)
-        .order('node_selections.nid DESC')
+      .references(:node_selections)
+      .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, uid)
+      .order('node_selections.nid DESC')
   end
 
   def liked_pages
     NodeSelection.where("status = 1 AND user_id = ? AND liking = ? AND (node.type = 'page' OR node.type = 'tool' OR node.type = 'place')", uid, true)
-                 .includes(:node)
-                 .references(:node)
-                 .collect(&:node)
-                 .reverse
+      .includes(:node)
+      .references(:node)
+      .collect(&:node)
+      .reverse
   end
 
   # last node
   def last
     Node.limit(1)
-        .where(uid: uid)
-        .order('changed DESC')
-        .first
+      .where(uid: uid)
+      .order('changed DESC')
+      .first
   end
 
   def profile_values

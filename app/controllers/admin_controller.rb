@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_filter :require_user, only: %i[spam spam_revisions]
+  before_filter :require_user, only: %i(spam spam_revisions)
 
   def promote_admin
     @user = User.find params[:id]
@@ -79,7 +79,7 @@ class AdminController < ApplicationController
                    .order('nid DESC')
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
-               else
+      else
                  @nodes.where(status: 0)
                end
     else
