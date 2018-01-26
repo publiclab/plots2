@@ -58,15 +58,15 @@ module Plots2
 
     # Enable the asset pipeline
     config.assets.enabled = true
-    
+
     I18n.available_locales = [:en, :de]
-    config.i18n.default_locale = :en 
-    
+    config.i18n.default_locale = :en
+
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
     # rails will fallback to config.i18n.default_locale translation
     config.i18n.fallbacks = true
-    
+
     # rails will fallback to en, no matter what is set as config.i18n.default_locale
     config.i18n.fallbacks = [:en]
 
@@ -84,6 +84,11 @@ module Plots2
     config.less.paths << Rails.root.join("assets","less")
     config.less.compress = true
 
+    # For Session
+    config.session_store :cookie_store, key: '_interslice_session'
+    config.middleware.use ActionDispatch::Cookies # Required for all session management
+    config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
+    
     ActiveRecord::SessionStore::Session.table_name = 'rsessions'
 
     require Rails.root + 'lib/open_id_authentication/open_id_authentication.rb'

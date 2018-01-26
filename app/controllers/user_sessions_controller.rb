@@ -1,14 +1,21 @@
 class UserSessionsController < ApplicationController
   def new
+
     @title = I18n.t('user_sessions_controller.log_in')
   end
 
   def create
-    params[:user_session][:username] = params[:openid] if params[:openid] # second runthrough must preserve username
-    username = params[:user_session][:username] if params[:user_session]
-    @user = User.find_by(username: username)
-
-    # try finding by email, if that exists
+    if params[:provider].nil?
+      params[:user_session][:username] = params[:openid] if params[:openid] # second runthrough must preserve username
+      username = params[:user_session][:username] if params[:user_session]
+      @user = User.find_by(username: username)
+      params[:user_session][:provider] = nil
+    else
+      auth = request.env["omniauth.auth"]
+      @user = User.find_by(provider:auth["provider"], uid:auth["uid"]) || User.create_with_omniauth(auth)
+      params[:user_session] = {"username"=>@user.username,"password"=>"12345678","remember_me"=>"0","provider"=>@user.provider}
+    end
+      # try finding by email, if that exists
     if @user.nil? && !User.where(email: username).empty?
       @user = User.find_by(email: username)
       params[:user_session][:username] = @user.username
@@ -16,7 +23,7 @@ class UserSessionsController < ApplicationController
 
     if params[:user_session].nil? || @user && @user.drupal_user.status == 1 || @user.nil?
       # an existing native user
-      if params[:user_session].nil? || @user
+      if params[:user_session].nil? || @user && !@user.provider.nil?
         if @user && @user.crypted_password.nil? # the user has not created a pwd in the new site
           params[:user_session][:openid_identifier] = 'https://old.publiclab.org/people/' + username + '/identity' if username
           params[:user_session].delete(:password)
@@ -28,7 +35,7 @@ class UserSessionsController < ApplicationController
           if result
             # replace this with temporarily saving pwd in session,
             # and automatically saving it in the user record after login is completed
-            if current_user.crypted_password.nil? # the user has not created a pwd in the new site
+            if current_user.crypted_password.nil? && !current_user.provider.nil? # the user has not created a pwd in the new site
               flash[:warning] = I18n.t('user_sessions_controller.create_password_for_new_site')
               redirect_to '/profile/edit'
             else
@@ -67,6 +74,7 @@ class UserSessionsController < ApplicationController
       flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
       redirect_to '/'
     end
+
   end
 
   def destroy
