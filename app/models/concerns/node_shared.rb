@@ -285,7 +285,7 @@ module NodeShared
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
                                      className: 'people-grid-' + tagname.parameterize,
-                                     currentUser: current_user,
+                                     current_user: current_user,
                                      users: users
                                    })
       output

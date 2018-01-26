@@ -28,11 +28,11 @@
   <% end %>
 <% end %>
 </table>
-<% if !currentUser.nil? %>
-  <p><a class="btn btn-primary" href="/profile/tags/create/<%=currentUser.id%>?name=<%= tagname %>">Join this group's tag</a></p> 
+<% if !current_user.nil? %>
+  <p><a class="btn btn-primary" href="/profile/tags/create/<%= current_user.id %>?name=<%= tagname %>">Join this group</a></p> 
 <% else %>
-  <p><a class="btn btn-primary disabled" href=" ">Join this group's tag</a></p>
-  <p><a href="/login">Login/Sign Up to join this tag!</a></p>
+  <p><a class="btn btn-primary disabled" href=" ">Join this group</a></p>
+  <p><a href="/login">Login/Sign Up to join!</a></p>
 <% end %>
 <script>
 (function(){
