@@ -1,5 +1,5 @@
 class EditorController < ApplicationController
-  before_filter :require_user, only: %i[post rich legacy editor]
+  before_filter :require_user, only: %i(post rich legacy editor)
 
   # main image via URL passed as GET param
   def legacy
@@ -14,7 +14,7 @@ class EditorController < ApplicationController
       node = Node.find(params[:n])
       params[:body] = node.body if node
     end
-    if params[:tags] && params[:tags].include?('question:')
+    if params[:tags]&.include?('question:')
       redirect_to "/questions/new?#{request.env['QUERY_STRING']}"
     else
       render template: 'editor/post'
@@ -26,7 +26,7 @@ class EditorController < ApplicationController
   end
 
   def post
-    if params[:tags] && params[:tags].include?('question:')
+    if params[:tags]&.include?('question:')
       redirect_to "/questions/new?#{request.env['QUERY_STRING']}"
     elsif params[:legacy] || params[:template] == 'event'
       legacy

@@ -11,7 +11,7 @@ class DocList
 
   def addAll(dlist)
     @items ||= []
-    dlist.each { |docItem| @items << docItem } unless dlist.nil?
+    dlist&.each { |docItem| @items << docItem }
   end
 
   def getDocs

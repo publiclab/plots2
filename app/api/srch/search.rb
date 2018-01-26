@@ -118,9 +118,9 @@ module Srch
       # Request URL should be /api/srch/locations?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Note: Query(QRY as above) must have latitude and longitude as srchString=lat,lon
       desc 'Perform a search of documents having nearby latitude and longitude tag values',
-           hidden: false,
-           is_array: false,
-           nickname: 'srchGetLocations'
+        hidden: false,
+        is_array: false,
+        nickname: 'srchGetLocations'
       params do
         requires :srchString, type: String, documentation: { example: 'Spec' }
         optional :seq, type: Integer, documentation: { example: 995 }

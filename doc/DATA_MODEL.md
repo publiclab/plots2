@@ -19,10 +19,10 @@ Nodes are a general type with primary key `nid`, a `title`, an author `uid`, and
 
 There are several types of nodes, based on their `type` field:
 
-* Notes, or research notes, of type "note", are single-author, single-revision.
-* Wikis, or wiki pages, of type "page", have many revisions, each of which has an author. They have a path like `/wiki/title` or simply `/title` (for so-called "root" pages).
-* Features, of type "feature", are blocks of content which can be included (hard-coded) throughout the site, but can only be made by admins. They are used for things like the front page, banners, and other content that is more infrastructural but change periodically. They are managed at https://publiclab.org/features.
-* Maps, of type "map", are web-map image layers and associated image files, displayed on https://publiclab.org/archive
+* **Notes**, or research notes, of type "note", are single-author, single-revision.
+* **Wikis**, or wiki pages, of type "page", have many revisions, each of which has an author. They have a path like `/wiki/title` or simply `/title` (for so-called "root" pages).
+* **Features**, of type "feature", are blocks of content which can be included (hard-coded) throughout the site, but can only be made by admins. They are used for things like the front page, banners, and other content that is more infrastructural but change periodically. They are managed at https://publiclab.org/features.
+* **Maps**, of type "map", are web-map image layers and associated image files, displayed on https://publiclab.org/archive
 
 Nodes may also be redirects, though this use is legacy only. More documentation needed.
 
