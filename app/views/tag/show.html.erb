@@ -12,13 +12,13 @@
           <div class="col-md-6">
             <h1 style="color:#333;"><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h1>
             <%= @wiki.latest.render_body.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %>
-            <%= link_to("Read more", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('</p>').length > 2 %>
+            <%= link_to("Learn more on the wiki page", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('</p>').length > 2 %>
           </div>
         </div>
       <% else %>
         <h1><%= @wiki.latest.title %></h1>
         <p><%= @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %></p>
-        <p><%= link_to("Read more", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).length > 1 %></p>
+        <p><%= link_to("Learn more on the wiki page", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).length > 1 %></p>
       <% end %>
     </div>
   <% elsif @wildcard %>
