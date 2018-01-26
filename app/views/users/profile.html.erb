@@ -5,7 +5,7 @@
       <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.user.profile_image %>" />
     </div>
   <% end %>
-  
+
    <div style="text-align: -webkit-center;">
     <% if @twitter.nil? == false %>
       <a href="<%= @twitter %>" >
@@ -95,7 +95,7 @@
   <% if @profile_user && current_user && @profile_user == current_user %>
     <button id="link_social_media" class="btn btn-default btn-block">Link Social media</button>
   <% end %>
-	
+
   <hr />
 
   <% if params[:preview] %>
@@ -158,8 +158,8 @@
 
   <hr />
   <div class="row" id="highlight" style=" text-align: center;">
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><%= Node.questions.where(status: 1, uid: @user.id).length %> questions asked <br><br> <%= Answer.where(uid: @profile_user.id).count %> answers posted</h3>
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><%= Comment.where(uid: @profile_user.id).count %> comments posted</h3>
+    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @user.id).length %> questions asked </a><br><br> <%= Answer.where(uid: @profile_user.id).count %> answers posted</h3>
+    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a><br><br> <a href = "/tag/replication:*/author/<%= params[:id] %>"><%= @count_activities_attempted %> activities attempted</a></h3>
      <% if !@map_lat.nil? && !@map_lon.nil? %>
       <%= render :partial => "map/userLeaflet" , locals: {haslocation: true} %>
     <% elsif !current_user.nil? && current_user.id == @user.id %>

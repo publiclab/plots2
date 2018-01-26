@@ -6,9 +6,9 @@ class QuestionsController < ApplicationController
     tagnames = tagnames.split(',')
     nids = questions.collect(&:nid)
     questions = Node.where(status: 1, type: 'note')
-                    .joins(:tag)
-                    .where('node.nid IN (?)', nids)
-                    .group('node.nid')
+      .joins(:tag)
+      .where('node.nid IN (?)', nids)
+      .group('node.nid')
     if !tagnames.empty?
       questions.where('term_data.name IN (?)', tagnames)
     else
@@ -22,9 +22,9 @@ class QuestionsController < ApplicationController
     @title = 'Questions and Answers'
     set_sidebar
     @questions = Node.questions
-                     .where(status: 1)
-                     .order('node.nid DESC')
-                     .paginate(page: params[:page], per_page: 24)
+      .where(status: 1)
+      .order('node.nid DESC')
+      .paginate(page: params[:page], per_page: 24)
   end
 
   # a form for new questions, at /questions/new
@@ -62,8 +62,8 @@ class QuestionsController < ApplicationController
     @tags = @node.power_tag_objects('question')
     @tagnames = @tags.collect(&:name)
     @users = @node.answers.group(:uid)
-                  .order('count(*) DESC')
-                  .collect(&:author)
+      .order('count(*) DESC')
+      .collect(&:author)
 
     set_sidebar :tags, @tagnames
   end
@@ -71,28 +71,28 @@ class QuestionsController < ApplicationController
   def answered
     @title = 'Recently answered'
     @questions = Node.questions
-                     .where(status: 1)
+      .where(status: 1)
     @questions = filter_questions_by_tag(@questions, params[:tagnames])
-                 .joins(:answers)
-                 .order('answers.created_at DESC')
-                 .group('node.nid')
-                 .paginate(page: params[:page], per_page: 24)
+      .joins(:answers)
+      .order('answers.created_at DESC')
+      .group('node.nid')
+      .paginate(page: params[:page], per_page: 24)
     @wikis = Node.limit(10)
-                 .where(type: 'page', status: 1)
-                 .order('nid DESC')
+      .where(type: 'page', status: 1)
+      .order('nid DESC')
     render template: 'questions/index'
   end
 
   def unanswered
     @title = 'Unanswered questions'
     @questions = Node.questions
-                     .where(status: 1)
-                     .includes(:answers)
-                     .references(:answers)
-                     .where(answers: { id: nil })
-                     .order('answers.created_at DESC')
-                     .group('node.nid')
-                     .paginate(page: params[:page], per_page: 24)
+      .where(status: 1)
+      .includes(:answers)
+      .references(:answers)
+      .where(answers: { id: nil })
+      .order('answers.created_at DESC')
+      .group('node.nid')
+      .paginate(page: params[:page], per_page: 24)
     render template: 'questions/index'
   end
 
@@ -108,14 +108,14 @@ class QuestionsController < ApplicationController
   def popular
     @title = 'Popular Questions'
     @questions = Node.questions
-                     .where(status: 1)
+      .where(status: 1)
     @questions = filter_questions_by_tag(@questions, params[:tagnames])
-                 .order('views DESC')
-                 .limit(20)
+      .order('views DESC')
+      .limit(20)
 
     @wikis = Node.limit(10)
-                 .where(type: 'page', status: 1)
-                 .order('nid DESC')
+      .where(type: 'page', status: 1)
+      .order('nid DESC')
     @unpaginated = true
     render template: 'questions/index'
   end
@@ -124,12 +124,12 @@ class QuestionsController < ApplicationController
     @title = 'Highly liked Questions'
     @questions = Node.questions.where(status: 1)
     @questions = filter_questions_by_tag(@questions, params[:tagnames])
-                 .order('cached_likes DESC')
-                 .limit(20)
+      .order('cached_likes DESC')
+      .limit(20)
 
     @wikis = Node.limit(10)
-                 .where(type: 'page', status: 1)
-                 .order('nid DESC')
+      .where(type: 'page', status: 1)
+      .order('nid DESC')
     @unpaginated = true
     render template: 'questions/index'
   end
