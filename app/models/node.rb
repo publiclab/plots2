@@ -243,7 +243,7 @@ class Node < ActiveRecord::Base
   end
 
   def body
-    latest.body if latest
+    latest&.body
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
@@ -326,7 +326,7 @@ class Node < ActiveRecord::Base
               .collect(&:tid)
     node_tag = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
                                      .order('nid DESC')
-    if node_tag && node_tag.first
+    if node_tag&.first
       node_tag.first.tag.name.gsub(tag + ':', '')
     else
       ''
@@ -454,7 +454,7 @@ class Node < ActiveRecord::Base
   def edit_path
     path = if type == 'page' || type == 'tool' || type == 'place'
              '/wiki/edit/' + self.path.split('/').last
-           else
+    else
              '/notes/edit/' + id.to_s
            end
     path
@@ -514,7 +514,7 @@ class Node < ActiveRecord::Base
   def add_comment(params = {})
     thread = if !comments.empty? && !comments.last.nil?
                comments.last.next_thread
-             else
+    else
                '01/'
              end
     c = Comment.new(pid: 0,

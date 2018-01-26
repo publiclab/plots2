@@ -1,6 +1,6 @@
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
-  before_filter :require_user, only: %i[create delete]
+  before_filter :require_user, only: %i(create delete)
 
   def index
     if params[:format]
@@ -14,36 +14,36 @@ class TagController < ApplicationController
     if params[:search]
     prefix = params[:search]
     @tags = Tag.joins(:node_tag, :node)
-               .select('node.nid, node.status, term_data.*, community_tags.*')
-               .where('node.status = ?', 1)
-               .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-               .where("name LIKE :prefix", prefix: "#{prefix}%")
-               .group(:name)
-               .order('count DESC')
-               .paginate(page: params[:page], per_page: 24)
+      .select('node.nid, node.status, term_data.*, community_tags.*')
+      .where('node.status = ?', 1)
+      .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+      .where("name LIKE :prefix", prefix: "#{prefix}%")
+      .group(:name)
+      .order('count DESC')
+      .paginate(page: params[:page], per_page: 24)
     elsif @toggle == 1
     @tags = Tag.joins(:node_tag, :node)
-               .select('node.nid, node.status, term_data.*, community_tags.*')
-               .where('node.status = ?', 1)
-               .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-               .group(:name)
-               .order('count DESC')
-               .paginate(page: params[:page], per_page: 24)
+      .select('node.nid, node.status, term_data.*, community_tags.*')
+      .where('node.status = ?', 1)
+      .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+      .group(:name)
+      .order('count DESC')
+      .paginate(page: params[:page], per_page: 24)
     elsif @toggle == 2
     @tags = Tag.joins(:node_tag, :node)
-               .select('node.nid, node.status, term_data.*, community_tags.*')
-               .where('node.status = ?', 1)
-               .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-               .group(:name)
-               .order('name')
-               .paginate(page: params[:page], per_page: 24)
+      .select('node.nid, node.status, term_data.*, community_tags.*')
+      .where('node.status = ?', 1)
+      .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+      .group(:name)
+      .order('name')
+      .paginate(page: params[:page], per_page: 24)
     else
       tags = Tag.joins(:node_tag, :node)
-                  .select('node.nid, node.status, term_data.*, community_tags.*')
-                  .where('node.status = ?', 1)
-                  .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-                  .group(:name)
-                  .order('name')
+        .select('node.nid, node.status, term_data.*, community_tags.*')
+        .where('node.status = ?', 1)
+        .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .group(:name)
+        .order('name')
 
       followed = []
       not_followed = []
@@ -56,18 +56,18 @@ class TagController < ApplicationController
       end
 
       ids = followed + not_followed
-      @tags = Tag.where(tid: ids).sort_by{|p| ids.index(p.tid) }.paginate(page: params[:page], per_page: 24)
+      @tags = Tag.where(tid: ids).sort_by { |p| ids.index(p.tid) }.paginate(page: params[:page], per_page: 24)
     end
   end
 
   def show
     # try for a matching /wiki/_TAGNAME_ or /_TAGNAME_
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
-    @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki && @wiki.has_power_tag('redirect') # use a redirected wiki page if it exists
+    @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
 
     default_type = if params[:id].match('question:')
                      'questions'
-                   else
+    else
                      'note'
                   end
     # params[:node_type] - this is an optional param
@@ -83,19 +83,19 @@ class TagController < ApplicationController
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
       nodes = Node.where(status: 1, type: node_type)
-                  .includes(:revision, :tag)
-                  .references(:term_data, :node_revisions)
-                  .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
-                  .paginate(page: params[:page], per_page: 24)
-                  .order('node_revisions.timestamp DESC')
+        .includes(:revision, :tag)
+        .references(:term_data, :node_revisions)
+        .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
+        .paginate(page: params[:page], per_page: 24)
+        .order('node_revisions.timestamp DESC')
     else
       @tags = Tag.where(name: params[:id])
       nodes = Node.where(status: 1, type: node_type)
-                  .includes(:revision, :tag)
-                  .references(:term_data, :node_revisions)
-                  .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
-                  .paginate(page: params[:page], per_page: 24)
-                  .order('node_revisions.timestamp DESC')
+        .includes(:revision, :tag)
+        .references(:term_data, :node_revisions)
+        .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
+        .paginate(page: params[:page], per_page: 24)
+        .order('node_revisions.timestamp DESC')
     end
 
     # breaks the parameter
@@ -109,10 +109,10 @@ class TagController < ApplicationController
     @title = params[:id]
     # the following could be refactored into a Tag.contributor_count method:
     notes = Node.where(status: 1, type: 'note')
-                .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
-                .includes(:tag)
-                .references(:term_data)
-                .where('term_data.name = ?', params[:id])
+      .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
+      .includes(:tag)
+      .references(:term_data)
+      .where('term_data.name = ?', params[:id])
     @length = Tag.contributor_count(params[:id]) || 0
 
     @tagnames = [params[:id]]
@@ -126,7 +126,7 @@ class TagController < ApplicationController
       format.json do
         json = []
         nodes.each do |node|
-          json << node.as_json(except: %i[path tags])
+          json << node.as_json(except: %i(path tags))
           json.last['path'] = 'https://' + request.host.to_s + node.path
           json.last['preview'] = node.body_preview(500)
           json.last['image'] = node.main_image.path(:large) if node.main_image
@@ -139,7 +139,7 @@ class TagController < ApplicationController
 
   def show_for_author
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
-    @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki && @wiki.has_power_tag('redirect')
+    @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki&.has_power_tag('redirect')
     if params[:id][-1..-1] == '*' # wildcard tags
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
@@ -149,7 +149,7 @@ class TagController < ApplicationController
     @tagname = params[:id]
     default_type = if params[:id].match('question:')
                      'questions'
-                   else
+    else
                      'note'
                   end
 
@@ -161,7 +161,7 @@ class TagController < ApplicationController
 
     qids = Node.questions.where(status: 1).collect(&:nid)
     nodes = Tag.tagged_nodes_by_author(@tagname, @user)
-              .paginate(page: params[:page], per_page: 24)
+      .paginate(page: params[:page], per_page: 24)
 
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @unpaginated = true
@@ -173,10 +173,10 @@ class TagController < ApplicationController
     @nodes = nodes if @node_type == 'maps'
     # the following could be refactored into a Tag.contributor_count method:
     notes = Node.where(status: 1, type: 'note')
-                .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
-                .includes(:tag)
-                .references(:term_data)
-                .where('term_data.name = ?', params[:id])
+      .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
+      .includes(:tag)
+      .references(:term_data)
+      .where('term_data.name = ?', params[:id])
     @length = Tag.contributor_count(params[:id]) || 0
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }
@@ -184,9 +184,9 @@ class TagController < ApplicationController
       format.json do
         json = []
         nodes.each do |node|
-          json << node.as_json(except: %i[path tags])
-          json.last['path'] = 'https://' + request.host.
-          to_s + node.path
+          json << node.as_json(except: %i(path tags))
+          json.last['path'] = 'https://' + request.host
+            .to_s + node.path
           json.last['preview'] = node.body_preview(500)
           json.last['image'] = node.main_image.path(:large) if node.main_image
           json.last['tags'] = Node.find(node.id).tags.collect(&:name) if node.tags
@@ -196,21 +196,20 @@ class TagController < ApplicationController
     end
 end
 
-
   def widget
     num = params[:n] || 4
     nids = Tag.find_nodes_by_type(params[:id], 'note', num).collect(&:nid)
     @notes = Node.paginate(page: params[:page], per_page: 24)
-                 .where('status = 1 AND nid in (?)', nids)
-                 .order('nid DESC')
+      .where('status = 1 AND nid in (?)', nids)
+      .order('nid DESC')
     render layout: false
   end
 
   def blog
     nids = Tag.find_nodes_by_type(params[:id], 'note', 20).collect(&:nid)
     @notes = Node.paginate(page: params[:page], per_page: 6)
-                 .where('status = 1 AND nid in (?)', nids)
-                 .order('nid DESC')
+      .where('status = 1 AND nid in (?)', nids)
+      .order('nid DESC')
     @tags = Tag.where(name: params[:id])
     @tagnames = @tags.collect(&:name).uniq! || []
     @title = @tagnames.join(',') + ' Blog' if @tagnames
@@ -273,8 +272,8 @@ end
           render json: @output
         else
           flash[:notice] = I18n.t('tag_controller.tags_created_error',
-                                  tag_count: @output[:saved].length,
-                                  error_count: @output[:errors].length).html_safe
+            tag_count: @output[:saved].length,
+            error_count: @output[:errors].length).html_safe
           redirect_to node.path
         end
       end
@@ -310,10 +309,10 @@ end
       @suggestions = []
       # filtering out tag spam by requiring tags attached to a published node
       Tag.where('name LIKE ?', '%' + params[:id] + '%')
-         .includes(:node)
-         .references(:node)
-         .where('node.status = 1')
-         .limit(10).each do |tag|
+        .includes(:node)
+        .references(:node)
+        .where('node.status = 1')
+        .limit(10).each do |tag|
         @suggestions << tag.name.downcase
       end
       render json: @suggestions.uniq
@@ -325,11 +324,11 @@ end
   def rss
     if params[:tagname][-1..-1] == '*'
       @notes = Node.where(status: 1, type: 'note')
-                   .includes(:revision, :tag)
-                   .references(:term_data, :node_revisions)
-                   .where('term_data.name LIKE (?)', params[:tagname][0..-2] + '%')
-                   .limit(20)
-                   .order('node_revisions.timestamp DESC')
+        .includes(:revision, :tag)
+        .references(:term_data, :node_revisions)
+        .where('term_data.name LIKE (?)', params[:tagname][0..-2] + '%')
+        .limit(20)
+        .order('node_revisions.timestamp DESC')
     else
       @notes = Tag.find_nodes_by_type([params[:tagname]], 'note', 20)
     end

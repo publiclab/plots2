@@ -15,7 +15,7 @@ xml.rss :version => "2.0" do
         xml.author      node.author.name
         if node.power_tag('date') != ''
           begin
-            xml.pubDate     DateTime.strptime(node.power_tag('date'), "%m-%d-%Y").rfc822()
+            xml.pubDate     DateTime.strptime(node.power_tag('date'), "%m-%d-%Y").rfc822
           rescue
             xml.pubDate     node.power_tag('date')
           end

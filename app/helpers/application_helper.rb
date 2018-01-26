@@ -47,13 +47,13 @@ module ApplicationHelper
 
   # returns the comment body which is to be shown in the comments section
   def render_comment_body(comment)
-    raw sanitize (RDiscount.new(title_suggestion(comment)).to_html), attributes: %w(class style href data-method src)
+    raw sanitize RDiscount.new(title_suggestion(comment)).to_html, attributes: %w(class style href data-method src)
   end
   
   # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)
-    comment.body.gsub(/\[propose:title](.*?)\[\/propose]/) do |title_suggestion|
-      a = ActionController::Base.new()
+    comment.body.gsub(/\[propose:title](.*?)\[\/propose]/) do |_title_suggestion|
+      a = ActionController::Base.new
       is_creator = current_user.drupal_user == Node.find(comment.nid).author
       title = Regexp.last_match(1)
       output = a.render_to_string(template: "notes/_title_suggestion",
@@ -62,9 +62,8 @@ module ApplicationHelper
                                     user: comment.drupal_user.name,
                                     nid: comment.nid,
                                     title: title,
-                                    is_creator: is_creator,
-                                  }
-               )
+                                    is_creator: is_creator
+                                  })
       output
     end
   end
