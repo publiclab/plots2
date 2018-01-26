@@ -148,7 +148,7 @@ class WikiController < ApplicationController
         end
         redirect_to @node.path
       else
-        flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/post?#{request.env['QUERY_STRING']}&legacy=true' class='legacy-button'>click here</a>."
+        flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/wiki/new?legacy=true' class='legacy-button'>click here</a>."
         if params[:main_image] && Image.find_by(id: params[:main_image])
           @main_image = Image.find_by(id: params[:main_image]).path
         end
@@ -156,6 +156,7 @@ class WikiController < ApplicationController
           node = Node.find(params[:n])
           params[:body] = node.body if node
         end
+        render template: 'editor/wikiRich'
       end
     else
       flash.keep[:error] = I18n.t('wiki_controller.you_have_been_banned').html_safe

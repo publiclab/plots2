@@ -29,7 +29,7 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil :wikis
   end
-  
+
   test 'should get wiki stale pages' do
     get :stale
 
@@ -106,7 +106,7 @@ class WikiControllerTest < ActionController::TestCase
          title: '',
          body:  'This is fascinating documentation about balloon mapping.'
 
-    assert_template 'wiki/edit'
+    assert_template 'editor/wikiRich'
     assert_select '.alert'
   end
 

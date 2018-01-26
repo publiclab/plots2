@@ -36,7 +36,7 @@ class WikiCreationTest < ActionDispatch::IntegrationTest
 
     assert_nil node
     assert_equal '/wiki/create', path
-    assert_select 'h2', '1 error prohibited this revision from being saved'
+    assert_select 'h2', '1'
 
     # Now fill the body, and check it succeeds
 
