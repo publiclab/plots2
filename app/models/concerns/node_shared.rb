@@ -254,7 +254,7 @@ module NodeShared
 
 
   # in our interface, "users" are known as "people" because it's more human
-  def self.people_grid(body, current_user, _page = 1)
+  def self.people_grid(body, current_user = nil, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[people\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
