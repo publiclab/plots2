@@ -11,7 +11,7 @@ class UserTagsControllerTest < ActionController::TestCase
       post :create, id: users(:bob).id, name: 'environment'
     end
     assert_equal 'environment tag created successfully', flash[:notice]
-    assert_redirected_to info_path
+    assert_redirected_to "/profile/#{users(:bob).username}"
   end
 
   test 'should create a new tags via xhr' do
@@ -51,14 +51,14 @@ class UserTagsControllerTest < ActionController::TestCase
     # duplicate tag
     post :create, id: users(:bob).id, name: 'environment'
     assert_equal 'Error: tag already exists.', assigns[:output][:errors][0]
-    assert_redirected_to info_path
+    assert_redirected_to "/profile/#{users(:bob).username}"
   end
 
   test 'should not allow empty tag name' do
     UserSession.create(users(:bob))
     post :create, id: users(:bob).id, value: ''
     assert_equal 'Error: value cannot be empty', assigns[:output][:errors][0]
-    assert_redirected_to info_path
+    assert_redirected_to "/profile/#{users(:bob).username}"
   end
 
   test 'admin should delete existing tag of normal user' do
