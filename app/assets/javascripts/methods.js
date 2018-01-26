@@ -1,4 +1,4 @@
-$(document).on("ready turbolinks:load", function($) {
+$(document).on("ready turbolinks:load", function() {
 
   if (window.location.hash !== '') {
     var tagname = window.location.hash.replace('#', '');

@@ -84,7 +84,7 @@
       $('body').css('column-count', 1)
                .css('column-gap', 0);
     }
-    $(document).on("ready turbolinks:load", function($) {
+    $(document).on("ready turbolinks:load", function() {
       // 304 cached response yields no data to insert, which is not useful
       jQuery.ajaxSetup({
         cache: false

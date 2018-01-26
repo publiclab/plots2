@@ -1,4 +1,4 @@
-$(document).on("ready turbolinks:load", function($) {
+$(document).on("ready turbolinks:load", function() {
 
   //$('#content').hide();
   //$('#content-raw-markdown').show();

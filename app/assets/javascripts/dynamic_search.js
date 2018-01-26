@@ -21,7 +21,7 @@
   /**
     Setup for dynamic search
   **/
-  $(document).on("ready turbolinks:load", function($) {
+  $(document).on("ready turbolinks:load", function() {
     // for now, prevent submission of the query form--all restful at this point
     $("#dynamic_srch_form").submit(function(e) {
       e.preventDefault();

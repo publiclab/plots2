@@ -7,7 +7,7 @@
 
 **/
 
-$(document).on("ready turbolinks:load", function($) {
+$(document).on("ready turbolinks:load", function() {
   //Set the search date format for the date pickers.
   $('#search_min_date,#search_max_date').each(function() {
     $(this).datepicker({
