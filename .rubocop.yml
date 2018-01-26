@@ -15,4 +15,8 @@ AllCops:
     - 'log/*'
     - 'db/**/*'
     - 'Gemfile'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'lib/**/*'
+    - 'test/**/*'
   TargetRubyVersion: '2.4'
