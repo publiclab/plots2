@@ -20,3 +20,6 @@ AllCops:
     - 'lib/**/*'
     - 'test/**/*'
   TargetRubyVersion: '2.4'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false

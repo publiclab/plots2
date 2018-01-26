@@ -10,9 +10,6 @@ Layout/AccessModifierIndentation:
   - indent
   IndentationWidth:
 
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
 Style/Alias:
   EnforcedStyle: prefer_alias_method
   SupportedStyles:
