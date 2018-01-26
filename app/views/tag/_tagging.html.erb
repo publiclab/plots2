@@ -34,7 +34,7 @@ $(function () {
       </div>
     </div>
     <script>
-      jQuery(document).ready(function() {
+      $(document).on("ready turbolinks:load", function($) {
         <% if @node %>
           // node tags:
           initTagForm("/tag/delete/<%= @node.id %>", '#tagform');

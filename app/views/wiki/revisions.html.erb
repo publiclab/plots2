@@ -103,7 +103,7 @@
 
       }
 
-      jQuery(document).ready(function() {
+      $(document).on("ready turbolinks:load", function($) {
 
         $('#diff').html(
           diffString(

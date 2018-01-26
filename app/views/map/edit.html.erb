@@ -95,7 +95,7 @@
   
       <input autocomplete="off" id="taginput" class="form-control" tabindex="28" name="tags" type="text" <% if params[:tags] || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
       <script>
-        jQuery(document).ready(function() {
+        $(document).ready(function() {
   
           /* tag autocomplete */
           $('#taginput').typeahead({

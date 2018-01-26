@@ -2,7 +2,7 @@
 <div class="blurred-location-container" style="position:absolute;top:0;left:0;"></div>
 
 <script>
-  jQuery(document).ready(function() {
+  $(document).on("ready turbolinks:load", function($) {
     $('.blurred-location-input').click(function createBlurredLocationInput() {
       $.ajax('/locations/modal')
        .done(function(response) {

@@ -86,7 +86,7 @@
     <% if @node.has_tag('event:rsvp') %>
       <p><b><% if @node.has_power_tag('date') %>
         <script>
-          jQuery(document).ready(function() {
+          $(document).on("ready turbolinks:load", function($) {
             cal = ics();
             cal.addEvent('<%= @node.latest.title %>', false, false, '<%= @node.power_tag('date') %>', '<%= @node.power_tag('date') %>');
           })

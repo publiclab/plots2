@@ -6,7 +6,7 @@
   <div class="control-group">
     <input autocomplete="off" id="taginput" name="id" type="text" placeholder="water-quality,dust" data-provide="typeahead" class="form-control" />
     <script>
-      jQuery(document).ready(function() {
+      $(document).on("ready turbolinks:load", function($) {
  
         $('#taginput').typeahead({
           items: 8,

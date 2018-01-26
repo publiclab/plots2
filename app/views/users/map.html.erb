@@ -42,7 +42,7 @@
 
 <script type="text/javascript">
   
-  $(document).ready(function() {
+  $(document).on("ready turbolinks:load", function($) {
     $("#tag_type").val("<%= params[:tag] %>");
 
     <% if @location_tags %>
