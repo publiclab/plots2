@@ -198,16 +198,27 @@ class TypeaheadService
   end
 
   # Search question entries for matching text
-  def search_questions(srchString, limit = 5)
+  def search_questions(input, limit = 5)
     sresult = TagList.new
-    questions = Node.where(
-      'type = "note" AND node.status = 1 AND title LIKE ?',
-      '%' + srchString + '%'
-    )
-      .joins(:tag)
-      .where('term_data.name LIKE ?', 'question:%')
-      .order('node.nid DESC')
-      .limit(limit)
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      questions = Node.search(input)
+        .group(:nid)
+        .includes(:node)
+        .references(:node)
+        .limit(limit)
+        .where("node.type": "note", "node.status": 1)
+        .order('node.changed DESC')
+        .joins(:tag)
+        .where('term_data.name LIKE ?', 'question:%')
+    else 
+      questions = Node.where('title LIKE ?', '%' + input + '%')
+        .joins(:tag)
+        .where('term_data.name LIKE ?', 'question:%')
+        .limit(limit)
+        .group(:nid)
+        .where(type: "note", status: 1)
+        .order(changed: :desc)
+    end
     questions.each do |match|
       tval = TagResult.fromSearch(
         match.nid,
