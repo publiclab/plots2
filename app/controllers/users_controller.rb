@@ -131,8 +131,8 @@ class UsersController < ApplicationController
       @twitter = @profile_user.social_link("twitter")
       @facebook = @profile_user.social_link("facebook")
       @instagram = @profile_user.social_link("instagram")
-
-      
+      @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @user).count
+      @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @user).count
       @map_lat = nil
       @map_lon = nil 
       @map_blurred = nil 
