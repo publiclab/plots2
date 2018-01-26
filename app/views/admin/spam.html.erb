@@ -1,6 +1,6 @@
 <div class="col-md-3">
 
-  <h3>Spam moderation:</h3> 
+  <h3>Spam moderation:</h3>
 
   <p>Moderators and admins have the ability to "spam" posts if they include inappropriate content, blatant advertising, or are otherwise problematic. If you're not sure, email <a href="mailto:organizers@<%= request.host %>">organizers@<%= request.host %></a>. If we all work together, we can keep spam to a minimum; thanks for helping out!</p>
 
@@ -16,6 +16,7 @@
     <li <% unless params[:type] && params[:action] == "spam_revisions" %>class="active"<% end %>><a href="/spam">Filtered</a></li>
     <li <% if params[:type] == "wiki" %>class="active"<% end %>><a href="/spam/wiki"><i class="fa fa-book"></i><span class="hidden-sm"> Wiki</span></a></li>
     <li <% if params[:action] == "spam_revisions" %>class="active"<% end %>><a href="/spam/revisions"><i class="fa fa-list"></i><span class="hidden-sm"> Revisions</span></a></li>
+    <li <a href="/people"><i class="fa fa-user"></i><span class="hidden-sm"> Active Users</span></a></li>
   </ul>
 
   <br />
