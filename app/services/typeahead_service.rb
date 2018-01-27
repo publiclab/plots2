@@ -86,40 +86,40 @@ class TypeaheadService
   end
 
   # Run a search in any of the associated systems for references that contain the search string
-  def search_all(srchString, limit = 5)
+  def search_all(search_string, limit = 5)
     sresult = TagList.new
-    unless srchString.nil? || srchString == 0
+    unless search_string.nil? || search_string.blank?
       # notes
-      notesrch = search_notes(srchString, limit)
+      notesrch = search_notes(search_string, limit)
       sresult.addAll(notesrch.getTags)
       # wikis
-      wikisrch = search_wikis(srchString, limit)
+      wikisrch = search_wikis(search_string, limit)
       sresult.addAll(wikisrch.getTags)
       # User profiles
-      usersrch = search_profiles(srchString, limit)
+      usersrch = search_profiles(search_string, limit)
       sresult.addAll(usersrch.getTags)
       # Tags -- handled differently because tag
-      tagsrch = search_tags(srchString, limit)
+      tagsrch = search_tags(search_string, limit)
       sresult.addAll(tagsrch.getTags)
       # maps
-      mapsrch = search_maps(srchString, limit)
+      mapsrch = search_maps(search_string, limit)
       sresult.addAll(mapsrch.getTags)
       # questions
-      qsrch = search_questions(srchString, limit)
+      qsrch = search_questions(search_string, limit)
       sresult.addAll(qsrch.getTags)
       #comments
-      commentsrch = search_comments(srchString, limit)
+      commentsrch = search_comments(search_string, limit)
       sresult.addAll(commentsrch.getTags)
     end
     sresult
   end
 
   # Search profiles for matching text
-  def search_profiles(srchString, limit = 5)
+  def search_profiles(search_string, limit = 5)
     sresult = TagList.new
-    unless srchString.nil? || srchString == 0
+    unless search_string.nil? || search_string.blank?
       # User profiles
-      users(srchString, limit).each do |match|
+      users(search_string, limit).each do |match|
         tval = TagResult.new
         tval.tagId = 0
         tval.tagType = 'user'
@@ -132,10 +132,10 @@ class TypeaheadService
   end
 
   # Search notes for matching strings
-  def search_notes(srchString, limit = 5)
+  def search_notes(search_string, limit = 5)
     sresult = TagList.new
-    unless srchString.nil? || srchString == 0
-      notes(srchString, limit).uniq.each do |match|
+    unless search_string.nil? || search_string.blank?
+      notes(search_string, limit).uniq.each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
@@ -148,10 +148,10 @@ class TypeaheadService
   end
 
   # Search wikis for matching strings
-  def search_wikis(srchString, limit = 5)
+  def search_wikis(search_string, limit = 5)
     sresult = TagList.new
-    unless srchString.nil? || srchString == 0
-      wikis(srchString, limit).select('node.title,node.type,node.nid,node.path').each do |match|
+    unless search_string.nil? || search_string.blank?
+      wikis(search_string, limit).select('node.title,node.type,node.nid,node.path').each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
@@ -164,11 +164,11 @@ class TypeaheadService
   end
 
   # Search maps for matching text
-  def search_maps(srchString, limit = 5)
+  def search_maps(search_string, limit = 5)
     sresult = TagList.new
-    unless srchString.nil? || srchString == 0
+    unless search_string.nil? || search_string.blank?
       # maps
-      maps(srchString, limit).select('title,type,nid,path').each do |match|
+      maps(search_string, limit).select('title,type,nid,path').each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
@@ -181,11 +181,11 @@ class TypeaheadService
   end
 
   # Search tag values for matching text
-  def search_tags(srchString, limit = 5)
+  def search_tags(search_string, limit = 5)
     sresult = TagList.new
-    unless srchString.nil? || srchString == 0
+    unless search_string.nil? || search_string.blank?
       # Tags
-      tlist = tags(srchString, limit)
+      tlist = tags(search_string, limit)
       tlist.each do |match|
         ntag = TagResult.new
         ntag.tagId = 0
@@ -200,8 +200,8 @@ class TypeaheadService
   # Search question entries for matching text
   def search_questions(input, limit = 5)
     sresult = TagList.new
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      questions = Node.search(input)
+    questions = if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      Node.search(input)
         .group(:nid)
         .includes(:node)
         .references(:node)
@@ -211,7 +211,7 @@ class TypeaheadService
         .joins(:tag)
         .where('term_data.name LIKE ?', 'question:%')
     else 
-      questions = Node.where('title LIKE ?', '%' + input + '%')
+      Node.where('title LIKE ?', '%' + input + '%')
         .joins(:tag)
         .where('term_data.name LIKE ?', 'question:%')
         .limit(limit)
@@ -232,10 +232,10 @@ class TypeaheadService
   end
 
   # Search comments for matching text
-  def search_comments(srchString, limit = 5)
+  def search_comments(search_string, limit = 5)
     sresult = TagList.new
-    unless srchString.nil? || srchString == 0
-      comments(srchString, limit).each do |match|
+    unless search_string.nil? || search_string.blank?
+      comments(search_string, limit).each do |match|
         tval = TagResult.new
         tval.tagId = match.pid
         tval.tagVal = match.comment.truncate(20)

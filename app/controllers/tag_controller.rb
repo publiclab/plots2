@@ -117,7 +117,7 @@ class TagController < ApplicationController
 
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
-    @noteCount = Tag.taggedNodeCount(params[:id]) || 0
+    @note_count = Tag.tagged_node_count(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
 
     respond_with(nodes) do |format|
@@ -194,7 +194,7 @@ class TagController < ApplicationController
         render json: json
       end
     end
-end
+  end
 
   def widget
     num = params[:n] || 4
@@ -350,7 +350,7 @@ end
     set_sidebar :tags, [params[:id]], note_count: 20
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
-    @noteCount = Tag.taggedNodeCount(params[:id]) || 0
+    @note_count = Tag.tagged_node_count(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
   end
 

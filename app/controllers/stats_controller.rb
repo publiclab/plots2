@@ -35,8 +35,8 @@ class StatsController < ApplicationController
     @time = if params[:time]
               Time.parse(params[:time])
     else
-              Time.now
-            end
+      Time.now
+    end
 
     @weekly_notes = Node.select(%i(created type status))
       .where(type: 'note', status: 1, created: @time.to_i - 1.weeks.to_i..@time.to_i)
