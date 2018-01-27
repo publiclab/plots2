@@ -33,7 +33,7 @@ class NodeTag < ActiveRecord::Base
   end
 
   def description
-    self.tag.description if self.tag && self.tag.description && !self.tag.description.empty?
+    self.tag.description if self.tag&.description && !self.tag.description.empty?
   end
 
 end

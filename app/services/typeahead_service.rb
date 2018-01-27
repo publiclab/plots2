@@ -15,72 +15,74 @@ class TypeaheadService
   def users(input, limit = 5)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       User.search(input)
-          .limit(limit)
-          .where(status: 1)
+        .limit(limit)
+        .where(status: 1)
     else 
       User.limit(limit)
-          .order('id DESC')
-          .where('username LIKE ? AND status = 1', '%' + input + '%')
+        .order('id DESC')
+        .where('username LIKE ? AND status = 1', '%' + input + '%')
     end
   end
 
   def tags(input, limit = 5)
     Tag.includes(:node)
-       .references(:node)
-       .where('node.status = 1')
-       .limit(limit)
-       .where('name LIKE ?', '%' + input + '%')
+      .references(:node)
+      .where('node.status = 1')
+      .limit(limit)
+      .where('name LIKE ?', '%' + input + '%')
+      .group('node.nid')
   end
 
   def comments(input, limit = 5)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       Comment.search(input)
-             .limit(limit)
-             .order('nid DESC')
-             .where(status: 1)
+        .limit(limit)
+        .order('nid DESC')
+        .where(status: 1)
     else 
       Comment.limit(limit)
-             .order('nid DESC')
-             .where('status = 1 AND comment LIKE ?', '%' + input + '%')
+        .order('nid DESC')
+        .where('status = 1 AND comment LIKE ?', '%' + input + '%')
     end
   end
 
   def notes(input, limit = 5)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       Node.search(input)
-          .group(:nid)
-          .includes(:node)
-          .references(:node)
-          .limit(limit)
-          .where("node.type": "note", "node.status": 1)
-          .order('node.changed DESC')
+        .group(:nid)
+        .includes(:node)
+        .references(:node)
+        .limit(limit)
+        .where("node.type": "note", "node.status": 1)
+        .order('node.changed DESC')
     else 
       Node.limit(limit)
-          .group(:nid)
-          .where(type: "note", status: 1)
-          .order(changed: :desc)
-          .where('title LIKE ?', '%' + input + '%')
+        .group(:nid)
+        .where(type: "note", status: 1)
+        .order(changed: :desc)
+        .where('title LIKE ?', '%' + input + '%')
     end
   end
 
   def wikis(input, limit = 5)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       Node.search(input)
-          .includes(:node)
-          .references(:node)
-          .limit(limit)
-          .where("node.type": "page", "node.status": 1)
+        .group('node.nid')
+        .includes(:node)
+        .references(:node)
+        .limit(limit)
+        .where("node.type": "page", "node.status": 1)
     else 
       Node.limit(limit)
-          .order('nid DESC')
-          .where('type = "page" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+        .order('nid DESC')
+        .where('type = "page" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
     end
   end
 
   def maps(input, limit = 5)
     Node.limit(limit)
-        .order('nid DESC')
-        .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+      .order('nid DESC')
+      .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
   end
 
   # Run a search in any of the associated systems for references that contain the search string
@@ -196,16 +198,27 @@ class TypeaheadService
   end
 
   # Search question entries for matching text
-  def search_questions(srchString, limit = 5)
+  def search_questions(input, limit = 5)
     sresult = TagList.new
-    questions = Node.where(
-      'type = "note" AND node.status = 1 AND title LIKE ?',
-      '%' + srchString + '%'
-    )
-                    .joins(:tag)
-                    .where('term_data.name LIKE ?', 'question:%')
-                    .order('node.nid DESC')
-                    .limit(limit)
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      questions = Node.search(input)
+        .group(:nid)
+        .includes(:node)
+        .references(:node)
+        .limit(limit)
+        .where("node.type": "note", "node.status": 1)
+        .order('node.changed DESC')
+        .joins(:tag)
+        .where('term_data.name LIKE ?', 'question:%')
+    else 
+      questions = Node.where('title LIKE ?', '%' + input + '%')
+        .joins(:tag)
+        .where('term_data.name LIKE ?', 'question:%')
+        .limit(limit)
+        .group(:nid)
+        .where(type: "note", status: 1)
+        .order(changed: :desc)
+    end
     questions.each do |match|
       tval = TagResult.fromSearch(
         match.nid,

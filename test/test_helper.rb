@@ -8,7 +8,7 @@ require 'authlogic/test_case'
 require 'i18n'
 
 require "minitest/reporters"
-MiniTest::Reporters.use! [MiniTest::Reporters::DefaultReporter.new,
+MiniTest::Reporters.use! [MiniTest::Reporters::ProgressReporter.new,
                           MiniTest::Reporters::JUnitReporter.new]
 
 class ActiveSupport::TestCase

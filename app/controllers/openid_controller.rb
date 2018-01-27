@@ -42,7 +42,7 @@ class OpenidController < ApplicationController
       if oidreq
 
         requested_username = ''
-        if request.env['ORIGINAL_FULLPATH'] && request.env['ORIGINAL_FULLPATH'].split('?')[1]
+        if request.env['ORIGINAL_FULLPATH']&.split('?')[1]
           request.env['ORIGINAL_FULLPATH'].split('?')[1].split('&').each do |param|
             requested_username = param.split('=')[1].split('%2F').last if param.split('=')[0] == 'openid.claimed_id'
           end
@@ -130,7 +130,7 @@ class OpenidController < ApplicationController
     # This is not technically correct, and should eventually be updated
     # to do real Accept header parsing and logic.  Though I expect it will work
     # 99% of the time.
-    if accept && accept.include?('application/xrds+xml')
+    if accept&.include?('application/xrds+xml')
       user_xrds
       return
     end

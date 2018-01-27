@@ -15,7 +15,7 @@ class TagList
 
   def addAll(tlist)
     @items ||= []
-    tlist.each { |tItem| @items << tItem } unless tlist.nil?
+    tlist&.each { |tItem| @items << tItem }
   end
 
   def getTags

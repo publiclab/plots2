@@ -1,4 +1,4 @@
-<form id="comment-form" data-remote="true" class="well" <% if params[:controller] == 'questions' %> action= "/answers/create/<%= @node.nid %>" <% else %> action="/comment/create/<%= @node.nid %>" <% end %>>
+<form id="comment-form" data-remote="true" class="well" <% if params[:controller] == 'questions' %> action= "/answers/create/<%= @node.nid %>" <% else %> action="/comment/create/<%= @node.nid %>" <% end %> method="post" >
   <h4 style="margin-top:0;"><%= title %></h4>
 
   <style>

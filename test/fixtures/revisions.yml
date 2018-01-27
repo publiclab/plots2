@@ -8,12 +8,14 @@ about:
   nid: 2
   uid: 2
   vid: 1
+  timestamp: <%= (Time.now - 1.day).to_i %>
   title: About
   body: All about Public Lab
 
 about_rev_2:
   nid: 2
   vid: 2
+  timestamp: <%= (Time.now - 1.day).to_i + 1 %>
   uid: 2
   title: About
   body: All about Public Lab, AGAIN
@@ -21,16 +23,18 @@ about_rev_2:
 about_rev_3:
   nid: 2
   vid: 3
+  timestamp: <%= (Time.now - 1.day).to_i + 2 %>
   uid: 1
   title: About
   body: All about Public Lab, ONCE AGAIN
 
-about_rev_3:
+about_rev_4:
   nid: 2
-  vid: 3
+  vid: 4
+  timestamp: <%= (Time.now - 1.day).to_i + 3 %>
   uid: 1
   title: About
-  body: All about Public Lab, ONCE MORE
+  body: All about Public Lab
 
 three:
   nid: 3

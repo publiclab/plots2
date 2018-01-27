@@ -2,8 +2,8 @@ class Comment < ActiveRecord::Base
   include CommentsShared # common methods for comment-like models
 
   attr_accessible :pid, :nid, :uid, :aid,
-                  :subject, :hostname, :comment,
-                  :status, :format, :thread, :timestamp
+    :subject, :hostname, :comment,
+    :status, :format, :thread, :timestamp
 
   belongs_to :node, foreign_key: 'nid', touch: true,
                     dependent: :destroy, counter_cache: true
@@ -27,8 +27,8 @@ class Comment < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
-                                  .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-                                  .count
+        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+        .count
     end
     weeks
   end
