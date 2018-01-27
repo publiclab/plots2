@@ -260,11 +260,11 @@ class Tag < ActiveRecord::Base
     end
   end
 
-  def self.taggedNodeCount(tagName)
+  def self.tagged_node_count(tag_name)
     Node.where(status: 1, type: 'note')
         .includes(:revision, :tag)
         .references(:term_data, :node_revisions)
-        .where('term_data.name = ?', tagName)
+        .where('term_data.name = ?', tag_name)
         .count
   end
 end

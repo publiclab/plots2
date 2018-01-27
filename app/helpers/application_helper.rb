@@ -52,7 +52,7 @@ module ApplicationHelper
   
   # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)
-    comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do |title_suggestion|
+    comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do ||
       a = ActionController::Base.new
       is_creator = current_user.drupal_user == Node.find(comment.nid).author
       title = Regexp.last_match(1)

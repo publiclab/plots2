@@ -19,7 +19,21 @@ AllCops:
     - 'script/**/*'
     - 'lib/**/*'
     - 'test/**/*'
+    - 'public/**/*'
+    - 'Dangerfile'
   TargetRubyVersion: '2.4'
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Max: 303
+
+Metrics/ClassLength:
+  Max: 660
+
+Style/RegexpLiteral:
   Enabled: false

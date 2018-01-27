@@ -22,8 +22,8 @@ class WikiController < ApplicationController
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
     else
-              Node.find_wiki(params[:id])
-            end
+      Node.find_wiki(params[:id])
+    end
 
     if @node&.has_power_tag('redirect') && Node.where(nid: @node.power_tag('redirect')).exists?
       if current_user.nil? || (current_user.role != 'admin' && current_user.role != 'moderator')
@@ -91,8 +91,9 @@ class WikiController < ApplicationController
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
     else
-              Node.find_wiki(params[:id])
-            end
+      Node.find_wiki(params[:id])
+    end
+
     if @node.has_tag('locked') && (current_user.role != 'admin' && current_user.role != 'moderator')
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
       redirect_to @node.path
@@ -293,8 +294,8 @@ class WikiController < ApplicationController
     order_string = if params[:order] == 'alphabetic'
                      'node_revisions.title ASC'
     else
-                     'node_revisions.timestamp DESC'
-                   end
+       'node_revisions.timestamp DESC'
+    end
 
     @wikis = Node.includes(:revision)
       .references(:node_revisions)

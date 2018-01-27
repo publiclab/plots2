@@ -6,7 +6,7 @@
          <% end %>
             <div class="row" id="highlight" style=" text-align: center;">
               <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @users.length || 0 %> contributors</h3>
-              <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @noteCount %> research notes</h3>
+              <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @note_count %> research notes</h3>
               <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @wikis.length %> wiki pages</h3>
             </div>
          <% if params["action"] == "contributors"%>
@@ -30,7 +30,7 @@
   <% end %>
  <% end %>
 
-  <% if @noteCount.nil? || @noteCount == 0 %>
+  <% if @note_count.nil? || @note_count == 0 %>
         <p><%= raw t('tag.contributors.no_contributors', :tag => params[:id]) %>:</p>
     <% else %>
         <table class="table">

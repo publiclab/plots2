@@ -35,11 +35,9 @@ class ApplicationController < ActionController::Base
                  Node.questions
                    .joins(:revision)
       else
-                 Node.research_notes
-                   .joins(:revision)
-                   .order('node.nid DESC')
-                   .paginate(page: params[:page])
-               end
+        Node.research_notes.joins(:revision).order('node.nid DESC').paginate(page: params[:page])
+      end
+
       @notes = @notes.where('node.nid != (?)', @node.nid) if @node
       @notes = @notes.where('node_revisions.status = 1 AND node.nid NOT IN (?)', hidden_nids) unless hidden_nids.empty?
 
@@ -163,17 +161,17 @@ class ApplicationController < ActionController::Base
               # finding node for node comments
               @comment.node
     else
-              # finding node for answer comments
-              @comment.answer.node
-            end
+      # finding node for answer comments
+      @comment.answer.node
+    end
 
     @path = if params[:type] && params[:type] == 'question'
               # questions path
               @node.path(:question)
     else
-              # notes path
-              @node.path
-            end
+      # notes path
+      @node.path
+    end
   end
 
   # used for url redirects for friendly_id
