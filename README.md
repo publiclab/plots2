@@ -50,18 +50,21 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 
 1. In the console, download a copy of the source with `git clone https://github.com/publiclab/plots2.git`.
 2. Enter the new **plots2** directory with `cd plots2`.
-3. Make sure to use ruby-2.3.0. To check your ruby version run `ruby -v`.If you are using some other version then install ruby-2.3.0 with `rvm install 2.3.0`. Later to use ruby-2.3.0, run `rvm use 2.3.0`. Always make sure that you are using the correct ruby version since it might go back to its original version if you close the terminal.
-4. Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work.
-5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
-6. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
-7. Run `rake db:setup` to set up the database
-8. Install static assets (like external javascript libraries, fonts) with `bower install`
-9. (optional, not recommended) Install solr engine `rails generate sunspot_rails:install`
-10. (optional, not recommended) Start the solr server in foreground by using `bundle exec rake sunspot:solr:start`
-11. (optional, not recommended) Index your search database in solr server using  `bundle exec rake sunspot:reindex`
-12. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
-13. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-14. Run `rake test` to confirm that your install is working properly. For some setups, you may see warnings even if test pass; [see this issue](https://github.com/publiclab/plots2/issues/440) we're working to resolve.
+3. Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work.
+4. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
+5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
+6. Run `rake db:setup` to set up the database
+7. Install static assets (like external javascript libraries, fonts) with `bower install`
+8. (optional, not recommended) Install solr engine `rails generate sunspot_rails:install`
+9. (optional, not recommended) Start the solr server in foreground by using `bundle exec rake sunspot:solr:start`
+10. (optional, not recommended) Index your search database in solr server using  `bundle exec rake sunspot:reindex`
+11. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
+12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
+13. Run `rake test` to confirm that your install is working properly. For some setups, you may see warnings even if test pass; [see this issue](https://github.com/publiclab/plots2/issues/440) we're working to resolve.
+
+### Ruby version
+
+Make sure to use ruby-2.3.0. To check your ruby version run `ruby -v`.If you are using some other version then install ruby-2.3.0 with `rvm install 2.3.0`. Later to use ruby-2.3.0, run `rvm use 2.3.0`. Always make sure that you are using the correct ruby version since it might go back to its original version if you close the terminal. You might have to do bundle install after switching to a different version. 
 
 ### Bundle exec
 
