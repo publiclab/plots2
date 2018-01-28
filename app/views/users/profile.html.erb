@@ -234,7 +234,7 @@
 
   <hr />
 
-  <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }" } %>
+  <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }", parent: :profile } %>
 
   <hr />
 
