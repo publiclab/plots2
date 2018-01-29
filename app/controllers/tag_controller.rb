@@ -346,6 +346,24 @@ class TagController < ApplicationController
     end
   end
 
+  def rss_for_tagged_with_author
+    @user = User.find_by(name: params[:author])
+    @notes = Tag.tagged_nodes_by_author([params[:tagname]], @user)
+                 .limit(20)
+     respond_to do |format|
+       format.rss do
+         response.headers['Content-Type'] = 'application/xml; charset=utf-8'
+         response.headers['Access-Control-Allow-Origin'] = '*'
+         render layout: false
+       end
+       format.ics do
+         response.headers['Content-Disposition'] = "attachment; filename='public-lab-events.ics'"
+         response.headers['Content-Type'] = 'text/calendar; charset=utf-8'
+         render layout: false, template: 'tag/icalendar.ics', filename: 'public-lab-events.ics'
+      end
+    end
+  end
+
   def contributors
     set_sidebar :tags, [params[:id]], note_count: 20
     @tagnames = [params[:id]]
