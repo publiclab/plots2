@@ -10,7 +10,7 @@ one:
   cached_likes: 0
   slug: jeff-<%= Time.now.strftime("%m-%d-%Y") %>-canon-a1200-ir-conversion-at-plots-barnraising-at-lumcon
 
-about: 
+about:
   nid: 2
   uid: 1
   title: "about"
@@ -34,7 +34,7 @@ spam:
   cached_likes: 0
   slug: spammer-<%= Time.now.strftime("%m-%d-%Y") %>-hot-stuff-i-m-selling
 
-spam_targeted_page: 
+spam_targeted_page:
   nid: 4
   uid: 1
   title: "Important work"
@@ -46,7 +46,7 @@ spam_targeted_page:
   cached_likes: 0
   slug: important-work
 
-organizers: 
+organizers:
   nid: 5
   uid: 1
   title: "Organizers"
@@ -228,17 +228,6 @@ feature:
 
 method:
   nid: 20
-  uid: 1
-  title: "Method page"
-  created: <%= Time.now.to_i %>
-  changed: <%= Time.now.to_i %>
-  status: 1
-  type: "page"
-  cached_likes: 0
-  path: "/wiki/spectrometer"
-
-method:
-  nid: 20
   uid: 8
   title: "Method page"
   created: <%= Time.now.to_i %>
@@ -247,4 +236,3 @@ method:
   type: "page"
   cached_likes: 0
   path: "/wiki/spectrometer"
-
