@@ -125,7 +125,7 @@
             <ul class="dropdown-menu">
               <li class="dropdown-header"><%= current_user.username %><% if current_user.role === 'moderator' || current_user.role === 'admin'%>: <%= current_user.role %><% end %></li>
               <% if params[:action] == "dashboard" %>
-                <li><a href="/home"><%= t('layout._header.home') %></a></li>
+                <li><a href="/home"></a>Home</li>
               <% else %>
                 <li><a href="/dashboard"><%= t('layout._header.dashboard') %></a></li>
               <% end %>

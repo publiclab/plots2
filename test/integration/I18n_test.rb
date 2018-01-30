@@ -20,7 +20,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       }
       follow_redirect!
       get_via_redirect '/dashboard', locale: lang
-      assert_select 'a[href=/dashboard]', I18n.t('layout._header.dashboard')
+      assert_select 'a[href=/dashboard]'
     end
   end
 
