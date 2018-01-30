@@ -40,6 +40,8 @@
 
         <% if current_user %><li><a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard"><i class="fa fa-home fa fa-white"></i></a></li><% end %>
 
+        <% if current_user %><li><a rel="tooltip" title="Wiki Pages" data-placement="bottom" href="/wiki"><i class="fa fa-wikipedia-w fa fa-white" ></i></a></li><% end %>
+
         <li class="dropdown">
 
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -131,13 +133,13 @@
               <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
               <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
               <li class="divider"></li>
-	       <% if current_user.role == 'admin' %>
+         <% if current_user.role == 'admin' %>
     <li><a href="/useremail">Email search</a></li>
     <li><a href="/wiki/locked">Locked pages</a></li>
     <li><a href="/spam">Spam moderation</a></li>
     <li><a href="/people">Contributors</a></li>
-	           <li class="divider"></li>
-	       <% end %>
+             <li class="divider"></li>
+         <% end %>
               <li><%= link_to t('layout._header.logout'), logout_path %></li>
               <li><a href="/logoutRemotely">Logout from all devices</a></li>
             </ul>
