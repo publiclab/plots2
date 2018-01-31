@@ -9,6 +9,13 @@ class SearchesController < ApplicationController
 
   # /search/
   def new
+    if(params[:q].present?)
+      @title = 'Search'
+      @tagnames = params[:q].split(',')
+      @users = SearchService.new.users(params[:q])
+      @nodes = SearchService.new.nodes(params[:q])
+                   .paginate(page: params[:page], per_page: 24)
+    end
   end
 
   # results: /search/foo
