@@ -238,15 +238,24 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test "should delete wiki if other author have not contributed" do
-    node = nodes(:about)
+    node = nodes(:one)
     length=node.authors.uniq.length
     assert_equal 1,length
-
-    post :delete, id: wiki.nid
+    
+    post :delete, id: node.id
 
     assert_equal flash[:notice], 'Wiki page deleted.'
     assert_redirected_to '/dashboard'
-   end 
+  end 
+
+  test "should not delete wiki if other author have contributed" do
+    node = nodes(:about)
+    length=node.authors.uniq.length
+    assert_not_equal 1,length
+
+    assert_redirected_to '/dashboard'
+    assert_equal flash[:warning], 'More than one contributor have contributed'
+  end 
 
   #  test "normal user should not delete wiki revision" do
   #    post :delete_revision, id: nodes(:organizers).latest.vid
