@@ -1,0 +1,28 @@
+  <% unique_id = rand(100) %>
+  <style>
+  	#map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
+  </style>
+	
+   <div class="leaflet-map" id="map<%= unique_id %>"></div>
+	<% if defined? people %>
+		<p><i><small>
+			Share your own location on <a href='/profile'>your profile</a>.
+		</small></i></p>
+	<% end %>
+
+  <script>
+	var map<%= unique_id %> = L.map('map<%= unique_id %>').on('load', onMapLoad).setView([<%= lat %>,<%= lon %>], 2);
+ 	L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map<%= unique_id %>);
+ 	function onMapLoad(e){
+     	$.getJSON("/api/srch/peoplelocations?srchString=100" , function(data){
+ 			if (!!data.items){
+ 				for (i = 0; i < data.items.length ; i++) { 
+ 					var url = data.items[i].docUrl ;
+ 					var title = data.items[i].docTitle ;
+   					L.marker([data.items[i].latitude , data.items[i].longitude]).addTo(map<%= unique_id %>).bindPopup("<a href=" +  url + ">" + title + "</a>") ;
+				}
+ 			}
+ 		});
+	}
+  </script>
+

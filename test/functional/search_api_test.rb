@@ -145,4 +145,28 @@ class SearchApiTest < ActiveSupport::TestCase
 
   end
 
+  test 'search Recent People functionality' do
+    get '/api/srch/peoplelocations?srchString=100'
+    assert last_response.ok?
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+            srchString: '100',
+            seq: nil,
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+
+    assert_equal users(:bob).username, json['items'][0]['docTitle']
+    assert_equal "people_coordinates",       json['items'][0]['docType']
+    assert_equal 1,                json['items'][0]['docId']
+
+    assert matcher =~ json
+
+  end
+
 end
