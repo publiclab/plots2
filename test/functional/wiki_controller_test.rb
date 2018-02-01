@@ -237,6 +237,17 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
   end
 
+  test "should delete wiki if other author have not contributed" do
+    node = nodes(:about)
+    length=node.authors.uniq.length
+    assert_equal 1,length
+
+    post :delete, id: wiki.nid
+
+    assert_equal flash[:notice], 'Wiki page deleted.'
+    assert_redirected_to '/dashboard'
+   end 
+
   #  test "normal user should not delete wiki revision" do
   #    post :delete_revision, id: nodes(:organizers).latest.vid
   #    assert_equal flash[:error], "Only admins can delete wiki revisions."
@@ -584,4 +595,5 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'div#comments h3', /Comments/
   end
+
 end
