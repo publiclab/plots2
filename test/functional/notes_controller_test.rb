@@ -576,8 +576,10 @@ class NotesControllerTest < ActionController::TestCase
   end
 
   test "should delete wiki if other author have not contributed" do
+
     node = nodes(:one)
     length=node.authors.uniq.length
+    user = UserSession.create(users(:jeff))
     assert_equal 1,length
     
     post :delete, id: node.nid
@@ -589,9 +591,12 @@ class NotesControllerTest < ActionController::TestCase
     node = nodes(:about)
     length=node.authors.uniq.length
     assert_not_equal 1,length
+    user = UserSession.create(users(:jeff))
 
+     get :delete, id: node.nid
+    
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-    assert_equal flash[:warning], 'More than one contributor have contributed'
+
   end 
 
 end
