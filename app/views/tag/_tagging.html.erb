@@ -17,9 +17,11 @@ $(function () {
 })
 </script>
 
+<% parent ||= nil %>
+
+<% if parent != :profile || (current_user && (current_user.id == @user.id || current_user.role == "admin")) %>
 <% url = url || "/tag/create/" + @node.id.to_s %>
 
-<% if current_user %>
 <form id="tagform" class="form" data-remote="true" action="<%= url %>">
   <div class="control-group">
     <input name="remote" type="hidden" value="true" />
