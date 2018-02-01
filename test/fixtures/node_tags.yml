@@ -70,6 +70,12 @@ blog:
   nid: 13
   date: <%= DateTime.now.to_i %>
 
+blog2:
+  tid: 18
+  uid: 1
+  nid: 13
+  date: <%= DateTime.now.to_i %>
+
 question3:
   tid: 6
   uid: 2

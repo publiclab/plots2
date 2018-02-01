@@ -67,3 +67,7 @@ activities-spectrometer:
 test_lego:
   tid: 17
   name: test_lego
+
+blog-featured:
+  tid: 18
+  name: blog-featured

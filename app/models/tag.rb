@@ -26,7 +26,7 @@ class Tag < ActiveRecord::Base
   end
 
   validates :name, presence: :true
-  validates :name, format: { with: /\A[\w\.:-]*\z/, message: 'can only include letters, numbers, and dashes' }
+  validates :name, format: { with: /\A[\w\.:-]*[\w\.!-]*\z/, message: 'can only include letters, numbers, and dashes' }
   # validates :name, :uniqueness => { case_sensitive: false  }
 
   def id
@@ -52,8 +52,9 @@ class Tag < ActiveRecord::Base
     node_tag && node_tag.uid == current_user.uid || node_tag.node.uid == current_user.uid
   end
 
-  def self.contributor_count(tagname)
+  def self.contributors(tagname)
     tag = Tag.includes(:node).where(name: tagname).first
+    return [] if tag.nil?
     nodes = tag.node.includes(:revision, :comments,:answers).where(status: 1)
     uids = nodes.collect(&:uid)
     nodes.each do |n|
@@ -62,6 +63,11 @@ class Tag < ActiveRecord::Base
       uids+=n.revision.collect(&:uid)
     end
     uids = uids.uniq
+    User.where(id: uids)
+  end
+
+  def self.contributor_count(tagname)
+    uids = Tag.contributors(tagname)
     uids.length
   end
 
@@ -99,7 +105,7 @@ class Tag < ActiveRecord::Base
 
   # just like find_nodes_by_type, but searches wiki pages, places, and tools
   def self.find_pages(tagnames, limit = 10)
-    find_nodes_by_type(tagnames, %w[page place tool], limit)
+    find_nodes_by_type(tagnames, %w(page place tool), limit)
   end
 
   def self.find_nodes_by_type_with_all_tags(tagnames, type = 'note', limit = 10)
@@ -174,7 +180,7 @@ class Tag < ActiveRecord::Base
   end
 
   def self.nodes_for_period(type, nids, start, finish)
-    Node.select(%i[created status type nid])
+    Node.select(%i(created status type nid))
         .where(
           'type = ? AND status = 1 AND nid IN (?) AND created > ? AND created <= ?',
           type,
@@ -242,14 +248,23 @@ class Tag < ActiveRecord::Base
       @wildcard = true
       Node.where('term_data.name LIKE(?)', tagname[0..-2]+'%')
         .includes(:node_tag, :tag)
+        .order('node.nid DESC')
         .references(:term_data)
         .where('node.uid = ?', user_id)
     else
       Node.where('term_data.name = ?', tagname)
         .includes(:node_tag, :tag)
+        .order('node.nid DESC')
         .references(:term_data)
         .where('node.uid = ?', user_id)
     end
   end
 
+  def self.tagged_node_count(tag_name)
+    Node.where(status: 1, type: 'note')
+        .includes(:revision, :tag)
+        .references(:term_data, :node_revisions)
+        .where('term_data.name = ?', tag_name)
+        .count
+  end
 end

@@ -1,4 +1,5 @@
 require 'test_helper'
+include ::ApplicationHelper
 
 class CommentControllerTest < ActionController::TestCase
   def setup
@@ -341,4 +342,27 @@ class CommentControllerTest < ActionController::TestCase
     assert_not_equal initial_mail_count, ActionMailer::Base.deliveries.size
   end
 
+  test 'render propose title template when author is logged in' do
+    comment = comments(:first)
+    comment.comment = '[propose:title]New Title[/propose]'
+    comment.save!
+    html = title_suggestion(comment)
+    assert_equal html.scan('<a href="/profile/Bob">Bob</a> is suggesting an alternative title').length,1
+    assert_equal html.scan('<a href="/node/update/title?id=1&title=New Title"').length,1
+  end
+
+  test 'render propose title template when author is not logged in' do
+    comment = comments(:second)
+    comment.comment = '[propose:title]New Title[/propose]'
+    comment.save!
+    html = title_suggestion(comment)
+    assert_equal html.scan('<a href="/profile/jeff">jeff</a> is suggesting an alternative title').length,1
+    assert_equal html.scan('<a href="/node/update/title?id=2&title=New Title"').length,0
+  end
+
+  private
+
+  def current_user
+    users(:jeff)
+  end
 end

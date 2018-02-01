@@ -34,8 +34,8 @@ module ApplicationHelper
     body = NodeShared.upgrades_grid(body)
     body = NodeShared.notes_map(body)
     body = NodeShared.notes_map_by_tag(body)
-    body = NodeShared.people_grid(body)
     body = NodeShared.people_map(body)
+    body = NodeShared.people_grid(body, @current_user || nil) # <= to allow testing of insert_extras
     body = NodeShared.graph_grid(body)
     body = NodeShared.wikis_grid(body)
     body
@@ -43,5 +43,28 @@ module ApplicationHelper
 
   def render_map(lat, lon, items)
     render partial: 'map/leaflet', locals: { lat: lat, lon: lon, items: items }
+  end
+
+  # returns the comment body which is to be shown in the comments section
+  def render_comment_body(comment)
+    raw sanitize RDiscount.new(title_suggestion(comment)).to_html, attributes: %w(class style href data-method src)
+  end
+  
+  # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
+  def title_suggestion(comment)
+    comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do ||
+      a = ActionController::Base.new
+      is_creator = current_user.drupal_user == Node.find(comment.nid).author
+      title = Regexp.last_match(1)
+      output = a.render_to_string(template: "notes/_title_suggestion",
+                                  layout:   false,
+                                  locals:   {
+                                    user: comment.drupal_user.name,
+                                    nid: comment.nid,
+                                    title: title,
+                                    is_creator: is_creator
+                                  })
+      output
+    end
   end
 end

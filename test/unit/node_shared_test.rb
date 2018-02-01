@@ -115,4 +115,71 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<table class="table inline-grid wikis-grid wikis-grid-test wikis-grid-test-').length
     assert_equal 1, html.scan('<table').length
   end
+
+  test 'about ability of power tags to exclude tags like [notes:test!awesome]' do
+    before = "Here are some notes in a table: \n\n[notes:test!awesome]"
+    html = NodeShared.notes_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid notes-grid notes-grid-test notes-grid-test-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 5, html.scan('notes-grid-test').length
+    assert_equal 4, html.scan('<td').length
+  end
+
+  test 'about ability of power tags to exclude tags like [questions:foo!foo1]' do
+    before = "Here are some questions in a table: \n\n[questions:spectrometer!awesome] \n\nThis is how you make it work:\n\n`[questions:tagname!tagname]`\n\n `[questions:tagname!tagname]`\n\nMake sense?"
+    html = NodeShared.questions_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid questions-grid questions-grid-spectrometer questions-grid-spectrometer-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 5, html.scan('questions-grid-spectrometer').length
+    assert html.scan('<td class="title">').length > 1
+  end
+
+  test 'about ability of power tags to exclude tags like [questions:foo!answered]' do
+    before = "Here are some questions in a table: \n\n[questions:spectrometer!answered] \n\nThis is how you make it work:\n\n`[questions:tagname!answered]`\n\n `[questions:tagname!answered]`\n\nMake sense?"
+    html = NodeShared.questions_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid questions-grid questions-grid-spectrometer questions-grid-spectrometer-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 5, html.scan('questions-grid-spectrometer').length
+    assert html.scan('<td class="title">').length > 1
+  end
+
+  test 'about ability of power tags to exclude tags like [activities:foo!foo1]' do
+    before = "Here are some activities in a table: \n\n[activities:spectrometer!test] \n\nThis is how you make it work:\n\n`[activities:tagname!tagname]`\n\nMake sense?"
+    html = NodeShared.activities_grid(before)
+    assert_equal 1, Node.activities('spectrometer').length
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid activity-grid activity-grid-spectrometer activity-grid-spectrometer-').length
+    assert_equal 4, html.scan('<td').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 5, html.scan('activity-grid-spectrometer').length
+  end
+
+  test 'about ability of power tags to exclude tags like [upgrades:foo!foo1]' do
+    before = "Here are some upgrades in a table: \n\n[upgrades:latest!test] \n\nThis is how you make it work:\n\n`[upgrades:tagname!exclude]`\n\nMake sense?"
+    html = NodeShared.upgrades_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid upgrades-grid upgrades-grid-latest upgrades-grid-latest-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 5, html.scan('upgrades-grid-latest').length
+    assert html.scan('<td class="title">').length > 1
+  end
+
+  test 'about ability of power tags to exclude tags like [wikis:foo!foo1]' do
+    before = "Here are some wikis in a table: \n\n[wikis:test!awesome] \n\nThis is how you make it work:\n\n`[wikis:tagname!tag]`\n\n `[wiksi:tagname!tag]`\n\nMake sense?"
+    html = NodeShared.wikis_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid wikis-grid wikis-grid-test wikis-grid-test-').length
+    assert_equal 1, html.scan('<table').length
+  end
+
+  test 'about ability of power tags to exclude tags like [people:organizer!foo1]' do
+    before = "Here are some people in a grid: \n\n[people:organizer!skill:rails] \n\nThis is how you make it work:\n\n`[people:organizer!skill:rails]`\n\nMake sense?"
+    html = NodeShared.people_grid(before)
+    assert_equal 1, html.scan('<table class="table inline-grid people-grid people-grid-organizer people-grid-organizer-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 6, html.scan('people-grid').length
+  end
 end

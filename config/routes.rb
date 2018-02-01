@@ -6,11 +6,12 @@ Plots2::Application.routes.draw do
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
 
   get 'searches/test' => 'searches#test'
+  post '/node/update/title' => 'notes#update_title'
 
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
   mount Srch::API => '/api'
-  mount GrapeSwaggerRails::Engine => '/api/d1ocs'
+  mount GrapeSwaggerRails::Engine => '/api/docs'
   #end
 
   resources :rusers
@@ -133,6 +134,7 @@ Plots2::Application.routes.draw do
   get 'notes/author/:author/:topic' => 'notes#author_topic'
   get 'notes/show/:id' => 'notes#show'
   get 'notes/:author/:date/:id' => 'notes#show'
+  get 'notes/feeds' => 'subscription#notes'
 
   # :id will be the node's id (like has no id)
   get 'likes' => 'like#index'
@@ -167,7 +169,7 @@ Plots2::Application.routes.draw do
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
   get 'tag/:id' => 'tag#show'
   get 'tag/:id/author/:author' => 'tag#show_for_author'
-
+  get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'
   get 'embed/grid/:tagname' => 'tag#gridsEmbed'

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class SubscriptionMailer - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">ActionMailer::Base
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="ApplicationHelper.html">ApplicationHelper</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-notify_node_creation">#notify_node_creation</a>
+    
+    <li ><a href="#method-i-notify_note_liked">#notify_note_liked</a>
+    
+    <li ><a href="#method-i-notify_tag_added">#notify_tag_added</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-SubscriptionMailer">
+  <h1 id="class-SubscriptionMailer" class="class">
+    class SubscriptionMailer
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-notify_node_creation" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">notify_node_creation</span><span
+            class="method-args">(node)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="notify_node_creation-source">
+            <pre><span class="ruby-comment"># File app/mailers/subscription_mailer.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_node_creation</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-identifier">subject</span> = <span class="ruby-string">&#39;[PublicLab] &#39;</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">node</span>.<span class="ruby-identifier">has_power_tag</span>(<span class="ruby-string">&#39;question&#39;</span>) <span class="ruby-operator">?</span> <span class="ruby-string">&#39;Question: &#39;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>) <span class="ruby-operator">+</span>
+            <span class="ruby-identifier">node</span>.<span class="ruby-identifier">title</span>
+  <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">subscribers</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">tags</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">_key</span>, <span class="ruby-identifier">val</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">val</span>[<span class="ruby-value">:user</span>]
+    <span class="ruby-ivar">@node</span> = <span class="ruby-identifier">node</span>
+    <span class="ruby-ivar">@tags</span> = <span class="ruby-identifier">val</span>[<span class="ruby-value">:tags</span>]
+    <span class="ruby-ivar">@footer</span> = <span class="ruby-identifier">feature</span>(<span class="ruby-string">&#39;email-footer&#39;</span>)
+    <span class="ruby-identifier">mail</span>(<span class="ruby-identifier">to</span><span class="ruby-operator">:</span> <span class="ruby-identifier">val</span>[<span class="ruby-value">:user</span>].<span class="ruby-identifier">email</span>, <span class="ruby-identifier">subject</span><span class="ruby-operator">:</span> <span class="ruby-identifier">subject</span>).<span class="ruby-identifier">deliver</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-notify_note_liked" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">notify_note_liked</span><span
+            class="method-args">(node, user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="notify_note_liked-source">
+            <pre><span class="ruby-comment"># File app/mailers/subscription_mailer.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_note_liked</span>(<span class="ruby-identifier">node</span>, <span class="ruby-identifier">user</span>)
+  <span class="ruby-identifier">subject</span> = <span class="ruby-node">&quot;[PublicLab] #{user.username} liked your &quot;</span> <span class="ruby-operator">+</span>
+            (<span class="ruby-identifier">node</span>.<span class="ruby-identifier">has_power_tag</span>(<span class="ruby-string">&#39;question&#39;</span>) <span class="ruby-operator">?</span> <span class="ruby-string">&#39;question&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&#39;research note&#39;</span>)
+  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
+  <span class="ruby-ivar">@node</span> = <span class="ruby-identifier">node</span>
+  <span class="ruby-ivar">@footer</span> = <span class="ruby-identifier">feature</span>(<span class="ruby-string">&#39;email-footer&#39;</span>)
+  <span class="ruby-identifier">mail</span>(<span class="ruby-identifier">to</span><span class="ruby-operator">:</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">author</span>.<span class="ruby-identifier">email</span>, <span class="ruby-identifier">subject</span><span class="ruby-operator">:</span> <span class="ruby-identifier">subject</span>).<span class="ruby-identifier">deliver</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-notify_tag_added" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">notify_tag_added</span><span
+            class="method-args">(node, tag, current_user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="notify_tag_added-source">
+            <pre><span class="ruby-comment"># File app/mailers/subscription_mailer.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">notify_tag_added</span>(<span class="ruby-identifier">node</span>, <span class="ruby-identifier">tag</span>, <span class="ruby-identifier">current_user</span>)
+   <span class="ruby-ivar">@tag</span> = <span class="ruby-identifier">tag</span>
+   <span class="ruby-ivar">@node</span> = <span class="ruby-identifier">node</span>
+   <span class="ruby-ivar">@current_user</span> = <span class="ruby-identifier">current_user</span>
+   <span class="ruby-identifier">given_tags</span> = <span class="ruby-identifier">node</span>.<span class="ruby-identifier">tags</span>.<span class="ruby-identifier">reject</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">tag</span>} 
+   <span class="ruby-identifier">users_to_email</span> = <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">followers_who_dont_follow_tags</span>(<span class="ruby-identifier">given_tags</span>)
+   <span class="ruby-identifier">users_with_everything_tag</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">followers</span>(<span class="ruby-string">&#39;everything&#39;</span>)
+   <span class="ruby-identifier">final_users_ids</span> = <span class="ruby-keyword">nil</span> 
+   <span class="ruby-keyword">if</span>(<span class="ruby-operator">!</span><span class="ruby-identifier">users_to_email</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">users_with_everything_tag</span>.<span class="ruby-identifier">nil?</span>)
+     <span class="ruby-identifier">final_users_ids</span> = <span class="ruby-identifier">users_to_email</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:id</span>) <span class="ruby-operator">-</span> <span class="ruby-identifier">users_with_everything_tag</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:uid</span>)
+   <span class="ruby-keyword">elsif</span>(<span class="ruby-operator">!</span><span class="ruby-identifier">users_to_email</span>.<span class="ruby-identifier">nil?</span>) 
+     <span class="ruby-identifier">final_users_ids</span> = <span class="ruby-identifier">users_to_email</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:id</span>)
+   <span class="ruby-keyword">end</span>
+   <span class="ruby-identifier">final_users_to_email</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">final_users_ids</span>) 
+   <span class="ruby-identifier">final_users_to_email</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">user</span><span class="ruby-operator">|</span>
+     <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
+     <span class="ruby-keyword">unless</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span> 
+        <span class="ruby-identifier">mail</span>(<span class="ruby-identifier">to</span><span class="ruby-operator">:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-identifier">subject</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;New tag added on #{node.title}&quot;</span>).<span class="ruby-identifier">deliver</span> 
+     <span class="ruby-keyword">end</span>
+   <span class="ruby-keyword">end</span>
+   <span class="ruby-ivar">@footer</span> = <span class="ruby-identifier">feature</span>(<span class="ruby-string">&#39;email-footer&#39;</span>)
+ <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

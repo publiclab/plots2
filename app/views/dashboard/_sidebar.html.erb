@@ -1,49 +1,5 @@
-  <br />
+<br />
 
-  <ul class="nav nav-tabs">
-    <li class="active">
-      <a class="wikis-tab" href="#wiki" data-toggle="tab">
-        <span class="visible-xs"><i class="fa fa-book"></i></span>
-        <span class="hidden-xs"><%= t('dashboard._sidebar.wiki') %></span>
-      </a>
-    </li>
-    <li>
-      <a class="lists-tab" href="#lists" data-toggle="tab">
-        <span class="visible-xs"><i class="fa fa-comment"></i></span>
-        <span class="hidden-xs"><%= t('dashboard._sidebar.discussion_list') %></span>
-      </a>
-    </li>
-  </ul>
-
-  <div class="tab-content">
-
-    <div class="tab-pane active" id="wiki">
-
-      <%= render partial: "dashboard/wiki", locals: { wikis: @wikis } %>
-
-    </div>
-
-    <div class="tab-pane" id="lists">
-
-      <div class="meta"> 
-        <select class="form-control input-sm list-select">
-          <option value="combined"><%= t('dashboard._sidebar.all') %></option>
-          <option value="publiclaboratory"><%= t('dashboard._sidebar.public_laboratory') %></option>
-          <option value="grassrootsmapping"><%= t('dashboard._sidebar.grassroots_mapping') %></option>
-          <option value="plots-spectrometry"><%= t('dashboard._sidebar.spectrometry') %></option>
-          <option value="plots-infrared"><%= t('dashboard._sidebar.infrared') %></option>
-          <option value="plots-airquality"><%= t('dashboard._sidebar.air_quality') %></option>
-          <option value="plots-waterquality"><%= t('dashboard._sidebar.water_quality') %></option>
-          <option value="plots-dev"><%= t('dashboard._sidebar.developers') %></option>
-        </select>
-      </div>
-
-      <div class="lists">
-
-        <i style="margin:20px 45% 20px;" class="fa fa-circle-o-notch fa-spin"></i>
-
-      </div>
-
-    </div>
-
-  </div>
+<div id="wiki">
+  <%= render partial: "dashboard/wiki", locals: { wikis: @wikis } %>
+</div>
