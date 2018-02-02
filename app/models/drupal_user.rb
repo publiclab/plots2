@@ -81,7 +81,7 @@ class DrupalUser < ActiveRecord::Base
   end
 
   def update_user_status(status)
-    u = user
+    u = self.user
     u.status = status
     u.save!
   end
