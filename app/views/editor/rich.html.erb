@@ -38,7 +38,7 @@
           </div>
           <div class="col-xs-2" style="padding-top:10px;text-align:left;">
             <a rel="tooltip" data-placement="bottom" title="Learn more about different posting types." class="ple-help-light" style="font-size:18px;"><i class="fa fa-question-circle"></i></a>
-            
+
           </div>
         </div>
       </div>
@@ -163,7 +163,7 @@
     </div>
     -->
     <!-- end multi module -->
-  
+
 
   </div>
 
@@ -190,7 +190,7 @@
       <span class="ple-steps-left">2</span>
       <span class="hidden-xs"> steps left</span>
     </span>
-    
+
   </div>
 
 </div>
@@ -218,9 +218,13 @@
       <% if params[:redirect] == 'question' %>
         redirect: 'redirect',
       <% end %>
-      <% if (@node && @node.errors.size > 0) || (@revision && @revision.errors.size > 0) %>
-        errors: <%=raw (@node.errors.to_h.merge(@revision.errors.to_h)).to_json %>,
-      <% end %>
+      <% if (@node && @node.errors.size > 0) && (@revision && @revision.errors.size > 0) %>
+         errors: <%=raw (@node.errors.to_h.merge(@revision.errors.to_h)).to_json %>,
+       <% elsif (@node && @node.errors.size > 0) %>
+         errors: <%=raw (@node.errors.to_h).to_json %>,
+       <% elsif (@revision && @revision.errors.size > 0) %>
+         errors: <%=raw (@revision.errors.to_h).to_json %>,
+       <% end %>
       format:      'publiclab',
       publishCallback: function publishCallback(response) {
         // parse and display errors!
@@ -250,7 +254,7 @@
         suggestRelated: true,
         fetchRelated: function(show) {
           $.getJSON("/api/srch/notes?srchString=" + editor.titleModule.value(), function(response) {
-            /* API provides: 
+            /* API provides:
             {"items":[{
               "docId":14022,
               "docType":"file",
