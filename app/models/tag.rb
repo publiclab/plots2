@@ -246,17 +246,17 @@ class Tag < ActiveRecord::Base
   def self.tagged_nodes_by_author(tagname, user_id)
     if tagname[-1..-1] == '*'
       @wildcard = true
-      Node.where('term_data.name LIKE(?)', tagname[0..-2]+'%')
-        .includes(:node_tag, :tag)
-        .references(:term_data)
-        .order('node.nid DESC')
-        .where('node.uid = ?', user_id)
+      Node.includes(:node_tag, :tag)
+          .where('term_data.name LIKE(?) OR term_data.parent LIKE (?)', tagname[0..-2]+'%', tagname[0..-2]+'%')
+          .references(:term_data, :node_tag)
+          .where('node.uid = ?', user_id)
+          .order('node.nid DESC')
     else
-      Node.where('term_data.name = ?', tagname)
-        .includes(:node_tag, :tag)
-        .order('node.nid DESC')
-        .references(:term_data)
-        .where('node.uid = ?', user_id)
+      Node.includes(:node_tag, :tag)
+          .where('term_data.name = ? OR term_data.parent = ?', tagname, tagname)
+          .references(:term_data, :node_tag)
+          .where('node.uid = ?', user_id)
+          .order('node.nid DESC')
     end
   end
 
