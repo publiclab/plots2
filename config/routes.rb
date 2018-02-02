@@ -93,6 +93,7 @@ Plots2::Application.routes.draw do
   # these need precedence for tag listings
   get 'feed/tag/:tagname' => 'tag#rss'
   get ':node_type/tag(/:id)' => 'tag#show'
+  get 'feed/tag/:tagname/author/:authorname' => 'tag#rss_for_tagged_with_author'
   get 'wiki/raw/:id' => 'wiki#raw'
   get 'wiki/revisions/:id' => 'wiki#revisions'
   get 'wiki/revert/:id' => 'wiki#revert'

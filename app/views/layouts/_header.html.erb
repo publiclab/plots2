@@ -124,7 +124,11 @@
             </a>
             <ul class="dropdown-menu">
               <li class="dropdown-header"><%= current_user.username %><% if current_user.role === 'moderator' || current_user.role === 'admin'%>: <%= current_user.role %><% end %></li>
-              <li><a href="/dashboard"><%= t('layout._header.dashboard') %></a></li>
+              <% if params[:action] == "dashboard" %>
+                <li><a href="/home"></a>Home</li>
+              <% else %>
+                <li><a href="/dashboard"><%= t('layout._header.dashboard') %></a></li>
+              <% end %>
               <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
               <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li>
               <li class="divider"></li>

@@ -62,6 +62,10 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
 13. Run `rake test` to confirm that your install is working properly. For some setups, you may see warnings even if test pass; [see this issue](https://github.com/publiclab/plots2/issues/440) we're working to resolve.
 
+### Ruby version
+
+Make sure to use ruby-2.3.4. To check your ruby version run `ruby -v`.If you are using some other version then install ruby-2.3.4 with `rvm install 2.3.4`. Later to use ruby-2.3.4, run `rvm use 2.3.4`. Always make sure that you are using the correct ruby version since it might go back to its original version if you close the terminal. You might have to redo the entire installation process after switching to a different version. 
+
 ### Bundle exec
 
 For some, it will be necessary to prepend your gem-related commands with `bundle exec`, for example, `bundle exec passenger start`; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler. `bundle exec rake db: setup`, `bundle exec rake db: seed` are other examples of where this might be necessary.

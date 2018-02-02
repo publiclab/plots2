@@ -446,7 +446,7 @@ class TagControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'table' # ensure a table is shown
   end
-
+  
   test "wildcard does not show map for show_for_author" do
     get :show_for_author, id: 'question:*', node_type: 'maps', author: 'Bob'
     assert_equal true, assigns(:nodes).empty?
@@ -477,5 +477,11 @@ class TagControllerTest < ActionController::TestCase
     get :show_for_author, id: 'question:*', node_type: 'wiki', author: 'jeff'
     assert_equal true, assigns(:wikis).empty?
   end
-
+  
+  test 'rss with tagname and authorname' do
+    get :rss_for_tagged_with_author, tagname: 'test*', authorname: 'jeff', format: 'rss'
+    assert :success
+    assert_not_nil :notes
+    assert_equal 'application/rss+xml', @response.content_type
+  end
 end
