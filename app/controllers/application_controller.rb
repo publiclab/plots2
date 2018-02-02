@@ -26,20 +26,18 @@ class ApplicationController < ActionController::Base
     else # type is generic
       # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
       hidden_nids = Node.joins(:node_tag)
-                        .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
-                        .select('node.*, term_data.*, community_tags.*')
-                        .where(type: 'note', status: 1)
-                        .where('term_data.name = (?)', 'hidden:response')
-                        .collect(&:nid)
+        .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
+        .select('node.*, term_data.*, community_tags.*')
+        .where(type: 'note', status: 1)
+        .where('term_data.name = (?)', 'hidden:response')
+        .collect(&:nid)
       @notes = if params[:controller] == 'questions'
                  Node.questions
-                     .joins(:revision)
-               else
-                 Node.research_notes
-                     .joins(:revision)
-                     .order('node.nid DESC')
-                     .paginate(page: params[:page])
-               end
+                   .joins(:revision)
+      else
+        Node.research_notes.joins(:revision).order('node.nid DESC').paginate(page: params[:page])
+      end
+
       @notes = @notes.where('node.nid != (?)', @node.nid) if @node
       @notes = @notes.where('node_revisions.status = 1 AND node.nid NOT IN (?)', hidden_nids) unless hidden_nids.empty?
 
@@ -52,11 +50,11 @@ class ApplicationController < ActionController::Base
       end
 
       @wikis = Node.order('changed DESC')
-                   .joins(:revision)
-                   .where('node_revisions.status = 1 AND node.status = 1 AND type = "page"')
-                   .limit(10)
-                   .group('node_revisions.nid')
-                   .order('node_revisions.timestamp DESC')
+        .joins(:revision)
+        .where('node_revisions.status = 1 AND node.status = 1 AND type = "page"')
+        .limit(10)
+        .group('node_revisions.nid')
+        .order('node_revisions.timestamp DESC')
     end
   end
 
@@ -73,7 +71,7 @@ class ApplicationController < ActionController::Base
 
   def current_user
     unless defined?(@current_user)
-      @current_user = current_user_session && current_user_session.record
+      @current_user = current_user_session&.record
     end
     # if banned or moderated:
     if @current_user.try(:drupal_user).try(:status) == 0
@@ -162,18 +160,18 @@ class ApplicationController < ActionController::Base
     @node = if @comment.aid == 0
               # finding node for node comments
               @comment.node
-            else
-              # finding node for answer comments
-              @comment.answer.node
-            end
+    else
+      # finding node for answer comments
+      @comment.answer.node
+    end
 
     @path = if params[:type] && params[:type] == 'question'
               # questions path
               @node.path(:question)
-            else
-              # notes path
-              @node.path
-            end
+    else
+      # notes path
+      @node.path
+    end
   end
 
   # used for url redirects for friendly_id

@@ -3,7 +3,7 @@ class FeaturesController < ApplicationController
 
   def index
     @features = Node.where(type: 'feature')
-                    .paginate(page: params[:page])
+      .paginate(page: params[:page])
   end
 
   def embed

@@ -1,7 +1,7 @@
 require 'rss'
 
 class WikiController < ApplicationController
-  before_filter :require_user, only: %i[new create edit update delete replace]
+  before_filter :require_user, only: %i(new create edit update delete replace)
 
   def subdomain
     url = "//#{request.host}/wiki/"
@@ -21,11 +21,11 @@ class WikiController < ApplicationController
   def show
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
-            else
-              Node.find_wiki(params[:id])
-            end
+    else
+      Node.find_wiki(params[:id])
+    end
 
-    if @node && @node.has_power_tag('redirect') && Node.where(nid: @node.power_tag('redirect')).exists?
+    if @node&.has_power_tag('redirect') && Node.where(nid: @node.power_tag('redirect')).exists?
       if current_user.nil? || (current_user.role != 'admin' && current_user.role != 'moderator')
         redirect_to Node.find(@node.power_tag('redirect')).path
         return
@@ -35,7 +35,7 @@ class WikiController < ApplicationController
       end
     end
 
-    if @node && @node.has_power_tag('abtest') && !Node.where(nid: @node.power_tag('abtest')).empty?
+    if @node&.has_power_tag('abtest') && !Node.where(nid: @node.power_tag('abtest')).empty?
       if current_user.nil? || (current_user.role != 'admin' && current_user.role != 'moderator')
         if Random.rand(2) == 0
           redirect_to Node.find(@node.power_tag('abtest')).path
@@ -90,9 +90,10 @@ class WikiController < ApplicationController
   def edit
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
-            else
-              Node.find_wiki(params[:id])
-            end
+    else
+      Node.find_wiki(params[:id])
+    end
+
     if @node.has_tag('locked') && (current_user.role != 'admin' && current_user.role != 'moderator')
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
       redirect_to @node.path
@@ -112,17 +113,17 @@ class WikiController < ApplicationController
     @node = Node.new
     if params[:n] && !params[:body] # use another node body as a template
       node = Node.find(params[:n])
-      params[:body] = node.latest.body if node && node.latest
+      params[:body] = node.latest.body if node&.latest
     end
     @tags = []
     if params[:id]
       flash.now[:notice] = I18n.t('wiki_controller.page_does_not_exist_create')
       title = params[:id].tr('-', ' ')
       @related = Node.limit(10)
-                     .order('node.nid DESC')
-                     .where('type = "page" AND node.status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', '%' + title + '%', '%' + title + '%')
-                     .includes(:revision)
-                     .references(:node_revisions)
+        .order('node.nid DESC')
+        .where('type = "page" AND node.status = 1 AND (node.title LIKE ? OR node_revisions.body LIKE ?)', '%' + title + '%', '%' + title + '%')
+        .includes(:revision)
+        .references(:node_revisions)
       tag = Tag.find_by(name: params[:id]) # add page name as a tag, too
       @tags << tag if tag
       @related += Tag.find_nodes_by_type(@tags.collect(&:name), 'page', 10)
@@ -292,16 +293,16 @@ class WikiController < ApplicationController
 
     order_string = if params[:order] == 'alphabetic'
                      'node_revisions.title ASC'
-                   else
-                     'node_revisions.timestamp DESC'
-                   end
+    else
+       'node_revisions.timestamp DESC'
+    end
 
     @wikis = Node.includes(:revision)
-                 .references(:node_revisions)
-                 .group('node_revisions.nid')
-                 .order(order_string)
-                 .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-                 .page(params[:page])
+      .references(:node_revisions)
+      .group('node_revisions.nid')
+      .order(order_string)
+      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
+      .page(params[:page])
 
     @paginated = true
   end
@@ -310,12 +311,12 @@ class WikiController < ApplicationController
     @title = I18n.t('wiki_controller.wiki')
 
     @wikis = Node.includes(:revision)
-                 .references(:node_revisions)
-                 .group('node_revisions.nid')
-                 .order('node_revisions.timestamp ASC')
-                 .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
-                 .page(params[:page])
-                 
+      .references(:node_revisions)
+      .group('node_revisions.nid')
+      .order('node_revisions.timestamp ASC')
+      .where("node_revisions.status = 1 AND node.status = 1 AND (type = 'page' OR type = 'tool' OR type = 'place')")
+      .page(params[:page])
+
     @paginated = true
     render template: 'wiki/index'
   end
@@ -323,19 +324,19 @@ class WikiController < ApplicationController
   def popular
     @title = I18n.t('wiki_controller.popular_wiki_pages')
     @wikis = Node.limit(40)
-                 .order('views DESC')
-                 .joins(:revision)
-                 .group('node_revisions.nid')
-                 .order('node_revisions.timestamp DESC')
-                 .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
+      .joins(:revision)
+      .group('node_revisions.nid')
+      .order('node_revisions.timestamp DESC')
+      .where("node.status = 1 AND node_revisions.status = 1 AND node.nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place')")
+      .sort_by(&:totalviews).reverse
     render template: 'wiki/index'
   end
 
   def liked
     @title = I18n.t('wiki_controller.well_liked_wiki_pages')
     @wikis = Node.limit(40)
-                 .order('node.cached_likes DESC')
-                 .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes > 0")
+      .order('node.cached_likes DESC')
+      .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes > 0")
     render template: 'wiki/index'
   end
 
@@ -368,36 +369,36 @@ class WikiController < ApplicationController
 
   def methods
     @nodes = Node.where(status: 1, type: ['page'])
-                 .where('term_data.name = ?', 'method')
-                 .includes(:revision, :tag)
-                 .references(:node_revision)
-                 .order('node_revisions.timestamp DESC')
+      .where('term_data.name = ?', 'method')
+      .includes(:revision, :tag)
+      .references(:node_revision)
+      .order('node_revisions.timestamp DESC')
     # deprecating the following in favor of javascript implementation in /app/assets/javascripts/methods.js
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
       @notes = Node.where(status: 1, type: ['page'])
-                   .where('node.nid IN (?)', nids)
-                   .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
-                          '%' + params[:topic] + '%',
-                          '%' + params[:topic] + '%',
-                          '%' + params[:topic] + '%',
-                          params[:topic])
-                   .includes(:revision, :tag)
-                   .references(:node_revision, :term_data)
-                   .order('node_revisions.timestamp DESC')
+        .where('node.nid IN (?)', nids)
+        .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
+          '%' + params[:topic] + '%',
+          '%' + params[:topic] + '%',
+          '%' + params[:topic] + '%',
+          params[:topic])
+        .includes(:revision, :tag)
+        .references(:node_revision, :term_data)
+        .order('node_revisions.timestamp DESC')
     end
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
       @nodes = Node.where(status: 1, type: ['page'])
-                   .where('node.nid IN (?)', nids)
-                   .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
-                          '%' + params[:topic] + '%',
-                          '%' + params[:topic] + '%',
-                          '%' + params[:topic] + '%',
-                          params[:topic])
-                   .includes(:revision, :tag)
-                   .references(:node_revision, :term_data)
-                   .order('node_revisions.timestamp DESC')
+        .where('node.nid IN (?)', nids)
+        .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
+          '%' + params[:topic] + '%',
+          '%' + params[:topic] + '%',
+          '%' + params[:topic] + '%',
+          params[:topic])
+        .includes(:revision, :tag)
+        .references(:node_revision, :term_data)
+        .order('node_revisions.timestamp DESC')
     end
 
     @unpaginated = true

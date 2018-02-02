@@ -12,7 +12,7 @@ class UserTag < ActiveRecord::Base
   end
 
   def self.exists?(uid, value)
-    UserTag.where(uid: uid, value: value).count > 0
+    UserTag.where(uid: uid, value: value).count.positive?
   end
 
   def name

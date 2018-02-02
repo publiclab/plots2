@@ -5,32 +5,41 @@
 			<p> This page shows a list of all Public Lab contributors and is sorted by those who have posted most recently. Click the profile link to view their posting activity. </p>
 		</div>
 	</div>
-  <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
+  <% if current_user && (current_user.role == "admin" || current_user.role == "moderator")%>
     <h2><%= t('users.list.user_moderation') %></h2>
     <p><%= t('users.list.admins_ban_spam') %> </p>
   <% end %>
 </div>
 <div class="col-md-9">
   <h2><%= raw t('users.list.members_last_activity') %></h2>
-
+  <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:17 , lon: 75} %>
   <table class="table">
     <tr>
-      <th><%= t('users.list.username') %></th>
+      <th class="visible-sm visible-xs"></th>
+      <th style="text-align: center;"><%= t('users.list.username') %></th>
       <th><%= t('users.list.last_activity') %></th>
       <th><%= t('users.list.history') %></th>
       <th><%= t('users.list.joined') %></th>
-      <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
+      <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
         <th><%= t('users.list.moderation') %></th>
       <% end %>
     </tr>
     <% @users.each do |user| %>
     <tr>
-      <td><a href="/profile/<%= user.username %>"><%= user.username %></a></td>
-      <td><%= time_ago_in_words(Time.at(user.last['changed'])) if user.last %></td>
-      <td><%= user.node_count %> <%= t('users.list.notes_and_edits') %></td>
-      <td><%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
-      <% if current_user && current_user.role = "admin" && current_user.role = "moderator" %>
-      <td>
+      <td class="visible-sm visible-xs" style="padding-top: 16px;">
+        <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= user.user.profile_image %>" />
+      </td>
+      <td style="display: flex; align-items: center;">
+        <div class="hidden-sm hidden-xs">
+          <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= user.user.profile_image %>" />
+        </div>
+        <a style="margin-left: 12px;" href="/profile/<%= user.username %>"><%= user.username %></a>
+      </td>
+      <td style="padding-top:16px;"><%= time_ago_in_words(Time.at(user.last['changed'])) if user.last %></td>
+      <td style="padding-top:16px;"><%= user.node_count %> <%= t('users.list.notes_and_edits') %></td>
+      <td style="padding-top:16px;"><%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
+      <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
+      <td style="padding-top:16px;">
         <% if user.status == 0 %>
           <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
         <% elsif user.status == 1 %>

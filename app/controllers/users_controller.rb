@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(params[:spamaway]) unless using_recaptcha
-    if ((@spamaway && @spamaway.valid?) || recaptcha) && @user.save({})
+    if ((@spamaway&.valid?) || recaptcha) && @user.save({})
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
@@ -107,11 +107,11 @@ class UsersController < ApplicationController
       @profile_user = User.find_by(username: params[:id])
       @title = @user.name
       @notes = Node.research_notes
-                         .page(params[:page])
+                         .paginate(page: params[:page], per_page: 24)
                          .order("nid DESC")
                          .where(status: 1, uid: @user.uid)
       @coauthored = @profile_user.coauthored_notes
-                                 .page(params[:page])
+                                 .paginate(page: params[:page], per_page: 24)
                                  .order('node_revisions.timestamp DESC')
       @questions = @user.user.questions
                              .order('node.nid DESC')
@@ -125,13 +125,22 @@ class UsersController < ApplicationController
                       .joins(:node)
                       .limit(20)
       @wikis = wikis.collect(&:parent).uniq
-     
+
       # User's social links
       @github = @profile_user.social_link("github")
       @twitter = @profile_user.social_link("twitter")
       @facebook = @profile_user.social_link("facebook")
       @instagram = @profile_user.social_link("instagram")
-     
+      @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @user).count
+      @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @user).count
+      @map_lat = nil
+      @map_lon = nil 
+      if @profile_user.has_power_tag("lat") && @profile_user.has_power_tag("lon")
+        @map_lat = @profile_user.get_value_of_power_tag("lat").to_f
+        @map_lon = @profile_user.get_value_of_power_tag("lon").to_f
+        @map_blurred = @profile_user.has_tag("location:blurred")
+      end
+
       if @user.status == 0
         if current_user && (current_user.role == "admin" || current_user.role == "moderator")
           flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
@@ -163,18 +172,17 @@ class UsersController < ApplicationController
         @notes = Node.order("nid DESC")
                            .where(type: 'note', status: 1, uid: @author.uid)
                            .limit(20)
+        respond_to do |format|
+          format.rss do
+            render layout: false
+            response.headers['Content-Type'] = 'application/xml; charset=utf-8'
+            response.headers['Access-Control-Allow-Origin'] = '*'
+          end
+        end
       else
         flash[:error] = I18n.t('users_controller.no_user_found')
         redirect_to "/"
       end
-    else
-    end
-    respond_to do |format|
-      format.rss {
-        render :layout => false
-        response.headers["Content-Type"] = "application/xml; charset=utf-8"
-        response.headers["Access-Control-Allow-Origin"] = "*"
-      }
     end
   end
 
@@ -248,7 +256,13 @@ class UsersController < ApplicationController
   end
 
   def info
-    @user = DrupalUser.find_by(name: params[:id])
+    @user = User.find_by(username: params[:id])
+  end
+  
+  # content this person follows
+  def followed
+    user = User.find_by(username: params[:id])
+    render json: user.content_followed_in_past_period(time_period)
   end
 
   def following

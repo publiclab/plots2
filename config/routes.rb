@@ -6,11 +6,12 @@ Plots2::Application.routes.draw do
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
 
   get 'searches/test' => 'searches#test'
+  post '/node/update/title' => 'notes#update_title'
 
   #Search RESTful endpoints
   #constraints(subdomain: 'api') do
   mount Srch::API => '/api'
-  mount GrapeSwaggerRails::Engine => '/api/d1ocs'
+  mount GrapeSwaggerRails::Engine => '/api/docs'
   #end
 
   resources :rusers
@@ -93,18 +94,18 @@ Plots2::Application.routes.draw do
   # these need precedence for tag listings
   get 'feed/tag/:tagname' => 'tag#rss'
   get ':node_type/tag(/:id)' => 'tag#show'
+  get 'feed/tag/:tagname/author/:authorname' => 'tag#rss_for_tagged_with_author'
   get 'wiki/raw/:id' => 'wiki#raw'
   get 'wiki/revisions/:id' => 'wiki#revisions'
   get 'wiki/revert/:id' => 'wiki#revert'
   get 'wiki/edit/:id' => 'wiki#edit'
   put 'wiki/update/:id' => 'wiki#update'
   delete 'wiki/delete/:id' => 'wiki#delete'
-  get 'wiki/delete/:id' => 'wiki#delete'
+
   get 'wiki/revisions/:id/:vid' => 'wiki#revision'
   get 'wiki/:lang/:id' => 'wiki#show'
   get 'wiki/edit/:lang/:id' => 'wiki#edit'
   get 'wiki' => 'wiki#index'
-  get 'wiki' => 'wiki#stale'
 
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
@@ -135,6 +136,7 @@ Plots2::Application.routes.draw do
   get 'notes/author/:author/:topic' => 'notes#author_topic'
   get 'notes/show/:id' => 'notes#show'
   get 'notes/:author/:date/:id' => 'notes#show'
+  get 'notes/feeds' => 'subscription#notes'
 
   # :id will be the node's id (like has no id)
   get 'likes' => 'like#index'
@@ -169,7 +171,7 @@ Plots2::Application.routes.draw do
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
   get 'tag/:id' => 'tag#show'
   get 'tag/:id/author/:author' => 'tag#show_for_author'
-
+  get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'
   get 'embed/grid/:tagname' => 'tag#gridsEmbed'
@@ -178,7 +180,7 @@ Plots2::Application.routes.draw do
   get 'feed/liked' => 'notes#liked_rss'
 
   get 'dashboard' => 'home#dashboard'
-  get 'dashboard2' => 'home#dashboard2'
+  get 'dashboard2' => 'home#dashboard'
   get 'comments' => 'comment#index'
   get 'profile/comments/:id' => 'users#comments'
   get 'nearby' => 'home#nearby'

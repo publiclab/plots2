@@ -45,7 +45,7 @@ class UserTagsController < ApplicationController
       else
         flash[:notice] = I18n.t('user_tags_controller.tag_created', tag_name: @output[:saved][0][0]).html_safe
       end
-      redirect_to info_path, id: params[:id]
+      redirect_to '/profile/' + user.username
     end
   end
 

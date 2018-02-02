@@ -574,4 +574,29 @@ class NotesControllerTest < ActionController::TestCase
       assert_equal I18n.t('notes_controller.research_note_published'), flash[:notice]
     end
   end
+
+  #should change title
+  test 'title change feature in comments when author is logged in' do
+    UserSession.create(users(:jeff))
+    node = nodes(:one)
+    post :update_title, id: '1',title: 'changed title'
+    assert_redirected_to node.path+"#comments"
+    assert_equal node.reload.title, 'changed title'
+  end
+  
+  # should not change title
+  test 'title change feature in comments when author is not logged in' do
+    node = nodes(:one)
+    post :update_title, id: '1',title: 'changed title'
+    assert_redirected_to node.path+"#comments"
+    assert_equal I18n.t('notes_controller.author_can_edit_note'), flash[:error]
+    assert_equal node.reload.title, node.title
+  end
+
+  def test_get_rss_feed
+    get :rss, :format => "rss"
+    assert_response :success   
+    assert_equal 'application/rss+xml', @response.content_type
+  end
+
 end

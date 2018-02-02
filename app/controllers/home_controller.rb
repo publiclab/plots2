@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :require_user, only: %i[subscriptions nearby]
+  before_filter :require_user, only: %i(subscriptions nearby)
 
   # caches_action :index, :cache_path => proc { |c|
   #  node = Node.find :last #c.params[:id]
@@ -43,17 +43,13 @@ class HomeController < ApplicationController
     render template: 'home/home'
   end
 
-  def dashboard2
-    redirect_to '/dashboard'
-  end
-
   def dashboard
-    @note_count = Node.select(%i[created type status])
-                      .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-                      .count(:all)
+    @note_count = Node.select(%i(created type status))
+      .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+      .count(:all)
     @wiki_count = Revision.select(:timestamp)
-                          .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-                          .count
+      .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+      .count
     @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
     @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = self.activity
     render template: 'dashboard/dashboard'
@@ -77,15 +73,15 @@ class HomeController < ApplicationController
     blog = Tag.find_nodes_by_type('blog', 'note', 1).first
     # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
     hidden_nids = Node.joins(:node_tag)
-                      .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
-                      .select('node.*, term_data.*, community_tags.*')
-                      .where(type: 'note', status: 1)
-                      .where('term_data.name = (?)', 'hidden:response')
-                      .collect(&:nid)
+      .joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
+      .select('node.*, term_data.*, community_tags.*')
+      .where(type: 'note', status: 1)
+      .where('term_data.name = (?)', 'hidden:response')
+      .collect(&:nid)
     notes = Node.where(type: 'note')
-                .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
-                .order('nid DESC')
-                .page(params[:page])
+      .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
+      .order('nid DESC')
+      .page(params[:page])
     notes = notes.where('nid != (?)', blog.nid) if blog
 
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
@@ -99,34 +95,34 @@ class HomeController < ApplicationController
 
     # include revisions, then mix with new pages:
     wikis = Node.where(type: 'page', status: 1)
-                .order('nid DESC')
-                .limit(10)
+      .order('nid DESC')
+      .limit(10)
     revisions = Revision.joins(:node)
-                        .order('timestamp DESC')
-                        .where('type = (?)', 'page')
-                        .where('node.status = 1')
-                        .where('node_revisions.status = 1')
-                        .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
-                        .limit(10)
-                        .group('node.title')
+      .order('timestamp DESC')
+      .where('type = (?)', 'page')
+      .where('node.status = 1')
+      .where('node_revisions.status = 1')
+      .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
+      .limit(10)
+      .group('node.title')
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     revisions = revisions.to_a # ensure it can be serialized for caching
     wikis += revisions
     wikis = wikis.sort_by(&:created_at).reverse
     comments = Comment.joins(:node, :drupal_user)
-                      .order('timestamp DESC')
-                      .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
-                      .page(params[:page])
-                      .group('title') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
+      .order('timestamp DESC')
+      .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
+      .page(params[:page])
+      .group('title') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     comments = comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     comments = comments.to_a # ensure it can be serialized for caching
     answer_comments = Comment.joins(:answer, :drupal_user)
-                             .order('timestamp DESC')
-                             .where('timestamp - answers.created_at > ?', 86_400)
-                             .limit(20)
-                             .group('answers.id')
+      .order('timestamp DESC')
+      .where('timestamp - answers.created_at > ?', 86_400)
+      .limit(20)
+      .group('answers.id')
     answer_comments = answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     answer_comments = answer_comments.to_a # ensure it can be serialized for caching
     activity = (notes + wikis + comments + answer_comments).sort_by(&:created_at).reverse

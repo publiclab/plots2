@@ -5,8 +5,8 @@
       <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.user.profile_image %>" />
     </div>
   <% end %>
-  
-  <div style="text-align: -webkit-center;">
+
+   <div style="text-align: -webkit-center;">
     <% if @twitter.nil? == false %>
       <a href="<%= @twitter %>" >
       <i class="fa fa-twitter fa-3x" aria-hidden="true"></i>
@@ -92,6 +92,10 @@
     <button id="btn-token" class="btn btn-default btn-block">My Access Token</button>
   <% end %>
 
+  <% if @profile_user && current_user && @profile_user == current_user %>
+    <button id="link_social_media" class="btn btn-default btn-block">Link Social media</button>
+  <% end %>
+
   <hr />
 
   <% if params[:preview] %>
@@ -123,7 +127,7 @@
     <ul class="nav bullet">
       <% @wikis.each do |wiki| %>
         <% unless (!@node.nil? && wiki.nid == @node.nid) %>
-		<li><a href="<%= wiki.path %>"><i class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;"><%= t('users.profile.updated') %> <%= distance_of_time_in_words(wiki.updated_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= t('users.profile.by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
+            <li><a href="<%= wiki.path %>"><i class="fa fa-<%= wiki.icon %>"></i> <%= wiki.latest.title %></a> <small style="color:#888;"><%= t('users.profile.updated') %> <%= distance_of_time_in_words(wiki.updated_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %> <%= t('users.profile.by') %> <a href="/profile/<%= wiki.latest.author.name %>"><%= wiki.latest.author.name %></a></small></li>
         <% end %>
       <% end %>
       <% if params[:controller] == "search" %>
@@ -154,20 +158,24 @@
 
   <hr />
   <div class="row" id="highlight" style=" text-align: center;">
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><%= Node.questions.where(status: 1, uid: @user.id).length %> questions asked</h3>
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><%= Answer.where(uid: @profile_user.id).count %> answers posted</h3>
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><%= Comment.where(uid: @profile_user.id).count %> comments posted</h3>
+    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @user.id).length %> questions asked </a><br><br> <%= Answer.where(uid: @profile_user.id).count %> answers posted</h3>
+    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a><br><br> <a href = "/tag/replication:*/author/<%= params[:id] %>"><%= @count_activities_attempted %> activities attempted</a></h3>
+     <% if !@map_lat.nil? && !@map_lon.nil? %>
+      <%= render :partial => "map/userLeaflet" , locals: {haslocation: true} %>
+    <% elsif !current_user.nil? && current_user.id == @user.id %>
+    <%= render :partial => "map/userLeaflet" , locals: {haslocation: false} %>
+    <% end %>
   </div>
   <hr />
 
   <ul class="nav nav-tabs">
-	  <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
+    <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
     <li class="active"><a href="#research" data-toggle="tab"><%= t('users.profile.research') %></a></li>
     <li><a href="#coauthored" data-toggle="tab"><span class="hidden-sm hidden-xs"> <%= t('users.profile.Coauthored') %> (<%= @coauthored.size %>)</span></a></li>
   <li><a href="#questions" data-toggle="tab"><i class="fa fa-comments"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %> (<%= Node.questions.where(status: 1, uid: @user.id).length %>)</span></a></li>
-    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"></span></a></li>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span></a></li>
     <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
-    <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> </span> (<%= @user.user.try(:barnstars).try(:length) %>)</a></li>
+    <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> Barnstars</span> (<%= @user.user.try(:barnstars).try(:length) %>)</a></li>
   </ul>
 
   <br />
@@ -200,7 +208,7 @@
     </div>
 
     <div class="tab-pane" id="maps">
-      <p><i><%= t('users.profile.view_these_maps', :url1 => "//mapknitter.org/profile/"+@user.name) %></i></p>
+      <p><i><%= raw t('users.profile.view_these_maps', :url1 => "//mapknitter.org/profile/"+@user.name) %></i></p>
       <table class="table">
         <tr>
           <th style="width:200px;"><%= t('users.profile.title') %></th>
@@ -226,9 +234,7 @@
 
   <hr />
 
-  <% if current_user && (current_user.id == @user.id || current_user.role == "admin") %>
-    <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }" } %>
-  <% end %>
+  <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }", parent: :profile } %>
 
   <hr />
 
@@ -238,6 +244,13 @@
   $('#btn-token').click(function() {
     alert("Your access token is: <%= @user.user.token %>");
   });
+
+  $('#link_social_media').click(function(){
+    var sign = prompt("Enter Your Social Media User name like twitter:publiclab or instagram:publiclab");
+    $.post('/profile/tags/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {
+        window.location='/profile/<%=@user.name %> ';
+     });
+   });
 
   (function () {
     var profile = Object.create(Profile);
@@ -259,5 +272,12 @@
 
   })();
 </script>
+
+<style type="text/css">
+  ul.nav-tabs>li a{
+    padding: 10px;
+  }
+</style>
+
 <%= stylesheet_link_tag "dashboard" %>
 <%= javascript_include_tag "dashboard" %>

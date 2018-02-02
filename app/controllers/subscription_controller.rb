@@ -53,7 +53,7 @@ class SubscriptionController < ApplicationController
         end
 
         # test for uniqueness, handle it as a validation error if you like
-        if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length > 0
+        if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).positive?
           flash[:error] = "You are already subscribed to '#{params[:name]}'"
           redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
         else

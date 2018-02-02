@@ -5,8 +5,12 @@ gem 'activerecord-session_store'
 gem 'protected_attributes'
 gem 'passenger'
 
+
 gem 'rails-i18n', '~> 4.0.0'
 # gem 'responders', '~> 2.0' # for Rails 4.2
+
+gem 'turbolinks'
+
 
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
@@ -36,7 +40,7 @@ group :development do
   gem "letter_opener"
   gem "nifty-generators"
   gem 'byebug'
-  gem 'rubocop', '~> 0.52.0', require: false
+  gem 'rubocop', '~> 0.52.1', require: false
 end
 
 # run with `bundle install --without test` to exclude these
@@ -72,7 +76,7 @@ gem 'geokit-rails'
 
 gem 'rails_autolink'
 gem 'rb-readline'
-gem "paperclip", "< 4.2.0"
+gem "paperclip", "~> 4.2.0"
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
 gem "authlogic", "~> 3.5.0"
