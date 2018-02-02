@@ -146,4 +146,22 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 1, user.errors[:email].count
   end
 
+  test 'user status changes when drupal user is banned or unbanned' do
+    drupal_user = drupal_users(:bob)
+    assert_equal 1, drupal_user.user.status
+    drupal_user.ban
+    assert_equal 0, drupal_user.user.status
+    drupal_user.unban
+    assert_equal 1, drupal_user.user.status
+  end
+
+  test 'user status changes when drupal user is moderated or unmoderated' do
+    drupal_user = drupal_users(:bob)
+    assert_equal 1, drupal_user.user.status
+    drupal_user.moderate
+    assert_equal 5, drupal_user.user.status
+    drupal_user.unmoderate
+    assert_equal 1, drupal_user.user.status
+  end
+
 end

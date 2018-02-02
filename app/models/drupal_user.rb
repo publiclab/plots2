@@ -47,6 +47,7 @@ class DrupalUser < ActiveRecord::Base
   def moderate
     self.status = 5
     save
+    update_user_status(5)
     # user is logged out next time they access current_user in a controller; see application controller
     self
   end
@@ -54,6 +55,7 @@ class DrupalUser < ActiveRecord::Base
   def unmoderate
     self.status = 1
     save
+    update_user_status(1)
     self
   end
 
@@ -61,6 +63,7 @@ class DrupalUser < ActiveRecord::Base
     self.status = 0
     decrease_likes_banned
     save
+    update_user_status(0)
     # user is logged out next time they access current_user in a controller; see application controller
     self
   end
@@ -69,11 +72,18 @@ class DrupalUser < ActiveRecord::Base
     self.status = 1
     increase_likes_unbanned
     save
+    update_user_status(1)
     self
   end
 
   def email
     mail
+  end
+
+  def update_user_status(status)
+    u = self.user
+    u.status = status
+    u.save!
   end
 
   def first_time_poster
