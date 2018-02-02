@@ -5,7 +5,7 @@
 class SubscriptionController < ApplicationController
 
   respond_to :html, :xml, :json
-  before_filter :require_user, :only => [:create, :delete, :index]
+  before_filter :require_user, :only => [:create, :delete, :index, :digest]
 
   def index
     @title = "Subscriptions"
@@ -108,6 +108,11 @@ class SubscriptionController < ApplicationController
         redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
       end
     end
+  end
+
+  def digest
+    @wikis = current_user.content_followed_in_period(Time.now - 1.week, Time.now)
+    render :template => "subscriptions/digest"
   end
 
   private
