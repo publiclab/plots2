@@ -171,39 +171,13 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#note-graph', 0
   end
 
-  test "wildcard tag show wiki pages with author" do
-    get :show_for_author, node_type: 'wiki', id: 'activity:*', author: 'jeff'
-    assert :success
-    assert_not_nil :tags
-    assert :wildcard
-    assert :wikis
-    assert assigns(:wikis).length > 0
-    assigns['wikis'].each do |node|
-      assert_equal 2, node.uid
-      assert node.has_tag('activity:*')
-    end
-    assert_select '#note-graph', 0
-    assert_template 'tag/show'
-  end
 
-  test "tag show wiki pages with author" do
-    get :show_for_author, node_type: 'wiki', id: 'activity:spectrometer', author: 'jeff'
-    assert :success
-    assert_not_nil :tags
-    assert :wildcard
-    assert :wikis
-    assert assigns(:wikis).length > 0
-    assigns['wikis'].each do |node|
-      assert_equal 2, node.uid
-      assert node.has_tag('activity:spectrometer')
-    end
-    assert_template 'tag/show'
-  end
 
   test "wildcard does not show wiki" do
     get :show, id: 'question:*', node_type: 'wiki'
     assert_equal true, assigns(:wikis).empty?
   end
+
 
   test "should show a featured wiki page at top, if it exists" do
     tag = tags(:test)
@@ -308,10 +282,22 @@ class TagControllerTest < ActionController::TestCase
     assert_equal 'note', assigns(:node_type)
   end
 
+
   test 'should list only question in question view' do
     tag = tags(:question)
 
     get :show, id: tag.name
+
+    questions = assigns(:questions)
+    expected = [nodes(:question), nodes(:question2)]
+    assert_not_nil assigns(:questions)
+    assert (questions & expected).present?
+  end
+
+  test 'should list only question in question view for show_for_author' do
+    tag = tags(:question)
+
+    get :show_for_author, id: tag.name, author: 'jeff'
 
     questions = assigns(:questions)
     expected = [nodes(:question), nodes(:question2)]
@@ -351,6 +337,19 @@ class TagControllerTest < ActionController::TestCase
     assert_select 'ul.nav-tabs' do
       assert_select 'li.active' do
         assert_select "a[href = '/questions/tag/question:spectrometer']", 1
+      end
+    end
+    assert_select '#questions.active', 1
+  end
+
+  test 'should have active question tab for question for show_for_author' do
+    tag = tags(:question)
+
+    get :show_for_author, id: tag.name, author: 'jeff'
+
+    assert_select 'ul.nav-tabs' do
+      assert_select 'li.active' do
+        assert_select "a[href = '/questions/tag/question:spectrometer/author/jeff']", 1
       end
     end
     assert_select '#questions.active', 1
@@ -447,6 +446,38 @@ class TagControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'table' # ensure a table is shown
   end
+  
+  test "wildcard does not show map for show_for_author" do
+    get :show_for_author, id: 'question:*', node_type: 'maps', author: 'Bob'
+    assert_equal true, assigns(:nodes).empty?
+  end
+
+  test " does not show map for show_for_author" do
+    get :show_for_author, id: 'question', node_type: 'maps', author: 'Bob'
+    assert_equal true, assigns(:nodes).empty?
+  end
+
+  test 'should take node type as question if tag is a question tag for show_for_author' do
+    tag = tags(:question)
+
+    get :show_for_author, id: tag.name, author: 'jeff'
+
+    assert_equal 'questions', assigns(:node_type)
+  end
+
+  test 'should take node type as note if tag is not a question tag for show_for_author' do
+    tag = tags(:awesome)
+
+    get :show_for_author, id: tag.name, author: 'jeff'
+
+    assert_equal 'note', assigns(:node_type)
+  end
+
+  test "wildcard does not show wiki for show_for_author" do
+    get :show_for_author, id: 'question:*', node_type: 'wiki', author: 'jeff'
+    assert_equal true, assigns(:wikis).empty?
+  end
+  
   test 'rss with tagname and authorname' do
     get :rss_for_tagged_with_author, tagname: 'test*', authorname: 'jeff', format: 'rss'
     assert :success
