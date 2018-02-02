@@ -447,4 +447,10 @@ class TagControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'table' # ensure a table is shown
   end
+  test 'rss with tagname and authorname' do
+    get :rss_for_tagged_with_author, tagname: 'test*', authorname: 'jeff', format: 'rss'
+    assert :success
+    assert_not_nil :notes
+    assert_equal 'application/rss+xml', @response.content_type
+  end
 end
