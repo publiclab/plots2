@@ -17,7 +17,7 @@ class DrupalUser < ActiveRecord::Base
   has_many :comments, foreign_key: 'uid'
 
   def user
-    User.where(username: name).first
+    User.find self.id
   end
 
   def bio
