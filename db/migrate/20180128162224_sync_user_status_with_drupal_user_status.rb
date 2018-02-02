@@ -3,7 +3,7 @@ class SyncUserStatusWithDrupalUserStatus < ActiveRecord::Migration
 		DrupalUser.all.each do |du|
 			user = du.user	
 			user.status = du.status	
-			user.save({})	
+      user.save({})
 		end
   end
 
