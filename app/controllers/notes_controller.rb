@@ -231,19 +231,19 @@ class NotesController < ApplicationController
   # at /notes/delete/:id
   # only for notes
   def delete
-  @node = Node.find(params[:id])
-   if current_user && (current_user.uid == @node.uid || current_user.role == "moderator" || current_user.role == "admin")
-    if @node.authors.uniq.length == 1 
-      @node.delete
-      respond_with do |format|
-        format.html do
-          if request.xhr?
-            render text: I18n.t('notes_controller.content_deleted')
-          else
-            flash[:notice] = I18n.t('notes_controller.content_deleted')
-            redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+    @node = Node.find(params[:id])
+    if current_user && (current_user.uid == @node.uid || current_user.role == "moderator" || current_user.role == "admin")
+      if @node.authors.uniq.length == 1 
+        @node.delete
+        respond_with do |format|
+          format.html do
+            if request.xhr?
+              render text: I18n.t('notes_controller.content_deleted')
+            else
+              flash[:notice] = I18n.t('notes_controller.content_deleted')
+              redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+            end
           end
-        end
       end
     else
       flash[:error] = I18n.t('notes_controller.more_than_one_contributor')
