@@ -121,7 +121,6 @@ gem 'jbuilder'
 # Pin mustermann to Ruby 2.1 compatible
 gem 'mustermann' , '~> 0.4'
 
-<<<<<<< 51c9abdf9d37eef37439e845a1e1fe59b569e717
 #Gem for assertions used in testing
 gem 'rails-dom-testing'
 #OAuth Based login
@@ -140,6 +139,3 @@ gem 'sanitize'
 gem 'rails-perftest'
 gem 'ruby-prof', group: :test
 gem 'ruby-prof', :github => 'ruby-prof'
-=======
-gem 'ruby-prof','~> 0.15.9', group: :test
->>>>>>> Added ruby-prof 0.15.9 and uncommented browsing test

@@ -197,8 +197,13 @@ GEM
     mimemagic (0.3.2)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
+<<<<<<< 4c5fa537f3fa9c9e7ae4a42ff622065dbeb88711
     minitest (5.11.3)
     minitest-reporters (1.1.19)
+=======
+    minitest (5.11.1)
+    minitest-reporters (1.2.0.beta2)
+>>>>>>> Update Gemfile.lock
       ansi
       builder
       minitest (>= 5.0)
@@ -452,7 +457,7 @@ DEPENDENCIES
   json_expressions
   less-rails (~> 2.6)
   letter_opener
-  minitest-reporters (~> 1.1.19)
+  minitest-reporters (~> 1.2.0.beta2)
   mocha (~> 1.1)
   mustermann (~> 0.4)
   mysql2 (~> 0.3.20)
