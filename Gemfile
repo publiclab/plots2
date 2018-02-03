@@ -51,7 +51,7 @@ end
 group :test, :development do
   gem 'test-unit'
   gem 'rails-perftest'
-  gem 'minitest-reporters', '~> 1.1.19'
+  gem 'minitest-reporters', '~> 1.2.0.beta2'
   gem 'rake',  '~> 10.5.0'
   # gems to test RESTful API
   gem 'rest-client'
