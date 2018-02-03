@@ -79,7 +79,7 @@
       <% end %>
 
       <li>
-        <a href="/talk/<%= @node.slug_from_path %>">
+        < a rel="tooltip" title="Practice in a realtime doc." data-placement="top" href="/talk/<%= @node.slug_from_path %>">
           <i class="fa fa-comments-o"></i>
           <span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.talk') %></span>
         </a>
