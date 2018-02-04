@@ -67,7 +67,7 @@ class Comment < ActiveRecord::Base
     if aid == 0
       node
     else
-      answer && answer.node
+      return answer.node unless answer.nil?
     end
   end
 

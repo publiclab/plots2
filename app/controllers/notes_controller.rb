@@ -233,7 +233,7 @@ class NotesController < ApplicationController
   def delete
     @node = Node.find(params[:id])
     if current_user.uid == @node.uid && @node.type == 'note' || current_user.role == 'admin' || current_user.role == 'moderator'
-      @node.delete
+      @node.destroy
       respond_with do |format|
         format.html do
           if request.xhr?
