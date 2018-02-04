@@ -11,7 +11,7 @@ xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
      if node.author.user.has_power_tag('twitter')
        uname = node.author.user.get_value_of_power_tag('twitter')
      end
-     author_format = "@#{uname} (#{email})"
+     author_format = "@#{uname}"
 
      xml.item do
        xml.title      "@#{uname} shared :  #{node.title}" 
