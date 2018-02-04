@@ -148,7 +148,7 @@ class DrupalUser < ActiveRecord::Base
         end
       end
     end
-    Node.find(node_ids.uniq, order: 'nid DESC')
+    Node.find(node_ids.uniq).sort_by(&:nid).reverse
   end
 
   def user_tags
