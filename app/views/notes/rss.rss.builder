@@ -6,16 +6,14 @@ xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
     xml.tag! 'atom:link', :rel => 'self', :type => 'application/rss+xml', :href => "https://#{ request.host }/feed.rss"
     
    @notes.each do |node|
-     uname = node.author.username
-     email = node.author.email               
+     author = node.author.username
      if node.author.user.has_power_tag('twitter')
-       uname = node.author.user.get_value_of_power_tag('twitter')
+       author = "@#{node.author.user.get_value_of_power_tag('twitter')}"
      end
-     author_format = "@#{uname}"
 
      xml.item do
-       xml.title      "@#{uname} shared :  #{node.title}" 
-       xml.author     author_format
+       xml.title      node.title
+       xml.author     author
        xml.pubDate     node.created_at.to_s(:rfc822)
        xml.link        "https://" + request.host.to_s + node.path
        if node.main_image
