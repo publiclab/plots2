@@ -39,6 +39,15 @@
 
 <br />
 
+<div class="row" id="questions-link-container">
+  <h1>Ask a question</h1>
+  <p>
+    The easiest way to start with Public Lab community is to ask a question.
+    See questions and ask your own here:
+  </p>
+  <a class="btn btn-primary" href="/questions">Questions>></a>
+</div>
+
 <div class="row">
 
   <% cache('feature_home-banners', skip_digest: true) do %>
@@ -82,6 +91,34 @@
   .activity-menu,
   .activity-dropdown {
     display: none;
+  }
+
+  #questions-link-container {
+    padding: 94px 280px;
+    text-align: center;
+  }
+
+  #questions-link-container>h1 {
+    font-weight: bold;
+  }
+
+  #questions-link-container>p {
+    font-size: 1.4em;
+    font-family: "Junction Regular", lucida grande,lucida sans console,sans-serif;
+  }
+
+  #questions-link-container>a {
+    font-size: 1.6em;
+  }
+
+  @media (max-width:992px) {
+    #questions-link-container {
+      padding: 48px 0;
+    }
+
+    #questions-link-container>p {
+      padding: 12px;
+    }
   }
 </style>
 
