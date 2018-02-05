@@ -6,14 +6,6 @@
      <th style="width: 50% ;">
        <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
      </th>
-     <th style="width: 50% ; text-align: right ;">
-
-
-      <a class="btn btn-default" rel="popover" data-trigger="focus" data-placement="bottom" data-html="true" data-content=" <a href = <%= tags_path(1) %> >Number of uses</a> <br> <a href = <%= tags_path(2) %> >Alphabetically</a><br> <a href = <%= tags_path(3) %> > Subscription </a>">
-        <i class="fa fa-sort"></i> <%=t('tag.index.sort_by') %>
-      </a>
-
-     </th>
    </tr>
  </table>
   <p><%= t('tag.index.browse_popular_tags') %></p>
@@ -34,11 +26,11 @@
 
   <table class="table">
     <tr>
-      <th><%= t('tag.index.tag') %></th>
-      <th><%= t('tag.index.number_of_uses') %></th>
+      <th><a href = <%= tags_path(2) %> ><%= t('tag.index.tag') %></a></th>
+      <th><a href = <%= tags_path(1) %> ><%= t('tag.index.number_of_uses') %></a></th>
       <th><%= t('tag.index.number_of_subscriptions')%></th>
       <% if current_user %>
-        <th><%= t('tag.index.subscriptions') %></th>
+        <th><a href = <%= tags_path(3) %> ><%= t('tag.index.subscriptions') %></a></th>
       <% end %>
     </tr>
     <% @tags.each do |tag| %>

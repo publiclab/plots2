@@ -237,6 +237,8 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
   end
 
+ 
+
   #  test "normal user should not delete wiki revision" do
   #    post :delete_revision, id: nodes(:organizers).latest.vid
   #    assert_equal flash[:error], "Only admins can delete wiki revisions."
@@ -586,4 +588,5 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'div#comments h3', /Comments/
   end
+
 end
