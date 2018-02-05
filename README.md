@@ -13,13 +13,14 @@ It features a Bootstrap-based UI and a variety of community and attribution feat
 
 Some key features include:
 
-* a Markdown-based research note and wiki editor
+* a [Question and Answer system](https://publiclab.org/questions) for peer-based problem solving
+* a rich text and Markdown research note and wiki [editor](https://github.com/publiclab/PublicLab.Editor)
 * [wiki editing](https://publiclab.org/wiki) and revision tracking
-* tagging and tag-based content organization
+* tagging and [tag-based content organization](http://publiclab.org/tags)
 * email notification subscriptions for tags and comments
-* a barebones search interface
-* a user dashboard [presenting recent activity](https://publiclab.org/research)
-* a [Question and Answer system](https://publiclab.org/questions)
+* a search interface built out of [our growing API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+* a user dashboard [presenting recent activity](https://publiclab.org/dashboard)
+* a privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
 
 ![Diagram](https://publiclab.org/system/images/photos/000/021/061/original/diagram.png)
 
