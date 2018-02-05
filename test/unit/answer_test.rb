@@ -48,4 +48,11 @@ class AnswerTest < ActiveSupport::TestCase
     answer = answers(:one)
     assert_equal answer.comments.last, Comment.last
   end
+
+  test 'should delete associated comments when an answer is deleted' do
+    answer = answers(:one)
+    assert_equal answer.comments.count, 2
+    deleted_answer = answer.destroy
+    assert_equal answer.comments.count, 0
+  end
 end

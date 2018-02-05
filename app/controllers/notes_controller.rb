@@ -234,7 +234,7 @@ class NotesController < ApplicationController
     @node = Node.find(params[:id])
     if current_user && (current_user.uid == @node.uid || current_user.role == "moderator" || current_user.role == "admin")
       if @node.authors.uniq.length == 1 
-        @node.delete
+        @node.destroy
         respond_with do |format|
           format.html do
             if request.xhr?

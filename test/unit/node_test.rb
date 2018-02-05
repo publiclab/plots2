@@ -336,4 +336,11 @@ class NodeTest < ActiveSupport::TestCase
     assert_not_nil tagged_note
     assert_equal jeff_notes, tagged_note
   end
+
+  test 'should delete associated comments when a node is deleted' do
+    node = nodes(:one)
+    assert_equal node.comments.count, 4
+    deleted_node = node.destroy
+    assert_equal node.comments.count, 0
+  end
 end
