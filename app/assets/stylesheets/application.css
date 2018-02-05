@@ -24,4 +24,9 @@
  *= require comments
  *= require wiki
  *= require question
+ *= require dashboard
+ *= require fancy
+ *= require print
+ *= require location_tags.css.scss
+ *= require user_tags.css.scss
 */
