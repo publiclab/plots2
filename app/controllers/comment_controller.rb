@@ -154,11 +154,12 @@ class CommentController < ApplicationController
       @answer = Answer.new(
           nid: @comment.nid,
           uid: @comment.uid,
-          content: @comment.comment
+          content: @comment.comment,
+          created_at: @comment.created_at,
+          updated_at: @comment.created_at
       )
 
       if @answer.save && @comment.delete
-        @answer.answer_notify(current_user)
         @answer_id = @comment.aid
         respond_with do |format|
           format.js { render template: 'comment/make_answer' }
