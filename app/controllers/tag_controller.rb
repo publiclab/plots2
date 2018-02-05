@@ -138,15 +138,10 @@ class TagController < ApplicationController
   end
 
   def show_for_author
+    # try for a matching /wiki/_TAGNAME_ or /_TAGNAME_
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
     @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki&.has_power_tag('redirect')
-    if params[:id][-1..-1] == '*' # wildcard tags
-      @wildcard = true
-      @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
-    else
-      @tags = Tag.where(name: params[:id])
-    end
-    @tagname = params[:id]
+
     default_type = if params[:id].match('question:')
                      'questions'
     else
@@ -156,21 +151,34 @@ class TagController < ApplicationController
     # params[:node_type] - this is an optional param
     # if params[:node_type] is nil - use @default_type
     @node_type = params[:node_type] || default_type
-    @user = User.find_by(name: params[:author])
-    @title = "'" + @tagname.to_s + "' by " +  params[:author]
 
-    qids = Node.questions.where(status: 1).collect(&:nid)
-    nodes = Tag.tagged_nodes_by_author(@tagname, @user)
-      .paginate(page: params[:page], per_page: 24)
-
-    @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
-    @unpaginated = true
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
     node_type = 'map' if @node_type == 'maps'
+    qids = Node.questions.where(status: 1).collect(&:nid)
+
+    if params[:id][-1..-1] == '*' # wildcard tags
+      @wildcard = true
+      @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
+    else
+      @tags = Tag.where(name: params[:id])
+    end
+    @tagname = params[:id]
+    @user = User.find_by(name: params[:author])
+
+    nodes = Tag.tagged_nodes_by_author(@tagname, @user)
+                .where(status: 1, type: node_type)
+                .paginate(page: params[:page], per_page: 24)
+
+    # breaks the parameter
+    # sets everything to an empty array
+    set_sidebar :tags, [params[:id]]
+
+    @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
+    @title = "'" + @tagname.to_s + "' by " +  params[:author]
     # the following could be refactored into a Tag.contributor_count method:
     notes = Node.where(status: 1, type: 'note')
       .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
@@ -195,6 +203,7 @@ class TagController < ApplicationController
       end
     end
   end
+
 
   def widget
     num = params[:n] || 4
