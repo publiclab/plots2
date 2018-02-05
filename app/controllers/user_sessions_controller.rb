@@ -1,4 +1,6 @@
 class UserSessionsController < ApplicationController
+
+  before_action :require_no_user, :only => [:new]
   def new
     @title = I18n.t('user_sessions_controller.log_in')
   end

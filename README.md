@@ -13,13 +13,14 @@ It features a Bootstrap-based UI and a variety of community and attribution feat
 
 Some key features include:
 
-* a Markdown-based research note and wiki editor
+* a [Question and Answer system](https://publiclab.org/questions) for peer-based problem solving
+* a rich text and Markdown research note and wiki [editor](https://github.com/publiclab/PublicLab.Editor)
 * [wiki editing](https://publiclab.org/wiki) and revision tracking
-* tagging and tag-based content organization
+* tagging and [tag-based content organization](http://publiclab.org/tags)
 * email notification subscriptions for tags and comments
-* a barebones search interface
-* a user dashboard [presenting recent activity](https://publiclab.org/research)
-* a [Question and Answer system](https://publiclab.org/questions)
+* a search interface built out of [our growing API](https://github.com/publiclab/plots2/blob/master/doc/API.md)
+* a user dashboard [presenting recent activity](https://publiclab.org/dashboard)
+* a privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
 
 ![Diagram](https://publiclab.org/system/images/photos/000/021/061/original/diagram.png)
 
@@ -61,6 +62,10 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 11. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
 13. Run `rake test` to confirm that your install is working properly. For some setups, you may see warnings even if test pass; [see this issue](https://github.com/publiclab/plots2/issues/440) we're working to resolve.
+
+### Ruby version
+
+Make sure to use ruby-2.3.4. To check your ruby version run `ruby -v`.If you are using some other version then install ruby-2.3.4 with `rvm install 2.3.4`. Later to use ruby-2.3.4, run `rvm use 2.3.4`. Always make sure that you are using the correct ruby version since it might go back to its original version if you close the terminal. You might have to redo the entire installation process after switching to a different version. 
 
 ### Bundle exec
 

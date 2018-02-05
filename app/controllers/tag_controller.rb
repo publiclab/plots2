@@ -39,11 +39,11 @@ class TagController < ApplicationController
       .paginate(page: params[:page], per_page: 24)
     else
       tags = Tag.joins(:node_tag, :node)
-        .select('node.nid, node.status, term_data.*, community_tags.*')
-        .where('node.status = ?', 1)
-        .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-        .group(:name)
-        .order('name')
+                .select('node.nid, node.status, term_data.*, community_tags.*')
+                .where('node.status = ?', 1)
+                .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+                .group(:name)
+                .order('name')
 
       followed = []
       not_followed = []
@@ -342,6 +342,24 @@ class TagController < ApplicationController
         response.headers['Content-Disposition'] = "attachment; filename='public-lab-events.ics'"
         response.headers['Content-Type'] = 'text/calendar; charset=utf-8'
         render layout: false, template: 'tag/icalendar.ics', filename: 'public-lab-events.ics'
+      end
+    end
+  end
+
+  def rss_for_tagged_with_author
+    @user = User.find_by(name: params[:author])
+    @notes = Tag.tagged_nodes_by_author([params[:tagname]], @user)
+                 .limit(20)
+     respond_to do |format|
+       format.rss do
+         response.headers['Content-Type'] = 'application/xml; charset=utf-8'
+         response.headers['Access-Control-Allow-Origin'] = '*'
+         render layout: false
+       end
+       format.ics do
+         response.headers['Content-Disposition'] = "attachment; filename='public-lab-events.ics'"
+         response.headers['Content-Type'] = 'text/calendar; charset=utf-8'
+         render layout: false, template: 'tag/icalendar.ics', filename: 'public-lab-events.ics'
       end
     end
   end
