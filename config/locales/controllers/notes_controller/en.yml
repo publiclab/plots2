@@ -15,3 +15,4 @@ en:
     content_deleted: "Content deleted."
     highly_liked_research_notes: "Highly liked research notes"
     popular_research_notes: "Popular research notes"
+    more_than_one_contributor: "You cannot delete a wiki page once someone else has begun to contribute to it"

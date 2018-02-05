@@ -575,6 +575,32 @@ class NotesControllerTest < ActionController::TestCase
     end
   end
 
+  test "should delete wiki if other author have not contributed" do
+    node = nodes(:one)
+    length=node.authors.uniq.length
+    user = UserSession.create(users(:jeff))
+    assert_equal 1,length
+
+    assert_difference 'Node.count', -1 do
+      post :delete, id: node.nid
+    end
+
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+  end 
+
+  test "should not delete wiki if other author have contributed" do
+    node = nodes(:about)
+    length=node.authors.uniq.length
+    assert_not_equal 1,length
+    user = UserSession.create(users(:jeff))
+
+    assert_no_difference 'Node.count' do
+      get :delete, id: node.nid
+    end
+    
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+  end 
+
   #should change title
   test 'title change feature in comments when author is logged in' do
     UserSession.create(users(:jeff))
@@ -598,5 +624,6 @@ class NotesControllerTest < ActionController::TestCase
     assert_response :success   
     assert_equal 'application/rss+xml', @response.content_type
   end
+
 
 end
