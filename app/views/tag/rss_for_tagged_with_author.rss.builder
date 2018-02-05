@@ -29,7 +29,7 @@ xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
         if node.main_image
           xml.description  {  xml.cdata!("<img src='#{node.main_image.path(:default)}' alt='#{node.main_image.title}'><p>#{auto_link(node.latest.render_body, :sanitize => false)}</p>")  }
         else
-          xml.description  {  xml.cdata!("<img src='https://i.publiclab.org/system/images/photos/000/000/354/medium/Boots-ground-02.png' alt='PublicLab'><p>#{auto_link(node.latest.render_body, :sanitize => false)}</p>")  }
+          xml.description  {  xml.cdata!("<img src='https://publiclab.org/system/images/photos/000/023/444/original/Screenshot_20180204-101546_2.png' alt='PublicLab'><p>#{auto_link(node.latest.render_body, :sanitize => false)}</p>")  }
         end
         xml.guid        url_for :only_path => false, :controller => 'notes', :action => 'show', :id => node.nid
       end
