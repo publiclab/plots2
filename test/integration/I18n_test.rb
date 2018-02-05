@@ -301,7 +301,6 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       wiki = nodes(:about)
       get '/wiki/edit/' + wiki.title.parameterize
-      assert_select 'a', I18n.t('wiki.edit.getting_started')
     end
   end
 
