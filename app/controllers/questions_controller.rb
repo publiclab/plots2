@@ -90,7 +90,7 @@ class QuestionsController < ApplicationController
       .includes(:answers)
       .references(:answers)
       .where(answers: { id: nil })
-      .order('answers.created_at DESC')
+      .order('node.nid DESC')
       .group('node.nid')
       .paginate(page: params[:page], per_page: 24)
     render template: 'questions/index'
