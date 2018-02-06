@@ -42,6 +42,6 @@ Leave a comment below!
 
 ### Is someone else already working on this?
 
-We encourage you to link to this issue by mentioning the issue # in your pull request, so we can see if someone's already started on it. **If someone seem stuck, offer them some help!** Otherwise, [take a look at some other issues you can help with](https://github.com/publiclab/plots2/projects/2). Thanks!
+We encourage you to link to this issue by mentioning the issue # in your pull request, so we can see if someone's already started on it. **If someone seem stuck, offer them some help!** Otherwise, [take a look at some other issues you can help with](https://publiclab.github.io/community-toolbox/#r=all). Thanks!
 
 (This issue was created by [First-Timers-Bot](https://github.com/hoodiehq/first-timers-bot).)
