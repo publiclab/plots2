@@ -55,6 +55,5 @@ begin
   end
 
 rescue => ex
-  puts "There was an error with Danger bot's Junit parsing:"
-  puts ex.message
+  fail "There was an error with Danger bot's Junit parsing: #{ex.message}"
 end

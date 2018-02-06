@@ -365,9 +365,10 @@ class TagController < ApplicationController
   end
 
   def rss_for_tagged_with_author
-    @user = User.find_by(name: params[:author])
-    @notes = Tag.tagged_nodes_by_author([params[:tagname]], @user)
-                 .limit(20)
+    @user = User.find_by(name: params[:authorname])
+    @notes = Tag.tagged_nodes_by_author(params[:tagname], @user)
+               .where(status: 1)
+               .limit(20)
      respond_to do |format|
        format.rss do
          response.headers['Content-Type'] = 'application/xml; charset=utf-8'
