@@ -261,6 +261,10 @@ end
           node.add_comment(subject: 'barnstar',
                            uid: current_user.uid,
                            body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_user.name} for their awesome contribution!")
+        elsif tagname.split(':')[0] == "with"
+          node.add_comment(subject: 'co-author',
+                           uid: current_user.uid,
+                           body: " @#{current_user.username} has marked #{tagname.split(':')[1]} as a co-author. ")
 
         end
 
