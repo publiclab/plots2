@@ -4,7 +4,7 @@ en:
   wiki:
     edit:
       did_you_mean: 'Did you mean'
-      try_searching_for: "Try <a href='%{url1}'>searching for '%{wiki}' &raquo;</a>"
+      try_searching_for: "Try searching for <a href='%{url1}'>'%{wiki}' &raquo;</a>"
       whats_a_wiki_page: |
         <h3><i class="fa fa-book"></i> What's a <br /> wiki page?</h3>
         <p>At Public Lab, we all collaborate to invent and improve open source environmental science tools. <b>Wiki pages</b> are web pages that anyone can create or edit -- we use them to collect information, documentation, and instructions on projects.</p>
