@@ -39,11 +39,11 @@ class TagController < ApplicationController
       .paginate(page: params[:page], per_page: 24)
     else
       tags = Tag.joins(:node_tag, :node)
-        .select('node.nid, node.status, term_data.*, community_tags.*')
-        .where('node.status = ?', 1)
-        .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-        .group(:name)
-        .order('name')
+                .select('node.nid, node.status, term_data.*, community_tags.*')
+                .where('node.status = ?', 1)
+                .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+                .group(:name)
+                .order('name')
 
       followed = []
       not_followed = []
@@ -117,7 +117,7 @@ class TagController < ApplicationController
 
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
-    @noteCount = Tag.taggedNodeCount(params[:id]) || 0
+    @note_count = Tag.tagged_node_count(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
 
     respond_with(nodes) do |format|
@@ -138,15 +138,10 @@ class TagController < ApplicationController
   end
 
   def show_for_author
+    # try for a matching /wiki/_TAGNAME_ or /_TAGNAME_
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
     @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki&.has_power_tag('redirect')
-    if params[:id][-1..-1] == '*' # wildcard tags
-      @wildcard = true
-      @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
-    else
-      @tags = Tag.where(name: params[:id])
-    end
-    @tagname = params[:id]
+
     default_type = if params[:id].match('question:')
                      'questions'
     else
@@ -156,21 +151,34 @@ class TagController < ApplicationController
     # params[:node_type] - this is an optional param
     # if params[:node_type] is nil - use @default_type
     @node_type = params[:node_type] || default_type
-    @user = User.find_by(name: params[:author])
-    @title = "'" + @tagname.to_s + "' by " +  params[:author]
 
-    qids = Node.questions.where(status: 1).collect(&:nid)
-    nodes = Tag.tagged_nodes_by_author(@tagname, @user)
-      .paginate(page: params[:page], per_page: 24)
-
-    @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
-    @unpaginated = true
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
     node_type = 'map' if @node_type == 'maps'
+    qids = Node.questions.where(status: 1).collect(&:nid)
+
+    if params[:id][-1..-1] == '*' # wildcard tags
+      @wildcard = true
+      @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
+    else
+      @tags = Tag.where(name: params[:id])
+    end
+    @tagname = params[:id]
+    @user = User.find_by(name: params[:author])
+
+    nodes = Tag.tagged_nodes_by_author(@tagname, @user)
+                .where(status: 1, type: node_type)
+                .paginate(page: params[:page], per_page: 24)
+
+    # breaks the parameter
+    # sets everything to an empty array
+    set_sidebar :tags, [params[:id]]
+
+    @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
+    @title = "'" + @tagname.to_s + "' by " +  params[:author]
     # the following could be refactored into a Tag.contributor_count method:
     notes = Node.where(status: 1, type: 'note')
       .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
@@ -194,7 +202,8 @@ class TagController < ApplicationController
         render json: json
       end
     end
-end
+  end
+
 
   def widget
     num = params[:n] || 4
@@ -261,6 +270,7 @@ end
           node.add_comment(subject: 'barnstar',
                            uid: current_user.uid,
                            body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_user.name} for their awesome contribution!")
+
         elsif tagname.split(':')[0] == "with"
           node.add_comment(subject: 'co-author',
                            uid: current_user.uid,
@@ -359,11 +369,30 @@ end
     end
   end
 
+  def rss_for_tagged_with_author
+    @user = User.find_by(name: params[:authorname])
+    @notes = Tag.tagged_nodes_by_author(params[:tagname], @user)
+               .where(status: 1)
+               .limit(20)
+     respond_to do |format|
+       format.rss do
+         response.headers['Content-Type'] = 'application/xml; charset=utf-8'
+         response.headers['Access-Control-Allow-Origin'] = '*'
+         render layout: false
+       end
+       format.ics do
+         response.headers['Content-Disposition'] = "attachment; filename='public-lab-events.ics'"
+         response.headers['Content-Type'] = 'text/calendar; charset=utf-8'
+         render layout: false, template: 'tag/icalendar.ics', filename: 'public-lab-events.ics'
+      end
+    end
+  end
+
   def contributors
     set_sidebar :tags, [params[:id]], note_count: 20
     @tagnames = [params[:id]]
     @tag = Tag.find_by(name: params[:id])
-    @noteCount = Tag.taggedNodeCount(params[:id]) || 0
+    @note_count = Tag.tagged_node_count(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
   end
 

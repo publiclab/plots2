@@ -80,8 +80,8 @@ class AdminController < ApplicationController
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
       else
-                 @nodes.where(status: 0)
-               end
+        @nodes.where(status: 0)
+      end
     else
       flash[:error] = 'Only moderators can moderate posts.'
       redirect_to '/dashboard'

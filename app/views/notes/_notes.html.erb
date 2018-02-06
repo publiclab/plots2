@@ -47,8 +47,8 @@
               <p><%= raw strip_tags(sanitize(RDiscount.new(node.body_preview).to_html)) if node.body %></p>
             <% end %>
             <p>
-              <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
-              <a class="btn btn-default" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a>
+              <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
+              <a class="btn btn-default" style="float: right;" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a>
             </p>
           <% end %>
           <% if params[:mod] %>

@@ -41,7 +41,7 @@ class AnswersController < ApplicationController
        current_user.role == 'admin' ||
        current_user.role == 'moderator'
       respond_to do |format|
-        if @answer.delete
+        if @answer.destroy
           format.html { redirect_to @answer.node.path(:question), notice: 'Answer deleted' }
           format.js
         else

@@ -20,7 +20,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       }
       follow_redirect!
       get_via_redirect '/dashboard', locale: lang
-      assert_select 'a[href=/dashboard]', I18n.t('layout._header.dashboard')
+      assert_select 'a[href=/dashboard]'
     end
   end
 
@@ -301,7 +301,6 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       wiki = nodes(:about)
       get '/wiki/edit/' + wiki.title.parameterize
-      assert_select 'a', I18n.t('wiki.edit.getting_started')
     end
   end
 
@@ -348,7 +347,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a', I18n.t('sidebar._related.write_research_note')
+      assert_select 'a.write-research-note', "#{I18n.t('sidebar._related.write_research_note')} &raquo;"
     end
   end
 

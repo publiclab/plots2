@@ -1,19 +1,19 @@
 xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
   xml.channel do
-    xml.title "Research tagged '#{params[:tagname]}'"
+    xml.title "Research tagged '#{params[:tagname]}' by '#{params[:authorname]}'"
     xml.description "Open source environmental science research at Public Lab"
-    xml.link "https://#{request.host}/feed/tag/"+params[:tagname]+".rss"
+    xml.link "https://#{request.host}/feed/tag/"+params[:tagname]+"/author/"+params[:authorname]+".rss"
 
     @notes.each do |node|
 
-      body = node.body
-      author = node.author.username
-       if node.author.user.has_power_tag('twitter')
-         author = "@#{node.author.user.get_value_of_power_tag('twitter')}"
-       end
-       xml.item do
-         xml.title      node.title
-         xml.author     author
+     body = node.body
+     author = node.author.username
+     if node.author.user.has_power_tag('twitter')
+       author = "@#{node.author.user.get_value_of_power_tag('twitter')}"
+     end
+     xml.item do
+       xml.title      node.title
+       xml.author     author
        if node.power_tag('date') != ''
           begin
             xml.pubDate     DateTime.strptime(node.power_tag('date'), "%m-%d-%Y").rfc822

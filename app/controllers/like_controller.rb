@@ -20,8 +20,8 @@ class LikeController < ApplicationController
     result = if result.nil?
                false
     else
-               result.liking
-             end
+      result.liking
+    end
     render json: result
   end
 

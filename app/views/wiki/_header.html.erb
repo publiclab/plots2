@@ -37,7 +37,7 @@
         <%= raw t('wiki.show.last_edited', url1: "/profile/" + @revision.author.name, author: @revision.author.name, time: time_ago_in_words(@revision.created_at)) %>
         | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a>
         <span class="hidden-xs hidden-sm hidden-md">
-          <a href="/n/<%= @node.id %>">/n/<%= @node.id %></a>
+          <a href="/n/<%= @node.id %>">#<%= @node.id %></a>
         </span>
       </span>
     </div>

@@ -6,7 +6,7 @@ class Answer < ActiveRecord::Base
   belongs_to :node, foreign_key: 'nid', dependent: :destroy
   belongs_to :drupal_user, foreign_key: 'uid'
   has_many :answer_selections, foreign_key: 'aid'
-  has_many :comments, foreign_key: 'aid'
+  has_many :comments, foreign_key: 'aid', dependent: :destroy
 
   validates :content, presence: true
 

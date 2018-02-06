@@ -38,7 +38,7 @@ class Node < ActiveRecord::Base
   has_many :tag, through: :node_tag
   # these override the above... have to do it manually:
   # has_many :tag, :through => :drupal_node_tag
-  has_many :comments, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :comments, foreign_key: 'nid' , dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_type_map, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_field_mappers, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_field_map_editor, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
@@ -166,11 +166,11 @@ class Node < ActiveRecord::Base
   end
 
   def answered
-    self.answers && self.answers.length > 0
+    self.answers&.length.positive?
   end
 
   def has_accepted_answers
-    self.answers.where(accepted: true).count > 0
+    self.answers.where(accepted: true).count.positive?
   end
   
   # users who like this node
@@ -455,8 +455,8 @@ class Node < ActiveRecord::Base
     path = if type == 'page' || type == 'tool' || type == 'place'
              '/wiki/edit/' + self.path.split('/').last
     else
-             '/notes/edit/' + id.to_s
-           end
+      '/notes/edit/' + id.to_s
+    end
     path
   end
 
@@ -515,8 +515,8 @@ class Node < ActiveRecord::Base
     thread = if !comments.empty? && !comments.last.nil?
                comments.last.next_thread
     else
-               '01/'
-             end
+      '01/'
+    end
     c = Comment.new(pid: 0,
                     nid: nid,
                     uid: params[:uid],

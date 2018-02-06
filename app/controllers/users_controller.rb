@@ -10,6 +10,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
+    @user.status = 1
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(params[:spamaway]) unless using_recaptcha
@@ -135,13 +136,10 @@ class UsersController < ApplicationController
       @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @user).count
       @map_lat = nil
       @map_lon = nil 
-      @map_blurred = nil 
       if @profile_user.has_power_tag("lat") && @profile_user.has_power_tag("lon")
-       @map_lat = @profile_user.get_value_of_power_tag("lat").to_f
-       @map_lon = @profile_user.get_value_of_power_tag("lon").to_f
-        if @profile_user.has_power_tag("blurred")
-        @map_blurred = @profile_user.get_value_of_power_tag("blurred")
-        end
+        @map_lat = @profile_user.get_value_of_power_tag("lat").to_f
+        @map_lon = @profile_user.get_value_of_power_tag("lon").to_f
+        @map_blurred = @profile_user.has_tag("blurred:true")
       end
 
       if @user.status == 0

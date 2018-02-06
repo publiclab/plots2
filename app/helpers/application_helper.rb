@@ -34,8 +34,8 @@ module ApplicationHelper
     body = NodeShared.upgrades_grid(body)
     body = NodeShared.notes_map(body)
     body = NodeShared.notes_map_by_tag(body)
-    body = NodeShared.people_grid(body)
     body = NodeShared.people_map(body)
+    body = NodeShared.people_grid(body, @current_user || nil) # <= to allow testing of insert_extras
     body = NodeShared.graph_grid(body)
     body = NodeShared.wikis_grid(body)
     body
@@ -52,7 +52,7 @@ module ApplicationHelper
   
   # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)
-    comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do |title_suggestion|
+    comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do ||
       a = ActionController::Base.new
       is_creator = current_user.drupal_user == Node.find(comment.nid).author
       title = Regexp.last_match(1)

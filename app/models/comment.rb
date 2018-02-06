@@ -5,8 +5,8 @@ class Comment < ActiveRecord::Base
     :subject, :hostname, :comment,
     :status, :format, :thread, :timestamp
 
-  belongs_to :node, foreign_key: 'nid', touch: true,
-                    dependent: :destroy, counter_cache: true
+  belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
+                    # dependent: :destroy, counter_cache: true
   belongs_to :drupal_user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
 
@@ -67,7 +67,7 @@ class Comment < ActiveRecord::Base
     if aid == 0
       node
     else
-      answer.node
+      return answer.node unless answer.nil?
     end
   end
 

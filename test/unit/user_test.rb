@@ -89,10 +89,14 @@ class UserTest < ActiveSupport::TestCase
     assert !users(:bob).has_tag('test:no')
   end
 
-  test 'returns nodes created in past given period of time' do
-    lurker = users(:lurker)
-    node2 = users(:lurker).node.find_by_nid(20)
-     assert_equal [node2], lurker.content_followed_in_past_period(2.hours.ago)
+  test 'returns nodes created in given period of time' do
+    bob = users(:bob)
+    node_count = 6
+    nodes_fix = [1,2,8,9,10,15]
+    count_return = bob.content_followed_in_period(2.hours.ago,Time.now).count
+    nodes_time = bob.content_followed_in_period(2.hours.ago,Time.now).pluck(:nid)
+    assert_equal node_count, count_return
+    assert_equal nodes_fix,nodes_time.sort
   end
 
   test 'returns value of power tag' do
@@ -140,6 +144,24 @@ class UserTest < ActiveSupport::TestCase
                     email: 'testpubliclab.org')
     assert_not user.save({})
     assert_equal 1, user.errors[:email].count
+  end
+
+  test 'user status changes when drupal user is banned or unbanned' do
+    drupal_user = drupal_users(:bob)
+    assert_equal 1, drupal_user.user.status
+    drupal_user.ban
+    assert_equal 0, drupal_user.user.status
+    drupal_user.unban
+    assert_equal 1, drupal_user.user.status
+  end
+
+  test 'user status changes when drupal user is moderated or unmoderated' do
+    drupal_user = drupal_users(:bob)
+    assert_equal 1, drupal_user.user.status
+    drupal_user.moderate
+    assert_equal 5, drupal_user.user.status
+    drupal_user.unmoderate
+    assert_equal 1, drupal_user.user.status
   end
 
 end
