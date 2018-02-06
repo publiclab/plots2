@@ -50,4 +50,5 @@
 //= require chart.js/dist/Chart.js
 //  require turbolinks // Temporarily removed while fixing
 //= require google_analytics.js
+//= require header_footer.js
 
