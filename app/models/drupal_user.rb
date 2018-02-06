@@ -178,7 +178,8 @@ class DrupalUser < ActiveRecord::Base
   end
 
   def migrate
-    u = User.new(username: name,
+    n = name.encode(Encoding.find('UTF-8'))
+    u = User.new(username: n,
                  id: uid,
                  email: mail,
                  openid_identifier: '//old.publiclab.org/user/' + uid.to_s + '/identity')
