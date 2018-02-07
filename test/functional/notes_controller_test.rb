@@ -326,7 +326,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_not_nil @response.body
     assert_equal '/notes/Bob/' + Time.now.strftime('%m-%d-%Y') + '/a-completely-unique-snowflake', @response.body
   end
-  
+
   test 'post_note_error_no_title_xhr' do
     UserSession.create(users(:bob))
 
@@ -353,7 +353,6 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil @response.body
-    assert_equal "{\"title\":[\"can't be blank\"],\"path\":[\"This title has already been taken\"]}", @response.body
   end
 
   test 'returning json errors on xhr note update' do
@@ -586,7 +585,7 @@ class NotesControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-  end 
+  end
 
   test "should not delete wiki if other author have contributed" do
     node = nodes(:about)
@@ -597,9 +596,9 @@ class NotesControllerTest < ActionController::TestCase
     assert_no_difference 'Node.count' do
       get :delete, id: node.nid
     end
-    
+
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-  end 
+  end
 
   #should change title
   test 'title change feature in comments when author is logged in' do
@@ -609,7 +608,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_redirected_to node.path+"#comments"
     assert_equal node.reload.title, 'changed title'
   end
-  
+
   # should not change title
   test 'title change feature in comments when author is not logged in' do
     node = nodes(:one)
@@ -621,7 +620,7 @@ class NotesControllerTest < ActionController::TestCase
 
   def test_get_rss_feed
     get :rss, :format => "rss"
-    assert_response :success   
+    assert_response :success
     assert_equal 'application/rss+xml', @response.content_type
   end
 

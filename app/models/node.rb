@@ -7,7 +7,7 @@ class UniqueUrlValidator < ActiveModel::Validator
       record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     else
       if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
-        record.errors[:base] << 'You have already used this title today.'
+        record.errors[:base] << 'You have already used this title.'
       end
     end
   end
@@ -50,7 +50,6 @@ class Node < ActiveRecord::Base
 
   validates :title, presence: :true
   validates_with UniqueUrlValidator, on: :create
-  validates :path, uniqueness: { message: 'This title has already been taken' }
 
   # making drupal and rails database conventions play nice;
   # 'changed' is a reserved word in rails
@@ -172,7 +171,7 @@ class Node < ActiveRecord::Base
   def has_accepted_answers
     self.answers.where(accepted: true).count.positive?
   end
-  
+
   # users who like this node
   def likers
     node_selections
@@ -817,9 +816,9 @@ class Node < ActiveRecord::Base
   def toggle_like(user)
     nodes = NodeSelection.where(nid: self.id , liking: true).count
     if is_liked_by(user)
-      self.cached_likes = nodes-1  
+      self.cached_likes = nodes-1
     else
-      self.cached_likes = nodes+1  
+      self.cached_likes = nodes+1
     end
   end
 
@@ -827,13 +826,13 @@ class Node < ActiveRecord::Base
      # scope like variable outside the transaction
     like = nil
     count = nil
-  
+
     ActiveRecord::Base.transaction do
       # Create the entry if it isn't already created.
       like = NodeSelection.where(user_id: user.uid,
                                  nid: nid).first_or_create
       like.liking = true
-      node = Node.find(nid)       
+      node = Node.find(nid)
       if node.type == 'note'
         SubscriptionMailer.notify_note_liked(node, like.user)
       end
@@ -849,17 +848,17 @@ class Node < ActiveRecord::Base
   def self.unlike(nid , user)
     like = nil
     count = nil
-  
+
     ActiveRecord::Base.transaction do
       like = NodeSelection.where(user_id: user.uid,
                                  nid: nid).first_or_create
       like.liking = false
-      count = -1 
-      node = Node.find(nid)       
+      count = -1
+      node = Node.find(nid)
       node.toggle_like(like.user)
       node.save!
       like.save!
-     end 
+     end
       count
   end
 end
