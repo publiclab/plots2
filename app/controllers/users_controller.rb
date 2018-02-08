@@ -108,9 +108,9 @@ class UsersController < ApplicationController
       @profile_user = User.find_by(username: params[:id])
       @title = @user.name
       @notes = Node.research_notes
-                         .paginate(page: params[:page], per_page: 24)
-                         .order("nid DESC")
-                         .where(status: 1, uid: @user.uid)
+                   .paginate(page: params[:page], per_page: 24)
+                   .order("nid DESC")
+                   .where(status: 1, uid: @user.uid)
       @coauthored = @profile_user.coauthored_notes
                                  .paginate(page: params[:page], per_page: 24)
                                  .order('node_revisions.timestamp DESC')
@@ -120,7 +120,8 @@ class UsersController < ApplicationController
       questions = Node.questions
                             .where(status: 1)
                             .order('node.nid DESC')
-      @answered_questions = questions.select{|q| q.answers.collect(&:author).include?(@user)}
+      ans_ques = questions.select{|q| q.answers.collect(&:author).include?(@user)}
+      @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
       wikis = Revision.order("nid DESC")
                       .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
                       .joins(:node)
@@ -135,7 +136,7 @@ class UsersController < ApplicationController
       @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @user).count
       @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @user).count
       @map_lat = nil
-      @map_lon = nil 
+      @map_lon = nil
       if @profile_user.has_power_tag("lat") && @profile_user.has_power_tag("lon")
         @map_lat = @profile_user.get_value_of_power_tag("lat").to_f
         @map_lon = @profile_user.get_value_of_power_tag("lon").to_f
@@ -259,7 +260,7 @@ class UsersController < ApplicationController
   def info
     @user = User.find_by(username: params[:id])
   end
-  
+
   # content this person follows
   def followed
     user = User.find_by(username: params[:id])
