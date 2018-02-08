@@ -3,10 +3,10 @@ class TagController < ApplicationController
   before_filter :require_user, only: %i(create delete)
 
   def index
-    if params[:format]
-      @toggle = params[:format].to_i
+    if params[:sort]
+      @toggle = params[:sort]
     else
-      @toggle = 1
+      @toggle = "uses"
     end
 
     @title = I18n.t('tag_controller.tags')
@@ -21,7 +21,7 @@ class TagController < ApplicationController
       .group(:name)
       .order('count DESC')
       .paginate(page: params[:page], per_page: 24)
-    elsif @toggle == 1
+    elsif @toggle == "uses"
     @tags = Tag.joins(:node_tag, :node)
       .select('node.nid, node.status, term_data.*, community_tags.*')
       .where('node.status = ?', 1)
@@ -29,7 +29,7 @@ class TagController < ApplicationController
       .group(:name)
       .order('count DESC')
       .paginate(page: params[:page], per_page: 24)
-    elsif @toggle == 2
+    elsif @toggle == "name"
     @tags = Tag.joins(:node_tag, :node)
       .select('node.nid, node.status, term_data.*, community_tags.*')
       .where('node.status = ?', 1)
