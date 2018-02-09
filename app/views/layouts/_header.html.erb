@@ -66,14 +66,10 @@
 
       <form id="searchform" class="navbar-form navbar-left" role="search" autocomplete="off">
         <div class="form-group">
-          <input tabindex="1" id="searchform_input" type="text" class="form-control search-query typeahead" qryType="all" placeholder="<%= t('layout._header.search') %>"/>
+          <input tabindex="1" id="searchform_input" type="text" class="form-control search-query typeahead" qryType="all" placeholder="<%= t('layout._header.search') %>" required/>
         </div>
         <button type="submit" class="btn btn-primary" style="background:#444;border-color:#222;"><i class="fa fa-search"></i></button>
       </form>
-      <script type="text/javascript">
-        document.getElementById("searchform_input").setCustomValidity('Please! Type something to search');
-      </script>
-
 
       <ul class="nav navbar-nav">
 
