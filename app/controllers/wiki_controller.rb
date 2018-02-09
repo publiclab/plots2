@@ -156,6 +156,7 @@ class WikiController < ApplicationController
           node = Node.find(params[:n])
           params[:body] = node.body if node
         end
+        flash[:error] = "Please enter both body and title"
         render template: 'editor/wikiRich'
       end
     else
