@@ -13,7 +13,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/home'
       get_via_redirect '/change_locale/' + lang.to_s
-      assert_select 'p.facebook-summary', I18n.t('layout._header.summary')
+      assert_select '[p.facebook-summary]', I18n.t('layout._header.summary')
       post '/user_sessions', user_session: {
         username: users(:jeff).username,
         password: 'secretive'
@@ -106,7 +106,7 @@ class I18nTest < ActionDispatch::IntegrationTest
            tags: 'Some-tag',
            status: 4
       get '/dashboard'
-      assert_select 'a.btn btn-default btn-xs', I18n.t('dashboard._node_moderate.approve')
+      assert_select '[a.btn btn-default btn-xs]', I18n.t('dashboard._node_moderate.approve')
     end
   end
 
@@ -476,7 +476,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       get nodes(:first_timer_note).path
       assert_template 'notes/show'
-      assert_select 'div.alert alert-warning', ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.show.note_no_tags'))
+      assert_select '[div.alert alert-warning]', ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.show.note_no_tags'))
     end
   end
 
