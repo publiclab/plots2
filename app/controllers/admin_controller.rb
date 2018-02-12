@@ -123,6 +123,23 @@ class AdminController < ApplicationController
     end
   end
 
+  def mark_comment_spam
+    @comment = Comment.find params[:id]
+    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+      if @comment.status == 0
+        @comment.comment_spam
+        flash[:notice] = "Comment has been marked as spam."
+        redirect_to '/dashboard'
+      else
+        flash[:notice] = "Comment already marked as spam."
+        redirect_to '/dashboard'
+      end
+    else
+      flash[:error] = 'Only moderators can moderate comments.'
+      redirect_to '/dashboard'
+    end
+  end
+
   def publish
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       @node = Node.find params[:id]
