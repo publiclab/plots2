@@ -335,8 +335,9 @@ class WikiController < ApplicationController
   def liked
     @title = I18n.t('wiki_controller.well_liked_wiki_pages')
     @wikis = Node.limit(40)
-      .order('node.cached_likes DESC')
-      .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes > 0")
+      .order('node.cached_likes DESC') 
+      .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes >= 0")
+   
     render template: 'wiki/index'
   end
 
