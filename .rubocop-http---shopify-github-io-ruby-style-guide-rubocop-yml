@@ -1080,9 +1080,6 @@ Performance/FixedSize:
 Performance/FlatMap:
   EnabledForFlattenWithoutParams: false
 
-Performance/HashEachMethods:
-  Enabled: true
-
 Performance/LstripRstrip:
   Enabled: true
 
