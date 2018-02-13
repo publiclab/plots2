@@ -95,7 +95,10 @@ class DrupalUser < ActiveRecord::Base
   end
 
   def like_count
-    NodeSelection.where(user_id: uid, liking: true).count
+    Node.includes(:node_selections)
+    .references(:node_selections)
+    .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, uid)
+    .count
   end
 
   def liked_notes
