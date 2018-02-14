@@ -35,3 +35,10 @@
 <% end %>
 
 </div>
+
+<script type="text/javascript">
+    $("#validBtn").click(function(event) {
+        var reset = Object.create(Reset);
+        reset.runValidation(event);
+    });
+</script>
