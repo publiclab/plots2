@@ -89,3 +89,27 @@ var Profile = {
     });
   }
 }
+
+function validateEmail(sEmail) {
+	var filter = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+	if (filter.test(sEmail)) {
+		return true;
+	}
+
+	else {
+		return false;
+	}
+}
+
+$(document).ready(function() {
+    $('#validBtn').click(function(event){
+        var email = $('#validEmail').val();
+
+        if(!validateEmail(email)) {
+            $("#validPrint").attr("style", "display:block");
+            $("#validPrint").html("<p>Invalid email address</p>");
+            event.preventDefault();
+        }
+    });
+});
