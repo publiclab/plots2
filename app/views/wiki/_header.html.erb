@@ -56,7 +56,7 @@
         </li>
       <% else %>
         <li>
-          <a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>">
+          <a rel="tooltip" title="Edit this wiki page." data-placement="top" href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>">
             <i class="fa fa-pencil"></i>
             <span class="hidden-xs hidden-sm hidden-md"></span>
           </a>
@@ -69,23 +69,24 @@
       <% end %>
 
       <% if current_user && current_user.role == "admin" %>
-        <li>
+        <li rel="tooltip" title="Delete this wiki page." data-placement="top">
           <%= link_to url_for(action: :delete,id: @node.id),method: :delete, data: {confirm: I18n.t('wiki.show.are_you_sure_delete', path: @node.path)} do %>
             <i class="fa fa-trash"></i>
             <span class="hidden-xs hidden-sm hidden-md hidden-lg"> <%= t('wiki.show.delete') %></span>
+          </a>
           <% end %>
         </li>
       <% end %>
 
       <li>
-        <a href="/talk/<%= @node.slug_from_path %>">
+        <a rel="tooltip" title="Practice in a realtime doc." data-placement="top" href="/talk/<%= @node.slug_from_path %>">
           <i class="fa fa-comments-o"></i>
           <span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.talk') %></span>
         </a>
       </li>
 
       <li>
-        <a href="/wiki/revisions/<%= @node.slug_from_path %>">
+        <a rel="tooltip" title="=View previous versions of this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>">
           <span class="hidden-xs"><%= @node.revisions.length %> </span>
           <i class="fa fa-list"></i>
         </a>
