@@ -1,11 +1,17 @@
-Make sure these boxes are checked before your pull request is ready to be reviewed and merged. Thanks!
+Make sure these boxes are checked before your pull request (PR) is ready to be reviewed and merged. Thanks!
 
-* [ ] all tests pass -- `rake test:all`
-* [ ] code is in uniquely-named feature branch, and has been rebased on top of latest master (especially if you've been asked to make additional changes)
-* [ ] pull request is descriptively named with #number reference back to original issue
+* [ ] tests pass -- look for a green checkbox ✔️ a few minutes after opening your PR -- or run tests locally with `rake test`
+* [ ] code is in uniquely-named feature branch and has no merge conflicts
+* [ ] PR is descriptively titled
+* [ ] PR body includes `fixes #0000`-style reference to original issue #
+* [ ] ask `@publiclab/reviewers` for help, in a comment below
 
-Please be sure you've reviewed our contribution guidelines at https://publiclab.org/wiki/contributing-to-public-lab-software
+> We're happy to help you get this ready -- don't be afraid to ask for help, and **don't be discouraged** if your tests fail at first!
 
-We have a loose schedule of reviewing and pulling in changes every Tuesday and Friday, and publishing changes on Fridays. Please alert developers on plots-dev@googlegroups.com when your request is ready or if you need assistance.
+If tests do fail, click on the red `X` to learn why by reading the logs.
+
+Please be sure you've reviewed our contribution guidelines at https://publiclab.org/contributing-to-public-lab-software
+
+We have a loose schedule of reviewing and pulling in changes every Tuesday and Friday, and publishing changes on Fridays. 
 
 Thanks!
