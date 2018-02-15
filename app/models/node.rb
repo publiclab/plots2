@@ -43,7 +43,7 @@ class Node < ActiveRecord::Base
   has_many :drupal_content_field_mappers, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_field_map_editor, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :images, foreign_key: :nid
-  has_many :node_selections, foreign_key: :nid
+  has_many :node_selections, foreign_key: :nid, dependent: :destroy
   has_many :answers, foreign_key: :nid
 
   belongs_to :drupal_user, foreign_key: 'uid'
@@ -172,7 +172,7 @@ class Node < ActiveRecord::Base
   def has_accepted_answers
     self.answers.where(accepted: true).count.positive?
   end
-  
+
   # users who like this node
   def likers
     node_selections
@@ -817,9 +817,9 @@ class Node < ActiveRecord::Base
   def toggle_like(user)
     nodes = NodeSelection.where(nid: self.id , liking: true).count
     if is_liked_by(user)
-      self.cached_likes = nodes-1  
+      self.cached_likes = nodes-1
     else
-      self.cached_likes = nodes+1  
+      self.cached_likes = nodes+1
     end
   end
 
@@ -827,13 +827,13 @@ class Node < ActiveRecord::Base
      # scope like variable outside the transaction
     like = nil
     count = nil
-  
+
     ActiveRecord::Base.transaction do
       # Create the entry if it isn't already created.
       like = NodeSelection.where(user_id: user.uid,
                                  nid: nid).first_or_create
       like.liking = true
-      node = Node.find(nid)       
+      node = Node.find(nid)
       if node.type == 'note'
         SubscriptionMailer.notify_note_liked(node, like.user)
       end
@@ -849,17 +849,17 @@ class Node < ActiveRecord::Base
   def self.unlike(nid , user)
     like = nil
     count = nil
-  
+
     ActiveRecord::Base.transaction do
       like = NodeSelection.where(user_id: user.uid,
                                  nid: nid).first_or_create
       like.liking = false
-      count = -1 
-      node = Node.find(nid)       
+      count = -1
+      node = Node.find(nid)
       node.toggle_like(like.user)
       node.save!
       like.save!
-     end 
+     end
       count
   end
 end
