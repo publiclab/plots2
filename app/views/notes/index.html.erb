@@ -26,11 +26,11 @@
     <% if params[:action] == "liked" %><a style="margin-right:4px;" class="pull-right btn btn-default btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
 
     <ul class="nav nav-tabs">
-        <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/notes/"><%= t('notes.index.recent') %></a></li>
-        <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/notes/popular/"><%= t('notes.index.popular') %></a></li>
+        <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/notes/"><i class="fa fa-refresh"></i><span class="hidden-sm"> <%= t('notes.index.recent') %></span></a></li>
+        <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/notes/popular/"><i class="fa fa-bolt"></i><span class="hidden-sm"> <%= t('notes.index.popular') %></span></a></li>
         <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="fa fa-star-o"></i><span class="hidden-sm"> <%= t('notes.index.liked') %></span></a></li>
   
-        <li><a href="/wiki/"><%= raw t('notes.index.wiki_pages') %></a></li>
+        <li><a href="/wiki/"><i class="fa fa-book"></i><span class="hidden-sm"> <%= raw t('notes.index.wiki_pages') %></span></a></li>
     </ul>
 
   <% end %>
