@@ -52,6 +52,12 @@ class NotesController < ApplicationController
       @node = Node.find params[:id]
     end
 
+    if @node.status == 3 && (current_user.nil? || @node.author != current_user)
+      flash[:notice] = "Only author can access the draft note"
+      redirect_to '/'
+      return
+    end
+
     if @node.has_power_tag('question')
       redirect_to @node.path(:question)
       return
