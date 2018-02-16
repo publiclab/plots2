@@ -141,7 +141,7 @@ class AdminController < ApplicationController
   def publish_comment
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       @comment = Comment.find params[:id]
-      if @comment.status == 0
+      if @comment.status != 2
         flash[:notice] = 'Comment already published.'
       else
         @comment.publish

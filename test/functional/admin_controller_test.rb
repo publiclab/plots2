@@ -453,4 +453,61 @@ class AdminControllerTest < ActionController::TestCase
     assert_redirected_to '/dashboard'
   end
 
+  test 'should publish comment from spam if admin' do
+    UserSession.create(users(:admin))
+    comment = comments(:spam_comment)
+    node = comment.node
+    post :publish_comment, id: comment.id
+
+    comment = assigns(:comment)
+    assert_equal 0, comment.status
+    assert_equal "Comment published.", flash[:notice]
+    assert_redirected_to node.path
+  end
+
+  test 'should publish comment from spam if moderator' do
+    UserSession.create(users(:moderator))
+    comment = comments(:spam_comment)
+    node = comment.node
+    post :publish_comment, id: comment.id
+
+    comment = assigns(:comment)
+    assert_equal 0, comment.status
+    assert_equal "Comment published.", flash[:notice]
+    assert_redirected_to node.path
+  end
+
+  test 'should login if want to publish comment from spam' do
+    comment = comments(:spam_comment)
+
+    post :publish_comment, id: comment.id
+
+    assert_equal 2, comment.status
+    assert_redirected_to '/login'
+  end
+
+  test 'should not publish comment from spam if any other user' do
+    UserSession.create(users(:newcomer))
+    comment = comments(:spam_comment)
+    node = comment.node
+
+    post :publish_comment, id: comment.id
+
+    assert_equal 2, comment.status
+    assert_equal "Only moderators can publish comments.", flash[:error]
+    assert_redirected_to '/dashboard'
+  end
+
+  test 'should not publish comment from spam if already published' do
+    UserSession.create(users(:admin))
+    comment = comments(:first)
+    node = comment.node
+
+    post :publish_comment, id: comment.id
+
+    assert_equal 1, comment.status
+    assert_equal "Comment already published.", flash[:notice]
+    assert_redirected_to node.path
+  end
+
 end
