@@ -126,7 +126,7 @@ class AdminController < ApplicationController
   def mark_comment_spam
     @comment = Comment.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      if @comment.status != 2
+      if @comment.status == 0 || @comment.status == 1
         @comment.spam
         flash[:notice] = "Comment has been marked as spam."
       else
@@ -141,7 +141,7 @@ class AdminController < ApplicationController
   def publish_comment
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       @comment = Comment.find params[:id]
-      if @comment.status != 2
+      if @comment.status == 0 || @comment.status == 1
         flash[:notice] = 'Comment already published.'
       else
         @comment.publish
