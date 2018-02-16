@@ -178,6 +178,7 @@ class NotesController < ApplicationController
       @revision = @node.latest
       @revision.title = params[:title]
       @revision.body = params[:body]
+      @revision.timestamp = Time.now.to_i
       if params[:tags]
         params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
           @node.add_tag(tagname, current_user)
