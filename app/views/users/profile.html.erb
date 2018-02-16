@@ -168,12 +168,14 @@
   </div>
   <hr />
 
+  <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
+  <br>
+
   <ul class="nav nav-tabs">
-    <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
-    <li class="active"><a href="#research" data-toggle="tab"><%= t('users.profile.research') %></a></li>
-    <li><a href="#coauthored" data-toggle="tab"><span class="hidden-sm hidden-xs"> <%= t('users.profile.Coauthored') %> (<%= @coauthored.size %>)</span></a></li>
-  <li><a href="#questions" data-toggle="tab"><i class="fa fa-comments"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %> (<%= Node.questions.where(status: 1, uid: @user.id).length %>)</span></a></li>
-    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span></a></li>
+    <li class="active"><a href="#research" data-toggle="tab"><i class="fa fa-file"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.research') %></span> <%= "(#{@notes.count})" %></a></li>
+    <li><a href="#coauthored" data-toggle="tab"><i class="fa fa-file-o"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.Coauthored') %></span> (<%= @coauthored.size %>)</a></li>
+    <li><a href="#questions" data-toggle="tab"><i class="fa fa-question-circle"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %></span> (<%= Node.questions.where(status: 1, uid: @user.id).length %>)</a></li>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span> (<%= @comment_count %>)</a></li>
     <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
     <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> Barnstars</span> (<%= @user.user.try(:barnstars).try(:length) %>)</a></li>
   </ul>
