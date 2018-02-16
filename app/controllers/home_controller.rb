@@ -9,14 +9,14 @@ class HomeController < ApplicationController
   # caches_action :index, :cache_path => { :last => Node.find(:last).updated_at.to_i }
 
   def home
-    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
-      self.activity
-    end
-
-    @title = I18n.t('home_controller.science_community')
     if current_user
       redirect_to '/dashboard'
     else
+      @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments=
+        Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
+          self.activity
+        end
+      @title = I18n.t('home_controller.science_community')
       render template: 'home/home'
     end
   end
