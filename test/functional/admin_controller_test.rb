@@ -396,4 +396,61 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 1, node.author.status
     assert_redirected_to node.path(:question)
   end
+
+  test 'should mark comment as spam if moderator' do
+    UserSession.create(users(:moderator))
+    comment = comments(:first)
+
+    post :mark_comment_spam, id: comment.id
+
+    comment = assigns(:comment)
+    assert_equal 2, comment.status
+    assert_equal "Comment has been marked as spam.", flash[:notice]
+    assert_redirected_to '/dashboard'
+  end
+
+  test 'should mark comment as spam if admin' do
+    UserSession.create(users(:admin))
+    comment = comments(:first)
+
+    post :mark_comment_spam, id: comment.id
+
+    comment = assigns(:comment)
+    assert_equal 2, comment.status
+    assert_equal "Comment has been marked as spam.", flash[:notice]
+    assert_redirected_to '/dashboard'
+  end
+
+  test 'should not mark comment as spam if no user' do
+    comment = comments(:first)
+
+    post :mark_comment_spam, id: comment.id
+
+    assert_redirected_to '/login'
+  end
+
+  test 'should not mark comment as spam if normal user' do
+    UserSession.create(users(:bob))
+    comment = comments(:first)
+
+    post :mark_comment_spam, id: comment.id
+
+    comment = assigns(:comment)
+    assert_equal 1, comment.status
+    assert_equal "Only moderators can moderate comments.", flash[:error]
+    assert_redirected_to '/dashboard'
+  end
+
+  test 'should not mark comment as spam if it is already marked as spam' do
+    UserSession.create(users(:admin))
+    comment = comments(:spam_comment)
+
+    post :mark_comment_spam, id: comment.id
+
+    comment = assigns(:comment)
+    assert_equal 2, comment.status
+    assert_equal "Comment already marked as spam.", flash[:notice]
+    assert_redirected_to '/dashboard'
+  end
+
 end

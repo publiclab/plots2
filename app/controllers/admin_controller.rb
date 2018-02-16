@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_filter :require_user, only: %i(spam spam_revisions)
+  before_filter :require_user, only: %i(spam spam_revisions mark_comment_spam publish_comment)
 
   def promote_admin
     @user = User.find params[:id]
@@ -126,7 +126,7 @@ class AdminController < ApplicationController
   def mark_comment_spam
     @comment = Comment.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      if @comment.status == 0
+      if @comment.status != 2
         @comment.spam
         flash[:notice] = "Comment has been marked as spam."
       else
