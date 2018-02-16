@@ -52,6 +52,12 @@ class NotesController < ApplicationController
       @node = Node.find params[:id]
     end
 
+    if @node.status == 3 && (current_user.nil? || @node.author != current_user)
+      flash[:notice] = "Only author can access the draft note"
+      redirect_to '/'
+      return
+    end
+
     if @node.has_power_tag('question')
       redirect_to @node.path(:question)
       return
@@ -105,20 +111,25 @@ class NotesController < ApplicationController
           @node.add_tag('event:rsvp', current_user)
           @node.add_tag('date:' + params[:date], current_user) if params[:date]
         end
-        if current_user.first_time_poster
-          AdminMailer.notify_node_moderators(@node)
-          flash[:first_time_post] = true
-          if @node.has_power_tag('question')
-            flash[:notice] = I18n.t('notes_controller.thank_you_for_question').html_safe
+        if params[:draft] != true
+          if current_user.first_time_poster
+            AdminMailer.notify_node_moderators(@node)
+            flash[:first_time_post] = true
+            if @node.has_power_tag('question')
+              flash[:notice] = I18n.t('notes_controller.thank_you_for_question').html_safe
+            else
+              flash[:notice] = I18n.t('notes_controller.thank_you_for_contribution').html_safe
+            end
           else
-            flash[:notice] = I18n.t('notes_controller.thank_you_for_contribution').html_safe
+            if @node.has_power_tag('question')
+              flash[:notice] = I18n.t('notes_controller.question_note_published').html_safe
+            else
+              flash[:notice] = I18n.t('notes_controller.research_note_published').html_safe
+            end
           end
         else
-          if @node.has_power_tag('question')
-            flash[:notice] = I18n.t('notes_controller.question_note_published').html_safe
-          else
-            flash[:notice] = I18n.t('notes_controller.research_note_published').html_safe
-          end
+          @node.draft
+          flash[:notice] = I18n.t('notes_controller.saved_as_draft').html_safe
         end
         # Notice: Temporary redirect.Remove this condition after questions show page is complete.
         #         Just keep @node.path(:question)

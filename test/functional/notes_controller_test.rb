@@ -624,5 +624,19 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal 'application/rss+xml', @response.content_type
   end
 
+  test 'draft should not be shown when no user' do
+    node = nodes(:draft)
+    post :show, id: '21',title: 'Draft note'
+    assert_redirected_to '/'
+    assert_equal "Only author can access the draft note", flash[:notice]
+  end
+
+  test 'draft should not be shown when user is not author' do
+    node = nodes(:draft)
+    UserSession.create(users(:test_user))
+    post :show, id: '21',title: 'Draft note'
+    assert_redirected_to '/'
+    assert_equal "Only author can access the draft note", flash[:notice]
+  end
 
 end

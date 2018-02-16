@@ -236,3 +236,15 @@ method:
   type: "page"
   cached_likes: 0
   path: "/wiki/spectrometer"
+
+draft:
+  nid: 21
+  uid: 2
+  title: "Draft note"
+  path: "/notes/test/<%= Time.now.strftime("%m-%d-%Y") %>/draft-note"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 3
+  type: "note"
+  cached_likes: 0
+  slug: test-<%= Time.now.strftime("%m-%d-%Y") %>-draft-note

@@ -861,4 +861,11 @@ class Node < ActiveRecord::Base
      end
       count
   end
+
+  # status = 3 for draft nodes,visible to author only
+  def draft
+      self.status = 3
+      save
+      self
+  end
 end
