@@ -2,7 +2,7 @@ var Profile = {
   value: { 
     user_id: null,
     name: null,
-    notes: null,
+    
     comments: null
   },
   display_comments: function(){
@@ -20,39 +20,43 @@ var Profile = {
     });
   },
   plot_graph: function(){
-    flotoptions_minimal = {
-      yaxis: { show: false },
-      xaxis: { show: true },
-      grid: {
-        borderWidth: 0,
-        //color: "#444",
-        markers: []
-      },
-      colors: [ "#08f", "#80f" ]
-    }
+		data = {
+		labels: ["12am-3am", "3am-6am", "6am-9am", "9am-12pm",
+		  "12pm-3pm", "3pm-6pm", "6pm-9pm", "9pm-12am"],
 
-    $.plot($("#note-graph"), [
-      {
-        data: Profile.value.notes,
-        hoverable: true,
-//      label: "Research Notes",
-        bars: { show: true, 
-                lineWidth: 0,
-                fillColor: "#08f",
-                barWidth: 0.5
-              }
-      }//,
-//    {
-//      data: value.comments,
-//      hoverable: true,
-//      label: "Comments",
-//      bars: { show: true, 
-//              lineWidth: 0,
-//              fillColor: "#80f",
-//              barWidth: 0.5
-//            }
-//    }
-    ],flotoptions_minimal);
+		datasets: [
+		  {
+			title: "Some Data",
+			values: [25, 40, 30, 35, 8, 52, 17, -4]
+		  },
+		  {
+			title: "Another Set",
+			values: [25, 50, -10, 15, 18, 32, 27, 14]
+		  },
+		  {
+			title: "Yet Another",
+			values: [15, 20, -3, -15, 58, 12, -17, 37]
+		  }
+		]
+	  };
+
+	  chart = new Chart({
+		parent: "#note-graph", // or a DOM element
+		title: "My Awesome Chart",
+		data: data,
+		type: 'bar', // or 'line', 'scatter', 'pie', 'percentage'
+		height: 250,
+
+		colors: ['#7cd6fd', 'violet', 'blue'],
+		// hex-codes or these preset colors;
+		// defaults (in order):
+		// ['light-blue', 'blue', 'violet', 'red',
+		// 'orange', 'yellow', 'green', 'light-green',
+		// 'purple', 'magenta', 'grey', 'dark-grey']
+
+		format_tooltip_x: d => (d + '').toUpperCase(),
+		format_tooltip_y: d => d + ' pts'
+	  }); 
   },
   fetch_maps: function(){
     $.get('https://mapknitter.org/feeds/author/' + Profile.value.name, function (feed) {

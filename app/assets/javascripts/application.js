@@ -20,6 +20,7 @@
 //= require jquery-file-upload/js/jquery.iframe-transport.js
 //= require flot/jquery.flot.js
 //= require flot/jquery.flot.crosshair.js
+//= require frappe-charts.min.iife
 //= require jsdiff.js
 //= require marked/lib/marked.js
 //= require megamark/dist/megamark.min.js

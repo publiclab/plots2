@@ -142,7 +142,7 @@
 
 <div class="col-md-9">
 
-  <div id="note-graph" style="height:100px;display:none;margin-bottom:16px;"></div>
+  <canvas id="note-graph"></canvas>
 
   <h3 style="margin-top:0;"><%= @user.name %>
     <small>
@@ -258,12 +258,12 @@
     profile.display_comments();
 
     <% if @user && @user.user %>
-      var notes = <%= @user.user.weekly_note_tally.to_a.sort.to_json %>
+      //var notes = <%= @user.user.daily_note_tally.to_a.sort %>
       var comments = <%= @user.user.weekly_comment_tally.to_a.sort.to_json %>
-      $('#note-graph').show()
+     //$('#note-graph').show()
     <% end %>
 
-    profile.value.notes = notes;
+    //profile.value.notes = notes;
     profile.value.comments = comments;
     profile.plot_graph();
 

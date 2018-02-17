@@ -197,6 +197,20 @@ class User < ActiveRecord::Base
     weeks
   end
 
+  def daily_note_tally(span = 365)
+      days = {}
+      (0..span).each do |day|
+          days[(DateTime.now-day.days).strftime('%d/%m/%Y')] = Node.select(:created)
+            .where( uid: drupal_user.uid,
+                                            type: 'note',
+                                            status: 1,
+                                            created: DateTime.now - day.days..DateTime.now - (day - 1).days)
+            .count
+      end
+      days
+  end
+ 
+
   def weekly_comment_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
