@@ -47,6 +47,7 @@ end
 group :test, :development do
   gem 'test-unit'
   gem 'rails-perftest'
+  gem 'ruby-prof'
   gem 'minitest-reporters', '~> 1.1.19'
   gem 'rake',  '~> 10.5.0'
   # gems to test RESTful API
