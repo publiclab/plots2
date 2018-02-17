@@ -90,20 +90,14 @@ var Profile = {
   }
 }
 
-var Reset = {
-    validateEmail: function(sEmail){
-        var filter = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+class Reset {
+    validateEmail(sEmail){
+        const filter = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return filter.test(sEmail); 
+    }
 
-        if (filter.test(sEmail)) {
-            return true;
-        }
-
-        else {
-            return false;
-        }
-    },
-    runValidation: function(event){ 
-        var email = $('#validEmail').val();
+    runValidation(event){ 
+        const email = $('#validEmail').val();
 
         if(!this.validateEmail(email)) {
             $("#validPrint").attr("style", "display:block");
