@@ -108,45 +108,16 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test 'create a wiki page with new as title' do
+    array = ['new', 'create', 'update', 'edit', 'delete']
+    array.each { |x|
     node = Node.new(uid: users(:bob).id,
                     type: 'page',
-                    title: 'new')
+                    title: x)
     assert_not node.valid?
     assert_equal 'page', node.type
+  }
   end
 
-  test 'create a wiki page with create as title' do
-    node = Node.new(uid: users(:bob).id,
-                    type: 'page',
-                    title: 'create')
-    assert_not node.valid?
-    assert_equal 'page', node.type
-  end
-
-  test 'create a wiki page with update as title' do
-    node = Node.new(uid: users(:bob).id,
-                    type: 'page',
-                    title: 'update')
-    assert_not node.valid?
-    assert_equal 'page', node.type
-  end
-
-  test 'create a wiki page with edit as title' do
-    node = Node.new(uid: users(:bob).id,
-                    type: 'page',
-                    title: 'edit')
-    assert_not node.valid?
-    assert_equal 'page', node.type
-  end
-
-  test 'create a wiki page with delete as title' do
-    node = Node.new(uid: users(:bob).id,
-                    type: 'page',
-                    title: 'delete')
-    assert_not node.valid?
-    assert_equal 'page', node.type
-  end
-  
   test 'create a wiki page with Node.new_wiki' do
     node = Node.new_wiki(uid: users(:bob).id,
                          type: 'page',
