@@ -1,10 +1,10 @@
-  <% if haslocation == true %>
+<% if haslocation == true %>
     <% unique_id = rand(100) %>
     <style>
       #map<%= unique_id %> {  height:300px; width:292px; margin: auto; position: relative;}
     </style>
     <div class="leaflet-map" id="map<%= unique_id %>"></div>
-    <script> 
+    <script>
       var map = L.map('map<%= unique_id %>').setView([<%= @map_lat %>,<%= @map_lon %>], 7);
       L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
       <% if !(@map_blurred == true) %>
@@ -13,7 +13,7 @@
     </script>
   <% else %>
     <div id="map_template" style="position: relative; display: inline-block;">
-      <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:300px; margin: 0; position: relative; margin-right: -10px;">  
+      <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:300px; margin: 0; position: relative; margin-right: -10px;">
       <button type='button' class='btn btn-default btn-lg' onclick='addLocation()' style="position: absolute;    position: absolute;top: 41% ; left: 15% ;"> <strong> Share your Location </strong> </button>
     </div>
     <script>
@@ -22,3 +22,8 @@
       }
     </script>
   <% end %>
+  <span style="display:inline-block; width: 150%">
+    <p><i><small>
+      <a href='/wiki/location-privacy'>Learn about privacy</a>.
+    </small></i></p>
+  </span>
