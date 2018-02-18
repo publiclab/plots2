@@ -49,5 +49,3 @@ test/reports/
 # Ignore NPM
 node_modules
 .byebug_history
-
-Gemfile.lock
