@@ -44,18 +44,36 @@ class HomeController < ApplicationController
   end
 
   def dashboard
-    @note_count = Node.select(%i(created type status))
-      .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-      .count(:all)
-    @wiki_count = Revision.select(:timestamp)
-      .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-      .count
-    @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
-    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = self.activity
-    render template: 'dashboard/dashboard'
-    @title = I18n.t('home_controller.community_research') unless current_user
+    if current_user
+      @note_count = Node.select(%i(created type status))
+        .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+        .count(:all)
+      @wiki_count = Revision.select(:timestamp)
+        .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+        .count
+      @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count
+      @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = self.activity
+      render template: 'dashboard/dashboard'
+    else
+      redirect_to '/research'
+    end
   end
 
+  def research
+    if current_user
+      redirect_to '/dashboard'
+    else
+      @note_count = Node.select(%i(created type status))
+        .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+        .count(:all)
+      @wiki_count = Revision.select(:timestamp)
+        .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+        .count
+      @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = self.activity
+      render template: 'dashboard/dashboard'
+      @title = I18n.t('home_controller.community_research')
+    end
+  end
   # trashy... clean this up!
   # this will eventually be based on the profile_tags data where people can mark their location with "location:lat,lon"
   def nearby
