@@ -3,8 +3,13 @@ class UniqueUrlValidator < ActiveModel::Validator
     if record.title == '' || record.title.nil?
       # record.errors[:base] << "You must provide a title."
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
-    elsif record.title == 'new' && record.type == 'page'
-      record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
+    elsif record.type == 'page'
+      array = ['create', 'edit', 'update', 'delete', 'new']
+      array.each { |x|
+        if record.title == x
+          record.errors[:base] << "You may not use the title '" + x + "'"
+        end
+      }
     else
       if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
         record.errors[:base] << 'You have already used this title.'
