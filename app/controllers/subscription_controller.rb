@@ -112,6 +112,9 @@ class SubscriptionController < ApplicationController
 
   def digest
     @wikis = current_user.content_followed_in_period(Time.now - 1.week, Time.now)
+             .page(params[:page])
+
+    @paginated = true
     render :template => "subscriptions/digest"
   end
 
