@@ -2,12 +2,15 @@
   <style>
   	#map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
   </style>
-	
+
    <div class="leaflet-map" id="map<%= unique_id %>"></div>
 	<% if defined? people %>
 		<p><i><small>
 			Share your own location on <a href='/profile'>your profile</a>.
 			Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a> 
+		</small></i></p>
+    <p><i><small>
+			<a href='/wiki/location-privacy'>Learn about privacy</a>.
 		</small></i></p>
 	<% end %>
 
@@ -17,7 +20,7 @@
  	function onMapLoad(e){
      	$.getJSON("/api/srch/peoplelocations?srchString=100" , function(data){
  			if (!!data.items){
- 				for (i = 0; i < data.items.length ; i++) { 
+ 				for (i = 0; i < data.items.length ; i++) {
  					var url = data.items[i].docUrl ;
  					var title = data.items[i].docTitle ;
    					L.marker([data.items[i].latitude , data.items[i].longitude]).addTo(map<%= unique_id %>).bindPopup("<a href=" +  url + ">" + title + "</a>") ;
