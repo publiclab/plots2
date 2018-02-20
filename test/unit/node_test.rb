@@ -350,7 +350,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should delete associated comments when a node is deleted' do
     node = nodes(:one)
-    assert_equal node.comments.count, 4
+    assert_equal node.comments.count, 5
     deleted_node = node.destroy
     assert_equal node.comments.count, 0
   end

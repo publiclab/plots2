@@ -405,7 +405,7 @@ class NotesControllerTest < ActionController::TestCase
         author: node.author.username,
         date: node.created_at.strftime('%m-%d-%Y'),
         id: node.title.parameterize
-    assert_select '.fa-fire', 3
+    assert_select '.fa-fire', 4
   end
 
   test 'should redirect to questions show page after creating a new question' do
