@@ -404,7 +404,7 @@ class AdminControllerTest < ActionController::TestCase
     post :mark_comment_spam, id: comment.id
 
     comment = assigns(:comment)
-    assert_equal 2, comment.status
+    assert_equal 0, comment.status
     assert_equal "Comment has been marked as spam.", flash[:notice]
     assert_redirected_to '/dashboard'
   end
@@ -416,7 +416,7 @@ class AdminControllerTest < ActionController::TestCase
     post :mark_comment_spam, id: comment.id
 
     comment = assigns(:comment)
-    assert_equal 2, comment.status
+    assert_equal 0, comment.status
     assert_equal "Comment has been marked as spam.", flash[:notice]
     assert_redirected_to '/dashboard'
   end
@@ -448,7 +448,7 @@ class AdminControllerTest < ActionController::TestCase
     post :mark_comment_spam, id: comment.id
 
     comment = assigns(:comment)
-    assert_equal 2, comment.status
+    assert_equal 0, comment.status
     assert_equal "Comment already marked as spam.", flash[:notice]
     assert_redirected_to '/dashboard'
   end
@@ -460,7 +460,7 @@ class AdminControllerTest < ActionController::TestCase
     post :publish_comment, id: comment.id
 
     comment = assigns(:comment)
-    assert_equal 0, comment.status
+    assert_equal 1, comment.status
     assert_equal "Comment published.", flash[:notice]
     assert_redirected_to node.path
   end
@@ -472,7 +472,7 @@ class AdminControllerTest < ActionController::TestCase
     post :publish_comment, id: comment.id
 
     comment = assigns(:comment)
-    assert_equal 0, comment.status
+    assert_equal 1, comment.status
     assert_equal "Comment published.", flash[:notice]
     assert_redirected_to node.path
   end
@@ -482,7 +482,7 @@ class AdminControllerTest < ActionController::TestCase
 
     post :publish_comment, id: comment.id
 
-    assert_equal 2, comment.status
+    assert_equal 0, comment.status
     assert_redirected_to '/login'
   end
 
@@ -493,7 +493,7 @@ class AdminControllerTest < ActionController::TestCase
 
     post :publish_comment, id: comment.id
 
-    assert_equal 2, comment.status
+    assert_equal 0, comment.status
     assert_equal "Only moderators can publish comments.", flash[:error]
     assert_redirected_to '/dashboard'
   end
