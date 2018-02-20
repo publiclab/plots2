@@ -16,6 +16,13 @@ class HomeControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'home should redirect to dashboard if logged in' do
+    UserSession.create(users(:bob))
+
+    get :home
+    assert_redirected_to dashboard_url
+  end
+
   test 'should get dashboard if not logged in' do
     get :dashboard
 
