@@ -116,7 +116,7 @@ question_tag:
 spam_comment:
   uid: 1
   nid: 1
-  status: 2
+  status: 0
   comment: This thing is spam.
   timestamp: <%= Time.now.to_i + 1 %>
   thread: /01

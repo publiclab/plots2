@@ -144,13 +144,13 @@ class Comment < ActiveRecord::Base
   end
 
   def spam
-    self.status = 2
+    self.status = 0
     save
     self
   end
 
   def publish
-    self.status = 0
+    self.status = 1
     save
     self
   end
