@@ -142,4 +142,17 @@ class Comment < ActiveRecord::Base
     notify_users(uids, current_user)
     notify_tag_followers(already + uids)
   end
+
+  def spam
+    self.status = 0
+    save
+    self
+  end
+
+  def publish
+    self.status = 1
+    save
+    self
+  end
+
 end

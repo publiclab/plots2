@@ -5,10 +5,6 @@
   <% if params[:controller] != 'questions' %>
     <%= feature('sidebar-feature') %>
   <% end %>
-  
-  <% if params[:controller] == 'questions' %>
-    <%= render partial: 'tag/sorting' %>
-  <% end %>
 
   <hr/>
 
