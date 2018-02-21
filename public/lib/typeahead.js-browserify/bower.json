@@ -1,0 +1,25 @@
+{
+  "name": "typeahead.js-browserify",
+  "description": "Simple wrapper to making working with typeahead.js with browserify easier",
+  "main": "index.js",
+  "authors": [
+    "nikvdp"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "typeahead.js",
+    "browserify"
+  ],
+  "homepage": "https://github.com/nikvdp/typeahead.js-browserify",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "typeahead.js": "^0.11.1"
+  }
+}

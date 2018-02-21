@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <title>PublicLab.Editor</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../node_modules/woofmark/dist/woofmark.min.css" rel="stylesheet">
+    <link href="../dist/PublicLab.Editor.css" rel="stylesheet">
+    <link href="../node_modules/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
+    <link href="../node_modules/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
+
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- required for TagsModule -->
+    <script src="../node_modules/typeahead.js/dist/typeahead.jquery.js"></script>
+    <script src="../node_modules/typeahead.js/dist/bloodhound.js"></script>
+    <script src="../node_modules/bootstrap-tokenfield/dist/bootstrap-tokenfield.js"></script>
+
+    <script src="../dist/PublicLab.Editor.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="pl-editor container">
+
+      <div class="ple-content">
+
+        <!-- tags module -->
+        <div class="ple-module-tags ple-module container">
+
+          <div class="ple-module-content">
+
+            <h2>Tags</h2>
+
+            <input class="form-control input-lg" type="text" placeholder="balloon-mapping, water-quality..." />
+
+          </div>
+
+        </div>
+        <!-- end tags module -->
+
+        </div>
+
+        
+      </div>
+
+    </div>
+
+
+    <script>
+
+      var editor;
+
+      (function() {
+
+        editor = new PL.Editor({
+          titleModule:     false,
+          mainImageModule: false,
+          richTextModule:  false,
+          tagsModule: {
+
+            local: [
+              "balloon-mapping", 
+              "water-quality", 
+              "rich-editor"
+            ],
+            prefetch: '../examples/data/text.json',
+            remote: {
+              url: '../examples/data/suggestions.json',
+              prepare: function prepareRemote(x) {
+                return "../examples/data/suggestions.json?" + x
+              }
+            }
+          }
+        });
+
+      })();
+
+    </script>
+
+
+  </body>
+</html>

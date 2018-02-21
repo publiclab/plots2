@@ -1,0 +1,20 @@
+{
+  "name": "megamark",
+  "version": "3.3.0",
+  "description": "Markdown with easy tokenization, a fast highlighter, and a lean HTML sanitizer",
+  "homepage": "https://github.com/bevacqua/megamark",
+  "main": "dist/megamark.js",
+  "authors": [
+    "Nicolas Bevacqua <nicolasbevacqua@gmail.com>"
+  ],
+  "license": "MIT",
+  "_release": "3.3.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v3.3.0",
+    "commit": "5dfe6014331d84257efaa351349bce82c5353438"
+  },
+  "_source": "https://github.com/bevacqua/megamark.git",
+  "_target": "~3.3.0",
+  "_originalSource": "megamark"
+}
