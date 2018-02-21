@@ -16,7 +16,7 @@ xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
          xml.author     author
        if node.power_tag('date') != ''
           begin
-            xml.pubDate     DateTime.strptime(node.power_tag('date'), "%m-%d-%Y").in_time_zone("America/New_York").rfc822
+            xml.pubDate     (DateTime.strptime(node.power_tag('date'), "%m-%d-%Y").in_time_zone("GMT") + 5.hours).rfc822
           rescue
             xml.pubDate     node.power_tag('date')
           end
