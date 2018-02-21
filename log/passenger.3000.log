@@ -187,3 +187,81 @@ App 2045 stdout:
 [ N 2018-02-17 00:41:07.9070 1402/Tf Ser/Server.h:559 ]: [ApiServer] Shutdown finished
 [ N 2018-02-17 00:41:07.9071 1402/T1 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 2041, application /Users/jamesmoore/Documents/plots2 (development)
 [ N 2018-02-17 00:41:08.1754 1402/T1 age/Cor/CoreMain.cpp:1227 ]: Passenger core shutdown finished
+[ N 2018-02-20 22:06:31.7078 58703/T1 age/Wat/WatchdogMain.cpp:1267 ]: Starting Passenger watchdog...
+[ N 2018-02-20 22:06:31.7292 58705/T1 age/Cor/CoreMain.cpp:1165 ]: Starting Passenger core...
+[ N 2018-02-20 22:06:31.7300 58705/T1 age/Cor/CoreMain.cpp:249 ]: Passenger core running in multi-application mode.
+[ N 2018-02-20 22:06:31.7410 58705/T1 age/Cor/CoreMain.cpp:905 ]: Passenger core online, PID 58705
+App 58719 stdout: 
+[ N 2018-02-20 22:06:34.9709 58705/T5 age/Cor/SecurityUpdateChecker.h:374 ]: Security update check: no update found (next check in 24 hours)
+App 58719 stdout: Not running mysql today.
+App 58733 stdout: 
+App 58719 stderr: /Users/jamesm/.rvm/gems/ruby-2.3.4@global/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: already initialized constant TagNodeAssociationExtension
+App 58719 stderr: /Users/jamesm/.rvm/gems/ruby-2.3.4@global/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: previous definition of TagNodeAssociationExtension was here
+
+[ N 2018-02-20 22:07:56.2223 58705/T7 age/Cor/CoreMain.cpp:589 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2018-02-20 22:07:56.2224 58705/T1 age/Cor/CoreMain.cpp:1080 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2018-02-20 22:07:56.2224 58705/T1 age/Cor/CoreMain.cpp:994 ]: Checking whether to disconnect long-running connections for process 58733, application /Users/jamesm/Documents/plots2/public (development)
+[ N 2018-02-20 22:07:56.2226 58705/T9 Ser/Server.h:885 ]: [ServerThr.2] Freed 128 spare client objects
+[ N 2018-02-20 22:07:56.2227 58705/T7 Ser/Server.h:885 ]: [ServerThr.1] Freed 128 spare client objects
+[ N 2018-02-20 22:07:56.2227 58705/T7 Ser/Server.h:531 ]: [ServerThr.1] Shutdown finished
+[ N 2018-02-20 22:07:56.2227 58705/Tb Ser/Server.h:885 ]: [ServerThr.3] Freed 128 spare client objects
+[ N 2018-02-20 22:07:56.2227 58705/Tb Ser/Server.h:531 ]: [ServerThr.3] Shutdown finished
+[ N 2018-02-20 22:07:56.2228 58705/Td Ser/Server.h:885 ]: [ServerThr.4] Freed 128 spare client objects
+[ N 2018-02-20 22:07:56.2228 58705/Td Ser/Server.h:531 ]: [ServerThr.4] Shutdown finished
+[ N 2018-02-20 22:07:56.2228 58705/T9 Ser/Server.h:531 ]: [ServerThr.2] Shutdown finished
+[ N 2018-02-20 22:07:56.2229 58705/Tf Ser/Server.h:885 ]: [ApiServer] Freed 0 spare client objects
+[ N 2018-02-20 22:07:56.2229 58705/Tf Ser/Server.h:531 ]: [ApiServer] Shutdown finished
+[ N 2018-02-20 22:07:56.2230 58705/T1 age/Cor/CoreMain.cpp:994 ]: Checking whether to disconnect long-running connections for process 58733, application /Users/jamesm/Documents/plots2/public (development)
+[ N 2018-02-20 22:07:56.5004 58705/T1 age/Cor/CoreMain.cpp:1150 ]: Passenger core shutdown finished
+[ N 2018-02-20 22:09:41.2935 58913/T1 age/Wat/WatchdogMain.cpp:1267 ]: Starting Passenger watchdog...
+[ N 2018-02-20 22:09:41.3141 58915/T1 age/Cor/CoreMain.cpp:1165 ]: Starting Passenger core...
+[ N 2018-02-20 22:09:41.3148 58915/T1 age/Cor/CoreMain.cpp:249 ]: Passenger core running in multi-application mode.
+[ N 2018-02-20 22:09:41.3254 58915/T1 age/Cor/CoreMain.cpp:905 ]: Passenger core online, PID 58915
+App 58929 stdout: 
+[ N 2018-02-20 22:09:44.0254 58915/T5 age/Cor/SecurityUpdateChecker.h:374 ]: Security update check: no update found (next check in 24 hours)
+App 58929 stdout: Not running mysql today.
+App 58943 stdout: 
+App 58929 stderr: /Users/jamesm/.rvm/gems/ruby-2.3.4@global/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: already initialized constant TagNodeAssociationExtension
+App 58929 stderr: /Users/jamesm/.rvm/gems/ruby-2.3.4@global/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: previous definition of TagNodeAssociationExtension was here
+
+[ N 2018-02-20 22:10:14.0350 58915/T7 age/Cor/CoreMain.cpp:589 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2018-02-20 22:10:14.0350 58915/T1 age/Cor/CoreMain.cpp:1080 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2018-02-20 22:10:14.0351 58915/T1 age/Cor/CoreMain.cpp:994 ]: Checking whether to disconnect long-running connections for process 58943, application /Users/jamesm/Documents/plots2/public (development)
+[ N 2018-02-20 22:10:14.0353 58915/T7 Ser/Server.h:885 ]: [ServerThr.1] Freed 128 spare client objects
+[ N 2018-02-20 22:10:14.0354 58915/T7 Ser/Server.h:531 ]: [ServerThr.1] Shutdown finished
+[ N 2018-02-20 22:10:14.0354 58915/T9 Ser/Server.h:885 ]: [ServerThr.2] Freed 128 spare client objects
+[ N 2018-02-20 22:10:14.0355 58915/T9 Ser/Server.h:531 ]: [ServerThr.2] Shutdown finished
+[ N 2018-02-20 22:10:14.0356 58915/Tb Ser/Server.h:885 ]: [ServerThr.3] Freed 128 spare client objects
+[ N 2018-02-20 22:10:14.0356 58915/Tb Ser/Server.h:531 ]: [ServerThr.3] Shutdown finished
+[ N 2018-02-20 22:10:14.0357 58915/Td Ser/Server.h:885 ]: [ServerThr.4] Freed 128 spare client objects
+[ N 2018-02-20 22:10:14.0357 58915/Td Ser/Server.h:531 ]: [ServerThr.4] Shutdown finished
+[ N 2018-02-20 22:10:14.0358 58915/Tf Ser/Server.h:885 ]: [ApiServer] Freed 0 spare client objects
+[ N 2018-02-20 22:10:14.0359 58915/Tf Ser/Server.h:531 ]: [ApiServer] Shutdown finished
+[ N 2018-02-20 22:10:14.0360 58915/T1 age/Cor/CoreMain.cpp:994 ]: Checking whether to disconnect long-running connections for process 58943, application /Users/jamesm/Documents/plots2/public (development)
+[ N 2018-02-20 22:10:14.3116 58915/T1 age/Cor/CoreMain.cpp:1150 ]: Passenger core shutdown finished
+[ N 2018-02-20 22:13:07.7842 60276/T1 age/Wat/WatchdogMain.cpp:1267 ]: Starting Passenger watchdog...
+[ N 2018-02-20 22:13:07.8035 60278/T1 age/Cor/CoreMain.cpp:1165 ]: Starting Passenger core...
+[ N 2018-02-20 22:13:07.8043 60278/T1 age/Cor/CoreMain.cpp:249 ]: Passenger core running in multi-application mode.
+[ N 2018-02-20 22:13:07.8143 60278/T1 age/Cor/CoreMain.cpp:905 ]: Passenger core online, PID 60278
+App 60292 stdout: 
+[ N 2018-02-20 22:13:10.6712 60278/T5 age/Cor/SecurityUpdateChecker.h:374 ]: Security update check: no update found (next check in 24 hours)
+App 60292 stdout: Not running mysql today.
+App 60305 stdout: 
+App 60292 stderr: /Users/jamesm/.rvm/gems/ruby-2.3.4@global/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: already initialized constant TagNodeAssociationExtension
+App 60292 stderr: /Users/jamesm/.rvm/gems/ruby-2.3.4@global/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: previous definition of TagNodeAssociationExtension was here
+
+[ N 2018-02-20 22:14:35.1980 60278/T7 age/Cor/CoreMain.cpp:589 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2018-02-20 22:14:35.1981 60278/T1 age/Cor/CoreMain.cpp:1080 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2018-02-20 22:14:35.1982 60278/T1 age/Cor/CoreMain.cpp:994 ]: Checking whether to disconnect long-running connections for process 60305, application /Users/jamesm/Documents/plots2/public (development)
+[ N 2018-02-20 22:14:35.1984 60278/Tb Ser/Server.h:885 ]: [ServerThr.3] Freed 128 spare client objects
+[ N 2018-02-20 22:14:35.1985 60278/Tb Ser/Server.h:531 ]: [ServerThr.3] Shutdown finished
+[ N 2018-02-20 22:14:35.1986 60278/T7 Ser/Server.h:885 ]: [ServerThr.1] Freed 128 spare client objects
+[ N 2018-02-20 22:14:35.1986 60278/T9 Ser/Server.h:885 ]: [ServerThr.2] Freed 128 spare client objects
+[ N 2018-02-20 22:14:35.1987 60278/T9 Ser/Server.h:531 ]: [ServerThr.2] Shutdown finished
+[ N 2018-02-20 22:14:35.1984 60278/Td Ser/Server.h:885 ]: [ServerThr.4] Freed 128 spare client objects
+[ N 2018-02-20 22:14:35.1987 60278/Td Ser/Server.h:531 ]: [ServerThr.4] Shutdown finished
+[ N 2018-02-20 22:14:35.1986 60278/T7 Ser/Server.h:531 ]: [ServerThr.1] Shutdown finished
+[ N 2018-02-20 22:14:35.1988 60278/Tf Ser/Server.h:885 ]: [ApiServer] Freed 0 spare client objects
+[ N 2018-02-20 22:14:35.1988 60278/Tf Ser/Server.h:531 ]: [ApiServer] Shutdown finished
+[ N 2018-02-20 22:14:35.1989 60278/T1 age/Cor/CoreMain.cpp:994 ]: Checking whether to disconnect long-running connections for process 60305, application /Users/jamesm/Documents/plots2/public (development)
+[ N 2018-02-20 22:14:35.4769 60278/T1 age/Cor/CoreMain.cpp:1150 ]: Passenger core shutdown finished

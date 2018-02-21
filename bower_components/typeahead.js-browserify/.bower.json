@@ -1,0 +1,35 @@
+{
+  "name": "typeahead.js-browserify",
+  "description": "Simple wrapper to making working with typeahead.js with browserify easier",
+  "main": "index.js",
+  "authors": [
+    "nikvdp"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "typeahead.js",
+    "browserify"
+  ],
+  "homepage": "https://github.com/nikvdp/typeahead.js-browserify",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "typeahead.js": "^0.11.1"
+  },
+  "version": "1.0.7",
+  "_release": "1.0.7",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.7",
+    "commit": "906f3747d5783039a2387a7120ee1557fd0810ca"
+  },
+  "_source": "https://github.com/Javier-Rotelli/typeahead.js-browserify.git",
+  "_target": "~1.0.7",
+  "_originalSource": "Javier-Rotelli/typeahead.js-browserify"
+}

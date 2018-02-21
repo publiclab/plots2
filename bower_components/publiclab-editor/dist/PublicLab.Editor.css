@@ -1,0 +1,166 @@
+.pl-editor {
+  margin-bottom: 100px;
+}
+
+.pl-editor h1,
+.pl-editor h2,
+.pl-editor h3,
+.pl-editor h4 {
+  font-family: "Junction Light", serif;
+}
+
+.ple-help {
+  color: #aaa;
+}
+
+.ple-help-minor {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.ple-help-light {
+  color: #ddd;
+}
+
+.ple-header {
+  text-align: center;
+}
+
+.ple-footer {
+  padding: 10px;
+  background: #f8f8f8;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+}
+
+.ple-footer .ple-help {
+  margin: 12px;
+}
+
+.ple-footer .ple-menu-more {
+  padding: 10px;
+}
+
+.ple-type {
+  margin-bottom: 20px;
+}
+
+.ple-module {
+  padding: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.ple-module-guide h2 {
+  font-size: 4em;
+  margin-top: 0;
+}
+
+.ple-module-guide p {
+  color: #aaa;
+  padding-bottom: 22px;
+  padding-right: 30px;
+  clear: left;
+}
+
+.ple-module-guide .ple-guide-minor p {
+  font-size: 12px;
+}
+
+.ple-module-guide p i.fa {
+  color: #666;
+  font-size: 18px;
+  float:left;
+  padding-top: 6px;
+  padding-right: 12px;
+  padding-bottom: 8px;
+}
+
+.ple-drag-drop {
+  border: 4px dotted #ccc;
+  background: #f8f8f8;
+  color: #aaa;
+  font-size: 16px;
+  padding: 40px;
+  text-align: center;
+  margin-bottom: 10px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius:    8px;
+  border-radius:         8px;
+}
+
+
+/********************/
+/* Rich text module */
+
+.ple-textarea {
+  box-sizing: border-box;
+  min-height: 31px;
+}
+
+.ple-history {
+  overflow: scroll;
+}
+
+.ple-textarea,
+.ple-textarea:focus,
+.wk-wysiwyg {
+  min-height: 200px;
+  padding:10px;
+  margin-bottom:10px;
+  border: 5px solid #eee;
+  -webkit-border-radius: 8px;
+  -moz-border-radius:    8px;
+  border-radius:         8px;
+  outline: none;
+}
+
+.ple-textarea img,
+.wk-wysiwyg img{
+  max-width: 100%
+}
+
+.wk-commands {
+  float: left;
+}
+
+.wk-switchboard {
+  float: right;
+}
+
+.wk-container-drop {
+  padding: 30px;
+  border: 4px dotted #ccc;
+  background: #eee;
+}
+
+.wk-prompt {
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* Following may be removed if this is resolved:
+https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
+.tt-menu {
+  width: 100%;
+  min-width: 160px;
+  margin-top: 2px;
+  padding: 5px 0;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+}
+
+.tooltip.bottom .tooltip-arrow {
+  display:none;
+}

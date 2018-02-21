@@ -1,0 +1,88 @@
+feature kern { # Kerning
+ # Latin
+lookup kern0 {
+    pos b u -10;
+    pos b a -10;
+    pos c o -10;
+    pos d z 15;
+    pos f c -60;
+    pos f d -60;
+    pos f e -70;
+    pos f f -20;
+    pos f g -25;
+    pos f i -20;
+    pos f o -50;
+    pos f q -60;
+    pos f s -40;
+    pos f t -20;
+    pos f u -22;
+    pos f a -55;
+    pos g d -10;
+    pos g o -22;
+    pos g a -25;
+    pos k e -10;
+    pos k s -25;
+    pos o d -10;
+    pos o o -10;
+    pos o x -25;
+    pos o y -15;
+    pos r c -12;
+    pos r d -30;
+    pos r g -15;
+    pos r i -15;
+    pos r o -30;
+    pos r s -10;
+    pos r y -15;
+    pos r hyphen -30;
+    pos r quotesingle 10;
+    pos r a -10;
+    pos s e -15;
+    pos s t -10;
+    pos s a -5;
+    pos x f -15;
+    pos x t -10;
+    pos y a -10;
+    pos z o -25;
+    pos A v -18;
+    pos L o -10;
+    pos V a -15;
+    pos W e -20;
+    pos W o -15;
+    pos W a -15;
+    pos one seven 15;
+    pos three one -10;
+    pos quotesingle s -35;
+    pos a d -15;
+    pos a e -15;
+    pos a s -10;
+} kern0;
+} kern;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

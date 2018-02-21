@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Leaflet.BlurredLocation</title>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>
+    <link href="../../../node_modules/leaflet/dist/leaflet.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="../dist/Leaflet.BlurredLocation.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- START OF EXAMPLE -->
+    <div class="container" >
+      <div class="row" >
+        <div class="col-md-8">
+          <label class="h2 font-size-big"><input type="radio" />&nbsp;&nbsp;Add location to your content</label>
+          <br/><br/>
+          <h4 class="font-size-small">Option 1 : By Placename</h4>
+          </br>
+          <input id="geo_location" type="text" class="form-control"><br/>
+          <h4 class="font-size-small">Option 2 : By dragging the map</h4></br>
+          <h4 class="font-size-small">Option 3 : By giving co-ordinates</h4></br>
+          <div class="col-md-6">
+            <input id="lat" type="text" class="form-control" placeholder="Latitude"><br/>
+          </div>
+          <div class="col-md-6">
+            <input id="lng" type="text" class="form-control" placeholder="Longitude"><br/>
+          </div>
+          <label class="h2 font-size-big"><input type="checkbox" onchange='getLocation(this);'>&nbsp;&nbsp;Obscure my exact location</label>
+        </div>
+        <div class="col-md-4">
+          <h3 class="font-size-small">On a map : </h3>
+          <br />
+          <div id="map" class="leaflet-map" style="width: 400px; height: 400px;"></div>
+          <br/>
+          <h3 class="font-size-small">In Text:</h3><br/>
+          <input id="location" type="text" class="form-control"><br/>
+        </div>
+      </div>
+    </div>
+    <!-- END OF EXAMPLE -->
+  </body>
+  <script>
+    var blurredLocation = new BlurredLocation();
+  </script>
+</html>
