@@ -101,7 +101,24 @@
 
     <% if @node_type == "questions" %>
       <div class="tab-pane active" id="questions">
-        <%= render :partial => "questions/questions" %>
+        <div class="tab-pane" id="questions-tab">
+          <div class="btn-group text-center">
+            <a href="#asked-tab" class="btn btn-default active" data-toggle="tab">Asked</a>
+            <a href="#answered-tab" class="btn btn-default" data-toggle="tab">Answered</a>
+          </div>
+
+          <div class="tab-content">
+            <div class="tab-pane active" id="asked-tab">
+              <%= render :partial => "questions/questions" %>
+            </div>
+
+            <div class="tab-pane" id="answered-tab">
+              <% if @answered_questions %>
+                <%= render :partial => "users/answered" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
       </div>
     <% end %>
 
@@ -130,7 +147,11 @@
     <hr />
 
   </div>
-
+  <script type="text/javascript">
+    $('#questions .btn-group .btn').click(function(){
+      $(this).addClass('active').siblings().removeClass('active');
+    });
+  </script>
 </div>
 <%= stylesheet_link_tag "dashboard" %>
 <%= javascript_include_tag "dashboard" %>
