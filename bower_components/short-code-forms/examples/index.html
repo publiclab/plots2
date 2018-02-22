@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">                                                                                         
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta content="text/html;charset=UTF-8" http-equiv="Content-Type"/>
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <title>Short Code Forms</title>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://use.fontawesome.com/38cd4f8783.js"></script>
+
+  <script src="http://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="../dist/short-code-forms.js" type="text/javascript"></script>
+  <script src="../dist/short-code-prompts.js" type="text/javascript"></script>
+
+  <style>
+    body {
+      padding: 20px;
+    }
+    .textareas textarea {
+      float: left;
+      margin-right: 10px;
+      width: 45% !important;
+      height: 600px !important;
+      margin-bottom:10px;
+    }
+  </style>
+
+</head>
+<body>
+
+  <h3>Short Code Forms</h3>
+  <p><a href="https://github.com/jywarren/short-code-forms">Open Source</a></p>
+
+  <div class="textareas">
+    <textarea class="text-input form-control">
+This is a simple prompt for text input:
+
+[prompt:text:Placeholder message]
+
+[prompt:paragraph:Type something here:uniqueId1]
+
+This is a flexible form with specifiable inputs:
+
+[form]
+ [text]
+[/form]
+
+[form:New]
+ [text]
+[/form]
+
+[form:Submit:uniqueId2]
+ [text]
+ [text:Email address]
+[/form]
+
+Then this is additional text.
+
+## Markdown allowed
+</textarea>
+
+    <textarea class="text-output form-control"></textarea>
+
+  </div>
+
+  <hr style="clear:both;padding:10px;" />
+
+  <div class="html-output"></div>
+
+  <script>
+
+    var el, el2;
+
+    (function() {
+
+      el = document.getElementsByClassName('text-input')[0];
+      el2 = document.getElementsByClassName('text-output')[0];
+      html = document.getElementsByClassName('html-output')[0];
+
+      el2.innerHTML = shortCodeForm(el); // this will cause double submission but that's OK in the example
+      html.innerHTML = shortCodeForm(el);
+
+      el2.innerHTML = shortCodePrompt(el2); // this will cause double submission but that's OK in the example
+      html.innerHTML = shortCodePrompt(html, { submitUrl: '/wiki/replace/1' }); // set upload URL
+
+    })();
+
+  </script>
+
+</body>
+</html>

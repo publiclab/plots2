@@ -1,0 +1,21 @@
+{
+  "name": "PublicLab Maps",
+  "homepage": "https://github.com/mridulnagpal/map_module",
+  "authors": [
+    "Public Lab"
+  ],
+  "description": "Test for PublicLab maps",
+  "main": "dist/Leaflet.BlurredLocation.js",
+  "keywords": [
+    "publiclab"
+  ],
+  "license": "GPL-3.0",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

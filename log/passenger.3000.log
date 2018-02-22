@@ -1,0 +1,267 @@
+2018/02/16 22:14:28 [emerg] 7738#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:14:28 [emerg] 7738#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:14:28 [emerg] 7738#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:14:28 [emerg] 7738#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:14:28 [emerg] 7738#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:14:28 [emerg] 7738#0: still could not bind()
+2018/02/16 22:15:03 [emerg] 7873#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:15:03 [emerg] 7873#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:15:03 [emerg] 7873#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:15:03 [emerg] 7873#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:15:03 [emerg] 7873#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:15:03 [emerg] 7873#0: still could not bind()
+2018/02/16 22:15:31 [emerg] 8141#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:15:31 [emerg] 8141#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:15:31 [emerg] 8141#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:15:31 [emerg] 8141#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:15:31 [emerg] 8141#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:15:31 [emerg] 8141#0: still could not bind()
+2018/02/16 22:17:25 [emerg] 8443#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:17:25 [emerg] 8443#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:17:25 [emerg] 8443#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:17:25 [emerg] 8443#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:17:25 [emerg] 8443#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:17:25 [emerg] 8443#0: still could not bind()
+2018/02/16 22:17:58 [emerg] 8512#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:17:58 [emerg] 8512#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:17:58 [emerg] 8512#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:17:58 [emerg] 8512#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:17:58 [emerg] 8512#0: bind() to 0.0.0.0:3000 failed (48: Address already in use)
+2018/02/16 22:17:58 [emerg] 8512#0: still could not bind()
+[ N 2018-02-16 22:23:04.6291 773/T1 age/Wat/WatchdogMain.cpp:1252 ]: Starting Passenger watchdog...
+[ N 2018-02-16 22:23:04.6707 775/T1 age/Cor/CoreMain.cpp:1242 ]: Starting Passenger core...
+[ N 2018-02-16 22:23:04.6719 775/T1 age/Cor/CoreMain.cpp:252 ]: Passenger core running in multi-application mode.
+[ N 2018-02-16 22:23:04.7061 775/T1 age/Cor/CoreMain.cpp:977 ]: Passenger core online, PID 775
+App 790 stdout: 
+App 790 stdout: 
+[ E 2018-02-16 22:23:07.2636 775/Ti age/Cor/App/Implementation.cpp:304 ]: Could not spawn process for application /Users/jamesmoore/Documents/plots2: An error occurred while starting up the preloader.
+  Error ID: 8965f2dd
+  Error details saved to: /var/folders/1j/4q9xj_vd2tn4r_hgk_1xl8kw0000gn/T//passenger-error-lhvAJy.html
+  Message from application: <p>It looks like Bundler could not find a gem. Maybe you didn't install all the gems that this application needs. To install your gems, please run:</p>
+
+  <pre class="commands">bundle install</pre>
+
+<p>If that didn't work, then the problem is probably caused by your application being run under a different environment than it's supposed to. Please check the following:</p>
+
+<ol>
+  <li>Is this app supposed to be run as the <code>jamesmoore</code> user?</li>
+  <li>Is this app being run on the correct Ruby interpreter? Below you will
+      see which Ruby interpreter Phusion Passenger attempted to use.</li>
+  <li>Please check whether the correct RVM gemset is being used.</li>
+  <li>Sometimes, RVM gemsets may be broken.
+      <a href="https://github.com/phusion/passenger/wiki/Resetting-RVM-gemsets">Try resetting them.</a></li>
+</ol>
+
+<p>-------- The exception is as follows: -------</p>
+Could not find parser-2.5.0.0 in any of the sources (Bundler::GemNotFound)
+<pre>  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/spec_set.rb:88:in `block in materialize&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/spec_set.rb:82:in `map!&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/spec_set.rb:82:in `materialize&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/definition.rb:170:in `specs&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/definition.rb:237:in `specs_for&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/definition.rb:226:in `requested_specs&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/runtime.rb:108:in `block in definition_method&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/runtime.rb:20:in `setup&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler.rb:107:in `setup&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/setup.rb:20:in `&lt;top (required)&gt;&#39;
+  /Users/jamesmoore/.rvm/rubies/ruby-2.4.1/lib/ruby/site_ruby/2.4.0/rubygems/core_ext/kernel_require.rb:55:in `require&#39;
+  /Users/jamesmoore/.rvm/rubies/ruby-2.4.1/lib/ruby/site_ruby/2.4.0/rubygems/core_ext/kernel_require.rb:55:in `require&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/ruby_supportlib/phusion_passenger/loader_shared_helpers.rb:456:in `activate_gem&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/ruby_supportlib/phusion_passenger/loader_shared_helpers.rb:323:in `block in run_load_path_setup_code&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/ruby_supportlib/phusion_passenger/loader_shared_helpers.rb:461:in `running_bundler&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/ruby_supportlib/phusion_passenger/loader_shared_helpers.rb:322:in `run_load_path_setup_code&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/helper-scripts/rack-preloader.rb:100:in `preload_app&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/helper-scripts/rack-preloader.rb:156:in `&lt;module:App&gt;&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/helper-scripts/rack-preloader.rb:30:in `&lt;module:PhusionPassenger&gt;&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/helper-scripts/rack-preloader.rb:29:in `&lt;main&gt;&#39;</pre>
+
+
+[ E 2018-02-16 22:23:07.2823 775/T7 age/Cor/Con/CheckoutSession.cpp:285 ]: [Client 1-1] Cannot checkout session because a spawning error occurred. The identifier of the error is 8965f2dd. Please see earlier logs for details about the error.
+[ N 2018-02-16 22:23:08.1268 775/T5 age/Cor/SecurityUpdateChecker.h:507 ]: Security update check: no update found (next check in 24 hours)
+[ E 2018-02-16 22:23:08.1350 775/T5 Crypto.cpp:988 ]: Removing Passenger private key from keychain failed: write permissions error. Please remove the private key from the certificate labeled Phusion Passenger Open Source in your keychain.
+App 915 stdout: 
+App 915 stdout: 
+[ E 2018-02-16 22:23:25.1642 775/Tl age/Cor/App/Implementation.cpp:304 ]: Could not spawn process for application /Users/jamesmoore/Documents/plots2: An error occurred while starting up the preloader.
+  Error ID: e2587a49
+  Error details saved to: /var/folders/1j/4q9xj_vd2tn4r_hgk_1xl8kw0000gn/T//passenger-error-l0jArk.html
+  Message from application: <p>It looks like Bundler could not find a gem. Maybe you didn't install all the gems that this application needs. To install your gems, please run:</p>
+
+  <pre class="commands">bundle install</pre>
+
+<p>If that didn't work, then the problem is probably caused by your application being run under a different environment than it's supposed to. Please check the following:</p>
+
+<ol>
+  <li>Is this app supposed to be run as the <code>jamesmoore</code> user?</li>
+  <li>Is this app being run on the correct Ruby interpreter? Below you will
+      see which Ruby interpreter Phusion Passenger attempted to use.</li>
+  <li>Please check whether the correct RVM gemset is being used.</li>
+  <li>Sometimes, RVM gemsets may be broken.
+      <a href="https://github.com/phusion/passenger/wiki/Resetting-RVM-gemsets">Try resetting them.</a></li>
+</ol>
+
+<p>-------- The exception is as follows: -------</p>
+Could not find parser-2.5.0.0 in any of the sources (Bundler::GemNotFound)
+<pre>  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/spec_set.rb:88:in `block in materialize&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/spec_set.rb:82:in `map!&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/spec_set.rb:82:in `materialize&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/definition.rb:170:in `specs&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/definition.rb:237:in `specs_for&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/definition.rb:226:in `requested_specs&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/runtime.rb:108:in `block in definition_method&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/runtime.rb:20:in `setup&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler.rb:107:in `setup&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/bundler-1.16.1/lib/bundler/setup.rb:20:in `&lt;top (required)&gt;&#39;
+  /Users/jamesmoore/.rvm/rubies/ruby-2.4.1/lib/ruby/site_ruby/2.4.0/rubygems/core_ext/kernel_require.rb:55:in `require&#39;
+  /Users/jamesmoore/.rvm/rubies/ruby-2.4.1/lib/ruby/site_ruby/2.4.0/rubygems/core_ext/kernel_require.rb:55:in `require&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/ruby_supportlib/phusion_passenger/loader_shared_helpers.rb:456:in `activate_gem&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/ruby_supportlib/phusion_passenger/loader_shared_helpers.rb:323:in `block in run_load_path_setup_code&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/ruby_supportlib/phusion_passenger/loader_shared_helpers.rb:461:in `running_bundler&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/ruby_supportlib/phusion_passenger/loader_shared_helpers.rb:322:in `run_load_path_setup_code&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/helper-scripts/rack-preloader.rb:100:in `preload_app&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/helper-scripts/rack-preloader.rb:156:in `&lt;module:App&gt;&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/helper-scripts/rack-preloader.rb:30:in `&lt;module:PhusionPassenger&gt;&#39;
+  /Users/jamesmoore/.rvm/gems/ruby-2.4.1/gems/passenger-5.2.0/src/helper-scripts/rack-preloader.rb:29:in `&lt;main&gt;&#39;</pre>
+
+
+[ E 2018-02-16 22:23:25.1795 775/T9 age/Cor/Con/CheckoutSession.cpp:285 ]: [Client 2-1] Cannot checkout session because a spawning error occurred. The identifier of the error is e2587a49. Please see earlier logs for details about the error.
+
+[ N 2018-02-16 22:23:39.6270 775/T7 age/Cor/CoreMain.cpp:616 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2018-02-16 22:23:39.6271 775/T1 age/Cor/CoreMain.cpp:1154 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2018-02-16 22:23:39.6272 775/T7 Ser/Server.h:902 ]: [ServerThr.1] Freed 0 spare client objects
+[ N 2018-02-16 22:23:39.6272 775/T7 Ser/Server.h:559 ]: [ServerThr.1] Shutdown finished
+[ N 2018-02-16 22:23:39.6273 775/T9 Ser/Server.h:902 ]: [ServerThr.2] Freed 0 spare client objects
+[ N 2018-02-16 22:23:39.6273 775/T9 Ser/Server.h:559 ]: [ServerThr.2] Shutdown finished
+[ N 2018-02-16 22:23:39.6273 775/Tb Ser/Server.h:902 ]: [ServerThr.3] Freed 0 spare client objects
+[ N 2018-02-16 22:23:39.6274 775/Tb Ser/Server.h:559 ]: [ServerThr.3] Shutdown finished
+[ N 2018-02-16 22:23:39.6274 775/Td Ser/Server.h:902 ]: [ServerThr.4] Freed 0 spare client objects
+[ N 2018-02-16 22:23:39.6274 775/Td Ser/Server.h:559 ]: [ServerThr.4] Shutdown finished
+[ N 2018-02-16 22:23:39.6276 775/Tf Ser/Server.h:902 ]: [ApiServer] Freed 0 spare client objects
+[ N 2018-02-16 22:23:39.6277 775/Tf Ser/Server.h:559 ]: [ApiServer] Shutdown finished
+[ N 2018-02-16 22:23:39.6955 775/T1 age/Cor/CoreMain.cpp:1227 ]: Passenger core shutdown finished
+[ N 2018-02-16 22:26:26.2943 1400/T1 age/Wat/WatchdogMain.cpp:1252 ]: Starting Passenger watchdog...
+[ N 2018-02-16 22:26:26.3300 1402/T1 age/Cor/CoreMain.cpp:1242 ]: Starting Passenger core...
+[ N 2018-02-16 22:26:26.3303 1402/T1 age/Cor/CoreMain.cpp:252 ]: Passenger core running in multi-application mode.
+[ N 2018-02-16 22:26:26.3472 1402/T1 age/Cor/CoreMain.cpp:977 ]: Passenger core online, PID 1402
+App 1416 stdout: 
+[ N 2018-02-16 22:26:29.2376 1402/T5 age/Cor/SecurityUpdateChecker.h:507 ]: Security update check: no update found (next check in 24 hours)
+[ E 2018-02-16 22:26:29.2440 1402/T5 Crypto.cpp:988 ]: Removing Passenger private key from keychain failed: write permissions error. Please remove the private key from the certificate labeled Phusion Passenger Open Source in your keychain.
+App 1416 stdout: Not running mysql today.
+App 1429 stdout: 
+App 1416 stderr: /Users/jamesmoore/.rvm/gems/ruby-2.3.4/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: already initialized constant TagNodeAssociationExtension
+App 1416 stderr: /Users/jamesmoore/.rvm/gems/ruby-2.3.4/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: previous definition of TagNodeAssociationExtension was here
+App 1443 stdout: 
+App 1444 stdout: 
+App 1445 stdout: 
+App 1446 stdout: 
+App 1447 stdout: 
+[ N 2018-02-16 22:34:51.1270 1402/T3 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 1443, application /Users/jamesmoore/Documents/plots2 (development)
+[ N 2018-02-16 22:34:51.1759 1402/T3 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 1446, application /Users/jamesmoore/Documents/plots2 (development)
+[ N 2018-02-16 22:34:51.5366 1402/T3 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 1445, application /Users/jamesmoore/Documents/plots2 (development)
+[ N 2018-02-16 22:34:51.5461 1402/T3 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 1444, application /Users/jamesmoore/Documents/plots2 (development)
+[ N 2018-02-16 22:34:51.5488 1402/T3 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 1447, application /Users/jamesmoore/Documents/plots2 (development)
+App 2028 stdout: 
+App 2028 stdout: Not running mysql today.
+App 2041 stdout: 
+App 2042 stdout: 
+App 2043 stdout: 
+App 2044 stdout: 
+App 2045 stdout: 
+[ N 2018-02-16 22:43:21.8089 1402/T3 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 2043, application /Users/jamesmoore/Documents/plots2 (development)
+[ N 2018-02-16 22:43:21.8093 1402/T3 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 2044, application /Users/jamesmoore/Documents/plots2 (development)
+[ N 2018-02-16 22:43:22.1196 1402/T3 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 (development)
+[ N 2018-02-16 22:43:22.1199 1402/T3 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 2045, application /Users/jamesmoore/Documents/plots2 (development)
+[ N 2018-02-16 22:43:22.3712 1402/T3 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 1429, application /Users/jamesmoore/Documents/plots2 (development)
+
+[ N 2018-02-17 00:41:07.9060 1402/T7 age/Cor/CoreMain.cpp:616 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2018-02-17 00:41:07.9061 1402/T1 age/Cor/CoreMain.cpp:1154 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2018-02-17 00:41:07.9061 1402/T1 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 2041, application /Users/jamesmoore/Documents/plots2 (development)
+[ N 2018-02-17 00:41:07.9062 1402/T9 Ser/Server.h:902 ]: [ServerThr.2] Freed 0 spare client objects
+[ N 2018-02-17 00:41:07.9062 1402/Tb Ser/Server.h:902 ]: [ServerThr.3] Freed 0 spare client objects
+[ N 2018-02-17 00:41:07.9063 1402/T9 Ser/Server.h:559 ]: [ServerThr.2] Shutdown finished
+[ N 2018-02-17 00:41:07.9063 1402/Td Ser/Server.h:902 ]: [ServerThr.4] Freed 0 spare client objects
+[ N 2018-02-17 00:41:07.9065 1402/Td Ser/Server.h:559 ]: [ServerThr.4] Shutdown finished
+[ N 2018-02-17 00:41:07.9063 1402/Tb Ser/Server.h:559 ]: [ServerThr.3] Shutdown finished
+[ N 2018-02-17 00:41:07.9063 1402/T7 Ser/Server.h:902 ]: [ServerThr.1] Freed 0 spare client objects
+[ N 2018-02-17 00:41:07.9066 1402/T7 Ser/Server.h:559 ]: [ServerThr.1] Shutdown finished
+[ N 2018-02-17 00:41:07.9069 1402/Tf Ser/Server.h:902 ]: [ApiServer] Freed 0 spare client objects
+[ N 2018-02-17 00:41:07.9070 1402/Tf Ser/Server.h:559 ]: [ApiServer] Shutdown finished
+[ N 2018-02-17 00:41:07.9071 1402/T1 age/Cor/CoreMain.cpp:1068 ]: Checking whether to disconnect long-running connections for process 2041, application /Users/jamesmoore/Documents/plots2 (development)
+[ N 2018-02-17 00:41:08.1754 1402/T1 age/Cor/CoreMain.cpp:1227 ]: Passenger core shutdown finished
+[ N 2018-02-20 22:06:31.7078 58703/T1 age/Wat/WatchdogMain.cpp:1267 ]: Starting Passenger watchdog...
+[ N 2018-02-20 22:06:31.7292 58705/T1 age/Cor/CoreMain.cpp:1165 ]: Starting Passenger core...
+[ N 2018-02-20 22:06:31.7300 58705/T1 age/Cor/CoreMain.cpp:249 ]: Passenger core running in multi-application mode.
+[ N 2018-02-20 22:06:31.7410 58705/T1 age/Cor/CoreMain.cpp:905 ]: Passenger core online, PID 58705
+App 58719 stdout: 
+[ N 2018-02-20 22:06:34.9709 58705/T5 age/Cor/SecurityUpdateChecker.h:374 ]: Security update check: no update found (next check in 24 hours)
+App 58719 stdout: Not running mysql today.
+App 58733 stdout: 
+App 58719 stderr: /Users/jamesm/.rvm/gems/ruby-2.3.4@global/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: already initialized constant TagNodeAssociationExtension
+App 58719 stderr: /Users/jamesm/.rvm/gems/ruby-2.3.4@global/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: previous definition of TagNodeAssociationExtension was here
+
+[ N 2018-02-20 22:07:56.2223 58705/T7 age/Cor/CoreMain.cpp:589 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2018-02-20 22:07:56.2224 58705/T1 age/Cor/CoreMain.cpp:1080 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2018-02-20 22:07:56.2224 58705/T1 age/Cor/CoreMain.cpp:994 ]: Checking whether to disconnect long-running connections for process 58733, application /Users/jamesm/Documents/plots2/public (development)
+[ N 2018-02-20 22:07:56.2226 58705/T9 Ser/Server.h:885 ]: [ServerThr.2] Freed 128 spare client objects
+[ N 2018-02-20 22:07:56.2227 58705/T7 Ser/Server.h:885 ]: [ServerThr.1] Freed 128 spare client objects
+[ N 2018-02-20 22:07:56.2227 58705/T7 Ser/Server.h:531 ]: [ServerThr.1] Shutdown finished
+[ N 2018-02-20 22:07:56.2227 58705/Tb Ser/Server.h:885 ]: [ServerThr.3] Freed 128 spare client objects
+[ N 2018-02-20 22:07:56.2227 58705/Tb Ser/Server.h:531 ]: [ServerThr.3] Shutdown finished
+[ N 2018-02-20 22:07:56.2228 58705/Td Ser/Server.h:885 ]: [ServerThr.4] Freed 128 spare client objects
+[ N 2018-02-20 22:07:56.2228 58705/Td Ser/Server.h:531 ]: [ServerThr.4] Shutdown finished
+[ N 2018-02-20 22:07:56.2228 58705/T9 Ser/Server.h:531 ]: [ServerThr.2] Shutdown finished
+[ N 2018-02-20 22:07:56.2229 58705/Tf Ser/Server.h:885 ]: [ApiServer] Freed 0 spare client objects
+[ N 2018-02-20 22:07:56.2229 58705/Tf Ser/Server.h:531 ]: [ApiServer] Shutdown finished
+[ N 2018-02-20 22:07:56.2230 58705/T1 age/Cor/CoreMain.cpp:994 ]: Checking whether to disconnect long-running connections for process 58733, application /Users/jamesm/Documents/plots2/public (development)
+[ N 2018-02-20 22:07:56.5004 58705/T1 age/Cor/CoreMain.cpp:1150 ]: Passenger core shutdown finished
+[ N 2018-02-20 22:09:41.2935 58913/T1 age/Wat/WatchdogMain.cpp:1267 ]: Starting Passenger watchdog...
+[ N 2018-02-20 22:09:41.3141 58915/T1 age/Cor/CoreMain.cpp:1165 ]: Starting Passenger core...
+[ N 2018-02-20 22:09:41.3148 58915/T1 age/Cor/CoreMain.cpp:249 ]: Passenger core running in multi-application mode.
+[ N 2018-02-20 22:09:41.3254 58915/T1 age/Cor/CoreMain.cpp:905 ]: Passenger core online, PID 58915
+App 58929 stdout: 
+[ N 2018-02-20 22:09:44.0254 58915/T5 age/Cor/SecurityUpdateChecker.h:374 ]: Security update check: no update found (next check in 24 hours)
+App 58929 stdout: Not running mysql today.
+App 58943 stdout: 
+App 58929 stderr: /Users/jamesm/.rvm/gems/ruby-2.3.4@global/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: already initialized constant TagNodeAssociationExtension
+App 58929 stderr: /Users/jamesm/.rvm/gems/ruby-2.3.4@global/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: previous definition of TagNodeAssociationExtension was here
+
+[ N 2018-02-20 22:10:14.0350 58915/T7 age/Cor/CoreMain.cpp:589 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2018-02-20 22:10:14.0350 58915/T1 age/Cor/CoreMain.cpp:1080 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2018-02-20 22:10:14.0351 58915/T1 age/Cor/CoreMain.cpp:994 ]: Checking whether to disconnect long-running connections for process 58943, application /Users/jamesm/Documents/plots2/public (development)
+[ N 2018-02-20 22:10:14.0353 58915/T7 Ser/Server.h:885 ]: [ServerThr.1] Freed 128 spare client objects
+[ N 2018-02-20 22:10:14.0354 58915/T7 Ser/Server.h:531 ]: [ServerThr.1] Shutdown finished
+[ N 2018-02-20 22:10:14.0354 58915/T9 Ser/Server.h:885 ]: [ServerThr.2] Freed 128 spare client objects
+[ N 2018-02-20 22:10:14.0355 58915/T9 Ser/Server.h:531 ]: [ServerThr.2] Shutdown finished
+[ N 2018-02-20 22:10:14.0356 58915/Tb Ser/Server.h:885 ]: [ServerThr.3] Freed 128 spare client objects
+[ N 2018-02-20 22:10:14.0356 58915/Tb Ser/Server.h:531 ]: [ServerThr.3] Shutdown finished
+[ N 2018-02-20 22:10:14.0357 58915/Td Ser/Server.h:885 ]: [ServerThr.4] Freed 128 spare client objects
+[ N 2018-02-20 22:10:14.0357 58915/Td Ser/Server.h:531 ]: [ServerThr.4] Shutdown finished
+[ N 2018-02-20 22:10:14.0358 58915/Tf Ser/Server.h:885 ]: [ApiServer] Freed 0 spare client objects
+[ N 2018-02-20 22:10:14.0359 58915/Tf Ser/Server.h:531 ]: [ApiServer] Shutdown finished
+[ N 2018-02-20 22:10:14.0360 58915/T1 age/Cor/CoreMain.cpp:994 ]: Checking whether to disconnect long-running connections for process 58943, application /Users/jamesm/Documents/plots2/public (development)
+[ N 2018-02-20 22:10:14.3116 58915/T1 age/Cor/CoreMain.cpp:1150 ]: Passenger core shutdown finished
+[ N 2018-02-20 22:13:07.7842 60276/T1 age/Wat/WatchdogMain.cpp:1267 ]: Starting Passenger watchdog...
+[ N 2018-02-20 22:13:07.8035 60278/T1 age/Cor/CoreMain.cpp:1165 ]: Starting Passenger core...
+[ N 2018-02-20 22:13:07.8043 60278/T1 age/Cor/CoreMain.cpp:249 ]: Passenger core running in multi-application mode.
+[ N 2018-02-20 22:13:07.8143 60278/T1 age/Cor/CoreMain.cpp:905 ]: Passenger core online, PID 60278
+App 60292 stdout: 
+[ N 2018-02-20 22:13:10.6712 60278/T5 age/Cor/SecurityUpdateChecker.h:374 ]: Security update check: no update found (next check in 24 hours)
+App 60292 stdout: Not running mysql today.
+App 60305 stdout: 
+App 60292 stderr: /Users/jamesm/.rvm/gems/ruby-2.3.4@global/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: already initialized constant TagNodeAssociationExtension
+App 60292 stderr: /Users/jamesm/.rvm/gems/ruby-2.3.4@global/gems/activerecord-4.1.16/lib/active_record/associations/builder/collection_association.rb:38: warning: previous definition of TagNodeAssociationExtension was here
+
+[ N 2018-02-20 22:14:35.1980 60278/T7 age/Cor/CoreMain.cpp:589 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2018-02-20 22:14:35.1981 60278/T1 age/Cor/CoreMain.cpp:1080 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2018-02-20 22:14:35.1982 60278/T1 age/Cor/CoreMain.cpp:994 ]: Checking whether to disconnect long-running connections for process 60305, application /Users/jamesm/Documents/plots2/public (development)
+[ N 2018-02-20 22:14:35.1984 60278/Tb Ser/Server.h:885 ]: [ServerThr.3] Freed 128 spare client objects
+[ N 2018-02-20 22:14:35.1985 60278/Tb Ser/Server.h:531 ]: [ServerThr.3] Shutdown finished
+[ N 2018-02-20 22:14:35.1986 60278/T7 Ser/Server.h:885 ]: [ServerThr.1] Freed 128 spare client objects
+[ N 2018-02-20 22:14:35.1986 60278/T9 Ser/Server.h:885 ]: [ServerThr.2] Freed 128 spare client objects
+[ N 2018-02-20 22:14:35.1987 60278/T9 Ser/Server.h:531 ]: [ServerThr.2] Shutdown finished
+[ N 2018-02-20 22:14:35.1984 60278/Td Ser/Server.h:885 ]: [ServerThr.4] Freed 128 spare client objects
+[ N 2018-02-20 22:14:35.1987 60278/Td Ser/Server.h:531 ]: [ServerThr.4] Shutdown finished
+[ N 2018-02-20 22:14:35.1986 60278/T7 Ser/Server.h:531 ]: [ServerThr.1] Shutdown finished
+[ N 2018-02-20 22:14:35.1988 60278/Tf Ser/Server.h:885 ]: [ApiServer] Freed 0 spare client objects
+[ N 2018-02-20 22:14:35.1988 60278/Tf Ser/Server.h:531 ]: [ApiServer] Shutdown finished
+[ N 2018-02-20 22:14:35.1989 60278/T1 age/Cor/CoreMain.cpp:994 ]: Checking whether to disconnect long-running connections for process 60305, application /Users/jamesm/Documents/plots2/public (development)
+[ N 2018-02-20 22:14:35.4769 60278/T1 age/Cor/CoreMain.cpp:1150 ]: Passenger core shutdown finished

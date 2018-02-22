@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <title>inline-markdown-editor</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-type" content="text/html; charset=UTF8">
+
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <link href="../dist/inlineMarkdownEditor.css" rel="stylesheet">
+    <link href="../node_modules/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
+    <link href="../node_modules/woofmark/dist/woofmark.css" rel="stylesheet">
+
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../node_modules/publiclab-editor/dist/PublicLab.Editor.js"></script>
+    <script src="../dist/inlineMarkdownEditor.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="header">
+
+      <h1>inline-markdown-editor</h1>
+      <h3>
+        <a href="https://github.com/publiclab/inline-markdown-editor"><i class="fa fa-github"></i></a>
+      </h3>
+
+      <p><i>WYSIWYG version</i></p>
+
+    </div>
+
+    <div class="markdown">
+
+### Hello, World
+
+This is a paragraph.
+
+* this
+* is
+* a
+* list
+
+    </div>
+
+    <script>
+
+      jQuery(document).ready(function($) {
+
+        inlineMarkdownEditor({
+          //preProcessor: preProcessMarkdown,
+          //postProcessor: postProcessContent,
+          wysiwyg: true,
+          replaceUrl: '/wiki/replace/',
+          selector: '.markdown'
+        });
+
+      });
+
+    </script>
+
+  </body>
+</html>

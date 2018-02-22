@@ -1,0 +1,14 @@
+{
+  "name": "i18n-js",
+  "homepage": "https://github.com/fnando/i18n-js",
+  "version": "2.1.2",
+  "_release": "2.1.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.1.2",
+    "commit": "9195980acb83f588868fb65b6dbe912bfb83f9d3"
+  },
+  "_source": "https://github.com/fnando/i18n-js.git",
+  "_target": "^2.1.2",
+  "_originalSource": "i18n-js"
+}

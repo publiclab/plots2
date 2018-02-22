@@ -1,0 +1,11 @@
+{
+  "name": "megamark",
+  "version": "3.2.4",
+  "description": "Markdown with easy tokenization, a fast highlighter, and a lean HTML sanitizer",
+  "homepage": "https://github.com/bevacqua/megamark",
+  "main": "dist/megamark.js",
+  "authors": [
+    "Nicolas Bevacqua <nicolasbevacqua@gmail.com>"
+  ],
+  "license": "MIT"
+}

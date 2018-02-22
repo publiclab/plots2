@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <title>PublicLab.Editor</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../node_modules/woofmark/dist/woofmark.min.css" rel="stylesheet">
+    <link href="../dist/PublicLab.Editor.css" rel="stylesheet">
+
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="../dist/PublicLab.Editor.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="pl-editor container">
+
+      <div class="ple-content col-md-4">
+
+        <h2>Comments <small>compact view</small></h2>
+
+
+        <!-- body module -->
+        <div class="ple-module-body ple-module">
+
+          <div class="ple-module-content">
+            <textarea class="ple-textarea form-control"># About my project
+
+I've been working on [this thing](/) and wanted to share.</textarea>
+          </div>
+
+          <div style="clear:both;padding-top:20px;">
+            <button class="ple-publish btn btn-lg btn-primary pull-right disabled">Publish</button>
+          </div>
+
+        </div>
+
+        
+      </div>
+
+    </div>
+
+
+    <script>
+
+      var editor;
+
+      (function() {
+
+        editor = new PL.Editor({
+          textarea: $('.ple-textarea')[0],
+          size: 'xs',
+          mainImageModule: false,
+          tagsModule: false,
+          titleModule: false
+        });
+
+      })();
+
+    </script>
+
+
+  </body>
+</html>

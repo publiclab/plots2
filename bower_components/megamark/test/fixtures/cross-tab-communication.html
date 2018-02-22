@@ -1,0 +1,85 @@
+<h1 id="cross-tab-communication">Cross-tab Communication</h1>
+<p>The upcoming <a href="https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker" title="SharedWorker Web API on MDN">SharedWorker</a> API allows to transmit data across iframes and even browser tabs or windows. It landed in Chrome years ago, and not so long ago in Firefox, but it’s <a href="http://caniuse.com/#feat=sharedworkers" title="Can I Use SharedWorkers?">nowhere to be seen</a> in IE or Safari. A wildly supported alternative exists that can be used today, but it’s largely unknown. Let’s explore it!</p>
+<p>I wanted an elegant solution to the following scenario: suppose a human walks into your website, logs in, <strong>opens a second tab</strong>, and logs out in that tab. He’s still <em>“logged in”</em> on the first tab, except anything he touches will either redirect them to the login page or straight blow up in their face. A more inviting alternative would be to figure out that they’re logged out and do something about it, such as display a dialog asking them to re-authenticate, or maybe the login view itself.</p>
+<p>You could use the WebSocket API for this, but that’d be overkill. I wanted a lower-level technology flyswatter, so I started looking for cross-tab communication options. The first option that popped up was using cookies or <code class="md-code md-code-inline">localStorage</code>, and then periodically checking whether they were logged in or not via <code class="md-code md-code-inline">setInterval</code>. I wasn’t satisfied with that answer because it would waste too many CPU cycles checking for something that might not ever come up. At that point I would’ve rather used a <em><a href="http://stackoverflow.com/a/12855533/389745" title="What are Long-Polling, Websockets, Server-Sent Events (SSE) and Comet?">“comet”</a> (also known as long-polling)</em>, Server-Sent Events, or WebSockets.</p>
+<p>I was surprised to see that the answer was lying in front of my nose, it was <code class="md-code md-code-inline">localStorage</code> all along!</p>
+<p>Did you know that <code class="md-code md-code-inline">localStorage</code> fires an event? More specifically, it fires an event whenever an item is added, modified, or removed <em>in another browsing context</em>. Effectively, this means that whenever you touch <code class="md-code md-code-inline">localStorage</code> in any given tab, all other tabs can learn about it by listening for the <code class="md-code md-code-inline">storage</code> event on the <code class="md-code md-code-inline">window</code> object, like so:</p>
+<pre class="md-code-block"><code class="md-code">window.addEventListener('storage', function (event) {
+  console.log(event.key, event.newValue);
+});
+</code></pre>
+<p>The <code class="md-code md-code-inline">event</code> object contains a few relevant properties.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="md-code md-code-inline">key</code></td>
+<td>The affected key in <code class="md-code md-code-inline">localStorage</code></td>
+</tr>
+<tr>
+<td><code class="md-code md-code-inline">newValue</code></td>
+<td>The value that is currently assigned to that key</td>
+</tr>
+<tr>
+<td><code class="md-code md-code-inline">oldValue</code></td>
+<td>The value before modification</td>
+</tr>
+<tr>
+<td><code class="md-code md-code-inline">url</code></td>
+<td>The URL of the page where the change occurred</td>
+</tr>
+</tbody>
+</table>
+<p>Whenever a tab modifies something in <code class="md-code md-code-inline">localStorage</code>, an event fires in every other tab. This means we’re able to <em>communicate across browser tabs</em> simply by setting values on <code class="md-code md-code-inline">localStorage</code>. Consider the following pseudo_ish_-code example:</p>
+<pre class="md-code-block"><code class="md-code md-lang-javascript"><span class="md-code-keyword">var</span> loggedOn;
+
+<span class="md-code-comment">// TODO: call when logged-in user changes or logs out</span>
+logonChanged();
+
+<span class="md-code-built_in">window</span>.addEventListener(<span class="md-code-string">'storage'</span>, updateLogon);
+<span class="md-code-built_in">window</span>.addEventListener(<span class="md-code-string">'focus'</span>, checkLogon);
+
+<span class="md-code-function"><span class="md-code-keyword">function</span> <span class="md-code-title">getUsernameOrNull</span> <span class="md-code-params">()</span> </span>{
+  <span class="md-code-comment">// TODO: return whether the user is logged on</span>
+}
+
+<span class="md-code-function"><span class="md-code-keyword">function</span> <span class="md-code-title">logonChanged</span> <span class="md-code-params">()</span> </span>{
+  <span class="md-code-keyword">var</span> uname = getUsernameOrNull();
+  loggedOn = uname;
+  localStorage.setItem(<span class="md-code-string">'logged-on'</span>, uname);
+}
+
+<span class="md-code-function"><span class="md-code-keyword">function</span> <span class="md-code-title">updateLogon</span> <span class="md-code-params">(event)</span> </span>{
+  <span class="md-code-keyword">if</span> (event.key === <span class="md-code-string">'logged-on'</span>) {
+    loggedOn = event.newValue;
+  }
+}
+
+<span class="md-code-function"><span class="md-code-keyword">function</span> <span class="md-code-title">checkLogon</span> <span class="md-code-params">()</span> </span>{
+  <span class="md-code-keyword">var</span> uname = getUsernameOrNull();
+  <span class="md-code-keyword">if</span> (uname !== loggedOn) {
+    location.reload();
+  }
+}
+</code></pre>
+<p>The basic idea is that when a user has two open tabs, logs out from one of them, and goes back to the other tab, the page is reloaded and <em>(hopefully)</em> the server-side logic redirects them to somewhere else. The check is being done only when the tab is focused as a nod to the fact that maybe they log out and they log back in immediately, and in those cases we wouldn’t want to log them out of every other tab.</p>
+<p>We could certainly improve that piece of code, but it serves its purpose pretty well.  A better implementation would probably ask them to log in on the spot, but note that this also works the other way around: when they log in and go to another tab that was also logged out, the snippet detects that change reloading the page, and then the server would redirect them to the logged-in fountain-of-youth blessing of an experience you call your website <em>(again, hopefully)</em>.</p>
+<h1 id="a-simpler-api">A simpler API</h1>
+<p>The <code class="md-code md-code-inline">localStorage</code> API is arguably one of the easiest to use APIs there are, when it comes to web browsers, and it also enjoys quite thorough cross-browser support. There are, however, some quirks such as incognito Safari throwing on sets with a <code class="md-code md-code-inline">QuotaExceededError</code>, no support for JSON out the box, or older browsers bumming you out.</p>
+<p>For those reasons, I put together <a href="https://github.com/bevacqua/local-storage" title="bevacqua/local-storage on GitHub">local-storage</a> which is a module that provides a simplified API to <code class="md-code md-code-inline">localStorage</code>, gets rid of those quirks, falls back to an in-memory store when the <code class="md-code md-code-inline">localStorage</code> API is missing, and also makes it easier to consume <code class="md-code md-code-inline">storage</code> events, by letting you register and unregister listeners for specific keys.</p>
+<p>API endpoints in <code class="md-code md-code-inline">local-storage@1.3.1</code> <em>(<strong>latest</strong>, at the time of this writing)</em> are listed below.</p>
+<ul>
+<li><code class="md-code md-code-inline">ls(key, value?)</code> gets or sets <code class="md-code md-code-inline">key</code></li>
+<li><code class="md-code md-code-inline">ls.get(key)</code> gets the value in <code class="md-code md-code-inline">key</code></li>
+<li><code class="md-code md-code-inline">ls.set(key, value)</code> sets <code class="md-code md-code-inline">key</code> to <code class="md-code md-code-inline">value</code></li>
+<li><code class="md-code md-code-inline">ls.remove(key)</code> removes <code class="md-code md-code-inline">key</code></li>
+<li><code class="md-code md-code-inline">ls.on(key, fn(value, old, url))</code> listens for changes to <code class="md-code md-code-inline">key</code> in other tabs, triggers <code class="md-code md-code-inline">fn</code></li>
+<li><code class="md-code md-code-inline">ls.off(key, fn)</code> unregisters listener previously added with <code class="md-code md-code-inline">ls.on</code></li>
+</ul>
+<p>It’s also worth mentioning that <a href="https://github.com/bevacqua/local-storage" title="bevacqua/local-storage on GitHub">local-storage</a> registers a single <code class="md-code md-code-inline">storage</code> event handler and keeps track of every key you want to observe, rather than register multiple <code class="md-code md-code-inline">storage</code> events.</p>
+<p>I’d be interested to learn about other use cases for low-tech communication across tabs! Certainly sounds useful for <em>offline-first</em> development, particularly if we keep in mind that <code class="md-code md-code-inline">SharedWorker</code> might take a while to become widely supported, and WebSockets are unreliable in offline-first scenarios.</p>

@@ -1,0 +1,36 @@
+{
+  "name": "publiclab-editor",
+  "description": "PublicLab.Editor is a general purpose, JavaScript/Bootstrap UI framework for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for PublicLab.org",
+  "main": "dist/PublicLab.Editor.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jywarren/webgl-distort.git"
+  },
+  "keywords": [
+    "editor",
+    "wysiwyg",
+    "publiclab"
+  ],
+  "author": "Public Lab",
+  "license": "GPL-3.0",
+  "ignore": [
+    "example.jpg",
+    "node_modules",
+    "bower.json",
+    "README.md"
+  ],
+  "bugs": {
+    "url": "https://github.com/publiclab/PublicLab.Editor/issues"
+  },
+  "homepage": "https://github.com/publiclab/PublicLab.Editor#readme",
+  "version": "1.0.1",
+  "_release": "1.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.1",
+    "commit": "dd3af666bc53ffa2a497dfa3e9e483875296c081"
+  },
+  "_source": "https://github.com/publiclab/PublicLab.Editor.git",
+  "_target": "~1.0.0",
+  "_originalSource": "publiclab/PublicLab.Editor"
+}

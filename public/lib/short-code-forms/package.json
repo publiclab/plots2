@@ -1,0 +1,20 @@
+{
+  "name": "short-code-forms",
+  "version": "0.0.4",
+  "description": "WordPress-style short codes for generating forms from [form][/form], in JavaScript",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jywarren/short-code-forms.git"
+  },
+  "keywords": [
+    "forms",
+    "short codes"
+  ],
+  "author": "Jeff Warren",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jywarren/short-code-forms/issues"
+  },
+  "homepage": "https://github.com/jywarren/short-code-forms",
+  "dependencies": {}
+}

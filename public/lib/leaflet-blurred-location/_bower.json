@@ -1,0 +1,30 @@
+{
+  "name": "PublicLab Maps",
+  "homepage": "https://github.com/mridulnagpal/map_module",
+  "authors": [
+    "Public Lab"
+  ],
+  "description": "Test for PublicLab maps",
+  "main": "dist/Leaflet.BlurredLocation.js",
+  "keywords": [
+    "publiclab"
+  ],
+  "license": "GPL-3.0",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "e802cdf2cd",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "e802cdf2cd4d8c7be69cca69f96327f4bc9a1346"
+  },
+  "_source": "https://github.com/publiclab/leaflet-blurred-location.git",
+  "_target": "master",
+  "_originalSource": "publiclab/leaflet-blurred-location"
+}

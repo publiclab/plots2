@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>Jasmine Test Runner</title>
+  </head>
+
+  <body>
+
+    <script type="text/javascript" src="/usr/lib/node_modules/phantom-jasmine/vendor/jasmine-1.2.0/jasmine.js"></script>
+    <script type="text/javascript" src="/usr/lib/node_modules/phantom-jasmine/vendor/jasmine-1.2.0/jasmine-html.js"></script>
+
+    <link rel="stylesheet" href="/usr/lib/node_modules/phantom-jasmine/vendor/jasmine-1.2.0/jasmine.css" title="" type="" />
+    
+    
+    <script src="/home/mridul/gsoc/leaflet-blurred-location/spec/javascripts/test_spec.js" type="text/javascript" charset="utf-8"></script>
+
+    
+    <script type="text/javascript" src="/usr/lib/node_modules/phantom-jasmine/lib/console-runner.js"></script>
+
+    <script type="text/javascript">
+      var console_reporter = new jasmine.ConsoleReporter(false, "none");
+
+      jasmine.getEnv().addReporter(new jasmine.HtmlReporter());
+      jasmine.getEnv().addReporter(console_reporter);
+      jasmine.getEnv().execute();
+    </script>
+  </body>
+</html>

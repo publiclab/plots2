@@ -1,0 +1,20 @@
+{
+  "name": "woofmark",
+  "version": "4.2.3",
+  "description": "Barking up the DOM tree. A modular, progressive, and beautiful Markdown and HTML editor",
+  "main": "dist/woofmark.js",
+  "homepage": "https://github.com/bevacqua/woofmark",
+  "authors": [
+    "Nicolas Bevacqua <nicolasbevacqua@gmail.com>"
+  ],
+  "license": "MIT",
+  "_release": "4.2.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v4.2.3",
+    "commit": "3bc26aa3f385d8922f127640f78767645385a47f"
+  },
+  "_source": "https://github.com/bevacqua/woofmark.git",
+  "_target": "~4.2.0",
+  "_originalSource": "woofmark"
+}

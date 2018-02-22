@@ -1,0 +1,44 @@
+{
+  "name": "leaflet-d3",
+  "version": "0.3.8",
+  "authors": [
+    "reblace <reblace@gmail.com>"
+  ],
+  "main": "dist/leaflet-d3.js",
+  "scripts": [
+    "dist/leaflet-d3.js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    ".DS_Store",
+    ".git",
+    ".gitignore",
+    ".travis.yml",
+    ".bowerrc",
+    ".jshintrc",
+    ".csslintrc",
+    ".project",
+    "gulpfile.js",
+    "package.json",
+    "examples",
+    "node_modules",
+    "package.json",
+    "src",
+    "test"
+  ],
+  "dependencies": {
+    "d3": "~3.5",
+    "leaflet": "~0.7.3",
+    "d3-plugins": "*"
+  },
+  "homepage": "https://github.com/Asymmetrik/leaflet-d3",
+  "_release": "0.3.8",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.3.8",
+    "commit": "bf557a3403d7d2583bb21d91209e16239b5189b0"
+  },
+  "_source": "https://github.com/Asymmetrik/leaflet-d3.git",
+  "_target": "^0.3.8",
+  "_originalSource": "leaflet-d3"
+}

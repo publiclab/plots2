@@ -1,0 +1,36 @@
+<script src="http://mbostock.github.com/d3/d3.v2.js"></script>
+<script src="graph.js"></script>
+<script>
+  var g = d3.graph();
+
+  g.nodes(['red', 'purple', 'orange']);
+  g.matrix([
+    [0,1,0],
+    [1,0,0],
+    [1,1,1]
+  ]);
+
+  console.log('matrix to list', d3.graph.matrixToList([
+    [0,1,0],
+    [1,0,0],
+    [1,1,1]
+  ]));
+
+  console.log('list to matrix', d3.graph.listToMatrix([
+    {"source":0,"target":1,"value":1},
+    {"source":1,"target":0,"value":1},
+    {"source":2,"target":0,"value":1},
+    {"source":2,"target":1,"value":1},
+    {"source":2,"target":2,"value":1}
+  ]));
+
+  console.log('nodes', g.nodes() );
+  console.log('links', g.links() );
+  console.log('matrix', g.matrix() );
+
+  var m = d3.graph.matrix([
+    [1,1,0],
+    [0,0,0],
+    [2,1,1]
+  ]);
+</script>

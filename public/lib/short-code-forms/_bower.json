@@ -1,0 +1,14 @@
+{
+  "name": "short-code-forms",
+  "homepage": "https://github.com/jywarren/short-code-forms",
+  "version": "0.0.4",
+  "_release": "0.0.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.4",
+    "commit": "cb7a07452fce13b0ff780c1991bfe8e1eddf39e3"
+  },
+  "_source": "https://github.com/jywarren/short-code-forms.git",
+  "_target": "~0.0.1",
+  "_originalSource": "jywarren/short-code-forms"
+}

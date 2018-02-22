@@ -1,0 +1,82 @@
+
+/* https://github.com/theleagueof/league-spartan */
+@font-face {
+    font-family: 'League Spartan';
+    src: url('https://raw.githubusercontent.com/theleagueof/league-spartan/master/_webfonts/leaguespartan-bold.eot');
+    src: url('https://raw.githubusercontent.com/theleagueof/league-spartan/master/_webfonts/leaguespartan-bold.eot?#iefix') format('embedded-opentype'),
+         url('https://raw.githubusercontent.com/theleagueof/league-spartan/master/_webfonts/leaguespartan-bold.woff2') format('woff2'),
+         url('https://raw.githubusercontent.com/theleagueof/league-spartan/master/_webfonts/leaguespartan-bold.woff') format('woff'),
+         url('https://raw.githubusercontent.com/theleagueof/league-spartan/master/_webfonts/leaguespartan-bold.ttf') format('truetype'),
+         url('https://raw.githubusercontent.com/theleagueof/league-spartan/master/_webfonts/leaguespartan-bold.svg#league_spartanbold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+body {
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 700px;
+  background: #f8f8fa;
+}
+
+h1 {
+  font-family: 'League Spartan';
+  color: #445;
+}
+
+.header {
+  text-align: center;
+}
+
+.panels {
+}
+
+.panel {
+  background: #f8f8fa;
+  padding: 20px 0;
+  margin-bottom: 20px;
+  border-bottom: 1px dashed #ccc;
+}
+
+.panel img {
+  max-width: 100%;
+}
+
+.instructions {
+  color: #aaa;
+}
+
+.log h4 {
+  text-align: center;
+}
+
+.log {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 9px;
+  font-family: monospace;
+  color: #666;
+  background: #efeff6;
+  border-radius: 4px;
+}
+
+/* ImageSelect styles */
+
+.mod-image-select #drop {
+  border-radius: 4px;
+  background: #efeff6;
+  color: #aaa;
+  padding: 20px;
+  width: 100%;
+  margin-bottom: 10px;
+  border: 4px dashed #ccc;
+  text-align: center;
+}
+
+.mod-image-select #drop.hover {
+  background: #ddd;
+}
+
+.mod-image-select #drop img {
+  width: 100%;
+}

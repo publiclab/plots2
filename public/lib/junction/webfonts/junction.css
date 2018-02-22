@@ -1,0 +1,36 @@
+
+@font-face {
+    font-family: 'Junction';
+    src: url('junction-bold.eot');
+    src: url('junction-bold.eot?#iefix') format('embedded-opentype'),
+         url('junction-bold.woff') format('woff'),
+         url('junction-bold.ttf') format('truetype'),
+         url('junction-bold.svg#junctionbold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Junction';
+    src: url('junction-light.eot');
+    src: url('junction-light.eot?#iefix') format('embedded-opentype'),
+         url('junction-light.woff') format('woff'),
+         url('junction-light.ttf') format('truetype'),
+         url('junction-light.svg#junctionlight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Junction';
+    src: url('junction-regular.eot');
+    src: url('junction-regular.eot?#iefix') format('embedded-opentype'),
+         url('junction-regular.woff') format('woff'),
+         url('junction-regular.ttf') format('truetype'),
+         url('junction-regular.svg#junctionregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}

@@ -1,0 +1,13 @@
+{
+  "name": "junction",
+  "homepage": "https://github.com/theleagueof/junction",
+  "_release": "fb73260e86",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "fb73260e86dd301b383cf6cc9ca8e726ef806535"
+  },
+  "_source": "https://github.com/theleagueof/junction.git",
+  "_target": "*",
+  "_originalSource": "theleagueof/junction"
+}

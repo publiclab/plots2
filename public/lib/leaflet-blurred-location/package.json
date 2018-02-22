@@ -1,0 +1,41 @@
+{
+  "name": "leaflet-blurred-location",
+  "version": "1.1.5",
+  "description": "",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/publiclab/leaflet-blurred-location.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/publiclab/leaflet-blurred-location/issues"
+  },
+  "homepage": "https://github.com/publiclab/leaflet-blurred-location#readme",
+  "devDependencies": {
+    "bootstrap": "^3.3.7",
+    "grunt": "^1.0.1",
+    "grunt-browserify": "^5.0.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-jasmine": "^1.1.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-uglify": "^2.2.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-template-jasmine-requirejs": "^0.2.3",
+    "jasmine": "^2.5.3",
+    "jasmine-ajax": "^3.3.1",
+    "jasmine-jquery": "^2.1.1",
+    "leaflet-graticule": "git://github.com/jywarren/Leaflet.Graticule.git#patch-1",
+    "matchdep": "^1.0.1",
+    "require": "^2.4.20",
+    "resig-class": "^1.0.0"
+  },
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "leaflet": "^1.0.3"
+  }
+}
