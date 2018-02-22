@@ -83,7 +83,7 @@ class TagController < ApplicationController
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
       nodes = Node.where(status: 1, type: node_type)
-        .includes(:revision, :tag)
+        .includes(:revision, :tag, :answers)
         .references(:term_data, :node_revisions)
         .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
         .paginate(page: params[:page], per_page: 24)
@@ -104,6 +104,10 @@ class TagController < ApplicationController
 
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    @answered_questions = []
+    if @questions
+      @questions.each { |question| @answered_questions << question if question.answers.any? { |answer| answer.accepted } }
+    end
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
