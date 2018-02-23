@@ -41,7 +41,6 @@
 //= require restful_typeahead.js
 //= require users.js
 //= require searchform.js
-//= require location_tags.js
 //= require tagging.js
 //= require grids.js
 //= require graph.js
