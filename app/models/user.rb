@@ -200,12 +200,13 @@ class User < ActiveRecord::Base
   def daily_note_tally(span = 365)
       days = {}
       (0..span).each do |day|
-          days[(DateTime.now-day.days).strftime('%d/%m/%Y')] = Node.select(:created)
-            .where( uid: drupal_user.uid,
-                                            type: 'note',
-                                            status: 1,
-                                            created: DateTime.now - day.days..DateTime.now - (day - 1).days)
-            .count
+          time=Time.now.in_time_zone(0).beginning_of_day.to_i
+          days[(time-day.days.to_i)] = Node.select(:created)
+          .where(uid: drupal_user.uid, 
+                                        type: 'note',
+                                        status: 1, 
+                                        created: time - (day-1).days.to_i..time - (day - 2).days.to_i) 
+          .count
       end
       days
   end

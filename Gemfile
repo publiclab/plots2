@@ -109,4 +109,3 @@ gem 'jbuilder'
 
 # Pin mustermann to Ruby 2.1 compatible
 gem 'mustermann' , '~> 0.4'
-gem 'frappe_charts'
