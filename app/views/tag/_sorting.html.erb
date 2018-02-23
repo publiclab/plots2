@@ -27,7 +27,7 @@
 
       $('#tagform').submit(function(e) {
         e.preventDefault();
-        window.location = "/questions/tag/" + ($('#taginput').val()).replace(' ', '-');
+        window.location = "/questions/tag/" + ($('#taginput').val()).replace(/\s/g, '-');
       });
 
     });
