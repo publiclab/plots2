@@ -91,7 +91,6 @@ GEM
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
-    frappe_charts (0.1.4)
     friendly_id (5.2.3)
       activerecord (>= 4.0.0)
     geocoder (1.4.5)
@@ -345,7 +344,6 @@ DEPENDENCIES
   composite_primary_keys
   coveralls
   execjs
-  frappe_charts
   friendly_id
   geocoder
   geokit-rails
