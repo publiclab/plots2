@@ -1,5 +1,5 @@
 class Tag < ActiveRecord::Base
-  attr_accessible :vid, :name, :description, :weight
+
   self.table_name = 'term_data'
   self.primary_key = 'tid'
 

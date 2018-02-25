@@ -207,8 +207,6 @@ GEM
     progress_bar (1.1.0)
       highline (~> 1.6)
       options (~> 2.3.0)
-    protected_attributes (1.1.4)
-      activemodel (>= 4.0.1, < 5.0)
     public_suffix (3.0.1)
     rack (1.5.5)
     rack-accept (0.4.5)
@@ -373,7 +371,6 @@ DEPENDENCIES
   passenger
   php-serialize
   progress_bar
-  protected_attributes
   rack-cors
   rack-openid
   rails (~> 4.1.16)
@@ -401,4 +398,3 @@ DEPENDENCIES
 
 BUNDLED WITH
    1.16.1
-   
