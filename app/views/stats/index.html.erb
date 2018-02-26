@@ -47,7 +47,7 @@
   
   <p><i><%= t('notes.stats.note_posting_52_weeks') %></i></p>
 
-  <div id="notes"></div>
+  <div id="notes" style="border:1px solid #E5E5E5"></div>
 
   <hr />
 
@@ -55,7 +55,7 @@
 
   <p><i><%= t('notes.stats.wiki_page_posting_52_weeks') %></i></p>
 
-  <div id="wikis"></div>
+  <div id="wikis" style="border:1px solid #E5E5E5"></div>
 
   <hr />
 
@@ -63,7 +63,7 @@
 
   <p><i><%= t('notes.stats.comments_posted_52_weeks') %></i></p>
 
-  <div id="comments"></div>
+  <div id="comments" style="border:1px solid #E5E5E5"></div>
 
   <hr />
 
@@ -133,7 +133,8 @@
             region_fill: 1, 
             data: data[i],
             x_axis_mode: "tick",
-            y_axis_mode: "span"
+            y_axis_mode: "span",
+            is_series: 1
         });
     }
 
