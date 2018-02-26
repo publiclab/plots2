@@ -18,7 +18,7 @@
       <% else %>
         <h1><%= @wiki.latest.title %></h1>
         <p><%= @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %></p>
-        <p><%= link_to("Learn more on the wiki page", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).length > 1 %></p>
+        <p><%= link_to("Learn more on the wiki page", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.length > 1 %></p>
       <% end %>
     </div>
   <% elsif @wildcard %>
