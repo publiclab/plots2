@@ -792,6 +792,8 @@ class Node < ActiveRecord::Base
       else
         true
       end
+    elsif tagname == 'format:raw' && user.role != 'admin'
+      errors ? "Only admins may create raw pages." : false
     elsif tagname[0..4] == 'rsvp:' && user.username != tagname.split(':')[1]
       errors ? I18n.t('node.only_RSVP_for_yourself') : false
     elsif tagname == 'locked' && user.role != 'admin'
