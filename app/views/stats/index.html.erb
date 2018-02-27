@@ -78,18 +78,21 @@
     divisions[1] = <%= @graph_wikis %>
     divisions[2] = <%= @graph_comments %>
 
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+                   "Sep", "Oct", "Nov", "Dec"];
     
     let parents = new Array();
     parents[0] = "#notes";
     parents[1] = "#wikis";
     parents[2] = "#comments";
 
-    let i; 
+    let i;
     let labels= new Array();
-    for(i = 0; i < 53; i++){
-        labels[i] = i+1;
-    } 
-    
+    let count = 0;
+    divisions[0].forEach(function(element){
+        labels[count] = months[element[0]-1];
+        count++;
+    });
     let title = new Array();
     title[0] = "notes"; 
     title[1] = "wikis"; 

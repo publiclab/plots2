@@ -144,6 +144,34 @@ class Node < ActiveRecord::Base
     end
     weeks
   end
+  def self.monthly_tallies(type = 'note', span = 12, time = Time.now)
+      months = {}
+      year = Date.today.strftime('%Y').to_i-1
+      currMonth = Date.today.strftime('%m').to_i
+      (1..span).each do |month| 
+          monthIndex = currMonth + month
+          currYear = year
+          if( monthIndex > 12)
+              monthIndex = monthIndex % 12
+              currYear = year+1
+          end
+          from = Date.new(currYear, monthIndex, 1).to_time.in_time_zone(0).to_i
+          if(monthIndex == 12)
+            toMonth=1
+            toYear=currYear+1
+          else
+            toMonth=monthIndex+1
+            toYear=currYear
+          end
+          to = Date.new(toYear, toMonth, 1).to_time.in_time_zone(0).to_i
+          months[monthIndex] = Node.select(:created)
+                                    .where(type: type,
+                                           status: 1,
+                                           created: from .. to)
+                                    .count
+      end
+      months
+  end 
 
   def notify
     if status == 4
