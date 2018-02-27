@@ -52,14 +52,14 @@
       <% end %>
     <% end %>
   </tr>
-  <% if index == 9 %>
-    <tr class="show-all">
-      <td><a>Show <%= nodes.length - 10 %> more <b class="caret"></b></a></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  <% end %>
+<% end %>
+<% if nodes.count > 9 %>
+    <tfoot>
+      <th class="show-all"><a>Show <%= nodes.length - 10 %> more <b class="caret"></b></a></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tfoot>
 <% end %>
 </table>
 
