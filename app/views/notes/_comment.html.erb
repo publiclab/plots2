@@ -44,6 +44,9 @@
           <i class='icon fa fa-trash'></i>
         </a>
       <% end %>
+          <a rel="tooltip" title="Flag as spam." class="btn btn-sm btn-default" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+"<%= comment.body.replace(' ','+') %>"%0A%0Ahttps://publiclab.org/n/<%= node.id %>%0Aby+https://publiclab.org/profile/<%= comment.author.username %>%0A%0AThanks!">
+        <i class="far fa-flag"></i>
+      </a>
     </div>
 
   </div>
