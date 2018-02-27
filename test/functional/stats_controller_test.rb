@@ -5,7 +5,7 @@ class StatsControllerTest < ActionController::TestCase
     Comment.delete_all
     Comment.create!(comment: 'blah', timestamp: Time.now - 1)
     get :index
-    assert_equal assigns(:graph_comments), Comment.comment_weekly_tallies(52, Time.now).to_a.sort.to_json
+    assert_equal assigns(:graph_comments), Comment.comment_monthly_tallies(12, Time.now).to_a.to_json
     assert_response :success
   end
 
