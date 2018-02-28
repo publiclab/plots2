@@ -41,7 +41,7 @@ class SubscriptionMailer < ActionMailer::Base
     final_users_to_email.each do |user|
       @user = user
       unless user.id == current_user.id 
-         mail(to: user.email, subject: "New tag added on #{node.title}").deliver 
+         mail(to: user.email, subject: "Added: #{node.title}").deliver
       end
     end
     @footer = feature('email-footer')

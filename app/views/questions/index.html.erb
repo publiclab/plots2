@@ -1,6 +1,4 @@
-<%= render :partial => "sidebar/user" %>
-
-<div class="col-md-9">
+<div class="col-md-12">
 
   <% if params[:action] == 'answered' %>
   <h2>Recently Answered <small class="hidden-sm">Recently answered questions</small></h2>
@@ -11,37 +9,48 @@
   <% elsif params[:action] == 'liked' %>
   <h2>Liked Questions <small class="hidden-sm">Most liked questions</small></h2>
   <% else %>
+  <div class="text-center">
   <h2>Questions and Answers <small class="hidden-sm">Public Lab's growing knowledge base</small>
   </h2>
   <h4><small><%= t('questions.index.explanation') %></small></h4>
   <% end %>
 
   <p>New to Public Lab? <a href="/wiki/public-lab-q-and-a">Learn how this works &raquo;</a></p>
+  </div>
 
   <hr />
 
-  <form id="questions_searchform" class="form-horizontal" role="search" autocomplete="off" action="/post">
-    <div class="form-group">
-      <div class="col-sm-10">
-        <input tabindex="1" id="questions_searchform_input" type="text" name="title" class="form-control search-query typeahead" qryType="questions" placeholder="Search or Ask a question">
-      </div>
-      <input type="hidden" name="tags" value="question:general">
-      <input type="hidden" name="template" value="question">
-      <input type="hidden" name="redirect" value="question">
-      <div class="col-sm-2 hidden-xs">
-        <button type="submit" rel="tooltip" title="Ask a question with the entered title" class="btn btn-primary btn-block btn-md">Ask</button>
-      </div>
-    </div> 
-  </form>
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Ask a question here</h4>
+      <form id="questions_searchform" class="form-horizontal" role="search" autocomplete="off" action="/post">
+        <div class="input-group">
+          <input tabindex="1" id="questions_searchform_input" type="text" name="title" class="form-control search-query typeahead" qryType="questions" placeholder="type your question">
+          <input type="hidden" name="tags" value="question:general">
+          <input type="hidden" name="template" value="question">
+          <input type="hidden" name="redirect" value="question">
+          <span class="input-group-btn">
+            <button type="submit" rel="tooltip" title="Ask a question with the entered title" class="btn btn-primary">Continue</button>
+          </span>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <% if params[:controller] == 'questions' %>
+        <%= render partial: 'tag/sorting' %>
+      <% end %>
+    </div>
+  </div>
+
   <hr />
 
   <%= render :partial => "notes/format_toggle" %>
 
   <ul class="nav nav-tabs">
-    <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/questions/">Recently Asked</a></li>
-    <li<% if params[:action] == "answered" %> class="active"<% end %>><a href="/questions/answered/">Recently Answered</a></li>
-    <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/questions/popular/">Popular</a></li>
-    <li<% if params[:action] == "unanswered" %> class="active"<% end %>><a href="/questions/unanswered/">Unanswered</a></li>
+    <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/questions/"><i class="fa fa-refresh"></i><span class="hidden-sm"> Recently Asked</span></a></li>
+    <li<% if params[:action] == "answered" %> class="active"<% end %>><a href="/questions/answered/"><i class="fa fa-check"></i><span class="hidden-sm"> Recently Answered</span></a></li>
+    <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/questions/popular/"><i class="fa fa-bolt"></i><span class="hidden-sm"> Popular</span></a></li>
+    <li<% if params[:action] == "unanswered" %> class="active"<% end %>><a href="/questions/unanswered/"><i class="fa fa-question-circle"></i><span class="hidden-sm"> Unanswered</span></a></li>
     <li<% if params[:action] == "liked" %> class="active"<% end %>>
       <a href="/questions/liked/"><i class="fa fa-star-o"></i><span class="hidden-sm"> Liked</span></a>
     </li>
