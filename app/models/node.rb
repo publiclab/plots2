@@ -146,8 +146,8 @@ class Node < ActiveRecord::Base
   end
   def self.monthly_tallies(type = 'note', span = 12, time = Time.now)
       months = {}
-      year = Date.today.strftime('%Y').to_i-1
-      currMonth = Date.today.strftime('%m').to_i
+      year = time.strftime('%Y').to_i-1
+      currMonth = time.strftime('%m').to_i
       (1..span).each do |month| 
           monthIndex = currMonth + month
           currYear = year
