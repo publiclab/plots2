@@ -258,7 +258,7 @@
     profile.display_comments();
 
     <% if @user && @user.user %>
-      var notes = <%= @user.user.daily_note_tally.to_a.sort%>
+      var notes = <%= @noteGraph%>
       var comments = <%= @user.user.weekly_comment_tally.to_a.sort.to_json %>
       var notesObject = {};
     notes.forEach(function(element){
