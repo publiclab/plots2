@@ -66,9 +66,10 @@ class StatsController < ApplicationController
       .where(timestamp: @time.to_i - 1.years.to_i..@time.to_i)
       .count / 52.0
 
-    @graph_notes = Node.monthly_tallies('note', 12, @time).to_a.to_json
-    @graph_wikis = Node.monthly_tallies('page', 12, @time).to_a.to_json
-    @graph_comments = Comment.comment_monthly_tallies(12, @time).to_a.to_json
+    @graph_notes = Node.contribution_graph_making('note', 52, @time).to_a.to_json
+    @graph_wikis = Node.contribution_graph_making('page', 52, @time).to_a.to_json
+    @graph_comments = Comment.contribution_graph_making(52, @time).to_a.to_json
+
 
     users = []
     nids = []

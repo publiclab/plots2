@@ -54,11 +54,38 @@ class Comment < ActiveRecord::Base
           end
           to = Date.new(toYear, toMonth, 1).to_time.in_time_zone(0).to_i
           months[monthIndex] = Comment.select(:timestamp)
-                                    .where(timestamp: from .. to)
-                                    .count
+                                      .where(timestamp: from .. to)
+                                      .count
       end
       months
   end 
+
+	def self.contribution_graph_making(span= 52, time= Time.now)   
+    weeks = {}
+    week = 52
+    count = 0;
+    while week >= 0
+       month = 0 
+      for i in 0..6 do
+          currMonth = (time - (week*7-i).days).strftime('%m')
+          if month == 0
+              month = currMonth
+          elsif month != currMonth
+              if i <= 4
+                  month = currMonth
+              end
+          end
+      end
+      month=month.to_i
+      currWeek = Comment.select(:timestamp)
+                     	.where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+                        .count
+      weeks[count] = [month, currWeek]
+      count+=1
+      week-=1
+    end
+    weeks
+  end
 
   def id
     cid
