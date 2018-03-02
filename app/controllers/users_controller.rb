@@ -193,7 +193,6 @@ class UsersController < ApplicationController
   def reset
     if params[:key] && params[:key] != nil
       @user = User.find_by(reset_key: params[:key])
-      binding.pry
             if @user
         if params[:user] && params[:user][:password]
           if @user.username.downcase == params[:user][:username].downcase
