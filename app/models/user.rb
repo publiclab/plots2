@@ -108,7 +108,7 @@ class User < ActiveRecord::Base
     20.times do
       key += [*'a'..'z'].sample
     end
-    self.reset_key = key
+      u.update_attribute(reset_key: key)
     key
   end
 
