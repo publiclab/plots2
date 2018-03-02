@@ -171,6 +171,19 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#note-graph', 0
   end
 
+  test 'wildcard tag should list answered questions' do
+    get :show, id: 'question:*'
+ 
+    assert_not_nil assigns(:answered_questions)
+  end
+
+  test 'wildcard tag should have a active asked and an inactive answered tab for question' do
+    get :show, id: 'question:*'
+
+    assert_select '#asked-tab.active', 1
+    assert_select '#answered-tab', 1    
+  end
+
   test "wildcard tag show wiki pages with author" do
     get :show_for_author, node_type: 'wiki', id: 'awes*', author: 'Bob'
     assert :success

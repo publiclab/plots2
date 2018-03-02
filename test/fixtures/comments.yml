@@ -112,3 +112,11 @@ question_tag:
   comment: 'Question #everything'
   timestamp: <%= Time.now.to_i + 13 %>
   thread: /04
+
+spam_comment:
+  uid: 1
+  nid: 1
+  status: 0
+  comment: This thing is spam.
+  timestamp: <%= Time.now.to_i + 1 %>
+  thread: /01
