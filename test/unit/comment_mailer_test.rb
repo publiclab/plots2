@@ -88,6 +88,6 @@ class CommentMailerTest < ActionMailer::TestCase
     assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal "You were added as a co-author!", email.subject
-    assert email.body.include?("has added you as a co-author of '<a href='#{note.path}'>#{note.title}</a>'")
+    assert email.body.include?("'<a href='https://#{request_host}/profile/#{note.author.name}'>jeff</a>' has added you as a co-author of '<a href='https://#{request_host}#{note.path}'>#{note.title}</a>'")
   end
 end
