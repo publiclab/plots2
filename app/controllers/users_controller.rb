@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
-        @user.status = 1
+    @user.status = 1
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(params[:spamaway]) unless using_recaptcha
@@ -193,7 +193,7 @@ class UsersController < ApplicationController
   def reset
     if params[:key] && params[:key] != nil
       @user = User.find_by(reset_key: params[:key])
-            if @user
+      if @user
         if params[:user] && params[:user][:password]
           if @user.username.downcase == params[:user][:username].downcase
             @user.password = params[:user][:password]
@@ -206,7 +206,7 @@ class UsersController < ApplicationController
               flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
               redirect_to "/"
             end
-	  else
+          else
             flash[:error] = I18n.t('users_controller.password_change_failed')
           end
         else
