@@ -47,16 +47,17 @@
           </a>
 
           <ul class="dropdown-menu">
-            <li><a href="/events">Meet people</a></li>
-            <li><a href="/lists">Join the discussions</a></li>
-            <li><a href="/chat">Chat online</a></li>
-            <li><a href="/wiki/requests">Browse requests</a></li>
-            <li><a href="/dashboard">See the latest research</a></li>
+            <li><a href="/events">Attend an event</a></li>
+	    <li><a href="/chat">Chat online</a></li>
+	    <li><a href="/questions">Ask a question</a></li>
+            <li><a href="/tags">Find a topic you care about</a></li>
+            <li><a href="/requests">Respond to a request</a></li>
+            <li><a href="/dashboard">Browse recent research</a></li>
             <li><a href="/methods">Discover methods</a></li>
+	    <li><a href="/kits">Contribute a kit</a></li>
             <% if !current_user %>
               <li><a href="/signup">Create an account</a></li>
             <% end %>
-            <li><a href="/questions">Ask a question</a></li>
             <li><a href="/post">Post your work</a></li>
             <li class="hidden-lg hidden-xl"><a href="/donate">Donate</a></li>
           </ul>
@@ -66,14 +67,10 @@
 
       <form id="searchform" class="navbar-form navbar-left" role="search" autocomplete="off">
         <div class="form-group">
-          <input tabindex="1" id="searchform_input" type="text" class="form-control search-query typeahead" qryType="all" placeholder="<%= t('layout._header.search') %>"/>
+          <input tabindex="1" id="searchform_input" type="text" class="form-control search-query typeahead" qryType="all" placeholder="<%= t('layout._header.search') %>" required/>
         </div>
         <button type="submit" class="btn btn-primary" style="background:#444;border-color:#222;"><i class="fa fa-search"></i></button>
       </form>
-      <script type="text/javascript">
-        document.getElementById("searchform_input").setCustomValidity('Please! Type something to search');
-      </script>
-
 
       <ul class="nav navbar-nav">
 

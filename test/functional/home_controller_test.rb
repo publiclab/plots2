@@ -25,17 +25,29 @@ class HomeControllerTest < ActionController::TestCase
     assert_redirected_to dashboard_url
   end
 
-  test 'should get dashboard if not logged in' do
+  test 'should get research if not logged by /dashboard' do
     get :dashboard
-
+    assert_redirected_to :research
+    get :research
     assert_response :success
   end
 
-  test 'should get dashboard' do
+  test 'should get research if not logged' do
+    get :research
+    assert_response :success
+  end
+
+  test 'should get dashboard if logged in by /research' do
     UserSession.create(users(:bob))
-
+    get :research
+    assert_redirected_to :dashboard
     get :dashboard
+    assert_response :success
+  end
 
+  test 'should get dashboard if logged in' do
+    UserSession.create(users(:bob))
+    get :dashboard
     assert_response :success
   end
 
@@ -46,7 +58,7 @@ class HomeControllerTest < ActionController::TestCase
                         .where('node_revisions.status = 1')
     @wikis += revisions
 
-    get :dashboard
+    get :research
 
     @wikis.each do |obj|
       if obj.class == Revision && obj.status == 1

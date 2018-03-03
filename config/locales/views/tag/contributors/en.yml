@@ -11,5 +11,6 @@ en:
       follow: "Follow"
       people_watching_tag: "%{count} people are watching this tag"
       no_contributors: "No contributors for that tag; try searching for '<b>%{tag}</b>'"
+      wild_card_search_detected: "Wildcard tag search detected. Wildcard tag searches use the * asterisk in their URLs, and will not show contributor listings."
       contributor: "Contributor"
       notes: "Notes"

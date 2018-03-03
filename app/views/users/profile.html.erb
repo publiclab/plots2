@@ -2,7 +2,7 @@
   <% if @user.user %>
     <img class="hidden-xs hidden-sm img-rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @user.user.profile_image %>" />
     <div style="text-align:center;" class="visible-sm visible-xs">
-      <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.user.profile_image %>" />
+      <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.user.photo_path %>" />
     </div>
   <% end %>
 
