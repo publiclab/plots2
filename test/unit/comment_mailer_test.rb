@@ -75,4 +75,19 @@ class CommentMailerTest < ActionMailer::TestCase
     assert_equal "New comment on your answer on '" + comment.parent.title + "'", email.subject
     assert email.body.include?("Hi! There's been a new comment to your answer on '<a href='https://#{request_host}#{comment.parent.path(:question)}#a#{comment.answer.id}'>#{comment.parent.title}</a>'")
   end
+
+  test 'notify coauthor' do
+    user = users(:bob)
+    note = nodes(:one)
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      CommentMailer.notify_coauthor(user, note)
+    end
+    assert !ActionMailer::Base.deliveries.empty?
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal [user.email], email.to
+    assert_equal "You were added as a co-author!", email.subject
+    assert email.body.include?("has added you as a co-author of '<a href='#{note.path}'>#{note.title}</a>'")
+  end
 end
