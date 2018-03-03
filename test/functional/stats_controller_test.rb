@@ -5,20 +5,20 @@ class StatsControllerTest < ActionController::TestCase
       Node.delete_all
       Node.create!(type: 'note', title:'blah', uid: 1, status: 1)
       get :index
-      assert_equal assigns(:graph_notes), Node.monthly_tallies('note', 12, Time.now).to_a.to_json
+      assert_equal assigns(:graph_notes), Node.contribution_graph_making('note', 52, Time.now).to_a.to_json
   end
   test 'should assign correct value to graph_wikis on GET stats' do
       Node.delete_all
       Node.create(type: 'note', title:'blah', uid: 1, status: 1)
       Node.create(type: 'page', title:'blahblah', uid: 1, status: 1)
       get :index
-      assert_equal assigns(:graph_wikis), Node.monthly_tallies('page', 12, Time.now()).to_a.to_json
+      assert_equal assigns(:graph_wikis), Node.contribution_graph_making('page', 52, Time.now()).to_a.to_json
   end
   test 'should assign correct value to graph_comments on GET stats' do
     Comment.delete_all
     Comment.create!(comment: 'blah', timestamp: Time.now - 1)
     get :index
-    assert_equal assigns(:graph_comments), Comment.comment_monthly_tallies(12, Time.now).to_a.to_json
+    assert_equal assigns(:graph_comments), Comment.contribution_graph_making(52, Time.now).to_a.to_json
     assert_response :success
   end
 
