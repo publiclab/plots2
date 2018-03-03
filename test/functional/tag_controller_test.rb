@@ -292,6 +292,21 @@ class TagControllerTest < ActionController::TestCase
     end
   end
 
+  test 'adds comment when creating coauthor' do
+    UserSession.create(users(:jeff))
+    user = users(:bob)
+    node = nodes(:one)
+
+    assert_difference 'Comment.count' do
+      tagname = "with:#{user.name}"
+      post :create,
+           name: tagname,
+           nid: node.id
+
+      assert_equal " [@#{node.author.name}](/profile/#{node.author.name}) has marked #{tagname.split(':')[1]} as a co-author. ", Comment.last.body
+    end
+  end
+
   test 'should take node type as question if tag is a question tag' do
     tag = tags(:question)
 
