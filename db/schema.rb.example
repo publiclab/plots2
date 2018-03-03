@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180128162224) do
+ActiveRecord::Schema.define(version: 20180220180926) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20180128162224) do
     t.text    "comment",   limit: 2147483647,              null: false
     t.string  "hostname",  limit: 128,        default: "", null: false
     t.integer "timestamp",                    default: 0,  null: false
-    t.integer "status",    limit: 1,          default: 0,  null: false
+    t.integer "status",    limit: 1,          default: 1,  null: false
     t.integer "format",    limit: 2,          default: 0,  null: false
     t.string  "thread"
     t.string  "name",      limit: 60

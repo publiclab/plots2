@@ -1,6 +1,4 @@
-<%= render :partial => "sidebar/featured" %>
-
-<div class="col-md-9">
+<div class="col-md-12">
   <table style="width:100%">
     <tr>
      <th style="width: 50% ;">
@@ -26,11 +24,11 @@
 
   <table class="table">
     <tr>
-      <th><a href = "<%= tags_path %>?sort=name"><%= t('tag.index.tag') %></a></th>
-      <th><a href = "<%= tags_path %>?sort=uses"><%= t('tag.index.number_of_uses') %></a></th>
+      <th><a href = "<%= tags_path %>?sort=name"><%= t('tag.index.tag') %></a> <i class="fa fa-arrows-v"></i></th>
+      <th><a href = "<%= tags_path %>?sort=uses"><%= t('tag.index.number_of_uses') %></a> <i class="fa fa-arrows-v"></i></th>
       <th><%= t('tag.index.number_of_subscriptions')%></th>
       <% if current_user %>
-        <th><a href = "<%= tags_path %>?sort=subscribers"><%= t('tag.index.subscriptions') %></a></th>
+        <th><a href = "<%= tags_path %>?sort=subscribers"><%= t('tag.index.subscriptions') %></a> <i class="fa fa-arrows-v"></i></th>
       <% end %>
     </tr>
     <% @tags.each do |tag| %>

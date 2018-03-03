@@ -93,7 +93,7 @@ class UsersController < ApplicationController
       @users = DrupalUser.select('*, MAX(node.changed) AS last_updated')
                           .joins(:node)
                           .group('users.uid')
-                          .where('users.status = 1 AND node.status = 1')
+                          .where('node.status = 1')
                           .order("last_updated DESC")
                           .page(params[:page])
     end
@@ -129,6 +129,8 @@ class UsersController < ApplicationController
                       .joins(:node)
                       .limit(20)
       @wikis = wikis.collect(&:parent).uniq
+
+      @comment_count = Comment.where(status: 0, uid: @user.uid).count
 
       # User's social links
       @github = @profile_user.social_link("github")
