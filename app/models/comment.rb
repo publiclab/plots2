@@ -87,14 +87,14 @@ class Comment < ActiveRecord::Base
   def notify_callout_users
     # notify mentioned users
     mentioned_users.each do |user|
-      CommentMailer.notify_callout(self, user) if user.username != author.username
+      CommentMailer.notify_callout(self, user).deliver_now if user.username != author.username
     end
   end
 
   def notify_tag_followers(already_mailed_uids = [])
     # notify users who follow the tags mentioned in the comment
     followers_of_mentioned_tags.each do |user|
-      CommentMailer.notify_tag_followers(self, user) unless already_mailed_uids.include?(user.uid)
+      CommentMailer.notify_tag_followers(self, user).deliver_now unless already_mailed_uids.include?(user.uid)
     end
   end
 
