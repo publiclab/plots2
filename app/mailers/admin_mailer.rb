@@ -57,6 +57,6 @@ class AdminMailer < ActionMailer::Base
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
       subject: subject
-    ).deliver_now
+    )
   end
 end

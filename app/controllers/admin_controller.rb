@@ -106,7 +106,7 @@ class AdminController < ApplicationController
       if @node.status == 1 || @node.status == 4
         @node.spam
         @node.author.ban
-        AdminMailer.notify_moderators_of_spam(@node, current_user)
+        AdminMailer.notify_moderators_of_spam(@node, current_user).deliver_now
         flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
         redirect_to '/dashboard'
       else

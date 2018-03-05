@@ -172,7 +172,11 @@ class AdminControllerTest < ActionController::TestCase
     node = nodes(:spam).publish
 
     get :mark_spam, id: node.id
-
+    user = users(:moderator)
+    email = AdminMailer.notify_moderators_of_spam(node, user)
+    assert_emails 1 do
+        email.deliver_now
+    end
     assert_equal "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
     node = assigns(:node)
     assert_equal 0, node.status
