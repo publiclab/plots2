@@ -23,7 +23,7 @@ class CommentMailer < ActionMailer::Base
     @giver = user.drupal_user
     @note = note
     @footer = feature('email-footer')
-    mail(to: note.author.email, subject: 'You were awarded a Barnstar!').deliver_now
+    mail(to: note.author.email, subject: 'You were awarded a Barnstar!')
   end
 
   def notify_callout(comment, user)

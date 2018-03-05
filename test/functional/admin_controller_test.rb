@@ -15,6 +15,7 @@ require 'test_helper'
 include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 
 class AdminControllerTest < ActionController::TestCase
+  include ActionMailer::TestHelper
   def setup
     activate_authlogic
     Timecop.freeze # account for timestamp change
@@ -386,9 +387,14 @@ class AdminControllerTest < ActionController::TestCase
   test 'first timer question should redirect to question path when approved by admin' do
     UserSession.create(users(:admin))
     node = nodes(:first_timer_question)
+    user = users(:moderator)
     assert_equal 4, node.status
 
     get :publish, id: nodes(:first_timer_question).id
+    assert_emails 2 do
+        AdminMailer.notify_author_of_approval(node, user).deliver_now
+        AdminMailer.notify_moderators_of_approval(node, user).deliver_now
+    end
 
     assert_equal "Question approved and published after #{time_ago_in_words(node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments.", flash[:notice]
     node = assigns(:node)

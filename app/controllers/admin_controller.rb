@@ -133,8 +133,8 @@ class AdminController < ApplicationController
         @node.publish
         @node.author.unban
         if first_timer_post
-          AdminMailer.notify_author_of_approval(@node, current_user)
-          AdminMailer.notify_moderators_of_approval(@node, current_user)
+          AdminMailer.notify_author_of_approval(@node, current_user).deliver_now
+          AdminMailer.notify_moderators_of_approval(@node, current_user).deliver_now
           SubscriptionMailer.notify_node_creation(@node)
           if @node.has_power_tag('question')
             flash[:notice] = "Question approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
