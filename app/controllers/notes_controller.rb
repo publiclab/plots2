@@ -108,7 +108,7 @@ class NotesController < ApplicationController
           @node.add_tag('date:' + params[:date], current_user) if params[:date]
         end
         if current_user.first_time_poster
-          AdminMailer.notify_node_moderators(@node)
+          AdminMailer.notify_node_moderators(@node).deliver_now
           flash[:first_time_post] = true
           if @node.has_power_tag('question')
             flash[:notice] = I18n.t('notes_controller.thank_you_for_question').html_safe

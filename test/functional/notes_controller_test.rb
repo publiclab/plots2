@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class NotesControllerTest < ActionController::TestCase
+   include ActionMailer::TestHelper
   def setup
     Timecop.freeze # account for timestamp change
     activate_authlogic
@@ -417,7 +418,11 @@ class NotesControllerTest < ActionController::TestCase
          body: 'Spectrometer question',
          tags: 'question:spectrometer',
          redirect: 'question'
-
+    node = nodes(:blog)
+    email = AdminMailer.notify_node_moderators(node)
+    assert_emails 1 do
+        email.deliver_now
+    end
     assert_redirected_to '/questions/' + users(:bob).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     assert_equal "Success! Thank you for contributing with a question, and thanks for your patience while your question is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published.", flash[:notice]
   end

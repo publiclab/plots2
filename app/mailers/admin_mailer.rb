@@ -13,7 +13,7 @@ class AdminMailer < ActionMailer::Base
       to: "moderators@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: moderators,
       subject: subject
-    ).deliver_now
+    )
   end
 
   def notify_author_of_approval(node, moderator)
