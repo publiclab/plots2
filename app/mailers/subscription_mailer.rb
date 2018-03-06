@@ -11,7 +11,7 @@ class SubscriptionMailer < ActionMailer::Base
       @node = node
       @tags = val[:tags]
       @footer = feature('email-footer')
-      mail(to: val[:user].email, subject: subject).deliver_now
+      mail(to: val[:user].email, subject: subject)
     end
   end
 
@@ -21,7 +21,7 @@ class SubscriptionMailer < ActionMailer::Base
     @user = user
     @node = node
     @footer = feature('email-footer')
-    mail(to: node.author.email, subject: subject).deliver_now
+    mail(to: node.author.email, subject: subject)
   end
 
  def notify_tag_added(node, tag, current_user)
@@ -41,7 +41,7 @@ class SubscriptionMailer < ActionMailer::Base
     final_users_to_email.each do |user|
       @user = user
       unless user.id == current_user.id 
-         mail(to: user.email, subject: "New tag added on #{node.title}").deliver_now 
+         mail(to: user.email, subject: "New tag added on #{node.title}")
       end
     end
     @footer = feature('email-footer')

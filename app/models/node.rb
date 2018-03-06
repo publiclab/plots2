@@ -145,7 +145,7 @@ class Node < ActiveRecord::Base
     if status == 4
       AdminMailer.notify_node_moderators(self)
     else
-      SubscriptionMailer.notify_node_creation(self)
+      SubscriptionMailer.notify_node_creation(self).deliver_now
     end
   end
 
@@ -672,7 +672,7 @@ class Node < ActiveRecord::Base
                                  nid: id)
           if node_tag.save
             saved = true
-            SubscriptionMailer.notify_tag_added(self, tag, user) unless tag.subscriptions.empty?
+            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty?
           else
             saved = false
             tag.destroy
@@ -835,7 +835,7 @@ class Node < ActiveRecord::Base
       like.liking = true
       node = Node.find(nid)       
       if node.type == 'note'
-        SubscriptionMailer.notify_note_liked(node, like.user)
+        SubscriptionMailer.notify_note_liked(node, like.user).deliver_now
       end
       count = 1
       node.toggle_like(like.user)
