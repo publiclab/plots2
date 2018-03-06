@@ -180,7 +180,7 @@ class User < ActiveRecord::Base
 
   def add_to_lists(lists)
     lists.each do |list|
-      WelcomeMailer.add_to_list(self, list)
+      WelcomeMailer.add_to_list(self, list).deliver_now
     end
   end
 
