@@ -50,7 +50,7 @@ class AdminController < ApplicationController
         key = user.generate_reset_key
         user.save({})
         # send key to user email
-        PasswordResetMailer.reset_notify(user, key) unless user.nil? # respond the same to both successes and failures; security
+        PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
       end
 
       flash[:notice] = "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with." 

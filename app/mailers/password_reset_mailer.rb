@@ -9,6 +9,6 @@ class PasswordResetMailer < ActionMailer::Base
     @user = user
     @key = key
     @footer = feature('email-footer')
-    mail(to: user.email, subject: subject).deliver_now
+    mail(to: user.email, subject: subject)
   end
 end

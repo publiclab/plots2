@@ -85,7 +85,13 @@ class AdminControllerTest < ActionController::TestCase
   test 'admin should be able to force reset user password' do
     UserSession.create(users(:admin))
     user = users(:bob)
-    get :reset_user_password, id: user.id 
+    get :reset_user_password, id: user.id, email: user.email 
+
+	#Testing whether email has been sent or not
+ 	email = ActionMailer::Base.deliveries.last
+ 	assert_equal '[Public Lab] Reset your password', email.subject
+ 	assert_equal [user.email], email.to
+
     assert_equal "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with.", flash[:notice] 
     assert_redirected_to '/profile/' + user.name
   end
