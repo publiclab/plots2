@@ -47,7 +47,7 @@ class HomeController < ApplicationController
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
         .count
       @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count
-	  set_activity
+      set_activity
       render template: 'dashboard/dashboard'
     else
       redirect_to '/research'
@@ -64,7 +64,7 @@ class HomeController < ApplicationController
       @wiki_count = Revision.select(:timestamp)
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
         .count
-	  set_activity
+      set_activity
       render template: 'dashboard/dashboard'
       @title = I18n.t('home_controller.community_research')
     end
