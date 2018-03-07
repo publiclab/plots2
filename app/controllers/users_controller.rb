@@ -87,6 +87,7 @@ class UsersController < ApplicationController
       @users = DrupalUser.joins('INNER JOIN rusers ON rusers.username = users.name')
                           .order("updated_at DESC")
                           .where('rusers.role = ?', params[:id])
+                          .where('rusers.status = 1')
                           .page(params[:page])
     else
       # recently active
