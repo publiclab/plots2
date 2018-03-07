@@ -107,7 +107,7 @@ class WikiControllerTest < ActionController::TestCase
          body:  'This is fascinating documentation about balloon mapping.'
 
     assert_template 'wiki/edit'
-    assert_select '.alert'
+    css_select '.alert'
   end
 
   test 'viewing edit wiki page' do
@@ -164,7 +164,7 @@ class WikiControllerTest < ActionController::TestCase
          title: ''
 
     assert_template 'wiki/edit'
-    assert_select '.alert'
+    css_select '.alert'
   end
 
   test 'update root-path (/about) wiki' do
