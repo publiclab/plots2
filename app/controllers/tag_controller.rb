@@ -279,6 +279,13 @@ class TagController < ApplicationController
                            uid: current_user.uid,
                            body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_user.name} for their awesome contribution!")
 
+        elsif tagname.split(':')[0] == "with"
+          user = User.find_by_username_case_insensitive(tagname.split(':')[1])
+          CommentMailer.notify_coauthor(user, node)
+          node.add_comment(subject: 'co-author',
+                           uid: current_user.uid,
+                           body: " @#{current_user.username} has marked #{tagname.split(':')[1]} as a co-author. ")
+
         end
 
         if saved
