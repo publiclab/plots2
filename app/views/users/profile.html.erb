@@ -176,7 +176,7 @@
     <li><a href="#coauthored" data-toggle="tab"><i class="fa fa-file-o"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.Coauthored') %></span> (<%= @coauthored.size %>)</a></li>
     <li><a href="#questions" data-toggle="tab"><i class="fa fa-question-circle"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %></span> (<%= Node.questions.where(status: 1, uid: @user.id).length %>)</a></li>
     <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span> (<%= @comment_count %>)</a></li>
-    <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
+    <li><a href="#likes" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>  
     <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> Barnstars</span> (<%= @user.user.try(:barnstars).try(:length) %>)</a></li>
   </ul>
 
@@ -224,6 +224,9 @@
       <h2 style="text-align:center;"><i class="fa fa-spinner fa fa-spin"></i></h2>
     </div>
 
+    <div class="tab-pane" id="likes">
+      <%= render :partial => "users/likes" %>
+    </div>
     <div class="tab-pane" id="barnstars">
       <% if @user.user %>
       <% @user.user.barnstars.each do |tag| %>

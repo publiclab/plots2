@@ -118,6 +118,8 @@ class UsersController < ApplicationController
       @questions = @user.user.questions
                              .order('node.nid DESC')
                              .paginate(:page => params[:page], :per_page => 24)
+      @likes = (@user.liked_notes.includes([:tag, :comments])+@user.liked_pages)
+                     .paginate(page: params[:page], per_page: 24)
       questions = Node.questions
                             .where(status: 1)
                             .order('node.nid DESC')
