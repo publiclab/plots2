@@ -14,8 +14,11 @@ Nothing. This issue is meant to welcome you to Open Source :) We are happy to wa
 
 - [ ] 🙋 **Claim this issue**: Comment below. If someone else has claimed it, ask if they've opened a pull request already and if they're stuck -- maybe you can help them solve a problem or move it along!
 
-- [ ] 📝 **Update** the file [$FILENAME]($BRANCH_URL) in the `$REPO` repository (press the little pen Icon) and edit the line as shown below. [See this page](https://github.com/publiclab/plots2/projects/2) for some help in taking your first steps!
+- [ ] 📝 **Update** the file [$FILENAME]($BRANCH_URL) in the `$REPO` repository (press the little pen Icon) and edit the line as shown below. 
 
+[See this page](https://publiclab.github.io/community-toolbox/#r=all) for some help in taking your first steps!
+
+Below is a "diff" showing in red (and a `-`) which lines to remove, and in green (and a `+`) which lines to add:
 
 ```diff
 $DIFF
@@ -39,6 +42,6 @@ Leave a comment below!
 
 ### Is someone else already working on this?
 
-We encourage you to link to this issue by mentioning the issue # in your pull request, so we can see if someone's already started on it. **If someone seem stuck, offer them some help!** Otherwise, [take a look at some other issues you can help with](https://github.com/publiclab/plots2/projects/2). Thanks!
+We encourage you to link to this issue by mentioning the issue # in your pull request, so we can see if someone's already started on it. **If someone seem stuck, offer them some help!** Otherwise, [take a look at some other issues you can help with](https://publiclab.github.io/community-toolbox/#r=all). Thanks!
 
 (This issue was created by [First-Timers-Bot](https://github.com/hoodiehq/first-timers-bot).)

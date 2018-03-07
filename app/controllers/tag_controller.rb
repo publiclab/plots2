@@ -3,10 +3,10 @@ class TagController < ApplicationController
   before_filter :require_user, only: %i(create delete)
 
   def index
-    if params[:format]
-      @toggle = params[:format].to_i
+    if params[:sort]
+      @toggle = params[:sort]
     else
-      @toggle = 1
+      @toggle = "uses"
     end
 
     @title = I18n.t('tag_controller.tags')
@@ -21,7 +21,7 @@ class TagController < ApplicationController
       .group(:name)
       .order('count DESC')
       .paginate(page: params[:page], per_page: 24)
-    elsif @toggle == 1
+    elsif @toggle == "uses"
     @tags = Tag.joins(:node_tag, :node)
       .select('node.nid, node.status, term_data.*, community_tags.*')
       .where('node.status = ?', 1)
@@ -29,7 +29,7 @@ class TagController < ApplicationController
       .group(:name)
       .order('count DESC')
       .paginate(page: params[:page], per_page: 24)
-    elsif @toggle == 2
+    elsif @toggle == "name"
     @tags = Tag.joins(:node_tag, :node)
       .select('node.nid, node.status, term_data.*, community_tags.*')
       .where('node.status = ?', 1)
@@ -83,7 +83,7 @@ class TagController < ApplicationController
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
       nodes = Node.where(status: 1, type: node_type)
-        .includes(:revision, :tag)
+        .includes(:revision, :tag, :answers)
         .references(:term_data, :node_revisions)
         .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
         .paginate(page: params[:page], per_page: 24)
@@ -104,6 +104,10 @@ class TagController < ApplicationController
 
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    @answered_questions = []
+    if @questions
+      @questions.each { |question| @answered_questions << question if question.answers.any? { |answer| answer.accepted } }
+    end
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
@@ -176,6 +180,10 @@ class TagController < ApplicationController
 
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    ans_ques = Answer.where(uid: @user.id, accepted: true).includes(:node).map do |ans|
+      ans.node
+    end
+    @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = "'" + @tagname.to_s + "' by " +  params[:author]

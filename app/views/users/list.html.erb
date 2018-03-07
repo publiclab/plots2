@@ -12,7 +12,7 @@
 </div>
 <div class="col-md-9">
   <h2><%= raw t('users.list.members_last_activity') %></h2>
-  <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:17 , lon: 75} %>
+  <%= render :partial => "map/peopleLeaflet" , locals: {people: true , lat:23 , lon: 4} %>
   <table class="table">
     <tr>
       <th class="visible-sm visible-xs"></th>
@@ -40,9 +40,9 @@
       <td style="padding-top:16px;"><%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
       <td style="padding-top:16px;">
-        <% if user.status == 0 %>
+        <% if user.user.status == 0 %>
           <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
-        <% elsif user.status == 1 %>
+        <% elsif user.user.status == 1 %>
           <a class="btn btn-default btn-sm" data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a>
         <% end %>
       </td>

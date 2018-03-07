@@ -10,6 +10,7 @@ function sortGrid(type, selector, headerLink) {
       headerLink = $(headerLink),
       desc = headerLink.hasClass('desc'),
       header = table.find('tr:first').detach(),
+      footer = table.find('tfoot').detach(),
       rows = table.find('tr').detach();
 
   rows = rows.sort(function(a, b){
@@ -39,6 +40,7 @@ function sortGrid(type, selector, headerLink) {
 
   table.html(rows);
   table.prepend(header);
+  table.append(footer);
 
 console.log('rows')
 rows.each(function(row) {

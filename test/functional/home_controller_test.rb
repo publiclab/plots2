@@ -11,22 +11,43 @@ class HomeControllerTest < ActionController::TestCase
   end
 
   test 'should get home' do
+    title = I18n.t('home_controller.science_community')
+
     get :home
-
     assert_response :success
+    assert_select "title", "&#127880; Public Lab: #{title}"
   end
 
-  test 'should get dashboard if not logged in' do
-    get :dashboard
-
-    assert_response :success
-  end
-
-  test 'should get dashboard' do
+  test 'home should redirect to dashboard if logged in' do
     UserSession.create(users(:bob))
 
-    get :dashboard
+    get :home
+    assert_redirected_to dashboard_url
+  end
 
+  test 'should get research if not logged by /dashboard' do
+    get :dashboard
+    assert_redirected_to :research
+    get :research
+    assert_response :success
+  end
+
+  test 'should get research if not logged' do
+    get :research
+    assert_response :success
+  end
+
+  test 'should get dashboard if logged in by /research' do
+    UserSession.create(users(:bob))
+    get :research
+    assert_redirected_to :dashboard
+    get :dashboard
+    assert_response :success
+  end
+
+  test 'should get dashboard if logged in' do
+    UserSession.create(users(:bob))
+    get :dashboard
     assert_response :success
   end
 
@@ -37,7 +58,7 @@ class HomeControllerTest < ActionController::TestCase
                         .where('node_revisions.status = 1')
     @wikis += revisions
 
-    get :dashboard
+    get :research
 
     @wikis.each do |obj|
       if obj.class == Revision && obj.status == 1

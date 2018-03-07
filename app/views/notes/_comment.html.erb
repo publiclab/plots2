@@ -64,10 +64,13 @@
   </script>
   
   <div id="c<%= comment.cid %>show">
-    <p><%= render_comment_body(comment) %></p>
+    <p><%= raw auto_link(render_comment_body(comment)) %></p>
     <% if comment.body.include?('?') %>
       <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
       </p>
+    <% end %>
+    <% if comment.parent.has_power_tag('activity') && current_user && current_user.id == comment.uid %>
+      <div class="alert alert-info">Have you attempted or completed this activity? Consider <a href="/post?n=15798&tags=replication:<%= comment.nid %>,<%= comment.parent.tagnames.join(',') %>">sharing how it went</a> to help refine and improve it.</div>
     <% end %>
   </div>
 

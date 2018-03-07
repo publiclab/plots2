@@ -7,6 +7,7 @@ de:
       advanced_search: "Erweiterte Suche"
       notes_tagged_with: "Hinweise getaggt mit <i style=\"color:#aaa;\">%{params}</i>"
       popular_research_notes: "Beliebte Forschungsnotizen"
+      recent_research_notes: "Aktuelle Forschungsberichte"
       research_on: "Forschung auf \"%{tags}\" von <a href='%{url1}'>%{user_name}</a>"
       research_notes_and_wiki_edits_with_time: "%{count} Forschung Notizen und Wiki-Bearbeitungen beginnend vor %{time}"
       research_by: "Forschung von <a href='%{url1}'>%{user_name}</a>"

@@ -326,7 +326,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_not_nil @response.body
     assert_equal '/notes/Bob/' + Time.now.strftime('%m-%d-%Y') + '/a-completely-unique-snowflake', @response.body
   end
-  
+
   test 'post_note_error_no_title_xhr' do
     UserSession.create(users(:bob))
 
@@ -353,7 +353,6 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil @response.body
-    assert_equal "{\"title\":[\"can't be blank\"],\"path\":[\"This title has already been taken\"]}", @response.body
   end
 
   test 'returning json errors on xhr note update' do
@@ -406,7 +405,7 @@ class NotesControllerTest < ActionController::TestCase
         author: node.author.username,
         date: node.created_at.strftime('%m-%d-%Y'),
         id: node.title.parameterize
-    assert_select '.fa-fire', 3
+    assert_select '.fa-fire', 4
   end
 
   test 'should redirect to questions show page after creating a new question' do
@@ -544,6 +543,15 @@ class NotesControllerTest < ActionController::TestCase
     assert !(notes & questions).present?
   end
 
+  test 'should list only research notes with status 1 in recent' do
+    get :recent
+    notes = assigns(:notes)
+    expected = [nodes(:one)]
+    questions = [nodes(:question)]
+    assert (notes & expected).present?
+    assert (notes & questions).present?
+  end
+
   test 'should list only research notes with status 1 in liked' do
     UserSession.create(users(:admin))
     get :liked
@@ -586,7 +594,7 @@ class NotesControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-  end 
+  end
 
   test "should not delete wiki if other author have contributed" do
     node = nodes(:about)
@@ -597,9 +605,9 @@ class NotesControllerTest < ActionController::TestCase
     assert_no_difference 'Node.count' do
       get :delete, id: node.nid
     end
-    
+
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-  end 
+  end
 
   #should change title
   test 'title change feature in comments when author is logged in' do
@@ -609,7 +617,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_redirected_to node.path+"#comments"
     assert_equal node.reload.title, 'changed title'
   end
-  
+
   # should not change title
   test 'title change feature in comments when author is not logged in' do
     node = nodes(:one)
@@ -621,9 +629,23 @@ class NotesControllerTest < ActionController::TestCase
 
   def test_get_rss_feed
     get :rss, :format => "rss"
-    assert_response :success   
+    assert_response :success
     assert_equal 'application/rss+xml', @response.content_type
   end
 
+  test 'draft should not be shown when no user' do
+    node = nodes(:draft)
+    post :show, id: '21',title: 'Draft note'
+    assert_redirected_to '/'
+    assert_equal "Only author can access the draft note", flash[:notice]
+  end
+
+  test 'draft should not be shown when user is not author' do
+    node = nodes(:draft)
+    UserSession.create(users(:test_user))
+    post :show, id: '21',title: 'Draft note'
+    assert_redirected_to '/'
+    assert_equal "Only author can access the draft note", flash[:notice]
+  end
 
 end
