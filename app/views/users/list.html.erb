@@ -16,10 +16,12 @@
   <table class="table">
     <tr>
       <th class="visible-sm visible-xs"></th>
-      <th style="text-align: center;"><%= t('users.list.username') %></th>
-      <th><%= t('users.list.last_activity') %></th>
+
+      <th style="text-align: center;"><a href = "<%= people_path %>?sort=username"> <%= t('users.list.username') %></a> <i class="fa fa-arrows-v"></i></th>
+      <th><a href = "<%= people_path %>?sort=last_activity"> <%= t('users.list.last_activity') %></a> <i class="fa fa-arrows-v"></i></th>
       <th><%= t('users.list.history') %></th>
-      <th><%= t('users.list.joined') %></th>
+      <th><a href = "<%= people_path %>?sort=joined"> <%= t('users.list.joined') %></a> <i class="fa fa-arrows-v"></i></th>
+
       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
         <th><%= t('users.list.moderation') %></th>
       <% end %>
