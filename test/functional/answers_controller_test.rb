@@ -139,4 +139,17 @@ class AnswersControllerTest < ActionController::TestCase
     assert answer.accepted
   end
 
+  test 'answer deletion should not delete the question node' do
+    UserSession.create(users(:moderator))
+    answer = answers(:one)
+    answer.save
+    a = Answer.count
+    b = Node.count
+
+    xhr :post, :delete, id: answer.id
+
+    assert_equal Answer.count ,a - 1
+    assert_equal Node.count,b
+    assert_response :success
+  end
 end
