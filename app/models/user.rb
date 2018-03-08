@@ -146,6 +146,7 @@ class User < ActiveRecord::Base
   end
 
   def can_moderate?
+    # use instead of "user.role == 'admin' || user.role == 'moderator'"
     admin? || moderator?
   end
 
