@@ -49,7 +49,7 @@ class Node < ActiveRecord::Base
   has_many :drupal_content_field_map_editor, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :images, foreign_key: :nid
   has_many :node_selections, foreign_key: :nid
-  has_many :answers, foreign_key: :nid
+  has_many :answers, foreign_key: :nid, dependent: :destroy
 
   belongs_to :drupal_user, foreign_key: 'uid'
 
