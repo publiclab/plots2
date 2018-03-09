@@ -4,6 +4,7 @@ Make sure these boxes are checked before your pull request (PR) is ready to be r
 * [ ] code is in uniquely-named feature branch and has no merge conflicts
 * [ ] PR is descriptively titled
 * [ ] PR body includes `fixes #0000`-style reference to original issue #
+* [ ] original issue has been labeled with `has-pull-request`
 * [ ] ask `@publiclab/reviewers` for help, in a comment below
 
 > We're happy to help you get this ready -- don't be afraid to ask for help, and **don't be discouraged** if your tests fail at first!
