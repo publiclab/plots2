@@ -19,9 +19,9 @@ class FeaturesController < ApplicationController
   end
 
   def edit
-    if current_user.role != 'admin'
+    if !current_user.admin?
       flash[:warning] = 'Only admins may edit features.'
-      redirect_to '/features'
+      redirect_to features_url
     else
       @node = Node.find params[:id]
     end
