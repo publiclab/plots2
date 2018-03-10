@@ -20,7 +20,7 @@ chdir APP_ROOT do
 
 
   puts "\n== Copying sample files =="
-  unless File.exist?('config/database.yml')
+  unless File.exist?('db/schema.rb')
     cp 'db/schema.rb.example', 'db/schema.rb'
   end
 
