@@ -101,21 +101,26 @@ class UsersController < ApplicationController
 
     # allow admins to view recent users
     if params[:id]
-      @users = DrupalUser.joins('INNER JOIN rusers ON rusers.username = users.name')
-                          .order(order_string)
-                          .where('rusers.role = ?', params[:id])
-                          .where('rusers.status = 1')
-                          .page(params[:page])
+      @users = User.order(order_string)
+                    .where('rusers.role = ?', params[:id])
+                    .where('rusers.status = 1')
+                    .page(params[:page])
+    
+    elsif params[:tagname]
+      @users = User.where(id: UserTag.where(value: params[:tagname]).collect(&:uid))
+                    .page(params[:page])
+
     else
       # recently active
-      @users = DrupalUser.select('*, MAX(node.changed) AS last_updated')
-                          .joins(:node)
-                          .group('users.uid')
-                          .where('node.status = 1')
-                          .order(order_string)
-                          .page(params[:page])
+      @users = User.select('*, rusers.status, MAX(node.changed) AS last_updated')
+                    .joins(:node)
+                    .group('rusers.id')
+                    .where('node.status = 1')
+                    .order(order_string)
+                    .page(params[:page])
     end
-    @users = @users.where('users.status = 1') unless current_user && (current_user.can_moderate?)
+
+    @users = @users.where('rusers.status = 1') unless current_user && (current_user.can_moderate?)
   end
 
   def profile
