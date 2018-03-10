@@ -12,9 +12,9 @@ class FeaturesController < ApplicationController
   end
 
   def new
-    if current_user.role != 'admin'
+    unless current_user.admin?
       flash[:warning] = 'Only admins may edit features.'
-      redirect_to '/features'
+      redirect_to features_url
     end
   end
 
