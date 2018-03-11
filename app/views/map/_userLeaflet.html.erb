@@ -10,6 +10,20 @@
     var normal_layer = L.tileLayer(mapboxUrl, {id: 'map<%= unique_id %>'}) ; 
     var map<%= unique_id %> = L.map('map<%= unique_id %>').on('load', onMapLoad).setView([<%= @map_lat %>,<%= @map_lon %>], 2);
     normal_layer.addTo(map<%= unique_id %>) ; 
+
+    var greenIcon = L.icon({
+      iconUrl: 'https://sagarpreet-chadha.github.io/leaf-green.png',
+      shadowUrl: 'https://sagarpreet-chadha.github.io/leaf-shadow.png',
+
+      iconSize:     [38, 95], // size of the icon
+      shadowSize:   [50, 64], // size of the shadow
+      iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+      shadowAnchor: [4, 62],  // the same for the shadow
+      popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+
+
+
     function onMapLoad(e){
       $.getJSON("https://alerts.skytruth.org/json?&d=30&channel=local&n=10&l=<%= @map_lat+100 %>,<%= @map_lon-100 %>,<%= @map_lat-100 %>,<%= @map_lon+100 %>" , function(data){
        if (!!data.feed){
@@ -20,7 +34,7 @@
           var url = data.feed[i].link ;
           var skymarker ; 
           if (!isNaN(parseInt(lat)) && !isNaN(parseInt(lng)) ){
-          skymarker = L.marker([parseInt(lat) , parseInt(lng)]).bindPopup(title + "<br><a>" + url +"</a>" + "<br><strong> lat: " + lat + "</strong><br><strong> lon: " + lng + "</strong>") ;
+          skymarker = L.marker([parseInt(lat) , parseInt(lng)] , {icon: greenIcon}).bindPopup(title + "<br><a>" + url +"</a>" + "<br><strong> lat: " + lat + "</strong><br><strong> lon: " + lng + "</strong>") ;
           }
           layerGroup.addLayer(skymarker);
         }
