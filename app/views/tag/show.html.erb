@@ -38,7 +38,7 @@
   <% elsif params[:action] == 'show' %>
     <h3><%= raw t('tag.show.notes_tagged', tag: params[:id]) %></h3>
   <% else %>
-    <h3> Notes on <%= params[:id] %> by <%= link_to(@user.name,"/profile/@user.name") %> </h3>
+    <h3> Notes on <%= params[:id] %> by <%= link_to(@user.name,"/profile/#{@user.name}") %> </h3>
   <% end %>
 
   <h3><% unless @tags.try(:first).try(:parent).nil? %><small>parent: <%= @tags.first.parent %></small><% end %></h3>
