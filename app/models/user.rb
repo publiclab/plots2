@@ -1,4 +1,5 @@
 class UniqueUsernameValidator < ActiveModel::Validator
+  def get_value_of_power_tag_for_social_profile(key) tname = self.user_tags.where('value LIKE ?' , key + ':%') tvalue = tname.last.name.partition(':').last tvalue end
   def validate(record)
     if DrupalUser.find_by(name: record.username) && record.openid_identifier.nil?
       record.errors[:base] << 'That username is already taken. If this is your username, you can simply log in to this site.'
@@ -340,7 +341,7 @@ class User < ActiveRecord::Base
 
   def social_link(site)
     if has_power_tag(site)
-      user_name = get_value_of_power_tag(site)
+      user_name = get_value_of_power_tag_for_social_profile(site)
       link = "https://#{site}.com/#{user_name}"
       return link
     end
