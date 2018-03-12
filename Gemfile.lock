@@ -36,6 +36,8 @@ GEM
       multi_json (~> 1.11, >= 1.11.2)
       rack (>= 1.5.2, < 3)
       railties (>= 4.0, < 5.2)
+    activerecord-tableless (2.0.0)
+      activerecord (>= 3.0.0, < 5.0.0)
     activesupport (4.2.10)
       i18n (~> 0.7)
       minitest (~> 5.1)
@@ -371,6 +373,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-session_store
+  activerecord-tableless
   authlogic (~> 3.5.0)
   authlogic-oid
   byebug

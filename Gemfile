@@ -113,3 +113,11 @@ gem 'mustermann' , '~> 0.4'
 
 #Gem for assertions used in testing
 gem 'rails-dom-testing'
+<<<<<<< Updated upstream
+=======
+#OAuth Based login
+gem 'omniauth', '~> 1.3', '>= 1.3.1'
+gem 'omniauth-facebook', '~> 3.0'
+#Gem for making tableless models 
+gem 'activerecord-tableless'
+>>>>>>> Stashed changes
