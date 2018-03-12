@@ -12,10 +12,7 @@ class HomeController < ApplicationController
     if current_user
       redirect_to '/dashboard'
     else
-      @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments=
-        Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
-          self.activity
-        end
+      set_activity :cache
       @title = I18n.t('home_controller.science_community')
       render template: 'home/home'
     end
@@ -36,10 +33,8 @@ class HomeController < ApplicationController
 
   # route for seeing the front page even if you are logged in
   def front
+    set_activity :cache
     @title = I18n.t('home_controller.environmental_investigation')
-    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
-      self.activity
-    end
     render template: 'home/home'
   end
 
@@ -52,7 +47,7 @@ class HomeController < ApplicationController
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
         .count
       @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count
-      @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = self.activity
+      set_activity
       render template: 'dashboard/dashboard'
     else
       redirect_to '/research'
@@ -69,7 +64,7 @@ class HomeController < ApplicationController
       @wiki_count = Revision.select(:timestamp)
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
         .count
-      @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = self.activity
+      set_activity
       render template: 'dashboard/dashboard'
       @title = I18n.t('home_controller.community_research')
     end
@@ -86,6 +81,8 @@ class HomeController < ApplicationController
       @users = DrupalUser.where('lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?', minlat, maxlat, minlon, maxlon)
     end
   end
+
+  private
 
   def activity
     blog = Tag.find_nodes_by_type('blog', 'note', 1).first
@@ -154,6 +151,17 @@ class HomeController < ApplicationController
       answer_comments
     ]
     response
+  end
+
+  def set_activity(source = :database)
+    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments =
+      if source == :cache
+        Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
+          activity
+        end
+      else
+        activity
+      end
   end
 
 end
