@@ -105,7 +105,6 @@ class UsersController < ApplicationController
       redirect_to "/profile/#{current_user.username}"
     else
       @user = DrupalUser.find_by(name: params[:id])
-      @noteGraph = @user.user.daily_note_tally.to_a.sort
       @profile_user = User.find_by(username: params[:id])
       @title = @user.name
       @notes = Node.research_notes

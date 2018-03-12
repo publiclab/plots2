@@ -202,7 +202,7 @@ class User < ActiveRecord::Base
       (0..span).each do |day|
           time=Time.now.in_time_zone(0).beginning_of_day.to_i
           days[(time-day.days.to_i)] = Node.select(:created)
-                                           .where(uid: drupal_user.uid, 
+                                           .where(uid: self.uid, 
                                                   type: 'note',
                                                   status: 1, 
                                                   created: time - (day-1).days.to_i..time - (day - 2).days.to_i) 
