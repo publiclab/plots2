@@ -80,7 +80,7 @@
     divisions[2] = <%= @graph_comments %>
     console.log(divisions);
 
-    let months = ["1", "2", "3", "4", "5", "6", "7", "8","9", "10", "11", "12"];
+    let months = ["J", "F", "M", "A", "M", "J", "J", "A","S", "O", "N", "D"];
     
     let parents = new Array();
     parents[0] = "#notes";
@@ -156,15 +156,16 @@
     for(i = 0; i < 3; i++){
         let lineGraph = new Chart({
             parent: parents[i], 
-            type: "line", 
+            type: "bar", 
             show_dots: 0,
             heatline: 1,
             height: 115,
-            region_fill: 1, 
+            region_fill: 0, 
             data: data[i],
             x_axis_mode: "tick",
             y_axis_mode: "span",
-            is_series: 1
+            is_series: 1,
+            colors: ['purple']
         });
     }
 
