@@ -8,7 +8,7 @@
  
     <div class="row" id="highlight" style=" text-align: center;">
       <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @users.length || 0 %> contributors</h3>
-      <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @noteCount %> research notes</h3>
+      <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @note_count %> research notes</h3>
       <h3 class="col-md-4 col-xs-12 col-sm-4"><%= @wikis.length %> wiki pages</h3>
     </div>
  
@@ -37,7 +37,7 @@
 
 <% if @wildcard %>
   <p><%= raw t('tag.contributors.wild_card_search_detected', :tag => params[:id]) %></p>
-<% elsif @noteCount.nil? || @noteCount == 0 %>
+<% elsif @note_count.nil? || @note_count == 0 %>
   <p><%= raw t('tag.contributors.no_contributors', :tag => params[:id]) %>:</p>
 <% else %>
   <table class="table">
@@ -47,7 +47,7 @@
     </tr>
     <% if @users %>
       <% @users.each do |user| %>
-        <tr>
+        <tr class="users-row">
           <td><a href='/profile/<%= user.name %>'><i class="fa fa-user"></i> <%= user.name %></a></td>
           <td><a href='/notes/author/<%= user.name %>/<%= params[:id] %>'><%= t('tag.contributors.notes') %> &raquo;</a></td>
         </tr>

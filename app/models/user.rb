@@ -137,6 +137,19 @@ class User < ActiveRecord::Base
     role == r
   end
 
+  def admin?
+    role == 'admin'
+  end
+
+  def moderator?
+    role == 'moderator'
+  end
+
+  def can_moderate?
+    # use instead of "user.role == 'admin' || user.role == 'moderator'"
+    admin? || moderator?
+  end
+
   def tags(limit = 10)
     Tag.where('name in (?)', tagnames).limit(limit)
   end
