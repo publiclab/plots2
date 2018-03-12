@@ -290,6 +290,7 @@ class TagControllerTest < ActionController::TestCase
     assert_not_nil :notes
     assert_not_nil :users
     assert_not_nil :tag
+    assert_select ".users-row", assigns(:users).length
   end
 
   test 'adds comment when awarding a barnstar' do
