@@ -288,10 +288,4 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :redirect
     assert_equal I18n.t('users_controller.no_user_found'), flash[:error]
   end
-  test 'should assign correct value to noteGraph' do
-      user = drupal_users(:jeff)
-      Node.create(type: "note", title: "Hello", uid: user.uid, status: 1)
-      get :profile, id: user.name
-      assert_equal assigns(:noteGraph), user.user.daily_note_tally.to_a.sort
-  end
 end

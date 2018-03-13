@@ -167,6 +167,7 @@ class UserTest < ActiveSupport::TestCase
   test 'daily_note_tally returns the correct type of array' do
       user=users(:bob)
       daily=user.daily_note_tally()
+      assert_not_empty daily
       assert_equal daily.count, 366
   end
 
