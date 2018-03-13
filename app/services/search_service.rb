@@ -61,7 +61,7 @@ class SearchService
         .references(:node)
         .limit(limit)
         .where("node.type": ["note", "page"], "node.status": 1)
-        .order('node.changed DESC')
+        .order('node.changed DESC').map{ |x| x.parent}
     else
       Node.limit(limit)
         .group(:nid)
