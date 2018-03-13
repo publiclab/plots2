@@ -126,6 +126,7 @@ Plots2::Application.routes.draw do
   get 'place/:id' => 'legacy#place'
   get 'tool/:id' => 'legacy#tool'
   get 'people/:id' => 'legacy#people'
+  get 'notes/recent' => 'notes#recent'
   get 'notes/:id' => 'legacy#notes'
   get 'sites/default/files/:filename.:format' => 'legacy#file'
   get 'sites/default/files/imagecache/:size/:filename.:format' => 'legacy#image'

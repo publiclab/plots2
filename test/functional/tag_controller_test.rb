@@ -171,6 +171,19 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#note-graph', 0
   end
 
+  test 'wildcard tag should list answered questions' do
+    get :show, id: 'question:*'
+ 
+    assert_not_nil assigns(:answered_questions)
+  end
+
+  test 'wildcard tag should have a active asked and an inactive answered tab for question' do
+    get :show, id: 'question:*'
+
+    assert_select '#asked-tab.active', 1
+    assert_select '#answered-tab', 1    
+  end
+
   test "wildcard tag show wiki pages with author" do
     get :show_for_author, node_type: 'wiki', id: 'awes*', author: 'Bob'
     assert :success
@@ -277,6 +290,7 @@ class TagControllerTest < ActionController::TestCase
     assert_not_nil :notes
     assert_not_nil :users
     assert_not_nil :tag
+    assert_select ".users-row", assigns(:users).length
   end
 
   test 'adds comment when awarding a barnstar' do
@@ -289,6 +303,21 @@ class TagControllerTest < ActionController::TestCase
            star: 'basic'
 
       assert_equal "[@#{User.first.username}](/profile/#{User.first.username}) awards a <a href=\"//#{request.host}/wiki/barnstars\">barnstar</a> to #{node.author.name} for their awesome contribution!", Comment.last.body
+    end
+  end
+
+  test 'adds comment when creating coauthor' do
+    UserSession.create(users(:jeff))
+    user = users(:bob)
+    node = nodes(:one)
+
+    assert_difference 'Comment.count' do
+      tagname = "with:#{user.name}"
+      post :create,
+           name: tagname,
+           nid: node.id
+
+      assert_equal " [@#{node.author.name}](/profile/#{node.author.name}) has marked #{tagname.split(':')[1]} as a co-author. ", Comment.last.body
     end
   end
 
@@ -464,6 +493,23 @@ class TagControllerTest < ActionController::TestCase
       end
     end
     assert_select '#questions.active', 1
+  end
+
+  test 'should have a active asked and an inactive answered tab for question' do
+    tag = tags(:question)
+
+    get :show_for_author, id: tag.name, author: 'jeff'
+
+    assert_select '#asked-tab.active', 1
+    assert_select '#answered-tab', 1    
+  end
+
+  test 'should list answered questions' do
+    tag = tags(:question)
+
+    get :show_for_author, id: tag.name, author: 'jeff'
+ 
+    assert_not_nil assigns(:answered_questions)
   end
 
   test 'should take node type as note if tag is not a question tag for show_for_author' do

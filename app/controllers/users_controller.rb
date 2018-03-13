@@ -82,11 +82,28 @@ class UsersController < ApplicationController
   end
 
   def list
+    sort_param = params[:sort]
+
+    if params[:id]
+      order_string = 'updated_at DESC'
+    else
+      order_string = 'last_updated DESC'
+    end
+
+    if sort_param == 'username'
+      order_string = 'name ASC'
+    elsif sort_param == 'last_activity'
+      order_string = 'last_updated DESC'
+    elsif sort_param == 'joined'
+      order_string = 'created DESC'
+    end
+
     # allow admins to view recent users
     if params[:id]
       @users = DrupalUser.joins('INNER JOIN rusers ON rusers.username = users.name')
-                          .order("updated_at DESC")
+                          .order(order_string)
                           .where('rusers.role = ?', params[:id])
+                          .where('rusers.status = 1')
                           .page(params[:page])
     else
       # recently active
@@ -94,7 +111,7 @@ class UsersController < ApplicationController
                           .joins(:node)
                           .group('users.uid')
                           .where('node.status = 1')
-                          .order("last_updated DESC")
+                          .order(order_string)
                           .page(params[:page])
     end
     @users = @users.where('users.status = 1') unless current_user && (current_user.role == "admin" || current_user.role == "moderator")
@@ -117,6 +134,8 @@ class UsersController < ApplicationController
       @questions = @user.user.questions
                              .order('node.nid DESC')
                              .paginate(:page => params[:page], :per_page => 24)
+      @likes = (@user.liked_notes.includes([:tag, :comments])+@user.liked_pages)
+                     .paginate(page: params[:page], per_page: 24)
       questions = Node.questions
                             .where(status: 1)
                             .order('node.nid DESC')

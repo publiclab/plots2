@@ -170,5 +170,19 @@ class UserTest < ActiveSupport::TestCase
       assert_not_empty daily
       assert_equal daily.count, 366
   end
+  test 'user roles' do
+    admin = users(:admin)
+    assert admin.admin?
+    assert admin.can_moderate?
+
+    moderator = users(:moderator)
+    assert moderator.moderator?
+    assert moderator.can_moderate?
+
+    basic_user = users(:newcomer)
+    assert_not basic_user.admin?
+    assert_not basic_user.moderator?
+    assert_not basic_user.can_moderate?
+  end
 
 end

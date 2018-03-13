@@ -11,7 +11,7 @@ Do NOT reply to this email; click this link to respond:
 <p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.node.path %>#c<%= @comment.cid %></p>
 <% end %>
 
-<p><b><a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @comment.author.name %>"><%= @comment.author.name %> wrote:</b></p>
+<p><b><a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @comment.author.name %>"><%= @comment.author.name %></a> wrote:</b></p>
 
 <hr /> 
 

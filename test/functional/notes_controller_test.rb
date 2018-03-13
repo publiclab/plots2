@@ -543,6 +543,15 @@ class NotesControllerTest < ActionController::TestCase
     assert !(notes & questions).present?
   end
 
+  test 'should list only research notes with status 1 in recent' do
+    get :recent
+    notes = assigns(:notes)
+    expected = [nodes(:one)]
+    questions = [nodes(:question)]
+    assert (notes & expected).present?
+    assert (notes & questions).present?
+  end
+
   test 'should list only research notes with status 1 in liked' do
     UserSession.create(users(:admin))
     get :liked
@@ -639,4 +648,20 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal "Only author can access the draft note", flash[:notice]
   end
 
+  test 'question deletion should delete all its answers' do
+    UserSession.create(users(:moderator))
+    node = nodes(:question)
+    node.save
+    answer1 = answers(:one)
+    answer1.save
+    answer2 = answers(:two)
+    answer2.save
+    n_count = Node.count
+
+    xhr :post, :delete, id: node.id
+
+    assert_response :success
+    assert_equal Node.count, n_count - 1
+    assert_equal Answer.count, 0
+  end
 end

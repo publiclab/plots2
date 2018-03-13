@@ -83,7 +83,7 @@ class TagController < ApplicationController
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
       nodes = Node.where(status: 1, type: node_type)
-        .includes(:revision, :tag)
+        .includes(:revision, :tag, :answers)
         .references(:term_data, :node_revisions)
         .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
         .paginate(page: params[:page], per_page: 24)
@@ -104,6 +104,10 @@ class TagController < ApplicationController
 
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    @answered_questions = []
+    if @questions
+      @questions.each { |question| @answered_questions << question if question.answers.any? { |answer| answer.accepted } }
+    end
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
@@ -176,6 +180,10 @@ class TagController < ApplicationController
 
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    ans_ques = Answer.where(uid: @user.id, accepted: true).includes(:node).map do |ans|
+      ans.node
+    end
+    @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = "'" + @tagname.to_s + "' by " +  params[:author]
@@ -271,6 +279,13 @@ class TagController < ApplicationController
                            uid: current_user.uid,
                            body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_user.name} for their awesome contribution!")
 
+        elsif tagname.split(':')[0] == "with"
+          user = User.find_by_username_case_insensitive(tagname.split(':')[1])
+          CommentMailer.notify_coauthor(user, node)
+          node.add_comment(subject: 'co-author',
+                           uid: current_user.uid,
+                           body: " @#{current_user.username} has marked #{tagname.split(':')[1]} as a co-author. ")
+
         end
 
         if saved
@@ -323,7 +338,7 @@ class TagController < ApplicationController
   end
 
   def suggested
-    if params[:id].length > 2
+    if !params[:id].empty? && params[:id].length > 2
       @suggestions = []
       # filtering out tag spam by requiring tags attached to a published node
       Tag.where('name LIKE ?', '%' + params[:id] + '%')

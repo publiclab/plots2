@@ -301,6 +301,16 @@ class NotesController < ApplicationController
     render template: 'notes/index'
   end
 
+  def recent
+    @title = I18n.t('notes_controller.recent_research_notes')
+    @wikis = Node.limit(10)
+      .where(type: 'page', status: 1)
+      .order('nid DESC')
+    @notes = Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+    @unpaginated = true
+    render template: 'notes/index'
+  end
+
   # notes with high # of views
   def popular
     @title = I18n.t('notes_controller.popular_research_notes')

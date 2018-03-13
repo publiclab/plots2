@@ -49,7 +49,7 @@ class Node < ActiveRecord::Base
   has_many :drupal_content_field_map_editor, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :images, foreign_key: :nid
   has_many :node_selections, foreign_key: :nid
-  has_many :answers, foreign_key: :nid
+  has_many :answers, foreign_key: :nid, dependent: :destroy
 
   belongs_to :drupal_user, foreign_key: 'uid'
 
@@ -792,6 +792,8 @@ class Node < ActiveRecord::Base
       else
         true
       end
+    elsif tagname == 'format:raw' && user.role != 'admin'
+      errors ? "Only admins may create raw pages." : false
     elsif tagname[0..4] == 'rsvp:' && user.username != tagname.split(':')[1]
       errors ? I18n.t('node.only_RSVP_for_yourself') : false
     elsif tagname == 'locked' && user.role != 'admin'

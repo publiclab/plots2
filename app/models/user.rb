@@ -137,6 +137,19 @@ class User < ActiveRecord::Base
     role == r
   end
 
+  def admin?
+    role == 'admin'
+  end
+
+  def moderator?
+    role == 'moderator'
+  end
+
+  def can_moderate?
+    # use instead of "user.role == 'admin' || user.role == 'moderator'"
+    admin? || moderator?
+  end
+
   def tags(limit = 10)
     Tag.where('name in (?)', tagnames).limit(limit)
   end
@@ -336,6 +349,7 @@ class User < ActiveRecord::Base
         .includes(:revision, :tag)
         .references(:node_revision)
         .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
+        .order('node_revisions.timestamp DESC')
         .uniq
   end
 

@@ -11,8 +11,18 @@ class HomeControllerTest < ActionController::TestCase
   end
 
   test 'should get home' do
+    title = I18n.t('home_controller.science_community')
+
     get :home
     assert_response :success
+    assert_select "title", "&#127880; Public Lab: #{title}"
+  end
+
+  test 'home should redirect to dashboard if logged in' do
+    UserSession.create(users(:bob))
+
+    get :home
+    assert_redirected_to dashboard_url
   end
 
   test 'should get research if not logged by /dashboard' do
