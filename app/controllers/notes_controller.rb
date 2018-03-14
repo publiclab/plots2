@@ -326,9 +326,16 @@ class NotesController < ApplicationController
   end
 
   def rss
-    @notes = Node.limit(20)
-      .order('nid DESC')
-      .where('type = ? AND status = 1 AND created < ?', 'note', (Time.now.to_i - 30.minutes.to_i))
+    limit = 20
+    if params[:moderators]
+      @notes = Node.limit(limit)
+        .order('nid DESC')
+        .where('type = ? AND status = 4', 'note')
+    else
+      @notes = Node.limit(limit)
+        .order('nid DESC')
+        .where('type = ? AND status = 1', 'note')
+    end
     respond_to do |format|
       format.rss do
         render layout: false
