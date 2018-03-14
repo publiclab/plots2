@@ -113,7 +113,6 @@ class NotesController < ApplicationController
         end
         if params[:draft] != true
           if current_user.first_time_poster
-            AdminMailer.notify_node_moderators(@node)
             flash[:first_time_post] = true
             if @node.has_power_tag('question')
               flash[:notice] = I18n.t('notes_controller.thank_you_for_question').html_safe
@@ -326,9 +325,16 @@ class NotesController < ApplicationController
   end
 
   def rss
-    @notes = Node.limit(20)
-      .order('nid DESC')
-      .where('type = ? AND status = 1 AND created < ?', 'note', (Time.now.to_i - 30.minutes.to_i))
+    limit = 20
+    if params[:moderators]
+      @notes = Node.limit(limit)
+        .order('nid DESC')
+        .where('type = ? AND status = 4', 'note')
+    else
+      @notes = Node.limit(limit)
+        .order('nid DESC')
+        .where('type = ? AND status = 1', 'note')
+    end
     respond_to do |format|
       format.rss do
         render layout: false
