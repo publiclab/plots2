@@ -55,13 +55,15 @@ class SearchService
 
   def find_nodes(input, limit = 5)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      Node.search(input)
+      nids = Node.search(input)
         .group(:nid)
         .includes(:node)
         .references(:node)
         .limit(limit)
         .where("node.type": ["note", "page"], "node.status": 1)
-        .order('node.changed DESC').map{ |x| x.parent}
+        .order('node.changed DESC')
+        .collect(&:nid)
+      Node.find nids
     else
       Node.limit(limit)
         .group(:nid)
