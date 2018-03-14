@@ -142,7 +142,7 @@
 
 <div class="col-md-9">
 
-  <div id="note-graph" style="overflow: auto; text-align:center; border: 1px solid #E5E5E5; margin-bottom: 10px;"></div>
+  <div id = "note-graph" style = "overflow: auto; text-align:center; border: 1px solid #E5E5E5; margin-bottom: 10px;"></div>
 
   <h3 style="margin-top:0;"><%= @user.name %>
     <small>
@@ -242,9 +242,9 @@
   <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }", parent: :profile } %>
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
+<script src = "https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 
-<script type="text/javascript">
+<script type = "text/javascript">
   $('#btn-token').click(function() {
     alert("Your access token is: <%= @user.user.token %>");
   });

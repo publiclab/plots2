@@ -213,7 +213,7 @@ class User < ActiveRecord::Base
   def daily_note_tally(span = 365)
       days = {}
       (0..span).each do |day|
-          time=Time.now.in_time_zone(0).beginning_of_day.to_i
+          time = Time.now.in_time_zone(0).beginning_of_day.to_i
           days[(time-day.days.to_i)] = Node.select(:created)
                                            .where(uid: self.uid, 
                                                   type: 'note',
