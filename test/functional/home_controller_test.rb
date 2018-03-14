@@ -72,13 +72,11 @@ class HomeControllerTest < ActionController::TestCase
   test 'should change i18n-locale to English' do
     I18n.locale = 'en'
     assert_equal 'en', I18n.locale.to_s
-    assert true
   end
 
   test 'should change i18n-locale to Deutsch' do
     I18n.locale = 'de'
     assert_equal 'de', I18n.locale.to_s
-    assert true
   end
 
   test 'should choose i18n for layout/alerts' do
@@ -94,7 +92,6 @@ class HomeControllerTest < ActionController::TestCase
       session[:openid_return_to] = '/home'
       get :dashboard
       assert_select 'a[href=/openid/resume]', I18n.t('layout._alerts.approve_or_deny') + ' &raquo;'
-      assert true
     end
   end
 
@@ -110,7 +107,6 @@ class HomeControllerTest < ActionController::TestCase
       get 'home'
       assert_template 'home/home'
       assert_select 'h2.the-problem', I18n.t('home.home.the_problem.title')
-      assert true
     end
   end
 end
