@@ -18,7 +18,7 @@
       popupAnchor:  [-5, -5] // point from which the popup should open relative to the iconAnchor
     });
 
-
+    map<%= unique_id %>.addControl(new L.Control.Fullscreen()); // to go full-screen
 
     function onMapLoad(e){
       $.getJSON("https://alerts.skytruth.org/json?&d=30&channel=local&n=10&l=<%= @map_lat+100 %>,<%= @map_lon-100 %>,<%= @map_lat-100 %>,<%= @map_lon+100 %>" , function(data){
@@ -41,7 +41,7 @@
       "Default": normal_layer,
     };
     var overlayMaps = {
-      "Skynet": layerGroup
+      "Skynet": layerGroup    // we can add more layers here !
     }; 
     L.control.layers(baseMaps , overlayMaps).addTo(map<%= unique_id %>);
     <% if !(@map_blurred == true) %>
