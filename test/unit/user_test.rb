@@ -184,4 +184,5 @@ class UserTest < ActiveSupport::TestCase
                     password_confirmation: 'nez',
                     email: '你好@xyz.com')
     assert_not user.save({})
+  end
 end
