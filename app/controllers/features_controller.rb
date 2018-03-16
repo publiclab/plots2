@@ -12,14 +12,14 @@ class FeaturesController < ApplicationController
   end
 
   def new
-    if current_user.role != 'admin'
+    unless current_user.admin?
       flash[:warning] = 'Only admins may edit features.'
       redirect_to '/features'
     end
   end
 
   def edit
-    if current_user.role != 'admin'
+    if !current_user.admin?
       flash[:warning] = 'Only admins may edit features.'
       redirect_to '/features'
     else
@@ -28,7 +28,7 @@ class FeaturesController < ApplicationController
   end
 
   def create
-    if current_user.role != 'admin'
+    if !current_user.admin?
       flash[:warning] = 'Only admins may edit features.'
       redirect_to '/features?_=' + Time.now.to_i.to_s
     else
@@ -63,7 +63,7 @@ class FeaturesController < ApplicationController
   end
 
   def update
-    if current_user.role != 'admin'
+    if !current_user.admin?
       flash[:warning] = 'Only admins may edit features.'
       redirect_to '/features?_=' + Time.now.to_i.to_s
     else
