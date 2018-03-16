@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
 
   acts_as_authentic do |c|
     c.openid_required_fields = %i(nickname email)
-    c.validates_format_of_email_field_options = { with: /@/ }
+    c.validates_format_of_email_field_options = { with:  /\A[\w+-.]+@[a-z\d-.]+.[a-z]+\z/i }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
 
