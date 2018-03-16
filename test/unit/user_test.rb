@@ -178,11 +178,10 @@ class UserTest < ActiveSupport::TestCase
     assert_not basic_user.moderator?
     assert_not basic_user.can_moderate?
   end
-     test 'invalid email address' do
+  test 'user email validation' do
     user = User.new(username: 'zen',
                     password: 'nez',
                     password_confirmation: 'nez',
                     email: '你好@xyz.com')
     assert_not user.save({})
-  end
 end
