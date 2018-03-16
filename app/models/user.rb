@@ -39,6 +39,11 @@ class User < ActiveRecord::Base
   before_create :create_drupal_user
   before_save :set_token
   after_destroy :destroy_drupal_user
+  
+  def get_value_of_power_tag_for_social_profile(key)
+    tname = self.user_tags.where('value LIKE ?' , key + ':%') 
+    tvalue = tname.last.name.partition(':').last tvalue
+  end
 
   def self.search(query)
     User.where('MATCH(username, bio) AGAINST(?)', query)
@@ -340,7 +345,7 @@ class User < ActiveRecord::Base
 
   def social_link(site)
     if has_power_tag(site)
-      user_name = get_value_of_power_tag(site)
+      user_name = get_value_of_power_tag_for_social_profile(site)
       link = "https://#{site}.com/#{user_name}"
       return link
     end
