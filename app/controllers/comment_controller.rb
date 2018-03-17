@@ -2,11 +2,11 @@ class CommentController < ApplicationController
   include CommentHelper
 
   respond_to :html, :xml, :json
-  before_filter :require_user, only: %i[create update delete]
+  before_filter :require_user, only: %i(create update make_answer delete)
 
   def index
     @comments = Comment.paginate(page: params[:page], per_page: 30)
-                       .order('timestamp DESC')
+      .order('timestamp DESC')
     render template: 'comments/index'
   end
 
@@ -42,7 +42,7 @@ class CommentController < ApplicationController
 
   def create_by_token
     @node = Node.find params[:id]
-    @user = User.find_by_username params[:username]
+    @user = User.find_by(username: params[:username])
     @body = params[:body]
     @token = request.headers["HTTP_TOKEN"]
 
@@ -142,4 +142,35 @@ class CommentController < ApplicationController
       prompt_login 'Only the comment or post author can delete this comment'
     end
   end
+
+  def make_answer
+    @comment = Comment.find params[:id]
+    comments_node_and_path
+
+    if @comment.uid == current_user.uid ||
+       current_user.role == 'admin' ||
+       current_user.role == 'moderator'
+
+      @answer = Answer.new(
+          nid: @comment.nid,
+          uid: @comment.uid,
+          content: @comment.comment,
+          created_at: @comment.created_at,
+          updated_at: @comment.created_at
+      )
+
+      if @answer.save && @comment.delete
+        @answer_id = @comment.aid
+        respond_with do |format|
+          format.js { render template: 'comment/make_answer' }
+        end
+      else
+        flash[:error] = 'The comment could not be promoted to answer.'
+        render text: 'failure'
+      end
+    else
+      prompt_login 'Only the comment author can promote this comment to answer'
+    end
+  end
+
 end

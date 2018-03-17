@@ -1,0 +1,39 @@
+# Start with Spotifys style guide as a base then customize from there
+inherit_from:
+  - http://shopify.github.io/ruby-style-guide/rubocop.yml
+  - .rubocop_todo.yml
+
+# Apply rule to all cops
+AllCops:
+  Include:
+    - '/Rakefile'
+    - '/config.ru'
+  Exclude:
+    - 'vendor/*'
+    - 'bin/*'
+    - 'doc/*'
+    - 'log/*'
+    - 'db/**/*'
+    - 'Gemfile'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'lib/**/*'
+    - 'test/**/*'
+    - 'public/**/*'
+    - 'Dangerfile'
+  TargetRubyVersion: '2.4'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Max: 303
+
+Metrics/ClassLength:
+  Max: 660
+
+Style/RegexpLiteral:
+  Enabled: false

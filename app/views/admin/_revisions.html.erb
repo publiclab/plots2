@@ -10,7 +10,7 @@
     <tr id="n<%= revision.vid %>">
       <td>
         <i class="fa fa-file"></i> <a href="<%= revision.parent.path %>"><%= revision.title.truncate(40) %></a><br />
-        <span style="color:grey;"><%= time_ago_in_words(revision.timestamp) %> ago</span>
+        <span style="color:grey;"><%= time_ago_in_words(revision.timestamp.seconds.ago) %> ago</span>
       </td>
       <td style="width:200px;">
         <%= revision.body.truncate(40) %>

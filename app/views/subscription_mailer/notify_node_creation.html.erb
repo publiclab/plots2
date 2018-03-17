@@ -10,7 +10,7 @@
 
 <hr /> 
 
-<% if @node.main_image %><a style="margin-bottom:10px;" href="https:<%= @node.main_image.path(:original) %>"><img src="<%= @node.main_image.path(:default) %>" /></a><% end %>
+<% if @node.main_image %><a style="margin-bottom:10px;" href="<%= @node.path %>"><img src="<%= @node.main_image.path(:default) %>" /></a><% end %>
 
 <%= raw auto_link(@node.latest.render_body_email(ActionMailer::Base.default_url_options[:host]), :sanitize => false) %>
 

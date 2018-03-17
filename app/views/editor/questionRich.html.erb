@@ -5,6 +5,16 @@
 
 <link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
 
+<!-- required for TagsModule -->
+<script src="/lib/typeahead.js/dist/typeahead.jquery.js"></script>
+<script src="/lib/typeahead.js/dist/bloodhound.js"></script>
+<script src="/lib/bootstrap-tokenfield/dist/bootstrap-tokenfield.js"></script>
+
+<!-- required for MainImageModule -->
+<script src="/lib/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="/lib/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="/lib/jquery-file-upload/js/jquery.fileupload.js"></script>
+
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 
 <div class="alert alert-success">This is the new rich Questions form. <a href="/questions/new?legacy=true">Click here for the legacy form</a>.</div>
@@ -100,7 +110,7 @@
     </div>
       
   </div>
-
+</div>
 
 <script>
 
@@ -109,6 +119,9 @@
   (function() {
 
     editor = new PL.Editor({
+      data: {
+        token: $('meta[name="csrf-token"]').attr('content')
+      },
       textarea:    $('.ple-textarea')[0],
       <% if @main_image %>
         mainImageUrl:   '<%= @main_image %>',

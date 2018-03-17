@@ -54,21 +54,9 @@ function adjust_anchor_for_banner(offset) {
 $(window).load(function() { adjust_anchor_for_banner(); })
 $(window).on('hashchange', adjust_anchor_for_banner)
 
-/* google analytics */
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-180781-33']);
-_gaq.push(['_setDomainName', 'publiclab.org']);
-_gaq.push(['_setAllowLinker', true]);
-_gaq.push(['_trackPageview']);
 
 jQuery(document).ready(function($) {
-
-  // Google Analytics
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  //ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-  ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-
+  
   /* facebook buttons ugh */
   (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];

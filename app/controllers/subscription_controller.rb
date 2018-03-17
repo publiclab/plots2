@@ -5,7 +5,7 @@
 class SubscriptionController < ApplicationController
 
   respond_to :html, :xml, :json
-  before_filter :require_user, :only => [:create, :delete, :index]
+  before_filter :require_user, :only => [:create, :delete, :index, :digest]
 
   def index
     @title = "Subscriptions"
@@ -14,7 +14,7 @@ class SubscriptionController < ApplicationController
 
   # return a count of subscriptions for a given tag
   def tag_count
-    render :json => TagSelection.count(params[:tid], :conditions => {:following => true})
+    render json: TagSelection.where(tid: params[:tid], following: true)
   end
 
   # for the current user, return whether is presently liked or not
@@ -34,7 +34,7 @@ class SubscriptionController < ApplicationController
     if current_user
       # assume tag, for now
       if params[:type] == "tag"
-        tag = Tag.find_by_name(params[:name])
+        tag = Tag.find_by(name: params[:name])
         if tag.nil?
           # if the tag doesn't exist, we should create it!
           # this could fail validations; error out if so... 
@@ -53,7 +53,7 @@ class SubscriptionController < ApplicationController
         end
 
         # test for uniqueness, handle it as a validation error if you like
-        if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length > 0
+        if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
           flash[:error] = "You are already subscribed to '#{params[:name]}'"
           redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
         else
@@ -86,7 +86,7 @@ class SubscriptionController < ApplicationController
   def delete
     # assume tag, for now
     if params[:type] == "tag"
-      id = Tag.find_by_name(params[:name]).tid
+      id = Tag.find_by(name: params[:name]).tid
     end
     if id.nil?
       flash[:error] = "You are not subscribed to '#{params[:name]}'"
@@ -110,11 +110,19 @@ class SubscriptionController < ApplicationController
     end
   end
 
+  def digest
+    @wikis = current_user.content_followed_in_period(Time.now - 1.week, Time.now)
+             .paginate(page: params[:page], per_page: 100)
+
+    @paginated = true
+    render :template => "subscriptions/digest"
+  end
+
   private
 
   def set_following(value,type,id)
     # add swtich statement for different types: tag, node, user
-    if type == 'tag' && Tag.find_by_tid(id)
+    if type == 'tag' && Tag.find_by(tid: id)
       # Create the entry if it isn't already created.
       # assume tag, for now: 
       subscription = TagSelection.where(:user_id => current_user.uid,

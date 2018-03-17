@@ -1,4 +1,4 @@
-<div class="col-md-6 note-container-note">
+<div class="col-md-6 note-container-note" style="overflow: hidden;">
   <div class="note note-default<% if node.status == 4 %> moderated<% end %>">
 
     <%= render partial: 'dashboard/node_moderate', locals: { node: node } %>

@@ -1,6 +1,6 @@
 <div class="container">
 
-<%= form_for @user_session, :as => :user_session, :url => { :action => "create" }, :html => {:class => "form col-md-6 offset-3"} do |f| %>
+<%= form_for :user_session, :as => :user_session, :url => { :action => "create" }, :html => {:class => "form col-md-6 offset-3"} do |f| %>
 
   <h2><%= raw t('user_sessions.new.log_in_or_sign_up', :url1 => "/signup") %></h2>
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
@@ -10,14 +10,14 @@
   <div class="form-group">
 
     <label for="username"><%= t('user_sessions.new.username') %></label>
-    <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username' } %>
+    <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username-signup' } %>
 
   </div>
 
   <div class="form-group">
 
     <label for="password"><%= t('user_sessions.new.password') %></label>
-    <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password' } %>
+    <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-signup' } %>
 
   </div>
  

@@ -5,17 +5,6 @@
   <% if params[:controller] != 'questions' %>
     <%= feature('sidebar-feature') %>
   <% end %>
-  
-  <div class="hidden-xs hidden-sm">
-    <p><i class="fa fa-envelope"></i> <a href="/lists"><%= t('sidebar._user.discussion_list') %> &raquo;</a></p>
-    <p><%= t('sidebar._user.work_happens_on_discussion_lists') %> <a href="/lists"><%= t('sidebar._user.join_one_today') %></a></p>
-    <!--<p><a href="/wiki/barnraising-2013"><img src="/images/barnraising-2013.png" width="100%" /></a></p>-->
-    <hr />
-  </div>
-
-  <% if params[:controller] == 'questions' %>
-    <%= render partial: 'tag/sorting' %>
-  <% end %>
 
   <hr/>
 

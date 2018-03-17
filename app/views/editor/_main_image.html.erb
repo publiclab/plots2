@@ -5,8 +5,8 @@
   <img class="img-rounded" id="leadImage" style="width:100%;<% unless (@node && @node.main_image) || params[:main_image] || params[:i] %>display:none;<% end %>"
        src="<% if @node && @node.main_image %>
          <%= @node.main_image.path(:default) %>
-       <% elsif params[:main_image] && Image.find_by_id(params[:main_image]) %>
-         <%= Image.find_by_id(params[:main_image]).path %>
+       <% elsif params[:main_image] && Image.find_by(id: params[:main_image]) %>
+         <%= Image.find_by(id: params[:main_image]).path %>
        <% elsif @image %>
          <%= @image.path(:default) %>
        <% end %>" />

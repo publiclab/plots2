@@ -2,7 +2,7 @@ Hi! There's been a new comment to your answer on '<a href='https://<%= ActionMai
 
 <p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.parent.path(:question) %>#answer-<%= @comment.aid %>-comment-<%= @comment.cid %></p>
 
-<p><b><a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @comment.author.name %>"><%= @comment.author.name %> wrote:</b></p>
+<p><b><a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @comment.author.name %>"><%= @comment.author.name %></a> wrote:</b></p>
 
 <hr /> 
 

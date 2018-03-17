@@ -16,7 +16,6 @@
   <div class="sidebar-nav hidden-sm">
     <ul class="nav nav-list">
       <li class="nav-header"><%= t('wiki.edit.more') %></li>
-      <li><a href="/wiki/getting-started"><%= t('wiki.edit.getting_started') %></a></li>
       <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><%= t('wiki.edit.revisions_for_this_page') %></a></li><% end %>
       <li><a href="/wiki/posting-research"><%= t('wiki.edit.about_posting_research') %></a></li>
       <li><a href="/wiki/authoring-help#Advanced+formatting"><%= t('wiki.edit.advanced_formatting') %></a></li>
@@ -34,14 +33,14 @@
     end
   %>
 
-  <%= form_for @node, :as => :node, :url => url do |f| %>
+  <%= form_for :node, :as => :node, :url => url do |f| %>
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
   <% end %>
 
-  <%= form_for @revision, :as => :revision, :url => url, :html => {:class => "form well"} do |f| %>
+  <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well wiki-form"} do |f| %>
 
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
-  
+
     <%= render :partial => "editor/main_image" %>
 
     <div class="col-md-9 col-md-pull-3">
@@ -51,17 +50,17 @@
       <% else %>
         <h3><%= t('wiki.edit.create_page') %>: <i><%=h params[:id] %></i></h3>
       <% end %>
- 
+
       <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
       <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
       <input id="images_input" type="hidden" name="images" value="" />
 
       <input id="taginput" type="hidden" name="tags" value="<%= params[:tags] %>" />
- 
+
       <div class="form-group">
         <input tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:id] %><% end %>">
       </div>
- 
+
       <script>
         (function(){
           $D = {
@@ -70,11 +69,12 @@
           }
         })()
       </script>
- 
+
       <%= render :partial => 'editor/editor' %>
- 
+
       <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= t('wiki.edit.publish') %></a>
       <a tabindex="6" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
+      <a class="btn btn-default btn-lg" href="/wiki/<%= params["id"] %>">Cancel</a>
 
     </div>
 
@@ -88,9 +88,13 @@
     <script>
       (function(){
         publish = function(e) {
-            $('#new_revision').submit()
+          $('form.wiki-form').submit()
         }
-        $(".publish").bind("click",publish)
+        publishOnEnter = function(e) {
+          if (e && e.keyCode == 13) $('form.wiki-form').submit()
+        }
+        $(".publish").bind("click", publish)
+        $(".publish").bind("keypress", publishOnEnter)
       })()
     </script>
 

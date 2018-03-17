@@ -5,7 +5,7 @@ require 'rack/cors'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  Bundler.require(*Rails.groups)
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
@@ -19,7 +19,6 @@ module Plots2
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
 
-    # attempting to load /lib/solr_toggle/solr_toggle.rb - SolrToggle
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
 
     # Only load the plugins named here, in the order given (default is alphabetical).
@@ -72,6 +71,7 @@ module Plots2
     config.i18n.fallbacks = [:en]
 
     config.action_view.sanitized_allowed_tags = ['iframe', 'embed']
+    config.action_dispatch.default_headers.merge!({'X-Frame-Options' => 'ALLOWALL'})
 
     # Search API
     # Auto-load API and its subdirectories

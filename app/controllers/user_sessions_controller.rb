@@ -1,4 +1,6 @@
 class UserSessionsController < ApplicationController
+
+  before_action :require_no_user, :only => [:new]
   def new
     @title = I18n.t('user_sessions_controller.log_in')
   end
@@ -6,18 +8,18 @@ class UserSessionsController < ApplicationController
   def create
     params[:user_session][:username] = params[:openid] if params[:openid] # second runthrough must preserve username
     username = params[:user_session][:username] if params[:user_session]
-    @user = User.find_by_username(username)
+    @user = User.find_by(username: username)
 
     # try finding by email, if that exists
     if @user.nil? && !User.where(email: username).empty?
-      @user = User.find_by_email(username)
+      @user = User.find_by(email: username)
       params[:user_session][:username] = @user.username
     end
 
-    if params[:user_session].nil? || @user && @user.drupal_user.status == 1 || @user.nil?
+    if params[:user_session].nil? || @user&.drupal_user.status == 1 || @user.nil?
       # an existing native user
       if params[:user_session].nil? || @user
-        if @user && @user.crypted_password.nil? # the user has not created a pwd in the new site
+        if @user&.crypted_password.nil? # the user has not created a pwd in the new site
           params[:user_session][:openid_identifier] = 'https://old.publiclab.org/people/' + username + '/identity' if username
           params[:user_session].delete(:password)
           params[:user_session].delete(:username)
@@ -52,7 +54,7 @@ class UserSessionsController < ApplicationController
           end
         end
       else # not a native user
-        if !DrupalUsers.find_by_name(username).nil?
+        if !DrupalUser.find_by(name: username).nil?
           # this is a user from the old site who hasn't registered on the new site
           redirect_to controller: :users, action: :create, user: { openid_identifier: username }
         else # totally new user!
@@ -60,7 +62,7 @@ class UserSessionsController < ApplicationController
           redirect_to '/signup'
         end
       end
-    elsif params[:user_session].nil? || @user && @user.drupal_user.status == 5 || @user.nil?
+    elsif params[:user_session].nil? || @user&.drupal_user.status == 5 || @user.nil?
       flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
       redirect_to '/'
     else
@@ -73,6 +75,12 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.find
     @user_session.destroy
     flash[:notice] = I18n.t('user_sessions_controller.logged_out')
-    redirect_to root_url
+    redirect_to '/' + '?_=' + Time.now.to_i.to_s
+  end
+
+  def logout_remotely
+    current_user.reset_persistence_token!
+    flash[:notice] = I18n.t('user_sessions_controller.logged_out')
+    redirect_to '/' + '?_=' + Time.now.to_i.to_s
   end
 end

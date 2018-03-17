@@ -11,22 +11,43 @@ class HomeControllerTest < ActionController::TestCase
   end
 
   test 'should get home' do
+    title = I18n.t('home_controller.science_community')
+
     get :home
+    assert_response :success
+    assert_select "title", "&#127880; Public Lab: #{title}"
+  end
 
+  test 'home should redirect to dashboard if logged in' do
+    UserSession.create(users(:bob))
+
+    get :home
+    assert_redirected_to dashboard_url
+  end
+
+  test 'should get research if not logged by /dashboard' do
+    get :dashboard
+    assert_redirected_to :research
+    get :research
     assert_response :success
   end
 
-  test 'should get dashboard if not logged in' do
-    get :dashboard
-
+  test 'should get research if not logged' do
+    get :research
     assert_response :success
   end
 
-  test 'should get dashboard' do
-    UserSession.create(rusers(:bob))
-
+  test 'should get dashboard if logged in by /research' do
+    UserSession.create(users(:bob))
+    get :research
+    assert_redirected_to :dashboard
     get :dashboard
+    assert_response :success
+  end
 
+  test 'should get dashboard if logged in' do
+    UserSession.create(users(:bob))
+    get :dashboard
     assert_response :success
   end
 
@@ -37,7 +58,7 @@ class HomeControllerTest < ActionController::TestCase
                         .where('node_revisions.status = 1')
     @wikis += revisions
 
-    get :dashboard
+    get :research
 
     @wikis.each do |obj|
       if obj.class == Revision && obj.status == 1
@@ -51,13 +72,11 @@ class HomeControllerTest < ActionController::TestCase
   test 'should change i18n-locale to English' do
     I18n.locale = 'en'
     assert_equal 'en', I18n.locale.to_s
-    assert true
   end
 
   test 'should change i18n-locale to Deutsch' do
     I18n.locale = 'de'
     assert_equal 'de', I18n.locale.to_s
-    assert true
   end
 
   test 'should choose i18n for layout/alerts' do
@@ -69,11 +88,10 @@ class HomeControllerTest < ActionController::TestCase
 
       @controller = old_controller
 
-      UserSession.create(rusers(:bob))
+      UserSession.create(users(:bob))
       session[:openid_return_to] = '/home'
       get :dashboard
       assert_select 'a[href=/openid/resume]', I18n.t('layout._alerts.approve_or_deny') + ' &raquo;'
-      assert true
     end
   end
 
@@ -89,7 +107,6 @@ class HomeControllerTest < ActionController::TestCase
       get 'home'
       assert_template 'home/home'
       assert_select 'h2.the-problem', I18n.t('home.home.the_problem.title')
-      assert true
     end
   end
 end

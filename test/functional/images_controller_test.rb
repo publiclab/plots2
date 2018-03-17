@@ -10,14 +10,14 @@ class ImagesControllerTest < ActionController::TestCase
   end
 
   #  test "normal user should not delete image" do
-  #    UserSession.new(users(:bob))
+  #    UserSession.new(drupal_users(:bob))
   #    post :delete, id: Image.last.id
   #    assert_equal flash[:error], "Only admins can delete wiki pages."
   #    assert_redirected_to "/wiki/" + title.parameterize # use node_path?
   #  end
 
   #  test "admin user should delete image" do
-  #    UserSession.new(users(:admin))
+  #    UserSession.new(drupal_users(:admin))
   #    post :delete, id: Image.last.id
   #    assert_equal flash[:notice], "Wiki revision deleted."
   #    assert_redirected_to "/wiki/" + title.parameterize # use node_path?

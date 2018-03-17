@@ -1,0 +1,25 @@
+  <% if haslocation == true %>
+    <% unique_id = rand(100) %>
+    <style>
+      #map<%= unique_id %> {  height:300px; width:292px; margin: auto; position: relative;}
+    </style>
+    <div class="leaflet-map" id="map<%= unique_id %>"></div>
+    <script> 
+      var map = L.map('map<%= unique_id %>').setView([<%= @map_lat %>,<%= @map_lon %>], 7);
+      L.tileLayer("//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png").addTo(map);
+      <% if !(@map_blurred == true) %>
+      L.marker([<%= @map_lat %>, <%= @map_lon %>]).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= @profile_user.username  %>'><%= @profile_user.username  %> </a>");
+      <% end %>
+    </script>
+  <% else %>
+    <div id="map_template" style="position: relative; display: inline-block;">
+      <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:300px; margin: 0; position: relative; margin-right: -10px;">  
+      <button type='button' class='btn btn-default btn-lg' onclick='addLocation()' style="position: absolute;    position: absolute;top: 41% ; left: 15% ;"> <strong> Share your Location </strong> </button>
+      <p><i><small>Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a> </small></i></p>
+    </div> 
+    <script>
+      function addLocation() {
+        $('.blurred-location-input').click() ;
+      }
+    </script>
+  <% end %>

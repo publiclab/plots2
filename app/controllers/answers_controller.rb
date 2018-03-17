@@ -41,7 +41,7 @@ class AnswersController < ApplicationController
        current_user.role == 'admin' ||
        current_user.role == 'moderator'
       respond_to do |format|
-        if @answer.delete
+        if @answer.destroy
           format.html { redirect_to @answer.node.path(:question), notice: 'Answer deleted' }
           format.js
         else
@@ -65,6 +65,7 @@ class AnswersController < ApplicationController
         else
           @answer.accepted = true
           @answer.save
+          @answer.node.add_tag('answered', @answer.author)
           AnswerMailer.notify_answer_accept(@answer.author, @answer).deliver
         end
         @answer.reload

@@ -13,18 +13,21 @@ class UserTagsController < ApplicationController
 
     if current_user && (current_user.role == 'admin' || current_user == user)
       if params[:name]
-        name = params[:name].to_s.downcase
-        if UserTag.exists?(user.id, name)
-          @output[:errors] << I18n.t('user_tags_controller.tag_already_exists')
-          exist = true
-        end
-
-        unless exist
-          user_tag = user.user_tags.build(value: name)
-          if user_tag.save
-            @output[:saved] << [name, user_tag.id]
-          else
-            @output[:errors] << I18n.t('user_tags_controller.cannot_save_value')
+        tagnames = params[:name].split(',')
+        tagnames.each do |tagname|
+          name = tagname.downcase
+          if UserTag.exists?(current_user.id, name)
+            @output[:errors] << I18n.t('user_tags_controller.tag_already_exists')
+            exist = true
+          end
+ 
+          unless exist
+            user_tag = user.user_tags.build(value: name)
+            if user_tag.save
+              @output[:saved] << [name, user_tag.id]
+            else
+              @output[:errors] << I18n.t('user_tags_controller.cannot_save_value')
+            end
           end
         end
       else
@@ -42,7 +45,7 @@ class UserTagsController < ApplicationController
       else
         flash[:notice] = I18n.t('user_tags_controller.tag_created', tag_name: @output[:saved][0][0]).html_safe
       end
-      redirect_to info_path, id: params[:id]
+      redirect_to '/profile/' + user.username
     end
   end
 
@@ -53,11 +56,15 @@ class UserTagsController < ApplicationController
     }
     message = ''
 
-    begin
-      @user_tag = UserTag.find(params[:id])
-      if current_user.role == 'admin' || @user_tag.user == current_user
-        if @user_tag
-          @user_tag.destroy
+    begin  
+      @user_tag = UserTag.where(uid: params[:id], value: params[:name])
+      if(!@user_tag.nil?)
+          @user_tag = @user_tag.first 
+      end 
+  
+      if current_user.role == 'admin' || params[:id].to_i == current_user.id
+        if (!@user_tag.nil? && @user_tag.user == current_user) || (!@user_tag.nil? && current_user.role == 'admin')
+          UserTag.where(uid: params[:id] , value: params[:name]).destroy_all    
           message = I18n.t('user_tags_controller.tag_deleted')
           output[:status] = true
         else

@@ -2,20 +2,20 @@
 # https://github.com/publiclab/plots2
 
 FROM ruby:2.3
-MAINTAINER Sebastian Silva "sebastian@fuentelibre.org"
 
-LABEL "This image deploys Plots2."
+LABEL maintainer="Sebastian Silva <sebastian@fuentelibre.org>"
+LABEL description="This image deploys Plots2."
 
 # Set correct environment variables.
 RUN mkdir -p /app
 ENV HOME /root
-ENV PHANTOMJS_VERSION 2.1.1 
+ENV PHANTOMJS_VERSION 2.1.1
 
-RUN echo \
-   'deb ftp://ftp.us.debian.org/debian/ jessie main\n \
-    deb ftp://ftp.us.debian.org/debian/ jessie-updates main\n \
-    deb http://security.debian.org jessie/updates main\n' \
-    > /etc/apt/sources.list
+#RUN echo \
+#   'deb ftp://ftp.us.debian.org/debian/ jessie main\n \
+#    deb ftp://ftp.us.debian.org/debian/ jessie-updates main\n \
+#    deb http://security.debian.org jessie/updates main\n' \
+#    > /etc/apt/sources.list
 
 # Install dependencies
 RUN apt-get update -qq && apt-get install -y bundler libmysqlclient-dev ruby-rmagick libfreeimage3 nodejs-legacy npm wget openjdk-7-jre openjdk-7-jdk procps

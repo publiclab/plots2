@@ -1,4 +1,4 @@
-<% cache('feature_anniversary-banner') do %>
+<% cache('feature_anniversary-banner', skip_digest: true) do %>
   <%= feature('anniversary-banner') %>
 <% end %>
 
@@ -43,21 +43,23 @@
         <li class="dropdown">
 
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Take Action <b class="caret"></b>
+            Get Involved <b class="caret"></b>
           </a>
 
           <ul class="dropdown-menu">
-
-            <li><a href="/dashboard">See the latest research</a></li>
-	    <!-- <li><a href="">Environmental issues</a></li> -->
-            <li><a href="/questions">Ask a question</a></li>
-            <li><a href="/people">Greet People</a></li>
-            <li><a href="/methods">Discover Methods</a></li>
-            <li><a href="/archive">Browse the Archive</a></li>
-            <!-- <li><a href="">Start a local investigation</a></li> -->
-            <!-- <li><a href="">Join a Working Group</a></li> -->
-            <!-- <li><a href="">Develop Tools</a></li> -->
-
+            <li><a href="/events">Attend an event</a></li>
+	    <li><a href="/chat">Chat online</a></li>
+	    <li><a href="/questions">Ask a question</a></li>
+            <li><a href="/tags">Find a topic you care about</a></li>
+            <li><a href="/requests">Respond to a request</a></li>
+            <li><a href="/dashboard">Browse recent research</a></li>
+            <li><a href="/methods">Discover methods</a></li>
+	    <li><a href="/kits">Contribute a kit</a></li>
+            <% if !current_user %>
+              <li><a href="/signup">Create an account</a></li>
+            <% end %>
+            <li><a href="/post">Post your work</a></li>
+            <li class="hidden-lg hidden-xl"><a href="/donate">Donate</a></li>
           </ul>
 
         </li>
@@ -65,7 +67,7 @@
 
       <form id="searchform" class="navbar-form navbar-left" role="search" autocomplete="off">
         <div class="form-group">
-          <input tabindex="1" id="searchform_input" type="text" class="form-control search-query typeahead" qryType="all" placeholder="<%= t('layout._header.search') %>"/>
+          <input tabindex="1" id="searchform_input" type="text" class="form-control search-query typeahead" qryType="all" placeholder="<%= t('layout._header.search') %>" required/>
         </div>
         <button type="submit" class="btn btn-primary" style="background:#444;border-color:#222;"><i class="fa fa-search"></i></button>
       </form>
@@ -88,29 +90,15 @@
             <li class="divider"></li>
             <li><a href="/media"><%= t('layout._header.about.press_and_media') %></a></li>
             <li><a href="/wiki/contact"><%= t('layout._header.about.contact') %></a></li>
+            <li class="hidden-lg hidden-xl"><a href="//store.publiclab.org"><%= t('layout._header.store') %></a></li>
           </ul>
         </li>
 
-        <li class="dropdown hidden-xs hidden-sm<%= ' hidden-md' unless current_user %>">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Connect <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-
-	    <!-- <li><a href="">Calls</a></li> -->
-            <li><a href="/events">Events</a></li>
-            <li><a href="/signup">Website</a></li>
-            <li><a href="/lists">Discussion lists</a></li>
-            <li><a href="/chat">Chat</a></li>
-	    <!-- <li><a href="">Start a project</a></li> -->
-
-          </ul>
+        <li class="nav-button-wrapper hidden-xs hidden-sm hidden-md">
+          <a class="btn btn-sm btn-default nav-button-store" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
         </li>
-
-        <li class="hidden-xs hidden-sm hidden-md"><a href="/donate"><%= t('layout._header.donate') %></a></li>
-        <li class="hidden-xs hidden-sm hidden-md"><a href="//store.publiclab.org"><%= t('layout._header.store') %></a></li>
-
       </ul>
+
 
       <div id="chat" class="chat-popover" data-placement="bottom" style="display:none;">
         <a style="margin-right:4px;" class="pull-right btn btn-sm" href="https://chat.publiclab.org" target="_blank"><%= t('layout._header.chatroom.pop_out') %></a>
@@ -119,11 +107,13 @@
       </div>
 
       <% unless current_user %><a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" data-placement="bottom" style="margin-left:14px;" href="/signup" class="btn btn-primary navbar-btn navbar-right hidden-xs"><%= t('layout._header.join') %></a><% end %>
-
+      <div class="nav-button-wrapper hidden-xs hidden-sm hidden-md navbar-right">
+        <a class="btn btn-sm nav-button-donate" href="/donate"><%= t('layout._header.donate') %></a>
+      </div>
       <% unless params[:action] == "register" || params[:action] == "signup" %>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-            <a id="chat-button">
+            <a id="chat-button" style="cursor: pointer;">
               <i class="fa fa-white fa fa-comments"></i>
             </a>
           </li>
@@ -135,21 +125,26 @@
             </a>
             <ul class="dropdown-menu">
               <li class="dropdown-header"><%= current_user.username %><% if current_user.role === 'moderator' || current_user.role === 'admin'%>: <%= current_user.role %><% end %></li>
-              <li><a href="/dashboard"><%= t('layout._header.dashboard') %></a></li>
+              <% if params[:action] == "dashboard" %>
+                <li><a href="/home">Home</a></li>
+              <% else %>
+                <li><a href="/dashboard"><%= t('layout._header.dashboard') %></a></li>
+              <% end %>
               <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
               <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li>
               <li class="divider"></li>
               <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
               <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
               <li class="divider"></li>
-	       <% if current_user.role == 'admin' %>
-    <li><a href="/useremail">Email search</a></li>
-    <li><a href="/wiki/locked">Locked pages</a></li>
-    <li><a href="/spam">Spam moderation</a></li>
-    <li><a href="/people">Contributors</a></li>
-	           <li class="divider"></li>
-	       <% end %>
+	      <% if current_user.role == 'admin' %>
+                <li><a href="/useremail">Email search</a></li>
+                <li><a href="/wiki/locked">Locked pages</a></li>
+                <li><a href="/spam">Spam moderation</a></li>
+                <li><a href="/people">Contributors</a></li>
+	        <li class="divider"></li>
+	      <% end %>
               <li><%= link_to t('layout._header.logout'), logout_path %></li>
+              <li><a href="/logoutRemotely">Logout from all devices</a></li>
             </ul>
             <% else %>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -158,19 +153,19 @@
             </a>
             <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
               <li style="padding:6px;">
-                <%= form_for @user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
+                <%= form_for :user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
 
                   <div class="form-group">
 
                     <label for="username"><%= t('layout._header.login.username') %></label>
-                    <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username' } %>
+                    <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username-login' } %>
 
                   </div>
 
                   <div class="form-group">
 
                     <label for="password"><%= t('layout._header.login.password') %></label>
-                    <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password' } %>
+                    <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-login' } %>
 
                   </div>
 
@@ -191,24 +186,12 @@
 
                 <% end %>
               </li>
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                  <i class="fa fa-language" aria-hidden="true"></i>
-                  <%= t('layout._footer.language.language_title') %> <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <% locale_name_pairs.each do |locale_name, locale| %>
-                    <li><%= link_to locale_name, change_locale_path(locale) %></li>
-                  <% end %>
-                </ul>
-              </li>
             </ul>
             <% end %>
           </li>
         </ul>
       <% end %>
     </div>
-
   </div>
 </nav>
 
@@ -219,7 +202,16 @@
     <% if params[:controller] == "wiki" %><h1>Public Lab <small><%= t('layout._header.wiki_doc') %></small></h1><% end %>
     <hr />
   </div>
-
+  <script>
+      $('#chat-button').click(function(e){
+              e.stopPropagation() ;
+      });
+      $('body').click(function(){
+          var c = $('#chat') ;
+          if($('#chat').is(':visible') == true)
+            c.hide() ;
+      });
+</script>
   <%= render :partial => "layouts/alerts" %>
 
 </div>

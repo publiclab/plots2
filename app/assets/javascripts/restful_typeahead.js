@@ -9,8 +9,9 @@
 jQuery(document).ready(function() {
   var el = $('input.search-query.typeahead');
   var typeahead = el.typeahead({
-    items: 8,
+    items: 15,
     minLength: 3,
+    autoSelect: false,
     source: function (query, process) {
       return $.getJSON('/api/typeahead/all?srchString=' + query, function (data) {
         return process(data.items);
@@ -18,6 +19,9 @@ jQuery(document).ready(function() {
     },
     highlighter: function (text, item) {
       return '<i class="fa fa-' + item.tagType + '"></i> ' + item.tagVal;
+    },
+    matcher: function() {
+      return true;
     },
     displayText: function(item) {
       return item.tagVal;

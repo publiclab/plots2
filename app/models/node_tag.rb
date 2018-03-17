@@ -21,11 +21,11 @@ class NodeTag < ActiveRecord::Base
   end
 
   def user
-    DrupalUsers.find_by_uid(uid).try(:user)
+    DrupalUser.find_by(uid: uid).try(:user)
   end
 
   def drupal_user
-    DrupalUsers.find uid
+    DrupalUser.find uid
   end
 
   def name
@@ -33,7 +33,7 @@ class NodeTag < ActiveRecord::Base
   end
 
   def description
-    self.tag.description if self.tag && self.tag.description && !self.tag.description.empty?
+    self.tag.description if self.tag&.description && !self.tag.description.empty?
   end
 
 end

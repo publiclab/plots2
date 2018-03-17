@@ -3,7 +3,7 @@ class UserTag < ActiveRecord::Base
   belongs_to :user, foreign_key: :uid
 
   validates :value, presence: :true
-  validates :value, format: { with: /^[\w\.:-]*$/, message: 'can only include letters, numbers, and dashes' }
+  validates :value, format: { with: /\A[\w\.:-]*\z/, message: 'can only include letters, numbers, and dashes' }
 
   before_save :preprocess
 
@@ -12,7 +12,7 @@ class UserTag < ActiveRecord::Base
   end
 
   def self.exists?(uid, value)
-    UserTag.where(uid: uid, value: value).count > 0
+    UserTag.where(uid: uid, value: value).count.positive?
   end
 
   def name

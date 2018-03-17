@@ -15,13 +15,13 @@
 <br class="visible-xs visible-sm" style="clear:both;" />
 
 <h1 style="font-family: 'Junction Light';">
-  <i class="fa fa-book"></i> <%= @revision.title %> 
+  <i class="fa fa-book"></i> <%= @revision.title %>
   <a onClick="$('#wiki-toolbar').toggle()" class="btn btn-link"><b class="caret"></b></a>
 </h1>
 
 <% if @is_revision %>
   <div class="alert alert-warning">
-    <%= raw t('wiki.show.revision_from', :time => @revision.created_at.to_s(:long)) %> 
+    <%= raw t('wiki.show.revision_from', :time => @revision.created_at.to_s(:long)) %>
     <a href="/wiki/revisions/<%= @node.slug_from_path %>">
       <%= t('wiki.show.view_all_revisions') %>
     </a>
@@ -35,9 +35,9 @@
       <span class="hidden-sm hidden-xs">
         <%= number_with_delimiter(@node.totalviews) %> <%= t('wiki.show.views') %> |
         <%= raw t('wiki.show.last_edited', url1: "/profile/" + @revision.author.name, author: @revision.author.name, time: time_ago_in_words(@revision.created_at)) %>
-        | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> 
+        | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a>
         <span class="hidden-xs hidden-sm hidden-md">
-          <a href="/n/<%= @node.id %>">/n/<%= @node.id %></a>
+          <a href="/n/<%= @node.id %>">#<%= @node.id %></a>
         </span>
       </span>
     </div>
@@ -56,9 +56,9 @@
         </li>
       <% else %>
         <li>
-          <a href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>">
+          <a rel="tooltip" title="Edit this wiki page." data-placement="top" href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>">
             <i class="fa fa-pencil"></i>
-            <span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.edit') %></span>
+            <span class="hidden-xs hidden-sm hidden-md"></span>
           </a>
         </li>
         <li class="<%= 'active' if params[:raw] == 'true' %>">
@@ -69,23 +69,24 @@
       <% end %>
 
       <% if current_user && current_user.role == "admin" %>
-        <li>
-          <%= link_to "/wiki/delete/" + @node.id.to_s, confirm: I18n.t('wiki.show.are_you_sure_delete', path: @node.path) do %>
+        <li rel="tooltip" title="Delete this wiki page." data-placement="top">
+          <%= link_to url_for(action: :delete,id: @node.id),method: :delete, data: {confirm: I18n.t('wiki.show.are_you_sure_delete', path: @node.path)} do %>
             <i class="fa fa-trash"></i>
             <span class="hidden-xs hidden-sm hidden-md hidden-lg"> <%= t('wiki.show.delete') %></span>
+          </a>
           <% end %>
         </li>
       <% end %>
 
       <li>
-        <a href="/talk/<%= @node.slug_from_path %>">
+        <a rel="tooltip" title="Practice in a realtime doc." data-placement="top" href="/talk/<%= @node.slug_from_path %>">
           <i class="fa fa-comments-o"></i>
           <span class="hidden-xs hidden-sm hidden-md"> <%= t('wiki.show.talk') %></span>
         </a>
       </li>
 
       <li>
-        <a href="/wiki/revisions/<%= @node.slug_from_path %>">
+        <a rel="tooltip" title="=View previous versions of this page." data-placement="top" href="/wiki/revisions/<%= @node.slug_from_path %>">
           <span class="hidden-xs"><%= @node.revisions.length %> </span>
           <i class="fa fa-list"></i>
         </a>
@@ -94,7 +95,7 @@
       <li class="<%= 'active' if (controller.action_name == 'comments' )%>">
         <a href="/wiki/<%= @node.slug_from_path %>/comments" rel="tooltip" title="Read Comments regarding this wiki page" data-placement="top">
           <span class="hidden-xs"> <%= @node.comments.count %></span>
-          <i class="fa fa-comment"></i>   
+          <i class="fa fa-comment"></i>
         </a>
       </li>
 

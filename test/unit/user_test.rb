@@ -3,8 +3,8 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   test 'user creation' do
     user = User.new(username: 'chris',
-                    password: 'science',
-                    password_confirmation: 'science',
+                    password: 'godzillas',
+                    password_confirmation: 'godzillas',
                     email: 'test@publiclab.org')
 
     assert user.save({})
@@ -16,10 +16,12 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil user.email
     assert_not_nil user.bio
     assert_not_nil user.token
+    assert_not_nil user.path
+    assert_not_nil user.title
   end
 
   test 'basic user attributes' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     assert_equal user.notes, user.drupal_user.notes
     assert_not_nil user.tags
     assert_not_nil user.drupal_user.tags
@@ -32,22 +34,31 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user.tagnames, user.drupal_user.tagnames
   end
 
+  test 'user mysql native fulltext search' do
+    assert User.count > 0
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      users = User.search('really interesting')
+      assert_not_nil users
+      assert users.length > 0
+    end
+  end
+
   test 'user questions' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     assert !user.questions.empty?
   end
 
   test 'user.notes and first time user' do
-    assert        !users(:jeff).notes.empty?
-    assert        !users(:jeff).first_time_poster
-    assert_false  !users(:bob).notes.empty?
-    assert        users(:bob).first_time_poster
-    assert_false  !users(:lurker).notes.empty?
-    assert        users(:lurker).first_time_poster
+    assert        !drupal_users(:jeff).notes.empty?
+    assert        !drupal_users(:jeff).first_time_poster
+    assert_not  !drupal_users(:bob).notes.empty?
+    assert        drupal_users(:bob).first_time_poster
+    assert_not  !drupal_users(:lurker).notes.empty?
+    assert        drupal_users(:lurker).first_time_poster
   end
 
   test 'user reset key' do
-    user = rusers(:jeff)
+    user = users(:jeff)
     assert_nil user.reset_key
 
     user.generate_reset_key
@@ -55,32 +66,117 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'should follow and unfollow user' do
-    bob = rusers(:bob)
-    jeff = rusers(:jeff)
-    assert_false bob.following?(jeff)
+    bob = users(:bob)
+    jeff = users(:jeff)
+    assert_not bob.following?(jeff)
     bob.follow(jeff)
     assert bob.following?(jeff)
     assert jeff.followers.include?(bob)
     bob.unfollow(jeff)
-    assert_false bob.following?(jeff)
+    assert_not bob.following?(jeff)
   end
 
   test "returns sha email for users who doesn't have image" do
-    bob = rusers(:bob)
+    bob = users(:bob)
     assert_equal 'https://www.gravatar.com/avatar/927536542991ac10fe2c546bc386a521', bob.profile_image
   end
 
   test 'can add a user_tag and use has_tag method' do
-    tag = rusers(:bob).user_tags.new
+    tag = users(:bob).user_tags.new
     tag.value = 'test:test'
     assert tag.save
-    assert rusers(:bob).has_tag('test:test')
-    assert !rusers(:bob).has_tag('test:no')
+    assert users(:bob).has_tag('test:test')
+    assert !users(:bob).has_tag('test:no')
   end
 
-  test 'returns nodes created in past given period of time' do
-    lurker = rusers(:lurker)
-    node2 = rusers(:lurker).node.find_by_nid(20)
-     assert_equal [node2], lurker.content_followed_in_past_period(2.hours.ago)
+  test 'returns nodes created in given period of time' do
+    bob = users(:bob)
+    node_count = 6
+    nodes_fix = [1,2,8,9,10,15]
+    count_return = bob.content_followed_in_period(2.hours.ago,Time.now).count
+    nodes_time = bob.content_followed_in_period(2.hours.ago,Time.now).pluck(:nid)
+    assert_equal node_count, count_return
+    assert_equal nodes_fix,nodes_time.sort
   end
+
+  test 'returns value of power tag' do
+    bob = users(:bob)
+    assert_equal bob.get_value_of_power_tag("skill") , "java"
+  end
+
+  test 'has power tag' do
+    bob = users(:bob)
+    assert bob.has_power_tag("skill")
+  end
+
+  test 'returns nodes coauthored by user with coauthored_notes method' do
+    jeff = users(:jeff)
+    bob = users(:bob)
+    assert bob.coauthored_notes.empty?
+
+    jeffs_note = nodes(:one)
+    jeffs_note.add_tag('with:bob', jeff)
+
+    coauthored_note = bob.coauthored_notes.first
+
+    assert_not_nil coauthored_note
+    assert_equal jeffs_note, coauthored_note
+  end
+
+  test 'contributor_count' do
+    contributor_count = User.contributor_count_for(Time.now-5.years, Time.now+5.days)
+    comment = Comment.new(uid: 99,
+                          nid: 2,
+                          status: 1,
+                          comment: 'Note comment',
+                          timestamp: Time.now.to_i + 2,
+                          thread: '/02'
+              )
+    assert comment.save
+    current_contributor_count = User.contributor_count_for(Time.now-5.years, Time.now+5.days)
+    assert_equal current_contributor_count-contributor_count,1
+  end
+
+  test 'user with wrong email' do
+    user = User.new(username: 'chris',
+                    password: 'godzillas',
+                    password_confirmation: 'godzillas',
+                    email: 'testpubliclab.org')
+    assert_not user.save({})
+    assert_equal 1, user.errors[:email].count
+  end
+
+  test 'user status changes when drupal user is banned or unbanned' do
+    drupal_user = drupal_users(:bob)
+    assert_equal 1, drupal_user.user.status
+    drupal_user.ban
+    assert_equal 0, drupal_user.user.status
+    drupal_user.unban
+    assert_equal 1, drupal_user.user.status
+  end
+
+  test 'user status changes when drupal user is moderated or unmoderated' do
+    drupal_user = drupal_users(:bob)
+    assert_equal 1, drupal_user.user.status
+    drupal_user.moderate
+    assert_equal 5, drupal_user.user.status
+    drupal_user.unmoderate
+    assert_equal 1, drupal_user.user.status
+  end
+
+  test 'user roles' do
+    admin = users(:admin)
+    assert admin.admin?
+    assert admin.can_moderate?
+
+    moderator = users(:moderator)
+    assert moderator.moderator?
+    assert moderator.can_moderate?
+
+    basic_user = users(:newcomer)
+    assert_not basic_user.admin?
+    assert_not basic_user.moderator?
+    assert_not basic_user.can_moderate?
+  end
+
 end

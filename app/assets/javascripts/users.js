@@ -89,3 +89,20 @@ var Profile = {
     });
   }
 }
+
+class Reset {
+    validateEmail(sEmail){
+        const filter = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return filter.test(sEmail); 
+    }
+
+    runValidation(event){ 
+        const email = $('#validEmail').val();
+
+        if(!this.validateEmail(email)) {
+            $("#validPrint").attr("style", "display:block");
+            $("#validPrint").html("<p>Invalid email address</p>");
+            event.preventDefault();
+        }
+    }
+}

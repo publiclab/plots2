@@ -11,7 +11,7 @@ The [following diagram](https://docs.google.com/presentation/d/1aquQKyih8vvtD7U-
 
 ## Content
 
-All user-generated content on PublicLab.org is either a Node, an Answer, or a Comment. 
+All user-generated content on PublicLab.org is either a Node, an Answer, or a Comment.
 
 ### Nodes
 
@@ -19,14 +19,26 @@ Nodes are a general type with primary key `nid`, a `title`, an author `uid`, and
 
 There are several types of nodes, based on their `type` field:
 
-* Notes, or research notes, of type "note", are single-author, single-revision. 
-* Wikis, or wiki pages, of type "page", have many revisions, each of which has an author. They have a path like `/wiki/title` or simply `/title` (for so-called "root" pages). 
-* Features, of type "feature", are blocks of content which can be included (hard-coded) throughout the site, but can only be made by admins. They are used for things like the front page, banners, and other content that is more infrastructural but change periodically. They are managed at https://publiclab.org/features.
-* Maps, of type "map", are web-map image layers and associated image files, displayed on https://publiclab.org/archive
+* **Notes**, or research notes, of type "note", are single-author, single-revision.
+* **Wikis**, or wiki pages, of type "page", have many revisions, each of which has an author. They have a path like `/wiki/title` or simply `/title` (for so-called "root" pages).
+* **Features**, of type "feature", are blocks of content which can be included (hard-coded) throughout the site, but can only be made by admins. Read more about them below.
+* **Maps**, of type "map", are web-map image layers and associated image files, displayed on https://publiclab.org/archive
 
 Nodes may also be redirects, though this use is legacy only. More documentation needed.
 
 Notes (type `note`) can also be a sub-type called Questions, if they have a tag starting with `question:` -- which gives them extra features such as the ability to have Answers (see below).
+
+### Features
+
+Features, mentioned above, are a type of Node. They are used for things like the front page, banners, footer text, and other content that is more infrastructural but change periodically. They are managed at https://publiclab.org/features.
+
+They are typically cached for quick loading, and can be inserted anywhere in the code to create a semi-permanent dynamic content area like a banner, explanatory text, etc. Here's an example for a Feature with the key `footer-notice`:
+
+```ruby
+<% cache('feature_footer-notice', skip_digest: true) do %>
+  <%= feature('footer-notice') %>
+<% end %>
+```
 
 
 ### Revisions
@@ -47,7 +59,7 @@ Answers are similar to Comments, but are used in Question-type Notes, and may ea
 
 Our primary user type is User, an Authlogic model. We also maintain a legacy `DrupalUsers` type, but are in the process of deprecating it. Users and `DrupalUsers` both have `uid` fields, which are synced one-to-one, and to fully deprecate `DrupalUsers` we must migrate these fields over to User.
 
-Users each have a profile at `/profile/username`, which displays content stored in an assocaited `DrupalProfileValue` with `fid = 7`.
+Users each have a profile at `/profile/username`, which displays content stored in an associated `DrupalProfileValue` with `fid = 7`.
 
 User `status` -- a property of `DrupalUser`, can be:
 

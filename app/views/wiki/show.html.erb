@@ -25,14 +25,20 @@
   <div class="alert alert-info" role="alert">This wiki page hasn't been edited for a while. If you see anything that needs updating, please help out!</div>
 <% end %>
 
-<% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
-  <%= render :partial => "sidebar/featured" %>
-<% else %>
-  <%= render :partial => "sidebar/related" %>
+<% if @node.has_tag('sidebar:none') %>
+  <div class="col-md-2"></div>
+
+  <div class="col-md-8">
+<% else %>  
+  <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
+    <%= render :partial => "sidebar/featured" %>
+  <% else %>
+    <%= render :partial => "sidebar/related" %>
+  <% end %>
+    
+  <div class="col-md-9">
 <% end %>
-
-<div class="col-md-9">
-
+    
   <%= render :partial => "wiki/header" %>
 
   <div class="tab-content">
@@ -68,7 +74,11 @@
           <%= render :partial => "notes/comments", :locals => {:nodes => @nodes} %>
       <% else %>
         <div <% unless @node.has_tag('style:wide') %>style="max-width:800px;"<% end %> id="content" class="pl-content wiki">
-          <%= raw auto_link(insert_extras(@revision.render_body), sanitize: false) %>
+          <% if @node.has_tag('format:raw') %>
+            <%= raw @revision.render_body_raw %>
+          <% else %>
+            <%= raw auto_link(insert_extras(@revision.render_body), sanitize: false) %>
+          <% end %>
         </div>
         <% if params[:raw] == 'true' %>
           <div style="display:none;" id="content-raw-markdown" class="pl-content wiki"><%= raw insert_extras(@revision.body_raw) %></div>

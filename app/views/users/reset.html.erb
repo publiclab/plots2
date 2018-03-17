@@ -4,7 +4,7 @@
 
 <hr />
 
-<% if params[:key] && User.find_by_reset_key(params[:key]) %>
+<% if params[:key] && User.find_by(reset_key: params[:key]) %>
 
 <p><%= t('users.reset.enter_username_and_password') %>:</p>
 
@@ -20,17 +20,25 @@
 </form>
 
 <% else %>
-
 <p><%= t('users.reset.enter_email_reset_password') %>:</p>
 
 <form action="/reset/" class='form'>
 
-  <input class="form-control" name="email" placeholder="you@example.com" tabindex='2' type="text" /> <br />
+  <div class="alert alert-danger" id="validPrint" style="display:none"> </div>
 
-  <button class="btn btn-lg btn-primary" type="submit" tabindex="3"><%= t('users.reset.reset') %></button>
+  <input class="form-control" name="email" id='validEmail' placeholder="you@example.com" tabindex='2' type="text" /> <br />
+
+  <button class="btn btn-lg btn-primary" id="validBtn" type="submit" tabindex="3"><%= t('users.reset.reset') %></button>
 
 </form>
 
 <% end %>
 
 </div>
+
+<script type="text/javascript">
+    $("#validBtn").click(function(event) {
+        const reset = new Reset;
+        reset.runValidation(event);
+    });
+</script>

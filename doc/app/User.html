@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class User - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">ActiveRecord::Base
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-search">::search</a>
+    
+    <li ><a href="#method-i-add_to_lists">#add_to_lists</a>
+    
+    <li ><a href="#method-i-barnstars">#barnstars</a>
+    
+    <li ><a href="#method-i-coauthored_notes">#coauthored_notes</a>
+    
+    <li ><a href="#method-i-comment_streak">#comment_streak</a>
+    
+    <li ><a href="#method-i-content_followed_in_past_period">#content_followed_in_past_period</a>
+    
+    <li ><a href="#method-i-create_drupal_user">#create_drupal_user</a>
+    
+    <li ><a href="#method-i-destroy_drupal_user">#destroy_drupal_user</a>
+    
+    <li ><a href="#method-i-drupal_user">#drupal_user</a>
+    
+    <li ><a href="#method-i-first_time_poster">#first_time_poster</a>
+    
+    <li ><a href="#method-i-follow">#follow</a>
+    
+    <li ><a href="#method-i-following">#following</a>
+    
+    <li ><a href="#method-i-following-3F">#following?</a>
+    
+    <li ><a href="#method-i-generate_reset_key">#generate_reset_key</a>
+    
+    <li ><a href="#method-i-get_value_of_power_tag">#get_value_of_power_tag</a>
+    
+    <li ><a href="#method-i-has_power_tag">#has_power_tag</a>
+    
+    <li ><a href="#method-i-has_role">#has_role</a>
+    
+    <li ><a href="#method-i-has_tag">#has_tag</a>
+    
+    <li ><a href="#method-i-lat">#lat</a>
+    
+    <li ><a href="#method-i-lon">#lon</a>
+    
+    <li ><a href="#method-i-note_streak">#note_streak</a>
+    
+    <li ><a href="#method-i-notes">#notes</a>
+    
+    <li ><a href="#method-i-path">#path</a>
+    
+    <li ><a href="#method-i-photo_path">#photo_path</a>
+    
+    <li ><a href="#method-i-profile_image">#profile_image</a>
+    
+    <li ><a href="#method-i-questions">#questions</a>
+    
+    <li ><a href="#method-i-set_token">#set_token</a>
+    
+    <li ><a href="#method-i-social_link">#social_link</a>
+    
+    <li ><a href="#method-i-streak">#streak</a>
+    
+    <li ><a href="#method-i-subscriptions">#subscriptions</a>
+    
+    <li ><a href="#method-i-tagnames">#tagnames</a>
+    
+    <li ><a href="#method-i-tags">#tags</a>
+    
+    <li ><a href="#method-i-title">#title</a>
+    
+    <li ><a href="#method-i-uid">#uid</a>
+    
+    <li ><a href="#method-i-unfollow">#unfollow</a>
+    
+    <li ><a href="#method-i-weekly_comment_tally">#weekly_comment_tally</a>
+    
+    <li ><a href="#method-i-weekly_note_tally">#weekly_note_tally</a>
+    
+    <li ><a href="#method-i-wiki_edit_streak">#wiki_edit_streak</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-User">
+  <h1 id="class-User" class="class">
+    class User
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-search" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search</span><span
+            class="method-args">(query)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="search-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">query</span>)
+  <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;MATCH(username, bio) AGAINST(?)&#39;</span>, <span class="ruby-identifier">query</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-add_to_lists" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_to_lists</span><span
+            class="method-args">(lists)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="add_to_lists-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 181</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_to_lists</span>(<span class="ruby-identifier">lists</span>)
+  <span class="ruby-identifier">lists</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">list</span><span class="ruby-operator">|</span>
+    <span class="ruby-constant">WelcomeMailer</span>.<span class="ruby-identifier">add_to_list</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">list</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-barnstars" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">barnstars</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="barnstars-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 274</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">barnstars</span>
+  <span class="ruby-constant">NodeTag</span>.<span class="ruby-identifier">includes</span>(<span class="ruby-value">:node</span>, <span class="ruby-value">:tag</span>)
+         .<span class="ruby-identifier">references</span>(<span class="ruby-value">:term_data</span>)
+         .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;type = ? AND term_data.name LIKE ? AND node.uid = ?&#39;</span>, <span class="ruby-string">&#39;note&#39;</span>, <span class="ruby-string">&#39;barnstar:%&#39;</span>, <span class="ruby-identifier">uid</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-coauthored_notes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">coauthored_notes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="coauthored_notes-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 97</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">coauthored_notes</span>
+  <span class="ruby-identifier">coauthored_tag</span> = <span class="ruby-string">&quot;with:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;note&quot;</span>)
+      .<span class="ruby-identifier">includes</span>(<span class="ruby-value">:revision</span>, <span class="ruby-value">:tag</span>)
+      .<span class="ruby-identifier">references</span>(<span class="ruby-value">:term_data</span>, <span class="ruby-value">:node_revisions</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;term_data.name = ? OR term_data.parent = ?&#39;</span>, <span class="ruby-identifier">coauthored_tag</span>.<span class="ruby-identifier">to_s</span> , <span class="ruby-identifier">coauthored_tag</span>.<span class="ruby-identifier">to_s</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-comment_streak" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">comment_streak</span><span
+            class="method-args">(span = 365)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="comment_streak-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 248</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">comment_streak</span>(<span class="ruby-identifier">span</span> = <span class="ruby-value">365</span>)
+  <span class="ruby-identifier">days</span> = {}
+  <span class="ruby-identifier">streak</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">comment_count</span> = <span class="ruby-value">0</span>
+  (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">span</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">day</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">days</span>[<span class="ruby-identifier">day</span>] = <span class="ruby-constant">Comment</span>.<span class="ruby-identifier">select</span>(<span class="ruby-value">:timestamp</span>)
+                       .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>,
+                               <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>,
+                               <span class="ruby-identifier">timestamp</span><span class="ruby-operator">:</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">midnight</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">day</span>.<span class="ruby-identifier">days</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">..</span><span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">midnight</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">day</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">days</span>.<span class="ruby-identifier">to_i</span>)
+                       .<span class="ruby-identifier">count</span>
+    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">days</span>[<span class="ruby-identifier">day</span>] <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-identifier">streak</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-identifier">comment_count</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">days</span>[<span class="ruby-identifier">day</span>]
+  <span class="ruby-keyword">end</span>
+  [<span class="ruby-identifier">streak</span>, <span class="ruby-identifier">comment_count</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-content_followed_in_past_period" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">content_followed_in_past_period</span><span
+            class="method-args">(time_period)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="content_followed_in_past_period-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 313</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">content_followed_in_past_period</span>(<span class="ruby-identifier">time_period</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-node">&quot;created &gt;= #{time_period.to_i}  AND changed &gt;= #{time_period.to_i}&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_drupal_user" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_drupal_user</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="create_drupal_user-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_drupal_user</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">bio</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">nil?</span>
+          <span class="ruby-identifier">drupal_user</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">username</span>,
+                                  <span class="ruby-identifier">pass</span><span class="ruby-operator">:</span> <span class="ruby-identifier">rand</span>(<span class="ruby-value">100_000_000_000_000_000_000</span>),
+                                  <span class="ruby-identifier">mail</span><span class="ruby-operator">:</span> <span class="ruby-identifier">email</span>,
+                                  <span class="ruby-identifier">mode</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>,
+                                  <span class="ruby-identifier">sort</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>,
+                                  <span class="ruby-identifier">threshold</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>,
+                                  <span class="ruby-identifier">theme</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>,
+                                  <span class="ruby-identifier">signature</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>,
+                                  <span class="ruby-identifier">signature_format</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>,
+                                  <span class="ruby-identifier">created</span><span class="ruby-operator">:</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>,
+                                  <span class="ruby-identifier">access</span><span class="ruby-operator">:</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>,
+                                  <span class="ruby-identifier">login</span><span class="ruby-operator">:</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>,
+                                  <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>,
+                                  <span class="ruby-identifier">timezone</span><span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>,
+                                  <span class="ruby-identifier">language</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>,
+                                  <span class="ruby-identifier">picture</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>,
+                                  <span class="ruby-identifier">init</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>,
+                                  <span class="ruby-identifier">data</span><span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>,
+                                  <span class="ruby-identifier">timezone_id</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>,
+                                  <span class="ruby-identifier">timezone_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>)
+    <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">save!</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span> = <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">username</span>).<span class="ruby-identifier">uid</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-destroy_drupal_user" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">destroy_drupal_user</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="destroy_drupal_user-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 77</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy_drupal_user</span>
+  <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">destroy</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-drupal_user" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">drupal_user</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>this is ridiculous. We need to store uid in this model. …migration is in
+progress. start getting rid of these calls…</p>
+          
+          
+
+          
+          <div class="method-source-code" id="drupal_user-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 87</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">drupal_user</span>
+  <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">username</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-first_time_poster" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">first_time_poster</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="first_time_poster-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 284</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">first_time_poster</span>
+  <span class="ruby-identifier">notes</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-follow" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">follow</span><span
+            class="method-args">(other_user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="follow-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 288</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">follow</span>(<span class="ruby-identifier">other_user</span>)
+  <span class="ruby-identifier">active_relationships</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">followed_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">other_user</span>.<span class="ruby-identifier">id</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-following" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">following</span><span
+            class="method-args">(tagname)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="following-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 176</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">following</span>(<span class="ruby-identifier">tagname</span>)
+  <span class="ruby-identifier">tids</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tagname</span>).<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:tid</span>)
+  <span class="ruby-operator">!</span><span class="ruby-constant">TagSelection</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">following</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>, <span class="ruby-identifier">tid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tids</span>, <span class="ruby-identifier">user_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">uid</span>).<span class="ruby-identifier">empty?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-following-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">following?</span><span
+            class="method-args">(other_user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="following-3F-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 296</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">following?</span>(<span class="ruby-identifier">other_user</span>)
+  <span class="ruby-identifier">following_users</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">other_user</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-generate_reset_key" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">generate_reset_key</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="generate_reset_key-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 105</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_reset_key</span>
+  <span class="ruby-comment"># invent a key and save it</span>
+  <span class="ruby-identifier">key</span> = <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-value">20</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">key</span> <span class="ruby-operator">+=</span> [<span class="ruby-operator">*</span><span class="ruby-string">&#39;a&#39;</span><span class="ruby-operator">..</span><span class="ruby-string">&#39;z&#39;</span>].<span class="ruby-identifier">sample</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">reset_key</span> = <span class="ruby-identifier">key</span>
+  <span class="ruby-identifier">key</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_value_of_power_tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_value_of_power_tag</span><span
+            class="method-args">(key)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_value_of_power_tag-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 163</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_value_of_power_tag</span>(<span class="ruby-identifier">key</span>)
+  <span class="ruby-identifier">tname</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">user_tags</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;value LIKE ?&#39;</span> , <span class="ruby-identifier">key</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;:%&#39;</span>)
+  <span class="ruby-identifier">tvalue</span> = <span class="ruby-identifier">tname</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">partition</span>(<span class="ruby-string">&#39;:&#39;</span>).<span class="ruby-identifier">last</span>
+  <span class="ruby-identifier">tvalue</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-has_power_tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">has_power_tag</span><span
+            class="method-args">(key)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>power tags have “key:value” format, and should be searched with a “key:*”
+wildcard</p>
+          
+          
+
+          
+          <div class="method-source-code" id="has_power_tag-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 158</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">has_power_tag</span>(<span class="ruby-identifier">key</span>)
+   <span class="ruby-identifier">tids</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">user_tags</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;value LIKE ?&#39;</span> , <span class="ruby-identifier">key</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;:%&#39;</span>).<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:id</span>)
+   <span class="ruby-operator">!</span><span class="ruby-identifier">tids</span>.<span class="ruby-identifier">blank?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-has_role" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">has_role</span><span
+            class="method-args">(r)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>we can revise/improve this for m2m later…</p>
+          
+          
+
+          
+          <div class="method-source-code" id="has_role-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 136</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">has_role</span>(<span class="ruby-identifier">r</span>)
+  <span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">r</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-has_tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">has_tag</span><span
+            class="method-args">(tagname)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="has_tag-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 153</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">has_tag</span>(<span class="ruby-identifier">tagname</span>)
+  <span class="ruby-identifier">user_tags</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:value</span>).<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tagname</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-lat" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">lat</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="lat-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 127</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">lat</span>
+  <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">lat</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-lon" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">lon</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="lon-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 131</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">lon</span>
+  <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">lon</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-note_streak" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">note_streak</span><span
+            class="method-args">(span = 365)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="note_streak-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 212</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">note_streak</span>(<span class="ruby-identifier">span</span> = <span class="ruby-value">365</span>)
+  <span class="ruby-identifier">days</span> = {}
+  <span class="ruby-identifier">streak</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">note_count</span> = <span class="ruby-value">0</span>
+  (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">span</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">day</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">days</span>[<span class="ruby-identifier">day</span>] = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">select</span>(<span class="ruby-value">:created</span>)
+                    .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>,
+                            <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;note&#39;</span>,
+                            <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>,
+                            <span class="ruby-identifier">created</span><span class="ruby-operator">:</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">midnight</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">day</span>.<span class="ruby-identifier">days</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">..</span><span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">midnight</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">day</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">days</span>.<span class="ruby-identifier">to_i</span>)
+                    .<span class="ruby-identifier">count</span>
+    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">days</span>[<span class="ruby-identifier">day</span>] <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-identifier">streak</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-identifier">note_count</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">days</span>[<span class="ruby-identifier">day</span>]
+  <span class="ruby-keyword">end</span>
+  [<span class="ruby-identifier">streak</span>, <span class="ruby-identifier">note_count</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-notes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">notes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="notes-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 91</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">notes</span>
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">uid</span>)
+      .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;note&#39;</span>)
+      .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;created DESC&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-path" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">path</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="path-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 123</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">path</span>
+  <span class="ruby-node">&quot;/profile/#{self.username}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-photo_path" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">photo_path</span><span
+            class="method-args">(size = :medium)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="photo_path-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 280</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">photo_path</span>(<span class="ruby-identifier">size</span> = <span class="ruby-value">:medium</span>)
+  <span class="ruby-identifier">photo</span>.<span class="ruby-identifier">url</span>(<span class="ruby-identifier">size</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-profile_image" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">profile_image</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="profile_image-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 300</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">profile_image</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">photo_file_name</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">photo_path</span>(<span class="ruby-value">:thumb</span>)
+    <span class="ruby-identifier">photo_path</span>(<span class="ruby-value">:thumb</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-node">&quot;https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-questions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">questions</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="questions-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 309</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">questions</span>
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">questions</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">id</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-set_token" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_token</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="set_token-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 81</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_token</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">token</span> = <span class="ruby-constant">SecureRandom</span>.<span class="ruby-identifier">uuid</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">token</span>.<span class="ruby-identifier">nil?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-social_link" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">social_link</span><span
+            class="method-args">(site)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="social_link-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 317</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">social_link</span>(<span class="ruby-identifier">site</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">has_power_tag</span>(<span class="ruby-identifier">site</span>)
+    <span class="ruby-identifier">user_name</span> = <span class="ruby-identifier">get_value_of_power_tag</span>(<span class="ruby-identifier">site</span>)
+    <span class="ruby-identifier">link</span> = <span class="ruby-node">&quot;https://#{site}.com/#{user_name}&quot;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">link</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-streak" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">streak</span><span
+            class="method-args">(span = 365)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="streak-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 265</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">streak</span>(<span class="ruby-identifier">span</span> = <span class="ruby-value">365</span>)
+  <span class="ruby-identifier">note_streak</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">note_streak</span>(<span class="ruby-identifier">span</span>)
+  <span class="ruby-identifier">wiki_edit_streak</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">wiki_edit_streak</span>(<span class="ruby-identifier">span</span>)
+  <span class="ruby-identifier">comment_streak</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">comment_streak</span>(<span class="ruby-identifier">span</span>)
+  <span class="ruby-identifier">streak_count</span> = [<span class="ruby-identifier">note_streak</span>[<span class="ruby-value">1</span>], <span class="ruby-identifier">wiki_edit_streak</span>[<span class="ruby-value">1</span>], <span class="ruby-identifier">comment_streak</span>[<span class="ruby-value">1</span>]]
+  <span class="ruby-identifier">streak</span> = [<span class="ruby-identifier">note_streak</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">wiki_edit_streak</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">comment_streak</span>[<span class="ruby-value">0</span>]]
+  [<span class="ruby-identifier">streak</span>.<span class="ruby-identifier">max</span>, <span class="ruby-identifier">streak_count</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-subscriptions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">subscriptions</span><span
+            class="method-args">(type = :tag)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="subscriptions-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 169</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">subscriptions</span>(<span class="ruby-identifier">type</span> = <span class="ruby-value">:tag</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:tag</span>
+    <span class="ruby-constant">TagSelection</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">user_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">uid</span>,
+                       <span class="ruby-identifier">following</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tagnames" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tagnames</span><span
+            class="method-args">(limit = 20, defaults = true)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="tagnames-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 144</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tagnames</span>(<span class="ruby-identifier">limit</span> = <span class="ruby-value">20</span>, <span class="ruby-identifier">defaults</span> = <span class="ruby-keyword">true</span>)
+  <span class="ruby-identifier">tagnames</span> = []
+  <span class="ruby-constant">Node</span>.<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;nid DESC&#39;</span>).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;note&#39;</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span>).<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">tagnames</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">tags</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:name</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">tagnames</span> <span class="ruby-operator">+=</span> [<span class="ruby-string">&#39;balloon-mapping&#39;</span>, <span class="ruby-string">&#39;spectrometer&#39;</span>, <span class="ruby-string">&#39;near-infrared-camera&#39;</span>, <span class="ruby-string">&#39;thermal-photography&#39;</span>, <span class="ruby-string">&#39;newsletter&#39;</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">tagnames</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">defaults</span>
+  <span class="ruby-identifier">tagnames</span>.<span class="ruby-identifier">uniq</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tags</span><span
+            class="method-args">(limit = 10)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="tags-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 140</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tags</span>(<span class="ruby-identifier">limit</span> = <span class="ruby-value">10</span>)
+  <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;name in (?)&#39;</span>, <span class="ruby-identifier">tagnames</span>).<span class="ruby-identifier">limit</span>(<span class="ruby-identifier">limit</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-title" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">title</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="title-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 119</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">title</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">username</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-uid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">uid</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="uid-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 115</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">uid</span>
+  <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-unfollow" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">unfollow</span><span
+            class="method-args">(other_user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="unfollow-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 292</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">unfollow</span>(<span class="ruby-identifier">other_user</span>)
+  <span class="ruby-identifier">active_relationships</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">followed_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">other_user</span>.<span class="ruby-identifier">id</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">destroy</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-weekly_comment_tally" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">weekly_comment_tally</span><span
+            class="method-args">(span = 52)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="weekly_comment_tally-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 200</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">weekly_comment_tally</span>(<span class="ruby-identifier">span</span> = <span class="ruby-value">52</span>)
+  <span class="ruby-identifier">weeks</span> = {}
+  (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">span</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">week</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">weeks</span>[<span class="ruby-identifier">span</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">week</span>] = <span class="ruby-constant">Comment</span>.<span class="ruby-identifier">select</span>(<span class="ruby-value">:timestamp</span>)
+                                .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>,
+                                        <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>,
+                                        <span class="ruby-identifier">timestamp</span><span class="ruby-operator">:</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">week</span>.<span class="ruby-identifier">weeks</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">..</span><span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">week</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">weeks</span>.<span class="ruby-identifier">to_i</span>)
+                                .<span class="ruby-identifier">count</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">weeks</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-weekly_note_tally" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">weekly_note_tally</span><span
+            class="method-args">(span = 52)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="weekly_note_tally-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 187</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">weekly_note_tally</span>(<span class="ruby-identifier">span</span> = <span class="ruby-value">52</span>)
+  <span class="ruby-identifier">weeks</span> = {}
+  (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">span</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">week</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">weeks</span>[<span class="ruby-identifier">span</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">week</span>] = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">select</span>(<span class="ruby-value">:created</span>)
+                             .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>,
+                                     <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;note&#39;</span>,
+                                     <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>,
+                                     <span class="ruby-identifier">created</span><span class="ruby-operator">:</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">week</span>.<span class="ruby-identifier">weeks</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">..</span><span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">week</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">weeks</span>.<span class="ruby-identifier">to_i</span>)
+                             .<span class="ruby-identifier">count</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">weeks</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-wiki_edit_streak" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">wiki_edit_streak</span><span
+            class="method-args">(span = 365)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="wiki_edit_streak-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 230</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">wiki_edit_streak</span>(<span class="ruby-identifier">span</span> = <span class="ruby-value">365</span>)
+  <span class="ruby-identifier">days</span> = {}
+  <span class="ruby-identifier">streak</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">wiki_edit_count</span> = <span class="ruby-value">0</span>
+  (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">span</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">day</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">days</span>[<span class="ruby-identifier">day</span>] = <span class="ruby-constant">Revision</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:node</span>)
+                        .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>,
+                                <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>,
+                                <span class="ruby-identifier">timestamp</span><span class="ruby-operator">:</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">midnight</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">day</span>.<span class="ruby-identifier">days</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">..</span><span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">midnight</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">day</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">days</span>.<span class="ruby-identifier">to_i</span>)
+                        .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.type != ?&#39;</span>, <span class="ruby-string">&#39;note&#39;</span>)
+                        .<span class="ruby-identifier">count</span>
+    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">days</span>[<span class="ruby-identifier">day</span>] <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-identifier">streak</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-identifier">wiki_edit_count</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">days</span>[<span class="ruby-identifier">day</span>]
+  <span class="ruby-keyword">end</span>
+  [<span class="ruby-identifier">streak</span>, <span class="ruby-identifier">wiki_edit_count</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -14,7 +14,7 @@ jQuery(document).ready(function() {
       $('.side-dropzone').css('background','#fcc')
       alert_notice('Click <b>Publish</b> again to publish without a main image, but it is recommended that you add one.', {'scroll': true})
     } else {
-      $('#new_revision#new_revision,#edit_revision').submit()
+      $('#new_revision#new_revision,#edit_revision,.legacy-form').submit()
     }
   }
   $(".publish").bind("click",publish)
