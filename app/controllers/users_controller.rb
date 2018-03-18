@@ -114,7 +114,7 @@ class UsersController < ApplicationController
                           .order(order_string)
                           .page(params[:page])
     end
-    @users = @users.where('users.status = 1') unless current_user && (current_user.role == "admin" || current_user.role == "moderator")
+    @users = @users.where('users.status = 1') unless current_user && (current_user.can_moderate?)
   end
 
   def profile
@@ -165,7 +165,7 @@ class UsersController < ApplicationController
       end
 
       if @user.status == 0
-        if current_user && (current_user.role == "admin" || current_user.role == "moderator")
+        if current_user && (current_user.can_moderate?)
           flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
         else
           flash[:error] = I18n.t('users_controller.user_has_been_banned')
@@ -259,7 +259,7 @@ class UsersController < ApplicationController
 
   def photo
     @user = DrupalUser.find_by(uid: params[:uid]).user
-    if current_user.uid == @user.uid || current_user.role == "admin"
+    if current_user.uid == @user.uid || current_user.admin?
       @user.photo = params[:photo]
       if @user.save!
         if request.xhr?
