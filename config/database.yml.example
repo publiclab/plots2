@@ -6,8 +6,8 @@ test:
   username: plots
   password: plots
   database: plots
-  host: db
   encoding: utf8
+  host: 127.0.0.1
   pool: 5
   timeout: 5000
 
