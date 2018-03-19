@@ -61,3 +61,10 @@
     opacity: 1;
   }
 }
+
+a.navbar-offset {
+    display: block;
+    position: relative;
+    top: -100px;
+    visibility: hidden;
+}
