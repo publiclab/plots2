@@ -302,4 +302,7 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
+  def settings
+    render partial: 'users/settings'
+  end
 end

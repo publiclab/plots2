@@ -132,11 +132,14 @@
               <% end %>
               <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
               <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li>
+              <li><a data-toggle="modal" data-target="#myModal">Settings</a></li>
               <li class="divider"></li>
               <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
               <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
               <li class="divider"></li>
-	      <% if current_user.role == 'admin' %>
+
+
+              <% if current_user.role == 'admin' %>
                 <li><a href="/useremail">Email search</a></li>
                 <li><a href="/wiki/locked">Locked pages</a></li>
                 <li><a href="/spam">Spam moderation</a></li>
@@ -214,4 +217,25 @@
 </script>
   <%= render :partial => "layouts/alerts" %>
 
+</div>
+
+<!-- Modal -->
+<div id="myModal"  class="modal fade" role="dialog">
+  <div  style="vertical-align: middle; width: 750px; margin: auto;" class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Settings</h4>
+      </div>
+      <div class="modal-body">
+        <%= render :partial => "users/settings" %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
 </div>
