@@ -132,7 +132,7 @@
               <% end %>
               <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
               <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li>
-              <li><a data-toggle="modal" data-target="#myModal">Settings</a></li>
+              <li><a style="cursor: pointer;" data-toggle="modal" data-target="#myModal">Settings</a></li>
               <li class="divider"></li>
               <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
               <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
@@ -227,7 +227,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Settings</h4>
+        <h2 class="modal-title">Settings</h2>
       </div>
       <div class="modal-body">
         <%= render :partial => "users/settings" %>
