@@ -303,6 +303,7 @@ class UsersController < ApplicationController
   end
 
   def settings
-    render partial: 'users/settings'
+    flash[:notice] = "Settings updated successfully !!!"
+    redirect_to '/dashboard'
   end
 end
