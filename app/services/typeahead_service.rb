@@ -46,36 +46,43 @@ class TypeaheadService
     end
   end
 
-  def notes(input, limit = 5)
+  # default order is recency
+  def notes(input, limit = 5, order = :default)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      Node.search(input)
+      Node.search(input, order)
         .group(:nid)
         .includes(:node)
         .references(:node)
         .limit(limit)
         .where("node.type": "note", "node.status": 1)
-        .order('node.changed DESC')
     else 
-      Node.limit(limit)
+      nodes = Node.limit(limit)
         .group(:nid)
-        .where(type: "note", status: 1)
-        .order(changed: :desc)
+        .where(type: 'note', status: 1)
         .where('title LIKE ?', '%' + input + '%')
+      nodes.order(changed: :desc) if order == :default
+      nodes.order(cached_likes: :desc) if order == :likes
+      nodes.order(views: :desc) if order == :views
     end
   end
 
-  def wikis(input, limit = 5)
+  # default order is recency
+  def wikis(input, limit = 5, order = :default)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      Node.search(input)
+      Node.search(input, order)
         .group('node.nid')
         .includes(:node)
         .references(:node)
         .limit(limit)
         .where("node.type": "page", "node.status": 1)
     else 
-      Node.limit(limit)
-        .order('nid DESC')
-        .where('type = "page" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+      nodes = Node.limit(limit)
+        .group(:nid)
+        .where(type: 'page', status: 1)
+        .where('title LIKE ?', '%' + input + '%')
+      nodes.order(changed: :desc) if order == :default
+      nodes.order(cached_likes: :desc) if order == :likes
+      nodes.order(views: :desc) if order == :views
     end
   end
 
