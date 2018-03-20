@@ -182,7 +182,7 @@ class UserTest < ActiveSupport::TestCase
     user = User.new(username: 'zen',
                     password: 'nez',
                     password_confirmation: 'nez',
-                    email: 'abc@xyz.com')
+                    email: 'abc@.com')
     assert_not user.save({})
   end
   test 'email validation' do
