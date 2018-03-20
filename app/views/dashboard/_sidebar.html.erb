@@ -1,5 +1,26 @@
-<br />
+  <br />
+  <ul class="nav nav-tabs">
+  	<li class="active">
+      <a class="lists-tab" href="#ask-question" data-toggle="tab">
+        <span class="visible-xs"><i class="fa fa-comment"></i></span>
+        <span class="hidden-xs">Ask a question</span>
+      </a>
+    </li>
+    <li>
+      <a class="wikis-tab" href="#wiki" data-toggle="tab">
+        <span class="visible-xs"><i class="fa fa-book"></i></span>
+        <span class="hidden-xs"><%= t('dashboard._sidebar.wiki') %></span>
+      </a>
+    </li>
+  </ul>
 
-<div id="wiki">
-  <%= render partial: "dashboard/wiki", locals: { wikis: @wikis } %>
-</div>
+  <div class="tab-content">
+    <div class="tab-pane" id="wiki">
+      <%= render partial: "dashboard/wiki", locals: { wikis: @wikis } %>
+    </div>
+
+    <div class="tab-pane active" id="ask-question">
+      <p>The easiest way to start with Public Lab community is to ask a question.<br />See questions and ask your own here:</p>
+	    <a class="btn btn-primary btn-sm" href="/questions">Questions &raquo;</a>
+    </div>
+  </div>
