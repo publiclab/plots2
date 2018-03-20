@@ -16,8 +16,8 @@ class SearchesController < ApplicationController
     @title = 'Search'
     @tagnames = params[:id].split(',')
     @users = SearchService.new.users(params[:id])
-    @nodes = SearchService.new.nodes(params[:id])
-                              .paginate(page: params[:page], per_page: 24)
+    @nodes = TypeaheadService.new.nodes(params[:id], 100, params[:order].to_sym)
+      .paginate(page: params[:page], per_page: 24)
   end
 
 end
