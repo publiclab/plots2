@@ -54,13 +54,25 @@ class SearchService
   end
 
   def find_nodes(input, limit = 5)
-    Node.limit(limit)
-      .order('nid DESC')
-      .where('node.status = 1 AND title LIKE ?', '%' + input + '%')
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      nids = Node.search(input)
+        .group(:nid)
+        .includes(:node)
+        .references(:node)
+        .limit(limit)
+        .where("node.type": ["note", "page"], "node.status": 1)
+        .order('node.changed DESC')
+        .collect(&:nid)
+      Node.find nids
+    else
+      Node.limit(limit)
+        .group(:nid)
+        .where(type: ["note", "page"], status: 1)
+        .order(changed: :desc)
+        .where('title LIKE ?', '%' + input + '%')
+    end
   end
 
-  ## search for node title only
-  ## FIXme with solr
   def find_notes(input, limit = 5)
     Node.limit(limit)
       .order('nid DESC')
