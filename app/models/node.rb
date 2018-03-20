@@ -3,11 +3,16 @@ class UniqueUrlValidator < ActiveModel::Validator
     if record.title == '' || record.title.nil?
       # record.errors[:base] << "You must provide a title."
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
-    elsif record.title == 'new' && record.type == 'page'
-      record.errors[:base] << "You may not use the title 'new'." # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
+    elsif record.type == 'page'
+      array = ['create', 'edit', 'update', 'delete', 'new']
+      array.each { |x|
+        if record.title == x
+          record.errors[:base] << "You may not use the title '" + x + "'"
+        end
+      }
     else
       if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
-        record.errors[:base] << 'You have already used this title today.'
+        record.errors[:base] << 'You have already used this title.'
       end
     end
   end
@@ -38,19 +43,18 @@ class Node < ActiveRecord::Base
   has_many :tag, through: :node_tag
   # these override the above... have to do it manually:
   # has_many :tag, :through => :drupal_node_tag
-  has_many :comments, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :comments, foreign_key: 'nid' , dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_type_map, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_field_mappers, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_field_map_editor, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :images, foreign_key: :nid
   has_many :node_selections, foreign_key: :nid
-  has_many :answers, foreign_key: :nid
+  has_many :answers, foreign_key: :nid, dependent: :destroy
 
   belongs_to :drupal_user, foreign_key: 'uid'
 
   validates :title, presence: :true
   validates_with UniqueUrlValidator, on: :create
-  validates :path, uniqueness: { message: 'This title has already been taken' }
 
   # making drupal and rails database conventions play nice;
   # 'changed' is a reserved word in rails
@@ -166,13 +170,13 @@ class Node < ActiveRecord::Base
   end
 
   def answered
-    self.answers && self.answers.length > 0
+    self.answers&.length.positive?
   end
 
   def has_accepted_answers
-    self.answers.where(accepted: true).count > 0
+    self.answers.where(accepted: true).count.positive?
   end
-  
+
   # users who like this node
   def likers
     node_selections
@@ -243,7 +247,7 @@ class Node < ActiveRecord::Base
   end
 
   def body
-    latest.body if latest
+    latest&.body
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
@@ -326,7 +330,7 @@ class Node < ActiveRecord::Base
               .collect(&:tid)
     node_tag = NodeTag.where('nid = ? AND tid IN (?)', id, tids)
                                      .order('nid DESC')
-    if node_tag && node_tag.first
+    if node_tag&.first
       node_tag.first.tag.name.gsub(tag + ':', '')
     else
       ''
@@ -454,9 +458,9 @@ class Node < ActiveRecord::Base
   def edit_path
     path = if type == 'page' || type == 'tool' || type == 'place'
              '/wiki/edit/' + self.path.split('/').last
-           else
-             '/notes/edit/' + id.to_s
-           end
+    else
+      '/notes/edit/' + id.to_s
+    end
     path
   end
 
@@ -514,9 +518,9 @@ class Node < ActiveRecord::Base
   def add_comment(params = {})
     thread = if !comments.empty? && !comments.last.nil?
                comments.last.next_thread
-             else
-               '01/'
-             end
+    else
+      '01/'
+    end
     c = Comment.new(pid: 0,
                     nid: nid,
                     uid: params[:uid],
@@ -788,6 +792,8 @@ class Node < ActiveRecord::Base
       else
         true
       end
+    elsif tagname == 'format:raw' && user.role != 'admin'
+      errors ? "Only admins may create raw pages." : false
     elsif tagname[0..4] == 'rsvp:' && user.username != tagname.split(':')[1]
       errors ? I18n.t('node.only_RSVP_for_yourself') : false
     elsif tagname == 'locked' && user.role != 'admin'
@@ -817,9 +823,9 @@ class Node < ActiveRecord::Base
   def toggle_like(user)
     nodes = NodeSelection.where(nid: self.id , liking: true).count
     if is_liked_by(user)
-      self.cached_likes = nodes-1  
+      self.cached_likes = nodes-1
     else
-      self.cached_likes = nodes+1  
+      self.cached_likes = nodes+1
     end
   end
 
@@ -827,13 +833,13 @@ class Node < ActiveRecord::Base
      # scope like variable outside the transaction
     like = nil
     count = nil
-  
+
     ActiveRecord::Base.transaction do
       # Create the entry if it isn't already created.
       like = NodeSelection.where(user_id: user.uid,
                                  nid: nid).first_or_create
       like.liking = true
-      node = Node.find(nid)       
+      node = Node.find(nid)
       if node.type == 'note'
         SubscriptionMailer.notify_note_liked(node, like.user)
       end
@@ -849,17 +855,24 @@ class Node < ActiveRecord::Base
   def self.unlike(nid , user)
     like = nil
     count = nil
-  
+
     ActiveRecord::Base.transaction do
       like = NodeSelection.where(user_id: user.uid,
                                  nid: nid).first_or_create
       like.liking = false
-      count = -1 
-      node = Node.find(nid)       
+      count = -1
+      node = Node.find(nid)
       node.toggle_like(like.user)
       node.save!
       like.save!
-     end 
+     end
       count
+  end
+
+  # status = 3 for draft nodes,visible to author only
+  def draft
+      self.status = 3
+      save
+      self
   end
 end

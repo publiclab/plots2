@@ -10,10 +10,11 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
+    @user.status = 1
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(params[:spamaway]) unless using_recaptcha
-    if ((@spamaway && @spamaway.valid?) || recaptcha) && @user.save({})
+    if ((@spamaway&.valid?) || recaptcha) && @user.save({})
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
@@ -81,19 +82,36 @@ class UsersController < ApplicationController
   end
 
   def list
+    sort_param = params[:sort]
+
+    if params[:id]
+      order_string = 'updated_at DESC'
+    else
+      order_string = 'last_updated DESC'
+    end
+
+    if sort_param == 'username'
+      order_string = 'name ASC'
+    elsif sort_param == 'last_activity'
+      order_string = 'last_updated DESC'
+    elsif sort_param == 'joined'
+      order_string = 'created DESC'
+    end
+
     # allow admins to view recent users
     if params[:id]
       @users = DrupalUser.joins('INNER JOIN rusers ON rusers.username = users.name')
-                          .order("updated_at DESC")
+                          .order(order_string)
                           .where('rusers.role = ?', params[:id])
+                          .where('rusers.status = 1')
                           .page(params[:page])
     else
       # recently active
       @users = DrupalUser.select('*, MAX(node.changed) AS last_updated')
                           .joins(:node)
                           .group('users.uid')
-                          .where('users.status = 1 AND node.status = 1')
-                          .order("last_updated DESC")
+                          .where('node.status = 1')
+                          .order(order_string)
                           .page(params[:page])
     end
     @users = @users.where('users.status = 1') unless current_user && (current_user.role == "admin" || current_user.role == "moderator")
@@ -107,41 +125,43 @@ class UsersController < ApplicationController
       @profile_user = User.find_by(username: params[:id])
       @title = @user.name
       @notes = Node.research_notes
-                         .paginate(page: params[:page], per_page: 24)
-                         .order("nid DESC")
-                         .where(status: 1, uid: @user.uid)
+                   .paginate(page: params[:page], per_page: 24)
+                   .order("nid DESC")
+                   .where(status: 1, uid: @user.uid)
       @coauthored = @profile_user.coauthored_notes
                                  .paginate(page: params[:page], per_page: 24)
                                  .order('node_revisions.timestamp DESC')
       @questions = @user.user.questions
                              .order('node.nid DESC')
                              .paginate(:page => params[:page], :per_page => 24)
+      @likes = (@user.liked_notes.includes([:tag, :comments])+@user.liked_pages)
+                     .paginate(page: params[:page], per_page: 24)
       questions = Node.questions
                             .where(status: 1)
                             .order('node.nid DESC')
-      @answered_questions = questions.select{|q| q.answers.collect(&:author).include?(@user)}
+      ans_ques = questions.select{|q| q.answers.collect(&:author).include?(@user)}
+      @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
       wikis = Revision.order("nid DESC")
                       .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
                       .joins(:node)
                       .limit(20)
       @wikis = wikis.collect(&:parent).uniq
 
+      @comment_count = Comment.where(status: 0, uid: @user.uid).count
+
       # User's social links
       @github = @profile_user.social_link("github")
       @twitter = @profile_user.social_link("twitter")
       @facebook = @profile_user.social_link("facebook")
       @instagram = @profile_user.social_link("instagram")
-
-      
+      @count_activities_posted = Tag.tagged_nodes_by_author("activity:*", @user).count
+      @count_activities_attempted = Tag.tagged_nodes_by_author("replication:*", @user).count
       @map_lat = nil
-      @map_lon = nil 
-      @map_blurred = nil 
-      if(@profile_user.has_power_tag("lat") && @profile_user.has_power_tag("lon"))
-       @map_lat = @profile_user.get_value_of_power_tag("lat").to_f
-       @map_lon = @profile_user.get_value_of_power_tag("lon").to_f
-        if(@profile_user.has_power_tag("blurred"))
-        @map_blurred = @profile_user.get_value_of_power_tag("blurred")
-        end
+      @map_lon = nil
+      if @profile_user.has_power_tag("lat") && @profile_user.has_power_tag("lon")
+        @map_lat = @profile_user.get_value_of_power_tag("lat").to_f
+        @map_lon = @profile_user.get_value_of_power_tag("lon").to_f
+        @map_blurred = @profile_user.has_tag("blurred:true")
       end
 
       if @user.status == 0
@@ -261,7 +281,7 @@ class UsersController < ApplicationController
   def info
     @user = User.find_by(username: params[:id])
   end
-  
+
   # content this person follows
   def followed
     user = User.find_by(username: params[:id])

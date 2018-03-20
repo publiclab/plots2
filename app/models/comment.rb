@@ -2,11 +2,11 @@ class Comment < ActiveRecord::Base
   include CommentsShared # common methods for comment-like models
 
   attr_accessible :pid, :nid, :uid, :aid,
-                  :subject, :hostname, :comment,
-                  :status, :format, :thread, :timestamp
+    :subject, :hostname, :comment,
+    :status, :format, :thread, :timestamp
 
-  belongs_to :node, foreign_key: 'nid', touch: true,
-                    dependent: :destroy, counter_cache: true
+  belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
+                    # dependent: :destroy, counter_cache: true
   belongs_to :drupal_user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
 
@@ -27,8 +27,8 @@ class Comment < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
-                                  .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-                                  .count
+        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+        .count
     end
     weeks
   end
@@ -67,7 +67,7 @@ class Comment < ActiveRecord::Base
     if aid == 0
       node
     else
-      answer.node
+      return answer.node unless answer.nil?
     end
   end
 
@@ -142,4 +142,17 @@ class Comment < ActiveRecord::Base
     notify_users(uids, current_user)
     notify_tag_followers(already + uids)
   end
+
+  def spam
+    self.status = 0
+    save
+    self
+  end
+
+  def publish
+    self.status = 1
+    save
+    self
+  end
+
 end

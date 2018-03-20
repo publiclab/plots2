@@ -2,13 +2,13 @@ class MapController < ApplicationController
   def index
     @title = 'Maps'
     @nodes = Node.paginate(page: params[:page], per_page: 32)
-                 .order('nid DESC')
-                 .where(type: 'map', status: 1)
+      .order('nid DESC')
+      .where(type: 'map', status: 1)
 
     # I'm not sure if this is actually eager loading the tags...
     @maps = Node.joins(:tag)
-                .where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%')
-                .uniq
+      .where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%')
+      .uniq
 
     # This is supposed to eager load the url_aliases, and seems to run, but doesn't actually eager load them...?
     # @maps = Node.select("node.*,url_alias.dst AS dst").joins(:tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').joins("INNER JOIN url_alias ON url_alias.src = CONCAT('node/',node.nid)")
@@ -56,10 +56,8 @@ class MapController < ApplicationController
       @revision.title = params[:title]
       @revision.body = params[:body]
 
-      if params[:tags]
-        params[:tags].split(',').each do |tagname|
+      params[:tags]&.split(',').each do |tagname|
           @node.add_tag(tagname, current_user)
-        end
       end
 
       # save main image
@@ -133,10 +131,8 @@ class MapController < ApplicationController
                                               main_image: params[:main_image])
 
       if saved
-        if params[:tags]
-          params[:tags].split(',').each do |tagname|
+        params[:tags]&.split(',').each do |tagname|
             @node.add_tag(tagname, current_user)
-          end
         end
 
         # save main image
@@ -205,8 +201,8 @@ class MapController < ApplicationController
     @tagnames = params[:id].split(',')
     nids = Tag.find_nodes_by_type(params[:id], 'map', 20).collect(&:nid)
     @notes = Node.paginate(page: params[:page])
-                 .where('nid in (?)', nids)
-                 .order('nid DESC')
+      .where('nid in (?)', nids)
+      .order('nid DESC')
 
     @title = @tagnames.join(', ') if @tagnames
     @unpaginated = true

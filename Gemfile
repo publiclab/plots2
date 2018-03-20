@@ -77,7 +77,7 @@ gem 'geokit-rails'
 
 gem 'rails_autolink'
 gem 'rb-readline'
-gem "paperclip", "~> 4.2.2"
+gem "paperclip", "~> 4.2.0"
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
 gem "authlogic", "~> 3.5.0"
@@ -110,3 +110,7 @@ gem 'jbuilder'
 
 # Pin mustermann to Ruby 2.1 compatible
 gem 'mustermann' , '~> 0.4'
+
+#OAuth Based login
+gem 'omniauth', '~> 1.3', '>= 1.3.1'
+gem 'omniauth-facebook', '~> 3.0'

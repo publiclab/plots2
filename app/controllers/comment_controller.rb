@@ -2,11 +2,11 @@ class CommentController < ApplicationController
   include CommentHelper
 
   respond_to :html, :xml, :json
-  before_filter :require_user, only: %i[create update make_answer delete]
+  before_filter :require_user, only: %i(create update make_answer delete)
 
   def index
     @comments = Comment.paginate(page: params[:page], per_page: 30)
-                       .order('timestamp DESC')
+      .order('timestamp DESC')
     render template: 'comments/index'
   end
 
@@ -148,17 +148,18 @@ class CommentController < ApplicationController
     comments_node_and_path
 
     if @comment.uid == current_user.uid ||
-        current_user.role == 'admin' ||
-        current_user.role == 'moderator'
+       current_user.role == 'admin' ||
+       current_user.role == 'moderator'
 
       @answer = Answer.new(
           nid: @comment.nid,
           uid: @comment.uid,
-          content: @comment.comment
+          content: @comment.comment,
+          created_at: @comment.created_at,
+          updated_at: @comment.created_at
       )
 
       if @answer.save && @comment.delete
-        @answer.answer_notify(current_user)
         @answer_id = @comment.aid
         respond_with do |format|
           format.js { render template: 'comment/make_answer' }

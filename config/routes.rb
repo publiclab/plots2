@@ -79,6 +79,7 @@ Plots2::Application.routes.draw do
   put 'subscribe/:type/:name' => 'subscription#add'
   get 'subscribe/:type/:name' => 'subscription#add'
   get 'subscriptions' => 'subscription#index'
+  get 'subscriptions/digest' => 'subscription#digest'
 
   get 'wiki/stale' => 'wiki#stale'
   get 'wiki/new' => 'wiki#new'
@@ -93,6 +94,7 @@ Plots2::Application.routes.draw do
   # these need precedence for tag listings
   get 'feed/tag/:tagname' => 'tag#rss'
   get ':node_type/tag(/:id)' => 'tag#show'
+  get 'feed/tag/:tagname/author/:authorname' => 'tag#rss_for_tagged_with_author'
   get 'wiki/raw/:id' => 'wiki#raw'
   get 'wiki/revisions/:id' => 'wiki#revisions'
   get 'wiki/revert/:id' => 'wiki#revert'
@@ -124,11 +126,12 @@ Plots2::Application.routes.draw do
   get 'place/:id' => 'legacy#place'
   get 'tool/:id' => 'legacy#tool'
   get 'people/:id' => 'legacy#people'
+  get 'notes/recent' => 'notes#recent'
   get 'notes/:id' => 'legacy#notes'
   get 'sites/default/files/:filename.:format' => 'legacy#file'
   get 'sites/default/files/imagecache/:size/:filename.:format' => 'legacy#image'
 
-  get 'research' => 'home#dashboard'
+  get 'research' => 'home#research'
   get 'notes' => 'legacy#notes'
   get 'notes/author/:id' => 'notes#author'
   get 'notes/author/:author/:topic' => 'notes#author_topic'

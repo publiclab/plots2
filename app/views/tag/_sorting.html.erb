@@ -1,34 +1,35 @@
-<div>
-<h4>Filter questions by topic</h4>
-<p>Refine questions by entering tags to search or answer questions on specific topics.</p>
-
-<form id="tagform" class="form" method="GET" action="/questions/tag/">
-  <div class="control-group">
-    <input autocomplete="off" id="taginput" name="id" type="text" placeholder="water-quality,dust" data-provide="typeahead" class="form-control" />
-    <script>
-      jQuery(document).ready(function() {
- 
-        $('#taginput').typeahead({
-          items: 8,
-          minLength: 3,
-          source: function (query, process) {
-            return $.post('/tag/suggested/' + query, {}, function (data) {
-              return process(data)
-            })
-          },
-          updater: function(text) { 
-            $('#taginput').val(text)
-            window.location = "/questions/tag/" + text;
-          }
-        });
-
-        $('#tagform').submit(function(e) {
-          e.preventDefault();
-          window.location = "/questions/tag/" + $('#taginput').val();
-        });
-
-      });
-    </script>
+<h4>View questions by topic</h4>
+<form id="tagform" class="form-horizontal" method="GET" action="/questions/tag/">
+  <div class="input-group">
+    <input tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="type your topic" data-provide="typeahead" class="form-control" />
+    <span class="input-group-btn" >
+      <button type="submit" rel="tooltip" title="View questions with the entered title" class="btn btn-primary">Search</button>
+    </span>
   </div>
 </form>
-</div>
+  <script>
+    jQuery(document).ready(function() {
+
+      $('#taginput').typeahead({
+        items: 8,
+        minLength: 3,
+        source: function (query, process) {
+          var replaced_query = query.replace(' ', /-/g);
+          return $.post('/tag/suggested/' + replaced_query, {}, function (data) {
+            return process(data)
+          })
+        },
+        updater: function(text) {
+          $('#taginput').val(text)
+          window.location = "/questions/tag/" + text;
+        }
+      });
+
+      $('#tagform').submit(function(e) {
+        e.preventDefault();
+        window.location = "/questions/tag/" + ($('#taginput').val()).replace(/\s/g, '-');
+      });
+
+    });
+  </script>
+

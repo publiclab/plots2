@@ -20,7 +20,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       }
       follow_redirect!
       get_via_redirect '/dashboard', locale: lang
-      assert_select 'a[href=/dashboard]', I18n.t('layout._header.dashboard')
+      assert_select 'a[href=/dashboard]'
     end
   end
 
@@ -144,20 +144,6 @@ class I18nTest < ActionDispatch::IntegrationTest
            status: 1
       get '/dashboard'
       assert_select 'span', I18n.t('dashboard._node_wiki.new_page_by')
-    end
-  end
-
-  test 'should choose i18n for dashboard/_sidebar' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
-      follow_redirect!
-      get '/dashboard'
-      assert_select 'span', I18n.t('dashboard._sidebar.wiki')
     end
   end
 
@@ -315,7 +301,6 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       wiki = nodes(:about)
       get '/wiki/edit/' + wiki.title.parameterize
-      assert_select 'a', I18n.t('wiki.edit.getting_started')
     end
   end
 
@@ -362,7 +347,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a', I18n.t('sidebar._related.write_research_note')
+      assert_select 'a.write-research-note', "#{I18n.t('sidebar._related.write_research_note')} &raquo;"
     end
   end
 

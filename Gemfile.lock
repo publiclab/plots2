@@ -401,7 +401,7 @@ DEPENDENCIES
   mustermann (~> 0.4)
   mysql2 (~> 0.3.20)
   nifty-generators
-  paperclip (< 4.2.0)
+  paperclip (~> 4.2.0)
   passenger
   php-serialize
   progress_bar
@@ -435,3 +435,4 @@ DEPENDENCIES
 
 BUNDLED WITH
    1.16.1
+   

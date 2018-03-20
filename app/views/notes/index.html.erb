@@ -13,6 +13,8 @@
     <h3><%= raw t('notes.index.notes_tagged_with', :params => params[:id]) %></h3>
   <% elsif params[:action] == "popular" %>
     <h2><%= t('notes.index.popular_research_notes') %></h2>
+  <% elsif params[:action] == "recent" %>
+    <h2><%= t('notes.index.recent_research_notes') %></h2>
   <% elsif params[:action] == "author_topic" %>
     <h3><%= raw t('notes.index.research_on', :tags => @tagnames.join(', '), :url1 => "/people/"+@user.name, :user_name => @user.name) %> <br /><small><%= raw t('notes.index.research_notes_and_wiki_edits_with_time', :count => @user.node_count, :time => time_ago_in_words(@user.created_at)) %></small></h3>
   <% elsif params[:action] == "author" %>
@@ -20,17 +22,17 @@
   <% else %>
     <h2><%= raw t('notes.index.research_notes_ideas_and_documentation') %></h2>
   <% end %>
-  <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked") %>
+  <% if params[:controller] == "notes" && (params[:action] == "popular" || params[:action] == "index" || params[:action] == "liked" || params[:action] == "recent") %>
 
     <%= render :partial => "notes/format_toggle" %>
     <% if params[:action] == "liked" %><a style="margin-right:4px;" class="pull-right btn btn-default btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
 
     <ul class="nav nav-tabs">
-        <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/notes/"><%= t('notes.index.recent') %></a></li>
-        <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/notes/popular/"><%= t('notes.index.popular') %></a></li>
+        <li<% if params[:action] == "recent" %> class="active"<% end %>><a href="/notes/recent"><%= t('notes.index.recent') %></a></li>
+        <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/notes/popular/"><i class="fa fa-bolt"></i><span class="hidden-sm"> <%= t('notes.index.popular') %></span></a></li>
         <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="fa fa-star-o"></i><span class="hidden-sm"> <%= t('notes.index.liked') %></span></a></li>
   
-        <li><a href="/wiki/"><%= raw t('notes.index.wiki_pages') %></a></li>
+        <li><a href="/wiki/"><i class="fa fa-book"></i><span class="hidden-sm"> <%= raw t('notes.index.wiki_pages') %></span></a></li>
     </ul>
 
   <% end %>

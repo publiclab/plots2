@@ -315,7 +315,7 @@ class CommentControllerTest < ActionController::TestCase
           id: comment.id
     end
     assert_not_nil :answer
-    assert_not_equal initial_mail_count, ActionMailer::Base.deliveries.size
+    assert_equal initial_mail_count, ActionMailer::Base.deliveries.size  # check for ensuring that no Email is sent
   end
 
   test 'should create answer while promoting comment if user is moderator' do
@@ -327,7 +327,7 @@ class CommentControllerTest < ActionController::TestCase
           id: comment.id
     end
     assert_not_nil :answer
-    assert_not_equal initial_mail_count, ActionMailer::Base.deliveries.size
+    assert_equal initial_mail_count, ActionMailer::Base.deliveries.size  # check for ensuring that no Email is sent
   end
 
   test 'should create answer while promoting comment if user is admin' do
@@ -339,7 +339,7 @@ class CommentControllerTest < ActionController::TestCase
           id: comment.id
     end
     assert_not_nil :answer
-    assert_not_equal initial_mail_count, ActionMailer::Base.deliveries.size
+    assert_equal initial_mail_count, ActionMailer::Base.deliveries.size  # check for ensuring that no Email is sent
   end
 
   test 'render propose title template when author is logged in' do

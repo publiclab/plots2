@@ -170,31 +170,44 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#note-graph', 0
   end
 
+  test 'wildcard tag should list answered questions' do
+    get :show, id: 'question:*'
+ 
+    assert_not_nil assigns(:answered_questions)
+  end
+
+  test 'wildcard tag should have a active asked and an inactive answered tab for question' do
+    get :show, id: 'question:*'
+
+    assert_select '#asked-tab.active', 1
+    assert_select '#answered-tab', 1    
+  end
+
   test "wildcard tag show wiki pages with author" do
-    get :show_for_author, node_type: 'wiki', id: 'activity:*', author: 'jeff'
+    get :show_for_author, node_type: 'wiki', id: 'awes*', author: 'Bob'
     assert :success
     assert_not_nil :tags
-    assert :wildcard
+    assert assigns(:wildcard)
     assert :wikis
     assert assigns(:wikis).length > 0
     assigns['wikis'].each do |node|
-      assert_equal 2, node.uid
-      assert node.has_tag('activity:*')
+      assert_equal 1, node.uid
+      assert node.has_tag('awes*')
     end
     assert_select '#note-graph', 0
     assert_template 'tag/show'
   end
 
   test "tag show wiki pages with author" do
-    get :show_for_author, node_type: 'wiki', id: 'activity:spectrometer', author: 'jeff'
+    get :show, node_type: 'wiki', id: 'awesome', author: 'Bob'
     assert :success
     assert_not_nil :tags
-    assert :wildcard
+    assert_nil assigns(:wildcard)
     assert :wikis
     assert assigns(:wikis).length > 0
     assigns['wikis'].each do |node|
-      assert_equal 2, node.uid
-      assert node.has_tag('activity:spectrometer')
+      assert_equal 1, node.uid
+      assert node.has_tag('awesome')
     end
     assert_template 'tag/show'
   end
@@ -213,34 +226,34 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'show note with author and tagname without wildcard' do
-      get :show_for_author, id: 'test', author: 'jeff'
-          assert_response :success
-          assert_not_nil :tags
-          assert_not_nil :authors
-          assert_not_nil :notes
-          assert_nil assigns(:wildcard)
-          assert  assigns['notes'].include?(nodes(:one))
-          assigns['notes'].each do |node|
-            assert_equal 2, node.uid
-            assert node.has_tag('test')
-          end
-          assert_template 'tag/show'
+    get :show_for_author, id: 'test', author: 'jeff'
+    assert_response :success
+    assert_not_nil :tags
+    assert_not_nil :authors
+    assert_not_nil :notes
+    assert_nil assigns(:wildcard)
+    assert  assigns['notes'].include?(nodes(:one))
+    assigns['notes'].each do |node|
+      assert_equal 2, node.uid
+      assert node.has_tag('test')
     end
+    assert_template 'tag/show'
+  end
 
-    test 'show note with author and tagname with wildcard' do
-      get :show_for_author, id: 'test*', author: 'jeff'
-          assert_response :success
-          assert_not_nil :tags
-          assert_not_nil :authors
-          assert_not_nil :notes
-          assert assigns(:wildcard)
-          assert  assigns['notes'].include?(nodes(:one))
-          assert  assigns['notes'].include?(nodes(:blog))
-          assigns['notes'].each do |node|
-            assert_equal 2, node.uid
-            assert node.has_tag('test*')
-          end
-          assert_template 'tag/show'
+  test 'show note with author and tagname with wildcard' do
+    get :show_for_author, id: 'test*', author: 'jeff'
+    assert_response :success
+    assert_not_nil :tags
+    assert_not_nil :authors
+    assert_not_nil :notes
+    assert assigns(:wildcard)
+    assert  assigns['notes'].include?(nodes(:one))
+    assert  assigns['notes'].include?(nodes(:blog))
+    assigns['notes'].each do |node|
+      assert_equal 2, node.uid
+      assert node.has_tag('test*')
+    end
+    assert_template 'tag/show'
   end
 
   test 'tag widget' do
@@ -276,6 +289,7 @@ class TagControllerTest < ActionController::TestCase
     assert_not_nil :notes
     assert_not_nil :users
     assert_not_nil :tag
+    assert_select ".users-row", assigns(:users).length
   end
 
   test 'adds comment when awarding a barnstar' do
@@ -288,6 +302,21 @@ class TagControllerTest < ActionController::TestCase
            star: 'basic'
 
       assert_equal "[@#{User.first.username}](/profile/#{User.first.username}) awards a <a href=\"//#{request.host}/wiki/barnstars\">barnstar</a> to #{node.author.name} for their awesome contribution!", Comment.last.body
+    end
+  end
+
+  test 'adds comment when creating coauthor' do
+    UserSession.create(users(:jeff))
+    user = users(:bob)
+    node = nodes(:one)
+
+    assert_difference 'Comment.count' do
+      tagname = "with:#{user.name}"
+      post :create,
+           name: tagname,
+           nid: node.id
+
+      assert_equal " [@#{node.author.name}](/profile/#{node.author.name}) has marked #{tagname.split(':')[1]} as a co-author. ", Comment.last.body
     end
   end
 
@@ -446,4 +475,78 @@ class TagControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'table' # ensure a table is shown
   end
+
+  test 'rss with tagname and authorname' do
+    get :rss_for_tagged_with_author, tagname: 'test*', authorname: 'jeff', format: 'rss'
+    assert :success
+    assert_not_nil :notes
+    assert_equal 'application/rss+xml', @response.content_type
+  end
+
+  test 'should have active question tab for question for show_for_author' do
+    tag = tags(:question)
+    get :show_for_author, id: tag.name, author: 'jeff'
+    assert_select 'ul.nav-tabs' do
+      assert_select 'li.active' do
+        assert_select "a[href = '/questions/tag/question:spectrometer/author/jeff']", 1
+      end
+    end
+    assert_select '#questions.active', 1
+  end
+
+  test 'should have a active asked and an inactive answered tab for question' do
+    tag = tags(:question)
+
+    get :show_for_author, id: tag.name, author: 'jeff'
+
+    assert_select '#asked-tab.active', 1
+    assert_select '#answered-tab', 1    
+  end
+
+  test 'should list answered questions' do
+    tag = tags(:question)
+
+    get :show_for_author, id: tag.name, author: 'jeff'
+ 
+    assert_not_nil assigns(:answered_questions)
+  end
+
+  test 'should take node type as note if tag is not a question tag for show_for_author' do
+    tag = tags(:awesome)
+
+    get :show_for_author, id: tag.name, author: 'jeff'
+
+    assert_equal 'note', assigns(:node_type)
+  end
+
+  test "does not show wiki for show_for_author" do
+    get :show_for_author, id: 'question', node_type: 'wiki', author: 'jeff'
+    assert_equal true, assigns(:wikis).empty?
+  end
+
+  test "wildcard does not show wiki for show_for_author" do
+    get :show_for_author, id: 'question:*', node_type: 'wiki', author: 'jeff'
+    assert_equal true, assigns(:wikis).empty?
+  end
+
+  test "does not show note for show_for_author" do
+    get :show_for_author, id: 'question', author: 'jeff'
+    assert_equal true, assigns(:notes).empty?
+  end
+
+  test "wildcard does not show note for show_for_author" do
+    get :show_for_author, id: 'question:*', author: 'jeff'
+    assert_equal true, assigns(:notes).empty?
+  end
+
+  test "wildcard does not show map for show_for_author" do
+    get :show_for_author, id: 'question:*', node_type: 'maps', author: 'jeff'
+    assert_equal true, assigns(:nodes).empty?
+  end
+
+  test " does not show map for show_for_author" do
+    get :show_for_author, id: 'question', node_type: 'maps', author: 'jeff'
+    assert_equal true, assigns(:nodes).empty?
+  end
+
 end

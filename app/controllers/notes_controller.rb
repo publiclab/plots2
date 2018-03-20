@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
   respond_to :html
-  before_filter :require_user, only: %i[create edit update delete rsvp]
+  before_filter :require_user, only: %i(create edit update delete rsvp)
 
   def index
     @title = I18n.t('notes_controller.research_notes')
@@ -16,14 +16,14 @@ class NotesController < ApplicationController
     @notes = Node.joins('LEFT OUTER JOIN node_revisions ON node_revisions.nid = node.nid
                          LEFT OUTER JOIN community_tags ON community_tags.nid = node.nid
                          LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
-                 .select('*, max(node_revisions.timestamp)')
-                 .where(status: 1, type:%w[page place])
-                 .includes(:revision, :tag)
-                 .references(:term_data)
-                 .where('term_data.name = ?', 'chapter')
-                 .group('node.nid')
-                 .order('max(node_revisions.timestamp) DESC, node.nid')
-                 .paginate(page: params[:page], per_page: 24)
+      .select('*, max(node_revisions.timestamp)')
+      .where(status: 1, type:%w(page place))
+      .includes(:revision, :tag)
+      .references(:term_data)
+      .where('term_data.name = ?', 'chapter')
+      .group('node.nid')
+      .order('max(node_revisions.timestamp) DESC, node.nid')
+      .paginate(page: params[:page], per_page: 24)
 
     render template: 'notes/tools_places'
   end
@@ -50,6 +50,12 @@ class NotesController < ApplicationController
       # redirect_old_urls
     else
       @node = Node.find params[:id]
+    end
+
+    if @node.status == 3 && (current_user.nil? || @node.author != current_user)
+      flash[:notice] = "Only author can access the draft note"
+      redirect_to '/'
+      return
     end
 
     if @node.has_power_tag('question')
@@ -97,30 +103,33 @@ class NotesController < ApplicationController
                                               main_image: params[:main_image])
 
       if saved
-        if params[:tags]
-          params[:tags].tr(' ', ',').split(',').each do |tagname|
+        params[:tags]&.tr(' ', ',').split(',').each do |tagname|
             @node.add_tag(tagname.strip, current_user)
-          end
         end
         if params[:event] == 'on'
           @node.add_tag('event', current_user)
           @node.add_tag('event:rsvp', current_user)
           @node.add_tag('date:' + params[:date], current_user) if params[:date]
         end
-        if current_user.first_time_poster
-          AdminMailer.notify_node_moderators(@node)
-          flash[:first_time_post] = true
-          if @node.has_power_tag('question')
-            flash[:notice] = I18n.t('notes_controller.thank_you_for_question').html_safe
+        if params[:draft] != true
+          if current_user.first_time_poster
+            AdminMailer.notify_node_moderators(@node)
+            flash[:first_time_post] = true
+            if @node.has_power_tag('question')
+              flash[:notice] = I18n.t('notes_controller.thank_you_for_question').html_safe
+            else
+              flash[:notice] = I18n.t('notes_controller.thank_you_for_contribution').html_safe
+            end
           else
-            flash[:notice] = I18n.t('notes_controller.thank_you_for_contribution').html_safe
+            if @node.has_power_tag('question')
+              flash[:notice] = I18n.t('notes_controller.question_note_published').html_safe
+            else
+              flash[:notice] = I18n.t('notes_controller.research_note_published').html_safe
+            end
           end
         else
-          if @node.has_power_tag('question')
-            flash[:notice] = I18n.t('notes_controller.question_note_published').html_safe
-          else
-            flash[:notice] = I18n.t('notes_controller.research_note_published').html_safe
-          end
+          @node.draft
+          flash[:notice] = I18n.t('notes_controller.saved_as_draft').html_safe
         end
         # Notice: Temporary redirect.Remove this condition after questions show page is complete.
         #         Just keep @node.path(:question)
@@ -136,7 +145,7 @@ class NotesController < ApplicationController
       else
         if request.xhr? # rich editor!
           errors = @node.errors
-          errors = errors.to_hash.merge(@revision.errors.to_hash) if @revision && @revision.errors
+          errors = errors.to_hash.merge(@revision.errors.to_hash) if @revision&.errors
           render json: errors
         else
           render template: 'editor/post'
@@ -180,8 +189,9 @@ class NotesController < ApplicationController
       @revision = @node.latest
       @revision.title = params[:title]
       @revision.body = params[:body]
+      @revision.timestamp = Time.now.to_i
       if params[:tags]
-        params[:tags].tr(' ', ',').split(',').each do |tagname|
+        params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
           @node.add_tag(tagname, current_user)
         end
       end
@@ -221,7 +231,7 @@ class NotesController < ApplicationController
         flash[:error] = I18n.t('notes_controller.edit_not_saved')
         if request.xhr? || params[:rich]
           errors = @node.errors
-          errors = errors.to_hash.merge(@revision.errors.to_hash) if @revision && @revision.errors
+          errors = errors.to_hash.merge(@revision.errors.to_hash) if @revision&.errors
           render json: errors
         else
           render 'editor/post'
@@ -234,18 +244,23 @@ class NotesController < ApplicationController
   # only for notes
   def delete
     @node = Node.find(params[:id])
-    if current_user.uid == @node.uid && @node.type == 'note' || current_user.role == 'admin' || current_user.role == 'moderator'
-      @node.delete
-      respond_with do |format|
-        format.html do
-          if request.xhr?
-            render text: I18n.t('notes_controller.content_deleted')
-          else
-            flash[:notice] = I18n.t('notes_controller.content_deleted')
-            redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+    if current_user && (current_user.uid == @node.uid || current_user.role == "moderator" || current_user.role == "admin")
+      if @node.authors.uniq.length == 1 
+        @node.destroy
+        respond_with do |format|
+          format.html do
+            if request.xhr?
+              render text: I18n.t('notes_controller.content_deleted')
+            else
+              flash[:notice] = I18n.t('notes_controller.content_deleted')
+              redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+            end
           end
-        end
       end
+    else
+      flash[:error] = I18n.t('notes_controller.more_than_one_contributor')
+      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+    end
     else
       prompt_login
     end
@@ -256,8 +271,8 @@ class NotesController < ApplicationController
     @user = DrupalUser.find_by(name: params[:id])
     @title = @user.name
     @notes = Node.paginate(page: params[:page], per_page: 24)
-                 .order('nid DESC')
-                 .where(type: 'note', status: 1, uid: @user.uid)
+      .order('nid DESC')
+      .where(type: 'note', status: 1, uid: @user.uid)
     render template: 'notes/index'
   end
 
@@ -275,13 +290,23 @@ class NotesController < ApplicationController
   def liked
     @title = I18n.t('notes_controller.highly_liked_research_notes')
     @wikis = Node.limit(10)
-                 .where(type: 'page', status: 1)
-                 .order('nid DESC')
+      .where(type: 'page', status: 1)
+      .order('nid DESC')
 
     @notes = Node.research_notes
-                 .where(status: 1)
-                 .limit(20)
-                 .order('nid DESC')
+      .where(status: 1)
+      .limit(20)
+      .order('nid DESC')
+    @unpaginated = true
+    render template: 'notes/index'
+  end
+
+  def recent
+    @title = I18n.t('notes_controller.recent_research_notes')
+    @wikis = Node.limit(10)
+      .where(type: 'page', status: 1)
+      .order('nid DESC')
+    @notes = Node.where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
     @unpaginated = true
     render template: 'notes/index'
   end
@@ -290,20 +315,20 @@ class NotesController < ApplicationController
   def popular
     @title = I18n.t('notes_controller.popular_research_notes')
     @wikis = Node.limit(10)
-                 .where(type: 'page', status: 1)
-                 .order('nid DESC')
+      .where(type: 'page', status: 1)
+      .order('nid DESC')
     @notes = Node.research_notes
-                 .limit(20)
-                 .where(status: 1)
-                 .order('views DESC')
+      .limit(20)
+      .where(status: 1)
+      .order('views DESC')
     @unpaginated = true
     render template: 'notes/index'
   end
 
   def rss
     @notes = Node.limit(20)
-                 .order('nid DESC')
-                 .where('type = ? AND status = 1 AND created < ?', 'note', (Time.now.to_i - 30.minutes.to_i))
+      .order('nid DESC')
+      .where('type = ? AND status = 1 AND created < ?', 'note', (Time.now.to_i - 30.minutes.to_i))
     respond_to do |format|
       format.rss do
         render layout: false
@@ -315,8 +340,8 @@ class NotesController < ApplicationController
 
   def liked_rss
     @notes = Node.limit(20)
-                 .order('created DESC')
-                 .where('type = ? AND status = 1 AND cached_likes > 0', 'note')
+      .order('created DESC')
+      .where('type = ? AND status = 1 AND cached_likes > 0', 'note')
     respond_to do |format|
       format.rss do
         render layout: false, template: 'notes/rss'

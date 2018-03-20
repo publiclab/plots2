@@ -6,11 +6,13 @@ class Revision < ActiveRecord::Base
 
   belongs_to :node, foreign_key: 'nid', dependent: :destroy, counter_cache: :drupal_node_revisions_count
   has_one :drupal_users, foreign_key: 'uid'
+  has_many :node_tag, foreign_key: 'nid'
+  has_many :tag, through: :node_tag
 
   validates :title,
-            presence: :true,
-            length: { minimum: 2 },
-            format: { with: /[A-Z][\w\-_]*/i, message: 'can only include letters, numbers, and dashes' }
+    presence: :true,
+    length: { minimum: 2 },
+    format: { with: /[A-Z][\w\-_]*/i, message: 'can only include letters, numbers, and dashes' }
   validates :body, presence: :true
   validates :uid, presence: :true
   validates :nid, presence: :true
@@ -78,14 +80,14 @@ class Revision < ActiveRecord::Base
 
   def previous
     parent.revision.order('timestamp DESC')
-          .where('timestamp < ?', timestamp)
-          .first
+      .where('timestamp < ?', timestamp)
+      .first
   end
 
   def next
     parent.revision.order('timestamp DESC')
-          .where('timestamp > ?', timestamp)
-          .last
+      .where('timestamp > ?', timestamp)
+      .last
   end
 
   # filtered version of node content
@@ -97,6 +99,16 @@ class Revision < ActiveRecord::Base
     body = body.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKHTML))
     body_extras(body)
+  end
+  
+  # filtered version of node content, but without running Markdown
+  def render_body_raw
+    body = self.body || ''
+    body = body.to_html
+    body = body.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKHTML))
+    body = body.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKHTML))
+    body = body.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKHTML))
+    insert_extras(body_extras(body))
   end
 
   # filtered version additionally appending http/https protocol to protocol-relative URLs like "/foo"

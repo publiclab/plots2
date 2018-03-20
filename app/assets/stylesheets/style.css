@@ -417,3 +417,15 @@ div.note.moderated h4 {
     font-size: 80%;
   }
 }
+ 
+.back-to-top {
+
+  float: right;
+
+}
+ 
+.back-to-top i {
+ 
+  font-size: 60px;
+ 
+}
