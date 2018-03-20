@@ -45,51 +45,47 @@ class TypeaheadService
         .where('status = 1 AND comment LIKE ?', '%' + input + '%')
     end
   end
-
+  
   # default order is recency
+  def nodes(input, limit = 5, order = :default)
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      Node.search(input, order)
+        .group(:nid)
+        .includes(:node)
+        .references(:node)
+        .where('node.status': 1)
+        .limit(limit)
+    else 
+      nodes = Node.limit(limit)
+        .group(:nid)
+        .where('title LIKE ?', '%' + input + '%')
+        .where('node.status': 1)
+      nodes.order(changed: :desc) if order == :default
+      nodes.order(cached_likes: :desc) if order == :likes
+      nodes.order(views: :desc) if order == :views
+    end
+  end
+
   def notes(input, limit = 5, order = :default)
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      Node.search(input, order)
-        .group(:nid)
-        .includes(:node)
-        .references(:node)
-        .limit(limit)
-        .where("node.type": "note", "node.status": 1)
-    else 
-      nodes = Node.limit(limit)
-        .group(:nid)
-        .where(type: 'note', status: 1)
-        .where('title LIKE ?', '%' + input + '%')
-      nodes.order(changed: :desc) if order == :default
-      nodes.order(cached_likes: :desc) if order == :likes
-      nodes.order(views: :desc) if order == :views
-    end
+    self.nodes(input, limit, order)
+      .where("node.type": "note")    
   end
 
-  # default order is recency
   def wikis(input, limit = 5, order = :default)
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      Node.search(input, order)
-        .group('node.nid')
-        .includes(:node)
-        .references(:node)
-        .limit(limit)
-        .where("node.type": "page", "node.status": 1)
-    else 
-      nodes = Node.limit(limit)
-        .group(:nid)
-        .where(type: 'page', status: 1)
-        .where('title LIKE ?', '%' + input + '%')
-      nodes.order(changed: :desc) if order == :default
-      nodes.order(cached_likes: :desc) if order == :likes
-      nodes.order(views: :desc) if order == :views
-    end
+    self.nodes(input, limit, order)
+      .where("node.type": "page")
   end
 
-  def maps(input, limit = 5)
-    Node.limit(limit)
-      .order('nid DESC')
-      .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+  def maps(input, limit = 5, order = :default)
+    self.nodes(input, limit, order)
+      .where("node.type": "map")
+  end
+  
+  def questions(input, limit = 5, order = :default)
+    self.nodes(input, limit, order)
+      .where('node.type': 'note')
+      .joins(:tag)
+      .where('term_data.name LIKE ?', 'question:%')
   end
 
   # Run a search in any of the associated systems for references that contain the search string
@@ -207,26 +203,7 @@ class TypeaheadService
   # Search question entries for matching text
   def search_questions(input, limit = 5)
     sresult = TagList.new
-    questions = if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      Node.search(input)
-        .group(:nid)
-        .includes(:node)
-        .references(:node)
-        .limit(limit)
-        .where("node.type": "note", "node.status": 1)
-        .order('node.changed DESC')
-        .joins(:tag)
-        .where('term_data.name LIKE ?', 'question:%')
-    else 
-      Node.where('title LIKE ?', '%' + input + '%')
-        .joins(:tag)
-        .where('term_data.name LIKE ?', 'question:%')
-        .limit(limit)
-        .group(:nid)
-        .where(type: "note", status: 1)
-        .order(changed: :desc)
-    end
-    questions.each do |match|
+    questions = self.questions(input, limit).each do |match|
       tval = TagResult.fromSearch(
         match.nid,
         match.title,
