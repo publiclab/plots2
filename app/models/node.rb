@@ -25,8 +25,13 @@ class Node < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query)
-    Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query)
+  def self.search(query, sort = :default)
+    if sort == :natural
+      Revision.select('node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
+        .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
+    else
+      Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query)
+    end
   end
 
   def updated_month
