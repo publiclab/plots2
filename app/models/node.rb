@@ -26,7 +26,7 @@ class Node < ActiveRecord::Base
   self.primary_key = 'nid'
 
   def self.search(query, order = :default)
-    if sort == :natural
+    if order == :natural
       nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
         .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
         .collect(&:nid)
