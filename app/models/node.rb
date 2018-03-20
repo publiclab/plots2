@@ -25,12 +25,18 @@ class Node < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query, sort = :default)
+  def self.search(query, order = :default)
     if sort == :natural
-      Revision.select('node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
+      nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
         .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
+        .collect(&:nid)
+      self.find(nids)
     else
-      Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query)
+      nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query)
+      nodes = self.find(nids)
+      nodes.order(changed: :desc) if order == :default
+      nodes.order(cached_likes: :desc) if order == :likes
+      nodes.order(views: :desc) if order == :views
     end
   end
 
@@ -128,14 +134,12 @@ class Node < ActiveRecord::Base
 
   public
 
-  # the counter_cache does not currently work: views column is not updated for some reason
-  # https://github.com/publiclab/plots2/issues/1196
   is_impressionable counter_cache: true, column_name: :views
 
   def totalviews
-    # disabled as impressionist is not currently updating counter_cache; see above
+    # this doesn't filter out duplicate ip addresses as the line below does:
     # self.views + self.legacy_views
-    impressionist_count(filter: :ip_address) + legacy_views
+    self.impressionist_count(filter: :ip_address) + self.legacy_views
   end
 
   def self.weekly_tallies(type = 'note', span = 52, time = Time.now)
