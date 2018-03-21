@@ -178,5 +178,18 @@ class UserTest < ActiveSupport::TestCase
     assert_not basic_user.moderator?
     assert_not basic_user.can_moderate?
   end
-
+  test 'user email validation' do
+    user = User.new(username: 'zen',
+                    password: 'nez',
+                    password_confirmation: 'nez',
+                    email: 'abc@.com')
+    assert_not user.save({})
+  end
+  test 'email validation' do
+    user = User.new(username: 'himanshu',
+                    password: 'bhallu',
+                    password_confirmation: 'bhallu',
+                    email: '@xyz.com')
+    assert_not user.save({})
+  end
 end
