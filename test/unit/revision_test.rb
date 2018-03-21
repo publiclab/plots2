@@ -86,12 +86,39 @@ class RevisionsTest < ActiveSupport::TestCase
     assert_includes revision.render_body_email(request_host), '//i.publiclab.org/system/images/photos/000/016/229/original/admin_tooltip.png'
   end
 
+  test 'should add tags for hashtags' do
+    revision = revisions(:hashtag_one)
+    revision.save
+    associated_tags = revision.parent.tag
+    tag_names = associated_tags.map(&:name)
+    assert_includes tag_names, 'hashtag'
+  end
+
   test 'should ignore hashtags in markdown' do
     revision = revisions(:hashtag_one)
     revision.save
     associated_tags = revision.parent.tag
     tag_names = associated_tags.map(&:name)
     assert_not tag_names.include?('heading')
+  end
+
+  test 'should ignore commas, exclamation, and periods in hashtags' do
+    revision = revisions(:hashtag_with_punctuation)
+    revision.save
+    associated_tags = revision.parent.tag
+    tag_names = associated_tags.map(&:name)
+    expected_tags = %w[hashtag1 hashtag2 hashtag3]
+    ignore_tags = ['hashtag1,', 'hashtag2!', 'hashtag3.']
+    assert (expected_tags - tag_names).empty?
+    assert (ignore_tags - tag_names).length == ignore_tags.length
+  end
+
+  test 'should tag hashtags in headers' do
+    revision = revisions(:hashtag_in_header)
+    revision.save
+    associated_tags = revision.parent.tag
+    tag_names = associated_tags.map(&:name)
+    assert_includes tag_names, 'hashtags'
   end
 
   test 'should ignore subheaders' do
@@ -132,6 +159,16 @@ class RevisionsTest < ActiveSupport::TestCase
     revision.save
     author = revision.parent.tag.last.node_tag.first.drupal_user
     assert_equal revision.author, author
+  end
+
+  test 'should not add duplicate hashtags on update' do
+    revision = revisions(:hashtag_three)
+    revision.save
+    revision.body = 'another #hashtag'
+    revision.save
+    associated_tags = revision.parent.tag
+    tag_names = associated_tags.map(&:name)
+    assert tag_names.count('hashtag') == 1
   end
 
   test 'should remove header from body for preview' do

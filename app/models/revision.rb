@@ -18,6 +18,7 @@ class Revision < ActiveRecord::Base
   validates :nid, presence: :true
 
   before_save :inline_tags
+  after_save :inline_hashtags
   before_create :setup
 
   def setup
