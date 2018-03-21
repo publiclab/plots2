@@ -195,7 +195,7 @@ class RevisionsTest < ActiveSupport::TestCase
     assert_equal "Some stuff about my post\n## A title\nsome more stuff about my post", revision.body_rich
   end
 
-  test 'should ignore add tags when pure number is present' do
+  test 'should not add tag when pure number is present' do
     revision = revisions(:hashtag_four)
     revision.save
     associated_tags = revision.parent.tag
