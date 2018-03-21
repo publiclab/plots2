@@ -1,26 +1,23 @@
 <div class="col-md-12">
-  <table style="width:100%">
-    <tr>
-     <th style="width: 50% ;">
-       <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
-     </th>
-   </tr>
- </table>
-  <p><%= t('tag.index.browse_popular_tags') %></p>
-  <!-- Search Bar -->
-    <input class="form-control" type="text" id="myInput"  placeholder="Search for tags..">
-    <script>
-      $('#myInput').keypress(function (e) {
-           var key = e.which;
-           if(key == 13)  // the enter key code
-            {
-             var pre = document.getElementById("myInput").value ;
+  <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
 
-              window.location.href = " <%= tags_path %>"+"/"+pre
-            }
-          });
-    </script>
-    <br><br>
+  <% cache('feature_tags-header', skip_digest: true) do %> 
+    <%= feature('tags-header') %>
+  <% end %>
+
+  <p><%= t('tag.index.browse_popular_tags') %></p>
+  
+  <input class="form-control" type="text" id="myInput"  placeholder="Search for tags..">
+  <script>
+    $('#myInput').keypress(function (e) {
+      var key = e.which;
+      if (key == 13) { // enter key
+        var pre = document.getElementById("myInput").value;
+        window.location.href = "<%= tags_path %>"+"/" + pre
+      }
+    });
+  </script>
+  <br/><br/>
 
   <table class="table">
     <tr>
