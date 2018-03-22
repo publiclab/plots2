@@ -51,8 +51,6 @@ class TypeaheadService
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       Node.search(input, order)
         .group(:nid)
-        .includes(:node)
-        .references(:node)
         .where('node.status': 1)
         .limit(limit)
     else 
