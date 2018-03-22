@@ -9,11 +9,7 @@ class Spamaway < Tableless
   column :statement3, :string
   column :statement4, :string
 
-  attr_accessible :follow_instructions,
-    :statement1,
-    :statement2,
-    :statement3,
-    :statement4
+
 
   validate :clean_honeypot, :human_responses
 
