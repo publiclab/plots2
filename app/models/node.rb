@@ -26,18 +26,26 @@ class Node < ActiveRecord::Base
   self.primary_key = 'nid'
 
   def self.search(query, order = :default)
-    if order == :natural
-      nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
-        .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
-        .collect(&:nid)
-      self.find(nids)
-    else
-      nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
-      tnids = Tag.find_nodes_by_type(query, type = ['note', 'page']).collect(&:nid) # include results by tag
-      condition = {changed: :desc} if order == :default
-      condition = {cached_likes: :desc} if order == :likes
-      condition = {views: :desc} if order == :views
-      self.where(nid: nids + tnids)
+    condition = {changed: :desc} if order == :default
+    condition = {cached_likes: :desc} if order == :likes
+    condition = {views: :desc} if order == :views
+
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      if order == :natural
+        nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
+          .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
+          .collect(&:nid)
+        self.find(nids)
+          .where(condition)
+      else
+        nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
+        tnids = Tag.find_nodes_by_type(query, type = ['note', 'page']).collect(&:nid) # include results by tag
+        self.where(nid: nids + tnids)
+          .where(condition)
+      end
+    else 
+      nodes = Node.limit(limit)
+        .where('title LIKE ?', '%' + input + '%')
         .where(condition)
     end
   end
