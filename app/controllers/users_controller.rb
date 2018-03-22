@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :require_no_user, :only => [:new]
-  before_filter :require_user, :only => [:update]
+  before_filter :require_user, :only => [:update , :settings]
 
   def new
     @spamaway = Spamaway.new
@@ -303,6 +303,10 @@ class UsersController < ApplicationController
   end
 
   def settings
+    render "users/settings"
+  end
+
+  def save_settings
     flash[:notice] = "Settings updated successfully !!!"
     redirect_to '/dashboard'
   end

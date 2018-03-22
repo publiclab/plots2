@@ -48,7 +48,8 @@ Plots2::Application.routes.draw do
   get 'people/:id/followers' => 'users#followers', as: :followers
   get 'signup' => 'users#new'
   get 'home' => 'home#front'
-  get 'settings' => 'users#settings'
+  get '/settings' => 'users#settings'
+  get '/save_settings' => 'users#save_settings'
 
   resources :relationships, only: [:create, :destroy]
   get '/wiki/:id/comments', to: 'wiki#comments'
