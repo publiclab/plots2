@@ -33,40 +33,18 @@ class Comment < ActiveRecord::Base
     weeks
   end
 
-  def self.comment_monthly_tallies(span = 12, time = Time.now)
-      months = {}
-      year = Date.today.strftime('%Y').to_i-1
-      currMonth = Date.today.strftime('%m').to_i
-      (1..span).each do |month| 
-          monthIndex = currMonth + month
-          currYear = year
-          if( monthIndex > 12)
-              monthIndex = monthIndex % 12
-              currYear = year+1
-          end
-          from = Date.new(currYear, monthIndex, 1).to_time.in_time_zone(0).to_i
-          if(monthIndex == 12)
-            toMonth=1
-            toYear=currYear+1
-          else
-            toMonth=monthIndex+1
-            toYear=currYear
-          end
-          to = Date.new(toYear, toMonth, 1).to_time.in_time_zone(0).to_i
-          months[monthIndex] = Comment.select(:timestamp)
-                                      .where(timestamp: from .. to)
-                                      .count
-      end
-      months
-  end 
-
 	def self.contribution_graph_making(span= 52, time= Time.now)   
     weeks = {}
-    week = 52
+    week = span
     count = 0;
-    while week >= 0
-       month = 0 
-      for i in 0..6 do
+    while week >= 1
+		#initialising month variable with the month of the starting day 
+		#of the week
+		month = (time - (week*7-1).days).strftime('%m')
+		#loop for finding the maximum occurence of a month name in that week
+		#For eg. If this week has 3 days falling in March and 4 days falling
+		#in April, then we would give this week name as April and vice-versa
+		for i in 0..6 do
           currMonth = (time - (week*7-i).days).strftime('%m')
           if month == 0
               month = currMonth
@@ -77,6 +55,7 @@ class Comment < ActiveRecord::Base
           end
       end
       month=month.to_i
+      #Now fetching comments per week
       currWeek = Comment.select(:timestamp)
                      	.where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
                         .count

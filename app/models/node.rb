@@ -144,51 +144,27 @@ class Node < ActiveRecord::Base
     end
     weeks
   end
-  def self.monthly_tallies(type = 'note', span = 12, time = Time.now)
-      months = {}
-      year = time.strftime('%Y').to_i-1
-      currMonth = time.strftime('%m').to_i
-      (1..span).each do |month| 
-          monthIndex = currMonth + month
-          currYear = year
-          if( monthIndex > 12)
-              monthIndex = monthIndex % 12
-              currYear = year+1
-          end
-          from = Date.new(currYear, monthIndex, 1).to_time.in_time_zone(0).to_i
-          if(monthIndex == 12)
-            toMonth=1
-            toYear=currYear+1
-          else
-            toMonth=monthIndex+1
-            toYear=currYear
-          end
-          to = Date.new(toYear, toMonth, 1).to_time.in_time_zone(0).to_i
-          months[monthIndex] = Node.select(:created)
-                                    .where(type: type,
-                                           status: 1,
-                                           created: from .. to)
-                                    .count
-      end
-      months
-  end 
 
   def self.contribution_graph_making(type= 'note', span= 52, time= Time.now)   
     weeks = {}
-    week = 52
+    week = span
     count = 0;
-    while week >= 0
-       month = 0 
-      for i in 0..6 do
+    while week >= 1
+       #initialising month variable with the month of the starting day 
+       #of the week
+       month = (time - (week*7-1).days).strftime('%m')
+       #loop for finding the maximum occurence of a month name in that week
+       #For eg. If this week has 3 days falling in March and 4 days falling
+       #in April, then we would give this week name as April and vice-versa
+      for i in 1..7 do
           currMonth = (time - (week*7-i).days).strftime('%m')
-          if month == 0
-              month = currMonth
-          elsif month != currMonth
+          if month != currMonth
               if i <= 4
                   month = currMonth
               end
           end
       end
+      #Now fetching the weekly data of notes or wikis
       month=month.to_i
       currWeek = Node.select(:created)
                      .where(type:    type,
