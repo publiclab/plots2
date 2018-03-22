@@ -32,7 +32,7 @@ class Node < ActiveRecord::Base
         .collect(&:nid)
       self.find(nids)
     else
-      nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query)
+      nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
       nodes = self.find(nids)
       nodes.order(changed: :desc) if order == :default
       nodes.order(cached_likes: :desc) if order == :likes
