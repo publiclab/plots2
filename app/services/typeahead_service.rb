@@ -48,26 +48,15 @@ class TypeaheadService
   
   # default order is recency
   def nodes(input, limit = 5, order = :default)
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      Node.search(input, order)
-        .group(:nid)
-        .where('node.status': 1)
-        .limit(limit)
-    else 
-      condition = {changed: :desc} if order == :default
-      condition = {cached_likes: :desc} if order == :likes
-      condition = {views: :desc} if order == :views
-      nodes = Node.limit(limit)
-        .group(:nid)
-        .where('title LIKE ?', '%' + input + '%')
-        .where('node.status': 1)
-        .where(condition)
-    end
+    Node.search(input, order)
+      .group(:nid)
+      .where('node.status': 1)
+      .limit(limit)
   end
 
   def notes(input, limit = 5, order = :default)
     self.nodes(input, limit, order)
-      .where("node.type": "note")    
+      .where("node.type": "note")
   end
 
   def wikis(input, limit = 5, order = :default)
