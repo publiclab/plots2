@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_filter :require_no_user, :only => [:new]
   before_filter :require_user, :only => [:update]
+  before_action :set_user, only: [:info, :followed, :following, :followers]
 
   def new
     @spamaway = Spamaway.new
@@ -279,27 +280,28 @@ class UsersController < ApplicationController
   end
 
   def info
-    @user = User.find_by(username: params[:id])
   end
 
   # content this person follows
   def followed
-    user = User.find_by(username: params[:id])
-    render json: user.content_followed_in_past_period(time_period)
+    render json: @user.content_followed_in_past_period(time_period)
   end
 
   def following
     @title = "Following"
-    @user  = User.find_by(username: params[:id])
     @users = @user.following_users.paginate(page: params[:page], per_page: 24)
     render 'show_follow'
   end
 
   def followers
     @title = "Followers"
-    @user  = User.find_by(username: params[:id])
     @users = @user.followers.paginate(page: params[:page], per_page: 24)
     render 'show_follow'
   end
 
+  private
+
+  def set_user
+    @user = User.find_by(username: params[:id])
+  end
 end
