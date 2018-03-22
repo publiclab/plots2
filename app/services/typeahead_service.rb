@@ -56,13 +56,14 @@ class TypeaheadService
         .where('node.status': 1)
         .limit(limit)
     else 
+      condition = {changed: :desc} if order == :default
+      condition = {cached_likes: :desc} if order == :likes
+      condition = {views: :desc} if order == :views
       nodes = Node.limit(limit)
         .group(:nid)
         .where('title LIKE ?', '%' + input + '%')
         .where('node.status': 1)
-      nodes.order(changed: :desc) if order == :default
-      nodes.order(cached_likes: :desc) if order == :likes
-      nodes.order(views: :desc) if order == :views
+        .where(condition)
     end
   end
 
