@@ -37,7 +37,7 @@ class Node < ActiveRecord::Base
       condition = {changed: :desc} if order == :default
       condition = {cached_likes: :desc} if order == :likes
       condition = {views: :desc} if order == :views
-      self.find(nids + tnids)
+      self.where(nid: nids + tnids)
         .where(condition)
     end
   end
