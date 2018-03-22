@@ -44,16 +44,12 @@ function alert_set(aclass, msg, options) {
 }
 
 /* window scroll trick for header */
-function adjust_anchor_for_banner(offset) {
-  offset = offset || 50; // how much to scroll to account for the banner
-  var scroll_pos = $(document).scrollTop()
-  if (scroll_pos > offset) {
-    $(document).scrollTop( scroll_pos - offset );
-  }
-}
-$(window).load(function() { adjust_anchor_for_banner(); })
-$(window).on('hashchange', adjust_anchor_for_banner)
-
+$(document).on('click', 'a[href^="#"]', function (event) {
+    event.preventDefault();
+    $('html, body').animate({
+        scrollTop: $($.attr(this, 'href')).offset().top - $("#header").outerHeight() - $("#anniversary").outerHeight() - 10
+    }, 500);
+});
 
 jQuery(document).ready(function($) {
   
