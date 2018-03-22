@@ -34,10 +34,11 @@ class Node < ActiveRecord::Base
     else
       nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
       tnids = Tag.find_nodes_by_type(query, type = ['note', 'page']) # include results by tag
-      nodes = self.find(nids + tnids)
-      nodes.order(changed: :desc) if order == :default
-      nodes.order(cached_likes: :desc) if order == :likes
-      nodes.order(views: :desc) if order == :views
+      condition = {changed: :desc} if order == :default
+      condition = {cached_likes: :desc} if order == :likes
+      condition = {views: :desc} if order == :views
+      self.find(nids + tnids)
+        .where(condition)
     end
   end
 
