@@ -149,7 +149,16 @@ class WikiController < ApplicationController
         end
         redirect_to @node.path
       else
-        render action: :edit
+        flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/wiki/new?legacy=true' class='legacy-button'>click here</a>."
+        if params[:main_image] && Image.find_by(id: params[:main_image])
+          @main_image = Image.find_by(id: params[:main_image]).path
+        end
+        if params[:n] && !params[:body] # use another node body as a template
+          node = Node.find(params[:n])
+          params[:body] = node.body if node
+        end
+        flash[:error] = "Please enter both body and title"
+        render template: 'editor/wikiRich'
       end
     else
       flash.keep[:error] = I18n.t('wiki_controller.you_have_been_banned').html_safe
@@ -335,9 +344,9 @@ class WikiController < ApplicationController
   def liked
     @title = I18n.t('wiki_controller.well_liked_wiki_pages')
     @wikis = Node.limit(40)
-      .order('node.cached_likes DESC') 
+      .order('node.cached_likes DESC')
       .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes >= 0")
-   
+
     render template: 'wiki/index'
   end
 
