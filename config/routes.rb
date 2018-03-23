@@ -312,6 +312,8 @@ Plots2::Application.routes.draw do
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
+  #handling omniauth callbacks
+  match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
 
   match ':controller(/:action(/:id))(.:format)', via: [:get, :post]
 end

@@ -6,19 +6,19 @@
     <% if params[:controller] == "users" && @action == "create" %>
 
       <div class="form-group">
-     
+
         <label for="username"><%= t('users._form.username') %></label>
         <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username' } %>
-     
+
       </div>
-     
+
     <% end %>
 
     <div class="form-group">
-   
+
       <label for="email"><%= t('users._form.email') %></label>
       <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
-   
+
     </div>
 
 
@@ -28,7 +28,7 @@
       <% else %>
         <label for="password"><%= t('users._form.change_password') %></label>
       <% end %>
-      <%= f.password_field :password, { placeholder: I18n.t('users._form.password'), 
+      <%= f.password_field :password, { placeholder: I18n.t('users._form.password'),
                                         tabindex: 4,
                                         class: 'form-control',
                                         id: 'password' }
@@ -47,14 +47,14 @@
 
     <div class="form-group">
       <label for="user_bio"><%= t('users._form.bio') %></label>
-      <%= f.text_area :bio, { placeholder: I18n.t('users._form.add_bio'), 
-                                          rows: 8, 
+      <%= f.text_area :bio, { placeholder: I18n.t('users._form.add_bio'),
+                                          rows: 8,
                                           class: 'form-control',
-                                          tabindex: 6 } 
+                                          tabindex: 6 }
       %>
     </div>
- 
- 
+
+
     <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
 
       <% if Rails.env == "production" && !params[:spamaway] %>
@@ -64,20 +64,20 @@
       <% else %>
 
         <%= fields_for @spamaway do |spam| %>
- 
+
           <div class="form-group spamaway">
- 
+
             <label for="spamaway_follow_instructions">
               <%= t('users._form.are_you_human') %>
             </label>
             <p>
               <%= t('users._form.spam_filtering') %>
             </p>
- 
+
             <% vars = [:statement1, :statement2, :statement3, :statement4] %>
             <% turingtest = Spamaway.get_pairs vars.length %>
             <% turingtest.each_index do |i| %>
- 
+
                 <div class="btn-group btn-group-justified" role="group">
                   <% [0,1].each_with_index do |s, j| %><% statement = turingtest[i][s] %>
                     <div class="btn-group" role="group">
@@ -88,11 +88,11 @@
                   <% end %>
                 </div>
                 <br />
- 
+
             <% end %>
-    
+
           </div>
- 
+
           <div class="form-group">
 
             <%= spam.text_area :follow_instructions, { class: "form-control col-md-6",
@@ -100,7 +100,7 @@
                                                      tabindex: 7,
                                                      placeholder: I18n.t('users._form.dont_write_here') }
             %>
-  
+
           </div>
 
         <% end %>
@@ -109,7 +109,7 @@
 
       <script>
         (function() {
-          $('.spamaway button').click(function(e) { 
+          $('.spamaway button').click(function(e) {
             $(this).find('input').prop('checked', true);
           })
         })();
@@ -140,7 +140,7 @@
           })
         })();
       </script>
-      
+
     </div>
 
   </div>
