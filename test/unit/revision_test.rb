@@ -194,4 +194,12 @@ class RevisionsTest < ActiveSupport::TestCase
     revision.body = "Some stuff about my post\n##A title\nsome more stuff about my post"
     assert_equal "Some stuff about my post\n## A title\nsome more stuff about my post", revision.body_rich
   end
+
+  test 'should not add tag when pure number is present' do
+    revision = revisions(:hashtag_four)
+    revision.save
+    associated_tags = revision.parent.tag
+    tag_names = associated_tags.map(&:name)
+    assert_not tag_names.include?('1234')
+  end
 end

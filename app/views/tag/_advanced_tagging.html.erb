@@ -3,10 +3,12 @@
   <% if current_user %>
     <li class="dropdown-header">Recently used tags</li>
     <% NodeTag.where(uid: current_user.id).order('date DESC').limit(5).each do |tag| %>
-      <li onClick="addTag('<%= tag.name %>')"><i><%= tag.name %></i></li>
+      <li onClick="addTag('<%= tag.name %>')"><a><i><%= tag.name %></i></a></li>
     <% end %>
   <% end %>
+  <li role="separator" class="divider"></li>
   <li><a href="#" data-value="style:">Style</a></li>
+  <li role="separator" class="divider"></li>
   <li><a href="#"  data-value="with:">Add Coauthor</a></li>
   <li role="separator" class="divider"></li>
   <li><a href="https://publiclab.org/wiki/power-tags" target="_blank">Learn About Powertags</a></li>

@@ -49,12 +49,14 @@ begin
       line = match[2]
       if !source_path.nil? && !line.nil?
         f = f.gsub(source_path + ':' + line, "<a href='https://github.com/#{github.pr_author}/plots2/tree/#{github.branch_for_head}/#{source_path}#L#{line}'>#{source_path}:#{line}</a>")
+          .gsub('`', "'") # remove ` as these cause Markdown formatting
+          #.gsub('\’', "`") # also remove ’ -- this causes the script to hang! omitting this line.
+          #.gsub('’', "`") # alternative (untested): replace ’ with ` for proper Markdown `code` formatting
       end
       fail("There was a test error at: #{f}")
     end
   end
 
 rescue => ex
-  puts "There was an error with Danger bot's Junit parsing:"
-  puts ex.message
+  fail "There was an error with Danger bot's Junit parsing: #{ex.message}"
 end

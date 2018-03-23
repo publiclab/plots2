@@ -107,6 +107,17 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal 'page', node.type
   end
 
+  test 'create a wiki page with new as title' do
+    array = ['new', 'create', 'update', 'edit', 'delete']
+    array.each { |x|
+    node = Node.new(uid: users(:bob).id,
+                    type: 'page',
+                    title: x)
+    assert_not node.valid?
+    assert_equal 'page', node.type
+  }
+  end
+
   test 'create a wiki page with Node.new_wiki' do
     node = Node.new_wiki(uid: users(:bob).id,
                          type: 'page',
@@ -203,7 +214,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should find all research notes' do
     notes = Node.research_notes
-    expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog), nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade)]
+    expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog), nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade), nodes(:draft)]
     assert_equal expected, notes
   end
 
@@ -335,5 +346,12 @@ class NodeTest < ActiveSupport::TestCase
     tagged_note = Tag.tagged_nodes_by_author('balloon*',2).first
     assert_not_nil tagged_note
     assert_equal jeff_notes, tagged_note
+  end
+
+  test 'should delete associated comments when a node is deleted' do
+    node = nodes(:one)
+    assert_equal node.comments.count, 5
+    deleted_node = node.destroy
+    assert_equal node.comments.count, 0
   end
 end

@@ -1,4 +1,6 @@
 class UserSessionsController < ApplicationController
+
+  before_action :require_no_user, :only => [:new]
   def new
     @title = I18n.t('user_sessions_controller.log_in')
   end
@@ -14,10 +16,10 @@ class UserSessionsController < ApplicationController
       params[:user_session][:username] = @user.username
     end
 
-    if params[:user_session].nil? || @user && @user.drupal_user.status == 1 || @user.nil?
+    if params[:user_session].nil? || @user&.drupal_user.status == 1 || @user.nil?
       # an existing native user
       if params[:user_session].nil? || @user
-        if @user && @user.crypted_password.nil? # the user has not created a pwd in the new site
+        if @user&.crypted_password.nil? # the user has not created a pwd in the new site
           params[:user_session][:openid_identifier] = 'https://old.publiclab.org/people/' + username + '/identity' if username
           params[:user_session].delete(:password)
           params[:user_session].delete(:username)
@@ -60,7 +62,7 @@ class UserSessionsController < ApplicationController
           redirect_to '/signup'
         end
       end
-    elsif params[:user_session].nil? || @user && @user.drupal_user.status == 5 || @user.nil?
+    elsif params[:user_session].nil? || @user&.drupal_user.status == 5 || @user.nil?
       flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
       redirect_to '/'
     else

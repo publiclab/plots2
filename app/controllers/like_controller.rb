@@ -1,6 +1,6 @@
 class LikeController < ApplicationController
   respond_to :html, :xml, :json
-  before_filter :require_user, only: %i[create delete]
+  before_filter :require_user, only: %i(create delete)
 
   #list all recent likes
   def index
@@ -19,9 +19,9 @@ class LikeController < ApplicationController
     result = NodeSelection.find_by_user_id_and_nid(current_user.uid, params[:id])
     result = if result.nil?
                false
-             else
-               result.liking
-             end
+    else
+      result.liking
+    end
     render json: result
   end
 

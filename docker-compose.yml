@@ -8,6 +8,8 @@ services:
       - MYSQL_PASSWORD=plots
       - MYSQL_RANDOM_ROOT_PASSWORD=true
     volumes:
+      - ./config/my.cnf:/etc/mysql/my.cnf
+      # for configuration 
       - ../mysql:/var/lib/mysql
       # for persistence
       - ../dump:/docker-entrypoint-initdb.d
@@ -25,4 +27,4 @@ services:
       - "127.0.0.1:4000:4000"
     links:
       - db
-#    restart: unless-stopped
+    restart: unless-stopped

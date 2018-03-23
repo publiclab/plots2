@@ -117,6 +117,16 @@ hashtag_three:
     # Heading 2
     Here is another #hashtag
 
+hashtag_four:
+  nid: 1
+  uid: 1
+  title: Ignores pure numbers
+  body: |+
+    # Heading 1
+    Here is a #1234
+    # Heading 2
+    Here is another #hashtag
+
 hashtag_with_punctuation:
   nid: 1
   uid: 1

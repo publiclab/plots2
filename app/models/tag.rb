@@ -105,7 +105,7 @@ class Tag < ActiveRecord::Base
 
   # just like find_nodes_by_type, but searches wiki pages, places, and tools
   def self.find_pages(tagnames, limit = 10)
-    find_nodes_by_type(tagnames, %w[page place tool], limit)
+    find_nodes_by_type(tagnames, %w(page place tool), limit)
   end
 
   def self.find_nodes_by_type_with_all_tags(tagnames, type = 'note', limit = 10)
@@ -180,7 +180,7 @@ class Tag < ActiveRecord::Base
   end
 
   def self.nodes_for_period(type, nids, start, finish)
-    Node.select(%i[created status type nid])
+    Node.select(%i(created status type nid))
         .where(
           'type = ? AND status = 1 AND nid IN (?) AND created > ? AND created <= ?',
           type,
@@ -246,25 +246,25 @@ class Tag < ActiveRecord::Base
   def self.tagged_nodes_by_author(tagname, user_id)
     if tagname[-1..-1] == '*'
       @wildcard = true
-      Node.where('term_data.name LIKE(?)', tagname[0..-2]+'%')
-        .includes(:node_tag, :tag)
-        .order('node.nid DESC')
-        .references(:term_data)
-        .where('node.uid = ?', user_id)
+      Node.includes(:node_tag, :tag)
+          .where('term_data.name LIKE(?) OR term_data.parent LIKE (?)', tagname[0..-2]+'%', tagname[0..-2]+'%')
+          .references(:term_data, :node_tag)
+          .where('node.uid = ?', user_id)
+          .order('node.nid DESC')
     else
-      Node.where('term_data.name = ?', tagname)
-        .includes(:node_tag, :tag)
-        .order('node.nid DESC')
-        .references(:term_data)
-        .where('node.uid = ?', user_id)
+      Node.includes(:node_tag, :tag)
+          .where('term_data.name = ? OR term_data.parent = ?', tagname, tagname)
+          .references(:term_data, :node_tag)
+          .where('node.uid = ?', user_id)
+          .order('node.nid DESC')
     end
   end
 
-  def self.taggedNodeCount(tagName)
+  def self.tagged_node_count(tag_name)
     Node.where(status: 1, type: 'note')
         .includes(:revision, :tag)
         .references(:term_data, :node_revisions)
-        .where('term_data.name = ?', tagName)
+        .where('term_data.name = ?', tag_name)
         .count
   end
 end

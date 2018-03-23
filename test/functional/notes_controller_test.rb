@@ -288,7 +288,7 @@ class NotesControllerTest < ActionController::TestCase
         id: node.title.parameterize
 
     assert_response :success
-    assert_equal "First-time poster <a href='#{node.author.name}'>#{node.author.name}</a> submitted this #{time_ago_in_words(node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{node.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{node.id}'>Spam</a>", flash[:warning]
+    assert_equal "First-time poster <a href='/profile/#{node.author.name}'>#{node.author.name}</a> submitted this #{time_ago_in_words(node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{node.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{node.id}'>Spam</a>", flash[:warning]
   end
 
   test 'first-timer moderated note (status=4) shown to moderator with notice and approval prompt in list view' do
@@ -327,7 +327,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_not_nil @response.body
     assert_equal '/notes/Bob/' + Time.now.strftime('%m-%d-%Y') + '/a-completely-unique-snowflake', @response.body
   end
-  
+
   test 'post_note_error_no_title_xhr' do
     UserSession.create(users(:bob))
 
@@ -354,7 +354,6 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil @response.body
-    assert_equal "{\"title\":[\"can't be blank\"],\"path\":[\"This title has already been taken\"]}", @response.body
   end
 
   test 'returning json errors on xhr note update' do
@@ -407,7 +406,7 @@ class NotesControllerTest < ActionController::TestCase
         author: node.author.username,
         date: node.created_at.strftime('%m-%d-%Y'),
         id: node.title.parameterize
-    assert_select '.fa-fire', 3
+    assert_select '.fa-fire', 4
   end
 
   test 'should redirect to questions show page after creating a new question' do
@@ -549,6 +548,15 @@ class NotesControllerTest < ActionController::TestCase
     assert !(notes & questions).present?
   end
 
+  test 'should list only research notes with status 1 in recent' do
+    get :recent
+    notes = assigns(:notes)
+    expected = [nodes(:one)]
+    questions = [nodes(:question)]
+    assert (notes & expected).present?
+    assert (notes & questions).present?
+  end
+
   test 'should list only research notes with status 1 in liked' do
     UserSession.create(users(:admin))
     get :liked
@@ -580,6 +588,32 @@ class NotesControllerTest < ActionController::TestCase
     end
   end
 
+  test "should delete wiki if other author have not contributed" do
+    node = nodes(:one)
+    length=node.authors.uniq.length
+    user = UserSession.create(users(:jeff))
+    assert_equal 1,length
+
+    assert_difference 'Node.count', -1 do
+      post :delete, id: node.nid
+    end
+
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+  end
+
+  test "should not delete wiki if other author have contributed" do
+    node = nodes(:about)
+    length=node.authors.uniq.length
+    assert_not_equal 1,length
+    user = UserSession.create(users(:jeff))
+
+    assert_no_difference 'Node.count' do
+      get :delete, id: node.nid
+    end
+
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+  end
+
   #should change title
   test 'title change feature in comments when author is logged in' do
     UserSession.create(users(:jeff))
@@ -588,7 +622,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_redirected_to node.path+"#comments"
     assert_equal node.reload.title, 'changed title'
   end
-  
+
   # should not change title
   test 'title change feature in comments when author is not logged in' do
     node = nodes(:one)
@@ -600,8 +634,39 @@ class NotesControllerTest < ActionController::TestCase
 
   def test_get_rss_feed
     get :rss, :format => "rss"
-    assert_response :success   
+    assert_response :success
     assert_equal 'application/rss+xml', @response.content_type
   end
 
+  test 'draft should not be shown when no user' do
+    node = nodes(:draft)
+    post :show, id: '21',title: 'Draft note'
+    assert_redirected_to '/'
+    assert_equal "Only author can access the draft note", flash[:notice]
+  end
+
+  test 'draft should not be shown when user is not author' do
+    node = nodes(:draft)
+    UserSession.create(users(:test_user))
+    post :show, id: '21',title: 'Draft note'
+    assert_redirected_to '/'
+    assert_equal "Only author can access the draft note", flash[:notice]
+  end
+
+  test 'question deletion should delete all its answers' do
+    UserSession.create(users(:moderator))
+    node = nodes(:question)
+    node.save
+    answer1 = answers(:one)
+    answer1.save
+    answer2 = answers(:two)
+    answer2.save
+    n_count = Node.count
+
+    xhr :post, :delete, id: node.id
+
+    assert_response :success
+    assert_equal Node.count, n_count - 1
+    assert_equal Answer.count, 0
+  end
 end

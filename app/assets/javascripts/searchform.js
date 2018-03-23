@@ -7,6 +7,5 @@
       e.preventDefault()
       window.location = '/search/'+$('#searchform_input').val()
     });
-
   });
 

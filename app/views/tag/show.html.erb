@@ -12,13 +12,13 @@
           <div class="col-md-6">
             <h1 style="color:#333;"><%= link_to @wiki.latest.title, "/wiki/#{params[:id]}" %></h1>
             <%= @wiki.latest.render_body.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %>
-            <%= link_to("Read more", "/wiki/#{params[:id]}") if @wiki.latest.render_body.split('</p>').length > 2 %>
+            <% if @wiki.latest.render_body.split('</p>').length > 2 %><a class="btn btn-lg btn-default" href="/wiki/<%= params[:id] %>">Learn more on the wiki page</a><% end %>
           </div>
         </div>
       <% else %>
         <h1><%= @wiki.latest.title %></h1>
         <p><%= @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.try(:first).to_s.html_safe %></p>
-        <p><%= link_to("Read more", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).length > 1 %></p>
+        <p><%= link_to("Learn more on the wiki page", "/wiki/#{params[:id]}") if @wiki.latest.render_body.html_safe.match(/<p>(.+)<\/p>/).to_a.length > 1 %></p>
       <% end %>
     </div>
   <% elsif @wildcard %>
@@ -26,7 +26,7 @@
     <p>Wildcard tag searches use the * asterisk in their URLs</p>
   <% else %>
     <p>This topic has no lead wiki page.</p>
-    <p><a class="btn btn-primary" href="/wiki/<%= params[:id] %>"><span class="fa fa-plus fa-white"></span> Add one now</a></p>
+    <p><a class="btn btn-primary" href="/wiki/<%= params[:id] %>?n=14552"><span class="fa fa-plus fa-white"></span> Add one now</a></p>
   <% end %>
 
   <% if @tags.first && params[:id][-1..-1] != "*" %>
@@ -38,7 +38,7 @@
   <% elsif params[:action] == 'show' %>
     <h3><%= raw t('tag.show.notes_tagged', tag: params[:id]) %></h3>
   <% else %>
-    <h3> Notes on <%= params[:id] %> by <%= link_to(@user.name,"/profile/@user.name") %> </h3>
+    <h3> Notes on <%= params[:id] %> by <%= link_to(@user.name,"/profile/#{@user.name}") %> </h3>
   <% end %>
 
   <h3><% unless @tags.try(:first).try(:parent).nil? %><small>parent: <%= @tags.first.parent %></small><% end %></h3>
@@ -63,13 +63,18 @@
   <% unless @wildcard %><p style="clear:both;padding-top:8px;"><a style="margin-bottom:6px;" class="btn btn-primary" href="/post?tags=question:<%= params[:id].gsub('question:', '') %>&template=question&redirect=question"><i class="fa fa-white icon-question-circle"></i> <%= raw t('tag.show.ask_question', :tag => params[:id].gsub('question:', '')) %></a> <%= raw t('tag.show.or_subscribe_to_answer', :url1 => "/subscribe/tag/question:"+params[:id].gsub('question:', '')) %></p><% end %>
 
   <ul class="nav nav-tabs" style="margin-top:10px;">
-    <% unless params[:id].match("question:") %><li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <%= raw t('tag.show.research_notes') %></a></li><% end %>
     <% if params[:action] == "show" %>
+      <% unless params[:id].match("question:") %><li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>"><i class="fa fa-file"></i> <%= raw t('tag.show.research_notes') %></a></li><% end %>
       <li<% if @node_type == "questions" %> class="active"<% end %>><a href="/questions/tag/<%= params[:id] %>"><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
       <li<% if @node_type == "wiki" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>"><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
       <li<% if @node_type == "maps" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>"><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
-      <li<% if @node_type == "contributors" %> class="active"<% end %>><a href="/contributors/tag/<%= params[:id] %>"><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %> <span class="badge"><%=@length %></span></a></li>
+      <% if !@wildcard %>
+        <li<% if @node_type == "contributors" %> class="active"<% end %>><a href="/contributors/<%= params[:id] %>"><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %> <span class="badge"><%=@length %></span></a></li>
+      <% else %>
+        <li class="disabled"<% if @node_type == "contributors" %> class="active"<% end %>><a href="#" rel="tooltip" title="Contributors cannot be listed for wildcard tag searches" ><i class="fa fa-user"></i> <%= raw t('tag.show.contributors') %></a></li>
+      <% end %>
     <% else %>
+      <% unless params[:id].match("question:") %><li<% if @node_type == "note" %> class="active"<% end %>><a href="/tag/<%= params[:id] %>/author/<%= params[:author] %>"><i class="fa fa-file"></i> <%= raw t('tag.show.research_notes') %></a></li><% end %>
       <li<% if @node_type == "questions" %> class="active"<% end %>><a href="/questions/tag/<%= params[:id] %>/author/<%= params[:author] %>" ><i class="fa fa-question-circle"></i> <%= t('tag.show.questions') %></a></li>
       <li<% if @node_type == "wiki" %> class="active"<% end %>><a href="/wiki/tag/<%= params[:id] %>/author/<%= params[:author] %>" ><i class="fa fa-book"></i> <%= raw t('tag.show.wiki_pages') %></a></li>
       <li<% if @node_type == "maps" %> class="active"<% end %>><a href="/maps/tag/<%= params[:id] %>/author/<%= params[:author] %>" ><i class="fa fa-map-marker"></i> <%= t('tag.show.maps') %></a></li>
@@ -96,7 +101,24 @@
 
     <% if @node_type == "questions" %>
       <div class="tab-pane active" id="questions">
-        <%= render :partial => "questions/questions" %>
+        <div class="tab-pane" id="questions-tab">
+          <div class="btn-group text-center">
+            <a href="#asked-tab" class="btn btn-default active" data-toggle="tab">Asked</a>
+            <a href="#answered-tab" class="btn btn-default" data-toggle="tab">Answered</a>
+          </div>
+
+          <div class="tab-content">
+            <div class="tab-pane active" id="asked-tab">
+              <%= render :partial => "questions/questions" %>
+            </div>
+
+            <div class="tab-pane" id="answered-tab">
+              <% if @answered_questions %>
+                <%= render :partial => "users/answered" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
       </div>
     <% end %>
 
@@ -125,7 +147,11 @@
     <hr />
 
   </div>
-
+  <script type="text/javascript">
+    $('#questions .btn-group .btn').click(function(){
+      $(this).addClass('active').siblings().removeClass('active');
+    });
+  </script>
 </div>
 <%= stylesheet_link_tag "dashboard" %>
 <%= javascript_include_tag "dashboard" %>

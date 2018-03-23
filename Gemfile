@@ -77,7 +77,7 @@ gem 'geokit-rails'
 
 gem 'rails_autolink'
 gem 'rb-readline'
-gem "paperclip", "~> 4.2.2"
+gem "paperclip", "~> 4.2.0"
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
 gem "authlogic", "~> 3.5.0"
