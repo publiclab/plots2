@@ -130,7 +130,7 @@ class Node < ActiveRecord::Base
   def totalviews
     # disabled as impressionist is not currently updating counter_cache; see above
     # self.views + self.legacy_views
-    cache("totalviews-#{self.id}", expires_in: 60.minutes, skip_digest: true) do
+    Rails.cache("totalviews-#{self.id}", expires_in: 60.minutes, skip_digest: true) do
       impressionist_count(filter: :ip_address) + legacy_views
     end
   end
