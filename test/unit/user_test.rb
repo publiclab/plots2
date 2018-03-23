@@ -164,6 +164,12 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 1, drupal_user.user.status
   end
 
+  test 'daily_note_tally returns the correct type of array' do
+      user = users(:bob)
+      daily = user.daily_note_tally()
+      assert_not_empty daily
+      assert_equal daily.count, 366
+  end
   test 'user roles' do
     admin = users(:admin)
     assert admin.admin?

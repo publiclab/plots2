@@ -211,6 +211,21 @@ class User < ActiveRecord::Base
     weeks
   end
 
+  def daily_note_tally(span = 365)
+      days = {}
+      (0..span).each do |day|
+          time = Time.now.in_time_zone(0).beginning_of_day.to_i
+          days[(time-day.days.to_i)] = Node.select(:created)
+                                           .where(uid: self.uid, 
+                                                  type: 'note',
+                                                  status: 1, 
+                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i) 
+                                           .count
+      end
+      days
+  end
+ 
+
   def weekly_comment_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
