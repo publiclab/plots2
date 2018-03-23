@@ -2,7 +2,7 @@ var Profile = {
   value: { 
     user_id: null,
     name: null,
-    notes: null,
+   	notes: null, 
     comments: null
   },
   display_comments: function(){
@@ -19,40 +19,13 @@ var Profile = {
       $(this).addClass('active').siblings().removeClass('active');
     });
   },
-  plot_graph: function(){
-    flotoptions_minimal = {
-      yaxis: { show: false },
-      xaxis: { show: true },
-      grid: {
-        borderWidth: 0,
-        //color: "#444",
-        markers: []
-      },
-      colors: [ "#08f", "#80f" ]
-    }
-
-    $.plot($("#note-graph"), [
-      {
-        data: Profile.value.notes,
-        hoverable: true,
-//      label: "Research Notes",
-        bars: { show: true, 
-                lineWidth: 0,
-                fillColor: "#08f",
-                barWidth: 0.5
-              }
-      }//,
-//    {
-//      data: value.comments,
-//      hoverable: true,
-//      label: "Comments",
-//      bars: { show: true, 
-//              lineWidth: 0,
-//              fillColor: "#80f",
-//              barWidth: 0.5
-//            }
-//    }
-    ],flotoptions_minimal);
+  plot_graph: function(){ 
+    let heatmap = new Chart({
+    parent: "#note-graph",
+    type: 'heatmap',
+    height: 115,
+    data: this.value.notes
+  	}); 
   },
   fetch_maps: function(){
     $.get('https://mapknitter.org/feeds/author/' + Profile.value.name, function (feed) {
