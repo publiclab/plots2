@@ -259,7 +259,7 @@ class WikiController < ApplicationController
     @node = Node.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
-      @revisions = @revisions.where(status: 1) unless current_user && !current_user.can_moderate?
+      @revisions = @revisions.where(status: 1) unless current_user && current_user.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @node.title).html_safe
       @tags = @node.tags
     else
