@@ -145,7 +145,7 @@ class Node < ActiveRecord::Base
     weeks
   end
 
-  def self.contribution_graph_making(type= 'note', span= 52, time= Time.now)   
+  def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)   
     weeks = {}
     week = span
     count = 0;
@@ -165,10 +165,10 @@ class Node < ActiveRecord::Base
           end
       end
       #Now fetching the weekly data of notes or wikis
-      month=month.to_i
+      month = month.to_i
       currWeek = Node.select(:created)
-                     .where(type:    type,
-                            status:  1,
+                     .where(type: type,
+                            status: 1,
                             created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
                       .count
       weeks[count] = [month, currWeek]
