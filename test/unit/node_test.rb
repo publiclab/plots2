@@ -46,7 +46,7 @@ class NodeTest < ActiveSupport::TestCase
       nodes = Node.search('awesome')
       assert_not_nil nodes
       assert nodes.length > 0
-      assert_equal nodes.length, Tag.find_nodes_by_type('awesome').length
+      assert_equal nodes.length, Tag.find_nodes_by_type('awesome', ['note', 'page']).length
     end
   end
 
