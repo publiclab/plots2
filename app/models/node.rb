@@ -26,9 +26,9 @@ class Node < ActiveRecord::Base
   self.primary_key = 'nid'
 
   def self.search(query, order = :default)
-    condition = {changed: :desc} if order == :default
-    condition = {cached_likes: :desc} if order == :likes
-    condition = {views: :desc} if order == :views
+    orderParam = {changed: :desc} if order == :default
+    orderParam = {cached_likes: :desc} if order == :likes
+    orderParam = {views: :desc} if order == :views
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
@@ -40,12 +40,12 @@ class Node < ActiveRecord::Base
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
         tnids = Tag.find_nodes_by_type(query, type = ['note', 'page']).collect(&:nid) # include results by tag
         self.where(nid: nids + tnids)
-          .where(condition)
+          .order(orderParam)
       end
     else 
       nodes = Node.limit(limit)
         .where('title LIKE ?', '%' + input + '%')
-        .where(condition)
+        .order(orderParam)
     end
   end
 
