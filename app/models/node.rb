@@ -152,12 +152,12 @@ class Node < ActiveRecord::Base
     while week >= 1
        #initialising month variable with the month of the starting day 
        #of the week
-       month = (time - (week*7-1).days).strftime('%m')
+       month = (time - (week*7 - 1).days).strftime('%m')
        #loop for finding the maximum occurence of a month name in that week
        #For eg. If this week has 3 days falling in March and 4 days falling
        #in April, then we would give this week name as April and vice-versa
       for i in 1..7 do
-          currMonth = (time - (week*7-i).days).strftime('%m')
+          currMonth = (time - (week*7 - i).days).strftime('%m')
           if month != currMonth
               if i <= 4
                   month = currMonth
@@ -172,8 +172,8 @@ class Node < ActiveRecord::Base
                             created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
                       .count
       weeks[count] = [month, currWeek]
-      count+=1
-      week-=1
+      count += 1
+      week -= 1
     end
     weeks
   end
