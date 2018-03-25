@@ -142,7 +142,7 @@
 
 <div class="col-md-9">
 
-  <div id="note-graph" style="height:100px;display:none;margin-bottom:16px;"></div>
+  <div id = "note-graph" style = "overflow: auto; text-align:center; border: 1px solid #E5E5E5; margin-bottom: 10px;"></div>
 
   <h3 style="margin-top:0;"><%= @user.name %>
     <small>
@@ -242,8 +242,9 @@
   <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }", parent: :profile } %>
 
 </div>
+<script src = "https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 
-<script type="text/javascript">
+<script type = "text/javascript">
   $('#btn-token').click(function() {
     alert("Your access token is: <%= @user.user.token %>");
   });
@@ -261,12 +262,15 @@
     profile.display_comments();
 
     <% if @user && @user.user %>
-      var notes = <%= @user.user.weekly_note_tally.to_a.sort.to_json %>
+      var notes = <%= @user.user.daily_note_tally.to_a.sort %>
       var comments = <%= @user.user.weekly_comment_tally.to_a.sort.to_json %>
-      $('#note-graph').show()
+      var notesObject = {};
+    notes.forEach(function(element){
+        notesObject[element[0]] = element[1];
+    });
     <% end %>
 
-    profile.value.notes = notes;
+    profile.value.notes = notesObject;
     profile.value.comments = comments;
     profile.plot_graph();
 

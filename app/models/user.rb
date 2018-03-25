@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
 
   acts_as_authentic do |c|
     c.openid_required_fields = %i(nickname email)
-    c.validates_format_of_email_field_options = { with: /@/ }
+    VALID_EMAIL_REGEX = /\A[-[:alnum:]+.]+@[[:alnum:]-.]+[.][[:alpha:]]+\z/
+    c.validates_format_of_email_field_options = { with: VALID_EMAIL_REGEX }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
 
@@ -108,7 +109,7 @@ class User < ActiveRecord::Base
     20.times do
       key += [*'a'..'z'].sample
     end
-    self.reset_key = key
+    self.update_attribute(:reset_key, key)
     key
   end
 
@@ -209,6 +210,21 @@ class User < ActiveRecord::Base
     end
     weeks
   end
+
+  def daily_note_tally(span = 365)
+      days = {}
+      (0..span).each do |day|
+          time = Time.now.in_time_zone(0).beginning_of_day.to_i
+          days[(time-day.days.to_i)] = Node.select(:created)
+                                           .where(uid: self.uid, 
+                                                  type: 'note',
+                                                  status: 1, 
+                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i) 
+                                           .count
+      end
+      days
+  end
+ 
 
   def weekly_comment_tally(span = 52)
     weeks = {}

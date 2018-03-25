@@ -49,7 +49,7 @@ class Revision < ActiveRecord::Base
 
   # search for inline hashtags(such as #hashtag) and create a new tag
   def inline_hashtags
-    body.scan(Callouts.const_get(:HASHTAG)).each do |match|
+    body.scan(Callouts.const_get(:HASHTAGWITHOUTNUMBER)).each do |match|
       parent.add_tag(match.last, author)
     end
   end

@@ -1,7 +1,10 @@
-<p>Dear <%= @user.username %>,</p>
+<p>
+  <b><a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/n/<%= @node.id %>'><%= @node.title %></a></b> 
 
-<p>Public Lab contributor <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @current_user.username %>'><%= @current_user.username %></a> just added a tag
-on  '<b><%= @node.title %></b>' entitled: <b> <%= @tag.name %></b></p>
+  was tagged with <i><a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/tag/<%= @tag.name %>'>#<%= @tag.name %></a></i> 
+
+  by <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @current_user.username %>'><%= @current_user.username %></a>
+</p>
 
 <p>Read and respond to the post here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p>
 

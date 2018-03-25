@@ -113,3 +113,5 @@ gem 'mustermann' , '~> 0.4'
 #OAuth Based login
 gem 'omniauth', '~> 1.3', '>= 1.3.1'
 gem 'omniauth-facebook', '~> 3.0'
+gem 'omniauth-google-oauth2'
+gem 'figaro'

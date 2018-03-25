@@ -36,8 +36,8 @@ class WikiCreationTest < ActionDispatch::IntegrationTest
 
     assert_nil node
     assert_equal '/wiki/create', path
-    assert_select 'h2', '1 error prohibited this revision from being saved'
-
+    flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/wiki/new?legacy=true' class='legacy-button'>click here</a>."
+    flash[:error] = "Please enter both body and title"
     # Now fill the body, and check it succeeds
 
     body = 'This is the body of the new wiki page'

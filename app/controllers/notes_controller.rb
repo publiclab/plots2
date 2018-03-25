@@ -64,10 +64,10 @@ class NotesController < ApplicationController
     end
 
     if @node.has_power_tag('redirect')
-      if current_user.nil? || (current_user.role != 'admin' && current_user.role != 'moderator')
+      if current_user.nil? || !current_user.can_moderate?
         redirect_to Node.find(@node.power_tag('redirect')).path
         return
-      elsif current_user.role == 'admin' || current_user.role == 'moderator'
+      elsif current_user.can_moderate?
         flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}.
         To remove the redirect, delete the tag beginning with 'redirect:'"
       end
@@ -158,7 +158,7 @@ class NotesController < ApplicationController
 
   def edit
     @node = Node.find_by(nid: params[:id], type: 'note')
-    if current_user.uid == @node.uid || current_user.role == 'admin' || @node.has_tag("with:#{current_user.username}")
+    if current_user.uid == @node.uid || current_user.admin? || @node.has_tag("with:#{current_user.username}")
       if params[:legacy]
         render template: 'editor/post'
       else
@@ -184,7 +184,7 @@ class NotesController < ApplicationController
   # at /notes/update/:id
   def update
     @node = Node.find(params[:id])
-    if current_user.uid == @node.uid || current_user.role == 'admin' || @node.has_tag("with:#{current_user.username}")
+    if current_user.uid == @node.uid || current_user.admin? || @node.has_tag("with:#{current_user.username}")
       @revision = @node.latest
       @revision.title = params[:title]
       @revision.body = params[:body]
@@ -243,7 +243,7 @@ class NotesController < ApplicationController
   # only for notes
   def delete
     @node = Node.find(params[:id])
-    if current_user && (current_user.uid == @node.uid || current_user.role == "moderator" || current_user.role == "admin")
+    if current_user && (current_user.uid == @node.uid || current_user.can_moderate?)
       if @node.authors.uniq.length == 1 
         @node.destroy
         respond_with do |format|

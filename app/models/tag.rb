@@ -148,9 +148,12 @@ class Tag < ActiveRecord::Base
   end
 
   def self.follower_count(tagname)
-    TagSelection.joins(:tag)
-                .where('term_data.name = ? AND following = ?', tagname, true)
-                .count
+    uids = TagSelection.joins(:tag)
+                       .where('term_data.name = ? AND following = ?', tagname, true)
+                       .collect(&:user_id)
+    User.where(id: uids)
+        .where(status: [1, 4])
+        .count
   end
 
   def self.followers(tagname)

@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_filter :require_no_user, :only => [:new]
   before_filter :require_user, :only => [:update]
+  before_action :set_user, only: [:info, :followed, :following, :followers]
 
   def new
     @spamaway = Spamaway.new
@@ -114,7 +115,7 @@ class UsersController < ApplicationController
                           .order(order_string)
                           .page(params[:page])
     end
-    @users = @users.where('users.status = 1') unless current_user && (current_user.role == "admin" || current_user.role == "moderator")
+    @users = @users.where('users.status = 1') unless current_user && (current_user.can_moderate?)
   end
 
   def profile
@@ -165,7 +166,7 @@ class UsersController < ApplicationController
       end
 
       if @user.status == 0
-        if current_user && (current_user.role == "admin" || current_user.role == "moderator")
+        if current_user && (current_user.can_moderate?)
           flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
         else
           flash[:error] = I18n.t('users_controller.user_has_been_banned')
@@ -259,7 +260,7 @@ class UsersController < ApplicationController
 
   def photo
     @user = DrupalUser.find_by(uid: params[:uid]).user
-    if current_user.uid == @user.uid || current_user.role == "admin"
+    if current_user.uid == @user.uid || current_user.admin?
       @user.photo = params[:photo]
       if @user.save!
         if request.xhr?
@@ -279,27 +280,28 @@ class UsersController < ApplicationController
   end
 
   def info
-    @user = User.find_by(username: params[:id])
   end
 
   # content this person follows
   def followed
-    user = User.find_by(username: params[:id])
-    render json: user.content_followed_in_past_period(time_period)
+    render json: @user.content_followed_in_past_period(time_period)
   end
 
   def following
     @title = "Following"
-    @user  = User.find_by(username: params[:id])
     @users = @user.following_users.paginate(page: params[:page], per_page: 24)
     render 'show_follow'
   end
 
   def followers
     @title = "Followers"
-    @user  = User.find_by(username: params[:id])
     @users = @user.followers.paginate(page: params[:page], per_page: 24)
     render 'show_follow'
   end
 
+  private
+
+  def set_user
+    @user = User.find_by(username: params[:id])
+  end
 end

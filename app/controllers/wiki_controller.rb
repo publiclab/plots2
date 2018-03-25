@@ -26,22 +26,22 @@ class WikiController < ApplicationController
     end
 
     if @node&.has_power_tag('redirect') && Node.where(nid: @node.power_tag('redirect')).exists?
-      if current_user.nil? || (current_user.role != 'admin' && current_user.role != 'moderator')
+      if current_user.nil? || !current_user.can_moderate?
         redirect_to Node.find(@node.power_tag('redirect')).path
         return
-      elsif current_user.role == 'admin' || current_user.role == 'moderator'
+      elsif current_user.can_moderate?
         flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to <a href='#{Node.find(@node.power_tag('redirect')).path}'>#{Node.find(@node.power_tag('redirect')).title}</a>.
         To remove the redirect, delete the tag beginning with 'redirect:'"
       end
     end
 
     if @node&.has_power_tag('abtest') && !Node.where(nid: @node.power_tag('abtest')).empty?
-      if current_user.nil? || (current_user.role != 'admin' && current_user.role != 'moderator')
+      if current_user.nil? || !current_user.can_moderate?
         if Random.rand(2) == 0
           redirect_to Node.find(@node.power_tag('abtest')).path
           return
         end
-      elsif current_user.role == 'admin' || current_user.role == 'moderator'
+      elsif current_user.can_moderate?
         flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('abtest')).title} roughly around 50% of the time.
         To remove this behavior, delete the tag beginning with 'abtest:'"
       end
@@ -94,7 +94,7 @@ class WikiController < ApplicationController
       Node.find_wiki(params[:id])
     end
 
-    if @node.has_tag('locked') && (current_user.role != 'admin' && current_user.role != 'moderator')
+    if @node.has_tag('locked') && !current_user.can_moderate?
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
       redirect_to @node.path
     end
@@ -149,7 +149,16 @@ class WikiController < ApplicationController
         end
         redirect_to @node.path
       else
-        render action: :edit
+        flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/wiki/new?legacy=true' class='legacy-button'>click here</a>."
+        if params[:main_image] && Image.find_by(id: params[:main_image])
+          @main_image = Image.find_by(id: params[:main_image]).path
+        end
+        if params[:n] && !params[:body] # use another node body as a template
+          node = Node.find(params[:n])
+          params[:body] = node.body if node
+        end
+        flash[:error] = "Please enter both body and title"
+        render template: 'editor/wikiRich'
       end
     else
       flash.keep[:error] = I18n.t('wiki_controller.you_have_been_banned').html_safe
@@ -162,7 +171,7 @@ class WikiController < ApplicationController
     @revision = @node.new_revision(uid:   current_user.uid,
                                    title: params[:title],
                                    body:  params[:body])
-    if @node.has_tag('locked') && (current_user.role != 'admin' && current_user.role != 'moderator')
+    if @node.has_tag('locked') && !current_user.can_moderate?
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can update it."
       redirect_to @node.path
 
@@ -202,7 +211,7 @@ class WikiController < ApplicationController
 
   def delete
     @node = Node.find(params[:id])
-    if current_user && current_user.role == 'admin'
+    if current_user && current_user.admin?
       @node.destroy
       flash[:notice] = I18n.t('wiki_controller.wiki_page_deleted')
       redirect_to '/dashboard'
@@ -215,7 +224,7 @@ class WikiController < ApplicationController
   def revert
     revision = Revision.find params[:id]
     node = revision.parent
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if current_user && current_user.can_moderate?
       new_rev = revision.dup
       new_rev.timestamp = DateTime.now.to_i
       if new_rev.save!
@@ -250,7 +259,7 @@ class WikiController < ApplicationController
     @node = Node.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
-      @revisions = @revisions.where(status: 1) unless current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+      @revisions = @revisions.where(status: 1) unless current_user && current_user.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @node.title).html_safe
       @tags = @node.tags
     else
@@ -269,7 +278,7 @@ class WikiController < ApplicationController
     if @revision.nil?
       flash[:error] = I18n.t('wiki_controller.revision_not_found')
       redirect_to action: 'revisions'
-    elsif @revision.status == 1 || current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    elsif @revision.status == 1 || current_user && current_user.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @revision.title).html_safe
       render template: 'wiki/show'
     else
@@ -335,9 +344,9 @@ class WikiController < ApplicationController
   def liked
     @title = I18n.t('wiki_controller.well_liked_wiki_pages')
     @wikis = Node.limit(40)
-      .order('node.cached_likes DESC') 
+      .order('node.cached_likes DESC')
       .where("status = 1 AND nid != 259 AND (type = 'page' OR type = 'tool' OR type = 'place') AND cached_likes >= 0")
-   
+
     render template: 'wiki/index'
   end
 
