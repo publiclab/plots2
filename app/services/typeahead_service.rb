@@ -55,22 +55,22 @@ class TypeaheadService
   end
 
   def notes(input, limit = 5, order = :default, type = :natural)
-    self.nodes(input, limit, order)
+    self.nodes(input, limit, order, type)
       .where("node.type": "note")
   end
 
   def wikis(input, limit = 5, order = :default, type = :natural)
-    self.nodes(input, limit, order)
+    self.nodes(input, limit, order, type)
       .where("node.type": "page")
   end
 
   def maps(input, limit = 5, order = :default, type = :natural)
-    self.nodes(input, limit, order)
+    self.nodes(input, limit, order, type)
       .where("node.type": "map")
   end
   
   def questions(input, limit = 5, order = :default, type = :natural)
-    self.nodes(input, limit, order)
+    self.nodes(input, limit, order, type)
       .where('node.type': 'note')
       .joins(:tag)
       .where('term_data.name LIKE ?', 'question:%')
