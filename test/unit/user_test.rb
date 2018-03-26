@@ -168,7 +168,7 @@ class UserTest < ActiveSupport::TestCase
       user = users(:bob)
       daily = user.daily_note_tally()
       assert_not_empty daily
-      assert_equal daily.count, 366
+      assert_equal daily.count, 365
   end
   test 'user roles' do
     admin = users(:admin)
