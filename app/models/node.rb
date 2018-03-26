@@ -32,13 +32,10 @@ class Node < ActiveRecord::Base
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
-        if type == :natural
-          revisions = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
-            .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
-        elsif type == :boolean
-          revisions = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN BOOLEAN MODE) AS score')
-            .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN BOOLEAN MODE)', query)
-        end
+        mode = "NATURAL LANGUAGE" if type == :natural
+        mode = "BOOLEAN" if type == :boolean
+        revisions = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST('#{query.to_s}' IN #{mode} MODE) AS score")
+          .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN #{type} MODE)", query)
         self.where(nid: revisions.collect(&:nid))
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
