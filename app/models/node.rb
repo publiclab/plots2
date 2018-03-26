@@ -25,17 +25,21 @@ class Node < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query, order = :default)
+  def self.search(query, order = :default, type = :natural)
     orderParam = {changed: :desc} if order == :default
     orderParam = {cached_likes: :desc} if order == :likes
     orderParam = {views: :desc} if order == :views
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
-        nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
-          .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
-          .collect(&:nid)
-        self.where(nid: nids)
+        if type == :natural
+          revisions = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
+            .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
+        elsif type == :boolean
+          revisions = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN BOOLEAN MODE) AS score')
+            .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN BOOLEAN MODE)', query)
+        end
+        self.where(nid: revisions.collect(&:nid))
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
         tnids = Tag.find_nodes_by_type(query, type = ['note', 'page']).collect(&:nid) # include results by tag
