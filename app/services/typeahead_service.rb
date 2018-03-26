@@ -46,31 +46,31 @@ class TypeaheadService
     end
   end
   
-  # default order is recency
-  def nodes(input, limit = 5, order = :default)
-    Node.search(input, order)
+  # default order is recency, type is natural or boolean
+  def nodes(input, limit = 5, order = :default, type = :natural)
+    Node.search(input, order, type)
       .group(:nid)
       .where('node.status': 1)
       .limit(limit)
   end
 
-  def notes(input, limit = 5, order = :default)
-    self.nodes(input, limit, order)
+  def notes(input, limit = 5, order = :default, type = :natural)
+    self.nodes(input, limit, order, type)
       .where("node.type": "note")
   end
 
-  def wikis(input, limit = 5, order = :default)
-    self.nodes(input, limit, order)
+  def wikis(input, limit = 5, order = :default, type = :natural)
+    self.nodes(input, limit, order, type)
       .where("node.type": "page")
   end
 
-  def maps(input, limit = 5, order = :default)
-    self.nodes(input, limit, order)
+  def maps(input, limit = 5, order = :default, type = :natural)
+    self.nodes(input, limit, order, type)
       .where("node.type": "map")
   end
   
-  def questions(input, limit = 5, order = :default)
-    self.nodes(input, limit, order)
+  def questions(input, limit = 5, order = :default, type = :natural)
+    self.nodes(input, limit, order, type)
       .where('node.type': 'note')
       .joins(:tag)
       .where('term_data.name LIKE ?', 'question:%')
