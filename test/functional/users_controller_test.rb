@@ -271,7 +271,7 @@ class UsersControllerTest < ActionController::TestCase
     user = drupal_users(:bob)
     get :edit, { id: user.name }
     assert_not flash.empty?
-    assert_redirected_to '/login'
+    assert_redirected_to '/profile/' + user.name
   end
 
   test 'should redirect update when not logged in' do
@@ -287,7 +287,7 @@ class UsersControllerTest < ActionController::TestCase
     new_user = drupal_users(:newcomer).user
     get :edit, { id: new_user.name }
     assert_not flash.empty?
-    assert_redirected_to '/profile/' + user.name
+    assert_redirected_to '/profile/' + new_user.name
   end
 
   test 'rejecting malformated email while updating profile' do

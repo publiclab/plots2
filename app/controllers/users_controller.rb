@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :require_no_user, :only => [:new]
-  before_action :require_user, :only => [:edit, :update]
+  before_filter :require_user, :only => [:update]
   before_action :set_user, only: [:info, :followed, :following, :followers]
 
   def new
@@ -74,11 +74,11 @@ class UsersController < ApplicationController
       @user = current_user
       @drupal_user = current_user.drupal_user
     end
-    if current_user.uid == @user.uid #|| current_user.role == "admin"
+    if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
       render :template => "users/edit"
     else
       flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
-      redirect_to "/profile/"+current_user.name
+      redirect_to "/profile/"+@user.name
     end
   end
 
