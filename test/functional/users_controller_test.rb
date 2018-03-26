@@ -267,6 +267,29 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal User.find(user.id).bio, 'Hello, there!'
   end
 
+  test 'should redirect edit when not logged in' do
+    user = drupal_users(:bob)
+    get :edit, { id: user.name }
+    assert_not flash.empty?
+    assert_redirected_to '/login'
+  end
+
+  test 'should redirect update when not logged in' do
+    user = users(:bob)
+    post :update, { user: { bio: 'Hello, there!' } }
+    assert_not flash.empty?
+    assert_redirected_to '/login'
+  end
+
+  test 'should redirect edit when logged in as another user' do
+    user = users(:bob)
+    UserSession.create(user)
+    new_user = drupal_users(:newcomer).user
+    get :edit, { id: new_user.name }
+    assert_not flash.empty?
+    assert_redirected_to '/profile/' + user.name
+  end
+
   test 'rejecting malformated email while updating profile' do
     user = users(:bob)
     email = users(:bob).email
