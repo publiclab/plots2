@@ -596,7 +596,7 @@ class WikiControllerTest < ActionController::TestCase
     assert_equal wiki.power_tag('redirect'), "about"
 
     get :show, id: slug
-    assert_redirected_to wiki.path
+    assert_redirected_to "http://test.host/about"
   end
 
 end
