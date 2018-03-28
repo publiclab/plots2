@@ -589,7 +589,7 @@ class WikiControllerTest < ActionController::TestCase
     assert_select 'div#comments h3', /Comments/
   end
   
-    test 'redirect normal user to tagged page' do
+    test 'redirect path by page name' do
     wiki = nodes(:wiki_page)
     slug = wiki.path.gsub('/wiki/', '')
     wiki.add_tag("redirect:about", users(:bob))
