@@ -68,11 +68,9 @@ class UsersController < ApplicationController
   def edit
     @action = "update" # sets the form url
     if params[:id] # admin only
-      @drupal_user = DrupalUser.find_by(name: params[:id])
-      @user = @drupal_user.user
+      @user = DrupalUser.find_by(name: params[:id]).user
     else
       @user = current_user
-      @drupal_user = current_user.drupal_user
     end
     if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
       render :template => "users/edit"
