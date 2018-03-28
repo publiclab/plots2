@@ -42,7 +42,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if current_user
+    if current_user     # Is this really needed? See before filters above.
     @user = current_user
       @user.attributes = params[:user]
       @user.save({}) do |result|
