@@ -11,6 +11,12 @@ class TagController < ApplicationController
 
     @title = I18n.t('tag_controller.tags')
     @paginated = true
+
+    order_string = "count DESC"
+    if params[:order] == "asc"
+      order_string = "count ASC"
+    end
+
     if params[:search]
     prefix = params[:search]
     @tags = Tag.joins(:node_tag, :node)
@@ -19,7 +25,7 @@ class TagController < ApplicationController
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
       .where("name LIKE :prefix", prefix: "#{prefix}%")
       .group(:name)
-      .order('count DESC')
+      .order(order_string)
       .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "uses"
     @tags = Tag.joins(:node_tag, :node)
@@ -27,23 +33,31 @@ class TagController < ApplicationController
       .where('node.status = ?', 1)
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
       .group(:name)
-      .order('count DESC')
+      .order(order_string)
       .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "name"
+    order_string = "name DESC"
+    if params[:order] == "asc"
+      order_string = "name ASC"
+    end
     @tags = Tag.joins(:node_tag, :node)
       .select('node.nid, node.status, term_data.*, community_tags.*')
       .where('node.status = ?', 1)
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
       .group(:name)
-      .order('name')
+      .order(order_string)
       .paginate(page: params[:page], per_page: 24)
     else
+      order_string = "name DESC"
+      if params[:order] == "asc"
+        order_string = "name ASC"
+      end
       tags = Tag.joins(:node_tag, :node)
                 .select('node.nid, node.status, term_data.*, community_tags.*')
                 .where('node.status = ?', 1)
                 .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                 .group(:name)
-                .order('name')
+                .order(order_string)
 
       followed = []
       not_followed = []
