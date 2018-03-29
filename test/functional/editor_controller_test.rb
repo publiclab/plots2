@@ -31,7 +31,7 @@ class EditorControllerTest < ActionController::TestCase
         tags: 'one,two'
     assert_response :success
     assert_select 'h3', 'Share your work'
-    assert_select 'span', false
+    assert_select 'p', "Hi! Just letting you know ahead of time that everyone's first posts to this website are moderated due to issues we've had with spam. Thanks for your patience!"
     assert_select '#taginput[value=?]', 'one,two'
     assert_select '#event-info'
   end
@@ -41,7 +41,7 @@ class EditorControllerTest < ActionController::TestCase
     get :post
     assert_response :success
     assert_select 'h1', 'Share'
-    assert_select 'p.ple-help', 'Select an optional main image for your post.'
+    assert_select 'p', 'Select an optional main image for your post.'
   end
 
   test "should use existing node body as template in legacy form based on param 'n'" do
