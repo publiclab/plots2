@@ -8,9 +8,15 @@
     var layerGroup = L.layerGroup() ; 
     var mapboxUrl = "//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png" ;
     var normal_layer = L.tileLayer(mapboxUrl, {id: 'map<%= unique_id %>'}) ; 
-    var map<%= unique_id %> = L.map('map<%= unique_id %>').on('load', onMapLoad).setView([<%= @map_lat %>,<%= @map_lon %>], 2);
+  
+    //Bounding map
+    var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
+    var map<%= unique_id %> = L.map('map<%= unique_id %>' , {
+      maxBounds: bounds , 
+      maxBoundsViscosity: 0.75
+    }).on('load', onMapLoad).setView([<%= @map_lat %>,<%= @map_lon %>], 2);
     normal_layer.addTo(map<%= unique_id %>) ; 
-
+    map<%= unique_id %>.options.minZoom = 1 ;
     var redDotIcon = L.icon({
       iconUrl: 'https://www.clker.com/cliparts/T/G/b/7/r/A/red-dot.svg',
       iconSize:     [30, 20], // size of the icon
@@ -19,6 +25,15 @@
     });
 
     map<%= unique_id %>.addControl(new L.Control.Fullscreen()); // to go full-screen
+    map<%= unique_id %>.on('fullscreenchange', function () {
+      if (map<%= unique_id %>.isFullscreen()) {
+          map<%= unique_id %>.options.minZoom = 3 ;
+
+      } else {
+          map<%= unique_id %>.options.minZoom = 1 ;
+          map<%= unique_id %>.panTo(new L.LatLng(<%= @map_lat %>, <%= @map_lon %>));
+      }
+    });
 
     // ADD MORE AJAX CALLS INSIDE THIS FUNCTION !
     function onMapLoad(e){
@@ -32,8 +47,8 @@
           var skymarker ; 
           if (!isNaN(parseInt(lat)) && !isNaN(parseInt(lng)) ){
           skymarker = L.marker([parseInt(lat) , parseInt(lng)] , {icon: redDotIcon}).bindPopup(title + "<br><a>" + url +"</a>" + "<br><strong> lat: " + lat + "</strong><br><strong> lon: " + lng + "</strong>") ;
-          }
           layerGroup.addLayer(skymarker);
+          }
         }
        }  
      });
