@@ -92,6 +92,18 @@ class Revision < ActiveRecord::Base
 
   # filtered version of node content
   def render_body
+    require "unicode/emoji"
+
+    string = "String which contains all kinds of emoji:
+
+    - Singleton Emoji: 😴
+    - Textual singleton Emoji with Emoji variation: ▶️
+    - Emoji with skin tone modifier: 🛌🏽
+    - Region flag: 🇵🇹
+    - Sub-Region flag: 🏴󠁧󠁢󠁳󠁣󠁴󠁿
+    - Keycap sequence: 2️⃣
+    - Sequence using ZWJ (zero width joiner): 🤾🏽‍♀️"
+    string.scan(Unicode::Emoji::REGEX) # => ["😴", "▶️", "🛌🏽", "🇵🇹", "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "2️⃣", "🤾🏽‍♀️"]
     body = self.body || ''
     body = RDiscount.new(body)
     body = body.to_html
