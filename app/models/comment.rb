@@ -41,6 +41,11 @@ class Comment < ActiveRecord::Base
         #initialising month variable with the month of the starting day 
         #of the week
         month = (time - (week*7 - 1).days).strftime('%m')
+        def body
+          finder = comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
+          finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD))
+          finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
+        end
         #loop for finding the maximum occurence of a month name in that week
         #For eg. If this week has 3 days falling in March and 4 days falling
         #in April, then we would give this week name as April and vice-versa
