@@ -164,7 +164,8 @@ class WikiControllerTest < ActionController::TestCase
          title: ''
 
     assert_template 'wiki/edit'
-    css_select '.alert'
+    selector = css_select '.alert'
+    assert_equal selector.size, 2
   end
 
   test 'update root-path (/about) wiki' do

@@ -31,7 +31,8 @@ class EditorControllerTest < ActionController::TestCase
         tags: 'one,two'
     assert_response :success
     assert_select 'h3', 'Share your work'
-    assert_select 'p', "Hi! Just letting you know ahead of time that everyone's first posts to this website are moderated due to issues we've had with spam. Thanks for your patience!"
+    selector = css_select 'span.moderation-notice'
+    assert_equal selector.size, 0
     assert_select '#taginput[value=?]', 'one,two'
     assert_select '#event-info'
   end

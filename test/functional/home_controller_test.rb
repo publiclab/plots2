@@ -62,9 +62,11 @@ class HomeControllerTest < ActionController::TestCase
 
     @wikis.each do |obj|
       if obj.class == Revision && obj.status == 1
-        assert_select '.wiki'
+        selections = css_select '.wiki'
+        assert_equal selections.length, 6
       elsif obj.class == Revision && obj.status != 1
-        assert_select false, '.wiki'
+        selections = css_select '.wiki'
+        assert_equal selections.length, 0
       end
     end
   end
@@ -106,7 +108,7 @@ class HomeControllerTest < ActionController::TestCase
 
       get 'home'
       assert_template 'home/home'
-      assert_select 'h2.the-problem', I18n.t('home.home.the_problem.title')
+      assert_select 'h2', I18n.t('home.home.the_problem.title')
     end
   end
 end
