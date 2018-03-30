@@ -5,7 +5,7 @@ gem 'activerecord-session_store'
 gem 'protected_attributes'
 gem 'passenger'
 
-
+gem "unicode-emoji"
 gem 'rails-i18n', '~> 4.0.0'
 # gem 'responders', '~> 2.0' # for Rails 4.2
 
