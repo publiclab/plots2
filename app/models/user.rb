@@ -89,6 +89,14 @@ class User < ActiveRecord::Base
     DrupalUser.find_by(name: username)
   end
 
+  def last
+    self.drupal_user.last
+  end
+
+  def node_count
+    self.drupal_user.node_count 
+  end
+
   def notes
     Node.where(uid: uid)
       .where(type: 'note')
