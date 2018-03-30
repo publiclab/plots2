@@ -125,7 +125,8 @@ class UsersControllerTest < ActionController::TestCase
 
     get :profile, id: user.username
 
-    assert_select 'a.user-reset-key', false
+    selector = css_select 'a.user-reset-key'
+    assert_equal selector.size, 0
   end
 
   test 'confirm user reset key visible to admins on profile' do
