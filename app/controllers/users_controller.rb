@@ -41,38 +41,31 @@ class UsersController < ApplicationController
     end
   end
 
-  def update
-    if current_user
+  def update                # login required, see before filter
     @user = current_user
-      @user.attributes = params[:user]
-      @user.save({}) do |result|
-        if result
-          if session[:openid_return_to] # for openid login, redirects back to openid auth process
-            return_to = session[:openid_return_to]
-            session[:openid_return_to] = nil
-            redirect_to return_to
-          else
-            flash[:notice] = I18n.t('users_controller.successful_updated_profile')+"<a href='/dashboard'>"+I18n.t('users_controller.return_dashboard')+" &raquo;</a>"
-            redirect_to "/profile/"+@user.username
-          end
+    @user.attributes = params[:user]
+    @user.save({}) do |result|
+      if result
+        if session[:openid_return_to] # for openid login, redirects back to openid auth process
+          return_to = session[:openid_return_to]
+          session[:openid_return_to] = nil
+          redirect_to return_to
         else
-          render :template => 'users/edit'
+          flash[:notice] = I18n.t('users_controller.successful_updated_profile')+"<a href='/dashboard'>"+I18n.t('users_controller.return_dashboard')+" &raquo;</a>"
+          redirect_to "/profile/"+@user.username
         end
+      else
+        render :template => 'users/edit'
       end
-    else
-      flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
-      redirect_to "/profile/"+@user.name
     end
   end
 
   def edit
     @action = "update" # sets the form url
     if params[:id] # admin only
-      @drupal_user = DrupalUser.find_by(name: params[:id])
-      @user = @drupal_user.user
+      @user = User.find_by(username: params[:id])
     else
       @user = current_user
-      @drupal_user = current_user.drupal_user
     end
     if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
       render :template => "users/edit"
