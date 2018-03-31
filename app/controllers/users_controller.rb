@@ -63,7 +63,7 @@ class UsersController < ApplicationController
   def edit
     @action = "update" # sets the form url
     if params[:id] # admin only
-      @user = DrupalUser.find_by(name: params[:id]).user
+      @user = User.find_by(username: params[:id])
     else
       @user = current_user
     end
