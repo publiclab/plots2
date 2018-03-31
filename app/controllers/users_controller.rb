@@ -42,26 +42,21 @@ class UsersController < ApplicationController
   end
 
   def update
-    if current_user     # Is this really needed? See before filters above.
     @user = current_user
-      @user.attributes = params[:user]
-      @user.save({}) do |result|
-        if result
-          if session[:openid_return_to] # for openid login, redirects back to openid auth process
-            return_to = session[:openid_return_to]
-            session[:openid_return_to] = nil
-            redirect_to return_to
-          else
-            flash[:notice] = I18n.t('users_controller.successful_updated_profile')+"<a href='/dashboard'>"+I18n.t('users_controller.return_dashboard')+" &raquo;</a>"
-            redirect_to "/profile/"+@user.username
-          end
+    @user.attributes = params[:user]
+    @user.save({}) do |result|
+      if result
+        if session[:openid_return_to] # for openid login, redirects back to openid auth process
+          return_to = session[:openid_return_to]
+          session[:openid_return_to] = nil
+          redirect_to return_to
         else
-          render :template => 'users/edit'
+          flash[:notice] = I18n.t('users_controller.successful_updated_profile')+"<a href='/dashboard'>"+I18n.t('users_controller.return_dashboard')+" &raquo;</a>"
+          redirect_to "/profile/"+@user.username
         end
+      else
+        render :template => 'users/edit'
       end
-    else
-      flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
-      redirect_to "/profile/"+@user.name
     end
   end
 
