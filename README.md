@@ -22,7 +22,7 @@ Some key features include:
 * a user dashboard [presenting recent activity](https://publiclab.org/dashboard)
 * a privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
 
-![Diagram](https://publiclab.org/system/images/photos/000/021/061/original/diagram.png)
+![Diagram](https://i.imgur.com/62O0tTK.jpg)
 
 _(Above: draft of our [Data model](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md))_
 
@@ -65,7 +65,7 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 
 ### Ruby version
 
-Make sure to use ruby-2.3.4. To check your ruby version run `ruby -v`.If you are using some other version then install ruby-2.3.4 with `rvm install 2.3.4`. Later to use ruby-2.3.4, run `rvm use 2.3.4`. Always make sure that you are using the correct ruby version since it might go back to its original version if you close the terminal. You might have to redo the entire installation process after switching to a different version. 
+Make sure to use ruby-2.3.4. To check your ruby version run `ruby -v`.If you are using some other version then install ruby-2.3.4 with `rvm install 2.3.4`. Later to use ruby-2.3.4, run `rvm use 2.3.4`. Always make sure that you are using the correct ruby version since it might go back to its original version if you close the terminal. You might have to redo the entire installation process after switching to a different version.
 
 ### Bundle exec
 
