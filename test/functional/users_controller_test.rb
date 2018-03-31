@@ -217,8 +217,10 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_nil assigns(:notes)
     assert_not_nil assigns(:questions)
     assert_not_nil assigns(:answered_questions)
-    assert_select '#asked .note-question', 2
-    assert_select '#answered .note-answer', 1
+    selector = css_select '#asked .note-question'
+    assert_equal selector.size, 2
+    selector = css_select '#answered .note-answer'
+    assert_equal selector.size, 1
   end
 
   test 'should get comments' do
