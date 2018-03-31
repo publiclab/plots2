@@ -107,7 +107,8 @@ class WikiControllerTest < ActionController::TestCase
          body:  'This is fascinating documentation about balloon mapping.'
 
     assert_template 'editor/wikiRich'
-    assert_select '.alert'
+    selector = css_select '.alert'
+    assert_equal selector.size, 2
   end
 
   test 'viewing edit wiki page' do
@@ -396,7 +397,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template :index
-    assert_select 'title', '&#127880; Public Lab: Popular wiki pages'
+    assert_select 'title', "🎈 Public Lab: Popular wiki pages"
   end
 
   test  'should display well liked wiki pages' do
@@ -404,7 +405,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template :index
-    assert_select 'title', '&#127880; Public Lab: Well-liked wiki pages'
+    assert_select 'title', "🎈 Public Lab: Well-liked wiki pages"
   end
 
   test 'should choose I18n for wiki controller' do
