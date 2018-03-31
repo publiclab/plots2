@@ -410,7 +410,8 @@ class NotesControllerTest < ActionController::TestCase
         author: node.author.username,
         date: node.created_at.strftime('%m-%d-%Y'),
         id: node.title.parameterize
-    assert_select '.fa-fire', 4
+    selector = css_select '.fa-fire'
+    assert_equal selector.size, 4
   end
 
   test 'should redirect to questions show page after creating a new question' do
@@ -470,7 +471,8 @@ class NotesControllerTest < ActionController::TestCase
     post :edit,
          id: note.nid
     assert_response :success
-    assert_select 'input', note.tagnames.join(',')
+    selector = css_select "input.form-control.input-lg[value='#{note.tagnames.join(',')}']"
+    assert_equal selector.size, 1
   end
 
   test 'should display /post template when editing a question' do
@@ -480,7 +482,8 @@ class NotesControllerTest < ActionController::TestCase
     post :edit,
          id: note.nid
     assert_response :success
-    assert_select 'input.form-control.input-lg[value=?]', note.tagnames.join(',')
+    selector = css_select "input.form-control.input-lg[value='#{note.tagnames.join(',')}']"
+    assert_equal selector.size, 1
   end
 
   test 'should redirect to questions show page when editing an existing question' do
