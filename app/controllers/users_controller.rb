@@ -41,7 +41,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def update
+  def update                # login required, see before filter
     @user = current_user
     @user.attributes = params[:user]
     @user.save({}) do |result|
