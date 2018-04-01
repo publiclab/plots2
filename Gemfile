@@ -1,11 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.2.9'
+gem 'rails', '~> 4.2.10'
+ruby '2.3.7'
+
 gem 'activerecord-session_store'
 gem 'protected_attributes'
 gem 'passenger'
 
-
+gem "unicode-emoji"
 gem 'rails-i18n', '~> 4.0.0'
 gem 'responders', '~> 2.0' # for Rails 4.2
 

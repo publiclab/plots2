@@ -1,22 +1,6 @@
-<div style="position:absolute;top:0;left:0;z-index:-1;height:380px;min-height:380px;overflow:hidden;">
-
-  <% cache('feature_home-carousel', skip_digest: true) do %>
-    <%= feature("home-carousel") %>
-  <% end %>
-
-</div>
-
-<script>
-(function() {
-  setTimeout(function() {
-    $('.carousel').carousel({
-      interval: 6000
-    })
-  },2000)
-})()
-</script>
-
-<div class="" style="margin-top:320px;"></div>
+<% cache('feature_home-carousel', skip_digest: true) do %>
+  <%= feature("home-carousel") %>
+<% end %>
 
 <div style="padding:30px 5%;">
 

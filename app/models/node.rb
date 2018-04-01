@@ -25,8 +25,28 @@ class Node < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query)
-    Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query)
+  def self.search(query, order = :default)
+    orderParam = {changed: :desc} if order == :default
+    orderParam = {cached_likes: :desc} if order == :likes
+    orderParam = {views: :desc} if order == :views
+
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      if order == :natural
+        nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
+          .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
+          .collect(&:nid)
+        self.where(nid: nids)
+      else
+        nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
+        tnids = Tag.find_nodes_by_type(query, type = ['note', 'page']).collect(&:nid) # include results by tag
+        self.where(nid: nids + tnids)
+          .order(orderParam)
+      end
+    else 
+      nodes = Node.limit(limit)
+        .where('title LIKE ?', '%' + input + '%')
+        .order(orderParam)
+    end
   end
 
   def updated_month
@@ -123,14 +143,12 @@ class Node < ActiveRecord::Base
 
   public
 
-  # the counter_cache does not currently work: views column is not updated for some reason
-  # https://github.com/publiclab/plots2/issues/1196
   is_impressionable counter_cache: true, column_name: :views
 
   def totalviews
-    # disabled as impressionist is not currently updating counter_cache; see above
+    # this doesn't filter out duplicate ip addresses as the line below does:
     # self.views + self.legacy_views
-    impressionist_count(filter: :ip_address) + legacy_views
+    self.impressionist_count(filter: :ip_address) + self.legacy_views
   end
 
   def self.weekly_tallies(type = 'note', span = 52, time = Time.now)
@@ -141,6 +159,39 @@ class Node < ActiveRecord::Base
                                       status:  1,
                                       created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
                                .count
+    end
+    weeks
+  end
+
+  def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)   
+    weeks = {}
+    week = span
+    count = 0;
+    while week >= 1
+       #initialising month variable with the month of the starting day 
+       #of the week
+       month = (time - (week*7 - 1).days).strftime('%m')
+       #loop for finding the maximum occurence of a month name in that week
+       #For eg. If this week has 3 days falling in March and 4 days falling
+       #in April, then we would give this week name as April and vice-versa
+      for i in 1..7 do
+          currMonth = (time - (week*7 - i).days).strftime('%m')
+          if month != currMonth
+              if i <= 4
+                  month = currMonth
+              end
+          end
+      end
+      #Now fetching the weekly data of notes or wikis
+      month = month.to_i
+      currWeek = Node.select(:created)
+                     .where(type: type,
+                            status: 1,
+                            created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+                      .count
+      weeks[count] = [month, currWeek]
+      count += 1
+      week -= 1
     end
     weeks
   end

@@ -22,6 +22,31 @@ class NodeTest < ActiveSupport::TestCase
       nodes = Node.search('organizers')
       assert_not_nil nodes
       assert nodes.length > 0
+      # now sorted by natural language match
+      nodes_natural = Node.search('organizers', :natural)
+      assert_not_nil nodes_natural
+      assert nodes_natural.length > 0
+      assert_not_equal nodes_natural, nodes
+      # now sorted by likes
+      nodes_likes = Node.search('organizers', :likes)
+      assert_not_nil nodes_likes
+      assert nodes_likes.length > 0
+      assert_not_equal nodes_likes, nodes
+      # now sorted by views
+      nodes_views = Node.search('organizers', :views)
+      assert_not_nil nodes_views
+      assert nodes_views.length > 0
+      assert_not_equal nodes_views, nodes
+    end
+  end
+
+  test 'node mysql native fulltext search returning tag-based matches' do
+    assert Node.count > 0
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      nodes = Node.search('awesome')
+      assert_not_nil nodes
+      assert nodes.length > 0
+      assert_equal nodes.length, Tag.find_nodes_by_type('awesome', ['note', 'page']).length
     end
   end
 

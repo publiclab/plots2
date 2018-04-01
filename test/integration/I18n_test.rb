@@ -1,13 +1,6 @@
 require 'test_helper'
 
 class I18nTest < ActionDispatch::IntegrationTest
-  test 'should choose i18n-locale for footer partial' do
-    available_testing_locales.each do |lang|
-      get '/home'
-      get_via_redirect '/change_locale/' + lang.to_s
-      assert_select 'a[href=/wiki/issues]', I18n.t('layout._footer.getting_help.report_bug')
-    end
-  end
 
   test 'should choose i18n-locale for header partial' do
     available_testing_locales.each do |lang|

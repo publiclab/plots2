@@ -33,6 +33,56 @@ class Comment < ActiveRecord::Base
     weeks
   end
 
+  def self.contribution_graph_making(span = 52, time = Time.now)   
+    weeks = {}
+    week = span
+    count = 0;
+    while week >= 1
+        #initialising month variable with the month of the starting day 
+        #of the week
+        month = (time - (week*7 - 1).days).strftime('%m')
+        def body
+          require "unicode/emoji"
+
+          string = "String which contains all kinds of emoji:
+
+          - Singleton Emoji: 😴
+          - Textual singleton Emoji with Emoji variation: ▶️
+          - Emoji with skin tone modifier: 🛌🏽
+          - Region flag: 🇵🇹
+          - Sub-Region flag: 🏴󠁧󠁢󠁳󠁣󠁴󠁿
+          - Keycap sequence: 2️⃣
+          - Sequence using ZWJ (zero width joiner): 🤾🏽‍♀️"
+          string.scan(Unicode::Emoji::REGEX) # => ["😴", "▶️", "🛌🏽", "🇵🇹", "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "2️⃣", "🤾🏽‍♀️"]
+          finder = comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
+          finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD))
+          finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
+        end
+        #loop for finding the maximum occurence of a month name in that week
+        #For eg. If this week has 3 days falling in March and 4 days falling
+        #in April, then we would give this week name as April and vice-versa
+        for i in 0..6 do
+          currMonth = (time - (week*7 - i).days).strftime('%m')
+          if month == 0
+              month = currMonth
+          elsif month != currMonth
+              if i <= 4
+                  month = currMonth
+              end
+          end
+        end
+        month = month.to_i
+        #Now fetching comments per week
+        currWeek = Comment.select(:timestamp)
+                        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+                        .count
+        weeks[count] = [month, currWeek]
+        count += 1
+        week -= 1
+    end
+    weeks
+  end
+
   def id
     cid
   end

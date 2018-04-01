@@ -29,11 +29,11 @@
     <% @users.each do |user| %>
     <tr>
       <td class="visible-sm visible-xs" style="padding-top: 16px;">
-        <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= user.user.profile_image %>" />
+        <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= user.profile_image %>" />
       </td>
       <td style="display: flex; align-items: center;">
         <div class="hidden-sm hidden-xs">
-          <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= user.user.profile_image %>" />
+          <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" src="<%= user.profile_image %>" />
         </div>
         <a style="margin-left: 12px;" href="/profile/<%= user.username %>"><%= user.username %></a>
       </td>
@@ -42,9 +42,9 @@
       <td style="padding-top:16px;"><%= distance_of_time_in_words(user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator") %>
       <td style="padding-top:16px;">
-        <% if user.user.status == 0 %>
+        <% if user.status == 0 %>
           <i class='fa fa-ban' style="color:#a00;"></i> <%= t('users.list.banned') %>
-        <% elsif user.user.status == 1 %>
+        <% elsif user.status == 1 %>
           <a class="btn btn-default btn-sm" data-confirm="<%= t('users.list.are_you_sure') %>" href="/ban/<%= user.uid %>" ><i class='fa fa-ban'></i> <%= t('users.list.ban') %></a>
         <% end %>
       </td>
