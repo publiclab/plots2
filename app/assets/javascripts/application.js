@@ -42,6 +42,7 @@
 //= require users.js
 //= require searchform.js
 //= require tagging.js
+//= require leaflet_helper
 //= require grids.js
 //= require graph.js
 //= require short-code-forms/dist/short-code-prompts.js
