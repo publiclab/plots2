@@ -347,7 +347,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a.write-research-note', "#{I18n.t('sidebar._related.write_research_note')} &raquo;"
+      assert_select 'a', "#{I18n.t('sidebar._related.write_research_note')} &raquo;"
     end
   end
 
@@ -423,7 +423,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/talk/' + nodes(:about).slug
-      assert_select 'p.help-text', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', page: nodes(:about).latest.title, url1: nodes(:about).path, url2: '/wiki/talk-pages'))
+      assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', page: nodes(:about).latest.title, url1: nodes(:about).path, url2: '/wiki/talk-pages'))
     end
   end
 
