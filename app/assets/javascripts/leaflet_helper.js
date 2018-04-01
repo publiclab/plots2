@@ -9,11 +9,10 @@ function setupLeafletMap() {
 }
 
 function setupLayers(map) {
-	var mapboxUrl = "//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png" ;
+    var mapboxUrl = "//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png" ;
     var normal_layer = L.tileLayer(mapboxUrl, {id: 'map'}) ; 
     normal_layer.addTo(map) ; 
     map.options.minZoom = 1 ;
-   
     var baseMaps = {
       "Default": normal_layer,
     };
@@ -24,13 +23,14 @@ function setupLayers(map) {
 }
 
 function setupFullScreen(map , lat , lon) {
-	map.addControl(new L.Control.Fullscreen()); // to go full-screen
+    map.addControl(new L.Control.Fullscreen()); // to go full-screen
     map.on('fullscreenchange', function () {
       if (map.isFullscreen()) {
-          map.options.minZoom = 3 ;
-      } else {
-          map.options.minZoom = 1 ;
-          map.panTo(new L.LatLng(lat,lon));
+        map.options.minZoom = 3 ;
+       } 
+      else {
+        map.options.minZoom = 1 ;
+        map.panTo(new L.LatLng(lat,lon));
       }
     });
 }
