@@ -1,14 +1,14 @@
-function setupLeafletMap() {
-  //Bounding map.  
+  function setupLeafletMap() {
+    //Bounding map.  
     var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
     var map = L.map('map_leaflet' , {
       maxBounds: bounds , 
       maxBoundsViscosity: 0.75
     }) ;
     return map ;
-}
+  }
 
-function setupLayers(map) {
+  function setupLayers(map) {
     var mapboxUrl = "//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png" ;
     var normal_layer = L.tileLayer(mapboxUrl, {id: 'map'}) ; 
     normal_layer.addTo(map) ; 
@@ -20,9 +20,9 @@ function setupLayers(map) {
       "Skynet": layerGroup    // we can add more layers here !
     }; 
     L.control.layers(baseMaps , overlayMaps).addTo(map);
-}
+  }
 
-function setupFullScreen(map , lat , lon) {
+  function setupFullScreen(map , lat , lon) {
     map.addControl(new L.Control.Fullscreen()); // to go full-screen
     map.on('fullscreenchange', function () {
       if (map.isFullscreen()) {
@@ -33,9 +33,9 @@ function setupFullScreen(map , lat , lon) {
         map.panTo(new L.LatLng(lat,lon));
       }
     });
-}
+  }
 
-function onMapLoad(e){
+  function onMapLoad(e){
 	// ADD MORE AJAX CALLS INSIDE THIS FUNCTION !
       $.getJSON(skynet_url , function(data){
        if (!!data.feed){
@@ -52,4 +52,4 @@ function onMapLoad(e){
         }
        }  
      });
- }
+   }
