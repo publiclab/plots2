@@ -33,17 +33,25 @@ class WikiController < ApplicationController
         flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to <a href='#{Node.find(@node.power_tag('redirect')).path}'>#{Node.find(@node.power_tag('redirect')).title}</a>.
         To remove the redirect, delete the tag beginning with 'redirect:'"
       end
-    end
-
-    if @node&.has_power_tag('abtest') && !Node.where(nid: @node.power_tag('abtest')).empty?
+    
+    elsif @node&.has_power_tag('redirect') && Node.where(slug: @node.power_tag('redirect')).exists?
       if current_user.nil? || !current_user.can_moderate?
-        if Random.rand(2) == 0
-          redirect_to Node.find(@node.power_tag('abtest')).path
-          return
-        end
+        redirect_to Node.find_by(slug: @node.power_tag('redirect')).path
+        return
       elsif current_user.can_moderate?
-        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('abtest')).title} roughly around 50% of the time.
+        flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to <a href='#{Node.find_by(slug: @node.power_tag('redirect')).path}'>#{Node.find_by(slug: @node.power_tag('redirect')).title}</a>.
+        To remove the redirect, delete the tag beginning with 'redirect:'"
+      end
+      if @node&.has_power_tag('abtest') && !Node.where(nid: @node.power_tag('abtest')).empty?
+        if current_user.nil? || !current_user.can_moderate?
+          if Random.rand(2) == 0
+            redirect_to Node.find(@node.power_tag('abtest')).path
+            return
+          end
+        elsif current_user.can_moderate?
+          flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('abtest')).title} roughly around 50% of the time.
         To remove this behavior, delete the tag beginning with 'abtest:'"
+        end
       end
     end
 

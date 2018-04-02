@@ -98,7 +98,7 @@ class Revision < ActiveRecord::Base
     body = body.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKHTML))
-    body_extras(body)
+    ApplicationController.helpers.emojify(body_extras(body))
   end
   
   # filtered version of node content, but without running Markdown

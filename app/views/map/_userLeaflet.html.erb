@@ -1,52 +1,25 @@
-  <% if haslocation == true %>
-    <% unique_id = rand(100) %>
+  <% if haslocation == true %>  
     <style>
-      #map<%= unique_id %> {  height:300px; width:292px; margin: auto; position: relative;}
+      #map_leaflet{  height:300px; width:292px; margin: auto; position: relative;}
     </style>
-    <div class="leaflet-map" id="map<%= unique_id %>"></div>
+    <div class="leaflet-map" id="map_leaflet"></div>
     <script>
+    var map_lat = <%= @map_lat %> ;
+    var map_lon = <%= @map_lon %>
+    var map = setupLeafletMap() ; 
     var layerGroup = L.layerGroup() ; 
-    var mapboxUrl = "//a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png" ;
-    var normal_layer = L.tileLayer(mapboxUrl, {id: 'map<%= unique_id %>'}) ; 
-    var map<%= unique_id %> = L.map('map<%= unique_id %>').on('load', onMapLoad).setView([<%= @map_lat %>,<%= @map_lon %>], 2);
-    normal_layer.addTo(map<%= unique_id %>) ; 
-
+    var skynet_url = "https://alerts.skytruth.org/json?&d=100&n=60&l=<%= @map_lat+100 %>,<%= @map_lon-100 %>,<%= @map_lat-100 %>,<%= @map_lon+100 %>" ;   
+    map.on('load', onMapLoad).setView([map_lat,map_lon], 2);
     var redDotIcon = L.icon({
       iconUrl: 'https://www.clker.com/cliparts/T/G/b/7/r/A/red-dot.svg',
       iconSize:     [30, 20], // size of the icon
       iconAnchor:   [20 , 0], // point of the icon which will correspond to marker's location
       popupAnchor:  [-5, -5] // point from which the popup should open relative to the iconAnchor
     });
-
-    map<%= unique_id %>.addControl(new L.Control.Fullscreen()); // to go full-screen
-
-    // ADD MORE AJAX CALLS INSIDE THIS FUNCTION !
-    function onMapLoad(e){
-      $.getJSON("https://alerts.skytruth.org/json?&d=100&n=60&l=<%= @map_lat+100 %>,<%= @map_lon-100 %>,<%= @map_lat-100 %>,<%= @map_lon+100 %>" , function(data){
-       if (!!data.feed){
-        for (i = 0 ; i < data.feed.length ; i++) { 
-          var lat = data.feed[i].lat ;
-          var lng = data.feed[i].lng;
-          var title = data.feed[i].title ;
-          var url = data.feed[i].link ;
-          var skymarker ; 
-          if (!isNaN(parseInt(lat)) && !isNaN(parseInt(lng)) ){
-          skymarker = L.marker([parseInt(lat) , parseInt(lng)] , {icon: redDotIcon}).bindPopup(title + "<br><a>" + url +"</a>" + "<br><strong> lat: " + lat + "</strong><br><strong> lon: " + lng + "</strong>") ;
-          }
-          layerGroup.addLayer(skymarker);
-        }
-       }  
-     });
-    }
-    var baseMaps = {
-      "Default": normal_layer,
-    };
-    var overlayMaps = {
-      "Skynet": layerGroup    // we can add more layers here !
-    }; 
-    L.control.layers(baseMaps , overlayMaps).addTo(map<%= unique_id %>);
+    setupFullScreen(map , map_lat , map_lon) ; 
+    setupLayers(map) ; 
     <% if !(@map_blurred == true) %>
-      L.marker([<%= @map_lat %>, <%= @map_lon %>]).addTo(map<%= unique_id %>).bindPopup("<a href='https://publiclab.org/profile/<%= @profile_user.username  %>'><%= @profile_user.username  %> </a>");
+      L.marker([<%= @map_lat %>, <%= @map_lon %>]).addTo(map).bindPopup("<a href='https://publiclab.org/profile/<%= @profile_user.username  %>'><%= @profile_user.username  %> </a>");
     <% end %>
     </script>
   <% else %>

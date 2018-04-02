@@ -16,8 +16,11 @@ class UserSessionsController < ApplicationController
       params[:user_session][:username] = @user.username
     end
 
-    if params[:user_session].nil? || @user&.drupal_user.status == 1 || @user.nil?
-      # an existing native user
+    if @user.nil?
+      flash[:warning] = "There is nobody in our system by that name, are you sure you have the right username?"
+      redirect_to '/login'
+    elsif params[:user_session].nil? || @user&.drupal_user&.status == 1
+      # an existing Rails user
       if params[:user_session].nil? || @user
         if @user&.crypted_password.nil? # the user has not created a pwd in the new site
           params[:user_session][:openid_identifier] = 'https://old.publiclab.org/people/' + username + '/identity' if username
@@ -50,6 +53,8 @@ class UserSessionsController < ApplicationController
               end
             end
           else
+            # Login failed; probably bad password. 
+            # Errors will display on login form:
             render action: 'new'
           end
         end
@@ -62,7 +67,7 @@ class UserSessionsController < ApplicationController
           redirect_to '/signup'
         end
       end
-    elsif params[:user_session].nil? || @user&.drupal_user.status == 5 || @user.nil?
+    elsif params[:user_session].nil? || @user&.drupal_user&.status == 5
       flash[:error] = I18n.t('user_sessions_controller.user_has_been_moderated', username: @user.username).html_safe
       redirect_to '/'
     else

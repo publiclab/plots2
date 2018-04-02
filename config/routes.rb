@@ -46,6 +46,7 @@ Plots2::Application.routes.draw do
   patch 'users/update' => 'users#update'
   get 'people/:id/following' => 'users#following', as: :following
   get 'people/:id/followers' => 'users#followers', as: :followers
+  get 'people/:tagname' => 'users#list'
   get 'signup' => 'users#new'
   get 'home' => 'home#front'
   resources :relationships, only: [:create, :destroy]

@@ -47,7 +47,6 @@ class NotesController < ApplicationController
     if params[:author] && params[:date]
       @node = Node.find_notes(params[:author], params[:date], params[:id])
       @node ||= Node.where(path: "/report/#{params[:id]}").first
-      # redirect_old_urls
     else
       @node = Node.find params[:id]
     end
