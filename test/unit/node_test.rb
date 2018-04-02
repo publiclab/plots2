@@ -20,7 +20,7 @@ class NodeTest < ActiveSupport::TestCase
     node = nodes(:one)
     revision = node.latest
     revision.body = ':cat:'
-    assert_equal "<p>🐱</p>/n", revision.render_body
+    assert_equal "<p>🐱</p> +", revision.render_body
   end
 
   test 'node mysql native fulltext search' do
