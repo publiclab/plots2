@@ -17,7 +17,7 @@ class TagController < ApplicationController
       .select('node.nid, node.status, term_data.*, community_tags.*')
       .where('node.status = ?', 1)
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-      .where("name LIKE :prefix", prefix: "#{prefix}%")
+      .where("name LIKE :prefix", prefix: "%#{prefix}%")
       .group(:name)
       .order('count DESC')
       .paginate(page: params[:page], per_page: 24)
