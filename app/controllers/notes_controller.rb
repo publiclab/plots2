@@ -45,7 +45,7 @@ class NotesController < ApplicationController
 
   def show
     if params[:author] && params[:date]
-      @node.23 = Node.find_notes(params[:author], params[:date], params[:id])
+      @node = Node.find_notes(params[:author], params[:date], params[:id])
       @node ||= Node.where(path: "/report/#{params[:id]}").first
     else
       @node = Node.find params[:id]
