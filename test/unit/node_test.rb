@@ -19,7 +19,7 @@ class NodeTest < ActiveSupport::TestCase
   test 'emoji conversion' do
     node = nodes(:one)
     node.latest.body = ':cat:'
-    assert node.latest.render_body.include?('🐱')
+    assert_equal node.latest.render_body, '🐱'
   end
 
   test 'node mysql native fulltext search' do
