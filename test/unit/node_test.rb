@@ -16,6 +16,12 @@ class NodeTest < ActiveSupport::TestCase
     assert question.answered
   end
 
+  test 'emoji conversion' do
+    node = nodes(:one)
+    node.latest.body = ':cat:'
+    assert node.latest.render_body.include?('🐱')
+  end
+
   test 'node mysql native fulltext search' do
     assert Node.count > 0
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
