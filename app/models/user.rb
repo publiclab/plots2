@@ -188,6 +188,12 @@ class User < ActiveRecord::Base
     tvalue
   end
 
+  def get_last_value_of_power_tag(key)
+    tname = self.user_tags.where('value LIKE ?' , key + ':%')
+    tvalue = tname.last.name.partition(':').last
+    tvalue
+  end
+
   def subscriptions(type = :tag)
     if type == :tag
       TagSelection.where(user_id: uid,
@@ -364,7 +370,7 @@ class User < ActiveRecord::Base
 
   def social_link(site)
     if has_power_tag(site)
-      user_name = get_value_of_power_tag(site)
+      user_name = get_last_value_of_power_tag(site)
       link = "https://#{site}.com/#{user_name}"
       return link
     end
