@@ -271,7 +271,7 @@ class UsersControllerTest < ActionController::TestCase
     user = drupal_users(:bob)
     get :edit, { id: user.name }
     assert_not flash.empty?
-    assert_redirected_to '/profile/' + user.name
+    assert_redirected_to '/login'
   end
 
   test 'should redirect update when not logged in' do
