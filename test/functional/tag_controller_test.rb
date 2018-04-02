@@ -117,6 +117,14 @@ class TagControllerTest < ActionController::TestCase
     assert_not_nil :tags
   end
 
+  test 'tag search' do
+    get :index , :search => "featured"
+
+    assert :success
+    assert assigns(:tags).length > 0
+    assert_template 'tag/index'
+  end
+
   test 'tag show' do
     get :show, id: tags(:spectrometer).name
 
