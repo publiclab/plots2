@@ -170,6 +170,7 @@ class UserTest < ActiveSupport::TestCase
       assert_not_empty daily
       assert_equal daily.count, 365
   end
+
   test 'user roles' do
     admin = users(:admin)
     assert admin.admin?
@@ -184,6 +185,16 @@ class UserTest < ActiveSupport::TestCase
     assert_not basic_user.moderator?
     assert_not basic_user.can_moderate?
   end
+
+  test 'user statuses' do
+    spammer = users(:spammer)
+    assert spammer.banned?
+
+    spammer.mark_as! :moderated
+    assert spammer.moderated?
+    assert_not spammer.banned?
+  end
+
   test 'user email validation' do
     user = User.new(username: 'zen',
                     password: 'nez',

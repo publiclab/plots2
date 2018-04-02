@@ -159,6 +159,22 @@ class User < ActiveRecord::Base
     admin? || moderator?
   end
 
+  # User status
+  # 0: banned
+  # 5: moderated
+  def mark_as!(new_status)
+    self.status = 0 if new_status == :banned
+    self.status = 5 if new_status == :moderated
+  end
+
+  def banned?
+    status == 0
+  end
+
+  def moderated?
+    status == 5
+  end
+
   def tags(limit = 10)
     Tag.where('name in (?)', tagnames).limit(limit)
   end
