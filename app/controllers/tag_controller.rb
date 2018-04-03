@@ -12,12 +12,12 @@ class TagController < ApplicationController
     @title = I18n.t('tag_controller.tags')
     @paginated = true
     if params[:search]
-    prefix = params[:search]
+    keyword = params[:search]
     @tags = Tag.joins(:node_tag, :node)
       .select('node.nid, node.status, term_data.*, community_tags.*')
       .where('node.status = ?', 1)
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-      .where("name LIKE :prefix", prefix: "#{prefix}%")
+      .where("name LIKE :keyword", keyword: "%#{keyword}%")
       .group(:name)
       .order('count DESC')
       .paginate(page: params[:page], per_page: 24)
