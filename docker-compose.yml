@@ -4,7 +4,7 @@ services:
     image: mariadb:10.2
     network_mode: "host"
     ports:
-      - "127.0.0.1:3306:3306"
+      - "3306"
     environment:
       - MYSQL_DATABASE=plots
       - MYSQL_USER=plots
