@@ -7,7 +7,7 @@
 class TypeaheadService
   def initialize; end
 
-  # search_users() returns a standard TagResult; 
+  # search_users() returns a standard TagResult;
   # users() returns an array of User records
   # It's unclear if TagResult was supposed to be broken into other types like DocResult?
   # but perhaps could simply be renamed Result.
@@ -17,7 +17,7 @@ class TypeaheadService
       User.search(input)
         .limit(limit)
         .where(status: 1)
-    else 
+    else
       User.limit(limit)
         .order('id DESC')
         .where('username LIKE ? AND status = 1', '%' + input + '%')
@@ -39,14 +39,14 @@ class TypeaheadService
         .limit(limit)
         .order('nid DESC')
         .where(status: 1)
-    else 
+    else
       Comment.limit(limit)
         .order('nid DESC')
         .where('status = 1 AND comment LIKE ?', '%' + input + '%')
     end
   end
-  
-  # default order is recency
+
+  # default order is natural language
   def nodes(input, limit = 5, order = :default)
     Node.search(input, order)
       .group(:nid)
@@ -68,7 +68,7 @@ class TypeaheadService
     self.nodes(input, limit, order)
       .where("node.type": "map")
   end
-  
+
   def questions(input, limit = 5, order = :default)
     self.nodes(input, limit, order)
       .where('node.type': 'note')

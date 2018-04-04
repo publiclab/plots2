@@ -26,12 +26,12 @@ class Node < ActiveRecord::Base
   self.primary_key = 'nid'
 
   def self.search(query, order = :default)
-    orderParam = {changed: :desc} if order == :default
+    orderParam = {changed: :desc} if order == :recency
     orderParam = {cached_likes: :desc} if order == :likes
     orderParam = {views: :desc} if order == :views
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      if order == :natural
+      if order == :default
         nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
           .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
           .collect(&:nid)

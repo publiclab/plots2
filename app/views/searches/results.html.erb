@@ -2,10 +2,10 @@
 
   <h3 style="display:inline;">Search results for <i style="color:#aaa;"><%= params[:id] %></i></h3>
   <p style="display:inline;">&emsp;
-    <a href="/search/<%= params[:id] %>?order=natural">best match</a> |
+    <a href="/search/<%= params[:id] %>">best match</a> |
     <a href="/search/<%= params[:id] %>?order=likes">likes</a> |
     <a href="/search/<%= params[:id] %>?order=views">views</a> |
-    <a href="/search/<%= params[:id] %>">date created</a>
+    <a href="/search/<%= params[:id] %>?order=recency">date created</a>
   </p>
   <% if @nodes.length == 0 %>
 
