@@ -4,6 +4,7 @@
 # def nearby
 
 require 'test_helper'
+require 'sanitize'
 
 class HomeControllerTest < ActionController::TestCase
   def setup
@@ -15,7 +16,7 @@ class HomeControllerTest < ActionController::TestCase
 
     get :home
     assert_response :success
-    assert_select "title", "🎈 Public Lab: #{title}"
+    assert_select "title", Sanitize.clean('&#127880;') + (" Public Lab: #{title}")
   end
 
   test 'home should redirect to dashboard if logged in' do

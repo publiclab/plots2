@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'sanitize'
 include ActionView::Helpers::TextHelper
 include ApplicationHelper
 #require "authlogic/test_case"
@@ -397,7 +398,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template :index
-    assert_select 'title', "🎈 Public Lab: Popular wiki pages"
+    assert_select "title", Sanitize.clean('&#127880;') + (" Public Lab: Popular wiki pages")
   end
 
   test  'should display well liked wiki pages' do
@@ -405,7 +406,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template :index
-    assert_select 'title', "🎈 Public Lab: Well-liked wiki pages"
+    assert_select "title", Sanitize.clean('&#127880;') + (" Public Lab: Well-liked wiki pages")
   end
 
   test 'should choose I18n for wiki controller' do

@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'sanitize'
 
 class I18nTest < ActionDispatch::IntegrationTest
 
@@ -150,7 +151,8 @@ class I18nTest < ActionDispatch::IntegrationTest
       }
       follow_redirect!
       get '/dashboard'
-      assert_select 'a', I18n.t('dashboard._wiki.more') + ' &raquo;'
+      puts 'hello'
+      puts assert_select 'a', I18n.t('dashboard._wiki.more') + Sanitize.clean(' &raquo;')
     end
   end
 
