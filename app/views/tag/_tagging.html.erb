@@ -16,7 +16,23 @@ $(function () {
   $('#tags [data-toggle="tooltip"]').tooltip()
 })
 
-$("[data-toggle=popover]").popover();
+var pops = $("[data-toggle=popover]");
+$(".label").on("click", function(e){
+    if(e.target === this){
+      let that = this;
+      if(this.dataset.count == 0){
+        setTimeout(function(){
+          $(that).popover("show");
+        }, 0);
+        this.dataset.count = 1;
+      } else {
+        setTimeout(function(){
+          $(that).popover("hide");
+        }, 0);
+        this.dataset.count = 0;
+      }
+    }
+  });
 </script>
 
 <% parent ||= nil %>
