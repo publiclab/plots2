@@ -151,8 +151,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       }
       follow_redirect!
       get '/dashboard'
-      puts 'hello'
-      puts assert_select 'a', I18n.t('dashboard._wiki.more') + Sanitize.clean(' &raquo;')
+      assert_select 'a', I18n.t('dashboard._wiki.more') + Sanitize.clean(' &raquo;')
     end
   end
 
@@ -342,7 +341,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a', "#{I18n.t('sidebar._related.write_research_note')} &raquo;"
+      assert_select 'a', "#{I18n.t('sidebar._related.write_research_note')} " + Sanitize.clean('&raquo;')
     end
   end
 

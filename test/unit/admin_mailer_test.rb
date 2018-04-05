@@ -10,7 +10,7 @@ class AdminMailerTest < ActionMailer::TestCase
 
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       # send the email
-      AdminMailer.notify_node_moderators(node)
+      AdminMailer.notify_node_moderators(node).deliver_now
     end
 
     # test that it got queued
@@ -32,7 +32,7 @@ class AdminMailerTest < ActionMailer::TestCase
 
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       # send the email
-      AdminMailer.notify_author_of_approval(node, moderator)
+      AdminMailer.notify_author_of_approval(node, moderator).deliver_now
     end
 
     # test that it got queued
@@ -54,7 +54,7 @@ class AdminMailerTest < ActionMailer::TestCase
 
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       # send the email
-      AdminMailer.notify_moderators_of_approval(node, moderator)
+      AdminMailer.notify_moderators_of_approval(node, moderator).deliver_now
     end
 
     # test that it got queued
@@ -80,7 +80,7 @@ class AdminMailerTest < ActionMailer::TestCase
 
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       # send the email
-      AdminMailer.notify_moderators_of_spam(node, moderator)
+      AdminMailer.notify_moderators_of_spam(node, moderator).deliver_now
     end
 
     # test that it got queued

@@ -35,7 +35,7 @@ class CommentMailerTest < ActionMailer::TestCase
     user = users(:bob)
     comment = comments(:question_callout)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      CommentMailer.notify_callout(comment, user)
+      CommentMailer.notify_callout(comment, user).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
@@ -50,7 +50,7 @@ class CommentMailerTest < ActionMailer::TestCase
     user = users(:bob)
     comment = comments(:question_tag)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      CommentMailer.notify_tag_followers(comment, user)
+      CommentMailer.notify_tag_followers(comment, user).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
@@ -75,13 +75,15 @@ class CommentMailerTest < ActionMailer::TestCase
     assert_equal "New comment on your answer on '" + comment.parent.title + "'", email.subject
     assert email.body.include?("Hi! There's been a new comment to your answer on '<a href='https://#{request_host}#{comment.parent.path(:question)}#a#{comment.answer.id}'>#{comment.parent.title}</a>'")
   end
+
  
   test 'notify barnstar' do
     user = users(:bob)
     note = nodes(:one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      CommentMailer.notify_barnstar(user, note)
+      CommentMailer.notify_barnstar(user, note).deliver_now
     end
+
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
@@ -95,7 +97,7 @@ class CommentMailerTest < ActionMailer::TestCase
     user = users(:bob)
     note = nodes(:one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      CommentMailer.notify_coauthor(user, note)
+      CommentMailer.notify_coauthor(user, note).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 

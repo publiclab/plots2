@@ -109,7 +109,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_template 'editor/wikiRich'
     selector = css_select '.alert'
-    assert_equal selector.size, 2
+    assert_equal selector.size, 1
   end
 
   test 'viewing edit wiki page' do
