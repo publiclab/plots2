@@ -106,5 +106,6 @@ module Plots2
 
     # Allow mass assignments
     config.active_record.whitelist_attributes = false
+    config.active_record.raise_in_transactional_callbacks = true
   end
 end

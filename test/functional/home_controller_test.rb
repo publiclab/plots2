@@ -94,7 +94,8 @@ class HomeControllerTest < ActionController::TestCase
       UserSession.create(users(:bob))
       session[:openid_return_to] = '/home'
       get :dashboard
-      assert_select 'a[href=/openid/resume]', I18n.t('layout._alerts.approve_or_deny') + ' &raquo;'
+      assert_select 'a[href=?]', "/openid/resume", I18n.t('layout._alerts.approve_or_deny') + ' &raquo;'
+      assert true
     end
   end
 
