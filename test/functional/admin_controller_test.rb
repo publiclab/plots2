@@ -15,6 +15,7 @@ require 'test_helper'
 include ActionView::Helpers::DateHelper # required for time_ago_in_words()
 
 class AdminControllerTest < ActionController::TestCase
+  include ActionMailer::TestHelper
   def setup
     activate_authlogic
     Timecop.freeze # account for timestamp change
@@ -84,7 +85,13 @@ class AdminControllerTest < ActionController::TestCase
   test 'admin should be able to force reset user password' do
     UserSession.create(users(:admin))
     user = users(:bob)
-    get :reset_user_password, id: user.id 
+    get :reset_user_password, id: user.id, email: user.email 
+
+	#Testing whether email has been sent or not
+ 	email = ActionMailer::Base.deliveries.last
+ 	assert_equal '[Public Lab] Reset your password', email.subject
+ 	assert_equal [user.email], email.to
+
     assert_equal "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with.", flash[:notice] 
     assert_redirected_to '/profile/' + user.name
   end
@@ -171,7 +178,11 @@ class AdminControllerTest < ActionController::TestCase
     node = nodes(:spam).publish
 
     get :mark_spam, id: node.id
-
+    user = users(:moderator)
+    email = AdminMailer.notify_moderators_of_spam(node, user)
+    assert_emails 1 do
+        email.deliver_now
+    end
     assert_equal "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
     node = assigns(:node)
     assert_equal 0, node.status
@@ -386,9 +397,15 @@ class AdminControllerTest < ActionController::TestCase
   test 'first timer question should redirect to question path when approved by admin' do
     UserSession.create(users(:admin))
     node = nodes(:first_timer_question)
+    user = users(:moderator)
     assert_equal 4, node.status
 
     get :publish, id: nodes(:first_timer_question).id
+    assert_emails 3 do
+        AdminMailer.notify_author_of_approval(node, user).deliver_now
+        AdminMailer.notify_moderators_of_approval(node, user).deliver_now
+        SubscriptionMailer.notify_node_creation(node).deliver_now
+    end
 
     assert_equal "Question approved and published after #{time_ago_in_words(node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments.", flash[:notice]
     node = assigns(:node)

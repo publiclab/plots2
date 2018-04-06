@@ -121,21 +121,21 @@ class Comment < ActiveRecord::Base
   def notify_callout_users
     # notify mentioned users
     mentioned_users.each do |user|
-      CommentMailer.notify_callout(self, user) if user.username != author.username
+      CommentMailer.notify_callout(self, user).deliver_now if user.username != author.username
     end
   end
 
   def notify_tag_followers(already_mailed_uids = [])
     # notify users who follow the tags mentioned in the comment
     followers_of_mentioned_tags.each do |user|
-      CommentMailer.notify_tag_followers(self, user) unless already_mailed_uids.include?(user.uid)
+      CommentMailer.notify_tag_followers(self, user).deliver_now unless already_mailed_uids.include?(user.uid)
     end
   end
 
   def notify_users(uids, current_user)
     DrupalUser.where('uid IN (?)', uids).each do |user|
       if user.uid != current_user.uid
-        CommentMailer.notify(user.user, self).deliver
+        CommentMailer.notify(user.user, self).deliver_now
       end
     end
   end
@@ -144,7 +144,7 @@ class Comment < ActiveRecord::Base
   # plus all who've starred it
   def notify(current_user)
     if parent.uid != current_user.uid
-      CommentMailer.notify_note_author(parent.author, self).deliver
+      CommentMailer.notify_note_author(parent.author, self).deliver_now
     end
 
     notify_callout_users
@@ -160,7 +160,7 @@ class Comment < ActiveRecord::Base
   def answer_comment_notify(current_user)
     # notify answer author
     if answer.uid != current_user.uid
-      CommentMailer.notify_answer_author(answer.author, self).deliver
+      CommentMailer.notify_answer_author(answer.author, self).deliver_now
     end
 
     notify_callout_users

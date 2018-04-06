@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class NotesControllerTest < ActionController::TestCase
+   include ActionMailer::TestHelper
   def setup
     Timecop.freeze # account for timestamp change
     activate_authlogic
@@ -235,7 +236,8 @@ class NotesControllerTest < ActionController::TestCase
 
     get :index
 
-    assert_select ".note-nid-#{node.id}", false
+    selector = css_select ".note-nid-#{node.id}"
+    assert_equal selector.size, 0
   end
 
   test 'first-timer moderated note (status=4) hidden to normal users in full view' do
@@ -272,8 +274,9 @@ class NotesControllerTest < ActionController::TestCase
     get :index
 
     assert_response :success
-    assert_select 'div.note'
-    assert_select "div.note-nid-#{node.nid} p.moderated", 'Pending approval by community moderators. Please be patient!'
+    selector = css_select 'div.note'
+    assert_equal selector.size, 15
+    assert_select "div p", 'Pending approval by community moderators. Please be patient!'
   end
 
   test 'first-timer moderated note (status=4) shown to moderator with notice and approval prompt in full view' do
@@ -298,8 +301,9 @@ class NotesControllerTest < ActionController::TestCase
     get :index
 
     assert_response :success
-    assert_select 'div.note'
-    assert_select "div.note-nid-#{node.nid} p.moderated", "Moderate first-time post: \n              Approve\n              Spam"
+    selector = css_select 'div.note'
+    assert_equal selector.size, 15
+    assert_select "p", "Moderate first-time post: \n              Approve\n              Spam"
   end
 
   test 'post_note_error_no_title' do
@@ -310,7 +314,8 @@ class NotesControllerTest < ActionController::TestCase
          tags: 'balloon-mapping,event'
 
     assert_template 'editor/post'
-    assert_select '.alert'
+    selector = css_select '.alert'
+    assert_equal selector.size, 2
   end
 
   test 'posting note successfully with no errors using xhr (rich editor)' do
@@ -383,7 +388,7 @@ class NotesControllerTest < ActionController::TestCase
 
     get :show, id: node[4], author: node[2], date: node[3]
 
-    assert_tag tag: 'iframe', attributes: { src: 'http://mapknitter.org/embed/sattelite-imagery' }
+    assert_select 'iframe[src=?]', 'http://mapknitter.org/embed/sattelite-imagery'
   end
 
   # test "should mark admins and moderators with a special icon" do
@@ -405,7 +410,8 @@ class NotesControllerTest < ActionController::TestCase
         author: node.author.username,
         date: node.created_at.strftime('%m-%d-%Y'),
         id: node.title.parameterize
-    assert_select '.fa-fire', 4
+    selector = css_select '.fa-fire'
+    assert_equal selector.size, 4
   end
 
   test 'should redirect to questions show page after creating a new question' do
@@ -416,7 +422,11 @@ class NotesControllerTest < ActionController::TestCase
          body: 'Spectrometer question',
          tags: 'question:spectrometer',
          redirect: 'question'
-
+    node = nodes(:blog)
+    email = AdminMailer.notify_node_moderators(node)
+    assert_emails 1 do
+        email.deliver_now
+    end
     assert_redirected_to '/questions/' + users(:bob).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     assert_equal "Success! Thank you for contributing with a question, and thanks for your patience while your question is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published.", flash[:notice]
   end
@@ -461,7 +471,8 @@ class NotesControllerTest < ActionController::TestCase
     post :edit,
          id: note.nid
     assert_response :success
-    assert_select 'input.form-control.input-lg[value=?]', note.tagnames.join(',')
+    selector = css_select "input.form-control.input-lg[value='#{note.tagnames.join(',')}']"
+    assert_equal selector.size, 1
   end
 
   test 'should display /post template when editing a question' do
@@ -471,7 +482,8 @@ class NotesControllerTest < ActionController::TestCase
     post :edit,
          id: note.nid
     assert_response :success
-    assert_select 'input.form-control.input-lg[value=?]', note.tagnames.join(',')
+    selector = css_select "input.form-control.input-lg[value='#{note.tagnames.join(',')}']"
+    assert_equal selector.size, 1
   end
 
   test 'should redirect to questions show page when editing an existing question' do

@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 
+gem 'rails', '~> 4.2.10'
 ruby '2.3.7'
 
-gem 'rails', '~> 4.1.16'
 gem 'activerecord-session_store'
 gem 'protected_attributes'
 gem 'passenger'
 
 gem 'rails-i18n', '~> 4.0.0'
-# gem 'responders', '~> 2.0' # for Rails 4.2
+gem 'responders', '~> 2.0' # for Rails 4.2
 
 gem 'turbolinks'
 
@@ -38,6 +38,7 @@ gem 'uglifier', '>= 1.0.3'
 
 # run with `bundle install --without development` to exclude these
 group :development do
+  gem 'web-console', '~> 2.0'
   gem "letter_opener"
   gem "nifty-generators"
   gem 'byebug'
@@ -114,8 +115,13 @@ gem 'jbuilder'
 # Pin mustermann to Ruby 2.1 compatible
 gem 'mustermann' , '~> 0.4'
 
+#Gem for assertions used in testing
+gem 'rails-dom-testing'
 #OAuth Based login
 gem 'omniauth', '~> 1.3', '>= 1.3.1'
 gem 'omniauth-facebook', '~> 3.0'
+#Gem for making tableless models 
+gem 'activerecord-tableless'
 gem 'omniauth-google-oauth2'
 gem 'figaro'
+gem 'sanitize'

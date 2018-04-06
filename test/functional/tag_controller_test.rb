@@ -188,7 +188,8 @@ class TagControllerTest < ActionController::TestCase
   test 'wildcard tag should have a active asked and an inactive answered tab for question' do
     get :show, id: 'question:*'
 
-    assert_select '#asked-tab.active', 1
+    selector = css_select '#asked-tab.active'
+    assert_equal selector.size, 1 
     assert_select '#answered-tab', 1    
   end
 
@@ -298,7 +299,8 @@ class TagControllerTest < ActionController::TestCase
     assert_not_nil :notes
     assert_not_nil :users
     assert_not_nil :tag
-    assert_select ".users-row", assigns(:users).length
+    selector = css_select ".users-row"
+    assert_equal selector.size, assigns(:users).length
   end
 
   test 'adds comment when awarding a barnstar' do
@@ -372,25 +374,20 @@ class TagControllerTest < ActionController::TestCase
 
     get :show, id: tag.name
 
-    assert_select 'ul.nav-tabs' do
-      assert_select 'li.active' do
-        assert_select "a[href = '/tag/test']", 1
-      end
-    end
-    assert_select '#notes.active', 1
+    selector = css_select "ul>li>a[href = '/tag/test']"
+    assert_equal selector.size, 1
+    selector = css_select '#notes.active'
+    assert_equal selector.size, 1
   end
 
   test 'should have active question tab for question' do
     tag = tags(:question)
 
     get :show, id: tag.name
-
-    assert_select 'ul.nav-tabs' do
-      assert_select 'li.active' do
-        assert_select "a[href = '/questions/tag/question:spectrometer']", 1
-      end
-    end
-    assert_select '#questions.active', 1
+    selector = css_select "ul>li>a[href = '/questions/tag/question:spectrometer']"
+    assert_equal selector.size, 1
+    selector = css_select '#questions.active'
+    assert_equal selector.size, 1
   end
 
   test 'can create tag instance (community_tag) using a parent tag' do
@@ -495,12 +492,10 @@ class TagControllerTest < ActionController::TestCase
   test 'should have active question tab for question for show_for_author' do
     tag = tags(:question)
     get :show_for_author, id: tag.name, author: 'jeff'
-    assert_select 'ul.nav-tabs' do
-      assert_select 'li.active' do
-        assert_select "a[href = '/questions/tag/question:spectrometer/author/jeff']", 1
-      end
-    end
-    assert_select '#questions.active', 1
+    selector = css_select "ul>li>a[href = '/questions/tag/question:spectrometer/author/jeff']"
+    assert_equal selector.size, 1
+    selector = css_select '#questions.active' 
+    assert_equal selector.size, 1
   end
 
   test 'should have a active asked and an inactive answered tab for question' do
@@ -508,7 +503,8 @@ class TagControllerTest < ActionController::TestCase
 
     get :show_for_author, id: tag.name, author: 'jeff'
 
-    assert_select '#asked-tab.active', 1
+    selector = css_select '#asked-tab.active'
+    assert_equal selector.size, 1
     assert_select '#answered-tab', 1    
   end
 

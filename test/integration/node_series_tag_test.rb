@@ -28,6 +28,6 @@ class NodeSeriesTagTest < ActionDispatch::IntegrationTest
     # visiting note with original path
     get '/notes/' + users(:bob).username + '/' +
         Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
-    assert_select '.alert', 'This is part of a series on  balloons.'
+    assert_select 'div', 'This is part of a series on  balloons.'
   end
 end

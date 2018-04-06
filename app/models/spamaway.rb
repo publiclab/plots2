@@ -1,8 +1,8 @@
-class Spamaway < Tableless
+class Spamaway < ActiveRecord::Base
   # This helper will generate pairs of human/robot statements and return
   # them alongside random strings.
   # There is no actual data in the database.
-
+  has_no_table
   column :follow_instructions, :string
   column :statement1, :string
   column :statement2, :string
