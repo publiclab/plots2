@@ -57,3 +57,55 @@ And several tag-based JSON/XML listings are generated directly from controllers,
 
 https://github.com/publiclab/plots2/blob/master/app/controllers/tag_controller.rb#L97-L108
 
+## POST Comment with token via API
+<details>
+  <summary>1) Documentation and Example (click to expand) </summary>
+  Allows a logged user or bot to post comments via API with a token.
+
+  Successful responses include a JSON-structure describing the comment.
+
+* **URL**
+
+  `/comment/create/token/id.:format`
+
+* **Method:**
+
+  `POST`
+
+*  **URL Params**
+
+   **Required:**
+
+   `id=[integer]`
+   `username=[string]`
+
+* **Data Params**
+
+  `body=[json]`
+  `headers=[token]`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{ id : 12, username : "janedoe", body : "This is a comment" }`
+
+* **Error Response:**
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ error : "Bad Request" }`
+
+* **Sample Call:**
+
+  ```POST https://publiclab.org/comment/create/token/id.:format
+  Content-Type: application/json
+  Body:
+  {
+    "id": 1,
+    "body": "This is a comment made with a token",
+    "username": "stefannibrasil"
+  },
+  Headers: {
+    token: ""
+  }
+  ```
+</details>
