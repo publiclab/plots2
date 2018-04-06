@@ -14,7 +14,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       }
       follow_redirect!
       get_via_redirect '/dashboard', locale: lang
-      assert_select 'a[href=/dashboard]'
+      assert_select 'a[href=?]', '/dashboard'
     end
   end
 
@@ -100,7 +100,7 @@ class I18nTest < ActionDispatch::IntegrationTest
            tags: 'Some-tag',
            status: 4
       get '/dashboard'
-      assert_select 'a[class=btn btn-default btn-xs]', I18n.t('dashboard._node_moderate.approve')
+      assert_select 'a[class=?]', 'btn btn-default btn-xs', I18n.t('dashboard._node_moderate.approve')
     end
   end
 
@@ -118,7 +118,7 @@ class I18nTest < ActionDispatch::IntegrationTest
            tags: 'question',
            status: 1
       get '/dashboard'
-      assert_select 'a[class=btn btn-default btn-xs pull-right respond answer]', I18n.t('dashboard._node_question.post_answer')
+      assert_select 'a[class=?]', 'btn btn-default btn-xs pull-right respond answer', I18n.t('dashboard._node_question.post_answer')
     end
   end
 
@@ -470,7 +470,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       get nodes(:first_timer_note).path
       assert_template 'notes/show'
-      assert_select 'div[class=alert alert-warning]', ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.show.note_no_tags'))
+      assert_select 'div[class=?]', 'alert alert-warning', ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.show.note_no_tags'))
     end
   end
 
