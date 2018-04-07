@@ -178,4 +178,23 @@ class CommentController < ApplicationController
     end
   end
 
+  def like_comment
+    @comment_id = params["comment_id"].to_i
+    @user_id = params["user_id"].to_i
+    comment = Comment.where(cid: @comment_id).first
+    like = comment.likes.where(user_id: @user_id)
+    @is_liked = like.count>0
+    if like.count>0
+      like.first.destroy
+    else
+      comment.likes.create(user_id: @user_id)
+    end
+
+    respond_with do |format|
+      format.js {
+       render template: 'comment/like_comment'
+      }
+    end
+  end
+
 end

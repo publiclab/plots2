@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  likeable_id: 1
+  likeable_type: MyString
+
+two:
+  likeable_id: 1
+  likeable_type: MyString

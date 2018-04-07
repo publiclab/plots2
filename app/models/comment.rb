@@ -9,6 +9,7 @@ class Comment < ActiveRecord::Base
                     # dependent: :destroy, counter_cache: true
   belongs_to :drupal_user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
+  has_many :likes, :as => :likeable
 
   validates :comment, presence: true
 
@@ -192,6 +193,14 @@ class Comment < ActiveRecord::Base
     self.status = 1
     save
     self
+  end
+
+  def liked_by(user_id)
+    self.likes.where(user_id: user_id).count > 0
+  end
+
+  def likers
+    User.where(id: self.likes.pluck(:user_id))
   end
 
 end
