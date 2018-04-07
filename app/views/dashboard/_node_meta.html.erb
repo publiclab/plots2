@@ -1,7 +1,7 @@
 <% unless node.is_a?(Comment) || node.is_a?(Revision) || node.type == 'page' %>
-  <%= t('dashboard.dashboard.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> 
+  <%= t('dashboard.dashboard.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>
   <% if node.has_power_tag('with') %>
-    with 
+    with
     <% node.coauthors.each_with_index do |coauthor,i| %>
       <a href="/profile/<%= coauthor.username %>">
         <%= coauthor.username%></a>
@@ -19,4 +19,7 @@
     <span class="hidden-xs hidden-sm">| <i class="fa fa-eye"></i> <%= number_with_delimiter(node.totalviews) %></span>
     | <i style="<% if node.likes > 0 %>color:#db4;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
   <% if params[:mod] %>| <a href="#"><i class="fa fa-ban"></i></a><% end %>
+  <a rel="tooltip" title="Flag as spam." class="btn btn-sm btn-default" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+"<%= node.title.gsub(/ /,'+') %>"%0A%0Ahttps://publiclab.org/n/<%= node.id %>%0Aby+https://publiclab.org/profile/<%= node.author.username %>%0A%0AThanks!">
+    <i class="far fa-flag"></i>
+  </a>
 </span>
