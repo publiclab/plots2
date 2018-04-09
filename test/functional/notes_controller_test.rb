@@ -42,6 +42,19 @@ class NotesControllerTest < ActionController::TestCase
     assert_select '#other-activities', false
   end
 
+  test 'comment markdown and autolinking works' do
+    note = Node.where(type: 'note', status: 1).first
+    assert node.comments.length > 0
+    comment = node.comments.last
+    comment.body = 'Test **markdown** and http://links.com'
+
+    get :show, id: note.id
+
+    assert_select '#comments b', markdown
+    assert_select '#comments .comment .body a', 'http://links.com'
+    assert_response :success
+  end
+
   test 'notes record views with unique ips' do
     note = nodes(:blog)
     # clear impressions so we get a unique view
