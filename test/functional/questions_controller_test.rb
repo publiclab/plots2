@@ -29,12 +29,12 @@ class QuestionsControllerTest < ActionController::TestCase
   end
 
   test 'question comment markdown and autolinking works' do
-    note = nodes(:question)
+    node = nodes(:question)
     assert node.comments.length > 0
     comment = node.comments.last
     comment.body = 'Test **markdown** and http://links.com'
 
-    get :show, id: note.id
+    get :show, id: node.id
 
     assert_select '#comments .comment .body b', 'markdown'
     assert_select '#comments .comment .body a', 'http://links.com'
