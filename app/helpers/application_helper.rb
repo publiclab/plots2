@@ -65,7 +65,7 @@ module ApplicationHelper
   def render_comment_body(comment)
     raw RDiscount.new(
       title_suggestion(comment)#,
-#      :autolink
+      :autolink
     ).to_html
   end
   
