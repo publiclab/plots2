@@ -64,7 +64,7 @@ module ApplicationHelper
   # returns the comment body which is to be shown in the comments section
   def render_comment_body(comment)
     raw RDiscount.new(
-      title_suggestion(comment)#,
+      title_suggestion(comment),
       :autolink
     ).to_html
   end
