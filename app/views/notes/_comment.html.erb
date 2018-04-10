@@ -64,7 +64,7 @@
   </script>
   
   <div id="c<%= comment.cid %>show">
-    <p class="comment-body"><%= raw render_comment_body(comment) %></p>
+    <p class="comment-body" id="comment-body-<%= comment.cid %>"><%= raw render_comment_body(comment) %></p>
     <% if comment.body.include?('?') %>
       <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
       </p>
