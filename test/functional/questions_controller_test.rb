@@ -36,8 +36,8 @@ class QuestionsControllerTest < ActionController::TestCase
 
     get :show, id: node.id
 
-    assert_select '.question-comment-body strong'
-    assert_select '.question-comment-body a'
+    assert_select 'strong', 'markdown'
+    assert_select 'a', 'http://links.com'
     assert_response :success
   end
 
@@ -45,12 +45,12 @@ class QuestionsControllerTest < ActionController::TestCase
     node = nodes(:question)
     assert node.answers.first.comments.length > 0
     comment = node.answers.first.comments.last
-    comment.comment = 'Test **markdown** and http://links.com'
+    comment.comment = 'Test **markdown2** and http://links2.com'
 
     get :show, id: node.id
 
-    assert_select '.question-comment-body strong'
-    assert_select '.question-comment-body a'
+    assert_select 'strong', 'markdown2'
+    assert_select 'a', 'http://links2.com'
     assert_response :success
   end
 

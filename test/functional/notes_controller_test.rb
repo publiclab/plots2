@@ -50,8 +50,8 @@ class NotesControllerTest < ActionController::TestCase
 
     get :show, id: node.id
 
-    assert_select '.comment-body strong'
-    assert_select '.comment-body a'
+    assert_select 'strong', 'markdown'
+    assert_select 'a', 'http://links.com'
     assert_response :success
   end
 
