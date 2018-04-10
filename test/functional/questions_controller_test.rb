@@ -32,7 +32,7 @@ class QuestionsControllerTest < ActionController::TestCase
     node = nodes(:question)
     assert node.comments.length > 0
     comment = node.comments.last
-    comment.body = 'Test **markdown** and http://links.com'
+    comment.comment = 'Test **markdown** and http://links.com'
 
     get :show, id: node.id
 
@@ -45,7 +45,7 @@ class QuestionsControllerTest < ActionController::TestCase
     node = nodes(:question)
     assert node.answers.first.comments.length > 0
     comment = node.answers.first.comments.last
-    comment.body = 'Test **markdown** and http://links.com'
+    comment.comment = 'Test **markdown** and http://links.com'
 
     get :show, id: node.id
 
