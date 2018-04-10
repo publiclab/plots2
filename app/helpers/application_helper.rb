@@ -55,8 +55,8 @@ module ApplicationHelper
     body
   end
 
-  def render_map(lat, lon, items)
-    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, items: items }
+  def render_map(lat, lon)
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon }
   end
 
   # returns the comment body which is to be shown in the comments section
