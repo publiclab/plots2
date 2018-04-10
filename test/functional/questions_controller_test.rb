@@ -22,11 +22,38 @@ class QuestionsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'show note by id' do
+  test 'show question by id' do
     note = nodes(:question)
     get :show, id: note.id
     assert_response :success
   end
+
+  test 'question comment markdown and autolinking works' do
+    note = nodes(:question)
+    assert node.comments.length > 0
+    comment = node.comments.last
+    comment.body = 'Test **markdown** and http://links.com'
+
+    get :show, id: note.id
+
+    assert_select '#comments .comment .body b', 'markdown'
+    assert_select '#comments .comment .body a', 'http://links.com'
+    assert_response :success
+  end
+
+  test 'answer comment markdown and autolinking works' do
+    note = nodes(:question)
+    assert node.answers.first.comments.length > 0
+    comment = node.answers.first.comments.last
+    comment.body = 'Test **markdown** and http://links.com'
+
+    get :show, id: note.id
+
+    assert_select '#comments .comment .body b', 'markdown'
+    assert_select '#comments .answer-comment .body a', 'http://links.com'
+    assert_response :success
+  end
+
 
   test 'should redirect notes other than question to note path' do
     note = nodes(:one)

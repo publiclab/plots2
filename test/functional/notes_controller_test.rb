@@ -50,7 +50,7 @@ class NotesControllerTest < ActionController::TestCase
 
     get :show, id: note.id
 
-    assert_select '#comments b', markdown
+    assert_select '#comments .comment .body b', 'markdown'
     assert_select '#comments .comment .body a', 'http://links.com'
     assert_response :success
   end
