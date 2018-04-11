@@ -30,21 +30,18 @@ class QuestionsControllerTest < ActionController::TestCase
 
   test 'question comment markdown and autolinking works' do
     node = nodes(:question)
-    assert node.comments.length > 0
+    assert node.comments.length.positive?
 
     get :show, author: node.author.name, date: Time.at(node.created).strftime('%m-%d-%Y'), id: node.title.parameterize
 
-    assert_select 'div#comment-content' do
-      assert_select 'p',"Test markdown and http://links.com"
-    end
-
+    assert_select 'p',"Test markdown and http://links.com"
     assert_select 'strong', 'markdown'
     assert_select  "a", "http://links.com"
     
     assert_response :success
   end
 
-  # How about we make a separte fixture for this and avoid using the same :question key??
+  # How about we make a separate fixture for this and avoid using the same :question key??
 
   # test 'answer comment markdown and autolinking works' do
   #   node = nodes(:question)
