@@ -30,31 +30,31 @@ class QuestionsControllerTest < ActionController::TestCase
 
   test 'question comment markdown and autolinking works' do
     node = nodes(:question)
-    assert node.comments.length.positive?
+    assert node.comments.length > 0
+    comment = node.comments.last
+    comment.comment = 'Test **markdown** and http://links.com'
+    comment.save!
 
-    get :show, author: node.author.name, date: Time.at(node.created).strftime('%m-%d-%Y'), id: node.title.parameterize
+    get :show, id: node.id
 
-    assert_select 'p',"Test markdown and http://links.com"
     assert_select 'strong', 'markdown'
-    assert_select  "a", "http://links.com"
-    
+    assert_select 'a', 'http://links.com'
     assert_response :success
   end
 
-  # How about we make a separate fixture for this and avoid using the same :question key??
+  test 'answer comment markdown and autolinking works' do
+    node = nodes(:question)
+    assert node.answers.first.comments.length > 0
+    comment = node.answers.first.comments.last
+    comment.comment = 'Test **markdown2** and http://links2.com'
+    comment.save!
 
-  # test 'answer comment markdown and autolinking works' do
-  #   node = nodes(:question)
-  #   assert node.answers.first.comments.length > 0
-  #   comment = node.answers.first.comments.last
-  #   comment.comment = 'Test **markdown2** and http://links2.com'
+    get :show, id: node.id
 
-  #   get :show, id: node.id
-
-  #   assert_select 'strong', 'markdown2'
-  #   assert_select 'a', 'http://links2.com'
-  #   assert_response :success
-  # end
+    assert_select 'strong', 'markdown2'
+    assert_select 'a', 'http://links2.com'
+    assert_response :success
+  end
 
 
   test 'should redirect notes other than question to note path' do
