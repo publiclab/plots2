@@ -69,7 +69,7 @@ question:
   nid: 8
   aid: 0
   status: 1
-  comment: Question comment
+  comment: Test **markdown** and http://links.com
   timestamp: <%= Time.now.to_i + 9 %>
   thread: /01
 
