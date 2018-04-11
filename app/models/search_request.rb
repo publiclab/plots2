@@ -3,7 +3,7 @@ class SearchRequest
   # Minimum query length, or we return an empty result
   MIN_QUERY_LENGTH = 3
 
-  attr_accessor :srchString, :seq, :showCount, :pageNum
+  attr_accessor :srchString, :seq, :showCount, :pageNum, :tagName
 
   def initialize; end
 
@@ -13,6 +13,7 @@ class SearchRequest
     obj.seq = rparams[:seq]
     obj.showCount = rparams[:showCount]
     obj.pageNum = rparams[:pageNum]
+    obj.tagName = rparams[:tagName]
     obj
   end
 
@@ -32,5 +33,6 @@ class SearchRequest
     expose :seq, documentation: { type: 'Integer', desc: 'Sequence value passed from client through to the SearchResult.  For client sequencing usage' }
     expose :showCount, documentation: { type: 'Integer', desc: 'The requested number of records to show per page' }
     expose :pageNum, documentation: { type: 'Integer', desc: 'Which page (zero-based counting, as in Array indexes) to show paginated data.' }
+    expose :tagName, documentation: { type: 'String', desc: 'To search users having specified tagName.' }
   end
 end

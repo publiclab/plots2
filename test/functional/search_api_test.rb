@@ -169,4 +169,25 @@ class SearchApiTest < ActiveSupport::TestCase
 
   end
 
+  test 'search recent people functionality having specified tagName' do
+    get '/api/srch/peoplelocations?srchString=100&tagName=tag'
+    assert last_response.ok?
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+            srchString: '100',
+            tagName: 'tag',
+            seq: nil,
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+
+    assert matcher =~ json
+
+  end
+
 end
