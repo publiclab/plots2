@@ -50,7 +50,7 @@ class NotesControllerTest < ActionController::TestCase
 
     get :show, id: node.id
 
-    assert_select ".comment-body-#{comment.id}", '<p>Test <strong>markdown</strong> and <a href="http://links.com">http://links.com</a></p>
+    assert_select ".comment-body-#{comment.id}", '<p>Test <strong>markdown</strong> and <a href="http://links.com">http://links.com</a></p>'
 
     assert_response :success
   end
