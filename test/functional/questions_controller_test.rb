@@ -30,7 +30,7 @@ class QuestionsControllerTest < ActionController::TestCase
 
   test 'question comment markdown and autolinking works' do
     node = nodes(:question)
-    assert node.comments.length > 0
+    assert node.comments.length.positive?
     comment = node.comments.last
     comment.comment = 'Test **markdown** and http://links.com'
     comment.save!
@@ -44,7 +44,7 @@ class QuestionsControllerTest < ActionController::TestCase
 
   test 'answer comment markdown and autolinking works' do
     node = nodes(:question)
-    assert node.answers.first.comments.length > 0
+    assert node.answers.first.comments.length.positive?
     comment = node.answers.first.comments.last
     comment.comment = 'Test **markdown2** and http://links2.com'
     comment.save!
