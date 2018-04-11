@@ -47,10 +47,12 @@ class NotesControllerTest < ActionController::TestCase
     assert node.comments.length > 0
     comment = node.comments.last
     comment.comment = 'Test **markdown** and http://links.com'
+    comment.save!
 
     get :show, id: node.id
 
-    assert_select ".comment-body-#{comment.id}", '<p>Test <strong>markdown</strong> and <a href="http://links.com">http://links.com</a></p>'
+    assert_select 'strong', 'markdown'
+    assert_select 'a', 'http://links.com'
 
     assert_response :success
   end
