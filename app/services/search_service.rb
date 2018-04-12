@@ -233,7 +233,7 @@ class SearchService
 
 #GET X number of latest people/contributors 
 # X = srchString
-def recentPeople(srchString, tagName=nil)
+def recentPeople(srchString, tagName = nil)
     sresult = DocList.new  
     nodes = Node.all.order("changed DESC").limit(100).uniq
     users = []
