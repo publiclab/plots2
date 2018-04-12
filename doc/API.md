@@ -59,6 +59,11 @@ https://github.com/publiclab/plots2/blob/master/app/controllers/tag_controller.r
 
 ## Token based API for creating comment
 Allows a logged user or bot to post comments via API with a token.
+
+API method is found in the codebase in the following place:
+
+https://github.com/publiclab/plots2/blob/master/app/controllers/comment_controller.rb#L48-L73
+
 * **URL**:  `/comment/create/token/id.:format`
 * **Method:**   `POST`
 * **URL Params** :-
@@ -89,11 +94,11 @@ Allows a logged user or bot to post comments via API with a token.
 
 * **Sample Call:**
   ```
-  POST https://publiclab.org/comment/create/token/id.:format
-  
-  Headers:- 
+  POST https://publiclab.org/comment/create/token/id.json
+
+  Headers:-
   "HTTP_TOKEN": "7a969e3d-cfe1-4da5-9b4c-71a42c9eef88"
-  
+
   Body:
   {
     "username": "user",
