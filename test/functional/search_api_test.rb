@@ -170,14 +170,14 @@ class SearchApiTest < ActiveSupport::TestCase
   end
 
   test 'search recent people functionality having specified tagName' do
-    get '/api/srch/peoplelocations?srchString=100&tagName=tag'
+    get '/api/srch/peoplelocations?srchString=100&tagName=tool:barometer'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
             srchString: '100',
-            tagName: 'tag',
+            tagName: 'tool:barometer',
             seq: nil,
         }.ignore_extra_keys!
     }.ignore_extra_keys!
@@ -185,6 +185,10 @@ class SearchApiTest < ActiveSupport::TestCase
     matcher = JsonExpressions::Matcher.new(pattern)
 
     json = JSON.parse(last_response.body)
+
+    assert_equal users(:bob).username, json['items'][0]['docTitle']
+    assert_equal "people_coordinates",       json['items'][0]['docType']
+    assert_equal 1,                json['items'][0]['docId']
 
     assert matcher =~ json
 
