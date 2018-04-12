@@ -39,8 +39,7 @@ class TagControllerTest < ActionController::TestCase
         id: 'question:*'
 
     assert_template :contributors
-    assert_tag tag: 'p',
-               child: /No contributors for that tag/
+    assert_select 'p', text: "No contributors for that tag; try searching for 'question:*':"
   end
 
   test "won't add invalid tags" do
