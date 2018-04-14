@@ -578,7 +578,7 @@ class Node < ActiveRecord::Base
                     subject: '',
                     hostname: '',
                     comment: params[:body],
-                    status: 0,
+                    status: 1,
                     format: 1,
                     thread: thread,
                     timestamp: DateTime.now.to_i)
