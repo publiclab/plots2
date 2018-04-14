@@ -148,20 +148,20 @@ class UserTest < ActiveSupport::TestCase
 
   test 'user status changes when drupal user is banned or unbanned' do
     drupal_user = drupal_users(:bob)
-    assert_equal 1, drupal_user.user.status
+    assert drupal_user.user.active?
     drupal_user.ban
-    assert_equal 0, drupal_user.user.status
+    assert drupal_user.user.banned?
     drupal_user.unban
-    assert_equal 1, drupal_user.user.status
+    assert drupal_user.user.active?
   end
 
   test 'user status changes when drupal user is moderated or unmoderated' do
     drupal_user = drupal_users(:bob)
-    assert_equal 1, drupal_user.user.status
+    assert drupal_user.user.active?
     drupal_user.moderate
-    assert_equal 5, drupal_user.user.status
+    assert drupal_user.user.moderated?
     drupal_user.unmoderate
-    assert_equal 1, drupal_user.user.status
+    assert drupal_user.user.active?
   end
 
   test 'daily_note_tally returns the correct type of array' do
@@ -186,13 +186,21 @@ class UserTest < ActiveSupport::TestCase
     assert_not basic_user.can_moderate?
   end
 
-  test 'user statuses' do
+  test 'user status' do
     spammer = users(:spammer)
     assert spammer.banned?
 
-    spammer.mark_as! :moderated
+    spammer.unban
+    assert spammer.active?
+
+    spammer.moderate
     assert spammer.moderated?
-    assert_not spammer.banned?
+
+    spammer.unmoderate
+    assert spammer.active?
+
+    spammer.ban
+    assert spammer.banned?
   end
 
   test 'user email validation' do

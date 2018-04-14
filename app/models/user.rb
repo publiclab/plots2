@@ -41,6 +41,12 @@ class User < ActiveRecord::Base
   before_save :set_token
   after_destroy :destroy_drupal_user
 
+  # User status
+  # 0: banned
+  # 1: active
+  # 5: moderated
+  enum status: {banned: 0, active: 1, moderated: 5}
+
   def self.search(query)
     User.where('MATCH(username, bio) AGAINST(?)', query)
   end
@@ -159,20 +165,20 @@ class User < ActiveRecord::Base
     admin? || moderator?
   end
 
-  # User status
-  # 0: banned
-  # 5: moderated
-  def mark_as!(new_status)
-    self.status = 0 if new_status == :banned
-    self.status = 5 if new_status == :moderated
+  def ban
+    banned!
   end
 
-  def banned?
-    status == 0
+  def unban
+    active!
   end
 
-  def moderated?
-    status == 5
+  def moderate
+    moderated!
+  end
+
+  def unmoderate
+    active!
   end
 
   def tags(limit = 10)
