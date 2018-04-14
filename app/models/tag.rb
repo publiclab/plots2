@@ -183,34 +183,41 @@ class Tag < ActiveRecord::Base
   end
 
 def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)   
-	weeks = {}
-	week = span
-	count = 0;
-	while week >= 1
-	   #initialising month variable with the month of the starting day 
-	   #of the week
-	   month = (time - (week*7 - 1).days).strftime('%m')
-	   #loop for finding the maximum occurence of a month name in that week
-	   #For eg. If this week has 3 days falling in March and 4 days falling
-	   #in April, then we would give this week name as April and vice-versa
-	  for i in 1..7 do
-		  currMonth = (time - (week*7 - i).days).strftime('%m')
-		  if month != currMonth
-			  if i <= 4
-				  month = currMonth
-			  end
-		  end
-	  end
-	  #Now fetching the weekly data of notes or wikis
-	  month = month.to_i
-	  currWeek = Node.select(:created)
-					 .where(type: type,
-							status: 1,
-							created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-					  .count
-	  weeks[count] = [month, currWeek]
-	  count += 1
-	  week -= 1
+    weeks = {}
+    week = span
+    count = 0;
+    while week >= 1
+        #initialising month variable with the month of the starting day 
+        #of the week
+        month = (time - (week*7 - 1).days).strftime('%m')
+        #loop for finding the maximum occurence of a month name in that week
+        #For eg. If this week has 3 days falling in March and 4 days falling
+        #in April, then we would give this week name as April and vice-versa
+        for i in 1..7 do
+            currMonth = (time - (week*7 - i).days).strftime('%m')
+            if month != currMonth
+                if i <= 4
+                    month = currMonth
+                end
+            end
+        end
+        #Now fetching the weekly data of notes or wikis
+        month = month.to_i
+        tids = Tag.where('name IN (?)', [name])
+              .collect(&:tid)
+        nids = NodeTag.where('tid IN (?)', tids)
+                                 .collect(&:nid)
+        currWeek = Tag.nodes_for_period(
+          type, 
+          nids, 
+          (time.to_i - week.weeks.to_i).to_s,
+          (time.to_i - (week - 1).weeks.to_i).to_s
+        ).count(:all)
+        puts(currWeek);
+
+        weeks[count] = [month, currWeek]
+        count += 1
+        week -= 1
 	end
 	weeks
 end 

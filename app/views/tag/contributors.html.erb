@@ -6,6 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
     <script type="text/javascript">
         var notes = <%= Tag.contribution_graph_making.to_a.sort.to_json %>
+        console.log(notes);
         let months = ["J", "F", "M", "A", "M", "J", "J", "A","S", "O", "N", "D"];
         let i;
         let labels = new Array();
@@ -17,10 +18,10 @@
             if(notes[i][1][0] != prev){
                 if(count == 4){
                     let j;
-                    labels[i - 2] = months[prev];
+                    labels[i - 2] = months[prev - 1];
                 }
                 else{
-                    labels[i - 3] = months[prev];
+                    labels[i - 3] = months[prev - 1];
                 }
                 prev = notes[i][1][0];
                 count = 0;
