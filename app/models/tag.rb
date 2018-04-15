@@ -96,10 +96,9 @@ class Tag < ActiveRecord::Base
                   .references(:term_data)
                   .where('term_data.name IN (?)', tags.collect(&:parent))
     Node.where('node.nid IN (?)', (nodes + parents).collect(&:nid))
-        .includes(:revision, :tag)
-        .references(:node_revisions)
+        .includes(:tag)
         .where(status: 1)
-        .order('node_revisions.timestamp DESC')
+        .order('created DESC')
         .limit(limit)
   end
 
