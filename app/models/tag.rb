@@ -182,10 +182,16 @@ class Tag < ActiveRecord::Base
     weeks
   end
 
-def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)   
+def contribution_graph_making(type = 'note', span = 52, time = Time.now)   
     weeks = {}
     week = span
     count = 0;
+    tids = Tag.where('name IN (?)', [name])
+          .collect(&:tid)
+    nids = NodeTag.where('tid IN (?)', tids)
+                             .collect(&:nid)
+    puts("nid")
+    puts(nids)
     while week >= 1
         #initialising month variable with the month of the starting day 
         #of the week
@@ -203,10 +209,7 @@ def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)
         end
         #Now fetching the weekly data of notes or wikis
         month = month.to_i
-        tids = Tag.where('name IN (?)', [name])
-              .collect(&:tid)
-        nids = NodeTag.where('tid IN (?)', tids)
-                                 .collect(&:nid)
+
         currWeek = Tag.nodes_for_period(
           type, 
           nids, 
