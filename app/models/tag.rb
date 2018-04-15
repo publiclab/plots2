@@ -190,8 +190,6 @@ def contribution_graph_making(type = 'note', span = 52, time = Time.now)
           .collect(&:tid)
     nids = NodeTag.where('tid IN (?)', tids)
                              .collect(&:nid)
-    puts("nid")
-    puts(nids)
     while week >= 1
         #initialising month variable with the month of the starting day 
         #of the week
@@ -216,7 +214,6 @@ def contribution_graph_making(type = 'note', span = 52, time = Time.now)
           (time.to_i - week.weeks.to_i).to_s,
           (time.to_i - (week - 1).weeks.to_i).to_s
         ).count(:all)
-        puts(currWeek);
 
         weeks[count] = [month, currWeek]
         count += 1
