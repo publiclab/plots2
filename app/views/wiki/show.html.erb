@@ -21,7 +21,7 @@
 
 <div class="row">
 
-<% if @node.latest.created_at < Time.now - 6.months %>
+<% if !@node.has_tag('locked') && @node.latest.created_at < Time.now - 6.months %>
   <div class="alert alert-info" role="alert">This wiki page hasn't been edited for a while. If you see anything that needs updating, please help out!</div>
 <% end %>
 
