@@ -47,7 +47,7 @@ blog_post_tag = Tag.create! "name"=>"blog", "description"=>"", "weight"=>0
 blog_post_community_tag = NodeTag.create! "tid"=>blog_post_tag.id,
   "nid"=>blog_post.id, "uid"=>admin.id
 blog_post_comment = Comment.create! "nid"=>blog_post.id, "uid"=>admin.id,
-  "subject"=>"", "comment"=>"Example Comment\r\n", "hostname"=>"", "status"=>0,
+  "subject"=>"", "comment"=>"Example Comment\r\n", "hostname"=>"", "status"=>1,
   "format"=>1, "thread"=>"01/"
 
 # Create 35 maps for the /maps sections
