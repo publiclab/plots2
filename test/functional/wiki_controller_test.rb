@@ -565,7 +565,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil :nodes
-    # assert_select ".questions-count-#{nodes(:method).id}", '1 questions'
+    assert_select ".questions-count-#{nodes(:method).id}", '1 questions'
   end
 
   test 'should get methods page for given topic' do
