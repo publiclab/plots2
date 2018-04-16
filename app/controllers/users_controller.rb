@@ -77,6 +77,7 @@ class UsersController < ApplicationController
 
   def list
     sort_param = params[:sort]
+    @tagname_param = params[:tagname]
 
     if params[:id]
       order_string = 'updated_at DESC'
@@ -99,8 +100,8 @@ class UsersController < ApplicationController
                     .where('rusers.status = 1')
                     .page(params[:page])
     
-    elsif params[:tagname]
-      @users = User.where(id: UserTag.where(value: params[:tagname]).collect(&:uid))
+    elsif @tagname_param
+      @users = User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
                     .page(params[:page])
 
     else
