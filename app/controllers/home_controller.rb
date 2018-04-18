@@ -13,6 +13,7 @@ class HomeController < ApplicationController
       redirect_to '/dashboard'
     else
       set_activity :cache
+      @comments = [] # inefficient, but quick way to remove comments from front page
       @title = I18n.t('home_controller.science_community')
       render template: 'home/home'
     end
