@@ -774,7 +774,7 @@ class Node < ActiveRecord::Base
   def questions
     # override with a tag like `questions:h2s`
     if self.has_power_tag('questions')
-      tagname = node.power_tag('questions')
+      tagname = self.power_tag('questions')
     else
       tagname = self.slug_from_path
     end
