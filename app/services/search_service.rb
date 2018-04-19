@@ -233,12 +233,16 @@ class SearchService
 
 #GET X number of latest people/contributors 
 # X = srchString
-def recentPeople(srchString)
+def recentPeople(srchString, tagName = nil)
     sresult = DocList.new  
     nodes = Node.all.order("changed DESC").limit(100).uniq
     users = []
-    nodes.each do |node|
-      users << node.author.user
+    nodes.each do |node|      
+      unless tagName.blank?
+        users << node.author.user if node.author.user.has_tag(tagName)
+      else
+        users << node.author.user
+      end
     end
     users = users.uniq 
     users.each do |user|

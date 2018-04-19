@@ -558,6 +558,16 @@ class WikiControllerTest < ActionController::TestCase
     assert_not_nil :topics
   end
 
+  test 'should get methods page and show questions count' do
+    nodes(:method).add_tag('questions:spectrometer', users(:bob))
+    nodes(:method).add_tag('method', users(:bob))
+    get :methods
+
+    assert_response :success
+    assert_not_nil :nodes
+    assert_select "#questions-count-#{nodes(:method).id}", "#{nodes(:method).questions.count} questions"
+  end
+
   test 'should get methods page for given topic' do
     get :methods, topic: 'mining'
 

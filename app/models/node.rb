@@ -578,7 +578,7 @@ class Node < ActiveRecord::Base
                     subject: '',
                     hostname: '',
                     comment: params[:body],
-                    status: 0,
+                    status: 1,
                     format: 1,
                     thread: thread,
                     timestamp: DateTime.now.to_i)
@@ -774,7 +774,7 @@ class Node < ActiveRecord::Base
   def questions
     # override with a tag like `questions:h2s`
     if self.has_power_tag('questions')
-      tagname = node.power_tag('questions')
+      tagname = self.power_tag('questions')
     else
       tagname = self.slug_from_path
     end
@@ -851,13 +851,7 @@ class Node < ActiveRecord::Base
       errors ? I18n.t('node.only_admins_can_lock') : false
     elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).length <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
-    elsif tagname.split(':')[0] == 'facebook'
-      errors ? "Only Oauth can create such tags" : false
-    elsif tagname.split(':')[0] == 'twitter'
-      errors ? "Only Oauth can create such tags" : false
-    elsif tagname.split(':')[0] == 'google'
-      errors ? "Only Oauth can create such tags" : false
-    elsif tagname.split(':')[0] == 'github'
+    elsif ["facebook", "github", "google", "twitter"].include? tagname.split(':')[0]
       errors ? "Only Oauth can create such tags" : false
     else
       true

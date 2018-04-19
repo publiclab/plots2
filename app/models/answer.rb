@@ -16,6 +16,10 @@ class Answer < ActiveRecord::Base
     finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))  
   end
 
+  def body_markdown
+    RDiscount.new(body, :autolink).to_html
+  end
+
   # users who like this answer
   def likers
     answer_selections

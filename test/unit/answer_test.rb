@@ -7,8 +7,10 @@ class AnswerTest < ActiveSupport::TestCase
   end
 
   test 'should save answer with a content' do
-    answer = Answer.new(content: 'A test answer')
+    answer = Answer.new(content: 'A test answer This has **markdown** and http://link.com')
     assert answer.save
+    assert answer.body_markdown.match('<a href="http://link.com">http://link.com</a>')
+    assert answer.body_markdown.match('<strong>markdown</strong>')
   end
 
   test 'should relate answer to user and node' do

@@ -81,6 +81,10 @@ class Comment < ActiveRecord::Base
     ApplicationController.helpers.emojify(finder)
   end
 
+  def body_markdown
+    RDiscount.new(body, :autolink).to_html
+  end
+
   def icon
     "<i class='icon-comment'></i>"
   end
