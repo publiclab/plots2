@@ -42,7 +42,7 @@ class Node < ActiveRecord::Base
         self.where(nid: nids + tnids)
           .order(orderParam)
       end
-    else 
+    else
       nodes = Node.limit(limit)
         .where('title LIKE ?', '%' + input + '%')
         .order(orderParam)
@@ -163,12 +163,12 @@ class Node < ActiveRecord::Base
     weeks
   end
 
-  def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)   
+  def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)
     weeks = {}
     week = span
     count = 0;
     while week >= 1
-       #initialising month variable with the month of the starting day 
+       #initialising month variable with the month of the starting day
        #of the week
        month = (time - (week*7 - 1).days).strftime('%m')
        #loop for finding the maximum occurence of a month name in that week
@@ -851,6 +851,14 @@ class Node < ActiveRecord::Base
       errors ? I18n.t('node.only_admins_can_lock') : false
     elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).length <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
+    elsif tagname.split(':')[0] == 'facebook'
+      errors ? "Only Oauth can create such tags" : false
+    elsif tagname.split(':')[0] == 'twitter'
+      errors ? "Only Oauth can create such tags" : false
+    elsif tagname.split(':')[0] == 'google'
+      errors ? "Only Oauth can create such tags" : false
+    elsif tagname.split(':')[0] == 'github'
+      errors ? "Only Oauth can create such tags" : false
     else
       true
     end
