@@ -32,3 +32,4 @@ ADD . /app
 WORKDIR /app
 
 RUN bower install --allow-root
+RUN bower update --allow-root
