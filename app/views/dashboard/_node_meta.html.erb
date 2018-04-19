@@ -19,7 +19,7 @@
     <span class="hidden-xs hidden-sm">| <i class="fa fa-eye"></i> <%= number_with_delimiter(node.totalviews) %></span>
     | <i style="<% if node.likes > 0 %>color:#db4;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
   <% if params[:mod] %>| <a href="#"><i class="fa fa-ban"></i></a><% end %>
-  <a rel="tooltip" title="Flag as spam." class="btn btn-sm btn-default" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+"<%= node.title.gsub(/ /,'+') %>"%0A%0Ahttps://publiclab.org/n/<%= node.id %>%0Aby+https://publiclab.org/profile/<%= node.author.username %>%0A%0AThanks!">
-    <i class="far fa-flag"></i>
+  <a rel="tooltip" title="Flag as spam." class="btn btn-xs btn-default btn-flag-spam-<%= node.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!">
+    <i class="fa fa-flag"></i>
   </a>
 </span>
