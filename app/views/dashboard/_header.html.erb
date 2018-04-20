@@ -31,7 +31,7 @@
 <div class="row stats">
   <h4 class="col-lg-12">
     <% if current_user %>
-      <span class="hidden-xs hidden-sm"><%= t('dashboard._header.welcome') %><span class="hidden-md">, <b><%= current_user.username %></b></span>!</span> 
+      <span class="hidden-xs hidden-sm"><%= t('dashboard._header.welcome') %><span class="hidden-md">,<b><a href="/profile/"> <%= current_user.username %></a></b></span>!</span>
       <a href="/notes/recent"><%= @note_count %> <%= t('dashboard._header.notes') %></a> <%= t('dashboard._header.and') %> <a href="/wiki"><%= @wiki_count %> <%= t('dashboard._header.wiki_edits') %></a> <%= t('dashboard._header.posted_past_week') %> 
       <%= t('dashboard._header.you_shared') %> <a href="/profile/<%= current_user.username %>"><%= @user_note_count %> <% if @user_note_count <= 1 %><%= t('dashboard._header.research_note') %><% else %><%= t('dashboard._header.research_notes') %><% end %></a>.
     <% else %>
