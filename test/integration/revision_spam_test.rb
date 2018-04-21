@@ -9,6 +9,8 @@ class RevisionSpamTest < ActionDispatch::IntegrationTest
 
     revision = revisions(:about_rev_2)
 
+    assert revision.parent.revisions.length > 1
+
     get '/moderate/revision/spam/' + revision.vid
 
     follow_redirect!
@@ -28,9 +30,13 @@ class RevisionSpamTest < ActionDispatch::IntegrationTest
 
     revision = revisions(:wiki_page)
 
+    assert_equal 1, revision.parent.revisions.length
+
     get '/moderate/revision/spam/' + revision.vid
 
     follow_redirect!
+    
+    assert_equal "You can't delete the last remaining revision of a page; try deleting the wiki page itself (if you're an admin) or contacting moderators@publiclab.org for assistance.", flash[:warning]
 
     get '/dashboard'
     assert_response :success
