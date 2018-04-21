@@ -11,7 +11,7 @@ class RevisionSpamTest < ActionDispatch::IntegrationTest
 
     assert revision.parent.revisions.length > 1
 
-    get '/moderate/revision/spam/' + revision.vid
+    get '/moderate/revision/spam/' + revision.vid.to_s
 
     follow_redirect!
 
@@ -32,7 +32,7 @@ class RevisionSpamTest < ActionDispatch::IntegrationTest
 
     assert_equal 1, revision.parent.revisions.length
 
-    get '/moderate/revision/spam/' + revision.vid
+    get '/moderate/revision/spam/' + revision.vid.to_s
 
     follow_redirect!
     
