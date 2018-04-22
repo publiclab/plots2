@@ -190,6 +190,14 @@ class AdminController < ApplicationController
 
   def mark_spam_revision
     @revision = Revision.find_by(vid: params[:vid])
+    @node = Node.find_by(nid: @revision.nid)
+
+    if(@node.drupal_node_revisions_count == 1)
+      flash[:warning] = "You can't delete the last remaining revision of a page; try deleting the wiki page itself (if you're an admin) or contacting moderators@publiclab.org for assistance."
+      redirect_to @node.path
+      return
+    end
+    
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       if @revision.status == 1
         @revision.spam
