@@ -37,7 +37,8 @@ class RevisionSpamTest < ActionDispatch::IntegrationTest
     follow_redirect!
 
     assert_equal "You can't delete the last remaining revision of a page; try deleting the wiki page itself (if you're an admin) or contacting moderators@publiclab.org for assistance.", flash[:warning]
-   # assert_select ".alert.alert-warning" ,:text => "× You can't delete the last remaining revision of a page; try deleting the wiki page itself (if you're an admin) or contacting moderators@publiclab.org for assistance."
+    assert_select "div.alert.alert-warning" ,:text => "× You can't delete the last remaining revision of a page; try deleting the wiki page itself (if you're an admin) or contacting moderators@publiclab.org for assistance."
+
     get '/dashboard'
     assert_response :success
 
