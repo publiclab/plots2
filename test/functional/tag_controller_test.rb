@@ -142,6 +142,15 @@ class TagControllerTest < ActionController::TestCase
     assert_select '#wiki-content', 1
   end
 
+  test 'tag show range' do
+    get :show, id: tags(:spectrometer).name,
+               start: (Time.now - 1.day).strftime('%d-%m-%Y'),
+               end: Time.now.strftime('%d-%m-%Y')
+
+    assert :success
+    assert_not_nil :tags
+  end
+
   test 'tag show JSON' do
     get :show, id: tags(:spectrometer).name, format: 'json'
 
@@ -180,7 +189,7 @@ class TagControllerTest < ActionController::TestCase
 
   test 'wildcard tag should list answered questions' do
     get :show, id: 'question:*'
- 
+
     assert_not_nil assigns(:answered_questions)
   end
 
@@ -188,8 +197,8 @@ class TagControllerTest < ActionController::TestCase
     get :show, id: 'question:*'
 
     selector = css_select '#asked-tab.active'
-    assert_equal selector.size, 1 
-    assert_select '#answered-tab', 1    
+    assert_equal selector.size, 1
+    assert_select '#answered-tab', 1
   end
 
   test "wildcard tag show wiki pages with author" do
@@ -493,7 +502,7 @@ class TagControllerTest < ActionController::TestCase
     get :show_for_author, id: tag.name, author: 'jeff'
     selector = css_select "ul>li>a[href = '/questions/tag/question:spectrometer/author/jeff']"
     assert_equal selector.size, 1
-    selector = css_select '#questions.active' 
+    selector = css_select '#questions.active'
     assert_equal selector.size, 1
   end
 
@@ -504,14 +513,14 @@ class TagControllerTest < ActionController::TestCase
 
     selector = css_select '#asked-tab.active'
     assert_equal selector.size, 1
-    assert_select '#answered-tab', 1    
+    assert_select '#answered-tab', 1
   end
 
   test 'should list answered questions' do
     tag = tags(:question)
 
     get :show_for_author, id: tag.name, author: 'jeff'
- 
+
     assert_not_nil assigns(:answered_questions)
   end
 
