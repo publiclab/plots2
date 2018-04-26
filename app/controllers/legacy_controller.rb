@@ -57,7 +57,7 @@ class LegacyController < ApplicationController
 
   def report
     @node = Node.find_by(slug: params[:id])
-    redirect_to: @node.path, status: :301
+    redirect_to: @node.path, status: 301
   end
 
   def rss
