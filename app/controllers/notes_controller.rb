@@ -51,7 +51,7 @@ class NotesController < ApplicationController
       @node = Node.find params[:id]
     end
 
-    if @node.status == 3 && (current_user.nil? || @node.author != current_user)
+    if @node.status == 3 && (current_user.nil? || @node.author.user != current_user)
       flash[:notice] = "Only author can access the draft note"
       redirect_to '/'
       return
@@ -243,7 +243,7 @@ class NotesController < ApplicationController
   def delete
     @node = Node.find(params[:id])
     if current_user && (current_user.uid == @node.uid || current_user.can_moderate?)
-      if @node.authors.uniq.length == 1 
+      if @node.authors.uniq.length == 1
         @node.destroy
         respond_with do |format|
           format.html do
