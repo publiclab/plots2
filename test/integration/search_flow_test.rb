@@ -38,5 +38,9 @@ class SearchFlowTest < ActionDispatch::IntegrationTest
          key_words: 'spectrom'
 
     assert_response :success
+
+    # Perform a query search when query present
+    get '/search', q: 'About'
+    assert_response :success
   end
 end

@@ -9,8 +9,17 @@ class SearchesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "new search page when query present at /search?q=" do
+    get :new, q: 'Organizers'
+    assert_response :success
+    assert_not_nil assigns(:tagnames)
+    assert_not_nil assigns(:users)
+    assert_not_nil assigns(:nodes)
+    assert_equal nodes(:organizers).id, assigns(:nodes).first.id
+  end
+
   test "search results page at /search/foo" do
-    get :results, q: 'Organizers'
+    get :results, id: 'Organizers'
     assert_response :success
     assert_not_nil assigns(:tagnames)
     assert_not_nil assigns(:users)
@@ -19,7 +28,7 @@ class SearchesControllerTest < ActionController::TestCase
   end
 
   test "search results page for no results at /search/somethingthathasnoresults" do
-    get :results, q: 'somethingthathasnoresults'
+    get :results, id: 'somethingthathasnoresults'
     assert_response :success
     assert_not_nil assigns(:tagnames)
     assert_not_nil assigns(:users)
