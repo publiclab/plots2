@@ -1,8 +1,10 @@
 sudo: required
 
-language: node_js
-node_js:
-  - '7'
+before_script: # install v6.x of nodejs
+- nvm install 6
+
+
+
 
 services:
   - docker
@@ -15,7 +17,7 @@ before_install:
 
 install:
   - cp config/database.yml.example config/database.yml
-  - cp db/schema.rb.example db/schema.rb
+  - cp db/schema.rb.example db/
   - docker-compose build
   - docker-compose up -d
   - docker-compose exec web sleep 5
