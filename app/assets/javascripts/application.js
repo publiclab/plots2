@@ -40,7 +40,6 @@
 //= require main_image.js
 //= require restful_typeahead.js
 //= require users.js
-//= require searchform.js
 //= require tagging.js
 //= require leaflet_helper
 //= require grids.js

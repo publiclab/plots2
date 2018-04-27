@@ -10,7 +10,7 @@ class SearchesControllerTest < ActionController::TestCase
   end
 
   test "search results page at /search/foo" do
-    get :results, id: 'Organizers'
+    get :results, q: 'Organizers'
     assert_response :success
     assert_not_nil assigns(:tagnames)
     assert_not_nil assigns(:users)
@@ -19,7 +19,7 @@ class SearchesControllerTest < ActionController::TestCase
   end
 
   test "search results page for no results at /search/somethingthathasnoresults" do
-    get :results, id: 'somethingthathasnoresults'
+    get :results, q: 'somethingthathasnoresults'
     assert_response :success
     assert_not_nil assigns(:tagnames)
     assert_not_nil assigns(:users)
