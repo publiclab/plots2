@@ -9,7 +9,7 @@ class SearchesController < ApplicationController
 
   # /search/
   def new
-    if(params[:q])
+    if params[:q].present?
       @title = 'Search'
       @tagnames = params[:q].split(',')
       @users = SearchService.new.users(params[:q])
