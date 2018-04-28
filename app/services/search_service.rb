@@ -238,11 +238,13 @@ def recentPeople(srchString, tagName = nil)
     nodes = Node.all.order("changed DESC").limit(100).uniq
     users = []
     nodes.each do |node|      
+     if node.author.status != 0 
       unless tagName.blank?
         users << node.author.user if node.author.user.has_tag(tagName)
       else
         users << node.author.user
       end
+     end
     end
     users = users.uniq 
     users.each do |user|
