@@ -30,7 +30,12 @@ class Image < ActiveRecord::Base
   end
 
   def filetype
-    filename[-3..filename.length].downcase
+    if remote_url_provided? && remote_url[0..9] == "data:image"
+      # data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+      remote_url.split(';').first.split('/').last.downcase
+    else
+      filename[-3..filename.length].downcase
+    end
   end
 
   def path(size = :medium)
