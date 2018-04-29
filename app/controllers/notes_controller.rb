@@ -51,7 +51,7 @@ class NotesController < ApplicationController
       @node = Node.find params[:id]
     end
 
-    if @node.status == 3 && (current_user.nil? || @node.author.user != current_user)
+    if @node.status == 3 && (current_user.nil? || @node.author.user != current_user) && !current_user.can_moderate?
       flash[:notice] = "Only author can access the draft note"
       redirect_to '/'
       return
