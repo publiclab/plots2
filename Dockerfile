@@ -29,7 +29,8 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 # Set debconf to run non-interactively
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
-ENV NVM_DIR ~/.nvm # or /usr/local/nvm , depending
+ENV NVM_DIR /usr/local/nvm
+# or ~/.nvm , depending
 ENV NODE_VERSION 6
 
 # Install nvm with node and npm
