@@ -27,7 +27,7 @@
   <div>
 
     <span>
-      <% if @node.status == 0 || @node.status == 4 %><span class="label label-danger"><%= t('notes.show.unpublished') %></span> | <% end %>
+      <% if @node.status == 0 || @node.status == 3 %><span class="label label-danger"><%= t('notes.show.unpublished') %></span> | <% end %>
       by <a href="/profile/<%= @node.author.name %>"><%= @node.author.name %></a>
       <% if @node.has_power_tag('with') %>with <% @node.coauthors.each_with_index do |coauthor,i| %>
               <a href="/profile/<%= coauthor.username %>">
