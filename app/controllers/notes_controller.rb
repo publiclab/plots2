@@ -55,10 +55,7 @@ class NotesController < ApplicationController
       flash[:warning] = "You need to login to view the page"
       redirect_to '/login'
       return
-
-    elsif @node.status == 3 && (@node.author.user == current_user || current_user.can_moderate?)
-
-    else
+    elsif @node.status == 3 && @node.author.user != current_user && !current_user.can_moderate?
       flash[:notice] = "Only author can access the draft note"
       redirect_to '/'
       return
