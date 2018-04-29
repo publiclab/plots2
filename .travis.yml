@@ -3,9 +3,9 @@ sudo: required
 # these didn't work:
 #before_script: # install v6.x of nodejs
 #- nvm install 6
-language: node_js
-node_js: '6'
-cache: yarn # This caches `$HOME/.yarn-cache`
+#language: node_js
+#node_js: '6'
+#cache: yarn # This caches `$HOME/.yarn-cache`
 
 services:
   - docker
