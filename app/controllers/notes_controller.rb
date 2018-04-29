@@ -375,3 +375,4 @@ class NotesController < ApplicationController
     redirect_to node.path + "#comments"
   end
 end
+
