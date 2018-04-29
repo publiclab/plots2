@@ -1,7 +1,11 @@
 sudo: required
 
-before_script: # install v6.x of nodejs
-- nvm install 6
+# these didn't work:
+#before_script: # install v6.x of nodejs
+#- nvm install 6
+language: node_js
+node_js: '6'
+cache: yarn # This caches `$HOME/.yarn-cache`
 
 services:
   - docker
@@ -31,3 +35,4 @@ script:
   - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml
   - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then danger --verbose; fi'
+  
