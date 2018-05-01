@@ -27,7 +27,7 @@ RUN npm install -g yarn
 # Install bundle of gems
 WORKDIR /tmp
 ADD Gemfile /tmp/Gemfile
-ADD Gemfile.lock /tmp/Gemfile.lock
+# ADD Gemfile.lock /tmp/Gemfile.lock  # *DISABLED TO TEST IMAGE SWITCH* 
 RUN bundle install --jobs 4
 
 ADD . /app
