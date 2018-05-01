@@ -1,6 +1,8 @@
-public/system
-publiclab.org
-log
+public/**
+publiclab.org/**
+log/**
 .git
 *.log
 tmp
+.dockerignore
+Gemfile.lock
