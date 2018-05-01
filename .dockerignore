@@ -1,2 +1,4 @@
-public/**
-publiclab.org/**
+public/system
+publiclab.org
+log
+.git
