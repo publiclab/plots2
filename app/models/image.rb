@@ -30,7 +30,7 @@ class Image < ActiveRecord::Base
   end
 
   def filetype
-    filename[-3..filename.length].downcase
+    filename.split('.').last.downcase
   end
 
   def path(size = :medium)

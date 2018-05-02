@@ -26,11 +26,12 @@ class ImagesController < ApplicationController
       render json: {
         id:       @image.id,
         url:      @image.shortlink,
+        full:     'https://' + request.host.to_s + '/' + @image.path(:large),
         filename: @image.photo_file_name,
-        href:     @image.path(:large), # Woofmark/PublicLab.Editor
+        href:     @image.shortlink, # Woofmark/PublicLab.Editor
         title:    @image.photo_file_name,
         results:  [{ # Woofmark/PublicLab.Editor
-          href:  @image.path(:large),
+          href: @image.shortlink + "." + @image.filetype,
           title: @image.photo_file_name
         }]
       }
