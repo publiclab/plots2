@@ -25,7 +25,7 @@ class ImagesController < ApplicationController
     if @image.save!
       render json: {
         id:       @image.id,
-        url:      @image.path(:large),
+        url:      @image.shortlink,
         filename: @image.photo_file_name,
         href:     @image.path(:large), # Woofmark/PublicLab.Editor
         title:    @image.photo_file_name,
