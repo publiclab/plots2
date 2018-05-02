@@ -7,7 +7,7 @@ class ImagesController < ApplicationController
   def shortlink
     params[:size] = params[:size] || :large
     image = Image.find(params[:id])
-    redirect_to image.path(params[:size])
+    redirect_to URI.parse(image.path(params[:size]))
   end
 
   def create
