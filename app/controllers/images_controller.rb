@@ -4,6 +4,12 @@ class ImagesController < ApplicationController
   respond_to :html, :xml, :json
   before_filter :require_user, only: %i(create new update delete)
 
+  def shortlink
+    params[:size] = params[:size] || :large
+    image = Image.find(params[:id])
+    redirect_to image.path(params[:size])
+  end
+
   def create
     if params[:i]
       @image = Image.new(remote_url: params[:i],
