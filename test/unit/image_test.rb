@@ -6,7 +6,7 @@ class ImageTest < ActiveSupport::TestCase
     assert image.is_image?
     assert_equal "jpg", image.filetype
     assert_equal "/i/#{image.id}", image.shortlink
-    assert_not_nil filename
-    assert_not_nil filename
+    assert_not_nil image.filename
+    assert_not_nil image.filename
   end
 end
