@@ -120,8 +120,11 @@ gem 'rails-dom-testing'
 #OAuth Based login
 gem 'omniauth', '~> 1.3', '>= 1.3.1'
 gem 'omniauth-facebook', '~> 3.0'
-#Gem for making tableless models 
-gem 'activerecord-tableless'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-twitter'
+gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
+
+#Gem for making tableless models
+gem 'activerecord-tableless'
 gem 'figaro'
 gem 'sanitize'
