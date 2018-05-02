@@ -11,9 +11,9 @@ class ImagesControllerTest < ActionController::TestCase
 
   test "image shortlinks redirect properly" do
     get :shortlink, id: Image.last.id
-    assert_redirected_to Image.last.path
-    get :shortlink, id: Image.last.id, size: 'large'
     assert_redirected_to Image.last.path(:large)
+    get :shortlink, id: Image.last.id, size: 'medium'
+    assert_redirected_to Image.last.path(:medium)
   end
 
   #  test "normal user should not delete image" do
