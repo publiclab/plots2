@@ -4,6 +4,12 @@ class ImagesController < ApplicationController
   respond_to :html, :xml, :json
   before_filter :require_user, only: %i(create new update delete)
 
+  def shortlink
+    params[:size] = params[:size] || :large
+    image = Image.find(params[:id])
+    redirect_to URI.parse(image.path(params[:size])).path
+  end
+
   def create
     if params[:i]
       @image = Image.new(remote_url: params[:i],
@@ -19,7 +25,7 @@ class ImagesController < ApplicationController
     if @image.save!
       render json: {
         id:       @image.id,
-        url:      @image.path(:large),
+        url:      @image.shortlink,
         filename: @image.photo_file_name,
         href:     @image.path(:large), # Woofmark/PublicLab.Editor
         title:    @image.photo_file_name,

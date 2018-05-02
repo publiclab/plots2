@@ -39,7 +39,11 @@ class Image < ActiveRecord::Base
     else
       size = :original
     end
-    absolute_uri + photo.url(size)
+    photo.url(size)
+  end
+
+  def shortlink
+    "/i/#{self.id}"
   end
 
   def filename
