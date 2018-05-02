@@ -223,7 +223,7 @@ class NotesController < ApplicationController
         if request.xhr?
           render text: "#{@node.path(format)}?_=#{Time.now.to_i}"
         else
-          redirect_to URI.parse(@node.path(format) + '?_=' + Time.now.to_i.to_s).path
+          redirect_to URI.parse(@node.path(format)).path + '?_=' + Time.now.to_i.to_s
         end
       else
         flash[:error] = I18n.t('notes_controller.edit_not_saved')
@@ -361,7 +361,7 @@ class NotesController < ApplicationController
     @comment = @node.add_comment(subject: 'rsvp', uid: current_user.uid, body: 'I will be attending!')
     # make a tag
     @node.add_tag('rsvp:' + current_user.username, current_user)
-    redirect_to URI.parse(@node.path + '#comments').path
+    redirect_to URI.parse(@node.path).path + '#comments'
   end
 
   # Updates title of a wiki page, takes id and title as query string params. maps to '/node/update/title'
@@ -369,9 +369,9 @@ class NotesController < ApplicationController
     node = Node.find params[:id].to_i
     unless current_user && current_user.drupal_user == node.author
       flash.keep[:error] = I18n.t('notes_controller.author_can_edit_note')
-      return redirect_to URI.parse(node.path + "#comments").path
+      return redirect_to URI.parse(node.path).path + "#comments"
     end
     node.update(title: params[:title])
-    redirect_to URI.parse(node.path + "#comments").path
+    redirect_to URI.parse(node.path).path + "#comments"
   end
 end
