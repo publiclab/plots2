@@ -42,6 +42,10 @@ class Image < ActiveRecord::Base
     photo.url(size)
   end
 
+  def shortlink
+    "/i/#{self.id}"
+  end
+
   def filename
     photo_file_name
   end
