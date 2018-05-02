@@ -31,9 +31,9 @@ class NotesController < ApplicationController
   def shortlink
     @node = Node.find params[:id]
     if @node.has_power_tag('question')
-      redirect_to @node.path(:question)
+      redirect_to URI.parse(@node.path(:question)).path
     else
-      redirect_to @node.path
+      redirect_to URI.parse(@node.path).path
     end
   end
 
@@ -64,7 +64,7 @@ class NotesController < ApplicationController
 
     if @node.has_power_tag('redirect')
       if current_user.nil? || !current_user.can_moderate?
-        redirect_to Node.find(@node.power_tag('redirect')).path
+        redirect_to URI.parse(Node.find(@node.power_tag('redirect')).path).path
         return
       elsif current_user.can_moderate?
         flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}.
@@ -82,6 +82,16 @@ class NotesController < ApplicationController
     @tagnames = @tags.collect(&:name)
 
     set_sidebar :tags, @tagnames
+  end
+
+  def image
+    params[:size] = params[:size] || :large
+    node = Node.find(params[:id])
+    if node.main_image
+      redirect_to URI.parse(node.main_image.path(params[:size])).path
+    else
+      redirect_to 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+    end
   end
 
   def create
@@ -211,9 +221,9 @@ class NotesController < ApplicationController
         format = false
         format = :question if params[:redirect] && params[:redirect] == 'question'
         if request.xhr?
-          render text: @node.path(format) + '?_=' + Time.now.to_i.to_s
+          render text: "#{@node.path(format)}?_=#{Time.now.to_i}"
         else
-          redirect_to @node.path(format) + '?_=' + Time.now.to_i.to_s
+          redirect_to URI.parse(@node.path(format) + '?_=' + Time.now.to_i.to_s).path
         end
       else
         flash[:error] = I18n.t('notes_controller.edit_not_saved')
@@ -351,7 +361,7 @@ class NotesController < ApplicationController
     @comment = @node.add_comment(subject: 'rsvp', uid: current_user.uid, body: 'I will be attending!')
     # make a tag
     @node.add_tag('rsvp:' + current_user.username, current_user)
-    redirect_to @node.path + '#comments'
+    redirect_to URI.parse(@node.path + '#comments').path
   end
 
   # Updates title of a wiki page, takes id and title as query string params. maps to '/node/update/title'
@@ -359,9 +369,9 @@ class NotesController < ApplicationController
     node = Node.find params[:id].to_i
     unless current_user && current_user.drupal_user == node.author
       flash.keep[:error] = I18n.t('notes_controller.author_can_edit_note')
-      return redirect_to node.path + "#comments"
+      return redirect_to URI.parse(node.path + "#comments").path
     end
     node.update(title: params[:title])
-    redirect_to node.path + "#comments"
+    redirect_to URI.parse(node.path + "#comments").path
   end
 end
