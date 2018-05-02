@@ -84,16 +84,6 @@ class NotesController < ApplicationController
     set_sidebar :tags, @tagnames
   end
 
-  def image
-    params[:size] = params[:size] || :large
-    node = Node.find(params[:id])
-    if node.main_image
-      redirect_to node.main_image.path(params[:size])
-    else
-      redirect_to 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
-    end
-  end
-
   def create
     if current_user.drupal_user.status == 1
       saved, @node, @revision = Node.new_note(uid: current_user.uid,
