@@ -43,8 +43,7 @@ class Node < ActiveRecord::Base
           .order(orderParam)
       end
     else
-      nodes = Node.limit(limit)
-        .where('title LIKE ?', '%' + input + '%')
+      nodes = Node.where('title LIKE ?', '%' + query + '%')
         .order(orderParam)
     end
   end

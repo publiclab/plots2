@@ -65,9 +65,9 @@
         </li>
       </ul>
 
-      <form id="searchform" class="navbar-form navbar-left" role="search" autocomplete="off">
+      <form id="searchform" action="<%= search_query_path %>" method="get" class="navbar-form navbar-left" role="search" autocomplete="off">
         <div class="form-group">
-          <input tabindex="1" id="searchform_input" type="text" class="form-control search-query typeahead" qryType="all" placeholder="<%= t('layout._header.search') %>" required/>
+          <input tabindex="1" name="q" id="searchform_input" type="text" class="form-control search-query typeahead" qryType="all" placeholder="<%= t('layout._header.search') %>" required/>
         </div>
         <button type="submit" class="btn btn-primary" style="background:#444;border-color:#222;"><i class="fa fa-search"></i></button>
       </form>
