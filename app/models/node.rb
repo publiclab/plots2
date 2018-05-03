@@ -35,16 +35,16 @@ class Node < ActiveRecord::Base
         nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
           .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
           .collect(&:nid)
-        self.where(nid: nids)
+        self.where(nid: nids, status: 1)
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
         tnids = Tag.find_nodes_by_type(query, type = ['note', 'page']).collect(&:nid) # include results by tag
-        self.where(nid: nids + tnids)
+        self.where(nid: nids + tnids, status: 1)
           .order(orderParam)
       end
     else
       nodes = Node.limit(limit)
-        .where('title LIKE ?', '%' + input + '%')
+        .where('title LIKE ?', '%' + input + '%', status: 1)
         .order(orderParam)
     end
   end
