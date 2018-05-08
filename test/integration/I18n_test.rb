@@ -417,7 +417,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/talk/' + nodes(:about).slug
-      assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', page: nodes(:about).latest.title, url1: nodes(:about).path, url2: '/wiki/talk-pages'))
+      assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', page: nodes(:about).latest.title, url1: nodes(:about).path, url2: '/wiki/talk-pages') + ' | for help, <a href="/chat">visit our chatroom</a>')
     end
   end
 
