@@ -63,6 +63,16 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
 13. Run `rake test` to confirm that your install is working properly. For some setups, you may see warnings even if test pass; [see this issue](https://github.com/publiclab/plots2/issues/440) we're working to resolve.
 
+## How to start and modify cron jobs
+
+1. We are using whenever gem to schedule cron jobs [Whenever](https://github.com/javan/whenever)
+2. All the cron jobs are written in easy ruby syntax using this gem and can be found in config/schedule.rb.
+2. Go to the config/schedule.rb file to create and modify the cron jobs.
+3. [Click here](https://github.com/javan/whenever) to know about how to write cron jobs.
+4. After updating config/schedule.rb file run the command `whenever --update-crontab` to update the cron jobs.
+5. To see the installed list of cron jobs use command `crontab -l`
+6. For more details about this gem, visit the official repository of whenever gem.
+
 ### Bundle exec
 
 For some, it will be necessary to prepend your gem-related commands with `bundle exec`, for example, `bundle exec passenger start`; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler. `bundle exec rake db: setup`, `bundle exec rake db: seed` are other examples of where this might be necessary.
