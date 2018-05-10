@@ -1,12 +1,22 @@
-# You can change the labels to suit your needs if "first-timers-only" is not what you are looking for.
-# These are some examples.
-labels:
-  - first-timers-only
-  - help-wanted
-  
-#If you would like to add your own template for the issue, add an .md file to your .github folder
-template: .github/first-timers-issue-template.md
-  
-# You can create the issue in a different repo than where the problem is. Just make sure you installed the bot on the configured repository.
-# The issue will link back to the original repository where the contribution will be made.
-#repository: repo-name 
+@@ -0,0 +1,21 @@
++# Configuration for welcome - https://github.com/behaviorbot/welcome
++
++# Configuration for new-issue-welcome - https://github.com/behaviorbot/new-issue-welcome
++
++# Comment to be posted to on first time issues
++newIssueWelcomeComment: >
++  Thanks for opening your first issue here! Please follow the issue template to help us help you 👍🎉😄
++
++# Configuration for new-pr-welcome - https://github.com/behaviorbot/new-pr-welcome
++
++# Comment to be posted to on PRs from first time contributors in your repository
++newPRWelcomeComment: >
++  Thanks for opening this pull request! `Dangerbot` will test out your code and reply in a bit with some pointers and requests. There may be some errors, but don't worry! We're here to help! 👍🎉😄
++
++# Configuration for first-pr-merge - https://github.com/behaviorbot/first-pr-merge
++
++# Comment to be posted to on pull requests merged by a first time user
++firstPRMergeComment: >
++  Congrats on merging your first pull request! 🙌🎉⚡️
++
++# It is recommend to include as many gifs and emojis as possible
