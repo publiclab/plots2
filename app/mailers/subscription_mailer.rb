@@ -53,4 +53,12 @@ class SubscriptionMailer < ActionMailer::Base
       subject: "#{node.title} (#{@tag.name})"
       )
   end
+
+  def send_digest user_id,top_picks
+    subject = "Your weekly digest"
+    @user = User.find(user_id)
+    @top_picks = top_picks
+    # @footer = feature('email-footer')
+    mail(to: @user.email, subject: subject)
+  end  
 end

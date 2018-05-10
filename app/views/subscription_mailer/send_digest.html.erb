@@ -1,0 +1,28 @@
+<header style="text-align: center;color:black">
+	<img src="https://avatars2.githubusercontent.com/u/4621650?s=200&v=4" style="width: 100px;height: 100px">
+	<p style="font-size: 20px"><%= @user.username.capitalize %>'s Digest</p>
+</header>
+
+<div style="width: 38vw;margin: 0 auto;margin-top: 54px;color: black;@media (max-width:458px){width: 88vw;}">
+	<p style="font-size: 1.2em; font-family: sans-serif;margin-bottom: 0;color: lightgray;@media (max-width:458px){width: 88vw;}">Top picks for you</p>
+	<hr id="first" style="border: none;height: 1px;background-color: #e2e2e2;width: 38vw;">
+	<% @top_picks.each do |n| %>
+		<div style="margin: 36px 0">
+			<p id="title" style="font-size: 20px;font-weight: bold;font-family: sans-serif;text-align: justify;">
+				<%= n.title %>
+			</p>
+			<div id="node-info" style="display: flex;margin: 10px 0;">
+        		<img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;height: 40px;border-radius: 50%;" src="https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058" />
+				<div style="margin: auto 0">
+					<b><%= n.author.username.capitalize %></b>
+					<p style="margin: 0;color: #999;">Published Feb 2</p>
+				</div>
+			</div>
+			<div style="display: flex;">
+				<p id="node-content" style="font-size: 1.2em;line-height: 1.6;text-align: justify;"><%= n.body.truncate(175) %><a href="<%= n.path %>" style="text-decoration: none;">  Read more</a></p>
+				<img src="https://publiclab.org/system/images/photos/000/022/879/original/geGuqxuCSrSFzCw7ZSHShQ.jpg" style="width: 90px;height: 90px;border-radius: 5px;margin-top: 20px;margin-left: 14px;">
+			</div>
+		</div>
+		<hr style="border: none;height: 1px;background-color: #e2e2e2;width: 140px;">
+	<% end %>
+</div>
