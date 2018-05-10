@@ -377,6 +377,10 @@ class User < ActiveRecord::Base
     nil
   end
 
+  def send_digest_email top_picks
+    SubscriptionMailer.send_digest(self.id,top_picks).deliver_now
+  end
+
   private
 
   def map_openid_registration(registration)
