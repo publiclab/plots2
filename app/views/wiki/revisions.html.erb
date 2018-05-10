@@ -46,9 +46,9 @@
     <% end %>
     </table>
 
-    <hr />
-    
-  </div>
+   <hr />
+   <%= will_paginate @revisions, :renderer => BootstrapPagination::Rails if @paginated %>
+</div>
   <div class="col-md-7">
     <div class="btn-group pull-right">
       <a class="btn btn-link" href="javascript:void(0)" onClick="prev()">&laquo;</a>
@@ -123,3 +123,4 @@
 
   <% end %>
 </div>
+
