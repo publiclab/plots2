@@ -562,4 +562,14 @@ class TagControllerTest < ActionController::TestCase
     assert_equal true, assigns(:nodes).empty?
   end
 
+  test "do not notify if tag created on unpublished node" do
+    UserSession.create(users(:newcomer))
+
+    assert_difference 'ActionMailer::Base.deliveries.size', 0 do
+      post :create,
+           name: 'tag for unpublished note',
+           nid: nodes(:first_timer_note).nid
+    end
+  end
+  
 end
