@@ -10,7 +10,7 @@
 # Ignore all logfiles and tempfiles.
 log/*.log
 log/*
-tmp
+/tmp/*
 data
 *.swp
 .DS_Store
