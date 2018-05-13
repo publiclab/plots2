@@ -1,7 +1,15 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.2.10'
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
+end
+
+gem 'rails', '~> 5.0.7'
 ruby '2.3.7'
+
+#Use Puma as the app server
+gem 'puma', '~> 3.0'
 
 gem 'activerecord-session_store'
 gem 'protected_attributes'
@@ -10,7 +18,7 @@ gem 'passenger'
 gem 'rails-i18n', '~> 4.0.0'
 gem 'responders', '~> 2.0' # for Rails 4.2
 
-gem 'turbolinks'
+gem 'turbolinks', '~> 5'
 
 # Whenever provides a clear syntax for writing and deploying cron jobs
 gem 'whenever', require: false
@@ -33,17 +41,18 @@ end
 
 # Gems used only for assets and not required in production environments by default.
 gem 'sass-rails',   '~> 4.0.0'
-gem 'coffee-rails', '~> 4.0.0'
+gem 'coffee-rails', '~> 4.2'
 gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer'
 gem 'uglifier', '>= 1.0.3'
 
 # run with `bundle install --without development` to exclude these
 group :development do
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '>= 3.3.0'
+  gem 'listen', '~> 3.0.5'
   gem "letter_opener"
   gem "nifty-generators"
-  gem 'byebug'
+  gem 'byebug', platform: :mri
   gem 'rubocop', '~> 0.52.1', require: false
 end
 
@@ -111,7 +120,8 @@ gem 'http_accept_language'
 
 # The default friendly_id version compatible with Rails 3 is v4.0
 gem 'friendly_id'
-gem 'jbuilder'
+gem 'jbuilder', '~> 2.5'
+
 #gem 'strong_parameters'
 
 # Pin mustermann to Ruby 2.1 compatible
@@ -130,3 +140,5 @@ gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
 gem 'activerecord-tableless'
 gem 'figaro'
 gem 'sanitize'
+#Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
