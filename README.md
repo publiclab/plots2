@@ -98,6 +98,10 @@ set in a similar way to [views](https://github.com/publiclab/plots2/tree/master/
 
 To add new languages or for additional support, please write to plots-dev@googlegroups.com
 
+## Security
+
+To report security vulnerabilities or for questions about security, please contact web@publiclab.org. Our Web Working Group will assess and respond promptly.
+
 ## Developers
 
 Help improve Public Lab software!
