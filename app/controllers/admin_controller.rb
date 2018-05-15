@@ -168,6 +168,13 @@ class AdminController < ApplicationController
           AdminMailer.notify_author_of_approval(@node, current_user).deliver_now
           AdminMailer.notify_moderators_of_approval(@node, current_user).deliver_now
           SubscriptionMailer.notify_node_creation(@node).deliver_now
+
+          if @node.tags.count > 0
+              @node.tags.each do |tag|
+                SubscriptionMailer.notify_tag_added(@node, tag, @node.author).deliver_now unless tag.subscriptions.empty?
+              end
+          end
+
           if @node.has_power_tag('question')
             flash[:notice] = "Question approved and published after #{time_ago_in_words(@node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments."
           else
