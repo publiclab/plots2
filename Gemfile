@@ -114,7 +114,6 @@ gem 'grape-swagger-ui'
 gem 'rack-cors', :require => 'rack/cors'
 
 gem 'mocha', '~> 1.1'
-gem 'rails_autolink'
 
 gem 'geocoder'
 gem "i18n-js", ">= 3.0.0.rc11"
