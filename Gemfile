@@ -82,7 +82,7 @@ end
 gem 'unicode-emoji'
 gem 'gemoji'
 
-# gem 'composite_primary_keys'
+gem 'composite_primary_keys'
 gem 'jquery-rails'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1' # Markdown
 gem 'will_paginate', '>= 3.0.6'

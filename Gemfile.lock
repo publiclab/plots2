@@ -84,6 +84,8 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     commonjs (0.2.7)
+    composite_primary_keys (9.0.9)
+      activerecord (~> 5.0.0)
     concurrent-ruby (1.0.5)
     coveralls (0.8.21)
       json (>= 1.8, < 3)
@@ -431,6 +433,7 @@ DEPENDENCIES
   byebug
   ci_reporter_test_unit
   coffee-rails (~> 4.2.2)
+  composite_primary_keys
   coveralls
   execjs
   figaro
