@@ -138,7 +138,7 @@ gem 'omniauth-twitter'
 gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
 
 #Gem for making tableless models
-gem 'activerecord-tableless'
+#gem 'activerecord-tableless'
 gem 'figaro'
 gem 'sanitize'
 #Windows does not include zoneinfo files, so bundle the tzinfo-data gem
