@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.3.7'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -6,16 +7,16 @@ git_source(:github) do |repo_name|
 end
 
 gem 'rails', '~> 5.0.7'
-ruby '2.3.7'
+
 
 #Use Puma as the app server
 gem 'puma', '~> 3.0'
 
 gem 'activerecord-session_store'
-gem 'protected_attributes'
+# gem 'protected_attributes'
 gem 'passenger'
 
-gem 'rails-i18n', '~> 4.0.0'
+gem 'rails-i18n', '~> 5.1.1'
 gem 'responders', '~> 2.0' # for Rails 4.2
 
 gem 'turbolinks', '~> 5'
@@ -40,8 +41,8 @@ end
 #end
 
 # Gems used only for assets and not required in production environments by default.
-gem 'sass-rails',   '~> 4.0.0'
-gem 'coffee-rails', '~> 4.2'
+gem 'sass-rails', '~> 5.0', '>= 5.0.7'
+gem 'coffee-rails', '~> 4.2.2'
 gem 'execjs' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer'
 gem 'uglifier', '>= 1.0.3'
@@ -61,7 +62,7 @@ group :test, :development do
   gem 'test-unit'
   gem 'rails-perftest'
   gem 'minitest-reporters', '~> 1.1.19'
-  gem 'rake',  '~> 10.5.0'
+  gem 'rake',  '~> 12.3.1'
   # gems to test RESTful API
   gem 'rest-client'
   gem 'rspec'
@@ -81,7 +82,7 @@ end
 gem 'unicode-emoji'
 gem 'gemoji'
 
-gem 'composite_primary_keys'
+# gem 'composite_primary_keys'
 gem 'jquery-rails'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1' # Markdown
 gem 'will_paginate', '>= 3.0.6'
@@ -95,7 +96,7 @@ gem 'rb-readline'
 gem "paperclip", "~> 5.2.0"
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
-gem "authlogic", "~> 3.5.0"
+gem "authlogic", "4.1.0"
 gem 'authlogic-oid'
 gem "php-serialize", :require => "php_serialize"
 gem 'less-rails',   '~> 2.6'
@@ -106,13 +107,14 @@ gem "recaptcha", require: "recaptcha/rails"
 # RESTful API Support
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', '~> 0.25.3' # later versions require
+gem 'grape-swagger', '~> 0.28.0' # later versions require
 gem 'grape-swagger-entity', '= 0.1.5' # Ruby 2.2 or later
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'rack-cors', :require => 'rack/cors'
 
 gem 'mocha', '~> 1.1'
+gem 'rails_autolink'
 
 gem 'geocoder'
 gem "i18n-js", ">= 3.0.0.rc11"
@@ -125,7 +127,7 @@ gem 'jbuilder', '~> 2.5'
 #gem 'strong_parameters'
 
 # Pin mustermann to Ruby 2.1 compatible
-gem 'mustermann' , '~> 0.4'
+gem 'mustermann' , '1.0.2'
 
 #Gem for assertions used in testing
 gem 'rails-dom-testing'
