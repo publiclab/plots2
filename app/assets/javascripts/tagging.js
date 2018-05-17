@@ -1,15 +1,17 @@
 function addTag(tagname, selector) {
 
   selector = selector || '#tagform';
+
   if (tagname.indexOf("place") != -1) {
     place = tagname.split(":")[1];
     place.replace("-", " ");
+    geocodeStringAndPan(place);
     alert("This looks like a location");
   }
 
   var el = $(selector);
 
-  el.find('.tag-input').val("tagname");
+  el.find('.tag-input').val(tagname);
 
   el.submit();
 
@@ -84,4 +86,19 @@ function initTagForm(deletion_path, selector) {
 
   return el;
 
+}
+
+function geocodeStringAndPan(string, onComplete) {
+  var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
+  var Blurred = $.ajax({
+      async: false,
+      url: url
+  });
+  onComplete = onComplete || function onComplete(geometry) {
+    lat = geometry.lat;
+    lng = geometry.lng;
+
+    return [lat, lng];
+  }
+  onComplete(Blurred.responseJSON.results[0].geometry.location);
 }
