@@ -1,9 +1,6 @@
 class Comment < ActiveRecord::Base
   include CommentsShared # common methods for comment-like models
 
-  attr_accessible :pid, :nid, :uid, :aid,
-    :subject, :hostname, :comment,
-    :status, :format, :thread, :timestamp
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
                     # dependent: :destroy, counter_cache: true
