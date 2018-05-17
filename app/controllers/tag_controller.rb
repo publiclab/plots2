@@ -289,6 +289,9 @@ class TagController < ApplicationController
                            uid: current_user.uid,
                            body: " @#{current_user.username} has marked #{tagname.split(':')[1]} as a co-author. ")
 
+        elsif tagname.split(':')[0] == "place"
+          place_name = tagname.split(':')[1]
+          place_name.gsub! '-', ''
         end
 
         if saved
