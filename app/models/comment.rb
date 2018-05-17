@@ -3,7 +3,7 @@ class Comment < ActiveRecord::Base
 
   attr_accessible :pid, :nid, :uid, :aid,
     :subject, :hostname, :comment,
-    :status, :format, :thread, :timestamp
+    :status, :format, :thread, :timestamp, :comment_via, :message_id
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
                     # dependent: :destroy, counter_cache: true
@@ -201,6 +201,19 @@ class Comment < ActiveRecord::Base
 
   def likers
     User.where(id: likes.pluck(:user_id))
+  end
+
+  def self.receive_mail(message)
+    node_id = message.subject[/#([\d]+)/, 1] #This took out the node ID from the subject line
+    if !node_id.nil?
+      node = Node.find(node_id)
+      user = User.find_by(email: message.from.first)
+      if user.present? && node_id.present?
+        message_markdown = ReverseMarkdown.convert message.html_part.body.decoded
+        message_id = message.message_id
+        comment = node.add_comment(uid: user.uid, body: message_markdown, comment_via: 1, message_id: message_id)
+      end
+    end
   end
 
 end
