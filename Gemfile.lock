@@ -325,6 +325,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    reverse_markdown (1.1.0)
+      nokogiri
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
@@ -479,6 +481,7 @@ DEPENDENCIES
   recaptcha
   responders (~> 2.0)
   rest-client
+  reverse_markdown
   rspec
   rubocop (~> 0.52.1)
   ruby-openid
