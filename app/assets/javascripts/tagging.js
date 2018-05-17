@@ -1,10 +1,15 @@
 function addTag(tagname, selector) {
 
   selector = selector || '#tagform';
+  if (tagname.indexOf("place") != -1) {
+    place = tagname.split(":")[1];
+    place.replace("-", " ");
+    alert("This looks like a location");
+  }
 
   var el = $(selector);
 
-  el.find('.tag-input').val(tagname);
+  el.find('.tag-input').val("tagname");
 
   el.submit();
 
