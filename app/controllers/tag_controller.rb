@@ -2,6 +2,9 @@ class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
   before_filter :require_user, only: %i(create delete)
 
+  def user_params
+      params.require(:tag).permit(:vid, :name, :description, :weight)
+  end
   def index
     if params[:sort]
       @toggle = params[:sort]
