@@ -6,7 +6,8 @@ function addTag(tagname, selector) {
     place = tagname.split(":")[1];
     place.replace("-", " ");
     geocodeStringAndPan(place);
-    alert("This looks like a location");
+    var choice = prompt("This looks like a location: A) Geocode B) Leave");
+    while(choice == NULL)
   }
 
   var el = $(selector);
