@@ -1,11 +1,11 @@
 class SubscriptionMailer < ActionMailer::Base
   helper :application
   include ApplicationHelper
-  default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
+  #default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
+  default from: "railsprojects2018@gmail.com"
 
   def notify_node_creation(node)
-    subject = '[PublicLab] ' + (node.has_power_tag('question') ? 'Question: ' : '') +
-              node.title
+    subject = '[PublicLab] ' + (node.has_power_tag('question') ? 'Question: ' : '') + node.title + ' (##{node.id})'
     @node = node
     @tags = node.tags.collect(&:name).join(',')
     @footer = feature('email-footer')
