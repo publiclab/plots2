@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.0.7'
+gem 'rails', '5.0.6'
 
 
 #Use Puma as the app server
@@ -82,7 +82,7 @@ end
 gem 'unicode-emoji'
 gem 'gemoji'
 
-gem 'composite_primary_keys'
+gem "composite_primary_keys"
 gem 'jquery-rails'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1' # Markdown
 gem 'will_paginate', '>= 3.0.6'
