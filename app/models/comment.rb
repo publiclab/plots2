@@ -205,7 +205,7 @@ class Comment < ActiveRecord::Base
 
   def self.receive_mail(message)
     node_id = message.subject[/#([\d]+)/, 1] #This took out the node ID from the subject line
-    if !node_id.nil?
+    unless node_id.nil?
       node = Node.find(node_id)
       user = User.find_by(email: message.from.first)
       if user.present? && node_id.present?
