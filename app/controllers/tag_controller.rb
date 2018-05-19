@@ -2,9 +2,13 @@ class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
   before_filter :require_user, only: %i(create delete)
 
-  def user_params
-      params.require(:tag).permit(:vid, :name, :description, :weight)
-  end
+  params.require(:tag).permit(:vid, :name, :description, :weight)
+  params.require(:answer).permit(:uid, :nid, :content, :cached_likes, :created_at, :updated_at)
+  params.require(:drupal_user).permit(:title, :body, :name, :pass, :mail, :mode, :sort, :threshold, :theme, :signature, :signature_format, :created, :access, :login, :status, :timezone, :language, :picture, :init, :data, :timezone_id, :timezone_name)
+  params.require(:node).permit(:title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug, :views)
+  params.require(:node_tag).permit(:nid, :tid, :uid, :date)
+  params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
+
   def index
     if params[:sort]
       @toggle = params[:sort]
