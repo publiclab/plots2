@@ -1,18 +1,19 @@
 function addTag(tagname, selector) {
 
   selector = selector || '#tagform';
-
   if (tagname.indexOf("place") != -1) {
     place = tagname.split(":")[1];
     place.replace("-", " ");
-    geocodeStringAndPan(place);
-    var choice = prompt("This looks like a location: A) Geocode B) Leave");
-    while(choice == NULL)
+
+    confirm("This looks like a location. Is this full description of the location accurate?");
+    if(confirm) {
+      geo = geocodeStringAndPan(place);
+    }
   }
 
   var el = $(selector);
 
-  el.find('.tag-input').val(tagname);
+  el.find('.tag-input').val("tagname");
 
   el.submit();
 
@@ -101,5 +102,6 @@ function geocodeStringAndPan(string, onComplete) {
 
     return [lat, lng];
   }
-  onComplete(Blurred.responseJSON.results[0].geometry.location);
+  var geo = onComplete(Blurred.responseJSON.results[0].geometry.location);
+  return geo;
 }
