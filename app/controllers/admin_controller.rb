@@ -338,25 +338,4 @@ class AdminController < ApplicationController
       redirect_to '/dashboard'
     end
   end
-
-  private
-      def comment_params
-        params.require(:comment).permit(:pid, :nid, :uid, :aid, :subject, :hostname, :comment, :status, :format, :thread, :timestamp)
-      end
-
-      def drupal_user_params
-          params.require(:drupal_user).permit(:title, :body, :name, :pass, :mail, :mode, :sort, :threshold, :theme, :signature, :signature_format, :created, :access, :login, :status, :timezone, :language, :picture, :init, :data, :timezone_id, :timezone_name)
-      end
-
-      def node_params
-        params.require(:node).permit(:title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug, :views)
-      end
-
-      def revision_params
-        params.require(:revision).permit(:title, :body, :nid, :uid, :teaser, :log, :timestamp, :format)
-      end
-
-      def user_params
-        params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
-      end
 end

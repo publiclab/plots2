@@ -123,7 +123,6 @@ gem 'http_accept_language'
 gem 'friendly_id'
 gem 'jbuilder', '~> 2.5'
 
-gem 'strong_parameters'
 
 # Pin mustermann to Ruby 2.1 compatible
 gem 'mustermann' , '1.0.2'

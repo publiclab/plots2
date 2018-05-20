@@ -440,29 +440,4 @@ class TagController < ApplicationController
   def gridsEmbed
     render layout: false
   end
-
-  private
-      def tag_params
-        params.require(:tag).permit(:vid, :name, :description, :weight)
-      end
-      
-      def answer_params
-        params.require(:answer).permit(:uid, :nid, :content, :cached_likes, :created_at, :updated_at)
-      end
-
-      def drupal_user_params
-        params.require(:drupal_user).permit(:title, :body, :name, :pass, :mail, :mode, :sort, :threshold, :theme, :signature, :signature_format, :created, :access, :login, :status, :timezone, :language, :picture, :init, :data, :timezone_id, :timezone_name)
-      end
-
-      def node_params
-        params.require(:node).permit(:title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug, :views)
-      end
-
-      def node_tag_params
-        params.require(:node_tag).permit(:nid, :tid, :uid, :date)
-      end
-
-      def user_params
-        params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
-      end
 end
