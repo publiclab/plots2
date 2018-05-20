@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
+  has_many :identities, dependent: :destroy
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
@@ -41,7 +42,7 @@ class User < ActiveRecord::Base
   before_save :set_token
   after_destroy :destroy_drupal_user
 
-  def self.search(query)
+  def self.search(query) 
     User.where('MATCH(username, bio) AGAINST(?)', query)
   end
 
@@ -230,15 +231,15 @@ class User < ActiveRecord::Base
       (1..span).each do |day|
           time = Time.now.utc.beginning_of_day.to_i
           days[(time-day.days.to_i)] = Node.select(:created)
-                                           .where(uid: self.uid, 
+                                           .where(uid: self.uid,
                                                   type: 'note',
-                                                  status: 1, 
-                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i) 
+                                                  status: 1,
+                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i)
                                            .count
       end
       days
   end
- 
+
 
   def weekly_comment_tally(span = 52)
     weeks = {}
