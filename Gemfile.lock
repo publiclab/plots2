@@ -63,7 +63,6 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.3)
     byebug (10.0.2)
-    chronic (0.10.2)
     ci_reporter (2.0.0)
       builder (>= 2.1.2)
     ci_reporter_test_unit (1.0.1)
@@ -231,22 +230,13 @@ GEM
       rack (>= 1.6.2, < 3)
     omniauth-facebook (3.0.0)
       omniauth-oauth2 (~> 1.2)
-    omniauth-github (1.3.0)
-      omniauth (~> 1.5)
-      omniauth-oauth2 (>= 1.4.0, < 2.0)
     omniauth-google-oauth2 (0.5.3)
       jwt (>= 1.5)
       omniauth (>= 1.1.1)
       omniauth-oauth2 (>= 1.5)
-    omniauth-oauth (1.1.0)
-      oauth
-      omniauth (~> 1.0)
     omniauth-oauth2 (1.5.0)
       oauth2 (~> 1.1)
       omniauth (~> 1.2)
-    omniauth-twitter (1.4.0)
-      omniauth-oauth (~> 1.1)
-      rack
     options (2.3.2)
     paperclip (5.2.1)
       activemodel (>= 4.2.0)
@@ -409,8 +399,6 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
-    whenever (0.10.0)
-      chronic (>= 0.6.3)
     will_paginate (3.1.6)
     will_paginate-bootstrap (1.0.1)
       will_paginate (>= 3.0.3)
@@ -493,12 +481,11 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicode-emoji
   web-console (~> 2.0)
-  whenever
   will_paginate (>= 3.0.6)
   will_paginate-bootstrap (>= 1.0.1)
 
 RUBY VERSION
-   ruby 2.3.3p222
+   ruby 2.3.7p456
 
 BUNDLED WITH
    1.16.1
