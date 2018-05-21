@@ -218,7 +218,6 @@ GEM
       mini_portile2 (~> 2.3.0)
     nokogumbo (1.5.0)
       nokogiri
-    oauth (0.5.4)
     oauth2 (1.4.0)
       faraday (>= 0.8, < 0.13)
       jwt (~> 1.0)
