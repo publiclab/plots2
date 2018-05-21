@@ -63,6 +63,7 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.3)
     byebug (10.0.2)
+    chronic (0.10.2)
     ci_reporter (2.0.0)
       builder (>= 2.1.2)
     ci_reporter_test_unit (1.0.1)
@@ -408,6 +409,8 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    whenever (0.10.0)
+      chronic (>= 0.6.3)
     will_paginate (3.1.6)
     will_paginate-bootstrap (1.0.1)
       will_paginate (>= 3.0.3)
@@ -490,11 +493,12 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicode-emoji
   web-console (~> 2.0)
+  whenever
   will_paginate (>= 3.0.6)
   will_paginate-bootstrap (>= 1.0.1)
 
 RUBY VERSION
-   ruby 2.3.7p456
+   ruby 2.3.3p222
 
 BUNDLED WITH
    1.16.1

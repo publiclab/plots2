@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 4.2.10'
-ruby '2.3.7'
+ruby '2.3.3'
 
 gem 'activerecord-session_store'
 gem 'protected_attributes'

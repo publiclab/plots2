@@ -54,7 +54,7 @@ class SubscriptionMailer < ActionMailer::Base
       )
   end
 
-  def send_digest user_id,top_picks
+  def send_digest(user_id, top_picks)
     subject = "Your weekly digest"
     @user = User.find(user_id)
     @top_picks = top_picks
