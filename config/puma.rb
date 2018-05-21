@@ -5,11 +5,11 @@
 # and maximum, this matches the default thread size of Active Record.
 #
 threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }.to_i
-threads threads_count, threads_count+
-# Specifies the `port` thauma will listen on to receive requests, default is 3000.
+threads threads_count, threads_count
+# Specifies the `port` that puma will listen on to receive requests, default is 3000.
 #
-port        ENV.fetch("PORT") { 3000 }+
-# Specifies the `environmenthat Puma will run in.
+port        ENV.fetch("PORT") { 3000 }
+# Specifies the `environment` that Puma will run in.
 #
 environment ENV.fetch("RAILS_ENV") { "development" }
 
