@@ -11,6 +11,7 @@ gem 'rails-i18n', '~> 4.0.0'
 gem 'responders', '~> 2.0' # for Rails 4.2
 
 gem 'turbolinks'
+gem 'resque'
 
 # Whenever provides a clear syntax for writing and deploying cron jobs
 gem 'whenever', require: false
