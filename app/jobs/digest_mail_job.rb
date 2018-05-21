@@ -1,6 +1,6 @@
 class DigestMailJob < ActiveJob::Base
   queue_as :default
-
+  # This is a separate job for sending digest mails.This job could be enqueued for executing task asynchronously.
   def perform(*args)
     users = User.includes(:user_tags).references(:user_tags).where('user_tags.value=?', 'digest:weekly').all
   	users.each do |u|
