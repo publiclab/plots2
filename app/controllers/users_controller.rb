@@ -43,7 +43,7 @@ class UsersController < ApplicationController
 
   def update                # login required, see before filter
     @user = current_user
-    @user.attributes = params[:user]
+    @user.attributes = user_params
     @user.save({}) do |result|
       if result
         if session[:openid_return_to] # for openid login, redirects back to openid auth process
@@ -52,7 +52,7 @@ class UsersController < ApplicationController
           redirect_to return_to
         else
           flash[:notice] = I18n.t('users_controller.successful_updated_profile')+"<a href='/dashboard'>"+I18n.t('users_controller.return_dashboard')+" &raquo;</a>"
-          redirect_to "/profile/"+@user.username
+          return redirect_to "/profile/"+@user.username
         end
       else
         render :template => 'users/edit'
@@ -303,4 +303,10 @@ class UsersController < ApplicationController
   def set_user
     @user = User.find_by(username: params[:id])
   end
+  private
+    def user_params
+            params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
+    end
 end
+
+
