@@ -10,11 +10,11 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     @user.status = 1
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
-    @spamaway = Spamaway.new(params[:spamaway]) unless using_recaptcha
+    @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
     if ((@spamaway&.valid?) || recaptcha) && @user.save({})
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
@@ -305,8 +305,11 @@ class UsersController < ApplicationController
   end
   private
     def user_params
-            params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
+        params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
     end
+	def spamaway_params
+	    params.require(:spamaway).permit(:follow_instructions, :statement1, :statement2, :statement3, :statement4)
+	end
 end
 
 
