@@ -63,7 +63,6 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.3)
     byebug (10.0.2)
-    chronic (0.10.2)
     ci_reporter (2.0.0)
       builder (>= 2.1.2)
     ci_reporter_test_unit (1.0.1)
