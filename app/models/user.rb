@@ -45,6 +45,11 @@ class User < ActiveRecord::Base
     User.where('MATCH(username, bio) AGAINST(?)', query)
   end
 
+  def new_contributor
+    @uid = self.id
+    return "<span style = 'font-size: smaller; color: #940;'>[ <i>New Contributor</i> ]</span>".html_safe if Node.where(:uid => @uid).length === 1
+  end
+
   def create_drupal_user
     self.bio ||= ''
     if drupal_user.nil?
@@ -94,7 +99,7 @@ class User < ActiveRecord::Base
   end
 
   def node_count
-    self.drupal_user.node_count 
+    self.drupal_user.node_count
   end
 
   def notes
@@ -230,15 +235,15 @@ class User < ActiveRecord::Base
       (1..span).each do |day|
           time = Time.now.utc.beginning_of_day.to_i
           days[(time-day.days.to_i)] = Node.select(:created)
-                                           .where(uid: self.uid, 
+                                           .where(uid: self.uid,
                                                   type: 'note',
-                                                  status: 1, 
-                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i) 
+                                                  status: 1,
+                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i)
                                            .count
       end
       days
   end
- 
+
 
   def weekly_comment_tally(span = 52)
     weeks = {}

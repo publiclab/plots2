@@ -69,6 +69,7 @@ class ApplicationController < ActionController::Base
     @current_user_session = UserSession.find
   end
 
+
   def current_user
     unless defined?(@current_user)
       @current_user = current_user_session&.record

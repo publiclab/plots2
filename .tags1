@@ -1,0 +1,39 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+DrupalUser	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^class DrupalUser < ActiveRecord::Base$/;"	class	line:1
+user	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def user$/;"	method	line:19	class:DrupalUser
+bio	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def bio$/;"	method	line:23	class:DrupalUser
+username	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def username$/;"	method	line:27	class:DrupalUser
+using_new_site?	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def using_new_site?$/;"	method	line:31	class:DrupalUser
+created_at	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def created_at$/;"	method	line:37	class:DrupalUser
+role	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def role$/;"	method	line:43	class:DrupalUser
+moderate	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def moderate$/;"	method	line:47	class:DrupalUser
+unmoderate	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def unmoderate$/;"	method	line:55	class:DrupalUser
+ban	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def ban$/;"	method	line:62	class:DrupalUser
+unban	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def unban$/;"	method	line:71	class:DrupalUser
+email	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def email$/;"	method	line:79	class:DrupalUser
+update_user_status	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def update_user_status(status)$/;"	method	line:83	class:DrupalUser
+first_time_poster	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def first_time_poster$/;"	method	line:89	class:DrupalUser
+new_author_contributor	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def new_author_contributor$/;"	method	line:93	class:DrupalUser
+new_contributor	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def new_contributor$/;"	method	line:98	class:DrupalUser
+likes	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def likes$/;"	method	line:103	class:DrupalUser
+like_count	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def like_count$/;"	method	line:107	class:DrupalUser
+liked_notes	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def liked_notes$/;"	method	line:111	class:DrupalUser
+liked_pages	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def liked_pages$/;"	method	line:118	class:DrupalUser
+last	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def last$/;"	method	line:127	class:DrupalUser
+profile_values	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def profile_values$/;"	method	line:134	class:DrupalUser
+notes	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def notes$/;"	method	line:138	class:DrupalUser
+note_count	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def note_count$/;"	method	line:142	class:DrupalUser
+node_count	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def node_count$/;"	method	line:146	class:DrupalUser
+notes_for_tags	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def notes_for_tags(tagnames)$/;"	method	line:151	class:DrupalUser
+user_tags	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def user_tags$/;"	method	line:164	class:DrupalUser
+tags	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def tags(limit = 10)$/;"	method	line:168	class:DrupalUser
+tagnames	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def tagnames(limit = 20, defaults = true)$/;"	method	line:172	class:DrupalUser
+tag_counts	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def tag_counts$/;"	method	line:176	class:DrupalUser
+migrate	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def migrate$/;"	method	line:190	class:DrupalUser
+decrease_likes_banned	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def decrease_likes_banned$/;"	method	line:207	class:DrupalUser
+increase_likes_unbanned	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def increase_likes_unbanned$/;"	method	line:214	class:DrupalUser
