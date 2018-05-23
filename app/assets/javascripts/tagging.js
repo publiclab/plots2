@@ -5,7 +5,7 @@ function addTag(tagname, selector) {
     place = tagname.split(":")[1];
     place.replace("-", " ");
 
-    confirm("This looks like a location. Is this full description of the location accurate?");
+    var confirm = confirm("This looks like a location. Is this full description of the location accurate?");
     if(confirm) {
       geo = geocodeStringAndPan(place);
     }
@@ -13,7 +13,7 @@ function addTag(tagname, selector) {
 
   var el = $(selector);
 
-  el.find('.tag-input').val("tagname");
+  el.find('.tag-input').val(tagname);
 
   el.submit();
 
