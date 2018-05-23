@@ -95,9 +95,7 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     comment = comments(:first)
     new_comment_body = 'New body text'
-    post :update,
-         id: comment.id,
-         body: new_comment_body
+    post :update, params: { id: comment.id, body: new_comment_body }
     comment.reload
     assert_equal new_comment_body, comment.comment
     assert_redirected_to comment.node.path + '?_=' + Time.now.to_i.to_s
@@ -108,10 +106,7 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     comment = comments(:question)
     new_comment_body = 'New question text'
-    post :update,
-         id: comment.id,
-         body: new_comment_body,
-         type: 'question'
+    post :update, params: { id: comment.id, body: new_comment_body, type: 'question' }
     comment.reload
     assert_equal new_comment_body, comment.comment
     assert_redirected_to comment.node.path(:question) + '?_=' + Time.now.to_i.to_s
@@ -122,10 +117,7 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     comment = comments(:answer_comment_one)
     new_comment_body = 'New answer text'
-    post :update,
-         id: comment.id,
-         body: new_comment_body,
-         type: 'question'
+    post :update, params: { id: comment.id, body: new_comment_body, type: 'question' }
     comment.reload
     assert_equal new_comment_body, comment.comment
     assert_redirected_to comment.answer.node.path(:question) + '?_=' + Time.now.to_i.to_s
@@ -147,9 +139,7 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:jeff))
     comment = comments(:first)
     new_comment_body = 'New body text'
-    post :update,
-         id: comment.id,
-         body: new_comment_body
+    post :update, params: { id: comment.id, body: new_comment_body }
     comment.reload
     assert_not_equal new_comment_body, comment.comment
     assert_redirected_to comment.node.path

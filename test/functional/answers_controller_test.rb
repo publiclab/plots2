@@ -42,8 +42,7 @@ class AnswersControllerTest < ActionController::TestCase
   test 'should get update if user is logged in' do
     UserSession.create(users(:bob))
     answer = answers(:one)
-    get :update, id: answer.id,
-                 body: 'Some changes in answer'
+    get :update, params: { id: answer.id, body: 'Some changes in answer' }
     assert_redirected_to answer.node.path(:question)
     assert_equal 'Answer updated', flash[:notice]
   end
@@ -51,8 +50,7 @@ class AnswersControllerTest < ActionController::TestCase
   test 'should show error if user is not the author of post' do
     UserSession.create(users(:jeff))
     answer = answers(:one)
-    get :update, id: answer.id,
-                 body: 'Some changes'
+    get :update, params: { id: answer.id, body: 'Some changes' }
     assert_redirected_to answer.node.path(:question)
     assert_equal 'Only the author of the answer can edit it.', flash[:error]
   end
