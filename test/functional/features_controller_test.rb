@@ -91,9 +91,7 @@ class FeaturesControllerTest < ActionController::TestCase
 
     node = nodes(:feature)
     assert_difference 'Revision.count' do
-      get :update,
-          id: node.id,
-          body: "A new feature to <a href=''>display</a> with additions"
+      get :update, params: { id: node.id, body: "A new feature to <a href=''>display</a> with additions"}
     end
 
     assert_equal  "A new feature to <a href=''>display</a> with additions", Node.find(node.id).latest.body

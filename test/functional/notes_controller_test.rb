@@ -504,12 +504,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'should redirect to questions show page when editing an existing question' do
     user = UserSession.create(users(:jeff))
     note = nodes(:question)
-    post :update,
-         id: note.nid,
-         title: note.title,
-         body: 'Spectrometer doubts',
-         tags: 'question:spectrometer',
-         redirect: 'question'
+    post :update, params: { id: note.nid, title: note.title, body: 'Spectrometer doubts', tags: 'question:spectrometer', redirect: 'question' }
 
     assert_redirected_to note.path(:question) + '?_=' + Time.now.to_i.to_s
   end

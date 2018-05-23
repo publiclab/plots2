@@ -21,9 +21,7 @@ class CommentControllerTest < ActionController::TestCase
   test 'should create note comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
-      xhr :post, :create,
-          id: nodes(:one).nid,
-          body: 'Notes comment'
+      xhr :post, :create, params: { id: nodes(:one).nid, body: 'Notes comment' }
     end
     assert_response :success
     assert_not_nil :comment
@@ -33,10 +31,7 @@ class CommentControllerTest < ActionController::TestCase
   test 'should create question comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
-      xhr :post, :create,
-          id: nodes(:question).nid,
-          body: 'Questions comment',
-          type: 'question'
+      xhr :post, :create, params: { id: nodes(:question).nid, body: 'Questions comment', type: 'question' }
     end
     assert_response :success
     assert_not_nil :comment
@@ -47,9 +42,7 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
       assert_difference "nodes(:wiki_page).comments.count" do
-        xhr :post, :create,
-            id: nodes(:wiki_page).nid,
-            body: 'Wiki comment'
+        xhr :post, :create, params: { id: nodes(:wiki_page).nid, body: 'Wiki comment' }
       end
     end
     assert_response :success
@@ -189,8 +182,7 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     comment = comments(:first)
     assert_difference 'Comment.count', -1 do
-      xhr :get, :delete,
-          id: comment.id
+      xhr :get, :delete, params: { id: comment.id }
     end
     assert_response :success
     assert_equal 'success', @response.body
@@ -232,20 +224,14 @@ class CommentControllerTest < ActionController::TestCase
 
   test 'should send mail to tag followers in the comment' do
     UserSession.create(users(:jeff))
-    xhr :post, :create,
-        id: nodes(:question).nid,
-        body: 'Question #awesome',
-        type: 'question'
+    xhr :post, :create, params: { id: nodes(:question).nid, body: 'Question #awesome', type: 'question' }
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:bob).email])
     # tag followers can be found in tag_selection.yml
   end
 
   test 'should send mail to multiple tag followers in the comment' do
     UserSession.create(users(:jeff))
-    xhr :post, :create,
-        id: nodes(:question).nid,
-        body: 'Question #everything #awesome',
-        type: 'question'
+    xhr :post, :create, params: { id: nodes(:question).nid, body: 'Question #everything #awesome', type: 'question' }
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:bob).email])
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:moderator).email])
     # tag followers can be found in tag_selection.yml
@@ -253,18 +239,13 @@ class CommentControllerTest < ActionController::TestCase
 
   test 'should send notification email upon a new wiki comment' do
     UserSession.create(users(:jeff))
-    xhr :post, :create,
-        id: nodes(:wiki_page).nid,
-        body: 'A comment by Jeff on a wiki page of author bob',
-        type: 'page'
+    xhr :post, :create, params: { id: nodes(:wiki_page).nid, body: 'A comment by Jeff on a wiki page of author bob', type: 'page' }
     assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on 'Wiki page title'")
   end
 
   test 'should prompt user if comment includes question mark' do
     UserSession.create(users(:jeff))
-    xhr :post, :create,
-        id: nodes(:blog).id,
-        body: 'Test question?'
+    xhr :post, :create, params: { id: nodes(:blog).id, body: 'Test question?' }
     assert_select 'a[href=?]', '/questions', { :count => 1, :text => 'Questions page' }
   end
 

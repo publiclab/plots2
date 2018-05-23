@@ -10,9 +10,7 @@ class AnswersControllerTest < ActionController::TestCase
     node = nodes(:question)
     initial_mail_count = ActionMailer::Base.deliveries.size
     assert_difference 'Answer.count' do
-      xhr :post, :create,
-          nid: node.nid,
-          body: 'Sample answer'
+    xhr :post, :create, params: { nid: node.nid, body: 'Sample answer'}
     end
     assert_not_equal initial_mail_count, ActionMailer::Base.deliveries.size
     assert ActionMailer::Base.deliveries.collect(&:to).include?([node.author.mail])
@@ -32,9 +30,7 @@ class AnswersControllerTest < ActionController::TestCase
     node = nodes(:question)
     initial_mail_count = ActionMailer::Base.deliveries.size
     assert_difference 'Answer.count' do
-      xhr :post, :create,
-          nid: node.nid,
-          body: 'Sample answer by the current user'
+      xhr :post, :create, params: { nid: node.nid, body: 'Sample answer by the current user'}
     end
 
     user_with_everything_tag = users(:moderator)

@@ -126,13 +126,8 @@ class WikiControllerTest < ActionController::TestCase
     wiki = nodes(:organizers)
     newtitle = 'New Title'
 
-    post :update,
-         id:    wiki.nid,
-         uid:   users(:bob).id,
-         title: newtitle,
-         body:  'Editing about Page'
+    post :update, params: { id: wiki.nid, uid: users(:bob).id, title: newtitle, body: 'Editing about Page' }
 
-    wiki.reload
     assert_redirected_to wiki.path
     assert_equal flash[:notice], 'Edits saved.'
   end
@@ -175,11 +170,7 @@ class WikiControllerTest < ActionController::TestCase
     newtitle = 'New Title'
     assert_equal wiki.path, '/about'
 
-    post :update,
-         id:    wiki.nid,
-         uid:   users(:bob).id,
-         title: newtitle,
-         body:  'Editing about Page'
+    post :update, params: { id: wiki.nid, uid: users(:bob).id, title: newtitle, body: 'Editing about Page' }
 
     wiki.reload
     assert_redirected_to wiki.path
@@ -190,13 +181,7 @@ class WikiControllerTest < ActionController::TestCase
     node = nodes(:about)
     image = fixture_file_upload 'rails.png'
 
-    post :update,
-         id:    node.nid,
-         uid:   users(:bob).id,
-         title: 'New Title',
-         body:  'Editing about Page',
-         image: { title: 'new image',
-                  photo: image }
+    post :update, params: { id: node.nid, uid: users(:bob).id, title: 'New Title', body: 'Editing about Page', image: { title: 'new image', photo: image } }
 
     node.reload
     assert_redirected_to node.path
@@ -207,12 +192,7 @@ class WikiControllerTest < ActionController::TestCase
     node = nodes(:about)
     image = node.images.where(photo_file_name: 'filename-1.jpg').last
 
-    post :update,
-         id:             node.nid,
-         uid:            users(:bob).id,
-         title:          'New Title',
-         body:           'Editing about Page',
-         image_revision: image.path(:default)
+    post :update, params: { id: node.nid, uid: users(:bob).id, title: 'New Title', body: 'Editing about Page', image_revision: image.path(:default) }
 
     node.reload
     assert_redirected_to node.path
@@ -421,11 +401,7 @@ class WikiControllerTest < ActionController::TestCase
       wiki = nodes(:organizers)
       newtitle = 'New Title'
 
-      post :update,
-           id:    wiki.nid,
-           uid:   users(:bob).id,
-           title: newtitle,
-           body:  'Editing about Page'
+      post :update, params: { id: wiki.nid, uid: users(:bob).id, title: newtitle, body:  'Editing about Page' }
 
       wiki.reload
       assert_redirected_to wiki.path
