@@ -180,6 +180,10 @@
       </div>
       -->
     </div>
+    <span style="color: black; font-weight: 500; margin-left: 40%; display: inline-flex;"> <input type="checkbox" id="myCheck" onclick="draftCheck()">&nbsp; Save as draft <span id="text" style="display:none; color:red; margin-left: 50px; ">  Your Research note would be saved as draft !</span>
+    </span>
+
+     <br />
 
     <button class="btn btn-lg btn-default btn-more">...</button>
 
@@ -309,6 +313,19 @@
   $('.legacy-button').click(function onLegacyClick(event) {
       event.preventDefault();
       window.location = "/post?legacy=true&body=" + editor.richTextModule.value() + "&tags=" + editor.tagsModule.value() + "&title=" + editor.titleModule.value();
-    });
+  });
+
+  function draftCheck() {
+      var checkBox = document.getElementById("myCheck");
+      var text = document.getElementById("text");
+     if (checkBox.checked === true){
+          editor.data.draft = true;
+         text.style.display = "block";
+      } else {
+          editor.data.draft = false;
+          text.style.display = "none";
+      }
+      console.log("Draft:", editor.data.draft);
+  }
 
 </script>

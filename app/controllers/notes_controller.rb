@@ -99,6 +99,7 @@ class NotesController < ApplicationController
   end
 
   def create
+
     if current_user.drupal_user.status == 1
       saved, @node, @revision = Node.new_note(uid: current_user.uid,
                                               title: params[:title],
@@ -114,7 +115,7 @@ class NotesController < ApplicationController
           @node.add_tag('event:rsvp', current_user)
           @node.add_tag('date:' + params[:date], current_user) if params[:date]
         end
-        if params[:draft] != true
+        if params[:draft] != "true"
           if current_user.first_time_poster
             flash[:first_time_post] = true
             if @node.has_power_tag('question')
