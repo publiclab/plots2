@@ -55,7 +55,7 @@ class NotesController < ApplicationController
       flash[:warning] = "You need to login to view the page"
       redirect_to '/login'
       return
-    elsif @node.status == 3 && @node.author.user != current_user && !current_user.can_moderate?
+    elsif @node.status == 3 && @node.author.user != current_user && !current_user.can_moderate? && !@node.has_tag("with:#{current_user.username}")
       flash[:notice] = "Only author can access the draft note"
       redirect_to '/'
       return
@@ -386,6 +386,7 @@ class NotesController < ApplicationController
     @node = Node.find(params[:id])
     if current_user && current_user.uid == @node.uid || current_user.admin? || @node.has_tag("with:#{current_user.username}")
       @node.publish
+      SubscriptionMailer.notify_node_creation(@node).deliver_now
       flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publically."
       redirect_to @node.path
     else
