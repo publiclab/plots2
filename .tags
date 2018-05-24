@@ -30,66 +30,6 @@ insert_extras	/Users/cbazin/bloc/plots2/app/helpers/application_helper.rb	/^  de
 render_map	/Users/cbazin/bloc/plots2/app/helpers/application_helper.rb	/^  def render_map(lat, lon)$/;"	method	line:60	class:ApplicationHelper
 render_comment_body	/Users/cbazin/bloc/plots2/app/helpers/application_helper.rb	/^  def render_comment_body(comment)$/;"	method	line:66	class:ApplicationHelper
 title_suggestion	/Users/cbazin/bloc/plots2/app/helpers/application_helper.rb	/^  def title_suggestion(comment)$/;"	method	line:75	class:ApplicationHelper
-UniqueUsernameValidator	/Users/cbazin/bloc/plots2/app/models/user.rb	/^class UniqueUsernameValidator < ActiveModel::Validator$/;"	class	line:1
-validate	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def validate(record)$/;"	method	line:2	class:UniqueUsernameValidator
-User	/Users/cbazin/bloc/plots2/app/models/user.rb	/^class User < ActiveRecord::Base$/;"	class	line:9
-search	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def self.search(query)$/;"	singleton method	line:44	class:User
-new_contributor	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def new_contributor$/;"	method	line:48	class:User
-create_drupal_user	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def create_drupal_user$/;"	method	line:53	class:User
-destroy_drupal_user	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def destroy_drupal_user$/;"	method	line:83	class:User
-set_token	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def set_token$/;"	method	line:87	class:User
-drupal_user	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def drupal_user$/;"	method	line:93	class:User
-last	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def last$/;"	method	line:97	class:User
-node_count	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def node_count$/;"	method	line:101	class:User
-notes	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def notes$/;"	method	line:105	class:User
-coauthored_notes	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def coauthored_notes$/;"	method	line:111	class:User
-generate_reset_key	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def generate_reset_key$/;"	method	line:119	class:User
-uid	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def uid$/;"	method	line:129	class:User
-title	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def title$/;"	method	line:133	class:User
-path	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def path$/;"	method	line:137	class:User
-lat	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def lat$/;"	method	line:141	class:User
-lon	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def lon$/;"	method	line:145	class:User
-has_role	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def has_role(r)$/;"	method	line:150	class:User
-admin?	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def admin?$/;"	method	line:154	class:User
-moderator?	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def moderator?$/;"	method	line:158	class:User
-can_moderate?	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def can_moderate?$/;"	method	line:162	class:User
-tags	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def tags(limit = 10)$/;"	method	line:167	class:User
-tagnames	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def tagnames(limit = 20, defaults = true)$/;"	method	line:171	class:User
-has_tag	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def has_tag(tagname)$/;"	method	line:180	class:User
-has_power_tag	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def has_power_tag(key)$/;"	method	line:185	class:User
-get_value_of_power_tag	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def get_value_of_power_tag(key)$/;"	method	line:190	class:User
-get_last_value_of_power_tag	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def get_last_value_of_power_tag(key)$/;"	method	line:196	class:User
-subscriptions	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def subscriptions(type = :tag)$/;"	method	line:202	class:User
-following	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def following(tagname)$/;"	method	line:209	class:User
-add_to_lists	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def add_to_lists(lists)$/;"	method	line:214	class:User
-weekly_note_tally	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def weekly_note_tally(span = 52)$/;"	method	line:220	class:User
-daily_note_tally	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def daily_note_tally(span = 365)$/;"	method	line:233	class:User
-weekly_comment_tally	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def weekly_comment_tally(span = 52)$/;"	method	line:248	class:User
-note_streak	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def note_streak(span = 365)$/;"	method	line:260	class:User
-wiki_edit_streak	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def wiki_edit_streak(span = 365)$/;"	method	line:278	class:User
-comment_streak	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def comment_streak(span = 365)$/;"	method	line:296	class:User
-streak	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def streak(span = 365)$/;"	method	line:313	class:User
-barnstars	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def barnstars$/;"	method	line:322	class:User
-photo_path	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def photo_path(size = :medium)$/;"	method	line:328	class:User
-first_time_poster	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def first_time_poster$/;"	method	line:332	class:User
-follow	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def follow(other_user)$/;"	method	line:336	class:User
-unfollow	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def unfollow(other_user)$/;"	method	line:340	class:User
-following?	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def following?(other_user)$/;"	method	line:344	class:User
-profile_image	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def profile_image$/;"	method	line:348	class:User
-questions	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def questions$/;"	method	line:357	class:User
-content_followed_in_period	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def content_followed_in_period(start_time, end_time)$/;"	method	line:361	class:User
-social_link	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def social_link(site)$/;"	method	line:376	class:User
-map_openid_registration	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def map_openid_registration(registration)$/;"	method	line:387	class:User
-find_by_username_case_insensitive	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def self.find_by_username_case_insensitive(username)$/;"	singleton method	line:392	class:User
-contributor_count_for	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def self.contributor_count_for(start_time,end_time)$/;"	singleton method	line:397	class:User
-NodeTag	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^class NodeTag < ActiveRecord::Base$/;"	class	line:1
-increment_count	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def increment_count$/;"	method	line:12	class:NodeTag
-author	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def author$/;"	method	line:19	class:NodeTag
-new_author_contributor	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def new_author_contributor$/;"	method	line:23	class:NodeTag
-user	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def user$/;"	method	line:28	class:NodeTag
-drupal_user	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def drupal_user$/;"	method	line:32	class:NodeTag
-name	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def name$/;"	method	line:36	class:NodeTag
-description	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def description$/;"	method	line:40	class:NodeTag
 UniqueUrlValidator	/Users/cbazin/bloc/plots2/app/models/node.rb	/^class UniqueUrlValidator < ActiveModel::Validator$/;"	class	line:1
 validate	/Users/cbazin/bloc/plots2/app/models/node.rb	/^  def validate(record)$/;"	method	line:2	class:UniqueUrlValidator
 Node	/Users/cbazin/bloc/plots2/app/models/node.rb	/^class Node < ActiveRecord::Base$/;"	class	line:21
@@ -217,3 +157,63 @@ tag_counts	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def tag_count
 migrate	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def migrate$/;"	method	line:190	class:DrupalUser
 decrease_likes_banned	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def decrease_likes_banned$/;"	method	line:207	class:DrupalUser
 increase_likes_unbanned	/Users/cbazin/bloc/plots2/app/models/drupal_user.rb	/^  def increase_likes_unbanned$/;"	method	line:214	class:DrupalUser
+UniqueUsernameValidator	/Users/cbazin/bloc/plots2/app/models/user.rb	/^class UniqueUsernameValidator < ActiveModel::Validator$/;"	class	line:1
+validate	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def validate(record)$/;"	method	line:2	class:UniqueUsernameValidator
+User	/Users/cbazin/bloc/plots2/app/models/user.rb	/^class User < ActiveRecord::Base$/;"	class	line:9
+search	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def self.search(query)$/;"	singleton method	line:44	class:User
+new_contributor	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def new_contributor$/;"	method	line:48	class:User
+create_drupal_user	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def create_drupal_user$/;"	method	line:53	class:User
+destroy_drupal_user	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def destroy_drupal_user$/;"	method	line:83	class:User
+set_token	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def set_token$/;"	method	line:87	class:User
+drupal_user	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def drupal_user$/;"	method	line:93	class:User
+last	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def last$/;"	method	line:97	class:User
+node_count	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def node_count$/;"	method	line:101	class:User
+notes	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def notes$/;"	method	line:105	class:User
+coauthored_notes	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def coauthored_notes$/;"	method	line:111	class:User
+generate_reset_key	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def generate_reset_key$/;"	method	line:119	class:User
+uid	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def uid$/;"	method	line:129	class:User
+title	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def title$/;"	method	line:133	class:User
+path	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def path$/;"	method	line:137	class:User
+lat	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def lat$/;"	method	line:141	class:User
+lon	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def lon$/;"	method	line:145	class:User
+has_role	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def has_role(r)$/;"	method	line:150	class:User
+admin?	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def admin?$/;"	method	line:154	class:User
+moderator?	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def moderator?$/;"	method	line:158	class:User
+can_moderate?	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def can_moderate?$/;"	method	line:162	class:User
+tags	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def tags(limit = 10)$/;"	method	line:167	class:User
+tagnames	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def tagnames(limit = 20, defaults = true)$/;"	method	line:171	class:User
+has_tag	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def has_tag(tagname)$/;"	method	line:180	class:User
+has_power_tag	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def has_power_tag(key)$/;"	method	line:185	class:User
+get_value_of_power_tag	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def get_value_of_power_tag(key)$/;"	method	line:190	class:User
+get_last_value_of_power_tag	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def get_last_value_of_power_tag(key)$/;"	method	line:196	class:User
+subscriptions	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def subscriptions(type = :tag)$/;"	method	line:202	class:User
+following	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def following(tagname)$/;"	method	line:209	class:User
+add_to_lists	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def add_to_lists(lists)$/;"	method	line:214	class:User
+weekly_note_tally	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def weekly_note_tally(span = 52)$/;"	method	line:220	class:User
+daily_note_tally	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def daily_note_tally(span = 365)$/;"	method	line:233	class:User
+weekly_comment_tally	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def weekly_comment_tally(span = 52)$/;"	method	line:248	class:User
+note_streak	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def note_streak(span = 365)$/;"	method	line:260	class:User
+wiki_edit_streak	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def wiki_edit_streak(span = 365)$/;"	method	line:278	class:User
+comment_streak	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def comment_streak(span = 365)$/;"	method	line:296	class:User
+streak	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def streak(span = 365)$/;"	method	line:313	class:User
+barnstars	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def barnstars$/;"	method	line:322	class:User
+photo_path	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def photo_path(size = :medium)$/;"	method	line:328	class:User
+first_time_poster	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def first_time_poster$/;"	method	line:332	class:User
+follow	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def follow(other_user)$/;"	method	line:336	class:User
+unfollow	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def unfollow(other_user)$/;"	method	line:340	class:User
+following?	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def following?(other_user)$/;"	method	line:344	class:User
+profile_image	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def profile_image$/;"	method	line:348	class:User
+questions	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def questions$/;"	method	line:357	class:User
+content_followed_in_period	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def content_followed_in_period(start_time, end_time)$/;"	method	line:361	class:User
+social_link	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def social_link(site)$/;"	method	line:376	class:User
+map_openid_registration	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def map_openid_registration(registration)$/;"	method	line:387	class:User
+find_by_username_case_insensitive	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def self.find_by_username_case_insensitive(username)$/;"	singleton method	line:392	class:User
+contributor_count_for	/Users/cbazin/bloc/plots2/app/models/user.rb	/^  def self.contributor_count_for(start_time,end_time)$/;"	singleton method	line:397	class:User
+NodeTag	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^class NodeTag < ActiveRecord::Base$/;"	class	line:1
+increment_count	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def increment_count$/;"	method	line:12	class:NodeTag
+author	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def author$/;"	method	line:19	class:NodeTag
+new_author_contributor	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def new_author_contributor$/;"	method	line:23	class:NodeTag
+user	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def user$/;"	method	line:28	class:NodeTag
+drupal_user	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def drupal_user$/;"	method	line:32	class:NodeTag
+name	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def name$/;"	method	line:36	class:NodeTag
+description	/Users/cbazin/bloc/plots2/app/models/node_tag.rb	/^  def description$/;"	method	line:40	class:NodeTag

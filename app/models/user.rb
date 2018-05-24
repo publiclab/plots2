@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
 
   def new_contributor
     @uid = self.id
-    return "<span style = 'font-size: smaller; color: #940;'>[ <i>New Contributor</i> ]</span>".html_safe if Node.where(:uid => @uid).length === 1
+    return "<span class = 'label label-success'>[ <i>New Contributor</i> ]</span>".html_safe if Node.where(:uid => @uid).length === 1
   end
 
   def create_drupal_user
