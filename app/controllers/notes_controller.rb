@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
   respond_to :html
-  before_filter :require_user, only: %i(create edit update delete rsvp)
+  before_filter :require_user, only: %i(create edit update delete rsvp publish_draft)
 
   def index
     @title = I18n.t('notes_controller.research_notes')
@@ -99,12 +99,15 @@ class NotesController < ApplicationController
   end
 
   def create
-
     if current_user.drupal_user.status == 1
       saved, @node, @revision = Node.new_note(uid: current_user.uid,
                                               title: params[:title],
                                               body: params[:body],
                                               main_image: params[:main_image])
+
+      if params[:draft] == "true"
+        @node.draft
+      end
 
       if saved
         params[:tags]&.tr(' ', ',').split(',').each do |tagname|
@@ -131,7 +134,6 @@ class NotesController < ApplicationController
             end
           end
         else
-          @node.draft
           flash[:notice] = I18n.t('notes_controller.saved_as_draft').html_safe
         end
         # Notice: Temporary redirect.Remove this condition after questions show page is complete.
@@ -378,5 +380,17 @@ class NotesController < ApplicationController
     end
     node.update(title: params[:title])
     redirect_to URI.parse(node.path).path + "#comments"
+  end
+
+  def publish_draft
+    @node = Node.find(params[:id])
+    if current_user && current_user.uid == @node.uid || current_user.admin? || @node.has_tag("with:#{current_user.username}")
+      @node.publish
+      flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publically."
+      redirect_to @node.path
+    else
+      flash[:warning] = "You are not author or moderator so you can't publish a draft!"
+      redirect_to '/'
+    end
   end
 end

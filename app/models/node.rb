@@ -727,7 +727,9 @@ class Node < ActiveRecord::Base
                                  nid: id)
           if node_tag.save
             saved = true
-            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty?
+            if self.status != 3
+              SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty?
+            end
           else
             saved = false
             tag.destroy
