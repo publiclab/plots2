@@ -22,7 +22,7 @@ class NodeTag < ActiveRecord::Base
 
   def new_author_contributor
     @uid = self.uid
-    return "<span class = 'label label-success'>[ <i>New Contributor</i> ]</span>".html_safe if Node.where(:uid => @uid).length === 1
+    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
   end
 
   def user
