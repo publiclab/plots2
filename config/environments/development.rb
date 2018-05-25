@@ -35,8 +35,8 @@ Plots2::Application.configure do
 
   config.action_mailer.delivery_method = :file
 
-  # force SSL
-  #config.force_ssl = true
+   #force SSL
+  config.force_ssl = true
 
   config.action_mailer.delivery_method = :letter_opener
 
