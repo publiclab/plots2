@@ -238,16 +238,15 @@ class User < ActiveRecord::Base
       end
       days
   end
- 
 
   def weekly_comment_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
-        .where( uid: drupal_user.uid,
-                                          status: 1,
-                                          timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
-        .count
+                            .where( uid: drupal_user.uid,
+                                    status: 1,
+                                    timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
+                            .count
     end
     weeks
   end
@@ -357,15 +356,15 @@ class User < ActiveRecord::Base
     tagnames = TagSelection.where(following: true, user_id: uid)
     node_ids = []
     tagnames.each do |tagname|
-      node_ids = node_ids + NodeTag.where(tid: tagname.tid).collect(&:nid)
+      node_ids += NodeTag.where(tid: tagname.tid).collect(&:nid)
     end
 
     Node.where(nid: node_ids)
-        .includes(:revision, :tag)
-        .references(:node_revision)
-        .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
-        .order('node_revisions.timestamp DESC')
-        .uniq
+      .includes(:revision, :tag)
+      .references(:node_revision)
+      .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
+      .order('node_revisions.timestamp DESC')
+      .uniq
   end
 
   def social_link(site)
