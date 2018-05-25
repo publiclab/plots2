@@ -1,7 +1,7 @@
 function addTag(tagname, selector) {
 
   selector = selector || '#tagform';
-  if (tagname.indexOf("place") != -1) {
+  if (tagname.indexOf("place") !== -1) {
     place = tagname.split(":")[1];
     place.replace("-", " ");
 
