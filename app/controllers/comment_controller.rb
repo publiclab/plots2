@@ -183,8 +183,8 @@ class CommentController < ApplicationController
     @user_id = params["user_id"].to_i
     comment = Comment.where(cid: @comment_id).first
     like = comment.likes.where(user_id: @user_id)
-    @is_liked = like.count>0
-    if like.count>0
+    @is_liked = like.count.positive?
+    if like.count.positive?
       like.first.destroy
     else
       comment.likes.create(user_id: @user_id)

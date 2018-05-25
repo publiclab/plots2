@@ -196,11 +196,11 @@ class Comment < ActiveRecord::Base
   end
 
   def liked_by(user_id)
-    self.likes.where(user_id: user_id).count > 0
+    likes.where(user_id: user_id).count > 0
   end
 
   def likers
-    User.where(id: self.likes.pluck(:user_id))
+    User.where(id: likes.pluck(:user_id))
   end
 
 end
