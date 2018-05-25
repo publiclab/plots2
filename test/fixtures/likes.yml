@@ -2,8 +2,10 @@
 
 one:
   likeable_id: 1
-  likeable_type: MyString
+  user_id: 1
+  likeable_type: "Comment"
 
 two:
   likeable_id: 1
-  likeable_type: MyString
+  user_id: 2
+  likeable_type: "Comment"
