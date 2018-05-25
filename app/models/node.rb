@@ -852,7 +852,7 @@ class Node < ActiveRecord::Base
       errors ? I18n.t('node.only_admins_can_lock') : false
     elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).length <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
-    elsif ["facebook", "github", "google", "twitter"].include? tagname.split(':')[0]
+    elsif ["oauth-facebook", "oauth-github", "oauth-google", "oauth-twitter"].include? tagname.split(':')[0]
       errors ? "Only Oauth can create such tags" : false
     else
       true

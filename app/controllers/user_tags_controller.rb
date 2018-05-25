@@ -23,7 +23,7 @@ class UserTagsController < ApplicationController
 
           unless exist
             user_tag = user.user_tags.build(value: name)
-            if ["facebook", "github", "google", "twitter"].include? tagname.split(':')[0]
+            if ["oauth-facebook", "oauth-github", "oauth-google", "oauth-twitter"].include? tagname.split(':')[0]
               @output[:errors] << "Only Oauth can create such tags"
             elsif user_tag.save
               @output[:saved] << [name, user_tag.id]
