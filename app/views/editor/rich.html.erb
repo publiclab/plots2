@@ -179,11 +179,12 @@
         <option selected value="">recent edits</option>
       </div>
       -->
-    </div>
-    <span style="color: black; font-weight: 500; margin-left: 40%; display: inline-flex;"> <input type="checkbox" id="myCheck" onclick="draftCheck()">&nbsp; Save as draft <span id="text" style="display:none; color:red; margin-left: 50px; ">  Your Research note would be saved as draft !</span>
-    </span>
+  </div>
 
+    <% if controller.action_name != "edit" && !current_user.first_time_poster %>
+    <span style="color: black; font-weight: 500; margin-left: 40%; display: inline-flex;"> <input type="checkbox" id="myCheck" onclick="draftCheck()">&nbsp; Save as draft <span id="text" style="display:none; color:red; margin-left: 50px; ">  Your Research note would be saved as draft !</span></span>
      <br />
+  <% end %>
 
     <button class="btn btn-lg btn-default btn-more">...</button>
 
