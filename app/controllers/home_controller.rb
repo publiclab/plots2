@@ -101,9 +101,9 @@ class HomeController < ApplicationController
     notes = notes.where('nid != (?)', blog.nid) if blog
 
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      notes = notes.where('(node.status = 1 OR node.status = 4)')
+      notes = notes.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
     elsif current_user
-      notes = notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
+      notes = notes.where('(node.status = 1 OR ((node.status = 3 OR node.status = 4) AND node.uid = ?))', current_user.uid)
     else
       notes = notes.where('node.status = 1')
     end
