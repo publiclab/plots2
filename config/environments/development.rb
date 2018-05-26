@@ -35,9 +35,11 @@ Plots2::Application.configure do
 
   config.action_mailer.delivery_method = :file
 
-   #force SSL
-  config.force_ssl = true
+  #force SSL
 
+  if config.ssl_port = 3001
+    config.use_ssl = true
+  end
   config.action_mailer.delivery_method = :letter_opener
 
   config.action_mailer.default_url_options = {
