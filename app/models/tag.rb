@@ -71,7 +71,7 @@ class Tag < ActiveRecord::Base
   end
 
   # finds highest viewcount nodes
-  def self.find_top_nodes_by_type(tagname, type = 'wiki', limit = 10)
+  def self.find_top_nodes_by_type(tagname:, type: 'wiki', limit: 10)
     Node.where(type: type)
         .where('term_data.name = ?', tagname)
         .order('node.views DESC')
