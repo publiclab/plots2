@@ -56,7 +56,8 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 6. Run `rake db:setup` to set up the database
 7. Install static assets (like external javascript libraries, fonts) with `bower install`
-8. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser. But if you are running OAuth then use 'passenger start --ssl --ssl-certificate localhost.crt --ssl-certificate-key localhost.key --ssl-port 3000' as it needs SSL.
+8. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
+But if you are willing to establish a secure connection in development mode then use 'passenger start --ssl --ssl-certificate localhost.crt --ssl-certificate-key localhost.key --ssl-port 3001'. Then open up https://localhost:3001. Add security exceptions from the advance settings of the browser. Secure connection is needed for OAuth etc.
 9. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
 10. Run `rake test` to confirm that your install is working properly.
 
