@@ -249,7 +249,7 @@ class AdminControllerTest < ActionController::TestCase
     # test general subscription notices
     # (we test the final one, but there are many)
     email = ActionMailer::Base.deliveries.last
-    assert_equal '[PublicLab] ' + node.title, email.subject
+    assert_equal "[PublicLab] #{node.title} (##{node.id}) ", email.subject
   end
 
   test "moderator user should not be able to publish a note if it's already published" do

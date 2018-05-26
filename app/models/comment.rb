@@ -212,6 +212,7 @@ class Comment < ActiveRecord::Base
         message_markdown = ReverseMarkdown.convert message.html_part.body.decoded
         message_id = message.message_id
         comment = node.add_comment(uid: user.uid, body: message_markdown, comment_via: 1, message_id: message_id)
+        comment.notify user
       end
     end
   end

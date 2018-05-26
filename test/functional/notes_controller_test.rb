@@ -223,7 +223,7 @@ class NotesControllerTest < ActionController::TestCase
     end
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal '[PublicLab] ' + title, email.subject
+    assert_equal '[PublicLab] ' + title + ' (#' + Node.last.id.to_s + ') ', email.subject
     assert_equal 1, Node.last.status
     assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
   end
