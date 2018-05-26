@@ -1,9 +1,6 @@
-require 'resque/server'
-
 Plots2::Application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
-  mount Resque::Server.new, at: '/resque'
 
   # Manually written API functions
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
