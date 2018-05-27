@@ -16,6 +16,8 @@ services:
       - ../dump:/docker-entrypoint-initdb.d
       # for importing a dump
       # if you want to re-import simply put away ../mysql/*
+  redis:
+    image: redis:latest
   web:
     build: .
     command: /bin/bash -c "sleep 5 && passenger start -p 4000"
@@ -27,3 +29,13 @@ services:
     ports:
       - "127.0.0.1:4000:4000"
     restart: unless-stopped
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+    environment:
+      - JOB_WORKER_URL=redis://redis:6379/0
