@@ -21,10 +21,16 @@ class UserTagsController < ApplicationController
             exist = true
           end
 
-          unless exist
+          unless exist 
             user_tag = user.user_tags.build(value: name)
-            if ["oauth-facebook", "oauth-github", "oauth-google", "oauth-twitter"].include? tagname.split(':')[0]
-              @output[:errors] << "Only Oauth can create such tags"
+            if  tagname.split(':')[0] == "oauth-facebook"
+              @output[:errors] << "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
+            elsif  tagname.split(':')[0] == "oauth-github"
+              @output[:errors] << "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
+            elsif  tagname.split(':')[0] ==  "oauth-google"
+              @output[:errors] << "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
+            elsif  tagname.split(':')[0] == "oauth-twitter"
+             @output[:errors] << "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
             elsif user_tag.save
               @output[:saved] << [name, user_tag.id]
             else
