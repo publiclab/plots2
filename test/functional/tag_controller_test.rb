@@ -156,13 +156,11 @@ class TagControllerTest < ActionController::TestCase
 
     assert :success
     assert_not_nil :tags
-
     json = ActiveSupport::JSON.decode(@response.body)
-
     assert_not_nil json
     assert !assigns['notes'].empty?
     node = Node.find tags(:spectrometer).nodes.first.nid
-    assert_equal node.nid,                  json.first['nid']
+    assert_equal node.nid,                  json.first['node']['nid']
     assert_equal node.body_preview,         json.first['preview']
     #assert_equal node.main_image,           json.first['image'] # this won't check anything bc there is no main image
     assert_equal node.tags.collect(&:name), json.first['tags']
@@ -494,7 +492,7 @@ class TagControllerTest < ActionController::TestCase
     get :rss_for_tagged_with_author, tagname: 'test*', authorname: 'jeff', format: 'rss'
     assert :success
     assert_not_nil :notes
-    assert_equal 'application/rss+xml', @response.content_type
+    assert_equal 'application/xml', @response.content_type
   end
 
   test 'should have active question tab for question for show_for_author' do
