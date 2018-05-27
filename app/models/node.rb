@@ -24,7 +24,7 @@ class Node < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query, order = :default)
+  def self.search(query:, order: :default, limit:)
     orderParam = {changed: :desc} if order == :default
     orderParam = {cached_likes: :desc} if order == :likes
     orderParam = {views: :desc} if order == :views
@@ -43,7 +43,8 @@ class Node < ActiveRecord::Base
       end
     else
       nodes = Node.limit(limit)
-        .where('title LIKE ?', '%' + input + '%', status: 1)
+        .where('title LIKE ?', '%' + query + '%')
+        .where(status: 1)
         .order(orderParam)
     end
   end

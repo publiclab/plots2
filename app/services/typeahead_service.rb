@@ -48,10 +48,9 @@ class TypeaheadService
   
   # default order is recency
   def nodes(input, limit = 5, order = :default)
-    Node.search(input, order)
+    Node.search(query: input, order: order, limit: 5)
       .group(:nid)
       .where('node.status': 1)
-      .limit(limit)
   end
 
   def notes(input, limit = 5, order = :default)
