@@ -658,8 +658,8 @@ class NotesControllerTest < ActionController::TestCase
   test 'draft should not be shown when no user' do
     node = nodes(:draft)
     post :show, id: '21',title: 'Draft note'
-    assert_redirected_to '/'
-    assert_equal "Only author can access the draft note", flash[:notice]
+    assert_redirected_to '/login'
+    assert_equal "You need to login to view the page", flash[:warning]
   end
 
   test 'draft should not be shown when user is not author' do
