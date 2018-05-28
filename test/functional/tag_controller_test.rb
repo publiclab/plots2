@@ -12,21 +12,23 @@ class TagControllerTest < ActionController::TestCase
   test 'add one or two tags' do
     UserSession.create(users(:bob))
 
-    post :create, name: 'mytag', nid: nodes(:one).nid, uid: users(:bob).id
+    post :create, params: { name: 'mytag', nid: nodes(:one).nid, uid: users(:bob).id }
 
     assert_equal 'mytag', assigns[:tags].last.name
     assert_redirected_to(nodes(:one).path)
 
     post :create,
+         params: {
          name: 'mysecondtag,mythirdtag',
          nid: nodes(:one).nid,
          uid: users(:bob).id
+         }
 
     assert_equal 'mysecondtag', assigns[:tags][assigns[:tags].length - 2].name
     assert_equal 'mythirdtag', assigns[:tags].last.name
     assert_redirected_to(nodes(:one).path)
 
-    xhr :post, :create, name: 'myfourthtag,myfifthtag', nid: nodes(:one).nid, uid: users(:bob).id
+    post :create, params: { name: 'myfourthtag,myfifthtag', nid: nodes(:one).nid, uid: users(:bob).id }, xhr: true
 
     assert_response :success
     assert_equal [['myfourthtag', Tag.find_by_name('myfourthtag').tid], ['myfifthtag', Tag.find_by_name('myfifthtag').tid]], JSON.parse(response.body)['saved']
@@ -46,8 +48,10 @@ class TagControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
 
     post :create,
+         params: { 
          name: 'my invalid tag $_',
          nid: nodes(:one).nid
+         }
 
     assert_redirected_to(nodes(:one).path)
     assert_equal 'Error: tags can only include letters, numbers, and dashes', assigns[:output][:errors][0]
@@ -57,8 +61,10 @@ class TagControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
 
     post :create,
+         params: { 
          name: 'with:bob',
          nid: nodes(:one).nid # authored by jeff, not bob
+         }
 
     assert_redirected_to(nodes(:one).path)
     assert_equal I18n.t('node.only_author_use_powertag'), assigns[:output][:errors][0]
@@ -68,8 +74,10 @@ class TagControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
 
     post :create,
+         params: {
          name: 'with:bob',
          nid: nodes(:one).nid # authored by jeff, not bob
+         }
 
     assert_redirected_to(nodes(:one).path)
     assert_equal 0, assigns[:output][:errors].length
@@ -80,18 +88,22 @@ class TagControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
 
     post :create,
+         params: {
          name: 'mytag',
          nid: nodes(:one).nid,
          uid: users(:bob)
+         }
 
     assert_redirected_to(nodes(:one).path)
 
     # 2nd identical tag:
 
     post :create,
+         params: {
          name: 'mytag',
          nid: nodes(:one).nid,
          uid: users(:bob)
+         }
 
     assert_redirected_to(nodes(:one).path)
     assert_equal 'Error: that tag already exists.', assigns[:output][:errors][0]
@@ -99,9 +111,11 @@ class TagControllerTest < ActionController::TestCase
 
   test 'add tag not logged in' do
     post :create,
+         params: {
          name: 'mytag',
          nid: nodes(:one).nid,
          uid: 1
+         }
 
     assert_redirected_to('/login')
   end
@@ -167,7 +181,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'wildcard tag show' do
-    get :show, id: 'question:*'
+    get :show, params: { id: 'question:*' }
     assert :success
     assert_not_nil :tags
     assert :wildcard
@@ -175,7 +189,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "wildcard tag show wiki pages" do
-    get :show, id: 'activities:*', node_type: 'wiki'
+    get :show, params: { id: 'activities:*', node_type: 'wiki' }
     assert :success
     assert_not_nil :tags
     assert :wildcard
@@ -186,13 +200,13 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'wildcard tag should list answered questions' do
-    get :show, id: 'question:*'
+    get :show, params: { id: 'question:*' }
 
     assert_not_nil assigns(:answered_questions)
   end
 
   test 'wildcard tag should have a active asked and an inactive answered tab for question' do
-    get :show, id: 'question:*'
+    get :show, params: { id: 'question:*' }
 
     selector = css_select '#asked-tab.active'
     assert_equal selector.size, 1
@@ -315,8 +329,10 @@ class TagControllerTest < ActionController::TestCase
       node = Node.where(type: 'note').last
 
       post :barnstar,
+           params: {
            nid: node.nid,
            star: 'basic'
+           }
 
       assert_equal "[@#{User.first.username}](/profile/#{User.first.username}) awards a <a href=\"//#{request.host}/wiki/barnstars\">barnstar</a> to #{node.author.name} for their awesome contribution!", Comment.last.body
     end
@@ -330,8 +346,10 @@ class TagControllerTest < ActionController::TestCase
     assert_difference 'Comment.count' do
       tagname = "with:#{user.name}"
       post :create,
+           params: {
            name: tagname,
            nid: node.id
+           }
 
       assert_equal " [@#{node.author.name}](/profile/#{node.author.name}) has marked #{tagname.split(':')[1]} as a co-author. ", Comment.last.body
     end
@@ -340,7 +358,7 @@ class TagControllerTest < ActionController::TestCase
   test 'should take node type as question if tag is a question tag' do
     tag = tags(:question)
 
-    get :show, id: tag.name
+    get :show, params: { id: tag.name }
 
     assert_equal 'questions', assigns(:node_type)
   end
@@ -356,7 +374,7 @@ class TagControllerTest < ActionController::TestCase
   test 'should list only question in question view' do
     tag = tags(:question)
 
-    get :show, id: tag.name
+    get :show, params: { id: tag.name }
 
     questions = assigns(:questions)
     expected = [nodes(:question), nodes(:question2)]
@@ -367,7 +385,7 @@ class TagControllerTest < ActionController::TestCase
   test 'should list only notes in notes view' do
     tag = tags(:test)
 
-    get :show, id: tag.name
+    get :show, params: { id: tag.name }
 
     notes = assigns(:notes)
     expected = [nodes(:one)]
@@ -378,7 +396,7 @@ class TagControllerTest < ActionController::TestCase
   test 'should have active Research tab for notes' do
     tag = tags(:test)
 
-    get :show, id: tag.name
+    get :show, params: { id: tag.name }
 
     selector = css_select "ul>li>a[href = '/tag/test']"
     assert_equal selector.size, 1
@@ -389,7 +407,7 @@ class TagControllerTest < ActionController::TestCase
   test 'should have active question tab for question' do
     tag = tags(:question)
 
-    get :show, id: tag.name
+    get :show, params: { id: tag.name }
     selector = css_select "ul>li>a[href = '/questions/tag/question:spectrometer']"
     assert_equal selector.size, 1
     selector = css_select '#questions.active'
@@ -399,7 +417,7 @@ class TagControllerTest < ActionController::TestCase
   test 'can create tag instance (community_tag) using a parent tag' do
     UserSession.create(users(:bob))
 
-    post :create, name: 'spectrometry', nid: nodes(:one).nid, uid: users(:bob).id
+    post :create, params: { name: 'spectrometry', nid: nodes(:one).nid, uid: users(:bob).id }
 
     assert_equal 'spectrometry', assigns[:tags].last.name
     assert_redirected_to(nodes(:one).path)
@@ -451,7 +469,7 @@ class TagControllerTest < ActionController::TestCase
     assert_equal '',             tags(:spectrometry).parent
     nodes(:blog).add_tag('spectrometry', users(:bob))
 
-    get :show, id: 'spectrometer'
+    get :show, params: { id: 'spectrometer' }
 
     assert_equal 1, assigns(:notes).length
     assert_not assigns(:notes).first.has_tag_without_aliasing('spectrometry')
@@ -459,7 +477,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'shows suggested tags' do
-    get :suggested, id: 'spectr'
+    get :suggested, params: { id: 'spectr' }
 
     assert_equal 4, assigns(:suggestions).length
     assert_equal ['question:spectrometer', 'spectrometer', 'activity:spectrometer', 'activities:spectrometer'], JSON.parse(response.body)
@@ -470,26 +488,26 @@ class TagControllerTest < ActionController::TestCase
       old_controller = @controller
       @controller = SettingsController.new
 
-      get :change_locale, locale: lang.to_s
+      get :change_locale, params: { locale: lang.to_s }
 
       @controller = old_controller
 
       UserSession.create(users(:bob))
-      post :create, name: 'mytag', nid: nodes(:one).nid, uid: users(:bob)
-      post :create, name: 'mytag', nid: nodes(:one).nid, uid: users(:bob)
+      post :create, params: { name: 'mytag', nid: nodes(:one).nid, uid: users(:bob) }
+      post :create, params: { name: 'mytag', nid: nodes(:one).nid, uid: users(:bob) }
       assert_equal I18n.t('tag_controller.tag_already_exists'), assigns[:output][:errors][0]
     end
   end
 
   test 'shows embeddable grid of tagged content' do
-    get :gridsEmbed, tagname: 'spectrometer'
+    get :gridsEmbed, params: { tagname: 'spectrometer' }
 
     assert_response :success
     assert_select 'table' # ensure a table is shown
   end
 
   test 'rss with tagname and authorname' do
-    get :rss_for_tagged_with_author, tagname: 'test*', authorname: 'jeff', format: 'rss'
+    get :rss_for_tagged_with_author, params: { tagname: 'test*', authorname: 'jeff', format: 'rss' }
     assert :success
     assert_not_nil :notes
     assert_equal 'application/xml', @response.content_type
@@ -497,7 +515,7 @@ class TagControllerTest < ActionController::TestCase
 
   test 'should have active question tab for question for show_for_author' do
     tag = tags(:question)
-    get :show_for_author, id: tag.name, author: 'jeff'
+    get :show_for_author, params: { id: tag.name, author: 'jeff' }
     selector = css_select "ul>li>a[href = '/questions/tag/question:spectrometer/author/jeff']"
     assert_equal selector.size, 1
     selector = css_select '#questions.active'
@@ -507,7 +525,7 @@ class TagControllerTest < ActionController::TestCase
   test 'should have a active asked and an inactive answered tab for question' do
     tag = tags(:question)
 
-    get :show_for_author, id: tag.name, author: 'jeff'
+    get :show_for_author, params: { id: tag.name, author: 'jeff' }
 
     selector = css_select '#asked-tab.active'
     assert_equal selector.size, 1
@@ -517,7 +535,7 @@ class TagControllerTest < ActionController::TestCase
   test 'should list answered questions' do
     tag = tags(:question)
 
-    get :show_for_author, id: tag.name, author: 'jeff'
+    get :show_for_author, params: { id: tag.name, author: 'jeff' }
 
     assert_not_nil assigns(:answered_questions)
   end
@@ -525,28 +543,28 @@ class TagControllerTest < ActionController::TestCase
   test 'should take node type as note if tag is not a question tag for show_for_author' do
     tag = tags(:awesome)
 
-    get :show_for_author, id: tag.name, author: 'jeff'
+    get :show_for_author, params: { id: tag.name, author: 'jeff' }
 
     assert_equal 'note', assigns(:node_type)
   end
 
   test "does not show wiki for show_for_author" do
-    get :show_for_author, id: 'question', node_type: 'wiki', author: 'jeff'
+    get :show_for_author, params: { id: 'question', node_type: 'wiki', author: 'jeff' }
     assert_equal true, assigns(:wikis).empty?
   end
 
   test "wildcard does not show wiki for show_for_author" do
-    get :show_for_author, id: 'question:*', node_type: 'wiki', author: 'jeff'
+    get :show_for_author, params: { id: 'question:*', node_type: 'wiki', author: 'jeff' }
     assert_equal true, assigns(:wikis).empty?
   end
 
   test "does not show note for show_for_author" do
-    get :show_for_author, id: 'question', author: 'jeff'
+    get :show_for_author, params: { id: 'question', author: 'jeff' }
     assert_equal true, assigns(:notes).empty?
   end
 
   test "wildcard does not show note for show_for_author" do
-    get :show_for_author, id: 'question:*', author: 'jeff'
+    get :show_for_author, params: { id: 'question:*', author: 'jeff' }
     assert_equal true, assigns(:notes).empty?
   end
 
@@ -556,7 +574,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test " does not show map for show_for_author" do
-    get :show_for_author, id: 'question', node_type: 'maps', author: 'jeff'
+    get :show_for_author, params: { id: 'question', node_type: 'maps', author: 'jeff' }
     assert_equal true, assigns(:nodes).empty?
   end
 

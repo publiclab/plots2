@@ -1,5 +1,5 @@
 class AnswerLikeController < ApplicationController
-  before_filter :require_user, only: :likes
+  before_action :require_user, only: :likes
 
   def show
     render json: Answer.find(params[:id]).cached_likes
