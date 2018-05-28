@@ -65,7 +65,7 @@ class LikeControllerTest < ActionController::TestCase
     note = Node.where(type: 'note', status: 1).first
     cached_likes = note.cached_likes
 
-    get :create, params: { id: note.id #first liked }
+    get :create, params: { id: note.id } #first liked 
 
     note = Node.find note.id
     cached_likes =  note.cached_likes
