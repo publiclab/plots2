@@ -14,7 +14,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'redirect note short url' do
     note = Node.where(type: 'note', status: 1).first
 
-    get :shortlink, id: note.id
+    get :shortlink, params: { id: note.id }
 
     assert_redirected_to note.path
   end
@@ -23,7 +23,7 @@ class NotesControllerTest < ActionController::TestCase
     note = Node.where(type: 'note', status: 1).first
     assert_not_nil note.id
 
-    get :show, id: note.id
+    get :show, params: { id: note.id }
 
     assert_response :success
   end
@@ -34,9 +34,11 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal 'nonexistent', note.power_tag('activity')
 
     get :show,
+        params: {
         author: note.author.name,
         date: Time.at(note.created).strftime('%m-%d-%Y'),
         id: note.title.parameterize
+        }
 
     assert_response :success
     assert_select '#other-activities', false
@@ -49,7 +51,7 @@ class NotesControllerTest < ActionController::TestCase
     comment.comment = 'Test **markdown** and http://links.com'
     comment.save!
 
-    get :show, id: node.id
+    get :show, params: { id: node.id }
 
     assert_select 'strong', 'markdown'
     assert_select 'a', 'http://links.com'
@@ -102,9 +104,11 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal blog.nid.to_s, note.power_tag('redirect')
 
     get :show,
+        params: {
         author: note.author.name,
         date: Time.at(note.created).strftime('%m-%d-%Y'),
         id: note.title.parameterize
+        }
 
     assert_redirected_to blog.path
   end
@@ -118,9 +122,11 @@ class NotesControllerTest < ActionController::TestCase
     UserSession.create(users(:jeff))
 
     get :show,
+        params: {
         author: note.author.name,
         date: Time.at(note.created).strftime('%m-%d-%Y'),
         id: note.title.parameterize
+        }
 
     assert_response :success
     assert_equal "Only moderators and admins see this page, as it is redirected to #{blog.title}.
@@ -134,9 +140,11 @@ class NotesControllerTest < ActionController::TestCase
     assert !Tag.where(name: 'activities:' + note.power_tag('activity')).empty?
 
     get :show,
+        params: {
         author: note.author.name,
         date: Time.at(note.created).strftime('%m-%d-%Y'),
         id: note.title.parameterize
+        }
 
     assert_response :success
     assert_select '#other-activities'
@@ -147,9 +155,11 @@ class NotesControllerTest < ActionController::TestCase
     note = nodes(:spam) # spam fixture
 
     get :show,
+        params: {
         author: note.author.name,
         date: Time.at(note.created).strftime('%m-%d-%Y'),
         id: note.title.parameterize
+        }
 
     assert_redirected_to '/'
   end
@@ -164,7 +174,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'should get raw note markup' do
     id = Node.where(type: 'note', status: 1).last.id
 
-    get :raw, id: id
+    get :raw, params: { id: id }
 
     assert_response :success
   end
@@ -172,7 +182,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'should show main image for node, returning blank image if it has none' do
     node = nodes(:one)
 
-    get :image, id: node.id
+    get :image, params: { id: node.id }
 
     assert_response :redirect
     assert_redirected_to 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
@@ -199,10 +209,11 @@ class NotesControllerTest < ActionController::TestCase
     title = 'My new post about balloon mapping'
 
     post :create,
-         id: users(:bob).id,
+         params: { id: users(:bob).id,
          title: title,
          body: 'This is a fascinating post about a balloon mapping event.',
          tags: 'balloon-mapping,event'
+         }
     # , main_image: "/images/testimage.jpg"
 
     assert_redirected_to('/login')
@@ -216,9 +227,10 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_difference 'ActionMailer::Base.deliveries.size', User.where(role: 'moderator').count do
       post :create,
-           title: title,
+           params: { title: title,
            body:  'This is a fascinating post about a balloon mapping event.',
            tags:  'balloon-mapping,event'
+           }
       # , main_image: "/images/testimage.jpg"
     end
 
@@ -233,9 +245,10 @@ class NotesControllerTest < ActionController::TestCase
     title = 'My first post to Public Lab'
 
     post :create,
-         title: title,
+         params: { title: title,
          body: 'This is a fascinating post about a balloon mapping event.',
          tags: 'balloon-mapping,event'
+         }
     # , :main_image => "/images/testimage.jpg"
 
     assert_equal "Success! Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so.", flash[:notice]
@@ -260,9 +273,11 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal 4, node.status
 
     get :show,
+        params: {
         author: node.author.username,
         date: node.created_at.strftime('%m-%d-%Y'),
         id: node.title.parameterize
+        }
 
     assert_redirected_to '/'
   end
@@ -273,9 +288,11 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal 4, node.status
 
     get :show,
+        params: {
         author: node.author.username,
         date: node.created_at.strftime('%m-%d-%Y'),
         id: node.title.parameterize
+        }
 
     assert_response :success
     assert_equal "Thank you for contributing open research, and thanks for your patience while your post is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published. In the meantime, if you have more to contribute, feel free to do so.", flash[:warning]
@@ -300,9 +317,11 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal 4, node.status
 
     get :show,
+        params: {
         author: node.author.username,
         date: node.created_at.strftime('%m-%d-%Y'),
         id: node.title.parameterize
+        }
 
     assert_response :success
     assert_equal "First-time poster <a href='/profile/#{node.author.name}'>#{node.author.name}</a> submitted this #{time_ago_in_words(node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{node.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{node.id}'>Spam</a>", flash[:warning]
@@ -325,8 +344,10 @@ class NotesControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
 
     post :create,
+         params: {
          body: 'This is a fascinating post about a balloon mapping event.',
          tags: 'balloon-mapping,event'
+         }
 
     assert_template 'editor/post'
     selector = css_select '.alert'
@@ -338,9 +359,11 @@ class NotesControllerTest < ActionController::TestCase
 
     xhr :post,
         :create,
+        params: {
         body: 'This is a fascinating post about a balloon mapping event.',
         title: 'A completely unique snowflake',
         tags: 'balloon-mapping,event'
+        }
 
     assert_response :success
     assert_not_nil @response.body
@@ -352,8 +375,10 @@ class NotesControllerTest < ActionController::TestCase
 
     xhr :post,
         :create,
+        params: {
         body: 'This is a fascinating post about a balloon mapping event.',
         tags: 'balloon-mapping,event'
+        }
 
     assert_response :success
     assert_not_nil @response.body
@@ -367,9 +392,11 @@ class NotesControllerTest < ActionController::TestCase
 
     xhr :post,
         :create,
+        params: {
         body: 'This is a fascinating post about a balloon mapping event.',
         title: '',
         tags: 'balloon-mapping,event'
+        }
 
     assert_response :success
     assert_not_nil @response.body
@@ -380,8 +407,10 @@ class NotesControllerTest < ActionController::TestCase
 
     xhr :post,
         :update,
+        params: {
         id: nodes(:blog).id,
         title: ''
+        }
 
     assert_response :success
     assert_not_nil @response.body
@@ -401,7 +430,7 @@ class NotesControllerTest < ActionController::TestCase
     comment.save
     node = nodes(:one).path.split('/')
 
-    get :show, id: node[4], author: node[2], date: node[3]
+    get :show, params: { id: node[4], author: node[2], date: node[3] }
 
     assert_select 'iframe[src=?]', 'http://mapknitter.org/embed/sattelite-imagery'
   end
@@ -422,9 +451,11 @@ class NotesControllerTest < ActionController::TestCase
     User.any_instance.stubs(:wiki_edit_streak).returns([9, 15])
     User.any_instance.stubs(:comment_streak).returns([10, 30])
     get :show,
+        params: {
         author: node.author.username,
         date: node.created_at.strftime('%m-%d-%Y'),
         id: node.title.parameterize
+        }
     selector = css_select '.fa-fire'
     assert_equal selector.size, 4
   end
@@ -433,10 +464,12 @@ class NotesControllerTest < ActionController::TestCase
     user = UserSession.create(users(:bob))
     title = 'How to use Spectrometer'
     post :create,
+         params: {
          title: title,
          body: 'Spectrometer question',
          tags: 'question:spectrometer',
          redirect: 'question'
+         }
     node = nodes(:blog)
     email = AdminMailer.notify_node_moderators(node)
     assert_emails 1 do
@@ -450,10 +483,12 @@ class NotesControllerTest < ActionController::TestCase
     UserSession.create(users(:jeff))
     title = 'My first question to Public Lab'
     post :create,
+         params: {
          title: title,
          body: 'Spectrometer question',
          tags: 'question:spectrometer',
          redirect: 'question'
+         }
 
     assert_redirected_to '/questions/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     assert_equal flash[:notice], 'Question published. In the meantime, if you have more to contribute, feel free to do so.'
@@ -463,8 +498,10 @@ class NotesControllerTest < ActionController::TestCase
     user = UserSession.create(users(:jeff))
     note = nodes(:blog)
     post :edit,
+         params: {
          id: note.nid,
          legacy: true
+         }
     assert_response :success
     assert_select 'input#taginput[value=?]', note.tagnames.join(',')
   end
@@ -474,8 +511,10 @@ class NotesControllerTest < ActionController::TestCase
     note = nodes(:question)
     note.add_tag('nice', users(:jeff))
     post :edit,
+         params: {
          id: note.nid,
          legacy: true
+         }
     assert_response :success
     assert_select 'input#taginput[value=?]', note.tagnames.join(',') + ',spectrometer' # for now, question subject is appended to end of form
   end
@@ -484,7 +523,9 @@ class NotesControllerTest < ActionController::TestCase
     user = UserSession.create(users(:jeff))
     note = nodes(:blog)
     post :edit,
+         params: {
          id: note.nid
+         }
     assert_response :success
     selector = css_select "input.form-control.input-lg[value='#{note.tagnames.join(',')}']"
     assert_equal selector.size, 1
@@ -495,7 +536,9 @@ class NotesControllerTest < ActionController::TestCase
     note = nodes(:question)
     note.add_tag('nice', users(:jeff))
     post :edit,
+         params: {
          id: note.nid
+         }
     assert_response :success
     selector = css_select "input.form-control.input-lg[value='#{note.tagnames.join(',')}']"
     assert_equal selector.size, 1
@@ -514,15 +557,17 @@ class NotesControllerTest < ActionController::TestCase
     node.add_tag('question:foo', users(:bob))
 
     post :update,
+         params: {
          id: node.nid,
          title: node.title + ' amended'
+         }
 
     assert_response :redirect
   end
 
   test 'should redirect to question path if node is a question when visiting shortlink' do
     node = nodes(:question)
-    get :shortlink, id: node.id
+    get :shortlink, params: { id: node.id}
     assert_redirected_to node.path(:question)
   end
 
@@ -530,9 +575,11 @@ class NotesControllerTest < ActionController::TestCase
     note = nodes(:question)
 
     get :show,
+        params: {
         author: note.author.name,
         date: Time.at(note.created).strftime('%m-%d-%Y'),
         id: note.title.parameterize
+        }
     assert_redirected_to note.path(:question)
   end
 
@@ -589,7 +636,7 @@ class NotesControllerTest < ActionController::TestCase
       old_controller = @controller
       @controller = SettingsController.new
 
-      get :change_locale, locale: lang.to_s
+      get :change_locale, params: { locale: lang.to_s } 
 
       @controller = old_controller
 
@@ -612,7 +659,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal 1,length
 
     assert_difference 'Node.count', -1 do
-      post :delete, id: node.nid
+      post :delete, params: {id: node.nid}
     end
 
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
@@ -625,7 +672,7 @@ class NotesControllerTest < ActionController::TestCase
     user = UserSession.create(users(:jeff))
 
     assert_no_difference 'Node.count' do
-      get :delete, id: node.nid
+      get :delete, params: { id: node.nid }
     end
 
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
@@ -635,7 +682,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'title change feature in comments when author is logged in' do
     UserSession.create(users(:jeff))
     node = nodes(:one)
-    post :update_title, id: '1',title: 'changed title'
+    post :update_title, params: { id: '1',title: 'changed title' }
     assert_redirected_to node.path+"#comments"
     assert_equal node.reload.title, 'changed title'
   end
@@ -643,7 +690,7 @@ class NotesControllerTest < ActionController::TestCase
   # should not change title
   test 'title change feature in comments when author is not logged in' do
     node = nodes(:one)
-    post :update_title, id: '1',title: 'changed title'
+    post :update_title, params: { id: '1',title: 'changed title' }
     assert_redirected_to node.path+"#comments"
     assert_equal I18n.t('notes_controller.author_can_edit_note'), flash[:error]
     assert_equal node.reload.title, node.title
@@ -657,7 +704,7 @@ class NotesControllerTest < ActionController::TestCase
 
   test 'draft should not be shown when no user' do
     node = nodes(:draft)
-    post :show, id: '21',title: 'Draft note'
+    post :show, params: { id: '21',title: 'Draft note' }
     assert_redirected_to '/login'
     assert_equal "You need to login to view the page", flash[:warning]
   end
@@ -665,7 +712,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'draft should not be shown when user is not author' do
     node = nodes(:draft)
     UserSession.create(users(:test_user))
-    post :show, id: '21',title: 'Draft note'
+    post :show, params: { id: '21',title: 'Draft note' }
     assert_redirected_to '/'
     assert_equal "Only author can access the draft note", flash[:notice]
   end
@@ -680,7 +727,7 @@ class NotesControllerTest < ActionController::TestCase
     answer2.save
     n_count = Node.count
 
-    xhr :post, :delete, id: node.id
+    xhr :post, :delete, params: { id: node.id }
 
     assert_response :success
     assert_equal Node.count, n_count - 1
