@@ -71,9 +71,11 @@ class NotesControllerTest < ActionController::TestCase
     # assert_difference 'note.views', 1 do
     assert_difference 'Impression.count', 1 do
       get :show,
+          params: {
           author: note.author.name,
           date: Time.at(note.created).strftime('%m-%d-%Y'),
           id: note.title.parameterize
+          }
     end
 
     assert_equal '0.0.0.0', Impression.last.ip_address
@@ -81,9 +83,11 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_difference 'note.totalviews', 1 do
       get :show,
+          params: {
           author: note.author.name,
           date: Time.at(note.created).strftime('%m-%d-%Y'),
           id: note.title.parameterize
+          }
     end
 
     assert_equal 2, note.totalviews
@@ -91,9 +95,11 @@ class NotesControllerTest < ActionController::TestCase
     # same IP won't add to views twice
     assert_difference 'note.totalviews', 0 do
       get :show,
+          params: {
           author: note.author.name,
           date: Time.at(note.created).strftime('%m-%d-%Y'),
           id: note.title.parameterize
+          }
     end
   end
 
@@ -357,13 +363,12 @@ class NotesControllerTest < ActionController::TestCase
   test 'posting note successfully with no errors using xhr (rich editor)' do
     UserSession.create(users(:bob))
 
-    xhr :post,
-        :create,
+    post :create,
         params: {
         body: 'This is a fascinating post about a balloon mapping event.',
         title: 'A completely unique snowflake',
         tags: 'balloon-mapping,event'
-        }
+        }, xhr: true
 
     assert_response :success
     assert_not_nil @response.body
@@ -373,12 +378,11 @@ class NotesControllerTest < ActionController::TestCase
   test 'post_note_error_no_title_xhr' do
     UserSession.create(users(:bob))
 
-    xhr :post,
-        :create,
+    post :create,
         params: {
         body: 'This is a fascinating post about a balloon mapping event.',
         tags: 'balloon-mapping,event'
-        }
+        }, xhr: true
 
     assert_response :success
     assert_not_nil @response.body
@@ -390,13 +394,12 @@ class NotesControllerTest < ActionController::TestCase
   test 'posting note with an error using xhr (rich editor) returns a JSON error' do
     UserSession.create(users(:bob))
 
-    xhr :post,
-        :create,
+    post :create,
         params: {
         body: 'This is a fascinating post about a balloon mapping event.',
         title: '',
         tags: 'balloon-mapping,event'
-        }
+        }, xhr: true
 
     assert_response :success
     assert_not_nil @response.body
@@ -405,12 +408,11 @@ class NotesControllerTest < ActionController::TestCase
   test 'returning json errors on xhr note update' do
     user = UserSession.create(users(:jeff))
 
-    xhr :post,
-        :update,
+    post :update,
         params: {
         id: nodes(:blog).id,
         title: ''
-        }
+        }, xhr: true
 
     assert_response :success
     assert_not_nil @response.body
@@ -727,7 +729,7 @@ class NotesControllerTest < ActionController::TestCase
     answer2.save
     n_count = Node.count
 
-    xhr :post, :delete, params: { id: node.id }
+    post :delete, params: { id: node.id }, xhr: true
 
     assert_response :success
     assert_equal Node.count, n_count - 1

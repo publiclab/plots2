@@ -40,7 +40,7 @@ class NotesController < ApplicationController
   # display a revision, raw
   def raw
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
-    render text: Node.find(params[:id]).latest.body
+    render plain: Node.find(params[:id]).latest.body
   end
 
   def show
@@ -139,7 +139,7 @@ class NotesController < ApplicationController
           redirect_to @node.path(:question)
         else
           if request.xhr? # rich editor!
-            render text: @node.path
+            render plain: @node.path
           else
             redirect_to @node.path
           end
@@ -252,7 +252,7 @@ class NotesController < ApplicationController
         respond_with do |format|
           format.html do
             if request.xhr?
-              render text: I18n.t('notes_controller.content_deleted')
+              render plain: I18n.t('notes_controller.content_deleted')
             else
               flash[:notice] = I18n.t('notes_controller.content_deleted')
               redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
