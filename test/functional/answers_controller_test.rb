@@ -10,7 +10,7 @@ class AnswersControllerTest < ActionController::TestCase
     node = nodes(:question)
     initial_mail_count = ActionMailer::Base.deliveries.size
     assert_difference 'Answer.count' do
-    xhr :post, :create, params: { nid: node.nid, body: 'Sample answer'}
+    post :create, params: { nid: node.nid, body: 'Sample answer'}, xhr: true
     end
     assert_not_equal initial_mail_count, ActionMailer::Base.deliveries.size
     assert ActionMailer::Base.deliveries.collect(&:to).include?([node.author.mail])
@@ -30,7 +30,7 @@ class AnswersControllerTest < ActionController::TestCase
     node = nodes(:question)
     initial_mail_count = ActionMailer::Base.deliveries.size
     assert_difference 'Answer.count' do
-      xhr :post, :create, params: { nid: node.nid, body: 'Sample answer by the current user'}
+    post :create, params: { nid: node.nid, body: 'Sample answer by the current user'}, xhr: true
     end
 
     user_with_everything_tag = users(:moderator)
@@ -59,7 +59,7 @@ class AnswersControllerTest < ActionController::TestCase
     UserSession.create(users(:jeff))
     answer = answers(:one)
     assert_difference 'Answer.count', -1 do
-      xhr :get, :delete, id: answer.id
+      get :delete, params: { id: answer.id }, xhr: true
     end
     assert_response :success
   end
@@ -68,7 +68,7 @@ class AnswersControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     answer = answers(:one)
     assert_difference 'Answer.count', -1 do
-      xhr :get, :delete, id: answer.id
+      get :delete, params: { id: answer.id }, xhr: true
     end
     assert_response :success
   end
@@ -77,7 +77,7 @@ class AnswersControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     answer = answers(:one)
     assert_difference 'Answer.count', -1 do
-      xhr :get, :delete, id: answer.id
+      get :delete, params: { id: answer.id }, xhr: true
     end
     assert_response :success
   end
@@ -86,7 +86,7 @@ class AnswersControllerTest < ActionController::TestCase
     UserSession.create(users(:moderator))
     answer = answers(:one)
     assert_difference 'Answer.count', -1 do
-      xhr :get, :delete, id: answer.id
+      get :delete, params: { id: answer.id }, xhr: true
     end
     assert_response :success
   end
@@ -95,7 +95,7 @@ class AnswersControllerTest < ActionController::TestCase
     UserSession.create(users(:newcomer))
     answer = answers(:one)
     assert_no_difference 'Answer.count' do
-      xhr :get, :delete, id: answer.id
+      get, :delete, params: { id: answer.id }, xhr: true
     end
     assert_redirected_to '/login'
     assert_equal 'Only the answer or question author can delete this answer', flash[:warning]
@@ -105,7 +105,7 @@ class AnswersControllerTest < ActionController::TestCase
     UserSession.create(users(:jeff))
     answer = answers(:one)
     assert !answer.accepted
-    xhr :get, :accept, id: answer.id
+    get :accept, params: { id: answer.id }, xhr: true
     answer.reload
     assert_response :success
     assert answer.accepted
@@ -115,7 +115,7 @@ class AnswersControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     answer = answers(:one)
     assert !answer.accepted
-    xhr :get, :accept, id: answer.id
+    get :accept, params: { id: answer.id }, xhr: true
     answer.reload
     assert !answer.accepted
     assert_equal "Answer couldn't be accepted", response.body
@@ -127,7 +127,7 @@ class AnswersControllerTest < ActionController::TestCase
     answer.accepted = false
     answer.save
     assert !answer.accepted
-    xhr :get, :accept, id: answer.id
+    get :accept, params: { id: answer.id }, xhr: true
     answer.reload
     assert_response :success
     assert answer.accepted
@@ -140,7 +140,7 @@ class AnswersControllerTest < ActionController::TestCase
     a = Answer.count
     b = Node.count
 
-    xhr :post, :delete, id: answer.id
+    post :delete, params: { id: answer.id }, xhr: true
 
     assert_equal Answer.count ,a - 1
     assert_equal Node.count,b
