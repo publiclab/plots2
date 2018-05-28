@@ -95,7 +95,7 @@ class AnswersControllerTest < ActionController::TestCase
     UserSession.create(users(:newcomer))
     answer = answers(:one)
     assert_no_difference 'Answer.count' do
-      get, :delete, params: { id: answer.id }, xhr: true
+      get :delete, params: { id: answer.id }, xhr: true
     end
     assert_redirected_to '/login'
     assert_equal 'Only the answer or question author can delete this answer', flash[:warning]
