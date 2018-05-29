@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :require_user, only: %i(subscriptions nearby)
+  before_action :require_user, only: %i(subscriptions nearby)
 
   # caches_action :index, :cache_path => proc { |c|
   #  node = Node.find :last #c.params[:id]

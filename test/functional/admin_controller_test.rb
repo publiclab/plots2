@@ -29,7 +29,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'admin should promote user role to admin' do
     UserSession.create(users(:jeff))
     user = users(:bob)
-    get :promote_admin, id: user.id
+    get :promote_admin, params: { id: user.id }
     assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now an admin.", flash[:notice]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
@@ -37,7 +37,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'admin should promote user role to moderator' do
     UserSession.create(users(:jeff))
     user = users(:bob)
-    get :promote_moderator, id: user.id
+    get :promote_moderator, params: { id: user.id }
     assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now a moderator.", flash[:notice]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
@@ -45,7 +45,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'moderator should promote user role to moderator' do
     UserSession.create(users(:moderator))
     user = users(:jeff)
-    get :promote_moderator, id: user.id
+    get :promote_moderator, params: { id: user.id }
     assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now a moderator.", flash[:notice]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
@@ -53,7 +53,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'user should not promote other user role to moderator' do
     UserSession.create(users(:bob))
     user = users(:jeff)
-    get :promote_moderator, id: user.id
+    get :promote_moderator, params: { id: user.id }
     assert_equal 'Only moderators can promote other users.', flash[:error]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
@@ -61,7 +61,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'user should not promote other user role to admin' do
     UserSession.create(users(:bob))
     user = users(:moderator)
-    get :promote_admin, id: user.id
+    get :promote_admin, params: { id: user.id }
     assert_equal 'Only admins can promote other users to admins.', flash[:error]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
@@ -69,7 +69,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'admin should demote moderator role to basic' do
     UserSession.create(users(:admin))
     user = users(:moderator)
-    get :demote_basic, id: user.id
+    get :demote_basic, params: { id: user.id }
     assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is no longer a moderator.", flash[:notice]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
@@ -77,7 +77,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'user should not demote other moderator role to basic' do
     UserSession.create(users(:bob))
     user = users(:moderator)
-    get :demote_basic, id: user.id
+    get :demote_basic, params: { id: user.id }
     assert_equal 'Only admins and moderators can demote other users.', flash[:error]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
@@ -85,7 +85,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'admin should be able to force reset user password' do
     UserSession.create(users(:admin))
     user = users(:bob)
-    get :reset_user_password, id: user.id, email: user.email 
+    get :reset_user_password, params: { id: user.id, email: user.email }
 
 	#Testing whether email has been sent or not
  	email = ActionMailer::Base.deliveries.last
@@ -134,7 +134,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     UserSession.find.destroy
 
-    get :mark_spam, id: nodes(:one).id
+    get :mark_spam, params: { id: nodes(:one).id }
 
     assert_equal 'Only moderators can moderate posts.', flash[:error]
     node = assigns(:node)
@@ -145,7 +145,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'normal user should not be able to mark a node as spam' do
     UserSession.create(users(:bob))
 
-    get :mark_spam, id: nodes(:one).id
+    get :mark_spam, params: { id: nodes(:one).id }
 
     assert_equal 'Only moderators can moderate posts.', flash[:error]
     node = assigns(:node)
@@ -157,7 +157,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:moderator))
     node = nodes(:spam).publish
 
-    get :mark_spam, id: node.id
+    get :mark_spam, params: { id: node.id }
 
     assert_equal "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
     node = assigns(:node)
@@ -177,7 +177,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     node = nodes(:spam).publish
 
-    get :mark_spam, id: node.id
+    get :mark_spam, params: { id: node.id }
     user = users(:moderator)
     email = AdminMailer.notify_moderators_of_spam(node, user)
     assert_emails 1 do
@@ -201,7 +201,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     assert_equal 0, nodes(:spam).status
 
-    get :mark_spam, id: nodes(:spam).id
+    get :mark_spam, params: { id: nodes(:spam).id }
 
     assert_equal "Item already marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
     assert_equal 0, nodes(:spam).status
@@ -211,7 +211,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'normal user should not be able to unspam a note' do
     UserSession.create(users(:bob))
 
-    get :publish, id: nodes(:spam).id
+    get :publish, params: { id: nodes(:spam).id }
 
     assert_equal 'Only moderators can publish posts.', flash[:error]
     assert_equal 0, nodes(:spam).status
@@ -224,7 +224,7 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal 4, node.status
     ActionMailer::Base.deliveries.clear
 
-    get :publish, id: nodes(:first_timer_note).id
+    get :publish, params: { id: nodes(:first_timer_note).id }
 
     assert_equal "Post approved and published after #{time_ago_in_words(node.created_at)} in moderation. Now reach out to the new community member; thank them, just say hello, or help them revise/format their post in the comments.", flash[:notice]
     node = assigns(:node)
@@ -257,7 +257,7 @@ class AdminControllerTest < ActionController::TestCase
     node = nodes(:one)
     assert_equal 1, node.status
 
-    get :publish, id: node.id
+    get :publish, params: { id: node.id }
 
     assert_equal 'Item already published.', flash[:notice]
     assert_equal 1, node.status
@@ -269,7 +269,7 @@ class AdminControllerTest < ActionController::TestCase
     node = nodes(:spam)
     assert_equal 0, node.status
 
-    get :publish, id: node.id
+    get :publish, params: { id: node.id }
 
     assert_equal 'Item published.', flash[:notice]
     node = assigns(:node)
@@ -281,7 +281,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'admin user should be able to unspam a note' do
     UserSession.create(users(:admin))
 
-    get :publish, id: nodes(:spam).id
+    get :publish, params: { id: nodes(:spam).id }
 
     assert_equal 'Item published.', flash[:notice]
     node = assigns(:node)
@@ -332,7 +332,7 @@ class AdminControllerTest < ActionController::TestCase
     revision = revisions(:unmoderated_spam_revision)
     assert_equal nodes(:spam_targeted_page).latest.vid, revision.vid
 
-    get :mark_spam_revision, vid: revision.vid
+    get :mark_spam_revision, params: { vid: revision.vid }
 
     assert_equal "Item marked as spam and author banned. You can undo this on the <a href='/spam/revisions'>spam moderation page</a>.", flash[:notice]
     revision = assigns(:revision)
@@ -349,7 +349,7 @@ class AdminControllerTest < ActionController::TestCase
     revision.spam
     assert_not_equal nodes(:spam_targeted_page).latest.vid, revision.vid
 
-    get :publish_revision, vid: revision.vid
+    get :publish_revision, params: { vid: revision.vid }
 
     assert_equal 'Item published.', flash[:notice]
     revision = assigns(:revision)
@@ -364,7 +364,7 @@ class AdminControllerTest < ActionController::TestCase
     node = nodes(:first_timer_note)
     ActionMailer::Base.deliveries.clear
 
-    get :mark_spam, id: node.id
+    get :mark_spam, params: { id: node.id }
 
     assert_equal "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
 
@@ -400,7 +400,7 @@ class AdminControllerTest < ActionController::TestCase
     user = users(:moderator)
     assert_equal 4, node.status
 
-    get :publish, id: nodes(:first_timer_question).id
+    get :publish, params: { id: nodes(:first_timer_question).id }
     assert_emails 3 do
         AdminMailer.notify_author_of_approval(node, user).deliver_now
         AdminMailer.notify_moderators_of_approval(node, user).deliver_now
@@ -418,7 +418,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:moderator))
     comment = comments(:first)
 
-    post :mark_comment_spam, id: comment.id
+    post :mark_comment_spam, params: { id: comment.id }
 
     comment = assigns(:comment)
     assert_equal 0, comment.status
@@ -430,7 +430,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     comment = comments(:first)
 
-    post :mark_comment_spam, id: comment.id
+    post :mark_comment_spam, params: { id: comment.id }
 
     comment = assigns(:comment)
     assert_equal 0, comment.status
@@ -441,7 +441,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'should not mark comment as spam if no user' do
     comment = comments(:first)
 
-    post :mark_comment_spam, id: comment.id
+    post :mark_comment_spam, params: { id: comment.id } 
 
     assert_redirected_to '/login'
   end
@@ -450,7 +450,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     comment = comments(:first)
 
-    post :mark_comment_spam, id: comment.id
+    post :mark_comment_spam, params: { id: comment.id } 
 
     comment = assigns(:comment)
     assert_equal 1, comment.status
@@ -462,7 +462,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     comment = comments(:spam_comment)
 
-    post :mark_comment_spam, id: comment.id
+    post :mark_comment_spam, params: { id: comment.id }
 
     comment = assigns(:comment)
     assert_equal 0, comment.status
@@ -474,7 +474,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     comment = comments(:spam_comment)
     node = comment.node
-    post :publish_comment, id: comment.id
+    post :publish_comment, params: { id: comment.id }
 
     comment = assigns(:comment)
     assert_equal 1, comment.status
@@ -486,7 +486,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:moderator))
     comment = comments(:spam_comment)
     node = comment.node
-    post :publish_comment, id: comment.id
+    post :publish_comment, params: { id: comment.id }
 
     comment = assigns(:comment)
     assert_equal 1, comment.status
@@ -497,7 +497,7 @@ class AdminControllerTest < ActionController::TestCase
   test 'should login if want to publish comment from spam' do
     comment = comments(:spam_comment)
 
-    post :publish_comment, id: comment.id
+    post :publish_comment, params: { id: comment.id }
 
     assert_equal 0, comment.status
     assert_redirected_to '/login'
@@ -508,7 +508,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = comments(:spam_comment)
     node = comment.node
 
-    post :publish_comment, id: comment.id
+    post :publish_comment, params: { id: comment.id } 
 
     assert_equal 0, comment.status
     assert_equal "Only moderators can publish comments.", flash[:error]
@@ -520,7 +520,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = comments(:first)
     node = comment.node
 
-    post :publish_comment, id: comment.id
+    post :publish_comment, params: { id: comment.id }
 
     assert_equal 1, comment.status
     assert_equal "Comment already published.", flash[:notice]
