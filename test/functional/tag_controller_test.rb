@@ -38,7 +38,9 @@ class TagControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
 
     get :contributors,
+        params: { 
         id: 'question:*'
+        }
 
     assert_template :contributors
     assert_select 'p', text: "No contributors for that tag; try searching for 'question:*':"
@@ -131,7 +133,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'tag search' do
-    get :index , :search => "featured"
+    get :index , params: { :search => "featured" }
 
     assert :success
     assert assigns(:tags).length > 0
@@ -139,7 +141,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'tag show' do
-    get :show, id: tags(:spectrometer).name
+    get :show, params: { id: tags(:spectrometer).name }
 
     assert :success
     assert_not_nil :tags
@@ -157,16 +159,16 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'tag show range' do
-    get :show, id: tags(:spectrometer).name,
+    get :show, params: { id: tags(:spectrometer).name,
                start: (Time.now - 1.day).strftime('%d-%m-%Y'),
-               end: Time.now.strftime('%d-%m-%Y')
+               end: Time.now.strftime('%d-%m-%Y') }
 
     assert :success
     assert_not_nil :tags
   end
 
   test 'tag show JSON' do
-    get :show, id: tags(:spectrometer).name, format: 'json'
+    get :show, params: { id: tags(:spectrometer).name, format: 'json' }
 
     assert :success
     assert_not_nil :tags
@@ -214,7 +216,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "wildcard tag show wiki pages with author" do
-    get :show_for_author, node_type: 'wiki', id: 'awes*', author: 'Bob'
+    get :show_for_author, params: { node_type: 'wiki', id: 'awes*', author: 'Bob' }
     assert :success
     assert_not_nil :tags
     assert assigns(:wildcard)
@@ -229,7 +231,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "tag show wiki pages with author" do
-    get :show, node_type: 'wiki', id: 'awesome', author: 'Bob'
+    get :show, params: { node_type: 'wiki', id: 'awesome', author: 'Bob' }
     assert :success
     assert_not_nil :tags
     assert_nil assigns(:wildcard)
@@ -243,20 +245,20 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "wildcard does not show wiki" do
-    get :show, id: 'question:*', node_type: 'wiki'
+    get :show, params: { id: 'question:*', node_type: 'wiki' }
     assert_equal true, assigns(:wikis).empty?
   end
 
   test "should show a featured wiki page at top, if it exists" do
     tag = tags(:test)
 
-    get :show, id: nodes(:organizers).slug
+    get :show, params: { id: nodes(:organizers).slug }
 
     assert_select '#wiki-content', 1
   end
 
   test 'show note with author and tagname without wildcard' do
-    get :show_for_author, id: 'test', author: 'jeff'
+    get :show_for_author, params: { id: 'test', author: 'jeff' }
     assert_response :success
     assert_not_nil :tags
     assert_not_nil :authors
@@ -271,7 +273,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'show note with author and tagname with wildcard' do
-    get :show_for_author, id: 'test*', author: 'jeff'
+    get :show_for_author, params: { id: 'test*', author: 'jeff' }
     assert_response :success
     assert_not_nil :tags
     assert_not_nil :authors
@@ -287,33 +289,33 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'tag widget' do
-    get :widget, id: Tag.last.name
+    get :widget, params: { id: Tag.last.name }
     assert :success
     assert_not_nil :notes
   end
 
   test 'tag blog' do
-    get :blog, id: Tag.last.name
+    get :blog, params: { id: Tag.last.name }
     assert :success
     assert_not_nil :notes
     assert_not_nil :tags
   end
 
   test 'tag author' do
-    get :author, id: User.last.username
+    get :author, params: { id: User.last.username }
 
     assert :success
   end
 
   test 'tag rss' do
-    get :rss, tagname: Tag.last.name, format: 'rss'
+    get :rss, params: { tagname: Tag.last.name, format: 'rss' }
 
     assert :success
     assert_not_nil :notes
   end
 
   test 'tag contributors' do
-    get :contributors, id: Tag.last.name
+    get :contributors, params: { id: Tag.last.name }
 
     assert :success
     assert_not_nil :notes
@@ -366,7 +368,7 @@ class TagControllerTest < ActionController::TestCase
   test 'should take node type as note if tag is not a question tag' do
     tag = tags(:awesome)
 
-    get :show, id: tag.name
+    get :show, params: { id: tag.name }
 
     assert_equal 'note', assigns(:node_type)
   end
@@ -436,7 +438,7 @@ class TagControllerTest < ActionController::TestCase
     nodes(:blog).add_tag('spectrometry', users(:bob))
     assert nodes(:blog).has_tag_without_aliasing('spectrometry')
 
-    get :show, id: 'spectrometry'
+    get :show, params: { id: 'spectrometry' }
 
     # order of timestamps during testing (almost same timestamps) was causing testing irregularities
     notes = assigns(:notes).sort_by(&:title).reverse
@@ -569,7 +571,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test "wildcard does not show map for show_for_author" do
-    get :show_for_author, id: 'question:*', node_type: 'maps', author: 'jeff'
+    get :show_for_author, params: { id: 'question:*', node_type: 'maps', author: 'jeff' }
     assert_equal true, assigns(:nodes).empty?
   end
 

@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
   respond_to :html
-  before_filter :require_user, only: %i(create edit update delete rsvp)
+  before_action :require_user, only: %i(create edit update delete rsvp)
 
   def index
     @title = I18n.t('notes_controller.research_notes')
