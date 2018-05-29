@@ -3,7 +3,7 @@
 en:
   wiki:
     show:
-     page_has_no_tags: "This page has no tags yet; help connect it to other content by <a href='javascript: document.querySelector('.tag-input').focus();'>adding descriptive tags below</a>"
+     page_has_no_tags: "This page has no tags yet; help connect it to other content by <a href='%{url}'>adding descriptive tags below</a>"
      revision_from: "This is a revision from %{time}."                                                    
      view_all_revisions: "View all revisions"
      views: "views"
