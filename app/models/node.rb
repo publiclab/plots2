@@ -98,7 +98,7 @@ class Node < ActiveRecord::Base
 
   before_save :set_changed_and_created
   after_create :setup
-  before_validation :set_path, on: :create
+  before_validation :set_path_and_slug, on: :create
 
   # can switch to a "question-style" path if specified
   def path(type = :default)
@@ -127,8 +127,9 @@ class Node < ActiveRecord::Base
 
   private
 
-  def set_path
+  def set_path_and_slug
     self.path = generate_path if path.blank? && !title.blank?
+    self.slug = self.path.split('/').last unless self.path.blank?
   end
 
   def set_changed_and_created
