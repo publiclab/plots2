@@ -1,7 +1,7 @@
 require 'rss'
 
 class WikiController < ApplicationController
-  before_filter :require_user, only: %i(new create edit update delete replace)
+  before_action :require_user, only: %i(new create edit update delete replace)
 
   def subdomain
     url = "//#{request.host}/wiki/"
@@ -92,7 +92,7 @@ class WikiController < ApplicationController
   # display a revision, raw
   def raw
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
-    render text: Revision.find(params[:id]).body
+    render plain: Revision.find(params[:id]).body
   end
 
   def edit

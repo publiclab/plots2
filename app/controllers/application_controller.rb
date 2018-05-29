@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user_session, :current_user, :prompt_login, :sidebar
 
-  before_filter :set_locale
+  before_action :set_locale
 
   private
 
