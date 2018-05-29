@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
+  has_many :likes
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
