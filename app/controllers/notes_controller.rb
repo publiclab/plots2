@@ -106,7 +106,6 @@ class NotesController < ApplicationController
                                               main_image: params[:main_image])
 
       if params[:draft] == "true"
-        flash[:notice] = "Draft:  #{params[:draft]}"
         @node.draft
       end
 
