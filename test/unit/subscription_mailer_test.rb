@@ -79,7 +79,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
     assert_equal ["do-not-reply@#{request_host}"], email.to
-    assert_equal email.bcc.include?(users_to_email.last.email)
+    assert email.bcc.include?(users_to_email.last.email)
     assert_equal "Added: #{node.title}", email.subject
     assert email.body.include?("was tagged with")
   end
