@@ -21,7 +21,7 @@ class CommentControllerTest < ActionController::TestCase
   test 'should create note comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
-      xhr :post, :create, params: { id: nodes(:one).nid, body: 'Notes comment' }
+      post :create, params: { id: nodes(:one).nid, body: 'Notes comment' }, xhr: true
     end
     assert_response :success
     assert_not_nil :comment
@@ -31,7 +31,7 @@ class CommentControllerTest < ActionController::TestCase
   test 'should create question comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
-      xhr :post, :create, params: { id: nodes(:question).nid, body: 'Questions comment', type: 'question' }
+      post :create, params: { id: nodes(:question).nid, body: 'Questions comment', type: 'question' }, xhr: true
     end
     assert_response :success
     assert_not_nil :comment
@@ -42,7 +42,7 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
       assert_difference "nodes(:wiki_page).comments.count" do
-        xhr :post, :create, params: { id: nodes(:wiki_page).nid, body: 'Wiki comment' }
+        post, :create, params: { id: nodes(:wiki_page).nid, body: 'Wiki comment' }, xhr: true
       end
     end
     assert_response :success
@@ -62,8 +62,10 @@ class CommentControllerTest < ActionController::TestCase
   test 'should show error if node comment not saved' do
     UserSession.create(users(:bob))
     assert_no_difference 'Comment.count' do
-      xhr :post, :create,
+      post, :create,
+          params: {
           id: nodes(:one).nid
+          }, xhr: true
     end
     assert_equal flash[:error], 'The comment could not be saved.'
     assert_equal 'failure', @response.body
@@ -72,9 +74,11 @@ class CommentControllerTest < ActionController::TestCase
   test 'should create answer comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
-      xhr :post, :answer_create,
+      post :answer_create,
+          params: {
           aid: answers(:one).id,
           body: 'Answers comment'
+          }, xhr: true
     end
     assert_response :success
     assert_not_nil :comment
@@ -84,8 +88,10 @@ class CommentControllerTest < ActionController::TestCase
   test 'should show error if answer comment not saved' do
     UserSession.create(users(:bob))
     assert_no_difference 'Comment.count' do
-      xhr :post, :answer_create,
+      post :answer_create,
+          params: {
           aid: answers(:one).id
+          }, xhr: true
     end
     assert_equal flash[:error], 'The comment could not be saved.'
     assert_equal 'failure', @response.body
@@ -128,7 +134,9 @@ class CommentControllerTest < ActionController::TestCase
     comment = comments(:first)
     new_comment_body = ''
     post :update,
+         params: {
          id: comment.id
+         }
     assert_not_equal new_comment_body, comment.comment
     assert_redirected_to comment.node.path
     assert_equal flash[:error], 'The comment could not be updated.'
@@ -149,8 +157,10 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     comment = comments(:first)
     assert_difference 'Comment.count', -1 do
-      xhr :get, :delete,
+      get :delete,
+          params: {
           id: comment.id
+          }, xhr: true
     end
     assert_response :success
     assert_equal 'success', @response.body
@@ -160,8 +170,10 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     comment = comments(:second)
     assert_difference 'Comment.count', -1 do
-      xhr :get, :delete,
+      get :delete,
+          params: {
           id: comment.id
+          }, xhr: true
     end
     assert_response :success
     assert_equal 'success', @response.body
@@ -171,7 +183,7 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     comment = comments(:first)
     assert_difference 'Comment.count', -1 do
-      xhr :get, :delete, params: { id: comment.id }
+      get :delete, params: { id: comment.id }, xhr: true
     end
     assert_response :success
     assert_equal 'success', @response.body
@@ -181,8 +193,10 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:moderator))
     comment = comments(:first)
     assert_difference 'Comment.count', -1 do
-      xhr :get, :delete,
+      get, :delete,
+          params: {
           id: comment.id
+          }, xhr: true
     end
     assert_response :success
     assert_equal 'success', @response.body
@@ -193,7 +207,9 @@ class CommentControllerTest < ActionController::TestCase
     comment = comments(:first)
     assert_no_difference 'Comment.count' do
       get :delete,
+          params: {
           id: comment.id
+          }
     end
     assert_redirected_to '/login'
     assert_equal flash[:warning], 'Only the comment or post author can delete this comment'
@@ -203,9 +219,11 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     comment = comments(:first)
     assert_difference 'Comment.count', -1 do
-      xhr :get, :delete,
+      get, :delete,
+          params: {
           id: comment.id,
           type: 'question'
+          }, xhr: true
     end
     assert_response :success
     assert_template 'comment/delete'
@@ -213,14 +231,14 @@ class CommentControllerTest < ActionController::TestCase
 
   test 'should send mail to tag followers in the comment' do
     UserSession.create(users(:jeff))
-    xhr :post, :create, params: { id: nodes(:question).nid, body: 'Question #awesome', type: 'question' }
+    post :create, params: { id: nodes(:question).nid, body: 'Question #awesome', type: 'question' }, xhr: true
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:bob).email])
     # tag followers can be found in tag_selection.yml
   end
 
   test 'should send mail to multiple tag followers in the comment' do
     UserSession.create(users(:jeff))
-    xhr :post, :create, params: { id: nodes(:question).nid, body: 'Question #everything #awesome', type: 'question' }
+    post :create, params: { id: nodes(:question).nid, body: 'Question #everything #awesome', type: 'question' }, xhr: true
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:bob).email])
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:moderator).email])
     # tag followers can be found in tag_selection.yml
@@ -228,7 +246,7 @@ class CommentControllerTest < ActionController::TestCase
 
   test 'should send notification email upon a new wiki comment' do
     UserSession.create(users(:jeff))
-    xhr :post, :create, params: { id: nodes(:wiki_page).nid, body: 'A comment by Jeff on a wiki page of author bob', type: 'page' }
+    post :create, params: { id: nodes(:wiki_page).nid, body: 'A comment by Jeff on a wiki page of author bob', type: 'page' }, xhr: true
     assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on 'Wiki page title'")
   end
 
@@ -242,8 +260,10 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     comment = comments(:first)
     assert_difference 'Comment.count', -1 do
-      xhr :post, :make_answer,
+      post :make_answer,
+          params: {
           id: comment.id
+          }, xhr: true
     end
   end
 
@@ -251,8 +271,10 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:moderator))
     comment = comments(:first)
     assert_difference 'Comment.count', -1 do
-      xhr :post, :make_answer,
+      post :make_answer,
+          params: {
           id: comment.id
+          }, xhr: true
     end
   end
 
@@ -260,8 +282,10 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     comment = comments(:first)
     assert_difference 'Comment.count', -1 do
-      xhr :post, :make_answer,
+      post :make_answer,
+          params: {
           id: comment.id
+         }, xhr: true
     end
   end
 
@@ -281,8 +305,10 @@ class CommentControllerTest < ActionController::TestCase
     comment = comments(:first)
     initial_mail_count = ActionMailer::Base.deliveries.size
     assert_difference 'Answer.count', +1 do
-      xhr :post, :make_answer,
+      post :make_answer,
+          params: {
           id: comment.id
+      }, xhr: true
     end
     assert_not_nil :answer
     assert_equal initial_mail_count, ActionMailer::Base.deliveries.size  # check for ensuring that no Email is sent
@@ -293,8 +319,10 @@ class CommentControllerTest < ActionController::TestCase
     comment = comments(:first)
     initial_mail_count = ActionMailer::Base.deliveries.size
     assert_difference 'Answer.count', +1 do
-      xhr :post, :make_answer,
+      post :make_answer,
+          params: {
           id: comment.id
+          }, xhr: true
     end
     assert_not_nil :answer
     assert_equal initial_mail_count, ActionMailer::Base.deliveries.size  # check for ensuring that no Email is sent
@@ -305,8 +333,10 @@ class CommentControllerTest < ActionController::TestCase
     comment = comments(:first)
     initial_mail_count = ActionMailer::Base.deliveries.size
     assert_difference 'Answer.count', +1 do
-      xhr :post, :make_answer,
+      post :make_answer,
+          params: {
           id: comment.id
+          }, xhr: true
     end
     assert_not_nil :answer
     assert_equal initial_mail_count, ActionMailer::Base.deliveries.size  # check for ensuring that no Email is sent

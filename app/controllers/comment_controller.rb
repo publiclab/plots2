@@ -2,7 +2,7 @@ class CommentController < ApplicationController
   include CommentHelper
 
   respond_to :html, :xml, :json
-  before_filter :require_user, only: %i(create update make_answer delete)
+  before_action :require_user, only: %i(create update make_answer delete)
 
   def index
     @comments = Comment.paginate(page: params[:page], per_page: 30)
@@ -41,7 +41,7 @@ class CommentController < ApplicationController
       end
     rescue CommentError
       flash[:error] = 'The comment could not be saved.'
-      render text: 'failure'
+      render plain: 'failure'
     end
   end
 
@@ -88,7 +88,7 @@ class CommentController < ApplicationController
       end
     else
       flash[:error] = 'The comment could not be saved.'
-      render text: 'failure'
+      render plain: 'failure'
     end
   end
 
@@ -131,7 +131,7 @@ class CommentController < ApplicationController
           else
             format.html do
               if request.xhr?
-                render text: 'success'
+                render plain: 'success'
               else
                 flash[:notice] = 'Comment deleted.'
                 redirect_to '/' + @node.path
