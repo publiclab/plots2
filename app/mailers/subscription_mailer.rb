@@ -50,7 +50,7 @@ class SubscriptionMailer < ActionMailer::Base
     mail(
       to: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: recipients,
-      subject: "#{node.title} ()"
+      subject: "#{node.title} (#{@tag.name})"
       )
   end
 end
