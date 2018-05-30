@@ -9,8 +9,8 @@ function addTag(tagname, selector) {
     if (geo.length > 0) {
       var confirm = confirm("This looks like a location. Is this full description of the location accurate?");
       if(confirm) {
-      addTag("lat");
-      addTag("lng");
+      addTag("lat: " + str(geo[0]));
+      addTag("lng: " + str(geo[1]));
     }
   }
 
