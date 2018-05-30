@@ -4,10 +4,13 @@ function addTag(tagname, selector) {
   if (tagname.indexOf("place") !== -1) {
     place = tagname.split(":")[1];
     place.replace("-", " ");
+    geo = geocodeStringAndPan(place);
 
-    var confirm = confirm("This looks like a location. Is this full description of the location accurate?");
-    if(confirm) {
-      geo = geocodeStringAndPan(place);
+    if (geo.length > 0) {
+      var confirm = confirm("This looks like a location. Is this full description of the location accurate?");
+      if(confirm) {
+      addTag("lat");
+      addTag("lng");
     }
   }
 
