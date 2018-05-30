@@ -42,7 +42,7 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
       assert_difference "nodes(:wiki_page).comments.count" do
-        post, :create, params: { id: nodes(:wiki_page).nid, body: 'Wiki comment' }, xhr: true
+        post :create, params: { id: nodes(:wiki_page).nid, body: 'Wiki comment' }, xhr: true
       end
     end
     assert_response :success
@@ -62,7 +62,7 @@ class CommentControllerTest < ActionController::TestCase
   test 'should show error if node comment not saved' do
     UserSession.create(users(:bob))
     assert_no_difference 'Comment.count' do
-      post, :create,
+      post :create,
           params: {
           id: nodes(:one).nid
           }, xhr: true
@@ -193,7 +193,7 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:moderator))
     comment = comments(:first)
     assert_difference 'Comment.count', -1 do
-      get, :delete,
+      get :delete,
           params: {
           id: comment.id
           }, xhr: true
@@ -219,7 +219,7 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     comment = comments(:first)
     assert_difference 'Comment.count', -1 do
-      get, :delete,
+      get :delete,
           params: {
           id: comment.id,
           type: 'question'
