@@ -306,7 +306,7 @@ class UsersControllerTest < ActionController::TestCase
     user = drupal_users(:jeff)
     get :rss, author: user.name, format: 'rss'
     assert_response :success
-    assert_equal 'application/rss+xml', @response.content_type
+    assert_equal 'application/xml', @response.content_type
   end
 
   test 'rss feed when username is not valid' do

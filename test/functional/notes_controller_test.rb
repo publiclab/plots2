@@ -701,7 +701,7 @@ class NotesControllerTest < ActionController::TestCase
   def test_get_rss_feed
     get :rss, :format => "rss"
     assert_response :success
-    assert_equal 'application/rss+xml', @response.content_type
+    assert_equal 'application/xml', @response.content_type
   end
 
   test 'draft should not be shown when no user' do
