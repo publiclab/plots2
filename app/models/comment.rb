@@ -112,7 +112,7 @@ class Comment < ActiveRecord::Base
 
   def mentioned_users
     usernames = comment.scan(Callouts.const_get(:FINDER))
-    User.where(username: usernames.map { |m| m[1] }).uniq
+    User.where(username: usernames.map { |m| m[1] }).distinct
   end
 
   def followers_of_mentioned_tags
