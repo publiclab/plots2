@@ -58,16 +58,16 @@ class CommentController < ApplicationController
         # used in here because the module was `include`d right at the beginning
         @comment = create_comment(@node, @user, @body)
         respond_to do |format|
-          format.all { render :nothing => true, :status => :created }
+          format.all { head :created }
         end
       rescue CommentError
         respond_to do |format|
-          format.all { render :nothing => true, :status => :bad_request }
+          format.all { head :bad_request }
         end
       end
     else
       respond_to do |format|
-        format.all { render :nothing => true, :status => :unauthorized }
+        format.all { head :unauthorized }
       end
     end
   end
