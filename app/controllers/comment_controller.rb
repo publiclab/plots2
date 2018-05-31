@@ -63,13 +63,11 @@ class CommentController < ApplicationController
       rescue CommentError
         respond_to do |format|
           format.all { render :nothing => true, :status => :bad_request }
-          
         end
       end
     else
       respond_to do |format|
         format.all { render :nothing => true, :status => :unauthorized }
-        
       end
     end
   end
