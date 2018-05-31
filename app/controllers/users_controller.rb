@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :require_no_user, :only => [:new]
-  before_filter :require_user, :only => [:update]
+  before_action :require_no_user, :only => [:new]
+  before_action :require_user, :only => [:update]
   before_action :set_user, only: [:info, :followed, :following, :followers]
 
   def new
