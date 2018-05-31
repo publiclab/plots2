@@ -99,7 +99,7 @@ gem "rack-openid"
 gem "authlogic", "4.1.0"
 gem 'authlogic-oid'
 gem "php-serialize", :require => "php_serialize"
-gem 'less-rails',   '~> 2.6'
+gem 'less-rails', '~> 3.0'
 gem 'progress_bar'
 gem 'impressionist'
 gem "recaptcha", require: "recaptcha/rails"

@@ -139,6 +139,7 @@ GEM
       railties (>= 3.2.12)
     grape-swagger-ui (2.2.8)
       railties (>= 3.1)
+    grease (0.3.1)
     hashie (3.5.7)
     highline (1.7.10)
     http-cookie (1.0.3)
@@ -172,8 +173,9 @@ GEM
       addressable (~> 2.3)
     less (2.6.0)
       commonjs (~> 0.2.7)
-    less-rails (2.8.0)
+    less-rails (3.0.0)
       actionpack (>= 4.0)
+      grease
       less (~> 2.6.0)
       sprockets (> 2, < 4)
       tilt
@@ -457,7 +459,7 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails
   json_expressions
-  less-rails (~> 2.6)
+  less-rails (~> 3.0)
   letter_opener
   listen (~> 3.0.5)
   minitest-reporters (~> 1.1.19)
@@ -512,4 +514,4 @@ RUBY VERSION
    ruby 2.3.7p456
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
