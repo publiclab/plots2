@@ -1,6 +1,44 @@
 class UserTagsController < ApplicationController
   respond_to :html, :xml, :json, :js
 
+  require 'will_paginate/array'
+
+  def index
+    if params[:sort]
+      @toggle = params[:sort]
+    else
+      @toggle = "uses"
+    end
+
+    @title = I18n.t('tag_controller.tags')
+    @paginated = true
+    if params[:search]
+      keyword = params[:search]
+      @user_tags = UserTag
+        .select('value')
+        .where("value LIKE :keyword", keyword: "%#{keyword}%")
+        .group(:value)
+        .order('value ASC')
+        .count('value')
+        .to_a
+        .paginate(page: params[:page], per_page: 24)
+    elsif @toggle == "value"
+      @user_tags = UserTag.group(:value)
+        .select('value')
+        .order('value ASC')
+        .count('value')
+        .to_a
+        .paginate(page: params[:page], per_page: 24)
+    else @toggle == "uses"
+      @user_tags = UserTag.group(:value)
+        .select('value')
+        .order('count_value DESC')
+        .count('value')
+        .to_a
+        .paginate(page: params[:page], per_page: 24)
+    end
+  end
+
   def create
 
     @output = {
