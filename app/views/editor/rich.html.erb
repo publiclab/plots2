@@ -189,8 +189,7 @@
     <span class="ple-help pull-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span style="display: inline-block;">
-          <span id="text" style="visibility:hidden; color:red;">Others won't be able to see
-          this until you're ready <a href="#" >Learn more</a>&nbsp; &nbsp;</span>
+          <span id="text" style="visibility:hidden; color:red;">Others won't be able to see this until you're ready <a href="#" >Learn more</a>&nbsp; &nbsp;</span>
           <span><input type="checkbox" id="myCheck" onclick="draftCheck()">Save as draft&nbsp; | &nbsp;</span>
         </span>
       <% end %>
@@ -335,3 +334,16 @@
   }
 
 </script>
+<style>
+  @media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+   .ple-footer{
+     display: inline-flex;
+     flex-flow: column-reverse;
+   }
+
+    .ple-steps-left{
+      offset-start: 0;
+    }
+  }
+</style>
