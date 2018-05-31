@@ -95,10 +95,12 @@ class WikiControllerTest < ActionController::TestCase
     title = 'All about balloon mapping'
 
     post :create,
+         params: {
          uid:   users(:bob).id,
          title: title,
          body:  'This is fascinating documentation about balloon mapping.',
          tags:  'balloon-mapping,event'
+         }
 
     assert_redirected_to '/wiki/' + title.parameterize
   end
