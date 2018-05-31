@@ -288,8 +288,9 @@ class TagController < ApplicationController
           node.add_comment(subject: 'co-author',
                            uid: current_user.uid,
                            body: " @#{current_user.username} has marked #{tagname.split(':')[1]} as a co-author. ")
+
         end
-        
+
         if saved
           @tags << tag
           @output[:saved] << [tag.name, tag.id]

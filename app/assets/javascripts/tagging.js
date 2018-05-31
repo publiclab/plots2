@@ -90,7 +90,8 @@ function geocodeStringAndPan(string, onComplete) {
   var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
   var Blurred = $.ajax({
       async: false,
-      url: url
+      url: url,
+      complete: onComplete(data.responseJSON.results[0].geometry.location),
   });
   onComplete = onComplete || function onComplete(geometry) {
     lat = geometry.lat;
@@ -105,5 +106,4 @@ function geocodeStringAndPan(string, onComplete) {
       addTag("lng: " + str(geo[1]));
     }    
   }
-  onComplete(Blurred.responseJSON.results[0].geometry.location);
 }
