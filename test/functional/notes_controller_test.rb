@@ -646,9 +646,11 @@ class NotesControllerTest < ActionController::TestCase
       title = 'Some post to Public Lab'
 
       post :create,
+           params: {
            title: title + lang.to_s,
            body: 'Some text.',
            tags: 'event'
+           }
 
       assert_equal I18n.t('notes_controller.research_note_published'), flash[:notice]
     end
