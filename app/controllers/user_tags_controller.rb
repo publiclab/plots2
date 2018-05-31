@@ -4,11 +4,7 @@ class UserTagsController < ApplicationController
   require 'will_paginate/array'
 
   def index
-    if params[:sort]
-      @toggle = params[:sort]
-    else
-      @toggle = "uses"
-    end
+    @toggle = params[:sort] || "uses"
 
     @title = I18n.t('tag_controller.tags')
     @paginated = true
@@ -19,22 +15,19 @@ class UserTagsController < ApplicationController
         .where("value LIKE :keyword", keyword: "%#{keyword}%")
         .group(:value)
         .order('value ASC')
-        .count('value')
-        .to_a
+        .count('value').to_a
         .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "value"
       @user_tags = UserTag.group(:value)
         .select('value')
         .order('value ASC')
-        .count('value')
-        .to_a
+        .count('value').to_a
         .paginate(page: params[:page], per_page: 24)
-    else @toggle == "uses"
+    else # @toggle == "uses"
       @user_tags = UserTag.group(:value)
         .select('value')
         .order('count_value DESC')
-        .count('value')
-        .to_a
+        .count('value').to_a
         .paginate(page: params[:page], per_page: 24)
     end
   end
