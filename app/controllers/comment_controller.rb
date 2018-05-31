@@ -28,8 +28,8 @@ class CommentController < ApplicationController
             if request.xhr?
               render partial: 'notes/comment', locals: { comment: @comment }
             else
-            	tagnames =  @node.tagnames.map do |tagname|
-            		"<a href='/subscribe/tag/#{ tagname }'>#{ tagname }</a>"
+              tagnames =  @node.tagnames.map do |tagname|
+                "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
               end
               tagnames = tagnames.join(', ')
               tagnames = " Click to subscribe to updates on these tags or topics: " + tagnames unless tagnames.empty?
@@ -63,13 +63,13 @@ class CommentController < ApplicationController
       rescue CommentError
         respond_to do |format|
           format.all { render :nothing => true, :status => :bad_request }
-          head :ok
+          
         end
       end
     else
       respond_to do |format|
         format.all { render :nothing => true, :status => :unauthorized }
-        head :ok
+        
       end
     end
   end
