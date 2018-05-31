@@ -5,13 +5,6 @@ function addTag(tagname, selector) {
     place = tagname.split(":")[1];
     place.replace("-", " ");
     geo = geocodeStringAndPan(place);
-
-    if (geo.length > 0) {
-      var confirm = confirm("This looks like a location. Is this full description of the location accurate?");
-      if(confirm) {
-      addTag("lat: " + str(geo[0]));
-      addTag("lng: " + str(geo[1]));
-    }
   }
 
   var el = $(selector);
@@ -102,9 +95,15 @@ function geocodeStringAndPan(string, onComplete) {
   onComplete = onComplete || function onComplete(geometry) {
     lat = geometry.lat;
     lng = geometry.lng;
+    
+    var geo = [lat, lng];
 
-    return [lat, lng];
+    if (geo.length > 0) {
+      var confirm = confirm("This looks like a location. Is this full description of the location accurate?");
+      if(confirm) {
+      addTag("lat: " + str(geo[0]));
+      addTag("lng: " + str(geo[1]));
+    }    
   }
-  var geo = onComplete(Blurred.responseJSON.results[0].geometry.location);
-  return geo;
+  onComplete(Blurred.responseJSON.results[0].geometry.location);
 }
