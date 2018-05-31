@@ -1,7 +1,7 @@
 function addTag(tagname, selector) {
 
   selector = selector || '#tagform';
-  if (tagname.indexOf("place") !== -1) {
+  if (tagname.slice(0,5).toLowerCase() === "place") {
     place = tagname.split(":")[1];
     place.replace("-", " ");
     geo = geocodeStringAndPan(place);
