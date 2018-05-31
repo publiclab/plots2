@@ -52,8 +52,10 @@ class CommentControllerTest < ActionController::TestCase
   test 'should show error if wiki comment not saved' do
     UserSession.create(users(:bob))
     assert_no_difference 'Comment.count' do
-      xhr :post, :create,
+      post :create,
+          params: {
           id: nodes(:wiki_page).nid
+          }
     end
     assert_equal flash[:error], 'The comment could not be saved.'
     assert_equal 'failure', @response.body
@@ -253,7 +255,7 @@ class CommentControllerTest < ActionController::TestCase
 
   test 'should prompt user if comment includes question mark' do
     UserSession.create(users(:jeff))
-    xhr :post, :create, params: { id: nodes(:blog).id, body: 'Test question?' }
+    post :create, params: { id: nodes(:blog).id, body: 'Test question?' }, xhr: true
     assert_select 'a[href=?]', '/questions', { :count => 1, :text => 'Questions page' }
   end
 
@@ -295,7 +297,9 @@ class CommentControllerTest < ActionController::TestCase
     comment = comments(:first)
     assert_no_difference 'Comment.count' do
       post :make_answer,
+          params: { 
            id: comment.id
+          }
     end
     assert_redirected_to '/login'
     assert_equal flash[:warning], 'Only the comment author can promote this comment to answer'
