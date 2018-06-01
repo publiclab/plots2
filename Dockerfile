@@ -1,7 +1,7 @@
 # Dockerfile # Plots2
 # https://github.com/publiclab/plots2
 
-FROM ruby:2.3-jessie
+FROM ruby:2.4.1
 
 LABEL maintainer="Sebastian Silva <sebastian@fuentelibre.org>"
 LABEL description="This image deploys Plots2."
