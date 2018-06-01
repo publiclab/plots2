@@ -154,10 +154,13 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     u = users(:unmoderated_user)
     u.drupal_user.moderate
 
-    post '/user_sessions', user_session: {
+    post '/user_sessions', 
+     params: { 
+      user_session: {
       username: u.username,
       password: 'secretive'
-    }
+      }
+     }
 
     assert_response :redirect
     follow_redirect!
