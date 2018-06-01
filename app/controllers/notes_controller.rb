@@ -385,6 +385,7 @@ class NotesController < ApplicationController
   def publish_draft
     @node = Node.find(params[:id])
     if current_user && current_user.uid == @node.uid || current_user.admin? || @node.has_tag("with:#{current_user.username}")
+      @node.path = @node.generate_path
       @node.publish
       SubscriptionMailer.notify_node_creation(@node).deliver_now
       flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publically."
