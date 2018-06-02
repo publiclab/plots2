@@ -12,6 +12,7 @@
 require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
+  include ActiveJob::TestHelper
   def setup
     activate_authlogic
 
@@ -313,5 +314,15 @@ class UsersControllerTest < ActionController::TestCase
     get :rss, author: 'some hacker'
     assert_response :redirect
     assert_equal I18n.t('users_controller.no_user_found'), flash[:error]
+  end
+
+  test "digest emails" do
+    user = users(:bob)
+    UserSession.create(user)
+    post :test_digest_email
+    assert_enqueued_with(job: DigestMailJob) do
+      DigestMailJob.perform_later
+    end
+    assert_enqueued_jobs 2
   end
 end

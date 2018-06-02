@@ -379,7 +379,9 @@ class User < ActiveRecord::Base
 
   def send_digest_email
     top_picks = self.content_followed_in_period(Time.now - 1.week, Time.now)
-    SubscriptionMailer.send_digest(self.id,top_picks).deliver_now
+    if top_picks.count > 0
+      SubscriptionMailer.send_digest(self.id,top_picks).deliver_now
+    end
   end
 
   private

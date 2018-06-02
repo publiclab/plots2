@@ -298,6 +298,11 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
+  def test_digest_email
+    DigestMailJob.perform_later
+    redirect_to "/profile/"+current_user.username
+  end
+
   private
 
   def set_user
