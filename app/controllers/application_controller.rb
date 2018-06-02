@@ -146,6 +146,7 @@ class ApplicationController < ActionController::Base
       flash.now[:warning] = "The user '#{@node.author.username}' has been placed <a href='https://#{request.host}/wiki/moderators'>in moderation</a> and will not be able to respond to comments."
     end
   end
+
   # Check the locale set and adjust the locale accordingly
   def set_locale
     if cookies[:plots2_locale] && I18n.available_locales.include?(cookies[:plots2_locale].to_sym)
