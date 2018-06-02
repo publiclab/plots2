@@ -103,7 +103,8 @@ class HomeController < ApplicationController
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       notes = notes.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
     elsif current_user
-      notes = notes.where('(node.status = 1 OR ((node.status = 3 OR node.status = 4) AND node.uid = ?))', current_user.uid)
+      coauthor_nids = Node.joins(:node_tag).joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid').select('node.*, term_data.*, community_tags.*').where(type: 'note', status: 3).where('term_data.name = (?)', "with:#{current_user.username}").collect(&:nid)
+      notes = notes.where('(node.nid IN (?) OR node.status = 1 OR ((node.status = 3 OR node.status = 4) AND node.uid = ?))', coauthor_nids, current_user.uid)
     else
       notes = notes.where('node.status = 1')
     end
