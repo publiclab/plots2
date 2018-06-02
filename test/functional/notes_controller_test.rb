@@ -691,4 +691,23 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal Node.count, n_count - 1
     assert_equal Answer.count, 0
   end
+
+  test 'moderator can publish the draft' do
+    UserSession.create(users(:moderator))
+    node = nodes(:draft)
+    assert_equal 3, node.status
+    ActionMailer::Base.deliveries.clear
+
+    get :publish_draft, id: node.id
+
+    assert_response :redirect
+    assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+    node = assigns(:node)
+    assert_equal 1, node.status
+    assert_equal 1, node.author.status
+    assert_redirected_to node.path
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal '[PublicLab] ' + node.title, email.subject
+  end
 end
