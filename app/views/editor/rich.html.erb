@@ -185,7 +185,7 @@
 
     <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="hidden-xs"> so that others may use it.</span></span>
 
-    <button class="ple-publish btn btn-lg btn-primary pull-right disabled">Publish</button>
+    <button class="ple-publish btn btn-lg btn-primary pull-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
     <span class="ple-help pull-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
