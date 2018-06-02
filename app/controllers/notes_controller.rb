@@ -384,7 +384,7 @@ class NotesController < ApplicationController
 
   def publish_draft
     @node = Node.find(params[:id])
-    if current_user && current_user.uid == @node.uid || current_user.admin? || @node.has_tag("with:#{current_user.username}")
+    if current_user && current_user.uid == @node.uid || current_user.can_moderate? || @node.has_tag("with:#{current_user.username}")
       @node.path = @node.generate_path
       @node.publish
       SubscriptionMailer.notify_node_creation(@node).deliver_now
