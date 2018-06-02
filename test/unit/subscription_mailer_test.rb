@@ -12,7 +12,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
-    assert_equal [subscribers.values.last[:user].email], email.to
+    assert_equal ["do-not-reply@#{request_host}"], email.to
     assert_equal '[PublicLab] ' + node.title + ' (#' + node.id.to_s + ') ', email.subject
     assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{node.author.name}'>#{node.author.name}</a> just posted a new research note")
   end
@@ -27,7 +27,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
 
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
-    assert_equal [subscribers.values.last[:user].email], email.to
+    assert_equal ["do-not-reply@#{request_host}"], email.to
     assert_equal '[PublicLab] Question: ' + node.title + ' (#' + node.id.to_s + ') ', email.subject
 
     assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{node.author.name}'>#{node.author.name}</a> just asked a question")
