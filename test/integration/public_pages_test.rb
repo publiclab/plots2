@@ -88,7 +88,7 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     get nodes(:redirect).path
     assert_response :redirect
     assert_redirected_to nodes(:blog).path
-    request_via_redirect :get, nodes(:blog).path
+    get nodes(:blog).path
     assert_select 'h1', nodes(:blog).title
   end
 
