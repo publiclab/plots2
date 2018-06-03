@@ -116,6 +116,7 @@ Plots2::Application.routes.draw do
   get 'notes/popular' => 'notes#popular'
   get 'notes/liked' => 'notes#liked'
   post 'notes/create' => 'notes#create'
+  get 'notes/publish_draft/:id' => 'notes#publish_draft'
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'

@@ -165,6 +165,10 @@ class User < ActiveRecord::Base
     admin? || moderator?
   end
 
+  def is_coauthor(node)
+    self.id == node.author.id || node.has_tag("with:#{self.username}")
+  end
+
   def tags(limit = 10)
     Tag.where('name in (?)', tagnames).limit(limit)
   end

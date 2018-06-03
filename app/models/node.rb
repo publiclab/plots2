@@ -624,7 +624,9 @@ class Node < ActiveRecord::Base
             img.save
           end
           node.save!
-          node.notify
+          if node.status != 3
+            node.notify
+          end
         else
           saved = false
           node.destroy
@@ -728,7 +730,7 @@ class Node < ActiveRecord::Base
                                  nid: id)
           if node_tag.save
             saved = true
-            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty?
+            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty? || self.status == 3
           else
             saved = false
             tag.destroy
