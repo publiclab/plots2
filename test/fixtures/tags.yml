@@ -71,3 +71,7 @@ test_lego:
 blog-featured:
   tid: 18
   name: blog-featured
+
+co-author:
+  tid: 19
+  name: with:testuser
