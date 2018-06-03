@@ -852,8 +852,14 @@ class Node < ActiveRecord::Base
       errors ? I18n.t('node.only_admins_can_lock') : false
     elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).length <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
-    elsif ["facebook", "github", "google", "twitter"].include? tagname.split(':')[0]
-      errors ? "Only Oauth can create such tags" : false
+    elsif  tagname.split(':')[0] == "oauth-facebook"
+      errors ? "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif  tagname.split(':')[0] == "oauth-github"
+      errors ? "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif  tagname.split(':')[0] ==  "oauth-google"
+      errors ? "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif  tagname.split(':')[0] == "oauth-twitter"
+      errors ? "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
     else
       true
     end
