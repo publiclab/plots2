@@ -624,7 +624,9 @@ class Node < ActiveRecord::Base
             img.save
           end
           node.save!
-          node.notify
+          if node.status != 3
+            node.notify
+          end
         else
           saved = false
           node.destroy
