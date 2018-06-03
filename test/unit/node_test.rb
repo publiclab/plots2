@@ -386,4 +386,11 @@ class NodeTest < ActiveSupport::TestCase
     deleted_node = node.destroy
     assert_equal node.comments.count, 0
   end
+
+  test 'should delete associated node selections when a node is deleted' do
+    node = nodes(:one)
+    node_selection = node_selections(:unbanned_spammer_like)
+    node.destroy
+    assert_equal node.node_selections.count, 0
+  end
 end
