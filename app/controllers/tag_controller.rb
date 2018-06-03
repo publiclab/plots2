@@ -3,25 +3,25 @@ class TagController < ApplicationController
   before_filter :require_user, only: %i(create delete)
 
   def index
-    if params[:format]
-      @toggle = params[:format].to_i
+    if params[:sort]
+      @toggle = params[:sort]
     else
-      @toggle = 1
+      @toggle = "uses"
     end
 
     @title = I18n.t('tag_controller.tags')
     @paginated = true
     if params[:search]
-    prefix = params[:search]
+    keyword = params[:search]
     @tags = Tag.joins(:node_tag, :node)
       .select('node.nid, node.status, term_data.*, community_tags.*')
       .where('node.status = ?', 1)
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-      .where("name LIKE :prefix", prefix: "#{prefix}%")
+      .where("name LIKE :keyword", keyword: "%#{keyword}%")
       .group(:name)
       .order('count DESC')
       .paginate(page: params[:page], per_page: 24)
-    elsif @toggle == 1
+    elsif @toggle == "uses"
     @tags = Tag.joins(:node_tag, :node)
       .select('node.nid, node.status, term_data.*, community_tags.*')
       .where('node.status = ?', 1)
@@ -29,7 +29,7 @@ class TagController < ApplicationController
       .group(:name)
       .order('count DESC')
       .paginate(page: params[:page], per_page: 24)
-    elsif @toggle == 2
+    elsif @toggle == "name"
     @tags = Tag.joins(:node_tag, :node)
       .select('node.nid, node.status, term_data.*, community_tags.*')
       .where('node.status = ?', 1)
@@ -73,6 +73,8 @@ class TagController < ApplicationController
     # params[:node_type] - this is an optional param
     # if params[:node_type] is nil - use @default_type
     @node_type = params[:node_type] || default_type
+    @start = Time.parse(params[:start]) if params[:start]
+    @end = Time.parse(params[:end]) if params[:end]
 
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
@@ -83,7 +85,7 @@ class TagController < ApplicationController
       @wildcard = true
       @tags = Tag.where('name LIKE (?)', params[:id][0..-2] + '%')
       nodes = Node.where(status: 1, type: node_type)
-        .includes(:revision, :tag)
+        .includes(:revision, :tag, :answers)
         .references(:term_data, :node_revisions)
         .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
         .paginate(page: params[:page], per_page: 24)
@@ -97,6 +99,7 @@ class TagController < ApplicationController
         .paginate(page: params[:page], per_page: 24)
         .order('node_revisions.timestamp DESC')
     end
+    nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
     # breaks the parameter
     # sets everything to an empty array
@@ -104,6 +107,10 @@ class TagController < ApplicationController
 
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    @answered_questions = []
+    if @questions
+      @questions.each { |question| @answered_questions << question if question.answers.any? { |answer| answer.accepted } }
+    end
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
@@ -176,6 +183,10 @@ class TagController < ApplicationController
 
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
+    ans_ques = Answer.where(uid: @user.id, accepted: true).includes(:node).map do |ans|
+      ans.node
+    end
+    @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
     @title = "'" + @tagname.to_s + "' by " +  params[:author]
@@ -271,6 +282,13 @@ class TagController < ApplicationController
                            uid: current_user.uid,
                            body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_user.name} for their awesome contribution!")
 
+        elsif tagname.split(':')[0] == "with"
+          user = User.find_by_username_case_insensitive(tagname.split(':')[1])
+          CommentMailer.notify_coauthor(user, node)
+          node.add_comment(subject: 'co-author',
+                           uid: current_user.uid,
+                           body: " @#{current_user.username} has marked #{tagname.split(':')[1]} as a co-author. ")
+
         end
 
         if saved
@@ -323,7 +341,7 @@ class TagController < ApplicationController
   end
 
   def suggested
-    if params[:id].length > 2
+    if !params[:id].empty? && params[:id].length > 2
       @suggestions = []
       # filtering out tag spam by requiring tags attached to a published node
       Tag.where('name LIKE ?', '%' + params[:id] + '%')
@@ -365,9 +383,10 @@ class TagController < ApplicationController
   end
 
   def rss_for_tagged_with_author
-    @user = User.find_by(name: params[:author])
-    @notes = Tag.tagged_nodes_by_author([params[:tagname]], @user)
-                 .limit(20)
+    @user = User.find_by(name: params[:authorname])
+    @notes = Tag.tagged_nodes_by_author(params[:tagname], @user)
+               .where(status: 1)
+               .limit(20)
      respond_to do |format|
        format.rss do
          response.headers['Content-Type'] = 'application/xml; charset=utf-8'

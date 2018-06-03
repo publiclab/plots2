@@ -4,7 +4,11 @@
 <script>
   jQuery(document).ready(function() {
     $('.blurred-location-input').click(function createBlurredLocationInput() {
-      $.ajax('/locations/modal')
+      <% if params[:action] == "profile" %>
+        $.ajax('/locations/modal?reload=true')
+      <% else %>
+        $.ajax('/locations/modal')
+      <% end %>
        .done(function(response) {
          $('.blurred-location-container').html(response);
          $('.modal').on('shown.bs.modal', function () { blurredLocation.map.invalidateSize(); });

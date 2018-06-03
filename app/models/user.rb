@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
 
   acts_as_authentic do |c|
     c.openid_required_fields = %i(nickname email)
-    c.validates_format_of_email_field_options = { with: /@/ }
+    VALID_EMAIL_REGEX = /\A[-[:alnum:]+.]+@[[:alnum:]-.]+[.][[:alpha:]]+\z/
+    c.validates_format_of_email_field_options = { with: VALID_EMAIL_REGEX }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
 
@@ -32,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
+  has_many :likes
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
@@ -42,6 +44,11 @@ class User < ActiveRecord::Base
 
   def self.search(query)
     User.where('MATCH(username, bio) AGAINST(?)', query)
+  end
+
+  def new_contributor
+    @uid = self.id
+    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
   end
 
   def create_drupal_user
@@ -88,6 +95,14 @@ class User < ActiveRecord::Base
     DrupalUser.find_by(name: username)
   end
 
+  def last
+    self.drupal_user.last
+  end
+
+  def node_count
+    self.drupal_user.node_count
+  end
+
   def notes
     Node.where(uid: uid)
       .where(type: 'note')
@@ -108,7 +123,7 @@ class User < ActiveRecord::Base
     20.times do
       key += [*'a'..'z'].sample
     end
-    self.reset_key = key
+    self.update_attribute(:reset_key, key)
     key
   end
 
@@ -135,6 +150,23 @@ class User < ActiveRecord::Base
   # we can revise/improve this for m2m later...
   def has_role(r)
     role == r
+  end
+
+  def admin?
+    role == 'admin'
+  end
+
+  def moderator?
+    role == 'moderator'
+  end
+
+  def can_moderate?
+    # use instead of "user.role == 'admin' || user.role == 'moderator'"
+    admin? || moderator?
+  end
+
+  def is_coauthor(node)
+    self.id == node.author.id || node.has_tag("with:#{self.username}")
   end
 
   def tags(limit = 10)
@@ -166,6 +198,12 @@ class User < ActiveRecord::Base
     tvalue
   end
 
+  def get_last_value_of_power_tag(key)
+    tname = self.user_tags.where('value LIKE ?' , key + ':%')
+    tvalue = tname.last.name.partition(':').last
+    tvalue
+  end
+
   def subscriptions(type = :tag)
     if type == :tag
       TagSelection.where(user_id: uid,
@@ -180,7 +218,7 @@ class User < ActiveRecord::Base
 
   def add_to_lists(lists)
     lists.each do |list|
-      WelcomeMailer.add_to_list(self, list)
+      WelcomeMailer.add_to_list(self, list).deliver_now
     end
   end
 
@@ -197,14 +235,28 @@ class User < ActiveRecord::Base
     weeks
   end
 
+  def daily_note_tally(span = 365)
+      days = {}
+      (1..span).each do |day|
+          time = Time.now.utc.beginning_of_day.to_i
+          days[(time-day.days.to_i)] = Node.select(:created)
+                                           .where(uid: self.uid,
+                                                  type: 'note',
+                                                  status: 1,
+                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i)
+                                           .count
+      end
+      days
+  end
+
   def weekly_comment_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
-        .where( uid: drupal_user.uid,
-                                          status: 1,
-                                          timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
-        .count
+                            .where( uid: drupal_user.uid,
+                                    status: 1,
+                                    timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
+                            .count
     end
     weeks
   end
@@ -314,18 +366,31 @@ class User < ActiveRecord::Base
     tagnames = TagSelection.where(following: true, user_id: uid)
     node_ids = []
     tagnames.each do |tagname|
-      node_ids = node_ids + NodeTag.where(tid: tagname.tid).collect(&:nid)
+      node_ids += NodeTag.where(tid: tagname.tid).collect(&:nid)
     end
-    Node.where(nid: node_ids).where("created >= #{start_time.to_i}  OR changed >= #{start_time.to_i} AND created <= #{end_time.to_i}  AND changed <= #{end_time.to_i}")
+
+    Node.where(nid: node_ids)
+      .includes(:revision, :tag)
+      .references(:node_revision)
+      .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
+      .order('node_revisions.timestamp DESC')
+      .uniq
   end
 
   def social_link(site)
     if has_power_tag(site)
-      user_name = get_value_of_power_tag(site)
+      user_name = get_last_value_of_power_tag(site)
       link = "https://#{site}.com/#{user_name}"
       return link
     end
     nil
+  end
+
+  def send_digest_email
+    top_picks = self.content_followed_in_period(Time.now - 1.week, Time.now)
+    if top_picks.count > 0
+      SubscriptionMailer.send_digest(self.id,top_picks).deliver_now
+    end
   end
 
   private

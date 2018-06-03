@@ -66,7 +66,7 @@ class AnswersController < ApplicationController
           @answer.accepted = true
           @answer.save
           @answer.node.add_tag('answered', @answer.author)
-          AnswerMailer.notify_answer_accept(@answer.author, @answer).deliver
+          AnswerMailer.notify_answer_accept(@answer.author, @answer).deliver_now
         end
         @answer.reload
         format.js

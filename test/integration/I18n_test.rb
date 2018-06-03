@@ -1,13 +1,7 @@
 require 'test_helper'
+require 'sanitize'
 
 class I18nTest < ActionDispatch::IntegrationTest
-  test 'should choose i18n-locale for footer partial' do
-    available_testing_locales.each do |lang|
-      get '/home'
-      get_via_redirect '/change_locale/' + lang.to_s
-      assert_select 'a[href=/wiki/issues]', I18n.t('layout._footer.getting_help.report_bug')
-    end
-  end
 
   test 'should choose i18n-locale for header partial' do
     available_testing_locales.each do |lang|
@@ -20,7 +14,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       }
       follow_redirect!
       get_via_redirect '/dashboard', locale: lang
-      assert_select 'a[href=/dashboard]'
+      assert_select 'a[href=?]', '/dashboard'
     end
   end
 
@@ -106,7 +100,7 @@ class I18nTest < ActionDispatch::IntegrationTest
            tags: 'Some-tag',
            status: 4
       get '/dashboard'
-      assert_select 'a[class=btn btn-default btn-xs]', I18n.t('dashboard._node_moderate.approve')
+      assert_select 'a[class=?]', 'btn btn-default btn-xs', I18n.t('dashboard._node_moderate.approve')
     end
   end
 
@@ -124,7 +118,7 @@ class I18nTest < ActionDispatch::IntegrationTest
            tags: 'question',
            status: 1
       get '/dashboard'
-      assert_select 'a[class=btn btn-default btn-xs pull-right respond answer]', I18n.t('dashboard._node_question.post_answer')
+      assert_select 'a[class=?]', 'btn btn-default btn-xs pull-right respond answer', I18n.t('dashboard._node_question.post_answer')
     end
   end
 
@@ -157,7 +151,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       }
       follow_redirect!
       get '/dashboard'
-      assert_select 'a', I18n.t('dashboard._wiki.more') + ' &raquo;'
+      assert_select 'a', I18n.t('dashboard._wiki.more') + Sanitize.clean(' &raquo;')
     end
   end
 
@@ -267,7 +261,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/login'
-      assert_select 'a[href=/signup]', I18n.t('user_sessions.new.sign_up')
+      assert_select 'a[href=?]', '/signup', I18n.t('user_sessions.new.sign_up')
     end
   end
 
@@ -347,7 +341,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a.write-research-note', "#{I18n.t('sidebar._related.write_research_note')} &raquo;"
+      assert_select 'a', "#{I18n.t('sidebar._related.write_research_note')} " + Sanitize.clean('&raquo;')
     end
   end
 
@@ -383,7 +377,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/contributors'
-      assert_select 'a[href=/post]', I18n.t('tag.contributors-index.write_research_note')
+      assert_select 'a[href=?]', '/post', I18n.t('tag.contributors-index.write_research_note')
     end
   end
 
@@ -423,7 +417,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/talk/' + nodes(:about).slug
-      assert_select 'p.help-text', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', page: nodes(:about).latest.title, url1: nodes(:about).path, url2: '/wiki/talk-pages'))
+      assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', page: nodes(:about).latest.title, url1: nodes(:about).path, url2: '/wiki/talk-pages') + ' | for help, <a href="/chat">visit our chatroom</a>')
     end
   end
 
@@ -476,7 +470,7 @@ class I18nTest < ActionDispatch::IntegrationTest
 
       get nodes(:first_timer_note).path
       assert_template 'notes/show'
-      assert_select 'div[class=alert alert-warning]', ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.show.note_no_tags'))
+      assert_select 'div[class=?]', 'alert alert-warning', ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.show.note_no_tags'))
     end
   end
 

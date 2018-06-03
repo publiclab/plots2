@@ -2,11 +2,11 @@
   <% if @user.user %>
     <img class="hidden-xs hidden-sm img-rounded" id="profile-photo" style="width:100%;margin-bottom:10px;" src="<%= @user.user.profile_image %>" />
     <div style="text-align:center;" class="visible-sm visible-xs">
-      <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.user.profile_image %>" />
+      <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= @user.user.photo_path %>" />
     </div>
   <% end %>
 
-   <div style="text-align: -webkit-center;">
+   <div style="text-align: center;">
     <% if @twitter.nil? == false %>
       <a href="<%= @twitter %>" >
       <i class="fa fa-twitter fa-3x" aria-hidden="true"></i>
@@ -96,6 +96,10 @@
     <button id="link_social_media" class="btn btn-default btn-block">Link Social media</button>
   <% end %>
 
+  <% if @profile_user && current_user && @profile_user == current_user %>
+    <a href="/users/test_digest_email" class="btn btn-default btn-sm btn-block" method: "post">Test Digest Email</a>
+  <% end %>
+
   <hr />
 
   <% if params[:preview] %>
@@ -142,9 +146,9 @@
 
 <div class="col-md-9">
 
-  <div id="note-graph" style="height:100px;display:none;margin-bottom:16px;"></div>
+  <div id = "note-graph" style = "overflow: auto; text-align:center; border: 1px solid #E5E5E5; margin-bottom: 10px;"></div>
 
-  <h3 style="margin-top:0;"><%= @user.name %>
+  <h3 style="margin-top:0;"><%= @user.name %> <%= @user.new_contributor %>
     <small>
       <%= @user.node_count %> <%= raw t('users.profile.notes_and_edits', :url1 => "/notes/author/"+@user.name) %>
       <% if current_user && current_user.role == "admin" %> | <%= @user.email %><% end %>
@@ -168,13 +172,15 @@
   </div>
   <hr />
 
+  <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
+  <br>
+
   <ul class="nav nav-tabs">
-    <span style="float:right;"><small><%= raw t('users.profile.joined_time_ago', :time_ago => distance_of_time_in_words(@user.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' })) %></small></span>
-    <li class="active"><a href="#research" data-toggle="tab"><%= t('users.profile.research') %></a></li>
-    <li><a href="#coauthored" data-toggle="tab"><span class="hidden-sm hidden-xs"> <%= t('users.profile.Coauthored') %> (<%= @coauthored.size %>)</span></a></li>
-  <li><a href="#questions" data-toggle="tab"><i class="fa fa-comments"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %> (<%= Node.questions.where(status: 1, uid: @user.id).length %>)</span></a></li>
-    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span></a></li>
-    <li><a href="/profile/<%= @user.username %>/likes"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
+    <li class="active"><a href="#research" data-toggle="tab"><i class="fa fa-file"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.research') %></span> <%= "(#{@notes.count})" %></a></li>
+    <li><a href="#coauthored" data-toggle="tab"><i class="fa fa-file-o"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.Coauthored') %></span> (<%= @coauthored.size %>)</a></li>
+    <li><a href="#questions" data-toggle="tab"><i class="fa fa-question-circle"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %></span> (<%= Node.questions.where(status: 1, uid: @user.id).length %>)</a></li>
+    <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span> (<%= @comment_count %>)</a></li>
+    <li><a href="#likes" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
     <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> Barnstars</span> (<%= @user.user.try(:barnstars).try(:length) %>)</a></li>
   </ul>
 
@@ -222,6 +228,9 @@
       <h2 style="text-align:center;"><i class="fa fa-spinner fa fa-spin"></i></h2>
     </div>
 
+    <div class="tab-pane" id="likes">
+      <%= render :partial => "users/likes" %>
+    </div>
     <div class="tab-pane" id="barnstars">
       <% if @user.user %>
       <% @user.user.barnstars.each do |tag| %>
@@ -236,11 +245,10 @@
 
   <%= render :partial => "tag/tagging", locals: { url: "/profile/tags/create/#{ @user.id }", parent: :profile } %>
 
-  <hr />
-
 </div>
+<script src = "https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 
-<script type="text/javascript">
+<script type = "text/javascript">
   $('#btn-token').click(function() {
     alert("Your access token is: <%= @user.user.token %>");
   });
@@ -258,12 +266,15 @@
     profile.display_comments();
 
     <% if @user && @user.user %>
-      var notes = <%= @user.user.weekly_note_tally.to_a.sort.to_json %>
+      var notes = <%= @user.user.daily_note_tally.to_a.sort %>
       var comments = <%= @user.user.weekly_comment_tally.to_a.sort.to_json %>
-      $('#note-graph').show()
+      var notesObject = {};
+    notes.forEach(function(element){
+        notesObject[element[0]] = element[1];
+    });
     <% end %>
 
-    profile.value.notes = notes;
+    profile.value.notes = notesObject;
     profile.value.comments = comments;
     profile.plot_graph();
 

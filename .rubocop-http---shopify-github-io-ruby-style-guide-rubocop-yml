@@ -1082,7 +1082,7 @@ Performance/FlatMap:
 
 Performance/HashEachMethods:
   Enabled: true
-
+  
 Performance/LstripRstrip:
   Enabled: true
 

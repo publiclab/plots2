@@ -5,14 +5,14 @@ class SubscriptionMailerTest < ActionMailer::TestCase
   test 'notify subscribers on creation of a research note' do
     node = nodes(:one)
     subscribers = Tag.subscribers(node.tags)
-    assert_difference 'ActionMailer::Base.deliveries.size', subscribers.size do
-      SubscriptionMailer.notify_node_creation(node)
+    assert_difference 'ActionMailer::Base.deliveries.size' do
+      SubscriptionMailer.notify_node_creation(node).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
-    assert_equal [subscribers.values.last[:user].email], email.to
+    assert_equal ["do-not-reply@#{request_host}"], email.to
     assert_equal '[PublicLab] ' + node.title, email.subject
     assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{node.author.name}'>#{node.author.name}</a> just posted a new research note")
   end
@@ -20,14 +20,14 @@ class SubscriptionMailerTest < ActionMailer::TestCase
   test 'notify subscribers on creation of a question' do
     node = nodes(:question)
     subscribers = Tag.subscribers(node.tags)
-    assert_difference 'ActionMailer::Base.deliveries.size', subscribers.size do
-      SubscriptionMailer.notify_node_creation(node)
+    assert_difference 'ActionMailer::Base.deliveries.size' do
+      SubscriptionMailer.notify_node_creation(node).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
-    assert_equal [subscribers.values.last[:user].email], email.to
+    assert_equal ["do-not-reply@#{request_host}"], email.to
     assert_equal '[PublicLab] Question: ' + node.title, email.subject
     assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{node.author.name}'>#{node.author.name}</a> just asked a question")
   end
@@ -36,7 +36,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     node = nodes(:one)
     user = users(:bob)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      SubscriptionMailer.notify_note_liked(node, user)
+      SubscriptionMailer.notify_note_liked(node, user).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
@@ -51,7 +51,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     node = nodes(:question)
     user = users(:bob)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      SubscriptionMailer.notify_note_liked(node, user)
+      SubscriptionMailer.notify_note_liked(node, user).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
@@ -73,14 +73,14 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert !u_e.empty?
     users_to_email_without_exception = users_to_email.reject { |u| u_e.include? u }
     assert_difference 'ActionMailer::Base.deliveries.size', users_to_email_without_exception.count do
-      SubscriptionMailer.notify_tag_added(node, new_tag, user)
+      SubscriptionMailer.notify_tag_added(node, new_tag, user).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
     email = ActionMailer::Base.deliveries.last
     assert_equal ["do-not-reply@#{request_host}"], email.from
-    assert_equal [users_to_email.last.email], email.to
-    assert_not_equal [user.email], email.to
-    assert_equal "New tag added on #{node.title}", email.subject
-    assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{user.username}'>#{user.username}</a> just added a tag")
+    assert_equal ["do-not-reply@#{request_host}"], email.to
+    assert email.bcc.include?(users_to_email.last.email)
+    assert_equal "#{node.title} (#{new_tag.name})", email.subject
+    assert email.body.include?("was tagged with")
   end
 end

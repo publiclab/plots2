@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'sanitize'
 include ActionView::Helpers::TextHelper
 include ApplicationHelper
 #require "authlogic/test_case"
@@ -29,7 +30,7 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil :wikis
   end
-  
+
   test 'should get wiki stale pages' do
     get :stale
 
@@ -106,8 +107,9 @@ class WikiControllerTest < ActionController::TestCase
          title: '',
          body:  'This is fascinating documentation about balloon mapping.'
 
-    assert_template 'wiki/edit'
-    assert_select '.alert'
+    assert_template 'editor/wikiRich'
+    selector = css_select '.alert'
+    assert_equal selector.size, 1
   end
 
   test 'viewing edit wiki page' do
@@ -164,7 +166,8 @@ class WikiControllerTest < ActionController::TestCase
          title: ''
 
     assert_template 'wiki/edit'
-    assert_select '.alert'
+    selector = css_select '.alert'
+    assert_equal selector.size, 2
   end
 
   test 'update root-path (/about) wiki' do
@@ -237,7 +240,7 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
   end
 
- 
+
 
   #  test "normal user should not delete wiki revision" do
   #    post :delete_revision, id: nodes(:organizers).latest.vid
@@ -395,7 +398,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template :index
-    assert_select 'title', '&#127880; Public Lab: Popular wiki pages'
+    assert_select "title", Sanitize.clean('&#127880;') + (" Public Lab: Popular wiki pages")
   end
 
   test  'should display well liked wiki pages' do
@@ -403,7 +406,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template :index
-    assert_select 'title', '&#127880; Public Lab: Well-liked wiki pages'
+    assert_select "title", Sanitize.clean('&#127880;') + (" Public Lab: Well-liked wiki pages")
   end
 
   test 'should choose I18n for wiki controller' do
@@ -555,6 +558,16 @@ class WikiControllerTest < ActionController::TestCase
     assert_not_nil :topics
   end
 
+  test 'should get methods page and show questions count' do
+    nodes(:method).add_tag('questions:spectrometer', users(:bob))
+    nodes(:method).add_tag('method', users(:bob))
+    get :methods
+
+    assert_response :success
+    assert_not_nil :nodes
+    assert_select "#questions-count-#{nodes(:method).id}", "#{nodes(:method).questions.count} questions"
+  end
+
   test 'should get methods page for given topic' do
     get :methods, topic: 'mining'
 
@@ -587,6 +600,16 @@ class WikiControllerTest < ActionController::TestCase
     get :comments, id: slug
     assert_response :success
     assert_select 'div#comments h3', /Comments/
+  end
+  
+    test 'redirect path by page name' do
+    wiki = nodes(:wiki_page)
+    slug = wiki.path.gsub('/wiki/', '')
+    wiki.add_tag("redirect:about", users(:bob))
+    assert_equal wiki.power_tag('redirect'), "about"
+
+    get :show, id: slug
+    assert_redirected_to "http://test.host/about"
   end
 
 end

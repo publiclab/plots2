@@ -9,6 +9,7 @@ class Comment < ActiveRecord::Base
                     # dependent: :destroy, counter_cache: true
   belongs_to :drupal_user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
+  has_many :likes, :as => :likeable
 
   validates :comment, presence: true
 
@@ -21,6 +22,7 @@ class Comment < ActiveRecord::Base
 
   def self.search(query)
     Comment.where('MATCH(comment) AGAINST(?)', query)
+      .where(status: 1)
   end
 
   def self.comment_weekly_tallies(span = 52, time = Time.now)
@@ -29,6 +31,39 @@ class Comment < ActiveRecord::Base
       weeks[span - week] = Comment.select(:timestamp)
         .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
         .count
+    end
+    weeks
+  end
+
+  def self.contribution_graph_making(span = 52, time = Time.now)   
+    weeks = {}
+    week = span
+    count = 0;
+    while week >= 1
+        #initialising month variable with the month of the starting day 
+        #of the week
+        month = (time - (week*7 - 1).days).strftime('%m')
+        #loop for finding the maximum occurence of a month name in that week
+        #For eg. If this week has 3 days falling in March and 4 days falling
+        #in April, then we would give this week name as April and vice-versa
+        for i in 0..6 do
+          currMonth = (time - (week*7 - i).days).strftime('%m')
+          if month == 0
+              month = currMonth
+          elsif month != currMonth
+              if i <= 4
+                  month = currMonth
+              end
+          end
+        end
+        month = month.to_i
+        #Now fetching comments per week
+        currWeek = Comment.select(:timestamp)
+                        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+                        .count
+        weeks[count] = [month, currWeek]
+        count += 1
+        week -= 1
     end
     weeks
   end
@@ -45,6 +80,11 @@ class Comment < ActiveRecord::Base
     finder = comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
     finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD)) 
     finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))  
+    ApplicationController.helpers.emojify(finder)
+  end
+
+  def body_markdown
+    RDiscount.new(body, :autolink).to_html
   end
 
   def icon
@@ -87,21 +127,21 @@ class Comment < ActiveRecord::Base
   def notify_callout_users
     # notify mentioned users
     mentioned_users.each do |user|
-      CommentMailer.notify_callout(self, user) if user.username != author.username
+      CommentMailer.notify_callout(self, user).deliver_now if user.username != author.username
     end
   end
 
   def notify_tag_followers(already_mailed_uids = [])
     # notify users who follow the tags mentioned in the comment
     followers_of_mentioned_tags.each do |user|
-      CommentMailer.notify_tag_followers(self, user) unless already_mailed_uids.include?(user.uid)
+      CommentMailer.notify_tag_followers(self, user).deliver_now unless already_mailed_uids.include?(user.uid)
     end
   end
 
   def notify_users(uids, current_user)
     DrupalUser.where('uid IN (?)', uids).each do |user|
       if user.uid != current_user.uid
-        CommentMailer.notify(user.user, self).deliver
+        CommentMailer.notify(user.user, self).deliver_now
       end
     end
   end
@@ -110,7 +150,7 @@ class Comment < ActiveRecord::Base
   # plus all who've starred it
   def notify(current_user)
     if parent.uid != current_user.uid
-      CommentMailer.notify_note_author(parent.author, self).deliver
+      CommentMailer.notify_note_author(parent.author, self).deliver_now
     end
 
     notify_callout_users
@@ -126,7 +166,7 @@ class Comment < ActiveRecord::Base
   def answer_comment_notify(current_user)
     # notify answer author
     if answer.uid != current_user.uid
-      CommentMailer.notify_answer_author(answer.author, self).deliver
+      CommentMailer.notify_answer_author(answer.author, self).deliver_now
     end
 
     notify_callout_users
@@ -142,4 +182,25 @@ class Comment < ActiveRecord::Base
     notify_users(uids, current_user)
     notify_tag_followers(already + uids)
   end
+
+  def spam
+    self.status = 0
+    save
+    self
+  end
+
+  def publish
+    self.status = 1
+    save
+    self
+  end
+
+  def liked_by(user_id)
+    likes.where(user_id: user_id).count > 0
+  end
+
+  def likers
+    User.where(id: likes.pluck(:user_id))
+  end
+
 end

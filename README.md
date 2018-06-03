@@ -56,16 +56,28 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 6. Run `rake db:setup` to set up the database
 7. Install static assets (like external javascript libraries, fonts) with `bower install`
-8. (optional, not recommended) Install solr engine `rails generate sunspot_rails:install`
-9. (optional, not recommended) Start the solr server in foreground by using `bundle exec rake sunspot:solr:start`
-10. (optional, not recommended) Index your search database in solr server using  `bundle exec rake sunspot:reindex`
-11. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
-12. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-13. Run `rake test` to confirm that your install is working properly. For some setups, you may see warnings even if test pass; [see this issue](https://github.com/publiclab/plots2/issues/440) we're working to resolve.
+8. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
+(for local SSL work, see [SSL](#ssl+in+development) below)
+9. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
+10. Run `rake test` to confirm that your install is working properly.
 
-### Ruby version
+## SSL in Development
+We at public labs use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
+1. Use 'passenger start --ssl --ssl-certificate config/localhost.crt --ssl-certificate-key config/localhost.key --ssl-port 3001'.
+2. Open up https://localhost:3001.
+3. Add security exceptions from the advance settings of the browser.
+You can also use http (unsecure connection) on the port number 3000 by going to 'http://localhost:3000'. We use port number 3001 for 'https' and port number 3000 for 'http' connection.
+Secure connection is needed for OAuth authentication etc.
 
-Make sure to use ruby-2.3.4. To check your ruby version run `ruby -v`.If you are using some other version then install ruby-2.3.4 with `rvm install 2.3.4`. Later to use ruby-2.3.4, run `rvm use 2.3.4`. Always make sure that you are using the correct ruby version since it might go back to its original version if you close the terminal. You might have to redo the entire installation process after switching to a different version. 
+## How to start and modify cron jobs
+
+1. We are using whenever gem to schedule cron jobs [Whenever](https://github.com/javan/whenever)
+2. All the cron jobs are written in easy ruby syntax using this gem and can be found in config/schedule.rb.
+2. Go to the config/schedule.rb file to create and modify the cron jobs.
+3. [Click here](https://github.com/javan/whenever) to know about how to write cron jobs.
+4. After updating config/schedule.rb file run the command `whenever --update-crontab` to update the cron jobs.
+5. To see the installed list of cron jobs use command `crontab -l`
+6. For more details about this gem, visit the official repository of whenever gem.
 
 ### Bundle exec
 
@@ -91,6 +103,10 @@ Translations are arranged in the YAML files [here](https://github.com/publiclab/
 set in a similar way to [views](https://github.com/publiclab/plots2/tree/master/app/views) files. An example for adding translations can be found [here](http://guides.rubyonrails.org/i18n.html#adding-translations).
 
 To add new languages or for additional support, please write to plots-dev@googlegroups.com
+
+## Security
+
+To report security vulnerabilities or for questions about security, please contact web@publiclab.org. Our Web Working Group will assess and respond promptly.
 
 ## Developers
 

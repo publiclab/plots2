@@ -99,7 +99,8 @@ class RestfulSearchTest < ActiveSupport::TestCase
         srchString: 'blog',
         seq: nil,
         showCount: nil,
-        pageNum: nil
+        pageNum: nil,
+        tagName: nil
       }
     }
 

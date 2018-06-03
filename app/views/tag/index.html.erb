@@ -1,36 +1,31 @@
-<%= render :partial => "sidebar/featured" %>
+<div class="col-md-12">
+  <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
 
-<div class="col-md-9">
-  <table style="width:100%">
-    <tr>
-     <th style="width: 50% ;">
-       <h1 style="font-family:Junction Light;"><%= t('tag.index.popular_tags') %></h1>
-     </th>
-   </tr>
- </table>
+  <% cache('feature_tags-header', skip_digest: true) do %> 
+    <%= feature('tags-header') %>
+  <% end %>
+
   <p><%= t('tag.index.browse_popular_tags') %></p>
-  <!-- Search Bar -->
-    <input class="form-control" type="text" id="myInput"  placeholder="Search for tags..">
-    <script>
-      $('#myInput').keypress(function (e) {
-           var key = e.which;
-           if(key == 13)  // the enter key code
-            {
-             var pre = document.getElementById("myInput").value ;
-
-              window.location.href = " <%= tags_path %>"+"/"+pre
-            }
-          });
-    </script>
-    <br><br>
+  
+  <input class="form-control" type="text" id="myInput"  placeholder="Search for tags..">
+  <script>
+    $('#myInput').keypress(function (e) {
+      var key = e.which;
+      if (key == 13) { // enter key
+        var pre = document.getElementById("myInput").value;
+        window.location.href = "<%= tags_path %>"+"/" + pre
+      }
+    });
+  </script>
+  <br/><br/>
 
   <table class="table">
     <tr>
-      <th><a href = <%= tags_path(2) %> ><%= t('tag.index.tag') %></a></th>
-      <th><a href = <%= tags_path(1) %> ><%= t('tag.index.number_of_uses') %></a></th>
+      <th><a href = "<%= tags_path %>?sort=name"><%= t('tag.index.tag') %></a> <i class="fa fa-arrows-v"></i></th>
+      <th><a href = "<%= tags_path %>?sort=uses"><%= t('tag.index.number_of_uses') %></a> <i class="fa fa-arrows-v"></i></th>
       <th><%= t('tag.index.number_of_subscriptions')%></th>
       <% if current_user %>
-        <th><a href = <%= tags_path(3) %> ><%= t('tag.index.subscriptions') %></a></th>
+        <th><a href = "<%= tags_path %>?sort=subscribers"><%= t('tag.index.subscriptions') %></a> <i class="fa fa-arrows-v"></i></th>
       <% end %>
     </tr>
     <% @tags.each do |tag| %>

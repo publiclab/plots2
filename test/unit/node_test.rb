@@ -16,12 +16,44 @@ class NodeTest < ActiveSupport::TestCase
     assert question.answered
   end
 
+  test 'emoji conversion' do
+    node = nodes(:one)
+    revision = node.latest
+    revision.body = ':cat:'
+    assert_equal "<p>🐱</p>\n", revision.render_body
+  end
+
   test 'node mysql native fulltext search' do
     assert Node.count > 0
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       nodes = Node.search('organizers')
       assert_not_nil nodes
       assert nodes.length > 0
+      # now sorted by natural language match
+      nodes_natural = Node.search('organizers', :natural)
+      assert_not_nil nodes_natural
+      assert nodes_natural.length > 0
+      assert_not_equal nodes_natural, nodes
+      # now sorted by likes
+      nodes_likes = Node.search('organizers', :likes)
+      assert_not_nil nodes_likes
+      assert nodes_likes.length > 0
+      assert_not_equal nodes_likes, nodes
+      # now sorted by views
+      nodes_views = Node.search('organizers', :views)
+      assert_not_nil nodes_views
+      assert nodes_views.length > 0
+      assert_not_equal nodes_views, nodes
+    end
+  end
+
+  test 'node mysql native fulltext search returning tag-based matches' do
+    assert Node.count > 0
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      nodes = Node.search('awesome')
+      assert_not_nil nodes
+      assert nodes.length > 0
+      assert_equal nodes.length, Tag.find_nodes_by_type('awesome', ['note', 'page']).length
     end
   end
 
@@ -105,6 +137,17 @@ class NodeTest < ActiveSupport::TestCase
                     title: 'My wiki page')
     assert node.save!
     assert_equal 'page', node.type
+  end
+
+  test 'create a wiki page with new as title' do
+    array = ['new', 'create', 'update', 'edit', 'delete']
+    array.each { |x|
+    node = Node.new(uid: users(:bob).id,
+                    type: 'page',
+                    title: x)
+    assert_not node.valid?
+    assert_equal 'page', node.type
+  }
   end
 
   test 'create a wiki page with Node.new_wiki' do
@@ -203,7 +246,7 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should find all research notes' do
     notes = Node.research_notes
-    expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog), nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade)]
+    expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog), nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade), nodes(:draft)]
     assert_equal expected, notes
   end
 
@@ -339,8 +382,15 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should delete associated comments when a node is deleted' do
     node = nodes(:one)
-    assert_equal node.comments.count, 4
+    assert_equal node.comments.count, 5
     deleted_node = node.destroy
     assert_equal node.comments.count, 0
+  end
+
+  test 'should delete associated node selections when a node is deleted' do
+    node = nodes(:one)
+    node_selection = node_selections(:unbanned_spammer_like)
+    node.destroy
+    assert_equal node.node_selections.count, 0
   end
 end

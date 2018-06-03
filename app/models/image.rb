@@ -30,7 +30,7 @@ class Image < ActiveRecord::Base
   end
 
   def filetype
-    filename[-3..filename.length].downcase
+    filename.split('.').last.downcase
   end
 
   def path(size = :medium)
@@ -39,7 +39,11 @@ class Image < ActiveRecord::Base
     else
       size = :original
     end
-    absolute_uri + photo.url(size)
+    photo.url(size)
+  end
+
+  def shortlink
+    "/i/#{self.id}"
   end
 
   def filename

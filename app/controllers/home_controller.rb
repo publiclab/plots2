@@ -9,14 +9,12 @@ class HomeController < ApplicationController
   # caches_action :index, :cache_path => { :last => Node.find(:last).updated_at.to_i }
 
   def home
-    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
-      self.activity
-    end
-
-    @title = I18n.t('home_controller.science_community')
     if current_user
       redirect_to '/dashboard'
     else
+      set_activity :cache
+      @comments = [] # inefficient, but quick way to remove comments from front page
+      @title = I18n.t('home_controller.science_community')
       render template: 'home/home'
     end
   end
@@ -36,26 +34,42 @@ class HomeController < ApplicationController
 
   # route for seeing the front page even if you are logged in
   def front
+    set_activity :cache
     @title = I18n.t('home_controller.environmental_investigation')
-    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
-      self.activity
-    end
     render template: 'home/home'
   end
 
   def dashboard
-    @note_count = Node.select(%i(created type status))
-      .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-      .count(:all)
-    @wiki_count = Revision.select(:timestamp)
-      .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
-      .count
-    @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count if current_user
-    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = self.activity
-    render template: 'dashboard/dashboard'
-    @title = I18n.t('home_controller.community_research') unless current_user
+    if current_user
+      @note_count = Node.select(%i(created type status))
+        .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+        .count(:all)
+      @wiki_count = Revision.select(:timestamp)
+        .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+        .count
+      @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count
+      set_activity
+      render template: 'dashboard/dashboard'
+    else
+      redirect_to '/research'
+    end
   end
 
+  def research
+    if current_user
+      redirect_to '/dashboard'
+    else
+      @note_count = Node.select(%i(created type status))
+        .where(type: 'note', status: 1, created: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+        .count(:all)
+      @wiki_count = Revision.select(:timestamp)
+        .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
+        .count
+      set_activity
+      render template: 'dashboard/dashboard'
+      @title = I18n.t('home_controller.community_research')
+    end
+  end
   # trashy... clean this up!
   # this will eventually be based on the profile_tags data where people can mark their location with "location:lat,lon"
   def nearby
@@ -68,6 +82,8 @@ class HomeController < ApplicationController
       @users = DrupalUser.where('lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?', minlat, maxlat, minlon, maxlon)
     end
   end
+
+  private
 
   def activity
     blog = Tag.find_nodes_by_type('blog', 'note', 1).first
@@ -85,9 +101,10 @@ class HomeController < ApplicationController
     notes = notes.where('nid != (?)', blog.nid) if blog
 
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      notes = notes.where('(node.status = 1 OR node.status = 4)')
+      notes = notes.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
     elsif current_user
-      notes = notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
+      coauthor_nids = Node.joins(:node_tag).joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid').select('node.*, term_data.*, community_tags.*').where(type: 'note', status: 3).where('term_data.name = (?)', "with:#{current_user.username}").collect(&:nid)
+      notes = notes.where('(node.nid IN (?) OR node.status = 1 OR ((node.status = 3 OR node.status = 4) AND node.uid = ?))', coauthor_nids, current_user.uid)
     else
       notes = notes.where('node.status = 1')
     end
@@ -113,6 +130,7 @@ class HomeController < ApplicationController
     comments = Comment.joins(:node, :drupal_user)
       .order('timestamp DESC')
       .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
+      .where('node.status = ?', 1)
       .page(params[:page])
       .group('title') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
@@ -136,6 +154,17 @@ class HomeController < ApplicationController
       answer_comments
     ]
     response
+  end
+
+  def set_activity(source = :database)
+    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments =
+      if source == :cache
+        Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
+          activity
+        end
+      else
+        activity
+      end
   end
 
 end

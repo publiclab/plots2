@@ -28,7 +28,12 @@ class CommentController < ApplicationController
             if request.xhr?
               render partial: 'notes/comment', locals: { comment: @comment }
             else
-              flash[:notice] = 'Comment posted.'
+            	tagnames =  @node.tagnames.map do |tagname|
+            		"<a href='/subscribe/tag/#{ tagname }'>#{ tagname }</a>"
+              end
+              tagnames = tagnames.join(', ')
+              tagnames = " Click to subscribe to updates on these tags or topics: " + tagnames unless tagnames.empty?
+              flash[:notice] = "Comment posted.#{tagnames}"
               redirect_to @node.path + '#last' # to last comment
             end
           end
@@ -170,6 +175,25 @@ class CommentController < ApplicationController
       end
     else
       prompt_login 'Only the comment author can promote this comment to answer'
+    end
+  end
+
+  def like_comment
+    @comment_id = params["comment_id"].to_i
+    @user_id = params["user_id"].to_i
+    comment = Comment.where(cid: @comment_id).first
+    like = comment.likes.where(user_id: @user_id)
+    @is_liked = like.count.positive?
+    if like.count.positive?
+      like.first.destroy
+    else
+      comment.likes.create(user_id: @user_id)
+    end
+
+    respond_with do |format|
+      format.js {
+       render template: 'comment/like_comment'
+      }
     end
   end
 

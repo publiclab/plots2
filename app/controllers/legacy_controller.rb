@@ -1,7 +1,7 @@
 class LegacyController < ApplicationController
   def notes
     if params[:id]
-      redirect_to '/tag/' + params[:id], status: 301
+      redirect_to URI.parse('/tag/' + params[:id]).path, status: 301
     else
       redirect_to '/research', status: 301
     end
@@ -16,48 +16,43 @@ class LegacyController < ApplicationController
   end
 
   def people
-    redirect_to '/profile/' + params[:id], status: 301
+    redirect_to URI.parse('/profile/' + params[:id]).path, status: 301
   end
 
   def place
-    redirect_to '/wiki/' + params[:id], status: 301
+    redirect_to URI.parse('/wiki/' + params[:id]).path, status: 301
   end
 
   def tool
-    redirect_to '/wiki/' + params[:id], status: 301
+    redirect_to URI.parse('/wiki/' + params[:id]).path, status: 301
   end
 
   def openid
     user = User.find params[:id]
-    redirect_to '/openid/' + user.username, status: 301
+    redirect_to URI.parse('/openid/' + user.username).path, status: 301
   end
 
   def openid_username
-    redirect_to '/openid/' + params[:username], status: 301
+    redirect_to URI.parse('/openid/' + params[:username]).path, status: 301
   end
 
   def file
-    redirect_to "//#{request.host}/sites/default/files/" + params[:filename] + '.' + params[:format], status: 301
+    redirect_to URI.parse("//#{request.host}/sites/default/files/" + params[:filename] + '.' + params[:format]).path, status: 301
   end
-
-  #  def image
-  #    # sites/default/files/imagecache/thumb/san-martin-spectro.jpg
-  #    redirect_to "//i.publiclab.org/sites/default/files/imagecache/"+params[:size]+"/"+params[:filename]+"."+params[:format], :status => 301
-  #  end
 
   def register
     redirect_to '/signup', status: 301
   end
 
-  # http://publiclaboratory.org/node/5853
+  # /node/5853
   def node
     node = Node.find params[:id]
-    redirect_to node.path, status: 301
+    redirect_to URI.parse(node.path).path, status: 301
   end
 
   def report
-    @node = DrupalUrlAlias.find_by(dst: 'report/' + params[:id]).node
-    redirect_to '/notes/' + @node.author.name.downcase + '/' + Time.at(@node.created_at).strftime('%m-%d-%Y') + '/' + params[:id], status: 301
+    node = Node.find_by(slug: params[:id])
+    redirect_to URI.parse(node.path).path, status: 301
   end
 
   def rss

@@ -141,3 +141,9 @@ test_lego:
   uid: 2
   nid: 13
   date: <%= DateTime.now.to_i %>
+
+co-author:
+  tid: 19
+  uid: 2
+  nid: 21
+  date: <%= DateTime.now.to_i %>

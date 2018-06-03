@@ -10,6 +10,15 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_redirected_to '/dashboard'
   end
 
+  test 'should redirect to create new account if username doesnt exist' do
+    post :create, user_session: {
+      username: 'nobody',
+      password: 'blablabla'
+    }
+    assert_redirected_to '/login'
+    assert_equal 'There is nobody in our system by that name, are you sure you have the right username?', flash[:warning]
+  end
+
   test 'login user with an email' do
     post :create, user_session: {
       username: users(:jeff).email,

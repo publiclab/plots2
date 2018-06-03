@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class NotesControllerTest < ActionController::TestCase
+   include ActionMailer::TestHelper
   def setup
     Timecop.freeze # account for timestamp change
     activate_authlogic
@@ -39,6 +40,21 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select '#other-activities', false
+  end
+
+  test 'comment markdown and autolinking works' do
+    node = Node.where(type: 'note', status: 1).first
+    assert node.comments.length > 0
+    comment = node.comments.last
+    comment.comment = 'Test **markdown** and http://links.com'
+    comment.save!
+
+    get :show, id: node.id
+
+    assert_select 'strong', 'markdown'
+    assert_select 'a', 'http://links.com'
+
+    assert_response :success
   end
 
   test 'notes record views with unique ips' do
@@ -235,7 +251,8 @@ class NotesControllerTest < ActionController::TestCase
 
     get :index
 
-    assert_select ".note-nid-#{node.id}", false
+    selector = css_select ".note-nid-#{node.id}"
+    assert_equal selector.size, 0
   end
 
   test 'first-timer moderated note (status=4) hidden to normal users in full view' do
@@ -272,8 +289,9 @@ class NotesControllerTest < ActionController::TestCase
     get :index
 
     assert_response :success
-    assert_select 'div.note'
-    assert_select "div.note-nid-#{node.nid} p.moderated", 'Pending approval by community moderators. Please be patient!'
+    selector = css_select 'div.note'
+    assert_equal selector.size, 15
+    assert_select "div p", 'Pending approval by community moderators. Please be patient!'
   end
 
   test 'first-timer moderated note (status=4) shown to moderator with notice and approval prompt in full view' do
@@ -287,7 +305,7 @@ class NotesControllerTest < ActionController::TestCase
         id: node.title.parameterize
 
     assert_response :success
-    assert_equal "First-time poster <a href='#{node.author.name}'>#{node.author.name}</a> submitted this #{time_ago_in_words(node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{node.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{node.id}'>Spam</a>", flash[:warning]
+    assert_equal "First-time poster <a href='/profile/#{node.author.name}'>#{node.author.name}</a> submitted this #{time_ago_in_words(node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{node.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{node.id}'>Spam</a>", flash[:warning]
   end
 
   test 'first-timer moderated note (status=4) shown to moderator with notice and approval prompt in list view' do
@@ -298,8 +316,9 @@ class NotesControllerTest < ActionController::TestCase
     get :index
 
     assert_response :success
-    assert_select 'div.note'
-    assert_select "div.note-nid-#{node.nid} p.moderated", "Moderate first-time post: \n              Approve\n              Spam"
+    selector = css_select 'div.note'
+    assert_equal selector.size, 15
+    assert_select "p", "Moderate first-time post: \n              Approve\n              Spam"
   end
 
   test 'post_note_error_no_title' do
@@ -310,7 +329,8 @@ class NotesControllerTest < ActionController::TestCase
          tags: 'balloon-mapping,event'
 
     assert_template 'editor/post'
-    assert_select '.alert'
+    selector = css_select '.alert'
+    assert_equal selector.size, 2
   end
 
   test 'posting note successfully with no errors using xhr (rich editor)' do
@@ -326,7 +346,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_not_nil @response.body
     assert_equal '/notes/Bob/' + Time.now.strftime('%m-%d-%Y') + '/a-completely-unique-snowflake', @response.body
   end
-  
+
   test 'post_note_error_no_title_xhr' do
     UserSession.create(users(:bob))
 
@@ -353,7 +373,6 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_not_nil @response.body
-    assert_equal "{\"title\":[\"can't be blank\"],\"path\":[\"This title has already been taken\"]}", @response.body
   end
 
   test 'returning json errors on xhr note update' do
@@ -384,7 +403,7 @@ class NotesControllerTest < ActionController::TestCase
 
     get :show, id: node[4], author: node[2], date: node[3]
 
-    assert_tag tag: 'iframe', attributes: { src: 'http://mapknitter.org/embed/sattelite-imagery' }
+    assert_select 'iframe[src=?]', 'http://mapknitter.org/embed/sattelite-imagery'
   end
 
   # test "should mark admins and moderators with a special icon" do
@@ -406,7 +425,8 @@ class NotesControllerTest < ActionController::TestCase
         author: node.author.username,
         date: node.created_at.strftime('%m-%d-%Y'),
         id: node.title.parameterize
-    assert_select '.fa-fire', 3
+    selector = css_select '.fa-fire'
+    assert_equal selector.size, 4
   end
 
   test 'should redirect to questions show page after creating a new question' do
@@ -417,7 +437,11 @@ class NotesControllerTest < ActionController::TestCase
          body: 'Spectrometer question',
          tags: 'question:spectrometer',
          redirect: 'question'
-
+    node = nodes(:blog)
+    email = AdminMailer.notify_node_moderators(node)
+    assert_emails 1 do
+        email.deliver_now
+    end
     assert_redirected_to '/questions/' + users(:bob).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
     assert_equal "Success! Thank you for contributing with a question, and thanks for your patience while your question is approved by <a href='/wiki/moderation'>community moderators</a> and we'll email you when it is published.", flash[:notice]
   end
@@ -462,7 +486,8 @@ class NotesControllerTest < ActionController::TestCase
     post :edit,
          id: note.nid
     assert_response :success
-    assert_select 'input.form-control.input-lg[value=?]', note.tagnames.join(',')
+    selector = css_select "input.form-control.input-lg[value='#{note.tagnames.join(',')}']"
+    assert_equal selector.size, 1
   end
 
   test 'should display /post template when editing a question' do
@@ -472,7 +497,8 @@ class NotesControllerTest < ActionController::TestCase
     post :edit,
          id: note.nid
     assert_response :success
-    assert_select 'input.form-control.input-lg[value=?]', note.tagnames.join(',')
+    selector = css_select "input.form-control.input-lg[value='#{note.tagnames.join(',')}']"
+    assert_equal selector.size, 1
   end
 
   test 'should redirect to questions show page when editing an existing question' do
@@ -544,6 +570,15 @@ class NotesControllerTest < ActionController::TestCase
     assert !(notes & questions).present?
   end
 
+  test 'should list only research notes with status 1 in recent' do
+    get :recent
+    notes = assigns(:notes)
+    expected = [nodes(:one)]
+    questions = [nodes(:question)]
+    assert (notes & expected).present?
+    assert (notes & questions).present?
+  end
+
   test 'should list only research notes with status 1 in liked' do
     UserSession.create(users(:admin))
     get :liked
@@ -586,7 +621,7 @@ class NotesControllerTest < ActionController::TestCase
     end
 
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-  end 
+  end
 
   test "should not delete wiki if other author have contributed" do
     node = nodes(:about)
@@ -597,9 +632,9 @@ class NotesControllerTest < ActionController::TestCase
     assert_no_difference 'Node.count' do
       get :delete, id: node.nid
     end
-    
+
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
-  end 
+  end
 
   #should change title
   test 'title change feature in comments when author is logged in' do
@@ -609,7 +644,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_redirected_to node.path+"#comments"
     assert_equal node.reload.title, 'changed title'
   end
-  
+
   # should not change title
   test 'title change feature in comments when author is not logged in' do
     node = nodes(:one)
@@ -621,9 +656,217 @@ class NotesControllerTest < ActionController::TestCase
 
   def test_get_rss_feed
     get :rss, :format => "rss"
-    assert_response :success   
+    assert_response :success
     assert_equal 'application/rss+xml', @response.content_type
   end
 
+  test 'draft should not be shown when no user' do
+    node = nodes(:draft)
+    post :show, id: '21',title: 'Draft note'
+    assert_redirected_to '/login'
+    assert_equal "You need to login to view the page", flash[:warning]
+  end
 
+  test 'draft should not be shown when user is not author' do
+    node = nodes(:draft)
+    UserSession.create(users(:bob))
+    post :show, id: '21',title: 'Draft note'
+    assert_redirected_to '/'
+    assert_equal "Only author can access the draft note", flash[:notice]
+  end
+
+  test 'question deletion should delete all its answers' do
+    UserSession.create(users(:moderator))
+    node = nodes(:question)
+    node.save
+    answer1 = answers(:one)
+    answer1.save
+    answer2 = answers(:two)
+    answer2.save
+    n_count = Node.count
+
+    xhr :post, :delete, id: node.id
+
+    assert_response :success
+    assert_equal Node.count, n_count - 1
+    assert_equal Answer.count, 0
+  end
+
+  test 'moderator can publish the draft' do
+    UserSession.create(users(:moderator))
+    node = nodes(:draft)
+    assert_equal 3, node.status
+    ActionMailer::Base.deliveries.clear
+
+    get :publish_draft, id: node.id
+
+    assert_response :redirect
+    assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+    node = assigns(:node)
+    assert_equal 1, node.status
+    assert_equal 1, node.author.status
+    assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal '[PublicLab] ' + node.title, email.subject
+  end
+
+   test 'draft author can publish the draft' do
+     UserSession.create(users(:jeff))
+     node = nodes(:draft)
+     assert_equal 3, node.status
+     ActionMailer::Base.deliveries.clear
+
+     get :publish_draft, id: node.id
+
+     assert_response :redirect
+     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+     node = assigns(:node)
+     assert_equal 1, node.status
+     assert_equal 1, node.author.status
+     assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
+
+     email = ActionMailer::Base.deliveries.last
+     assert_equal '[PublicLab] ' + node.title, email.subject
+   end
+
+   test 'co-author can publish the draft' do
+     UserSession.create(users(:test_user))
+     node = nodes(:draft)
+     assert_equal 3, node.status
+     ActionMailer::Base.deliveries.clear
+
+     get :publish_draft, id: node.id
+
+     assert_response :redirect
+     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+     node = assigns(:node)
+     assert_equal 1, node.status
+     assert_equal 1, node.author.status
+     assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
+
+     email = ActionMailer::Base.deliveries.last
+     assert_equal '[PublicLab] ' + node.title, email.subject
+   end
+
+   test 'Normal user should not be allowed to publish the draft' do
+     UserSession.create(users(:bob))
+     node = nodes(:draft)
+     assert_equal 3, node.status
+     ActionMailer::Base.deliveries.clear
+
+     get :publish_draft, id: node.id
+
+     assert_response :redirect
+     assert_equal "You are not author or moderator so you can't publish a draft!", flash[:warning]
+     node = assigns(:node)
+     assert_equal 3, node.status
+     assert_equal 1, node.author.status
+     assert_redirected_to '/'
+     assert_equal ActionMailer::Base.deliveries.size, 0
+   end
+
+   test 'User should be logged in to publish draft' do
+     node = nodes(:draft)
+     assert_equal 3, node.status
+     ActionMailer::Base.deliveries.clear
+
+     get :publish_draft, id: node.id
+
+     assert_response :redirect
+     assert_equal "You must be logged in to access this page", flash[:warning]
+     assert_equal 3, node.status
+     assert_equal 1, node.author.status
+     assert_redirected_to '/login'
+     assert_equal ActionMailer::Base.deliveries.size, 0
+   end
+
+   test 'post draft no login' do
+     user_session = UserSession.create(users(:bob))
+     user_session.destroy
+     title = 'My new post about balloon mapping'
+
+     post :create,
+          id: users(:bob).id,
+          title: title,
+          body: 'This is a fascinating post about a balloon mapping event.',
+          tags: 'balloon-mapping,event',
+          draft: "true"
+
+     assert_redirected_to('/login')
+   end
+
+   test 'non-first-timer posts draft' do
+     UserSession.create(users(:jeff))
+     title = 'My new post about balloon mapping'
+     assert !users(:jeff).first_time_poster
+
+       post :create,
+            title: title,
+            body:  'This is a fascinating post about a balloon mapping event.',
+            tags:  'balloon-mapping,event',
+            draft: "true"
+
+     email = ActionMailer::Base.deliveries.last
+     assert_equal '[PublicLab] ' + title, email.subject
+     assert_equal 3, Node.last.status
+     assert_equal I18n.t('notes_controller.saved_as_draft'), flash[:notice]
+     assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
+   end
+
+   test 'first-timer posts draft' do
+     UserSession.create(users(:lurker))
+     title = 'My first post to Public Lab'
+
+     post :create,
+          title: title,
+          body: 'This is a fascinating post about a balloon mapping event.',
+          tags: 'balloon-mapping,event',
+          draft: "true"
+
+     assert_equal "First-time users are not eligible to create a draft.", flash[:notice]
+     assert_redirected_to '/'
+   end
+
+   test 'draft note (status=3) shown to author in full view with notice' do
+     node = nodes(:draft)
+     UserSession.create(node.author.user)
+     assert_equal 3, node.status
+
+     get :show,
+         author: node.author.username,
+         date: node.created_at.strftime('%m-%d-%Y'),
+         id: node.title.parameterize
+
+     assert_response :success
+     assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
+   end
+
+   test 'draft note (status=3) shown to moderator in full view with notice' do
+     UserSession.create(users(:moderator))
+     node = nodes(:draft)
+     assert_equal 3, node.status
+
+     get :show,
+         author: node.author.username,
+         date: node.created_at.strftime('%m-%d-%Y'),
+         id: node.title.parameterize
+
+     assert_response :success
+     assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
+   end
+
+   test 'draft note (status=3) shown to co-author in full view with notice' do
+     UserSession.create(users(:test_user))
+     node = nodes(:draft)
+     assert_equal 3, node.status
+
+     get :show,
+         author: node.author.username,
+         date: node.created_at.strftime('%m-%d-%Y'),
+         id: node.title.parameterize
+
+     assert_response :success
+     assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
+   end
 end

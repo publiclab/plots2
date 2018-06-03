@@ -164,4 +164,38 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 1, drupal_user.user.status
   end
 
+  test 'daily_note_tally returns the correct type of array' do
+      user = users(:bob)
+      daily = user.daily_note_tally()
+      assert_not_empty daily
+      assert_equal daily.count, 365
+  end
+  test 'user roles' do
+    admin = users(:admin)
+    assert admin.admin?
+    assert admin.can_moderate?
+
+    moderator = users(:moderator)
+    assert moderator.moderator?
+    assert moderator.can_moderate?
+
+    basic_user = users(:newcomer)
+    assert_not basic_user.admin?
+    assert_not basic_user.moderator?
+    assert_not basic_user.can_moderate?
+  end
+  test 'user email validation' do
+    user = User.new(username: 'zen',
+                    password: 'nez',
+                    password_confirmation: 'nez',
+                    email: 'abc@.com')
+    assert_not user.save({})
+  end
+  test 'email validation' do
+    user = User.new(username: 'himanshu',
+                    password: 'bhallu',
+                    password_confirmation: 'bhallu',
+                    email: '@xyz.com')
+    assert_not user.save({})
+  end
 end

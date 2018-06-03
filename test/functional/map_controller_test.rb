@@ -22,7 +22,7 @@ class MapControllerTest < ActionController::TestCase
     map = nodes(:map)
     get :show,
         name: map.title.parameterize,
-        date: map.created_at.strftime('%m-%d-%Y')
+        date: map.created_at.strftime('%m-%d-%Y').slice(0, 19)
     assert_response :success
   end
 end

@@ -46,6 +46,7 @@ Plots2::Application.routes.draw do
   patch 'users/update' => 'users#update'
   get 'people/:id/following' => 'users#following', as: :following
   get 'people/:id/followers' => 'users#followers', as: :followers
+  get 'people/:tagname' => 'users#list'
   get 'signup' => 'users#new'
   get 'home' => 'home#front'
   resources :relationships, only: [:create, :destroy]
@@ -93,7 +94,7 @@ Plots2::Application.routes.draw do
 
   # these need precedence for tag listings
   get 'feed/tag/:tagname' => 'tag#rss'
-  get ':node_type/tag(/:id)' => 'tag#show'
+  get ':node_type/tag(/:id)(/:start)(/:end)' => 'tag#show'
   get 'feed/tag/:tagname/author/:authorname' => 'tag#rss_for_tagged_with_author'
   get 'wiki/raw/:id' => 'wiki#raw'
   get 'wiki/revisions/:id' => 'wiki#revisions'
@@ -109,10 +110,13 @@ Plots2::Application.routes.draw do
 
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
+  get 'i/:id' => 'images#shortlink'
+  get 'p/:id' => 'users#shortlink'
   get 'notes/raw/:id' => 'notes#raw'
   get 'notes/popular' => 'notes#popular'
   get 'notes/liked' => 'notes#liked'
   post 'notes/create' => 'notes#create'
+  get 'notes/publish_draft/:id' => 'notes#publish_draft'
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
@@ -126,11 +130,12 @@ Plots2::Application.routes.draw do
   get 'place/:id' => 'legacy#place'
   get 'tool/:id' => 'legacy#tool'
   get 'people/:id' => 'legacy#people'
+  get 'notes/recent' => 'notes#recent'
   get 'notes/:id' => 'legacy#notes'
   get 'sites/default/files/:filename.:format' => 'legacy#file'
   get 'sites/default/files/imagecache/:size/:filename.:format' => 'legacy#image'
 
-  get 'research' => 'home#dashboard'
+  get 'research' => 'home#research'
   get 'notes' => 'legacy#notes'
   get 'notes/author/:id' => 'notes#author'
   get 'notes/author/:author/:topic' => 'notes#author_topic'
@@ -180,7 +185,6 @@ Plots2::Application.routes.draw do
   get 'feed/liked' => 'notes#liked_rss'
 
   get 'dashboard' => 'home#dashboard'
-  get 'dashboard2' => 'home#dashboard'
   get 'comments' => 'comment#index'
   get 'profile/comments/:id' => 'users#comments'
   get 'nearby' => 'home#nearby'
@@ -254,6 +258,8 @@ Plots2::Application.routes.draw do
   get 'questions/unanswered(/:tagnames)' => 'questions#unanswered'
   get 'questions/liked(/:tagnames)' => 'questions#liked'
 
+  post 'users/test_digest_email' => 'users#test_digest_email'
+
   post 'answers/create/:nid' => 'answers#create'
   get 'answers/create/:nid' => 'answers#create'
   put 'answers/update/:id' => 'answers#update'
@@ -266,6 +272,7 @@ Plots2::Application.routes.draw do
 
   get 'comment/answer_create/:aid' => 'comment#answer_create'
   post 'comment/make_answer/:id' => 'comment#make_answer'
+  post '/comment/like' => 'comment#like_comment'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
@@ -312,6 +319,8 @@ Plots2::Application.routes.draw do
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
+  #handling omniauth callbacks
+  match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
 
   match ':controller(/:action(/:id))(.:format)', via: [:get, :post]
 end

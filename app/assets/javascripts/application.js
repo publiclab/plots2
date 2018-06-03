@@ -41,13 +41,13 @@
 //= require restful_typeahead.js
 //= require users.js
 //= require searchform.js
-//= require location_tags.js
 //= require tagging.js
+//= require leaflet_helper
 //= require grids.js
 //= require graph.js
 //= require short-code-forms/dist/short-code-prompts.js
 //= require wikis.js
 //= require chart.js/dist/Chart.js
+//= require header_footer.js
 //  require turbolinks // Temporarily removed while fixing
-//= require google_analytics.js
 
