@@ -53,8 +53,8 @@ class AdminController < ApplicationController
         PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
       end
 
-      flash[:notice] = "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with." 
-      redirect_to "/profile/" + user.name
+      flash[:notice] = "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with."
+      redirect_to URI.parse("/profile/" + user.name).path
     end
   end
 

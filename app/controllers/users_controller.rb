@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :require_no_user, :only => [:new]
-  before_filter :require_user, :only => [:update]
+  before_filter :require_user, :only => [:edit, :update]
   before_action :set_user, only: [:info, :followed, :following, :followers]
 
   def new
@@ -296,6 +296,11 @@ class UsersController < ApplicationController
     @title = "Followers"
     @users = @user.followers.paginate(page: params[:page], per_page: 24)
     render 'show_follow'
+  end
+
+  def test_digest_email
+    DigestMailJob.perform_later
+    redirect_to "/profile/"+current_user.username
   end
 
   private

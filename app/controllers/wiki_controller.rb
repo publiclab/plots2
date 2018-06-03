@@ -266,9 +266,10 @@ class WikiController < ApplicationController
     @node = Node.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
-      @revisions = @revisions.where(status: 1) unless current_user && current_user.can_moderate?
+      @revisions = @revisions.where(status: 1).page(params[:page]).per_page(20) unless current_user && current_user.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @node.title).html_safe
       @tags = @node.tags
+      @paginated = true unless current_user && current_user.can_moderate?
     else
       flash[:error] = I18n.t('wiki_controller.invalid_wiki_page')
     end

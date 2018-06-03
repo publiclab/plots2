@@ -90,6 +90,16 @@ class DrupalUser < ActiveRecord::Base
     user.first_time_poster
   end
 
+  def new_author_contributor
+    @uid = self.uid
+    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
+  end
+
+  def new_contributor
+    @uid = self.id
+    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
+  end
+
   def likes
     NodeSelection.where(user_id: uid, liking: true)
   end

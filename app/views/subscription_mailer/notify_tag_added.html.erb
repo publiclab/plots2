@@ -3,16 +3,14 @@
 
   was tagged with <i><a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/tag/<%= @tag.name %>'>#<%= @tag.name %></a></i> 
 
-  by <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @current_user.username %>'><%= @current_user.username %></a>
+  by <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @tagging_user.username %>'><%= @tagging_user.username %></a>
 </p>
 
 <p>Read and respond to the post here: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %></p>
 
-<% if @user.role == "admin" || @user.role == "moderator" %>Does this look like spam? <a class="btn btn-sm" href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/spam/<%= @node.id %>">Spam</a><% end %>
-
 <div style="color:#aaa;">
 
-<p>You received this email because you are subscribed to the following tag: <%= @tag.name %>.</p>
+<p>You received this email because it was tagged with: <%= @tag.name %>.</p>
 
 <p>To change your preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.</p>
 

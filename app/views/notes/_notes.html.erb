@@ -24,7 +24,7 @@
 
         <p class="meta"><small>
           <% if node.type == 'note' %>
-            by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a>
+            by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_author_contributor %>
 	    <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %>
             | <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
           <% else %>

@@ -12,6 +12,8 @@ gem 'responders', '~> 2.0' # for Rails 4.2
 
 gem 'turbolinks'
 
+# Whenever provides a clear syntax for writing and deploying cron jobs
+gem 'whenever', require: false
 
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
@@ -60,6 +62,7 @@ group :test, :development do
   gem 'jasmine-jquery-rails'
   gem 'coveralls', require: false
   gem 'ci_reporter_test_unit'
+  gem 'openssl', '~> 2.0.0.beta.1'
 end
 
 # run with `bundle install --without production` to exclude these
@@ -120,8 +123,11 @@ gem 'rails-dom-testing'
 #OAuth Based login
 gem 'omniauth', '~> 1.3', '>= 1.3.1'
 gem 'omniauth-facebook', '~> 3.0'
-#Gem for making tableless models 
-gem 'activerecord-tableless'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-twitter'
+gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
+
+#Gem for making tableless models
+gem 'activerecord-tableless'
 gem 'figaro'
 gem 'sanitize'
