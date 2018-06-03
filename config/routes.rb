@@ -257,6 +257,8 @@ Plots2::Application.routes.draw do
   get 'questions/unanswered(/:tagnames)' => 'questions#unanswered'
   get 'questions/liked(/:tagnames)' => 'questions#liked'
 
+  post 'users/test_digest_email' => 'users#test_digest_email'
+
   post 'answers/create/:nid' => 'answers#create'
   get 'answers/create/:nid' => 'answers#create'
   put 'answers/update/:id' => 'answers#update'

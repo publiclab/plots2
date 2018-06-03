@@ -377,6 +377,13 @@ class User < ActiveRecord::Base
     nil
   end
 
+  def send_digest_email
+    top_picks = self.content_followed_in_period(Time.now - 1.week, Time.now)
+    if top_picks.count > 0
+      SubscriptionMailer.send_digest(self.id,top_picks).deliver_now
+    end
+  end
+
   private
 
   def map_openid_registration(registration)
