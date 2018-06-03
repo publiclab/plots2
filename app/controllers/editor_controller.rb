@@ -6,10 +6,7 @@ class EditorController < ApplicationController
     # /post/?i=http://myurl.com/image.jpg
     flash.now[:notice] = "This is the legacy editor. For the new rich editor, <a href='/editor'>click here</a>."
     image if params[:i]
-    if params[:n] && !params[:body] # use another node body as a template
-      node = Node.find(params[:n])
-      params[:body] = node.body if node
-    end
+    template if params[:n] && !params[:body] # use another node body as a template
     if params[:tags]&.include?('question:')
       redirect_to "/questions/new?#{request.env['QUERY_STRING']}"
     else
