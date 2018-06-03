@@ -1,4 +1,4 @@
-class Revision < ActiveRecord::Base
+class Revision < ApplicationRecord
 
   self.table_name = 'node_revisions'
   self.primary_key = 'vid'

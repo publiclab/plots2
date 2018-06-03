@@ -1,4 +1,4 @@
-class Tag < ActiveRecord::Base
+class Tag < ApplicationRecord
   self.table_name = 'term_data'
   self.primary_key = 'tid'
 

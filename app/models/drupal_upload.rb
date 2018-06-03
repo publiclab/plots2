@@ -1,4 +1,4 @@
-class DrupalUpload < ActiveRecord::Base
+class DrupalUpload < ApplicationRecord
   self.table_name = 'upload'
   belongs_to :node, foreign_key: 'nid', dependent: :destroy
   belongs_to :drupal_file, foreign_key: 'fid'

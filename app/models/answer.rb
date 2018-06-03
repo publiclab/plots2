@@ -1,4 +1,4 @@
-class Answer < ActiveRecord::Base
+class Answer < ApplicationRecord
   include NodeShared, CommentsShared # common methods for node-like and comment-like models
 
 

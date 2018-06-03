@@ -1,6 +1,6 @@
 require 'open-uri'
 
-class Image < ActiveRecord::Base
+class Image < ApplicationRecord
 
   # has_many :comments, :dependent => :destroy
   # has_many :likes, :dependent => :destroy
