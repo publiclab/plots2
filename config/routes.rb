@@ -240,6 +240,7 @@ Plots2::Application.routes.draw do
   get 'admin/unmoderate/:id' => 'admin#unmoderate'
 
   get 'post' => 'editor#post'
+  post 'post' => 'editor#post'
   get 'legacy' => 'editor#legacy'
   get 'editor' => 'editor#editor'
   post 'images/create' => 'images#create'
