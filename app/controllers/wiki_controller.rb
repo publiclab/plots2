@@ -266,9 +266,10 @@ class WikiController < ApplicationController
     @node = Node.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
-      @revisions = @revisions.where(status: 1) unless current_user && current_user.can_moderate?
+      @revisions = @revisions.where(status: 1).page(params[:page]).per_page(20) unless current_user && current_user.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @node.title).html_safe
       @tags = @node.tags
+      @paginated = true unless current_user && current_user.can_moderate?
     else
       flash[:error] = I18n.t('wiki_controller.invalid_wiki_page')
     end
@@ -306,11 +307,19 @@ class WikiController < ApplicationController
 
   def index
     @title = I18n.t('wiki_controller.wiki')
+    sort_param = params[:sort]
+    order_string = 'node_revisions.timestamp DESC'
 
-    order_string = if params[:order] == 'alphabetic'
-                     'node_revisions.title ASC'
-    else
-       'node_revisions.timestamp DESC'
+    if sort_param == 'title'
+      order_string = 'node_revisions.title ASC'
+    elsif sort_param == 'last_edited'
+       order_string = 'node_revisions.timestamp DESC'
+    elsif sort_param == 'edits'
+      order_string = 'drupal_node_revisions_count DESC'
+    elsif sort_param == 'page_views'
+      order_string = 'views DESC'
+    elsif sort_param == 'likes'
+      order_string = 'cached_likes DESC'
     end
 
     @wikis = Node.includes(:revision)

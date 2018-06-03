@@ -28,7 +28,9 @@ class UserSessionsController < ApplicationController
           params[:user_session].delete(:username)
           params[:openid] = username # pack up username for second runthrough
         end
-        @user_session = UserSession.new(params[:user_session])
+        @user_session = UserSession.new(username: params[:user_session][:username], 
+                                        password: params[:user_session][:password], 
+                                        remember_me: params[:user_session][:remember_me])
         saved = @user_session.save do |result|
           if result
             # replace this with temporarily saving pwd in session,

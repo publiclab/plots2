@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :require_no_user, :only => [:new]
-  before_filter :require_user, :only => [:update]
+  before_filter :require_user, :only => [:edit, :update]
   before_action :set_user, only: [:info, :followed, :following, :followers]
 
   def new
@@ -77,6 +77,7 @@ class UsersController < ApplicationController
 
   def list
     sort_param = params[:sort]
+    @tagname_param = params[:tagname]
 
     if params[:id]
       order_string = 'updated_at DESC'
@@ -99,8 +100,8 @@ class UsersController < ApplicationController
                     .where('rusers.status = 1')
                     .page(params[:page])
     
-    elsif params[:tagname]
-      @users = User.where(id: UserTag.where(value: params[:tagname]).collect(&:uid))
+    elsif @tagname_param
+      @users = User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
                     .page(params[:page])
 
     else
@@ -241,7 +242,7 @@ class UsersController < ApplicationController
         key = user.generate_reset_key
         user.save({})
         # send key to user email
-        PasswordResetMailer.reset_notify(user, key) unless user.nil? # respond the same to both successes and failures; security
+        PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
       end
       flash[:notice] = I18n.t('users_controller.password_reset_email')
       redirect_to "/login"
@@ -295,6 +296,11 @@ class UsersController < ApplicationController
     @title = "Followers"
     @users = @user.followers.paginate(page: params[:page], per_page: 24)
     render 'show_follow'
+  end
+
+  def test_digest_email
+    DigestMailJob.perform_later
+    redirect_to "/profile/"+current_user.username
   end
 
   private

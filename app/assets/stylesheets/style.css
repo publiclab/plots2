@@ -58,6 +58,7 @@ h4,h5,h6, h1 small, h3 small {
 
 .pl-content p img,
 #comments p img,
+#answer-0-comment p img,
 .pl-content p iframe {
   max-width: 100%;
   border: none;

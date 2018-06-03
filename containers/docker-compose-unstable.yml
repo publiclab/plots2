@@ -1,0 +1,30 @@
+version: "2"
+services:
+  db:
+    image: mariadb:10.2
+    environment:
+      - MYSQL_DATABASE=plots
+      - MYSQL_USER=plots
+      - MYSQL_PASSWORD=plots
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+    volumes:
+      - ./config/my.cnf:/etc/mysql/my.cnf
+      # for configuration 
+      - ../mysql:/var/lib/mysql
+      # for persistence
+      - ../dump:/docker-entrypoint-initdb.d
+      # for importing a dump
+      # if you want to re-import simply put away ../mysql/*
+  web:
+    build: .
+    command: /bin/bash -c "sleep 5 && passenger start -p 5001"
+    environment:
+      - RAILS_ENV=${RAILS_ENV}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+    volumes:
+      - .:/app
+    ports: 
+      - "127.0.0.1:5001:5001"
+    links:
+      - db
+#    restart: unless-stopped

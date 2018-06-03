@@ -1,18 +1,19 @@
 source 'https://rubygems.org'
 
+gem 'rails', '~> 4.2.10'
 ruby '2.3.7'
 
-gem 'rails', '~> 4.1.16'
 gem 'activerecord-session_store'
 gem 'protected_attributes'
 gem 'passenger'
 
-gem "unicode-emoji"
 gem 'rails-i18n', '~> 4.0.0'
-# gem 'responders', '~> 2.0' # for Rails 4.2
+gem 'responders', '~> 2.0' # for Rails 4.2
 
 gem 'turbolinks'
 
+# Whenever provides a clear syntax for writing and deploying cron jobs
+gem 'whenever', require: false
 
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
@@ -39,6 +40,7 @@ gem 'uglifier', '>= 1.0.3'
 
 # run with `bundle install --without development` to exclude these
 group :development do
+  gem 'web-console', '~> 2.0'
   gem "letter_opener"
   gem "nifty-generators"
   gem 'byebug'
@@ -60,12 +62,16 @@ group :test, :development do
   gem 'jasmine-jquery-rails'
   gem 'coveralls', require: false
   gem 'ci_reporter_test_unit'
+  gem 'openssl', '~> 2.0.0.beta.1'
 end
 
 # run with `bundle install --without production` to exclude these
 group :production do
   gem "scrypt", "~> 3"
 end
+
+gem 'unicode-emoji'
+gem 'gemoji'
 
 gem 'composite_primary_keys'
 gem 'jquery-rails'
@@ -78,7 +84,7 @@ gem 'geokit-rails'
 
 gem 'rails_autolink'
 gem 'rb-readline'
-gem "paperclip", "~> 4.2.0"
+gem "paperclip", "~> 5.2.0"
 gem "ruby-openid", :require => "openid"
 gem "rack-openid"
 gem "authlogic", "~> 3.5.0"
@@ -112,8 +118,16 @@ gem 'jbuilder'
 # Pin mustermann to Ruby 2.1 compatible
 gem 'mustermann' , '~> 0.4'
 
+#Gem for assertions used in testing
+gem 'rails-dom-testing'
 #OAuth Based login
 gem 'omniauth', '~> 1.3', '>= 1.3.1'
 gem 'omniauth-facebook', '~> 3.0'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-twitter'
+gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
+
+#Gem for making tableless models
+gem 'activerecord-tableless'
 gem 'figaro'
+gem 'sanitize'

@@ -12,12 +12,12 @@ class TagController < ApplicationController
     @title = I18n.t('tag_controller.tags')
     @paginated = true
     if params[:search]
-    prefix = params[:search]
+    keyword = params[:search]
     @tags = Tag.joins(:node_tag, :node)
       .select('node.nid, node.status, term_data.*, community_tags.*')
       .where('node.status = ?', 1)
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-      .where("name LIKE :prefix", prefix: "#{prefix}%")
+      .where("name LIKE :keyword", keyword: "%#{keyword}%")
       .group(:name)
       .order('count DESC')
       .paginate(page: params[:page], per_page: 24)
@@ -73,6 +73,8 @@ class TagController < ApplicationController
     # params[:node_type] - this is an optional param
     # if params[:node_type] is nil - use @default_type
     @node_type = params[:node_type] || default_type
+    @start = Time.parse(params[:start]) if params[:start]
+    @end = Time.parse(params[:end]) if params[:end]
 
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
@@ -97,6 +99,7 @@ class TagController < ApplicationController
         .paginate(page: params[:page], per_page: 24)
         .order('node_revisions.timestamp DESC')
     end
+    nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
     # breaks the parameter
     # sets everything to an empty array

@@ -4,7 +4,7 @@ class Revision < ActiveRecord::Base
   self.table_name = 'node_revisions'
   self.primary_key = 'vid'
 
-  belongs_to :node, foreign_key: 'nid', dependent: :destroy, counter_cache: :drupal_node_revisions_count
+  belongs_to :node, foreign_key: 'nid', counter_cache: :drupal_node_revisions_count
   has_one :drupal_users, foreign_key: 'uid'
   has_many :node_tag, foreign_key: 'nid'
   has_many :tag, through: :node_tag
@@ -92,27 +92,15 @@ class Revision < ActiveRecord::Base
 
   # filtered version of node content
   def render_body
-    require "unicode/emoji"
-
-    string = "String which contains all kinds of emoji:
-
-    - Singleton Emoji: 😴
-    - Textual singleton Emoji with Emoji variation: ▶️
-    - Emoji with skin tone modifier: 🛌🏽
-    - Region flag: 🇵🇹
-    - Sub-Region flag: 🏴󠁧󠁢󠁳󠁣󠁴󠁿
-    - Keycap sequence: 2️⃣
-    - Sequence using ZWJ (zero width joiner): 🤾🏽‍♀️"
-    string.scan(Unicode::Emoji::REGEX) # => ["😴", "▶️", "🛌🏽", "🇵🇹", "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "2️⃣", "🤾🏽‍♀️"]
     body = self.body || ''
     body = RDiscount.new(body)
     body = body.to_html
     body = body.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKHTML))
-    body_extras(body)
+    ApplicationController.helpers.emojify(body_extras(body)).to_s
   end
-  
+
   # filtered version of node content, but without running Markdown
   def render_body_raw
     body = self.body || ''

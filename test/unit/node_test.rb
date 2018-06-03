@@ -16,6 +16,13 @@ class NodeTest < ActiveSupport::TestCase
     assert question.answered
   end
 
+  test 'emoji conversion' do
+    node = nodes(:one)
+    revision = node.latest
+    revision.body = ':cat:'
+    assert_equal "<p>🐱</p>\n", revision.render_body
+  end
+
   test 'node mysql native fulltext search' do
     assert Node.count > 0
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
@@ -378,5 +385,12 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal node.comments.count, 5
     deleted_node = node.destroy
     assert_equal node.comments.count, 0
+  end
+
+  test 'should delete associated node selections when a node is deleted' do
+    node = nodes(:one)
+    node_selection = node_selections(:unbanned_spammer_like)
+    node.destroy
+    assert_equal node.node_selections.count, 0
   end
 end

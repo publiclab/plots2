@@ -1,7 +1,0 @@
-# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
-de:
-  dashboard:
-    dashboard:
-      from_blog: "Vom <a href='%{url}'>Public Lab Blog</a>"
-      by: "vom"

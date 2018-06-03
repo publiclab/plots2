@@ -1,0 +1,14 @@
+<% comment_star = "#comment-like-star-#{@comment_id}-#{@user_id}" %>
+<% comment_count = "#comment-like-count-#{@comment_id}-#{@user_id}" %>
+
+<% if @is_liked %>
+	$("<%= comment_star %>").removeClass("fa fa-star").addClass("fa fa-star-o");
+	oldValue = parseInt($("<%= comment_count %>").html());
+	newValue = oldValue-1;
+	$("<%= comment_count %>").html(newValue);
+<% else %>
+	$("<%= comment_star %>").removeClass("fa fa-star-o").addClass("fa fa-star");
+	oldValue = parseInt($("<%= comment_count %>").html());
+	newValue = oldValue+1;
+	$("<%= comment_count %>").html(newValue);	
+<% end %>

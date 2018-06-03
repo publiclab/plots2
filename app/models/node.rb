@@ -35,16 +35,16 @@ class Node < ActiveRecord::Base
         nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
           .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
           .collect(&:nid)
-        self.where(nid: nids)
+        self.where(nid: nids, status: 1)
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
         tnids = Tag.find_nodes_by_type(query, type = ['note', 'page']).collect(&:nid) # include results by tag
-        self.where(nid: nids + tnids)
+        self.where(nid: nids + tnids, status: 1)
           .order(orderParam)
       end
-    else 
+    else
       nodes = Node.limit(limit)
-        .where('title LIKE ?', '%' + input + '%')
+        .where('title LIKE ?', '%' + input + '%', status: 1)
         .order(orderParam)
     end
   end
@@ -68,7 +68,7 @@ class Node < ActiveRecord::Base
   has_many :drupal_content_field_mappers, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_field_map_editor, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
   has_many :images, foreign_key: :nid
-  has_many :node_selections, foreign_key: :nid
+  has_many :node_selections, foreign_key: :nid, dependent: :destroy
   has_many :answers, foreign_key: :nid, dependent: :destroy
 
   belongs_to :drupal_user, foreign_key: 'uid'
@@ -98,7 +98,7 @@ class Node < ActiveRecord::Base
 
   before_save :set_changed_and_created
   after_create :setup
-  before_validation :set_path, on: :create
+  before_validation :set_path_and_slug, on: :create
 
   # can switch to a "question-style" path if specified
   def path(type = :default)
@@ -127,8 +127,9 @@ class Node < ActiveRecord::Base
 
   private
 
-  def set_path
+  def set_path_and_slug
     self.path = generate_path if path.blank? && !title.blank?
+    self.slug = self.path.split('/').last unless self.path.blank?
   end
 
   def set_changed_and_created
@@ -163,12 +164,12 @@ class Node < ActiveRecord::Base
     weeks
   end
 
-  def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)   
+  def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)
     weeks = {}
     week = span
     count = 0;
     while week >= 1
-       #initialising month variable with the month of the starting day 
+       #initialising month variable with the month of the starting day
        #of the week
        month = (time - (week*7 - 1).days).strftime('%m')
        #loop for finding the maximum occurence of a month name in that week
@@ -200,7 +201,7 @@ class Node < ActiveRecord::Base
     if status == 4
       AdminMailer.notify_node_moderators(self)
     else
-      SubscriptionMailer.notify_node_creation(self)
+      SubscriptionMailer.notify_node_creation(self).deliver_now
     end
   end
 
@@ -578,7 +579,7 @@ class Node < ActiveRecord::Base
                     subject: '',
                     hostname: '',
                     comment: params[:body],
-                    status: 0,
+                    status: 1,
                     format: 1,
                     thread: thread,
                     timestamp: DateTime.now.to_i)
@@ -623,7 +624,9 @@ class Node < ActiveRecord::Base
             img.save
           end
           node.save!
-          node.notify
+          if node.status != 3
+            node.notify
+          end
         else
           saved = false
           node.destroy
@@ -699,7 +702,7 @@ class Node < ActiveRecord::Base
 
   def add_barnstar(tagname, giver)
     add_tag(tagname, giver.drupal_user)
-    CommentMailer.notify_barnstar(giver, self)
+    CommentMailer.notify_barnstar(giver, self).deliver_now
   end
 
   def add_tag(tagname, user)
@@ -727,7 +730,7 @@ class Node < ActiveRecord::Base
                                  nid: id)
           if node_tag.save
             saved = true
-            SubscriptionMailer.notify_tag_added(self, tag, user) unless tag.subscriptions.empty?
+            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty? || self.status == 3
           else
             saved = false
             tag.destroy
@@ -774,7 +777,7 @@ class Node < ActiveRecord::Base
   def questions
     # override with a tag like `questions:h2s`
     if self.has_power_tag('questions')
-      tagname = node.power_tag('questions')
+      tagname = self.power_tag('questions')
     else
       tagname = self.slug_from_path
     end
@@ -851,6 +854,14 @@ class Node < ActiveRecord::Base
       errors ? I18n.t('node.only_admins_can_lock') : false
     elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).length <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
+    elsif  tagname.split(':')[0] == "oauth-facebook"
+      errors ? "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif  tagname.split(':')[0] == "oauth-github"
+      errors ? "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif  tagname.split(':')[0] ==  "oauth-google"
+      errors ? "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif  tagname.split(':')[0] == "oauth-twitter"
+      errors ? "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
     else
       true
     end
@@ -892,7 +903,7 @@ class Node < ActiveRecord::Base
       like.liking = true
       node = Node.find(nid)
       if node.type == 'note'
-        SubscriptionMailer.notify_note_liked(node, like.user)
+        SubscriptionMailer.notify_note_liked(node, like.user).deliver_now
       end
       count = 1
       node.toggle_like(like.user)

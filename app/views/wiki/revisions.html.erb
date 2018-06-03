@@ -23,7 +23,7 @@
           <% if revision.vid == @node.latest.vid %><span class="label label-success"><%= t('wiki.revisions.current') %></span><% end %>
         </b></td>
 
-        <% if revision.author %><td><a href="/people/<%= revision.author.name %>"><%= revision.author.name %></a></td><% end %>
+        <% if revision.author %><td><a href="/profile/<%= revision.author.name %>"><%= revision.author.name %></a></td><% end %>
 
         <td>
           <a href="/wiki/revisions/<%= params[:id] %>/<%= revision.vid %>"><%= revision.created_at.to_s(:long) %></a> 
@@ -46,9 +46,9 @@
     <% end %>
     </table>
 
-    <hr />
-    
-  </div>
+   <hr />
+   <%= will_paginate @revisions, :renderer => BootstrapPagination::Rails if @paginated %>
+</div>
   <div class="col-md-7">
     <div class="btn-group pull-right">
       <a class="btn btn-link" href="javascript:void(0)" onClick="prev()">&laquo;</a>
@@ -123,3 +123,4 @@
 
   <% end %>
 </div>
+

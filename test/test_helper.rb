@@ -6,6 +6,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'authlogic/test_case'
 require 'i18n'
+require 'mocha/setup'
 
 require "minitest/reporters"
 MiniTest::Reporters.use! [MiniTest::Reporters::ProgressReporter.new,

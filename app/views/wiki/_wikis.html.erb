@@ -1,7 +1,10 @@
 <table class="table">
   <tr>
-    <%= raw t('wiki._wikis.table_content') %>
-    <th> <%= t('wiki._wikis.likes') %></th>
+    <th><a href = "<%= wiki_path %>?sort=title"> <%= t('wiki._wikis.title') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "<%= wiki_path %>?sort=last_edited"> <%= t('wiki._wikis.last_edited') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "<%= wiki_path %>?sort=edits"> <%= t('wiki._wikis.edits') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "<%= wiki_path %>?sort=page_views"> <%= t('wiki._wikis.page_views') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
+    <th><a href = "<%= wiki_path %>?sort=likes"> <%= t('wiki._wikis.likes') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
   </tr>
   <% @wikis.each do |wiki| %>
     <tr>

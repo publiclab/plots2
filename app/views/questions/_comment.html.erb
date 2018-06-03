@@ -3,7 +3,7 @@
 <% else %>
   <% node = Answer.find(answer_id).node %>
 <% end %>
-<div id="answer-<%= answer_id %>-comment-<%= comment.id %>" class="answer-<%= answer_id %>-comments" style="padding-top: 10px;">
+<div id="answer-<%= answer_id %>-comment-<%= comment.id %>" class="answer-<%= answer_id %>-comments comment answer-comment" style="padding-top: 10px;">
   <div class="inline" style="vertical-align: top;">
   <% if comment.author.user && comment.author.user.photo_file_name %>
     <img class="img-circle" src="<%= comment.author.user.photo_path(:thumb) %>" />
@@ -15,8 +15,8 @@
     <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
     <span class="hidden-xs">commented</span>
     <a style="color:#aaa;" href="#answer-<%= answer_id %>-comment-<%= comment.id %>"><%= time_ago_in_words(comment.created_at) %> ago</a><br/>
-    <span class="content">
-      <%= raw sanitize(auto_link(insert_extras(RDiscount.new(comment.body).to_html))) %>
+    <span class="content question-comment-body" id="comment-body-<%= comment.cid %>">
+      <%= raw insert_extras(comment.body_markdown) %>
     </span>
     <div class="content-form" style="display: none;">
       <form id="comment-<%= comment.id %>-edit-form" class="form-horizontal" action="/comment/update/<%= comment.id %>">

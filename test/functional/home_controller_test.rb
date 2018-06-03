@@ -1,9 +1,5 @@
-# def home
-# def front
-# def dashboard
-# def nearby
-
 require 'test_helper'
+require 'sanitize'
 
 class HomeControllerTest < ActionController::TestCase
   def setup
@@ -15,7 +11,7 @@ class HomeControllerTest < ActionController::TestCase
 
     get :home
     assert_response :success
-    assert_select "title", "&#127880; Public Lab: #{title}"
+    assert_select "title", Sanitize.clean('&#127880;') + (" Public Lab: #{title}")
   end
 
   test 'home should redirect to dashboard if logged in' do
@@ -49,6 +45,7 @@ class HomeControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     get :dashboard
     assert_response :success
+    assert_select 'a[href=?]', "mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+Canon+A1200+IR+conversion+at+PLOTS+Barnraising+at+LUMCON+https://publiclab.org/n/1+by+https://publiclab.org/profile/jeff+Thanks!"
   end
 
   test 'should show only unmoderated spam' do
@@ -62,9 +59,11 @@ class HomeControllerTest < ActionController::TestCase
 
     @wikis.each do |obj|
       if obj.class == Revision && obj.status == 1
-        assert_select '.wiki'
+        selections = css_select '.wiki'
+        assert_equal selections.length, 6
       elsif obj.class == Revision && obj.status != 1
-        assert_select false, '.wiki'
+        selections = css_select '.wiki'
+        assert_equal selections.length, 0
       end
     end
   end
@@ -91,7 +90,8 @@ class HomeControllerTest < ActionController::TestCase
       UserSession.create(users(:bob))
       session[:openid_return_to] = '/home'
       get :dashboard
-      assert_select 'a[href=/openid/resume]', I18n.t('layout._alerts.approve_or_deny') + ' &raquo;'
+      assert_select 'a[href=?]', "/openid/resume", I18n.t('layout._alerts.approve_or_deny') + Sanitize.clean(' &raquo;')
+      assert true
     end
   end
 
@@ -106,7 +106,7 @@ class HomeControllerTest < ActionController::TestCase
 
       get 'home'
       assert_template 'home/home'
-      assert_select 'h2.the-problem', I18n.t('home.home.the_problem.title')
+      assert_select 'h2', I18n.t('home.home.the_problem.title')
     end
   end
 end

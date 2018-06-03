@@ -360,6 +360,25 @@ class CommentControllerTest < ActionController::TestCase
     assert_equal html.scan('<a href="/node/update/title?id=2&title=New Title"').length,0
   end
 
+  test 'should increase likes if liked' do
+    UserSession.create(users(:bob))
+    comment = comments(:first)
+    like_count = Like.where(likeable_id: comment.id, likeable_type: "Comment").count
+    xhr :post, :like_comment, comment_id: comment.id, user_id: 7
+    updated_like_count = Like.where(likeable_id: comment.id, likeable_type: "Comment").count
+    assert_equal updated_like_count, like_count+1
+  end
+
+  test 'should decrease likes if unliked' do
+    UserSession.create(users(:bob))
+    comment = comments(:first)
+    Like.create(likeable_id: comment.id, user_id: 1, likeable_type: "Comment")
+    like_count = Like.where(likeable_id: comment.id, likeable_type: "Comment").count
+    xhr :post, :like_comment, comment_id: comment.id, user_id: 1
+    updated_like_count = Like.where(likeable_id: comment.id, likeable_type: "Comment").count
+    assert_equal updated_like_count, like_count-1
+  end
+
   private
 
   def current_user

@@ -7,14 +7,14 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
     assert_equal 0, Impression.count
 
     assert_difference 'Impression.count', 1 do
-      get "wiki/#{nodes(:about).slug}"
+      get "/wiki/#{nodes(:about).slug}"
 
       assert_response :success
     end
 
     assert_difference 'nodes(:about).totalviews', 0 do
       assert_difference 'Impression.count', 0 do
-        get "wiki/#{nodes(:about).slug}"
+        get "/wiki/#{nodes(:about).slug}"
         assert_response :success
       end
     end
@@ -24,7 +24,7 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
 
     assert_difference 'nodes(:about).totalviews', 1 do
       assert_difference 'Impression.count', 1 do
-        get "wiki/#{nodes(:about).slug}"
+        get "/wiki/#{nodes(:about).slug}"
         assert_response :success
       end
     end
