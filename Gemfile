@@ -62,6 +62,7 @@ group :test, :development do
   gem 'jasmine-jquery-rails'
   gem 'coveralls', require: false
   gem 'ci_reporter_test_unit'
+  gem 'openssl', '~> 2.0.0.beta.1'
 end
 
 # run with `bundle install --without production` to exclude these

@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
+  has_many :likes
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
@@ -43,6 +44,11 @@ class User < ActiveRecord::Base
 
   def self.search(query)
     User.where('MATCH(username, bio) AGAINST(?)', query)
+  end
+
+  def new_contributor
+    @uid = self.id
+    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
   end
 
   def create_drupal_user
@@ -94,7 +100,7 @@ class User < ActiveRecord::Base
   end
 
   def node_count
-    self.drupal_user.node_count 
+    self.drupal_user.node_count
   end
 
   def notes
@@ -230,10 +236,10 @@ class User < ActiveRecord::Base
       (1..span).each do |day|
           time = Time.now.utc.beginning_of_day.to_i
           days[(time-day.days.to_i)] = Node.select(:created)
-                                           .where(uid: self.uid, 
+                                           .where(uid: self.uid,
                                                   type: 'note',
-                                                  status: 1, 
-                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i) 
+                                                  status: 1,
+                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i)
                                            .count
       end
       days
@@ -374,6 +380,13 @@ class User < ActiveRecord::Base
       return link
     end
     nil
+  end
+
+  def send_digest_email
+    top_picks = self.content_followed_in_period(Time.now - 1.week, Time.now)
+    if top_picks.count > 0
+      SubscriptionMailer.send_digest(self.id,top_picks).deliver_now
+    end
   end
 
   private
