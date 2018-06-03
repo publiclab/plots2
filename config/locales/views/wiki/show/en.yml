@@ -3,8 +3,8 @@
 en:
   wiki:
     show:
-     page_has_no_tags: "This page has no tags yet; help connect it to other content by <a onClick='$('#taginput').focus()'>adding descriptive tags below</a>."
-     revision_from: "This is a revision from %{time}."
+     page_has_no_tags: "This page has no tags yet; help connect it to other content by <a href='%{url}'>adding descriptive tags below</a>"
+     revision_from: "This is a revision from %{time}."                                                    
      view_all_revisions: "View all revisions"
      views: "views"
      last_edited: "Last edited by <a href='%{url1}'>%{author}</a> %{time} ago"

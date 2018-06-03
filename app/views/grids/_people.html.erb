@@ -16,7 +16,7 @@
   <% else %>
     <tr>
   <% end %>
-    <td class="username"><a href="/profile/<%= user.username %>"><%= user.username %></a></td>
+    <td class="username"><a href="/profile/<%= user.username %>"><%= user.username %></a> <%=user.new_contributor %></td>
   </tr>
   <% if index == 9 %>
     <tr class="show-all">
@@ -29,14 +29,14 @@
 <% end %>
 </table>
 <% if !current_user.nil? %>
-  <p><a class="btn btn-primary" href="/profile/tags/create/<%= current_user.id %>?name=<%= tagname %>">Join this group</a></p> 
+  <p><a class="btn btn-primary" href="/profile/tags/create/<%= current_user.id %>?name=<%= tagname %>">Join this group</a></p>
 <% else %>
   <p><a class="btn btn-primary disabled" href="">Join this group</a></p>
   <p><a href="/login">Login/Sign Up to join!</a></p>
 <% end %>
 <script>
 (function(){
-  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function() { 
+  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function() {
     $(".<%= className %>-<%= randomSeed %> tr.hide").toggleClass("hide");
   });
   setupGridSorters(".<%= className %>-<%= randomSeed %>");
