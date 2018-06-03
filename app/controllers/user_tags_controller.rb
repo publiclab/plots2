@@ -21,7 +21,7 @@ class UserTagsController < ApplicationController
             exist = true
           end
 
-          unless exist 
+          unless exist
             user_tag = user.user_tags.build(value: name)
             if  tagname.split(':')[0] == "oauth-facebook"
               @output[:errors] << "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
@@ -53,7 +53,7 @@ class UserTagsController < ApplicationController
       else
         flash[:notice] = I18n.t('user_tags_controller.tag_created', tag_name: @output[:saved][0][0]).html_safe
       end
-      redirect_to '/profile/' + user.username
+      redirect_to URI.parse('/profile/' + user.username).path
     end
   end
 
