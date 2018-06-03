@@ -56,9 +56,18 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 6. Run `rake db:setup` to set up the database
 7. Install static assets (like external javascript libraries, fonts) with `bower install`
-8. Start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
+8. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
+(for local SSL work, see [SSL](#ssl+in+development) below)
 9. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
 10. Run `rake test` to confirm that your install is working properly.
+
+## SSL in Development
+We at public labs use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
+1. Use 'passenger start --ssl --ssl-certificate config/localhost.crt --ssl-certificate-key config/localhost.key --ssl-port 3001'.
+2. Open up https://localhost:3001.
+3. Add security exceptions from the advance settings of the browser.
+You can also use http (unsecure connection) on the port number 3000 by going to 'http://localhost:3000'. We use port number 3001 for 'https' and port number 3000 for 'http' connection.
+Secure connection is needed for OAuth authentication etc.
 
 ## How to start and modify cron jobs
 
