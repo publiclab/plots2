@@ -27,7 +27,7 @@ class RoutesTest < ActionDispatch::IntegrationTest
         get '/profile/jeff/edit'
         assert_response 302 	#error code 302 is for REDIRECT : https://stackoverflow.com/questions/23788331/http-error-code-302-when-calling-https-webservice
         follow_redirect!
-        assert_equal '/profile/jeff' , path
+        assert_equal '/login' , path
 	end
 
 	test "edit profile route when user logged in " do
