@@ -824,7 +824,7 @@ class NotesControllerTest < ActionController::TestCase
           tags: 'balloon-mapping,event',
           draft: "true"
 
-     assert_equal "First-time users are not eligible to create draft.", flash[:notice]
+     assert_equal "First-time users are not eligible to create a draft.", flash[:notice]
      assert_redirected_to '/'
    end
 

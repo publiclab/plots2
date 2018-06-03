@@ -106,7 +106,7 @@ class NotesController < ApplicationController
                                               main_image: params[:main_image])
 
       if params[:draft] == "true" && current_user.first_time_poster
-        flash[:notice] = "First-time users are not eligible to create draft."
+        flash[:notice] = "First-time users are not eligible to create a draft."
         redirect_to '/'
         return
       elsif params[:draft] == "true"

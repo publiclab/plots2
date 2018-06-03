@@ -165,7 +165,7 @@ class User < ActiveRecord::Base
     admin? || moderator?
   end
 
-  def is_associated(node)
+  def is_coauthor(node)
     self.id == node.author.id || node.has_tag("with:#{self.username}")
   end
 
