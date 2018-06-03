@@ -7,11 +7,11 @@ Mailman.config.logger = Logger.new("log/mailman.log")
 
 # Email Configration for mailman
 Mailman.config.pop3 = {
-  server: 'pop.example.com', 
+  server: ENV['SERVER_ADDRESS'], # example pop.example.com 
   port: 995, 
   ssl: true,
-  username: 'ENV[USERNAME]',
-  password: 'ENV[EMAIL_PASSWORD]'
+  username: ENV['USERNAME'],
+  password: ENV['EMAIL_PASSWORD']
 }
 
 Mailman::Application.run do
