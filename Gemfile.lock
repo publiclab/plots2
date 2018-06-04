@@ -197,13 +197,8 @@ GEM
     mimemagic (0.3.2)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
-<<<<<<< 4c5fa537f3fa9c9e7ae4a42ff622065dbeb88711
-    minitest (5.11.3)
-    minitest-reporters (1.1.19)
-=======
     minitest (5.11.1)
     minitest-reporters (1.2.0.beta2)
->>>>>>> Update Gemfile.lock
       ansi
       builder
       minitest (>= 5.0)
@@ -252,6 +247,7 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
+    openssl (2.0.8)
     options (2.3.2)
     paperclip (5.2.1)
       activemodel (>= 4.2.0)
@@ -467,6 +463,7 @@ DEPENDENCIES
   omniauth-github (~> 1.1, >= 1.1.2)
   omniauth-google-oauth2
   omniauth-twitter
+  openssl (~> 2.0.0.beta.1)
   paperclip (~> 5.2.0)
   passenger
   php-serialize
@@ -488,19 +485,8 @@ DEPENDENCIES
   rspec
   rubocop (~> 0.52.1)
   ruby-openid
-<<<<<<< 51c9abdf9d37eef37439e845a1e1fe59b569e717
-<<<<<<< 59f260e3120e184c9376835dda5879118e6ba4d8
-<<<<<<< d5759ea4a5ffe7a59cf03091d29a1e22bccce10c
-  sanitize
-=======
-  ruby-prof
->>>>>>> Added rails-perftest and ruby-prof gems, uncommented lines 9-11 in borwsing_test.rb
-=======
-  ruby-prof!
->>>>>>> Updated gemfile to pull ruby prof from Github
-=======
   ruby-prof (~> 0.15.9)
->>>>>>> Added ruby-prof 0.15.9 and uncommented browsing test
+  sanitize
   sass-rails (~> 4.0.0)
   scrypt (~> 3)
   sqlite3

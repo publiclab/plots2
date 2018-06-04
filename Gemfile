@@ -50,7 +50,6 @@ end
 # run with `bundle install --without test` to exclude these
 group :test, :development do
   gem 'test-unit'
-  gem 'rails-perftest'
   gem 'minitest-reporters', '~> 1.2.0.beta2'
   gem 'rake',  '~> 10.5.0'
   # gems to test RESTful API
@@ -66,6 +65,7 @@ group :test, :development do
 
   # Performance testing
   gem 'rails-perftest'
+  gem 'ruby-prof','~> 0.15.9', group: :test
 end
 
 # run with `bundle install --without production` to exclude these
@@ -134,8 +134,3 @@ gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
 gem 'activerecord-tableless'
 gem 'figaro'
 gem 'sanitize'
-
-#Performance testing
-gem 'rails-perftest'
-gem 'ruby-prof', group: :test
-gem 'ruby-prof', :github => 'ruby-prof'
