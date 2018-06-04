@@ -669,7 +669,7 @@ class NotesControllerTest < ActionController::TestCase
 
   test 'draft should not be shown when user is not author' do
     node = nodes(:draft)
-    UserSession.create(users(:test_user))
+    UserSession.create(users(:bob))
     post :show, id: '21',title: 'Draft note'
     assert_redirected_to '/'
     assert_equal "Only author can access the draft note", flash[:notice]
@@ -691,4 +691,182 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal Node.count, n_count - 1
     assert_equal Answer.count, 0
   end
+
+  test 'moderator can publish the draft' do
+    UserSession.create(users(:moderator))
+    node = nodes(:draft)
+    assert_equal 3, node.status
+    ActionMailer::Base.deliveries.clear
+
+    get :publish_draft, id: node.id
+
+    assert_response :redirect
+    assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+    node = assigns(:node)
+    assert_equal 1, node.status
+    assert_equal 1, node.author.status
+    assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal '[PublicLab] ' + node.title, email.subject
+  end
+
+   test 'draft author can publish the draft' do
+     UserSession.create(users(:jeff))
+     node = nodes(:draft)
+     assert_equal 3, node.status
+     ActionMailer::Base.deliveries.clear
+
+     get :publish_draft, id: node.id
+
+     assert_response :redirect
+     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+     node = assigns(:node)
+     assert_equal 1, node.status
+     assert_equal 1, node.author.status
+     assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
+
+     email = ActionMailer::Base.deliveries.last
+     assert_equal '[PublicLab] ' + node.title, email.subject
+   end
+
+   test 'co-author can publish the draft' do
+     UserSession.create(users(:test_user))
+     node = nodes(:draft)
+     assert_equal 3, node.status
+     ActionMailer::Base.deliveries.clear
+
+     get :publish_draft, id: node.id
+
+     assert_response :redirect
+     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
+     node = assigns(:node)
+     assert_equal 1, node.status
+     assert_equal 1, node.author.status
+     assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
+
+     email = ActionMailer::Base.deliveries.last
+     assert_equal '[PublicLab] ' + node.title, email.subject
+   end
+
+   test 'Normal user should not be allowed to publish the draft' do
+     UserSession.create(users(:bob))
+     node = nodes(:draft)
+     assert_equal 3, node.status
+     ActionMailer::Base.deliveries.clear
+
+     get :publish_draft, id: node.id
+
+     assert_response :redirect
+     assert_equal "You are not author or moderator so you can't publish a draft!", flash[:warning]
+     node = assigns(:node)
+     assert_equal 3, node.status
+     assert_equal 1, node.author.status
+     assert_redirected_to '/'
+     assert_equal ActionMailer::Base.deliveries.size, 0
+   end
+
+   test 'User should be logged in to publish draft' do
+     node = nodes(:draft)
+     assert_equal 3, node.status
+     ActionMailer::Base.deliveries.clear
+
+     get :publish_draft, id: node.id
+
+     assert_response :redirect
+     assert_equal "You must be logged in to access this page", flash[:warning]
+     assert_equal 3, node.status
+     assert_equal 1, node.author.status
+     assert_redirected_to '/login'
+     assert_equal ActionMailer::Base.deliveries.size, 0
+   end
+
+   test 'post draft no login' do
+     user_session = UserSession.create(users(:bob))
+     user_session.destroy
+     title = 'My new post about balloon mapping'
+
+     post :create,
+          id: users(:bob).id,
+          title: title,
+          body: 'This is a fascinating post about a balloon mapping event.',
+          tags: 'balloon-mapping,event',
+          draft: "true"
+
+     assert_redirected_to('/login')
+   end
+
+   test 'non-first-timer posts draft' do
+     UserSession.create(users(:jeff))
+     title = 'My new post about balloon mapping'
+     assert !users(:jeff).first_time_poster
+
+       post :create,
+            title: title,
+            body:  'This is a fascinating post about a balloon mapping event.',
+            tags:  'balloon-mapping,event',
+            draft: "true"
+
+     email = ActionMailer::Base.deliveries.last
+     assert_equal '[PublicLab] ' + title, email.subject
+     assert_equal 3, Node.last.status
+     assert_equal I18n.t('notes_controller.saved_as_draft'), flash[:notice]
+     assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
+   end
+
+   test 'first-timer posts draft' do
+     UserSession.create(users(:lurker))
+     title = 'My first post to Public Lab'
+
+     post :create,
+          title: title,
+          body: 'This is a fascinating post about a balloon mapping event.',
+          tags: 'balloon-mapping,event',
+          draft: "true"
+
+     assert_equal "First-time users are not eligible to create a draft.", flash[:notice]
+     assert_redirected_to '/'
+   end
+
+   test 'draft note (status=3) shown to author in full view with notice' do
+     node = nodes(:draft)
+     UserSession.create(node.author.user)
+     assert_equal 3, node.status
+
+     get :show,
+         author: node.author.username,
+         date: node.created_at.strftime('%m-%d-%Y'),
+         id: node.title.parameterize
+
+     assert_response :success
+     assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
+   end
+
+   test 'draft note (status=3) shown to moderator in full view with notice' do
+     UserSession.create(users(:moderator))
+     node = nodes(:draft)
+     assert_equal 3, node.status
+
+     get :show,
+         author: node.author.username,
+         date: node.created_at.strftime('%m-%d-%Y'),
+         id: node.title.parameterize
+
+     assert_response :success
+     assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
+   end
+
+   test 'draft note (status=3) shown to co-author in full view with notice' do
+     UserSession.create(users(:test_user))
+     node = nodes(:draft)
+     assert_equal 3, node.status
+
+     get :show,
+         author: node.author.username,
+         date: node.created_at.strftime('%m-%d-%Y'),
+         id: node.title.parameterize
+
+     assert_response :success
+     assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
+   end
 end

@@ -3,7 +3,7 @@
 
     <div class="header-icon"><i class="fa fa-comment-o"></i></div>
     <p class="meta">
-      <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>
+      <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_author_contributor %>
       <span><%= t('dashboard._node_comment.commented_on') %></span> <% unless node.aid == 0 %> an answer about<% end %> <% if node.parent.has_power_tag('question') %><a href="<%= node.parent.path(:question) %>"><% else %><a href="<%= node.parent.path %>"><% end %><%= node.parent.title %></a>
     </p>
 

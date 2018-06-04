@@ -116,6 +116,7 @@ Plots2::Application.routes.draw do
   get 'notes/popular' => 'notes#popular'
   get 'notes/liked' => 'notes#liked'
   post 'notes/create' => 'notes#create'
+  get 'notes/publish_draft/:id' => 'notes#publish_draft'
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
@@ -239,6 +240,7 @@ Plots2::Application.routes.draw do
   get 'admin/unmoderate/:id' => 'admin#unmoderate'
 
   get 'post' => 'editor#post'
+  post 'post' => 'editor#post'
   get 'legacy' => 'editor#legacy'
   get 'editor' => 'editor#editor'
   post 'images/create' => 'images#create'
@@ -256,6 +258,8 @@ Plots2::Application.routes.draw do
   get 'questions/popular(/:tagnames)' => 'questions#popular'
   get 'questions/unanswered(/:tagnames)' => 'questions#unanswered'
   get 'questions/liked(/:tagnames)' => 'questions#liked'
+
+  post 'users/test_digest_email' => 'users#test_digest_email'
 
   post 'answers/create/:nid' => 'answers#create'
   get 'answers/create/:nid' => 'answers#create'

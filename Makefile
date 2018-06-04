@@ -4,6 +4,17 @@ build:
 	docker-compose down --remove-orphans
 	docker-compose build
 
+redeploy-container:
+	docker-compose build --pull
+	docker-compose exec web rake db:migrate
+	docker-compose exec web bower install --allow-root
+	docker-compose exec web bower update --allow-root
+	docker-compose exec web rake assets:precompile
+	docker-compose down --remove-orphans
+	rm -f ./tmp/pids/server.pid
+	docker-compose up -d
+	docker-compose exec -T web bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
+
 deploy-container:
 	docker-compose run web sleep 5
 	docker-compose run web rake db:migrate

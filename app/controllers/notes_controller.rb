@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
   respond_to :html
-  before_filter :require_user, only: %i(create edit update delete rsvp)
+  before_filter :require_user, only: %i(create edit update delete rsvp publish_draft)
 
   def index
     @title = I18n.t('notes_controller.research_notes')
@@ -55,7 +55,7 @@ class NotesController < ApplicationController
       flash[:warning] = "You need to login to view the page"
       redirect_to '/login'
       return
-    elsif @node.status == 3 && @node.author.user != current_user && !current_user.can_moderate?
+    elsif @node.status == 3 && @node.author.user != current_user && !current_user.can_moderate? && !@node.has_tag("with:#{current_user.username}")
       flash[:notice] = "Only author can access the draft note"
       redirect_to '/'
       return
@@ -105,6 +105,14 @@ class NotesController < ApplicationController
                                               body: params[:body],
                                               main_image: params[:main_image])
 
+      if params[:draft] == "true" && current_user.first_time_poster
+        flash[:notice] = "First-time users are not eligible to create a draft."
+        redirect_to '/'
+        return
+      elsif params[:draft] == "true"
+         @node.draft
+      end
+
       if saved
         params[:tags]&.tr(' ', ',').split(',').each do |tagname|
             @node.add_tag(tagname.strip, current_user)
@@ -114,7 +122,7 @@ class NotesController < ApplicationController
           @node.add_tag('event:rsvp', current_user)
           @node.add_tag('date:' + params[:date], current_user) if params[:date]
         end
-        if params[:draft] != true
+        if params[:draft] != "true"
           if current_user.first_time_poster
             flash[:first_time_post] = true
             if @node.has_power_tag('question')
@@ -130,7 +138,6 @@ class NotesController < ApplicationController
             end
           end
         else
-          @node.draft
           flash[:notice] = I18n.t('notes_controller.saved_as_draft').html_safe
         end
         # Notice: Temporary redirect.Remove this condition after questions show page is complete.
@@ -377,5 +384,19 @@ class NotesController < ApplicationController
     end
     node.update(title: params[:title])
     redirect_to URI.parse(node.path).path + "#comments"
+  end
+
+  def publish_draft
+    @node = Node.find(params[:id])
+    if current_user && current_user.uid == @node.uid || current_user.can_moderate? || @node.has_tag("with:#{current_user.username}")
+      @node.path = @node.generate_path
+      @node.publish
+      SubscriptionMailer.notify_node_creation(@node).deliver_now
+      flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publically."
+      redirect_to @node.path
+    else
+      flash[:warning] = "You are not author or moderator so you can't publish a draft!"
+      redirect_to '/'
+    end
   end
 end
