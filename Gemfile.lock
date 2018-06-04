@@ -63,6 +63,8 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.3)
     byebug (10.0.2)
+    celluloid (0.16.0)
+      timers (~> 4.0.0)
     chronic (0.10.2)
     ci_reporter (2.0.0)
       builder (>= 2.1.2)
@@ -146,6 +148,7 @@ GEM
     hashie (3.5.7)
     highline (1.7.10)
     hike (1.2.3)
+    hitimes (1.2.6)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     http_accept_language (2.1.1)
@@ -185,11 +188,22 @@ GEM
     letter_opener (1.6.0)
       launchy (~> 2.2)
     libv8 (3.16.14.19)
+    listen (2.10.1)
+      celluloid (~> 0.16.0)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9)
     loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
       mini_mime (>= 0.1.1)
+    maildir (2.2.1)
+    mailman (0.7.3)
+      activesupport (>= 2.3.4)
+      i18n (>= 0.4.1)
+      listen (~> 2.2)
+      mail (>= 2.0.3)
+      maildir (>= 0.5.0)
     metaclass (0.0.4)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
@@ -247,6 +261,7 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
+    openssl (2.0.8)
     options (2.3.2)
     paperclip (5.2.1)
       activemodel (>= 4.2.0)
@@ -311,6 +326,9 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rainbow (3.0.0)
     rake (10.5.0)
+    rb-fsevent (0.10.3)
+    rb-inotify (0.9.10)
+      ffi (>= 0.5.0, < 2)
     rb-readline (0.5.5)
     rdiscount (2.2.0.1)
     recaptcha (4.7.0)
@@ -387,6 +405,8 @@ GEM
     thread_safe (0.3.6)
     tilt (1.4.1)
     timecop (0.9.1)
+    timers (4.0.4)
+      hitimes
     tins (1.16.3)
     tool (0.2.3)
     turbolinks (5.1.0)
@@ -453,6 +473,7 @@ DEPENDENCIES
   json_expressions
   less-rails (~> 2.6)
   letter_opener
+  mailman
   minitest-reporters (~> 1.1.19)
   mocha (~> 1.1)
   mustermann (~> 0.4)
@@ -463,6 +484,7 @@ DEPENDENCIES
   omniauth-github (~> 1.1, >= 1.1.2)
   omniauth-google-oauth2
   omniauth-twitter
+  openssl (~> 2.0.0.beta.1)
   paperclip (~> 5.2.0)
   passenger
   php-serialize
