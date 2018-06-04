@@ -49,17 +49,18 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 
 ## Installation
 
-1. In the console, download a copy of the source with `git clone https://github.com/publiclab/plots2.git`.
-2. Enter the new **plots2** directory with `cd plots2`.
-3. Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work.
-4. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
-5. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
-6. Run `rake db:setup` to set up the database
-7. Install static assets (like external javascript libraries, fonts) with `bower install`
-8. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
+1. Fork our repo from https://github.com/publiclab/plots2.
+2. In the console, download a copy of your forked repo with `git clone https://github.com/your_username/plots2.git` where `your_username` is your GitHub username.
+3. Enter the new **plots2** directory with `cd plots2`.
+4. Install gems with `bundle install --without production mysql` from the rails root folder, to install the gems you'll need, excluding those needed only in production. You may need to first run `bundle update` if you have older gems in your environment from previous Rails work.
+5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
+6. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
+7. Run `rake db:setup` to set up the database
+8. Install static assets (like external javascript libraries, fonts) with `bower install`
+9. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 (for local SSL work, see [SSL](#ssl+in+development) below)
-9. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
-10. Run `rake test` to confirm that your install is working properly.
+10. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
+11. Run `rake test` to confirm that your install is working properly.
 
 ## SSL in Development
 We at public labs use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
