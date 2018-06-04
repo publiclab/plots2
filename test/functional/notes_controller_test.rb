@@ -708,7 +708,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal '[PublicLab] ' + node.title, email.subject
+    assert_equal '[PublicLab] ' + node.title + " (##{node.id}) ", email.subject
   end
 
    test 'draft author can publish the draft' do
@@ -727,7 +727,7 @@ class NotesControllerTest < ActionController::TestCase
      assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
 
      email = ActionMailer::Base.deliveries.last
-     assert_equal '[PublicLab] ' + node.title, email.subject
+     assert_equal '[PublicLab] ' + node.title + " (##{node.id}) ", email.subject
    end
 
    test 'co-author can publish the draft' do
@@ -746,7 +746,7 @@ class NotesControllerTest < ActionController::TestCase
      assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + node.title.parameterize
 
      email = ActionMailer::Base.deliveries.last
-     assert_equal '[PublicLab] ' + node.title, email.subject
+     assert_equal '[PublicLab] ' + node.title + " (##{node.id}) ", email.subject
    end
 
    test 'Normal user should not be allowed to publish the draft' do
@@ -808,7 +808,7 @@ class NotesControllerTest < ActionController::TestCase
             draft: "true"
 
      email = ActionMailer::Base.deliveries.last
-     assert_equal '[PublicLab] ' + title, email.subject
+     assert_equal '[PublicLab] ' + title + " (##{Node.last.id}) ", email.subject
      assert_equal 3, Node.last.status
      assert_equal I18n.t('notes_controller.saved_as_draft'), flash[:notice]
      assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
