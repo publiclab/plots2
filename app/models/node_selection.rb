@@ -1,4 +1,4 @@
-class NodeSelection < ActiveRecord::Base
+class NodeSelection < ApplicationRecord
   self.primary_keys = :user_id, :nid
   # belongs_to :user
   belongs_to :node, foreign_key: :nid

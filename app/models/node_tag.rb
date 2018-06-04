@@ -1,4 +1,4 @@
-class NodeTag < ActiveRecord::Base
+class NodeTag < ApplicationRecord
   self.table_name = 'community_tags'
   self.primary_keys = :tid, :nid
   belongs_to :node, foreign_key: 'nid'

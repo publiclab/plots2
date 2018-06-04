@@ -1,4 +1,4 @@
-class Comment < ActiveRecord::Base
+class Comment < ApplicationRecord
   include CommentsShared # common methods for comment-like models
 
 

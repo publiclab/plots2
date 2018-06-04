@@ -1,4 +1,4 @@
-class DrupalUser < ActiveRecord::Base
+class DrupalUser < ApplicationRecord
 
   ## User status can be:
   #  0: banned

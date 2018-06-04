@@ -1,4 +1,4 @@
-class DrupalProfileValue < ActiveRecord::Base
+class DrupalProfileValue < ApplicationRecord
   self.table_name = 'profile_values'
   self.primary_key = 'uid'
 

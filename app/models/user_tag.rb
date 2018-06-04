@@ -1,4 +1,4 @@
-class UserTag < ActiveRecord::Base
+class UserTag < ApplicationRecord
   belongs_to :user, foreign_key: :uid
 
   validates :value, presence: :true
