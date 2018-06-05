@@ -22,8 +22,11 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
       xhr :post, :create,
-          id: nodes(:one).nid,
-          body: 'Notes comment'
+          {
+            id: nodes(:one).nid,
+            body: 'Notes comment'  
+          }
+          
     end
     assert_response :success
     assert_not_nil :comment
@@ -257,7 +260,7 @@ class CommentControllerTest < ActionController::TestCase
         id: nodes(:wiki_page).nid,
         body: 'A comment by Jeff on a wiki page of author bob',
         type: 'page'
-    assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on 'Wiki page title'")
+    assert ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on Wiki page title (#11) ")
   end
 
   test 'should prompt user if comment includes question mark' do
