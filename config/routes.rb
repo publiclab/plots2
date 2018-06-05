@@ -208,6 +208,8 @@ Plots2::Application.routes.draw do
   delete 'profile/tags/delete/:id' => 'user_tags#delete'
   get 'user_tags' => 'user_tags#index'
   get 'user_tags/:search' => 'user_tags#index'
+  get 'groups' => 'user_tags#index'
+  get 'groups/:search' => 'user_tags#index'
 
 
   get 'maps' => 'map#index'
