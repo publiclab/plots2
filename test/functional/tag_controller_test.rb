@@ -133,7 +133,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'tag search' do
-    get :index , params: { :search => "featured" }
+    get :index , params: { search: "featured" }
 
     assert :success
     assert assigns(:tags).length > 0

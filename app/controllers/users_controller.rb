@@ -304,12 +304,12 @@ class UsersController < ApplicationController
     @user = User.find_by(username: params[:id])
   end
   private
-    def user_params
-        params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
-    end
-	def spamaway_params
-	    params.require(:spamaway).permit(:follow_instructions, :statement1, :statement2, :statement3, :statement4)
-	end
+  def user_params
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
+  end
+  def spamaway_params
+    params.require(:spamaway).permit(:follow_instructions, :statement1, :statement2, :statement3, :statement4)
+  end
 end
 
 
