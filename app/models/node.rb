@@ -573,6 +573,11 @@ class Node < ActiveRecord::Base
     else
       '01/'
     end
+    if params[:comment_via].nil?
+      comment_via_status = 0
+    else
+      comment_via_status = params[:comment_via].to_i
+    end
     c = Comment.new(pid: 0,
                     nid: nid,
                     uid: params[:uid],
@@ -582,7 +587,9 @@ class Node < ActiveRecord::Base
                     status: 1,
                     format: 1,
                     thread: thread,
-                    timestamp: DateTime.now.to_i)
+                    timestamp: DateTime.now.to_i,
+                    comment_via: comment_via_status,
+                    message_id: params[:message_id])
     c.save
     c
   end
