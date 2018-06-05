@@ -25,7 +25,6 @@ namespace :test do
       require 'ci/reporter/rake/test_unit'
       Rake::Task["ci:setup:testunit"].execute
     end
-    puts "Running Rails tests"
     puts "Running jasmine tests headlessly"
     Rake::Task["spec:javascript"].execute
     Rake::Task["coveralls:push"].execute
