@@ -74,6 +74,8 @@ end
 gem 'unicode-emoji'
 gem 'gemoji'
 
+gem "skylight" # performance tracking via skylight.io
+
 gem 'composite_primary_keys'
 gem 'jquery-rails'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1' # Markdown
