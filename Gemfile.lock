@@ -269,7 +269,6 @@ GEM
       highline (~> 1.6)
       options (~> 2.3.0)
     public_suffix (3.0.2)
-    puma (3.11.4)
     rack (2.0.5)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -476,7 +475,6 @@ DEPENDENCIES
   passenger
   php-serialize
   progress_bar
-  puma (~> 3.0)
   rack-cors
   rack-openid
   rails (= 5.0.6)

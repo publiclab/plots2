@@ -7,7 +7,6 @@ git_source(:github) do |repo_name|
 end
 
 gem 'rails', '5.0.6'
-gem 'puma', '~> 3.0'
 gem 'activerecord-session_store'
 gem 'passenger'
 gem 'rails-i18n', '~> 5.1.1'
