@@ -848,10 +848,12 @@ class NotesControllerTest < ActionController::TestCase
      assert !users(:jeff).first_time_poster
 
        post :create,
+           params: {
             title: title,
             body:  'This is a fascinating post about a balloon mapping event.',
             tags:  'balloon-mapping,event',
             draft: "true"
+           }
 
      email = ActionMailer::Base.deliveries.last
      assert_equal '[PublicLab] ' + title + " (##{Node.last.id}) ", email.subject
@@ -865,10 +867,12 @@ class NotesControllerTest < ActionController::TestCase
      title = 'My first post to Public Lab'
 
      post :create,
+         params: {
           title: title,
           body: 'This is a fascinating post about a balloon mapping event.',
           tags: 'balloon-mapping,event',
           draft: "true"
+         }
 
      assert_equal "First-time users are not eligible to create a draft.", flash[:notice]
      assert_redirected_to '/'
@@ -894,9 +898,11 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal 3, node.status
 
      get :show,
+        params: {
          author: node.author.username,
          date: node.created_at.strftime('%m-%d-%Y'),
          id: node.title.parameterize
+        }
 
      assert_response :success
      assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
