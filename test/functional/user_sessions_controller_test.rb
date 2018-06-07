@@ -3,36 +3,24 @@ require 'test_helper'
 class UserSessionsControllerTest < ActionController::TestCase
 
   test 'should login an user' do
-    post :create, user_session: {
-      username: users(:jeff).username,
-      password: 'secretive'
-    }
+    post :create, params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
     assert_redirected_to '/dashboard'
   end
 
   test 'should redirect to create new account if username doesnt exist' do
-    post :create, user_session: {
-      username: 'nobody',
-      password: 'blablabla'
-    }
+    post :create, params: { user_session: { username: 'nobody', password: 'blablabla' } }
     assert_redirected_to '/login'
     assert_equal 'There is nobody in our system by that name, are you sure you have the right username?', flash[:warning]
   end
 
   test 'login user with an email' do
-    post :create, user_session: {
-      username: users(:jeff).email,
-      password: 'secretive'
-    }
+    post :create, params: { user_session: { username: users(:jeff).email, password: 'secretive' } }
     assert_redirected_to '/dashboard'
   end
 
   test 'should login and redirect to corresct url' do
     session[:return_to] = '/post?tags=question:question&template=question'
-    post :create, user_session: {
-      username: users(:jeff).username,
-      password: 'secretive'
-    }
+    post :create, params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
     assert_redirected_to '/post?tags=question:question&template=question'
   end
 
@@ -42,18 +30,14 @@ class UserSessionsControllerTest < ActionController::TestCase
       @controller = SettingsController.new
 
       # set locale in cookie
-      get :change_locale, locale: lang.to_s
+      get :change_locale, params: { locale: lang.to_s }
 
       @controller = old_controller
 
-      post :create, user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post :create, params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
 
       assert_redirected_to '/dashboard'
       assert_equal I18n.t('user_sessions_controller.logged_in'), flash[:notice]
     end
   end
-
 end

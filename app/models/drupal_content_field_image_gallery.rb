@@ -1,6 +1,6 @@
 require 'php_serialize'
 
-class DrupalContentFieldImageGallery < ActiveRecord::Base
+class DrupalContentFieldImageGallery < ApplicationRecord
   self.table_name = 'content_field_image_gallery'
   self.primary_keys = :vid, :nid
 

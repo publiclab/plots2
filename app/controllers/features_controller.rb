@@ -1,5 +1,5 @@
 class FeaturesController < ApplicationController
-  before_filter :require_user, except: [:embed]
+  before_action :require_user, except: [:embed]
 
   def index
     @features = Node.where(type: 'feature')

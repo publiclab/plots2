@@ -1,5 +1,6 @@
 class AdminController < ApplicationController
-  before_filter :require_user, only: %i(spam spam_revisions mark_comment_spam publish_comment)
+  before_action :require_user, only: %i(spam spam_revisions mark_comment_spam publish_comment)
+
 
   def promote_admin
     @user = User.find params[:id]

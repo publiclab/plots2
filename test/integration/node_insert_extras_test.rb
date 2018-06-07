@@ -2,17 +2,20 @@ require 'test_helper'
 
 class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
   test 'note with inline tagged notes table via insert_extras() helper' do
-    post '/user_sessions', user_session: {
+    post '/user_sessions', params: { user_session: {
       username: users(:jeff).username,
       password: 'secretive'
+    }
     }
 
     title = 'One more post about balloon mapping'
 
     post '/notes/create',
+         params: {
          title: title,
          body:  "This is a fascinating post about a balloon mapping event. \n\n[notes:test] \n\n[activities:test] \n\n `[notes:shouldnt]` \n\n[upgrades:test]",
          tags:  'test'
+         }
 
     follow_redirect!
 
