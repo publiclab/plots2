@@ -369,7 +369,7 @@ class CommentControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     comment = comments(:first)
     like_count = Like.where(likeable_id: comment.id, likeable_type: "Comment").count
-    xhr :post, :like_comment, comment_id: comment.id, user_id: 7
+    post :like_comment, params: { comment_id: comment.id, user_id: 7 }, xhr: true
     updated_like_count = Like.where(likeable_id: comment.id, likeable_type: "Comment").count
     assert_equal updated_like_count, like_count+1
   end
@@ -379,7 +379,7 @@ class CommentControllerTest < ActionController::TestCase
     comment = comments(:first)
     Like.create(likeable_id: comment.id, user_id: 1, likeable_type: "Comment")
     like_count = Like.where(likeable_id: comment.id, likeable_type: "Comment").count
-    xhr :post, :like_comment, comment_id: comment.id, user_id: 1
+    post :like_comment, params: { comment_id: comment.id, user_id: 1 }, xhr: true
     updated_like_count = Like.where(likeable_id: comment.id, likeable_type: "Comment").count
     assert_equal updated_like_count, like_count-1
   end

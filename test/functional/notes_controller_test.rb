@@ -744,7 +744,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_equal 3, node.status
     ActionMailer::Base.deliveries.clear
 
-    get :publish_draft, id: node.id
+    get :publish_draft, params: { id: node.id }
 
     assert_response :redirect
     assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
@@ -763,7 +763,7 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal 3, node.status
      ActionMailer::Base.deliveries.clear
 
-     get :publish_draft, id: node.id
+     get :publish_draft, params: { id: node.id }
 
      assert_response :redirect
      assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
@@ -782,7 +782,7 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal 3, node.status
      ActionMailer::Base.deliveries.clear
 
-     get :publish_draft, id: node.id
+     get :publish_draft, params: { id: node.id }
 
      assert_response :redirect
      assert_equal "Thanks for your contribution. Research note published! Now, it's visible publically.", flash[:notice]
@@ -801,7 +801,7 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal 3, node.status
      ActionMailer::Base.deliveries.clear
 
-     get :publish_draft, id: node.id
+     get :publish_draft, params: { id: node.id }
 
      assert_response :redirect
      assert_equal "You are not author or moderator so you can't publish a draft!", flash[:warning]
@@ -817,7 +817,7 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal 3, node.status
      ActionMailer::Base.deliveries.clear
 
-     get :publish_draft, id: node.id
+     get :publish_draft, params: { id: node.id }
 
      assert_response :redirect
      assert_equal "You must be logged in to access this page", flash[:warning]
@@ -884,9 +884,11 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal 3, node.status
 
      get :show,
+        params: {
          author: node.author.username,
          date: node.created_at.strftime('%m-%d-%Y'),
          id: node.title.parameterize
+        }
 
      assert_response :success
      assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
@@ -914,9 +916,11 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal 3, node.status
 
      get :show,
+        params: {
          author: node.author.username,
          date: node.created_at.strftime('%m-%d-%Y'),
          id: node.title.parameterize
+        }
 
      assert_response :success
      assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
