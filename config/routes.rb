@@ -170,7 +170,7 @@ Plots2::Application.routes.draw do
   get 'contributors' => 'tag#contributors_index'
   get 'tags' => 'tag#index'
   get 'tags/:search' => 'tag#index'
-  get 'tag/suggested/:id' => 'tag#suggested'
+  post 'tag/suggested/:id' => 'tag#suggested'
   get 'tag/author/:id.json' => 'tag#author'
   post 'tag/create/:nid' => 'tag#create'
   get 'tag/create/:nid' => 'tag#create'
