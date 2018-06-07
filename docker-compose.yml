@@ -18,6 +18,8 @@ services:
       # if you want to re-import simply put away ../mysql/*
   redis:
     image: redis:latest
+    ports:
+      - '6379:6379'
     command: redis-server
   web:
     build: .
@@ -25,6 +27,8 @@ services:
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+    depends_on:
+      - redis
     volumes:
       - .:/app
     ports:
