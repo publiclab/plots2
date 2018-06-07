@@ -1,4 +1,4 @@
-class DrupalFile < ActiveRecord::Base
+class DrupalFile < ApplicationRecord
   self.table_name = 'files'
   self.primary_key = 'fid'
 

@@ -41,7 +41,7 @@ Plots2::Application.configure do
   config.log_level = :info
 
   # Prepend all log lines with the following tags
-  # config.log_tags = [ :subdomain, :uuid ]
+  config.log_tags = [ :request_id ]
 
   # Use a different logger for distributed setups
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
@@ -49,8 +49,10 @@ Plots2::Application.configure do
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
 
-  # Enable serving of images, stylesheets, and JavaScripts from an asset server
-  # config.action_controller.asset_host = "http://assets.example.com"
+  # Use a real queuing backend for Active Job (and separate queues per environment)
+  # config.active_job.queue_adapter     = :resque
+  # config.active_job.queue_name_prefix = "railsdiff_#{Rails.env}"
+  config.action_mailer.perform_caching = false
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )

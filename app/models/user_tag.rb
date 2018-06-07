@@ -1,5 +1,4 @@
-class UserTag < ActiveRecord::Base
-  attr_accessible :uid, :value
+class UserTag < ApplicationRecord
   belongs_to :user, foreign_key: :uid
 
   validates :value, presence: :true

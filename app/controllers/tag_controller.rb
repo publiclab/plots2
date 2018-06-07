@@ -1,6 +1,7 @@
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
-  before_filter :require_user, only: %i(create delete)
+  before_action :require_user, only: %i(create delete)
+
 
   def index
     if params[:sort]

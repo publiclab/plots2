@@ -1,0 +1,1 @@
+Rails.application.config.assets.precompile += %w( print.css I18n.css sidebar.js dashboard.css dashboard.js dragdrop.js methods.js post.js comment_expand.js leaflet-blurred-location/dist/Leaflet.BlurredLocation.js dynamic_search.js notes.js textbox_expand.js question.js )

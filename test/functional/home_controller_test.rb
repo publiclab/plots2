@@ -83,7 +83,7 @@ class HomeControllerTest < ActionController::TestCase
       old_controller = @controller
       @controller = SettingsController.new
 
-      get :change_locale, locale: lang.to_s
+      get :change_locale, params: { locale: lang.to_s }
 
       @controller = old_controller
 
@@ -100,7 +100,7 @@ class HomeControllerTest < ActionController::TestCase
       old_controller = @controller
       @controller = SettingsController.new
 
-      get :change_locale, locale: lang.to_s
+      get :change_locale, params: { locale: lang.to_s }
 
       @controller = old_controller
 
