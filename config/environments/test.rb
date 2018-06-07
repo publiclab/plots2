@@ -1,17 +1,18 @@
-Plots2::Application.configure do
+Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs. Don't rely on the data there!
+
   config.cache_classes = true
 
   config.eager_load = false
 
   # Configure static asset server for tests with Cache-Control for performance
-  config.serve_static_assets = true
-  config.static_cache_control = "public, max-age=3600"
+  config.public_file_server.enabled = true
+  config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -29,11 +30,11 @@ Plots2::Application.configure do
   config.action_mailer.delivery_method = :test
   config.action_mailer.raise_delivery_errors = false
 
-  # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :strict
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  config.active_support.test_order = :sorted # or `:random` if you prefer
 
   config.action_mailer.default_url_options = {
     host: 'www.example.com'

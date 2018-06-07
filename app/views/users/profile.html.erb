@@ -96,6 +96,10 @@
     <button id="link_social_media" class="btn btn-default btn-block">Link Social media</button>
   <% end %>
 
+  <% if @profile_user && current_user && @profile_user == current_user %>
+    <a href="/users/test_digest_email" class="btn btn-default btn-sm btn-block" method: "post">Test Digest Email</a>
+  <% end %>
+
   <hr />
 
   <% if params[:preview] %>
@@ -144,7 +148,7 @@
 
   <div id = "note-graph" style = "overflow: auto; text-align:center; border: 1px solid #E5E5E5; margin-bottom: 10px;"></div>
 
-  <h3 style="margin-top:0;"><%= @user.name %>
+  <h3 style="margin-top:0;"><%= @user.name %> <%= @user.new_contributor %>
     <small>
       <%= @user.node_count %> <%= raw t('users.profile.notes_and_edits', :url1 => "/notes/author/"+@user.name) %>
       <% if current_user && current_user.role == "admin" %> | <%= @user.email %><% end %>
@@ -176,7 +180,7 @@
     <li><a href="#coauthored" data-toggle="tab"><i class="fa fa-file-o"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.Coauthored') %></span> (<%= @coauthored.size %>)</a></li>
     <li><a href="#questions" data-toggle="tab"><i class="fa fa-question-circle"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %></span> (<%= Node.questions.where(status: 1, uid: @user.id).length %>)</a></li>
     <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span> (<%= @comment_count %>)</a></li>
-    <li><a href="#likes" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>  
+    <li><a href="#likes" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
     <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> Barnstars</span> (<%= @user.user.try(:barnstars).try(:length) %>)</a></li>
   </ul>
 

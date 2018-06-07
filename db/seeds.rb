@@ -47,21 +47,19 @@ blog_post_tag = Tag.create! "name"=>"blog", "description"=>"", "weight"=>0
 blog_post_community_tag = NodeTag.create! "tid"=>blog_post_tag.id,
   "nid"=>blog_post.id, "uid"=>admin.id
 blog_post_comment = Comment.create! "nid"=>blog_post.id, "uid"=>admin.id,
-  "subject"=>"", "comment"=>"Example Comment\r\n", "hostname"=>"", "status"=>0,
+  "subject"=>"", "comment"=>"Example Comment\r\n", "hostname"=>"", "status"=>1,
   "format"=>1, "thread"=>"01/"
 
 # Create 35 maps for the /maps sections
 35.times do |t|
   map_node = Node.create! "type"=>"map", "title"=>"test map #{t}", "uid"=>1,
     "status"=>1
-  Revision.attr_accessible :nid, :vid
   map_node_revision =  Revision.create! "nid" => map_node.nid, "vid" => map_node.nid,
     "uid"=>1, "title"=>"Test Map #{t}", "body"=>"Body of revision #{t}" 
   tag_lat = Tag.create! name: "lat:#{rand * 80}", description: "Desc #{t}", weight: 5
   tag_lon = Tag.create! name: "lon:#{rand * 80}", description: "Desc #{t}", weight: 5
   drupal_comm_tag_lat = NodeTag.create! nid: map_node.nid, tid: tag_lat.tid, uid: 1
   drupal_comm_tag_lon = NodeTag.create! nid: map_node.nid, tid: tag_lon.tid, uid: 1
-  DrupalContentTypeMap.attr_accessible :nid, :vid, :field_publication_date_value, :field_capture_date_value, :field_tms_url_value, :field_license_value, :field_raw_images_value, :field_cartographer_notes_value, :field_notes_value, :field_zoom_min_value, :field_zoom_max_value, :authorship
   content_type_mape = DrupalContentTypeMap.create! "vid"=>map_node.nid,
     "nid"=>map_node.nid, "field_publication_date_value"=>Time.now.to_s(:short),
     "field_capture_date_value"=>Time.now.to_s(:short),

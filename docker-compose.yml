@@ -2,6 +2,7 @@ version: "2"
 services:
   db:
     image: mariadb:10.2
+    network_mode: "service:web"
     environment:
       - MYSQL_DATABASE=plots
       - MYSQL_USER=plots
@@ -15,6 +16,8 @@ services:
       - ../dump:/docker-entrypoint-initdb.d
       # for importing a dump
       # if you want to re-import simply put away ../mysql/*
+  redis:
+    image: redis:latest
   web:
     build: .
     command: /bin/bash -c "sleep 5 && passenger start -p 4000"
@@ -25,6 +28,14 @@ services:
       - .:/app
     ports:
       - "127.0.0.1:4000:4000"
-    links:
-      - db
     restart: unless-stopped
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+    environment:
+      - JOB_WORKER_URL=redis://redis:6379/0

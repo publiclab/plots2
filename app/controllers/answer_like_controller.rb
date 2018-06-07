@@ -1,5 +1,5 @@
 class AnswerLikeController < ApplicationController
-  before_filter :require_user, only: :likes
+  before_action :require_user, only: :likes
 
   def show
     render json: Answer.find(params[:id]).cached_likes
@@ -12,7 +12,7 @@ class AnswerLikeController < ApplicationController
     else
       AnswerSelection.set_likes(current_user.uid, @answer.id, true)
       user = User.find(current_user.uid)
-      AnswerMailer.notify_answer_like(user, @answer).deliver
+      AnswerMailer.notify_answer_like(user, @answer).deliver_now
     end
     @answer.reload
     respond_to do |format|

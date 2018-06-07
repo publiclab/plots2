@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :require_no_user, :only => [:new]
-  before_filter :require_user, :only => [:update]
+  before_action :require_no_user, :only => [:new]
+  before_action :require_user, :only => [:edit, :update]
   before_action :set_user, only: [:info, :followed, :following, :followers]
 
   def new
@@ -10,17 +10,16 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     @user.status = 1
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
-    @spamaway = Spamaway.new(params[:spamaway]) unless using_recaptcha
+    @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
     if ((@spamaway&.valid?) || recaptcha) && @user.save({})
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
       else
-        @user.add_to_lists(['publiclaboratory'])
         flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
@@ -41,38 +40,31 @@ class UsersController < ApplicationController
     end
   end
 
-  def update
-    if current_user
+  def update                # login required, see before filter
     @user = current_user
-      @user.attributes = params[:user]
-      @user.save({}) do |result|
-        if result
-          if session[:openid_return_to] # for openid login, redirects back to openid auth process
-            return_to = session[:openid_return_to]
-            session[:openid_return_to] = nil
-            redirect_to return_to
-          else
-            flash[:notice] = I18n.t('users_controller.successful_updated_profile')+"<a href='/dashboard'>"+I18n.t('users_controller.return_dashboard')+" &raquo;</a>"
-            redirect_to "/profile/"+@user.username
-          end
+    @user.attributes = user_params
+    @user.save({}) do |result|
+      if result
+        if session[:openid_return_to] # for openid login, redirects back to openid auth process
+          return_to = session[:openid_return_to]
+          session[:openid_return_to] = nil
+          redirect_to return_to
         else
-          render :template => 'users/edit'
+          flash[:notice] = I18n.t('users_controller.successful_updated_profile')+"<a href='/dashboard'>"+I18n.t('users_controller.return_dashboard')+" &raquo;</a>"
+          return redirect_to "/profile/"+@user.username
         end
+      else
+        render :template => 'users/edit'
       end
-    else
-      flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
-      redirect_to "/profile/"+@user.name
     end
   end
 
   def edit
     @action = "update" # sets the form url
     if params[:id] # admin only
-      @drupal_user = DrupalUser.find_by(name: params[:id])
-      @user = @drupal_user.user
+      @user = User.find_by(username: params[:id])
     else
       @user = current_user
-      @drupal_user = current_user.drupal_user
     end
     if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
       render :template => "users/edit"
@@ -84,6 +76,7 @@ class UsersController < ApplicationController
 
   def list
     sort_param = params[:sort]
+    @tagname_param = params[:tagname]
 
     if params[:id]
       order_string = 'updated_at DESC'
@@ -101,21 +94,26 @@ class UsersController < ApplicationController
 
     # allow admins to view recent users
     if params[:id]
-      @users = DrupalUser.joins('INNER JOIN rusers ON rusers.username = users.name')
-                          .order(order_string)
-                          .where('rusers.role = ?', params[:id])
-                          .where('rusers.status = 1')
-                          .page(params[:page])
+      @users = User.order(order_string)
+                    .where('rusers.role = ?', params[:id])
+                    .where('rusers.status = 1')
+                    .page(params[:page])
+    
+    elsif @tagname_param
+      @users = User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
+                    .page(params[:page])
+
     else
       # recently active
-      @users = DrupalUser.select('*, MAX(node.changed) AS last_updated')
-                          .joins(:node)
-                          .group('users.uid')
-                          .where('node.status = 1')
-                          .order(order_string)
-                          .page(params[:page])
+      @users = User.select('*, rusers.status, MAX(node.changed) AS last_updated')
+                    .joins(:node)
+                    .group('rusers.id')
+                    .where('node.status = 1')
+                    .order(order_string)
+                    .page(params[:page])
     end
-    @users = @users.where('users.status = 1') unless current_user && (current_user.can_moderate?)
+
+    @users = @users.where('rusers.status = 1') unless current_user && (current_user.can_moderate?)
   end
 
   def profile
@@ -243,7 +241,7 @@ class UsersController < ApplicationController
         key = user.generate_reset_key
         user.save({})
         # send key to user email
-        PasswordResetMailer.reset_notify(user, key) unless user.nil? # respond the same to both successes and failures; security
+        PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
       end
       flash[:notice] = I18n.t('users_controller.password_reset_email')
       redirect_to "/login"
@@ -299,9 +297,23 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
+  def test_digest_email
+    DigestMailJob.perform_later
+    redirect_to "/profile/"+current_user.username
+  end
+
   private
 
   def set_user
     @user = User.find_by(username: params[:id])
   end
+  private
+  def user_params
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
+  end
+  def spamaway_params
+    params.require(:spamaway).permit(:follow_instructions, :statement1, :statement2, :statement3, :statement4)
+  end
 end
+
+

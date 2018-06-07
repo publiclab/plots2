@@ -246,3 +246,9 @@ method:
   uid: 1
   title: "Method page"
   body: "[activities:spectrometer]"
+
+draft:
+  nid: 21
+  uid: 2
+  title: "Draft note"
+  body: This is draft note.

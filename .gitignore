@@ -10,7 +10,7 @@
 # Ignore all logfiles and tempfiles.
 log/*.log
 log/*
-tmp
+/tmp/*
 data
 *.swp
 .DS_Store
@@ -36,6 +36,7 @@ todo.txt
 *.pfx
 *.pem
 *.key
+!config/localhost.key
 passenger.*
 passenger-standalone.json.bkp
 public/pdf.js/

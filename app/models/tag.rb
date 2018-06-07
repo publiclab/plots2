@@ -1,5 +1,4 @@
-class Tag < ActiveRecord::Base
-  attr_accessible :vid, :name, :description, :weight
+class Tag < ApplicationRecord
   self.table_name = 'term_data'
   self.primary_key = 'tid'
 
@@ -72,7 +71,7 @@ class Tag < ActiveRecord::Base
   end
 
   # finds highest viewcount nodes
-  def self.find_top_nodes_by_type(tagname, type = 'wiki', limit = 10)
+  def self.find_top_nodes_by_type(tagname:, type: 'wiki', limit: 10)
     Node.where(type: type)
         .where('term_data.name = ?', tagname)
         .order('node.views DESC')
@@ -181,6 +180,46 @@ class Tag < ActiveRecord::Base
     end
     weeks
   end
+
+def contribution_graph_making(type = 'note', span = 52, time = Time.now)   
+    weeks = {}
+    week = span
+    count = 0;
+    tids = Tag.where('name IN (?)', [name])
+          .collect(&:tid)
+    nids = NodeTag.where('tid IN (?)', tids)
+                             .collect(&:nid)
+    while week >= 1
+        #initialising month variable with the month of the starting day 
+        #of the week
+        month = (time - (week*7 - 1).days).strftime('%m')
+        #loop for finding the maximum occurence of a month name in that week
+        #For eg. If this week has 3 days falling in March and 4 days falling
+        #in April, then we would give this week name as April and vice-versa
+        for i in 1..7 do
+            currMonth = (time - (week*7 - i).days).strftime('%m')
+            if month != currMonth
+                if i <= 4
+                    month = currMonth
+                end
+            end
+        end
+        #Now fetching the weekly data of notes or wikis
+        month = month.to_i
+
+        currWeek = Tag.nodes_for_period(
+          type, 
+          nids, 
+          (time.to_i - week.weeks.to_i).to_s,
+          (time.to_i - (week - 1).weeks.to_i).to_s
+        ).count(:all)
+
+        weeks[count] = [month, currWeek]
+        count += 1
+        week -= 1
+	end
+	weeks
+end 
 
   def self.nodes_for_period(type, nids, start, finish)
     Node.select(%i(created status type nid))

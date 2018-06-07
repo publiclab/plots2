@@ -1,7 +1,14 @@
-class Spamaway < Tableless
+class Spamaway
+    include ActiveModel::Model
+
   # This helper will generate pairs of human/robot statements and return
   # them alongside random strings.
   # There is no actual data in the database.
+  def self.columns() @columns ||= []; end
+ 
+  def self.column(name, sql_type = nil, default = nil, null = true)
+    columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
+  end
 
   column :follow_instructions, :string
   column :statement1, :string
@@ -9,11 +16,8 @@ class Spamaway < Tableless
   column :statement3, :string
   column :statement4, :string
 
-  attr_accessible :follow_instructions,
-    :statement1,
-    :statement2,
-    :statement3,
-    :statement4
+  attr_accessor :follow_instructions, :statement1, :statement2, :statement3, :statement4
+
 
   validate :clean_honeypot, :human_responses
 

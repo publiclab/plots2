@@ -12,6 +12,21 @@ module ApplicationHelper
     end
   end
 
+
+  def emojify(content)
+    content.to_str.gsub(/:([\w+-]+):/) do |match|
+      if emoji = Emoji.find_by_alias($1)
+        if emoji.raw
+          emoji.raw
+        else
+          %(<img class="emoji" alt="#$1" src="#{image_path("emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
+        end
+      else
+        match
+      end
+    end if content.present?
+  end
+
   def feature(title)
     features = Node.where(type: 'feature', title: title)
     if !features.empty?
@@ -41,15 +56,21 @@ module ApplicationHelper
     body
   end
 
-  def render_map(lat, lon, items)
-    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, items: items }
+  # we should move this to the Node model:
+  def render_map(lat, lon)
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon }
   end
 
+  # we should move this to the Comment model:
   # returns the comment body which is to be shown in the comments section
   def render_comment_body(comment)
-    raw sanitize RDiscount.new(title_suggestion(comment)).to_html, attributes: %w(class style href data-method src)
+    raw RDiscount.new(
+      title_suggestion(comment),
+      :autolink
+    ).to_html
   end
-  
+
+  # we should move this to the Comment model:
   # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)
     comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do ||

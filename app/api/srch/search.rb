@@ -139,7 +139,7 @@ module Srch
       end
 
       #API TO FETCH QRY RECENT CONTRIBUTORS
-      # Request URL should be /api/srch/peoplelocations?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/peoplelocations?srchString=QRY[&tagName=group:partsandcrafts&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       #QRY should be a number
       desc 'Perform a search to show x Recent People',
         hidden: false,
@@ -147,6 +147,7 @@ module Srch
         nickname: 'srchGetPeople'
       params do
         requires :srchString, type: String, documentation: { example: 'Spec' }
+        optional :tagName, type: String, documentation: { example: 'group:partsandcrafts' }
         optional :seq, type: Integer, documentation: { example: 995 }
         optional :showCount, type: Integer, documentation: { example: 3 }
         optional :pageNum, type: Integer, documentation: { example: 0 }
@@ -155,7 +156,7 @@ module Srch
         sresult = DocList.new
         unless params[:srchString].nil? || params[:srchString] == 0 
           sservice = SearchService.new
-          sresult = sservice.recentPeople(params[:srchString])
+          sresult = sservice.recentPeople(params[:srchString], params[:tagName])
         end
         sparms = SearchRequest.fromRequest(params)
         sresult.srchParams = sparms

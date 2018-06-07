@@ -47,30 +47,29 @@ class TypeaheadService
   end
   
   # default order is recency
-  def nodes(input, limit = 5, order = :default)
-    Node.search(input, order)
+  def nodes(input, _limit = 5, order = :default)
+    Node.search(query: input, order: order, limit: 5)
       .group(:nid)
       .where('node.status': 1)
-      .limit(limit)
   end
 
   def notes(input, limit = 5, order = :default)
-    self.nodes(input, limit, order)
+    nodes(input, limit, order)
       .where("node.type": "note")
   end
 
   def wikis(input, limit = 5, order = :default)
-    self.nodes(input, limit, order)
+    nodes(input, limit, order)
       .where("node.type": "page")
   end
 
   def maps(input, limit = 5, order = :default)
-    self.nodes(input, limit, order)
+    nodes(input, limit, order)
       .where("node.type": "map")
   end
   
   def questions(input, limit = 5, order = :default)
-    self.nodes(input, limit, order)
+    nodes(input, limit, order)
       .where('node.type': 'note')
       .joins(:tag)
       .where('term_data.name LIKE ?', 'question:%')
@@ -126,7 +125,7 @@ class TypeaheadService
   def search_notes(search_string, limit = 5)
     sresult = TagList.new
     unless search_string.nil? || search_string.blank?
-      notes(search_string, limit).uniq.each do |match|
+      notes(search_string, limit).distinct.each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
