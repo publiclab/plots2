@@ -1,9 +1,6 @@
-class Comment < ActiveRecord::Base
+class Comment < ApplicationRecord
   include CommentsShared # common methods for comment-like models
 
-  attr_accessible :pid, :nid, :uid, :aid,
-    :subject, :hostname, :comment,
-    :status, :format, :thread, :timestamp, :comment_via, :message_id
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
                     # dependent: :destroy, counter_cache: true
@@ -116,7 +113,7 @@ class Comment < ActiveRecord::Base
 
   def mentioned_users
     usernames = comment.scan(Callouts.const_get(:FINDER))
-    User.where(username: usernames.map { |m| m[1] }).uniq
+    User.where(username: usernames.map { |m| m[1] }).distinct
   end
 
   def followers_of_mentioned_tags

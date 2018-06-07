@@ -28,7 +28,9 @@ class EditorControllerTest < ActionController::TestCase
   test 'should get legacy form' do
     UserSession.create(users(:bob))
     get :legacy,
+        params: { 
         tags: 'one,two'
+        }
     assert_response :success
     assert_select 'h3', 'Share your work'
     selector = css_select 'span.moderation-notice'
@@ -48,7 +50,9 @@ class EditorControllerTest < ActionController::TestCase
   test "should use existing node body as template in legacy form based on param 'n'" do
     UserSession.create(users(:bob))
     get :legacy,
+        params: {
         n: nodes(:blog).id
+        }
     assert_response :success
     assert_select 'textarea#text-input', nodes(:blog).body
   end
@@ -56,7 +60,9 @@ class EditorControllerTest < ActionController::TestCase
   test "should use existing node body as template in legacy form based on param 'n' in rich editor" do
     UserSession.create(users(:bob))
     get :rich,
+        params: {
         n: nodes(:blog).id
+        }
     assert_response :success
     assert_select 'textarea#text-input', nodes(:blog).body
   end
@@ -64,7 +70,9 @@ class EditorControllerTest < ActionController::TestCase
   test "should use existing node body as template in post form based on param 'n'" do
     UserSession.create(users(:bob))
     get :post,
+        params: {
         n: nodes(:blog).id
+        }
     assert_response :success
     assert_select 'textarea#text-input', nodes(:blog).body
   end
@@ -87,9 +95,11 @@ class EditorControllerTest < ActionController::TestCase
 
   test 'should redirect to login page while posting  question' do
     get :legacy,
+        params: { 
         tags: 'question:question',
         template: 'question',
         redirect: 'question'
+        }
     assert_redirected_to '/login'
     # uses ASCII format instead of utf-8
     assert_equal '/legacy?redirect=question&tags=question%3Aquestion&template=question', session[:return_to]
@@ -98,9 +108,11 @@ class EditorControllerTest < ActionController::TestCase
   test 'should show question template in legacy form for questions' do
     UserSession.create(users(:bob))
     get :legacy,
+        params: {
         tags: 'question:question,one',
         template: 'question',
         redirect: 'question'
+        }
     assert_response :redirect
     assert_redirected_to '/questions/new?redirect=question&tags=question%3Aquestion%2Cone&template=question'
     # assert_select "h3", "Ask a question of the community"
@@ -110,9 +122,11 @@ class EditorControllerTest < ActionController::TestCase
   test 'should show question template in post form for questions' do
     UserSession.create(users(:bob))
     get :post,
+        params: {
         tags: 'question:question,one',
         template: 'question',
         redirect: 'question'
+        }
     assert_response :redirect
     assert_redirected_to '/questions/new?redirect=question&tags=question%3Aquestion%2Cone&template=question'
     # assert_select "h3", "Ask a question of the community"
@@ -122,7 +136,9 @@ class EditorControllerTest < ActionController::TestCase
   test 'should show title form input if title parameter present' do
     UserSession.create(users(:bob))
     get :legacy,
+        params: {
         title: 'New Question'
+        }
     assert_response :success
     assert_select 'input#title' do
       assert_select '[value=?]', 'New Question'

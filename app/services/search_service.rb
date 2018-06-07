@@ -233,29 +233,28 @@ class SearchService
 
   #GET X number of latest people/contributors 
   # X = srchString
-  def recentPeople(srchString, tagName = nil)
+  def recentPeople(_srchString, tagName = nil)
     sresult = DocList.new  
-    nodes = Node.all.order("changed DESC").limit(100).uniq
+    nodes = Node.all.order("changed DESC").limit(100).distinct
     users = []
     nodes.each do |node|      
      if node.author.status != 0 
-       unless tagName.blank?
-         users << node.author.user if node.author.user.has_tag(tagName)
-       else
+       if tagName.blank?
          users << node.author.user
+       else
+         users << node.author.user if node.author.user.has_tag(tagName)
        end
      end
     end
     users = users.uniq 
     users.each do |user|
-      if user.has_power_tag("lat") && user.has_power_tag("lon") 
-        blurred = false 
-        if user.has_power_tag("location")
-          blurred = user.get_value_of_power_tag("location")
-        end
-        doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path , user.username , 0 , 0 , user.lat , user.lon , blurred)
-        sresult.addDoc(doc)
+      next unless user.has_power_tag("lat") && user.has_power_tag("lon") 
+      blurred = false 
+      if user.has_power_tag("location")
+        blurred = user.get_value_of_power_tag("location")
       end
+      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
+      sresult.addDoc(doc)
     end                  
     sresult
   end

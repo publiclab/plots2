@@ -6,28 +6,20 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_equal '/login', path
 
-    post '/user_sessions', user_session: {
-      username: users(:jeff).username,
-      password: 'secretive'
-    }
+    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' }  }
+
     follow_redirect!
     assert_equal '/post?tags=question:question&template=question', request.fullpath
   end
 
   # This test depend on question based search functionality
   test 'search a question and go through post mechanism if question not found when user is not logged in' do
-    get '/post', tags: 'question:question',
-                 template: 'question',
-                 title: 'What',
-                 redirect: 'question'
+    get '/post', params: { tags: 'question:question', template: 'question', title: 'What', redirect: 'question' }
 
     follow_redirect!
     assert_equal '/login', path
 
-    post '/user_sessions', user_session: {
-      username: users(:jeff).username,
-      password: 'secretive'
-    }
+    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } } 
 
     follow_redirect!
     assert_response :redirect
@@ -42,12 +34,8 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     get '/questions'
     assert_response :success
 
-    post '/user_sessions',
-         return_to: request.path,
-         user_session: {
-           username: users(:jeff).username,
-           password: 'secretive'
-         }
+    post '/user_sessions', params: { return_to: request.path, user_session: { username: users(:jeff).username,  password: 'secretive' }  } 
+
     follow_redirect!
     assert_equal '/questions', path
   end

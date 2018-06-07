@@ -1,7 +1,6 @@
 require 'open-uri'
 
-class Image < ActiveRecord::Base
-  attr_accessible :uid, :notes, :title, :photo, :nid, :remote_url
+class Image < ApplicationRecord
 
   # has_many :comments, :dependent => :destroy
   # has_many :likes, :dependent => :destroy

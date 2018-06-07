@@ -1,6 +1,6 @@
 class LikeController < ApplicationController
   respond_to :html, :xml, :json
-  before_filter :require_user, only: %i(create delete)
+  before_action :require_user, only: %i(create delete)
 
   #list all recent likes
   def index

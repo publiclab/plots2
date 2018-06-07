@@ -21,11 +21,10 @@ end
 class Node < ActiveRecord::Base
   include NodeShared # common methods for node-like models
 
-  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug, :views
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query, order = :default)
+  def self.search(query:, order: :default, limit:)
     orderParam = {changed: :desc} if order == :default
     orderParam = {cached_likes: :desc} if order == :likes
     orderParam = {views: :desc} if order == :views
@@ -44,7 +43,8 @@ class Node < ActiveRecord::Base
       end
     else
       nodes = Node.limit(limit)
-        .where('title LIKE ?', '%' + input + '%', status: 1)
+        .where('title LIKE ?', '%' + query + '%')
+        .where(status: 1)
         .order(orderParam)
     end
   end
