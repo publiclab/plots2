@@ -18,6 +18,7 @@ services:
       # if you want to re-import simply put away ../mysql/*
   redis:
     image: redis:latest
+    command: redis-server
   web:
     build: .
     command: /bin/bash -c "sleep 5 && passenger start -p 4000"
@@ -38,4 +39,4 @@ services:
     volumes:
       - .:/app
     environment:
-      - JOB_WORKER_URL=redis://redis:6379/0
+      - REDIS_URL=redis://redis:6379/0
