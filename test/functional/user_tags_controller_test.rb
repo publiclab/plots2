@@ -106,4 +106,27 @@ class UserTagsControllerTest < ActionController::TestCase
       assert_equal I18n.t('user_tags_controller.tag_doesnt_exist'), flash[:error]
     end
   end
+
+  test 'user tags index' do
+   get :index
+
+   assert :success
+   assert assigns['user_tags']
+   assert_equal assigns['user_tags'].collect{ |a| a[0] }, assigns['user_tags'].collect{ |a| a[0]}.uniq
+   assert_not assigns['user_tags'].include?(0)
+   assert_not_nil :user_tags
+
+   get :index, {sort: "value"}
+   assert_equal assigns['user_tags'].collect{ |a| [a[0], a[1]] }, assigns['user_tags'].sort_by{ |a| [a[0]]}
+
+ end
+
+ test 'user tags search' do
+   get :index, search: "skill:rails"
+
+   assert :success
+   assert assigns(:user_tags).length > 0
+   assert_template 'user_tags/index'
+ end
+
 end

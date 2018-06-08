@@ -1,0 +1,38 @@
+<div class="col-md-12">
+  <h1 style="font-family:Junction Light;"><%= t('user_tag.index.popular_user_tags') %></h1>
+
+  <% cache('feature_user_tags-header', skip_digest: true) do %>
+    <%= feature('user-tags-header') %>
+  <% end %>
+
+  <p><%= t('user_tag.index.browse_popular_user_tags') %></p>
+
+  <input class="form-control" type="text" id="myInput"  placeholder="Search for user tags..">
+  <script>
+    $('#myInput').keypress(function (e) {
+      var key = e.which;
+      if (key == 13) { // enter key
+        var pre = document.getElementById("myInput").value;
+        window.location.href = "<%= user_tags_path %>"+"/" + pre
+      }
+    });
+  </script>
+  <br/><br/>
+
+  <table class="table">
+    <tr>
+      <th><a href = "<%= user_tags_path %>?sort=value"><%= t('user_tag.index.user_tag') %></a> <i class="fa fa-arrows-v"></i></th>
+      <th><a href = "<%= user_tags_path %>?sort=uses"><%= t('user_tag.index.number_of_uses') %></a> <i class="fa fa-arrows-v"></i></th>
+    </tr>
+    <% @user_tags.each do |user_tag| %>
+      <tr>
+        <td><i class="fa fa-tag"></i> <a href="/user_tag/<%= user_tag[0] %>"><%= user_tag[0] %></a></td>
+        <td><%= user_tag[1] %></td>
+      </tr>
+    <% end %>
+  </table>
+  <%= will_paginate @user_tags, :renderer => BootstrapPagination::Rails if @paginated %>
+
+  <hr />
+
+</div>
