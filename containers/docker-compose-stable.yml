@@ -8,21 +8,21 @@ services:
       - MYSQL_PASSWORD=plots
       - MYSQL_RANDOM_ROOT_PASSWORD=true
     volumes:
-      - ../mysql:/var/lib/mysql
+      - ../config/my.cnf:/etc/mysql/my.cnf
+      # for configuration 
+      - ../../mysql:/var/lib/mysql
       # for persistence
-      - ../dump:/docker-entrypoint-initdb.d
-      # for importing a dump
-      # if you want to re-import simply put away ../mysql/*
+      - ../../dump:/docker-entrypoint-initdb.d
+      # mporting a dump
+      # if you want to re-import simply put away ../../mysql/*
   web:
     build: .
     command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start -p 4000"
     environment:
       - RAILS_ENV=${RAILS_ENV}
-      - SOLR_URL=${SOLR_URL}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
-      - DISABLE_SOLR_CHECK=1
     volumes:
-      - .:/app
+      - ..:/app
     ports:
       - "127.0.0.1:4000:4000"
     links:
