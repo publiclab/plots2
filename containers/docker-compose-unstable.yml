@@ -9,7 +9,7 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
     volumes:
       - ../config/my.cnf:/etc/mysql/my.cnf
-      # for configuration
+      # for configuration 
       - ../../mysql:/var/lib/mysql
       # for persistence
       - ../../dump:/docker-entrypoint-initdb.d
@@ -17,6 +17,8 @@ services:
       # if you want to re-import simply put away ../../mysql/*
   redis:
     image: redis:latest
+    ports:
+      - '6379:6379'
     command: redis-server
   web:
     build: ..
@@ -62,7 +64,7 @@ services:
       - db
       - redis
     volumes:
-      - ..:/app
+      - .:/app
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - REDIS_URL=redis://redis:6379/0
