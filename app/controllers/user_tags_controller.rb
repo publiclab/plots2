@@ -27,7 +27,7 @@ class UserTagsController < ApplicationController
               @output[:errors] << "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
             elsif  tagname.split(':')[0] == "oauth-github"
               @output[:errors] << "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
-            elsif  tagname.split(':')[0] ==  "oauth-google"
+            elsif  tagname.split(':')[0] ==  "google_oauth2"
               @output[:errors] << "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
             elsif  tagname.split(':')[0] == "oauth-twitter"
              @output[:errors] << "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"

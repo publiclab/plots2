@@ -856,7 +856,7 @@ class Node < ActiveRecord::Base
       errors ? "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
     elsif  tagname.split(':')[0] == "oauth-github"
       errors ? "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[0] ==  "oauth-google"
+    elsif  tagname.split(':')[0] ==  "google_oauth2"
       errors ? "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
     elsif  tagname.split(':')[0] == "oauth-twitter"
       errors ? "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
