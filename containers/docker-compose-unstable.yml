@@ -15,6 +15,11 @@ services:
       - ../../dump:/docker-entrypoint-initdb.d
       # for importing a dump
       # if you want to re-import simply put away ../../mysql/*
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
+    command: redis-server
   web:
     build: ..
     command: /bin/bash -c "sleep 5 && bundle exec rails s -p 5001 -b '0.0.0.0'"
@@ -30,6 +35,7 @@ services:
       - OAUTH_GITHUB_APP_SECRET=${OAUTH_GITHUB_APP_SECRET}
       - OAUTH_TWITTER_APP_KEY=${OAUTH_TWITTER_APP_KEY}
       - OAUTH_TWITTER_APP_SECRET=${OAUTH_TWITTER_APP_SECRET}
+      - REDIS_URL=redis://redis:6379/0
     volumes:
       - ..:/app
     ports:
@@ -47,3 +53,13 @@ services:
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     volumes:
       - ..:/app
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+    environment:
+      - REDIS_URL=redis://redis:6379/0
