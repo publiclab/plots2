@@ -16,7 +16,7 @@ services:
       # for importing a dump
       # if you want to re-import simply put away ../../mysql/*
   web:
-    build: .
+    build: ..
     command: /bin/bash -c "sleep 5 && bundle exec rails s -p 5001 -b '0.0.0.0'"
     environment:
       - RAILS_ENV=${RAILS_ENV}
