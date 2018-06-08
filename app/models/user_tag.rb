@@ -19,4 +19,12 @@ class UserTag < ActiveRecord::Base
     self.value
   end
 
+  def self.find_with_omniauth(auth)
+    find_by(value: auth['provider'] + ":" + auth['uid'])
+  end
+
+  def self.create_with_omniauth(auth)
+    create(value:  auth['provider'] + ":" + auth['uid'] )
+  end
+
 end
