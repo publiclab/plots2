@@ -54,7 +54,7 @@ services:
     volumes:
       - ..:/app
   sidekiq:
-    build: .
+    build: ..
     command: bundle exec sidekiq
     depends_on:
       - db
