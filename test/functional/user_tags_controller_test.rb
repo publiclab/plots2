@@ -112,10 +112,13 @@ class UserTagsControllerTest < ActionController::TestCase
 
    assert :success
    assert assigns['user_tags']
-   assert_equal assigns['user_tags'].collect{ |a| [a[0], a[1]] }, assigns['user_tags'].sort_by{ |a| [a[0]]}
    assert_equal assigns['user_tags'].collect{ |a| a[0] }, assigns['user_tags'].collect{ |a| a[0]}.uniq
    assert_not assigns['user_tags'].include?(0)
    assert_not_nil :user_tags
+
+   get :index, {sort: "value"}
+   assert_equal assigns['user_tags'].collect{ |a| [a[0], a[1]] }, assigns['user_tags'].sort_by{ |a| [a[0]]}
+
  end
 
  test 'user tags search' do
