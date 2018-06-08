@@ -121,7 +121,7 @@ class HomeController < ApplicationController
       .where('node_revisions.status = 1')
       .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
       .limit(10)
-      .group(['node.title', 'note.nid'])
+      .group(['node.title', 'node.nid'])
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     revisions = revisions.to_a # ensure it can be serialized for caching
