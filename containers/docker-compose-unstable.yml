@@ -35,7 +35,7 @@ services:
       - db
     restart: unless-stopped
   sidekiq:
-    build: .
+    build: ..
     command: bundle exec sidekiq
     depends_on:
       - db
