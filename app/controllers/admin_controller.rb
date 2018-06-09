@@ -69,7 +69,7 @@ class AdminController < ApplicationController
       end
     else
       # unauthorized. instead of return ugly 403, just send somewhere else
-      redirect_to '/dashboard'
+      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s 
     end
   end
 
@@ -84,7 +84,7 @@ class AdminController < ApplicationController
       end
     else
       flash[:error] = 'Only moderators can moderate posts.'
-      redirect_to '/dashboard'
+      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
     end
   end
 
@@ -96,7 +96,7 @@ class AdminController < ApplicationController
       render template: 'admin/spam'
     else
       flash[:error] = 'Only moderators can moderate revisions.'
-      redirect_to '/dashboard'
+      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
     end
   end
 
@@ -111,7 +111,7 @@ class AdminController < ApplicationController
         redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
       else
         flash[:notice] = "Item already marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
-        redirect_to '/dashboard'
+        redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
       end
     else
       flash[:error] = 'Only moderators can moderate posts.'
@@ -151,7 +151,7 @@ class AdminController < ApplicationController
       redirect_to @node.path
     else
       flash[:error] = 'Only moderators can publish comments.'
-      redirect_to '/dashboard'
+      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
     end
   end
 
@@ -184,7 +184,7 @@ class AdminController < ApplicationController
       end
     else
       flash[:error] = 'Only moderators can publish posts.'
-      redirect_to '/dashboard'
+      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
     end
   end
 
@@ -206,7 +206,7 @@ class AdminController < ApplicationController
         redirect_to '/wiki/revisions/' + @revision.node.slug_from_path + '?_=' + Time.now.to_i.to_s
       else
         flash[:notice] = "Item already marked as spam and author banned. You can undo this on the <a href='/spam/revisions'>spam moderation page</a>."
-        redirect_to '/dashboard'
+        redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
       end
     else
       flash[:error] = 'Only moderators can moderate posts.'
@@ -231,7 +231,7 @@ class AdminController < ApplicationController
       end
     else
       flash[:error] = 'Only moderators can publish posts.'
-      redirect_to '/dashboard'
+      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
     end
   end
 
@@ -284,7 +284,7 @@ class AdminController < ApplicationController
       @users = DrupalUser.order('uid DESC').limit(200)
     else
       flash[:error] = 'Only moderators can moderate other users.'
-      redirect_to '/dashboard'
+      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
     end
   end
 
@@ -304,7 +304,7 @@ class AdminController < ApplicationController
       redirect_to '/spam/wiki'
     else
       flash[:error] = 'Only admins can batch moderate.'
-      redirect_to '/dashboard'
+      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
     end
   end
 
@@ -334,7 +334,7 @@ class AdminController < ApplicationController
       render template: 'notes/index'
     else
       flash[:error] = 'Only moderators and admins can see the moderation queue.'
-      redirect_to '/dashboard'
+      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
     end
   end
 end
