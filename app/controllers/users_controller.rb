@@ -99,7 +99,7 @@ class UsersController < ApplicationController
                     .where('rusers.role = ?', params[:id])
                     .where('rusers.status = 1')
                     .page(params[:page])
-    
+
     elsif @tagname_param
       @users = User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
                     .page(params[:page])

@@ -414,7 +414,7 @@ class User < ActiveRecord::Base
   def self.create_with_omniauth(auth)
     puts(auth)
     create! do |user|
-      user.username = auth["info"]["first_name"] + auth["info"]["last_name"]
+      user.username = auth["info"]["first_name"]
       user.email = auth["info"]["email"]
       user.password = auth["uid"]
       user.password_confirmation = auth["uid"]

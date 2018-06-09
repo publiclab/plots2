@@ -192,6 +192,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user=(user)
-      Thread.current[:user] = user
+    @current_user = user
+    session[:user_id] = user.id
   end
 end
