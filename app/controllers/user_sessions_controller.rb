@@ -33,18 +33,30 @@ class UserSessionsController < ApplicationController
           # that user. So let's display an error message.
           redirect_to root_url, notice: "Already linked to another account!"
         end
-      else
+      else # not signed in
         if @identity&.user.present?
           # The identity we found had a user associated with it so let's
           # just log them in here
           self.current_user = @identity.user
           redirect_to root_url, notice: "Signed in!"
         else
-          # No user associated with the identity so we need to create a new one
-          redirect_to root_url, notice: "Please finish registering"
+          if User.where(email: auth["info"]["email"] ).empty?
+            user =  User.create_with_omniauth(auth)
+            @identity = UserTag.create_with_omniauth(auth, user.ids.first)
+            params[:user_session] = {"username"=>user.username,"passwords"=>auth["uid"],"remember_me"=>"0"}
+            redirect_to root_url, notice: "You have successfully signed in"
+          else #email exists
+            user = User.where(email: auth["info"]["email"] )
+            # If no identity was found, create a brand new one here
+            @identity = UserTag.create_with_omniauth(auth, user.ids.first)
+            # The identity is not associated with the current_user so lets
+            # associate the identity
+            @identity.save
+            #log in them
+            redirect_to root_url, notice: "Successfully linked to your account!"
+          end
         end
       end
-
     else
       params[:user_session][:username] = params[:openid] if params[:openid] # second runthrough must preserve username
       username = params[:user_session][:username] if params[:user_session]
