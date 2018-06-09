@@ -1,6 +1,9 @@
 class AdminController < ApplicationController
   before_action :require_user, only: %i(spam spam_revisions mark_comment_spam publish_comment)
 
+  # intended to provide integration tests for assets
+  def assets
+  end
 
   def promote_admin
     @user = User.find params[:id]
