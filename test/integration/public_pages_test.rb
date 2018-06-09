@@ -96,4 +96,9 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     get nodes(:question).path(:question)
     assert_response :success
   end
+
+  test 'assets tests' do
+    get '/assets'
+    assert_response :success
+  end
 end
