@@ -44,4 +44,18 @@ class WikiCreationTest < ActionDispatch::IntegrationTest
     assert_equal flash[:notice], 'Wiki page created.'
     assert_select 'h1', title
   end
+
+  test 'updating wiki' do
+    post '/user_sessions', params: { user_session: { username: users(:bob).username, password: 'secretive' } }
+    wiki = nodes(:organizers)
+    title = wiki.title
+    newtitle = 'New Title'
+
+    post "/wiki/update/#{wiki.id}", params: { uid: users(:bob).id, title: newtitle, body: 'Editing about Page' }
+
+    follow_redirect!
+
+    assert_equal "/wiki/#{title.parameterize}", path
+    assert_equal flash[:notice], 'Edits saved.'
+  end
 end
