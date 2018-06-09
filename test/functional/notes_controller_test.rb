@@ -499,7 +499,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'should display /post template when editing a note in legacy mode' do
     user = UserSession.create(users(:jeff))
     note = nodes(:blog)
-    post :edit,
+    get :edit,
          params: {
          id: note.nid,
          legacy: true
@@ -512,7 +512,7 @@ class NotesControllerTest < ActionController::TestCase
     user = UserSession.create(users(:jeff))
     note = nodes(:question)
     note.add_tag('nice', users(:jeff))
-    post :edit,
+    get :edit,
          params: {
          id: note.nid,
          legacy: true
@@ -524,7 +524,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'should display /post template when editing a note' do
     user = UserSession.create(users(:jeff))
     note = nodes(:blog)
-    post :edit,
+    get :edit,
          params: {
          id: note.nid
          }
@@ -537,7 +537,7 @@ class NotesControllerTest < ActionController::TestCase
     user = UserSession.create(users(:jeff))
     note = nodes(:question)
     note.add_tag('nice', users(:jeff))
-    post :edit,
+    get :edit,
          params: {
          id: note.nid
          }
