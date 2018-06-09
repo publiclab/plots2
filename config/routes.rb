@@ -31,7 +31,7 @@ Plots2::Application.routes.draw do
   end
 
   get '/change_locale/:locale', to: 'settings#change_locale', as: :change_locale
-  get 'ioby' => "legacy#ioby"
+  get 'assets' => "admin#assets"
 
   get 'login' => "user_sessions#new",      :as => :login
   get 'logout' => "user_sessions#destroy", :as => :logout
