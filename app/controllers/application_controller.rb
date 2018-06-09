@@ -186,4 +186,12 @@ class ApplicationController < ActionController::Base
       redirect_to @node.path, status: :moved_permanently
     end
   end
+
+  def signed_in?
+    !!current_user
+  end
+
+  def current_user=(user)
+      Thread.current[:user] = user
+  end
 end

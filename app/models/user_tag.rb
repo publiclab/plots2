@@ -4,7 +4,6 @@ class UserTag < ActiveRecord::Base
 
   validates :value, presence: :true
   validates :value, format: { with: /\A[\w\.:-]*\z/, message: 'can only include letters, numbers, and dashes' }
-
   before_save :preprocess
 
   def preprocess
