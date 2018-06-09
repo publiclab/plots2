@@ -120,9 +120,9 @@ Plots2::Application.routes.draw do
   get 'notes/image/:id' => 'notes#image'
   post 'notes/delete/:id' => 'notes#delete'
   post 'notes/update/:id' => 'notes#update'
-  post 'notes/update/:id' => 'notes#edit'
   post 'notes/create' => 'notes#create'
   get 'notes/publish_draft/:id' => 'notes#publish_draft'
+  get 'notes/edit/:id' => 'notes#edit'
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
