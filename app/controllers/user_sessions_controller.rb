@@ -34,7 +34,7 @@ class UserSessionsController < ApplicationController
           redirect_to root_url, notice: "Already linked to another account!"
         end
       else
-        if @identity && @identity.user.present?
+        if @identity&.user.present?
           # The identity we found had a user associated with it so let's
           # just log them in here
           self.current_user = @identity.user
