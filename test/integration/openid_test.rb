@@ -79,11 +79,12 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     follow_redirect!
 
     post '/openid/decision', params: { 
-      "authenticity_token": "KfpoKpR20/cbyQ/Rw2YCa1pDlNeFNM0AsZ6PwSkOudRu3QBvviywgVf2qooiOMb0At5DPiqteW5BMjEwe5scJQ==",
+      "authenticity_token": "RcLcGH3lzSTCC24UpPnNm56sllNaMrHg5%2FSrQzNxB%2B4%3D",
       "yes": "Yes"
     }
 
-    assert_redirected_to "https://spectralworkbench.org/session/new?authenticity_token=RcLcGH3lzSTCC24UpPnNm56sllNaMrHg5%2FSrQzNxB%2B4%3D&back_to=&open_id=jeff&return_to=&openid.assoc_handle=%7BHMAC-SHA1%7D%7B5b1d6e45%7D%7Bs15kdQ%3D%3D%7D&openid.claimed_id=https%3A%2F%2Fspectralworkbench.org%2Fopenid%2Fjeff&openid.identity=https%3A%2F%2Fspectralworkbench.org%2Fopenid%2Fjeff&openid.mode=id_res&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.ns.sreg=http%3A%2F%2Fopenid.net%2Fextensions%2Fsreg%2F1.1&openid.op_endpoint=http%3A%2F%2Fwww.example.com%2Fopenid&openid.response_nonce=2018-06-10T18%3A30%3A29Zecgnhd&openid.return_to=https%3A%2F%2Fspectralworkbench.org%2Fsession%2Fnew%3Fauthenticity_token%3DRcLcGH3lzSTCC24UpPnNm56sllNaMrHg5%252FSrQzNxB%252B4%253D%26back_to%3D%26open_id%3Djeff%26return_to%3D&openid.sig=soIlLug0jDZr3qOyDJSLGxMmik4%3D&openid.signed=assoc_handle%2Cclaimed_id%2Cidentity%2Cmode%2Cns%2Cns.sreg%2Cop_endpoint%2Cresponse_nonce%2Creturn_to%2Csigned%2Csreg.email%2Csreg.nickname&openid.sreg.email=jeff%40pxlshp.com&openid.sreg.nickname=jeff"
+    # redirects back to originating site
+    assert_match /https:\/\/spectralworkbench.org\/session\/new/, @response.redirect_url
   end
 
 end
