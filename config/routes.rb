@@ -63,6 +63,7 @@ Plots2::Application.routes.draw do
 
   get 'openid/xrds' => 'openid#idp_xrds'
   get 'openid/decision' => 'openid#decision'
+  post 'openid/decision' => 'openid#decision'
   get 'openid/resume' => 'openid#resume'
   get 'openid/:username' => 'openid#user_page'
   get 'openid/:username/xrds' => 'openid#user_xrds'
