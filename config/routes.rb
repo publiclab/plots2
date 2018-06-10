@@ -56,6 +56,7 @@ Plots2::Application.routes.draw do
   #resources :users
 
   get 'openid' => 'openid#index'
+  post 'openid' => 'openid#index'
   # Try to get rails to accept params with periods in the keyname?
   # The following isn't right and it may be about param parsing rather than routing?
   # match 'openid' => 'openid#index', :constraints => { 'openid.mode' => /.*/ }
