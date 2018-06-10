@@ -114,7 +114,7 @@ class OpenidController < ApplicationController
     end
   end
 
-  def show_decision_page(oidreq, message = 'Do you trust this site with your identity?')
+  def show_decision_page(oidreq, message = 'The site shown below is asking to use your PublicLab.org account to log you in. Do you trust this site?')
     session[:last_oidreq] = oidreq
     @oidreq = oidreq
 
