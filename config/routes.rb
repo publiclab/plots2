@@ -188,6 +188,7 @@ Plots2::Application.routes.draw do
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'
   get 'embed/grid/:tagname' => 'tag#gridsEmbed'
+  get 'features/embed/:id' => 'features#embed'
 
   get 'rsvp/:id' => 'notes#rsvp'
   get 'feed/liked' => 'notes#liked_rss'

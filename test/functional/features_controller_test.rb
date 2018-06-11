@@ -99,4 +99,11 @@ class FeaturesControllerTest < ActionController::TestCase
     assert_equal  'Edits saved and cache cleared.', flash[:notice]
     assert_redirected_to '/features?_=' + Time.now.to_i.to_s
   end
+
+  test 'should find the correct node in embed of feature' do
+    fixture_node = nodes(:blog)
+    get :embed, params: { id: fixture_node.title}
+    embed_node = assigns(:node)
+    assert_equal embed_node.nid, fixture_node.nid
+  end
 end
