@@ -39,3 +39,12 @@ services:
       - .:/app
     environment:
       - JOB_WORKER_URL=redis://redis:6379/0
+  mailman:
+    build: .
+    command: cd script && mailman
+    environment:
+      - SERVER_ADDRESS=${SERVER_ADDRESS}
+      - USERNAME=${USERNAME}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+    volumes:
+      - .:/app
