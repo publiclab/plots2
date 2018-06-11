@@ -120,6 +120,7 @@ Plots2::Application.routes.draw do
   get 'notes/popular' => 'notes#popular'
   get 'notes/liked' => 'notes#liked'
   get 'notes/image/:id' => 'notes#image'
+  get 'notes/delete/:id' => 'notes#delete'
   post 'notes/delete/:id' => 'notes#delete'
   post 'notes/update/:id' => 'notes#update'
   post 'notes/create' => 'notes#create'
