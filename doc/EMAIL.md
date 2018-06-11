@@ -7,6 +7,7 @@ With the merge of [fad88f](https://github.com/publiclab/plots2/commit/fad88fd72c
 After configurations are done we are good to start the `mailman` server. For starting the server use the go to the script folder and use command `mailman`.
 
 > cd script
+
 > mailman
 
 Above command will start the server and then the mailman server will do polling in every 60 seconds(which is by default) to check for the incoming mail. However polling time can be changed by setting value to `Mailman.config.poll_interval`(more details can be found at its official [mailman user guide](https://github.com/mailman/mailman/blob/master/USER_GUIDE.md)).
