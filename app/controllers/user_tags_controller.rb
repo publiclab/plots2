@@ -23,13 +23,13 @@ class UserTagsController < ApplicationController
 
           unless exist
             user_tag = user.user_tags.build(value: name)
-            if  tagname.split(':')[0] == "oauth-facebook"
+            if  tagname.split(':')[1] == "facebook"
               @output[:errors] << "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
-            elsif  tagname.split(':')[0] == "oauth-github"
+            elsif  tagname.split(':')[1] == "github"
               @output[:errors] << "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
-            elsif  tagname.split(':')[0] ==  "google_oauth2"
+            elsif  tagname.split(':')[1] ==  "google_oauth2"
               @output[:errors] << "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
-            elsif  tagname.split(':')[0] == "oauth-twitter"
+            elsif  tagname.split(':')[1] == "twitter"
              @output[:errors] << "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
             elsif user_tag.save
               @output[:saved] << [name, user_tag.id]
