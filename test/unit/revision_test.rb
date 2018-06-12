@@ -202,4 +202,12 @@ class RevisionsTest < ActiveSupport::TestCase
     tag_names = associated_tags.map(&:name)
     assert_not tag_names.include?('1234')
   end
+
+  test 'should be able to convert * [ ] into a checkbox [x]' do
+    revision = nodes(:one).latest
+    revision.body = "* [x]"
+    assert_includes revision.render_body, "<ul>\n<li>[x]</li>\n</ul>\n\n"
+  end
+
+
 end

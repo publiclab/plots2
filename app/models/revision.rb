@@ -54,6 +54,7 @@ class Revision < ActiveRecord::Base
     end
   end
 
+#search for checkboxes and mark check as true if checked
   def checkbox
     body.scan(Callouts.const_get(:CHECKBOX)).each do |match|
       checked = " checked='true'" if match == "x"
