@@ -51,4 +51,13 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_equal '/questions', path
   end
+
+  test 'google login routing' do
+    assert_routing '/auth/google_oauth2/callback', {controller: 'user_sessions', action: 'create',provider: 'google_oauth2'}
+  end
+
+  test 'google_oauth2 login post' do
+    assert_routing({path: '/auth/google_oauth2/callback', method: 'post'},{controller: 'user_sessions', action: 'create' ,provider: 'google_oauth2'})
+  end
+
 end
