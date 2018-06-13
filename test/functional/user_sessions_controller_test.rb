@@ -100,10 +100,10 @@ class UserSessionsControllerTest < ActionController::TestCase
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:google_oauth2_2]
     assert_not_nil request.env['omniauth.auth']
     #Link a google account to an existing user
-    post :create
+    post :create, params: { user_session: {username: users(:jeff).email, password: 'secretive'} }
     assert_equal "Successfully linked to your account!",  flash[:notice]
     #Link same google account to an existing user again
-    post :create
+    post :create, params: { user_session: {username: users(:jeff).email, password: 'secretive'} }
     assert_equal "Already linked to your account!",  flash[:notice]
     #Log Out
     post :destroy
