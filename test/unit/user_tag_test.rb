@@ -73,7 +73,7 @@ class UserTagTest < ActiveSupport::TestCase
     assert_equal(identity1, identity2)
   end
 
-  test 'Search a usertag from google auth' do
+  test 'Search a usertag from google auth which does not exist' do
     user = users(:jeff)
     auth = { "provider" => "google_oauth2", "uid" => "12345678"}
     uid = user.id
@@ -81,7 +81,7 @@ class UserTagTest < ActiveSupport::TestCase
     assert_nil identity
   end
 
-  test 'Search a usertag from twitter auth' do
+  test 'Search a usertag from twitter auth which does not exist' do
     user = users(:jeff)
     auth = { "provider" => "twitter", "uid" => "12345678"}
     uid = user.id
@@ -89,7 +89,7 @@ class UserTagTest < ActiveSupport::TestCase
     assert_nil identity
   end
 
-  test 'Search a usertag from github auth' do
+  test 'Search a usertag from github auth which does not exist' do
     user = users(:jeff)
     auth = { "provider" => "github", "uid" => "12345678"}
     uid = user.id
@@ -97,7 +97,7 @@ class UserTagTest < ActiveSupport::TestCase
     assert_nil identity
   end
 
-  test 'Search a usertag from facebook auth' do
+  test 'Search a usertag from facebook auth which does not exist' do
     user = users(:jeff)
     auth = { "provider" => "facebook", "uid" => "12345678"}
     uid = user.id
@@ -105,5 +105,36 @@ class UserTagTest < ActiveSupport::TestCase
     assert_nil identity
   end
 
+  test 'Search a usertag from google auth which does exist' do
+    user = users(:jeff)
+    auth = { "provider" => "google_oauth2", "uid" => "987654321"}
+    uid = user.id
+    identity = UserTag.find_with_omniauth(auth)
+    assert_not_nil identity
+  end
+
+  test 'Search a usertag from twitter auth which does exist' do
+    user = users(:jeff)
+    auth = { "provider" => "twitter", "uid" => "987654321"}
+    uid = user.id
+    identity = UserTag.find_with_omniauth(auth)
+    assert_not_nil identity
+  end
+
+  test 'Search a usertag from github auth which does exist' do
+    user = users(:jeff)
+    auth = { "provider" => "github", "uid" => "987654321"}
+    uid = user.id
+    identity = UserTag.find_with_omniauth(auth)
+    assert_not_nil identity
+  end
+
+  test 'Search a usertag from facebook auth which does exist' do
+    user = users(:jeff)
+    auth = { "provider" => "facebook", "uid" => "987654321"}
+    uid = user.id
+    identity = UserTag.find_with_omniauth(auth)
+    assert_not_nil identity
+  end
 
 end
