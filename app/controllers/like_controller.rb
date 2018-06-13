@@ -11,7 +11,7 @@ class LikeController < ApplicationController
   # return a count of likes for a given node
   # This does not support non-nodes very well
   def show
-    render json: Node.find(params[:id]).cached_likes
+    render json: Node.find(params[:id]).likers.length
   end
 
   # for the current user, return whether is presently liked or not
