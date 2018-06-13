@@ -73,7 +73,37 @@ class UserTagTest < ActiveSupport::TestCase
     assert_equal(identity1, identity2)
   end
 
+  test 'Search a usertag from google auth' do
+    user = users(:jeff)
+    auth = { "provider" => "google_oauth2", "uid" => "12345678"}
+    uid = user.id
+    identity = UserTag.find_with_omniauth(auth)
+    assert_nil identity
+  end
 
+  test 'Search a usertag from twitter auth' do
+    user = users(:jeff)
+    auth = { "provider" => "twitter", "uid" => "12345678"}
+    uid = user.id
+    identity = UserTag.find_with_omniauth(auth)
+    assert_nil identity
+  end
+
+  test 'Search a usertag from github auth' do
+    user = users(:jeff)
+    auth = { "provider" => "github", "uid" => "12345678"}
+    uid = user.id
+    identity = UserTag.find_with_omniauth(auth)
+    assert_nil identity
+  end
+
+  test 'Search a usertag from facebook auth' do
+    user = users(:jeff)
+    auth = { "provider" => "facebook", "uid" => "12345678"}
+    uid = user.id
+    identity = UserTag.find_with_omniauth(auth)
+    assert_nil identity
+  end
 
 
 end
