@@ -60,4 +60,12 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_routing({path: '/auth/google_oauth2/callback', method: 'post'},{controller: 'user_sessions', action: 'create' ,provider: 'google_oauth2'})
   end
 
+  test 'should get oauth hash from /auth/google_oauth2' do
+    get '/auth/google_oauth2'
+    assert_redirected_to '/auth/google_oauth2/callback'
+    assert_not_nil OmniAuth.config.mock_auth[:google_oauth2]
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:google_oauth2]
+    assert_not_nil request.env['omniauth.auth']
+  end
+
 end
