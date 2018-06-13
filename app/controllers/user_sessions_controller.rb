@@ -37,7 +37,7 @@ class UserSessionsController < ApplicationController
         if @identity&.user.present?
           # The identity we found had a user associated with it so let's
           # just log them in here
-          self.current_user = @identity.user
+          UserSession.create( @identity.user)
           redirect_to root_url, notice: "Signed in!"
         else #identity does not exist so we need to either create a user with identity OR link identity to existing user
           if User.where(email: auth["info"]["email"]).empty?
@@ -56,7 +56,7 @@ class UserSessionsController < ApplicationController
             # associate the identity
             @identity.save
             #log in them
-            self.current_user = @identity.user
+            UserSession.create( @identity.user)
             redirect_to root_url, notice: "Successfully linked to your account!"
           end
         end
