@@ -83,10 +83,12 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
 
     post :create,
+        params: {
          uid:   users(:bob).id,
          title: 'All about balloon mapping',
          body:  'This is fascinating documentation about balloon mapping.',
          tags:  'balloon-mapping,event'
+        }
 
     assert_redirected_to('/login')
   end

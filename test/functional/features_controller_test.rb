@@ -63,8 +63,10 @@ class FeaturesControllerTest < ActionController::TestCase
 
     assert_difference 'Node.count', 0 do
       get :create,
+         params: {
           title: 'new-feature',
           body: "A new feature to <a href=''>display</a>"
+         }
     end
 
     assert_equal 'Only admins may edit features.', flash[:warning]

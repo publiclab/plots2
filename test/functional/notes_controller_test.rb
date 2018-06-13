@@ -833,11 +833,13 @@ class NotesControllerTest < ActionController::TestCase
      title = 'My new post about balloon mapping'
 
      post :create,
+         params: {
           id: users(:bob).id,
           title: title,
           body: 'This is a fascinating post about a balloon mapping event.',
           tags: 'balloon-mapping,event',
           draft: "true"
+         }
 
      assert_redirected_to('/login')
    end
