@@ -88,4 +88,25 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Signed in!",  flash[:notice]
   end
 
+
+  test 'login user with an email and then connect google provider' do
+    post :create, user_session: {
+      username: users(:jeff).email,
+      password: 'secretive'
+    }
+    assert_redirected_to '/dashboard'
+    assert_not_nil OmniAuth.config.mock_auth[:google_oauth2_2]
+    #Omniauth hash is present
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:google_oauth2_2]
+    assert_not_nil request.env['omniauth.auth']
+    #Link a google account to an existing user
+    post :create
+    assert_equal "Successfully linked to your account!",  flash[:notice]
+    #Link same google account to an existing user again
+    post :create
+    assert_equal "Already linked to your account!",  flash[:notice]
+    #Log Out
+    post :destroy
+    assert_equal "Successfully logged out.",  flash[:notice]
+  end
 end
