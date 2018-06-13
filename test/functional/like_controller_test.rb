@@ -15,7 +15,7 @@ class LikeControllerTest < ActionController::TestCase
 
   test 'show like' do
     note = Node.where(type: 'note', status: 1).first
-    get :show, id: note.id
+    get :show, params: { id: note.id }
     assert_response :success
   end
 
@@ -25,7 +25,7 @@ class LikeControllerTest < ActionController::TestCase
     note = Node.where(type: 'note', status: 1).first
     cached_likes = note.cached_likes
 
-    get :create, id: note.id
+    get :create, params: { id: note.id }
     assert_response :success
 
     note = Node.find note.id
@@ -39,11 +39,11 @@ class LikeControllerTest < ActionController::TestCase
     current_user = User.find 2
     note = Node.where(type: 'note', status: 1).first
 
-    get :create, id: note.id # ensure it's liked first
+    get :create, params: { id: note.id } # ensure it's liked first
 
     note = Node.find note.id
     cached_likes = note.cached_likes
-    get :delete, id: note.id
+    get :delete, params: { id: note.id }
     assert_response :success
 
     note = Node.find note.id
@@ -65,7 +65,7 @@ class LikeControllerTest < ActionController::TestCase
     note = Node.where(type: 'note', status: 1).first
     cached_likes = note.cached_likes
 
-    get :create, id: note.id #first liked 
+    get :create, params: { id: note.id } #first liked 
 
     note = Node.find note.id
     cached_likes =  note.cached_likes
