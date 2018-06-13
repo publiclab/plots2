@@ -56,4 +56,18 @@ class UserSessionsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'sign up and login via provider basic flow' do
+    assert_not_nil OmniAuth.config.mock_auth[:google_oauth2]
+    #Omniauth hash is present
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:google_oauth2]
+    assert_not_nil request.env['omniauth.auth']
+    #Sign Up for a new user
+    post :create
+    assert_equal "You have successfully signed in. Please change your password via a link sent to you via a mail",  flash[:notice]
+    #Log Out
+    post :destroy
+    #auth hash is present so login via a provider
+    post :create
+    assert_equal "Signed in!",  flash[:notice]
+  end
 end
