@@ -66,6 +66,7 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "You have successfully signed in. Please change your password via a link sent to you via a mail",  flash[:notice]
     #Log Out
     post :destroy
+    assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
     assert_equal "Signed in!",  flash[:notice]
@@ -81,9 +82,10 @@ class UserSessionsControllerTest < ActionController::TestCase
     assert_equal "Successfully linked to your account!",  flash[:notice]
     #Log Out
     post :destroy
+    assert_equal "Successfully logged out.",  flash[:notice]
     #auth hash is present so login via a provider
     post :create
     assert_equal "Signed in!",  flash[:notice]
   end
-  
+
 end
