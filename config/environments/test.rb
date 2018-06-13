@@ -42,4 +42,15 @@ Rails.application.configure do
     host: 'www.example.com'
   }
 
+
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+      'provider' => 'google_oauth2',
+      'uid' => '1357908642',
+      'info' => {
+        'name' => 'sidharth bansal',
+        'email' => 'bansal.sidharth309@gmail.com'
+      }
+    })
+
 end
