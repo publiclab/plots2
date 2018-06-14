@@ -75,10 +75,24 @@
   <script>
     // deletion button code:
     $("#c<%= comment.cid %>delete-btn").bind('ajax:success', function(e,response){
+      new Noty({
+        theme: 'sunset',
+        timeout: 3000,
+        type: 'error',
+        layout: 'topRight',
+        text: 'Comment deleted'
+      }).show();
       $("#c<%= comment.cid %>").remove()
       $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)-1
     })
     $("#c<%= comment.cid %>delete-btn-2").bind('ajax:success', function(e,response){
+      new Noty({
+        theme: 'sunset',
+        timeout: 3000,
+        type: 'error',
+        layout: 'topRight',
+        text: 'Comment deleted'
+      }).show();
       $("#c<%= comment.cid %>").remove()
       $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)-1
     })
