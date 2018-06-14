@@ -1,7 +1,6 @@
 require 'open-uri'
 
-class Image < ActiveRecord::Base
-  attr_accessible :uid, :notes, :title, :photo, :nid, :remote_url
+class Image < ApplicationRecord
 
   # has_many :comments, :dependent => :destroy
   # has_many :likes, :dependent => :destroy
@@ -30,7 +29,12 @@ class Image < ActiveRecord::Base
   end
 
   def filetype
-    filename.split('.').last.downcase
+    if remote_url_provided? && remote_url[0..9] == "data:image"
+      # data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+      remote_url.split(';').first.split('/').last.downcase
+    else
+      filename.split('.').last.downcase
+    end
   end
 
   def path(size = :medium)

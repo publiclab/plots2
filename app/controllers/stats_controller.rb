@@ -5,7 +5,7 @@ class StatsController < ApplicationController
       @tags[tag.tagname] = @tags[tag.tagname] || 0
       @tags[tag.tagname] += 1
     end
-    render text: @tags.inspect, status: 200
+    render plain: @tags.inspect, status: 200
   end
 
   def range
@@ -69,7 +69,6 @@ class StatsController < ApplicationController
     @graph_notes = Node.contribution_graph_making('note', 52, @time).to_a.to_json
     @graph_wikis = Node.contribution_graph_making('page', 52, @time).to_a.to_json
     @graph_comments = Comment.contribution_graph_making(52, @time).to_a.to_json
-
 
     users = []
     nids = []

@@ -25,7 +25,7 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'should get wiki index in alphabetical order' do
-    get :index, order: 'alphabetic'
+    get :index, params: { order: 'alphabetic' }
 
     assert_response :success
     assert_not_nil :wikis
@@ -42,8 +42,10 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
 
     get :new,
+        params: { 
         tags: 'one,two',
         n: nodes(:blog).id
+        }
 
     assert_response :success
     assert_select '#taginput[value=?]', 'one,two'
@@ -51,7 +53,7 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'should get raw wiki markup' do
-    get :raw, id: revisions(:one).id
+    get :raw, params: { id: revisions(:one).id }
 
     assert_response :success
   end
@@ -64,7 +66,7 @@ class WikiControllerTest < ActionController::TestCase
     nodes(:about).save
 
     assert_difference 'Impression.count', 1 do
-      get :show, id: nodes(:about).slug
+      get :show, params: { id: nodes(:about).slug }
 
       assert_response :success
     end
@@ -72,7 +74,7 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'should get root-level (/about) wiki page' do
-    get :root, id: 'about'
+    get :root, params: { id: 'about' }
 
     assert_response :success
   end
@@ -93,19 +95,23 @@ class WikiControllerTest < ActionController::TestCase
     title = 'All about balloon mapping'
 
     post :create,
+         params: {
          uid:   users(:bob).id,
          title: title,
          body:  'This is fascinating documentation about balloon mapping.',
          tags:  'balloon-mapping,event'
+         }
 
     assert_redirected_to '/wiki/' + title.parameterize
   end
 
   test 'post wiki with bad title' do
     post :create,
+         params: {
          uid:   users(:bob).id,
          title: '',
          body:  'This is fascinating documentation about balloon mapping.'
+         }
 
     assert_template 'editor/wikiRich'
     selector = css_select '.alert'
@@ -114,7 +120,9 @@ class WikiControllerTest < ActionController::TestCase
 
   test 'viewing edit wiki page' do
     get :edit,
+        params: {
         id: 'organizers'
+        }
 
     assert_template 'wiki/edit'
     assert_not_nil assigns(:title)
@@ -126,13 +134,8 @@ class WikiControllerTest < ActionController::TestCase
     wiki = nodes(:organizers)
     newtitle = 'New Title'
 
-    post :update,
-         id:    wiki.nid,
-         uid:   users(:bob).id,
-         title: newtitle,
-         body:  'Editing about Page'
+    post :update, params: { id: wiki.nid, uid: users(:bob).id, title: newtitle, body: 'Editing about Page' }
 
-    wiki.reload
     assert_redirected_to wiki.path
     assert_equal flash[:notice], 'Edits saved.'
   end
@@ -142,7 +145,9 @@ class WikiControllerTest < ActionController::TestCase
     # then try editing it
     assert_difference 'Revision.count', 0 do
       post :edit,
+           params: { 
            id: 'organizers'
+           }
     end
     assert_equal flash[:warning], "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
     assert_redirected_to nodes(:organizers).path
@@ -153,7 +158,9 @@ class WikiControllerTest < ActionController::TestCase
     # then try editing it
     assert_difference 'Revision.count', 0 do
       post :update,
+           params: { 
            id: nodes(:organizers).id
+           }
     end
     assert_equal flash[:warning], "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can update it."
     assert_redirected_to nodes(:organizers).path
@@ -161,9 +168,11 @@ class WikiControllerTest < ActionController::TestCase
 
   test 'updating wiki with bad title' do
     post :update,
+         params: {
          id:  nodes(:organizers).id,
          uid:   users(:bob).id,
          title: ''
+         }
 
     assert_template 'wiki/edit'
     selector = css_select '.alert'
@@ -175,11 +184,7 @@ class WikiControllerTest < ActionController::TestCase
     newtitle = 'New Title'
     assert_equal wiki.path, '/about'
 
-    post :update,
-         id:    wiki.nid,
-         uid:   users(:bob).id,
-         title: newtitle,
-         body:  'Editing about Page'
+    post :update, params: { id: wiki.nid, uid: users(:bob).id, title: newtitle, body: 'Editing about Page' }
 
     wiki.reload
     assert_redirected_to wiki.path
@@ -190,13 +195,7 @@ class WikiControllerTest < ActionController::TestCase
     node = nodes(:about)
     image = fixture_file_upload 'rails.png'
 
-    post :update,
-         id:    node.nid,
-         uid:   users(:bob).id,
-         title: 'New Title',
-         body:  'Editing about Page',
-         image: { title: 'new image',
-                  photo: image }
+    post :update, params: { id: node.nid, uid: users(:bob).id, title: 'New Title', body: 'Editing about Page', image: { title: 'new image', photo: image } }
 
     node.reload
     assert_redirected_to node.path
@@ -207,12 +206,7 @@ class WikiControllerTest < ActionController::TestCase
     node = nodes(:about)
     image = node.images.where(photo_file_name: 'filename-1.jpg').last
 
-    post :update,
-         id:             node.nid,
-         uid:            users(:bob).id,
-         title:          'New Title',
-         body:           'Editing about Page',
-         image_revision: image.path(:default)
+    post :update, params: { id: node.nid, uid: users(:bob).id, title: 'New Title', body: 'Editing about Page', image_revision: image.path(:default) }
 
     node.reload
     assert_redirected_to node.path
@@ -222,7 +216,7 @@ class WikiControllerTest < ActionController::TestCase
   test 'normal user should not delete wiki page' do
     wiki = nodes(:about)
 
-    post :delete, id: wiki.nid
+    post :delete, params: { id: wiki.nid }
 
     assert_equal flash[:error], 'Only admins can delete wiki pages.'
     assert_redirected_to wiki.path
@@ -233,7 +227,7 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
     UserSession.create(users(:admin))
 
-    post :delete, id: wiki.nid
+    post :delete, params: { id: wiki.nid }
 
     assert_equal flash[:notice], 'Wiki page deleted.'
     assert_redirected_to '/dashboard'
@@ -271,7 +265,7 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
     UserSession.create(users(:admin))
 
-    get :root, id: 'about'
+    get :root, params: { id: 'about' }
 
     assert_response :success
     UserSession.find.destroy
@@ -281,7 +275,7 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
     UserSession.create(users(:admin))
 
-    get :root, id: 'madeup'
+    get :root, params: { id: 'madeup' }
 
     assert_redirected_to '/wiki/madeup'
     UserSession.find.destroy
@@ -292,7 +286,7 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     wiki = nodes(:spam_targeted_page)
 
-    get :revert, id: wiki.latest.vid # currently, just revert to same, which clones latest
+    get :revert, params: { id: wiki.latest.vid } # currently, just revert to same, which clones latest
 
     assert_equal flash[:notice], 'The wiki page was reverted.'
     assert_nil flash[:error]
@@ -303,21 +297,21 @@ class WikiControllerTest < ActionController::TestCase
   test 'user cannot revert wiki page' do
     wiki = nodes(:spam_targeted_page)
 
-    get :revert, id: wiki.latest.vid
+    get :revert, params: { id: wiki.latest.vid }
 
     assert_equal flash[:error], 'Only moderators and admins can delete wiki pages.'
     assert_redirected_to '/wiki/' + wiki.slug
   end
 
   test 'should display revisions' do
-    get :revisions, id: nodes(:spam_targeted_page).id
+    get :revisions, params: { id: nodes(:spam_targeted_page).id }
 
     assert_response :success
     assert_template :revisions
   end
 
   test 'should not error if no node exist' do
-    get :revisions, id: 'Invalid Node'
+    get :revisions, params: { id: 'Invalid Node' }
 
     assert_template :revisions
     assert_equal flash[:error], 'Invalid wiki page. No Revisions exist for this wiki page.'
@@ -327,7 +321,7 @@ class WikiControllerTest < ActionController::TestCase
     revision = revisions(:unmoderated_spam_revision)
     revision.spam
 
-    get :revision, id: revision.parent.slug, vid: revision.vid
+    get :revision, params: { id: revision.parent.slug, vid: revision.vid }
 
     assert_equal "That revision has been moderated. Please see <a href='/wiki/moderation'>the moderation page to learn more</a>.", flash[:error]
     assert_redirected_to revision.parent.path
@@ -337,7 +331,7 @@ class WikiControllerTest < ActionController::TestCase
     revision = revisions(:unmoderated_spam_revision)
     revision.spam
 
-    get :revision, id: revision.parent.slug, vid: revision.vid
+    get :revision, params: { id: revision.parent.slug, vid: revision.vid }
 
     assert_equal "That revision has been moderated. Please see <a href='/wiki/moderation'>the moderation page to learn more</a>.", flash[:error]
     assert_redirected_to revision.parent.path
@@ -346,7 +340,7 @@ class WikiControllerTest < ActionController::TestCase
   test 'should display individual revision' do
     revision = revisions(:unmoderated_spam_revision)
 
-    get :revision, id: revision.parent.slug, vid: revision.vid
+    get :revision, params: { id: revision.parent.slug, vid: revision.vid }
 
     assert_template 'show'
     assert_response :success
@@ -361,7 +355,7 @@ class WikiControllerTest < ActionController::TestCase
   test 'should display individual revision that is not the latest' do
     revision = revisions(:about_rev_2)
 
-    get :revision, id: revision.parent.slug, vid: revision.vid
+    get :revision, params: { id: revision.parent.slug, vid: revision.vid }
 
     assert_template 'show'
     assert_response :success
@@ -374,14 +368,14 @@ class WikiControllerTest < ActionController::TestCase
   test 'should display individual raw revision' do
     revision = revisions(:about)
 
-    get :raw, id: revision.vid
+    get :raw, params: { id: revision.vid }
 
     assert_response :success
     assert_equal @response.body, revision.body
   end
 
   test 'should display error message for invalid revision' do
-    get :revision, id: nodes(:about).slug, vid: -3
+    get :revision, params: { id: nodes(:about).slug, vid: -3 }
 
     assert_equal flash[:error], 'Revision not found.'
   end
@@ -414,18 +408,14 @@ class WikiControllerTest < ActionController::TestCase
       old_controller = @controller
       @controller = SettingsController.new
 
-      get :change_locale, locale: lang.to_s
+      get :change_locale, params: { locale: lang.to_s }
 
       @controller = old_controller
 
       wiki = nodes(:organizers)
       newtitle = 'New Title'
 
-      post :update,
-           id:    wiki.nid,
-           uid:   users(:bob).id,
-           title: newtitle,
-           body:  'Editing about Page'
+      post :update, params: { id: wiki.nid, uid: users(:bob).id, title: newtitle, body:  'Editing about Page' }
 
       wiki.reload
       assert_redirected_to wiki.path
@@ -436,13 +426,13 @@ class WikiControllerTest < ActionController::TestCase
   test 'should get wiki with different title and path' do
     wiki = nodes(:wiki_page)
     slug = wiki.path.gsub('/wiki/', '')
-    get :show, id: slug
+    get :show, params: { id: slug }
     assert_response :success
   end
 
   test "should show the wiki post page if wiki page doesn't exist" do
     UserSession.create(users(:jeff))
-    get :show, id: 'A-new-wiki-page'
+    get :show, params: { id: 'A-new-wiki-page' }
     assert_response :success
     assert_template 'wiki/edit'
   end
@@ -453,7 +443,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_difference 'Revision.count' do
       assert_difference "Node.find(#{node.id}).revisions.count" do
-        get :replace, id: node.id, before: 'Public', after: 'Private'
+        get :replace, params: { id: node.id, before: 'Public', after: 'Private' }
       end
     end
 
@@ -469,7 +459,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_difference 'Revision.count' do
       assert_difference "Node.find(#{node.id}).revisions.count" do
-        xhr :post, :replace, id: node.id, before: 'Public', after: 'Private'
+        post :replace, params: { id: node.id, before: 'Public', after: 'Private' }, xhr: true
       end
     end
 
@@ -488,7 +478,7 @@ class WikiControllerTest < ActionController::TestCase
 
     assert_difference 'Revision.count', 0 do
       assert_difference "Node.find(#{node.id}).revisions.count", 0 do
-        xhr :post, :replace, id: node.id, before: 'Elephants', after: 'Tigers'
+        post :replace, params: { id: node.id, before: 'Elephants', after: 'Tigers' }, xhr: true
       end
     end
 
@@ -507,7 +497,7 @@ class WikiControllerTest < ActionController::TestCase
     wiki.add_tag("abtest:#{place.nid}", users(:bob))
     assert_equal wiki.power_tag('abtest'), place.nid.to_s
 
-    get :show, id: slug
+    get :show, params: { id: slug }
     # assert_response :success # we can't assert this since ~50% of the time it'll redirect
   end
 
@@ -518,7 +508,7 @@ class WikiControllerTest < ActionController::TestCase
     wiki.add_tag('redirect:nonsense', users(:bob))
     assert_equal wiki.power_tag('redirect'), 'nonsense'
 
-    get :show, id: slug
+    get :show, params: { id: slug }
     assert_response :success
   end
 
@@ -529,7 +519,7 @@ class WikiControllerTest < ActionController::TestCase
     wiki.add_tag("redirect:#{blog.nid}", users(:bob))
     assert_equal wiki.power_tag('redirect'), blog.nid.to_s
 
-    get :show, id: slug
+    get :show, params: { id: slug }
     assert_redirected_to blog.path
   end
 
@@ -542,7 +532,7 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy if UserSession.find
     UserSession.create(users(:jeff))
 
-    get :show, id: slug
+    get :show, params: { id: slug }
 
     assert_response :success
     assert_equal "Only moderators and admins see this page, as it is redirected to <a href='#{blog.path}'>#{blog.title}</a>.
@@ -569,14 +559,14 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test 'should get methods page for given topic' do
-    get :methods, topic: 'mining'
+    get :methods, params: { topic: 'mining' }
 
     assert_response :success
     assert_not_nil :nodes
   end
 
   test 'should get methods page for given topic, for non-existent topic' do
-    get :methods, topic: 'mining'
+    get :methods, params: { topic: 'mining' }
 
     assert_response :success
     assert_not_nil :nodes
@@ -590,14 +580,14 @@ class WikiControllerTest < ActionController::TestCase
     assert_equal false, @node.has_power_tag('date')
     # assert_equal "anything goes", DateTime.strptime(@node.power_tag('date'),'%m- %d-%Y').to_date.to_s(:long)
 
-    get :show, id: @node.slug
+    get :show, params: { id: @node.slug }
     assert_response :success
   end
 
   test "should render comment template when comment icon is clicked" do
     wiki = nodes(:wiki_page)
     slug = wiki.path.gsub('/wiki/', '')
-    get :comments, id: slug
+    get :comments, params: { id: slug }
     assert_response :success
     assert_select 'div#comments h3', /Comments/
   end
@@ -608,7 +598,7 @@ class WikiControllerTest < ActionController::TestCase
     wiki.add_tag("redirect:about", users(:bob))
     assert_equal wiki.power_tag('redirect'), "about"
 
-    get :show, id: slug
+    get :show, params: { id: slug }
     assert_redirected_to "http://test.host/about"
   end
 

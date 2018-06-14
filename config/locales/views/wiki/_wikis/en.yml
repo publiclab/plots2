@@ -3,11 +3,10 @@
 en:
   wiki:
     _wikis:
-      table_content: |
-        <th>Title</th>
-        <th>Last edited</th>
-        <th>Edits</th>
-        <th class="hidden-xs">Pageviews</th>
+      title: 'Title'
+      last_edited: 'Last edited'
+      edits: 'Edits'
+      page_views: 'Page Views'
       likes: 'Likes'
       by: 'by'
       

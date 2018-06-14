@@ -14,6 +14,9 @@
         <a style="color:#aaa;" href="#a<%= answer.id %>"><%= time_ago_in_words(answer.created_at) %> ago</a>
       </div>
       <div class="navbar-text pull-right">
+        <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-default btn-flag-spam-<%= answer.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= answer.node.path %>#a<%= answer.id %>+by+https://publiclab.org/profile/<%= answer.author.username %>+Thanks!">
+          <i class="fa fa-flag"></i>
+        </a>
         <% if current_user && answer.uid == current_user.uid %>
         <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= answer.id %>edit').toggle();$('#c<%= answer.id %>show').toggle();setInit(<%= answer.id %>);"><i class="fa fa-pencil"></i></a>
         <% end %>

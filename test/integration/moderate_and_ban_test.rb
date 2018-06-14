@@ -3,10 +3,7 @@ require 'test_helper'
 class ModerateAndBanTest < ActionDispatch::IntegrationTest
   test 'users are logged out and alerted when banned, and notes are not accessible' do
     u = users(:unmoderated_user)
-    post '/user_sessions', user_session: {
-      username: u.username,
-      password: 'secretive'
-    }
+    post '/user_sessions', params: { user_session: { username: u.username, password: 'secretive' } }
 
     get '/post' # dashboard is actually world-readable, but /post is not
 
@@ -50,10 +47,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
   test 'users are logged out and alerted when moderated, and notes are not accessible' do
     u = users(:unmoderated_user)
-    post '/user_sessions', user_session: {
-      username: u.username,
-      password: 'secretive'
-    }
+    post '/user_sessions', params: { user_session: { username: u.username, password: 'secretive' } }
 
     get '/post' # dashboard is actually world-readable, but /post is not
 
@@ -100,10 +94,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     u.drupal_user.ban
     admin = users(:admin)
 
-    post '/user_sessions', user_session: {
-      username: admin.username,
-      password: 'secretive'
-    }
+    post '/user_sessions', params: { user_session: { username: admin.username, password: 'secretive' } }
 
     get "/profile/#{u.username}"
 
@@ -117,10 +108,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     u.drupal_user.unmoderate
     u.drupal_user.unban
 
-    post '/user_sessions', user_session: {
-      username: admin.username,
-      password: 'secretive'
-    }
+    post '/user_sessions', params: { user_session: { username: admin.username, password: 'secretive' } }
 
     get "/admin/moderate/#{u.uid}"
 
@@ -143,10 +131,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     u.drupal_user.unmoderate
     u.drupal_user.unban
 
-    post '/user_sessions', user_session: {
-      username: normal_user.username,
-      password: 'secretive'
-    }
+    post '/user_sessions', params: { user_session: { username: normal_user.username, password: 'secretive' } }
 
     get "/admin/moderate/#{u.uid}"
 
@@ -169,10 +154,13 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     u = users(:unmoderated_user)
     u.drupal_user.moderate
 
-    post '/user_sessions', user_session: {
+    post '/user_sessions', 
+     params: { 
+      user_session: {
       username: u.username,
       password: 'secretive'
-    }
+      }
+     }
 
     assert_response :redirect
     follow_redirect!

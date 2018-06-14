@@ -53,15 +53,19 @@
         <% end %>
       -->
       <% end %>
+
       <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-default btn-flag-spam-<%= comment.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= comment.parent.path %>#c<%= comment.cid %>+by+https://publiclab.org/profile/<% if comment.author %><%= comment.author.name %><% end %>+Thanks!">
         <i class="fa fa-flag"></i>
       </a>
+      <% if comment.comment_via == 1 %>
+        <a href="#" onclick="return false;" class="btn btn-default btn-sm"><i class="fa fa-envelope"></i></a>
+      <% end %>
+
       <% if current_user && comment.uid == current_user.uid %>
         <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
           <i class="fa fa-pencil"></i>
         </a>
       <% end %>
-
       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
         <a data-remote="true" data-confirm="<%= t('notes._comment.are_you_sure') %> <% if current_user && comment.uid != current_user.uid %><%= t('notes._comment.please_exercise_caution') %><% end %>" href="/comment/delete/<%= comment.cid %>" class="btn btn-default btn-sm" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
