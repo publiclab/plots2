@@ -43,6 +43,7 @@
     </div>
   </div>
 
+  <%= javascript_include_tag "horsey" %>
   <script type="application/javascript">
     jQuery(document).ready(function() {
       $E.initialize();
@@ -120,6 +121,20 @@
         );
       }
     });
+
+    <% emoji_names = get_emoji_names %>
+    <% emojis = emoji_names[:emojis] %>
+    <% image_map = emoji_names[:image_map] %>
+    var image_map = <%= raw image_map.to_json %>
+        horsey(document.querySelector('textarea'), {
+            suggestions: (<%= raw emojis.to_json %>),
+            anchor: ':',
+            render: function (li, suggestion) {
+                var image = image_map[suggestion.text];
+                li.innerHTML = "<b>"+image+"</b><span>"+suggestion.text+"</span>";
+            },
+            limit: 6
+        });
   </script>
 
   <div class="well col-md-11" id="c<%= comment.id %>preview" style="background:white;display: none">
@@ -150,3 +165,15 @@
 </form>
 
 
+
+<style>
+  .sey-item b {
+    font-weight: 300;
+    font-size: 20px;
+  }
+
+  .sey-item span {
+    margin-bottom: 0;
+    margin-left: 4px;
+  }
+</style>

@@ -48,6 +48,8 @@
 
   <div class="well col-md-11" id="preview" style="background:white;display: none">
   </div>
+  <%= javascript_include_tag "horsey" %>
+  <link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
 
   <script>
     jQuery(document).ready(function() {
@@ -64,10 +66,24 @@
   </script>
 
   <%= javascript_include_tag "dragdrop" %>
-  <script>    
+  <%= javascript_include_tag "horsey" %>
+  <script>
     $('#comment-form').bind('ajax:beforeSend', function(event){      
       $("#text-input").prop('disabled',true)
       $("#comment-form .btn-primary").button('loading',true);      
+    });
+    <% emoji_names = get_emoji_names %>
+    <% emojis = emoji_names[:emojis] %>
+    <% image_map = emoji_names[:image_map] %>
+    var image_map = <%= raw image_map.to_json %>
+    horsey(document.querySelector('textarea'), {
+        suggestions: (<%= raw emojis.to_json %>),
+        anchor: ':',
+        render: function (li, suggestion) {
+            var image = image_map[suggestion.text];
+            li.innerHTML = "<b>"+image+"</b><span>"+suggestion.text+"</span>";
+        },
+        limit: 6
     });
 
     $('#comment-form').bind('ajax:success', function(e, data, status, xhr){      
@@ -125,3 +141,15 @@
   </p>
 
 </form>
+
+<style>
+  .sey-item b {
+    font-weight: 300;
+    font-size: 20px;
+  }
+
+  .sey-item span {
+    margin-bottom: 0;
+    margin-left: 4px;
+  }
+</style>
