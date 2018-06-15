@@ -118,7 +118,7 @@ class OpenidController < ApplicationController
     session[:last_oidreq] = oidreq
     @oidreq = oidreq
 
-    flash[:notice] = message if message
+    flash.now[:notice] = message if message
 
     render template: 'openid/decide'
   end
