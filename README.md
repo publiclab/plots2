@@ -88,7 +88,9 @@ For some, it will be necessary to prepend your gem-related commands with `bundle
 
 ***
 
-### Public Lab now supports reply by email to comment feature. For more details regarding it go to [Doc](https://github.com/publiclab/plots2/blob/master/doc/EMAIL.md)
+### Reply-by-email
+
+Public Lab now supports reply by email to comment feature. For more details regarding it go to the [email documentation](https://github.com/publiclab/plots2/blob/master/doc/EMAIL.md)
 
 ***
 

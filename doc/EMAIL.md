@@ -1,6 +1,6 @@
 ## How to start reply by email to comment feature
 
-With the merge of [fad88f](https://github.com/publiclab/plots2/commit/fad88fd72c9d08f5591bf4c0cab402160eb9ea54) Public lab now supports Reply-by-email to comment features to the various nodes. For implementing this feature we have used `mailman` gem which is a microframework for processing incoming email. More details about this can be found at [mailman](https://github.com/mailman/mailman).
+With the merge of [#2669](https://github.com/publiclab/plots2/pull/2669) Public lab now supports Reply-by-email to comment features to the various nodes. For implementing this feature we have used `mailman` gem which is a microframework for processing incoming email. More details about this can be found at [mailman](https://github.com/mailman/mailman).
 
 [This](https://github.com/publiclab/plots2/blob/master/script/mailman_server) file contains the script for starting the mailman server. It is using POP3 (Post Office Protocol version 3) to receive emails from a remote server to a local email client. All the configrations regarding this is to be done in [mailman script](https://github.com/publiclab/plots2/blob/master/script/mailman_server). 
 
