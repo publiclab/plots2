@@ -80,9 +80,17 @@ Secure connection is needed for OAuth authentication etc.
 5. To see the installed list of cron jobs use command `crontab -l`
 6. For more details about this gem, visit the official repository of whenever gem.
 
+***
+
 ### Bundle exec
 
 For some, it will be necessary to prepend your gem-related commands with `bundle exec`, for example, `bundle exec passenger start`; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler. `bundle exec rake db: setup`, `bundle exec rake db: seed` are other examples of where this might be necessary.
+
+***
+
+### Reply-by-email
+
+Public Lab now supports reply by email to comment feature. For more details regarding it go to the [email documentation](https://github.com/publiclab/plots2/blob/master/doc/EMAIL.md)
 
 ***
 
