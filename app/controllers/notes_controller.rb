@@ -408,7 +408,7 @@ class NotesController < ApplicationController
     @node = Node.find_by(nid: params[:id])
 
     if !@node.has_power_tag('secret_token')
-      @token = SecureRandom.urlsafe_base64(16, false)
+      @token = SecureRandom.urlsafe_base64(16, false).downcase
       @node.add_tag("secret_token:"+@token, current_user)
     else
       @token = @node.power_tag('secret_token')
