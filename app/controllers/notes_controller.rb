@@ -51,7 +51,7 @@ class NotesController < ApplicationController
       @node = Node.find params[:id]
     end
 
-    if (@node.status == 3 && params[:token]!= nil && @node.power_tag('secret_token') == params[:token])
+    if @node.status == 3 && !params[:token].nil? && @node.power_tag('secret_token') == params[:token]
     else
 
     if @node.status == 3 && current_user.nil?
@@ -413,7 +413,7 @@ class NotesController < ApplicationController
     else
       @token = @node.power_tag('secret_token')
     end
-    @data = {"url" => 'notes/show/' + @node.nid.to_s + '/' + @token.to_s }
+    @data = {"url"=>request.host+'/notes/show/'+@node.nid.to_s + '/'+@token.to_s}
 
     respond_to do |format|
       format.json { render json: @data }

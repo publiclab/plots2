@@ -50,8 +50,8 @@
       <span class="hidden-lg">
         <%= @node.created_at.to_s(:short) %>
       </span>
-      <% if current_user %>
-        <button class="btn btn-default" onclick='get_secret_URL(<% @node %>)'>Generate secret URL</button>
+      <% if current_user && @node.status == 3 %>
+        <button class="btn btn-default btn-sm" onclick='get_secret_URL(<% @node %>)'>Generate secret URL</button>
       <% end %>
       </span>
 
