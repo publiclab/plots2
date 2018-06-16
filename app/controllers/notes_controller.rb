@@ -51,6 +51,9 @@ class NotesController < ApplicationController
       @node = Node.find params[:id]
     end
 
+    if (@node.status == 3 && params[:token]!= nil && @node.power_tag('secret_token') == params[:token])
+    else
+
     if @node.status == 3 && current_user.nil?
       flash[:warning] = "You need to login to view the page"
       redirect_to '/login'
@@ -60,6 +63,7 @@ class NotesController < ApplicationController
       redirect_to '/'
       return
     end
+  end
 
     if @node.has_power_tag('question')
       redirect_to @node.path(:question)
@@ -405,11 +409,11 @@ class NotesController < ApplicationController
 
     if !@node.has_power_tag('secret_token')
       @token = SecureRandom.urlsafe_base64(16, false)
-      @node.add_tag("secret_token:"+token, current_user)
+      @node.add_tag("secret_token:"+@token, current_user)
     else
       @token = @node.power_tag('secret_token')
     end
-    @data = {"url" => @node.path+'/'+@token }
+    @data = {"url" => 'notes/show/' + @node.nid.to_s + '/' + @token.to_s }
 
     respond_to do |format|
       format.json { render json: @data }
