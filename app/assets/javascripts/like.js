@@ -31,13 +31,7 @@ function clickliked() {
   // toggle liked to not liked.
   $.getJSON("/likes/node/" + node_id + "/delete")
    .done(function(response) {
-    new Noty({
-      theme: 'mint',
-      timeout: 3000,
-      type: 'success',
-      layout: 'topRight',
-      text: 'Unliked!'
-    }).show();
+    notyNotification('mint', 3000, 'success', 'topRight', 'Unliked!');
     shownotliked(node_id);
     changelikecount(parseInt(response), node_id);
     $('#like-button-' + node_id).on('click', clicknotliked);
@@ -53,13 +47,7 @@ function clicknotliked() {
   // toggle not liked to liked.
   $.getJSON("/likes/node/" + node_id + "/create")
    .done(function(response) {
-    new Noty({
-      theme: 'mint',
-      timeout: 3000,
-      type: 'success',
-      layout: 'topRight',
-      text: 'Liked!'
-    }).show();
+    notyNotification('mint', 3000, 'success', 'topRight', 'Liked!');
     showliked(node_id);
     changelikecount(parseInt(response), node_id);
     $('#like-button-' + node_id).on('click', clickliked);

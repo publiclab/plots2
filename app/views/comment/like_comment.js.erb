@@ -16,25 +16,13 @@ $("<%= str %>").css("display","none");
 <% if @is_liked %>
 	$("<%= comment_star %>").removeClass("fa fa-star").addClass("fa fa-star-o");
 	oldValue = parseInt($("<%= comment_count %>").html());
-	new Noty({
-      theme: 'mint',
-      timeout: 3000,
-      type: 'success',
-      layout: 'topRight',
-      text: 'Unliked!'
-    }).show();
+  notyNotification('mint', 3000, 'success', 'topRight', 'Unliked!');
 	newValue = oldValue-1;
 	$("<%= comment_count %>").html(newValue);
 <% else %>
 	$("<%= comment_star %>").removeClass("fa fa-star-o").addClass("fa fa-star");
 	oldValue = parseInt($("<%= comment_count %>").html());
 	newValue = oldValue+1;
-	new Noty({
-      theme: 'mint',
-      timeout: 3000,
-      type: 'success',
-      layout: 'topRight',
-      text: 'Liked!'
-    }).show();
+	notyNotification('mint', 3000, 'success', 'topRight', 'Liked!');
 	$("<%= comment_count %>").html(newValue);	
 <% end %>
