@@ -50,7 +50,10 @@
       <span class="hidden-lg">
         <%= @node.created_at.to_s(:short) %>
       </span>
-    </span>
+      <% if current_user %>
+        <button class="btn btn-default" onclick='get_secret_URL(<% @node %>)'>Generate secret URL</button>
+      <% end %>
+      </span>
 
     <p class="visible-print">
       Read more: <%= request.host %>/n/<%= @node.id %>
@@ -120,3 +123,18 @@
   </div>
 
 </div><!--/span-->
+
+
+<script>
+    function get_secret_URL(node) {
+        $.ajax({
+            url: '/notes/generate_secret_url/<%= @node.id %>',
+            type: "GET",
+            cache: false,
+
+            success: function (data) {
+                alert(data.url);
+            }
+    });
+}
+</script>

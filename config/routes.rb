@@ -126,6 +126,7 @@ Plots2::Application.routes.draw do
   post 'notes/create' => 'notes#create'
   get 'notes/publish_draft/:id' => 'notes#publish_draft'
   get 'notes/edit/:id' => 'notes#edit'
+  get 'notes/generate_secret_url/:id' => 'notes#generate_secret_url_draft'
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
