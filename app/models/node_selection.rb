@@ -5,6 +5,6 @@ class NodeSelection < ApplicationRecord
   belongs_to :drupal_user, foreign_key: :user_id
 
   def user
-    User.find_by(username: DrupalUser.find_by(uid: user_id).name)
+    User.find_by(username: User.find_by(uid: user_id).name)
   end
 end

@@ -8,7 +8,7 @@ class TagSelection < ApplicationRecord
   validates :tag, presence: :true
 
   def user
-    DrupalUser.find_by(uid: user_id)
+    User.find_by(uid: user_id)
   end
 
   def ruser

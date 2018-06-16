@@ -28,7 +28,7 @@ class NodeTag < ApplicationRecord
   end
 
   def drupal_user
-    DrupalUser.find uid
+    User.find uid
   end
 
   def name
