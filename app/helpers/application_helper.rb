@@ -31,12 +31,10 @@ module ApplicationHelper
     emojis = []
     image_map = Hash.new
     Emoji.all.each do |e|
-      val = ":#{e.name}:"
-      emojis<<{value: val ,text: e.name}
       if e.raw
+        val = ":#{e.name}:"
+        emojis<<{value: val ,text: e.name}
         image_map[e.name] = e.raw
-      else
-        image_map[e.name] = %(<img class="autofruit" alt="#$1" src="#{image_path("emoji/#{e.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
       end
     end
     return {emojis: emojis, image_map: image_map}
