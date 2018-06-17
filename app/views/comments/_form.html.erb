@@ -70,7 +70,7 @@
       $("#text-input").prop('disabled',true)
       $("#comment-form .btn-primary").button('loading',true);      
     });
-    <% emoji_names = get_emoji_names %>
+    <% emoji_names = emoji_names_list %>
     <% emojis = emoji_names[:emojis] %>
     <% image_map = emoji_names[:image_map] %>
     var image_map = <%= raw image_map.to_json %>
