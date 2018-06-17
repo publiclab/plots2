@@ -31,11 +31,10 @@ module ApplicationHelper
     emojis = []
     image_map = {}
     Emoji.all.each do |e|
-      if e.raw
-        val = ":#{e.name}:"
-        emojis<<{ value: val, text: e.name }
-        image_map[e.name] = e.raw
-      end
+      next unless e.raw
+      val = ":#{e.name}:"
+      emojis<<{ value: val, text: e.name }
+      image_map[e.name] = e.raw
     end
     { emojis: emojis, image_map: image_map }
   end
