@@ -3,7 +3,8 @@
 read -p "Enter your cloud9 username: " un
 rvm install ruby-2.3.7
 source $(rvm 2.3.7 do rvm env --path)
-rvm 2.3.7
+rvm use 2.3.7
+bundle install
 sudo apt-get update
 sudo apt-get -y install imagemagick ruby-rmagick
 npm install -g bower
