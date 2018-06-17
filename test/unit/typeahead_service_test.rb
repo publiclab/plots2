@@ -6,7 +6,7 @@ class TypeaheadServiceTest < ActiveSupport::TestCase
     result = TypeaheadService.new.notes('blog')
     assert_not_nil result
     assert_equal 1, result.length
-    assert_equal result.length, result.uniq.length
+    assert_equal result.length, result.distinct.length
   end
   
 #  test 'running TypeaheadService.new.wikis' do
@@ -21,7 +21,7 @@ class TypeaheadServiceTest < ActiveSupport::TestCase
     result = TypeaheadService.new.tags('blog')
     assert_not_nil result
     assert_equal 1, result.length
-    assert_equal result.length, result.uniq.length
+    assert_equal result.length, result.distinct.length
   end
 
   test 'running TypeaheadService.new.users' do

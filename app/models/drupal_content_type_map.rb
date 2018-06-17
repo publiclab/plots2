@@ -1,4 +1,4 @@
-class DrupalContentTypeMap < ActiveRecord::Base
+class DrupalContentTypeMap < ApplicationRecord
   self.table_name = 'content_type_map'
   self.primary_key = 'vid'
 

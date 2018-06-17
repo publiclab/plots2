@@ -10,9 +10,9 @@ class ImagesControllerTest < ActionController::TestCase
   end
 
   test "image shortlinks redirect properly" do
-    get :shortlink, id: Image.last.id
+    get :shortlink, params: { id: Image.last.id }
     assert_redirected_to Image.last.path(:large)
-    get :shortlink, id: Image.last.id, size: 'medium'
+    get :shortlink, params: { id: Image.last.id, size: 'medium' }
     assert_redirected_to Image.last.path(:medium)
   end
 
