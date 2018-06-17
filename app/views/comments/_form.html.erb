@@ -48,7 +48,6 @@
 
   <div class="well col-md-11" id="preview" style="background:white;display: none">
   </div>
-  <%= javascript_include_tag "horsey" %>
   <link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
 
   <script>
@@ -66,7 +65,6 @@
   </script>
 
   <%= javascript_include_tag "dragdrop" %>
-  <%= javascript_include_tag "horsey" %>
   <script>
     $('#comment-form').bind('ajax:beforeSend', function(event){      
       $("#text-input").prop('disabled',true)
@@ -141,15 +139,3 @@
   </p>
 
 </form>
-
-<style>
-  .sey-item b {
-    font-weight: 300;
-    font-size: 20px;
-  }
-
-  .sey-item span {
-    margin-bottom: 0;
-    margin-left: 4px;
-  }
-</style>
