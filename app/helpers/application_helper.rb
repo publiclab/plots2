@@ -27,17 +27,17 @@ module ApplicationHelper
     end if content.present?
   end
 
-  def get_emoji_names
+  def emoji_names_list
     emojis = []
-    image_map = Hash.new
+    image_map = {}
     Emoji.all.each do |e|
       if e.raw
         val = ":#{e.name}:"
-        emojis<<{value: val ,text: e.name}
+        emojis<<{ value: val, text: e.name }
         image_map[e.name] = e.raw
       end
     end
-    return {emojis: emojis, image_map: image_map}
+    { emojis: emojis, image_map: image_map }
   end
 
   def feature(title)
