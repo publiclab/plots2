@@ -46,6 +46,8 @@ Rails.application.config.assets.precompile += [
   'style.css',
   'tags.css',
   'user_tags.css.scss',
-  'wiki.css'
+  'wiki.css',
+  'horsey.js',
+  'comment-autocomplete'
 ]
 
