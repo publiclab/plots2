@@ -21,11 +21,10 @@ end
 class Node < ActiveRecord::Base
   include NodeShared # common methods for node-like models
 
-  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug, :views
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query, order = :default)
+  def self.search(query:, order: :default, limit:)
     orderParam = {changed: :desc} if order == :default
     orderParam = {cached_likes: :desc} if order == :likes
     orderParam = {views: :desc} if order == :views
@@ -44,7 +43,8 @@ class Node < ActiveRecord::Base
       end
     else
       nodes = Node.limit(limit)
-        .where('title LIKE ?', '%' + input + '%', status: 1)
+        .where('title LIKE ?', '%' + query + '%')
+        .where(status: 1)
         .order(orderParam)
     end
   end
@@ -573,6 +573,11 @@ class Node < ActiveRecord::Base
     else
       '01/'
     end
+    if params[:comment_via].nil?
+      comment_via_status = 0
+    else
+      comment_via_status = params[:comment_via].to_i
+    end
     c = Comment.new(pid: 0,
                     nid: nid,
                     uid: params[:uid],
@@ -582,7 +587,9 @@ class Node < ActiveRecord::Base
                     status: 1,
                     format: 1,
                     thread: thread,
-                    timestamp: DateTime.now.to_i)
+                    timestamp: DateTime.now.to_i,
+                    comment_via: comment_via_status,
+                    message_id: params[:message_id])
     c.save
     c
   end
@@ -624,7 +631,9 @@ class Node < ActiveRecord::Base
             img.save
           end
           node.save!
-          node.notify
+          if node.status != 3
+            node.notify
+          end
         else
           saved = false
           node.destroy
@@ -728,7 +737,7 @@ class Node < ActiveRecord::Base
                                  nid: id)
           if node_tag.save
             saved = true
-            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty?
+            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty? || self.status == 3
           else
             saved = false
             tag.destroy

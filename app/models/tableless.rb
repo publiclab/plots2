@@ -1,7 +1,7 @@
 # http://stackoverflow.com/questions/937429/activerecordbase-without-table
 # Models without Tables
 
-class Tableless < ActiveRecord::Base
+class Tableless < ApplicationRecord
   def self.columns
     @columns ||= []
   end

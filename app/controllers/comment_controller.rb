@@ -2,7 +2,7 @@ class CommentController < ApplicationController
   include CommentHelper
 
   respond_to :html, :xml, :json
-  before_filter :require_user, only: %i(create update make_answer delete)
+  before_action :require_user, only: %i(create update make_answer delete)
 
   def index
     @comments = Comment.paginate(page: params[:page], per_page: 30)
@@ -28,8 +28,8 @@ class CommentController < ApplicationController
             if request.xhr?
               render partial: 'notes/comment', locals: { comment: @comment }
             else
-            	tagnames =  @node.tagnames.map do |tagname|
-            		"<a href='/subscribe/tag/#{ tagname }'>#{ tagname }</a>"
+              tagnames =  @node.tagnames.map do |tagname|
+                "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
               end
               tagnames = tagnames.join(', ')
               tagnames = " Click to subscribe to updates on these tags or topics: " + tagnames unless tagnames.empty?
@@ -41,7 +41,7 @@ class CommentController < ApplicationController
       end
     rescue CommentError
       flash[:error] = 'The comment could not be saved.'
-      render text: 'failure'
+      render plain: 'failure'
     end
   end
 
@@ -58,16 +58,16 @@ class CommentController < ApplicationController
         # used in here because the module was `include`d right at the beginning
         @comment = create_comment(@node, @user, @body)
         respond_to do |format|
-          format.all { render :nothing => true, :status => :created }
+          format.all { head :created }
         end
       rescue CommentError
         respond_to do |format|
-          format.all { render :nothing => true, :status => :bad_request }
+          format.all { head :bad_request }
         end
       end
     else
       respond_to do |format|
-        format.all { render :nothing => true, :status => :unauthorized }
+        format.all { head :unauthorized }
       end
     end
   end
@@ -88,7 +88,7 @@ class CommentController < ApplicationController
       end
     else
       flash[:error] = 'The comment could not be saved.'
-      render text: 'failure'
+      render plain: 'failure'
     end
   end
 
@@ -131,7 +131,7 @@ class CommentController < ApplicationController
           else
             format.html do
               if request.xhr?
-                render text: 'success'
+                render plain: 'success'
               else
                 flash[:notice] = 'Comment deleted.'
                 redirect_to '/' + @node.path
