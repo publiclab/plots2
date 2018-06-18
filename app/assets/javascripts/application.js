@@ -56,5 +56,5 @@
 //  require turbolinks // Temporarily removed while fixing
 //= require noty/lib/noty.js
 //= require noty_notification.js
-//= require jquery-confirm2/js/jquery-confirm.js
+//= require jquery-confirm/js/jquery-confirm.js
 
