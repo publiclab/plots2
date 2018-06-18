@@ -23,26 +23,6 @@
       <% end %>
     </div>
 
-      <div class="hidden-print btn-toolbar pull-right" style="margin-left:10px;">
-        <ul class="btn-group" style="margin-top: 16px; margin-right: 16px;">
-          <% if !current_user %>
-            <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like">
-            <%= link_to  new_user_session_path( return_to: request.path ), style: "text-decoration: none; color: black;" do %>
-              <span class="fa fa-star-o"></span>
-              <span><%= comment.likers.count %></span>
-            <% end %>
-          <% else %>
-            <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}" %>
-            <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like">
-            <%= link_to str, data: { method: "post", remote: true }, style: "text-decoration: none; color: black;" do %>
-              <span id="comment-like-star-<%= comment.cid %>-<%= current_user.uid %>" class="fa fa-star<% if !comment.liked_by(current_user.uid) %>-o<% end %>"></span>
-              <span id="comment-like-count-<%= comment.cid %>-<%= current_user.uid %>"><%= comment.likers.count %></span>                
-            <% end %>
-          <% end %>
-          </li>
-        </ul>
-      </div>
-
     <div class="navbar-text navbar-right pull-right" style="padding-right:10px;">
       <% if comment.author && comment.author.user && comment.author.user.role %>
       <!-- Role icon for admins & moderators
@@ -54,18 +34,35 @@
       -->
       <% end %>
 
-      <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-default btn-flag-spam-<%= comment.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= comment.parent.path %>#c<%= comment.cid %>+by+https://publiclab.org/profile/<% if comment.author %><%= comment.author.name %><% end %>+Thanks!">
-        <i class="fa fa-flag"></i>
-      </a>
-      <% if comment.comment_via == 1 %>
-        <a href="#" onclick="return false;" class="btn btn-default btn-sm"><i class="fa fa-envelope"></i></a>
-      <% end %>
+        <ul class="btn-group" style="margin-top: 10px;">
+          <% if !current_user %>
+              <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like">
+                <%= link_to  new_user_session_path( return_to: request.path ), style: "text-decoration: none; color: black;" do %>
+                    <span class="fa fa-star-o"></span>
+                    <span><%= comment.likers.count %></span>
+                <% end %>
+          <% else %>
+              <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}" %>
+              <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like">
+                <%= link_to str, data: { method: "post", remote: true }, style: "text-decoration: none; color: black;" do %>
+                    <span id="comment-like-star-<%= comment.cid %>-<%= current_user.uid %>" class="fa fa-star<% if !comment.liked_by(current_user.uid) %>-o<% end %>"></span>
+                    <span id="comment-like-count-<%= comment.cid %>-<%= current_user.uid %>"><%= comment.likers.count %></span>
+                <% end %>
+          <% end %>
+          </li>
+        </ul>
 
       <% if current_user && comment.uid == current_user.uid %>
         <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
           <i class="fa fa-pencil"></i>
         </a>
       <% end %>
+        <% if comment.comment_via == 1 %>
+          <a href="#" onclick="return false;" class="btn btn-default btn-sm"><i class="fa fa-envelope"></i></a>
+        <% end %>
+        <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-default btn-flag-spam-<%= comment.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= comment.parent.path %>#c<%= comment.cid %>+by+https://publiclab.org/profile/<% if comment.author %><%= comment.author.name %><% end %>+Thanks!">
+          <i class="fa fa-flag"></i>
+        </a>
       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
         <a data-remote="true" data-confirm="<%= t('notes._comment.are_you_sure') %> <% if current_user && comment.uid != current_user.uid %><%= t('notes._comment.please_exercise_caution') %><% end %>" href="/comment/delete/<%= comment.cid %>" class="btn btn-default btn-sm" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
