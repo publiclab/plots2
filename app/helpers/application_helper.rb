@@ -27,6 +27,18 @@ module ApplicationHelper
     end if content.present?
   end
 
+  def emoji_names_list
+    emojis = []
+    image_map = {}
+    Emoji.all.each do |e|
+      next unless e.raw
+      val = ":#{e.name}:"
+      emojis<<{ value: val, text: e.name }
+      image_map[e.name] = e.raw
+    end
+    { emojis: emojis, image_map: image_map }
+  end
+
   def feature(title)
     features = Node.where(type: 'feature', title: title)
     if !features.empty?

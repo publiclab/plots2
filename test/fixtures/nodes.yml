@@ -241,7 +241,7 @@ draft:
   nid: 21
   uid: 2
   title: "Draft note"
-  path: "/notes/test/<%= Time.now.strftime("%m-%d-%Y") %>/draft-note"
+  path: "/notes/jeff/<%= Time.now.strftime("%m-%d-%Y") %>/draft-note"
   created: <%= Time.now.to_i %>
   changed: <%= Time.now.to_i %>
   status: 3

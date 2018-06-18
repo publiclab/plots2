@@ -7,14 +7,14 @@ class AnswerLikeControllerTest < ActionController::TestCase
 
   test 'should get show' do
     answer = answers(:one)
-    get :show, id: answer.id
+    get :show, params: { id: answer.id }
     assert_response :success
   end
 
   test 'should get likes' do
     UserSession.create(users(:admin))
     answer = answers(:one)
-    xhr :get, :likes, aid: answer.id
+    get :likes, params: { aid: answer.id }, xhr: true
     assert_response :success
     assert_not_nil assigns(:answer)
   end
@@ -23,7 +23,7 @@ class AnswerLikeControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     answer = answers(:one)
     assert_difference 'answer.cached_likes' do
-      xhr :get, :likes, aid: answer.id
+      get :likes, params: { aid: answer.id }, xhr: true
       answer.reload
     end
   end
@@ -32,7 +32,7 @@ class AnswerLikeControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     answer = answers(:one)
     assert_difference 'answer.cached_likes', -1 do
-      xhr :get, :likes, aid: answer.id
+      get :likes, params: { aid: answer.id }, xhr: true
       answer.reload
     end
   end

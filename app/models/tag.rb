@@ -1,5 +1,4 @@
-class Tag < ActiveRecord::Base
-  attr_accessible :vid, :name, :description, :weight
+class Tag < ApplicationRecord
   self.table_name = 'term_data'
   self.primary_key = 'tid'
 
@@ -72,7 +71,7 @@ class Tag < ActiveRecord::Base
   end
 
   # finds highest viewcount nodes
-  def self.find_top_nodes_by_type(tagname, type = 'wiki', limit = 10)
+  def self.find_top_nodes_by_type(tagname:, type: 'wiki', limit: 10)
     Node.where(type: type)
         .where('term_data.name = ?', tagname)
         .order('node.views DESC')

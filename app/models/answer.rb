@@ -1,7 +1,6 @@
-class Answer < ActiveRecord::Base
+class Answer < ApplicationRecord
   include NodeShared, CommentsShared # common methods for node-like and comment-like models
 
-  attr_accessible :uid, :nid, :content, :cached_likes, :created_at, :updated_at
 
   belongs_to :node, foreign_key: 'nid'
   belongs_to :drupal_user, foreign_key: 'uid'

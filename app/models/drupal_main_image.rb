@@ -1,4 +1,4 @@
-class DrupalMainImage < ActiveRecord::Base
+class DrupalMainImage < ApplicationRecord
   self.table_name = 'content_field_main_image'
   self.primary_key = :nid
 
