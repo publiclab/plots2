@@ -1,0 +1,2 @@
+google_app_key: ENV['OAUTH_GOOGLE_APP_KEY']
+google_app_secret: ENV['OAUTH_GOOGLE_APP_SECRET']

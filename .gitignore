@@ -26,7 +26,6 @@ config/initializers/recaptcha.rb
 config/config.yml
 config/initializers/site_keys.rb
 config/initializers/secret_token.rb
-config/application.yml
 public/system
 public/lib
 db/openid-store/
