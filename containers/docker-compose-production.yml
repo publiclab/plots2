@@ -1,0 +1,13 @@
+version: "2"
+services:
+  web:
+    build: .
+    network_mode: "host"
+    command: /bin/bash -c "sleep 5 && passenger start --max-pool-size 9 --min-instances 9 -p 4001 -a 127.0.0.1"
+    environment:
+      - RAILS_ENV=${RAILS_ENV}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+    volumes:
+      - .:/app
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro

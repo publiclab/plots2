@@ -1,10 +1,9 @@
-class Revision < ActiveRecord::Base
+class Revision < ApplicationRecord
 
-  attr_accessible :title, :body, :nid, :uid, :teaser, :log, :timestamp, :format
   self.table_name = 'node_revisions'
   self.primary_key = 'vid'
 
-  belongs_to :node, foreign_key: 'nid', dependent: :destroy, counter_cache: :drupal_node_revisions_count
+  belongs_to :node, foreign_key: 'nid', counter_cache: :drupal_node_revisions_count
   has_one :drupal_users, foreign_key: 'uid'
   has_many :node_tag, foreign_key: 'nid'
   has_many :tag, through: :node_tag

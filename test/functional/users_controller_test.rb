@@ -1,17 +1,7 @@
-# def new
-# def create
-# def update
-# def edit
-# def list
-# def likes
-# def rss
-# def reset
-# def comments
-# def photo
-
 require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
+  include ActiveJob::TestHelper
   def setup
     activate_authlogic
 
@@ -59,25 +49,25 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'list users by moderator role' do
     UserSession.create(users(:bob))
-    get :list, id: 'moderator'
+    get :list, params: { id: 'moderator' }
     assert_response :success
     assert_not_nil :users
   end
 
   test 'list users by admin role' do
     UserSession.create(users(:bob))
-    get :list, id: 'admin'
+    get :list, params: { id: 'admin' }
     assert_response :success
     assert_not_nil :users
   end
 
   test 'should not get spam profile' do
-    get :profile, id: User.find(3).username # spam user
+    get :profile, params: { id: User.find(3).username }
     assert_response 302
   end
 
   test 'should get profile' do
-    get :profile, id: DrupalUser.where(status: 1).first.name
+    get :profile, params: { id: DrupalUser.where(status: 1).first.name }
     assert_response :success
   end
 
@@ -85,7 +75,7 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:jeff)
     assert_nil user.reset_key
 
-    get :reset, email: user.email
+    get :reset, params: { email: user.email }
 
     assert_not_nil User.find(user.id).reset_key
 
@@ -104,8 +94,7 @@ class UsersControllerTest < ActionController::TestCase
     user_attributes[:password] = 'newpassword'
     user_attributes[:password_confirmation] = 'newpassword'
 
-    get :reset, key: key,
-	        user: user_attributes
+    get :reset, params: { key: key, user: user_attributes }
 
     assert_response :redirect
     assert_redirected_to '/dashboard'
@@ -123,7 +112,7 @@ class UsersControllerTest < ActionController::TestCase
     user.save({})
     assert_not_nil User.find(user.id).reset_key
 
-    get :profile, id: user.username
+    get :profile, params: { id: user.username }
 
     selector = css_select 'a.user-reset-key'
     assert_equal selector.size, 0
@@ -137,7 +126,7 @@ class UsersControllerTest < ActionController::TestCase
     user.save({})
     assert_not_nil User.find(user.id).reset_key
 
-    get :profile, id: user.username
+    get :profile, params: { id: user.username }
 
     assert_select 'a#user-reset-key'
   end
@@ -147,73 +136,15 @@ class UsersControllerTest < ActionController::TestCase
       old_controller = @controller
       @controller = SettingsController.new
 
-      get :change_locale, locale: lang.to_s
+      get :change_locale, params: { locale: lang.to_s }
 
       @controller = old_controller
     end
   end
 
-  #  test "should display map with success response" do
-  #    UserSession.create(users(:jeff))
-  #    get :map
-  #    assert_response 200
-  #  end
-
-  #  test "should display users map based on location" do
-  #    UserSession.create(users(:jeff))
-  #    get :map, :country => 'United States', tag: "", value: ""
-  #    assert_response 200
-  #    assert assigns[:users]
-  #  end
-
-  #  test "should display user map on tag and value parameter" do
-  #    UserSession.create(users(:jeff))
-  #    get :map, :tag => 'Skill', :value => 'Developer', country: ''
-  #    assert_response 200
-  #    assert assigns[:location_tags]
-  #    assert assigns[:location_tags].is_a? Hash
-  #  end
-
-  #  test "should display flash error for invalid tag" do
-  #    UserSession.create(users(:jeff))
-  #    get :map, :tag => 'abc', value: '', country: ''
-  #    assert_response 200
-  #    assert_equal "abc doesn't exitst", flash[:error]
-  #  end
-
-  #  def test_create_invalid
-  #    User.any_instance.stubs(:valid?).returns(false)
-  #    post :create
-  #    assert_template 'new'
-  #  end
-
-  #  def test_create_valid
-  #    User.any_instance.stubs(:valid?).returns(true)
-  #    post :create
-  #    assert_redirected_to root_url
-  #  end
-
-  #  def test_edit
-  #    user =  FactoryGirl.create(:user)
-  #    get :edit, :id => user.id
-  #    assert_template 'edit'
-  #  end
-
-  #  def test_update_invalid
-  #    User.any_instance.stubs(:valid?).returns(false)
-  #    put :update, :id => FactoryGirl.create(:user).id
-  #    assert_template 'edit'
-  #  end
-
-  #  def test_update_valid
-  #    User.any_instance.stubs(:valid?).returns(true)
-  #    put :update, :id => User.first
-  #    assert_redirected_to root_url
-  #  end
-
   test 'should list notes and questions in user profile' do
     user = drupal_users(:jeff)
-    get :profile, id: user.name
+    get :profile, params: { id: user.name }
     assert_not_nil assigns(:notes)
     assert_not_nil assigns(:questions)
     assert_not_nil assigns(:answered_questions)
@@ -225,7 +156,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'should get comments' do
     user = drupal_users(:jeff)
-    get :comments, id: user.id
+    get :comments, params: { id: user.id }
     assert_response :success
     assert_not_nil assigns(:comments)
     assert_template partial: 'comments/_comments'
@@ -239,7 +170,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'creating new account' do
     assert_difference 'User.count', 1 do
-      post :create, { 
+      post :create, params: { 
         user: { 
           username: 'eleven',
           password: 'demagorgon',
@@ -265,21 +196,21 @@ class UsersControllerTest < ActionController::TestCase
   test 'updating profile' do
     user = users(:bob)
     UserSession.create(user)
-    post :update, { user: { bio: 'Hello, there!' } }
+    post :update, params: { user: { bio: 'Hello, there!' } }
     assert_response :redirect
     assert_equal User.find(user.id).bio, 'Hello, there!'
   end
 
   test 'should redirect edit when not logged in' do
     user = drupal_users(:bob)
-    get :edit, { id: user.name }
+    get :edit, params: { id: user.name }
     assert_not flash.empty?
-    assert_redirected_to '/profile/' + user.name
+    assert_redirected_to '/login'
   end
 
   test 'should redirect update when not logged in' do
     user = users(:bob)
-    post :update, { user: { bio: 'Hello, there!' } }
+    post :update, params: { user: { bio: 'Hello, there!' } }
     assert_not flash.empty?
     assert_redirected_to '/login'
   end
@@ -288,7 +219,7 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:bob)
     UserSession.create(user)
     new_user = drupal_users(:newcomer).user
-    get :edit, { id: new_user.name }
+    get :edit, params: { id: new_user.name }
     assert_not flash.empty?
     assert_redirected_to '/profile/' + new_user.name
   end
@@ -297,21 +228,31 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:bob)
     email = users(:bob).email
     UserSession.create(user)
-    post :update, { user: { email: 'not an address' } }
+    post :update, params: { user: { email: 'not an address' } }
     assert_response :success
     assert_equal user.email, email
   end
 
   test 'rss feed when username is valid' do
     user = drupal_users(:jeff)
-    get :rss, author: user.name, format: 'rss'
+    get :rss, params: { author: user.name, format: 'rss' }
     assert_response :success
-    assert_equal 'application/rss+xml', @response.content_type
+    assert_equal 'application/xml', @response.content_type
   end
 
   test 'rss feed when username is not valid' do
-    get :rss, author: 'some hacker'
+    get :rss, params: { author: 'some hacker' }
     assert_response :redirect
     assert_equal I18n.t('users_controller.no_user_found'), flash[:error]
+  end
+
+  test "digest emails" do
+    user = users(:bob)
+    UserSession.create(user)
+    post :test_digest_email
+    assert_enqueued_with(job: DigestMailJob) do
+      DigestMailJob.perform_later
+    end
+    assert_enqueued_jobs 2
   end
 end

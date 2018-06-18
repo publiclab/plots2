@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :require_user, only: %i(subscriptions nearby)
+  before_action :require_user, only: %i(subscriptions nearby)
 
   # caches_action :index, :cache_path => proc { |c|
   #  node = Node.find :last #c.params[:id]
@@ -101,9 +101,10 @@ class HomeController < ApplicationController
     notes = notes.where('nid != (?)', blog.nid) if blog
 
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      notes = notes.where('(node.status = 1 OR node.status = 4)')
+      notes = notes.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
     elsif current_user
-      notes = notes.where('(node.status = 1 OR (node.status = 4 AND node.uid = ?))', current_user.uid)
+      coauthor_nids = Node.joins(:node_tag).joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid').select('node.*, term_data.*, community_tags.*').where(type: 'note', status: 3).where('term_data.name = (?)', "with:#{current_user.username}").collect(&:nid)
+      notes = notes.where('(node.nid IN (?) OR node.status = 1 OR ((node.status = 3 OR node.status = 4) AND node.uid = ?))', coauthor_nids, current_user.uid)
     else
       notes = notes.where('node.status = 1')
     end
@@ -120,7 +121,7 @@ class HomeController < ApplicationController
       .where('node_revisions.status = 1')
       .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
       .limit(10)
-      .group('node.title')
+      .group(['node.title', 'node.nid'])
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     revisions = revisions.to_a # ensure it can be serialized for caching
@@ -129,6 +130,7 @@ class HomeController < ApplicationController
     comments = Comment.joins(:node, :drupal_user)
       .order('timestamp DESC')
       .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
+      .where('node.status = ?', 1)
       .page(params[:page])
       .group('title') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp

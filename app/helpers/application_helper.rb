@@ -12,6 +12,7 @@ module ApplicationHelper
     end
   end
 
+
   def emojify(content)
     content.to_str.gsub(/:([\w+-]+):/) do |match|
       if emoji = Emoji.find_by_alias($1)
@@ -25,7 +26,19 @@ module ApplicationHelper
       end
     end if content.present?
   end
-  
+
+  def emoji_names_list
+    emojis = []
+    image_map = {}
+    Emoji.all.each do |e|
+      next unless e.raw
+      val = ":#{e.name}:"
+      emojis<<{ value: val, text: e.name }
+      image_map[e.name] = e.raw
+    end
+    { emojis: emojis, image_map: image_map }
+  end
+
   def feature(title)
     features = Node.where(type: 'feature', title: title)
     if !features.empty?
@@ -68,7 +81,7 @@ module ApplicationHelper
       :autolink
     ).to_html
   end
-  
+
   # we should move this to the Comment model:
   # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)

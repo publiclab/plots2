@@ -4,15 +4,16 @@ class SubscriptionMailer < ActionMailer::Base
   default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
 
   def notify_node_creation(node)
-    subject = '[PublicLab] ' + (node.has_power_tag('question') ? 'Question: ' : '') +
-              node.title
-    Tag.subscribers(node.tags).each do |_key, val|
-      @user = val[:user]
-      @node = node
-      @tags = val[:tags]
-      @footer = feature('email-footer')
-      mail(to: val[:user].email, subject: subject)
-    end
+    subject = '[PublicLab] ' + (node.has_power_tag('question') ? 'Question: ' : '') + node.title + " (##{node.id}) "
+    @node = node
+    @tags = node.tags.collect(&:name).join(',')
+    @footer = feature('email-footer')
+    recipients = Tag.subscribers(node.tags).values.map{ |obj| obj[:user] }.collect(&:email)
+    mail(
+      to: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}",
+      bcc: recipients,
+      subject: subject
+    )
   end
 
   def notify_note_liked(node, user)
@@ -24,26 +25,38 @@ class SubscriptionMailer < ActionMailer::Base
     mail(to: node.author.email, subject: subject)
   end
 
- def notify_tag_added(node, tag, current_user)
+ def notify_tag_added(node, tag, tagging_user)
     @tag = tag
     @node = node
-    @current_user = current_user
+    @tagging_user = tagging_user
     given_tags = node.tags.reject { |t| t == tag} 
     users_to_email = tag.followers_who_dont_follow_tags(given_tags)
     users_with_everything_tag = Tag.followers('everything')
     final_users_ids = nil 
-    if(!users_to_email.nil? && !users_with_everything_tag.nil?)
+    if (!users_to_email.nil? && !users_with_everything_tag.nil?)
       final_users_ids = users_to_email.collect(&:id) - users_with_everything_tag.collect(&:uid)
-    elsif(!users_to_email.nil?) 
+    elsif (!users_to_email.nil?) 
       final_users_ids = users_to_email.collect(&:id)
     end
-    final_users_to_email = User.find(final_users_ids) 
+    final_users_to_email = User.find(final_users_ids)
+    recipients = []
     final_users_to_email.each do |user|
-      @user = user
-      unless user.id == current_user.id 
-        mail(to: user.email, subject: "Added: #{node.title}")
+      unless user.id == tagging_user.id
+        recipients << user.email
       end
     end
     @footer = feature('email-footer')
+    mail(
+      to: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}",
+      bcc: recipients,
+      subject: "#{node.title} (#{@tag.name})"
+      )
   end
+
+  def send_digest(user_id, top_picks)
+    subject = "Your weekly digest"
+    @user = User.find(user_id)
+    @top_picks = top_picks
+    mail(to: @user.email, subject: subject)
+  end  
 end

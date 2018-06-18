@@ -1,14 +1,12 @@
-class Comment < ActiveRecord::Base
+class Comment < ApplicationRecord
   include CommentsShared # common methods for comment-like models
 
-  attr_accessible :pid, :nid, :uid, :aid,
-    :subject, :hostname, :comment,
-    :status, :format, :thread, :timestamp
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
                     # dependent: :destroy, counter_cache: true
   belongs_to :drupal_user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
+  has_many :likes, :as => :likeable
 
   validates :comment, presence: true
 
@@ -115,7 +113,7 @@ class Comment < ActiveRecord::Base
 
   def mentioned_users
     usernames = comment.scan(Callouts.const_get(:FINDER))
-    User.where(username: usernames.map { |m| m[1] }).uniq
+    User.where(username: usernames.map { |m| m[1] }).distinct
   end
 
   def followers_of_mentioned_tags
@@ -192,6 +190,28 @@ class Comment < ActiveRecord::Base
     self.status = 1
     save
     self
+  end
+
+  def liked_by(user_id)
+    likes.where(user_id: user_id).count > 0
+  end
+
+  def likers
+    User.where(id: likes.pluck(:user_id))
+  end
+
+  def self.receive_mail(message)
+    node_id = message.subject[/#([\d]+)/, 1] #This took out the node ID from the subject line
+    unless node_id.nil?
+      node = Node.find(node_id)
+      user = User.find_by(email: message.from.first)
+      if user.present? && node_id.present?
+        message_markdown = ReverseMarkdown.convert message.html_part.body.decoded
+        message_id = message.message_id
+        comment = node.add_comment(uid: user.uid, body: message_markdown, comment_via: 1, message_id: message_id)
+        comment.notify user
+      end
+    end
   end
 
 end

@@ -8,12 +8,11 @@ end
 
 class User < ActiveRecord::Base
   self.table_name = 'rusers'
-  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status
   alias_attribute :name, :username
 
   acts_as_authentic do |c|
     c.openid_required_fields = %i(nickname email)
-    VALID_EMAIL_REGEX = /\A[-[:alnum:]+.]+@[[:alnum:]-.]+[.][[:alpha:]]+\z/
+    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
     c.validates_format_of_email_field_options = { with: VALID_EMAIL_REGEX }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
@@ -33,6 +32,7 @@ class User < ActiveRecord::Base
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
+  has_many :likes
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
@@ -43,6 +43,11 @@ class User < ActiveRecord::Base
 
   def self.search(query)
     User.where('MATCH(username, bio) AGAINST(?)', query)
+  end
+
+  def new_contributor
+    @uid = self.id
+    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
   end
 
   def create_drupal_user
@@ -94,7 +99,7 @@ class User < ActiveRecord::Base
   end
 
   def node_count
-    self.drupal_user.node_count 
+    self.drupal_user.node_count
   end
 
   def notes
@@ -157,6 +162,10 @@ class User < ActiveRecord::Base
   def can_moderate?
     # use instead of "user.role == 'admin' || user.role == 'moderator'"
     admin? || moderator?
+  end
+
+  def is_coauthor(node)
+    self.id == node.author.id || node.has_tag("with:#{self.username}")
   end
 
   def tags(limit = 10)
@@ -230,24 +239,23 @@ class User < ActiveRecord::Base
       (1..span).each do |day|
           time = Time.now.utc.beginning_of_day.to_i
           days[(time-day.days.to_i)] = Node.select(:created)
-                                           .where(uid: self.uid, 
+                                           .where(uid: self.uid,
                                                   type: 'note',
-                                                  status: 1, 
-                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i) 
+                                                  status: 1,
+                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i)
                                            .count
       end
       days
   end
- 
 
   def weekly_comment_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
-        .where( uid: drupal_user.uid,
-                                          status: 1,
-                                          timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
-        .count
+                            .where( uid: drupal_user.uid,
+                                    status: 1,
+                                    timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
+                            .count
     end
     weeks
   end
@@ -357,15 +365,15 @@ class User < ActiveRecord::Base
     tagnames = TagSelection.where(following: true, user_id: uid)
     node_ids = []
     tagnames.each do |tagname|
-      node_ids = node_ids + NodeTag.where(tid: tagname.tid).collect(&:nid)
+      node_ids += NodeTag.where(tid: tagname.tid).collect(&:nid)
     end
 
     Node.where(nid: node_ids)
-        .includes(:revision, :tag)
-        .references(:node_revision)
-        .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
-        .order('node_revisions.timestamp DESC')
-        .uniq
+      .includes(:revision, :tag)
+      .references(:node_revision)
+      .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
+      .order('node_revisions.timestamp DESC')
+      .distinct
   end
 
   def social_link(site)
@@ -375,6 +383,13 @@ class User < ActiveRecord::Base
       return link
     end
     nil
+  end
+
+  def send_digest_email
+    top_picks = self.content_followed_in_period(Time.now - 1.week, Time.now)
+    if top_picks.count > 0
+      SubscriptionMailer.send_digest(self.id,top_picks).deliver_now
+    end
   end
 
   private

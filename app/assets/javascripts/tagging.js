@@ -1,12 +1,18 @@
 function addTag(tagname, selector) {
 
   selector = selector || '#tagform';
+  if (tagname.slice(0,5).toLowerCase() === "place") {
+    place = tagname.split(":")[1];
+    place.replace("-", " ");
+    geo = geocodeStringAndPan(place);
+  }
+  else {
+    var el = $(selector);
 
-  var el = $(selector);
+    el.find('.tag-input').val(tagname);
 
-  el.find('.tag-input').val(tagname);
-
-  el.submit();
+    el.submit();
+  }
 
 }
 
@@ -79,4 +85,28 @@ function initTagForm(deletion_path, selector) {
 
   return el;
 
+}
+
+function geocodeStringAndPan(string, onComplete) {
+  var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + string.split(" ").join("+");
+  var Blurred = $.ajax({
+      async: false,
+      url: url,
+      complete: function(data) {
+        geometry = data.responseJSON.results[0].geometry.location;
+        lat = geometry.lat;
+        lng = geometry.lng;
+        
+        var geo = [lat, lng];
+
+        if (geo.length > 0) {
+          var r = confirm("This looks like a location. Is this full description of the location accurate?");
+          console.log(geo[0]);
+          console.log(geo[1]);
+          if(r) { 
+            addTag("lat:" + geo[0].toString() + ",lng:" + geo[1].toString()+",place:"+string);
+          }    
+        }
+      },
+  });
 }

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  likeable_id: 1
+  user_id: 1
+  likeable_type: "Comment"
+
+two:
+  likeable_id: 1
+  user_id: 2
+  likeable_type: "Comment"

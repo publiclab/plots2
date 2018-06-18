@@ -2,17 +2,11 @@ require 'test_helper'
 
 class NodeUpdateTest < ActionDispatch::IntegrationTest
   test 'edit note after creating a new note' do
-    post '/user_sessions', user_session: {
-      username: users(:bob).username,
-      password: 'secretive'
-    }
+    post '/user_sessions', params: { user_session: { username: users(:bob).username, password: 'secretive' } }
 
     title = 'My second post about balloon mapping'
 
-    post '/notes/create',
-         title: title,
-         body: 'This is a fascinating post about a balloon mapping event.',
-         tags: 'balloon-mapping,event'
+    post '/notes/create', params: { title: title, body: 'This is a fascinating post about a balloon mapping event.', tags: 'balloon-mapping,event' }
 
     follow_redirect!
     assert_equal '/notes/' + users(:bob).username + '/' +
@@ -27,9 +21,12 @@ class NodeUpdateTest < ActionDispatch::IntegrationTest
     newtitle = title + ' which I amended'
 
     post '/notes/update/' + node.id.to_s,
-         title: newtitle,
-         body: "This is a fascinating post about a balloon mapping event. <span id='teststring'>added content</span>",
-         tags: 'balloon-mapping,event,meetup'
+      params: {
+        title: newtitle,
+        body: "This is a fascinating post about a balloon mapping event. <span id='teststring'>added content</span>",
+        tags: 'balloon-mapping,event,meetup'
+      }
+         
     follow_redirect!
     # path does not get updated
     assert_equal '/notes/' + users(:bob).username + '/' +
