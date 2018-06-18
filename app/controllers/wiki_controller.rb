@@ -136,7 +136,15 @@ class WikiController < ApplicationController
       @tags << tag if tag
       @related += Tag.find_nodes_by_type(@tags.collect(&:name), 'page', 10)
     end
-    render template: 'wiki/edit'
+    flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/post?#{request.env['QUERY_STRING']}&legacy=true' class='legacy-button'>click here</a>." 
+    if params[:main_image] && Image.find_by(id: params[:main_image]) 
+     @main_image = Image.find_by(id: params[:main_image]).path 
+    end 
+    if params[:n] && !params[:body] # use another node body as a template 
+     node = Node.find(params[:n]) 
+     params[:body] = node.body if node 
+    end 
+    render template: 'editor/wikiRich'
   end
 
   def create
