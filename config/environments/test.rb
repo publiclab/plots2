@@ -40,4 +40,31 @@ Rails.application.configure do
     host: 'www.example.com'
   }
 
+#omniauth hash returned by github provider for OAuth testing
+  OmniAuth.config.mock_auth[:github1] = OmniAuth::AuthHash.new({
+      'provider' => 'github',
+      'uid' => '135790579602',
+      'info' => {
+        'name' => 'sidharth bansal',
+        'email' => 'bansal.sidharth309@gmail.com'
+      }
+    })
+
+  OmniAuth.config.mock_auth[:github2] = OmniAuth::AuthHash.new({
+      'provider' => 'github',
+      'uid' => '1357998009602',
+      'info' => {
+        'name' => 'sidharth bansal',
+        'email' => 'bansal.sidharth309@xyz.com'
+        }
+    })
+  OmniAuth.config.mock_auth[:github3] = OmniAuth::AuthHash.new({
+      'provider' => 'github',
+      'uid' => '135799239602',
+      'info' => {
+        'name' => 'emila buffet',
+        'email' => 'emila.buffet309@gmail.com'
+      }
+    })
+
 end
