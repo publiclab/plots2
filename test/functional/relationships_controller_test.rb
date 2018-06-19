@@ -10,7 +10,7 @@ class RelationshipsControllerTest < ActionController::TestCase
     followed_user = users(:jeff)
     UserSession.create(user)
     assert_difference 'Relationship.count', 1 do
-      post :create, followed_id: followed_user.id
+      post :create, params: { followed_id: followed_user.id }
     end
     assert_response :redirect
     assert_redirected_to '/profile/' + followed_user.username
@@ -20,10 +20,10 @@ class RelationshipsControllerTest < ActionController::TestCase
     user = users(:jeff)
     UserSession.create(user)
     followed_user = users(:bob)
-    post :create, followed_id: followed_user.id
+    post :create, params: { followed_id: followed_user.id }
 
     assert_difference 'Relationship.count', -1 do
-      delete :destroy, id: Relationship.last.id
+      delete :destroy, params: { id: Relationship.last.id }
     end
 
     assert_response :redirect
@@ -32,11 +32,11 @@ class RelationshipsControllerTest < ActionController::TestCase
 
   test 'actions require authorization' do
     followed_user = users(:bob)
-    post :create, followed_id: followed_user.id
+    post :create, params: { followed_id: followed_user.id }
 
     assert_response :unprocessable_entity
 
-    post :destroy, id: 1
+    post :destroy, params: { id: 1 }
     assert_response :unprocessable_entity
   end
 end

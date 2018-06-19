@@ -12,4 +12,4 @@ services:
     volumes:
       - .:/app
       - /etc/passwd:/etc/passwd:ro
-- /etc/group:/etc/group:ro
+      - /etc/group:/etc/group:ro

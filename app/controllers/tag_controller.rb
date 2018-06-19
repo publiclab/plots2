@@ -1,6 +1,7 @@
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
-  before_filter :require_user, only: %i(create delete)
+  before_action :require_user, only: %i(create delete)
+
 
   def index
     if params[:sort]
@@ -11,6 +12,8 @@ class TagController < ApplicationController
 
     @title = I18n.t('tag_controller.tags')
     @paginated = true
+    @order_type = params[:order] == "desc" ? "asc" : "desc"
+
     if params[:search]
     keyword = params[:search]
     @tags = Tag.joins(:node_tag, :node)
@@ -19,7 +22,7 @@ class TagController < ApplicationController
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
       .where("name LIKE :keyword", keyword: "%#{keyword}%")
       .group(:name)
-      .order('count DESC')
+      .order(order_string)
       .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "uses"
     @tags = Tag.joins(:node_tag, :node)
@@ -27,7 +30,7 @@ class TagController < ApplicationController
       .where('node.status = ?', 1)
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
       .group(:name)
-      .order('count DESC')
+      .order(order_string)
       .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "name"
     @tags = Tag.joins(:node_tag, :node)
@@ -35,7 +38,7 @@ class TagController < ApplicationController
       .where('node.status = ?', 1)
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
       .group(:name)
-      .order('name')
+      .order(order_string)
       .paginate(page: params[:page], per_page: 24)
     else
       tags = Tag.joins(:node_tag, :node)
@@ -43,7 +46,7 @@ class TagController < ApplicationController
                 .where('node.status = ?', 1)
                 .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                 .group(:name)
-                .order('name')
+                .order(order_string)
 
       followed = []
       not_followed = []
@@ -438,5 +441,15 @@ class TagController < ApplicationController
 
   def gridsEmbed
     render layout: false
+  end
+
+  private
+
+  def order_string
+    if params[:search] || @toggle == "uses"
+      params[:order] == "asc" ? "count ASC" : "count DESC"
+    else
+      params[:order] == "asc" ? "name ASC" : "name DESC"
+    end
   end
 end

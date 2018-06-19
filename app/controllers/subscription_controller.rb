@@ -5,7 +5,7 @@
 class SubscriptionController < ApplicationController
 
   respond_to :html, :xml, :json
-  before_filter :require_user, :only => [:create, :delete, :index, :digest]
+  before_action :require_user, :only => [:create, :delete, :index, :digest]
 
   def index
     @title = "Subscriptions"

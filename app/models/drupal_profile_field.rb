@@ -1,4 +1,4 @@
-class DrupalProfileField < ActiveRecord::Base
+class DrupalProfileField < ApplicationRecord
   self.table_name = 'profile_fields'
 
   has_many :drupal_profile_values, foreign_key: 'fid'

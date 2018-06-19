@@ -9,7 +9,7 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
     volumes:
       - ../config/my.cnf:/etc/mysql/my.cnf
-      # for configuration
+      # for configuration 
       - ../../mysql:/var/lib/mysql
       # for persistence
       - ../../dump:/docker-entrypoint-initdb.d
@@ -25,8 +25,8 @@ services:
       - OAUTH_GOOGLE_APP_SECRET=${OAUTH_GOOGLE_APP_SECRET}
     volumes:
       - ..:/app
-    ports:
+    ports: 
       - "127.0.0.1:5001:5001"
     links:
       - db
-restart: unless-stopped
+    restart: unless-stopped
