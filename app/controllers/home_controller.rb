@@ -79,7 +79,7 @@ class HomeController < ApplicationController
       maxlat = current_user.lat + dist
       minlon = current_user.lon - dist
       maxlon = current_user.lon + dist
-      @users = DrupalUser.where('lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?', minlat, maxlat, minlon, maxlon)
+      @users = User.where('lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?', minlat, maxlat, minlon, maxlon)
     end
   end
 

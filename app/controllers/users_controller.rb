@@ -135,7 +135,7 @@ class UsersController < ApplicationController
     elsif !current_user && params[:id].nil?
       redirect_to "/"
     else
-      @user = DrupalUser.find_by(name: params[:id])
+      @user = User.find_by(name: params[:id])
       @profile_user = User.find_by(username: params[:id])
       if !@user || !@profile_user
         flash[:error] = I18n.t('users_controller.no_user_found_name', username: params[:id])
@@ -202,8 +202,8 @@ class UsersController < ApplicationController
   end
 
   def likes
-    @user = DrupalUser.find_by(name: params[:id])
-    @title = "Liked by " + @user.name
+    @user = User.find_by(name: params[:id])
+    @title = "Liked by "+@user.name
     @notes = @user.liked_notes
                   .includes(%i(tag comments))
                   .paginate(page: params[:page], per_page: 24)
@@ -214,7 +214,7 @@ class UsersController < ApplicationController
 
   def rss
     if params[:author]
-      @author = DrupalUser.where(name: params[:author], status: 1).first
+      @author = User.where(name: params[:author], status: 1).first
       if @author
         @notes = Node.order("nid DESC")
                            .where(type: 'note', status: 1, uid: @author.uid)
@@ -283,7 +283,7 @@ class UsersController < ApplicationController
   end
 
   def photo
-    @user = DrupalUser.find_by(uid: params[:uid]).user
+    @user = User.find_by(uid: params[:uid]).user
     if current_user.uid == @user.uid || current_user.admin?
       @user.photo = params[:photo]
       if @user.save!

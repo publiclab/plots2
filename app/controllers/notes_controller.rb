@@ -287,7 +287,7 @@ class NotesController < ApplicationController
 
   # notes for a given author
   def author
-    @user = DrupalUser.find_by(name: params[:id])
+    @user = User.find_by(name: params[:id])
     @title = @user.name
     @notes = Node.paginate(page: params[:page], per_page: 24)
       .order('nid DESC')
@@ -297,7 +297,7 @@ class NotesController < ApplicationController
 
   # notes for given comma-delimited tags params[:topic] for author
   def author_topic
-    @user = DrupalUser.find_by(name: params[:author])
+    @user = User.find_by(name: params[:author])
     @tagnames = params[:topic].split('+')
     @title = @user.name + " on '" + @tagnames.join(', ') + "'"
     @notes = @user.notes_for_tags(@tagnames)
