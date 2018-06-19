@@ -23,7 +23,7 @@ class SearchApiTest < ActiveSupport::TestCase
 
      json = JSON.parse(last_response.body)
 
-     assert_equal nodes(:blog).path,  json['items'][0]['docUrl']
+     assert_equal nodes(:blog).path, json['items'][0]['docUrl']
      assert_equal "Blog post",       json['items'][0]['docTitle']
      assert_equal 13,                json['items'][0]['docId']
 
@@ -49,7 +49,7 @@ class SearchApiTest < ActiveSupport::TestCase
 
      assert_equal "/profile/jeff", json['items'][0]['docUrl']
      assert_equal "jeff",          json['items'][0]['docTitle']
-     assert_equal "user",               json['items'][0]['docType']
+     assert_equal "user",          json['items'][0]['docType']
 
      assert matcher =~ json
 
@@ -119,16 +119,17 @@ class SearchApiTest < ActiveSupport::TestCase
      json = JSON.parse(last_response.body)
      assert matcher =~ json
 
-    end
+  end
 
-  test 'search nearby nodes functionality' do
-    get '/api/srch/locations?srchString=71.00,52.00'
+  test 'search Tag Nearby Nodes functionality' do
+    get '/api/srch/taglocations?srchString=71.00,52.00&tagName=awesome'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
             srchString: '71.00,52.00',
+            tagName: 'awesome',
             seq: nil,
         }.ignore_extra_keys!
     }.ignore_extra_keys!
@@ -136,11 +137,6 @@ class SearchApiTest < ActiveSupport::TestCase
     matcher = JsonExpressions::Matcher.new(pattern)
 
     json = JSON.parse(last_response.body)
-
-    assert_equal nodes(:blog).path, json['items'][0]['docUrl']
-    assert_equal "Blog post",       json['items'][0]['docTitle']
-    assert_equal 13,                json['items'][0]['docId']
-
     assert matcher =~ json
 
   end
@@ -162,8 +158,8 @@ class SearchApiTest < ActiveSupport::TestCase
     json = JSON.parse(last_response.body)
 
     assert_equal users(:bob).username, json['items'][0]['docTitle']
-    assert_equal "people_coordinates",       json['items'][0]['docType']
-    assert_equal 1,                json['items'][0]['docId']
+    assert_equal "people_coordinates", json['items'][0]['docType']
+    assert_equal 1,                    json['items'][0]['docId']
 
     assert matcher =~ json
 
@@ -187,8 +183,8 @@ class SearchApiTest < ActiveSupport::TestCase
     json = JSON.parse(last_response.body)
 
     assert_equal users(:bob).username, json['items'][0]['docTitle']
-    assert_equal "people_coordinates",       json['items'][0]['docType']
-    assert_equal 1,                json['items'][0]['docId']
+    assert_equal "people_coordinates", json['items'][0]['docType']
+    assert_equal 1,                    json['items'][0]['docId']
 
     assert matcher =~ json
 

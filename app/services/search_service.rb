@@ -196,12 +196,15 @@ class SearchService
     sresult
   end
 
-  # Search nearby nodes with respect to given latitude and longitude
-  def nearbyNodes(srchString)
+  # Search nearby nodes with respect to given latitude, longitute and tags
+  def tagNearbyNodes(srchString, tag)
     sresult = DocList.new
     coordinates = srchString.split(",")
     lat = coordinates[0]
     lon = coordinates[1]
+
+    tagList = textSearch_tags(tag)
+    sresult.addAll(tagList.items)
 
     nids = NodeTag.joins(:tag)
       .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
