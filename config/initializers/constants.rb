@@ -9,6 +9,4 @@ module Callouts
   PRETTYLINKHTML = '\1<a href="/profile/\2">@\2</a>'
   HASHLINKHTML = '\1<a href="/tag/\2">#\2</a>'
   NODELINKHTML = '\1<a href="/n/\2">#\2</a>'
-  CHECKBOX = /[-|\*] \[( |x)\]/
-  CHECKBOXHTML = '<input type="checkbox">'
 end

@@ -35,14 +35,4 @@ class ConstantsTest < ActiveSupport::TestCase
     assert_equal expect, string.gsub(Callouts.const_get(:HASHTAGNUMBER), ' REPLACE') ;
   end
 
-  test 'checkbox regex should match a checked checkbox' do
-    string = "* [x]"
-    assert string.scan(Callouts.const_get(:CHECKBOX))[0][0] == "x"
-  end
-
-  test 'checkbox regex should match an unchecked checkbox' do
-    string = "* [ ]"
-    assert string.scan(Callouts.const_get(:CHECKBOX))[0][0] == " "
-  end
-
 end

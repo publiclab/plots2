@@ -203,10 +203,14 @@ class RevisionsTest < ActiveSupport::TestCase
     assert_not tag_names.include?('1234')
   end
 
-  test 'should be able to convert * [ ] into a checkbox [x]' do
-    revision = nodes(:one).latest
-    revision.body = "* [x]"
-    assert_includes revision.render_body, "<ul>\n<li>[x]</li>\n</ul>\n\n"
+  test 'should recognize unmarked markdown style checkboxes and convert them into unchecked checkbox' do
+    revision = revisions(:checkbox_one)
+    assert_includes revision.render_body, %(<i class="fa fa-square-o"></i>)
+  end
+
+  test 'should recognize marked markdown style checkboxes and convert them into checked checkbox' do
+    revision = revisions(:checkbox_two)
+    assert_includes revision.render_body, %(<i class="fa fa-check-square-o"></i>)
   end
 
 
