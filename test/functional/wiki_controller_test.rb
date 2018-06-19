@@ -434,7 +434,8 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.create(users(:jeff))
     get :show, params: { id: 'A-new-wiki-page' }
     assert_response :success
-    assert_template 'wiki/edit'
+    assert_template 'editor/wikiRich'
+    # assert_template 'wiki/edit'
   end
 
   test 'replacing content in a node with replace action' do

@@ -119,10 +119,10 @@ class WikiController < ApplicationController
 
   def new
     @node = Node.new
-    if params[:n] && !params[:body] # use another node body as a template
-      node = Node.find(params[:n])
-      params[:body] = node.latest.body if node&.latest
-    end
+    # if params[:n] && !params[:body] # use another node body as a template
+    #   node = Node.find(params[:n])
+    #   params[:body] = node.latest.body if node&.latest
+    # end
     @tags = []
     if params[:id]
       flash.now[:notice] = I18n.t('wiki_controller.page_does_not_exist_create')
@@ -138,13 +138,14 @@ class WikiController < ApplicationController
     end
     flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/post?#{request.env['QUERY_STRING']}&legacy=true' class='legacy-button'>click here</a>." 
     if params[:main_image] && Image.find_by(id: params[:main_image]) 
-     @main_image = Image.find_by(id: params[:main_image]).path 
+      @main_image = Image.find_by(id: params[:main_image]).path 
     end 
     if params[:n] && !params[:body] # use another node body as a template 
-     node = Node.find(params[:n]) 
-     params[:body] = node.body if node 
+      node = Node.find(params[:n]) 
+      params[:body] = node.body if node 
     end 
     render template: 'editor/wikiRich'
+    # render template: 'wiki/edit'
   end
 
   def create
