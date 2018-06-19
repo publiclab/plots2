@@ -9,8 +9,7 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
     volumes:
       - ../config/my.cnf:/etc/mysql/my.cnf
-      # for configuration
-
+      # for configuration 
       - ../../mysql:/var/lib/mysql
       # for persistence
       - ../../dump:/docker-entrypoint-initdb.d
