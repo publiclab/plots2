@@ -10,6 +10,7 @@ services:
     volumes:
       - ../config/my.cnf:/etc/mysql/my.cnf
       # for configuration
+      
       - ../../mysql:/var/lib/mysql
       # for persistence
       - ../../dump:/docker-entrypoint-initdb.d
