@@ -38,18 +38,30 @@ class Comment < ApplicationRecord
     week = span
     count = 0
     while week >= 1
-      # initialising month variable with the month of the starting day
-      # of the week
-      month = (time - (week * 7 - 1).days).strftime('%m')
-
-      month = month.to_i
-      # Now fetching comments per week
-      current_week = Comment.select(:timestamp)
-        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-        .count
-      weeks[count] = [month, current_week]
-      count += 1
-      week -= 1
+        #initialising month variable with the month of the starting day
+        #of the week
+        month = (time - (week*7 - 1).days).strftime('%m')
+        #loop for finding the maximum occurence of a month name in that week
+        #For eg. If this week has 3 days falling in March and 4 days falling
+        #in April, then we would give this week name as April and vice-versa
+        for i in 0..6 do
+          currMonth = (time - (week*7 - i).days).strftime('%m')
+          if month == 0
+              month = currMonth
+          elsif month != currMonth
+              if i <= 4
+                  month = currMonth
+              end
+          end
+        end
+        month = month.to_i
+        #Now fetching comments per week
+        currWeek = Comment.select(:timestamp)
+                        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+                        .count
+        weeks[count] = [month, currWeek]
+        count += 1
+        week -= 1
     end
     weeks
   end
@@ -122,7 +134,7 @@ class Comment < ApplicationRecord
   end
 
   def notify_users(uids, current_user)
-    DrupalUser.where('uid IN (?)', uids).each do |user|
+    User.where('uid IN (?)', uids).each do |user|
       if user.uid != current_user.uid
         CommentMailer.notify(user.user, self).deliver_now
       end

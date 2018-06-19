@@ -132,7 +132,7 @@ class Node < ActiveRecord::Base
   # or, we should refactor to us node.created instead of Time.now
   def generate_path
     if type == 'note'
-      username = DrupalUser.find_by(uid: uid).name
+      username = User.find_by(uid: uid).name
       "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{title.parameterize}"
     elsif type == 'page'
       '/wiki/' + title.parameterize
@@ -270,7 +270,7 @@ class Node < ActiveRecord::Base
   end
 
   def author
-    DrupalUser.find_by(uid: uid)
+    User.find_by(uid: uid)
   end
 
   def coauthors
@@ -620,7 +620,7 @@ class Node < ActiveRecord::Base
   # researching simultaneous creation of associated records
   def self.new_note(params)
     saved = false
-    author = DrupalUser.find(params[:uid])
+    author = User.find(params[:uid])
     node = Node.new(uid:     author.uid,
                     title:   params[:title],
                     comment: 2,

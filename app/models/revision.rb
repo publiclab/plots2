@@ -65,7 +65,7 @@ class Revision < ApplicationRecord
   end
 
   def author
-    DrupalUser.find_by(uid: uid)
+    User.find_by(uid: uid)
   end
 
   def parent
