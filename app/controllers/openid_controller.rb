@@ -13,10 +13,12 @@ class OpenidController < ApplicationController
   include OpenID::Server
   layout nil
 
+
   def index
     begin
+      permitted_params = params.permit('openid.claimed_id', 'openid.identity', 'openid.mode', 'openid.ns', 'openid.ns.sreg', 'openid.realm', 'openid.return_to', 'openid.sreg.required').to_h
       if params['openid.mode']
-        oidreq = server.decode_request(params)
+        oidreq = server.decode_request(permitted_params)
       else
         oidreq = server.decode_request(Rack::Utils.parse_query(request.env['ORIGINAL_FULLPATH'].split('?')[1]))
       end
