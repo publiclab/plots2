@@ -200,6 +200,10 @@ class Comment < ApplicationRecord
     User.where(id: likes.pluck(:user_id))
   end
 
+  def emoji_likes
+    likes.group(:emoji_type).count
+  end
+
   def self.receive_mail(message)
     node_id = message.subject[/#([\d]+)/, 1] #This took out the node ID from the subject line
     unless node_id.nil?

@@ -414,4 +414,22 @@ class User < ActiveRecord::Base
     contributors
   end
 
+  def self.create_with_omniauth(auth)
+    #email prefix is part of email before @ with periods replaced with underscores
+    #generate a 2 digit alphanumeric number and append it at the end of email-prefix
+    charset = Array('A'..'Z') + Array('a'..'z')  + Array(0..9)
+    email_prefix = auth["info"]["email"].gsub('.','_').split('@')[0]
+    while(!User.where(username: email_prefix).empty?)
+         email_prefix =  auth["info"]["email"].gsub('.','_').split('@')[0] + Array.new(2) { charset.sample }.join
+    end
+    puts(auth)
+    create! do |user|
+      user.username = email_prefix
+      user.email = auth["info"]["email"]
+      user.password = auth["uid"]
+      user.password_confirmation = auth["uid"]
+      user.save!
+    end
+  end
+
 end
