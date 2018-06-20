@@ -18,7 +18,8 @@ ENV PHANTOMJS_VERSION 2.1.1
 
 # Install dependencies
 RUN echo "deb http://ftp.debian.org/debian stretch-backports main" | tee -a /etc/apt/sources.list.d/stretch-bp.list
-RUN apt-get update -qq && apt-get install -y bundler libmariadbclient-dev ruby-rmagick libfreeimage3 wget procps cron make && apt-get install -y -t stretch-backports nodejs
+RUN apt-get update -qq && apt-get install -y build-essential bundler libmariadbclient-dev ruby-rmagick libfreeimage3 wget curl procps cron make
+RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 RUN wget https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -O /tmp/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2; tar -xvf /tmp/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C /opt ; cp /opt/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin/* /usr/local/bin/
 RUN npm install -g bower
 
