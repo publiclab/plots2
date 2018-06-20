@@ -34,24 +34,6 @@
       -->
       <% end %>
 
-        <ul class="btn-group" style="margin-top: 10px;">
-          <% if !current_user %>
-              <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like">
-                <%= link_to  new_user_session_path( return_to: request.path ), style: "text-decoration: none; color: black;" do %>
-                    <span class="fa fa-star-o"></span>
-                    <span><%= comment.likers.count %></span>
-                <% end %>
-          <% else %>
-              <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}" %>
-              <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like">
-                <%= link_to str, data: { method: "post", remote: true }, style: "text-decoration: none; color: black;" do %>
-                    <span id="comment-like-star-<%= comment.cid %>-<%= current_user.uid %>" class="fa fa-star<% if !comment.liked_by(current_user.uid) %>-o<% end %>"></span>
-                    <span id="comment-like-count-<%= comment.cid %>-<%= current_user.uid %>"><%= comment.likers.count %></span>
-                <% end %>
-          <% end %>
-          </li>
-        </ul>
-
       <% if current_user && comment.uid == current_user.uid %>
         <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
           <i class="fa fa-pencil"></i>
