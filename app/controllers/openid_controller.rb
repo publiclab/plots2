@@ -15,7 +15,22 @@ class OpenidController < ApplicationController
 
   def index
     begin
-      permitted_params = params.permit('authenticity_token', 'back_to', 'open_id', 'openid.assoc_handle', 'openid.op_endpoint', 'openid.response_nonce', 'openid.sig', 'openid.signed', 'openid.sreg.email', 'openid.sreg.nickname', 'return_to', 'openid.claimed_id', 'openid.identity', 'openid.mode', 'openid.ns', 'openid.ns.sreg', 'openid.realm', 'openid.return_to', 'openid.sreg.required', 'openid.trust_root', 'openid.id_select', 'openid.immediate', 'openid.cancel_url').to_h
+      permitted_params = params.permit('authenticity_token', 'back_to', 
+                                       'open_id', 'openid.assoc_handle', 
+                                       'openid.op_endpoint', 
+                                       'openid.response_nonce', 
+                                       'openid.sig', 'openid.signed', 
+                                       'openid.sreg.email', 
+                                       'openid.sreg.nickname', 
+                                       'return_to', 'openid.claimed_id', 
+                                       'openid.identity', 'openid.mode', 
+                                       'openid.ns', 'openid.ns.sreg', 
+                                       'openid.realm', 'openid.return_to', 
+                                       'openid.sreg.required', 
+                                       'openid.trust_root', 
+                                       'openid.id_select', 
+                                       'openid.immediate', 
+                                       'openid.cancel_url').to_h
       if params['openid.mode']
         oidreq = server.decode_request(permitted_params)
       else
