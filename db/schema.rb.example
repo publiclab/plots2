@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180605010014) do
+ActiveRecord::Schema.define(version: 20180618184048) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 20180605010014) do
     t.string   "likeable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "emoji_type"
   end
 
   create_table "node", primary_key: "nid", force: true do |t|

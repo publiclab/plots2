@@ -27,6 +27,32 @@ module ApplicationHelper
     end if content.present?
   end
 
+  def emoji_names_list
+    emojis = []
+    image_map = {}
+    Emoji.all.each do |e|
+      next unless e.raw
+      val = ":#{e.name}:"
+      emojis<<{ value: val, text: e.name }
+      image_map[e.name] = e.raw
+    end
+    { emojis: emojis, image_map: image_map }
+  end
+
+  def emoji_info
+    emoji_names = ["thumbs-up", "thumbs-down", "laugh",
+                   "hooray", "confused", "heart"]
+    emoji_image_map = {
+      "thumbs-up" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png",
+      "thumbs-down" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png",
+      "laugh" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png",
+      "hooray" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png",
+      "confused" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png",
+      "heart" => "https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png"
+    }
+    [emoji_names, emoji_image_map]
+  end
+
   def feature(title)
     features = Node.where(type: 'feature', title: title)
     if !features.empty?
