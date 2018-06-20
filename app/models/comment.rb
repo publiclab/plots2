@@ -201,7 +201,7 @@ class Comment < ApplicationRecord
   end
 
   def emoji_likes
-    self.likes.group(:emoji_type).count
+    likes.group(:emoji_type).count
   end
 
   def self.receive_mail(message)

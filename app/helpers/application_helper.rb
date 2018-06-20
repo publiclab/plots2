@@ -50,7 +50,7 @@ module ApplicationHelper
       "confused" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png",
       "heart" => "https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png"
     }
-    return emoji_names, emoji_image_map
+    [emoji_names, emoji_image_map]
   end
 
   def feature(title)
