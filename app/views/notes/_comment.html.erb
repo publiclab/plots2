@@ -73,43 +73,17 @@
             <i class='icon fa fa-smile-o'></i>
             <sup style="font-size: 12px;">+</sup>
           </button>
-          <ul style="background: #f8f8f8" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li class="grow">
-              <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=ThumbsUp" %>
-              <%= link_to str, data: { method: "post", remote: true }, style: "padding: 0;" do %>
-                <img class="emoji" height="20" width="20" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png">
-              <% end %>
-            </li>
-            <li class="grow">
-              <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=ThumbsDown" %>
-              <%= link_to str, data: { method: "post", remote: true }, style: "padding: 0;" do %>
-                <img class="emoji" height="20" width="20" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png">
-              <% end %>
-            </li>
-            <li class="grow">
-              <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=Laugh" %>
-              <%= link_to str, data: { method: "post", remote: true }, style: "padding: 0;" do %>
-                <img class="emoji" height="20" width="20" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png">
-              <% end %>
-            </li>
-            <li class="grow">
-              <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=Hooray" %>
-              <%= link_to str, data: { method: "post", remote: true }, style: "padding: 0;" do %>
-                <img class="emoji" height="20" width="20" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png">
-              <% end %>
-            </li>
-            <li class="grow">
-              <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=Confused" %>
-              <%= link_to str, data: { method: "post", remote: true }, style: "padding: 0;" do %>
-                <img class="emoji" height="20" width="20" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png">
-              <% end %>
-            </li>
-            <li class="grow">
-              <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=Heart" %>
-              <%= link_to str, data: { method: "post", remote: true }, style: "padding: 0;" do %>
-                <img class="emoji" height="20" width="20" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png">
-              <% end %>
-            </li>
+          <ul id="emoji-dropdown" style="background: #f8f8f8" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <% emoji_names, emoji_image_map = emoji_info %>
+            <% emoji_names.each do |e| %>
+              <li class="grow">
+                <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
+                <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=#{capitalized_emoji_name}" %>
+                <%= link_to str, data: { method: "post", remote: true }, style: "padding: 0;" do %>
+                  <img class="emoji" height="20" width="20" src="<%= emoji_image_map[e] %>">
+                <% end %>
+              </li>
+            <% end %>
           </ul>
       <% end %>
     </div>
@@ -143,16 +117,8 @@
   </div>
   <% str = "#{comment.id}-like-emojis" %>
   <div id=<%= str %> class="navbar-text navbar-right pull-right" style="margin: 0;width: 100%;display: flex;border: 1px solid #e7e7e7;border-top: 0;">
-    <% emoji_names = ["thumbs-up", "thumbs-down", "laugh", "hooray", "confused", "heart"] %>
+    <% emoji_names, emoji_image_map = emoji_info %>
     <% emoji_like_map = comment.emoji_likes %>
-    <% emoji_image_map = {
-      "thumbs-up" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png",
-      "thumbs-down" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png",
-      "laugh" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png",
-      "hooray" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png",
-      "confused" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png",
-      "heart" => "https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png"
-    } %>
     <% emoji_names.each do |e| %>
       <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
       <% str = "#{comment.id}-emoji-button-#{e}" %>
@@ -172,13 +138,13 @@
 </div>
 
 <style>
-  .open>.dropdown-menu {
+  .open>#emoji-dropdown.dropdown-menu {
     display: flex;
     justify-content: space-around;
     padding: 6px;
   }
 
-  .dropdown-menu {
+  #emoji-dropdown .dropdown-menu {
     min-width: 196px;
   }
 

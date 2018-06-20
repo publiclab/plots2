@@ -39,6 +39,20 @@ module ApplicationHelper
     { emojis: emojis, image_map: image_map }
   end
 
+  def emoji_info
+    emoji_names = ["thumbs-up", "thumbs-down", "laugh",
+                   "hooray", "confused", "heart"]
+    emoji_image_map = {
+      "thumbs-up" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png",
+      "thumbs-down" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png",
+      "laugh" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png",
+      "hooray" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png",
+      "confused" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png",
+      "heart" => "https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png"
+    }
+    return emoji_names, emoji_image_map
+  end
+
   def feature(title)
     features = Node.where(type: 'feature', title: title)
     if !features.empty?
