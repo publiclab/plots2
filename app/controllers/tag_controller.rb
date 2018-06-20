@@ -95,12 +95,28 @@ class TagController < ApplicationController
         .order('node_revisions.timestamp DESC')
     else
       @tags = Tag.where(name: params[:id])
-      nodes = Node.where(status: 1, type: node_type)
-        .includes(:revision, :tag)
-        .references(:term_data, :node_revisions)
-        .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
-        .paginate(page: params[:page], per_page: 24)
-        .order('node_revisions.timestamp DESC')
+
+      if(@node_type == 'questions')
+        if params[:id].include?"question:"
+          other_tag = params[:id].split(':')[1]
+        else
+          other_tag = "question:" + params[:id]
+        end
+
+        nodes = Node.where(status: 1, type: node_type)
+                    .includes(:revision, :tag)
+                    .references(:term_data, :node_revisions)
+                    .where('term_data.name = ? OR term_data.name = ? OR term_data.parent = ?', params[:id], other_tag, params[:id])
+                    .paginate(page: params[:page], per_page: 24)
+                    .order('node_revisions.timestamp DESC')
+      else
+        nodes = Node.where(status: 1, type: node_type)
+                    .includes(:revision, :tag)
+                    .references(:term_data, :node_revisions)
+                    .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
+                    .paginate(page: params[:page], per_page: 24)
+                    .order('node_revisions.timestamp DESC')
+      end
     end
     nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
