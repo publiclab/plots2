@@ -96,7 +96,7 @@ class TagController < ApplicationController
     else
       @tags = Tag.where(name: params[:id])
 
-      if (@node_type == 'questions')
+      if @node_type == 'questions'
         if params[:id].include? "question:"
           other_tag = params[:id].split(':')[1]
         else
