@@ -1,14 +1,32 @@
-<% comment_star = "#comment-like-star-#{@comment_id}-#{@user_id}" %>
-<% comment_count = "#comment-like-count-#{@comment_id}-#{@user_id}" %>
-
-<% if @is_liked %>
-	$("<%= comment_star %>").removeClass("fa fa-star").addClass("fa fa-star-o");
-	oldValue = parseInt($("<%= comment_count %>").html());
-	newValue = oldValue-1;
-	$("<%= comment_count %>").html(newValue);
-<% else %>
-	$("<%= comment_star %>").removeClass("fa fa-star-o").addClass("fa fa-star");
-	oldValue = parseInt($("<%= comment_count %>").html());
-	newValue = oldValue+1;
-	$("<%= comment_count %>").html(newValue);	
+<% str="##{@comment_id}-like-emojis button" %>
+$("<%= str %>").css("display","none");
+<% if @likes.has_key? "ThumbsUp" %>
+  <% str="##{@comment_id}-emoji-button-thumbs-up" %>
+  $("<%= str %>").css("display","flex");
+  $("<%= str %> div").val("<%= @likes["ThumbsUp"] %>");
+<% end %>
+<% if @likes.has_key? "ThumbsDown" %>
+  <% str="##{@comment_id}-emoji-button-thumbs-down" %>
+  $("<%= str %>").css("display","flex");
+  $("<%= str %> div").val("<%= @likes["ThumbsDown"] %>");
+<% end %>
+<% if @likes.has_key? "Laugh" %>
+  <% str="##{@comment_id}-emoji-button-laugh" %>
+  $("<%= str %>").css("display","flex");
+  $("<%= str %> div").val("<%= @likes["Laugh"] %>");
+<% end %>
+<% if @likes.has_key? "Hooray" %>
+  <% str="##{@comment_id}-emoji-button-hooray" %>
+  $("<%= str %>").css("display","flex");
+  $("<%= str %> div").val("<%= @likes["Hooray"] %>");
+<% end %>
+<% if @likes.has_key? "Confused" %>
+  <% str="##{@comment_id}-emoji-button-confused" %>
+  $("<%= str %>").css("display","flex");
+  $("<%= str %> div").val("<%= @likes["Confused"] %>");
+<% end %>
+<% if @likes.has_key? "Heart" %>
+  <% str="##{@comment_id}-emoji-button-heart" %>
+  $("<%= str %>").css("display","flex");
+  $("<%= str %>").val("<%= @likes["Heart"] %>");
 <% end %>
