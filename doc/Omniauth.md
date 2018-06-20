@@ -29,15 +29,10 @@ Developers can create a developer's app for OAuth. Each app created has an app_i
 * For creating Google app go to https://console.developers.google.com/apis/library
 And then create an app. Search for the app_id and app_secret present in your app.
 
-## How to set up OAuth Locally?
+## How to set up OAuth?
 
-Create a file config/application.yml and add the app_ids and app_secrets of the provider which you want to use on your local machine.
-
-## How to set up OAuth in Production Or Unstable?
-
-Add the app_id and app_secret in the Jenkins and containers/docker*.yml files.
-
-Note: Please take care of setting up the details in your developer's app. The settings for unstable, production and development will be different.
+Add the app_id and app_secret in the Jenkins and containers/docker*.yml files in the production.
+They are accessed by ENV["OAUTH_GITHUB_APP_KEY"], ENV["OAUTH_GITHUB_APP_SECRET"] etc inside the (config/initializers/omniauth.rb)[https://github.com/publiclab/plots2/blob/master/config/initializers/omniauth.rb]
 
 ## Variables used
 
