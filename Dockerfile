@@ -1,9 +1,8 @@
 # Dockerfile # Plots2
 # https://github.com/publiclab/plots2
 
-FROM ruby:2.4.1-jessie
+FROM ruby:2.4.1-stretch
 
-LABEL maintainer="Sebastian Silva <sebastian@fuentelibre.org>"
 LABEL description="This image deploys Plots2."
 
 # Set correct environment variables.
