@@ -98,7 +98,7 @@ class UsersController < ApplicationController
                     .where('rusers.role = ?', params[:id])
                     .where('rusers.status = 1')
                     .page(params[:page])
-    
+
     elsif @tagname_param
       @users = User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
                     .page(params[:page])
@@ -119,6 +119,8 @@ class UsersController < ApplicationController
   def profile
     if current_user && params[:id].nil?
       redirect_to "/profile/#{current_user.username}"
+    elsif !current_user && params[:id].nil?
+      redirect_to "/"
     else
       @user = DrupalUser.find_by(name: params[:id])
       @profile_user = User.find_by(username: params[:id])

@@ -24,3 +24,43 @@ longitude:
   id: 5
   uid: 1
   value: lon:-90
+
+google1:
+  id: 6
+  uid: 1
+  value: oauth:google_oauth2:987654321
+
+twitter1:
+  id: 7
+  uid: 1
+  value: oauth:twitter:987654321
+
+facebook1:
+  id: 8
+  uid: 1
+  value: oauth:facebook:987654321
+
+github1:
+  id: 9
+  uid: 1
+  value: oauth:github:987654321
+
+google2:
+  id: 10
+  uid: 2
+  value: oauth:google_oauth2:876543219
+
+twitter2:
+  id: 11
+  uid: 2
+  value: oauth:twitter:876543219
+
+facebook2:
+  id: 12
+  uid: 2
+  value: oauth:facebook:876543219
+
+github2:
+  id: 13
+  uid: 2
+  value: oauth:github:876543219
