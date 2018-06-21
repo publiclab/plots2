@@ -5,6 +5,8 @@ require "mailman"
 
 Mailman.config.logger = Logger.new("public/mailman.log")
 
+Mailman.config.ignore_stdin = true
+
 # Email Configration for mailman
 Mailman.config.pop3 = {
   server: ENV['SERVER_ADDRESS'], # example pop.example.com 
