@@ -15,8 +15,10 @@ class SearchFlowTest < ActionDispatch::IntegrationTest
 
     # Perform a POST search submission without a term
     post '/search',
+         params: {
          key_words: 'blog',
          main_type: 'Notes or Wiki updates'
+         }
 
     assert_response :success
 
@@ -25,17 +27,21 @@ class SearchFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     post '/search',
+        params: {
          'search_record' => {
            key_words: 'post',
            main_type: 'Notes or Wiki updates'
          }
+        }
 
     assert_response :success
 
     # https://publiclab.org/searches?key_words=spec
 
     post '/search',
+        params: {
          key_words: 'spectrom'
+        }
 
     assert_response :success
   end

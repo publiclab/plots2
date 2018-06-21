@@ -10,7 +10,7 @@
 # Ignore all logfiles and tempfiles.
 log/*.log
 log/*
-tmp
+/tmp/*
 data
 *.swp
 .DS_Store
@@ -46,7 +46,7 @@ production.db
 test.db
 solr/*
 test/reports/
-
+!config/application.yml
 # Ignore NPM
 node_modules
 .byebug_history

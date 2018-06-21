@@ -8,12 +8,11 @@ end
 
 class User < ActiveRecord::Base
   self.table_name = 'rusers'
-  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status
   alias_attribute :name, :username
 
   acts_as_authentic do |c|
     c.openid_required_fields = %i(nickname email)
-    VALID_EMAIL_REGEX = /\A[-[:alnum:]+.]+@[[:alnum:]-.]+[.][[:alpha:]]+\z/
+    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
     c.validates_format_of_email_field_options = { with: VALID_EMAIL_REGEX }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
@@ -374,7 +373,7 @@ class User < ActiveRecord::Base
       .references(:node_revision)
       .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
       .order('node_revisions.timestamp DESC')
-      .uniq
+      .distinct
   end
 
   def social_link(site)
@@ -413,6 +412,24 @@ class User < ActiveRecord::Base
     revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
     contributors = (notes+answers+questions+comments+revisions).compact.uniq.length
     contributors
+  end
+
+  def self.create_with_omniauth(auth)
+    #email prefix is part of email before @ with periods replaced with underscores
+    #generate a 2 digit alphanumeric number and append it at the end of email-prefix
+    charset = Array('A'..'Z') + Array('a'..'z')  + Array(0..9)
+    email_prefix = auth["info"]["email"].gsub('.','_').split('@')[0]
+    while(!User.where(username: email_prefix).empty?)
+         email_prefix =  auth["info"]["email"].gsub('.','_').split('@')[0] + Array.new(2) { charset.sample }.join
+    end
+    puts(auth)
+    create! do |user|
+      user.username = email_prefix
+      user.email = auth["info"]["email"]
+      user.password = auth["uid"]
+      user.password_confirmation = auth["uid"]
+      user.save!
+    end
   end
 
 end

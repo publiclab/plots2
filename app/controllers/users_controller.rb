@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_filter :require_no_user, :only => [:new]
-  before_filter :require_user, :only => [:edit, :update]
+  before_action :require_no_user, :only => [:new]
+  before_action :require_user, :only => [:edit, :update]
   before_action :set_user, only: [:info, :followed, :following, :followers]
 
   def new
@@ -10,11 +10,11 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     @user.status = 1
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
-    @spamaway = Spamaway.new(params[:spamaway]) unless using_recaptcha
+    @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
     if ((@spamaway&.valid?) || recaptcha) && @user.save({})
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
   def update                # login required, see before filter
     @user = current_user
-    @user.attributes = params[:user]
+    @user.attributes = user_params
     @user.save({}) do |result|
       if result
         if session[:openid_return_to] # for openid login, redirects back to openid auth process
@@ -51,7 +51,7 @@ class UsersController < ApplicationController
           redirect_to return_to
         else
           flash[:notice] = I18n.t('users_controller.successful_updated_profile')+"<a href='/dashboard'>"+I18n.t('users_controller.return_dashboard')+" &raquo;</a>"
-          redirect_to "/profile/"+@user.username
+          return redirect_to "/profile/"+@user.username
         end
       else
         render :template => 'users/edit'
@@ -98,7 +98,7 @@ class UsersController < ApplicationController
                     .where('rusers.role = ?', params[:id])
                     .where('rusers.status = 1')
                     .page(params[:page])
-    
+
     elsif @tagname_param
       @users = User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
                     .page(params[:page])
@@ -119,6 +119,8 @@ class UsersController < ApplicationController
   def profile
     if current_user && params[:id].nil?
       redirect_to "/profile/#{current_user.username}"
+    elsif !current_user && params[:id].nil?
+      redirect_to "/"
     else
       @user = DrupalUser.find_by(name: params[:id])
       @profile_user = User.find_by(username: params[:id])
@@ -307,4 +309,13 @@ class UsersController < ApplicationController
   def set_user
     @user = User.find_by(username: params[:id])
   end
+  private
+  def user_params
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
+  end
+  def spamaway_params
+    params.require(:spamaway).permit(:follow_instructions, :statement1, :statement2, :statement3, :statement4)
+  end
 end
+
+

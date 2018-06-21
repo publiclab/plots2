@@ -1,6 +1,37 @@
 class UserTagsController < ApplicationController
   respond_to :html, :xml, :json, :js
 
+  require 'will_paginate/array'
+
+  def index
+    @toggle = params[:sort] || "uses"
+
+    @title = I18n.t('tag_controller.tags')
+    @paginated = true
+    if params[:search]
+      keyword = params[:search]
+      @user_tags = UserTag
+        .select('value')
+        .where("value LIKE :keyword", keyword: "%#{keyword}%")
+        .group(:value)
+        .order('value ASC')
+        .count('value').to_a
+        .paginate(page: params[:page], per_page: 24)
+    elsif @toggle == "value"
+      @user_tags = UserTag.group(:value)
+        .select('value')
+        .order('value ASC')
+        .count('value').to_a
+        .paginate(page: params[:page], per_page: 24)
+    else # @toggle == "uses"
+      @user_tags = UserTag.group(:value)
+        .select('value')
+        .order('count_value DESC')
+        .count('value').to_a
+        .paginate(page: params[:page], per_page: 24)
+    end
+  end
+
   def create
 
     @output = {
@@ -23,13 +54,13 @@ class UserTagsController < ApplicationController
 
           unless exist
             user_tag = user.user_tags.build(value: name)
-            if  tagname.split(':')[0] == "oauth-facebook"
+            if  tagname.split(':')[1] == "facebook"
               @output[:errors] << "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
-            elsif  tagname.split(':')[0] == "oauth-github"
+            elsif  tagname.split(':')[1] == "github"
               @output[:errors] << "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
-            elsif  tagname.split(':')[0] ==  "oauth-google"
+            elsif  tagname.split(':')[1] ==  "google_oauth2"
               @output[:errors] << "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
-            elsif  tagname.split(':')[0] == "oauth-twitter"
+            elsif  tagname.split(':')[1] == "twitter"
              @output[:errors] << "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
             elsif user_tag.save
               @output[:saved] << [name, user_tag.id]

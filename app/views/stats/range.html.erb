@@ -4,24 +4,41 @@
 
 <hr />
 
-<h4><%= @notes %> notes in this period</h4>
-
-<h4><%= @wikis %> wiki edits in this period</h4>
-
-<h4><%= @people %> new member registrations in this period</h4>
-
-<h4><%= @answers %> answers posted in this period</h4>
-
-<h4><%= @comments %> comments posted in this period</h4>
-
-<h4><%= @questions.count %> questions posted in this period</h4>
-
-<h4><%= @contributors %> contributors in this period</h4>
+<table class="table">
+  <tr>
+    <td><%= @notes %></td>
+    <td>notes in this period</td>
+  </tr>
+  <tr>
+    <%= @wikis %></td>
+    wiki edits in this period</td>
+  </tr>
+  <tr>
+    <td><%= @people %></td>
+    <td>new member registrations in this period</td>
+  </tr>
+  <tr>
+    <td><%= @answers %></td>
+    <td>answers posted in this period</td>
+  </tr>
+  <tr>
+    <td><%= @comments %></td>
+    <td>comments posted in this period</td>
+  </tr>
+  <tr>
+    <td><%= @questions.count %></td>
+    <td>questions posted in this period</td>
+  </tr>
+  <tr>
+    <td><%= @contributors %></td>
+    <td>contributors in this period</td>
+  </tr>
+<table>
 
 <p><i>Member registration may include spam accounts</i></p>
 
 <p>
-  Back by: 
+  Back by:
   <a href="/stats/range/<%= (@start - 1.week).to_formatted_s(:long)   %>/<%= (@end - 1.week).to_formatted_s(:long)   %>">one week</a>,
   <a href="/stats/range/<%= (@start - 1.month).to_formatted_s(:long)  %>/<%= (@end - 1.month).to_formatted_s(:long)  %>">one month</a>,
   <a href="/stats/range/<%= (@start - 3.months).to_formatted_s(:long) %>/<%= (@end - 3.months).to_formatted_s(:long) %>">three months</a>,
@@ -29,7 +46,7 @@
 </p>
 
 <p>
-  Forward by: 
+  Forward by:
   <a href="/stats/range/<%= (@start + 1.week).to_formatted_s(:long)   %>/<%= (@end + 1.week).to_formatted_s(:long)   %>">one week</a>,
   <a href="/stats/range/<%= (@start + 1.month).to_formatted_s(:long)  %>/<%= (@end + 1.month).to_formatted_s(:long)  %>">one month</a>,
   <a href="/stats/range/<%= (@start + 3.months).to_formatted_s(:long) %>/<%= (@end + 3.months).to_formatted_s(:long) %>">three months</a>,

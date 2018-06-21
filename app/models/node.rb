@@ -21,11 +21,10 @@ end
 class Node < ActiveRecord::Base
   include NodeShared # common methods for node-like models
 
-  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug, :views
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query, order = :default)
+  def self.search(query:, order: :default, limit:)
     orderParam = {changed: :desc} if order == :default
     orderParam = {cached_likes: :desc} if order == :likes
     orderParam = {views: :desc} if order == :views
@@ -44,7 +43,8 @@ class Node < ActiveRecord::Base
       end
     else
       nodes = Node.limit(limit)
-        .where('title LIKE ?', '%' + input + '%', status: 1)
+        .where('title LIKE ?', '%' + query + '%')
+        .where(status: 1)
         .order(orderParam)
     end
   end
@@ -861,13 +861,13 @@ class Node < ActiveRecord::Base
       errors ? I18n.t('node.only_admins_can_lock') : false
     elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).length <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
-    elsif  tagname.split(':')[0] == "oauth-facebook"
+    elsif  tagname.split(':')[1] == "facebook"
       errors ? "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[0] == "oauth-github"
+    elsif  tagname.split(':')[1] == "github"
       errors ? "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[0] ==  "oauth-google"
+    elsif  tagname.split(':')[1] ==  "google_oauth2"
       errors ? "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[0] == "oauth-twitter"
+    elsif  tagname.split(':')[1] == "twitter"
       errors ? "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
     else
       true
