@@ -35,3 +35,12 @@ services:
     links:
       - db
     restart: unless-stopped
+  mailman:
+    build: .
+    command: script/mailman_server
+    environment:
+      - SERVER_ADDRESS=${SERVER_ADDRESS}
+      - USERNAME=${USERNAME}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+    volumes:
+      - .:/app
