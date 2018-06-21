@@ -4,11 +4,11 @@ read -p "Enter your cloud9 username: " un
 rvm install ruby-2.3.7
 source $(rvm 2.3.7 do rvm env --path)
 rvm use 2.3.7
-bundle install
 sudo apt-get update
 sudo apt-get -y install imagemagick ruby-rmagick
 npm install -g bower
 bower install
+gem install bundler
 bundle install --without production mysql
 cp db/schema.rb.example db/schema.rb
 cp config/database.yml.sqlite.example config/database.yml
