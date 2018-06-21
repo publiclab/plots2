@@ -252,11 +252,11 @@ var rdoc_rel_prefix = './';
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
   <span class="ruby-ivar">@action</span> = <span class="ruby-string">&quot;update&quot;</span> <span class="ruby-comment"># sets the form url</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>] <span class="ruby-comment"># admin only</span>
-    <span class="ruby-ivar">@drupal_user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-    <span class="ruby-ivar">@user</span> = <span class="ruby-ivar">@drupal_user</span>.<span class="ruby-identifier">user</span>
+    <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+    <span class="ruby-ivar">@user</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">user</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
-    <span class="ruby-ivar">@drupal_user</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">drupal_user</span>
+    <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">user</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">uid</span> <span class="ruby-comment">#|| current_user.role == &quot;admin&quot;</span>
     <span class="ruby-identifier">render</span> <span class="ruby-value">:template</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;users/edit&quot;</span>

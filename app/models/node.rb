@@ -89,7 +89,7 @@ class Node < ActiveRecord::Base
   has_many :node_selections, foreign_key: :nid, dependent: :destroy
   has_many :answers, foreign_key: :nid, dependent: :destroy
 
-  belongs_to :drupal_user, foreign_key: 'uid'
+  belongs_to :user, foreign_key: 'uid'
 
   validates :title, presence: :true
   validates_with UniqueUrlValidator, on: :create
@@ -240,7 +240,7 @@ class Node < ActiveRecord::Base
   # users who like this node
   def likers
     node_selections
-      .joins(:drupal_user)
+      .joins(:user)
       .references(:users)
       .where(liking: true)
       .where('users.status = ?', 1)
@@ -723,7 +723,7 @@ class Node < ActiveRecord::Base
   end
 
   def add_barnstar(tagname, giver)
-    add_tag(tagname, giver.drupal_user)
+    add_tag(tagname, giver.user)
     CommentMailer.notify_barnstar(giver, self).deliver_now
   end
 

@@ -82,11 +82,11 @@ var rdoc_rel_prefix = './';
 
     <li ><a href="#method-i-content_followed_in_past_period">#content_followed_in_past_period</a>
 
-    <li ><a href="#method-i-create_drupal_user">#create_drupal_user</a>
+    <li ><a href="#method-i-create_user">#create_user</a>
 
-    <li ><a href="#method-i-destroy_drupal_user">#destroy_drupal_user</a>
+    <li ><a href="#method-i-destroy_user">#destroy_user</a>
 
-    <li ><a href="#method-i-drupal_user">#drupal_user</a>
+    <li ><a href="#method-i-user">#user</a>
 
     <li ><a href="#method-i-first_time_poster">#first_time_poster</a>
 
@@ -354,7 +354,7 @@ var rdoc_rel_prefix = './';
   <span class="ruby-identifier">comment_count</span> = <span class="ruby-value">0</span>
   (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">span</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">day</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">days</span>[<span class="ruby-identifier">day</span>] = <span class="ruby-constant">Comment</span>.<span class="ruby-identifier">select</span>(<span class="ruby-value">:timestamp</span>)
-                       .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>,
+                       .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">uid</span>,
                                <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>,
                                <span class="ruby-identifier">timestamp</span><span class="ruby-operator">:</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">midnight</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">day</span>.<span class="ruby-identifier">days</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">..</span><span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">midnight</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">day</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">days</span>.<span class="ruby-identifier">to_i</span>)
                        .<span class="ruby-identifier">count</span>
@@ -407,10 +407,10 @@ var rdoc_rel_prefix = './';
       </div>
 
 
-      <div id="method-i-create_drupal_user" class="method-detail ">
+      <div id="method-i-create_user" class="method-detail ">
 
         <div class="method-heading">
-          <span class="method-name">create_drupal_user</span><span
+          <span class="method-name">create_user</span><span
             class="method-args">()</span>
 
           <span class="method-click-advice">click to toggle source</span>
@@ -425,12 +425,12 @@ var rdoc_rel_prefix = './';
 
 
 
-          <div class="method-source-code" id="create_drupal_user-source">
+          <div class="method-source-code" id="create_user-source">
             <pre><span class="ruby-comment"># File app/models/user.rb, line 47</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_drupal_user</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_user</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">bio</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&#39;&#39;</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">nil?</span>
-          <span class="ruby-identifier">drupal_user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">username</span>,
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">nil?</span>
+          <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">username</span>,
                                   <span class="ruby-identifier">pass</span><span class="ruby-operator">:</span> <span class="ruby-identifier">rand</span>(<span class="ruby-value">100_000_000_000_000_000_000</span>),
                                   <span class="ruby-identifier">mail</span><span class="ruby-operator">:</span> <span class="ruby-identifier">email</span>,
                                   <span class="ruby-identifier">mode</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>,
@@ -450,8 +450,8 @@ var rdoc_rel_prefix = './';
                                   <span class="ruby-identifier">data</span><span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>,
                                   <span class="ruby-identifier">timezone_id</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>,
                                   <span class="ruby-identifier">timezone_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>)
-    <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">save!</span>
-    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span> = <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>
+    <span class="ruby-identifier">user</span>.<span class="ruby-identifier">save!</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">uid</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">username</span>).<span class="ruby-identifier">uid</span>
   <span class="ruby-keyword">end</span>
@@ -466,10 +466,10 @@ var rdoc_rel_prefix = './';
       </div>
 
 
-      <div id="method-i-destroy_drupal_user" class="method-detail ">
+      <div id="method-i-destroy_user" class="method-detail ">
 
         <div class="method-heading">
-          <span class="method-name">destroy_drupal_user</span><span
+          <span class="method-name">destroy_user</span><span
             class="method-args">()</span>
 
           <span class="method-click-advice">click to toggle source</span>
@@ -484,10 +484,10 @@ var rdoc_rel_prefix = './';
 
 
 
-          <div class="method-source-code" id="destroy_drupal_user-source">
+          <div class="method-source-code" id="destroy_user-source">
             <pre><span class="ruby-comment"># File app/models/user.rb, line 77</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy_drupal_user</span>
-  <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">destroy</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy_user</span>
+  <span class="ruby-identifier">user</span>.<span class="ruby-identifier">destroy</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
 
@@ -499,10 +499,10 @@ var rdoc_rel_prefix = './';
       </div>
 
 
-      <div id="method-i-drupal_user" class="method-detail ">
+      <div id="method-i-user" class="method-detail ">
 
         <div class="method-heading">
-          <span class="method-name">drupal_user</span><span
+          <span class="method-name">user</span><span
             class="method-args">()</span>
 
           <span class="method-click-advice">click to toggle source</span>
@@ -518,9 +518,9 @@ progress. start getting rid of these calls…</p>
 
 
 
-          <div class="method-source-code" id="drupal_user-source">
+          <div class="method-source-code" id="user-source">
             <pre><span class="ruby-comment"># File app/models/user.rb, line 87</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">drupal_user</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">user</span>
   <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">username</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -862,7 +862,7 @@ wildcard</p>
           <div class="method-source-code" id="lat-source">
             <pre><span class="ruby-comment"># File app/models/user.rb, line 127</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">lat</span>
-  <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">lat</span>
+  <span class="ruby-identifier">user</span>.<span class="ruby-identifier">lat</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
 
@@ -895,7 +895,7 @@ wildcard</p>
           <div class="method-source-code" id="lon-source">
             <pre><span class="ruby-comment"># File app/models/user.rb, line 131</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">lon</span>
-  <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">lon</span>
+  <span class="ruby-identifier">user</span>.<span class="ruby-identifier">lon</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
 
@@ -933,7 +933,7 @@ wildcard</p>
   <span class="ruby-identifier">note_count</span> = <span class="ruby-value">0</span>
   (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">span</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">day</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">days</span>[<span class="ruby-identifier">day</span>] = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">select</span>(<span class="ruby-value">:created</span>)
-                    .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>,
+                    .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">uid</span>,
                             <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;note&#39;</span>,
                             <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>,
                             <span class="ruby-identifier">created</span><span class="ruby-operator">:</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">midnight</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">day</span>.<span class="ruby-identifier">days</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">..</span><span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">midnight</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">day</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">days</span>.<span class="ruby-identifier">to_i</span>)
@@ -1396,7 +1396,7 @@ wildcard</p>
           <div class="method-source-code" id="uid-source">
             <pre><span class="ruby-comment"># File app/models/user.rb, line 115</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">uid</span>
-  <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>
+  <span class="ruby-identifier">user</span>.<span class="ruby-identifier">uid</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
 
@@ -1465,7 +1465,7 @@ wildcard</p>
   <span class="ruby-identifier">weeks</span> = {}
   (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">span</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">week</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">weeks</span>[<span class="ruby-identifier">span</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">week</span>] = <span class="ruby-constant">Comment</span>.<span class="ruby-identifier">select</span>(<span class="ruby-value">:timestamp</span>)
-                                .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>,
+                                .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">uid</span>,
                                         <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>,
                                         <span class="ruby-identifier">timestamp</span><span class="ruby-operator">:</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">week</span>.<span class="ruby-identifier">weeks</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">..</span><span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">week</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">weeks</span>.<span class="ruby-identifier">to_i</span>)
                                 .<span class="ruby-identifier">count</span>
@@ -1506,7 +1506,7 @@ wildcard</p>
   <span class="ruby-identifier">weeks</span> = {}
   (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">span</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">week</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">weeks</span>[<span class="ruby-identifier">span</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">week</span>] = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">select</span>(<span class="ruby-value">:created</span>)
-                             .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>,
+                             .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">uid</span>,
                                      <span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;note&#39;</span>,
                                      <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>,
                                      <span class="ruby-identifier">created</span><span class="ruby-operator">:</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">week</span>.<span class="ruby-identifier">weeks</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">..</span><span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">week</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">weeks</span>.<span class="ruby-identifier">to_i</span>)
@@ -1550,7 +1550,7 @@ wildcard</p>
   <span class="ruby-identifier">wiki_edit_count</span> = <span class="ruby-value">0</span>
   (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">span</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">day</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">days</span>[<span class="ruby-identifier">day</span>] = <span class="ruby-constant">Revision</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:node</span>)
-                        .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">uid</span>,
+                        .<span class="ruby-identifier">where</span>( <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">uid</span>,
                                 <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>,
                                 <span class="ruby-identifier">timestamp</span><span class="ruby-operator">:</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">midnight</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">day</span>.<span class="ruby-identifier">days</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">..</span><span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">midnight</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">day</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">days</span>.<span class="ruby-identifier">to_i</span>)
                         .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;node.type != ?&#39;</span>, <span class="ruby-string">&#39;note&#39;</span>)

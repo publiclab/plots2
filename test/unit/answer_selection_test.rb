@@ -8,9 +8,9 @@ class AnswerSelectionTest < ActiveSupport::TestCase
 
   test 'should relate answer_selection with answer and node' do
     answer_selection = AnswerSelection.new
-    user = drupal_users(:bob)
+    user = users(:bob)
     answer = answers(:one)
-    answer_selection.drupal_user = user
+    answer_selection.user = user
     answer_selection.answer = answer
     answer_selection.save
     assert_equal user.answer_selections.last, answer_selection
@@ -24,7 +24,7 @@ class AnswerSelectionTest < ActiveSupport::TestCase
   end
 
   test 'should create answer_selection if not present' do
-    user = drupal_users(:admin)
+    user = users(:admin)
     answer = answers(:one)
     assert_difference 'AnswerSelection.count' do
       assert AnswerSelection.set_likes(user.uid, answer.id, true)
@@ -32,7 +32,7 @@ class AnswerSelectionTest < ActiveSupport::TestCase
   end
 
   test 'should set liking false if value is false' do
-    user = drupal_users(:bob)
+    user = users(:bob)
     answer = answers(:one)
     assert_no_difference 'AnswerSelection.count' do
       assert !AnswerSelection.set_likes(user.uid, answer.id, false)
@@ -40,7 +40,7 @@ class AnswerSelectionTest < ActiveSupport::TestCase
   end
 
   test 'should not create new answer_selection if present' do
-    user = drupal_users(:jeff)
+    user = users(:jeff)
     answer = answers(:one)
     assert_no_difference 'AnswerSelection.count' do
       assert AnswerSelection.set_likes(user.uid, answer.id, true)
@@ -48,7 +48,7 @@ class AnswerSelectionTest < ActiveSupport::TestCase
   end
 
   test 'should increase cached likes if liked' do
-    user = drupal_users(:admin)
+    user = users(:admin)
     answer = answers(:one)
     assert_difference 'answer.cached_likes' do
       AnswerSelection.set_likes(user.uid, answer.id, true)
@@ -57,7 +57,7 @@ class AnswerSelectionTest < ActiveSupport::TestCase
   end
 
   test 'should decrease cached likes if unliked' do
-    user = drupal_users(:bob)
+    user = users(:bob)
     answer = answers(:one)
     assert_difference 'answer.cached_likes', -1 do
       AnswerSelection.set_likes(user.uid, answer.id, false)

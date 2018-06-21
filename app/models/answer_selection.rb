@@ -1,6 +1,6 @@
 class AnswerSelection < ApplicationRecord
   belongs_to :answer, foreign_key: :aid, dependent: :destroy
-  belongs_to :drupal_user, foreign_key: :user_id
+  belongs_to :user, foreign_key: :user_id
 
   def user
     User.find_by(username: User.find_by(uid: user_id).name)

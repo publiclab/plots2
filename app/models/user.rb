@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
 
   # this doesn't work... we should have a uid field on User
-  # has_one :drupal_users, :conditions => proc { ["drupal_users.name =  ?", self.username] }
+  # has_one :users, :conditions => proc { ["users.name =  ?", self.username] }
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
@@ -39,9 +39,9 @@ class User < ActiveRecord::Base
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
 
-  before_create :create_drupal_user
+  before_create :create_user
   before_save :set_token
-  after_destroy :destroy_drupal_user
+  after_destroy :destroy_user
 
   def self.search(query)
     User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
@@ -59,10 +59,10 @@ class User < ActiveRecord::Base
     return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor
   end
 
-  def create_drupal_user
+  def create_user
     self.bio ||= ''
-    if drupal_user.nil?
-      	    drupal_user = User.new(name: username,
+    if user.nil?
+      	    user = User.new(name: username,
                                     pass: rand(100_000_000_000_000_000_000),
                                     mail: email,
                                     mode: 0,
@@ -82,15 +82,15 @@ class User < ActiveRecord::Base
                                     data: nil,
                                     timezone_id: 0,
                                     timezone_name: '')
-      drupal_user.save!
-      self.id = drupal_user.uid
+      user.save!
+      self.id = user.uid
     else
       self.id = User.find_by(name: username).uid
     end
   end
 
-  def destroy_drupal_user
-    drupal_user.destroy
+  def destroy_user
+    user.destroy
   end
 
   def set_token
@@ -99,16 +99,16 @@ class User < ActiveRecord::Base
 
   # this is ridiculous. We need to store uid in this model.
   # ...migration is in progress. start getting rid of these calls...
-  def drupal_user
+  def user
     User.find_by(name: username)
   end
 
   def last
-    drupal_user.last
+    user.last
   end
 
   def node_count
-    drupal_user.node_count
+    user.node_count
   end
 
   def notes
@@ -136,7 +136,7 @@ class User < ActiveRecord::Base
   end
 
   def uid
-    drupal_user.uid
+    user.uid
   end
 
   def title
@@ -237,7 +237,7 @@ class User < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Node.select(:created)
-        .where(uid: drupal_user.uid,
+        .where( uid: user.uid,
                                        type: 'note',
                                        status: 1,
                                        created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
@@ -264,7 +264,7 @@ class User < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
-        .where(uid: drupal_user.uid,
+                            .where( uid: user.uid,
                                     status: 1,
                                     timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
         .count
@@ -278,7 +278,7 @@ class User < ActiveRecord::Base
     note_count = 0
     (0..span).each do |day|
       days[day] = Node.select(:created)
-        .where(uid: drupal_user.uid,
+        .where( uid: user.uid,
                               type: 'note',
                               status: 1,
                               created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
@@ -296,7 +296,7 @@ class User < ActiveRecord::Base
     wiki_edit_count = 0
     (0..span).each do |day|
       days[day] = Revision.joins(:node)
-        .where(uid: drupal_user.uid,
+        .where( uid: user.uid,
                                   status: 1,
                                   timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .where('node.type != ?', 'note')
@@ -314,7 +314,7 @@ class User < ActiveRecord::Base
     comment_count = 0
     (0..span).each do |day|
       days[day] = Comment.select(:timestamp)
-        .where(uid: drupal_user.uid,
+        .where( uid: user.uid,
                                  status: 1,
                                  timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .count

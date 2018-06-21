@@ -237,7 +237,7 @@ var rdoc_rel_prefix = './';
           <div class="method-source-code" id="create-source">
             <pre><span class="ruby-comment"># File app/controllers/notes_controller.rb, line 92</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
     <span class="ruby-identifier">saved</span>, <span class="ruby-ivar">@node</span>, <span class="ruby-ivar">@revision</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">new_note</span>(<span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span>,
                                             <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:title</span>],
                                             <span class="ruby-identifier">body</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:body</span>],

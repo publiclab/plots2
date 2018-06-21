@@ -2,8 +2,8 @@ class Comment < ApplicationRecord
   include CommentsShared # common methods for comment-like models
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
-  # dependent: :destroy, counter_cache: true
-  belongs_to :drupal_user, foreign_key: 'uid'
+                    # dependent: :destroy, counter_cache: true
+  belongs_to :user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, :as => :likeable
 

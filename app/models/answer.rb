@@ -2,7 +2,7 @@ class Answer < ApplicationRecord
   include NodeShared, CommentsShared # common methods for node-like and comment-like models
 
   belongs_to :node, foreign_key: 'nid'
-  belongs_to :drupal_user, foreign_key: 'uid'
+  belongs_to :user, foreign_key: 'uid'
   has_many :answer_selections, foreign_key: 'aid'
   has_many :comments, foreign_key: 'aid', dependent: :destroy
 
@@ -21,7 +21,7 @@ class Answer < ApplicationRecord
   # users who like this answer
   def likers
     answer_selections
-      .joins(:drupal_user)
+      .joins(:user)
       .references(:users)
       .where(liking: true)
       .where('users.status = ?', 1)

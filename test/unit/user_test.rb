@@ -11,7 +11,7 @@ class UserTest < ActiveSupport::TestCase
 
     assert user.first_time_poster
     assert_not_nil user.id
-    assert_not_nil user.drupal_user
+    assert_not_nil user.user
     assert_not_nil user.uid
     assert_not_nil user.email
     assert_not_nil user.bio
@@ -22,16 +22,16 @@ class UserTest < ActiveSupport::TestCase
 
   test 'basic user attributes' do
     user = users(:jeff)
-    assert_equal user.notes, user.drupal_user.notes
+    assert_equal user.notes, user.user.notes
     assert_not_nil user.tags
-    assert_not_nil user.drupal_user.tags
-    assert_equal user.tags, user.drupal_user.tags
+    assert_not_nil user.user.tags
+    assert_equal user.tags, user.user.tags
     assert_not_nil user.user_tags
-    assert_not_nil user.drupal_user.user_tags
-    assert_equal user.user_tags, user.drupal_user.user_tags
+    assert_not_nil user.user.user_tags
+    assert_equal user.user_tags, user.user.user_tags
     assert_not_nil user.tagnames
-    assert_not_nil user.drupal_user.tagnames
-    assert_equal user.tagnames, user.drupal_user.tagnames
+    assert_not_nil user.user.tagnames
+    assert_equal user.tagnames, user.user.tagnames
   end
 
   test 'user mysql native fulltext search' do
@@ -49,12 +49,12 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user.notes and first time user' do
-    assert        !drupal_users(:jeff).notes.empty?
-    assert        !drupal_users(:jeff).first_time_poster
-    assert_not  !drupal_users(:bob).notes.empty?
-    assert        drupal_users(:bob).first_time_poster
-    assert_not  !drupal_users(:lurker).notes.empty?
-    assert        drupal_users(:lurker).first_time_poster
+    assert        !users(:jeff).notes.empty?
+    assert        !users(:jeff).first_time_poster
+    assert_not  !users(:bob).notes.empty?
+    assert        users(:bob).first_time_poster
+    assert_not  !users(:lurker).notes.empty?
+    assert        users(:lurker).first_time_poster
   end
 
   test 'user reset key' do
@@ -147,21 +147,21 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user status changes when drupal user is banned or unbanned' do
-    drupal_user = drupal_users(:bob)
-    assert_equal 1, drupal_user.user.status
-    drupal_user.ban
-    assert_equal 0, drupal_user.user.status
-    drupal_user.unban
-    assert_equal 1, drupal_user.user.status
+    user = users(:bob)
+    assert_equal 1, user.user.status
+    user.ban
+    assert_equal 0, user.user.status
+    user.unban
+    assert_equal 1, user.user.status
   end
 
   test 'user status changes when drupal user is moderated or unmoderated' do
-    drupal_user = drupal_users(:bob)
-    assert_equal 1, drupal_user.user.status
-    drupal_user.moderate
-    assert_equal 5, drupal_user.user.status
-    drupal_user.unmoderate
-    assert_equal 1, drupal_user.user.status
+    user = users(:bob)
+    assert_equal 1, user.user.status
+    user.moderate
+    assert_equal 5, user.user.status
+    user.unmoderate
+    assert_equal 1, user.user.status
   end
 
   test 'daily_note_tally returns the correct type of array' do

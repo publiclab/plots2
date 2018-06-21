@@ -179,7 +179,7 @@ var rdoc_rel_prefix = './';
   <span class="ruby-identifier">revisions</span> = <span class="ruby-identifier">revisions</span>.<span class="ruby-identifier">to_a</span> <span class="ruby-comment"># ensure it can be serialized for caching</span>
   <span class="ruby-identifier">wikis</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">revisions</span>
   <span class="ruby-identifier">wikis</span> = <span class="ruby-identifier">wikis</span>.<span class="ruby-identifier">sort_by</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:created_at</span>).<span class="ruby-identifier">reverse</span>
-  <span class="ruby-identifier">comments</span> = <span class="ruby-constant">Comment</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:node</span>, <span class="ruby-value">:drupal_user</span>)
+  <span class="ruby-identifier">comments</span> = <span class="ruby-constant">Comment</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:node</span>, <span class="ruby-value">:user</span>)
                     .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;timestamp DESC&#39;</span>)
                     .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;timestamp - node.created &gt; ?&#39;</span>, <span class="ruby-value">86_400</span>) <span class="ruby-comment"># don&#39;t report edits within 1 day of page creation</span>
                     .<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>])
@@ -187,7 +187,7 @@ var rdoc_rel_prefix = './';
   <span class="ruby-comment"># group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp</span>
   <span class="ruby-identifier">comments</span> = <span class="ruby-identifier">comments</span>.<span class="ruby-identifier">group</span>(<span class="ruby-string">&#39;DATE(FROM_UNIXTIME(timestamp))&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;production&#39;</span>
   <span class="ruby-identifier">comments</span> = <span class="ruby-identifier">comments</span>.<span class="ruby-identifier">to_a</span> <span class="ruby-comment"># ensure it can be serialized for caching</span>
-  <span class="ruby-identifier">answer_comments</span> = <span class="ruby-constant">Comment</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:answer</span>, <span class="ruby-value">:drupal_user</span>)
+  <span class="ruby-identifier">answer_comments</span> = <span class="ruby-constant">Comment</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:answer</span>, <span class="ruby-value">:user</span>)
                            .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;timestamp DESC&#39;</span>)
                            .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;timestamp - answers.created_at &gt; ?&#39;</span>, <span class="ruby-value">86_400</span>)
                            .<span class="ruby-identifier">limit</span>(<span class="ruby-value">20</span>)
