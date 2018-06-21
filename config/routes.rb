@@ -281,6 +281,7 @@ Plots2::Application.routes.draw do
 
   post 'answers/create/:nid' => 'answers#create'
   get 'answers/create/:nid' => 'answers#create'
+  get 'answers/update/:id' => 'answers#update'
   put 'answers/update/:id' => 'answers#update'
   delete 'answers/delete/:id' => 'answers#delete'
   put 'answers/accept/:id' => 'answers#accept'
@@ -294,6 +295,7 @@ Plots2::Application.routes.draw do
   post 'comment/update/:id' => 'comment#update'
   post 'comment/make_answer/:id' => 'comment#make_answer'
   post '/comment/like' => 'comment#like_comment'
+  get '/comment/create/:id' => 'comment#create'
   post 'comment/create/:id' => 'comment#create'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
