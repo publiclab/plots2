@@ -1,6 +1,6 @@
-<div id="c<%= comment.cid %>" class="comment">
+<div id="c<%= comment.cid %>" class="comment" style="margin-top: 38px;padding-bottom: 9px;">
 
-  <div class="navbar navbar-default">
+  <div style="margin-bottom: 0;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;" class="navbar navbar-default">
 
     <div class="navbar-text pull-left visible-xs">&nbsp;&nbsp;</div>
 
@@ -34,24 +34,6 @@
       -->
       <% end %>
 
-        <ul class="btn-group" style="margin-top: 10px;">
-          <% if !current_user %>
-              <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like">
-                <%= link_to  new_user_session_path( return_to: request.path ), style: "text-decoration: none; color: black;" do %>
-                    <span class="fa fa-star-o"></span>
-                    <span><%= comment.likers.count %></span>
-                <% end %>
-          <% else %>
-              <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}" %>
-              <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like">
-                <%= link_to str, data: { method: "post", remote: true }, style: "text-decoration: none; color: black;" do %>
-                    <span id="comment-like-star-<%= comment.cid %>-<%= current_user.uid %>" class="fa fa-star<% if !comment.liked_by(current_user.uid) %>-o<% end %>"></span>
-                    <span id="comment-like-count-<%= comment.cid %>-<%= current_user.uid %>"><%= comment.likers.count %></span>
-                <% end %>
-          <% end %>
-          </li>
-        </ul>
-
       <% if current_user && comment.uid == current_user.uid %>
         <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
           <i class="fa fa-pencil"></i>
@@ -67,6 +49,24 @@
         <a data-remote="true" data-confirm="<%= t('notes._comment.are_you_sure') %> <% if current_user && comment.uid != current_user.uid %><%= t('notes._comment.please_exercise_caution') %><% end %>" href="/comment/delete/<%= comment.cid %>" class="btn btn-default btn-sm" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
         </a>
+      <% end %>
+      <% if current_user %>
+          <button style="background: white;border: 1px solid #ccc;padding: 4px 6px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class='icon fa fa-smile-o'></i>
+            <sup style="font-size: 12px;">+</sup>
+          </button>
+          <ul id="emoji-dropdown" style="background: #f8f8f8" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <% emoji_names, emoji_image_map = emoji_info %>
+            <% emoji_names.each do |e| %>
+              <li class="grow">
+                <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
+                <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=#{capitalized_emoji_name}" %>
+                <%= link_to str, data: { method: "post", remote: true }, style: "padding: 0;" do %>
+                  <img class="emoji" height="20" width="20" src="<%= emoji_image_map[e] %>">
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
       <% end %>
     </div>
 
@@ -87,7 +87,7 @@
     })
   </script>
   
-  <div id="c<%= comment.cid %>show">
+  <div style="border: 1px solid #e7e7e7;padding: 18px;" id="c<%= comment.cid %>show">
     <p class="comment-body" id="comment-body-<%= comment.cid %>"><%= raw render_comment_body(comment) %></p>
     <% if comment.body.include?('?') %>
       <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
@@ -97,6 +97,20 @@
       <div class="alert alert-info">Have you attempted or completed this activity? Consider <a href="/post?n=15798&tags=replication:<%= comment.nid %>,<%= comment.parent.tagnames.join(',') %>">sharing how it went</a> to help refine and improve it.</div>
     <% end %>
   </div>
+  <% str = "#{comment.id}-like-emojis" %>
+  <div id=<%= str %> class="navbar-text navbar-right pull-right" style="margin: 0;width: 100%;display: flex;border: 1px solid #e7e7e7;border-top: 0;">
+    <% emoji_names, emoji_image_map = emoji_info %>
+    <% emoji_like_map = comment.emoji_likes %>
+    <% emoji_names.each do |e| %>
+      <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
+      <% str = "#{comment.id}-emoji-button-#{e}" %>
+      <% display = (emoji_like_map.has_key? capitalized_emoji_name) ? "display: flex;" : "display: none;" %>
+      <button id="<%= str %>" style="border: 0;background: #f1f8ff;border-radius: 0;border-right: 1px solid #e7e7e7;<%= display %>" type="button" class="btn btn-default btn-sm">
+        <img height="20" width="20" src="<%= emoji_image_map[e] %>">
+        <div style="margin-left: 6px;font-size: 14px;"><%= emoji_like_map[capitalized_emoji_name] %></div>
+      </button>
+    <% end %>
+  </div>
 
   <% if current_user %>
      <%=  render :partial => "comments/edit", :locals => { title: I18n.t('notes._comment.edit_comment'), comment: comment, placeholder: I18n.t('notes._comment.edit_placeholder') } %>
@@ -104,3 +118,27 @@
   <br />
 
 </div>
+
+<style>
+  .open>#emoji-dropdown.dropdown-menu {
+    display: flex;
+    justify-content: space-around;
+    padding: 6px;
+  }
+
+  #emoji-dropdown .dropdown-menu {
+    min-width: 196px;
+  }
+
+  .grow {
+    transition: all .1s ease-in-out;
+  }
+
+  .grow:hover {
+    transform: scale(1.2);
+  }
+
+  .grow:active {
+    transform: scale(1);
+  }
+</style>

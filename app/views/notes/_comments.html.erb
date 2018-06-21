@@ -4,7 +4,7 @@
 
     <h3><span id="comment-count"><%= @node.comments.length %></span> <%= t('notes._comments.comments') %></h3>
 
-    <div id="comments-container">
+    <div style="margin-bottom: 50px;" id="comments-container">
       <% @node.comments.order('timestamp ASC').each do |comment| %>
         <% if comment.cid == @node.comments.first.cid %><a id="last" name="last"></a><% end %>
 

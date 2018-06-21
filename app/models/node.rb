@@ -861,13 +861,13 @@ class Node < ActiveRecord::Base
       errors ? I18n.t('node.only_admins_can_lock') : false
     elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).length <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
-    elsif  tagname.split(':')[0] == "oauth-facebook"
+    elsif  tagname.split(':')[1] == "facebook"
       errors ? "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[0] == "oauth-github"
+    elsif  tagname.split(':')[1] == "github"
       errors ? "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[0] ==  "oauth-google"
+    elsif  tagname.split(':')[1] ==  "google_oauth2"
       errors ? "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
-    elsif  tagname.split(':')[0] == "oauth-twitter"
+    elsif  tagname.split(':')[1] == "twitter"
       errors ? "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
     else
       true
