@@ -22,11 +22,11 @@ services:
       - /etc/group:/etc/group:ro
     restart: unless-stopped
   mailman:
-    build: .
+    build: ..
     command: script/mailman_server
     environment:
       - SERVER_ADDRESS=${SERVER_ADDRESS}
       - USERNAME=${USERNAME}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     volumes:
-      - .:/app
+      - ..:/app
