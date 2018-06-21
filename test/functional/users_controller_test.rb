@@ -67,7 +67,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should get profile' do
-    get :profile, params: { id: DrupalUser.where(status: 1).first.name }
+    get :profile, params: { id: User.where(status: 1).first.name }
     assert_response :success
   end
 

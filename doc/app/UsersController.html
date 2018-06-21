@@ -7,7 +7,7 @@
 <title>class UsersController - Rails Application Documentation</title>
 
 <script type="text/javascript">
-  var rdoc_rel_prefix = "./";
+var rdoc_rel_prefix = './';
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -50,54 +50,54 @@
 
   </div>
 
-  
+
 
   <div id="class-metadata">
-    
+
     <div id="parent-class-section" class="nav-section">
   <h3>Parent</h3>
 
-  
+
   <p class="link"><a href="ApplicationController.html">ApplicationController</a>
-  
+
 </div>
 
-    
-    
+
+
     <!-- Method Quickref -->
 <div id="method-list-section" class="nav-section">
   <h3>Methods</h3>
 
   <ul class="link-list" role="directory">
-    
+
     <li ><a href="#method-i-comments">#comments</a>
-    
+
     <li ><a href="#method-i-create">#create</a>
-    
+
     <li ><a href="#method-i-edit">#edit</a>
-    
+
     <li ><a href="#method-i-followers">#followers</a>
-    
+
     <li ><a href="#method-i-following">#following</a>
-    
+
     <li ><a href="#method-i-info">#info</a>
-    
+
     <li ><a href="#method-i-likes">#likes</a>
-    
+
     <li ><a href="#method-i-list">#list</a>
-    
+
     <li ><a href="#method-i-new">#new</a>
-    
+
     <li ><a href="#method-i-photo">#photo</a>
-    
+
     <li ><a href="#method-i-profile">#profile</a>
-    
+
     <li ><a href="#method-i-reset">#reset</a>
-    
+
     <li ><a href="#method-i-rss">#rss</a>
-    
+
     <li ><a href="#method-i-update">#update</a>
-    
+
   </ul>
 </div>
 
@@ -110,46 +110,46 @@
   </h1>
 
   <section class="description">
-    
+
   </section>
 
-  
-  
-  
+
+
+
   <section id="5Buntitled-5D" class="documentation-section">
-    
 
-    
 
-    
 
-    
 
-    
+
+
+
+
+
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Public Instance Methods</h3>
        </header>
 
-    
+
       <div id="method-i-comments" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">comments</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="comments-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 221</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">comments</span>
@@ -160,33 +160,33 @@
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">partial</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;comments/comments&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-create" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">create</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="create-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 11</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
@@ -220,39 +220,39 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-edit" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">edit</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="edit-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 66</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
   <span class="ruby-ivar">@action</span> = <span class="ruby-string">&quot;update&quot;</span> <span class="ruby-comment"># sets the form url</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>] <span class="ruby-comment"># admin only</span>
-    <span class="ruby-ivar">@drupal_user</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+    <span class="ruby-ivar">@drupal_user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
     <span class="ruby-ivar">@user</span> = <span class="ruby-ivar">@drupal_user</span>.<span class="ruby-identifier">user</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
@@ -266,33 +266,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-followers" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">followers</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="followers-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 261</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">followers</span>
@@ -302,33 +302,33 @@
   <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;show_follow&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-following" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">following</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="following-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 254</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">following</span>
@@ -338,70 +338,70 @@
   <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;show_follow&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-info" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">info</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="info-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 250</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">info</span>
-  <span class="ruby-ivar">@user</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-likes" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">likes</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="likes-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 148</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">likes</span>
-  <span class="ruby-ivar">@user</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;Liked by &quot;</span><span class="ruby-operator">+</span><span class="ruby-ivar">@user</span>.<span class="ruby-identifier">name</span>
   <span class="ruby-ivar">@notes</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">liked_notes</span>
                 .<span class="ruby-identifier">includes</span>([<span class="ruby-value">:tag</span>, <span class="ruby-value">:comments</span>])
@@ -411,45 +411,45 @@
   <span class="ruby-ivar">@unpaginated</span> = <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-list" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">list</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="list-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 83</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">list</span>
   <span class="ruby-comment"># allow admins to view recent users</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
-    <span class="ruby-ivar">@users</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-string">&#39;INNER JOIN rusers ON rusers.username = users.name&#39;</span>)
+    <span class="ruby-ivar">@users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-string">&#39;INNER JOIN rusers ON rusers.username = users.name&#39;</span>)
                         .<span class="ruby-identifier">order</span>(<span class="ruby-string">&quot;updated_at DESC&quot;</span>)
                         .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;rusers.role = ?&#39;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
                         .<span class="ruby-identifier">page</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>])
   <span class="ruby-keyword">else</span>
     <span class="ruby-comment"># recently active</span>
-    <span class="ruby-ivar">@users</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">select</span>(<span class="ruby-string">&#39;*, MAX(node.changed) AS last_updated&#39;</span>)
+    <span class="ruby-ivar">@users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">select</span>(<span class="ruby-string">&#39;*, MAX(node.changed) AS last_updated&#39;</span>)
                         .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:node</span>)
                         .<span class="ruby-identifier">group</span>(<span class="ruby-string">&#39;users.uid&#39;</span>)
                         .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;users.status = 1 AND node.status = 1&#39;</span>)
@@ -459,33 +459,33 @@
   <span class="ruby-ivar">@users</span> = <span class="ruby-ivar">@users</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;users.status = 1&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;admin&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;moderator&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-new" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">new</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="new-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
@@ -494,37 +494,37 @@
   <span class="ruby-ivar">@action</span> = <span class="ruby-string">&quot;create&quot;</span> <span class="ruby-comment"># sets the form url</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-photo" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">photo</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="photo-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 229</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">photo</span>
-  <span class="ruby-ivar">@user</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:uid</span>]).<span class="ruby-identifier">user</span>
+  <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:uid</span>]).<span class="ruby-identifier">user</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">uid</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;admin&quot;</span>
     <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">photo</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:photo</span>]
     <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save!</span>
@@ -544,40 +544,40 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-profile" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">profile</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="profile-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 102</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">profile</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>].<span class="ruby-identifier">nil?</span>
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-node">&quot;/profile/#{current_user.username}&quot;</span>
   <span class="ruby-keyword">else</span>
-    <span class="ruby-ivar">@user</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+    <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
     <span class="ruby-ivar">@profile_user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">username</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
     <span class="ruby-ivar">@title</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">name</span>
     <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">research_notes</span>
@@ -599,13 +599,13 @@
                     .<span class="ruby-identifier">joins</span>(<span class="ruby-value">:node</span>)
                     .<span class="ruby-identifier">limit</span>(<span class="ruby-value">20</span>)
     <span class="ruby-ivar">@wikis</span> = <span class="ruby-identifier">wikis</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:parent</span>).<span class="ruby-identifier">uniq</span>
-   
+
     <span class="ruby-comment"># User&#39;s social links</span>
     <span class="ruby-ivar">@github</span> = <span class="ruby-ivar">@profile_user</span>.<span class="ruby-identifier">social_link</span>(<span class="ruby-string">&quot;github&quot;</span>)
     <span class="ruby-ivar">@twitter</span> = <span class="ruby-ivar">@profile_user</span>.<span class="ruby-identifier">social_link</span>(<span class="ruby-string">&quot;twitter&quot;</span>)
     <span class="ruby-ivar">@facebook</span> = <span class="ruby-ivar">@profile_user</span>.<span class="ruby-identifier">social_link</span>(<span class="ruby-string">&quot;facebook&quot;</span>)
     <span class="ruby-ivar">@instagram</span> = <span class="ruby-ivar">@profile_user</span>.<span class="ruby-identifier">social_link</span>(<span class="ruby-string">&quot;instagram&quot;</span>)
-   
+
     <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;admin&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;moderator&quot;</span>)
         <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;users_controller.user_has_been_banned&#39;</span>)
@@ -619,33 +619,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-reset" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">reset</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="reset-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 181</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">reset</span>
@@ -688,38 +688,38 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-rss" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">rss</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="rss-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 159</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">rss</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:author</span>]
-    <span class="ruby-ivar">@author</span> = <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:author</span>], <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">first</span>
+    <span class="ruby-ivar">@author</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:author</span>], <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">first</span>
     <span class="ruby-keyword">if</span> <span class="ruby-ivar">@author</span>
       <span class="ruby-ivar">@notes</span> = <span class="ruby-constant">Node</span>.<span class="ruby-identifier">order</span>(<span class="ruby-string">&quot;nid DESC&quot;</span>)
                          .<span class="ruby-identifier">where</span>(<span class="ruby-identifier">type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;note&#39;</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@author</span>.<span class="ruby-identifier">uid</span>)
@@ -739,33 +739,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-update" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">update</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="update-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
@@ -792,17 +792,17 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
     </section>
-  
+
   </section>
 </main>
 
@@ -812,4 +812,3 @@
   <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
-

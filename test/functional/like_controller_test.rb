@@ -57,7 +57,7 @@ class LikeControllerTest < ActionController::TestCase
 
   test 'show recent likes' do
     get :index
-    
+
     assert_response :success
     assert_template :index
   end
@@ -68,12 +68,12 @@ class LikeControllerTest < ActionController::TestCase
     note = Node.where(type: 'note', status: 1).first
     cached_likes = note.cached_likes
 
-    get :create, params: { id: note.id } #first liked 
+    get :create, params: { id: note.id } #first liked
 
     note = Node.find note.id
     cached_likes =  note.cached_likes
 
-    drupal_current_user = DrupalUser.find 2 
+    drupal_current_user = User.find 2 
     drupal_current_user.ban    #banned user
 
     note = Node.find note.id

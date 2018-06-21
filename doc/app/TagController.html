@@ -7,7 +7,7 @@
 <title>class TagController - Rails Application Documentation</title>
 
 <script type="text/javascript">
-  var rdoc_rel_prefix = "./";
+var rdoc_rel_prefix = './';
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -50,58 +50,58 @@
 
   </div>
 
-  
+
 
   <div id="class-metadata">
-    
+
     <div id="parent-class-section" class="nav-section">
   <h3>Parent</h3>
 
-  
+
   <p class="link"><a href="ApplicationController.html">ApplicationController</a>
-  
+
 </div>
 
-    
-    
+
+
     <!-- Method Quickref -->
 <div id="method-list-section" class="nav-section">
   <h3>Methods</h3>
 
   <ul class="link-list" role="directory">
-    
+
     <li ><a href="#method-i-author">#author</a>
-    
+
     <li ><a href="#method-i-barnstar">#barnstar</a>
-    
+
     <li ><a href="#method-i-blog">#blog</a>
-    
+
     <li ><a href="#method-i-contributors">#contributors</a>
-    
+
     <li ><a href="#method-i-contributors_index">#contributors_index</a>
-    
+
     <li ><a href="#method-i-create">#create</a>
-    
+
     <li ><a href="#method-i-delete">#delete</a>
-    
+
     <li ><a href="#method-i-gridsEmbed">#gridsEmbed</a>
-    
+
     <li ><a href="#method-i-index">#index</a>
-    
+
     <li ><a href="#method-i-location">#location</a>
-    
+
     <li ><a href="#method-i-location_modal">#location_modal</a>
-    
+
     <li ><a href="#method-i-rss">#rss</a>
-    
+
     <li ><a href="#method-i-show">#show</a>
-    
+
     <li ><a href="#method-i-show_for_author">#show_for_author</a>
-    
+
     <li ><a href="#method-i-suggested">#suggested</a>
-    
+
     <li ><a href="#method-i-widget">#widget</a>
-    
+
   </ul>
 </div>
 
@@ -114,79 +114,79 @@
   </h1>
 
   <section class="description">
-    
+
   </section>
 
-  
-  
-  
+
+
+
   <section id="5Buntitled-5D" class="documentation-section">
-    
 
-    
 
-    
 
-    
 
-    
+
+
+
+
+
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Public Instance Methods</h3>
        </header>
 
-    
+
       <div id="method-i-author" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">author</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="author-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 162</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">author</span>
-  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]).<span class="ruby-identifier">tag_counts</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]).<span class="ruby-identifier">tag_counts</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-barnstar" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">barnstar</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="barnstar-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 166</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">barnstar</span>
@@ -207,33 +207,33 @@
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">path</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-blog" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">blog</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="blog-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 152</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">blog</span>
@@ -246,33 +246,33 @@
   <span class="ruby-ivar">@title</span> = <span class="ruby-ivar">@tagnames</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;,&#39;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39; Blog&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@tagnames</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-contributors" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">contributors</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="contributors-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 292</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">contributors</span>
@@ -287,33 +287,33 @@
   <span class="ruby-ivar">@users</span> = <span class="ruby-ivar">@notes</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:author</span>).<span class="ruby-identifier">uniq</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-contributors_index" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">contributors_index</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>/contributors</p>
-          
-          
 
-          
+          <p>/contributors</p>
+
+
+
+
           <div class="method-source-code" id="contributors_index-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 305</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">contributors_index</span>
@@ -334,33 +334,33 @@
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;tag/contributors-index&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-create" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">create</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="create-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 184</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
@@ -406,34 +406,34 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-delete" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">delete</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
+
           <p>should delete only the term_node/node_tag (instance), not the term_data
 (class)</p>
-          
-          
 
-          
+
+
+
           <div class="method-source-code" id="delete-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 228</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>
@@ -458,66 +458,66 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-gridsEmbed" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">gridsEmbed</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="gridsEmbed-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 331</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">gridsEmbed</span>
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-index" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">index</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="index-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
@@ -554,103 +554,103 @@
              .<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;community_tags.date &gt; ?&#39;</span>, (<span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">month</span>).<span class="ruby-identifier">to_i</span>)
              .<span class="ruby-identifier">group</span>(<span class="ruby-value">:name</span>)
              .<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;name&#39;</span>)
-             .<span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">page</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>], <span class="ruby-identifier">per_page</span><span class="ruby-operator">:</span> <span class="ruby-value">24</span>)    
+             .<span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">page</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>], <span class="ruby-identifier">per_page</span><span class="ruby-operator">:</span> <span class="ruby-value">24</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-location" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">location</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="location-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 323</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">location</span>
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;locations/_form&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-location_modal" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">location_modal</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="location_modal-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 327</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">location_modal</span>
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">template</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;locations/_modal&#39;</span>, <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-rss" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">rss</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="rss-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 267</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">rss</span>
@@ -678,33 +678,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-show" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">show</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="show-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
@@ -776,33 +776,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-show_for_author" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">show_for_author</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="show_for_author-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 112</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show_for_author</span>
@@ -836,33 +836,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-suggested" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">suggested</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="suggested-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 250</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">suggested</span>
@@ -882,33 +882,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-widget" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">widget</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="widget-source">
             <pre><span class="ruby-comment"># File app/controllers/tag_controller.rb, line 143</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">widget</span>
@@ -920,17 +920,17 @@
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
     </section>
-  
+
   </section>
 </main>
 
@@ -940,4 +940,3 @@
   <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
-

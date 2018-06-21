@@ -7,7 +7,7 @@
 <title>class NodeTag - Rails Application Documentation</title>
 
 <script type="text/javascript">
-  var rdoc_rel_prefix = "./";
+var rdoc_rel_prefix = './';
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -50,38 +50,38 @@
 
   </div>
 
-  
+
 
   <div id="class-metadata">
-    
+
     <div id="parent-class-section" class="nav-section">
   <h3>Parent</h3>
 
-  
+
   <p class="link">ActiveRecord::Base
-  
+
 </div>
 
-    
-    
+
+
     <!-- Method Quickref -->
 <div id="method-list-section" class="nav-section">
   <h3>Methods</h3>
 
   <ul class="link-list" role="directory">
-    
+
     <li ><a href="#method-i-author">#author</a>
-    
+
     <li ><a href="#method-i-description">#description</a>
-    
+
     <li ><a href="#method-i-drupal_user">#drupal_user</a>
-    
+
     <li ><a href="#method-i-increment_count">#increment_count</a>
-    
+
     <li ><a href="#method-i-name">#name</a>
-    
+
     <li ><a href="#method-i-user">#user</a>
-    
+
   </ul>
 </div>
 
@@ -94,145 +94,145 @@
   </h1>
 
   <section class="description">
-    
+
   </section>
 
-  
-  
-  
+
+
+
   <section id="5Buntitled-5D" class="documentation-section">
-    
 
-    
 
-    
 
-    
 
-    
+
+
+
+
+
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Public Instance Methods</h3>
        </header>
 
-    
+
       <div id="method-i-author" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">author</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="author-source">
             <pre><span class="ruby-comment"># File app/models/node_tag.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">author</span>
   <span class="ruby-identifier">user</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-description" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">description</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="description-source">
             <pre><span class="ruby-comment"># File app/models/node_tag.rb, line 35</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tag</span>.<span class="ruby-identifier">description</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tag</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">tag</span>.<span class="ruby-identifier">description</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-keyword">self</span>.<span class="ruby-identifier">tag</span>.<span class="ruby-identifier">description</span>.<span class="ruby-identifier">empty?</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-drupal_user" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">drupal_user</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="drupal_user-source">
             <pre><span class="ruby-comment"># File app/models/node_tag.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">drupal_user</span>
-  <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">uid</span>
+  <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">uid</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-increment_count" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">increment_count</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="increment_count-source">
             <pre><span class="ruby-comment"># File app/models/node_tag.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">increment_count</span>
@@ -242,83 +242,83 @@
   <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">save</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-name" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">name</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="name-source">
             <pre><span class="ruby-comment"># File app/models/node_tag.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>
   <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">name</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-user" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">user</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="user-source">
             <pre><span class="ruby-comment"># File app/models/node_tag.rb, line 23</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">user</span>
-  <span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">uid</span>).<span class="ruby-identifier">try</span>(<span class="ruby-value">:user</span>)
+  <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">uid</span><span class="ruby-operator">:</span> <span class="ruby-identifier">uid</span>).<span class="ruby-identifier">try</span>(<span class="ruby-value">:user</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
     </section>
-  
+
   </section>
 </main>
 
@@ -328,4 +328,3 @@
   <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
-

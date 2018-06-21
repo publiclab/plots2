@@ -7,6 +7,10 @@
 # Ignore bundler config
 .bundle
 
+# Ignore misc files
+Gemfile.lock
+www.example.com/*
+
 # Ignore all logfiles and tempfiles.
 log/*.log
 log/*
