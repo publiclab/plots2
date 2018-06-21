@@ -75,10 +75,13 @@ class UserSessionsControllerTest < ActionController::TestCase
 
 
   test 'login user with an email and then connect google provider' do
-    post :create, user_session: {
-      username: users(:jeff).email,
-      password: 'secretive'
-    }
+    post :create, 
+       params: {
+        user_session: {
+        username: users(:jeff).email,
+        password: 'secretive'
+        }
+       }
     assert_redirected_to '/dashboard'
     assert_not_nil OmniAuth.config.mock_auth[:google_oauth2_2]
     #Omniauth hash is present
