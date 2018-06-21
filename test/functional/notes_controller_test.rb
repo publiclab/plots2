@@ -290,7 +290,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 15
+    assert_equal selector.size, 17
     assert_select "div p", 'Pending approval by community moderators. Please be patient!'
   end
 
@@ -317,7 +317,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 15
+    assert_equal selector.size, 17
     assert_select "p", "Moderate first-time post: \n              Approve\n              Spam"
   end
 
@@ -419,7 +419,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'should display an icon for users with streak longer than 7 days' do
     node = nodes(:one)
     User.any_instance.stubs(:note_streak).returns([8, 10])
-    User.any_instance.stubs(:wiki_edit_streak).returns([9, 15])
+    User.any_instance.stubs(:wiki_edit_streak).returns([9, 17])
     User.any_instance.stubs(:comment_streak).returns([10, 30])
     get :show,
         author: node.author.username,

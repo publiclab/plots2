@@ -205,12 +205,12 @@ class RevisionsTest < ActiveSupport::TestCase
 
   test 'should recognize unmarked markdown style checkboxes and convert them into unchecked checkbox' do
     revision = revisions(:checkbox_one)
-    assert_includes revision.render_body, %(<i class="fa fa-square-o"></i>)
+    assert_includes revision.render_body, %(* <input type="checkbox" editable="false" />)
   end
 
   test 'should recognize marked markdown style checkboxes and convert them into checked checkbox' do
     revision = revisions(:checkbox_two)
-    assert_includes revision.render_body, %(<i class="fa fa-check-square-o"></i>)
+    assert_includes revision.render_body, %(* <input type="checkbox" editable="false" checked="checked" />)
   end
 
 

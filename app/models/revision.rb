@@ -98,7 +98,7 @@ class Revision < ActiveRecord::Base
     body = body.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKHTML))
-    body = body.gsub(/(\d+\. |\* )\K\[(x|X)\]/, %(<i class="fa fa-check-square-o"></i>)).gsub(/(\d+\. |\* )\K\[ \]/, %(<i class="fa fa-square-o"></i>))
+    body = body.gsub(/(\d+\. |\* )\K\[(x|X)\]/, %(<input type="checkbox" editable="false" checked="checked" />)).gsub(/(\d+\. |\* )\K\[ \]/, %(<input type="checkbox" editable="false" />))
     ApplicationController.helpers.emojify(body_extras(body)).to_s
   end
 
@@ -109,7 +109,7 @@ class Revision < ActiveRecord::Base
     body = body.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKHTML))
-    body = body.gsub(/(\d+\. |\* )\K\[(x|X)\]/, %(<i class="fa fa-check-square-o"></i>)).gsub(/(\d+\. |\* )\K\[ \]/, %(<i class="fa fa-square-o"></i>))
+    body = body.gsub(/(\d+\. |\* )\K\[(x|X)\]/, %(<input type="checkbox" editable="false" checked="checked" />)).gsub(/(\d+\. |\* )\K\[ \]/, %(<input type="checkbox" editable="false" />))
     insert_extras(body_extras(body))
   end
 
