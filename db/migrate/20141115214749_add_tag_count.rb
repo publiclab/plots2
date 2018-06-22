@@ -1,4 +1,4 @@
-class AddTagCount < ActiveRecord::Migration
+class AddTagCount < ActiveRecord::Migration[5.1]
   def up
     add_column :term_data, :count, :integer
     Tag.all.each do |tag|

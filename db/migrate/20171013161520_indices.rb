@@ -1,4 +1,4 @@
-class Indices < ActiveRecord::Migration
+class Indices < ActiveRecord::Migration[5.1]
   def up
     add_index "rusers", ["email"], :name => "index_rusers_on_email"
     add_index "users", ["uid"], :name => "index_users_uid"

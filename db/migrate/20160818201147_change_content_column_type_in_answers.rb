@@ -1,4 +1,4 @@
-class ChangeContentColumnTypeInAnswers < ActiveRecord::Migration
+class ChangeContentColumnTypeInAnswers < ActiveRecord::Migration[5.1]
   def up
     change_column :answers, :content, :text, limit: 2147483647
   end

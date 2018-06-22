@@ -6,7 +6,7 @@ class String
    end
 end
 
-class RecoverBiosTokensStatuses < ActiveRecord::Migration
+class RecoverBiosTokensStatuses < ActiveRecord::Migration[5.1]
   def up
       DrupalUsers.where('status != 0').each do |u|
         unless u.name.multibyte?

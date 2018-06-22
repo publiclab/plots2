@@ -1,4 +1,4 @@
-class AddLocationTagColumns < ActiveRecord::Migration
+class AddLocationTagColumns < ActiveRecord::Migration[5.1]
   def up
     add_column :location_tags, :country, :string
     add_column :location_tags, :state, :string
