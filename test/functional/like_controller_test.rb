@@ -83,7 +83,7 @@ class LikeControllerTest < ActionController::TestCase
     UserSession.create(User.find(2))
     note = Node.where(type: 'note', status: 1).first
 
-    get :create, id: note.id #first liked
+    get :create, params: { id: note.id } #first liked
 
     note = Node.find note.id
 
@@ -91,19 +91,19 @@ class LikeControllerTest < ActionController::TestCase
     drupal_current_user.moderate    #moderated user
 
     note = Node.find note.id
-    assert_equal note.likers.length, note.cached_likes - 1
+    assert_equal note.likers.count, note.cached_likes - 1
   end
 
   # using likers will exclude moderated and banned users on the likes count
   test 'moderated not included' do
     UserSession.create(User.find(2))
     note = Node.where(type: 'note', status: 1).first
-    likers_length =  note.likers.length
+    likers_length =  note.likers.count
 
-    get :create, id: note.id #first liked
+    get :create, params: { id: note.id } #first liked
 
     note = Node.find note.id
-    assert_equal  likers_length + 1 , note.likers.length
+    assert_equal  likers_length + 1 , note.likers.count
   end
 
 end
