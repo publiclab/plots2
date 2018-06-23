@@ -232,7 +232,7 @@ class NotesController < ApplicationController
         format = false
         format = :question if params[:redirect] && params[:redirect] == 'question'
         if request.xhr?
-          render text: "#{@node.path(format).to_s}?_=#{Time.now.to_i}"
+          render plain: "#{@node.path(format).to_s}?_=#{Time.now.to_i}"
         else
           redirect_to URI.parse(@node.path(format)).path + '?_=' + Time.now.to_i.to_s
         end
