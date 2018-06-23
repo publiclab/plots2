@@ -51,7 +51,7 @@ class NotesController < ApplicationController
       @node = Node.find params[:id]
     end
 
-    if @node.status == 3 && !params[:token].nil? && @node.power_tag('secret_token') == params[:token]
+    if @node.status == 3 && !params[:token].nil? && @node.slug.split('token:').last == params[:token]
     else
 
     if @node.status == 3 && current_user.nil?
@@ -407,11 +407,12 @@ class NotesController < ApplicationController
   def generate_secret_url_draft
     @node = Node.find_by(nid: params[:id])
 
-    if !@node.has_power_tag('secret_token')
-      @token = SecureRandom.urlsafe_base64(16, false).downcase
-      @node.add_tag("secret_token:"+@token, current_user)
+    if !@node.slug.include?('token')
+      @token = SecureRandom.urlsafe_base64(16, false)
+      @node.slug = @node.slug + " token:" + @token
+      @node.save!
     else
-      @token = @node.power_tag('secret_token')
+      @token = @node.slug.split('token:').last
     end
     @data = {"url"=>request.host+'/notes/show/'+@node.nid.to_s + '/'+@token.to_s}
 
