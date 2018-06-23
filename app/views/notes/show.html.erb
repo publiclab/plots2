@@ -50,9 +50,6 @@
       <span class="hidden-lg">
         <%= @node.created_at.to_s(:short) %>
       </span>
-      <% if current_user && @node.status == 3 %>
-        <button class="btn btn-default btn-sm" onclick='get_secret_URL(<% @node %>)'>Generate secret URL</button>
-      <% end %>
       </span>
 
     <p class="visible-print">
@@ -133,7 +130,7 @@
             cache: false,
 
             success: function (data) {
-                prompt("Here's the secret URL, using which other people can see this draft.",data.url);
+                prompt("Here's the secret URL, with which other people can see this draft.",data.url);
             }
     });
 }
