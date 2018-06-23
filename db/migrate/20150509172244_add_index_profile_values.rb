@@ -1,4 +1,4 @@
-class AddIndexProfileValues < ActiveRecord::Migration
+class AddIndexProfileValues < ActiveRecord::Migration[5.1]
   def up
     add_index(:profile_values, :uid)
   end

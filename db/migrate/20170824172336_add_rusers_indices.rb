@@ -1,4 +1,4 @@
-class AddRusersIndices < ActiveRecord::Migration
+class AddRusersIndices < ActiveRecord::Migration[5.1]
   def up
     add_index "rusers", ["status"], name: "index_rusers_on_status"
     add_index "rusers", ["created_at"], name: "index_rusers_created_at"

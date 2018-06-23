@@ -1,4 +1,4 @@
-class AddAcceptedFieldToAnswers < ActiveRecord::Migration
+class AddAcceptedFieldToAnswers < ActiveRecord::Migration[5.1]
   def up
     add_column :answers, :accepted, :boolean, default: false
   end

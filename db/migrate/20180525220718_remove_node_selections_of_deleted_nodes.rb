@@ -1,4 +1,4 @@
-class RemoveNodeSelectionsOfDeletedNodes < ActiveRecord::Migration
+class RemoveNodeSelectionsOfDeletedNodes < ActiveRecord::Migration[5.1]
   def change
     node_selections = NodeSelection.all
     
