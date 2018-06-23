@@ -1,4 +1,4 @@
-class DrupalSchema < ActiveRecord::Migration
+class DrupalSchema < ActiveRecord::Migration[5.1]
   def up
     unless table_exists? "comments"
       create_table "comments", :primary_key => "cid", :options=>'ENGINE=MyISAM' do |t|

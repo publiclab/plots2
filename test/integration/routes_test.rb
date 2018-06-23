@@ -37,4 +37,12 @@ class RoutesTest < ActionDispatch::IntegrationTest
         assert_equal '/profile/jeff/edit' , path
 	end
 
+    test "test get request for comment create" do
+	    assert_routing({ path: '/comment/create/8', method: :get }, { controller: 'comment', action: 'create', id: '8' })
+    end
+
+    test "test get request for answer update" do
+        assert_routing({ path: '/answers/update/1', method: 'get' }, { controller: 'answers', action: 'update', id: '1' })
+    end
+
 end
