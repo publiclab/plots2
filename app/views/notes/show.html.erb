@@ -123,7 +123,7 @@
 
 
 <script>
-    function get_secret_URL(node) {
+    function get_secret_URL() {
         $.ajax({
             url: '/notes/generate_secret_url/<%= @node.id %>',
             type: "GET",
