@@ -133,7 +133,7 @@
             cache: false,
 
             success: function (data) {
-                alert(data.url);
+                prompt("Here's the secret URL, using which other people can see this draft.",data.url);
             }
     });
 }

@@ -414,7 +414,7 @@ class NotesController < ApplicationController
     else
       @token = @node.slug.split('token:').last
     end
-    @data = {"url"=>request.host+'/notes/show/'+@node.nid.to_s + '/'+@token.to_s}
+    @data = { "url" => request.host_with_port + '/notes/show/' + @node.nid.to_s + '/'+@token.to_s }
 
     respond_to do |format|
       format.json { render json: @data }
