@@ -299,7 +299,7 @@ class WikiController < ApplicationController
     @a = Revision.find_by(vid: params[:a])
     @b = Revision.find_by(vid: params[:b])
     if @a.body == @b.body
-      render text: I18n.t('wiki_controller.lead_image_or_title_change').html_safe
+      render plain: I18n.t('wiki_controller.lead_image_or_title_change').html_safe
     else
       render partial: 'wiki/diff'
     end

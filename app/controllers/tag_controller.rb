@@ -346,7 +346,7 @@ class TagController < ApplicationController
       respond_with do |format|
         format.html do
           if request.xhr?
-            render text: node_tag.tid
+            render plain: node_tag.tid
           else
             flash[:notice] = I18n.t('tag_controller.tag_deleted')
             redirect_to node_tag.node.path

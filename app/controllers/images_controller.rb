@@ -36,7 +36,7 @@ class ImagesController < ApplicationController
         }]
       }
     else
-      render text: 'The image could not be saved.'
+      render plain: 'The image could not be saved.'
     end
   end
 
