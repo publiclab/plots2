@@ -181,15 +181,17 @@ class CommentController < ApplicationController
   def like_comment
     @comment_id = params["comment_id"].to_i
     @user_id = params["user_id"].to_i
+    @emoji_type = params["emoji_type"]
     comment = Comment.where(cid: @comment_id).first
-    like = comment.likes.where(user_id: @user_id)
+    like = comment.likes.where(user_id: @user_id, emoji_type: @emoji_type)
     @is_liked = like.count.positive?
     if like.count.positive?
       like.first.destroy
     else
-      comment.likes.create(user_id: @user_id)
+      comment.likes.create(user_id: @user_id, emoji_type: @emoji_type)
     end
 
+    @likes = comment.likes.group(:emoji_type).count
     respond_with do |format|
       format.js {
        render template: 'comment/like_comment'

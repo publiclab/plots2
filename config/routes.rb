@@ -281,6 +281,7 @@ Plots2::Application.routes.draw do
 
   post 'answers/create/:nid' => 'answers#create'
   get 'answers/create/:nid' => 'answers#create'
+  get 'answers/update/:id' => 'answers#update'
   put 'answers/update/:id' => 'answers#update'
   delete 'answers/delete/:id' => 'answers#delete'
   put 'answers/accept/:id' => 'answers#accept'
@@ -294,6 +295,7 @@ Plots2::Application.routes.draw do
   post 'comment/update/:id' => 'comment#update'
   post 'comment/make_answer/:id' => 'comment#make_answer'
   post '/comment/like' => 'comment#like_comment'
+  get '/comment/create/:id' => 'comment#create'
   post 'comment/create/:id' => 'comment#create'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
@@ -342,6 +344,7 @@ Plots2::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   #handling omniauth callbacks
-  match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
+  match '/auth/:provider/callback', to: 'user_sessions#create', via: [:get, :post]
+  get 'auth/failure', to: redirect('/')
 
 end

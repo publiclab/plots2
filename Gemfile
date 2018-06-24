@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '5.0.6'
+gem 'rails', '5.1.5'
 gem 'activerecord-session_store'
 gem 'passenger'
 gem 'sidekiq'
@@ -51,7 +51,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'mustermann' , '1.0.2'
 gem 'rails-dom-testing'
 gem 'omniauth', '~> 1.3', '>= 1.3.1'
-gem 'omniauth-facebook', '~> 3.0'
+gem 'omniauth-facebook', '~> 4.0'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'omniauth-github', '~> 1.1', '>= 1.1.2'

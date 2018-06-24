@@ -1,4 +1,4 @@
-class AddSearchfieldsToSearches < ActiveRecord::Migration
+class AddSearchfieldsToSearches < ActiveRecord::Migration[5.1]
   def change
     add_column :searches, :main_type, :string
     add_column :searches, :note_type, :string

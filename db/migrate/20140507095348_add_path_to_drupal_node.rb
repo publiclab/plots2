@@ -1,4 +1,4 @@
-class AddPathToDrupalNode < ActiveRecord::Migration
+class AddPathToDrupalNode < ActiveRecord::Migration[5.1]
   def up
     add_column :node, :path, :string
     Node.reset_column_information

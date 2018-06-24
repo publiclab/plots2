@@ -1,4 +1,4 @@
-class AddRoles < ActiveRecord::Migration
+class AddRoles < ActiveRecord::Migration[5.1]
   def up
     unless column_exists? "rusers", :role
       add_column :rusers, :role, :string, :default => "basic"

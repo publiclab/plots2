@@ -1,4 +1,4 @@
-class SyncAnsweredQuestion < ActiveRecord::Migration
+class SyncAnsweredQuestion < ActiveRecord::Migration[5.1]
   def up
     Answer.where(accepted: true).each do |a|
       node = a.node

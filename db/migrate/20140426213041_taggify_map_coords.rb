@@ -1,4 +1,4 @@
-class TaggifyMapCoords < ActiveRecord::Migration
+class TaggifyMapCoords < ActiveRecord::Migration[5.1]
   def up
     @maps = Node.find(:all, :conditions => {:type => 'map', :status => 1})
     @maps.each do |map|

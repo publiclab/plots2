@@ -1,4 +1,4 @@
-class NodePageviews < ActiveRecord::Migration
+class NodePageviews < ActiveRecord::Migration[5.1]
   def up
     add_column :node, :legacy_views, :integer, default: 0
     add_column :node, :views, :integer, default: 0
