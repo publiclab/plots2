@@ -554,6 +554,16 @@ class NotesControllerTest < ActionController::TestCase
     assert_redirected_to note.path(:question) + '?_=' + Time.now.to_i.to_s
   end
 
+  
+  test 'should render a text/plain when the note is edited through xhr' do
+    user = UserSession.create(users(:jeff))
+    note = nodes(:one)
+    post :update, params: { id: note.nid, title: note.title, body: 'Canon A1200 IR Conversion is working' }, xhr: true
+    assert_equal I18n.t('notes_controller.edits_saved'), flash[:notice]
+    assert_equal "text/plain", @response.content_type
+    assert_equal "#{note.path(false).to_s}?_=#{Time.now.to_i}", @response.body
+  end
+
   test 'should update a former note that has become a question by tagging' do
     node = nodes(:blog)
     node.add_tag('question:foo', users(:bob))
