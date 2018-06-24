@@ -19,7 +19,7 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_equal '/login', path
 
-    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } } 
+    post '/user_sessions', params: { user_session: { username: users(:jeff).username, password: 'secretive' } }
 
     follow_redirect!
     assert_response :redirect
@@ -34,7 +34,7 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     get '/questions'
     assert_response :success
 
-    post '/user_sessions', params: { return_to: request.path, user_session: { username: users(:jeff).username,  password: 'secretive' }  } 
+    post '/user_sessions', params: { return_to: request.path, user_session: { username: users(:jeff).username,  password: 'secretive' }  }
 
     follow_redirect!
     assert_equal '/questions', path
@@ -56,4 +56,19 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_not_nil request.env['omniauth.auth']
   end
 
+  test 'github login routing' do
+    assert_routing '/auth/github/callback', {controller: 'user_sessions', action: 'create',provider: 'github'}
+  end
+
+  test 'github login post' do
+    assert_routing({path: '/auth/github/callback', method: 'post'},{controller: 'user_sessions', action: 'create' ,provider: 'github'})
+  end
+
+  test 'should get oauth hash from /auth/github' do
+    get '/auth/github'
+    assert_redirected_to '/auth/github/callback'
+    assert_not_nil OmniAuth.config.mock_auth[:github2]
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:github2]
+    assert_not_nil request.env['omniauth.auth']
+  end
 end
