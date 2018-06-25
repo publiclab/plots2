@@ -4,11 +4,7 @@ class RelationshipsController < ApplicationController
   def create
     user = User.find(params[:followed_id])
     current_user.follow(user)
-    if !request.referer.include?('profile')
-      flash[:notice] = "You are now following #{user.username} ."
-      redirect_to request.referer
-      return
-    end
+    flash[:notice] = "You are now following #{user.username} ."
     redirect_to URI.parse("/profile/#{user.username}").path
   end
 
