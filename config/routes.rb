@@ -1,11 +1,9 @@
 require 'sidekiq/web'
 
 Plots2::Application.routes.draw do
-  # require 'admin_constraint'
-
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
-  
+
   mount Sidekiq::Web => '/sidekiq'
 
   # Manually written API functions
