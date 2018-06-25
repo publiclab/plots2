@@ -250,9 +250,6 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:bob)
     UserSession.create(user)
     post :test_digest_email
-    assert_enqueued_with(job: DigestMailJob) do
-      DigestMailJob.perform_later
-    end
-    assert_enqueued_jobs 2
+    assert_redirected_to '/profile/'+user.username
   end
 end
