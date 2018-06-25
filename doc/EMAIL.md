@@ -6,6 +6,6 @@ With the merge of [#2669](https://github.com/publiclab/plots2/pull/2669) Public 
 
 After configurations are done we are good to start the `mailman` server. For starting the server run the `mailman_server` script file present inside script folder.
 
-> ruby script/mailman
+> ruby script/mailman_server
 
 Above command will start the server and then the mailman server will do polling in every 60 seconds(which is by default) to check for the incoming mail. However polling time can be changed by setting value to `Mailman.config.poll_interval`(more details can be found at its official [mailman user guide](https://github.com/mailman/mailman/blob/master/USER_GUIDE.md)). Logs for mailman can be seen oin Mailman log file which is present in `log` folder.
