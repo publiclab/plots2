@@ -1,5 +1,4 @@
-class TagSelection < ActiveRecord::Base
-  attr_accessible :following
+class TagSelection < ApplicationRecord
   self.primary_keys = :user_id, :tid
   belongs_to :tag, foreign_key: :tid
   has_many :node_tags, foreign_key: :tid

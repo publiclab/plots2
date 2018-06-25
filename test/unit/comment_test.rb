@@ -3,8 +3,10 @@ require 'test_helper'
 class CommentTest < ActiveSupport::TestCase
   test 'should save comment' do
     comment = Comment.new
-    comment.comment = "My first thought is\n\nthat this is pretty good."
+    comment.comment = "My first thought is\n\nthat this is pretty good. **markdown** and http://link.com"
     assert comment.save
+    assert comment.body_markdown.match('<a href="http://link.com">http://link.com</a>')
+    assert comment.body_markdown.match('<strong>markdown</strong>')
   end
 
   test 'comment mysql native fulltext search' do

@@ -1,49 +1,6 @@
 <footer class="footer">
-  <div class="col-md-3 hidden-print">
-    <p><b>Getting help</b></p>
-    <ul>
-      <li><a href="/wiki/issues" > <%= t('layout._footer.getting_help.report_bug') %> </a></li>
-      <li><a href="mailto:web@<%= request.host %>"> <%= t('layout._footer.getting_help.email_working_group') %> </a></li>
-      <li> <%= raw t('layout._footer.getting_help.publiclab_oss', :url1 => 'https://github.com/publiclab/plots2', :url2 => '/wiki/developers') %> </li>
-    </ul>
-    <% cache('feature_footer-notice', skip_digest: true) do %>
-      <%= feature('footer-notice') %>
-    <% end %>
-  </div>
-  <div class="col-md-3 hidden-print">
-    <p><b>Links</b></p>
-    <ul>
-      <li><a href="/about"><%= t('layout._footer.links.about') %></a></li>
-      <li><a href="/wiki/getting-started"><%= t('layout._footer.links.getting_started') %></a></li>
-      <li><a href="/wiki/licenses"><%= t('layout._footer.links.licenses') %></a></li>
-      <li><a href="/lists"><%= t('layout._footer.links.discussion_lists') %></a></li>
-      <li><a href="/stats"><%= t('layout._footer.links.site_statistics') %></a></li>
-      <li><a href="/feed.rss"><%= t('layout._footer.links.rss') %></a></li>
-    </ul>
-  </div>
-  <div class="col-md-3">
-    <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><i class="fa fa-creative-commons"></i></a> <%= raw t('layout._footer.license', :creative_commons_url => 'http://creativecommons.org/licenses/by-sa/3.0/', :cern_license_url => 'http://www.ohwr.org/cernohl', :publiclab_license_url => '/licenses') %> </p>
-  </div>
-  <div class="col-md-3 hidden-print">
-    <p><%= t('layout._footer.different_licenses') %></p>
-    <p><%= raw t('layout._footer.font_use', :url => 'http://www.theleagueofmoveabletype.com/junction') %></p>
-    <p><%= raw t('layout._footer.server_donation', :url => 'http://rackspace.com/') %></p>
-    <ul class="dropdown">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-        <i class="fa fa-language" aria-hidden="true"></i>
-        <%= t('layout._footer.language.language_title') %> <b class="caret"></b>
-      </a>
-      <ul class="dropdown-menu">
-        <% locale_name_pairs.each do |locale_name, locale| %>
-          <li><%= link_to locale_name, change_locale_path(locale) %></li>
-        <% end %>
-      </ul>
-    </ul>
-
-    <a href="#" class="back-to-top" style="display: inline;">
-      <i class="fa fa-arrow-circle-up"></i>
-    </a>
-    
-  </div>
-  <br style="clear:both;" />
+  <% cache('feature_footer-notice', skip_digest: true) do %>
+    <%= feature('footer-notice') %>
+  <% end %>
+  <!-- Rails version <%= Rails.version %>-->
 </footer>

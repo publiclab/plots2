@@ -45,44 +45,34 @@ class TypeaheadService
         .where('status = 1 AND comment LIKE ?', '%' + input + '%')
     end
   end
-
-  def notes(input, limit = 5)
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      Node.search(input)
-        .group(:nid)
-        .includes(:node)
-        .references(:node)
-        .limit(limit)
-        .where("node.type": "note", "node.status": 1)
-        .order('node.changed DESC')
-    else 
-      Node.limit(limit)
-        .group(:nid)
-        .where(type: "note", status: 1)
-        .order(changed: :desc)
-        .where('title LIKE ?', '%' + input + '%')
-    end
+  
+  # default order is recency
+  def nodes(input, _limit = 5, order = :default)
+    Node.search(query: input, order: order, limit: 5)
+      .group(:nid)
+      .where('node.status': 1)
   end
 
-  def wikis(input, limit = 5)
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      Node.search(input)
-        .group('node.nid')
-        .includes(:node)
-        .references(:node)
-        .limit(limit)
-        .where("node.type": "page", "node.status": 1)
-    else 
-      Node.limit(limit)
-        .order('nid DESC')
-        .where('type = "page" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
-    end
+  def notes(input, limit = 5, order = :default)
+    nodes(input, limit, order)
+      .where("node.type": "note")
   end
 
-  def maps(input, limit = 5)
-    Node.limit(limit)
-      .order('nid DESC')
-      .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+  def wikis(input, limit = 5, order = :default)
+    nodes(input, limit, order)
+      .where("node.type": "page")
+  end
+
+  def maps(input, limit = 5, order = :default)
+    nodes(input, limit, order)
+      .where("node.type": "map")
+  end
+  
+  def questions(input, limit = 5, order = :default)
+    nodes(input, limit, order)
+      .where('node.type': 'note')
+      .joins(:tag)
+      .where('term_data.name LIKE ?', 'question:%')
   end
 
   # Run a search in any of the associated systems for references that contain the search string
@@ -135,7 +125,7 @@ class TypeaheadService
   def search_notes(search_string, limit = 5)
     sresult = TagList.new
     unless search_string.nil? || search_string.blank?
-      notes(search_string, limit).uniq.each do |match|
+      notes(search_string, limit).distinct.each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
@@ -200,26 +190,7 @@ class TypeaheadService
   # Search question entries for matching text
   def search_questions(input, limit = 5)
     sresult = TagList.new
-    questions = if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      Node.search(input)
-        .group(:nid)
-        .includes(:node)
-        .references(:node)
-        .limit(limit)
-        .where("node.type": "note", "node.status": 1)
-        .order('node.changed DESC')
-        .joins(:tag)
-        .where('term_data.name LIKE ?', 'question:%')
-    else 
-      Node.where('title LIKE ?', '%' + input + '%')
-        .joins(:tag)
-        .where('term_data.name LIKE ?', 'question:%')
-        .limit(limit)
-        .group(:nid)
-        .where(type: "note", status: 1)
-        .order(changed: :desc)
-    end
-    questions.each do |match|
+    questions = self.questions(input, limit).each do |match|
       tval = TagResult.fromSearch(
         match.nid,
         match.title,

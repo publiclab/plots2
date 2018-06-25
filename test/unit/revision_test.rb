@@ -194,4 +194,24 @@ class RevisionsTest < ActiveSupport::TestCase
     revision.body = "Some stuff about my post\n##A title\nsome more stuff about my post"
     assert_equal "Some stuff about my post\n## A title\nsome more stuff about my post", revision.body_rich
   end
+
+  test 'should not add tag when pure number is present' do
+    revision = revisions(:hashtag_four)
+    revision.save
+    associated_tags = revision.parent.tag
+    tag_names = associated_tags.map(&:name)
+    assert_not tag_names.include?('1234')
+  end
+
+  test 'should recognize unmarked markdown style checkboxes and convert them into unchecked checkbox' do
+    revision = revisions(:checkbox_one)
+    assert_includes revision.render_body, %(* <input type="checkbox" editable="false" />)
+  end
+
+  test 'should recognize marked markdown style checkboxes and convert them into checked checkbox' do
+    revision = revisions(:checkbox_two)
+    assert_includes revision.render_body, %(* <input type="checkbox" editable="false" checked="checked" />)
+  end
+
+
 end

@@ -10,13 +10,11 @@
   <h2>Liked Questions <small class="hidden-sm">Most liked questions</small></h2>
   <% else %>
   <div class="text-center">
-  <h2>Questions and Answers<br /><small class="hidden-sm">Use Public Lab's community knowledge base</small>
-  </h2>
-  <h4><small><%= t('questions.index.explanation') %></small></h4>
-  <% end %>
-
-  <p>New to Public Lab? <a href="/wiki/public-lab-q-and-a">Learn how this works &raquo;</a></p>
+    <% cache('feature_questions-header', skip_digest: true) do %>
+      <%= feature('questions-header') %>
+    <% end %>
   </div>
+  <% end %>                                   
 
   <hr />
 
@@ -62,4 +60,3 @@
 
 <%= stylesheet_link_tag "dashboard" %>
 <%= javascript_include_tag "dashboard" %>
-<%= javascript_include_tag "questions_search" %>

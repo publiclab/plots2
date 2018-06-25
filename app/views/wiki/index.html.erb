@@ -22,40 +22,11 @@
      <a style="margin-bottom:4px;" href="/wiki/new" class="btn btn-default">
        <i class="fa fa-plus-circle"></i> <%= t('wiki.index.create_wiki_page') %>
      </a>
-    <span style="margin-top:4px;" class="pull-right"> <%= t('wiki.index.sort_by') %>
-
-      <% if params[:action] == "index" && params[:order] !="alphabetic" %>
-        <span style="color:#aaa"><%= t('wiki.index.by_recency') %></span> |
-      <% else %>
-        <a href="/wiki/"><%= t('wiki.index.by_recency') %></a> |
-      <% end %>
-
-      <% if params[:order] == "alphabetic" %>
-        <span style="color:#aaa"><%= t('wiki.index.by_alphabetic') %></span> |
-      <% else %>
-        <a href="/wiki/?order=alphabetic"><%= t('wiki.index.by_alphabetic') %></a> |
-      <% end %>
-
-      <% if params[:action] == "liked" %>
-        <span style="color:#aaa"><%= t('wiki.index.by_number_of_likes') %></span> |
-      <% else %>
-        <a href="/wiki/liked"><%= t('wiki.index.by_number_of_likes') %></a> |
-      <% end %>
-
-
-      <% if params[:action] == "popular" %>
-        <span style="color:#aaa"><%= t('wiki.index.by_popularity') %></span>
-      <% else %>
-        <a href="/wiki/popular"><%= t('wiki.index.by_popularity') %></a>
-      <% end %>
-
-    </span>
   </p>
-
 
   <%= render :partial => "wiki/wikis" %>
 
   <hr />
 
+</div>
 
-</div><!--/span-->

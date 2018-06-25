@@ -1,8 +1,8 @@
 map:
   nid: 12
   vid: 12
-  field_publication_date_value: <%= Time.now.to_s %>
-  field_capture_date_value: <%= Time.now.to_s %>
+  field_publication_date_value: <%= Time.now.to_s.slice(0, 19) %>
+  field_capture_date_value: <%= Time.now.to_s.slice(0, 19) %>
   field_geotiff_url_value: publiclab.org
   field_google_maps_url_value: map.google.com
   field_openlayers_url_value: map.google.com

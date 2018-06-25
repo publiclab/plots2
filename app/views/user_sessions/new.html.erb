@@ -20,7 +20,7 @@
     <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-signup' } %>
 
   </div>
- 
+
   <input type="hidden" name="return_to" value="<%= params[:return_to] %>" />
 
   <div class="checkbox">
@@ -31,10 +31,18 @@
 
   <div class="input-group-inline">
 
-    <button class="btn btn-primary btn-lg" type="submit" tabindex="3"><%= t('user_sessions.new.log_in') %></button> 
+    <button class="btn btn-primary btn-lg" type="submit" tabindex="3"><%= t('user_sessions.new.log_in') %></button>
     <a class="btn btn-default btn-lg" href="/signup" tabindex="4"><%= t('user_sessions.new.sign_up') %></a>
 
   </div>
+  </br>
+  <h5>OR </h5>
+  <h3> Login with </h3>
+  <div class="loginbutton" >
+    <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default"><i class="fa fa-google" style="font-size:17px;color:red"></i></span></div></a>
+  </div>
+
+  <br>
 
   <br />
   <p style="color: #888;"><%= raw t('user_sessions.new.reset_by_clicking_here', :url1 => "/reset/") %></p>

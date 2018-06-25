@@ -16,12 +16,44 @@ class NodeTest < ActiveSupport::TestCase
     assert question.answered
   end
 
+  test 'emoji conversion' do
+    node = nodes(:one)
+    revision = node.latest
+    revision.body = ':cat:'
+    assert_equal "<p>🐱</p>\n", revision.render_body
+  end
+
   test 'node mysql native fulltext search' do
     assert Node.count > 0
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      nodes = Node.search('organizers')
+      nodes = Node.search(query: 'organizers', limit: 1000)
       assert_not_nil nodes
       assert nodes.length > 0
+      # now sorted by natural language match
+      nodes_natural = Node.search(query: 'organizers', order: :natural, limit: 1000)
+      assert_not_nil nodes_natural
+      assert nodes_natural.length > 0
+      assert_not_equal nodes_natural, nodes
+      # now sorted by likes
+      nodes_likes = Node.search(query: 'organizers', order: :likes, limit: 1000)
+      assert_not_nil nodes_likes
+      assert nodes_likes.length > 0
+      assert_not_equal nodes_likes, nodes
+      # now sorted by views
+      nodes_views = Node.search(query: 'organizers', order: :views, limit: 1000)
+      assert_not_nil nodes_views
+      assert nodes_views.length > 0
+      assert_not_equal nodes_views, nodes
+    end
+  end
+
+  test 'node mysql native fulltext search returning tag-based matches' do
+    assert Node.count > 0
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      nodes = Node.search(query: 'awesome', limit: 1000)
+      assert_not_nil nodes
+      assert nodes.length > 0
+      assert_equal nodes.length, Tag.find_nodes_by_type('awesome', ['note', 'page']).length
     end
   end
 
@@ -353,5 +385,12 @@ class NodeTest < ActiveSupport::TestCase
     assert_equal node.comments.count, 5
     deleted_node = node.destroy
     assert_equal node.comments.count, 0
+  end
+
+  test 'should delete associated node selections when a node is deleted' do
+    node = nodes(:one)
+    node_selection = node_selections(:unbanned_spammer_like)
+    node.destroy
+    assert_equal node.node_selections.count, 0
   end
 end

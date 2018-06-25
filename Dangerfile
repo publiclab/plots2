@@ -32,28 +32,32 @@ begin
   junit.parse "output.xml"
   junit.failures.collect(&:nodes).flatten.each do |failure|
     failure.nodes.each do |f|
-      match = f.match(/(test[a-z_\/]+.rb):([0-9]+)/)
-      source_path = match[1]
-      line = match[2]
-      if !source_path.nil? && !line.nil?
-        f = f.gsub(source_path + ':' + line, "<a href='https://github.com/#{github.pr_author}/plots2/tree/#{github.branch_for_head}/#{source_path}#L#{line}'>#{source_path}:#{line}</a>")
+      f.match(/(test[a-z_\/]+.rb):([0-9]+)/) do |match|
+        source_path = match[1]
+        line = match[2]
+        if !source_path.nil? && !line.nil?
+          f = f.gsub(source_path + ':' + line, "<a href='https://github.com/#{github.pr_author}/plots2/tree/#{github.branch_for_head}/#{source_path}#L#{line}'>#{source_path}:#{line}</a>")
+        end
+        fail("There was a test failure at: #{f}")
       end
-      fail("There was a test failure at: #{f}")
     end
   end
 
   junit.errors.collect(&:nodes).flatten.each do |error|
     error.nodes.each do |f|
-      match = f.match(/(test[a-z_\/]+.rb):([0-9]+)/)
-      source_path = match[1]
-      line = match[2]
-      if !source_path.nil? && !line.nil?
-        f = f.gsub(source_path + ':' + line, "<a href='https://github.com/#{github.pr_author}/plots2/tree/#{github.branch_for_head}/#{source_path}#L#{line}'>#{source_path}:#{line}</a>")
+      f.match(/(test[a-z_\/]+.rb):([0-9]+)/) do |match|
+        source_path = match[1]
+        line = match[2]
+        if !source_path.nil? && !line.nil?
+          f = f.gsub(source_path + ':' + line, "<a href='https://github.com/#{github.pr_author}/plots2/tree/#{github.branch_for_head}/#{source_path}#L#{line}'>#{source_path}:#{line}</a>")
+            .gsub('`', "'") # remove ` as these cause Markdown formatting
+        end
+        fail("There was a test error at: #{f}")
       end
-      fail("There was a test error at: #{f}")
     end
   end
 
 rescue => ex
   fail "There was an error with Danger bot's Junit parsing: #{ex.message}"
+  puts ex.inspect # view the entire error output in the log
 end

@@ -1,4 +1,4 @@
-class AddIndexTermDataName < ActiveRecord::Migration
+class AddIndexTermDataName < ActiveRecord::Migration[5.1]
   def up
     add_index(:term_data, :name)
   end

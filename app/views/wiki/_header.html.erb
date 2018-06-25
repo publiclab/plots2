@@ -1,5 +1,5 @@
 <% if current_user && @node.tags.length == 0 %>
-  <div class="alert alert-warning"><%= raw t('wiki.show.page_has_no_tags') %></div>
+  <div class="alert alert-warning"><%= raw t('wiki.show.page_has_no_tags', url: 'javascript: $(".tag-input").focus();') %></div>
 <% end %>
 
 <% if @node.main_image && !@presentation %>
@@ -110,7 +110,7 @@
 <% end %>
 
 <% if @node.has_power_tag('parent') %>
-  <% parent = Node.find_by_path("wiki/" + @node.power_tag('parent')) %>
+  <% parent = Node.find_by(slug: @node.power_tag('parent')) %>
   <% if parent %>
   <div class="alert alert-success" style="border-color:#eee;background:#f8f8f8;color:#aaa;">&laquo; <%= raw t('wiki.show.back_to_wiki', :url1 => parent.path, :title => parent.latest.title) %></a></div>
   <% end %>

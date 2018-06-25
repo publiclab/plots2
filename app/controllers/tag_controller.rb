@@ -1,6 +1,7 @@
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
-  before_filter :require_user, only: %i(create delete)
+  before_action :require_user, only: %i(create delete)
+
 
   def index
     if params[:sort]
@@ -11,15 +12,17 @@ class TagController < ApplicationController
 
     @title = I18n.t('tag_controller.tags')
     @paginated = true
+    @order_type = params[:order] == "desc" ? "asc" : "desc"
+
     if params[:search]
-    prefix = params[:search]
+    keyword = params[:search]
     @tags = Tag.joins(:node_tag, :node)
       .select('node.nid, node.status, term_data.*, community_tags.*')
       .where('node.status = ?', 1)
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-      .where("name LIKE :prefix", prefix: "#{prefix}%")
+      .where("name LIKE :keyword", keyword: "%#{keyword}%")
       .group(:name)
-      .order('count DESC')
+      .order(order_string)
       .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "uses"
     @tags = Tag.joins(:node_tag, :node)
@@ -27,7 +30,7 @@ class TagController < ApplicationController
       .where('node.status = ?', 1)
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
       .group(:name)
-      .order('count DESC')
+      .order(order_string)
       .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "name"
     @tags = Tag.joins(:node_tag, :node)
@@ -35,7 +38,7 @@ class TagController < ApplicationController
       .where('node.status = ?', 1)
       .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
       .group(:name)
-      .order('name')
+      .order(order_string)
       .paginate(page: params[:page], per_page: 24)
     else
       tags = Tag.joins(:node_tag, :node)
@@ -43,7 +46,7 @@ class TagController < ApplicationController
                 .where('node.status = ?', 1)
                 .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
                 .group(:name)
-                .order('name')
+                .order(order_string)
 
       followed = []
       not_followed = []
@@ -73,6 +76,8 @@ class TagController < ApplicationController
     # params[:node_type] - this is an optional param
     # if params[:node_type] is nil - use @default_type
     @node_type = params[:node_type] || default_type
+    @start = Time.parse(params[:start]) if params[:start]
+    @end = Time.parse(params[:end]) if params[:end]
 
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
@@ -90,13 +95,30 @@ class TagController < ApplicationController
         .order('node_revisions.timestamp DESC')
     else
       @tags = Tag.where(name: params[:id])
-      nodes = Node.where(status: 1, type: node_type)
-        .includes(:revision, :tag)
-        .references(:term_data, :node_revisions)
-        .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
-        .paginate(page: params[:page], per_page: 24)
-        .order('node_revisions.timestamp DESC')
+
+      if @node_type == 'questions'
+        if params[:id].include? "question:"
+          other_tag = params[:id].split(':')[1]
+        else
+          other_tag = "question:" + params[:id]
+        end
+
+        nodes = Node.where(status: 1, type: node_type)
+          .includes(:revision, :tag)
+          .references(:term_data, :node_revisions)
+          .where('term_data.name = ? OR term_data.name = ? OR term_data.parent = ?', params[:id], other_tag, params[:id])
+          .paginate(page: params[:page], per_page: 24)
+          .order('node_revisions.timestamp DESC')
+      else
+        nodes = Node.where(status: 1, type: node_type)
+          .includes(:revision, :tag)
+          .references(:term_data, :node_revisions)
+          .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
+          .paginate(page: params[:page], per_page: 24)
+          .order('node_revisions.timestamp DESC')
+      end
     end
+    nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
     # breaks the parameter
     # sets everything to an empty array
@@ -435,5 +457,15 @@ class TagController < ApplicationController
 
   def gridsEmbed
     render layout: false
+  end
+
+  private
+
+  def order_string
+    if params[:search] || @toggle == "uses"
+      params[:order] == "asc" ? "count ASC" : "count DESC"
+    else
+      params[:order] == "asc" ? "name ASC" : "name DESC"
+    end
   end
 end

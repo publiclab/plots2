@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  before_filter :require_user
+  before_action :require_user
 
   def create
     @node = Node.find(params[:nid])
@@ -66,13 +66,13 @@ class AnswersController < ApplicationController
           @answer.accepted = true
           @answer.save
           @answer.node.add_tag('answered', @answer.author)
-          AnswerMailer.notify_answer_accept(@answer.author, @answer).deliver
+          AnswerMailer.notify_answer_accept(@answer.author, @answer).deliver_now
         end
         @answer.reload
         format.js
       end
     else
-      render text: "Answer couldn't be accepted"
+      render plain: "Answer couldn't be accepted"
     end
   end
 end

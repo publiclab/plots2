@@ -1,26 +1,24 @@
 require 'test_helper'
+require 'sanitize'
 
 class I18nTest < ActionDispatch::IntegrationTest
-  test 'should choose i18n-locale for footer partial' do
-    available_testing_locales.each do |lang|
-      get '/home'
-      get_via_redirect '/change_locale/' + lang.to_s
-      assert_select 'a[href=/wiki/issues]', I18n.t('layout._footer.getting_help.report_bug')
-    end
-  end
 
   test 'should choose i18n-locale for header partial' do
     available_testing_locales.each do |lang|
-      get '/home'
-      get_via_redirect '/change_locale/' + lang.to_s
-      assert_select 'p[class=facebook-summary]', I18n.t('layout._header.summary')
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
-      follow_redirect!
-      get_via_redirect '/dashboard', locale: lang
-      assert_select 'a[href=/dashboard]'
+      # This test could use a rewrite. Two `get`s in succession?
+      # get '/home'
+      # get '/change_locale/' + lang.to_s
+      # follow_redirect!
+      # assert_select 'p[class=facebook-summary]', I18n.t('layout._header.summary')
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
+      get '/dashboard', params: { locale: lang }
+      assert_select 'a[href=?]', '/dashboard'
     end
   end
 
@@ -29,7 +27,8 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
       assert_equal lang.to_s, I18n.locale.to_s
-      get_via_redirect '/dashboard'
+      get '/dashboard'
+      follow_redirect!
       assert_equal lang.to_s, I18n.locale.to_s
     end
   end
@@ -43,10 +42,13 @@ class I18nTest < ActionDispatch::IntegrationTest
   test 'should choose i18n for subscriptions' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
       get '/subscriptions'
       assert_select 'b', I18n.t('home.subscriptions.title')
@@ -56,10 +58,13 @@ class I18nTest < ActionDispatch::IntegrationTest
   test 'should choose i18n for dashboard/_activity' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
       assert_select 'h3', I18n.t('dashboard._activity.activity')
     end
@@ -68,10 +73,13 @@ class I18nTest < ActionDispatch::IntegrationTest
   test 'should choose i18n for dashboard/_header' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
       assert_select 'h1', I18n.t('dashboard._header.dashboard')
     end
@@ -81,10 +89,13 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
       get '/dashboard'
       assert_select 'span', I18n.t('dashboard._node_comment.commented_on')
@@ -95,18 +106,23 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
       post '/notes/create',
+          params: {
            title: 'Some post',
            body: 'Some post body',
            tags: 'Some-tag',
            status: 4
+          }
       get '/dashboard'
-      assert_select 'a[class=btn btn-default btn-xs]', I18n.t('dashboard._node_moderate.approve')
+      assert_select 'a[class=?]', 'btn btn-default btn-xs', I18n.t('dashboard._node_moderate.approve')
     end
   end
 
@@ -114,17 +130,22 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
       post '/notes/create',
+          params: {
            title: 'Some question',
            tags: 'question',
            status: 1
+          }
       get '/dashboard'
-      assert_select 'a[class=btn btn-default btn-xs pull-right respond answer]', I18n.t('dashboard._node_question.post_answer')
+      assert_select 'a[class=?]', 'btn btn-default btn-xs pull-right respond answer', I18n.t('dashboard._node_question.post_answer')
     end
   end
 
@@ -132,16 +153,21 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
       post '/notes/create',
+          params: {
            title: 'Some topic',
            tags: 'some-tag',
            type: 'page',
            status: 1
+          }
       get '/dashboard'
       assert_select 'span', I18n.t('dashboard._node_wiki.new_page_by')
     end
@@ -151,13 +177,16 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
       get '/dashboard'
-      assert_select 'a', I18n.t('dashboard._wiki.more') + ' &raquo;'
+      assert_select 'a', I18n.t('dashboard._wiki.more') + Sanitize.clean(' &raquo;')
     end
   end
 
@@ -177,10 +206,13 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
 
       get '/profile/edit'
@@ -194,10 +226,13 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
 
       username = users(:jeff).username.to_s
@@ -232,10 +267,13 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
 
       get '/profile/' + users(:jeff).username
@@ -248,10 +286,13 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
 
       get '/reset'
@@ -267,7 +308,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/login'
-      assert_select 'a[href=/signup]', I18n.t('user_sessions.new.sign_up')
+      assert_select 'a[href=?]', '/signup', I18n.t('user_sessions.new.sign_up')
     end
   end
 
@@ -276,10 +317,13 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
 
       get '/wiki'
@@ -293,10 +337,13 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
 
       wiki = nodes(:about)
@@ -329,10 +376,13 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
 
       get '/notes/author/' + users(:jeff).username
@@ -347,7 +397,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/wiki/' + nodes(:organizers).title.parameterize
-      assert_select 'a.write-research-note', "#{I18n.t('sidebar._related.write_research_note')} &raquo;"
+      assert_select 'a', "#{I18n.t('sidebar._related.write_research_note')} " + Sanitize.clean('&raquo;')
     end
   end
 
@@ -356,10 +406,13 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+         params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+         }
       follow_redirect!
 
       get nodes(:one).path
@@ -383,7 +436,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/contributors'
-      assert_select 'a[href=/post]', I18n.t('tag.contributors-index.write_research_note')
+      assert_select 'a[href=?]', '/post', I18n.t('tag.contributors-index.write_research_note')
     end
   end
 
@@ -423,7 +476,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       get '/talk/' + nodes(:about).slug
-      assert_select 'p.help-text', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', page: nodes(:about).latest.title, url1: nodes(:about).path, url2: '/wiki/talk-pages'))
+      assert_select 'p', ActionView::Base.full_sanitizer.sanitize(I18n.t('talk.show.welcome', page: nodes(:about).latest.title, url1: nodes(:about).path, url2: '/wiki/talk-pages') + ' | for help, <a href="/chat">visit our chatroom</a>')
     end
   end
 
@@ -432,10 +485,13 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
 
       get nodes(:one).path
@@ -468,15 +524,18 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', user_session: {
-        username: users(:jeff).username,
-        password: 'secretive'
-      }
+      post '/user_sessions', 
+        params: {
+          user_session: {
+            username: users(:jeff).username,
+            password: 'secretive'
+          }
+        }
       follow_redirect!
 
       get nodes(:first_timer_note).path
       assert_template 'notes/show'
-      assert_select 'div[class=alert alert-warning]', ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.show.note_no_tags'))
+      assert_select 'div[class=?]', 'alert alert-warning', ActionView::Base.full_sanitizer.sanitize(I18n.t('notes.show.note_no_tags'))
     end
   end
 

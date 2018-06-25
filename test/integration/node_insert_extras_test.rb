@@ -2,17 +2,20 @@ require 'test_helper'
 
 class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
   test 'note with inline tagged notes table via insert_extras() helper' do
-    post '/user_sessions', user_session: {
+    post '/user_sessions', params: { user_session: {
       username: users(:jeff).username,
       password: 'secretive'
+    }
     }
 
     title = 'One more post about balloon mapping'
 
     post '/notes/create',
+         params: {
          title: title,
          body:  "This is a fascinating post about a balloon mapping event. \n\n[notes:test] \n\n[activities:test] \n\n `[notes:shouldnt]` \n\n[upgrades:test]",
          tags:  'test'
+         }
 
     follow_redirect!
 
@@ -33,14 +36,19 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
     assert_equal   [], Node.activities('shouldnt')
     assert_not_nil Node.upgrades('test')
 
-    assert_select 'table.notes-grid-test'
-    assert_select 'table.activity-grid-test'
-    assert_select 'table.upgrades-grid-test'
-    assert_select 'table.notes-grid-shouldnt', false
+    selector= css_select 'table.notes-grid-test'
+    assert_equal selector.size, 1
+    selector = css_select 'table.activity-grid-test'
+    assert_equal selector.size, 1
+    selector = css_select 'table.upgrades-grid-test'
+    assert_equal selector.size, 1
+    selector = css_select 'table.notes-grid-shouldnt'
+    assert_equal selector.size, 0
 
     # here we test to see that the requested replications are shown on the bottom of the note
     assert_equal 1, node.response_count('replication')
-    assert_select "table.notes-grid-replication-#{node.id}"
+    selector = css_select "table.notes-grid-replication-#{node.id}"
+    assert_equal selector.size, 1
 
     seeks_reps.destroy
 
@@ -52,10 +60,15 @@ class NodeInsertExtrasTest < ActionDispatch::IntegrationTest
     get node.path
 
     assert_select 'h1', title
-    assert_select 'table.notes-grid-test'
-    assert_select 'table.activity-grid-test'
-    assert_select 'table.upgrades-grid-test'
-    assert_select 'table.notes-grid-shouldnt', false
-    assert_select "table.notes-grid-replication-#{node.id}"
+    selector = css_select 'table.notes-grid-test'
+    assert_equal selector.size, 1
+    selector = css_select 'table.activity-grid-test'
+    assert_equal selector.size, 1
+    selector = css_select 'table.upgrades-grid-test'
+    assert_equal selector.size, 1
+    selector = css_select 'table.notes-grid-shouldnt'
+    assert_equal selector.size, 0
+    selector = css_select "table.notes-grid-replication-#{node.id}"
+    assert_equal selector.size, 1
   end
 end

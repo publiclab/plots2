@@ -9,6 +9,13 @@ class ImagesControllerTest < ActionController::TestCase
     activate_authlogic
   end
 
+  test "image shortlinks redirect properly" do
+    get :shortlink, params: { id: Image.last.id }
+    assert_redirected_to Image.last.path(:large)
+    get :shortlink, params: { id: Image.last.id, size: 'medium' }
+    assert_redirected_to Image.last.path(:medium)
+  end
+
   #  test "normal user should not delete image" do
   #    UserSession.new(drupal_users(:bob))
   #    post :delete, id: Image.last.id

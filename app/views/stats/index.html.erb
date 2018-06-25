@@ -47,7 +47,7 @@
   
   <p><i><%= t('notes.stats.note_posting_52_weeks') %></i></p>
 
-  <div id="notes" style="height:100px;"></div>
+  <div id="notes" style="border:1px solid #E5E5E5"></div>
 
   <hr />
 
@@ -55,7 +55,7 @@
 
   <p><i><%= t('notes.stats.wiki_page_posting_52_weeks') %></i></p>
 
-  <div id="wikis" style="height:100px;"></div>
+  <div id="wikis" style="border:1px solid #E5E5E5"></div>
 
   <hr />
 
@@ -63,7 +63,7 @@
 
   <p><i><%= t('notes.stats.comments_posted_52_weeks') %></i></p>
 
-  <div id="comments" style="height:100px;"></div>
+  <div id="comments" style="border:1px solid #E5E5E5"></div>
 
   <hr />
 
@@ -71,59 +71,101 @@
   <p><%= raw t('notes.stats.edits_per_week', :count => @edits_per_week_past_year.round(2)) %></p>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 
 <script type="text/javascript">
-  (function () {
+    let divisions = new Array();
+    divisions[0] = <%= @graph_notes %>
+    divisions[1] = <%= @graph_wikis %>
+    divisions[2] = <%= @graph_comments %>
 
-    flotoptions_minimal = {
-      yaxis: { show: true },
-      xaxis: { show: true },
-      grid: {
-        borderWidth: 0,
-        //backgroundColor: "#222",
-        //color: "#444",
-        markers: []
-      }
-      // Palette "i eat the rainbow" by svartedauden on Colourlovers: http://www.colourlovers.com/palette/1630898/i_eat_the_rainbow, CC-BY-NC
-      //colors: [ "#E02130", "#FAB243", "#429867", "#2B5166" ]//, "#482344" ]
+    let months = ["J", "F", "M", "A", "M", "J", "J", "A","S", "O", "N", "D"];
+    
+    let parents = new Array();
+    parents[0] = "#notes";
+    parents[1] = "#wikis";
+    parents[2] = "#comments";
+
+    let i;
+    let labels = new Array();
+    for(i = 0; i < divisions[0].length; i++)
+        labels[i] = "";
+    let count = 0;
+    let prev = 0;
+    for(i = 0; i < divisions[0].length; i++){
+        if(divisions[0][i][1][0] != prev){
+            if(count < 4){
+                let j;
+                for(j = i - 1; j >= i - count; j--){
+                    labels[j] = "";
+                }
+            }
+
+            else if(count == 4){
+                let j;
+                for(j = i - 1; j >= i - count; j--){
+                    labels[j] = "";
+                }
+                labels[i-2] = months[divisions[0][i - 2][1][0]-1];
+            }
+            else{
+                let j;
+                for(j = i-1; j >= i - count; j--){
+                    labels[j] = "";
+                }
+                labels[i-3] = months[divisions[0][i - 3][1][0]-1];
+            }
+            count = 0;
+        }
+        prev = divisions[0][i][1][0];
+        count++;
+    }
+    let title = new Array();
+    title[0] = "notes"; 
+    title[1] = "wikis"; 
+    title[2] = "comments";
+    
+    let values = new Array();
+    for(i = 0; i < 3; i++){
+        let j = 0;
+        values[i] = new Array();
+        for(j = 0; j < divisions[i].length; j++){
+            values[i][j] = divisions[i][j][1][1];
+        }
+    }
+	
+    let datasets = new Array();
+    for(i = 0; i < 3; i++){
+        datasets[i] = new Array();
+        obj = new Object(); 
+        obj.title = title[i];
+        obj.values = new Array();
+        obj.values = values[i];
+        datasets[i][0] = new Object();
+        datasets[i][0] = obj;
+    }
+    
+    let data = new Array();
+    for(i = 0; i < 3; i++){
+        data[i] = new Object();
+        data[i].labels = labels;
+        data[i].datasets = datasets[i];
+    }
+	
+    for(i = 0; i < 3; i++){
+        let lineGraph = new Chart({
+            parent: parents[i], 
+            type: "bar", 
+            show_dots: 0,
+            heatline: 1,
+            height: 115,
+            region_fill: 0, 
+            data: data[i],
+            x_axis_mode: "tick",
+            y_axis_mode: "span",
+            is_series: 1,
+            colors: ['purple']
+        });
     }
 
-    var notes = <%= @graph_notes %>
-    var wikis = <%= @graph_wikis %>
-    var comments = <%= @graph_comments %>
-
-    $.plot($("#notes"), [
-      {
-          data: notes,
-          bars: { show: true,
-                  lineWidth: 0,
-                  fillColor: "#08f",
-                  barWidth: 0.5
-                }
-      }
-    ],flotoptions_minimal)
-
-    $.plot($("#wikis"), [
-      {
-          data: wikis,
-          bars: { show: true,
-                  lineWidth: 0,
-                  fillColor: "#80f",
-                  barWidth: 0.5
-                }
-      }
-    ],flotoptions_minimal)
-
-    $.plot($("#comments"), [
-      {
-          data: comments,
-          bars: { show: true,
-                  lineWidth: 0,
-                  fillColor: "#80f",
-                  barWidth: 0.5
-                }
-      }
-    ],flotoptions_minimal)
-
-  })()
 </script>

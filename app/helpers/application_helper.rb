@@ -12,6 +12,47 @@ module ApplicationHelper
     end
   end
 
+
+  def emojify(content)
+    content.to_str.gsub(/:([\w+-]+):/) do |match|
+      if emoji = Emoji.find_by_alias($1)
+        if emoji.raw
+          emoji.raw
+        else
+          %(<img class="emoji" alt="#$1" src="#{image_path("emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
+        end
+      else
+        match
+      end
+    end if content.present?
+  end
+
+  def emoji_names_list
+    emojis = []
+    image_map = {}
+    Emoji.all.each do |e|
+      next unless e.raw
+      val = ":#{e.name}:"
+      emojis<<{ value: val, text: e.name }
+      image_map[e.name] = e.raw
+    end
+    { emojis: emojis, image_map: image_map }
+  end
+
+  def emoji_info
+    emoji_names = ["thumbs-up", "thumbs-down", "laugh",
+                   "hooray", "confused", "heart"]
+    emoji_image_map = {
+      "thumbs-up" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png",
+      "thumbs-down" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png",
+      "laugh" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png",
+      "hooray" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png",
+      "confused" => "https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png",
+      "heart" => "https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png"
+    }
+    [emoji_names, emoji_image_map]
+  end
+
   def feature(title)
     features = Node.where(type: 'feature', title: title)
     if !features.empty?
@@ -41,15 +82,21 @@ module ApplicationHelper
     body
   end
 
-  def render_map(lat, lon, items)
-    render partial: 'map/leaflet', locals: { lat: lat, lon: lon, items: items }
+  # we should move this to the Node model:
+  def render_map(lat, lon)
+    render partial: 'map/leaflet', locals: { lat: lat, lon: lon }
   end
 
+  # we should move this to the Comment model:
   # returns the comment body which is to be shown in the comments section
   def render_comment_body(comment)
-    raw sanitize RDiscount.new(title_suggestion(comment)).to_html, attributes: %w(class style href data-method src)
+    raw RDiscount.new(
+      title_suggestion(comment),
+      :autolink
+    ).to_html
   end
-  
+
+  # we should move this to the Comment model:
   # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)
     comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do ||

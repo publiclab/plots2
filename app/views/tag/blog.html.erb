@@ -19,17 +19,17 @@
         <% else %>
         <br><br>
         <div class="alert alert-success" role="alert">
-        Want to get updates for new blog posts? <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= params[:id] %>"> 
+        Want to get updates for new blog posts? <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= params[:id] %>">
         <b><%= t('Click here to subscribe!') %></b></a>
         </div>
         <% end %>
       <% else %>
         <div class="alert alert-info" role="alert">
-        <a href="/login?return_to=/blog" class="alert-link">Log in</a> to get updates for new posts! 
+        <a href="/login?return_to=/blog" class="alert-link">Log in</a> to get updates for new posts!
         </div>
       <% end %>
     <% end %>
-    
+
     <br />
 
   </div>
@@ -50,7 +50,7 @@
           <% end %>
           <h1><a href="<%= node.path %>"><%= node.title %></a></h1>
           <p class="meta" style="color:#888;"><small>
-            <%= t('tag.blog.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>
+            <%= t('tag.blog.by') %> <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_author_contributor %>
 	    | <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
             | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
             <% if params[:controller] == "notes" && params[:action] == "popular" %>
@@ -64,7 +64,7 @@
           <p>
             <%= render :partial => "like/like", :locals => {:node => node, :tagnames => node.tags.collect(&:name) } %>
             <% node.tags[0..3].each do |tag| %>
-              <a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
+              <a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a>
             <% end %>
           </p>
           <% if params[:mod] %>
@@ -79,5 +79,5 @@
   <% end %>
 
   <hr />
-  
+
 </div>

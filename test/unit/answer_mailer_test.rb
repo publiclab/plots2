@@ -5,7 +5,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     user = users(:jeff)
     answer = answers(:one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      AnswerMailer.notify_question_author(user, answer).deliver
+      AnswerMailer.notify_question_author(user, answer).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
@@ -21,7 +21,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     user = users(:bob)
     answer = answers(:two)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      AnswerMailer.notify_answer_likers_author(user, answer).deliver
+      AnswerMailer.notify_answer_likers_author(user, answer).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
@@ -36,7 +36,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     user = users(:admin)
     answer = answers(:two)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      AnswerMailer.notify_answer_likers_author(user, answer).deliver
+      AnswerMailer.notify_answer_likers_author(user, answer).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
@@ -51,7 +51,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     user = users(:bob)
     answer = answers(:one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      AnswerMailer.notify_answer_accept(user, answer).deliver
+      AnswerMailer.notify_answer_accept(user, answer).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 
@@ -66,7 +66,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     user = users(:bob)
     answer = answers(:one)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-      AnswerMailer.notify_answer_like(user, answer).deliver
+      AnswerMailer.notify_answer_like(user, answer).deliver_now
     end
     assert !ActionMailer::Base.deliveries.empty?
 

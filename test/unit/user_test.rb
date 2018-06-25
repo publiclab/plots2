@@ -164,6 +164,13 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 1, drupal_user.user.status
   end
 
+  test 'daily_note_tally returns the correct type of array' do
+      user = users(:bob)
+      daily = user.daily_note_tally()
+      assert_not_empty daily
+      assert_equal daily.count, 365
+  end
+
   test 'user roles' do
     admin = users(:admin)
     assert admin.admin?
@@ -179,4 +186,37 @@ class UserTest < ActiveSupport::TestCase
     assert_not basic_user.can_moderate?
   end
 
+  test 'user email validation' do
+    user = User.new(username: 'zen',
+                    password: 'nez',
+                    password_confirmation: 'nez',
+                    email: 'abc@.com')
+    assert_not user.save({})
+  end
+
+  test 'email validation' do
+    user = User.new(username: 'himanshu',
+                    password: 'bhallu',
+                    password_confirmation: 'bhallu',
+                    email: '@xyz.com')
+    assert_not user.save({})
+  end
+
+  test 'create a user with omniauth if email prefix does not exist in db' do
+    auth = {"uid" => "98746858591", "info" => { "email" => "bansal.sidharth2990@gmail.com"}}
+    sidharth = User.create_with_omniauth(auth)
+    assert_not_nil sidharth
+    assert_equal sidharth.email, "bansal.sidharth2990@gmail.com"
+    #as username "bansal_sidharth2990" does not exist in the db, user with username = "bansal_sidharth2990" will be created
+    assert_equal sidharth.username, "bansal_sidharth2990"
+  end
+
+  test 'create a user with omniauth if email prefix does exist in db' do
+    auth = {"uid" => "98740858591", "info" => { "email" => "jeff@gmail.com"}}
+    jeffrey = User.create_with_omniauth(auth)
+    assert_not_nil jeffrey
+    assert_equal jeffrey.email, "jeff@gmail.com"
+    #as the username as "jeff" exists, hence username = "jeff" + 2 digit alphanumeric code will be created
+    assert_not_equal jeffrey.username, "jeff"
+  end
 end

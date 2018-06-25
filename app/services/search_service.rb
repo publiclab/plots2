@@ -54,13 +54,25 @@ class SearchService
   end
 
   def find_nodes(input, limit = 5)
-    Node.limit(limit)
-      .order('nid DESC')
-      .where('node.status = 1 AND title LIKE ?', '%' + input + '%')
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      nids = Node.search(input)
+        .group(:nid)
+        .includes(:node)
+        .references(:node)
+        .limit(limit)
+        .where("node.type": ["note", "page"], "node.status": 1)
+        .order('node.changed DESC')
+        .collect(&:nid)
+      Node.find nids
+    else
+      Node.limit(limit)
+        .group(:nid)
+        .where(type: ["note", "page"], status: 1)
+        .order(changed: :desc)
+        .where('title LIKE ?', '%' + input + '%')
+    end
   end
 
-  ## search for node title only
-  ## FIXme with solr
   def find_notes(input, limit = 5)
     Node.limit(limit)
       .order('nid DESC')
@@ -219,25 +231,30 @@ class SearchService
     sresult
   end
 
-#GET X number of latest people/contributors 
-# X = srchString
-def recentPeople(srchString)
+  #GET X number of latest people/contributors 
+  # X = srchString
+  def recentPeople(_srchString, tagName = nil)
     sresult = DocList.new  
-    nodes = Node.all.order("changed DESC").limit(100).uniq
+    nodes = Node.all.order("changed DESC").limit(100).distinct
     users = []
-    nodes.each do |node|
-      users << node.author.user
+    nodes.each do |node|      
+     if node.author.status != 0 
+       if tagName.blank?
+         users << node.author.user
+       else
+         users << node.author.user if node.author.user.has_tag(tagName)
+       end
+     end
     end
     users = users.uniq 
     users.each do |user|
-      if user.has_power_tag("lat") && user.has_power_tag("lon") 
-          blurred = false 
-          if user.has_power_tag("location")
-            blurred = user.get_value_of_power_tag("location")
-          end
-          doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path , user.username , 0 , 0 , user.lat , user.lon , blurred)
-          sresult.addDoc(doc)
+      next unless user.has_power_tag("lat") && user.has_power_tag("lon") 
+      blurred = false 
+      if user.has_power_tag("location")
+        blurred = user.get_value_of_power_tag("location")
       end
+      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
+      sresult.addDoc(doc)
     end                  
     sresult
   end

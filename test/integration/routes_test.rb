@@ -27,7 +27,7 @@ class RoutesTest < ActionDispatch::IntegrationTest
         get '/profile/jeff/edit'
         assert_response 302 	#error code 302 is for REDIRECT : https://stackoverflow.com/questions/23788331/http-error-code-302-when-calling-https-webservice
         follow_redirect!
-        assert_equal '/profile/jeff' , path
+        assert_equal '/login' , path
 	end
 
 	test "edit profile route when user logged in " do
@@ -36,5 +36,13 @@ class RoutesTest < ActionDispatch::IntegrationTest
         get '/profile/jeff/edit'	
         assert_equal '/profile/jeff/edit' , path
 	end
+
+    test "test get request for comment create" do
+	    assert_routing({ path: '/comment/create/8', method: :get }, { controller: 'comment', action: 'create', id: '8' })
+    end
+
+    test "test get request for answer update" do
+        assert_routing({ path: '/answers/update/1', method: 'get' }, { controller: 'answers', action: 'update', id: '1' })
+    end
 
 end

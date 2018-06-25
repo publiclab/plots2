@@ -1,4 +1,4 @@
-class RemoveUnusedTablesAndAddUsedOnes < ActiveRecord::Migration
+class RemoveUnusedTablesAndAddUsedOnes < ActiveRecord::Migration[5.1]
   def up
     ActiveRecord::Base.connection.execute("DROP VIEW IF EXISTS view_node_like_count")
     drop_table :content_field_map
