@@ -51,7 +51,7 @@ Rails.application.configure do
         'email' => 'bansal.sidharth309@gmail.com'
       }
     })
-  
+
   OmniAuth.config.mock_auth[:google_oauth2_2] = OmniAuth::AuthHash.new({
        'provider' => 'google_oauth2',
        'uid' => '1357908642',
@@ -74,11 +74,11 @@ Rails.application.configure do
       'provider' => 'github',
       'uid' => '1357998009602',
       'info' => {
-        'name' => 'sidharth bansal',
-        'email' => 'bansal.sidharth309@xyz.com'
+        'name' => 'jeffrey',
+        'email' => 'jeff@pxlshp.com'
         }
     })
-  
+
   OmniAuth.config.mock_auth[:github3] = OmniAuth::AuthHash.new({
       'provider' => 'github',
       'uid' => '135799239602',
