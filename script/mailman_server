@@ -9,6 +9,7 @@ Mailman.config.ignore_stdin = true #ignore input from STDIN
 
 Mailman.config.poll_interval = 5 # To poll for mails in every 5 seconds
 
+
 # Email Configration for mailman
 Mailman.config.pop3 = {
   server: ENV['SERVER_ADDRESS'], # example pop.example.com 
