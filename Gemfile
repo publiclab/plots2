@@ -59,7 +59,7 @@ gem 'figaro'
 gem 'sanitize'
 gem 'tzinfo-data', platforms: %i(mingw mswin x64_mingw jruby)
 gem 'rails-controller-testing'
-
+gem 'sprockets', '~> 3.7.2'
 
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
