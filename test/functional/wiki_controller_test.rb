@@ -594,7 +594,7 @@ class WikiControllerTest < ActionController::TestCase
     assert_select 'div#comments h3', /Comments/
   end
   
-    test 'redirect path by page name' do
+  test 'redirect path by page name' do
     wiki = nodes(:wiki_page)
     slug = wiki.path.gsub('/wiki/', '')
     wiki.add_tag("redirect:about", users(:bob))
@@ -602,6 +602,21 @@ class WikiControllerTest < ActionController::TestCase
 
     get :show, params: { id: slug }
     assert_redirected_to "http://test.host/about"
+  end
+
+  test 'should render a text/plain when the body of two wikis are same' do
+      revisionA = revisions(:about)
+      revisionB = revisions(:about_rev_4)
+      get :diff, params: { a: revisionA.vid, b: revisionB.vid}
+      assert_equal 'text/plain', @response.content_type
+      assert_equal I18n.t('wiki_controller.lead_image_or_title_change').html_safe, @response.body
+  end
+
+  test 'should render a text/partial when the body of two wikis are same' do
+      revisionA = revisions(:about)
+      revisionB = revisions(:about_rev_2)
+      get :diff, params: { a: revisionA.vid, b: revisionB.vid}
+      assert_equal 'text/html', @response.content_type
   end
 
 end
