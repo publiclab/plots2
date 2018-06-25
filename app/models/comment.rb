@@ -209,7 +209,7 @@ class Comment < ApplicationRecord
     puts node_id
     unless node_id.nil?
       node = Node.where(nid: node_id)
-      if(node.any?)
+      if node.any?
         node = node.first
         user = User.find_by(email: message.from.first)
         if user.present? && node_id.present?
