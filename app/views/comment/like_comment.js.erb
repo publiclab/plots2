@@ -1,6 +1,7 @@
 <% str="##{@comment_id}-like-emojis button" %>
 <% emoji_names = ["thumbs-up", "thumbs-down", "laugh",
                    "hooray", "confused", "heart"] %>
+
 $("<%= str %>").css("display","none");
 <% emoji_names.each do |e| %>
   <% str="##{@comment_id}-emoji-button-#{e}" %>
