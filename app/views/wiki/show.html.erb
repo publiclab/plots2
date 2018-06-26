@@ -42,6 +42,7 @@
   <%= render :partial => "wiki/header" %>
 
   <div class="tab-content">
+
     <% if @node.has_power_tag('tabbed') %>
       <% if @node.power_tags('tabbed').include?("notes") %>
         <div class="tab-pane" id="tab-notes">
