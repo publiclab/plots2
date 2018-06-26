@@ -206,7 +206,7 @@ class Comment < ApplicationRecord
 
   def user_reactions_map
     likes_map = likes.includes(:user).group_by(&:emoji_type)
-    user_like_map=Hash.new
+    user_like_map={}
     likes_map.each do |reaction, likes|
       users = []
       likes.each do |like|
