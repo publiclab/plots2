@@ -96,12 +96,6 @@
         cache: false
       });
 
-      // grab the like count for this node; "/likes/node/11278/count"
-      jQuery.getJSON("<%= like_count_path(node) %>", function (json) {
-        // push like count into the Like button placeholder
-        $('#like-count-<%= node.id %>').html(json);
-      });
-
       <% if current_user %>
         $('#like-button-<%= node.id %>').on('click',<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>)
       <% end %>
