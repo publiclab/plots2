@@ -28,4 +28,6 @@
  *= require wiki
  *= require question
  *= require tags
+ *= require noty/lib/noty.css
+ *= require jquery-confirm/css/jquery-confirm.css
 */

@@ -46,7 +46,7 @@
           <i class="fa fa-flag"></i>
         </a>
       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
-        <a data-remote="true" data-confirm="<%= t('notes._comment.are_you_sure') %> <% if current_user && comment.uid != current_user.uid %><%= t('notes._comment.please_exercise_caution') %><% end %>" href="/comment/delete/<%= comment.cid %>" class="btn btn-default btn-sm" id="c<%= comment.cid %>delete-btn">
+        <a class="btn btn-default btn-sm" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
         </a>
       <% end %>
@@ -73,15 +73,33 @@
   </div>
 
   <script>
-    // deletion button code:
-    $("#c<%= comment.cid %>delete-btn").bind('ajax:success', function(e,response){
-      $("#c<%= comment.cid %>").remove()
-      $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)-1
-    })
-    $("#c<%= comment.cid %>delete-btn-2").bind('ajax:success', function(e,response){
-      $("#c<%= comment.cid %>").remove()
-      $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)-1
-    })
+
+    $("#c<%= comment.cid %>delete-btn").click(function () {
+      $.confirm({
+        title: 'Confirm!',
+        theme: 'Supervan',
+        content: 'Are you sure?',
+        buttons: {
+
+          confirm: function () {
+            $.ajax({
+              url : "/comment/delete/<%= comment.cid %>",
+              type: 'GET',
+              success: function(response){
+                notyNotification('sunset', 3000, 'error', 'topRight', 'Comment deleted');
+                $("#c<%= comment.cid %>").remove()
+                $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)-1;
+              }
+            });
+          },
+
+          cancel: function () {
+              notyNotification('sunset', 3000, 'info', 'topRight', 'Comment deletion cancelled!');
+          },
+        }
+      });  
+    });
+
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })
