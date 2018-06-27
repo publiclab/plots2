@@ -220,73 +220,73 @@ class Comment < ApplicationRecord
     user_like_map
   end
 
-	def self.receive_mail(mail)
+  def self.receive_mail(mail)
 
-		user = User.where(email: mail.from.first).first
-		if user
-			node_id = mail.subject[/#([\d]+)/, 1] #This took out the node ID from the subject line
-			unless node_id.nil?
-				node = Node.where(nid: node_id).first
-					if node
-						mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
-						domain = get_domain mail.from.first
-						if domain == "gmail"
-							content = gmail_parsed_mail mail_doc
-						elsif domain == "yahoo"
-							content = yahoo_parsed_mail mail_doc
-						else
-							content = {
-								"comment_content" => mail_doc, 
-								"extra_content" => nil
-							}
-						end	
-						comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
-						extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
-						message_id = mail.message_id
-						comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id, reply_to_content: extra_content_markdown)
-						comment.notify user
-					end
-			end
-		end
+    user = User.where(email: mail.from.first).first
+    if user
+      node_id = mail.subject[/#([\d]+)/, 1] #This took out the node ID from the subject line
+      unless node_id.nil?
+        node = Node.where(nid: node_id).first
+          if node
+            mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
+            domain = get_domain mail.from.first
+            if domain == "gmail"
+              content = gmail_parsed_mail mail_doc
+            elsif domain == "yahoo"
+              content = yahoo_parsed_mail mail_doc
+            else
+              content = {
+                "comment_content" => mail_doc, 
+                "extra_content" => nil
+              }
+            end 
+            comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+            extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
+            message_id = mail.message_id
+            comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id, reply_to_content: extra_content_markdown)
+            comment.notify user
+          end
+      end
+    end
 
-	end
+  end
 
-	def self.get_domain(email)
-		domain = email[/(?<=@)[^.]+(?=\.)/,0]
-		return domain
-	end
+  def self.get_domain(email)
+    domain = email[/(?<=@)[^.]+(?=\.)/,0]
+    return domain
+  end
 
-	def self.yahoo_parsed_mail(mail_doc)
-		if mail_doc.css(".yahoo_quoted")
-			extra_content = mail_doc.css(".yahoo_quoted")[0]
-			mail_doc.css(".yahoo_quoted")[0].remove
-			comment_content = mail_doc
-		else
-			comment_content = mail_doc
-			extra_content = nil
-		end
+  def self.yahoo_parsed_mail(mail_doc)
+    if mail_doc.css(".yahoo_quoted")
+      extra_content = mail_doc.css(".yahoo_quoted")[0]
+      mail_doc.css(".yahoo_quoted")[0].remove
+      comment_content = mail_doc
+    else
+      comment_content = mail_doc
+      extra_content = nil
+    end
 
-		return {
-			"comment_content" => comment_content, 
-			"extra_content" => extra_content
-		}
-	end
+    return {
+      "comment_content" => comment_content, 
+      "extra_content" => extra_content
+    }
+  end
 
-	def self.gmail_parsed_mail(mail_doc)
-		if mail_doc.css(".gmail_quote").any?
-			extra_content = mail_doc.css(".gmail_quote")[0]
-			mail_doc.css(".gmail_quote")[0].remove
-			comment_content = mail_doc
-		else
-			comment_content = mail_doc
-			extra_content = nil
-		end
+  def self.gmail_parsed_mail(mail_doc)
+    if mail_doc.css(".gmail_quote").any?
+      extra_content = mail_doc.css(".gmail_quote")[0]
+      mail_doc.css(".gmail_quote")[0].remove
+      comment_content = mail_doc
+    else
+      comment_content = mail_doc
+      extra_content = nil
+    end
 
-		return {
-			"comment_content" => comment_content, 
-			"extra_content" => extra_content
-		}
+    return {
+      "comment_content" => comment_content, 
+      "extra_content" => extra_content
+    }
 
-	end
+  end
 
 end
