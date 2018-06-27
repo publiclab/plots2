@@ -55,6 +55,7 @@ services:
   sidekiq:
     build: ..
     command: bundle exec sidekiq -L log/sidekiq.log
+    network_mode: "host"
     depends_on:
       - db
       - redis
