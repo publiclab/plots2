@@ -21,7 +21,6 @@ services:
     ports:
       - '6379:6379'
     command: redis-server
-    network_mode: "service:web"
   web:
     build: ..
     command: /bin/bash -c "sleep 5 && passenger start -p 4000"
