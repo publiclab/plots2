@@ -11,8 +11,8 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
-    assert_equal ["do-not-reply@#{request_host}"], email.to
+    assert_equal ["notifications@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.to
     assert_equal '[PublicLab] ' + node.title + ' (#' + node.id.to_s + ') ', email.subject
     assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{node.author.name}'>#{node.author.name}</a> just posted a new research note")
   end
@@ -26,8 +26,8 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
-    assert_equal ["do-not-reply@#{request_host}"], email.to
+    assert_equal ["notifications@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.to
     assert_equal '[PublicLab] Question: ' + node.title + ' (#' + node.id.to_s + ') ', email.subject
 
     assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{node.author.name}'>#{node.author.name}</a> just asked a question")
@@ -42,7 +42,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [node.author.email], email.to
     assert_equal "[PublicLab] #{user.username} liked your research note", email.subject
     assert email.body.include?("Public Lab contributor #{user.username} (https://#{request_host}/profile/#{user.username}) just liked your research note")
@@ -57,7 +57,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [node.author.email], email.to
     assert_equal "[PublicLab] #{user.username} liked your question", email.subject
     assert email.body.include?("Public Lab contributor #{user.username} (https://#{request_host}/profile/#{user.username}) just liked your question")
@@ -78,8 +78,8 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     end
     assert !ActionMailer::Base.deliveries.empty?
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
-    assert_equal ["do-not-reply@#{request_host}"], email.to
+    assert_equal ["notifications@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.to
     assert email.bcc.include?(users_to_email.last.email)
     assert_equal "#{node.title} (#{new_tag.name})", email.subject
     assert email.body.include?("was tagged with")
