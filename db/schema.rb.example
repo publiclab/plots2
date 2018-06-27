@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20180627060150) do
     t.string  "homepage"
     t.integer "aid",                          default: 0,  null: false
     t.integer "comment_via", limit: 4,          default: 0
-    t.text "reply_to_content"
+    t.text "extra_content"
     t.string  "message_id",  limit: 255
   end
 
