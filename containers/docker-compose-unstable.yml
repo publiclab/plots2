@@ -18,6 +18,7 @@ services:
   redis:
     image: redis:latest
     command: redis-server
+    network_mode: "host"
   web:
     build: ..
     command: /bin/bash -c "sleep 5 && bundle exec rails s -p 5001 -b '0.0.0.0'"
@@ -55,12 +56,11 @@ services:
   sidekiq:
     build: ..
     command: bundle exec sidekiq -L log/sidekiq.log
-    network_mode: "host"
     depends_on:
       - db
       - redis
-#    links:
-#      - redis
+    links:
+      - redis
     volumes:
       - ..:/app
     environment:
