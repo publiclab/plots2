@@ -10,7 +10,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal '[PLab] Question: ' + answer.node.title.truncate(30,omission: '...?') + ' An answer has been posted on Public Lab', email.subject
     assert email.body.include?("Hi! <a href='https://#{request_host}/profile/#{ answer.author.name }'>#{ answer.author.name }</a> responded :
@@ -26,7 +26,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal '[PublicLab] New answer to Question: ' + answer.node.title, email.subject
     assert email.body.include?("Hi! There's been a new answer posted for the question '<a href='https://#{request_host}#{answer.node.path(:question)}'>#{answer.node.title}</a>' that you also answered")
@@ -41,7 +41,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal '[PublicLab] New answer to Question: ' + answer.node.title, email.subject
     assert email.body.include?("Hi! There's been a new answer posted for the question '<a href='https://#{request_host}#{answer.node.path(:question)}'>#{answer.node.title}</a>' that you liked")
@@ -56,7 +56,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal '[PublicLab] Your answer has been accepted', email.subject
     assert email.body.include?("Your answer for the question <a href='https://#{request_host}#{answer.node.path(:question)}'>#{answer.node.title}</a> has been accepted")
@@ -71,7 +71,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [answer.author.email], email.to
     assert_equal "[PublicLab] #{user.username} liked your answer to: " + answer.node.title, email.subject
     assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{user.username}'>#{user.username}</a> just liked your answer to the question <a href='https://#{request_host}#{answer.node.path(:question)}'>#{answer.node.title}</a>")
