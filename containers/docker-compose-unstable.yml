@@ -54,7 +54,7 @@ services:
       - ..:/app
   sidekiq:
     build: ..
-    command: bundle exec sidekiq
+    command: bundle exec sidekiq -L log/sidekiq.log
     depends_on:
       - db
       - redis
