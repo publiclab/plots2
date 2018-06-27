@@ -5,8 +5,10 @@
   <hr />
 
   <%= render 'form' %>
+      <% if Rails.env == "production"%>
         <h5>Link to </h5>
         <div class="loginbutton" >
           <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default"><i class="fa fa-google" style="font-size:20px;color:red"></i></span></div></a>
         </div>
+      <% end %>
 </div>
