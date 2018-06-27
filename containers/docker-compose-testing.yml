@@ -28,6 +28,8 @@ services:
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
       - REDIS_URL=redis://redis:6379/0
+    links:
+      - redis
     volumes:
       - ..:/app
     ports:
@@ -38,6 +40,8 @@ services:
     command: bundle exec sidekiq
     depends_on:
       - db
+      - redis
+    links:
       - redis
     volumes:
       - .:/app
