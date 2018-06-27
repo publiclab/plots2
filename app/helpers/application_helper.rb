@@ -96,6 +96,13 @@ module ApplicationHelper
     ).to_html
   end
 
+  def render_extra_content(comment)
+    raw RDiscount.new(
+      comment.reply_to_content,
+      :autolink
+    ).to_html
+  end
+
   # we should move this to the Comment model:
   # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)
