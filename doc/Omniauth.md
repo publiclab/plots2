@@ -29,6 +29,28 @@ Developers can create a developer's app for OAuth. Each app created has an app_i
 * For creating Google app go to https://console.developers.google.com/apis/library
 And then create an app. Search for the app_id and app_secret present in your app.
 
+## How to set up client id and client secret in development mode?
+
+As to the environment variables, you can insert them at run time locally by doing:
+
+```
+OAUTH_GOOGLE_APP_KEY=xxxxxxxx passenger start
+```
+
+Or, you can put it in a file like `environment.sh` which is like:
+
+```
+OAUTH_GOOGLE_APP_KEY=xxxxxxxx
+```
+
+and do:
+
+```
+source environment.sh && passenger start
+```
+
+Or, write them in config/application.yml file
+
 ## How to set up OAuth?
 
 Add the app_id and app_secret in the Jenkins and containers/docker*.yml files in the production.
