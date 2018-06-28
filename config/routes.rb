@@ -284,6 +284,7 @@ Plots2::Application.routes.draw do
   get 'answers/update/:id' => 'answers#update'
   put 'answers/update/:id' => 'answers#update'
   delete 'answers/delete/:id' => 'answers#delete'
+  get 'answers/accept/:id' => 'answers#accept'
   put 'answers/accept/:id' => 'answers#accept'
 
   get 'answer_like/show/:id' => 'answer_like#show'
@@ -293,6 +294,7 @@ Plots2::Application.routes.draw do
   get 'comment/answer_create/:aid' => 'comment#answer_create'
   get 'comment/delete/:id' => 'comment#delete'
   post 'comment/update/:id' => 'comment#update'
+  get 'comment/make_answer/:id' => 'comment#make_answer'
   post 'comment/make_answer/:id' => 'comment#make_answer'
   post '/comment/like' => 'comment#like_comment'
   get '/comment/create/:id' => 'comment#create'
