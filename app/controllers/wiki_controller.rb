@@ -118,7 +118,7 @@ class WikiController < ApplicationController
   end
 
   def new
-    if current_user && current_user.first_time_poster
+    if current_user &.first_time_poster
       flash[:notice] = "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
       redirect_to '/'
       return
