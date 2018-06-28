@@ -39,7 +39,7 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test "should use existing node body as template in post form based on param 'n'" do
-    UserSession.create(users(:bob))
+    UserSession.create(users(:test_user))
 
     get :new,
         params: { 
@@ -576,8 +576,9 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   test "Invalid date tags aren't added" do
+    @user = UserSession.create(users(:jeff))
     @node = nodes(:wiki_page)
-    @node.add_tag('date:bad', users(:jeff))
+    @node.add_tag('date:bad', @user)
 
     assert_equal false, @node.has_power_tag('date')
     # assert_equal "anything goes", DateTime.strptime(@node.power_tag('date'),'%m- %d-%Y').to_date.to_s(:long)
