@@ -64,4 +64,5 @@ services:
     volumes:
       - ..:/app
     environment:
+      - RAILS_ENV=${RAILS_ENV}
       - REDIS_URL=redis://redis:6379/0
