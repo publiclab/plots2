@@ -109,16 +109,21 @@
 
 <hr style="clear:both;padding:20px;" />
 
-<h2><center>Recent community activity</center></h2>
+<h2><center>Public Lab Blog</center></h2>
 
-<p><center><a href="/research">See more &raquo;</a></center></p>
+<p><center>
+  <a href="/blog">More of the blog</a> | 
+  <a href="/research">All recent work &raquo;</a>
+</center></p>
 
 <div class="dashboard">
-  <% cache('home-activity', expires_in: 60.minutes, skip_digest: true) do %>
-    <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
+  <% cache('home-blog', expires_in: 60.minutes, skip_digest: true) do %>
+    <div class="tab-pane active" id="notes">
+      <% unless @notes.nil? || @notes.length == 0 %>
+        <%= render partial: "notes/notes" %>
+      <% end %>
+    </div>
   <% end %>
-  <%= stylesheet_link_tag "dashboard" %>
-  <%= javascript_include_tag "dashboard" %>
 </div>
 
 </div>
