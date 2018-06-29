@@ -250,6 +250,6 @@ class UsersControllerTest < ActionController::TestCase
     user = users(:bob)
     UserSession.create(user)
     post :test_digest_email
-    assert_redirected_to '/profile/'+user.username
+    assert_redirected_to '/'
   end
 end
