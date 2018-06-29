@@ -205,7 +205,7 @@ class Comment < ApplicationRecord
   end
 
   def user_reactions_map
-    likes_map = likes.includes(:user).group_by(&:emoji_type)
+    likes_map = likes.where.not(emoji_type: nil).includes(:user).group_by(&:emoji_type)
     user_like_map={}
     likes_map.each do |reaction, likes|
       users = []
