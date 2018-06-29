@@ -51,7 +51,7 @@
 //= require short-code-forms/dist/short-code-prompts.js
 //= require wikis.js
 //= require chart.js/dist/Chart.js
-//= require horsey.js
+//= require horsey/dist/horsey.min.js
 //= require header_footer.js
 //  require turbolinks // Temporarily removed while fixing
 //= require noty/lib/noty.js
