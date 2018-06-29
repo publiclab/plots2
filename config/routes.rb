@@ -97,6 +97,8 @@ Plots2::Application.routes.draw do
 
   # these need precedence for tag listings
   get 'feed/tag/:tagname' => 'tag#rss'
+  get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
+  get 'tag/:id/author/:author' => 'tag#show_for_author'
   get ':node_type/tag(/:id)(/:start)(/:end)' => 'tag#show'
   get 'feed/tag/:tagname/author/:authorname' => 'tag#rss_for_tagged_with_author'
   get 'wiki/raw/:id' => 'wiki#raw'
@@ -184,8 +186,6 @@ Plots2::Application.routes.draw do
   put 'tag/remove_tag/:id' => 'tag#remove_tag'
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
   get 'tag/:id' => 'tag#show'
-  get 'tag/:id/author/:author' => 'tag#show_for_author'
-  get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'
   get 'embed/grid/:tagname' => 'tag#gridsEmbed'
