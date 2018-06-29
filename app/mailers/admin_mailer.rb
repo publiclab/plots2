@@ -1,7 +1,7 @@
 class AdminMailer < ActionMailer::Base
   helper :application
   include ApplicationHelper
-  default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
+  default from: "notifications@#{ActionMailer::Base.default_url_options[:host]}"
 
   def notify_node_moderators(node)
     subject = '[New Public Lab poster needs moderation] ' + node.title

@@ -141,7 +141,7 @@ class CommentController < ApplicationController
         end
       else
         flash[:error] = 'The comment could not be deleted.'
-        render text: 'failure'
+        render plain: 'failure'
       end
     else
       prompt_login 'Only the comment or post author can delete this comment'
@@ -171,7 +171,7 @@ class CommentController < ApplicationController
         end
       else
         flash[:error] = 'The comment could not be promoted to answer.'
-        render text: 'failure'
+        render plain: 'failure'
       end
     else
       prompt_login 'Only the comment author can promote this comment to answer'

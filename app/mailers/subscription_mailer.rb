@@ -1,7 +1,7 @@
 class SubscriptionMailer < ActionMailer::Base
   helper :application
   include ApplicationHelper
-  default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
+  default from: "notifications@#{ActionMailer::Base.default_url_options[:host]}"
 
   def notify_node_creation(node)
     subject = '[PublicLab] ' + (node.has_power_tag('question') ? 'Question: ' : '') + node.title + " (##{node.id}) "
@@ -10,7 +10,7 @@ class SubscriptionMailer < ActionMailer::Base
     @footer = feature('email-footer')
     recipients = Tag.subscribers(node.tags).values.map{ |obj| obj[:user] }.collect(&:email)
     mail(
-      to: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}",
+      to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: recipients,
       subject: subject
     )
@@ -47,7 +47,7 @@ class SubscriptionMailer < ActionMailer::Base
     end
     @footer = feature('email-footer')
     mail(
-      to: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}",
+      to: "notifications@#{ActionMailer::Base.default_url_options[:host]}",
       bcc: recipients,
       subject: "#{node.title} (#{@tag.name})"
       )

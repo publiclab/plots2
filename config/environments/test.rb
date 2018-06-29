@@ -40,8 +40,9 @@ Rails.application.configure do
     host: 'www.example.com'
   }
 
-
   OmniAuth.config.test_mode = true
+  #OAuth hash for different providers for testing purpose
+  #Google Provider
   OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
       'provider' => 'google_oauth2',
       'uid' => '1357908642',
@@ -51,13 +52,43 @@ Rails.application.configure do
       }
     })
 
-    OmniAuth.config.mock_auth[:google_oauth2_2] = OmniAuth::AuthHash.new({
-        'provider' => 'google_oauth2',
-        'uid' => '1357908642',
-        'info' => {
-          'name' => 'jeff',
-          'email' => 'jeff@pxlshp.com'
+  OmniAuth.config.mock_auth[:google_oauth2_2] = OmniAuth::AuthHash.new({
+       'provider' => 'google_oauth2',
+       'uid' => '1357908642',
+       'info' => {
+         'name' => 'jeff',
+         'email' => 'jeff@pxlshp.com'
+       }
+     })
+  #Github Provider
+  OmniAuth.config.mock_auth[:github1] = OmniAuth::AuthHash.new({
+      'provider' => 'github',
+      'uid' => '135790579602',
+      'info' => {
+        'name' => 'sidharth bansal',
+        'email' => 'bansal.sidharth309@gmail.com'
+      }
+    })
+
+  OmniAuth.config.mock_auth[:github2] = OmniAuth::AuthHash.new({
+      'provider' => 'github',
+      'uid' => '1357998009602',
+      'info' => {
+        'name' => 'jeffrey',
+        'email' => 'jeff@pxlshp.com'
         }
-      })
+    })
+
+  OmniAuth.config.mock_auth[:github3] = OmniAuth::AuthHash.new({
+      'provider' => 'github',
+      'uid' => '135799239602',
+      'info' => {
+        'name' => 'emila buffet',
+        'email' => 'emila.buffet309@gmail.com'
+      }
+    })
+
+
+
 
 end

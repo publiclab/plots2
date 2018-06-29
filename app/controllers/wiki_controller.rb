@@ -118,6 +118,11 @@ class WikiController < ApplicationController
   end
 
   def new
+    if current_user &.first_time_poster
+      flash[:notice] = "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
+      redirect_to '/'
+      return
+    end
     @node = Node.new
     if params[:n] && !params[:body] # use another node body as a template
       node = Node.find(params[:n])
@@ -299,7 +304,7 @@ class WikiController < ApplicationController
     @a = Revision.find_by(vid: params[:a])
     @b = Revision.find_by(vid: params[:b])
     if @a.body == @b.body
-      render text: I18n.t('wiki_controller.lead_image_or_title_change').html_safe
+      render plain: I18n.t('wiki_controller.lead_image_or_title_change').html_safe
     else
       render partial: 'wiki/diff'
     end
