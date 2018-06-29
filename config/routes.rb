@@ -283,6 +283,7 @@ Plots2::Application.routes.draw do
   get 'answers/create/:nid' => 'answers#create'
   get 'answers/update/:id' => 'answers#update'
   put 'answers/update/:id' => 'answers#update'
+  get 'answers/delete/:id' => 'answers#delete'
   delete 'answers/delete/:id' => 'answers#delete'
   get 'answers/accept/:id' => 'answers#accept'
   put 'answers/accept/:id' => 'answers#accept'
