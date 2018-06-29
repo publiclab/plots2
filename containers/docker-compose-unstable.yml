@@ -59,6 +59,7 @@ services:
       - db
       - redis
     links:
+      - db
       - redis
     volumes:
       - ..:/app
