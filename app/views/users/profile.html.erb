@@ -97,7 +97,7 @@
   <% end %>
 
   <% if @profile_user && current_user && @profile_user == current_user %>
-    <a href="/users/test_digest_email" class="btn btn-default btn-sm btn-block" method: "post">Test Digest Email</a>
+    <a href="/users/test_digest_email" class="btn btn-default btn-sm btn-block" data-method="post">Test Digest Email</a>
   <% end %>
 
   <hr />
@@ -176,42 +176,57 @@
   <br>
 
   <ul class="nav nav-tabs">
-    <li class="active"><a href="#research" data-toggle="tab"><i class="fa fa-file"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.research') %></span> <%= "(#{@notes.count})" %></a></li>
-    <li><a href="#coauthored" data-toggle="tab"><i class="fa fa-file-o"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.Coauthored') %></span> (<%= @coauthored.size %>)</a></li>
+    <li class="active"><a href="#research" data-toggle="tab"><i class="fa fa-file"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.research') %></span><% if current_user && current_user.uid == @profile_user.uid %> <%= "(#{@notes.count + @coauthored.count + @drafts.count })" %><% else %><%= "(#{ @notes.count + @coauthored.count })" %><% end %></a></li>
     <li><a href="#questions" data-toggle="tab"><i class="fa fa-question-circle"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %></span> (<%= Node.questions.where(status: 1, uid: @user.id).length %>)</a></li>
     <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span> (<%= @comment_count %>)</a></li>
-    <li><a href="#likes" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
+    <li><a href="#likes" data-toggle="tab"><i class="fa fa-star"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
     <li><a href="#barnstars" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> Barnstars</span> (<%= @user.user.try(:barnstars).try(:length) %>)</a></li>
   </ul>
 
   <br />
 
-  <div class="tab-content">
+ <div class="tab-content">
 
     <div class="tab-pane active" id="research">
-      <%= render :partial => "notes/notes" %>
-    </div>
-
-    <div class="tab-pane" id="coauthored">
-      <%= render :partial => "notes/coauthored_notes" %>
-    </div>
-
-    <div class="tab-pane" id="questions">
       <div class="btn-group text-center">
-        <a href="#asked" class="btn btn-default active" data-toggle="tab">Asked</a>
-        <a href="#answered" class="btn btn-default" data-toggle="tab">Answered</a>
+        <a href="#notes" class="btn btn-default" data-toggle="tab">Authored <%= "(#{ @notes.count })" %></a>
+        <a href="#coauthored" class="btn btn-default" data-toggle="tab">Coauthored  <%= "(#{ @coauthored.count })" %></a>
+        <% if current_user && current_user.uid == @profile_user.uid %><a href="#draft" class="btn btn-default" data-toggle="tab">Drafts <%= "(#{ @drafts.count })" %></a><% end %>
       </div>
 
       <div class="tab-content">
-        <div class="tab-pane active" id="asked">
-          <%= render :partial => "questions/questions" %>
+        <div class="tab-pane active" id="notes">
+          <%= render :partial => "notes/notes" %>
         </div>
 
-        <div class="tab-pane" id="answered">
-          <%= render :partial => "users/answered" %>
+        <div class="tab-pane" id="coauthored">
+          <%= render :partial => "notes/coauthored_notes" %>
         </div>
+
+        <% if current_user && current_user.uid == @profile_user.uid %>
+            <div class="tab-pane" id="draft">
+              <%= render :partial => "notes/draft_notes" %>
+            </div>
+        <% end %>
       </div>
     </div>
+
+   <div class="tab-pane" id="questions">
+     <div class="btn-group text-center">
+       <a href="#asked" class="btn btn-default active" data-toggle="tab">Asked</a>
+       <a href="#answered" class="btn btn-default" data-toggle="tab">Answered</a>
+     </div>
+
+     <div class="tab-content">
+       <div class="tab-pane active" id="asked">
+         <%= render :partial => "questions/questions" %>
+       </div>
+
+       <div class="tab-pane" id="answered">
+         <%= render :partial => "users/answered" %>
+       </div>
+     </div>
+   </div>
 
     <div class="tab-pane" id="maps">
       <p><i><%= raw t('users.profile.view_these_maps', :url1 => "//mapknitter.org/profile/"+@user.name) %></i></p>
@@ -231,6 +246,7 @@
     <div class="tab-pane" id="likes">
       <%= render :partial => "users/likes" %>
     </div>
+
     <div class="tab-pane" id="barnstars">
       <% if @user.user %>
       <% @user.user.barnstars.each do |tag| %>
