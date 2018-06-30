@@ -891,7 +891,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/21'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='https://publiclab.org/notes/show/21/test-06-30-2018-draft-note'>https://publiclab.org/notes/show/21/test-06-30-2018-draft-note</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to moderator in full view with notice' do
@@ -907,7 +907,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/21'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='https://publiclab.org/notes/show/21/test-06-30-2018-draft-note'>https://publiclab.org/notes/show/21/test-06-30-2018-draft-note</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to co-author in full view with notice' do
@@ -923,6 +923,6 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/21'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='https://publiclab.org/notes/show/21/test-06-30-2018-draft-note'>https://publiclab.org/notes/show/21/test-06-30-2018-draft-note</a>", flash[:warning]
    end
 end
