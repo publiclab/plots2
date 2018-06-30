@@ -247,4 +247,4 @@ draft:
   status: 3
   type: "note"
   cached_likes: 0
-  slug: test-<%= Time.now.strftime("%m-%d-%Y") %>-draft-note
+  slug: test-<%= Time.now.strftime("%m-%d-%Y") %>-draft-note token:briRpnTHzKHepo6-j8-b5w
