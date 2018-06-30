@@ -148,7 +148,7 @@ class UsersController < ApplicationController
                       .limit(20)
       @wikis = wikis.collect(&:parent).uniq
 
-      @comment_count = Comment.where(status: 0, uid: @user.uid).count
+      @comment_count = Comment.where(status: 1, uid: @user.uid).count
 
       # User's social links
       @github = @profile_user.social_link("github")
@@ -253,7 +253,7 @@ class UsersController < ApplicationController
   def comments
     @comments = Comment.limit(20)
                              .order("timestamp DESC")
-                             .where(status: 0, uid: params[:id])
+                             .where(status: 1, uid: params[:id])
                              .paginate(page: params[:page])
     render partial: 'comments/comments'
   end
