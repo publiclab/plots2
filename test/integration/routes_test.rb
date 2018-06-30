@@ -45,4 +45,16 @@ class RoutesTest < ActionDispatch::IntegrationTest
         assert_routing({ path: '/answers/update/1', method: 'get' }, { controller: 'answers', action: 'update', id: '1' })
     end
 
+    test "test get request for answer accept" do
+        assert_routing({ path: '/answers/accept/1', method: 'get' }, {controller: 'answers', action: 'accept', id: '1' })
+    end
+
+    test "test get request for promote comment to answer" do
+        assert_routing({ path: '/comment/make_answer/1', method: 'get' }, {controller: 'comment', action: 'make_answer', id: '1' })
+    end
+
+    test "test get request for deleting an answer" do
+        assert_routing({ path: '/answers/delete/:id', method: 'get' }, {controller: 'answers', action: 'delete', id: ':id' })
+    end
+
 end

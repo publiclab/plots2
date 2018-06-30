@@ -1,4 +1,4 @@
-class ConsolidateTags < ActiveRecord::Migration
+class ConsolidateTags < ActiveRecord::Migration[5.1]
   def up
 
     # before wrapping the rest in a transaction, we have to make sure the database supports transactions

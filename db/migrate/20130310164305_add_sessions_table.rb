@@ -1,4 +1,4 @@
-class AddSessionsTable < ActiveRecord::Migration
+class AddSessionsTable < ActiveRecord::Migration[5.1]
   def change
     unless table_exists? "rsessions"
       create_table :rsessions do |t|

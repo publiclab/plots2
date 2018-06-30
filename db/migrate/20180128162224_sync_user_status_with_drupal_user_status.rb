@@ -1,4 +1,4 @@
-class SyncUserStatusWithDrupalUserStatus < ActiveRecord::Migration
+class SyncUserStatusWithDrupalUserStatus < ActiveRecord::Migration[5.1]
   def up
     DrupalUser.all.each do |du|
       user = du.user

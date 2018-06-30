@@ -1,4 +1,4 @@
-class ChangeComments < ActiveRecord::Migration
+class ChangeComments < ActiveRecord::Migration[5.1]
   def up
     rename_column :node, :drupal_comments_count, :comments_count
   end

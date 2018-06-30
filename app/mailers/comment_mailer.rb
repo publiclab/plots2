@@ -2,7 +2,7 @@ class CommentMailer < ActionMailer::Base
   helper :application
   require 'byebug'
   include ApplicationHelper
-  default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
+  default from: "notifications@#{ActionMailer::Base.default_url_options[:host]}"
 
   # CommentMailer.notify_of_comment(user,self).deliver_now
   def notify(user, comment)
