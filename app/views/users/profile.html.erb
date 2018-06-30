@@ -176,7 +176,7 @@
   <br>
 
   <ul class="nav nav-tabs">
-    <li class="active"><a href="#research" data-toggle="tab"><i class="fa fa-file"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.research') %></span> <%= "(#{@notes.count})" %></a></li>
+    <li class="active"><a href="#research" data-toggle="tab"><i class="fa fa-file"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.research') %></span><% if current_user && current_user.uid == @profile_user.uid %> <%= "(#{@notes.count + @coauthored.count + @drafts.count })" %><% else %><%= "(#{ @notes.count + @coauthored.count })" %><% end %></a></li>
     <li><a href="#questions" data-toggle="tab"><i class="fa fa-question-circle"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.questions') %></span> (<%= Node.questions.where(status: 1, uid: @user.id).length %>)</a></li>
     <li><a href="#comments" id="comments-tab" data-toggle="tab"><i class="fa fa-comment"></i><span class="hidden-sm hidden-xs"> Comments</span> (<%= @comment_count %>)</a></li>
     <li><a href="#likes" data-toggle="tab"><i class="fa fa-certificate"></i><span class="hidden-sm hidden-xs"> <%= t('users.profile.liked') %></span> (<%= @user.like_count %>)</a></li>
@@ -189,9 +189,9 @@
 
     <div class="tab-pane active" id="research">
       <div class="btn-group text-center">
-        <a href="#notes" class="btn btn-default" data-toggle="tab">All</a>
+        <a href="#notes" class="btn btn-default" data-toggle="tab">Authored</a>
         <a href="#coauthored" class="btn btn-default" data-toggle="tab">Coauthored</a>
-        <a href="#draft" class="btn btn-default" data-toggle="tab">Drafts</a>
+        <% if current_user && current_user.uid == @profile_user.uid %><a href="#draft" class="btn btn-default" data-toggle="tab">Drafts</a><% end %>
       </div>
 
       <div class="tab-content">
@@ -203,9 +203,11 @@
           <%= render :partial => "notes/coauthored_notes" %>
         </div>
 
-        <div class="tab-pane" id="draft">
-          <%= render :partial => "notes/coauthored_notes" %>
-        </div>
+        <% if current_user && current_user.uid == @profile_user.uid %>
+            <div class="tab-pane" id="draft">
+              <%= render :partial => "notes/draft_notes" %>
+            </div>
+        <% end %>
       </div>
     </div>
 
