@@ -51,6 +51,9 @@ class NotesController < ApplicationController
       @node = Node.find params[:id]
     end
 
+    if @node.status == 3 && !params[:token].nil? && @node.slug.split('token:').last == params[:token]
+    else
+
     if @node.status == 3 && current_user.nil?
       flash[:warning] = "You need to login to view the page"
       redirect_to '/login'
@@ -60,6 +63,7 @@ class NotesController < ApplicationController
       redirect_to '/'
       return
     end
+  end
 
     if @node.has_power_tag('question')
       redirect_to @node.path(:question)
@@ -111,6 +115,9 @@ class NotesController < ApplicationController
         return
       elsif params[:draft] == "true"
          @node.draft
+         @token = SecureRandom.urlsafe_base64(16, false)
+         @node.slug = @node.slug + " token:" + @token
+         @node.save!
       end
 
       if saved
@@ -390,6 +397,7 @@ class NotesController < ApplicationController
     @node = Node.find(params[:id])
     if current_user && current_user.uid == @node.uid || current_user.can_moderate? || @node.has_tag("with:#{current_user.username}")
       @node.path = @node.generate_path
+      @node.slug = @node.slug.split('token').first
       @node.publish
       SubscriptionMailer.notify_node_creation(@node).deliver_now
       flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publically."
@@ -399,4 +407,5 @@ class NotesController < ApplicationController
       redirect_to '/'
     end
   end
+
 end
