@@ -23,6 +23,22 @@ services:
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
     restart: unless-stopped
+  redis:
+    image: redis:latest
+    ports:
+      - '127.0.0.1:6379:6379'
+    command: redis-server
+  sidekiq:
+    build: ..
+    command: bundle exec sidekiq -L log/sidekiq.log
+    depends_on:
+      - redis
+    network_mode: "host"
+    volumes:
+      - .:/app
+    environment:
+      - RAILS_ENV=${RAILS_ENV}
+      - REDIS_URL=redis://redis:6379/0
   mailman:
     build: ..
     network_mode: "host"
