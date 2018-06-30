@@ -120,18 +120,3 @@
   </div>
 
 </div><!--/span-->
-
-
-<script>
-    function get_secret_URL() {
-        $.ajax({
-            url: '/notes/generate_secret_url/<%= @node.id %>',
-            type: "GET",
-            cache: false,
-
-            success: function (data) {
-                prompt("Here's the secret URL, with which other people can see this draft.",data.url);
-            }
-    });
-}
-</script>

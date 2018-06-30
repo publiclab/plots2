@@ -115,6 +115,9 @@ class NotesController < ApplicationController
         return
       elsif params[:draft] == "true"
          @node.draft
+         @token = SecureRandom.urlsafe_base64(16, false)
+         @node.slug = @node.slug + " token:" + @token
+         @node.save!
       end
 
       if saved
@@ -404,20 +407,4 @@ class NotesController < ApplicationController
     end
   end
 
-  def generate_secret_url_draft
-    @node = Node.find_by(nid: params[:id])
-
-    if !@node.slug.include?('token')
-      @token = SecureRandom.urlsafe_base64(16, false)
-      @node.slug = @node.slug + " token:" + @token
-      @node.save!
-    else
-      @token = @node.slug.split('token:').last
-    end
-    @data = { "url" => request.host_with_port + '/notes/show/' + @node.nid.to_s + '/'+@token.to_s }
-
-    respond_to do |format|
-      format.json { render json: @data }
-    end
-  end
 end
