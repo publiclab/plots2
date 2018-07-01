@@ -89,6 +89,32 @@ Rails.application.configure do
     })
 
 
+    #facebook Provider
+    OmniAuth.config.mock_auth[:facebook1] = OmniAuth::AuthHash.new({
+        'provider' => 'facebook',
+        'uid' => '1357905002',
+        'info' => {
+          'name' => 'sidharth bansal',
+          'email' => 'bansal.sidharth309@gmail.com'
+        }
+      })
 
+      OmniAuth.config.mock_auth[:facebook2] = OmniAuth::AuthHash.new({
+          'provider' => 'facebook',
+          'uid' => '1359988009602',
+          'info' => {
+            'name' => 'jeffrey',
+            'email' => 'jeff@pxlshp.com'
+            }
+        })
+
+      OmniAuth.config.mock_auth[:facebook3] = OmniAuth::AuthHash.new({
+          'provider' => 'facebook',
+          'uid' => '13579992302',
+          'info' => {
+            'name' => 'emila buffet',
+            'email' => 'emila.buffet309@gmail.com'
+          }
+      })
 
 end
