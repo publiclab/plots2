@@ -153,4 +153,5 @@ class UserSessionsControllerTest < ActionController::TestCase
     post :destroy
     assert_equal "Successfully logged out.",  flash[:notice]
   end
+
 end
