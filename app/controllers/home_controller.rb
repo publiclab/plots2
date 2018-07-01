@@ -25,7 +25,7 @@ class HomeController < ApplicationController
       .references(:term_data, :node_revisions)
       .where('term_data.name = ?', 'blog')
       .order('created DESC')
-      .page(params[:page])
+      .paginate(page: params[:page], per_page: 8)
   end
 
   # Proxy to enable AJAX loading of RSS feeds, which requires same-origin.
