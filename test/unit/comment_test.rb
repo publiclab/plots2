@@ -211,4 +211,15 @@ class CommentTest < ActiveSupport::TestCase
 
     assert_equal [users(:spammer).uid, users(:jeff).uid, users(:bob).uid], comment.uids_to_notify
   end
+
+  test 'should return list of users who reacted on a comment' do
+    comment = comments(:first)
+    user = users(:bob)
+    like = Like.create(likeable_id: comment.id, user_id: user.id, likeable_type: "Comment", emoji_type: "Heart")
+    map = comment.user_reactions_map
+    assert_equal map["Heart"], "Bob reacted with heart emoji"
+    like = Like.create(likeable_id: comment.id, user_id: users(:jeff).id, likeable_type: "Comment", emoji_type: "Heart")
+    map = comment.user_reactions_map
+    assert_equal map["Heart"], "Bob and jeff reacted with heart emoji"
+  end
 end

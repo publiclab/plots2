@@ -1,4 +1,4 @@
-class RenameLikeAndFollow < ActiveRecord::Migration
+class RenameLikeAndFollow < ActiveRecord::Migration[5.1]
   def up
     remove_index :nodeselections, [:user_id, :nid]
     drop_table :nodeselections

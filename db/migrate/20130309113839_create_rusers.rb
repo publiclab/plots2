@@ -1,4 +1,4 @@
-class CreateRusers < ActiveRecord::Migration
+class CreateRusers < ActiveRecord::Migration[5.1]
   def self.up
     unless table_exists? "rusers"
       create_table :rusers do |t|

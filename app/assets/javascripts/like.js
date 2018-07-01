@@ -31,11 +31,11 @@ function clickliked() {
   // toggle liked to not liked.
   $.getJSON("/likes/node/" + node_id + "/delete")
    .done(function(response) {
-
-     shownotliked(node_id);
-     changelikecount(parseInt(response), node_id);
-     $('#like-button-' + node_id).on('click', clicknotliked);
-     $('#like-button-' + node_id).off('click', clickliked);
+    notyNotification('mint', 3000, 'success', 'topRight', 'Unliked!');
+    shownotliked(node_id);
+    changelikecount(parseInt(response), node_id);
+    $('#like-button-' + node_id).on('click', clicknotliked);
+    $('#like-button-' + node_id).off('click', clickliked);
 
   });
 
@@ -47,12 +47,12 @@ function clicknotliked() {
   // toggle not liked to liked.
   $.getJSON("/likes/node/" + node_id + "/create")
    .done(function(response) {
+    notyNotification('mint', 3000, 'success', 'topRight', 'Liked!');
+    showliked(node_id);
+    changelikecount(parseInt(response), node_id);
+    $('#like-button-' + node_id).on('click', clickliked);
+    $('#like-button-' + node_id).off('click', clicknotliked);
 
-     showliked(node_id);
-     changelikecount(parseInt(response), node_id);
-     $('#like-button-' + node_id).on('click', clickliked);
-     $('#like-button-' + node_id).off('click', clicknotliked);
- 
-   });
+  });
 
 }

@@ -16,6 +16,8 @@ services:
       - OAUTH_GOOGLE_APP_SECRET=${OAUTH_GOOGLE_APP_SECRET}
       - OAUTH_GITHUB_APP_KEY=${OAUTH_GITHUB_APP_KEY}
       - OAUTH_GITHUB_APP_SECRET=${OAUTH_GITHUB_APP_SECRET}
+      - OAUTH_TWITTER_APP_KEY=${OAUTH_TWITTER_APP_KEY}
+      - OAUTH_TWITTER_APP_SECRET=${OAUTH_TWITTER_APP_SECRET}
     volumes:
       - ..:/app
       - /etc/passwd:/etc/passwd:ro
@@ -23,8 +25,10 @@ services:
     restart: unless-stopped
   mailman:
     build: ..
+    network_mode: "host"
     command: script/mailman_server
     environment:
+      - RAILS_ENV=${RAILS_ENV}
       - SERVER_ADDRESS=${SERVER_ADDRESS}
       - USERNAME=${USERNAME}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}

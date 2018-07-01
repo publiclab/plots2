@@ -26,7 +26,9 @@
     "short-code-forms": "jywarren/short-code-forms#~0.0.1",
     "leaflet-blurred-location": "publiclab/leaflet-blurred-location#master",
     "chart.js": "v2.7.0",
-    "typeahead.js-browserify": "Javier-Rotelli/typeahead.js-browserify#~1.0.7"
+    "typeahead.js-browserify": "Javier-Rotelli/typeahead.js-browserify#~1.0.7",
+    "noty": "3.1.4",
+    "jquery-confirm": "craftpip/jquery-confirm#3.3.2"
   },
   "resolutions": {
     "jquery": "~2.1.0",

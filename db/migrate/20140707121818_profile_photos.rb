@@ -1,4 +1,4 @@
-class ProfilePhotos < ActiveRecord::Migration
+class ProfilePhotos < ActiveRecord::Migration[5.1]
   def up
     # attachment (paperclip)
     add_column :rusers, :photo_file_name, :string

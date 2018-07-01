@@ -1,4 +1,4 @@
-class AddAidToComments < ActiveRecord::Migration
+class AddAidToComments < ActiveRecord::Migration[5.1]
   def up
     add_column :comments, :aid, :integer, default: 0, null: false
   end

@@ -1,7 +1,7 @@
 class WelcomeMailer < ActionMailer::Base
   helper :application
   include ApplicationHelper
-  # default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
+  # default from: "notifications@#{ActionMailer::Base.default_url_options[:host]}"
 
   # PasswordResetMailer.reset_notify(user).deliver_now
   def add_to_list(user, list)

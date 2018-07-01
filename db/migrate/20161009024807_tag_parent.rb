@@ -1,4 +1,4 @@
-class TagParent < ActiveRecord::Migration
+class TagParent < ActiveRecord::Migration[5.1]
   def up
     add_column :term_data, :parent, :string
     add_index :term_data, :parent

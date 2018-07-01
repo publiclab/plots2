@@ -35,10 +35,16 @@
     <a class="btn btn-default btn-lg" href="/signup" tabindex="4"><%= t('user_sessions.new.sign_up') %></a>
 
   </div>
-  <br>
+  </br>
+    <% if Rails.env == "production"%>
+      <h5>OR </h5>
+      <h3> Login with </h3>
+      <div class="loginbutton" >
+        <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default"><i class="fa fa-google" style="font-size:17px;color:red"></i></span></div></a>
+      </div>
 
-
-  <br />
+      <br />
+    <% end %>
   <p style="color: #888;"><%= raw t('user_sessions.new.reset_by_clicking_here', :url1 => "/reset/") %></p>
 <% end %>
 

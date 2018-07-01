@@ -6,7 +6,7 @@ PRODID:-//publiclab/events//NONSGML v1.0//EN
 <% begin %>
 <% date = DateTime.parse(node.power_tag('date')) %>
 BEGIN:VEVENT
-UID:do-not-reply@<%= request.host %>
+UID:notifications@<%= request.host %>
 DTSTAMP:<%= date.strftime("%Y%m%dT%H%M%S") %>
 DTSTART;VALUE=DATE:<%= date.strftime("%Y%m%d") %>
 DTEND;VALUE=DATE:<%= (date + 1.day).strftime("%Y%m%d") %>

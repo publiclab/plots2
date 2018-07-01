@@ -97,6 +97,8 @@ Plots2::Application.routes.draw do
 
   # these need precedence for tag listings
   get 'feed/tag/:tagname' => 'tag#rss'
+  get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
+  get 'tag/:id/author/:author' => 'tag#show_for_author'
   get ':node_type/tag(/:id)(/:start)(/:end)' => 'tag#show'
   get 'feed/tag/:tagname/author/:authorname' => 'tag#rss_for_tagged_with_author'
   get 'wiki/raw/:id' => 'wiki#raw'
@@ -126,6 +128,7 @@ Plots2::Application.routes.draw do
   post 'notes/create' => 'notes#create'
   get 'notes/publish_draft/:id' => 'notes#publish_draft'
   get 'notes/edit/:id' => 'notes#edit'
+  get 'notes/show/:id/:token' => 'notes#show'
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
@@ -184,8 +187,6 @@ Plots2::Application.routes.draw do
   put 'tag/remove_tag/:id' => 'tag#remove_tag'
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
   get 'tag/:id' => 'tag#show'
-  get 'tag/:id/author/:author' => 'tag#show_for_author'
-  get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'
   get 'embed/grid/:tagname' => 'tag#gridsEmbed'
@@ -283,7 +284,9 @@ Plots2::Application.routes.draw do
   get 'answers/create/:nid' => 'answers#create'
   get 'answers/update/:id' => 'answers#update'
   put 'answers/update/:id' => 'answers#update'
+  get 'answers/delete/:id' => 'answers#delete'
   delete 'answers/delete/:id' => 'answers#delete'
+  get 'answers/accept/:id' => 'answers#accept'
   put 'answers/accept/:id' => 'answers#accept'
 
   get 'answer_like/show/:id' => 'answer_like#show'
@@ -293,6 +296,7 @@ Plots2::Application.routes.draw do
   get 'comment/answer_create/:aid' => 'comment#answer_create'
   get 'comment/delete/:id' => 'comment#delete'
   post 'comment/update/:id' => 'comment#update'
+  get 'comment/make_answer/:id' => 'comment#make_answer'
   post 'comment/make_answer/:id' => 'comment#make_answer'
   post '/comment/like' => 'comment#like_comment'
   get '/comment/create/:id' => 'comment#create'

@@ -1,4 +1,4 @@
-class DropContentFieldBbox < ActiveRecord::Migration
+class DropContentFieldBbox < ActiveRecord::Migration[5.1]
   def up
     drop_table :content_field_bbox if table_exists? "content_field_bbox"
     rename_index :community_tags, 'nid', 'index_community_tags_nid' #if index_exists?(:community_tags, 'nid')

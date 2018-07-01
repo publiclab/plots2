@@ -84,7 +84,8 @@
         limit: 6
     });
 
-    $('#comment-form').bind('ajax:success', function(e, data, status, xhr){      
+    $('#comment-form').bind('ajax:success', function(e, data, status, xhr){ 
+      notyNotification('mint', 3000, 'success', 'topRight', 'Comment Added!');      
       $('#text-input').prop('disabled',false);      
       $('#text-input').val('');      
       $('#comments-container').append(xhr.responseText);      
@@ -95,7 +96,8 @@
       $('#preview-btn').button('toggle');      
     })
 
-    $('#comment-form').bind('ajax:error', function(e,response){      
+    $('#comment-form').bind('ajax:error', function(e,response){  
+      notyNotification('mint', 3000, 'success', 'topRight', 'Some error occured while adding comment'); 
       $('#comment-form .control-group').addClass('has-error')
       $('#comment-form .control-group .help-block ').remove()
       $('#comment-form .control-group').append('<span class="help-block ">Error: there was a problem.</span>')

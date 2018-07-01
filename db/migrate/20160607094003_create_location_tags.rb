@@ -1,4 +1,4 @@
-class CreateLocationTags < ActiveRecord::Migration
+class CreateLocationTags < ActiveRecord::Migration[5.1]
   def up
     unless table_exists? "location_tags"
       create_table :location_tags do |t|
