@@ -197,20 +197,18 @@ class SearchService
   end
 
   # Search nearby nodes with respect to given latitude, longitute and tags
-  def tagNearbyNodes(srchString, tag)
+  def tagNearbyNodes(srchString, tagName)
     sresult = DocList.new
-    coordinates = srchString.split(",")
-    lat = coordinates[0]
-    lon = coordinates[1]
+    lat, lon =  srchString.split(',')
 
-    tagList = textSearch_tags(tag)
-    sresult.addAll(tagList.items)
-
-    nids = NodeTag.joins(:tag)
+    nodes_scope = NodeTag.joins(:tag)
       .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
-      .collect(&:nid)
 
-    nids ||= []
+    if tagName.present?
+      nodes_scope = nodes_scope.where('name LIKE ?', tagName)
+    end
+
+    nids = nodes_scope.collect(&:nid) || []
 
     items = Node.includes(:tag)
       .references(:node, :term_data)
@@ -234,14 +232,14 @@ class SearchService
     sresult
   end
 
-  #GET X number of latest people/contributors 
+  #GET X number of latest people/contributors
   # X = srchString
   def recentPeople(_srchString, tagName = nil)
-    sresult = DocList.new  
+    sresult = DocList.new
     nodes = Node.all.order("changed DESC").limit(100).distinct
     users = []
-    nodes.each do |node|      
-     if node.author.status != 0 
+    nodes.each do |node|
+     if node.author.status != 0
        if tagName.blank?
          users << node.author.user
        else
@@ -249,16 +247,16 @@ class SearchService
        end
      end
     end
-    users = users.uniq 
+    users = users.uniq
     users.each do |user|
-      next unless user.has_power_tag("lat") && user.has_power_tag("lon") 
-      blurred = false 
+      next unless user.has_power_tag("lat") && user.has_power_tag("lon")
+      blurred = false
       if user.has_power_tag("location")
         blurred = user.get_value_of_power_tag("location")
       end
       doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
       sresult.addDoc(doc)
-    end                  
+    end
     sresult
   end
 
