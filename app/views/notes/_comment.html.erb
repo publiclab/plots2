@@ -43,7 +43,7 @@
           <a href="#" onclick="return false;" class="btn btn-default btn-sm"><i class="fa fa-envelope"></i></a>
         <% end %>
       <% if current_user &. can_moderate? %>
-          <a rel="tooltip" title="Mark as spam" class="btn btn-sm btn-default btn-flag-spam-<%= comment.id %>" data-confirm="<%= t('users.profile.confirm_ban_user') %>" href="/admin/mark_comment_spam/<%= comment.id %>">
+          <a rel="tooltip" title="Mark as spam" class="btn btn-sm btn-default btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
             <i class="fa fa-ban"></i>
           </a>
     <% else %>
