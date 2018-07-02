@@ -22,7 +22,7 @@ class NotesController < ApplicationController
       .references(:term_data)
       .where('term_data.name = ?', 'chapter')
       .group('node.nid')
-      .order('max(node_revisions.timestamp) DESC, node.nid')
+      .order(Arel.sql('max(node_revisions.timestamp) DESC, node.nid'))
       .paginate(page: params[:page], per_page: 24)
 
     render template: 'notes/tools_places'

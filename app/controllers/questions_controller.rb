@@ -62,7 +62,7 @@ class QuestionsController < ApplicationController
     @tags = @node.power_tag_objects('question')
     @tagnames = @tags.collect(&:name)
     @users = @node.answers.group(:uid)
-      .order('count(*) DESC')
+      .order(Arel.sql('count(*) DESC'))
       .collect(&:author)
 
     set_sidebar :tags, @tagnames
