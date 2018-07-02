@@ -13,8 +13,7 @@ class Comment < ApplicationRecord
   self.table_name = 'comments'
   self.primary_key = 'cid'
 
-  COMMENT_FILTER = "\n@@$$%% Trimmed Content @@$$%%\n".freeze
-  COMMENT_HTML_FILTER = "@@$$%% Trimmed Content @@$$%%".freeze
+  COMMENT_FILTER = "<!-- @@$$%% Trimmed Content @@$$%% -->".freeze
 
   def self.inheritance_column
     'rails_type'
