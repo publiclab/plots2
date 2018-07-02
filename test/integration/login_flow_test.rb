@@ -86,7 +86,22 @@ class LoginFlowTest < ActionDispatch::IntegrationTest
     assert_not_nil OmniAuth.config.mock_auth[:twitter2]
     request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:twitter2]
     assert_not_nil request.env['omniauth.auth']
-end
+  end
 
+  test 'facebook login routing' do
+    assert_routing '/auth/facebook/callback', {controller: 'user_sessions', action: 'create',provider: 'facebook'}
+  end
+
+  test 'facebook login post' do
+    assert_routing({path: '/auth/facebook/callback', method: 'post'},{controller: 'user_sessions', action: 'create' ,provider: 'facebook'})
+  end
+
+  test 'should get oauth hash from /auth/facebook' do
+    get '/auth/facebook'
+    assert_redirected_to '/auth/facebook/callback'
+    assert_not_nil OmniAuth.config.mock_auth[:facebook2]
+    request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:facebook2]
+    assert_not_nil request.env['omniauth.auth']
+  end
 
 end
