@@ -6,7 +6,11 @@ module CommentsShared
   # filtered version additionally appending http/https
   #   protocol to protocol-relative URLslike "/foo"
   def body_email(host = 'publiclab.org')
-    body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?#{host})/, '\1https://\3')
+    if contain_trimmed_body?(body)
+      comment_body = filtered_comment_body(body)
+      return comment_body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?#{host})/, '\1https://\3')
+    end
+    return body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?#{host})/, '\1https://\3')
   end
 
   def author
