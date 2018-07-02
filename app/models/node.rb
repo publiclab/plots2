@@ -589,8 +589,7 @@ class Node < ActiveRecord::Base
                     thread: thread,
                     timestamp: DateTime.now.to_i,
                     comment_via: comment_via_status,
-                    message_id: params[:message_id],
-                    reply_to_content: params[:reply_to_content])
+                    message_id: params[:message_id])
     c.save
     c
   end

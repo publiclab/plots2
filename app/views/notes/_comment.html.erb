@@ -106,13 +106,13 @@
   </script>
   
   <div style="border: 1px solid #e7e7e7;padding: 18px;" id="c<%= comment.cid %>show">
-    <p class="comment-body" id="comment-body-<%= comment.cid %>"><%= raw render_comment_body(comment) %></p>
 
-    <% if !comment.reply_to_content.nil? %>
-      <% if  !comment.reply_to_content.empty? %>
-        <span><a class="email-toggle" data-toggle="collapse" data-target="#comment-<%= comment.cid %>-extra-content">...</a></span>
-        <div class="comment-extra-content collapse" id="comment-<%= comment.cid %>-extra-content" ><%= raw render_extra_content(comment) %></div>
-      <% end %>
+    <% comment_body = render_comment_body(comment) %>
+    <p class="comment-body" id="comment-body-<%= comment.cid %>"><%= raw filtered_comment_body(comment_body) %></p>
+
+    <% if contain_trimmed_body?(comment_body) %>
+      <span><a class="email-toggle" data-toggle="collapse" data-target="#comment-<%= comment.cid %>-extra-content">...</a></span>
+      <div class="comment-extra-content collapse" id="comment-<%= comment.cid %>-extra-content" ><%= raw trimmed_body(comment_body) %></div>
     <% end %>
 
     <% if comment.body.include?('?') %>

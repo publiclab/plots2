@@ -13,6 +13,9 @@ class Comment < ApplicationRecord
   self.table_name = 'comments'
   self.primary_key = 'cid'
 
+  COMMENT_FILTER = "\n@@$$%% Trimmed Content @@$$%%\n"
+  COMMENT_HTML_FILTER = "@@$$%% Trimmed Content @@$$%%"
+
   def self.inheritance_column
     'rails_type'
   end
@@ -240,10 +243,16 @@ class Comment < ApplicationRecord
                 "extra_content" => nil
               }
             end 
-            comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
-            extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
+
+            if content["extra_content"] == nil
+              comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
+            else
+              extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
+              comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+              comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
+            end
             message_id = mail.message_id
-            comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id, reply_to_content: extra_content_markdown)
+            comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
             comment.notify user
           end
       end
@@ -287,6 +296,28 @@ class Comment < ApplicationRecord
       "extra_content" => extra_content
     }
 
+  end
+
+  def trimmed_content?
+    comment.include?(COMMENT_FILTER)
+  end
+
+  def comment_body
+    if comment_via == 1
+      if trimmed_content?
+        return comment.split(COMMENT_FILTER).first
+      end
+    end
+        return comment
+  end
+
+  def trimmed_body
+    if comment_via == 1
+      if trimmed_content?
+        return comment.split(COMMENT_FILTER).second
+      end
+    end
+        return nil
   end
 
 end
