@@ -224,40 +224,38 @@ class Comment < ApplicationRecord
   end
 
   def self.receive_mail(mail)
-
     user = User.where(email: mail.from.first).first
     if user
       node_id = mail.subject[/#([\d]+)/, 1] #This took out the node ID from the subject line
       unless node_id.nil?
         node = Node.where(nid: node_id).first
-          if node
-            mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
-            domain = get_domain mail.from.first
-            if domain == "gmail"
-              content = gmail_parsed_mail mail_doc
-            elsif domain == "yahoo"
-              content = yahoo_parsed_mail mail_doc
-            else
-              content = {
-                "comment_content" => mail_doc, 
-                "extra_content" => nil
-              }
-            end 
+        if node
+          mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
+          domain = get_domain mail.from.first
+          if domain == "gmail"
+            content = gmail_parsed_mail mail_doc
+          elsif domain == "yahoo"
+            content = yahoo_parsed_mail mail_doc
+          else
+            content = {
+              "comment_content" => mail_doc, 
+              "extra_content" => nil
+            }
+          end 
 
-            if content["extra_content"] == nil
-              comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
-            else
-              extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
-              comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
-              comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
-            end
-            message_id = mail.message_id
-            comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
-            comment.notify user
+          if content["extra_content"] == nil
+            comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
+          else
+            extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
+            comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+            comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
           end
+          message_id = mail.message_id
+          comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
+          comment.notify user
+        end
       end
     end
-
   end
 
   def self.get_domain(email)
@@ -295,29 +293,10 @@ class Comment < ApplicationRecord
       "comment_content" => comment_content, 
       "extra_content" => extra_content
     }
-
   end
 
   def trimmed_content?
     comment.include?(COMMENT_FILTER)
-  end
-
-  def comment_body
-    if comment_via == 1
-      if trimmed_content?
-        return comment.split(COMMENT_FILTER).first
-      end
-    end
-        return comment
-  end
-
-  def trimmed_body
-    if comment_via == 1
-      if trimmed_content?
-        return comment.split(COMMENT_FILTER).second
-      end
-    end
-        return nil
   end
 
 end
