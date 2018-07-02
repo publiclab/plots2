@@ -254,7 +254,7 @@ Plots2::Application.routes.draw do
   get 'admin/moderate/:id' => 'admin#moderate'
   get 'admin/unmoderate/:id' => 'admin#unmoderate'
   get 'admin/publish_comment/:id' => 'admin#publish_comment'
-  post 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
+  get 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
 
   get 'post' => 'editor#post'
   post 'post' => 'editor#post'
