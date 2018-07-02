@@ -119,11 +119,11 @@ module ApplicationHelper
     if contain_trimmed_body?(comment_body)
       return comment_body.split(Comment::COMMENT_HTML_FILTER).first
     end
-    return comment_body
+    comment_body
   end
 
   def contain_trimmed_body?(comment_body)
-    return comment_body.include?(Comment::COMMENT_HTML_FILTER)
+    comment_body.include?(Comment::COMMENT_HTML_FILTER)
   end
 
   def trimmed_body(comment_body)

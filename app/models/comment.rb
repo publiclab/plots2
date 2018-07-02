@@ -13,8 +13,8 @@ class Comment < ApplicationRecord
   self.table_name = 'comments'
   self.primary_key = 'cid'
 
-  COMMENT_FILTER = "\n@@$$%% Trimmed Content @@$$%%\n"
-  COMMENT_HTML_FILTER = "@@$$%% Trimmed Content @@$$%%"
+  COMMENT_FILTER = "\n@@$$%% Trimmed Content @@$$%%\n".freeze
+  COMMENT_HTML_FILTER = "@@$$%% Trimmed Content @@$$%%".freeze
 
   def self.inheritance_column
     'rails_type'
@@ -243,7 +243,7 @@ class Comment < ApplicationRecord
             }
           end 
 
-          if content["extra_content"] == nil
+          if content["extra_content"].nil?
             comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
           else
             extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
@@ -259,8 +259,7 @@ class Comment < ApplicationRecord
   end
 
   def self.get_domain(email)
-    domain = email[/(?<=@)[^.]+(?=\.)/,0]
-    return domain
+    domain = email[/(?<=@)[^.]+(?=\.)/, 0]
   end
 
   def self.yahoo_parsed_mail(mail_doc)
@@ -273,7 +272,7 @@ class Comment < ApplicationRecord
       extra_content = nil
     end
 
-    return {
+    {
       "comment_content" => comment_content, 
       "extra_content" => extra_content
     }
@@ -289,7 +288,7 @@ class Comment < ApplicationRecord
       extra_content = nil
     end
 
-    return {
+    {
       "comment_content" => comment_content, 
       "extra_content" => extra_content
     }
