@@ -25,6 +25,8 @@ class NotesController < ApplicationController
       .order(Arel.sql('max(node_revisions.timestamp) DESC, node.nid'))
       .paginate(page: params[:page], per_page: 24)
 
+      #Arel.sql is used to remove a Deprecation warning while updating to rails 5.2.
+
     render template: 'notes/tools_places'
   end
 
