@@ -422,7 +422,7 @@ class AdminControllerTest < ActionController::TestCase
 
     comment = assigns(:comment)
     assert_equal 0, comment.status
-    assert_equal "Comment has been marked as spam.", flash[:notice]
+    assert_equal "Comment has been marked as spam and comment author has been banned.", flash[:notice]
     assert_redirected_to '/dashboard'
   end
 
@@ -434,7 +434,7 @@ class AdminControllerTest < ActionController::TestCase
 
     comment = assigns(:comment)
     assert_equal 0, comment.status
-    assert_equal "Comment has been marked as spam.", flash[:notice]
+    assert_equal "Comment has been marked as spam and comment author has been banned.", flash[:notice]
     assert_redirected_to '/dashboard'
   end
 
