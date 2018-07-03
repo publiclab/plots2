@@ -305,8 +305,8 @@ class UsersController < ApplicationController
   end
 
   def test_digest_email
-    DigestMailJob.perform_later
-    redirect_to "/profile/"+current_user.username
+    DigestMailJob.perform_async
+    redirect_to "/"
   end
 
   private
