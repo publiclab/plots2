@@ -114,4 +114,19 @@ module ApplicationHelper
       output
     end
   end
+
+  def filtered_comment_body(comment_body)
+    if contain_trimmed_body?(comment_body)
+      return comment_body.split(Comment::COMMENT_FILTER).first
+    end
+    comment_body
+  end
+
+  def contain_trimmed_body?(comment_body)
+    comment_body.include?(Comment::COMMENT_FILTER)
+  end
+
+  def trimmed_body(comment_body)
+    comment_body.split(Comment::COMMENT_FILTER).second
+  end
 end

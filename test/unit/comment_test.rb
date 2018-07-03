@@ -1,5 +1,4 @@
 require 'test_helper'
-
 class CommentTest < ActiveSupport::TestCase
   test 'should save comment' do
     comment = Comment.new
@@ -222,4 +221,28 @@ class CommentTest < ActiveSupport::TestCase
     map = comment.user_reactions_map
     assert_equal map["Heart"], "Bob and jeff reacted with heart emoji"
   end
+
+
+  test 'should parse incoming mail from gmail service correctly' do
+    require 'mail'
+    mail = Mail.read('test/incoming_test_emails/gmail/incoming_gmail_email.eml')
+    node = Node.last
+    mail.subject = "Re: #{node.title} (##{node.nid})"
+    Comment.receive_mail(mail)
+    f = File.open('test/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
+    comment = Comment.last
+    assert_equal comment.comment, f.read
+  end
+
+  test 'should parse incoming mail from yahoo service correctly' do
+    require 'mail'
+    mail = Mail.read('test/incoming_test_emails/yahoo/incoming_yahoo_email.eml')
+    node = Node.last
+    mail.subject = "Re: #{node.title} (##{node.nid})"
+    Comment.receive_mail(mail)
+    f = File.open('test/incoming_test_emails/yahoo/final_parsed_comment.txt', 'r')
+    comment = Comment.last
+    assert_equal comment.comment, f.read
+  end
+
 end
