@@ -295,6 +295,7 @@ Plots2::Application.routes.draw do
 
   get 'comment/answer_create/:aid' => 'comment#answer_create'
   get 'comment/delete/:id' => 'comment#delete'
+  get 'comment/update/:id' => 'comment#update'
   post 'comment/update/:id' => 'comment#update'
   get 'comment/make_answer/:id' => 'comment#make_answer'
   post 'comment/make_answer/:id' => 'comment#make_answer'
