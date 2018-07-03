@@ -2,6 +2,7 @@
 # Refer to this link: http://stackoverflow.com/questions/14541823/how-to-use-concerns-in-rails-4
 module CommentsShared
   extend ActiveSupport::Concern
+  include ApplicationHelper
 
   # filtered version additionally appending http/https
   #   protocol to protocol-relative URLslike "/foo"
