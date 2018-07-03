@@ -62,8 +62,10 @@ class QuestionsController < ApplicationController
     @tags = @node.power_tag_objects('question')
     @tagnames = @tags.collect(&:name)
     @users = @node.answers.group(:uid)
-      .order('count(*) DESC')
+      .order(Arel.sql('count(*) DESC'))
       .collect(&:author)
+
+    #Arel.sql is used to remove a Deprecation warning while updating to rails 5.2
 
     set_sidebar :tags, @tagnames
   end

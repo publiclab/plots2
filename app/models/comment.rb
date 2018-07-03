@@ -13,6 +13,8 @@ class Comment < ApplicationRecord
   self.table_name = 'comments'
   self.primary_key = 'cid'
 
+  COMMENT_FILTER = "<!-- @@$$%% Trimmed Content @@$$%% -->".freeze
+
   def self.inheritance_column
     'rails_type'
   end
@@ -220,22 +222,79 @@ class Comment < ApplicationRecord
     user_like_map
   end
 
-  def self.receive_mail(message)
-    node_id = message.subject[/#([\d]+)/, 1] #This took out the node ID from the subject line
-    puts node_id
-    unless node_id.nil?
-      node = Node.where(nid: node_id)
-      if node.any?
-        node = node.first
-        user = User.find_by(email: message.from.first)
-        if user.present? && node_id.present?
-          message_markdown = ReverseMarkdown.convert message.html_part.body.decoded
-          message_id = message.message_id
-          comment = node.add_comment(uid: user.uid, body: message_markdown, comment_via: 1, message_id: message_id)
+  def self.receive_mail(mail)
+    user = User.where(email: mail.from.first).first
+    if user
+      node_id = mail.subject[/#([\d]+)/, 1] #This took out the node ID from the subject line
+      unless node_id.nil?
+        node = Node.where(nid: node_id).first
+        if node
+          mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
+          domain = get_domain mail.from.first
+          if domain == "gmail"
+            content = gmail_parsed_mail mail_doc
+          elsif domain == "yahoo"
+            content = yahoo_parsed_mail mail_doc
+          else
+            content = {
+              "comment_content" => mail_doc, 
+              "extra_content" => nil
+            }
+          end 
+
+          if content["extra_content"].nil?
+            comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
+          else
+            extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
+            comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+            comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
+          end
+          message_id = mail.message_id
+          comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
           comment.notify user
         end
       end
     end
+  end
+
+  def self.get_domain(email)
+    domain = email[/(?<=@)[^.]+(?=\.)/, 0]
+  end
+
+  def self.yahoo_parsed_mail(mail_doc)
+    if mail_doc.css(".yahoo_quoted")
+      extra_content = mail_doc.css(".yahoo_quoted")[0]
+      mail_doc.css(".yahoo_quoted")[0].remove
+      comment_content = mail_doc
+    else
+      comment_content = mail_doc
+      extra_content = nil
+    end
+
+    {
+      "comment_content" => comment_content, 
+      "extra_content" => extra_content
+    }
+  end
+
+  def self.gmail_parsed_mail(mail_doc)
+    if mail_doc.css(".gmail_quote").any?
+      extra_content = mail_doc.css(".gmail_quote")[0]
+      mail_doc.css(".gmail_quote")[0].remove
+      comment_content = mail_doc
+    else
+      comment_content = mail_doc
+      extra_content = nil
+    end
+
+    {
+      "comment_content" => comment_content, 
+      "extra_content" => extra_content
+    }
+  end
+
+  def trimmed_content?
+    comment.include?(COMMENT_FILTER)
   end
 
 end

@@ -1,6 +1,5 @@
 class CommentMailer < ActionMailer::Base
   helper :application
-  require 'byebug'
   include ApplicationHelper
   default from: "notifications@#{ActionMailer::Base.default_url_options[:host]}"
 

@@ -129,6 +129,11 @@ class UsersController < ApplicationController
                    .paginate(page: params[:page], per_page: 24)
                    .order("nid DESC")
                    .where(status: 1, uid: @user.uid)
+
+      if current_user && current_user.uid == @profile_user.uid
+        coauthor_nids = Node.joins(:node_tag).joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid').select('node.*, term_data.*, community_tags.*').where(type: 'note', status: 3).where('term_data.name = (?)', "with:#{@profile_user.username}").collect(&:nid)
+        @drafts = Node.where('(nid IN (?) OR (status = 3 AND uid = ?))', coauthor_nids, @profile_user.uid).paginate(page: params[:page], per_page: 24)
+      end
       @coauthored = @profile_user.coauthored_notes
                                  .paginate(page: params[:page], per_page: 24)
                                  .order('node_revisions.timestamp DESC')
