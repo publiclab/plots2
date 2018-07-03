@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '5.1.5'
+gem 'rails', '5.2.0'
 gem 'activerecord-session_store'
 gem 'passenger'
 gem 'sidekiq'
@@ -69,7 +69,7 @@ gem 'reverse_markdown'
 
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
-  gem 'mysql2', '~> 0.3.20'
+  gem 'mysql2', '>= 0.4.4'
   # mysql 0.4.3+ causes a version mismatch, apparently, and demands 'activerecord-mysql2-adapter'
 end
 
