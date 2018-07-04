@@ -2,6 +2,7 @@ version: "2"
 services:
   db:
     image: mariadb:10.2
+    network_mode: "service:web"
     environment:
       - MYSQL_DATABASE=plots
       - MYSQL_USER=plots
@@ -9,7 +10,7 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
     volumes:
       - ../config/my.cnf:/etc/mysql/my.cnf
-      # for configuration 
+      # for configuration
       - ../../mysql:/var/lib/mysql
       # for persistence
       - ../../dump:/docker-entrypoint-initdb.d
@@ -43,8 +44,8 @@ services:
     ports:
       - "127.0.0.1:5001:5001"
     links:
-      - db
       - redis
+      - db
     restart: unless-stopped
   mailman:
     build: ..
