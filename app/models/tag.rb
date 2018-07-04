@@ -185,24 +185,14 @@ class Tag < ApplicationRecord
       weeks = {}
       week = span
       count = 0
-      tids = Tag.where('name IN (?)', [name])
-            .collect(&:tid)
-      nids = NodeTag.where('tid IN (?)', tids)
-                               .collect(&:nid)
+      tids = Tag.where('name IN (?)', [name]).collect(&:tid)
+      nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
+
       while week >= 1
           #initialising month variable with the month of the starting day 
           #of the week
           month = (time - (week*7 - 1).days).strftime('%m')
-          #loop for finding the maximum occurence of a month name in that week
-          #For eg. If this week has 3 days falling in March and 4 days falling
-          #in April, then we would give this week name as April and vice-versa
-          for i in 1..7 do
-              currMonth = (time - (week*7 - i).days).strftime('%m')
-              next unless month != currMonth
-              if i <= 4
-                  month = currMonth
-              end
-          end
+
           #Now fetching the weekly data of notes or wikis
           month = month.to_i
   
