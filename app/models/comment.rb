@@ -209,35 +209,80 @@ class Comment < ApplicationRecord
   def self.receive_mail(mail)
     user = User.where(email: mail.from.first).first
     if user
-      node_id = mail.subject[/#([\d]+)/, 1] # This took out the node ID from the subject line
-      unless node_id.nil?
-        node = Node.where(nid: node_id).first
-        if node
-          mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
-          domain = get_domain mail.from.first
-          content = if domain == "gmail"
-                      gmail_parsed_mail mail_doc
-                    elsif domain == "yahoo"
-                      yahoo_parsed_mail mail_doc
-                    else
-                      {
-                        "comment_content" => mail_doc,
-                        "extra_content" => nil
-                      }
-          end
-
-          if content["extra_content"].nil?
-            comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
-          else
-            extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
-            comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
-            comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
-          end
-          message_id = mail.message_id
-          comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
-          comment.notify user
+      node_id = mail.subject[/#([\d]+)/, 1] # This tooks out the node ID from the subject line
+      if node_id.nil?
+        answer_id = mail.subject[/#a([\d]+)/, 1] # This tooks out the answer ID from the subject line
+        unless answer_id.nil?
+          add_answer_comment(mail, answer_id, user);
         end
+      else
+        add_comment(mail, node_id, user)
       end
+    end
+  end
+
+  def self.add_answer_comment(mail, answer_id, user)
+    answer = Answer.where(id: answer_id).first
+    if answer
+      mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
+      domain = get_domain mail.from.first
+      if domain == "gmail"
+        content = gmail_parsed_mail mail_doc
+      elsif domain == "yahoo"
+        content = yahoo_parsed_mail mail_doc
+      else
+        content = {
+          "comment_content" => mail_doc, 
+          "extra_content" => nil
+        }
+      end 
+      if content["extra_content"].nil?
+        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
+      else
+        extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
+        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+        comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
+      end
+      message_id = mail.message_id
+      comment = Comment.new(
+        uid: user.uid, 
+        aid: answer_id, 
+        comment: comment_content_markdown,
+        comment_via: 1,
+        message_id: message_id, 
+        timestamp: Time.now.to_i)
+      if comment.save
+        comment.answer_comment_notify(user)
+      end
+    end
+  end
+
+  def self.add_comment(mail, node_id, user)
+    node = Node.where(nid: node_id).first
+    if node
+      mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
+      domain = get_domain mail.from.first
+      if domain == "gmail"
+        content = gmail_parsed_mail mail_doc
+      elsif domain == "yahoo"
+        content = yahoo_parsed_mail mail_doc
+      else
+        content = {
+          "comment_content" => mail_doc, 
+          "extra_content" => nil
+        }
+      end 
+
+      if content["extra_content"].nil?
+        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
+      else
+        extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
+        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+        comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
+      end
+      message_id = mail.message_id
+      comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
+      comment.notify user
     end
   end
 

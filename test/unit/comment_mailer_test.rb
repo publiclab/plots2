@@ -72,7 +72,7 @@ class CommentMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal "New comment on your answer on #{comment.parent.title} (##{comment.parent.id}) ", email.subject
+    assert_equal "New comment on your answer on #{comment.parent.title} (#a#{comment.parent.id}) ", email.subject
     assert email.body.include?("Hi! There's been a new comment to your answer on '<a href='https://#{request_host}#{comment.parent.path(:question)}#a#{comment.answer.id}'>#{comment.parent.title}</a>'")
   end
 
