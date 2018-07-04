@@ -250,7 +250,8 @@ class Comment < ApplicationRecord
         comment: comment_content_markdown,
         comment_via: 1,
         message_id: message_id, 
-        timestamp: Time.now.to_i)
+        timestamp: Time.now.to_i
+        )
       if comment.save
         comment.answer_comment_notify(user)
       end
