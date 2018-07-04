@@ -2,6 +2,7 @@ version: "2"
 services:
   db:
     image: mariadb:10.2
+    network_mode: "service:web"
     environment:
       - MYSQL_DATABASE=plots
       - MYSQL_USER=plots
@@ -43,6 +44,7 @@ services:
     ports:
       - "127.0.0.1:5001:5001"
     links:
+      - redis
       - db
       - redis
     restart: unless-stopped
