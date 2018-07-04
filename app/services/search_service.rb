@@ -205,10 +205,12 @@ class SearchService
       .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
 
     if tagName.present?
-      nodes_scope = nodes_scope.where('name LIKE ?', tagName)
+      nodes_scope = NodeTag.joins(:tag)
+                           .where('name LIKE ?', tagName)
+                           .where(nid: nodes_scope.select(:nid))
     end
 
-    nids = nodes_scope.collect(&:nid) || []
+    nids = nodes_scope.collect(&:nid).uniq || []
 
     items = Node.includes(:tag)
       .references(:node, :term_data)

@@ -132,7 +132,7 @@ module Srch
         sresult = DocList.new
         unless params[:srchString].nil? || params[:srchString] == 0 || !(params[:srchString].include? ",")
           sservice = SearchService.new
-          sresult = sservice.tagNearbyNodes(params[:srchString], params[:tag])
+          sresult = sservice.tagNearbyNodes(params[:srchString], params[:tagName])
         end
         sparms = SearchRequest.fromRequest(params)
         sresult.srchParams = sparms
@@ -155,7 +155,7 @@ module Srch
       end
       get :peoplelocations do
         sresult = DocList.new
-        unless params[:srchString].nil? || params[:srchString] == 0 
+        unless params[:srchString].nil? || params[:srchString] == 0
           sservice = SearchService.new
           sresult = sservice.recentPeople(params[:srchString], params[:tagName])
         end
