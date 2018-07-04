@@ -37,3 +37,49 @@ Metrics/ClassLength:
 
 Style/RegexpLiteral:
   Enabled: false
+
+Style/IfInsideElse:
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Style/DateTime:
+  Enabled: false
+
+Lint/ParenthesesAsGroupedExpression:
+  Enabled: false
+
+Lint/UselessAccessModifier:
+  Enabled: false
+
+Lint/EndAlignment:
+  Enabled: false
+
+Style/CommentedKeyword:
+  Enabled: false
+
+Style/CaseEquality:
+  Enabled: false
+
+Naming/VariableName:
+  Enabled: false
+
+Naming/VariableName:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Lint/DefEndAlignment:
+  Enabled: false
+
+Style/For:
+  Enabled: false
+
