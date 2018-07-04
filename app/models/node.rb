@@ -5,11 +5,11 @@ class UniqueUrlValidator < ActiveModel::Validator
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     elsif record.type == 'page'
       array = ['create', 'edit', 'update', 'delete', 'new']
-      array.each { |x|
+      array.each do |x|
         if record.title == x
           record.errors[:base] << "You may not use the title '" + x + "'"
         end
-      }
+      end
     else
       if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
         record.errors[:base] << 'You have already used this title.'
@@ -25,9 +25,9 @@ class Node < ActiveRecord::Base
   self.primary_key = 'nid'
 
   def self.search(query:, order: :default, limit:)
-    orderParam = {changed: :desc} if order == :default
-    orderParam = {cached_likes: :desc} if order == :likes
-    orderParam = {views: :desc} if order == :views
+    orderParam = { changed: :desc } if order == :default
+    orderParam = { cached_likes: :desc } if order == :likes
+    orderParam = { views: :desc } if order == :views
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
@@ -167,7 +167,7 @@ class Node < ActiveRecord::Base
   def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)
     weeks = {}
     week = span
-    count = 0;
+    count = 0
     while week >= 1
        #initialising month variable with the month of the starting day
        #of the week
@@ -177,10 +177,9 @@ class Node < ActiveRecord::Base
        #in April, then we would give this week name as April and vice-versa
       for i in 1..7 do
           currMonth = (time - (week*7 - i).days).strftime('%m')
-          if month != currMonth
-              if i <= 4
-                  month = currMonth
-              end
+          next unless month != currMonth
+          if i <= 4
+              month = currMonth
           end
       end
       #Now fetching the weekly data of notes or wikis

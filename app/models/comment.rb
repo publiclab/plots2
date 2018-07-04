@@ -1,9 +1,8 @@
 class Comment < ApplicationRecord
   include CommentsShared # common methods for comment-like models
 
-
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
-                    # dependent: :destroy, counter_cache: true
+  # dependent: :destroy, counter_cache: true
   belongs_to :drupal_user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, :as => :likeable
@@ -37,7 +36,7 @@ class Comment < ApplicationRecord
   def self.contribution_graph_making(span = 52, time = Time.now)   
     weeks = {}
     week = span
-    count = 0;
+    count = 0
     while week >= 1
         #initialising month variable with the month of the starting day 
         #of the week
@@ -58,8 +57,8 @@ class Comment < ApplicationRecord
         month = month.to_i
         #Now fetching comments per week
         currWeek = Comment.select(:timestamp)
-                        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-                        .count
+          .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+          .count
         weeks[count] = [month, currWeek]
         count += 1
         week -= 1
@@ -231,12 +230,12 @@ class Comment < ApplicationRecord
         if node
           mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
           domain = get_domain mail.from.first
-          if domain == "gmail"
-            content = gmail_parsed_mail mail_doc
+          content = if domain == "gmail"
+            gmail_parsed_mail mail_doc
           elsif domain == "yahoo"
-            content = yahoo_parsed_mail mail_doc
+            yahoo_parsed_mail mail_doc
           else
-            content = {
+            {
               "comment_content" => mail_doc, 
               "extra_content" => nil
             }

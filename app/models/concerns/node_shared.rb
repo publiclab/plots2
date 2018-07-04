@@ -218,7 +218,7 @@ module NodeShared
     end
   end
 
- # in our interface, "users" are known as "people" because it's more human
+  # in our interface, "users" are known as "people" because it's more human
   def self.people_map(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
@@ -230,8 +230,8 @@ module NodeShared
       output = a.render_to_string(template: "map/_peopleLeaflet", 
                                   layout:   false, 
                                   locals:   {
-                                    lat: lat ,
-                                    lon: lon , 
+                                    lat: lat,
+                                    lon: lon, 
                                     people: true
                                   }
                )

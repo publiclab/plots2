@@ -239,11 +239,11 @@ class User < ActiveRecord::Base
       (1..span).each do |day|
           time = Time.now.utc.beginning_of_day.to_i
           days[(time-day.days.to_i)] = Node.select(:created)
-                                           .where(uid: self.uid,
+            .where(uid: self.uid,
                                                   type: 'note',
                                                   status: 1,
                                                   created: time - (day-1).days.to_i..time - (day - 2).days.to_i)
-                                           .count
+            .count
       end
       days
   end
@@ -252,10 +252,10 @@ class User < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
-                            .where( uid: drupal_user.uid,
+        .where( uid: drupal_user.uid,
                                     status: 1,
                                     timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
-                            .count
+        .count
     end
     weeks
   end
@@ -430,10 +430,8 @@ class User < ActiveRecord::Base
     #email prefix is part of email before @ with periods replaced with underscores
     #generate a 2 digit alphanumeric number and append it at the end of email-prefix
     charset = Array('A'..'Z') + Array('a'..'z')  + Array(0..9)
-    email_prefix = auth["info"]["email"].gsub('.','_').split('@')[0]
-    while(!User.where(username: email_prefix).empty?)
-         email_prefix =  auth["info"]["email"].gsub('.','_').split('@')[0] + Array.new(2) { charset.sample }.join
-    end
+    email_prefix = auth["info"]["email"].tr('.','_').split('@')[0]
+    email_prefix =  auth["info"]["email"].tr('.','_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
     puts(auth)
     create! do |user|
       user.username = email_prefix

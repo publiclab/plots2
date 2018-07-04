@@ -223,7 +223,7 @@ class WikiController < ApplicationController
 
   def delete
     @node = Node.find(params[:id])
-    if current_user && current_user.admin?
+    if current_user&.admin?
       @node.destroy
       flash[:notice] = I18n.t('wiki_controller.wiki_page_deleted')
       redirect_to '/dashboard'
@@ -236,7 +236,7 @@ class WikiController < ApplicationController
   def revert
     revision = Revision.find params[:id]
     node = revision.parent
-    if current_user && current_user.can_moderate?
+    if current_user&.can_moderate?
       new_rev = revision.dup
       new_rev.timestamp = DateTime.now.to_i
       if new_rev.save!
@@ -271,10 +271,10 @@ class WikiController < ApplicationController
     @node = Node.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
-      @revisions = @revisions.where(status: 1).page(params[:page]).per_page(20) unless current_user && current_user.can_moderate?
+      @revisions = @revisions.where(status: 1).page(params[:page]).per_page(20) unless current_user&.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @node.title).html_safe
       @tags = @node.tags
-      @paginated = true unless current_user && current_user.can_moderate?
+      @paginated = true unless current_user&.can_moderate?
     else
       flash[:error] = I18n.t('wiki_controller.invalid_wiki_page')
     end
@@ -291,7 +291,7 @@ class WikiController < ApplicationController
     if @revision.nil?
       flash[:error] = I18n.t('wiki_controller.revision_not_found')
       redirect_to action: 'revisions'
-    elsif @revision.status == 1 || current_user && current_user.can_moderate?
+    elsif @revision.status == 1 || current_user&.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @revision.title).html_safe
       render template: 'wiki/show'
     else
