@@ -9,23 +9,22 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
     volumes:
       - ../config/my.cnf:/etc/mysql/my.cnf
-      # for configuration 
+      # for configuration
       - ../../mysql:/var/lib/mysql
       # for persistence
       - ../../dump:/docker-entrypoint-initdb.d
       # for importing a dump
       # if you want to re-import simply put away ../../mysql/*
-  redis:
-    image: redis:latest
-    ports:
-      - '6379:6379'
-    command: redis-server
   web:
+    ports:
+      - "127.0.0.1:5001:4000"
     build: ..
-    command: /bin/bash -c "sleep 5 && bundle exec rails s -p 5001 -b '0.0.0.0'"
+    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start -p 4000"
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY}
+      - RECAPTCHA_SITE_KEY=${RECAPTCHA_SITE_KEY}
       - SERVER_ADDRESS=${SERVER_ADDRESS}
       - USERNAME=${USERNAME}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
@@ -40,22 +39,17 @@ services:
       - REDIS_URL=redis://redis:6379/0
     volumes:
       - ..:/app
-    ports:
-      - "127.0.0.1:5001:5001"
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
     links:
-      - db
       - redis
-    restart: unless-stopped
-  mailman:
-    build: ..
-    command: script/mailman_server
-    environment:
-      - RAILS_ENV=${RAILS_ENV}
-      - SERVER_ADDRESS=${SERVER_ADDRESS}
-      - USERNAME=${USERNAME}
-      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
-    volumes:
-      - ..:/app
+      - db
+    restart: on-failure:5
+  redis:
+    image: redis:latest
+    ports:
+      - '127.0.0.1:6379:6379'
+    command: redis-server
   sidekiq:
     build: ..
     command: bundle exec sidekiq -L log/sidekiq.log
@@ -70,3 +64,13 @@ services:
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - REDIS_URL=redis://redis:6379/0
+  mailman:
+    build: ..
+    command: script/mailman_server
+    environment:
+      - RAILS_ENV=${RAILS_ENV}
+      - SERVER_ADDRESS=${SERVER_ADDRESS}
+      - USERNAME=${USERNAME}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+    volumes:
+      - ..:/app
