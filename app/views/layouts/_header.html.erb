@@ -185,8 +185,8 @@
                   <p><a href="/reset/"><%= t('layout._header.login.reset_password') %></a></p>
                   <% if Rails.env == "production"%>
                    <h5>Log In with</h5>
-                    <div class="loginbutton" >
-                      <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default"><i class="fa fa-google" style="font-size:20px;color:red"></i></span></div></a>
+                    <div class="loginbutton" style="float:left">
+                      <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default"><i class="fa fa-google" style="font-size:20px;color:red;"></i></span></div></a>
                       <a href="/auth/github" id="connect-github"><span class="btn btn-default"><i class="fa fa-github" style="font-size:20px;color:green;"></i></span></div></a>
                     </div>
                   <% end %>
