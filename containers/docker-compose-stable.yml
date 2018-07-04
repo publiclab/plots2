@@ -2,7 +2,6 @@ version: "2"
 services:
   db:
     image: mariadb:10.2
-    network_mode: "service:web"
     environment:
       - MYSQL_DATABASE=plots
       - MYSQL_USER=plots
