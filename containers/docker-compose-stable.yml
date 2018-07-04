@@ -64,6 +64,7 @@ services:
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
   mailman:
     build: ..
     command: script/mailman_server
