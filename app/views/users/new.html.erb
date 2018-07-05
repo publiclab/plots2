@@ -26,8 +26,9 @@
     <% if Rails.env == "production"%>
       <h5>  OR </h5>
       <h3> Sign up with </h3>
-      <div class="loginbutton" >
-        <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default"><i class="fa fa-google" style="font-size:17px;color:red"></i></span></div></a>
+      <div class="loginbutton" style="float:left">
+        <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default" style="margin-right:2px"><i class="fa fa-google" style="font-size:20px;color:red;"></i></span></div></a>
+        <a href="/auth/github" id="connect-github"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-github" style="font-size:20px;color:green;"></i></span></div></a>
       </div>
     <% end %>
   <% cache('feature_signup-notice', skip_digest: true) do %>
