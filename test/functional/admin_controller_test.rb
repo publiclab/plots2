@@ -187,7 +187,7 @@ class AdminControllerTest < ActionController::TestCase
     node = assigns(:node)
     assert_equal 0, node.status
     assert_equal 0, node.author.status
-    assert_redirected_to '/dashboard'
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
 
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
@@ -205,7 +205,7 @@ class AdminControllerTest < ActionController::TestCase
 
     assert_equal "Item already marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>.", flash[:notice]
     assert_equal 0, nodes(:spam).status
-    assert_redirected_to '/dashboard'
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
   end
 
   test 'normal user should not be able to unspam a note' do
@@ -423,7 +423,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 0, comment.status
     assert_equal "Comment has been marked as spam.", flash[:notice]
-    assert_redirected_to '/dashboard'
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should mark comment as spam if admin' do
