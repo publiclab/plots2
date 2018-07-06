@@ -29,6 +29,9 @@ Style/FrozenStringLiteralComment:
 Metrics/ParameterLists:
   Enabled: false
 
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
 Metrics/ModuleLength:
   Max: 303
 
