@@ -74,6 +74,5 @@ services:
       - SERVER_ADDRESS=${SERVER_ADDRESS}
       - USERNAME=${USERNAME}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
-      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
     volumes:
       - ..:/app
