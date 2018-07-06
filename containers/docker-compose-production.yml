@@ -68,6 +68,7 @@ services:
   mailman:
     build: ..
     command: script/mailman_server
+    network_mode: "service:web"
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
