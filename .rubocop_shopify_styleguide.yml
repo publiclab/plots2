@@ -104,14 +104,6 @@ Style/CommandLiteral:
   - mixed
   AllowInnerBackticks: false
 
-Style/CommentAnnotation:
-  Keywords:
-  - TODO
-  - FIXME
-  - OPTIMIZE
-  - HACK
-  - REVIEW
-
 Style/ConditionalAssignment:
   EnforcedStyle: assign_to_condition
   SupportedStyles:
