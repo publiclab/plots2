@@ -232,9 +232,9 @@ class Comment < ApplicationRecord
           domain = get_domain mail.from.first
           content = if domain == "gmail"
             gmail_parsed_mail mail_doc
-          elsif domain == "yahoo"
+                    elsif domain == "yahoo"
             yahoo_parsed_mail mail_doc
-          else
+                    else
             {
               "comment_content" => mail_doc, 
               "extra_content" => nil

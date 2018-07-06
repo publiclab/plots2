@@ -67,9 +67,9 @@ class TagController < ApplicationController
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
     @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
 
-    default_type = if params[:id].match('question:')
+    default_type = if params[:id].match?('question:')
                      'questions'
-    else
+                   else
                      'note'
                   end
     # params[:node_type] - this is an optional param
@@ -165,9 +165,9 @@ class TagController < ApplicationController
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
     @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki&.has_power_tag('redirect')
 
-    default_type = if params[:id].match('question:')
+    default_type = if params[:id].match?('question:')
                      'questions'
-    else
+                   else
                      'note'
                   end
 

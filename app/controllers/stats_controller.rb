@@ -34,7 +34,7 @@ class StatsController < ApplicationController
   def index
     @time = if params[:time]
               Time.parse(params[:time])
-    else
+            else
       Time.now
     end
 

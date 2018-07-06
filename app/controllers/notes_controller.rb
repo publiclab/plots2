@@ -123,7 +123,7 @@ class NotesController < ApplicationController
       end
 
       if saved
-        params[:tags]&.tr(' ', ',').split(',').each do |tagname|
+        params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
             @node.add_tag(tagname.strip, current_user)
         end
         if params[:event] == 'on'

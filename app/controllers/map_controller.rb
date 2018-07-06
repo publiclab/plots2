@@ -56,7 +56,7 @@ class MapController < ApplicationController
       @revision.title = params[:title]
       @revision.body = params[:body]
 
-      params[:tags]&.split(',').each do |tagname|
+      params[:tags]&.split(',')&.each do |tagname|
           @node.add_tag(tagname, current_user)
       end
 
@@ -131,7 +131,7 @@ class MapController < ApplicationController
                                               main_image: params[:main_image])
 
       if saved
-        params[:tags]&.split(',').each do |tagname|
+        params[:tags]&.split(',')&.each do |tagname|
             @node.add_tag(tagname, current_user)
         end
 

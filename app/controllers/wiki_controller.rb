@@ -21,7 +21,7 @@ class WikiController < ApplicationController
   def show
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
-    else
+            else
       Node.find_wiki(params[:id])
     end
 
@@ -98,7 +98,7 @@ class WikiController < ApplicationController
   def edit
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
-    else
+            else
       Node.find_wiki(params[:id])
     end
 

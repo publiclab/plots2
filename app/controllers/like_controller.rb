@@ -19,7 +19,7 @@ class LikeController < ApplicationController
     result = NodeSelection.find_by_user_id_and_nid(current_user.uid, params[:id])
     result = if result.nil?
                false
-    else
+             else
       result.liking
     end
     render json: result

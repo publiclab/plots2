@@ -1,10 +1,5 @@
-# Recommended rubocop version: ~> 0.56.0
-
-AllCops:
-  Exclude:
-  - 'db/schema.rb'
-  DisabledByDefault: true
-
+# http://shopify.github.io/ruby-style-guide/rubocop.yml
+#
 Layout/AccessModifierIndentation:
   EnforcedStyle: indent
   SupportedStyles:
@@ -202,9 +197,6 @@ Style/FrozenStringLiteralComment:
     - always
     - never
 
-Style/GlobalVars:
-  AllowedVariables: []
-
 Style/HashSyntax:
   EnforcedStyle: ruby19
   SupportedStyles:
@@ -361,7 +353,7 @@ Style/RedundantReturn:
   AllowMultipleReturnValues: false
 
 Style/RegexpLiteral:
-  EnforcedStyle: mixed
+  EnforcedStyle: slashes
   SupportedStyles:
   - slashes
   - percent_r
@@ -512,36 +504,11 @@ Style/WordArray:
   MinSize: 0
   WordRegex: !ruby/regexp /\A[\p{Word}\n\t]+\z/
 
-Metrics/BlockNesting:
-  Max: 3
-
-Metrics/LineLength:
-  Max: 120
-  AllowHeredoc: true
-  AllowURI: true
-  URISchemes:
-  - http
-  - https
-  IgnoreCopDirectives: false
-  IgnoredPatterns:
-  - '\A\s*(remote_)?test(_\w+)?\s.*(do|->)(\s|\Z)'
-
-Metrics/ParameterLists:
-  Max: 5
-  CountKeywordArgs: false
-
 Layout/BlockAlignment:
   EnforcedStyleAlignWith: either
   SupportedStylesAlignWith:
   - either
   - start_of_block
-  - start_of_line
-
-Layout/EndAlignment:
-  EnforcedStyleAlignWith: variable
-  SupportedStylesAlignWith:
-  - keyword
-  - variable
   - start_of_line
 
 Layout/DefEndAlignment:
@@ -700,9 +667,6 @@ Layout/CommentIndentation:
 Naming/ConstantName:
   Enabled: true
 
-Style/DateTime:
-  Enabled: true
-
 Style/DefWithParentheses:
   Enabled: true
 
@@ -767,12 +731,6 @@ Style/LineEndConcatenation:
   Enabled: true
 
 Style/MethodCallWithoutArgsParentheses:
-  Enabled: true
-
-Style/MethodMissingSuper:
-  Enabled: true
-
-Style/MissingRespondToMissing:
   Enabled: true
 
 Style/MultilineBlockChain:
@@ -1059,9 +1017,6 @@ Lint/UnreachableCode:
 Lint/UselessAccessModifier:
   ContextCreatingMethods: []
 
-Lint/UselessAssignment:
-  Enabled: true
-
 Lint/UselessComparison:
   Enabled: true
 
@@ -1158,14 +1113,6 @@ Style/TrailingBodyOnClass:
   Enabled: true
 
 Style/TrailingBodyOnModule:
-  Enabled: true
-
-Style/TrailingCommaInArrayLiteral:
-  EnforcedStyleForMultiline: comma
-  Enabled: true
-
-Style/TrailingCommaInHashLiteral:
-  EnforcedStyleForMultiline: comma
   Enabled: true
 
 Layout/SpaceInsideReferenceBrackets:

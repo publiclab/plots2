@@ -81,7 +81,7 @@ class AdminController < ApplicationController
                    .order('nid DESC')
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
-      else
+               else
         @nodes.where(status: 0)
       end
     else
