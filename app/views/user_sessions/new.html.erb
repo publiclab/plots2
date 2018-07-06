@@ -36,16 +36,18 @@
 
   </div>
   </br>
-    <% if Rails.env == "production"%>
+  <% if Rails.env == "production"%>
       <h5>OR </h5>
       <h3> Login with </h3>
       <div class="loginbutton" style="float:left">
-        <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default" style="margin-right:2px"><i class="fa fa-google" style="font-size:20px;color:red;"></i></span></div></a>
-        <a href="/auth/github" id="connect-github"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-github" style="font-size:20px;color:green;"></i></span></div></a>
+        <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default" style="margin-right:2px"><i class="fa fa-google" style="font-size:20px;color:red;"></i></span></a>
+        <a href="/auth/github" id="connect-github"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-github" style="font-size:20px;color:green;"></i></span></a>
+        <a href="/auth/facebook" id="connect-facebook"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-facebook" style="font-size:20px;color:blue;"></i></span></a>
       </div>
 
       <br />
-    <% end %>
+  <% end %>
+
   <p style="color: #888;"><%= raw t('user_sessions.new.reset_by_clicking_here', :url1 => "/reset/") %></p>
 <% end %>
 
