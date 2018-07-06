@@ -1,3 +1,5 @@
+# Recommended rubocop version: ~> 0.56.0
+
 AllCops:
   Exclude:
   - 'db/schema.rb'
@@ -359,7 +361,7 @@ Style/RedundantReturn:
   AllowMultipleReturnValues: false
 
 Style/RegexpLiteral:
-  EnforcedStyle: slashes
+  EnforcedStyle: mixed
   SupportedStyles:
   - slashes
   - percent_r
@@ -368,6 +370,10 @@ Style/RegexpLiteral:
 
 Style/SafeNavigation:
   ConvertCodeThatCanStartToReturnNil: false
+  Enabled: true
+
+Lint/SafeNavigationChain:
+  Enabled: true
 
 Style/Semicolon:
   AllowAsExpressionSeparator: false
@@ -518,27 +524,27 @@ Metrics/LineLength:
   - https
   IgnoreCopDirectives: false
   IgnoredPatterns:
-  - '\A\s*test(_\w+)?\s.*(do|->)(\s|\Z)'
+  - '\A\s*(remote_)?test(_\w+)?\s.*(do|->)(\s|\Z)'
 
 Metrics/ParameterLists:
   Max: 5
   CountKeywordArgs: false
 
-Lint/BlockAlignment:
+Layout/BlockAlignment:
   EnforcedStyleAlignWith: either
   SupportedStylesAlignWith:
   - either
   - start_of_block
   - start_of_line
 
-Lint/EndAlignment:
+Layout/EndAlignment:
   EnforcedStyleAlignWith: variable
   SupportedStylesAlignWith:
   - keyword
   - variable
   - start_of_line
 
-Lint/DefEndAlignment:
+Layout/DefEndAlignment:
   EnforcedStyleAlignWith: start_of_line
   SupportedStylesAlignWith:
   - start_of_line
@@ -694,6 +700,9 @@ Layout/CommentIndentation:
 Naming/ConstantName:
   Enabled: true
 
+Style/DateTime:
+  Enabled: true
+
 Style/DefWithParentheses:
   Enabled: true
 
@@ -760,7 +769,10 @@ Style/LineEndConcatenation:
 Style/MethodCallWithoutArgsParentheses:
   Enabled: true
 
-Style/MethodMissing:
+Style/MethodMissingSuper:
+  Enabled: true
+
+Style/MissingRespondToMissing:
   Enabled: true
 
 Style/MultilineBlockChain:
@@ -928,7 +940,7 @@ Lint/AmbiguousRegexpLiteral:
 Lint/CircularArgumentReference:
   Enabled: true
 
-Lint/ConditionPosition:
+Layout/ConditionPosition:
   Enabled: true
 
 Lint/Debugger:
@@ -1032,7 +1044,10 @@ Lint/UnderscorePrefixedVariableName:
 Lint/UnifiedInteger:
   Enabled: true
 
-Lint/UnneededDisable:
+Lint/UnneededCopDisableDirective:
+  Enabled: true
+
+Lint/UnneededCopEnableDirective:
   Enabled: true
 
 Lint/UnneededSplatExpansion:
@@ -1080,9 +1095,6 @@ Performance/FixedSize:
 Performance/FlatMap:
   EnabledForFlattenWithoutParams: false
 
-Performance/HashEachMethods:
-  Enabled: true
-  
 Performance/LstripRstrip:
   Enabled: true
 
@@ -1134,4 +1146,35 @@ Security/Eval:
   Enabled: true
 
 Security/JSONLoad:
+  Enabled: true
+
+Security/Open:
+  Enabled: true
+
+Lint/BigDecimalNew:
+  Enabled: true
+
+Style/TrailingBodyOnClass:
+  Enabled: true
+
+Style/TrailingBodyOnModule:
+  Enabled: true
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+  Enabled: true
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+  Enabled: true
+
+Layout/SpaceInsideReferenceBrackets:
+  EnforcedStyle: no_space
+  EnforcedStyleForEmptyBrackets: no_space
+  Enabled: true
+
+Style/ModuleFunction:
+  EnforcedStyle: extend_self
+
+Lint/OrderedMagicComments:
   Enabled: true
