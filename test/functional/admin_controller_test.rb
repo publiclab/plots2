@@ -87,10 +87,10 @@ class AdminControllerTest < ActionController::TestCase
     user = users(:bob)
     get :reset_user_password, params: { id: user.id, email: user.email }
 
-	#Testing whether email has been sent or not
- 	email = ActionMailer::Base.deliveries.last
- 	assert_equal '[Public Lab] Reset your password', email.subject
- 	assert_equal [user.email], email.to
+  #Testing whether email has been sent or not
+  email = ActionMailer::Base.deliveries.last
+  assert_equal '[Public Lab] Reset your password', email.subject
+  assert_equal [user.email], email.to
 
     assert_equal "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with.", flash[:notice] 
     assert_redirected_to '/profile/' + user.name
@@ -187,7 +187,7 @@ class AdminControllerTest < ActionController::TestCase
     node = assigns(:node)
     assert_equal 0, node.status
     assert_equal 0, node.author.status
-    assert_redirected_to '/dashboard'
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
 
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
@@ -455,7 +455,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 1, comment.status
     assert_equal "Only moderators can moderate comments.", flash[:error]
-    assert_redirected_to '/dashboard'
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should not mark comment as spam if it is already marked as spam' do
