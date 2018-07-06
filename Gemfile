@@ -59,7 +59,7 @@ gem 'figaro'
 gem 'sanitize'
 gem 'tzinfo-data', platforms: %i(mingw mswin x64_mingw jruby)
 gem 'rails-controller-testing'
-
+gem 'rubocop', '~> 0.52.1', require: false
 
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
@@ -89,7 +89,6 @@ group :development do
   gem "letter_opener"
   gem "nifty-generators"
   gem 'byebug', platform: :mri
-  gem 'rubocop', '~> 0.52.1', require: false
 end
 
 group :test, :development do
