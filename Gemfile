@@ -105,6 +105,11 @@ group :test, :development do
   gem 'rspec'
   gem 'test-unit'
   gem 'timecop'
+  gem 'teaspoon-mocha'
+  gem 'phantomjs'
+  gem 'coveralls', require: false
+  gem 'ci_reporter_test_unit'
+  gem 'openssl', '~> 2.0.0.beta.1'
 end
 
 group :production do

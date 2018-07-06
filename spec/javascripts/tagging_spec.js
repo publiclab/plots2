@@ -1,6 +1,5 @@
 /*
 //= require application
-//= require jasmine-jquery
 //= require tagging
 
 var editor;

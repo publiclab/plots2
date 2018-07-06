@@ -1,5 +1,4 @@
 //= require application
-//= require jasmine-jquery
 //= require comment_expand
 
 var editor;

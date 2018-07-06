@@ -1,5 +1,4 @@
 //= require application
-//= require jasmine-jquery
 //= require wikis
 
 var editor;
