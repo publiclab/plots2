@@ -111,7 +111,7 @@ class AdminController < ApplicationController
         @node.author.ban
         AdminMailer.notify_moderators_of_spam(@node, current_user).deliver_now
         flash[:notice] = "Item marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
-        redirect_to '/dashboard'
+         redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
       else
         flash[:notice] = "Item already marked as spam and author banned. You can undo this on the <a href='/spam'>spam moderation page</a>."
         redirect_to '/dashboard'
@@ -138,7 +138,7 @@ class AdminController < ApplicationController
     else
       flash[:error] = 'Only moderators can moderate comments.'
     end
-    redirect_to '/dashboard'
+     redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
   end
 
   def publish_comment
