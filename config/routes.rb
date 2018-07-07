@@ -211,6 +211,7 @@ Plots2::Application.routes.draw do
   get 'profile/:id/edit' => 'users#edit'
   get 'profile/:id/likes' => 'users#likes'
   get 'feed/:author' => 'users#rss'
+  get '/settings' => 'users#settings'
 
   post 'profile/tags/create/:id' => 'user_tags#create'
   get 'profile/tags/create/:id' => 'user_tags#create'
