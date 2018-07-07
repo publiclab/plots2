@@ -68,20 +68,11 @@ Style/CommentedKeyword:
 Style/CaseEquality:
   Enabled: false
 
-Naming/VariableName:
-  Enabled: false
-
-Naming/VariableName:
-  Enabled: false
-
 Naming/AccessorMethodName:
   Enabled: false
 
 Metrics/ClassLength:
   Enabled: false
-
-# Style/DoubleNegation:
-#   Enabled: false
 
 Lint/DefEndAlignment:
   Enabled: false

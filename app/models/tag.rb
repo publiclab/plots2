@@ -196,14 +196,14 @@ class Tag < ApplicationRecord
           #Now fetching the weekly data of notes or wikis
           month = month.to_i
   
-          currWeek = Tag.nodes_for_period(
+          current_week = Tag.nodes_for_period(
             type, 
             nids, 
             (time.to_i - week.weeks.to_i).to_s,
             (time.to_i - (week - 1).weeks.to_i).to_s
           ).count(:all)
   
-          weeks[count] = [month, currWeek]
+          weeks[count] = [month, current_week]
           count += 1
           week -= 1
   	end

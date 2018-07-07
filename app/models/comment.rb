@@ -44,10 +44,10 @@ class Comment < ApplicationRecord
 
         month = month.to_i
         #Now fetching comments per week
-        currWeek = Comment.select(:timestamp)
+        current_week = Comment.select(:timestamp)
           .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
           .count
-        weeks[count] = [month, currWeek]
+        weeks[count] = [month, current_week]
         count += 1
         week -= 1
     end

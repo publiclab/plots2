@@ -25,9 +25,13 @@ class Node < ActiveRecord::Base
   self.primary_key = 'nid'
 
   def self.search(query:, order: :default, limit:)
-    orderParam = { changed: :desc } if order == :default
-    orderParam = { cached_likes: :desc } if order == :likes
-    orderParam = { views: :desc } if order == :views
+    order_param = if order == :default
+                    { changed: :desc }
+                  elsif order == :likes
+                    { cached_likes: :desc }
+                  elsif order == :views
+                    { views: :desc }
+                  end
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
@@ -39,13 +43,13 @@ class Node < ActiveRecord::Base
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
         tnids = Tag.find_nodes_by_type(query, type = ['note', 'page']).collect(&:nid) # include results by tag
         self.where(nid: nids + tnids, status: 1)
-          .order(orderParam)
+          .order(order_param)
       end
     else
       nodes = Node.limit(limit)
         .where('title LIKE ?', '%' + query + '%')
         .where(status: 1)
-        .order(orderParam)
+        .order(order_param)
     end
   end
 
@@ -175,12 +179,12 @@ class Node < ActiveRecord::Base
 
       #Now fetching the weekly data of notes or wikis
       month = month.to_i
-      currWeek = Node.select(:created)
+      current_week = Node.select(:created)
                      .where(type: type,
                             status: 1,
                             created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
                       .count
-      weeks[count] = [month, currWeek]
+      weeks[count] = [month, current_week]
       count += 1
       week -= 1
     end
