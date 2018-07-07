@@ -54,10 +54,6 @@ module ApplicationHelper
     [emoji_names, emoji_image_map]
   end
 
-  def tag_names_list
-    tagnames = Tag.all.collect(&:name)
-  end
-
   def atwho_emojis
     emoji_names = ["smile", "thumbsup", "tada", "confused", "thumbsdown", "heart"]
     atwho_emojis = []
