@@ -182,32 +182,32 @@ class Tag < ApplicationRecord
   end
 
   def contribution_graph_making(type = 'note', span = 52, time = Time.now)   
-      weeks = {}
-      week = span
-      count = 0
-      tids = Tag.where('name IN (?)', [name]).collect(&:tid)
-      nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
+    weeks = {}
+    week = span
+    count = 0
+    tids = Tag.where('name IN (?)', [name]).collect(&:tid)
+    nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
 
-      while week >= 1
-          #initialising month variable with the month of the starting day 
-          #of the week
-          month = (time - (week*7 - 1).days).strftime('%m')
+    while week >= 1
+      #initialising month variable with the month of the starting day 
+      #of the week
+      month = (time - (week*7 - 1).days).strftime('%m')
 
-          #Now fetching the weekly data of notes or wikis
-          month = month.to_i
-  
-          current_week = Tag.nodes_for_period(
-            type, 
-            nids, 
-            (time.to_i - week.weeks.to_i).to_s,
-            (time.to_i - (week - 1).weeks.to_i).to_s
-          ).count(:all)
-  
-          weeks[count] = [month, current_week]
-          count += 1
-          week -= 1
-  	end
-  	   weeks
+      #Now fetching the weekly data of notes or wikis
+      month = month.to_i
+
+      current_week = Tag.nodes_for_period(
+        type, 
+        nids, 
+        (time.to_i - week.weeks.to_i).to_s,
+        (time.to_i - (week - 1).weeks.to_i).to_s
+      ).count(:all)
+
+      weeks[count] = [month, current_week]
+      count += 1
+      week -= 1
+    end
+    weeks
   end 
 
   def self.nodes_for_period(type, nids, start, finish)

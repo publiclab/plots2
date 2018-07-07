@@ -62,9 +62,6 @@ Lint/UselessAccessModifier:
 Lint/EndAlignment:
   Enabled: false
 
-Style/CommentedKeyword:
-  Enabled: false
-
 Style/CaseEquality:
   Enabled: false
 
