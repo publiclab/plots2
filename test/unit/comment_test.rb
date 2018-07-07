@@ -245,4 +245,10 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal comment.comment, f.read
   end
 
+  test 'should save comment with emojis' do
+    comment = Comment.new
+    comment.comment = "Comment with Emojis 😎😎😎"
+    assert comment.save
+  end
+
 end
