@@ -23,20 +23,8 @@ AllCops:
     - 'Dangerfile'
   TargetRubyVersion: '2.4'
 
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
-Metrics/ParameterLists:
-  Enabled: false
-
 Layout/MultilineMethodCallIndentation:
   Enabled: false
-
-Metrics/ModuleLength:
-  Max: 303
-
-Metrics/ClassLength:
-  Max: 660
 
 Style/RegexpLiteral:
   Enabled: false
@@ -44,13 +32,13 @@ Style/RegexpLiteral:
 Style/IfInsideElse:
   Enabled: false
 
-Lint/SafeNavigationChain:
-  Enabled: false
-
-Lint/AssignmentInCondition:
-  Enabled: false
-
 Style/DateTime:
+  Enabled: false
+
+Style/CaseEquality:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
   Enabled: false
 
 Lint/ParenthesesAsGroupedExpression:
@@ -62,7 +50,13 @@ Lint/UselessAccessModifier:
 Lint/EndAlignment:
   Enabled: false
 
-Style/CaseEquality:
+Lint/DefEndAlignment:
+  Enabled: false
+
+Lint/SafeNavigationChain:
+  Enabled: false
+
+Lint/AssignmentInCondition:
   Enabled: false
 
 Naming/AccessorMethodName:
@@ -71,5 +65,13 @@ Naming/AccessorMethodName:
 Metrics/ClassLength:
   Enabled: false
 
-Lint/DefEndAlignment:
+Metrics/ParameterLists:
   Enabled: false
+
+Metrics/ModuleLength:
+  Max: 303
+
+Metrics/ClassLength:
+  Max: 660
+
+
