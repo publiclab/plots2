@@ -41,19 +41,7 @@ class Comment < ApplicationRecord
         #initialising month variable with the month of the starting day 
         #of the week
         month = (time - (week*7 - 1).days).strftime('%m')
-        #loop for finding the maximum occurence of a month name in that week
-        #For eg. If this week has 3 days falling in March and 4 days falling
-        #in April, then we would give this week name as April and vice-versa
-        for i in 0..6 do
-          currMonth = (time - (week*7 - i).days).strftime('%m')
-          if month == 0
-              month = currMonth
-          elsif month != currMonth
-              if i <= 4
-                  month = currMonth
-              end
-          end
-        end
+
         month = month.to_i
         #Now fetching comments per week
         currWeek = Comment.select(:timestamp)

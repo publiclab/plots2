@@ -86,6 +86,6 @@ Style/DoubleNegation:
 Lint/DefEndAlignment:
   Enabled: false
 
-Style/For:
-  Enabled: false
+# Style/For:
+#   Enabled: false
 
