@@ -80,12 +80,8 @@ Naming/AccessorMethodName:
 Metrics/ClassLength:
   Enabled: false
 
-Style/DoubleNegation:
-  Enabled: false
+# Style/DoubleNegation:
+#   Enabled: false
 
 Lint/DefEndAlignment:
   Enabled: false
-
-# Style/For:
-#   Enabled: false
-
