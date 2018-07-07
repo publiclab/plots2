@@ -314,8 +314,6 @@ class UsersController < ApplicationController
     @user = User.find_by(username: params[:id])
   end
 
-  private
-
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
   end

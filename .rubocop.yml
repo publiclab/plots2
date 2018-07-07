@@ -44,9 +44,6 @@ Style/FrozenStringLiteralComment:
 Lint/ParenthesesAsGroupedExpression:
   Enabled: false
 
-Lint/UselessAccessModifier:
-  Enabled: false
-
 Lint/EndAlignment:
   Enabled: false
 
@@ -70,8 +67,3 @@ Metrics/ParameterLists:
 
 Metrics/ModuleLength:
   Max: 303
-
-Metrics/ClassLength:
-  Max: 660
-
-
