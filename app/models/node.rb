@@ -944,4 +944,9 @@ class Node < ActiveRecord::Base
       save
       self
   end
+
+  def draft_url
+    @token = slug.split('token:').last
+    url = 'https://publiclab.org/notes/show/' + nid.to_s + '/'+ @token.to_s
+  end
 end

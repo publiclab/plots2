@@ -2,10 +2,15 @@
 # Refer to this link: http://stackoverflow.com/questions/14541823/how-to-use-concerns-in-rails-4
 module CommentsShared
   extend ActiveSupport::Concern
+  include ApplicationHelper
 
   # filtered version additionally appending http/https
   #   protocol to protocol-relative URLslike "/foo"
   def body_email(host = 'publiclab.org')
+    if contain_trimmed_body?(body)
+      comment_body = filtered_comment_body(body)
+      return comment_body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?#{host})/, '\1https://\3')
+    end
     body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?#{host})/, '\1https://\3')
   end
 

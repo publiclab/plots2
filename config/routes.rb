@@ -1,6 +1,10 @@
+require 'sidekiq/web'
+
 Plots2::Application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
+
+  mount Sidekiq::Web => '/sidekiq'
 
   # Manually written API functions
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
@@ -128,6 +132,7 @@ Plots2::Application.routes.draw do
   post 'notes/create' => 'notes#create'
   get 'notes/publish_draft/:id' => 'notes#publish_draft'
   get 'notes/edit/:id' => 'notes#edit'
+  get 'notes/show/:id/:token' => 'notes#show'
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
@@ -294,6 +299,7 @@ Plots2::Application.routes.draw do
 
   get 'comment/answer_create/:aid' => 'comment#answer_create'
   get 'comment/delete/:id' => 'comment#delete'
+  get 'comment/update/:id' => 'comment#update'
   post 'comment/update/:id' => 'comment#update'
   get 'comment/make_answer/:id' => 'comment#make_answer'
   post 'comment/make_answer/:id' => 'comment#make_answer'

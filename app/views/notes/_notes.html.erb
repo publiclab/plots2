@@ -48,7 +48,7 @@
             <% end %>
             <p>
               <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
-              <a class="btn btn-default" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a>
+              <a class="btn btn-default" style="float: right; margin-left: 1px;" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a>
             </p>
           <% end %>
           <% if params[:mod] %>
