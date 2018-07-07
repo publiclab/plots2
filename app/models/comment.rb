@@ -97,9 +97,6 @@ class Comment < ApplicationRecord
     end
   end
 
-  # users who are involved in this comment thread
-  def thread_participants; end
-
   def mentioned_users
     usernames = comment.scan(Callouts.const_get(:FINDER))
     User.where(username: usernames.map { |m| m[1] }).distinct
