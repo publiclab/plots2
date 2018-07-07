@@ -17,7 +17,7 @@ describe("Inline grids", function() {
   it("sends a like request when like button is clicked", function() {
 
 
-    expect($($('.notes-grid tr')[1]).find('td:first a').html()).toEqual('First post');
+    expect($($('.notes-grid tr')[1]).find('td:first a').html()).to.eql('First post');
 
     $('table:first th:first a').trigger('click');
 
