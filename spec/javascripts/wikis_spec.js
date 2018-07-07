@@ -25,7 +25,7 @@ describe("Wikis", function() {
 
   });
 
-  it("adds deep links like example.com#Sub+section", function() {
+  xit("adds deep links like example.com#Sub+section", function() {
 
     loadFixtures('content.html');
     addDeepLinks($('#content'));
@@ -33,7 +33,7 @@ describe("Wikis", function() {
 
   });
 
-  it("adds table CSS", function() {
+  xit("adds table CSS", function() {
 
     loadFixtures('content.html');
     postProcessContent($('#content'));

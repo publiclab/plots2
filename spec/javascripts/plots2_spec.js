@@ -26,7 +26,7 @@ describe("Plots2", function() {
   });
 
 
-  it("sends a like request when like button is clicked", function() {
+  xit("sends a like request when like button is clicked", function() {
 
     loadFixtures('index.html');
 
@@ -63,7 +63,7 @@ describe("Plots2", function() {
   });
 
 
-  it("unlikes a request if already liked", function() {
+  xit("unlikes a request if already liked", function() {
 
     loadFixtures('unlike.html');
 
@@ -87,7 +87,7 @@ describe("Plots2", function() {
 
   });
 
-  it("shows expand comment button with remaining comment count", function(){
+  xit("shows expand comment button with remaining comment count", function(){
     loadFixtures('comment_expand.html');
 
     $('#answer-0-expand').trigger('click');
@@ -97,7 +97,7 @@ describe("Plots2", function() {
     expect($('#answer-0-expand').css('display')).toEqual('none');
   });
 
-  it("loads up i18n-js library properly", function() {
+  xit("loads up i18n-js library properly", function() {
     expect(I18n.t('js.dashboard.selected_updates')).toBe('Selected updates')
   });
 
