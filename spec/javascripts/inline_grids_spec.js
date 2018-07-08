@@ -1,6 +1,3 @@
-//= require application
-//= require comment_expand
-
 var editor;
 
 fixture.preload("inline_grid.html");

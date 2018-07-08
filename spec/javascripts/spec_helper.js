@@ -1,6 +1,6 @@
 // Teaspoon includes some support files, but you can use anything from your own support path too.
 //= require support/expect
-// require support/sinon
+//= require support/sinon
 //= require support/chai
 // require support/chai-jq-0.0.7
 // require support/your-support-file
