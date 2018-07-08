@@ -25,21 +25,28 @@ describe("Plots2", function() {
 		else console.log('Failed to fake response to:', object.url);
 
 		var d = $.Deferred();
-        if(response == '4')
+        if(response == '4'){
 		    d.resolve(response);
-        else
+        }
+        else{
 		    d.reject(response);
-		return d.promise();
+        }
+
+        return d.promise();
 
 	});
 
-    $('#like-button-1').trigger('click');
 
     // should trigger the following and our ajaxSpy should return a fake response of "4":
-    response = jQuery.getJSON("/likes/node/1/create", {}, function() {});
-    // then triggering like.js code
+    var response;
+    jQuery.getJSON("/likes/node/1/create").done(function(data){
+        response = data;
+    });
 
-    //expect(response).toEqual('4');
+    // then triggering like.js code
+    $('#like-button-1').trigger('click');
+
+    expect(response).to.eql('4');
     //expect($('#like-count-1').html()).to.eql('4'); // passing
     //expect($('#like-star-1')[0].className).to.eql('fa fa-star');
 
