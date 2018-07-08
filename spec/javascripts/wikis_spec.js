@@ -8,36 +8,27 @@ describe("Wikis", function() {
   beforeEach(function() {
 
     // for phantomjs running
-    jasmine.getFixtures().fixturesPath="../../spec/javascripts/fixtures";
 
     // for in-browser running... still doesn't work
     //jasmine.getFixtures().fixturesPath = 'assets/fixtures';
-    preloadFixtures('content.html');
+    fixture.preload('content.html');
 
-    jasmine.Ajax.install();
 
   });
 
+  it("adds deep links like example.com#Sub+section", function() {
 
-  afterEach(function(){
-
-    jasmine.Ajax.uninstall();
-
-  });
-
-  xit("adds deep links like example.com#Sub+section", function() {
-
-    loadFixtures('content.html');
+    fixture.load('content.html');
     addDeepLinks($('#content'));
-    expect($('#content h2 i.fa').length).not.toBe(0);
+    expect($('#content h2 i.fa').length).to.not.equal(0);
 
   });
 
-  xit("adds table CSS", function() {
+  it("adds table CSS", function() {
 
-    loadFixtures('content.html');
+    fixture.load('content.html');
     postProcessContent($('#content'));
-    expect($('#content table.table').length).not.toBe(0);
+    expect($('#content table.table').length).to.not.equal(0);
 
   });
 
