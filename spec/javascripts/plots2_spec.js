@@ -37,6 +37,8 @@ describe("Plots2", function() {
 	});
 
 
+    $('#like-button-1').trigger('click');
+
     // should trigger the following and our ajaxSpy should return a fake response of "4":
     var response;
     jQuery.getJSON("/likes/node/1/create").done(function(data){
@@ -44,7 +46,6 @@ describe("Plots2", function() {
     });
 
     // then triggering like.js code
-    $('#like-button-1').trigger('click');
 
     expect(response).to.eql('4');
     //expect($('#like-count-1').html()).to.eql('4'); // passing
