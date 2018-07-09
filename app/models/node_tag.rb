@@ -39,5 +39,4 @@ class NodeTag < ApplicationRecord
   def description
     tag.description if tag&.description && !tag.description.empty?
   end
-
 end

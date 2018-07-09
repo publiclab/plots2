@@ -217,5 +217,4 @@ class TypeaheadService
     end
     sresult
   end
-
 end

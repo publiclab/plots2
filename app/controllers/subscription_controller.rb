@@ -3,7 +3,6 @@
 # No route or view code as of yet.
 
 class SubscriptionController < ApplicationController
-
   respond_to :html, :xml, :json
   before_action :require_user, :only => %i(create delete index digest)
 
@@ -146,11 +145,10 @@ class SubscriptionController < ApplicationController
         #end
       end
  
-      return subscription.following
+      subscription.following
     else
       flash[:error] = "There was an error."
-      return false
+      false
     end
   end
-
 end

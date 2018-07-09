@@ -6,7 +6,6 @@ xml.rss :version => "2.0" do
     xml.link "https://#{ request.host }/feed/"+params[:author]+".rss"
 
    @notes.each do |node|
-
     newline = '&#13;&#10;'
 
      body = node.body

@@ -47,93 +47,6 @@ Layout/CommentIndentation:
     - 'db/seeds.rb'
     - 'test/performance/browsing_test.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Layout/ElseAlignment:
-  Exclude:
-    - 'app/controllers/users_controller.rb'
-    - 'lib/dynamic_form/action_view/helpers/dynamic_form.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Layout/EmptyLineAfterMagicComment:
-  Exclude:
-    - 'db/schema-drupal.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAdjacentOneLineDefs, NumberOfEmptyLines.
-Layout/EmptyLineBetweenDefs:
-  Exclude:
-    - 'app/controllers/admin_controller.rb'
-    - 'app/models/concerns/node_shared.rb'
-    - 'db/migrate/20140507095348_add_path_to_drupal_node.rb'
-
-# Offense count: 9
-# Cop supports --auto-correct.
-Layout/EmptyLines:
-  Exclude:
-    - 'Gemfile'
-    - 'app/controllers/admin_controller.rb'
-    - 'app/models/concerns/node_shared.rb'
-    - 'config/routes.rb'
-    - 'db/migrate/20120101000000_drupal_schema.rb'
-    - 'db/migrate/20140507095348_add_path_to_drupal_node.rb'
-
-# Offense count: 4
-# Cop supports --auto-correct.
-Layout/EmptyLinesAroundAccessModifier:
-  Exclude:
-    - 'lib/authlogic_openid/authlogic_openid/acts_as_authentic.rb'
-    - 'lib/authlogic_openid/authlogic_openid/session.rb'
-    - 'lib/open_id_authentication/open_id_authentication.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Layout/EmptyLinesAroundBeginBody:
-  Exclude:
-    - 'Dangerfile'
-
-# Offense count: 14
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, no_empty_lines
-Layout/EmptyLinesAroundBlockBody:
-  Exclude:
-    - 'Rakefile'
-    - 'app/controllers/tag_controller.rb'
-    - 'app/views/notes/rss.rss.builder'
-    - 'app/views/users/rss.rss.builder'
-    - 'config/environments/development.rb'
-    - 'config/environments/production.rb'
-    - 'config/environments/test.rb'
-    - 'db/migrate/20140429190219_consolidate_tags.rb'
-    - 'db/schema-drupal.rb'
-    - 'lib/authlogic_openid/authlogic_openid/acts_as_authentic.rb'
-    - 'test/functional/search_api_test.rb'
-    - 'test/unit/node_test.rb'
-
-# Offense count: 31
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines
-Layout/EmptyLinesAroundClassBody:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Layout/EmptyLinesAroundExceptionHandlingKeywords:
-  Exclude:
-    - 'Dangerfile'
-
-# Offense count: 4
-# Cop supports --auto-correct.
-Layout/EmptyLinesAroundMethodBody:
-  Exclude:
-    - 'app/controllers/user_tags_controller.rb'
-    - 'db/migrate/20140416153948_remove_unused_tables_and_add_used_ones.rb'
-    - 'db/migrate/20140429190219_consolidate_tags.rb'
-
 # Offense count: 3
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -900,19 +813,6 @@ Style/MixinUsage:
     - 'test/functional/wiki_controller_test.rb'
     - 'test/unit/admin_mailer_test.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/MultilineIfThen:
-  Exclude:
-    - 'db/migrate/20170704165711_add_user_bio_and_token.rb'
-
-# Offense count: 7
-# Cop supports --auto-correct.
-Style/MutableConstant:
-  Exclude:
-    - 'config/initializers/constants.rb'
-    - 'lib/open_id_authentication/open_id_authentication.rb'
-
 # Offense count: 3
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -935,18 +835,6 @@ Style/Next:
     - 'db/migrate/20170704165711_add_user_bio_and_token.rb'
     - 'db/migrate/20170726174757_recover_bios_tokens_statuses.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/NilComparison:
-  Exclude:
-    - 'app/controllers/questions_controller.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: IncludeSemanticChanges.
-Style/NonNilCheck:
-  Exclude:
-    - 'app/controllers/users_controller.rb'
 
 # Offense count: 128
 # Cop supports --auto-correct.
@@ -970,107 +858,9 @@ Style/NumericPredicate:
     - 'app/services/search_service.rb'
     - 'db/migrate/20140429190219_consolidate_tags.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/ParallelAssignment:
-  Exclude:
-    - 'lib/authlogic_openid/authlogic_openid/version.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowSafeAssignment.
-Style/ParenthesesAroundCondition:
-  Exclude:
-    - 'app/controllers/answers_controller.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: PreferredDelimiters.
-Style/PercentLiteralDelimiters:
-  Exclude:
-    - 'config/application.rb'
-    - 'db/seeds.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/Proc:
-  Exclude:
-    - 'config/initializers/jasmine_fixtures.rb'
-    - 'lib/dynamic_form/action_view/helpers/dynamic_form.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: compact, exploded
-Style/RaiseArgs:
-  Exclude:
-    - 'app/helpers/comment_helper.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantBegin:
-  Exclude:
-    - 'lib/solr_toggle/solr_toggle.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantParentheses:
-  Exclude:
-    - 'lib/open_id_authentication/open_id_authentication.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: AllowMultipleReturnValues.
-Style/RedundantReturn:
-  Exclude:
-    - 'app/controllers/subscription_controller.rb'
-    - 'lib/authlogic_openid/authlogic_openid/acts_as_authentic.rb'
 
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, AllowInnerSlashes.
-# SupportedStyles: slashes, percent_r, mixed
-Style/RegexpLiteral:
-  Exclude:
-    - 'Dangerfile'
-    - 'app/models/concerns/comments_shared.rb'
-    - 'app/models/revision.rb'
 
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: implicit, explicit
-Style/RescueStandardError:
-  Exclude:
-    - 'Dangerfile'
-    - 'app/controllers/wiki_controller.rb'
-    - 'app/models/drupal_content_field_image_gallery.rb'
-    - 'app/models/image.rb'
-    - 'app/models/node.rb'
-    - 'app/views/tag/rss.rss.builder'
-    - 'lib/solr_toggle/solr_toggle.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/SelfAssignment:
-  Exclude:
-    - 'app/models/concerns/node_shared.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAsExpressionSeparator.
-Style/Semicolon:
-  Exclude:
-    - 'test/unit/constants_test.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: only_raise, only_fail, semantic
-Style/SignalException:
-  Exclude:
-    - 'Dangerfile'
 
 # Offense count: 3619
 # Cop supports --auto-correct.
@@ -1079,19 +869,6 @@ Style/SignalException:
 Style/StringLiterals:
   Enabled: false
 
-# Offense count: 58
-# Cop supports --auto-correct.
-# Configuration parameters: .
-# SupportedStyles: percent, brackets
-Style/SymbolArray:
-  EnforcedStyle: percent
-  MinSize: 4
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/UnlessElse:
-  Exclude:
-    - 'lib/dynamic_form/action_view/helpers/dynamic_form.rb'
 
 # Offense count: 1492
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.

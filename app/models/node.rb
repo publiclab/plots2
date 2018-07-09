@@ -461,7 +461,7 @@ class Node < ActiveRecord::Base
     Rails.cache.fetch('feed-' + id.to_s + '-' + (updated_at.to_i / 300).to_i.to_s) do
       RSS::Parser.parse(open('https://groups.google.com/group/' + power_tag('list') + '/feed/rss_v2_0_topics.xml').read, false).items
     end
-  rescue
+  rescue StandardError
     return []
   end
 
@@ -720,7 +720,7 @@ class Node < ActiveRecord::Base
           if tag.name.split(':')[0] == 'date'
             begin
               DateTime.strptime(tag.name.split(':')[1], '%m-%d-%Y').to_date.to_s(:long)
-            rescue
+            rescue StandardError
               return [false, tag.destroy]
             end
           end

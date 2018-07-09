@@ -280,5 +280,4 @@ class Comment < ApplicationRecord
   def trimmed_content?
     comment.include?(COMMENT_FILTER)
   end
-
 end

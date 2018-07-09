@@ -60,7 +60,6 @@ class AdminController < ApplicationController
     end
   end
 
-
   def useremail
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       if params[:address]

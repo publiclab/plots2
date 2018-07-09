@@ -33,7 +33,7 @@ class QuestionsController < ApplicationController
       node = Node.find(params[:n])
       params[:body] = node.body if node
     end
-    if current_user == nil
+    if current_user.nil?
       redirect_to new_user_session_path( return_to: request.path )
       flash[:notice] = "Your question is important and we want to hear from you! Please log in or sign up to post a question"
     else

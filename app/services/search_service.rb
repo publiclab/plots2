@@ -261,5 +261,4 @@ class SearchService
     end
     sresult
   end
-
 end

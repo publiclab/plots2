@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_no_user, :only => [:new]
-  before_action :require_user, :only => [:edit, :update]
+  before_action :require_user, :only => %i(edit update)
   before_action :set_user, only: %i(info followed following followers)
 
   def new
@@ -140,7 +140,7 @@ class UsersController < ApplicationController
       @questions = @user.user.questions
                              .order('node.nid DESC')
                              .paginate(:page => params[:page], :per_page => 24)
-      @likes = (@user.liked_notes.includes([:tag, :comments])+@user.liked_pages)
+      @likes = (@user.liked_notes.includes(%i(tag comments))+@user.liked_pages)
                      .paginate(page: params[:page], per_page: 24)
       questions = Node.questions
                             .where(status: 1)
@@ -187,7 +187,7 @@ class UsersController < ApplicationController
     @user = DrupalUser.find_by(name: params[:id])
     @title = "Liked by "+@user.name
     @notes = @user.liked_notes
-                  .includes([:tag, :comments])
+                  .includes(%i(tag comments))
                   .paginate(page: params[:page], per_page: 24)
     @wikis = @user.liked_pages
     @tagnames = []
@@ -216,7 +216,7 @@ class UsersController < ApplicationController
   end
 
   def reset
-    if params[:key] && params[:key] != nil
+    if params[:key] && !params[:key].nil?
       @user = User.find_by(reset_key: params[:key])
       if @user
         if params[:user] && params[:user][:password]
@@ -231,7 +231,7 @@ class UsersController < ApplicationController
               flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
               redirect_to "/"
             end
-	  else
+	         else
             flash[:error] = I18n.t('users_controller.password_change_failed')
           end
         else

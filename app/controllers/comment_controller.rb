@@ -198,5 +198,4 @@ class CommentController < ApplicationController
       end
     end
   end
-
 end

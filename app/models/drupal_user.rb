@@ -1,5 +1,4 @@
 class DrupalUser < ApplicationRecord
-
   ## User status can be:
   #  0: banned
   #  1: normal

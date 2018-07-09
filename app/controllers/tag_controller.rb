@@ -313,7 +313,6 @@ class TagController < ApplicationController
       else
         @output[:errors] << node.can_tag(tagname, current_user, true)
       end
-
     end
     respond_with do |format|
       format.html do

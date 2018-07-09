@@ -33,7 +33,6 @@ class UserTagsController < ApplicationController
   end
 
   def create
-
     @output = {
       errors: [],
       saved: []

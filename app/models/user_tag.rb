@@ -26,5 +26,4 @@ class UserTag < ApplicationRecord
     create(value: "oauth:" + auth['provider'] + ":" + auth['uid'],
           uid: uid)
   end
-
 end

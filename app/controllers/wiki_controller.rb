@@ -207,7 +207,7 @@ class WikiController < ApplicationController
               @node.main_image_id = img.id
               img.save
             end
-          rescue
+          rescue StandardError
           end
         end
         @node.save

@@ -48,7 +48,7 @@ module NodeShared
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
                   .where('term_data.name IN (?)', exclude)
-        nodes = nodes - exclude
+        nodes -= exclude
       end
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
@@ -85,7 +85,7 @@ module NodeShared
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
                   .where('term_data.name IN (?)', exclude)
-        nodes = nodes - exclude
+        nodes -= exclude
       end
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
@@ -118,7 +118,7 @@ module NodeShared
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
                   .where('term_data.name IN (?)', exclude)
-        nodes = nodes - exclude
+        nodes -= exclude
       end
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
@@ -151,7 +151,7 @@ module NodeShared
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
                   .where('term_data.name IN (?)', exclude)
-        nodes = nodes - exclude
+        nodes -= exclude
       end
 
       output = ''
@@ -199,7 +199,7 @@ module NodeShared
                                    .where(nid: nids)
                                    .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
                                    .collect(&:nid)
-      nids = nids || []
+      nids ||= []
       items = Node.includes(:tag)
                   .references(:node, :term_data)
                   .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
@@ -224,7 +224,7 @@ module NodeShared
       tagname = Regexp.last_match(2)
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
-      nids = nids || []
+      nids ||= []
       
       a = ActionController::Base.new()
       output = a.render_to_string(template: "map/_peopleLeaflet", 
@@ -259,7 +259,7 @@ module NodeShared
                   .includes(:user_tags)
                   .references(:user_tags)
                   .where('user_tags.value IN (?)', exclude)
-        users = users - exclude
+        users -= exclude
       end
 
       output = ''
@@ -298,7 +298,7 @@ module NodeShared
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
                   .where('term_data.name IN (?)', exclude)
-        nodes = nodes - exclude
+        nodes -= exclude
       end
 
       output = ''
