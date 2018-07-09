@@ -60,14 +60,14 @@ class SearchService
         .includes(:node)
         .references(:node)
         .limit(limit)
-        .where("node.type": ["note", "page"], "node.status": 1)
+        .where("node.type": %w(note page), "node.status": 1)
         .order('node.changed DESC')
         .collect(&:nid)
       Node.find nids
     else
       Node.limit(limit)
         .group(:nid)
-        .where(type: ["note", "page"], status: 1)
+        .where(type: %w(note page), status: 1)
         .order(changed: :desc)
         .where('title LIKE ?', '%' + input + '%')
     end

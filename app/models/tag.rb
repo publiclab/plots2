@@ -256,7 +256,7 @@ class Tag < ApplicationRecord
   end
 
   def followers_who_dont_follow_tags(tags)
-    tag_followers = User.where(id: self.subscriptions.collect(&:user_id))
+    tag_followers = User.where(id: subscriptions.collect(&:user_id))
     uids = tags.collect(&:subscriptions).flatten.collect(&:user_id)
     following_given_tags = User.where(id: uids)
     tag_followers.reject { |user| following_given_tags.include? user  }

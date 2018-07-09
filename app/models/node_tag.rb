@@ -20,7 +20,7 @@ class NodeTag < ApplicationRecord
   end
 
   def new_author_contributor
-    @uid = self.uid
+    @uid = uid
     return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
   end
 
@@ -37,7 +37,7 @@ class NodeTag < ApplicationRecord
   end
 
   def description
-    self.tag.description if self.tag&.description && !self.tag.description.empty?
+    tag.description if tag&.description && !tag.description.empty?
   end
 
 end

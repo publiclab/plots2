@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   end
 
   def new_contributor
-    @uid = self.id
+    @uid = id
     return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
   end
 
@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
   end
 
   def set_token
-    self.token = SecureRandom.uuid if self.token.nil?
+    self.token = SecureRandom.uuid if token.nil?
   end
 
   # this is ridiculous. We need to store uid in this model.
@@ -95,11 +95,11 @@ class User < ActiveRecord::Base
   end
 
   def last
-    self.drupal_user.last
+    drupal_user.last
   end
 
   def node_count
-    self.drupal_user.node_count
+    drupal_user.node_count
   end
 
   def notes
@@ -109,7 +109,7 @@ class User < ActiveRecord::Base
   end
 
   def coauthored_notes
-    coauthored_tag = "with:" + self.name.downcase
+    coauthored_tag = "with:" + name.downcase
     Node.where(status: 1, type: "note")
       .includes(:revision, :tag)
       .references(:term_data, :node_revisions)
@@ -122,7 +122,7 @@ class User < ActiveRecord::Base
     20.times do
       key += [*'a'..'z'].sample
     end
-    self.update_attribute(:reset_key, key)
+    update_attribute(:reset_key, key)
     key
   end
 
@@ -131,19 +131,19 @@ class User < ActiveRecord::Base
   end
 
   def title
-    self.username
+    username
   end
 
   def path
-    "/profile/#{self.username}"
+    "/profile/#{username}"
   end
 
   def lat
-    self.get_value_of_power_tag('lat')
+    get_value_of_power_tag('lat')
   end
 
   def lon
-    self.get_value_of_power_tag('lon')
+    get_value_of_power_tag('lon')
   end
 
   # we can revise/improve this for m2m later...
@@ -165,7 +165,7 @@ class User < ActiveRecord::Base
   end
 
   def is_coauthor(node)
-    self.id == node.author.id || node.has_tag("with:#{self.username}")
+    id == node.author.id || node.has_tag("with:#{username}")
   end
 
   def tags(limit = 10)
@@ -174,7 +174,7 @@ class User < ActiveRecord::Base
 
   def tagnames(limit = 20, defaults = true)
     tagnames = []
-    Node.order('nid DESC').where(type: 'note', status: 1, uid: self.id).limit(limit).each do |node|
+    Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
       tagnames += node.tags.collect(&:name)
     end
     tagnames += ['balloon-mapping', 'spectrometer', 'near-infrared-camera', 'thermal-photography', 'newsletter'] if tagnames.empty? && defaults
@@ -187,18 +187,18 @@ class User < ActiveRecord::Base
 
    # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
-     tids = self.user_tags.where('value LIKE ?' , key + ':%').collect(&:id)
+     tids = user_tags.where('value LIKE ?' , key + ':%').collect(&:id)
      !tids.blank?
   end
 
   def get_value_of_power_tag(key)
-    tname = self.user_tags.where('value LIKE ?' , key + ':%')
+    tname = user_tags.where('value LIKE ?' , key + ':%')
     tvalue = tname.first.name.partition(':').last
     tvalue
   end
 
   def get_last_value_of_power_tag(key)
-    tname = self.user_tags.where('value LIKE ?' , key + ':%')
+    tname = user_tags.where('value LIKE ?' , key + ':%')
     tvalue = tname.last.name.partition(':').last
     tvalue
   end
@@ -239,7 +239,7 @@ class User < ActiveRecord::Base
       (1..span).each do |day|
           time = Time.now.utc.beginning_of_day.to_i
           days[(time-day.days.to_i)] = Node.select(:created)
-            .where(uid: self.uid,
+            .where(uid: uid,
                                                   type: 'note',
                                                   status: 1,
                                                   created: time - (day-1).days.to_i..time - (day - 2).days.to_i)
@@ -386,9 +386,9 @@ class User < ActiveRecord::Base
   end
 
   def send_digest_email
-    top_picks = self.content_followed_in_period(Time.now - 1.week, Time.now)
+    top_picks = content_followed_in_period(Time.now - 1.week, Time.now)
     if top_picks.count > 0
-      SubscriptionMailer.send_digest(self.id, top_picks).deliver_now
+      SubscriptionMailer.send_digest(id, top_picks).deliver_now
     end
   end
 
@@ -400,7 +400,7 @@ class User < ActiveRecord::Base
     end
     unless newtag.blank?
       UserTag.where('value LIKE (?)','digest%').destroy_all
-      UserTag.create(uid: self.id, value: newtag)
+      UserTag.create(uid: id, value: newtag)
     end
   end
 

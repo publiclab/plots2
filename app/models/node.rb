@@ -4,7 +4,7 @@ class UniqueUrlValidator < ActiveModel::Validator
       # record.errors[:base] << "You must provide a title."
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     elsif record.type == 'page'
-      array = ['create', 'edit', 'update', 'delete', 'new']
+      array = %w(create edit update delete new)
       array.each do |x|
         if record.title == x
           record.errors[:base] << "You may not use the title '" + x + "'"
@@ -38,11 +38,11 @@ class Node < ActiveRecord::Base
         nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
           .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
           .collect(&:nid)
-        self.where(nid: nids, status: 1)
+        where(nid: nids, status: 1)
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
-        tnids = Tag.find_nodes_by_type(query, type = ['note', 'page']).collect(&:nid) # include results by tag
-        self.where(nid: nids + tnids, status: 1)
+        tnids = Tag.find_nodes_by_type(query, type = %w(note page)).collect(&:nid) # include results by tag
+        where(nid: nids + tnids, status: 1)
           .order(order_param)
       end
     else
@@ -133,7 +133,7 @@ class Node < ActiveRecord::Base
 
   def set_path_and_slug
     self.path = generate_path if path.blank? && !title.blank?
-    self.slug = self.path.split('/').last unless self.path.blank?
+    self.slug = path.split('/').last unless path.blank?
   end
 
   def set_changed_and_created
@@ -153,7 +153,7 @@ class Node < ActiveRecord::Base
   def totalviews
     # this doesn't filter out duplicate ip addresses as the line below does:
     # self.views + self.legacy_views
-    self.impressionist_count(filter: :ip_address) + self.legacy_views
+    impressionist_count(filter: :ip_address) + legacy_views
   end
 
   def self.weekly_tallies(type = 'note', span = 52, time = Time.now)
@@ -216,11 +216,11 @@ class Node < ActiveRecord::Base
   end
 
   def answered
-    self.answers&.length&.positive?
+    answers&.length&.positive?
   end
 
   def has_accepted_answers
-    self.answers.where(accepted: true).count.positive?
+    answers.where(accepted: true).count.positive?
   end
 
   # users who like this node
@@ -731,7 +731,7 @@ class Node < ActiveRecord::Base
                                  nid: id)
           if node_tag.save
             saved = true
-            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty? || self.status == 3
+            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty? || status == 3
           else
             saved = false
             tag.destroy
@@ -777,10 +777,10 @@ class Node < ActiveRecord::Base
   # with node.questions
   def questions
     # override with a tag like `questions:h2s`
-    if self.has_power_tag('questions')
-      tagname = self.power_tag('questions')
+    if has_power_tag('questions')
+      tagname = power_tag('questions')
     else
-      tagname = self.slug_from_path
+      tagname = slug_from_path
     end
     Node.where(status: 1, type: 'note')
         .includes(:revision, :tag)
@@ -800,10 +800,10 @@ class Node < ActiveRecord::Base
   # with node.activities
   def activities
     # override with a tag like `activities:h2s`
-    if self.has_power_tag('activities')
-      tagname = self.power_tag('activities')
+    if has_power_tag('activities')
+      tagname = power_tag('activities')
     else
-      tagname = self.slug_from_path
+      tagname = slug_from_path
     end
     Node.activities(tagname)
   end
@@ -820,10 +820,10 @@ class Node < ActiveRecord::Base
   # with node.upgrades
   def upgrades
     # override with a tag like `upgrades:h2s`
-    if self.has_power_tag('upgrades')
+    if has_power_tag('upgrades')
       tagname = node.power_tag('upgrades')
     else
-      tagname = self.slug_from_path
+      tagname = slug_from_path
     end
     Node.upgrades(tagname)
   end
@@ -880,11 +880,11 @@ class Node < ActiveRecord::Base
   end
 
   def is_liked_by(user)
-     !NodeSelection.where(user_id: user.uid, nid: self.id , liking: true).empty?
+     !NodeSelection.where(user_id: user.uid, nid: id , liking: true).empty?
   end
 
   def toggle_like(user)
-    nodes = NodeSelection.where(nid: self.id , liking: true).count
+    nodes = NodeSelection.where(nid: id , liking: true).count
     if is_liked_by(user)
       self.cached_likes = nodes-1
     else
