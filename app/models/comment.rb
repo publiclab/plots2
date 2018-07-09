@@ -5,7 +5,7 @@ class Comment < ApplicationRecord
   # dependent: :destroy, counter_cache: true
   belongs_to :drupal_user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
-  has_many :likes, :as => :likeable
+  has_many :likes, as: :likeable
 
   validates :comment, presence: true
 
@@ -123,18 +123,14 @@ class Comment < ApplicationRecord
 
   def notify_users(uids, current_user)
     DrupalUser.where('uid IN (?)', uids).each do |user|
-      if user.uid != current_user.uid
-        CommentMailer.notify(user.user, self).deliver_now
-      end
+      CommentMailer.notify(user.user, self).deliver_now if user.uid != current_user.uid
     end
   end
 
   # email all users in this thread
   # plus all who've starred it
   def notify(current_user)
-    if parent.uid != current_user.uid
-      CommentMailer.notify_note_author(parent.author, self).deliver_now
-    end
+    CommentMailer.notify_note_author(parent.author, self).deliver_now if parent.uid != current_user.uid
 
     notify_callout_users
 
@@ -148,9 +144,7 @@ class Comment < ApplicationRecord
 
   def answer_comment_notify(current_user)
     # notify answer author
-    if answer.uid != current_user.uid
-      CommentMailer.notify_answer_author(answer.author, self).deliver_now
-    end
+    CommentMailer.notify_answer_author(answer.author, self).deliver_now if answer.uid != current_user.uid
 
     notify_callout_users
 

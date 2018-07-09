@@ -106,9 +106,7 @@ class WikiController < ApplicationController
       flash[:warning] = "This page is <a href='/wiki/power-tags#Locking'>locked</a>, and only <a href='/wiki/moderators'>moderators</a> can edit it."
       redirect_to @node.path
     end
-    if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
-      flash.now[:warning] = I18n.t('wiki_controller.someone_clicked_edit_5_minutes_ago')
-    end
+    flash.now[:warning] = I18n.t('wiki_controller.someone_clicked_edit_5_minutes_ago') if ((Time.now.to_i - @node.latest.timestamp) < 5.minutes.to_i) && @node.latest.author.uid != current_user.uid
     # we could do this...
     # @node.locked = true
     # @node.save
@@ -162,9 +160,7 @@ class WikiController < ApplicationController
         end
         redirect_to @node.path
       else
-        if params[:main_image] && Image.find_by(id: params[:main_image])
-          @main_image = Image.find_by(id: params[:main_image]).path
-        end
+        @main_image = Image.find_by(id: params[:main_image]).path if params[:main_image] && Image.find_by(id: params[:main_image])
         if params[:n] && !params[:body] # use another node body as a template
           node = Node.find(params[:n])
           params[:body] = node.body if node
@@ -207,7 +203,6 @@ class WikiController < ApplicationController
               @node.main_image_id = img.id
               img.save
             end
-          rescue StandardError
           end
         end
         @node.save

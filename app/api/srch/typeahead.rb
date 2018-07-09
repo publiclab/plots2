@@ -20,9 +20,7 @@ module Srch
       get :all do
         sresult = TagList.new
         sparms = SearchRequest.fromRequest(params)
-        if sparms.valid?
-          sresult = TypeaheadService.new.search_all(params[:srchString], TYPEAHEAD_LIMIT)
-        end
+        sresult = TypeaheadService.new.search_all(params[:srchString], TYPEAHEAD_LIMIT) if sparms.valid?
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
       end
@@ -39,9 +37,7 @@ module Srch
       get :profiles do
         sresult = TagList.new
         sparms = SearchRequest.fromRequest(params)
-        if sparms.valid?
-          sresult = TypeaheadService.new.search_profiles(params[:srchString], TYPEAHEAD_LIMIT)
-        end
+        sresult = TypeaheadService.new.search_profiles(params[:srchString], TYPEAHEAD_LIMIT) if sparms.valid?
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
       end
@@ -58,9 +54,7 @@ module Srch
       get :notes do
         sresult = TagList.new
         sparms = SearchRequest.fromRequest(params)
-        if sparms.valid?
-          sresult = TypeaheadService.new.search_notes(params[:srchString], TYPEAHEAD_LIMIT)
-        end
+        sresult = TypeaheadService.new.search_notes(params[:srchString], TYPEAHEAD_LIMIT) if sparms.valid?
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
       end
@@ -77,9 +71,7 @@ module Srch
       get :questions do
         sresult = TagList.new
         sparms = SearchRequest.fromRequest(params)
-        if sparms.valid?
-          sresult = TypeaheadService.new.search_questions(params[:srchString], TYPEAHEAD_LIMIT)
-        end
+        sresult = TypeaheadService.new.search_questions(params[:srchString], TYPEAHEAD_LIMIT) if sparms.valid?
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
       end
@@ -96,9 +88,7 @@ module Srch
       get :tags do
         sresult = TagList.new
         sparms = SearchRequest.fromRequest(params)
-        if sparms.valid?
-          TypeaheadService.new.search_tags(params[:srchString], TYPEAHEAD_LIMIT)
-        end
+        TypeaheadService.new.search_tags(params[:srchString], TYPEAHEAD_LIMIT) if sparms.valid?
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
       end
@@ -115,9 +105,7 @@ module Srch
       get :comments do
         sresult = TagList.new
         sparms = SearchRequest.fromRequest(params)
-        if sparms.valid?
-          TypeaheadService.new.search_comments(params[:srchString], TYPEAHEAD_LIMIT)
-        end
+        TypeaheadService.new.search_comments(params[:srchString], TYPEAHEAD_LIMIT) if sparms.valid?
         sresult.srchParams = sparms
         present sresult, with: TagList::Entity
       end

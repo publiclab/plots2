@@ -1,5 +1,5 @@
-xml.instruct! :xml, :version => "1.0"
-xml.rss :version => "2.0" do
+xml.instruct! :xml, version: "1.0"
+xml.rss version: "2.0" do
   xml.channel do
     xml.title "Research by " + params[:author]
     xml.description "Open source environmental science research at Public Lab"

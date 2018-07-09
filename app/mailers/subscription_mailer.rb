@@ -41,9 +41,7 @@ class SubscriptionMailer < ActionMailer::Base
     final_users_to_email = User.find(final_users_ids)
     recipients = []
     final_users_to_email.each do |user|
-      unless user.id == tagging_user.id
-        recipients << user.email
-      end
+      recipients << user.email unless user.id == tagging_user.id
     end
     @footer = feature('email-footer')
     mail(

@@ -1,5 +1,6 @@
 class Answer < ApplicationRecord
-  include NodeShared, CommentsShared # common methods for node-like and comment-like models
+  include CommentsShared
+  include NodeShared # common methods for node-like and comment-like models
 
   belongs_to :node, foreign_key: 'nid'
   belongs_to :drupal_user, foreign_key: 'uid'
@@ -30,16 +31,12 @@ class Answer < ApplicationRecord
 
   def answer_notify(current_user)
     # notify question author
-    if current_user.uid != node.author.uid
-      AnswerMailer.notify_question_author(node.author, self).deliver_now
-    end
+    AnswerMailer.notify_question_author(node.author, self).deliver_now if current_user.uid != node.author.uid
     users_with_everything_tag = Tag.followers('everything')
     uids = (node.answers.collect(&:uid) + node.likers.collect(&:uid) + users_with_everything_tag.collect(&:uid)).uniq
     # notify other answer authors and users who liked the question
     DrupalUser.where('uid IN (?)', uids).each do |user|
-      if (user.uid != current_user.uid) && (user.uid != node.author.uid)
-        AnswerMailer.notify_answer_likers_author(user.user, self).deliver_now
-      end
+      AnswerMailer.notify_answer_likers_author(user.user, self).deliver_now if (user.uid != current_user.uid) && (user.uid != node.author.uid)
     end
   end
 end
