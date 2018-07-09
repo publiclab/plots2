@@ -378,7 +378,7 @@ class WikiController < ApplicationController
       # during round trip, strings are getting "\r\n" newlines converted to "\n",
       # so we're ensuring they remain "\r\n"; this may vary based on platform, unfortunately
       before = params[:before].gsub("\n", "\r\n")
-      after  = params[:after]# .gsub( "\n", "\r\n")
+      after  = params[:after] # .gsub( "\n", "\r\n")
       if output = @node.replace(before, after, current_user)
         flash[:notice] = 'New revision created with your additions.' unless request.xhr?
       else

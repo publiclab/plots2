@@ -1,15 +1,15 @@
 xml.instruct! :xml, :version => "1.0"
 xml.rss :version => "2.0" do
   xml.channel do
-    xml.title "Research by "+params[:author]
+    xml.title "Research by " + params[:author]
     xml.description "Open source environmental science research at Public Lab"
-    xml.link "https://#{request.host}/feed/"+params[:author]+".rss"
+    xml.link "https://#{request.host}/feed/" + params[:author] + ".rss"
 
     @notes.each do |node|
       newline = '&#13;&#10;'
 
       body = node.body
-      body = "<img src='https://#{request.host}"+node.main_image.path(:default)+"'/><br />"+newline+node.body if node.main_image
+      body = "<img src='https://#{request.host}" + node.main_image.path(:default) + "'/><br />" + newline + node.body if node.main_image
 
       xml.item do
         xml.title       node.title

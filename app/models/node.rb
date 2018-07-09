@@ -67,7 +67,7 @@ class Node < ActiveRecord::Base
   has_many :tag, through: :node_tag
   # these override the above... have to do it manually:
   # has_many :tag, :through => :drupal_node_tag
-  has_many :comments, foreign_key: 'nid' , dependent: :destroy # re-enable in Rails 5
+  has_many :comments, foreign_key: 'nid', dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_type_map, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_field_mappers, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :drupal_content_field_map_editor, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
@@ -175,7 +175,7 @@ class Node < ActiveRecord::Base
     while week >= 1
       # initialising month variable with the month of the starting day
       # of the week
-      month = (time - (week*7 - 1).days).strftime('%m')
+      month = (time - (week * 7 - 1).days).strftime('%m')
 
       # Now fetching the weekly data of notes or wikis
       month = month.to_i
@@ -880,19 +880,19 @@ class Node < ActiveRecord::Base
   end
 
   def is_liked_by(user)
-    !NodeSelection.where(user_id: user.uid, nid: id , liking: true).empty?
+    !NodeSelection.where(user_id: user.uid, nid: id, liking: true).empty?
   end
 
   def toggle_like(user)
-    nodes = NodeSelection.where(nid: id , liking: true).count
+    nodes = NodeSelection.where(nid: id, liking: true).count
     if is_liked_by(user)
-      self.cached_likes = nodes-1
+      self.cached_likes = nodes - 1
     else
-      self.cached_likes = nodes+1
+      self.cached_likes = nodes + 1
     end
   end
 
-  def self.like(nid , user)
+  def self.like(nid, user)
     # scope like variable outside the transaction
     like = nil
     count = nil
@@ -915,7 +915,7 @@ class Node < ActiveRecord::Base
     count
   end
 
-  def self.unlike(nid , user)
+  def self.unlike(nid, user)
     like = nil
     count = nil
 
@@ -941,6 +941,6 @@ class Node < ActiveRecord::Base
 
   def draft_url
     @token = slug.split('token:').last
-    url = 'https://publiclab.org/notes/show/' + nid.to_s + '/'+ @token.to_s
+    url = 'https://publiclab.org/notes/show/' + nid.to_s + '/' + @token.to_s
   end
 end

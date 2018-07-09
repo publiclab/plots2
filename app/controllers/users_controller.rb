@@ -50,8 +50,8 @@ class UsersController < ApplicationController
           session[:openid_return_to] = nil
           redirect_to return_to
         else
-          flash[:notice] = I18n.t('users_controller.successful_updated_profile')+"<a href='/dashboard'>"+I18n.t('users_controller.return_dashboard')+" &raquo;</a>"
-          return redirect_to "/profile/"+@user.username
+          flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/dashboard'>" + I18n.t('users_controller.return_dashboard') + " &raquo;</a>"
+          return redirect_to "/profile/" + @user.username
         end
       else
         render :template => 'users/edit'
@@ -70,7 +70,7 @@ class UsersController < ApplicationController
       render :template => "users/edit"
     else
       flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
-      redirect_to "/profile/"+@user.name
+      redirect_to "/profile/" + @user.name
     end
   end
 
@@ -140,12 +140,12 @@ class UsersController < ApplicationController
       @questions = @user.user.questions
                              .order('node.nid DESC')
                              .paginate(:page => params[:page], :per_page => 24)
-      @likes = (@user.liked_notes.includes(%i(tag comments))+@user.liked_pages)
+      @likes = (@user.liked_notes.includes(%i(tag comments)) + @user.liked_pages)
                      .paginate(page: params[:page], per_page: 24)
       questions = Node.questions
                             .where(status: 1)
                             .order('node.nid DESC')
-      ans_ques = questions.select{ |q| q.answers.collect(&:author).include?(@user) }
+      ans_ques = questions.select { |q| q.answers.collect(&:author).include?(@user) }
       @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
       wikis = Revision.order("nid DESC")
                       .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
@@ -185,7 +185,7 @@ class UsersController < ApplicationController
 
   def likes
     @user = DrupalUser.find_by(name: params[:id])
-    @title = "Liked by "+@user.name
+    @title = "Liked by " + @user.name
     @notes = @user.liked_notes
                   .includes(%i(tag comments))
                   .paginate(page: params[:page], per_page: 24)

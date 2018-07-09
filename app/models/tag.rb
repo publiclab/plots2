@@ -54,12 +54,12 @@ class Tag < ApplicationRecord
   def self.contributors(tagname)
     tag = Tag.includes(:node).where(name: tagname).first
     return [] if tag.nil?
-    nodes = tag.node.includes(:revision, :comments,:answers).where(status: 1)
+    nodes = tag.node.includes(:revision, :comments, :answers).where(status: 1)
     uids = nodes.collect(&:uid)
     nodes.each do |n|
-      uids+=n.comments.collect(&:uid)
-      uids+=n.answers.collect(&:uid)
-      uids+=n.revision.collect(&:uid)
+      uids += n.comments.collect(&:uid)
+      uids += n.answers.collect(&:uid)
+      uids += n.revision.collect(&:uid)
     end
     uids = uids.uniq
     User.where(id: uids)
@@ -191,7 +191,7 @@ class Tag < ApplicationRecord
     while week >= 1
       # initialising month variable with the month of the starting day
       # of the week
-      month = (time - (week*7 - 1).days).strftime('%m')
+      month = (time - (week * 7 - 1).days).strftime('%m')
 
       # Now fetching the weekly data of notes or wikis
       month = month.to_i
@@ -262,7 +262,7 @@ class Tag < ApplicationRecord
     tag_followers.reject { |user| following_given_tags.include? user }
   end
 
-  def self.trending(limit = 5 , start_date = DateTime.now - 1.month , end_date = DateTime.now)
+  def self.trending(limit = 5, start_date = DateTime.now - 1.month, end_date = DateTime.now)
     Tag.joins(:node_tag, :node)
        .select('node.nid, node.created, node.status, term_data.*, community_tags.*')
        .where('node.status = ?', 1)
@@ -278,7 +278,7 @@ class Tag < ApplicationRecord
     if tagname[-1..-1] == '*'
       @wildcard = true
       Node.includes(:node_tag, :tag)
-          .where('term_data.name LIKE(?) OR term_data.parent LIKE (?)', tagname[0..-2]+'%', tagname[0..-2]+'%')
+          .where('term_data.name LIKE(?) OR term_data.parent LIKE (?)', tagname[0..-2] + '%', tagname[0..-2] + '%')
           .references(:term_data, :node_tag)
           .where('node.uid = ?', user_id)
           .order('node.nid DESC')

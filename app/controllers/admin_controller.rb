@@ -66,7 +66,7 @@ class AdminController < ApplicationController
         # address was submitted. find the username(s) and return.
         @address = params[:address]
         @users = User.where(email: params[:address])
-                 .where(status: [1,4])
+                 .where(status: [1, 4])
       end
     else
       # unauthorized. instead of return ugly 403, just send somewhere else

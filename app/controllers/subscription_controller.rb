@@ -37,12 +37,12 @@ class SubscriptionController < ApplicationController
         if tag.nil?
           # if the tag doesn't exist, we should create it!
           # this could fail validations; error out if so...
-          tag = Tag.new({
+          tag = Tag.new(
             :vid => 3, # vocabulary id
             :name => params[:name],
             :description => "",
             :weight => 0
-          })
+          )
           begin
             tag.save!
           rescue ActiveRecord::RecordInvalid
@@ -57,7 +57,7 @@ class SubscriptionController < ApplicationController
           flash[:error] = "You are already subscribed to '#{params[:name]}'"
           redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
         else
-          if set_following(true,params[:type],tag.tid)
+          if set_following(true, params[:type], tag.tid)
             respond_with do |format|
               format.html do
                 if request.xhr?
@@ -78,7 +78,7 @@ class SubscriptionController < ApplicationController
       end
     else
       flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
-      redirect_to "/tag/"+params[:name]
+      redirect_to "/tag/" + params[:name]
     end
   end
 
@@ -92,7 +92,7 @@ class SubscriptionController < ApplicationController
       flash[:error] = "You are not subscribed to '#{params[:name]}'"
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
     else
-      if !set_following(false,params[:type],id) # should return false if result is that following == false
+      if !set_following(false, params[:type], id) # should return false if result is that following == false
         respond_with do |format|
           format.html do
             if request.xhr?
@@ -120,7 +120,7 @@ class SubscriptionController < ApplicationController
 
   private
 
-  def set_following(value,type,id)
+  def set_following(value, type, id)
     # add swtich statement for different types: tag, node, user
     if type == 'tag' && Tag.find_by(tid: id)
       # Create the entry if it isn't already created.

@@ -27,11 +27,11 @@ class LikeController < ApplicationController
 
   # for the current user, register as liking the given node
   def create
-    render json: Node.like(params[:id] , current_user)
+    render json: Node.like(params[:id], current_user)
   end
 
   # for the current user, remove the like from the given node
   def delete
-    render json: Node.unlike(params[:id] , current_user)
+    render json: Node.unlike(params[:id], current_user)
   end
 end

@@ -40,7 +40,7 @@ class Comment < ApplicationRecord
     while week >= 1
       # initialising month variable with the month of the starting day
       # of the week
-      month = (time - (week*7 - 1).days).strftime('%m')
+      month = (time - (week * 7 - 1).days).strftime('%m')
 
       month = month.to_i
       # Now fetching comments per week
@@ -192,7 +192,7 @@ class Comment < ApplicationRecord
 
   def user_reactions_map
     likes_map = likes.where.not(emoji_type: nil).includes(:user).group_by(&:emoji_type)
-    user_like_map={}
+    user_like_map = {}
     likes_map.each do |reaction, likes|
       users = []
       likes.each do |like|
@@ -200,7 +200,7 @@ class Comment < ApplicationRecord
       end
 
       emoji_type = reaction.underscore.humanize.downcase
-      users_string = (users.length > 1 ? users[0..-2].join(", ")+" and "+users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
+      users_string = (users.length > 1 ? users[0..-2].join(", ") + " and " + users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
       user_like_map[reaction] = users_string
     end
     user_like_map

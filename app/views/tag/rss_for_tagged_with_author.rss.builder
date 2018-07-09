@@ -2,7 +2,7 @@ xml.rss :version => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
   xml.channel do
     xml.title "Research tagged '#{params[:tagname]}' by '#{params[:authorname]}'"
     xml.description "Open source environmental science research at Public Lab"
-    xml.link "https://#{request.host}/feed/tag/"+params[:tagname]+"/author/"+params[:authorname]+".rss"
+    xml.link "https://#{request.host}/feed/tag/" + params[:tagname] + "/author/" + params[:authorname] + ".rss"
 
     @notes.each do |node|
       body = node.body

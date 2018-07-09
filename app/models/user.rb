@@ -113,7 +113,7 @@ class User < ActiveRecord::Base
     Node.where(status: 1, type: "note")
       .includes(:revision, :tag)
       .references(:term_data, :node_revisions)
-      .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s , coauthored_tag.to_s)
+      .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s, coauthored_tag.to_s)
   end
 
   def generate_reset_key
@@ -187,18 +187,18 @@ class User < ActiveRecord::Base
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
-    tids = user_tags.where('value LIKE ?' , key + ':%').collect(&:id)
+    tids = user_tags.where('value LIKE ?', key + ':%').collect(&:id)
     !tids.blank?
   end
 
   def get_value_of_power_tag(key)
-    tname = user_tags.where('value LIKE ?' , key + ':%')
+    tname = user_tags.where('value LIKE ?', key + ':%')
     tvalue = tname.first.name.partition(':').last
     tvalue
   end
 
   def get_last_value_of_power_tag(key)
-    tname = user_tags.where('value LIKE ?' , key + ':%')
+    tname = user_tags.where('value LIKE ?', key + ':%')
     tvalue = tname.last.name.partition(':').last
     tvalue
   end
@@ -238,11 +238,11 @@ class User < ActiveRecord::Base
     days = {}
     (1..span).each do |day|
       time = Time.now.utc.beginning_of_day.to_i
-      days[(time-day.days.to_i)] = Node.select(:created)
+      days[(time - day.days.to_i)] = Node.select(:created)
         .where(uid: uid,
                                               type: 'note',
                                               status: 1,
-                                              created: time - (day-1).days.to_i..time - (day - 2).days.to_i)
+                                              created: time - (day - 1).days.to_i..time - (day - 2).days.to_i)
         .count
     end
     days
@@ -393,13 +393,13 @@ class User < ActiveRecord::Base
   end
 
   def customize_digest(type)
-    if type==0
+    if type == 0
       newtag = 'digest:daily'
-    elsif type==1
+    elsif type == 1
       newtag = 'digest:weekly'
     end
     unless newtag.blank?
-      UserTag.where('value LIKE (?)','digest%').destroy_all
+      UserTag.where('value LIKE (?)', 'digest%').destroy_all
       UserTag.create(uid: id, value: newtag)
     end
   end
@@ -416,13 +416,13 @@ class User < ActiveRecord::Base
   end
 
   # all uses who've posted a node, comment, or answer in the given period
-  def self.contributor_count_for(start_time,end_time)
+  def self.contributor_count_for(start_time, end_time)
     notes = Node.where(type: 'note', status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
     answers = Answer.where(created_at: start_time..end_time).pluck(:uid)
     questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
     comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
     revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-    contributors = (notes+answers+questions+comments+revisions).compact.uniq.length
+    contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
     contributors
   end
 
@@ -430,8 +430,8 @@ class User < ActiveRecord::Base
     # email prefix is part of email before @ with periods replaced with underscores
     # generate a 2 digit alphanumeric number and append it at the end of email-prefix
     charset = Array('A'..'Z') + Array('a'..'z') + Array(0..9)
-    email_prefix = auth["info"]["email"].tr('.','_').split('@')[0]
-    email_prefix = auth["info"]["email"].tr('.','_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
+    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
+    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
     puts(auth)
     create! do |user|
       user.username = email_prefix
