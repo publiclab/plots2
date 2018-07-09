@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_no_user, :only => [:new]
-  before_action :require_user, :only => [:edit, :update]
+  before_action :require_user, :only => %i(edit update)
   before_action :set_user, only: %i(info followed following followers)
 
   def new
@@ -50,8 +50,8 @@ class UsersController < ApplicationController
           session[:openid_return_to] = nil
           redirect_to return_to
         else
-          flash[:notice] = I18n.t('users_controller.successful_updated_profile')+"<a href='/dashboard'>"+I18n.t('users_controller.return_dashboard')+" &raquo;</a>"
-          return redirect_to "/profile/"+@user.username
+          flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/dashboard'>" + I18n.t('users_controller.return_dashboard') + " &raquo;</a>"
+          return redirect_to "/profile/" + @user.username
         end
       else
         render :template => 'users/edit'
@@ -66,11 +66,11 @@ class UsersController < ApplicationController
     else
       @user = current_user
     end
-    if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
+    if current_user && current_user.uid == @user.uid # || current_user.role == "admin"
       render :template => "users/edit"
     else
       flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
-      redirect_to "/profile/"+@user.name
+      redirect_to "/profile/" + @user.name
     end
   end
 
@@ -140,12 +140,12 @@ class UsersController < ApplicationController
       @questions = @user.user.questions
                              .order('node.nid DESC')
                              .paginate(:page => params[:page], :per_page => 24)
-      @likes = (@user.liked_notes.includes([:tag, :comments])+@user.liked_pages)
+      @likes = (@user.liked_notes.includes(%i(tag comments)) + @user.liked_pages)
                      .paginate(page: params[:page], per_page: 24)
       questions = Node.questions
                             .where(status: 1)
                             .order('node.nid DESC')
-      ans_ques = questions.select{|q| q.answers.collect(&:author).include?(@user)}
+      ans_ques = questions.select { |q| q.answers.collect(&:author).include?(@user) }
       @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
       wikis = Revision.order("nid DESC")
                       .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
@@ -185,9 +185,9 @@ class UsersController < ApplicationController
 
   def likes
     @user = DrupalUser.find_by(name: params[:id])
-    @title = "Liked by "+@user.name
+    @title = "Liked by " + @user.name
     @notes = @user.liked_notes
-                  .includes([:tag, :comments])
+                  .includes(%i(tag comments))
                   .paginate(page: params[:page], per_page: 24)
     @wikis = @user.liked_pages
     @tagnames = []
@@ -216,11 +216,11 @@ class UsersController < ApplicationController
   end
 
   def reset
-    if params[:key] && params[:key] != nil
+    if params[:key] && !params[:key].nil?
       @user = User.find_by(reset_key: params[:key])
       if @user
         if params[:user] && params[:user][:password]
-          if @user.username.downcase == params[:user][:username].downcase
+          if @user.username.casecmp(params[:user][:username].downcase).zero?
             @user.password = params[:user][:password]
             @user.password_confirmation = params[:user][:password]
             @user.reset_key = nil
@@ -231,7 +231,7 @@ class UsersController < ApplicationController
               flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
               redirect_to "/"
             end
-	  else
+          else
             flash[:error] = I18n.t('users_controller.password_change_failed')
           end
         else

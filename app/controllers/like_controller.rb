@@ -2,7 +2,7 @@ class LikeController < ApplicationController
   respond_to :html, :xml, :json
   before_action :require_user, only: %i(create delete)
 
-  #list all recent likes
+  # list all recent likes
   def index
     @paginated = true
     @likes = NodeSelection.all.reverse.paginate(page: params[:page])
@@ -20,18 +20,18 @@ class LikeController < ApplicationController
     result = if result.nil?
                false
              else
-      result.liking
+               result.liking
     end
     render json: result
   end
 
   # for the current user, register as liking the given node
   def create
-    render json: Node.like(params[:id] , current_user)
+    render json: Node.like(params[:id], current_user)
   end
 
   # for the current user, remove the like from the given node
   def delete
-    render json: Node.unlike(params[:id] , current_user)
+    render json: Node.unlike(params[:id], current_user)
   end
 end

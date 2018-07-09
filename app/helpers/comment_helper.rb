@@ -8,7 +8,7 @@ module CommentHelper
       @comment.notify user
       return @comment
     else
-      raise CommentError.new()
+      raise CommentError
     end
   end
 end

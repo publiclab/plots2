@@ -167,5 +167,4 @@ class HomeController < ApplicationController
         activity
       end
   end
-
 end

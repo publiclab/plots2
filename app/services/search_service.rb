@@ -60,14 +60,14 @@ class SearchService
         .includes(:node)
         .references(:node)
         .limit(limit)
-        .where("node.type": ["note", "page"], "node.status": 1)
+        .where("node.type": %w(note page), "node.status": 1)
         .order('node.changed DESC')
         .collect(&:nid)
       Node.find nids
     else
       Node.limit(limit)
         .group(:nid)
-        .where(type: ["note", "page"], status: 1)
+        .where(type: %w(note page), status: 1)
         .order(changed: :desc)
         .where('title LIKE ?', '%' + input + '%')
     end
@@ -234,20 +234,20 @@ class SearchService
     sresult
   end
 
-  #GET X number of latest people/contributors
+  # GET X number of latest people/contributors
   # X = srchString
   def recentPeople(_srchString, tagName = nil)
     sresult = DocList.new
     nodes = Node.all.order("changed DESC").limit(100).distinct
     users = []
     nodes.each do |node|
-     if node.author.status != 0
-       if tagName.blank?
-         users << node.author.user
-       else
-         users << node.author.user if node.author.user.has_tag(tagName)
-       end
-     end
+      if node.author.status != 0
+        if tagName.blank?
+          users << node.author.user
+        else
+          users << node.author.user if node.author.user.has_tag(tagName)
+        end
+      end
     end
     users = users.uniq
     users.each do |user|
@@ -261,5 +261,4 @@ class SearchService
     end
     sresult
   end
-
 end

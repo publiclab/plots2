@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
                  Node.questions
                    .joins(:revision)
                else
-        Node.research_notes.joins(:revision).order('node.nid DESC').paginate(page: params[:page])
+                 Node.research_notes.joins(:revision).order('node.nid DESC').paginate(page: params[:page])
       end
 
       @notes = @notes.where('node.nid != (?)', @node.nid) if @node
@@ -163,16 +163,16 @@ class ApplicationController < ActionController::Base
               # finding node for node comments
               @comment.node
             else
-      # finding node for answer comments
-      @comment.answer.node
+              # finding node for answer comments
+              @comment.answer.node
     end
 
     @path = if params[:type] && params[:type] == 'question'
               # questions path
               @node.path(:question)
             else
-      # notes path
-      @node.path
+              # notes path
+              @node.path
     end
   end
 

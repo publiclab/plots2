@@ -14,31 +14,31 @@ class TagController < ApplicationController
     @order_type = params[:order] == "desc" ? "asc" : "desc"
 
     if params[:search]
-    keyword = params[:search]
-    @tags = Tag.joins(:node_tag, :node)
-      .select('node.nid, node.status, term_data.*, community_tags.*')
-      .where('node.status = ?', 1)
-      .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-      .where("name LIKE :keyword", keyword: "%#{keyword}%")
-      .group(:name)
-      .order(order_string)
-      .paginate(page: params[:page], per_page: 24)
+      keyword = params[:search]
+      @tags = Tag.joins(:node_tag, :node)
+        .select('node.nid, node.status, term_data.*, community_tags.*')
+        .where('node.status = ?', 1)
+        .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .where("name LIKE :keyword", keyword: "%#{keyword}%")
+        .group(:name)
+        .order(order_string)
+        .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "uses"
-    @tags = Tag.joins(:node_tag, :node)
-      .select('node.nid, node.status, term_data.*, community_tags.*')
-      .where('node.status = ?', 1)
-      .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-      .group(:name)
-      .order(order_string)
-      .paginate(page: params[:page], per_page: 24)
+      @tags = Tag.joins(:node_tag, :node)
+        .select('node.nid, node.status, term_data.*, community_tags.*')
+        .where('node.status = ?', 1)
+        .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .group(:name)
+        .order(order_string)
+        .paginate(page: params[:page], per_page: 24)
     elsif @toggle == "name"
-    @tags = Tag.joins(:node_tag, :node)
-      .select('node.nid, node.status, term_data.*, community_tags.*')
-      .where('node.status = ?', 1)
-      .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
-      .group(:name)
-      .order(order_string)
-      .paginate(page: params[:page], per_page: 24)
+      @tags = Tag.joins(:node_tag, :node)
+        .select('node.nid, node.status, term_data.*, community_tags.*')
+        .where('node.status = ?', 1)
+        .where('community_tags.date > ?', (DateTime.now - 1.month).to_i)
+        .group(:name)
+        .order(order_string)
+        .paginate(page: params[:page], per_page: 24)
     else
       tags = Tag.joins(:node_tag, :node)
         .select('node.nid, node.status, term_data.*, community_tags.*')
@@ -65,7 +65,7 @@ class TagController < ApplicationController
   def show
     # try for a matching /wiki/_TAGNAME_ or /_TAGNAME_
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
-    @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
+    @wiki = Node.find(@wiki.power_tag('redirect')) if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
 
     default_type = if params[:id].match?('question:')
                      'questions'
@@ -163,7 +163,7 @@ class TagController < ApplicationController
   def show_for_author
     # try for a matching /wiki/_TAGNAME_ or /_TAGNAME_
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
-    @wiki = Node.find(@wiki.power_tag('redirect'))  if @wiki&.has_power_tag('redirect')
+    @wiki = Node.find(@wiki.power_tag('redirect')) if @wiki&.has_power_tag('redirect')
 
     default_type = if params[:id].match?('question:')
                      'questions'
@@ -203,7 +203,7 @@ class TagController < ApplicationController
     @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
     @wikis = nodes if @node_type == 'wiki'
     @nodes = nodes if @node_type == 'maps'
-    @title = "'" + @tagname.to_s + "' by " +  params[:author]
+    @title = "'" + @tagname.to_s + "' by " + params[:author]
     # the following could be refactored into a Tag.contributor_count method:
     notes = Node.where(status: 1, type: 'note')
       .select('node.nid, node.type, node.uid, node.status, term_data.*, community_tags.*')
@@ -313,7 +313,6 @@ class TagController < ApplicationController
       else
         @output[:errors] << node.can_tag(tagname, current_user, true)
       end
-
     end
     respond_with do |format|
       format.html do

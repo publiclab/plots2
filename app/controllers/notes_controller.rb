@@ -17,7 +17,7 @@ class NotesController < ApplicationController
                          LEFT OUTER JOIN community_tags ON community_tags.nid = node.nid
                          LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
       .select('*, max(node_revisions.timestamp)')
-      .where(status: 1, type:%w(page place))
+      .where(status: 1, type: %w(page place))
       .includes(:revision, :tag)
       .references(:term_data)
       .where('term_data.name = ?', 'chapter')
@@ -25,7 +25,7 @@ class NotesController < ApplicationController
       .order(Arel.sql('max(node_revisions.timestamp) DESC, node.nid'))
       .paginate(page: params[:page], per_page: 24)
 
-    #Arel.sql is used to remove a Deprecation warning while updating to rails 5.2.
+    # Arel.sql is used to remove a Deprecation warning while updating to rails 5.2.
 
     render template: 'notes/tools_places'
   end
@@ -116,15 +116,15 @@ class NotesController < ApplicationController
         redirect_to '/'
         return
       elsif params[:draft] == "true"
-         @node.draft
-         @token = SecureRandom.urlsafe_base64(16, false)
-         @node.slug = @node.slug + " token:" + @token
-         @node.save!
+        @node.draft
+        @token = SecureRandom.urlsafe_base64(16, false)
+        @node.slug = @node.slug + " token:" + @token
+        @node.save!
       end
 
       if saved
         params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
-            @node.add_tag(tagname.strip, current_user)
+          @node.add_tag(tagname.strip, current_user)
         end
         if params[:event] == 'on'
           @node.add_tag('event', current_user)
@@ -276,8 +276,8 @@ class NotesController < ApplicationController
           end
         end
       else
-      flash[:error] = I18n.t('notes_controller.more_than_one_contributor')
-      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+        flash[:error] = I18n.t('notes_controller.more_than_one_contributor')
+        redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
     end
     else
       prompt_login
@@ -409,5 +409,4 @@ class NotesController < ApplicationController
       redirect_to '/'
     end
   end
-
 end

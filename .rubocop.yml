@@ -15,6 +15,7 @@ AllCops:
     - 'log/*'
     - 'db/**/*'
     - 'Gemfile'
+    - 'Rakefile'
     - 'config/**/*'
     - 'script/**/*'
     - 'lib/**/*'

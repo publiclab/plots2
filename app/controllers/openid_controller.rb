@@ -15,21 +15,21 @@ class OpenidController < ApplicationController
 
   def index
     begin
-      permitted_params = params.permit('authenticity_token', 'back_to', 
-        'open_id', 'openid.assoc_handle', 
-        'openid.op_endpoint', 
-        'openid.response_nonce', 
-        'openid.sig', 'openid.signed', 
-        'openid.sreg.email', 
-        'openid.sreg.nickname', 
-        'return_to', 'openid.claimed_id', 
-        'openid.identity', 'openid.mode', 
-        'openid.ns', 'openid.ns.sreg', 
-        'openid.realm', 'openid.return_to', 
-        'openid.sreg.required', 
-        'openid.trust_root', 
-        'openid.id_select', 
-        'openid.immediate', 
+      permitted_params = params.permit('authenticity_token', 'back_to',
+        'open_id', 'openid.assoc_handle',
+        'openid.op_endpoint',
+        'openid.response_nonce',
+        'openid.sig', 'openid.signed',
+        'openid.sreg.email',
+        'openid.sreg.nickname',
+        'return_to', 'openid.claimed_id',
+        'openid.identity', 'openid.mode',
+        'openid.ns', 'openid.ns.sreg',
+        'openid.realm', 'openid.return_to',
+        'openid.sreg.required',
+        'openid.trust_root',
+        'openid.id_select',
+        'openid.immediate',
         'openid.cancel_url').to_h
       if params['openid.mode']
         oidreq = server.decode_request(permitted_params)
@@ -153,12 +153,12 @@ class OpenidController < ApplicationController
 
     # content negotiation failed, so just render the user page
     xrds_url = url_for(controller: 'user', action: params[:username]) + '/xrds'
-    identity_page = <<EOS
-<html><head>
-<meta http-equiv="X-XRDS-Location" content="#{xrds_url}" />
-<link rel="openid.server" href="#{url_for action: 'index'}" />
-</head><body><p>OpenID identity page for #{params[:username]}</p>
-</body></html>
+    identity_page = <<~EOS
+      <html><head>
+      <meta http-equiv="X-XRDS-Location" content="#{xrds_url}" />
+      <link rel="openid.server" href="#{url_for action: 'index'}" />
+      </head><body><p>OpenID identity page for #{params[:username]}</p>
+      </body></html>
 EOS
 
     # Also add the Yadis location header, so that they don't have
@@ -251,18 +251,18 @@ EOS
       type_str += "<Type>#{uri}</Type>\n      "
     end
 
-    yadis = <<EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<xrds:XRDS
-    xmlns:xrds="xri://$xrds"
-    xmlns="xri://$xrd*($v*2.0)">
-  <XRD>
-    <Service priority="0">
-      #{type_str}
-      <URI>#{url_for(controller: 'openid', only_path: false)}</URI>
-    </Service>
-  </XRD>
-</xrds:XRDS>
+    yadis = <<~EOS
+      <?xml version="1.0" encoding="UTF-8"?>
+      <xrds:XRDS
+          xmlns:xrds="xri://$xrds"
+          xmlns="xri://$xrd*($v*2.0)">
+        <XRD>
+          <Service priority="0">
+            #{type_str}
+            <URI>#{url_for(controller: 'openid', only_path: false)}</URI>
+          </Service>
+        </XRD>
+      </xrds:XRDS>
 EOS
 
     response.headers['content-type'] = 'application/xrds+xml'

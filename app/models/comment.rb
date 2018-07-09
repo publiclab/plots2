@@ -33,23 +33,23 @@ class Comment < ApplicationRecord
     weeks
   end
 
-  def self.contribution_graph_making(span = 52, time = Time.now)   
+  def self.contribution_graph_making(span = 52, time = Time.now)
     weeks = {}
     week = span
     count = 0
     while week >= 1
-        #initialising month variable with the month of the starting day 
-        #of the week
-        month = (time - (week*7 - 1).days).strftime('%m')
+      # initialising month variable with the month of the starting day
+      # of the week
+      month = (time - (week * 7 - 1).days).strftime('%m')
 
-        month = month.to_i
-        #Now fetching comments per week
-        current_week = Comment.select(:timestamp)
-          .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-          .count
-        weeks[count] = [month, current_week]
-        count += 1
-        week -= 1
+      month = month.to_i
+      # Now fetching comments per week
+      current_week = Comment.select(:timestamp)
+        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+        .count
+      weeks[count] = [month, current_week]
+      count += 1
+      week -= 1
     end
     weeks
   end
@@ -64,8 +64,8 @@ class Comment < ApplicationRecord
 
   def body
     finder = comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
-    finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD)) 
-    finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))  
+    finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD))
+    finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
     ApplicationController.helpers.emojify(finder)
   end
 
@@ -192,7 +192,7 @@ class Comment < ApplicationRecord
 
   def user_reactions_map
     likes_map = likes.where.not(emoji_type: nil).includes(:user).group_by(&:emoji_type)
-    user_like_map={}
+    user_like_map = {}
     likes_map.each do |reaction, likes|
       users = []
       likes.each do |like|
@@ -200,7 +200,7 @@ class Comment < ApplicationRecord
       end
 
       emoji_type = reaction.underscore.humanize.downcase
-      users_string = (users.length > 1 ? users[0..-2].join(", ")+" and "+users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
+      users_string = (users.length > 1 ? users[0..-2].join(", ") + " and " + users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
       user_like_map[reaction] = users_string
     end
     user_like_map
@@ -209,25 +209,25 @@ class Comment < ApplicationRecord
   def self.receive_mail(mail)
     user = User.where(email: mail.from.first).first
     if user
-      node_id = mail.subject[/#([\d]+)/, 1] #This took out the node ID from the subject line
+      node_id = mail.subject[/#([\d]+)/, 1] # This took out the node ID from the subject line
       unless node_id.nil?
         node = Node.where(nid: node_id).first
         if node
           mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
           domain = get_domain mail.from.first
           content = if domain == "gmail"
-            gmail_parsed_mail mail_doc
+                      gmail_parsed_mail mail_doc
                     elsif domain == "yahoo"
-            yahoo_parsed_mail mail_doc
+                      yahoo_parsed_mail mail_doc
                     else
-            {
-              "comment_content" => mail_doc, 
-              "extra_content" => nil
-            }
-          end 
+                      {
+                        "comment_content" => mail_doc,
+                        "extra_content" => nil
+                      }
+          end
 
           if content["extra_content"].nil?
-            comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
+            comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
           else
             extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
             comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
@@ -256,7 +256,7 @@ class Comment < ApplicationRecord
     end
 
     {
-      "comment_content" => comment_content, 
+      "comment_content" => comment_content,
       "extra_content" => extra_content
     }
   end
@@ -272,7 +272,7 @@ class Comment < ApplicationRecord
     end
 
     {
-      "comment_content" => comment_content, 
+      "comment_content" => comment_content,
       "extra_content" => extra_content
     }
   end
@@ -280,5 +280,4 @@ class Comment < ApplicationRecord
   def trimmed_content?
     comment.include?(COMMENT_FILTER)
   end
-
 end
