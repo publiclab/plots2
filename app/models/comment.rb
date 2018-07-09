@@ -213,7 +213,7 @@ class Comment < ApplicationRecord
       if node_id.nil?
         answer_id = mail.subject[/#a([\d]+)/, 1] # This tooks out the answer ID from the subject line
         unless answer_id.nil?
-          add_answer_comment(mail, answer_id, user);
+          add_answer_comment(mail, answer_id, user)
         end
       else
         add_comment(mail, node_id, user)
@@ -226,16 +226,16 @@ class Comment < ApplicationRecord
     if answer
       mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
       domain = get_domain mail.from.first
-      if domain == "gmail"
-        content = gmail_parsed_mail mail_doc
-      elsif domain == "yahoo"
-        content = yahoo_parsed_mail mail_doc
-      else
-        content = {
-          "comment_content" => mail_doc, 
-          "extra_content" => nil
-        }
-      end 
+      content = if domain == "gmail"
+                  gmail_parsed_mail mail_doc
+                elsif domain == "yahoo"
+                  yahoo_parsed_mail mail_doc
+                else
+                  {
+                    "comment_content" => mail_doc, 
+                    "extra_content" => nil
+                  }
+                end 
       if content["extra_content"].nil?
         comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
       else
@@ -244,14 +244,13 @@ class Comment < ApplicationRecord
         comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
       end
       message_id = mail.message_id
-      comment = Comment.new(
-        uid: user.uid, 
-        aid: answer_id, 
-        comment: comment_content_markdown,
-        comment_via: 1,
-        message_id: message_id, 
-        timestamp: Time.now.to_i
-        )
+      comment = Comment.new(uid: user.uid, 
+                            aid: answer_id, 
+                            comment: comment_content_markdown,
+                            comment_via: 1,
+                            message_id: message_id, 
+                            timestamp: Time.now.to_i
+                            )
       if comment.save
         comment.answer_comment_notify(user)
       end
@@ -263,16 +262,16 @@ class Comment < ApplicationRecord
     if node
       mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
       domain = get_domain mail.from.first
-      if domain == "gmail"
-        content = gmail_parsed_mail mail_doc
-      elsif domain == "yahoo"
-        content = yahoo_parsed_mail mail_doc
-      else
-        content = {
-          "comment_content" => mail_doc, 
-          "extra_content" => nil
-        }
-      end 
+      content = if domain == "gmail"
+                  gmail_parsed_mail mail_doc
+                elsif domain == "yahoo"
+                  yahoo_parsed_mail mail_doc
+                else
+                  {
+                    "comment_content" => mail_doc, 
+                    "extra_content" => nil
+                  }
+                end 
 
       if content["extra_content"].nil?
         comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
