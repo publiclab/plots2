@@ -303,23 +303,6 @@ Layout/SpaceInsideHashLiteralBraces:
     - 'lib/dynamic_form/action_view/helpers/dynamic_form.rb'
     - 'test/unit/tag_test.rb'
 
-# Offense count: 7
-# Cop supports --auto-correct.
-Layout/SpaceInsideParens:
-  Exclude:
-    - 'app/controllers/questions_controller.rb'
-    - 'app/models/user.rb'
-
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: space, no_space
-Layout/SpaceInsideStringInterpolation:
-  Exclude:
-    - 'app/views/notes/rss.rss.builder'
-    - 'app/views/users/rss.rss.builder'
-    - 'test/unit/answer_mailer_test.rb'
-
 # Offense count: 30
 # Cop supports --auto-correct.
 # Configuration parameters: IndentationWidth.
@@ -334,21 +317,6 @@ Layout/Tab:
     - 'test/functional/users_controller_test.rb'
     - 'test/integration/routes_test.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: final_newline, final_blank_line
-Layout/TrailingBlankLines:
-  Exclude:
-    - 'app/controllers/comment_controller.rb'
-    - 'config/initializers/I18n.rb'
-    - 'config/initializers/jasmine_fixtures.rb'
-    - 'lib/authlogic_openid/authlogic_openid/version.rb'
-
-# Offense count: 152
-# Cop supports --auto-correct.
-Layout/TrailingWhitespace:
-  Enabled: false
 
 # Offense count: 1
 # Configuration parameters: AllowSafeAssignment.
@@ -356,13 +324,6 @@ Lint/AssignmentInCondition:
   Exclude:
     - 'app/controllers/wiki_controller.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleAlignWith.
-# SupportedStylesAlignWith: either, start_of_block, start_of_line
-Lint/BlockAlignment:
-  Exclude:
-    - 'app/models/node.rb'
 
 # Offense count: 13
 Lint/BooleanSymbol:
@@ -375,31 +336,10 @@ Lint/BooleanSymbol:
     - 'app/models/tag_selection.rb'
     - 'app/models/user_tag.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleAlignWith, AutoCorrect.
-# SupportedStylesAlignWith: start_of_line, def
-Lint/DefEndAlignment:
-  Exclude:
-    - 'app/mailers/subscription_mailer.rb'
-    - 'app/models/concerns/node_shared.rb'
-    - 'test/integration/routes_test.rb'
-
 # Offense count: 1
 Lint/DuplicateMethods:
   Exclude:
     - 'lib/authlogic_openid/authlogic_openid/session.rb'
-
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleAlignWith, AutoCorrect.
-# SupportedStylesAlignWith: keyword, variable, start_of_line
-Lint/EndAlignment:
-  Exclude:
-    - 'app/controllers/notes_controller.rb'
-    - 'app/controllers/tag_controller.rb'
-    - 'lib/dynamic_form/action_view/helpers/dynamic_form.rb'
-    - 'lib/open_id_authentication/open_id_authentication.rb'
 
 # Offense count: 1
 Lint/HandleExceptions:
@@ -421,14 +361,6 @@ Lint/NonLocalExitFromIterator:
   Exclude:
     - 'lib/authlogic_openid/authlogic_openid/session.rb'
 
-# Offense count: 14
-Lint/ParenthesesAsGroupedExpression:
-  Exclude:
-    - 'test/functional/notes_controller_test.rb'
-    - 'test/functional/questions_controller_test.rb'
-    - 'test/functional/tag_controller_test.rb'
-    - 'test/unit/revision_test.rb'
-    - 'test/unit/tag_test.rb'
 
 # Offense count: 1
 Lint/RescueException:
@@ -570,33 +502,6 @@ Naming/VariableNumber:
   Exclude:
     - 'test/unit/revision_test.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Performance/Casecmp:
-  Exclude:
-    - 'app/controllers/users_controller.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect.
-Performance/HashEachMethods:
-  Exclude:
-    - 'app/mailers/subscription_mailer.rb'
-    - 'lib/open_id_authentication/open_id_authentication.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Performance/RedundantMatch:
-  Exclude:
-    - 'app/controllers/tag_controller.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: MaxKeyValuePairs.
-Performance/RedundantMerge:
-  Exclude:
-    - 'config/application.rb'
-    - 'config/initializers/rack.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -706,10 +611,6 @@ Style/DateTime:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 1
-Style/DoubleNegation:
-  Exclude:
-    - 'test/unit/revision_test.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.
@@ -720,26 +621,6 @@ Style/EmptyElse:
     - 'app/controllers/subscription_controller.rb'
     - 'app/controllers/users_controller.rb'
 
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: compact, expanded
-Style/EmptyMethod:
-  Exclude:
-    - 'app/controllers/searches_controller.rb'
-    - 'db/migrate/20130424190648_sync_ruser_id_drupal_users_uid.rb'
-    - 'db/migrate/20140426213041_taggify_map_coords.rb'
-    - 'db/migrate/20140429190219_consolidate_tags.rb'
-    - 'db/migrate/20160319213901_drop_content_field_bbox.rb'
-    - 'db/migrate/20160403220245_remove_constraints_for_sqlite.rb'
-    - 'db/migrate/20161122154603_remove_friendly_id_indices.rb'
-    - 'db/migrate/20170120160451_drop_drupal_counter.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Encoding:
-  Exclude:
-    - 'db/schema-drupal.rb'
 
 # Offense count: 34
 # Configuration parameters: MinBodyLength.
@@ -776,14 +657,6 @@ Style/IfInsideElse:
 Style/IfUnlessModifier:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: line_count_dependent, lambda, literal
-Style/Lambda:
-  Exclude:
-    - 'config/routes.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/LineEndConcatenation:
@@ -812,28 +685,6 @@ Style/MixinUsage:
     - 'test/functional/admin_controller_test.rb'
     - 'test/functional/wiki_controller_test.rb'
     - 'test/unit/admin_mailer_test.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: both, prefix, postfix
-Style/NegatedIf:
-  Exclude:
-    - 'app/controllers/user_tags_controller.rb'
-    - 'lib/authlogic_openid/authlogic_openid/acts_as_authentic.rb'
-    - 'lib/authlogic_openid/authlogic_openid/session.rb'
-
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, MinBodyLength.
-# SupportedStyles: skip_modifier_ifs, always
-Style/Next:
-  Exclude:
-    - 'app/controllers/user_tags_controller.rb'
-    - 'db/migrate/20140429190219_consolidate_tags.rb'
-    - 'db/migrate/20140507095348_add_path_to_drupal_node.rb'
-    - 'db/migrate/20170704165711_add_user_bio_and_token.rb'
-    - 'db/migrate/20170726174757_recover_bios_tokens_statuses.rb'
 
 
 # Offense count: 128

@@ -29,13 +29,13 @@ class SubscriptionMailer < ActionMailer::Base
     @tag = tag
     @node = node
     @tagging_user = tagging_user
-    given_tags = node.tags.reject { |t| t == tag} 
+    given_tags = node.tags.reject { |t| t == tag}
     users_to_email = tag.followers_who_dont_follow_tags(given_tags)
     users_with_everything_tag = Tag.followers('everything')
-    final_users_ids = nil 
+    final_users_ids = nil
     if !users_to_email.nil? && !users_with_everything_tag.nil?
       final_users_ids = users_to_email.collect(&:id) - users_with_everything_tag.collect(&:uid)
-    elsif !users_to_email.nil? 
+    elsif !users_to_email.nil?
       final_users_ids = users_to_email.collect(&:id)
     end
     final_users_to_email = User.find(final_users_ids)
@@ -58,5 +58,5 @@ class SubscriptionMailer < ActionMailer::Base
     @user = User.find(user_id)
     @top_picks = top_picks
     mail(to: @user.email, subject: subject)
-  end  
+  end
 end

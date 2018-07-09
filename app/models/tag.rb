@@ -181,7 +181,7 @@ class Tag < ApplicationRecord
     weeks
   end
 
-  def contribution_graph_making(type = 'note', span = 52, time = Time.now)   
+  def contribution_graph_making(type = 'note', span = 52, time = Time.now)
     weeks = {}
     week = span
     count = 0
@@ -189,7 +189,7 @@ class Tag < ApplicationRecord
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
 
     while week >= 1
-      #initialising month variable with the month of the starting day 
+      #initialising month variable with the month of the starting day
       #of the week
       month = (time - (week*7 - 1).days).strftime('%m')
 
@@ -197,8 +197,8 @@ class Tag < ApplicationRecord
       month = month.to_i
 
       current_week = Tag.nodes_for_period(
-        type, 
-        nids, 
+        type,
+        nids,
         (time.to_i - week.weeks.to_i).to_s,
         (time.to_i - (week - 1).weeks.to_i).to_s
       ).count(:all)
@@ -208,7 +208,7 @@ class Tag < ApplicationRecord
       week -= 1
     end
     weeks
-  end 
+  end
 
   def self.nodes_for_period(type, nids, start, finish)
     Node.select(%i(created status type nid))

@@ -20,7 +20,7 @@ class StatsController < ApplicationController
     @people = User.where(created_at: @start..@end)
       .joins('INNER JOIN users ON users.uid = rusers.id')
       .where('users.status = 1')
-      .count                 
+      .count
     @answers = Answer.where(created_at: @start..@end)
       .count
     @comments = Comment.select(:timestamp)

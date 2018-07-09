@@ -928,7 +928,7 @@ class Node < ActiveRecord::Base
       node.toggle_like(like.user)
       node.save!
       like.save!
-     end
+    end
       count
   end
 

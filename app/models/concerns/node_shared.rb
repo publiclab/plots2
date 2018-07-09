@@ -15,8 +15,8 @@ module NodeShared
       url = Regexp.last_match(2)
       a = ActionController::Base.new()
       randomSeed = rand(1000).to_s
-      output = a.render_to_string(template: "grids/_graph", 
-                                  layout:   false, 
+      output = a.render_to_string(template: "grids/_graph",
+                                  layout:   false,
                                   locals:   {
                                     url: url,
                                     randomSeed: randomSeed,
@@ -53,8 +53,8 @@ module NodeShared
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
       a = ActionController::Base.new()
-      output += a.render_to_string(template: "grids/_notes", 
-                                   layout:   false, 
+      output += a.render_to_string(template: "grids/_notes",
+                                   layout:   false,
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
@@ -90,8 +90,8 @@ module NodeShared
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
       a = ActionController::Base.new()
-      output += a.render_to_string(template: "grids/_notes", 
-                                   layout:   false, 
+      output += a.render_to_string(template: "grids/_notes",
+                                   layout:   false,
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
@@ -123,8 +123,8 @@ module NodeShared
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
       a = ActionController::Base.new()
-      output += a.render_to_string(template: "grids/_notes", 
-                                   layout:   false, 
+      output += a.render_to_string(template: "grids/_notes",
+                                   layout:   false,
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
@@ -157,8 +157,8 @@ module NodeShared
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
       a = ActionController::Base.new()
-      output += a.render_to_string(template: "grids/_notes", 
-                                   layout:   false, 
+      output += a.render_to_string(template: "grids/_notes",
+                                   layout:   false,
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
@@ -176,8 +176,8 @@ module NodeShared
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
       a = ActionController::Base.new()
-      output = a.render_to_string(template: "map/_leaflet", 
-                                  layout:   false, 
+      output = a.render_to_string(template: "map/_leaflet",
+                                  layout:   false,
                                   locals:   {
                                     lat:   lat,
                                     lon:   lon
@@ -206,8 +206,8 @@ module NodeShared
                   .limit(200)
                   .order('node.nid DESC')
       a = ActionController::Base.new()
-      output = a.render_to_string(template: "map/_leaflet", 
-                                  layout:   false, 
+      output = a.render_to_string(template: "map/_leaflet",
+                                  layout:   false,
                                   locals:   {
                                     lat:   lat,
                                     lon:   lon,
@@ -225,13 +225,13 @@ module NodeShared
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
       nids ||= []
-      
+
       a = ActionController::Base.new()
-      output = a.render_to_string(template: "map/_peopleLeaflet", 
-                                  layout:   false, 
+      output = a.render_to_string(template: "map/_peopleLeaflet",
+                                  layout:   false,
                                   locals:   {
                                     lat: lat,
-                                    lon: lon, 
+                                    lon: lon,
                                     people: true
                                   }
                )
@@ -265,8 +265,8 @@ module NodeShared
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
       a = ActionController::Base.new()
-      output += a.render_to_string(template: "grids/_people", 
-                                   layout:   false, 
+      output += a.render_to_string(template: "grids/_people",
+                                   layout:   false,
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
@@ -304,8 +304,8 @@ module NodeShared
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
       a = ActionController::Base.new()
-      output += a.render_to_string(template: "grids/_wikis", 
-                                   layout:   false, 
+      output += a.render_to_string(template: "grids/_wikis",
+                                   layout:   false,
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,

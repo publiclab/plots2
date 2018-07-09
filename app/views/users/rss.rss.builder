@@ -1,9 +1,9 @@
-xml.instruct! :xml, :version => "1.0" 
+xml.instruct! :xml, :version => "1.0"
 xml.rss :version => "2.0" do
   xml.channel do
     xml.title "Research by "+params[:author]
     xml.description "Open source environmental science research at Public Lab"
-    xml.link "https://#{ request.host }/feed/"+params[:author]+".rss"
+    xml.link "https://#{request.host}/feed/"+params[:author]+".rss"
 
    @notes.each do |node|
     newline = '&#13;&#10;'

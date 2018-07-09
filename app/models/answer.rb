@@ -10,8 +10,8 @@ class Answer < ApplicationRecord
 
   def body
     finder = content.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
-    finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD)) 
-    finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))  
+    finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD))
+    finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
   end
 
   def body_markdown
@@ -33,7 +33,7 @@ class Answer < ApplicationRecord
     if current_user.uid != node.author.uid
       AnswerMailer.notify_question_author(node.author, self).deliver_now
     end
-    users_with_everything_tag = Tag.followers('everything') 
+    users_with_everything_tag = Tag.followers('everything')
     uids = (node.answers.collect(&:uid) + node.likers.collect(&:uid) + users_with_everything_tag.collect(&:uid)).uniq
     # notify other answer authors and users who liked the question
     DrupalUser.where('uid IN (?)', uids).each do |user|

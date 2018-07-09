@@ -33,12 +33,12 @@ class Comment < ApplicationRecord
     weeks
   end
 
-  def self.contribution_graph_making(span = 52, time = Time.now)   
+  def self.contribution_graph_making(span = 52, time = Time.now)
     weeks = {}
     week = span
     count = 0
     while week >= 1
-        #initialising month variable with the month of the starting day 
+        #initialising month variable with the month of the starting day
         #of the week
         month = (time - (week*7 - 1).days).strftime('%m')
 
@@ -64,8 +64,8 @@ class Comment < ApplicationRecord
 
   def body
     finder = comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
-    finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD)) 
-    finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))  
+    finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD))
+    finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
     ApplicationController.helpers.emojify(finder)
   end
 
@@ -221,13 +221,13 @@ class Comment < ApplicationRecord
             yahoo_parsed_mail mail_doc
                     else
             {
-              "comment_content" => mail_doc, 
+              "comment_content" => mail_doc,
               "extra_content" => nil
             }
-          end 
+          end
 
           if content["extra_content"].nil?
-            comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
+            comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
           else
             extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
             comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
@@ -256,7 +256,7 @@ class Comment < ApplicationRecord
     end
 
     {
-      "comment_content" => comment_content, 
+      "comment_content" => comment_content,
       "extra_content" => extra_content
     }
   end
@@ -272,7 +272,7 @@ class Comment < ApplicationRecord
     end
 
     {
-      "comment_content" => comment_content, 
+      "comment_content" => comment_content,
       "extra_content" => extra_content
     }
   end

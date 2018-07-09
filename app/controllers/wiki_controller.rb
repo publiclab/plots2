@@ -33,7 +33,7 @@ class WikiController < ApplicationController
         flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to <a href='#{Node.find(@node.power_tag('redirect')).path}'>#{Node.find(@node.power_tag('redirect')).title}</a>.
         To remove the redirect, delete the tag beginning with 'redirect:'"
       end
-    
+
     elsif @node&.has_power_tag('redirect') && Node.where(slug: @node.power_tag('redirect')).exists?
       if current_user.nil? || !current_user.can_moderate?
         redirect_to Node.find_by(slug: @node.power_tag('redirect')).path

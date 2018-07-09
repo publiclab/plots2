@@ -220,7 +220,7 @@ class UsersController < ApplicationController
       @user = User.find_by(reset_key: params[:key])
       if @user
         if params[:user] && params[:user][:password]
-          if @user.username.downcase == params[:user][:username].downcase
+          if @user.username.casecmp(params[:user][:username].downcase).zero?
             @user.password = params[:user][:password]
             @user.password_confirmation = params[:user][:password]
             @user.reset_key = nil

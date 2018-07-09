@@ -4,10 +4,10 @@ class Spamaway
     # This helper will generate pairs of human/robot statements and return
     # them alongside random strings.
     # There is no actual data in the database.
-    def self.columns 
-    @columns ||= [] 
+    def self.columns
+    @columns ||= []
   end
- 
+
     def self.column(name, sql_type = nil, default = nil, null = true)
       columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
     end
@@ -29,25 +29,25 @@ class Spamaway
                 I18n.t('spamaway.human.statement4'),
                 I18n.t('spamaway.human.statement5'),
                 I18n.t('spamaway.human.statement6')]
-  
+
       @robot = [I18n.t('spamaway.robot.statement1'),
                 I18n.t('spamaway.robot.statement2'),
                 I18n.t('spamaway.robot.statement3'),
                 I18n.t('spamaway.robot.statement4'),
                 I18n.t('spamaway.robot.statement5'),
                 I18n.t('spamaway.robot.statement6')]
-  
+
       # static method to return how_many pairs of human/robot statements.
       if (how_many <= 0) || (how_many > @human.length) || (how_many > @robot.length)
         raise ArgumentError, 'Cannot return ' + how_many + ' statements.'
       end
-  
+
       # randomly select how_many statements from each list
       human_perms = @human.permutation(how_many).to_a
       robot_perms = @robot.permutation(how_many).to_a
       human_index = rand(human_perms.length)
       robot_index = rand(robot_perms.length)
-  
+
       # slap pairs together
       pairs = human_perms[human_index].zip(robot_perms[robot_index])
       # randomly flip human/robot order for each statement pair
@@ -64,14 +64,14 @@ class Spamaway
                 I18n.t('spamaway.human.statement4'),
                 I18n.t('spamaway.human.statement5'),
                 I18n.t('spamaway.human.statement6')]
-  
+
       @robot = [I18n.t('spamaway.robot.statement1'),
                 I18n.t('spamaway.robot.statement2'),
                 I18n.t('spamaway.robot.statement3'),
                 I18n.t('spamaway.robot.statement4'),
                 I18n.t('spamaway.robot.statement5'),
                 I18n.t('spamaway.robot.statement6')]
-  
+
       # return True if response is a human response, False otherwise.
       @human.member? response
     end

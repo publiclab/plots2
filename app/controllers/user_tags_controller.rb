@@ -51,21 +51,20 @@ class UserTagsController < ApplicationController
             exist = true
           end
 
-          unless exist
-            user_tag = user.user_tags.build(value: name)
-            if  tagname.split(':')[1] == "facebook"
-              @output[:errors] << "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
-            elsif  tagname.split(':')[1] == "github"
-              @output[:errors] << "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
-            elsif  tagname.split(':')[1] ==  "google_oauth2"
-              @output[:errors] << "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
-            elsif  tagname.split(':')[1] == "twitter"
-             @output[:errors] << "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
-            elsif user_tag.save
-              @output[:saved] << [name, user_tag.id]
-            else
-              @output[:errors] << I18n.t('user_tags_controller.cannot_save_value')
-            end
+          next if exist
+          user_tag = user.user_tags.build(value: name)
+          if  tagname.split(':')[1] == "facebook"
+            @output[:errors] << "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
+          elsif  tagname.split(':')[1] == "github"
+            @output[:errors] << "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
+          elsif  tagname.split(':')[1] ==  "google_oauth2"
+            @output[:errors] << "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
+          elsif  tagname.split(':')[1] == "twitter"
+           @output[:errors] << "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>"
+          elsif user_tag.save
+            @output[:saved] << [name, user_tag.id]
+          else
+            @output[:errors] << I18n.t('user_tags_controller.cannot_save_value')
           end
         end
       else
@@ -96,7 +95,7 @@ class UserTagsController < ApplicationController
 
     begin
       @user_tag = UserTag.where(uid: params[:id], value: params[:name])
-      if(!@user_tag.nil?)
+      unless(@user_tag.nil?)
           @user_tag = @user_tag.first
       end
 

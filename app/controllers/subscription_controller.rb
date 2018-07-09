@@ -1,5 +1,5 @@
-# for now, adapting like_controller for just tag following. 
-# We can create switches for different kinds of likes. 
+# for now, adapting like_controller for just tag following.
+# We can create switches for different kinds of likes.
 # No route or view code as of yet.
 
 class SubscriptionController < ApplicationController
@@ -36,7 +36,7 @@ class SubscriptionController < ApplicationController
         tag = Tag.find_by(name: params[:name])
         if tag.nil?
           # if the tag doesn't exist, we should create it!
-          # this could fail validations; error out if so... 
+          # this could fail validations; error out if so...
           tag = Tag.new({
             :vid => 3, # vocabulary id
             :name => params[:name],
@@ -68,7 +68,7 @@ class SubscriptionController < ApplicationController
               end
             end
           else
-            flash[:error] = "Something went wrong!" # silly 
+            flash[:error] = "Something went wrong!" # silly
           end
         end
       else
@@ -103,7 +103,7 @@ class SubscriptionController < ApplicationController
           end
         end
       else
-        flash[:error] = "Something went wrong!" # silly 
+        flash[:error] = "Something went wrong!" # silly
         redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
       end
     end
@@ -123,11 +123,11 @@ class SubscriptionController < ApplicationController
     # add swtich statement for different types: tag, node, user
     if type == 'tag' && Tag.find_by(tid: id)
       # Create the entry if it isn't already created.
-      # assume tag, for now: 
+      # assume tag, for now:
       subscription = TagSelection.where(:user_id => current_user.uid,
                                         :tid => id).first_or_create
       subscription.following = value
- 
+
       # Check if the value changed.
       if subscription.following_changed?
         #tag = Tag.find(id)
@@ -137,14 +137,14 @@ class SubscriptionController < ApplicationController
         #else
         #  node.cached_likes = node.cached_likes - 1
         #end
-        
+
         # Save the changes.
         #ActiveRecord::Base.transaction do
         #  tag.save!
           subscription.save!
         #end
       end
- 
+
       subscription.following
     else
       flash[:error] = "There was an error."

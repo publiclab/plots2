@@ -7,8 +7,7 @@ class SearchesController < ApplicationController
   end
 
   # /search/
-  def new
-  end
+  def new; end
 
   # results: /search/foo
   def results
