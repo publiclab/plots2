@@ -47,7 +47,7 @@ class Image < ApplicationRecord
   end
 
   def shortlink
-    "/i/#{self.id}"
+    "/i/#{id}"
   end
 
   def filename

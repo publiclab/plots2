@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :require_no_user, :only => [:new]
   before_action :require_user, :only => [:edit, :update]
-  before_action :set_user, only: [:info, :followed, :following, :followers]
+  before_action :set_user, only: %i(info followed following followers)
 
   def new
     @spamaway = Spamaway.new
@@ -40,7 +40,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def update                # login required, see before filter
+  def update
     @user = current_user
     @user.attributes = user_params
     @user.save({}) do |result|
@@ -113,7 +113,7 @@ class UsersController < ApplicationController
                     .page(params[:page])
     end
 
-    @users = @users.where('rusers.status = 1') unless current_user && (current_user.can_moderate?)
+    @users = @users.where('rusers.status = 1') unless current_user&.can_moderate?
   end
 
   def profile
@@ -171,7 +171,7 @@ class UsersController < ApplicationController
       end
 
       if @user.status == 0
-        if current_user && (current_user.can_moderate?)
+        if current_user&.can_moderate?
           flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
         else
           flash[:error] = I18n.t('users_controller.user_has_been_banned')
@@ -284,8 +284,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def info
-  end
+  def info; end
 
   # content this person follows
   def followed
@@ -314,13 +313,12 @@ class UsersController < ApplicationController
   def set_user
     @user = User.find_by(username: params[:id])
   end
-  private
+
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
   end
+
   def spamaway_params
     params.require(:spamaway).permit(:follow_instructions, :statement1, :statement2, :statement3, :statement4)
   end
 end
-
-

@@ -69,6 +69,7 @@ class HomeController < ApplicationController
       @title = I18n.t('home_controller.community_research')
     end
   end
+
   # trashy... clean this up!
   # this will eventually be based on the profile_tags data where people can mark their location with "location:lat,lon"
   def nearby

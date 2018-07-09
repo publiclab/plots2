@@ -1,7 +1,6 @@
 class Answer < ApplicationRecord
   include NodeShared, CommentsShared # common methods for node-like and comment-like models
 
-
   belongs_to :node, foreign_key: 'nid'
   belongs_to :drupal_user, foreign_key: 'uid'
   has_many :answer_selections, foreign_key: 'aid'

@@ -5,7 +5,7 @@
 class SubscriptionController < ApplicationController
 
   respond_to :html, :xml, :json
-  before_action :require_user, :only => [:create, :delete, :index, :digest]
+  before_action :require_user, :only => %i(create delete index digest)
 
   def index
     @title = "Subscriptions"
@@ -112,7 +112,7 @@ class SubscriptionController < ApplicationController
 
   def digest
     @wikis = current_user.content_followed_in_period(Time.now - 1.week, Time.now)
-             .paginate(page: params[:page], per_page: 100)
+      .paginate(page: params[:page], per_page: 100)
 
     @paginated = true
     render :template => "subscriptions/digest"

@@ -2,8 +2,7 @@ class AdminController < ApplicationController
   before_action :require_user, only: %i(spam spam_revisions mark_comment_spam publish_comment)
 
   # intended to provide integration tests for assets
-  def assets
-  end
+  def assets; end
 
   def promote_admin
     @user = User.find params[:id]
@@ -82,7 +81,7 @@ class AdminController < ApplicationController
                    .order('nid DESC')
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
-      else
+               else
         @nodes.where(status: 0)
       end
     else
@@ -195,7 +194,7 @@ class AdminController < ApplicationController
     @revision = Revision.find_by(vid: params[:vid])
     @node = Node.find_by(nid: @revision.nid)
 
-    if(@node.revisions.length <= 1)
+    if @node.revisions.length <= 1
       flash[:warning] = "You can't delete the last remaining revision of a page; try deleting the wiki page itself (if you're an admin) or contacting moderators@publiclab.org for assistance."
       redirect_to @node.path
       return

@@ -123,7 +123,7 @@ class NotesController < ApplicationController
       end
 
       if saved
-        params[:tags]&.tr(' ', ',').split(',').each do |tagname|
+        params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
             @node.add_tag(tagname.strip, current_user)
         end
         if params[:event] == 'on'
@@ -241,7 +241,7 @@ class NotesController < ApplicationController
         format = false
         format = :question if params[:redirect] && params[:redirect] == 'question'
         if request.xhr?
-          render plain: "#{@node.path(format).to_s}?_=#{Time.now.to_i}"
+          render plain: "#{@node.path(format)}?_=#{Time.now.to_i}"
         else
           redirect_to URI.parse(@node.path(format)).path + '?_=' + Time.now.to_i.to_s
         end
@@ -274,8 +274,8 @@ class NotesController < ApplicationController
               redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
             end
           end
-      end
-    else
+        end
+      else
       flash[:error] = I18n.t('notes_controller.more_than_one_contributor')
       redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
     end

@@ -5,11 +5,11 @@ class UniqueUrlValidator < ActiveModel::Validator
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     elsif record.type == 'page'
       array = ['create', 'edit', 'update', 'delete', 'new']
-      array.each { |x|
+      array.each do |x|
         if record.title == x
           record.errors[:base] << "You may not use the title '" + x + "'"
         end
-      }
+      end
     else
       if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
         record.errors[:base] << 'You have already used this title.'
@@ -25,9 +25,13 @@ class Node < ActiveRecord::Base
   self.primary_key = 'nid'
 
   def self.search(query:, order: :default, limit:)
-    orderParam = {changed: :desc} if order == :default
-    orderParam = {cached_likes: :desc} if order == :likes
-    orderParam = {views: :desc} if order == :views
+    order_param = if order == :default
+                    { changed: :desc }
+                  elsif order == :likes
+                    { cached_likes: :desc }
+                  elsif order == :views
+                    { views: :desc }
+                  end
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
@@ -39,13 +43,13 @@ class Node < ActiveRecord::Base
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
         tnids = Tag.find_nodes_by_type(query, type = ['note', 'page']).collect(&:nid) # include results by tag
         self.where(nid: nids + tnids, status: 1)
-          .order(orderParam)
+          .order(order_param)
       end
     else
       nodes = Node.limit(limit)
         .where('title LIKE ?', '%' + query + '%')
         .where(status: 1)
-        .order(orderParam)
+        .order(order_param)
     end
   end
 
@@ -167,30 +171,20 @@ class Node < ActiveRecord::Base
   def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)
     weeks = {}
     week = span
-    count = 0;
+    count = 0
     while week >= 1
        #initialising month variable with the month of the starting day
        #of the week
        month = (time - (week*7 - 1).days).strftime('%m')
-       #loop for finding the maximum occurence of a month name in that week
-       #For eg. If this week has 3 days falling in March and 4 days falling
-       #in April, then we would give this week name as April and vice-versa
-      for i in 1..7 do
-          currMonth = (time - (week*7 - i).days).strftime('%m')
-          if month != currMonth
-              if i <= 4
-                  month = currMonth
-              end
-          end
-      end
+
       #Now fetching the weekly data of notes or wikis
       month = month.to_i
-      currWeek = Node.select(:created)
+      current_week = Node.select(:created)
                      .where(type: type,
                             status: 1,
                             created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
                       .count
-      weeks[count] = [month, currWeek]
+      weeks[count] = [month, current_week]
       count += 1
       week -= 1
     end
@@ -222,7 +216,7 @@ class Node < ActiveRecord::Base
   end
 
   def answered
-    self.answers&.length.positive?
+    self.answers&.length&.positive?
   end
 
   def has_accepted_answers
@@ -510,7 +504,7 @@ class Node < ActiveRecord::Base
   def edit_path
     path = if type == 'page' || type == 'tool' || type == 'place'
              '/wiki/edit/' + self.path.split('/').last
-    else
+           else
       '/notes/edit/' + id.to_s
     end
     path
@@ -570,7 +564,7 @@ class Node < ActiveRecord::Base
   def add_comment(params = {})
     thread = if !comments.empty? && !comments.last.nil?
                comments.last.next_thread
-    else
+             else
       '01/'
     end
     if params[:comment_via].nil?
