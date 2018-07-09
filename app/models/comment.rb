@@ -244,14 +244,12 @@ class Comment < ApplicationRecord
         comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
       end
       message_id = mail.message_id
-      comment = Comment.new(
-                        uid: user.uid,
-                        aid: answer_id,
-                        comment: comment_content_markdown,
-                        comment_via: 1,
-                        message_id: message_id,
-                        timestamp: Time.now.to_i
-                        )
+      comment = Comment.new(uid: user.uid,
+        aid: answer_id,
+        comment: comment_content_markdown,
+        comment_via: 1,
+        message_id: message_id,
+        timestamp: Time.now.to_i)
       if comment.save
         comment.answer_comment_notify(user)
       end
