@@ -237,6 +237,7 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal comment.message_id, mail.message_id
     assert_equal comment.comment_via, 1
     assert_equal User.find(comment.uid).email, user_email
+    f.close()
   end
 
   test 'should parse incoming mail from yahoo service correctly and add comment' do
@@ -253,6 +254,7 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal comment.message_id, mail.message_id
     assert_equal comment.comment_via, 1
     assert_equal User.find(comment.uid).email, user_email
+    f.close()
   end
 
   test 'should parse incoming mail from gmail service correctly and add answer comment' do
@@ -288,6 +290,32 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal comment.comment_via, 1
     assert_equal User.find(comment.uid).email, user_email
     f.close()
+  end
+
+  test 'should give the domain of gmail correctly' do
+    domain = Comment.get_domain("01namangupta@gmail.com")
+    assert_equal domain, "gmail"
+  end
+
+  test 'should give the domain of yahoo mail correctly' do
+    domain = Comment.get_domain("naman18996@yahoo.com")
+    assert_equal domain, "yahoo"
+  end
+
+  test 'should be true when there is trimmed content in comment' do
+    comment = Comment.new
+    f = File.open('test/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
+    comment.comment = f.read
+    f.close()
+    comment.save
+    assert_equal true, comment.trimmed_content?
+  end
+
+  test 'should be false when there is no trimmed content in comment' do
+    comment = Comment.new
+    comment.comment = "This is a comment without trimmed content"
+    comment.save
+    assert_equal false, comment.trimmed_content?
   end
 
 end
