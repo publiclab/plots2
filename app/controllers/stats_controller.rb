@@ -35,7 +35,7 @@ class StatsController < ApplicationController
     @time = if params[:time]
               Time.parse(params[:time])
             else
-      Time.now
+              Time.now
     end
 
     @weekly_notes = Node.select(%i(created type status))

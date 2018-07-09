@@ -139,9 +139,9 @@ module Srch
         sresult
       end
 
-      #API TO FETCH QRY RECENT CONTRIBUTORS
+      # API TO FETCH QRY RECENT CONTRIBUTORS
       # Request URL should be /api/srch/peoplelocations?srchString=QRY[&tagName=group:partsandcrafts&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
-      #QRY should be a number
+      # QRY should be a number
       desc 'Perform a search to show x Recent People',
         hidden: false,
         is_array: false,

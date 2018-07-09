@@ -77,7 +77,7 @@ class Tag < ApplicationRecord
         .order('node.views DESC')
         .limit(limit)
         .includes(:node_tag, :tag)
-	.references(:term_data)
+  .references(:term_data)
   end
 
   # finds recent nodes - should drop "limit" and allow use of chainable .limit()
@@ -86,8 +86,8 @@ class Tag < ApplicationRecord
                 .includes(:tag)
                 .references(:term_data)
                 .where('term_data.name IN (?)', tagnames)
-                #.select(%i[node.nid node.status node.type community_tags.nid community_tags.tid term_data.name term_data.tid])
-                # above select could be added later for further optimization
+    # .select(%i[node.nid node.status node.type community_tags.nid community_tags.tid term_data.name term_data.tid])
+    # above select could be added later for further optimization
     # .where('term_data.name IN (?) OR term_data.parent in (?)', tagnames, tagnames) # greedily fetch children
     tags = Tag.where('term_data.name IN (?)', tagnames)
     parents = Node.where(status: 1, type: type)
@@ -189,11 +189,11 @@ class Tag < ApplicationRecord
     nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
 
     while week >= 1
-      #initialising month variable with the month of the starting day
-      #of the week
+      # initialising month variable with the month of the starting day
+      # of the week
       month = (time - (week*7 - 1).days).strftime('%m')
 
-      #Now fetching the weekly data of notes or wikis
+      # Now fetching the weekly data of notes or wikis
       month = month.to_i
 
       current_week = Tag.nodes_for_period(
@@ -259,7 +259,7 @@ class Tag < ApplicationRecord
     tag_followers = User.where(id: subscriptions.collect(&:user_id))
     uids = tags.collect(&:subscriptions).flatten.collect(&:user_id)
     following_given_tags = User.where(id: uids)
-    tag_followers.reject { |user| following_given_tags.include? user  }
+    tag_followers.reject { |user| following_given_tags.include? user }
   end
 
   def self.trending(limit = 5 , start_date = DateTime.now - 1.month , end_date = DateTime.now)
@@ -273,7 +273,7 @@ class Tag < ApplicationRecord
        .limit(limit)
   end
 
-  #select nodes by tagname and user_id
+  # select nodes by tagname and user_id
   def self.tagged_nodes_by_author(tagname, user_id)
     if tagname[-1..-1] == '*'
       @wildcard = true

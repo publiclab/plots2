@@ -38,23 +38,23 @@ class UserSessionsController < ApplicationController
           # just log them in here
           UserSession.create(@identity.user)
           redirect_to root_url, notice: "Signed in!"
-        else #identity does not exist so we need to either create a user with identity OR link identity to existing user
+        else # identity does not exist so we need to either create a user with identity OR link identity to existing user
           if User.where(email: auth["info"]["email"]).empty?
-            #Create a new user as email provided is not present in PL database
-            user =  User.create_with_omniauth(auth)
+            # Create a new user as email provided is not present in PL database
+            user = User.create_with_omniauth(auth)
             @identity = UserTag.create_with_omniauth(auth, user.id)
             key = user.generate_reset_key
             # send key to user email
             PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
             redirect_to root_url, notice: "You have successfully signed in. Please change your password via a link sent to you via a mail"
-          else #email exists so link the identity with existing user and log in the user
+          else # email exists so link the identity with existing user and log in the user
             user = User.where(email: auth["info"]["email"])
             # If no identity was found, create a brand new one here
             @identity = UserTag.create_with_omniauth(auth, user.ids.first)
             # The identity is not associated with the current_user so lets
             # associate the identity
             @identity.save
-            #log in them
+            # log in them
             UserSession.create(@identity.user)
             redirect_to root_url, notice: "Successfully linked to your account!"
           end

@@ -22,7 +22,7 @@ class WikiController < ApplicationController
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
             else
-      Node.find_wiki(params[:id])
+              Node.find_wiki(params[:id])
     end
 
     if @node&.has_power_tag('redirect') && Node.where(nid: @node.power_tag('redirect')).exists?
@@ -99,7 +99,7 @@ class WikiController < ApplicationController
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
             else
-      Node.find_wiki(params[:id])
+              Node.find_wiki(params[:id])
     end
 
     if @node.has_tag('locked') && !current_user.can_moderate?
@@ -318,7 +318,7 @@ class WikiController < ApplicationController
     if sort_param == 'title'
       order_string = 'node_revisions.title ASC'
     elsif sort_param == 'last_edited'
-       order_string = 'node_revisions.timestamp DESC'
+      order_string = 'node_revisions.timestamp DESC'
     elsif sort_param == 'edits'
       order_string = 'drupal_node_revisions_count DESC'
     elsif sort_param == 'page_views'
@@ -378,7 +378,7 @@ class WikiController < ApplicationController
       # during round trip, strings are getting "\r\n" newlines converted to "\n",
       # so we're ensuring they remain "\r\n"; this may vary based on platform, unfortunately
       before = params[:before].gsub("\n", "\r\n")
-      after  = params[:after]#.gsub( "\n", "\r\n")
+      after  = params[:after]# .gsub( "\n", "\r\n")
       if output = @node.replace(before, after, current_user)
         flash[:notice] = 'New revision created with your additions.' unless request.xhr?
       else

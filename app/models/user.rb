@@ -53,26 +53,26 @@ class User < ActiveRecord::Base
   def create_drupal_user
     self.bio ||= ''
     if drupal_user.nil?
-      	    drupal_user = DrupalUser.new(name: username,
-                                    pass: rand(100_000_000_000_000_000_000),
-                                    mail: email,
-                                    mode: 0,
-                                    sort: 0,
-                                    threshold: 0,
-                                    theme: '',
-                                    signature: '',
-                                    signature_format: 0,
-                                    created: DateTime.now.to_i,
-                                    access: DateTime.now.to_i,
-                                    login: DateTime.now.to_i,
-                                    status: 1,
-                                    timezone: nil,
-                                    language: '',
-                                    picture: '',
-                                    init: '',
-                                    data: nil,
-                                    timezone_id: 0,
-                                    timezone_name: '')
+      drupal_user = DrupalUser.new(name: username,
+                              pass: rand(100_000_000_000_000_000_000),
+                              mail: email,
+                              mode: 0,
+                              sort: 0,
+                              threshold: 0,
+                              theme: '',
+                              signature: '',
+                              signature_format: 0,
+                              created: DateTime.now.to_i,
+                              access: DateTime.now.to_i,
+                              login: DateTime.now.to_i,
+                              status: 1,
+                              timezone: nil,
+                              language: '',
+                              picture: '',
+                              init: '',
+                              data: nil,
+                              timezone_id: 0,
+                              timezone_name: '')
       drupal_user.save!
       self.id = drupal_user.uid
     else
@@ -185,10 +185,10 @@ class User < ActiveRecord::Base
     user_tags.collect(&:value).include?(tagname)
   end
 
-   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
+  # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
-     tids = user_tags.where('value LIKE ?' , key + ':%').collect(&:id)
-     !tids.blank?
+    tids = user_tags.where('value LIKE ?' , key + ':%').collect(&:id)
+    !tids.blank?
   end
 
   def get_value_of_power_tag(key)
@@ -235,17 +235,17 @@ class User < ActiveRecord::Base
   end
 
   def daily_note_tally(span = 365)
-      days = {}
-      (1..span).each do |day|
-          time = Time.now.utc.beginning_of_day.to_i
-          days[(time-day.days.to_i)] = Node.select(:created)
-            .where(uid: uid,
-                                                  type: 'note',
-                                                  status: 1,
-                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i)
-            .count
-      end
-      days
+    days = {}
+    (1..span).each do |day|
+      time = Time.now.utc.beginning_of_day.to_i
+      days[(time-day.days.to_i)] = Node.select(:created)
+        .where(uid: uid,
+                                              type: 'note',
+                                              status: 1,
+                                              created: time - (day-1).days.to_i..time - (day - 2).days.to_i)
+        .count
+    end
+    days
   end
 
   def weekly_comment_tally(span = 52)
@@ -427,11 +427,11 @@ class User < ActiveRecord::Base
   end
 
   def self.create_with_omniauth(auth)
-    #email prefix is part of email before @ with periods replaced with underscores
-    #generate a 2 digit alphanumeric number and append it at the end of email-prefix
-    charset = Array('A'..'Z') + Array('a'..'z')  + Array(0..9)
+    # email prefix is part of email before @ with periods replaced with underscores
+    # generate a 2 digit alphanumeric number and append it at the end of email-prefix
+    charset = Array('A'..'Z') + Array('a'..'z') + Array(0..9)
     email_prefix = auth["info"]["email"].tr('.','_').split('@')[0]
-    email_prefix =  auth["info"]["email"].tr('.','_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
+    email_prefix = auth["info"]["email"].tr('.','_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
     puts(auth)
     create! do |user|
       user.username = email_prefix

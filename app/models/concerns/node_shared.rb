@@ -170,7 +170,7 @@ module NodeShared
     end
   end
 
-  #Blank map loaded only , markers will be loaded using API call .
+  # Blank map loaded only , markers will be loaded using API call .
   def self.notes_map(body)
     body.gsub(/[^\>`](\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
@@ -181,8 +181,7 @@ module NodeShared
                                   locals:   {
                                     lat:   lat,
                                     lon:   lon
-                                  }
-               )
+                                  })
       output
     end
   end
@@ -212,8 +211,7 @@ module NodeShared
                                     lat:   lat,
                                     lon:   lon,
                                     items: items
-                                  }
-               )
+                                  })
       output
     end
   end
@@ -233,8 +231,7 @@ module NodeShared
                                     lat: lat,
                                     lon: lon,
                                     people: true
-                                  }
-               )
+                                  })
       output
     end
   end
@@ -278,7 +275,7 @@ module NodeShared
     end
   end
 
- def self.wikis_grid(body, _page = 1)
+  def self.wikis_grid(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[wikis\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
@@ -315,6 +312,5 @@ module NodeShared
                                    })
       output
     end
-  end
-
+   end
 end

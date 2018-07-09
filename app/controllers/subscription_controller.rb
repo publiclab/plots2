@@ -41,7 +41,8 @@ class SubscriptionController < ApplicationController
             :vid => 3, # vocabulary id
             :name => params[:name],
             :description => "",
-            :weight => 0})
+            :weight => 0
+          })
           begin
             tag.save!
           rescue ActiveRecord::RecordInvalid
@@ -76,8 +77,8 @@ class SubscriptionController < ApplicationController
 
       end
     else
-        flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
-        redirect_to "/tag/"+params[:name]
+      flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
+      redirect_to "/tag/"+params[:name]
     end
   end
 
@@ -91,7 +92,7 @@ class SubscriptionController < ApplicationController
       flash[:error] = "You are not subscribed to '#{params[:name]}'"
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
     else
-      if !set_following(false,params[:type],id) #should return false if result is that following == false
+      if !set_following(false,params[:type],id) # should return false if result is that following == false
         respond_with do |format|
           format.html do
             if request.xhr?
@@ -130,19 +131,19 @@ class SubscriptionController < ApplicationController
 
       # Check if the value changed.
       if subscription.following_changed?
-        #tag = Tag.find(id)
+        # tag = Tag.find(id)
         # we have to implement caching for tags if we want to adapt this code:
-        #if subscription.following
+        # if subscription.following
         #  node.cached_likes = node.cached_likes + 1
-        #else
+        # else
         #  node.cached_likes = node.cached_likes - 1
-        #end
+        # end
 
         # Save the changes.
-        #ActiveRecord::Base.transaction do
+        # ActiveRecord::Base.transaction do
         #  tag.save!
-          subscription.save!
-        #end
+        subscription.save!
+        # end
       end
 
       subscription.following

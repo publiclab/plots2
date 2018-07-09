@@ -38,18 +38,18 @@ class Comment < ApplicationRecord
     week = span
     count = 0
     while week >= 1
-        #initialising month variable with the month of the starting day
-        #of the week
-        month = (time - (week*7 - 1).days).strftime('%m')
+      # initialising month variable with the month of the starting day
+      # of the week
+      month = (time - (week*7 - 1).days).strftime('%m')
 
-        month = month.to_i
-        #Now fetching comments per week
-        current_week = Comment.select(:timestamp)
-          .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-          .count
-        weeks[count] = [month, current_week]
-        count += 1
-        week -= 1
+      month = month.to_i
+      # Now fetching comments per week
+      current_week = Comment.select(:timestamp)
+        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+        .count
+      weeks[count] = [month, current_week]
+      count += 1
+      week -= 1
     end
     weeks
   end
@@ -209,21 +209,21 @@ class Comment < ApplicationRecord
   def self.receive_mail(mail)
     user = User.where(email: mail.from.first).first
     if user
-      node_id = mail.subject[/#([\d]+)/, 1] #This took out the node ID from the subject line
+      node_id = mail.subject[/#([\d]+)/, 1] # This took out the node ID from the subject line
       unless node_id.nil?
         node = Node.where(nid: node_id).first
         if node
           mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
           domain = get_domain mail.from.first
           content = if domain == "gmail"
-            gmail_parsed_mail mail_doc
+                      gmail_parsed_mail mail_doc
                     elsif domain == "yahoo"
-            yahoo_parsed_mail mail_doc
+                      yahoo_parsed_mail mail_doc
                     else
-            {
-              "comment_content" => mail_doc,
-              "extra_content" => nil
-            }
+                      {
+                        "comment_content" => mail_doc,
+                        "extra_content" => nil
+                      }
           end
 
           if content["extra_content"].nil?

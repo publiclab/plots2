@@ -25,11 +25,11 @@ class SubscriptionMailer < ActionMailer::Base
     mail(to: node.author.email, subject: subject)
   end
 
- def notify_tag_added(node, tag, tagging_user)
+  def notify_tag_added(node, tag, tagging_user)
     @tag = tag
     @node = node
     @tagging_user = tagging_user
-    given_tags = node.tags.reject { |t| t == tag}
+    given_tags = node.tags.reject { |t| t == tag }
     users_to_email = tag.followers_who_dont_follow_tags(given_tags)
     users_with_everything_tag = Tag.followers('everything')
     final_users_ids = nil
@@ -51,7 +51,7 @@ class SubscriptionMailer < ActionMailer::Base
       bcc: recipients,
       subject: "#{node.title} (#{@tag.name})"
     )
-  end
+   end
 
   def send_digest(user_id, top_picks)
     subject = "Your weekly digest"

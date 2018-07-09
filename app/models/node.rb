@@ -57,20 +57,20 @@ class Node < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-  has_many :revision, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :revision, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
-  has_many :drupal_upload, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_upload, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :drupal_files, through: :drupal_upload
-  has_many :node_tag, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :node_tag, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :tag, through: :node_tag
   # these override the above... have to do it manually:
   # has_many :tag, :through => :drupal_node_tag
   has_many :comments, foreign_key: 'nid' , dependent: :destroy # re-enable in Rails 5
-  has_many :drupal_content_type_map, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
-  has_many :drupal_content_field_mappers, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
-  has_many :drupal_content_field_map_editor, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_content_type_map, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_content_field_mappers, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_content_field_map_editor, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :images, foreign_key: :nid
   has_many :node_selections, foreign_key: :nid, dependent: :destroy
   has_many :answers, foreign_key: :nid, dependent: :destroy
@@ -173,11 +173,11 @@ class Node < ActiveRecord::Base
     week = span
     count = 0
     while week >= 1
-       #initialising month variable with the month of the starting day
-       #of the week
-       month = (time - (week*7 - 1).days).strftime('%m')
+      # initialising month variable with the month of the starting day
+      # of the week
+      month = (time - (week*7 - 1).days).strftime('%m')
 
-      #Now fetching the weekly data of notes or wikis
+      # Now fetching the weekly data of notes or wikis
       month = month.to_i
       current_week = Node.select(:created)
                      .where(type: type,
@@ -505,7 +505,7 @@ class Node < ActiveRecord::Base
     path = if type == 'page' || type == 'tool' || type == 'place'
              '/wiki/edit/' + self.path.split('/').last
            else
-      '/notes/edit/' + id.to_s
+             '/notes/edit/' + id.to_s
     end
     path
   end
@@ -565,7 +565,7 @@ class Node < ActiveRecord::Base
     thread = if !comments.empty? && !comments.last.nil?
                comments.last.next_thread
              else
-      '01/'
+               '01/'
     end
     if params[:comment_via].nil?
       comment_via_status = 0
@@ -880,7 +880,7 @@ class Node < ActiveRecord::Base
   end
 
   def is_liked_by(user)
-     !NodeSelection.where(user_id: user.uid, nid: id , liking: true).empty?
+    !NodeSelection.where(user_id: user.uid, nid: id , liking: true).empty?
   end
 
   def toggle_like(user)
@@ -893,7 +893,7 @@ class Node < ActiveRecord::Base
   end
 
   def self.like(nid , user)
-     # scope like variable outside the transaction
+    # scope like variable outside the transaction
     like = nil
     count = nil
 
@@ -912,7 +912,7 @@ class Node < ActiveRecord::Base
       node.save!
       like.save!
     end
-      count
+    count
   end
 
   def self.unlike(nid , user)
@@ -929,14 +929,14 @@ class Node < ActiveRecord::Base
       node.save!
       like.save!
     end
-      count
+    count
   end
 
   # status = 3 for draft nodes,visible to author only
   def draft
-      self.status = 3
-      save
-      self
+    self.status = 3
+    save
+    self
   end
 
   def draft_url

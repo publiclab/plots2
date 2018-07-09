@@ -97,7 +97,7 @@ class TypeaheadService
       # questions
       qsrch = search_questions(search_string, limit)
       sresult.addAll(qsrch.getTags)
-      #comments
+      # comments
       commentsrch = search_comments(search_string, limit)
       sresult.addAll(commentsrch.getTags)
     end

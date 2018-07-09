@@ -66,7 +66,7 @@ class UsersController < ApplicationController
     else
       @user = current_user
     end
-    if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
+    if current_user && current_user.uid == @user.uid # || current_user.role == "admin"
       render :template => "users/edit"
     else
       flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
@@ -145,7 +145,7 @@ class UsersController < ApplicationController
       questions = Node.questions
                             .where(status: 1)
                             .order('node.nid DESC')
-      ans_ques = questions.select{|q| q.answers.collect(&:author).include?(@user)}
+      ans_ques = questions.select{ |q| q.answers.collect(&:author).include?(@user) }
       @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
       wikis = Revision.order("nid DESC")
                       .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
@@ -231,7 +231,7 @@ class UsersController < ApplicationController
               flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
               redirect_to "/"
             end
-	         else
+          else
             flash[:error] = I18n.t('users_controller.password_change_failed')
           end
         else
