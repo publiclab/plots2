@@ -6,14 +6,10 @@ class UniqueUrlValidator < ActiveModel::Validator
     elsif record.type == 'page'
       array = %w(create edit update delete new)
       array.each do |x|
-        if record.title == x
-          record.errors[:base] << "You may not use the title '" + x + "'"
-        end
+        record.errors[:base] << "You may not use the title '" + x + "'" if record.title == x
       end
     else
-      if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
-        record.errors[:base] << 'You have already used this title.'
-      end
+      record.errors[:base] << 'You have already used this title.' if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
     end
   end
 end
@@ -77,7 +73,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :drupal_user, foreign_key: 'uid'
 
-  validates :title, presence: :true
+  validates :title, presence: true
   validates_with UniqueUrlValidator, on: :create
 
   # making drupal and rails database conventions play nice;
@@ -567,11 +563,11 @@ class Node < ActiveRecord::Base
              else
                '01/'
     end
-    if params[:comment_via].nil?
-      comment_via_status = 0
-    else
-      comment_via_status = params[:comment_via].to_i
-    end
+    comment_via_status = if params[:comment_via].nil?
+                           0
+                         else
+                           params[:comment_via].to_i
+                         end
     c = Comment.new(pid: 0,
                     nid: nid,
                     uid: params[:uid],
@@ -625,9 +621,7 @@ class Node < ActiveRecord::Base
             img.save
           end
           node.save!
-          if node.status != 3
-            node.notify
-          end
+          node.notify if node.status != 3
         else
           saved = false
           node.destroy
@@ -777,11 +771,11 @@ class Node < ActiveRecord::Base
   # with node.questions
   def questions
     # override with a tag like `questions:h2s`
-    if has_power_tag('questions')
-      tagname = power_tag('questions')
-    else
-      tagname = slug_from_path
-    end
+    tagname = if has_power_tag('questions')
+                power_tag('questions')
+              else
+                slug_from_path
+              end
     Node.where(status: 1, type: 'note')
         .includes(:revision, :tag)
         .references(:term_data)
@@ -800,11 +794,11 @@ class Node < ActiveRecord::Base
   # with node.activities
   def activities
     # override with a tag like `activities:h2s`
-    if has_power_tag('activities')
-      tagname = power_tag('activities')
-    else
-      tagname = slug_from_path
-    end
+    tagname = if has_power_tag('activities')
+                power_tag('activities')
+              else
+                slug_from_path
+              end
     Node.activities(tagname)
   end
 
@@ -820,11 +814,11 @@ class Node < ActiveRecord::Base
   # with node.upgrades
   def upgrades
     # override with a tag like `upgrades:h2s`
-    if has_power_tag('upgrades')
-      tagname = node.power_tag('upgrades')
-    else
-      tagname = slug_from_path
-    end
+    tagname = if has_power_tag('upgrades')
+                node.power_tag('upgrades')
+              else
+                slug_from_path
+              end
     Node.upgrades(tagname)
   end
 
@@ -885,11 +879,11 @@ class Node < ActiveRecord::Base
 
   def toggle_like(user)
     nodes = NodeSelection.where(nid: id, liking: true).count
-    if is_liked_by(user)
-      self.cached_likes = nodes - 1
-    else
-      self.cached_likes = nodes + 1
-    end
+    self.cached_likes = if is_liked_by(user)
+                          nodes - 1
+                        else
+                          nodes + 1
+                        end
   end
 
   def self.like(nid, user)
@@ -903,9 +897,7 @@ class Node < ActiveRecord::Base
                                  nid: nid).first_or_create
       like.liking = true
       node = Node.find(nid)
-      if node.type == 'note'
-        SubscriptionMailer.notify_note_liked(node, like.user).deliver_now
-      end
+      SubscriptionMailer.notify_note_liked(node, like.user).deliver_now if node.type == 'note'
       count = 1
       node.toggle_like(like.user)
       # Save the changes.

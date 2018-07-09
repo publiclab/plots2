@@ -6,31 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-
-
-
-
-# Offense count: 13
-Lint/BooleanSymbol:
-  Exclude:
-    - 'app/models/drupal_content_type_map.rb'
-    - 'app/models/image.rb'
-    - 'app/models/node.rb'
-    - 'app/models/revision.rb'
-    - 'app/models/tag.rb'
-    - 'app/models/tag_selection.rb'
-    - 'app/models/user_tag.rb'
-
-# Offense count: 1
-Lint/DuplicateMethods:
-  Exclude:
-    - 'lib/authlogic_openid/authlogic_openid/session.rb'
-
-# Offense count: 1
-Lint/HandleExceptions:
-  Exclude:
-    - 'app/controllers/wiki_controller.rb'
-
 # Offense count: 2
 Lint/IneffectiveAccessModifier:
   Exclude:
@@ -45,25 +20,6 @@ Lint/LiteralAsCondition:
 Lint/NonLocalExitFromIterator:
   Exclude:
     - 'lib/authlogic_openid/authlogic_openid/session.rb'
-
-
-# Offense count: 1
-Lint/RescueException:
-  Exclude:
-    - 'config/initializers/abstract_mysql2_adapter.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Lint/ScriptPermission:
-  Exclude:
-    - 'Rakefile'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoreEmptyBlocks, AllowUnusedKeywordArguments.
-Lint/UnusedBlockArgument:
-  Exclude:
-    - 'lib/authlogic_openid/authlogic_openid/acts_as_authentic.rb'
 
 # Offense count: 1
 Lint/UriEscapeUnescape:
@@ -188,22 +144,10 @@ Naming/VariableNumber:
     - 'test/unit/revision_test.rb'
 
 
-
-
 # Offense count: 1
 Style/CaseEquality:
   Exclude:
     - 'app/controllers/tag_controller.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, EnforcedStyle.
-# SupportedStyles: nested, compact
-Style/ClassAndModuleChildren:
-  Exclude:
-    - 'config/initializers/abstract_mysql2_adapter.rb'
-    - 'lib/dynamic_form/dynamic_form.rb'
-    - 'test/test_helper.rb'
 
 # Offense count: 1
 Style/ClassVars:
@@ -216,21 +160,6 @@ Style/CommentedKeyword:
     - 'lib/authlogic_openid/authlogic_openid/acts_as_authentic.rb'
     - 'lib/open_id_authentication/open_id_authentication.rb'
 
-# Offense count: 15
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.
-# SupportedStyles: assign_to_condition, assign_inside_condition
-Style/ConditionalAssignment:
-  Exclude:
-    - 'app/controllers/admin_controller.rb'
-    - 'app/controllers/application_controller.rb'
-    - 'app/controllers/home_controller.rb'
-    - 'app/controllers/notes_controller.rb'
-    - 'app/controllers/openid_controller.rb'
-    - 'app/controllers/subscription_controller.rb'
-    - 'app/controllers/tag_controller.rb'
-    - 'app/controllers/users_controller.rb'
-    - 'app/models/node.rb'
 
 # Offense count: 17
 Style/DateTime:
@@ -248,28 +177,11 @@ Style/DateTime:
 Style/Documentation:
   Enabled: false
 
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty, nil, both
-Style/EmptyElse:
-  Exclude:
-    - 'app/controllers/subscription_controller.rb'
-    - 'app/controllers/users_controller.rb'
-
-
 # Offense count: 34
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
   Enabled: false
 
-# Offense count: 3290
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, UseHashRocketsWithSymbolValues, PreferHashRocketsForNonAlnumEndingSymbols.
-# SupportedStyles: ruby19, hash_rockets, no_mixed_keys, ruby19_no_mixed_keys
-Style/HashSyntax:
-  Enabled: false
 
 # Offense count: 6
 Style/IdenticalConditionalBranches:
@@ -289,26 +201,6 @@ Style/IfInsideElse:
     - 'app/controllers/user_sessions_controller.rb'
     - 'app/models/node.rb'
 
-# Offense count: 97
-# Cop supports --auto-correct.
-Style/IfUnlessModifier:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/LineEndConcatenation:
-  Exclude:
-    - 'lib/dynamic_form/action_view/helpers/dynamic_form.rb'
-
-
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: separated, grouped
-Style/MixinGrouping:
-  Exclude:
-    - 'app/models/answer.rb'
 
 # Offense count: 5
 Style/MixinUsage:
@@ -319,16 +211,10 @@ Style/MixinUsage:
     - 'test/unit/admin_mailer_test.rb'
 
 
-# Offense count: 128
-# Cop supports --auto-correct.
-# Configuration parameters: Strict.
-Style/NumericLiterals:
-  MinDigits: 11
-
 # Offense count: 25
 # Cop supports --auto-correct.
 # Configuration parameters: AutoCorrect, EnforcedStyle.
-# SupportedStyles: predicate, comparison
+# # SupportedStyles: predicate, comparison
 Style/NumericPredicate:
   Exclude:
     - 'spec/**/*'
@@ -340,21 +226,3 @@ Style/NumericPredicate:
     - 'app/models/user.rb'
     - 'app/services/search_service.rb'
     - 'db/migrate/20140429190219_consolidate_tags.rb'
-
-
-
-
-
-# Offense count: 3619
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Enabled: false
-
-
-# Offense count: 1492
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 423

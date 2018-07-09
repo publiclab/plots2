@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_no_user, :only => [:new]
-  before_action :require_user, :only => %i(edit update)
+  before_action :require_no_user, only: [:new]
+  before_action :require_user, only: %i(edit update)
   before_action :set_user, only: %i(info followed following followers)
 
   def new
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
         redirect_to "/profile/edit"
       else
         flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
-        flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
+        flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', url1: "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
         redirect_to "/dashboard"
       end
@@ -54,22 +54,22 @@ class UsersController < ApplicationController
           return redirect_to "/profile/" + @user.username
         end
       else
-        render :template => 'users/edit'
+        render template: 'users/edit'
       end
     end
   end
 
   def edit
     @action = "update" # sets the form url
-    if params[:id] # admin only
-      @user = User.find_by(username: params[:id])
-    else
-      @user = current_user
-    end
+    @user = if params[:id] # admin only
+              User.find_by(username: params[:id])
+            else
+              current_user
+            end
     if current_user && current_user.uid == @user.uid # || current_user.role == "admin"
-      render :template => "users/edit"
+      render template: "users/edit"
     else
-      flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
+      flash[:error] = I18n.t('users_controller.only_user_edit_profile', user: @user.name).html_safe
       redirect_to "/profile/" + @user.name
     end
   end
@@ -78,11 +78,11 @@ class UsersController < ApplicationController
     sort_param = params[:sort]
     @tagname_param = params[:tagname]
 
-    if params[:id]
-      order_string = 'updated_at DESC'
-    else
-      order_string = 'last_updated DESC'
-    end
+    order_string = if params[:id]
+                     'updated_at DESC'
+                   else
+                     'last_updated DESC'
+                   end
 
     if sort_param == 'username'
       order_string = 'name ASC'
@@ -93,25 +93,25 @@ class UsersController < ApplicationController
     end
 
     # allow admins to view recent users
-    if params[:id]
-      @users = User.order(order_string)
-                    .where('rusers.role = ?', params[:id])
-                    .where('rusers.status = 1')
-                    .page(params[:page])
+    @users = if params[:id]
+               User.order(order_string)
+                             .where('rusers.role = ?', params[:id])
+                             .where('rusers.status = 1')
+                             .page(params[:page])
 
-    elsif @tagname_param
-      @users = User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
-                    .page(params[:page])
+             elsif @tagname_param
+               User.where(id: UserTag.where(value: @tagname_param).collect(&:uid))
+                             .page(params[:page])
 
-    else
-      # recently active
-      @users = User.select('*, rusers.status, MAX(node.changed) AS last_updated')
-                    .joins(:node)
-                    .group('rusers.id')
-                    .where('node.status = 1')
-                    .order(order_string)
-                    .page(params[:page])
-    end
+             else
+               # recently active
+               User.select('*, rusers.status, MAX(node.changed) AS last_updated')
+                             .joins(:node)
+                             .group('rusers.id')
+                             .where('node.status = 1')
+                             .order(order_string)
+                             .page(params[:page])
+             end
 
     @users = @users.where('rusers.status = 1') unless current_user&.can_moderate?
   end
@@ -139,7 +139,7 @@ class UsersController < ApplicationController
                                  .order('node_revisions.timestamp DESC')
       @questions = @user.user.questions
                              .order('node.nid DESC')
-                             .paginate(:page => params[:page], :per_page => 24)
+                             .paginate(page: params[:page], per_page: 24)
       @likes = (@user.liked_notes.includes(%i(tag comments)) + @user.liked_pages)
                      .paginate(page: params[:page], per_page: 24)
       questions = Node.questions
@@ -234,8 +234,6 @@ class UsersController < ApplicationController
           else
             flash[:error] = I18n.t('users_controller.password_change_failed')
           end
-        else
-          # Just display page prompting username & pwd
         end
       else
         flash[:error] = I18n.t('users_controller.password_reset_failed_no_user').html_safe
@@ -269,7 +267,7 @@ class UsersController < ApplicationController
       @user.photo = params[:photo]
       if @user.save!
         if request.xhr?
-          render :json => { :url => @user.photo_path }
+          render json: { url: @user.photo_path }
         else
           flash[:notice] = I18n.t('users_controller.image_saved')
           redirect_to @node.path

@@ -27,6 +27,12 @@ AllCops:
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
+Metrics/LineLength:
+  Max: 423
+
+Style/StringLiterals:
+  Enabled: false
+
 Style/RegexpLiteral:
   Enabled: false
 

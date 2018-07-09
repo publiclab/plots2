@@ -4,11 +4,11 @@
 
 class SubscriptionController < ApplicationController
   respond_to :html, :xml, :json
-  before_action :require_user, :only => %i(create delete index digest)
+  before_action :require_user, only: %i(create delete index digest)
 
   def index
     @title = "Subscriptions"
-    render :template => "home/subscriptions"
+    render template: "home/subscriptions"
   end
 
   # return a count of subscriptions for a given tag
@@ -20,12 +20,12 @@ class SubscriptionController < ApplicationController
   def followed
     # may be trouble: there can be multiple tags with the same name, no? We can eliminate that possibility in a migration if so.
     result = TagSelection.find_by_user_id_and_tid(current_user.uid, params[:id]) if params[:type] == "tag"
-    if result.nil?
-      result = false
-    else
-      result = result.following
-    end
-    render :json => result
+    result = if result.nil?
+               false
+             else
+               result.following
+             end
+    render json: result
   end
 
   # for the current user, register as liking the given tag
@@ -38,10 +38,10 @@ class SubscriptionController < ApplicationController
           # if the tag doesn't exist, we should create it!
           # this could fail validations; error out if so...
           tag = Tag.new(
-            :vid => 3, # vocabulary id
-            :name => params[:name],
-            :description => "",
-            :weight => 0
+            vid: 3, # vocabulary id
+            name: params[:name],
+            description: "",
+            weight: 0
           )
           begin
             tag.save!
@@ -61,7 +61,7 @@ class SubscriptionController < ApplicationController
             respond_with do |format|
               format.html do
                 if request.xhr?
-                  render :json => true
+                  render json: true
                 else
                   flash[:notice] = "You are now following '#{params[:name]}'."
                   redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
@@ -72,9 +72,6 @@ class SubscriptionController < ApplicationController
             flash[:error] = "Something went wrong!" # silly
           end
         end
-      else
-        # user or node subscription
-
       end
     else
       flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
@@ -85,9 +82,7 @@ class SubscriptionController < ApplicationController
   # for the current user, remove the like from the given tag
   def delete
     # assume tag, for now
-    if params[:type] == "tag"
-      id = Tag.find_by(name: params[:name]).tid
-    end
+    id = Tag.find_by(name: params[:name]).tid if params[:type] == "tag"
     if id.nil?
       flash[:error] = "You are not subscribed to '#{params[:name]}'"
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
@@ -96,7 +91,7 @@ class SubscriptionController < ApplicationController
         respond_with do |format|
           format.html do
             if request.xhr?
-              render :json => true
+              render json: true
             else
               flash[:notice] = "You have stopped following '#{params[:name]}'."
               redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
@@ -115,7 +110,7 @@ class SubscriptionController < ApplicationController
       .paginate(page: params[:page], per_page: 100)
 
     @paginated = true
-    render :template => "subscriptions/digest"
+    render template: "subscriptions/digest"
   end
 
   private
@@ -125,8 +120,8 @@ class SubscriptionController < ApplicationController
     if type == 'tag' && Tag.find_by(tid: id)
       # Create the entry if it isn't already created.
       # assume tag, for now:
-      subscription = TagSelection.where(:user_id => current_user.uid,
-                                        :tid => id).first_or_create
+      subscription = TagSelection.where(user_id: current_user.uid,
+                                        tid: id).first_or_create
       subscription.following = value
 
       # Check if the value changed.

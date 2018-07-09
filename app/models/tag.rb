@@ -24,7 +24,7 @@ class Tag < ApplicationRecord
     end
   end
 
-  validates :name, presence: :true
+  validates :name, presence: true
   validates :name, format: { with: /\A[\w\.:-]*[\w\.!-]*\z/, message: 'can only include letters, numbers, and dashes' }
   # validates :name, :uniqueness => { case_sensitive: false  }
 

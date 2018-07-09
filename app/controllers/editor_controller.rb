@@ -31,9 +31,7 @@ class EditorController < ApplicationController
 
   def rich
     flash.now[:notice] = "This is the new rich editor. For the legacy editor, <a href='/post?#{request.env['QUERY_STRING']}&legacy=true' class='legacy-button'>click here</a>."
-    if params[:main_image] && Image.find_by(id: params[:main_image])
-      @main_image = Image.find_by(id: params[:main_image]).path
-    end
+    @main_image = Image.find_by(id: params[:main_image]).path if params[:main_image] && Image.find_by(id: params[:main_image])
     template if params[:n] && !params[:body] # use another node body as a template
     image if params[:i]
   end

@@ -117,9 +117,7 @@ module ApplicationHelper
   end
 
   def filtered_comment_body(comment_body)
-    if contain_trimmed_body?(comment_body)
-      return comment_body.split(Comment::COMMENT_FILTER).first
-    end
+    return comment_body.split(Comment::COMMENT_FILTER).first if contain_trimmed_body?(comment_body)
     comment_body
   end
 

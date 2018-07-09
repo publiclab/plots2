@@ -1,8 +1,6 @@
 class UniqueUsernameValidator < ActiveModel::Validator
   def validate(record)
-    if DrupalUser.find_by(name: record.username) && record.openid_identifier.nil?
-      record.errors[:base] << 'That username is already taken. If this is your username, you can simply log in to this site.'
-    end
+    record.errors[:base] << 'That username is already taken. If this is your username, you can simply log in to this site.' if DrupalUser.find_by(name: record.username) && record.openid_identifier.nil?
   end
 end
 
@@ -47,7 +45,7 @@ class User < ActiveRecord::Base
 
   def new_contributor
     @uid = id
-    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
+    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(uid: @uid).length === 1
   end
 
   def create_drupal_user
@@ -387,9 +385,7 @@ class User < ActiveRecord::Base
 
   def send_digest_email
     top_picks = content_followed_in_period(Time.now - 1.week, Time.now)
-    if top_picks.count > 0
-      SubscriptionMailer.send_digest(id, top_picks).deliver_now
-    end
+    SubscriptionMailer.send_digest(id, top_picks).deliver_now if top_picks.count > 0
   end
 
   def customize_digest(type)

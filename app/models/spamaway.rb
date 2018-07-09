@@ -38,9 +38,7 @@ end
               I18n.t('spamaway.robot.statement6')]
 
     # static method to return how_many pairs of human/robot statements.
-    if (how_many <= 0) || (how_many > @human.length) || (how_many > @robot.length)
-      raise ArgumentError, 'Cannot return ' + how_many + ' statements.'
-    end
+    raise ArgumentError, 'Cannot return ' + how_many + ' statements.' if (how_many <= 0) || (how_many > @human.length) || (how_many > @robot.length)
 
     # randomly select how_many statements from each list
     human_perms = @human.permutation(how_many).to_a
@@ -80,9 +78,7 @@ end
 
   def clean_honeypot
     # errors if the honeypot (follow_instructions) is not clean.
-    unless follow_instructions.blank? || (follow_instructions == '')
-      errors.add(:base, I18n.t('spamaway.errors.please_read_instructions'))
-    end
+    errors.add(:base, I18n.t('spamaway.errors.please_read_instructions')) unless follow_instructions.blank? || (follow_instructions == '')
   end
 
   def human_responses
@@ -91,8 +87,6 @@ end
     # turn statements into T/F array and keep only the Trues
     not_robot = statements.map { |a| human_response? a } .select { |a| a }
     # make sure the number of Trues matches the number of original statements
-    if statements.length != not_robot.length
-      errors.add(:base, I18n.t('spamaway.errors.not_a_real_person'))
-    end
+    errors.add(:base, I18n.t('spamaway.errors.not_a_real_person')) if statements.length != not_robot.length
   end
 end

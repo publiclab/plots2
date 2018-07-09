@@ -95,9 +95,7 @@ class UserTagsController < ApplicationController
 
     begin
       @user_tag = UserTag.where(uid: params[:id], value: params[:name])
-      unless @user_tag.nil?
-        @user_tag = @user_tag.first
-      end
+      @user_tag = @user_tag.first unless @user_tag.nil?
 
       if current_user.role == 'admin' || params[:id].to_i == current_user.id
         if (!@user_tag.nil? && @user_tag.user == current_user) || (!@user_tag.nil? && current_user.role == 'admin')

@@ -253,9 +253,7 @@ class SearchService
     users.each do |user|
       next unless user.has_power_tag("lat") && user.has_power_tag("lon")
       blurred = false
-      if user.has_power_tag("location")
-        blurred = user.get_value_of_power_tag("location")
-      end
+      blurred = user.get_value_of_power_tag("location") if user.has_power_tag("location")
       doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
       sresult.addDoc(doc)
     end
