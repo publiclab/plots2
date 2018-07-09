@@ -23,8 +23,8 @@ class ApplicationHelperTest < ActionView::TestCase
 	test 'should return true if contain trimmed content' do
 		f = File.open('test/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
 		contain_trimmed_body = contain_trimmed_body?(f.read)
-		f.close()
 		assert_equal contain_trimmed_body, true
+    f.close()
 	end
 
 	test 'should return false if there is no trimmed content' do
