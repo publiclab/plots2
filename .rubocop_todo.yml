@@ -300,12 +300,7 @@ Style/LineEndConcatenation:
   Exclude:
     - 'lib/dynamic_form/action_view/helpers/dynamic_form.rb'
 
-# Offense count: 11
-# Cop supports --auto-correct.
-Style/MethodCallWithoutArgsParentheses:
-  Exclude:
-    - 'app/helpers/comment_helper.rb'
-    - 'app/models/concerns/node_shared.rb'
+
 
 # Offense count: 1
 # Cop supports --auto-correct.
