@@ -232,25 +232,26 @@ class Comment < ApplicationRecord
                   yahoo_parsed_mail mail_doc
                 else
                   {
-                    "comment_content" => mail_doc, 
+                    "comment_content" => mail_doc,
                     "extra_content" => nil
                   }
-                end 
+                end
       if content["extra_content"].nil?
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
+        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
       else
         extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
         comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
         comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
       end
       message_id = mail.message_id
-      comment = Comment.new(uid: user.uid, 
-                            aid: answer_id, 
-                            comment: comment_content_markdown,
-                            comment_via: 1,
-                            message_id: message_id, 
-                            timestamp: Time.now.to_i
-                            )
+      comment = Comment.new(
+                        uid: user.uid,
+                        aid: answer_id,
+                        comment: comment_content_markdown,
+                        comment_via: 1,
+                        message_id: message_id,
+                        timestamp: Time.now.to_i
+                        )
       if comment.save
         comment.answer_comment_notify(user)
       end
@@ -268,13 +269,13 @@ class Comment < ApplicationRecord
                   yahoo_parsed_mail mail_doc
                 else
                   {
-                    "comment_content" => mail_doc, 
+                    "comment_content" => mail_doc,
                     "extra_content" => nil
                   }
-                end 
+                end
 
       if content["extra_content"].nil?
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]  
+        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
       else
         extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
         comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
