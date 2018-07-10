@@ -11,11 +11,11 @@ class WelcomeMailer < ActionMailer::Base
     mail(to: list + '+subscribe@googlegroups.com', subject: subject, from: user.email)
   end
 
-  def welcome_mail(user)
+  def notify_newcomer(user)
     subject = 'Welcome to Public Lab'
     @user = user
     @footer = feature('email-footer')
-    @body = feature('welcome-email-body')
+    @body = feature_node('welcome-email-body')
     mail(to: user.email, subject: subject, from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}")
   end
 end
