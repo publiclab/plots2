@@ -3,7 +3,7 @@
   <h2><%= t('users.edit.edit_profile') %></h2>
 
   <hr />
-
+<% if Rails.env == "production"%>
   <div class='col-lg-8 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
   <label> Link your PublicLab.org account to other providers Twitter, Google, Facebook or GitHub </label>
   </div>
@@ -15,5 +15,6 @@
         <a href="/auth/facebook" id="connect-facebook"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-facebook" style="font-size:20px;color:blue;"></i></span></a>
     </div>
    </div>
+<% end %>
 
 <%= render 'form' %>
