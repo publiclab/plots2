@@ -15,7 +15,7 @@
         </span>
       <% end %>
 
-    <% elsif tag.class == UserTag && (tag..split(':')[0] != "oauth"||(tag..split(':')[0] == "oauth" && (tag.uid == current_user.uid || tag.uid = current_user.role == "admin") ) ) %>
+    <% elsif tag.class == UserTag && (tag.split(':')[0] != "oauth"||(tag.split(':')[0] == "oauth" && (tag.uid == current_user.uid || tag.uid = current_user.role == "admin") ) ) %>
 
         <span id="tag_<%= tag.id %>" class="label <%= label_name %>" style="cursor:pointer" data-toggle="popover" data-trigger="manual" data-count=0 data-placement="top" data-content="<a href='/contributors/<%= tag.name %>'><%= Tag.tagged_node_count(tag.name) || 0 %> notes - <%= Tag.contributors(tag.name).count %> people <br></a>" data-html="true" title="<%= tag.name %>">
           <%= tag.name %>
