@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class WelcomeMailerTest < ActionMailer::TestCase
-  
+
   test 'notify newcomer with welcome email' do
     user = users(:bob)
     @body = nodes(:welcome_feature)
