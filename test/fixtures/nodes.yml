@@ -248,3 +248,13 @@ draft:
   type: "note"
   cached_likes: 0
   slug: test-<%= Time.now.strftime("%m-%d-%Y") %>-draft-note token:briRpnTHzKHepo6-j8-b5w
+
+welcome_feature:
+  nid: 22
+  uid: 1
+  title: "welcome-email-body"
+  created: <%= Time.now.to_i %>
+  changed: <%= Time.now.to_i %>
+  status: 1
+  type: "feature"
+  cached_likes: 0
