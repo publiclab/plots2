@@ -2,6 +2,7 @@
 //= require support/expect
 //= require support/sinon
 //= require support/chai
+//= require jquery
 // require support/chai-jq-0.0.7
 // require support/your-support-file
 //

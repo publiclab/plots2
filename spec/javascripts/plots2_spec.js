@@ -1,3 +1,5 @@
+//= require comment_expand
+//= require like
 var editor;
 
 describe("Plots2", function() {
@@ -14,7 +16,6 @@ describe("Plots2", function() {
 
     ajaxStub = sinon.stub($, 'ajax', function(object) {
 
-		var response;
 		if   (object.url == '/likes/node/1/create') response = '4';
 		else response = 'none';
 
@@ -36,60 +37,70 @@ describe("Plots2", function() {
 
 	});
 
+    $(document).ready(function(){
+        $("#like-button-1").on('click', clicknotliked);
+    });
 
-    $('#like-button-1').trigger('click');
-
+    $("#like-button-1").click();
     // should trigger the following and our ajaxSpy should return a fake response of "4":
-    var response;
+    /*var response;
     jQuery.getJSON("/likes/node/1/create").done(function(data){
         response = data;
-    });
+    });*/
 
     // then triggering like.js code
 
-    expect(response).to.eql('4');
-    //expect($('#like-count-1').html()).to.eql('4'); // passing
-    //expect($('#like-star-1')[0].className).to.eql('fa fa-star');
-
+    expect($('#like-count-1').html()).to.eql('4'); // passing
+    expect($('#like-star-1')[0].className).to.eql('fa fa-star');
+    ajaxStub.restore();
   });
 
 
-  xit("unlikes a request if already liked", function() {
+  it("unlikes a request if already liked", function() {
 
-    loadFixtures('unlike.html');
+    fixture.load('unlike.html');
 
-    ajaxSpy = spyOn($, "ajax").and.callFake(function(object) {
+    ajaxStub = sinon.stub($, 'ajax', function(object) {
 
-      if   (object.url == '/likes/node/1/delete') response = "-1";
-      else response = 'none';
+		if   (object.url == '/likes/node/1/delete') response = '-1';
+		else response = 'none';
 
-      var d = $.Deferred();
-      d.resolve(response);
-      d.reject(response);
-      return d.promise();
+		// check this if you have trouble faking a server response:
 
+		var d = $.Deferred();
+        if(response == '-1'){
+		    d.resolve(response);
+        }
+        else{
+		    d.reject(response);
+        }
+
+        return d.promise();
+
+	});
+
+    $(document).ready(function(){
+        $("#like-button-1").on('click', clickliked);
     });
 
-    $('#like-button-1').trigger('click');
-
-    expect(response).toEqual('-1');
-    expect($('#like-count-1').html()).toEqual('0');
-    expect($('#like-star-1')[0].className).toEqual('fa fa-star-o');
-
+    $("#like-button-1").trigger('click');
+    expect($('#like-count-1').html()).to.eql('0');
+    expect($('#like-star-1')[0].className).to.eql('fa fa-star-o');
+    ajaxStub.restore();
   });
 
-  xit("shows expand comment button with remaining comment count", function(){
-    loadFixtures('comment_expand.html');
+  it("shows expand comment button with remaining comment count", function(){
+    fixture.load('comment_expand.html');
 
-    $('#answer-0-expand').trigger('click');
-    expect($('#answer-0-expand').html()).toEqual('View 2 previous comments');
+    expand_comments(0);
+    expect($('#answer-0-expand').html()).to.eql('View 2 previous comments');
 
-    $('#answer-0-expand').trigger('click');
-    expect($('#answer-0-expand').css('display')).toEqual('none');
+    expand_comments(0);
+    expect($('#answer-0-expand').css('display')).to.eql('none');
   });
 
-  xit("loads up i18n-js library properly", function() {
-    expect(I18n.t('js.dashboard.selected_updates')).toBe('Selected updates')
+  it("loads up i18n-js library properly", function() {
+    expect(I18n.t('js.dashboard.selected_updates')).to.eql('Selected updates')
   });
 
 });
