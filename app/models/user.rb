@@ -433,10 +433,11 @@ class User < ActiveRecord::Base
     email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
     email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
     create! do |user|
+      s=SecureRandom.random_bytes(32)
       user.username = email_prefix
       user.email = auth["info"]["email"]
-      user.password = SecureRandom.random_bytes(32)
-      user.password_confirmation = SecureRandom.random_bytes(32)
+      user.password = s
+      user.password_confirmation = s
       user.save!
     end
   end
