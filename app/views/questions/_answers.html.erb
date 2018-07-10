@@ -8,7 +8,7 @@
     </div>
     <div id="post-answer">
     <% if current_user %>
-      <%= render :partial => "comments/form", :locals => { title: "Post an answer", comment: false, placeholder: "Help users by posting an answer to this question" } %>
+      <%= render :partial => "comments/form", :locals => { title: "Post an answer", comment: false, placeholder: "Help users by posting an answer to this question", is_answer: true } %>
     <% else %>
     <p><%= link_to "Sign up", signup_path( return_to: request.path )%> or <%= link_to "Login", new_user_session_path( return_to: request.path )%> to post an answer to this question.</p>
     <% end %> 
