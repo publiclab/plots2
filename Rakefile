@@ -27,7 +27,7 @@ namespace :test do
       Rake::Task["ci:setup:testunit"].execute
     end
     puts "Running jasmine tests headlessly"
-    Rake::Task["spec:javascript"].execute
+    Rake::Task["teaspoon"].execute
     Rake::Task["coveralls:push"].execute
   end
 
