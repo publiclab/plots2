@@ -41,5 +41,4 @@ class DocResult
     expose :latitude, documentation: { type: 'String', desc: "Returns the latitude associated with the node." }
     expose :longitude, documentation: { type: 'String', desc: "Returns the longitude associated with the node." }
   end
-
 end

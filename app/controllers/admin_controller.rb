@@ -2,8 +2,7 @@ class AdminController < ApplicationController
   before_action :require_user, only: %i(spam spam_revisions mark_comment_spam publish_comment)
 
   # intended to provide integration tests for assets
-  def assets
-  end
+  def assets; end
 
   def promote_admin
     @user = User.find params[:id]
@@ -56,11 +55,10 @@ class AdminController < ApplicationController
         # send key to user email
         PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
       end
-      flash[:notice] = "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with." 
+      flash[:notice] = "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with."
       redirect_to URI.parse("/profile/" + user.name).path
     end
   end
-
 
   def useremail
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
@@ -68,7 +66,7 @@ class AdminController < ApplicationController
         # address was submitted. find the username(s) and return.
         @address = params[:address]
         @users = User.where(email: params[:address])
-                 .where(status: [1,4])
+                 .where(status: [1, 4])
       end
     else
       # unauthorized. instead of return ugly 403, just send somewhere else
@@ -82,8 +80,8 @@ class AdminController < ApplicationController
                    .order('nid DESC')
       @nodes = if params[:type] == 'wiki'
                  @nodes.where(type: 'page', status: 1)
-      else
-        @nodes.where(status: 0)
+               else
+                 @nodes.where(status: 0)
       end
     else
       flash[:error] = 'Only moderators can moderate posts.'
@@ -195,7 +193,7 @@ class AdminController < ApplicationController
     @revision = Revision.find_by(vid: params[:vid])
     @node = Node.find_by(nid: @revision.nid)
 
-    if(@node.revisions.length <= 1)
+    if @node.revisions.length <= 1
       flash[:warning] = "You can't delete the last remaining revision of a page; try deleting the wiki page itself (if you're an admin) or contacting moderators@publiclab.org for assistance."
       redirect_to @node.path
       return

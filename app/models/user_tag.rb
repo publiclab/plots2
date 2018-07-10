@@ -7,7 +7,7 @@ class UserTag < ApplicationRecord
   before_save :preprocess
 
   def preprocess
-    self.value = self.value.downcase
+    self.value = value.downcase
   end
 
   def self.exists?(uid, value)
@@ -15,7 +15,7 @@ class UserTag < ApplicationRecord
   end
 
   def name
-    self.value
+    value
   end
 
   def self.find_with_omniauth(auth)
@@ -26,5 +26,4 @@ class UserTag < ApplicationRecord
     create(value: "oauth:" + auth['provider'] + ":" + auth['uid'],
           uid: uid)
   end
-
 end

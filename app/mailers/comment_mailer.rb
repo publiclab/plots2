@@ -44,7 +44,7 @@ class CommentMailer < ActionMailer::Base
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on your answer on #{comment.parent.title} (##{comment.parent.id}) ")
+    mail(to: user.email, subject: "New comment on your answer on #{comment.parent.title} (#a#{comment.parent.id}) ")
   end
 
   def notify_coauthor(user, note)

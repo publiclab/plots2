@@ -1,4 +1,4 @@
-<div id="c<%= comment.cid %>" class="comment" style="margin-top: 38px;padding-bottom: 9px;">
+<div id="c<%= comment.cid %>" class="comment" style="margin-top: 20px;padding-bottom: 9px;">
 
   <div style="margin-bottom: 0;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;" class="navbar navbar-default">
 
@@ -140,7 +140,9 @@
   </div>
 
   <% if current_user %>
-     <%=  render :partial => "comments/edit", :locals => { title: I18n.t('notes._comment.edit_comment'), comment: comment, placeholder: I18n.t('notes._comment.edit_placeholder') } %>
+    <% h = { title: I18n.t('notes._comment.edit_comment'), comment: comment, placeholder: I18n.t('notes._comment.edit_placeholder') } %>
+    <% h[:is_answer] = true if local_assigns[:is_answer] %>
+    <%=  render :partial => "comments/edit", :locals => h %>
   <% end %>
   <br />
 

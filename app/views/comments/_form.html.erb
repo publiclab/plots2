@@ -1,4 +1,4 @@
-<form id="comment-form" data-remote="true" class="well" <% if params[:controller] == 'questions' %> action= "/answers/create/<%= @node.nid %>" <% else %> action="/comment/create/<%= @node.nid %>" <% end %> method="post" >
+<form id="comment-form" data-remote="true" class="well" <% unless local_assigns[:is_answer].blank? %> action= "/answers/create/<%= @node.nid %>" <% else %> action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% end %> method="post">
   <h4 style="margin-top:0;"><%= title %></h4>
 
   <style>
@@ -12,7 +12,7 @@
   <% end %>
 
   <div class="form-group dropzone">
-    <textarea onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= params[:body] %></textarea>
+    <textarea style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= params[:body] %></textarea>
 
     <div id="imagebar">
 

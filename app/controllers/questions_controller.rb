@@ -33,8 +33,8 @@ class QuestionsController < ApplicationController
       node = Node.find(params[:n])
       params[:body] = node.body if node
     end
-    if current_user == nil
-      redirect_to new_user_session_path( return_to: request.path )
+    if current_user.nil?
+      redirect_to new_user_session_path(return_to: request.path)
       flash[:notice] = "Your question is important and we want to hear from you! Please log in or sign up to post a question"
     else
       if params[:legacy]
@@ -65,7 +65,7 @@ class QuestionsController < ApplicationController
       .order(Arel.sql('count(*) DESC'))
       .collect(&:author)
 
-    #Arel.sql is used to remove a Deprecation warning while updating to rails 5.2
+    # Arel.sql is used to remove a Deprecation warning while updating to rails 5.2
 
     set_sidebar :tags, @tagnames
   end
