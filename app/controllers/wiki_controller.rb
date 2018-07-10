@@ -73,8 +73,8 @@ class WikiController < ApplicationController
 #      end
       flash[:notice] = "The wiki page does not exist, but here are notes tagged with #{params[:id]}."
       redirect_to '/tag/' + params[:id]
-       return		
-       # fixing-test --mention(@gauravano)	
+      return		
+      
     end
 
     unless @title # the page exists
