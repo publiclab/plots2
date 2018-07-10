@@ -436,8 +436,8 @@ class User < ActiveRecord::Base
     create! do |user|
       user.username = email_prefix
       user.email = auth["info"]["email"]
-      user.password = auth["uid"]
-      user.password_confirmation = auth["uid"]
+      user.password = Array.new(12) { charset.sample }.join
+      user.password_confirmation = Array.new(12) { charset.sample }.join
       user.save!
     end
   end
