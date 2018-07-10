@@ -1,6 +1,7 @@
 <form method="post" id="c<%= comment.id %>edit" style="display:none;" class="well" <% if comment.is_a?Answer %> action= "/answers/update/<%= comment.id %>" <% else %> action="/comment/update/<%= comment.id %>" <% end %>>
 
   <h4 style="margin-top:0;"><%= title %></h4>
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
 
   <style>
     #imagebar {width:100%;}
