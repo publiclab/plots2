@@ -275,5 +275,5 @@ email_body:
   nid: 22
   uid: 1
   title: "welcome-email-body"
-  body: Test
+  body: Welcome email body
   timestamp: <%= (Time.now - 1.week).to_i %>

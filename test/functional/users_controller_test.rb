@@ -252,4 +252,30 @@ class UsersControllerTest < ActionController::TestCase
     post :test_digest_email
     assert_redirected_to '/'
   end
+
+  test '' do
+    assert_difference 'User.count', 1 do
+      post :create, params: {
+          user: {
+              username: 'eleven',
+              password: 'demagorgon',
+              password_confirmation: 'demagorgon',
+              email: 'upside@down.today',
+              bio: 'From Hawkins'
+          },
+          spamaway: {
+              statement1: I18n.t('spamaway.human.statement1'),
+              statement2: I18n.t('spamaway.human.statement2'),
+              statement3: I18n.t('spamaway.human.statement3'),
+              statement4: I18n.t('spamaway.human.statement4')
+          }
+      }
+    end
+    assert_response :redirect
+    # a success here would mean sent back to form with errors
+    assert_redirected_to '/dashboard'
+    assert_equal 'From Hawkins', User.last.bio
+    assert_equal 'upside@down.today', User.last.email
+  end
+
 end

@@ -1,7 +1,7 @@
 class WelcomeMailer < ActionMailer::Base
   helper :application
   include ApplicationHelper
-  # default from: "notifications@#{ActionMailer::Base.default_url_options[:host]}"
+  default from: "notifications@#{ActionMailer::Base.default_url_options[:host]}"
 
   # PasswordResetMailer.reset_notify(user).deliver_now
   def add_to_list(user, list)
@@ -16,6 +16,6 @@ class WelcomeMailer < ActionMailer::Base
     @user = user
     @footer = feature('email-footer')
     @body = feature_node('welcome-email-body')
-    mail(to: user.email, subject: subject, from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}")
+    mail(to: user.email, subject: subject)
   end
 end
