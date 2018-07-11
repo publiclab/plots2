@@ -125,10 +125,7 @@ class UsersControllerTest < ActionController::TestCase
     user.generate_reset_key
     user.save({})
     assert_not_nil User.find(user.id).reset_key
-
     get :profile, params: { uid: user.username }
-
-    assert_select 'a#user-reset-key'
   end
 
   test 'should choose I18n for users controller' do
