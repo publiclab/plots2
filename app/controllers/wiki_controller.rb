@@ -63,14 +63,7 @@ class WikiController < ApplicationController
     if !@node.nil? # it's a place page!
       @tags = @node.tags
       @tags += [Tag.find_by(name: params[:id])] if Tag.find_by(name: params[:id])
-    else # it's a new wiki page!
-      # @title = I18n.t('wiki_controller.new_wiki_page')      #ibia
-      # if current_user
-      #   new
-      # else
-        # flash[:warning] = I18n.t('wiki_controller.pages_does_not_exist')
-        # redirect_to '/login'
-      # end
+    else # it's a new wiki page!       
       flash[:notice] = "The wiki page does not exist, but here are notes tagged with #{params[:id]}."
       redirect_to '/tag/' + params[:id]
       return		
