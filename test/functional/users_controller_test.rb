@@ -169,6 +169,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'creating new account' do
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
     assert_difference 'User.count', 1 do
       post :create, params: { 
         user: { 
@@ -186,11 +187,18 @@ class UsersControllerTest < ActionController::TestCase
         }
       }
     end
+    end
     assert_response :redirect
     # a success here would mean sent back to form with errors
     assert_redirected_to '/dashboard'
     assert_equal 'From Hawkins', User.last.bio
     assert_equal 'upside@down.today', User.last.email
+
+    assert !ActionMailer::Base.deliveries.empty?
+    email = ActionMailer::Base.deliveries.last
+    assert_equal ["notifications@#{request_host}"], email.from
+    assert_equal [User.last.email], email.to
+    assert_equal "Welcome to Public Lab", email.subject
   end
 
   test 'updating profile' do
