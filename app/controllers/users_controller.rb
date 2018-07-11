@@ -309,6 +309,15 @@ class UsersController < ApplicationController
     redirect_to "/"
   end
 
+  def settings
+    render "users/settings"
+  end
+
+  def save_settings
+    flash[:notice] = "Settings updated successfully !!!"
+    redirect_to '/dashboard'
+  end
+
   private
 
   def set_user
