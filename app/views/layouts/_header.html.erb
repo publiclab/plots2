@@ -151,16 +151,27 @@
               <i class="fa fa-user fa fa-white"></i>
                <%= t('layout._header.login.login_title') %> <b class="caret"></b>
             </a>
-            <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
+            <ul id="login-dropdown" class="dropdown-menu" style="width:250px;">
               <li style="padding:6px;">
                 <%= form_for :user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
+                <div class="form-group">
+                  
+                   <h5>Log In with</h5>
+                    <div class="loginbutton" style="float:left">
+                       <%= render :partial => "layouts/social_icons" %>
+                    </div>
+                     
+                   
+
+                </div>  
+
 
                   <div class="form-group">
 
                     <label for="username"><%= t('layout._header.login.username') %></label>
                     <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username-login' } %>
 
-                  </div>
+                  
 
                   <div class="form-group">
 
@@ -183,12 +194,7 @@
                   </p>
 
                   <p><a href="/reset/"><%= t('layout._header.login.reset_password') %></a></p>
-                    <% if Rails.env == "production"%>
-                   <h5>Log In with</h5>
-                    <div class="loginbutton" style="float:left">
-                       <%= render :partial => "layouts/social_icons" %>
-                    </div>
-                   <% end %>
+                   
                 <% end %>
               </li>
             </ul>

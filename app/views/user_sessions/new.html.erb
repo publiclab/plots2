@@ -6,6 +6,18 @@
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
   <br style="clear:both;"/>
+   <% if Rails.env == "production"%>
+     <div class='col-lg-8 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
+          <%= render :partial => "layouts/social_icons" %>
+     </div>
+
+
+      <br />
+  <% end %>
+  <div class='col-lg-8 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
+    <h3>OR</h3>
+  </div>
+  <br style="clear:both;"/>
 
   <div class="form-group">
 
@@ -36,16 +48,7 @@
 
   </div>
   </br>
-    <% if Rails.env == "development"%>
-      <h5>OR </h5>
-      <h3> Login with </h3>
-      <div class="loginbutton" style="float:left">
-          <%= render :partial => "layouts/social_icons" %>
-      </div>
-
-
-      <br />
-  <% end %>
+   
   <p style="color: #888;"><%= raw t('user_sessions.new.reset_by_clicking_here', :url1 => "/reset/") %></p>
 <% end %>
 

@@ -27,16 +27,17 @@
   <% if Rails.env == "production"%>
     <div class='col-lg-8 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
     
-      <div class="loginbutton" >
+      
        <%= render :partial => "layouts/social_icons" %>
 
+   
+  <% end %>
     </div>
-   <% end %>
-  
+   
    <div class='col-lg-8 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
     <h3> OR</h3>
-  </div>
-</div>
+  
+   </div>
   
   
   <%= render 'form' %>
