@@ -88,72 +88,72 @@ class SearchService
   # Run a search in any of the associated systems for references that contain the search string
   def textSearch_all(srchString)
     sresult = DocList.new
-    unless srchString.nil? || srchString == 0
-      # notes
-      noteList = textSearch_notes(srchString)
-      sresult.addAll(noteList.items)
 
-      # Node search
-      Node.limit(5)
-        .order('nid DESC')
-        .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + srchString + '%')
-        .select('title,type,nid,path').each do |match|
-        doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
-        sresult.addDoc(doc)
-      end
-      # User profiles
-      userList = textSearch_profiles(srchString)
-      sresult.addAll(userList.items)
+    # notes
+    noteList = textSearch_notes(srchString)
+    sresult.addAll(noteList.items)
 
-      # Tags
-      tagList = textSearch_tags(srchString)
-      sresult.addAll(tagList.items)
-      # maps
-      mapList = textSearch_maps(srchString)
-      sresult.addAll(mapList.items)
-      # questions
-      qList = textSearch_questions(srchString)
-      sresult.addAll(qList.items)
+    # Node search
+    Node.limit(5)
+      .order('nid DESC')
+      .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + srchString + '%')
+      .select('title,type,nid,path').each do |match|
+      doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
+      sresult.addDoc(doc)
     end
+    # User profiles
+    userList = textSearch_profiles(srchString)
+    sresult.addAll(userList.items)
+
+    # Tags
+    tagList = textSearch_tags(srchString)
+    sresult.addAll(tagList.items)
+    # maps
+    mapList = textSearch_maps(srchString)
+    sresult.addAll(mapList.items)
+    # questions
+    qList = textSearch_questions(srchString)
+    sresult.addAll(qList.items)
+
     sresult
   end
 
   # Search profiles for matching text
   def textSearch_profiles(srchString)
     sresult = DocList.new
-    unless srchString.nil? || srchString == 0
-      # User profiles
-      users(srchString).each do |match|
-        doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
-        sresult.addDoc(doc)
-      end
+
+    # User profiles
+    users(srchString).each do |match|
+      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
+      sresult.addDoc(doc)
     end
+
     sresult
   end
 
   # Search notes for matching strings
   def textSearch_notes(srchString)
     sresult = DocList.new
-    unless srchString.nil? || srchString == 0
-      # notes
-      find_notes(srchString, 25).each do |match|
-        doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
-        sresult.addDoc(doc)
-      end
+
+    # notes
+    find_notes(srchString, 25).each do |match|
+      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
+      sresult.addDoc(doc)
     end
+
     sresult
   end
 
   # Search maps for matching text
   def textSearch_maps(srchString)
     sresult = DocList.new
-    unless srchString.nil? || srchString == 0
-      # maps
-      maps(srchString).select('title,type,nid,path').each do |match|
-        doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
-        sresult.addDoc(doc)
-      end
+
+    # maps
+    maps(srchString).select('title,type,nid,path').each do |match|
+      doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
+      sresult.addDoc(doc)
     end
+
     sresult
   end
 
@@ -162,25 +162,26 @@ class SearchService
   # chained to the notes that are tagged with those values
   def textSearch_tags(srchString)
     sresult = DocList.new
-    unless srchString.nil? || srchString == 0
-      # Tags
-      sterms = srchString.split(' ')
-      tlist = Tag.where(name: sterms)
-        .joins(:node_tag)
-        .joins(:node)
-        .where('node.status = 1')
-        .select('DISTINCT node.nid,node.title,node.path')
-      tlist.each do |match|
-        tagdoc = DocResult.fromSearch(match.nid, 'tag', match.path, match.title, '', 0)
-        sresult.addDoc(tagdoc)
-      end
+
+    # Tags
+    sterms = srchString.split(' ')
+    tlist = Tag.where(name: sterms)
+      .joins(:node_tag)
+      .joins(:node)
+      .where('node.status = 1')
+      .select('DISTINCT node.nid,node.title,node.path')
+    tlist.each do |match|
+      tagdoc = DocResult.fromSearch(match.nid, 'tag', match.path, match.title, '', 0)
+      sresult.addDoc(tagdoc)
     end
+
     sresult
   end
 
   # Search question entries for matching text
   def textSearch_questions(srchString)
     sresult = DocList.new
+
     questions = Node.where(
       'type = "note" AND node.status = 1 AND title LIKE ?',
       '%' + srchString + '%'
@@ -193,12 +194,14 @@ class SearchService
       doc = DocResult.fromSearch(match.nid, 'question-circle', match.path(:question), match.title, 0, match.answers.length.to_i)
       sresult.addDoc(doc)
     end
+
     sresult
   end
 
   # Search nearby nodes with respect to given latitude, longitute and tags
   def tagNearbyNodes(srchString, tagName)
     sresult = DocList.new
+
     lat, lon =  srchString.split(',')
 
     nodes_scope = NodeTag.joins(:tag)
@@ -238,6 +241,7 @@ class SearchService
   # X = srchString
   def recentPeople(_srchString, tagName = nil)
     sresult = DocList.new
+
     nodes = Node.all.order("changed DESC").limit(100).distinct
     users = []
     nodes.each do |node|
@@ -259,6 +263,7 @@ class SearchService
       doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
       sresult.addDoc(doc)
     end
+
     sresult
   end
 end
