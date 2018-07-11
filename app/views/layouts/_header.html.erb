@@ -155,12 +155,12 @@
               <li style="padding:6px;">
                 <%= form_for :user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
                 <div class="form-group">
-                  <% if Rails.env == "production" %>
-                   <h5>Log In with</h5>
+                 
+                   <label style="display: block; text-align: center;">Log In with</label>
                     <div class="loginbutton" style="float:left">
                        <%= render :partial => "layouts/social_icons" %>
                     </div>
-                  <% end %>
+                  
                      
                    
 
