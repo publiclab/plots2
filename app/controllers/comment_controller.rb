@@ -16,7 +16,6 @@ class CommentController < ApplicationController
     @node = Node.find params[:id]
     @body = params[:body]
     @user = current_user
-
     begin
       @comment = create_comment(@node, @user, @body)
       respond_with do |format|

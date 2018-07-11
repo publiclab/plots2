@@ -63,6 +63,15 @@ module ApplicationHelper
     end
   end
 
+  def feature_node(title)
+    features = Node.where(type: 'feature', title: title)
+    if !features.empty?
+      return features.last
+    else
+      ''
+    end
+  end
+
   def locale_name_pairs
     I18n.available_locales.map do |locale|
       [I18n.t('language', locale: locale), locale]

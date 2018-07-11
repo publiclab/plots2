@@ -20,6 +20,7 @@ class UsersController < ApplicationController
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
       else
+        WelcomeMailer.notify_newcomer(@user).deliver_now
         flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
@@ -153,7 +154,7 @@ class UsersController < ApplicationController
                       .limit(20)
       @wikis = wikis.collect(&:parent).uniq
 
-      @comment_count = Comment.where(status: 0, uid: @user.uid).count
+      @comment_count = Comment.where(status: 1, uid: @user.uid).count
 
       # User's social links
       @github = @profile_user.social_link("github")
@@ -258,7 +259,7 @@ class UsersController < ApplicationController
   def comments
     @comments = Comment.limit(20)
                              .order("timestamp DESC")
-                             .where(status: 0, uid: params[:id])
+                             .where(status: 1, uid: params[:id])
                              .paginate(page: params[:page])
     render partial: 'comments/comments'
   end

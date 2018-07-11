@@ -54,29 +54,20 @@
 
   <hr />
 
-  <h4><span id="answer-0-comment-count"><%= @node.comments.length %></span> Comments</h4>
-    <div id="answer-0-comment" style="margin: 10px; padding:10px; border-radius: 5px; background-color: #eee">
-        <% @node.comments.order("timestamp ASC").each do |comment| %>
-            <%= render partial: "questions/comment", locals: { comment: comment, answer_id: 0 } %>
-        <% end %>
-    <div id="answer-0-comment-section">
-    <% if current_user %>
-    <div class="inline hidden-xs" style="vertical-align: top;">
-      <% if current_user.photo_file_name %>
-        <img class="img-circle" src="<%= current_user.photo_path(:thumb) %>" />
-      <% else %>
-        <div class="img-circle"></div>
-      <% end %>
-    </div>
-    <div class="inline" id="question-comment-form">
-      <form id="answer-0-comment-form" class="form-horizontal" action="/comment/create/<%= @node.id%>" data-remote="true">
-        <%= render partial: "questions/form" %>
-      </form>
-    </div>
-    <% else %>
-    <p><%= link_to "Log in", new_user_session_path( return_to: request.path )%> to comment</p>
+  <h3><span id="answer-0-comment-count"><%= @node.comments.length %></span> Comments</h3>
+    <% @node.comments.order("timestamp ASC").each do |comment| %>
+      <%= render :partial => "notes/comment", :locals => {:comment => comment} %>
     <% end %>
-    </div>
+    <div id="answer-0-comment" style="margin-top: 30px;">
+      <div id="answer-0-comment-section">
+      <% if current_user %>
+        <div class="inline" id="question-comment-form">
+            <%= render :partial => "comments/form", :locals => { title: "Post Comment", comment: false, placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", type: "question" } %>
+        </div>
+      <% else %>
+        <p><%= link_to "Log in", new_user_session_path( return_to: request.path )%> to comment</p>
+      <% end %>
+      </div>
   </div>
 
   <%= render :partial => "questions/answers" %>

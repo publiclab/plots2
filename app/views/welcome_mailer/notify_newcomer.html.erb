@@ -1,0 +1,4 @@
+
+<%= raw auto_link(@body.latest.render_body_email(ActionMailer::Base.default_url_options[:host]), sanitize: false) %>
+
+<%= @footer %>
