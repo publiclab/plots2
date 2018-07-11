@@ -15,6 +15,6 @@ class WelcomeMailerTest < ActionMailer::TestCase
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal "Welcome to Public Lab", email.subject
-    assert email.body.include?("Welcome email body")
+    assert email.body.include?("Welcome to Public Lab")
   end
 end
