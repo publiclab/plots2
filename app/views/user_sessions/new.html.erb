@@ -4,6 +4,19 @@
 
   <h2><%= raw t('user_sessions.new.log_in_or_sign_up', :url1 => "/signup") %></h2>
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+    <% if Rails.env == "production"%>
+      <div class="loginbutton" style="text-align: center">
+        <h3> Login with </h3>
+        <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default" style="margin-right:2px"><i class="fa fa-google" style="font-size:20px;color:red;"></i></span></a>
+        <a href="/auth/github" id="connect-github"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-github" style="font-size:20px;color:green;"></i></span></a>
+        <a href="/auth/facebook" id="connect-facebook"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-facebook" style="font-size:20px;color:blue;"></i></span></a>
+        <a href="/auth/twitter" id="connect-twitter"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-twitter" style="font-size:20px;color:blue;margin-left:2px;"></i></span></a>
+      </div>
+     <br />
+
+     <h5 style="text-align:center; border-bottom:2px solid #cccccc">OR</h5>
+   <% end %>
+
 
   <br style="clear:both;"/>
 
@@ -32,23 +45,10 @@
   <div class="input-group-inline">
 
     <button class="btn btn-primary btn-lg" type="submit" tabindex="3"><%= t('user_sessions.new.log_in') %></button>
-    <a class="btn btn-default btn-lg" href="/signup" tabindex="4"><%= t('user_sessions.new.sign_up') %></a>
 
   </div>
   </br>
-    <% if Rails.env == "production"%>
-      <h5>OR </h5>
-      <h3> Login with </h3>
-      <div class="loginbutton" style="float:left">
-        <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default" style="margin-right:2px"><i class="fa fa-google" style="font-size:20px;color:red;"></i></span></a>
-        <a href="/auth/github" id="connect-github"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-github" style="font-size:20px;color:green;"></i></span></a>
-        <a href="/auth/facebook" id="connect-facebook"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-facebook" style="font-size:20px;color:blue;"></i></span></a>
-      </div>
 
-         <a href="https://publiclab.org/auth/twitter" id="connect-twitter"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-twitter" style="font-size:20px;color:blue;margin-left:2px;"></i></span></a>
-
-      <br />
-  <% end %>
   <p style="color: #888;"><%= raw t('user_sessions.new.reset_by_clicking_here', :url1 => "/reset/") %></p>
 <% end %>
 
