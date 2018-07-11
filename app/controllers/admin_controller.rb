@@ -129,7 +129,9 @@ class AdminController < ApplicationController
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       if @comment.status == 1
         @comment.spam
-        flash[:notice] = "Comment has been marked as spam."
+        user = @comment.author
+        user.ban
+        flash[:notice] = "Comment has been marked as spam and comment author has been banned."
       else
         flash[:notice] = "Comment already marked as spam."
       end
