@@ -42,6 +42,7 @@ class UserSessionsController < ApplicationController
           if User.where(email: auth["info"]["email"]).empty?
             # Create a new user as email provided is not present in PL database
             user = User.create_with_omniauth(auth)
+            WelcomeMailer.notify_newcomer(user).deliver_now
             @identity = UserTag.create_with_omniauth(auth, user.id)
             key = user.generate_reset_key
             # send key to user email
