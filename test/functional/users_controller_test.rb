@@ -126,7 +126,7 @@ class UsersControllerTest < ActionController::TestCase
     user.save({})
     assert_not_nil User.find(user.id).reset_key
 
-    get :profile, params: { id: user.username }
+    get :profile, params: { uid: user.username }
 
     assert_select 'a#user-reset-key'
   end
@@ -170,13 +170,13 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'creating new account' do
     assert_difference 'User.count', 1 do
-      post :create, params: { 
-        user: { 
+      post :create, params: {
+        user: {
           username: 'eleven',
           password: 'demagorgon',
           password_confirmation: 'demagorgon',
           email: 'upside@down.today',
-          bio: 'From Hawkins' 
+          bio: 'From Hawkins'
         },
         spamaway: {
           statement1: I18n.t('spamaway.human.statement1'),
