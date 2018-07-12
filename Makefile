@@ -28,7 +28,8 @@ deploy-container:
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
 	docker-compose exec -T web bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
-	docker-compose exec -T mailman bash -c "echo 172.19.0.1 smtp >> /etc/hosts"	
+	docker-compose exec -T mailman bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
+	docker-compose exec -T sidekiq bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T web bundle exec whenever --update-crontab
 	docker-compose exec -T web service cron start
 
