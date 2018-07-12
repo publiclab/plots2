@@ -5,7 +5,7 @@
   <h2><%= raw t('user_sessions.new.log_in_or_sign_up', :url1 => "/signup") %></h2>
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
   <br style="clear:both;"/>
-   <% if Rails.env == "production"%>
+   <% if Rails.env == "production" %>
      <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
           <%= render :partial => "layouts/social_icons" %>
      </div>
