@@ -4,7 +4,20 @@
 
   <div class="col-lg-8 col-md-10 col-sm-10">
     <% if params[:controller] == "users" && @action == "create" %>
-
+    <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
+      <h3> Sign up with </h3>
+    </div>
+    <% if Rails.env == "production" %>
+      <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
+        <%= render :partial => "layouts/social_icons" %>
+    <% end %>
+      </div>
+   
+   <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
+    <h3> OR</h3>
+  
+   </div>
+   <br style="clear:both;"/>
       <div class="form-group">
 
         <label for="username"><%= t('users._form.username') %></label>

@@ -21,8 +21,8 @@ class WikiController < ApplicationController
   def show
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
-    else
-      Node.find_wiki(params[:id])
+            else
+              Node.find_wiki(params[:id])
     end
 
     if @node&.has_power_tag('redirect') && Node.where(nid: @node.power_tag('redirect')).exists?
@@ -33,7 +33,7 @@ class WikiController < ApplicationController
         flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to <a href='#{Node.find(@node.power_tag('redirect')).path}'>#{Node.find(@node.power_tag('redirect')).title}</a>.
         To remove the redirect, delete the tag beginning with 'redirect:'"
       end
-    
+
     elsif @node&.has_power_tag('redirect') && Node.where(slug: @node.power_tag('redirect')).exists?
       if current_user.nil? || !current_user.can_moderate?
         redirect_to Node.find_by(slug: @node.power_tag('redirect')).path
@@ -98,8 +98,8 @@ class WikiController < ApplicationController
   def edit
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
-    else
-      Node.find_wiki(params[:id])
+            else
+              Node.find_wiki(params[:id])
     end
 
     if @node.has_tag('locked') && !current_user.can_moderate?
@@ -207,7 +207,7 @@ class WikiController < ApplicationController
               @node.main_image_id = img.id
               img.save
             end
-          rescue
+          rescue StandardError
           end
         end
         @node.save
@@ -223,7 +223,7 @@ class WikiController < ApplicationController
 
   def delete
     @node = Node.find(params[:id])
-    if current_user && current_user.admin?
+    if current_user&.admin?
       @node.destroy
       flash[:notice] = I18n.t('wiki_controller.wiki_page_deleted')
       redirect_to '/dashboard'
@@ -236,7 +236,7 @@ class WikiController < ApplicationController
   def revert
     revision = Revision.find params[:id]
     node = revision.parent
-    if current_user && current_user.can_moderate?
+    if current_user&.can_moderate?
       new_rev = revision.dup
       new_rev.timestamp = DateTime.now.to_i
       if new_rev.save!
@@ -271,10 +271,10 @@ class WikiController < ApplicationController
     @node = Node.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
-      @revisions = @revisions.where(status: 1).page(params[:page]).per_page(20) unless current_user && current_user.can_moderate?
+      @revisions = @revisions.where(status: 1).page(params[:page]).per_page(20) unless current_user&.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @node.title).html_safe
       @tags = @node.tags
-      @paginated = true unless current_user && current_user.can_moderate?
+      @paginated = true unless current_user&.can_moderate?
     else
       flash[:error] = I18n.t('wiki_controller.invalid_wiki_page')
     end
@@ -291,7 +291,7 @@ class WikiController < ApplicationController
     if @revision.nil?
       flash[:error] = I18n.t('wiki_controller.revision_not_found')
       redirect_to action: 'revisions'
-    elsif @revision.status == 1 || current_user && current_user.can_moderate?
+    elsif @revision.status == 1 || current_user&.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @revision.title).html_safe
       render template: 'wiki/show'
     else
@@ -318,7 +318,7 @@ class WikiController < ApplicationController
     if sort_param == 'title'
       order_string = 'node_revisions.title ASC'
     elsif sort_param == 'last_edited'
-       order_string = 'node_revisions.timestamp DESC'
+      order_string = 'node_revisions.timestamp DESC'
     elsif sort_param == 'edits'
       order_string = 'drupal_node_revisions_count DESC'
     elsif sort_param == 'page_views'
@@ -378,7 +378,7 @@ class WikiController < ApplicationController
       # during round trip, strings are getting "\r\n" newlines converted to "\n",
       # so we're ensuring they remain "\r\n"; this may vary based on platform, unfortunately
       before = params[:before].gsub("\n", "\r\n")
-      after  = params[:after]#.gsub( "\n", "\r\n")
+      after  = params[:after] # .gsub( "\n", "\r\n")
       if output = @node.replace(before, after, current_user)
         flash[:notice] = 'New revision created with your additions.' unless request.xhr?
       else

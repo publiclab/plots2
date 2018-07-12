@@ -163,7 +163,7 @@ class AdminControllerTest < ActionController::TestCase
     node = assigns(:node)
     assert_equal 0, node.status
     assert_equal 0, node.author.status
-    assert_redirected_to '/dashboard'
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
 
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
@@ -187,7 +187,7 @@ class AdminControllerTest < ActionController::TestCase
     node = assigns(:node)
     assert_equal 0, node.status
     assert_equal 0, node.author.status
-    assert_redirected_to '/dashboard'
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
 
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
@@ -371,7 +371,7 @@ class AdminControllerTest < ActionController::TestCase
     node = assigns(:node)
     assert_equal 0, node.status
     assert_equal 0, node.author.status
-    assert_redirected_to '/dashboard'
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
 
     # test the moderator notification
     email = ActionMailer::Base.deliveries.last
@@ -422,8 +422,9 @@ class AdminControllerTest < ActionController::TestCase
 
     comment = assigns(:comment)
     assert_equal 0, comment.status
-    assert_equal "Comment has been marked as spam.", flash[:notice]
-    assert_redirected_to '/dashboard'
+    
+    assert_equal "Comment has been marked as spam and comment author has been banned.", flash[:notice]
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should mark comment as spam if admin' do
@@ -434,8 +435,9 @@ class AdminControllerTest < ActionController::TestCase
 
     comment = assigns(:comment)
     assert_equal 0, comment.status
-    assert_equal "Comment has been marked as spam.", flash[:notice]
-    assert_redirected_to '/dashboard'
+
+    assert_equal "Comment has been marked as spam and comment author has been banned.", flash[:notice]
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should not mark comment as spam if no user' do
@@ -455,7 +457,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 1, comment.status
     assert_equal "Only moderators can moderate comments.", flash[:error]
-    assert_redirected_to '/dashboard'
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should not mark comment as spam if it is already marked as spam' do
@@ -467,7 +469,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 0, comment.status
     assert_equal "Comment already marked as spam.", flash[:notice]
-    assert_redirected_to '/dashboard'
+    assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
   end
 
   test 'should publish comment from spam if admin' do

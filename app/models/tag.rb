@@ -54,12 +54,12 @@ class Tag < ApplicationRecord
   def self.contributors(tagname)
     tag = Tag.includes(:node).where(name: tagname).first
     return [] if tag.nil?
-    nodes = tag.node.includes(:revision, :comments,:answers).where(status: 1)
+    nodes = tag.node.includes(:revision, :comments, :answers).where(status: 1)
     uids = nodes.collect(&:uid)
     nodes.each do |n|
-      uids+=n.comments.collect(&:uid)
-      uids+=n.answers.collect(&:uid)
-      uids+=n.revision.collect(&:uid)
+      uids += n.comments.collect(&:uid)
+      uids += n.answers.collect(&:uid)
+      uids += n.revision.collect(&:uid)
     end
     uids = uids.uniq
     User.where(id: uids)
@@ -77,7 +77,7 @@ class Tag < ApplicationRecord
         .order('node.views DESC')
         .limit(limit)
         .includes(:node_tag, :tag)
-	.references(:term_data)
+  .references(:term_data)
   end
 
   # finds recent nodes - should drop "limit" and allow use of chainable .limit()
@@ -86,8 +86,8 @@ class Tag < ApplicationRecord
                 .includes(:tag)
                 .references(:term_data)
                 .where('term_data.name IN (?)', tagnames)
-                #.select(%i[node.nid node.status node.type community_tags.nid community_tags.tid term_data.name term_data.tid])
-                # above select could be added later for further optimization
+    # .select(%i[node.nid node.status node.type community_tags.nid community_tags.tid term_data.name term_data.tid])
+    # above select could be added later for further optimization
     # .where('term_data.name IN (?) OR term_data.parent in (?)', tagnames, tagnames) # greedily fetch children
     tags = Tag.where('term_data.name IN (?)', tagnames)
     parents = Node.where(status: 1, type: type)
@@ -181,45 +181,34 @@ class Tag < ApplicationRecord
     weeks
   end
 
-def contribution_graph_making(type = 'note', span = 52, time = Time.now)   
+  def contribution_graph_making(type = 'note', span = 52, time = Time.now)
     weeks = {}
     week = span
-    count = 0;
-    tids = Tag.where('name IN (?)', [name])
-          .collect(&:tid)
-    nids = NodeTag.where('tid IN (?)', tids)
-                             .collect(&:nid)
+    count = 0
+    tids = Tag.where('name IN (?)', [name]).collect(&:tid)
+    nids = NodeTag.where('tid IN (?)', tids).collect(&:nid)
+
     while week >= 1
-        #initialising month variable with the month of the starting day 
-        #of the week
-        month = (time - (week*7 - 1).days).strftime('%m')
-        #loop for finding the maximum occurence of a month name in that week
-        #For eg. If this week has 3 days falling in March and 4 days falling
-        #in April, then we would give this week name as April and vice-versa
-        for i in 1..7 do
-            currMonth = (time - (week*7 - i).days).strftime('%m')
-            if month != currMonth
-                if i <= 4
-                    month = currMonth
-                end
-            end
-        end
-        #Now fetching the weekly data of notes or wikis
-        month = month.to_i
+      # initialising month variable with the month of the starting day
+      # of the week
+      month = (time - (week * 7 - 1).days).strftime('%m')
 
-        currWeek = Tag.nodes_for_period(
-          type, 
-          nids, 
-          (time.to_i - week.weeks.to_i).to_s,
-          (time.to_i - (week - 1).weeks.to_i).to_s
-        ).count(:all)
+      # Now fetching the weekly data of notes or wikis
+      month = month.to_i
 
-        weeks[count] = [month, currWeek]
-        count += 1
-        week -= 1
-	end
-	weeks
-end 
+      current_week = Tag.nodes_for_period(
+        type,
+        nids,
+        (time.to_i - week.weeks.to_i).to_s,
+        (time.to_i - (week - 1).weeks.to_i).to_s
+      ).count(:all)
+
+      weeks[count] = [month, current_week]
+      count += 1
+      week -= 1
+    end
+    weeks
+  end
 
   def self.nodes_for_period(type, nids, start, finish)
     Node.select(%i(created status type nid))
@@ -267,13 +256,13 @@ end
   end
 
   def followers_who_dont_follow_tags(tags)
-    tag_followers = User.where(id: self.subscriptions.collect(&:user_id))
+    tag_followers = User.where(id: subscriptions.collect(&:user_id))
     uids = tags.collect(&:subscriptions).flatten.collect(&:user_id)
     following_given_tags = User.where(id: uids)
-    tag_followers.reject { |user| following_given_tags.include? user  }
+    tag_followers.reject { |user| following_given_tags.include? user }
   end
 
-  def self.trending(limit = 5 , start_date = DateTime.now - 1.month , end_date = DateTime.now)
+  def self.trending(limit = 5, start_date = DateTime.now - 1.month, end_date = DateTime.now)
     Tag.joins(:node_tag, :node)
        .select('node.nid, node.created, node.status, term_data.*, community_tags.*')
        .where('node.status = ?', 1)
@@ -284,12 +273,12 @@ end
        .limit(limit)
   end
 
-  #select nodes by tagname and user_id
+  # select nodes by tagname and user_id
   def self.tagged_nodes_by_author(tagname, user_id)
     if tagname[-1..-1] == '*'
       @wildcard = true
       Node.includes(:node_tag, :tag)
-          .where('term_data.name LIKE(?) OR term_data.parent LIKE (?)', tagname[0..-2]+'%', tagname[0..-2]+'%')
+          .where('term_data.name LIKE(?) OR term_data.parent LIKE (?)', tagname[0..-2] + '%', tagname[0..-2] + '%')
           .references(:term_data, :node_tag)
           .where('node.uid = ?', user_id)
           .order('node.nid DESC')

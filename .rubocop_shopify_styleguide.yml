@@ -1,8 +1,5 @@
-AllCops:
-  Exclude:
-  - 'db/schema.rb'
-  DisabledByDefault: true
-
+# http://shopify.github.io/ruby-style-guide/rubocop.yml
+#
 Layout/AccessModifierIndentation:
   EnforcedStyle: indent
   SupportedStyles:
@@ -107,14 +104,6 @@ Style/CommandLiteral:
   - mixed
   AllowInnerBackticks: false
 
-Style/CommentAnnotation:
-  Keywords:
-  - TODO
-  - FIXME
-  - OPTIMIZE
-  - HACK
-  - REVIEW
-
 Style/ConditionalAssignment:
   EnforcedStyle: assign_to_condition
   SupportedStyles:
@@ -199,9 +188,6 @@ Style/FrozenStringLiteralComment:
     - when_needed
     - always
     - never
-
-Style/GlobalVars:
-  AllowedVariables: []
 
 Style/HashSyntax:
   EnforcedStyle: ruby19
@@ -368,6 +354,10 @@ Style/RegexpLiteral:
 
 Style/SafeNavigation:
   ConvertCodeThatCanStartToReturnNil: false
+  Enabled: true
+
+Lint/SafeNavigationChain:
+  Enabled: true
 
 Style/Semicolon:
   AllowAsExpressionSeparator: false
@@ -506,39 +496,14 @@ Style/WordArray:
   MinSize: 0
   WordRegex: !ruby/regexp /\A[\p{Word}\n\t]+\z/
 
-Metrics/BlockNesting:
-  Max: 3
-
-Metrics/LineLength:
-  Max: 120
-  AllowHeredoc: true
-  AllowURI: true
-  URISchemes:
-  - http
-  - https
-  IgnoreCopDirectives: false
-  IgnoredPatterns:
-  - '\A\s*test(_\w+)?\s.*(do|->)(\s|\Z)'
-
-Metrics/ParameterLists:
-  Max: 5
-  CountKeywordArgs: false
-
-Lint/BlockAlignment:
+Layout/BlockAlignment:
   EnforcedStyleAlignWith: either
   SupportedStylesAlignWith:
   - either
   - start_of_block
   - start_of_line
 
-Lint/EndAlignment:
-  EnforcedStyleAlignWith: variable
-  SupportedStylesAlignWith:
-  - keyword
-  - variable
-  - start_of_line
-
-Lint/DefEndAlignment:
+Layout/DefEndAlignment:
   EnforcedStyleAlignWith: start_of_line
   SupportedStylesAlignWith:
   - start_of_line
@@ -760,9 +725,6 @@ Style/LineEndConcatenation:
 Style/MethodCallWithoutArgsParentheses:
   Enabled: true
 
-Style/MethodMissing:
-  Enabled: true
-
 Style/MultilineBlockChain:
   Enabled: true
 
@@ -928,7 +890,7 @@ Lint/AmbiguousRegexpLiteral:
 Lint/CircularArgumentReference:
   Enabled: true
 
-Lint/ConditionPosition:
+Layout/ConditionPosition:
   Enabled: true
 
 Lint/Debugger:
@@ -1032,7 +994,10 @@ Lint/UnderscorePrefixedVariableName:
 Lint/UnifiedInteger:
   Enabled: true
 
-Lint/UnneededDisable:
+Lint/UnneededCopDisableDirective:
+  Enabled: true
+
+Lint/UnneededCopEnableDirective:
   Enabled: true
 
 Lint/UnneededSplatExpansion:
@@ -1043,9 +1008,6 @@ Lint/UnreachableCode:
 
 Lint/UselessAccessModifier:
   ContextCreatingMethods: []
-
-Lint/UselessAssignment:
-  Enabled: true
 
 Lint/UselessComparison:
   Enabled: true
@@ -1080,9 +1042,6 @@ Performance/FixedSize:
 Performance/FlatMap:
   EnabledForFlattenWithoutParams: false
 
-Performance/HashEachMethods:
-  Enabled: true
-  
 Performance/LstripRstrip:
   Enabled: true
 
@@ -1134,4 +1093,27 @@ Security/Eval:
   Enabled: true
 
 Security/JSONLoad:
+  Enabled: true
+
+Security/Open:
+  Enabled: true
+
+Lint/BigDecimalNew:
+  Enabled: true
+
+Style/TrailingBodyOnClass:
+  Enabled: true
+
+Style/TrailingBodyOnModule:
+  Enabled: true
+
+Layout/SpaceInsideReferenceBrackets:
+  EnforcedStyle: no_space
+  EnforcedStyleForEmptyBrackets: no_space
+  Enabled: true
+
+Style/ModuleFunction:
+  EnforcedStyle: extend_self
+
+Lint/OrderedMagicComments:
   Enabled: true

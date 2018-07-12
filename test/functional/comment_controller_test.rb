@@ -35,7 +35,7 @@ class CommentControllerTest < ActionController::TestCase
     end
     assert_response :success
     assert_not_nil :comment
-    assert_template partial: 'questions/_comment'
+    assert_template partial: 'notes/_comment'
   end
 
   test 'should create wiki comments' do
@@ -84,7 +84,7 @@ class CommentControllerTest < ActionController::TestCase
     end
     assert_response :success
     assert_not_nil :comment
-    assert_template partial: 'questions/_comment'
+    assert_template partial: 'notes/_comment'
   end
 
   test 'should show error if answer comment not saved' do

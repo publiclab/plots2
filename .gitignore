@@ -29,6 +29,8 @@ config/initializers/secret_token.rb
 public/system
 public/lib
 db/openid-store/
+www.example.com/
+dump.rdb
 db/schema.rb
 public/assets/application-*
 todo.txt
