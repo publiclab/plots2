@@ -135,3 +135,12 @@
     border-radius: 50%;
   }
 </style>
+
+<script>
+    $(document).ready(function() {
+        $(':input[type="submit"]').prop('disabled', true);
+        $('input[type="checkbox"]').change(function() {
+            $(':input[type="submit"]').prop('disabled', false);
+        });
+    });
+</script>
