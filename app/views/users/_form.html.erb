@@ -7,7 +7,7 @@
     <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
       <h3> Sign up with </h3>
     </div>
-    <% if Rails.env == "development"%>
+    <% if Rails.env == "production"%>
       <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
         <%= render :partial => "layouts/social_icons" %>
     <% end %>
