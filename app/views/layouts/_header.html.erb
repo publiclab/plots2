@@ -163,21 +163,13 @@
                     <br style="clear:both;"/>
                    <label style="display: block; text-align: center; margin-top:13px;">OR</label>
                   <% end %>
-                  
-                     
-                   
-
-                </div>  
-
-
-                  <div class="form-group">
+                 </div>  
+		<div class="form-group">
 
                     <label for="username"><%= t('layout._header.login.username') %></label>
                     <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username-login' } %>
 
-                  
-
-                  <div class="form-group">
+                <div class="form-group">
 
                     <label for="password"><%= t('layout._header.login.password') %></label>
                     <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-login' } %>
