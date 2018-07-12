@@ -1,6 +1,7 @@
 <h1 class="page-title">Settings</h1>
 <hr />
 
+<form name="settingsForm" action="/save_settings">
 <div class="emailSettings">
   <h4><b>Email Notification Settings</b></h4>
   <hr style="width: 35%;  margin-left: 0;" />
@@ -9,7 +10,7 @@
     <span>Do you want to be notified by email for comments on your posts</span>
     <span>
     <label class="switch">
-      <input type="checkbox" <% if UserTag.exists?(current_user.id, 'notify-comment-direct:false') %>checked<% end %>>
+      <input type="checkbox" name="notify-comment-direct:false" <% if UserTag.exists?(current_user.id, 'notify-comment-direct:false') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
     </span>
@@ -64,9 +65,11 @@
 <br />
 
 <div class="page-footer">
-  <a type="button" class="btn btn-success" href="/save_settings">Save</a>
+  <button type="submit" class="btn btn-success">Save</button>
   <a type="button" class="btn btn-default" href="/dashboard">Cancel</a>
 </div>
+
+</form>
 
 <style>
   .switch {

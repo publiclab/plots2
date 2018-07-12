@@ -27,4 +27,12 @@ class UserTag < ApplicationRecord
           uid: uid)
   end
 
+  def self.create_tag(uid, value)
+    create(uid: uid, value: value)
+  end
+
+  def self.remove(uid, value)
+    UserTag.where(uid: uid , value: value).destroy_all
+  end
+
 end

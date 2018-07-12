@@ -309,6 +309,24 @@ class UsersController < ApplicationController
     redirect_to "/"
   end
 
+  def save_settings
+
+    # settings = ['notify-comment-direct:false', 'notify-comment-indirect:false', 'notify-likes-direct:false', 'notify-wiki-edits:false']
+    settings = ['notify-comment-direct:false']
+
+    settings.each do |setting|
+      if params[setting] && params[setting] == "on"
+          if UserTag.exists?(current_user.uid, setting)
+            UserTag.remove(current_user.uid, setting)
+          end
+      else
+        if !UserTag.exists?(current_user.uid, setting)
+          UserTag.create_tag(current_user.uid, setting)
+        end
+      end
+    end
+  end
+
   private
 
   def set_user
