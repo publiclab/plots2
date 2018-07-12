@@ -57,6 +57,13 @@ begin
     end
   end
 
+  junit.parse "output2.xml"
+  junit.failures.collect(&:nodes).flatten.each do |failure|
+    failure.nodes.each do |f|
+        fail("There was a test error in js: #{f}")
+    end
+  end
+
 rescue => ex
   fail "There was an error with Danger bot's Junit parsing: #{ex.message}"
   message ex.inspect # view the entire error output in the log

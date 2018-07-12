@@ -29,5 +29,7 @@ script:
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test -d"
   - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml
-  - tail -n +2 -q ./test/reports/TEST*.xml ./spec/TEST*.xml >> output.xml
+  - tail -n +2 -q ./test/reports/TEST*.xml >> output.xml
+  - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output2.xml
+  - tail -n +2 -q ./spec/TEST-Teaspoon-Result.xml >> output2.xml
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then danger --verbose; fi'
