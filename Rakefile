@@ -18,7 +18,7 @@ namespace :test do
     t.test_files = FileList['test/**/*_test.rb']
   end
 
-  desc "Run rails and jasmine tests"
+  desc "Run rails and teaspoon tests"
   task :all => :environment do
     require 'coveralls/rake/task'
     Coveralls::RakeTask.new
@@ -26,15 +26,8 @@ namespace :test do
       require 'ci/reporter/rake/test_unit'
       Rake::Task["ci:setup:testunit"].execute
     end
-    puts "Running jasmine tests headlessly"
+    puts "Running teaspoon tests headlessly"
     Rake::Task["teaspoon"].execute
     Rake::Task["coveralls:push"].execute
   end
-
-  desc "Run rails and jasmine tests"
-  task :javascript do
-    puts "Running jasmine tests headlessly"
-    Rake::Task["spec:javascript"].execute
-  end
-
 end
