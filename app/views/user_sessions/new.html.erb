@@ -4,20 +4,18 @@
 
   <h2><%= raw t('user_sessions.new.log_in_or_sign_up', :url1 => "/signup") %></h2>
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
-    <% if Rails.env == "production"%>
-      <div class="loginbutton" style="text-align: center">
-        <h3> Login with </h3>
-        <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default" style="margin-right:2px"><i class="fa fa-google" style="font-size:20px;color:red;"></i></span></a>
-        <a href="/auth/github" id="connect-github"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-github" style="font-size:20px;color:green;"></i></span></a>
-        <a href="/auth/facebook" id="connect-facebook"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-facebook" style="font-size:20px;color:blue;"></i></span></a>
-        <a href="/auth/twitter" id="connect-twitter"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-twitter" style="font-size:20px;color:blue;margin-left:2px;"></i></span></a>
-      </div>
-     <br />
-
-     <h5 style="text-align:center; border-bottom:2px solid #cccccc">OR</h5>
-   <% end %>
+  <br style="clear:both;"/>
+   <% if Rails.env == "production"%>
+     <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
+          <%= render :partial => "layouts/social_icons" %>
+     </div>
 
 
+      <br />
+  <% end %>
+  <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
+    <h3>OR</h3>
+  </div>
   <br style="clear:both;"/>
 
   <div class="form-group">
