@@ -225,11 +225,11 @@ class CommentTest < ActiveSupport::TestCase
 
   test 'should parse incoming mail from gmail service correctly and add comment' do
     require 'mail'
-    mail = Mail.read('fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
+    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
     node = Node.last
     mail.subject = "Re: #{node.title} (##{node.nid})"
     Comment.receive_mail(mail)
-    f = File.open('fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
+    f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
     comment = Comment.last
     user_email = mail.from.first
     assert_equal comment.comment, f.read
@@ -242,11 +242,11 @@ class CommentTest < ActiveSupport::TestCase
 
   test 'should parse incoming mail from yahoo service correctly and add comment' do
     require 'mail'
-    mail = Mail.read('fixtures/incoming_test_emails/yahoo/incoming_yahoo_email.eml')
+    mail = Mail.read('test/fixtures/incoming_test_emails/yahoo/incoming_yahoo_email.eml')
     node = Node.last
     mail.subject = "Re: #{node.title} (##{node.nid})"
     Comment.receive_mail(mail)
-    f = File.open('fixtures/incoming_test_emails/yahoo/final_parsed_comment.txt', 'r')
+    f = File.open('test/fixtures/incoming_test_emails/yahoo/final_parsed_comment.txt', 'r')
     comment = Comment.last
     user_email = mail.from.first
     assert_equal comment.comment, f.read
@@ -259,11 +259,11 @@ class CommentTest < ActiveSupport::TestCase
 
   test 'should parse incoming mail from gmail service correctly and add answer comment' do
     require 'mail'
-    mail = Mail.read('fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
+    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
     answer = Answer.last
     mail.subject = "Re: (#a#{answer.id})"
     Comment.receive_mail(mail)
-    f = File.open('fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
+    f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
     comment = Comment.last
     user_email = mail.from.first
     assert_equal comment.comment, f.read
@@ -276,12 +276,12 @@ class CommentTest < ActiveSupport::TestCase
 
   test 'should parse incoming mail from yahoo service correctly and add answer comment' do
     require 'mail'
-    mail = Mail.read('fixtures/incoming_test_emails/yahoo/incoming_yahoo_email.eml')
+    mail = Mail.read('test/fixtures/incoming_test_emails/yahoo/incoming_yahoo_email.eml')
     # Mail contain ["01namangupta@gmail.com"] in from field.
     answer = Answer.last
     mail.subject = "Re: (#a#{answer.id})"
     Comment.receive_mail(mail)
-    f = File.open('fixtures/incoming_test_emails/yahoo/final_parsed_comment.txt', 'r')
+    f = File.open('test/fixtures/incoming_test_emails/yahoo/final_parsed_comment.txt', 'r')
     comment = Comment.last
     user_email = mail.from.first
     assert_equal comment.comment, f.read
@@ -304,7 +304,7 @@ class CommentTest < ActiveSupport::TestCase
 
   test 'should be true when there is trimmed content in comment' do
     comment = Comment.new
-    f = File.open('fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
+    f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
     comment.comment = f.read
     f.close()
     comment.save
