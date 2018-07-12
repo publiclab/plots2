@@ -148,7 +148,7 @@ class Comment < ApplicationRecord
   # email all users in this thread
   # plus all who've starred it
   def notify(current_user)
-    if parent.uid != current_user.uid && UserTag.exists?(parent.uid, 'notifications:comment-direct')
+    if parent.uid != current_user.uid && !UserTag.exists?(parent.uid, 'notify-comment-direct:false')
       CommentMailer.notify_note_author(parent.author, self).deliver_now
     end
 
