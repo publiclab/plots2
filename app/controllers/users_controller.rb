@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :require_no_user, :only => [:new]
   before_action :require_user, :only => [:edit, :update]
   before_action :set_user, only: [:info, :followed, :following, :followers]
+  respond_to :html, :xml, :json
 
   def new
     @spamaway = Spamaway.new
@@ -310,7 +311,6 @@ class UsersController < ApplicationController
   end
 
   def save_settings
-
     # settings = ['notify-comment-direct:false', 'notify-comment-indirect:false', 'notify-likes-direct:false', 'notify-wiki-edits:false']
     settings = ['notify-comment-direct:false']
 
@@ -325,6 +325,8 @@ class UsersController < ApplicationController
         end
       end
     end
+    flash[:notice] = "Settings updated successfully!"
+    render js: "window.location.reload()"
   end
 
   private
