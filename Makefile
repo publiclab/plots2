@@ -10,6 +10,7 @@ redeploy-container:
 	docker-compose exec web bower install --allow-root
 	docker-compose exec web bower update --allow-root
 	docker-compose exec web rake assets:precompile
+	docker-compose exec web rake tmp:cache:clear
 	docker-compose down --remove-orphans
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
