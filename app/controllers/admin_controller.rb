@@ -101,6 +101,18 @@ class AdminController < ApplicationController
     end
   end
 
+  def spam_comments
+    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+      @comments = Comment.paginate(page: params[:page])
+                       .order('timestamp DESC')
+                       .where(status: 0)
+      render template: 'admin/spam'
+    else
+      flash[:error] = 'Only moderators can moderate comments.'
+      redirect_to '/dashboard'
+    end
+  end
+
   def mark_spam
     @node = Node.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
