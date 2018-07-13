@@ -94,6 +94,7 @@ end
 group :test, :development do
   gem 'ci_reporter_test_unit'
   gem 'coveralls', require: false
+  gem 'danger-junit'
   gem 'jasmine-jquery-rails'
   gem 'jasmine-rails'
   gem 'json_expressions'
