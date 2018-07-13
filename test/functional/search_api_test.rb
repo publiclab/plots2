@@ -31,51 +31,6 @@ class SearchApiTest < ActiveSupport::TestCase
 
    end
 
-   test 'search all functionality with multiple responses' do
-      get '/api/srch/all?srchString=question'
-      assert last_response.ok?
-
-      # Expected search pattern
-      pattern = {
-        srchParams: {
-          srchString: 'question',
-          seq: nil,
-        }.ignore_extra_keys!
-      }.ignore_extra_keys!
-
-      matcher = JsonExpressions::Matcher.new(pattern)
-
-      json = JSON.parse(last_response.body)
-
-      assert_equal 15,               json['items'][0]['docId']
-      assert_equal 9,                json['items'][1]['docId']
-      assert_equal 15,               json['items'][2]['docId']
-      assert_equal 9,                json['items'][3]['docId']
-
-      assert matcher =~ json
-
-    end
-
-    test 'search all functionality without search query' do
-       get '/api/srch/all?srchString'
-       assert last_response.ok?
-
-       # Expected search pattern
-       pattern = {
-         srchParams: {
-           srchString: nil,
-           seq: nil,
-         }.ignore_extra_keys!
-       }.ignore_extra_keys!
-
-       matcher = JsonExpressions::Matcher.new(pattern)
-
-       json = JSON.parse(last_response.body)
-       puts json.inspect
-       assert matcher =~ json
-
-     end
-
    test 'search profiles functionality' do
      get '/api/srch/profiles?srchString=Jeff'
      assert last_response.ok?
@@ -132,18 +87,17 @@ class SearchApiTest < ActiveSupport::TestCase
          srchParams: {
            srchString: 'Question',
            seq: nil,
+        }.ignore_extra_keys!
       }.ignore_extra_keys!
-    }.ignore_extra_keys!
 
-    matcher = JsonExpressions::Matcher.new(pattern)
+      matcher = JsonExpressions::Matcher.new(pattern)
 
-    json = JSON.parse(last_response.body)
+      json = JSON.parse(last_response.body)
 
-    assert_equal "Question by a moderated user",   json['items'][0]['docTitle']
-    assert_equal 15,                               json['items'][0]['docId']
+      assert_equal "Question by a moderated user",   json['items'][0]['docTitle']
+      assert_equal 15,                               json['items'][0]['docId']
 
-
-    assert matcher =~ json
+      assert matcher =~ json
 
   end
 
@@ -164,7 +118,7 @@ class SearchApiTest < ActiveSupport::TestCase
      json = JSON.parse(last_response.body)
      assert matcher =~ json
 
-    end
+  end
 
   test 'search Tag Nearby Nodes functionality' do
     get '/api/srch/taglocations?srchString=71.00,52.00&tagName=awesome'
