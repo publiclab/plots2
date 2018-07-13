@@ -3,45 +3,12 @@ require 'grape-entity'
 
 module Srch
   class Search < Grape::API
-    def self.create(endpoint)
-      get endpoint.to_sym do
-        sresult = DocList.new
-        unless params[:srchString].nil? || params[:srchString] == 0
-          sservice = SearchService.new
-          if endpoint == "all"
-            sresult = sservice.textSearch_all(params[:srchString])
-          elsif endpoint == "profiles"
-            sresult = sservice.textSearch_profiles(params[:srchString])
-          elsif endpoint == "notes"
-            sresult = sservice.textSearch_notes(params[:srchString])
-          elsif endpoint == "questions"
-            sresult = sservice.textSearch_questions(params[:srchString])
-          elsif endpoint == "tags"
-            sresult = sservice.textSearch_tags(params[:srchString])
-          elsif endpoint == "peoplelocations"
-            sresult = sservice.recentPeople(params[:srchString])
-          elsif endpoint == "taglocations" && (params[:srchString].include? ",")
-            sresult = sservice.tagNearbyNodes(params[:srchString], params[:tagName])
-          end
-        end
-        sparms = SearchRequest.fromRequest(params)
-        sresult.srchParams = sparms
-        sresult
-      end
-    end
+    # we are using a group of reusable parameters using a shared params helper
+    # see /app/api/srch/shared_params.rb
+    helpers SharedParams
 
     # Endpoint definitions
     resource :srch do
-      # add a default set of params
-      helpers do
-        params :common do
-          requires :srchString, type: String, documentation: { example: 'Spec' }
-          optional :seq, type: Integer, documentation: { example: 995 }
-          optional :showCount, type: Integer, documentation: { example: 3 }
-          optional :pageNum, type: Integer, documentation: { example: 0 }
-        end
-      end
-
       # Request URL should be /api/srch/all?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of all available resources', hidden: false,
@@ -50,9 +17,9 @@ module Srch
       params do
         use :common
       end
-
-      endpoint = 'all'
-      create(endpoint)
+      get :all do
+        Search.execute(:all, params)
+      end
 
       # Request URL should be /api/srch/profiles?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
@@ -63,8 +30,9 @@ module Srch
       params do
         use :common
       end
-      endpoint = 'profiles'
-      create(endpoint)
+      get :profiles do
+        Search.execute(:profiles, params)
+      end
 
       # Request URL should be /api/srch/notes?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
@@ -75,8 +43,9 @@ module Srch
       params do
         use :common
       end
-      endpoint = 'notes'
-      create(endpoint)
+      get :notes do
+        Search.execute(:notes, params)
+      end
 
       # Request URL should be /api/srch/questions?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
@@ -87,8 +56,9 @@ module Srch
       params do
         use :common
       end
-      endpoint = 'questions'
-      create(endpoint)
+      get :questions do
+        Search.execute(:questions, params)
+      end
 
       # Request URL should be /api/srch/tags?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
@@ -99,37 +69,51 @@ module Srch
       params do
         use :common
       end
-      endpoint = 'tags'
-      create(endpoint)
+      get :tags do
+        Search.execute(:tags, params)
+      end
 
-      # Request URL should be /api/srch/locations?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/taglocations?srchString=QRY[&tagName=awesome&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Note: Query(QRY as above) must have latitude and longitude as srchString=lat,lon
       desc 'Perform a search of documents having nearby latitude and longitude tag values', hidden: false,
                                                                                             is_array: false,
                                                                                             nickname: 'srchGetLocations'
 
       params do
-        use :common
-        optional :tagName, type: String, documentation: { example: 'awesome' }
+        use :common, :additional
       end
-      endpoint = 'taglocations'
-      create(endpoint)
+      get :taglocations do
+        Search.execute(:taglocations, params)
+      end
 
       # API TO FETCH QRY RECENT CONTRIBUTORS
-      # Request URL should be /api/srch/peoplelocations?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/peoplelocations?srchString=QRY[&tagName=group:partsandcrafts&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # QRY should be a number
       desc 'Perform a search to show x Recent People',  hidden: false,
                                                         is_array: false,
                                                         nickname: 'srchGetPeople'
 
       params do
-        use :common
-        optional :tagName, type: String, documentation: { example: 'group:partsandcrafts' }
+        use :common, :additional
       end
+      get :peoplelocations do
+        Search.execute(:peoplelocations, params)
+      end
+    end
 
-      endpoint = 'peoplelocations'
-      create(endpoint)
-      # end endpoint definitions
+    def self.execute(endpoint, params)
+      sresult = DocList.new
+      search_query = params[:srchString]
+      tag_query = params[:tagName]
+      search_type = endpoint
+      search_criteria = SearchCriteria.new(search_query, tag_query)
+
+      if search_criteria.valid?
+        sresult = ExecuteSearch.new.by(search_type, search_criteria)
+      end
+      sparms = SearchRequest.fromRequest(params)
+      sresult.srchParams = sparms
+      sresult
     end
   end
 end
