@@ -28,7 +28,12 @@ end
 message "Pull Request is marked as Work in Progress" if github.pr_title.include? "[WIP]"
 
 junit.parse "output2.xml"
-fail("hello world")
+  junit.failures.collect(&:nodes).flatten.each do |failure|
+    failure.nodes.each do |f|
+        fail("There was a failure which is: #{f}")
+    end
+  end
+
 
 begin
 
