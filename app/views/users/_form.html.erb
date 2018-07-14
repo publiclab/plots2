@@ -29,12 +29,14 @@
 
     <div class="form-group">
      <% if Rails.env == "production" %>
+     <% if params[:controller] == "users" && params[:action] == "edit" %>
       <div class='col-lg-8 col-md-10 col-sm-10' style="display:flex; justify-content: flex-start; padding: 0;">
         <label> Link your Public Lab account to providers </label>
     </div>
     <div class='col-lg-8 col-md-10 col-sm-10' style="display:flex; justify-content: flex-start; padding: 0; margin-bottom: 10px;">
       <%= render :partial => "layouts/social_icons" %>
     </div>
+    <% end %>
     <% end %>
     <br style="clear:both;"/>
   
