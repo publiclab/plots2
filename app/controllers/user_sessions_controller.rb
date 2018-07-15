@@ -36,7 +36,8 @@ class UserSessionsController < ApplicationController
         if @identity&.user.present?
           # The identity we found had a user associated with it so let's
           # just log them in here
-          UserSession.create(@identity.user)
+          @user = @identity.user
+          @user_session = UserSession.create(@identity.user)
           redirect_to root_url, notice: "Signed in!"
         else # identity does not exist so we need to either create a user with identity OR link identity to existing user
           if User.where(email: auth["info"]["email"]).empty?
@@ -45,6 +46,8 @@ class UserSessionsController < ApplicationController
             WelcomeMailer.notify_newcomer(user).deliver_now
             @identity = UserTag.create_with_omniauth(auth, user.id)
             key = user.generate_reset_key
+            @user_session = UserSession.create(@identity.user)
+            @user = user
             # send key to user email
             PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
             redirect_to root_url, notice: "You have successfully signed in. Please change your password via a link sent to you via a mail"
@@ -55,8 +58,9 @@ class UserSessionsController < ApplicationController
             # The identity is not associated with the current_user so lets
             # associate the identity
             @identity.save
+            @user = user
             # log in them
-            UserSession.create(@identity.user)
+            @user_session = UserSession.create(@identity.user)
             redirect_to root_url, notice: "Successfully linked to your account!"
           end
         end
