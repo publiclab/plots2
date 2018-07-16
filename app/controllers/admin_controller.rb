@@ -102,7 +102,6 @@ class AdminController < ApplicationController
   end
 
   def spam_comments
-
     if current_user &. can_moderate?
       @comments = Comment.paginate(page: params[:page])
                        .order('timestamp DESC')
