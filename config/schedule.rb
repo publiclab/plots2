@@ -28,6 +28,10 @@ every 1.minutes do
 	command "date -u" #This will print utc time every 1 min in log/cron_log.log file
 end
 
+every 1.day do
+	runner "DigestMailJob.perform_async(0)"
+end
+
 every 1.week do
-	runner "DigestMailJob.perform_async"
+	runner "DigestMailJob.perform_async(1)"
 end
