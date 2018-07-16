@@ -9,8 +9,10 @@
   <% @comments.each do |comment| %>
       <tr id="n<%= comment.id %>">
         <td>
-          <i class="fa fa-file"></i> <a href="<%= comment.parent.path %>"><%= comment.parent.title.truncate(40) %></a><br />
-          <span style="color:grey;"><%= time_ago_in_words(comment.timestamp.seconds.ago) %> ago</span>
+          <% unless comment.node.nil? %>
+            <i class="fa fa-file"></i> <a href="<%= comment.node.path %>"><%= comment.node.title.truncate(40) %></a><br />
+            <span style="color:grey;"><%= time_ago_in_words(comment.timestamp.seconds.ago) %> ago</span>
+          <% end %>
         </td>
         <td style="width:200px;">
           <%= comment.body.truncate(40) %>

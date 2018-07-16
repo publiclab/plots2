@@ -143,7 +143,7 @@ class AdminController < ApplicationController
         @comment.spam
         user = @comment.author
         user.ban
-        flash[:notice] = "Comment has been marked as spam and comment author has been banned."
+        flash[:notice] = "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>."
       else
         flash[:notice] = "Comment already marked as spam."
       end
