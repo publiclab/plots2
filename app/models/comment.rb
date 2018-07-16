@@ -1,5 +1,4 @@
 class Comment < ApplicationRecord
-
   include CommentsShared # common methods for comment-like models
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
@@ -332,5 +331,4 @@ class Comment < ApplicationRecord
   def trimmed_content?
     comment.include?(COMMENT_FILTER)
   end
-
 end
