@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_action :require_user, only: %i(spam spam_revisions mark_comment_spam publish_comment)
+  before_action :require_user, only: %i(spam spam_revisions mark_comment_spam publish_comment spam_comments)
 
   # intended to provide integration tests for assets
   def assets; end
@@ -102,7 +102,8 @@ class AdminController < ApplicationController
   end
 
   def spam_comments
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+
+    if current_user &. can_moderate?
       @comments = Comment.paginate(page: params[:page])
                        .order('timestamp DESC')
                        .where(status: 0)
