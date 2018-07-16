@@ -287,6 +287,7 @@ Plots2::Application.routes.draw do
   post 'answers/create/:nid' => 'answers#create'
   get 'answers/create/:nid' => 'answers#create'
   get 'answers/update/:id' => 'answers#update'
+  post 'answers/update/:id' => 'answers#update'
   put 'answers/update/:id' => 'answers#update'
   get 'answers/delete/:id' => 'answers#delete'
   delete 'answers/delete/:id' => 'answers#delete'
