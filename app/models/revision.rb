@@ -117,6 +117,8 @@ class Revision < ApplicationRecord
     body = render_body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?#{host})/, '\1https://\3')
     body = body.gsub("href='/", "href='https://#{host}/")
     body = body.gsub('href="/', 'href="https://' + host.to_s + '/')
+    body = body.gsub("src='/", "src='https://#{host}/")
+    body = body.gsub('src="/', 'src="https://' + host.to_s + '/')
     body
   end
 
