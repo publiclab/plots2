@@ -314,16 +314,25 @@ class UsersController < ApplicationController
     settings = ['notify-comment-direct:false']
 
     settings.each do |setting|
-      if params[setting] && params[setting] == "on"
-          if UserTag.exists?(current_user.uid, setting)
-            UserTag.remove(current_user.uid, setting)
-          end
+      if params[setting] && params[setting] == "on" && UserTag.exists?(current_user.uid, setting)
+          UserTag.remove(current_user.uid, setting)
       else
-        if !UserTag.exists?(current_user.uid, setting)
+        unless UserTag.exists?(current_user.uid, setting)
           UserTag.create_tag(current_user.uid, setting)
         end
       end
     end
+
+    if params['digest:weekly'] == "on"
+      digest_val = 1
+    elsif params['digest:daily'] == "on"
+      digest_val = 0
+    else
+      digest_val = 2
+    end
+
+    current_user.customize_digest(digest_val)
+
     flash[:notice] = "Settings updated successfully!"
     render js: "window.location.reload()"
   end

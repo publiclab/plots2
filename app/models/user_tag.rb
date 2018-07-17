@@ -32,6 +32,6 @@ class UserTag < ApplicationRecord
   end
 
   def self.remove(uid, value)
-    UserTag.where(uid: uid , value: value).destroy_all
+    UserTag.where(uid: uid, value: value).destroy_all
   end
 end
