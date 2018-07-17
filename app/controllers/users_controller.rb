@@ -315,7 +315,7 @@ class UsersController < ApplicationController
 
     settings.each do |setting|
       if params[setting] && params[setting] == "on" && UserTag.exists?(current_user.uid, setting)
-          UserTag.remove(current_user.uid, setting)
+        UserTag.remove(current_user.uid, setting)
       else
         unless UserTag.exists?(current_user.uid, setting)
           UserTag.create_tag(current_user.uid, setting)

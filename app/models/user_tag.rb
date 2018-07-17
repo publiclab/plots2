@@ -26,7 +26,7 @@ class UserTag < ApplicationRecord
     create(value: "oauth:" + auth['provider'] + ":" + auth['uid'],
           uid: uid)
   end
-  
+
   def self.create_tag(uid, value)
     create(uid: uid, value: value)
   end
