@@ -88,3 +88,10 @@ naman18996:
   uid: 13
   status: 1
   created: <%= Time.now.to_i %>
+
+jeffrey:
+  name: jeffrey
+  status: 1
+  mail: jeff@publiclab.org
+  uid: 14
+  created: <%= Time.now.to_i %>

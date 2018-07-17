@@ -158,3 +158,16 @@ naman18996:
   bio: ''
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
+
+jeffrey:
+  username: jeffrey
+  status: 1
+  email: jeff@publiclab.org
+  id: 14
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: 'Here is something really interesting about Jeff.'
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
