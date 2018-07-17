@@ -27,23 +27,15 @@ class UserTag < ApplicationRecord
           uid: uid)
   end
 
-  def self.create_tag(uid, value)
-    create(uid: uid, value: value)
-  end
-
-  def self.remove(uid, value)
-    UserTag.where(uid: uid, value: value).destroy_all
-  end
-
   def self.remove_if_exists(uid, value)
     if exists?(uid, value)
-      remove(uid, value)
+      UserTag.where(uid: uid, value: value).destroy_all
     end
   end
 
   def self.create_if_absent(uid, value)
     unless exists?(uid, value)
-      create_tag(uid, value)
+      UserTag.create(uid: uid, value: value)
     end
   end
 end
