@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'activerecord-session_store'
-gem "authlogic", "4.1.0"
+gem "authlogic", "4.1.1"
 gem 'authlogic-oid'
 gem "composite_primary_keys"
 gem 'figaro'
