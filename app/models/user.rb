@@ -393,9 +393,9 @@ class User < ActiveRecord::Base
   end
 
   def customize_digest(type)
-    if type == 0
+    if type == UserTag::DIGEST_DAILY
       newtag = 'digest:daily'
-    elsif type == 1
+    elsif type == UserTag::DIGEST_WEEKLY
       newtag = 'digest:weekly'
     end
     unless newtag.blank?
