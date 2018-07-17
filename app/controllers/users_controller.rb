@@ -314,8 +314,10 @@ class UsersController < ApplicationController
     settings = ['notify-comment-direct:false']
 
     settings.each do |setting|
-      if params[setting] && params[setting] == "on" && UserTag.exists?(current_user.uid, setting)
-        UserTag.remove(current_user.uid, setting)
+      if params[setting] && params[setting] == "on"
+        if UserTag.exists?(current_user.uid, setting)
+          UserTag.remove(current_user.uid, setting)
+        end
       else
         unless UserTag.exists?(current_user.uid, setting)
           UserTag.create_tag(current_user.uid, setting)

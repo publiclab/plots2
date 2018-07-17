@@ -10,7 +10,7 @@
     <span>Do you want to be notified by email for comments on your posts ? </span>
     <span>
     <label class="switch">
-      <input type="checkbox" name="notify-comment-direct:false" <% if !UserTag.exists?(current_user.id, 'notify-comment-direct:false') %>checked<% end %>>
+      <input type="checkbox" name="notify-comment-direct:false" <% unless UserTag.exists?(current_user.id, 'notify-comment-direct:false') %>checked<% end %>>
       <span class="slider round"></span>
     </label>
     </span>
