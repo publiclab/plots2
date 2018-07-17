@@ -241,6 +241,7 @@ Plots2::Application.routes.draw do
   post 'useremail' => 'admin#useremail'
   get 'spam' => 'admin#spam'
   get 'spam/revisions' => 'admin#spam_revisions'
+  get 'spam/comments' => 'admin#spam_comments'
   get 'spam/:type' => 'admin#spam'
   get 'spam/batch/:ids' => 'admin#batch'
   get 'admin/users' => 'admin#users'
