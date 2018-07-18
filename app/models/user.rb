@@ -353,7 +353,7 @@ class User < ActiveRecord::Base
       puts photo_path(:thumb)
       photo_path(:thumb)
     else
-      "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}"
+      "https://www.gravatar.com/avatar/#{OpenSSL::Digest::MD5.hexdigest(email)}"
     end
   end
 
