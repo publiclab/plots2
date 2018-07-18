@@ -95,11 +95,14 @@ class Tag < ActiveRecord::Base
                   .includes(:tag)
                   .references(:term_data)
                   .where('term_data.name IN (?)', tags.collect(&:parent))
+    order = 'node_revisions.timestamp DESC'
+    order = 'created DESC' if type == 'note'
     Node.where('node.nid IN (?)', (nodes + parents).collect(&:nid))
-        .includes(:tag)
+        .includes(:revision, :tag)
+        .references(:node_revisions)
         .where(status: 1)
-        .order('created DESC')
         .limit(limit)
+        .order(order)
   end
 
   # just like find_nodes_by_type, but searches wiki pages, places, and tools
