@@ -14,6 +14,5 @@ module Srch
     params :additional do
       optional :tagName, type: String, documentation: { example: 'awesome' }
     end
-
   end
 end
