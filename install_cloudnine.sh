@@ -4,6 +4,7 @@ read -p "Enter your cloud9 username: " un
 rvm install ruby-2.4.1
 source $(rvm 2.4.1 do rvm env --path)
 rvm use 2.4.1
+gem install rails -v 5.2.0
 sudo apt-get update
 sudo apt-get -y install imagemagick ruby-rmagick
 npm install -g bower
