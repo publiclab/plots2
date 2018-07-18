@@ -496,14 +496,14 @@ Style/WordArray:
   MinSize: 0
   WordRegex: !ruby/regexp /\A[\p{Word}\n\t]+\z/
 
-Layout/BlockAlignment:
+Lint/BlockAlignment:
   EnforcedStyleAlignWith: either
   SupportedStylesAlignWith:
   - either
   - start_of_block
   - start_of_line
 
-Layout/DefEndAlignment:
+Lint/DefEndAlignment:
   EnforcedStyleAlignWith: start_of_line
   SupportedStylesAlignWith:
   - start_of_line
@@ -890,7 +890,7 @@ Lint/AmbiguousRegexpLiteral:
 Lint/CircularArgumentReference:
   Enabled: true
 
-Layout/ConditionPosition:
+Lint/ConditionPosition:
   Enabled: true
 
 Lint/Debugger:
@@ -994,12 +994,6 @@ Lint/UnderscorePrefixedVariableName:
 Lint/UnifiedInteger:
   Enabled: true
 
-Lint/UnneededCopDisableDirective:
-  Enabled: true
-
-Lint/UnneededCopEnableDirective:
-  Enabled: true
-
 Lint/UnneededSplatExpansion:
   Enabled: true
 
@@ -1095,25 +1089,5 @@ Security/Eval:
 Security/JSONLoad:
   Enabled: true
 
-Security/Open:
-  Enabled: true
-
-Lint/BigDecimalNew:
-  Enabled: true
-
-Style/TrailingBodyOnClass:
-  Enabled: true
-
-Style/TrailingBodyOnModule:
-  Enabled: true
-
-Layout/SpaceInsideReferenceBrackets:
-  EnforcedStyle: no_space
-  EnforcedStyleForEmptyBrackets: no_space
-  Enabled: true
-
 Style/ModuleFunction:
   EnforcedStyle: extend_self
-
-Lint/OrderedMagicComments:
-  Enabled: true
