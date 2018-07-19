@@ -17,13 +17,15 @@ class NotesController < ApplicationController
                          LEFT OUTER JOIN community_tags ON community_tags.nid = node.nid
                          LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
       .select('*, max(node_revisions.timestamp)')
-      .where(status: 1, type:%w(page place))
+      .where(status: 1, type: %w(page place))
       .includes(:revision, :tag)
       .references(:term_data)
       .where('term_data.name = ?', 'chapter')
       .group('node.nid')
-      .order('max(node_revisions.timestamp) DESC, node.nid')
+      .order(Arel.sql('max(node_revisions.timestamp) DESC, node.nid'))
       .paginate(page: params[:page], per_page: 24)
+
+    # Arel.sql is used to remove a Deprecation warning while updating to rails 5.2.
 
     render template: 'notes/tools_places'
   end
@@ -51,6 +53,9 @@ class NotesController < ApplicationController
       @node = Node.find params[:id]
     end
 
+    if @node.status == 3 && !params[:token].nil? && @node.slug.split('token:').last == params[:token]
+    else
+
     if @node.status == 3 && current_user.nil?
       flash[:warning] = "You need to login to view the page"
       redirect_to '/login'
@@ -60,6 +65,7 @@ class NotesController < ApplicationController
       redirect_to '/'
       return
     end
+  end
 
     if @node.has_power_tag('question')
       redirect_to @node.path(:question)
@@ -110,12 +116,15 @@ class NotesController < ApplicationController
         redirect_to '/'
         return
       elsif params[:draft] == "true"
-         @node.draft
+        @node.draft
+        @token = SecureRandom.urlsafe_base64(16, false)
+        @node.slug = @node.slug + " token:" + @token
+        @node.save!
       end
 
       if saved
-        params[:tags]&.tr(' ', ',').split(',').each do |tagname|
-            @node.add_tag(tagname.strip, current_user)
+        params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
+          @node.add_tag(tagname.strip, current_user)
         end
         if params[:event] == 'on'
           @node.add_tag('event', current_user)
@@ -232,7 +241,7 @@ class NotesController < ApplicationController
         format = false
         format = :question if params[:redirect] && params[:redirect] == 'question'
         if request.xhr?
-          render plain: "#{@node.path(format).to_s}?_=#{Time.now.to_i}"
+          render plain: "#{@node.path(format)}?_=#{Time.now.to_i}"
         else
           redirect_to URI.parse(@node.path(format)).path + '?_=' + Time.now.to_i.to_s
         end
@@ -265,10 +274,10 @@ class NotesController < ApplicationController
               redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
             end
           end
-      end
-    else
-      flash[:error] = I18n.t('notes_controller.more_than_one_contributor')
-      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+        end
+      else
+        flash[:error] = I18n.t('notes_controller.more_than_one_contributor')
+        redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
     end
     else
       prompt_login
@@ -390,6 +399,7 @@ class NotesController < ApplicationController
     @node = Node.find(params[:id])
     if current_user && current_user.uid == @node.uid || current_user.can_moderate? || @node.has_tag("with:#{current_user.username}")
       @node.path = @node.generate_path
+      @node.slug = @node.slug.split('token').first
       @node.publish
       SubscriptionMailer.notify_node_creation(@node).deliver_now
       flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publically."

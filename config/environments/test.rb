@@ -88,7 +88,60 @@ Rails.application.configure do
       }
     })
 
+    #facebook Provider
+    OmniAuth.config.mock_auth[:facebook1] = OmniAuth::AuthHash.new({
+        'provider' => 'facebook',
+        'uid' => '1357905002',
+        'info' => {
+          'name' => 'sidharth bansal',
+          'email' => 'bansal.sidharth309@gmail.com'
+        }
+      })
+  
+    #Twitter Provider
+    OmniAuth.config.mock_auth[:twitter1] = OmniAuth::AuthHash.new({
+        'provider' => 'twitter',
+        'uid' => '135798079602',
+        'info' => {
+          'name' => 'sidharth bansal',
+          'email' => 'bansal.sidharth309@gmail.com'
+        }
+      })
 
+      OmniAuth.config.mock_auth[:facebook2] = OmniAuth::AuthHash.new({
+          'provider' => 'facebook',
+          'uid' => '1359988009602',
+          'info' => {
+            'name' => 'jeffrey',
+            'email' => 'jeff@pxlshp.com'
+            }
+        })
 
+      OmniAuth.config.mock_auth[:facebook3] = OmniAuth::AuthHash.new({
+          'provider' => 'facebook',
+          'uid' => '13579992302',
+          'info' => {
+            'name' => 'emila buffet',
+            'email' => 'emila.buffet309@gmail.com'
+          }
+      })
+
+    OmniAuth.config.mock_auth[:twitter2] = OmniAuth::AuthHash.new({
+        'provider' => 'twitter',
+        'uid' => '137898009602',
+        'info' => {
+          'name' => 'jeffrey',
+          'email' => 'jeff@pxlshp.com'
+          }
+      })
+
+    OmniAuth.config.mock_auth[:twitter3] = OmniAuth::AuthHash.new({
+        'provider' => 'twitter',
+        'uid' => '135689602',
+        'info' => {
+          'name' => 'emila buffet',
+          'email' => 'emila.buffet309@gmail.com'
+        }
+      })
 
 end

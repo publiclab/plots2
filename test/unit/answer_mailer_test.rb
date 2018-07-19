@@ -12,7 +12,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal '[PLab] Question: ' + answer.node.title.truncate(30,omission: '...?') + ' An answer has been posted on Public Lab', email.subject
+    assert_equal '[PLab] Question: ' + answer.node.title.truncate(30,omission: '...?') + ' An answer has been posted on Public Lab' + + " (#a#{answer.id})", email.subject
     assert email.body.include?("Hi! <a href='https://#{request_host}/profile/#{ answer.author.name }'>#{ answer.author.name }</a> responded :
 <hr /><p>#{ answer.content }</p><hr />")
   end
@@ -28,7 +28,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal '[PublicLab] New answer to Question: ' + answer.node.title, email.subject
+    assert_equal '[PublicLab] New answer to Question: ' + answer.node.title + " (#a#{answer.id})", email.subject
     assert email.body.include?("Hi! There's been a new answer posted for the question '<a href='https://#{request_host}#{answer.node.path(:question)}'>#{answer.node.title}</a>' that you also answered")
   end
 
@@ -43,7 +43,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal '[PublicLab] New answer to Question: ' + answer.node.title, email.subject
+    assert_equal "[PublicLab] New answer to Question: " + answer.node.title + " (#a#{answer.id})" , email.subject
     assert email.body.include?("Hi! There's been a new answer posted for the question '<a href='https://#{request_host}#{answer.node.path(:question)}'>#{answer.node.title}</a>' that you liked")
   end
 
@@ -73,7 +73,7 @@ class AnswerMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [answer.author.email], email.to
-    assert_equal "[PublicLab] #{user.username} liked your answer to: " + answer.node.title, email.subject
+    assert_equal "[PublicLab] #{user.username} liked your answer to: " + answer.node.title + " (#a#{answer.id})", email.subject
     assert email.body.include?("Public Lab contributor <a href='https://#{request_host}/profile/#{user.username}'>#{user.username}</a> just liked your answer to the question <a href='https://#{request_host}#{answer.node.path(:question)}'>#{answer.node.title}</a>")
   end
 end

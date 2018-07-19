@@ -25,7 +25,7 @@ class HomeController < ApplicationController
       .references(:term_data, :node_revisions)
       .where('term_data.name = ?', 'blog')
       .order('created DESC')
-      .page(params[:page])
+      .paginate(page: params[:page], per_page: 8)
   end
 
   # Proxy to enable AJAX loading of RSS feeds, which requires same-origin.
@@ -69,6 +69,7 @@ class HomeController < ApplicationController
       @title = I18n.t('home_controller.community_research')
     end
   end
+
   # trashy... clean this up!
   # this will eventually be based on the profile_tags data where people can mark their location with "location:lat,lon"
   def nearby
@@ -166,5 +167,4 @@ class HomeController < ApplicationController
         activity
       end
   end
-
 end

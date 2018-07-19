@@ -1,9 +1,8 @@
 class Comment < ApplicationRecord
   include CommentsShared # common methods for comment-like models
 
-
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
-                    # dependent: :destroy, counter_cache: true
+  # dependent: :destroy, counter_cache: true
   belongs_to :drupal_user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, :as => :likeable
@@ -12,6 +11,8 @@ class Comment < ApplicationRecord
 
   self.table_name = 'comments'
   self.primary_key = 'cid'
+
+  COMMENT_FILTER = "<!-- @@$$%% Trimmed Content @@$$%% -->".freeze
 
   def self.inheritance_column
     'rails_type'
@@ -32,35 +33,23 @@ class Comment < ApplicationRecord
     weeks
   end
 
-  def self.contribution_graph_making(span = 52, time = Time.now)   
+  def self.contribution_graph_making(span = 52, time = Time.now)
     weeks = {}
     week = span
-    count = 0;
+    count = 0
     while week >= 1
-        #initialising month variable with the month of the starting day 
-        #of the week
-        month = (time - (week*7 - 1).days).strftime('%m')
-        #loop for finding the maximum occurence of a month name in that week
-        #For eg. If this week has 3 days falling in March and 4 days falling
-        #in April, then we would give this week name as April and vice-versa
-        for i in 0..6 do
-          currMonth = (time - (week*7 - i).days).strftime('%m')
-          if month == 0
-              month = currMonth
-          elsif month != currMonth
-              if i <= 4
-                  month = currMonth
-              end
-          end
-        end
-        month = month.to_i
-        #Now fetching comments per week
-        currWeek = Comment.select(:timestamp)
-                        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-                        .count
-        weeks[count] = [month, currWeek]
-        count += 1
-        week -= 1
+      # initialising month variable with the month of the starting day
+      # of the week
+      month = (time - (week * 7 - 1).days).strftime('%m')
+
+      month = month.to_i
+      # Now fetching comments per week
+      current_week = Comment.select(:timestamp)
+        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+        .count
+      weeks[count] = [month, current_week]
+      count += 1
+      week -= 1
     end
     weeks
   end
@@ -75,8 +64,8 @@ class Comment < ApplicationRecord
 
   def body
     finder = comment.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKMD))
-    finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD)) 
-    finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))  
+    finder = finder.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKMD))
+    finder = finder.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKMD))
     ApplicationController.helpers.emojify(finder)
   end
 
@@ -107,9 +96,6 @@ class Comment < ApplicationRecord
       return answer.node unless answer.nil?
     end
   end
-
-  # users who are involved in this comment thread
-  def thread_participants; end
 
   def mentioned_users
     usernames = comment.scan(Callouts.const_get(:FINDER))
@@ -206,7 +192,7 @@ class Comment < ApplicationRecord
 
   def user_reactions_map
     likes_map = likes.where.not(emoji_type: nil).includes(:user).group_by(&:emoji_type)
-    user_like_map={}
+    user_like_map = {}
     likes_map.each do |reaction, likes|
       users = []
       likes.each do |like|
@@ -214,28 +200,135 @@ class Comment < ApplicationRecord
       end
 
       emoji_type = reaction.underscore.humanize.downcase
-      users_string = (users.length > 1 ? users[0..-2].join(", ")+" and "+users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
+      users_string = (users.length > 1 ? users[0..-2].join(", ") + " and " + users[-1] : users[0]) + " reacted with " + emoji_type + " emoji"
       user_like_map[reaction] = users_string
     end
     user_like_map
   end
 
-  def self.receive_mail(message)
-    node_id = message.subject[/#([\d]+)/, 1] #This took out the node ID from the subject line
-    puts node_id
-    unless node_id.nil?
-      node = Node.where(nid: node_id)
-      if node.any?
-        node = node.first
-        user = User.find_by(email: message.from.first)
-        if user.present? && node_id.present?
-          message_markdown = ReverseMarkdown.convert message.html_part.body.decoded
-          message_id = message.message_id
-          comment = node.add_comment(uid: user.uid, body: message_markdown, comment_via: 1, message_id: message_id)
-          comment.notify user
+  def self.receive_mail(mail)
+    user = User.where(email: mail.from.first).first
+    if user
+      node_id = mail.subject[/#([\d]+)/, 1] # This tooks out the node ID from the subject line
+      if node_id.nil?
+        answer_id = mail.subject[/#a([\d]+)/, 1] # This tooks out the answer ID from the subject line
+        unless answer_id.nil?
+          add_answer_comment(mail, answer_id, user)
         end
+      else
+        add_comment(mail, node_id, user)
       end
     end
   end
 
+  def self.add_answer_comment(mail, answer_id, user)
+    answer = Answer.where(id: answer_id).first
+    if answer
+      mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
+      domain = get_domain mail.from.first
+      content = if domain == "gmail"
+                  gmail_parsed_mail mail_doc
+                elsif domain == "yahoo"
+                  yahoo_parsed_mail mail_doc
+                elsif gmail_quote_present?(mail_doc)
+                  gmail_parsed_mail mail_doc
+                else
+                  {
+                    "comment_content" => mail_doc,
+                    "extra_content" => nil
+                  }
+                end
+      if content["extra_content"].nil?
+        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+      else
+        extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
+        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+        comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
+      end
+      message_id = mail.message_id
+      comment = Comment.new(uid: user.uid,
+        aid: answer_id,
+        comment: comment_content_markdown,
+        comment_via: 1,
+        message_id: message_id,
+        timestamp: Time.now.to_i)
+      if comment.save
+        comment.answer_comment_notify(user)
+      end
+    end
+  end
+
+  def self.add_comment(mail, node_id, user)
+    node = Node.where(nid: node_id).first
+    if node
+      mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
+      domain = get_domain mail.from.first
+      content = if domain == "gmail"
+                  gmail_parsed_mail mail_doc
+                elsif domain == "yahoo"
+                  yahoo_parsed_mail mail_doc
+                elsif gmail_quote_present?(mail_doc)
+                  gmail_parsed_mail mail_doc
+                else
+                  {
+                    "comment_content" => mail_doc,
+                    "extra_content" => nil
+                  }
+                end
+      if content["extra_content"].nil?
+        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+      else
+        extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
+        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+        comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
+      end
+      message_id = mail.message_id
+      comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
+      comment.notify user
+    end
+  end
+
+  def self.gmail_quote_present?(mail_doc)
+    mail_doc.css(".gmail_quote").any?
+  end
+
+  def self.get_domain(email)
+    domain = email[/(?<=@)[^.]+(?=\.)/, 0]
+  end
+
+  def self.yahoo_parsed_mail(mail_doc)
+    if mail_doc.css(".yahoo_quoted")
+      extra_content = mail_doc.css(".yahoo_quoted")[0]
+      mail_doc.css(".yahoo_quoted")[0].remove
+      comment_content = mail_doc
+    else
+      comment_content = mail_doc
+      extra_content = nil
+    end
+
+    {
+      "comment_content" => comment_content,
+      "extra_content" => extra_content
+    }
+  end
+
+  def self.gmail_parsed_mail(mail_doc)
+    if mail_doc.css(".gmail_quote").any?
+      extra_content = mail_doc.css(".gmail_quote")[0]
+      mail_doc.css(".gmail_quote")[0].remove
+      comment_content = mail_doc
+    else
+      comment_content = mail_doc
+      extra_content = nil
+    end
+
+    {
+      "comment_content" => comment_content,
+      "extra_content" => extra_content
+    }
+  end
+
+  def trimmed_content?
+    comment.include?(COMMENT_FILTER)
+  end
 end

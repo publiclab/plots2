@@ -1,6 +1,10 @@
+require 'sidekiq/web'
+
 Plots2::Application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
+
+  mount Sidekiq::Web => '/sidekiq'
 
   # Manually written API functions
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
@@ -128,6 +132,7 @@ Plots2::Application.routes.draw do
   post 'notes/create' => 'notes#create'
   get 'notes/publish_draft/:id' => 'notes#publish_draft'
   get 'notes/edit/:id' => 'notes#edit'
+  get 'notes/show/:id/:token' => 'notes#show'
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
@@ -236,6 +241,7 @@ Plots2::Application.routes.draw do
   post 'useremail' => 'admin#useremail'
   get 'spam' => 'admin#spam'
   get 'spam/revisions' => 'admin#spam_revisions'
+  get 'spam/comments' => 'admin#spam_comments'
   get 'spam/:type' => 'admin#spam'
   get 'spam/batch/:ids' => 'admin#batch'
   get 'admin/users' => 'admin#users'
@@ -254,7 +260,7 @@ Plots2::Application.routes.draw do
   get 'admin/moderate/:id' => 'admin#moderate'
   get 'admin/unmoderate/:id' => 'admin#unmoderate'
   get 'admin/publish_comment/:id' => 'admin#publish_comment'
-  post 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
+  get 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
 
   get 'post' => 'editor#post'
   post 'post' => 'editor#post'
@@ -282,6 +288,7 @@ Plots2::Application.routes.draw do
   post 'answers/create/:nid' => 'answers#create'
   get 'answers/create/:nid' => 'answers#create'
   get 'answers/update/:id' => 'answers#update'
+  post 'answers/update/:id' => 'answers#update'
   put 'answers/update/:id' => 'answers#update'
   get 'answers/delete/:id' => 'answers#delete'
   delete 'answers/delete/:id' => 'answers#delete'
@@ -294,6 +301,7 @@ Plots2::Application.routes.draw do
 
   get 'comment/answer_create/:aid' => 'comment#answer_create'
   get 'comment/delete/:id' => 'comment#delete'
+  get 'comment/update/:id' => 'comment#update'
   post 'comment/update/:id' => 'comment#update'
   get 'comment/make_answer/:id' => 'comment#make_answer'
   post 'comment/make_answer/:id' => 'comment#make_answer'

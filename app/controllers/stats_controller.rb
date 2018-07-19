@@ -20,7 +20,7 @@ class StatsController < ApplicationController
     @people = User.where(created_at: @start..@end)
       .joins('INNER JOIN users ON users.uid = rusers.id')
       .where('users.status = 1')
-      .count                 
+      .count
     @answers = Answer.where(created_at: @start..@end)
       .count
     @comments = Comment.select(:timestamp)
@@ -28,14 +28,14 @@ class StatsController < ApplicationController
       .count
     @questions = Node.questions.where(status: 1, created: @start.to_i..@end.to_i)
       .count
-    @contributors = User.contributor_count_for(@start,@end)
+    @contributors = User.contributor_count_for(@start, @end)
   end
 
   def index
     @time = if params[:time]
               Time.parse(params[:time])
-    else
-      Time.now
+            else
+              Time.now
     end
 
     @weekly_notes = Node.select(%i(created type status))

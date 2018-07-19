@@ -6,8 +6,11 @@ class UserTag < ApplicationRecord
   validates_uniqueness_of :value, :scope => :uid
   before_save :preprocess
 
+  DIGEST_DAILY = 0
+  DIGEST_WEEKLY = 1
+
   def preprocess
-    self.value = self.value.downcase
+    self.value = value.downcase
   end
 
   def self.exists?(uid, value)
@@ -15,7 +18,7 @@ class UserTag < ApplicationRecord
   end
 
   def name
-    self.value
+    value
   end
 
   def self.find_with_omniauth(auth)
@@ -26,5 +29,4 @@ class UserTag < ApplicationRecord
     create(value: "oauth:" + auth['provider'] + ":" + auth['uid'],
           uid: uid)
   end
-
 end

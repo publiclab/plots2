@@ -15,7 +15,7 @@ class DrupalContentTypeMap < ApplicationRecord
   before_save :truncate_fields
 
   def truncate_fields
-    self.field_publication_date_value = self.field_publication_date_value.slice(0, 19)
+    self.field_publication_date_value = field_publication_date_value.slice(0, 19)
   end
 
   def tms

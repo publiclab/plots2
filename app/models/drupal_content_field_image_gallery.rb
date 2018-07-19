@@ -21,7 +21,7 @@ class DrupalContentFieldImageGallery < ApplicationRecord
 
   def description
     PHP.unserialize(field_image_gallery_data)['description']
-  rescue
+  rescue StandardError
     ''
   end
 end

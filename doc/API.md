@@ -16,7 +16,7 @@ Per-model API endpoints are:
 * Questions: https://publiclab.org/api/srch/questions?srchString=foo
 * Tags: https://publiclab.org/api/srch/tags?srchString=foo
 * Notes: https://publiclab.org/api/srch/notes?srchString=foo
-* Locations: https://publiclab.org/api/srch/locations?srchString=lat,lon
+* TagLocations: https://publiclab.org/api/srch/taglocations?srchString=lat,lon
 * PeopleLocations: https://publiclab.org/api/srch/peoplelocations?srchString=QRY
 
 ****

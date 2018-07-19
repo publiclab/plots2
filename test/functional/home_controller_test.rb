@@ -106,7 +106,6 @@ class HomeControllerTest < ActionController::TestCase
 
       get 'home'
       assert_template 'home/home'
-      assert_select 'h2', I18n.t('home.home.the_problem.title')
     end
   end
 end
