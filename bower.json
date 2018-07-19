@@ -28,7 +28,9 @@
     "chart.js": "v2.7.0",
     "typeahead.js-browserify": "Javier-Rotelli/typeahead.js-browserify#~1.0.7",
     "noty": "3.1.4",
-    "jquery-confirm": "craftpip/jquery-confirm#3.3.2"
+    "jquery-confirm": "craftpip/jquery-confirm#3.3.2" , 
+    "leaflet-environmental-layers": "*" ,
+    "leaflet-hash": "*" 
   },
   "resolutions": {
     "jquery": "~2.1.0",
