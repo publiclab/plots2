@@ -7,16 +7,6 @@
   <%= stylesheet_link_tag "I18n" %>
 <% end %>
 
-<% if @node && @node.body %>
-  <p class="facebook-summary" style="display:none;">
-    <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>
-  </p>
-<% end %>
-<p class="facebook-summary" style="display:none;"><%= t('layout._header.summary') %></p>
-
-<!-- facebook needs this apparently -->
-<div id="fb-root"></div>
-
 <nav id="header" class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom:20px;">
 
   <div class="container">
