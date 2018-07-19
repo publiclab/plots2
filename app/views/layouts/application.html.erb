@@ -35,10 +35,24 @@
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
     <meta name="google-translate-customization" content="4ce4c7c384354172-5179499fc244f592-g2b333d0d29f59663-d" />
-    <% if @node && @node.main_image %>
-      <!-- facebook like button image: -->
-      <meta property="og:image" content="<%= @node.main_image.path(:default) %>" />
+
+    <% if @node && @node.body %>
+      <meta property="og:title" content="<%= @title %>">
+      <meta property="og:site_name" content="Public Lab">
+      <meta property="og:url" content="<%= request.host %>/n/<%= @node.id %>">
+      <meta property="og:description" content="<%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>">
+      <meta property="og:type" content="article">
+      <% if @node.main_image %>
+        <meta property="og:image" content="<%= @node.main_image.path(:default) %>" />
+      <% end %>
+      <p class="facebook-summary" style="display:none;">
+        <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>
+      </p>
     <% end %>
+    <p class="facebook-summary" style="display:none;"><%= t('layout._header.summary') %></p>
+
+    <!-- facebook needs this apparently -->
+    <div id="fb-root"></div>
 
     <%= yield(:head) %>
 
