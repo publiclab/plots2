@@ -9,7 +9,6 @@ sudo apt-get update
 sudo apt-get -y install imagemagick ruby-rmagick
 npm install -g bower
 bower install
-bower install noty
 gem install bundler
 bundle install --without production mysql
 cp db/schema.rb.example db/schema.rb
