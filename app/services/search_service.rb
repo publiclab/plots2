@@ -8,83 +8,6 @@
 class SearchService
   def initialize; end
 
-  def users(params)
-    @users ||= find_users(params)
-  end
-
-  def tags(params)
-    @tags ||= find_tags(params)
-  end
-
-  def nodes(params)
-    @nodes ||= find_nodes(params)
-  end
-
-  def notes(params)
-    @notes ||= find_notes(params)
-  end
-
-  def maps(params)
-    @maps ||= find_maps(params)
-  end
-
-  def comments
-    @comments ||= find_comments(params)
-  end
-
-  def find_users(input, limit = 10)
-    User.limit(limit)
-      .order('id DESC')
-      .where(status: 1)
-      .where('username LIKE ?', '%' + input + '%')
-  end
-
-  def find_tags(input, limit = 5)
-    Tag.includes(:node)
-      .references(:node)
-      .where('node.status = 1')
-      .limit(limit)
-      .where('name LIKE ?', '%' + input + '%')
-  end
-
-  def find_comments(input, limit = 5)
-    Comment.limit(limit)
-      .order('nid DESC')
-      .where('status = 1 AND comment LIKE ?', '%' + input + '%')
-  end
-
-  def find_nodes(input, limit = 5)
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      nids = Node.search(input)
-        .group(:nid)
-        .includes(:node)
-        .references(:node)
-        .limit(limit)
-        .where("node.type": %w(note page), "node.status": 1)
-        .order('node.changed DESC')
-        .collect(&:nid)
-      Node.find nids
-    else
-      Node.limit(limit)
-        .group(:nid)
-        .where(type: %w(note page), status: 1)
-        .order(changed: :desc)
-        .where('title LIKE ?', '%' + input + '%')
-    end
-  end
-
-  def find_notes(input, limit = 5)
-    Node.limit(limit)
-      .order('nid DESC')
-      .where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
-  end
-
-  def find_maps(input, limit = 5)
-    Node.limit(limit)
-      .order('nid DESC')
-      .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
-  end
-
   # Run a search in any of the associated systems for references that contain the search string
   def textSearch_all(srchString)
     sresult = DocList.new
@@ -122,8 +45,9 @@ class SearchService
   def textSearch_profiles(srchString)
     sresult = DocList.new
 
+    users = SrchScope.find_users(srchString, limit = nil)
     # User profiles
-    users(srchString).each do |match|
+    users.each do |match|
       doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
       sresult.addDoc(doc)
     end
@@ -135,8 +59,8 @@ class SearchService
   def textSearch_notes(srchString)
     sresult = DocList.new
 
-    # notes
-    find_notes(srchString, 25).each do |match|
+    notes = SrchScope.find_notes(srchString, 25)
+    notes.each do |match|
       doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
       sresult.addDoc(doc)
     end
@@ -148,8 +72,9 @@ class SearchService
   def textSearch_maps(srchString)
     sresult = DocList.new
 
-    # maps
-    maps(srchString).select('title,type,nid,path').each do |match|
+    maps = SrchScope.find_maps(srchString, 5)
+
+    maps.select('title,type,nid,path').each do |match|
       doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
       sresult.addDoc(doc)
     end
