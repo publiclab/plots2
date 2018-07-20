@@ -81,31 +81,33 @@
            });
           }
         },
-        limit: 6
+        limit: 20
       },
       hashtags_config = {
         at: "#",
         callbacks: {
           remoteFilter: function(query, callback) {
-            $.post('/tag/suggested/____' + query, function(response) {
-               callback(response.map(function(tagnames){ return tagnames }));
-             });
+            if (query != ''){
+              $.post('/tag/suggested/' + query, {}, function(response) {
+                 callback(response.map(function(tagnames){ return tagnames }));
+               });
+              }
             }
           },
-        limit: 6
+        limit: 20
       },
       emojis_config = {
         at: ':',
         callbacks: {
           remoteFilter: function(query, callback) {
-            $.getJSON("/emoji.json" + query, {}, function(data) {
+            $.getJSON("/emoji.json", function(data) {
                 callback(Object.values(data).map(function(name) { return name }));
              });
             }
           },
          displayTpl: "<li>${name}</li>",
          insertTpl: "${name}",
-         limit: 8
+         limit: 600
      }
 
     $('textarea#text-input').atwho(at_config).atwho(hashtags_config).atwho(emojis_config);
