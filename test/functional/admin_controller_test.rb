@@ -423,7 +423,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 0, comment.status
     
-    assert_equal "Comment has been marked as spam and comment author has been banned.", flash[:notice]
+    assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
   end
 
@@ -436,7 +436,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = assigns(:comment)
     assert_equal 0, comment.status
 
-    assert_equal "Comment has been marked as spam and comment author has been banned.", flash[:notice]
+    assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
   end
 
@@ -529,4 +529,40 @@ class AdminControllerTest < ActionController::TestCase
     assert_redirected_to node.path
   end
 
+  test 'non-registered user should not be able to see spam_comments page' do
+    UserSession.create(users(:admin))
+    UserSession.find.destroy
+
+    get :spam_comments
+
+    assert_equal 'You must be logged in to access this page', flash[:warning]
+    assert_redirected_to '/login'
+  end
+
+  test 'normal user should not be able to see spam_comments page' do
+    UserSession.create(users(:bob))
+
+    get :spam_comments
+
+    assert_equal 'Only moderators can moderate comments.', flash[:error]
+    assert_redirected_to '/dashboard'
+  end
+
+  test 'moderator user should be able to see spam_comments page' do
+    UserSession.create(users(:moderator))
+
+    get :spam_comments
+
+    assert_response :success
+    assert_not_nil assigns(:comments)
+  end
+
+  test 'admin user should be able to see spam_comments page' do
+    UserSession.create(users(:admin))
+
+    get :spam_comments
+
+    assert_response :success
+    assert_not_nil assigns(:comments)
+  end
 end

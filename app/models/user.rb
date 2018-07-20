@@ -353,7 +353,7 @@ class User < ActiveRecord::Base
       puts photo_path(:thumb)
       photo_path(:thumb)
     else
-      "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}"
+      "https://www.gravatar.com/avatar/#{OpenSSL::Digest::MD5.hexdigest(email)}"
     end
   end
 
@@ -393,9 +393,9 @@ class User < ActiveRecord::Base
   end
 
   def customize_digest(type)
-    if type == 0
+    if type == UserTag::DIGEST_DAILY
       newtag = 'digest:daily'
-    elsif type == 1
+    elsif type == UserTag::DIGEST_WEEKLY
       newtag = 'digest:weekly'
     end
     unless newtag.blank?
@@ -433,7 +433,7 @@ class User < ActiveRecord::Base
     email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
     email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
     create! do |user|
-      s = SecureRandom.random_bytes(32)
+      s = SecureRandom.urlsafe_base64
       user.username = email_prefix
       user.email = auth["info"]["email"]
       user.password = s

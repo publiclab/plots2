@@ -230,6 +230,8 @@ class Comment < ApplicationRecord
                   gmail_parsed_mail mail_doc
                 elsif domain == "yahoo"
                   yahoo_parsed_mail mail_doc
+                elsif gmail_quote_present?(mail_doc)
+                  gmail_parsed_mail mail_doc
                 else
                   {
                     "comment_content" => mail_doc,
@@ -265,13 +267,14 @@ class Comment < ApplicationRecord
                   gmail_parsed_mail mail_doc
                 elsif domain == "yahoo"
                   yahoo_parsed_mail mail_doc
+                elsif gmail_quote_present?(mail_doc)
+                  gmail_parsed_mail mail_doc
                 else
                   {
                     "comment_content" => mail_doc,
                     "extra_content" => nil
                   }
                 end
-
       if content["extra_content"].nil?
         comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
       else
@@ -283,6 +286,10 @@ class Comment < ApplicationRecord
       comment = node.add_comment(uid: user.uid, body: comment_content_markdown, comment_via: 1, message_id: message_id)
       comment.notify user
     end
+  end
+
+  def self.gmail_quote_present?(mail_doc)
+    mail_doc.css(".gmail_quote").any?
   end
 
   def self.get_domain(email)

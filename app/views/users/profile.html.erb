@@ -196,6 +196,8 @@
         <% if current_user && current_user.uid == @profile_user.uid %><a href="#draft" class="btn btn-default" data-toggle="tab">Drafts <%= "(#{ @drafts.count })" %></a><% end %>
       </div>
 
+      <br />
+
       <div class="tab-content">
         <div class="tab-pane active" id="notes">
           <%= render :partial => "notes/notes" %>

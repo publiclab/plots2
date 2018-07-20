@@ -151,18 +151,25 @@
               <i class="fa fa-user fa fa-white"></i>
                <%= t('layout._header.login.login_title') %> <b class="caret"></b>
             </a>
-            <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
+            <ul id="login-dropdown" class="dropdown-menu" style="width:245px;">
               <li style="padding:6px;">
                 <%= form_for :user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
-
-                  <div class="form-group">
+                <div class="form-group">
+                 <% if Rails.env == "production" %>
+                   <label style="display: block; text-align: center;">Log In with</label>
+                    <div class="loginbutton" style="float:left">
+                       <%= render :partial => "layouts/social_icons" %>
+                    </div>
+                    <br style="clear:both;"/>
+                   <label style="display: block; text-align: center; margin-top:13px;">OR</label>
+                  <% end %>
+                 </div>  
+		<div class="form-group">
 
                     <label for="username"><%= t('layout._header.login.username') %></label>
                     <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username-login' } %>
 
-                  </div>
-
-                  <div class="form-group">
+                <div class="form-group">
 
                     <label for="password"><%= t('layout._header.login.password') %></label>
                     <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-login' } %>
@@ -183,15 +190,7 @@
                   </p>
 
                   <p><a href="/reset/"><%= t('layout._header.login.reset_password') %></a></p>
-                    <% if Rails.env == "production"%>
-                   <h5>Log In with</h5>
-                    <div class="loginbutton" style="float:left">
-                      <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default" style="margin-right:2px"><i class="fa fa-google" style="font-size:20px;color:red;"></i></span></a>
-                      <a href="/auth/github" id="connect-github"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-github" style="font-size:20px;color:green;"></i></span></a>
-                      <a href="https://publiclab.org/auth/twitter" id="connect-twitter"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-twitter" style="font-size:20px;color:blue;margin-left:2px;"></i></span></div></a>
-                      <a href="/auth/facebook" id="connect-facebook"><span class="btn btn-default" style="margin-left:2px"><i class="fa fa-facebook" style="font-size:20px;color:blue;"></i></span></a>
-                    </div>
-                   <% end %>
+                   
                 <% end %>
               </li>
             </ul>
