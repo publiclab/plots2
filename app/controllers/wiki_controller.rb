@@ -65,7 +65,7 @@ class WikiController < ApplicationController
       @tags += [Tag.find_by(name: params[:id])] if Tag.find_by(name: params[:id])
     else # it's a new wiki page!
       flash[:notice] = "The wiki page does not exist, but here are notes tagged with #{params[:id]}."
-      redirect_to '/tag/' + params[:id]
+      redirect_to URI.parse('/tag/' + params[:id]).path
       return
     end
 
