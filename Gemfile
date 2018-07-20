@@ -60,7 +60,7 @@ gem 'unicode-emoji'
 gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
-
+gem 'jquery-atwho-rails'
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
 
