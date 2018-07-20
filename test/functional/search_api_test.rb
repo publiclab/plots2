@@ -132,18 +132,17 @@ class SearchApiTest < ActiveSupport::TestCase
          srchParams: {
            srchString: 'Question',
            seq: nil,
+        }.ignore_extra_keys!
       }.ignore_extra_keys!
-    }.ignore_extra_keys!
 
-    matcher = JsonExpressions::Matcher.new(pattern)
+      matcher = JsonExpressions::Matcher.new(pattern)
 
-    json = JSON.parse(last_response.body)
+      json = JSON.parse(last_response.body)
 
-    assert_equal "Question by a moderated user",   json['items'][0]['docTitle']
-    assert_equal 15,                               json['items'][0]['docId']
+      assert_equal "Question by a moderated user",   json['items'][0]['docTitle']
+      assert_equal 15,                               json['items'][0]['docId']
 
-
-    assert matcher =~ json
+      assert matcher =~ json
 
   end
 

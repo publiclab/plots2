@@ -107,16 +107,14 @@ class TypeaheadService
   # Search profiles for matching text
   def search_profiles(search_string, limit = 5)
     sresult = TagList.new
-    unless search_string.nil? || search_string.blank?
-      # User profiles
-      users(search_string, limit).each do |match|
-        tval = TagResult.new
-        tval.tagId = 0
-        tval.tagType = 'user'
-        tval.tagVal = match.username
-        tval.tagSource = '/profile/' + match.username
-        sresult.addTag(tval)
-      end
+    # User profiles
+    users(search_string, limit).each do |match|
+      tval = TagResult.new
+      tval.tagId = 0
+      tval.tagType = 'user'
+      tval.tagVal = match.username
+      tval.tagSource = '/profile/' + match.username
+      sresult.addTag(tval)
     end
     sresult
   end
@@ -124,15 +122,13 @@ class TypeaheadService
   # Search notes for matching strings
   def search_notes(search_string, limit = 5)
     sresult = TagList.new
-    unless search_string.nil? || search_string.blank?
-      notes(search_string, limit).distinct.each do |match|
-        tval = TagResult.new
-        tval.tagId = match.nid
-        tval.tagVal = match.title
-        tval.tagType = 'file'
-        tval.tagSource = match.path
-        sresult.addTag(tval)
-      end
+    notes(search_string, limit).distinct.each do |match|
+      tval = TagResult.new
+      tval.tagId = match.nid
+      tval.tagVal = match.title
+      tval.tagType = 'file'
+      tval.tagSource = match.path
+      sresult.addTag(tval)
     end
     sresult
   end
@@ -140,15 +136,13 @@ class TypeaheadService
   # Search wikis for matching strings
   def search_wikis(search_string, limit = 5)
     sresult = TagList.new
-    unless search_string.nil? || search_string.blank?
-      wikis(search_string, limit).select('node.title,node.type,node.nid,node.path').each do |match|
-        tval = TagResult.new
-        tval.tagId = match.nid
-        tval.tagVal = match.title
-        tval.tagType = 'file'
-        tval.tagSource = match.path
-        sresult.addTag(tval)
-      end
+    wikis(search_string, limit).select('node.title,node.type,node.nid,node.path').each do |match|
+      tval = TagResult.new
+      tval.tagId = match.nid
+      tval.tagVal = match.title
+      tval.tagType = 'file'
+      tval.tagSource = match.path
+      sresult.addTag(tval)
     end
     sresult
   end
@@ -156,16 +150,14 @@ class TypeaheadService
   # Search maps for matching text
   def search_maps(search_string, limit = 5)
     sresult = TagList.new
-    unless search_string.nil? || search_string.blank?
-      # maps
-      maps(search_string, limit).select('title,type,nid,path').each do |match|
-        tval = TagResult.new
-        tval.tagId = match.nid
-        tval.tagVal = match.title
-        tval.tagType = match.icon
-        tval.tagSource = match.path
-        sresult.addTag(tval)
-      end
+    # maps
+    maps(search_string, limit).select('title,type,nid,path').each do |match|
+      tval = TagResult.new
+      tval.tagId = match.nid
+      tval.tagVal = match.title
+      tval.tagType = match.icon
+      tval.tagSource = match.path
+      sresult.addTag(tval)
     end
     sresult
   end
@@ -173,16 +165,14 @@ class TypeaheadService
   # Search tag values for matching text
   def search_tags(search_string, limit = 5)
     sresult = TagList.new
-    unless search_string.nil? || search_string.blank?
-      # Tags
-      tlist = tags(search_string, limit)
-      tlist.each do |match|
-        ntag = TagResult.new
-        ntag.tagId = 0
-        ntag.tagVal = match.name
-        ntag.tagType = 'tag'
-        sresult.addTag(ntag)
-      end
+    # Tags
+    tlist = tags(search_string, limit)
+    tlist.each do |match|
+      ntag = TagResult.new
+      ntag.tagId = 0
+      ntag.tagVal = match.name
+      ntag.tagType = 'tag'
+      sresult.addTag(ntag)
     end
     sresult
   end
@@ -205,15 +195,13 @@ class TypeaheadService
   # Search comments for matching text
   def search_comments(search_string, limit = 5)
     sresult = TagList.new
-    unless search_string.nil? || search_string.blank?
-      comments(search_string, limit).each do |match|
-        tval = TagResult.new
-        tval.tagId = match.pid
-        tval.tagVal = match.comment.truncate(20)
-        tval.tagType = 'comment'
-        tval.tagSource = match.parent.path
-        sresult.addTag(tval)
-      end
+    comments(search_string, limit).each do |match|
+      tval = TagResult.new
+      tval.tagId = match.pid
+      tval.tagVal = match.comment.truncate(20)
+      tval.tagType = 'comment'
+      tval.tagSource = match.parent.path
+      sresult.addTag(tval)
     end
     sresult
   end
