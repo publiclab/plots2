@@ -71,7 +71,6 @@ class SearchApiTest < ActiveSupport::TestCase
        matcher = JsonExpressions::Matcher.new(pattern)
 
        json = JSON.parse(last_response.body)
-       puts json.inspect
        assert matcher =~ json
 
      end
