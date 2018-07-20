@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_no_user, :only => [:new]
-  before_action :require_user, :only => %i(edit update)
+  before_action :require_user, :only => %i(edit update save_settings)
   before_action :set_user, only: %i(info followed following followers)
 
   def new
@@ -307,6 +307,31 @@ class UsersController < ApplicationController
   def test_digest_email
     DigestMailJob.perform_async
     redirect_to "/"
+  end
+
+  def save_settings
+    user_settings = ['notify-comment-direct:false']
+
+    user_settings.each do |setting|
+      if params[setting] && params[setting] == "on"
+        UserTag.remove_if_exists(current_user.uid, setting)
+      else
+        UserTag.create_if_absent(current_user.uid, setting)
+      end
+    end
+
+    if params['digest:weekly'] == "on"
+      digest_val = 1
+    elsif params['digest:daily'] == "on"
+      digest_val = 0
+    else
+      digest_val = 2
+    end
+    # Digest settings handled separately
+    current_user.customize_digest(digest_val)
+
+    flash[:notice] = "Settings updated successfully!"
+    render js: "window.location.reload()"
   end
 
   private

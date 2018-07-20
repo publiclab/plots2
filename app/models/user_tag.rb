@@ -29,4 +29,16 @@ class UserTag < ApplicationRecord
     create(value: "oauth:" + auth['provider'] + ":" + auth['uid'],
           uid: uid)
   end
+
+  def self.remove_if_exists(uid, value)
+    if exists?(uid, value)
+      UserTag.where(uid: uid, value: value).destroy_all
+    end
+  end
+
+  def self.create_if_absent(uid, value)
+    unless exists?(uid, value)
+      UserTag.create(uid: uid, value: value)
+    end
+  end
 end

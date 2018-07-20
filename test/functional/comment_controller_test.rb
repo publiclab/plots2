@@ -384,6 +384,17 @@ class CommentControllerTest < ActionController::TestCase
     assert_equal updated_like_count, like_count-1
   end
 
+  test 'should not send notification email to author if notify-comment-direct:false usertag is present' do
+    UserSession.create(users(:jeff))
+    post :create, params: {
+        id: nodes(:activity).nid,
+        body: 'A comment by Jeff on note of author test_user'
+    }, xhr: true
+
+    assert_not ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on #{nodes(:activity).title} (##{nodes(:activity).nid}) ")
+    assert_not ActionMailer::Base.deliveries.collect(&:to).include?([users(:test_user).email])
+  end
+
   private
 
   def current_user
