@@ -99,11 +99,13 @@ group :test, :development do
   gem 'json_expressions'
   gem 'minitest-reporters', '~> 1.1.19'
   gem 'openssl', '~> 2.0.0.beta.1'
+  gem 'phantomjs'
   gem 'rails-perftest'
   gem 'rake',  '~> 12.3.1'
   gem 'rest-client'
   gem 'rspec'
   gem 'test-unit'
+  gem 'teaspoon-mocha'
   gem 'timecop'
 end
 
