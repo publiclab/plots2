@@ -92,7 +92,7 @@ describe("Plots2", function() {
   it("shows expand comment button with remaining comment count", function(){
     fixture.load('comment_expand.html');
 
-    //expand_comments(0);
+    expand_comments(0);
     expect($('#answer-0-expand').html()).to.eql('View 2 previous comments');
 
     expand_comments(0);
