@@ -3,47 +3,15 @@
 # Though similar in operation to the SearchService, the implementation is separate, in that the goal of the response
 # is to provide _fast_ returns at a higher level than a general search.  In effect, TypeaheadService provides pointers to
 # better searches, while SearchService provides deep and detailed information.
-# TODO: Refactor TypeaheadService and SearchService so that common functions come from a higher level class?
+#
+# See SrchScope class for more details about the reusable scope
+# that Typeahead and Search services use
 class TypeaheadService
   def initialize; end
 
-  # search_users() returns a standard TagResult;
-  # users() returns an array of User records
-  # It's unclear if TagResult was supposed to be broken into other types like DocResult?
-  # but perhaps could simply be renamed Result.
-
-  def users(input, limit = 5)
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      User.search(input)
-        .limit(limit)
-        .where(status: 1)
-    else
-      User.limit(limit)
-        .order('id DESC')
-        .where('username LIKE ? AND status = 1', '%' + input + '%')
-    end
-  end
-
   def tags(input, limit = 5)
-    Tag.includes(:node)
-      .references(:node)
-      .where('node.status = 1')
-      .limit(limit)
-      .where('name LIKE ?', '%' + input + '%')
-      .group('node.nid')
-  end
-
-  def comments(input, limit = 5)
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      Comment.search(input)
-        .limit(limit)
-        .order('nid DESC')
-        .where(status: 1)
-    else
-      Comment.limit(limit)
-        .order('nid DESC')
-        .where('status = 1 AND comment LIKE ?', '%' + input + '%')
-    end
+    SrchScope.find_tags(input, limit)
+             .group('node.nid')
   end
 
   # default order is recency
@@ -58,24 +26,13 @@ class TypeaheadService
       .where("node.type": "note")
   end
 
-  def wikis(input, limit = 5, order = :default)
-    nodes(input, limit, order)
-      .where("node.type": "page")
-  end
-
   def maps(input, limit = 5, order = :default)
     nodes(input, limit, order)
       .where("node.type": "map")
   end
 
-  def questions(input, limit = 5, order = :default)
-    nodes(input, limit, order)
-      .where('node.type': 'note')
-      .joins(:tag)
-      .where('term_data.name LIKE ?', 'question:%')
-  end
-
   # Run a search in any of the associated systems for references that contain the search string
+  # and package up as a TagResult
   def search_all(search_string, limit = 5)
     sresult = TagList.new
     unless search_string.nil? || search_string.blank?
@@ -104,12 +61,12 @@ class TypeaheadService
     sresult
   end
 
-  # Search profiles for matching text
+  # Search profiles for matching text and package up as a TagResult
   def search_profiles(search_string, limit = 5)
     sresult = TagList.new
     unless search_string.nil? || search_string.blank?
-      # User profiles
-      users(search_string, limit).each do |match|
+      users = SrchScope.find_users(search_string, limit)
+      users.each do |match|
         tval = TagResult.new
         tval.tagId = 0
         tval.tagType = 'user'
@@ -121,11 +78,12 @@ class TypeaheadService
     sresult
   end
 
-  # Search notes for matching strings
+  # Search notes for matching strings and package up as a TagResult
   def search_notes(search_string, limit = 5)
     sresult = TagList.new
     unless search_string.nil? || search_string.blank?
-      notes(search_string, limit).distinct.each do |match|
+      notes = notes(search_string, limit).distinct
+      notes.each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
@@ -137,11 +95,12 @@ class TypeaheadService
     sresult
   end
 
-  # Search wikis for matching strings
+  # Search wikis for matching strings and package up as a TagResult
   def search_wikis(search_string, limit = 5)
     sresult = TagList.new
     unless search_string.nil? || search_string.blank?
-      wikis(search_string, limit).select('node.title,node.type,node.nid,node.path').each do |match|
+      wikis = SrchScope.find_wikis(search_string, limit, order = :default)
+      wikis.select('node.title,node.type,node.nid,node.path').each do |match|
         tval = TagResult.new
         tval.tagId = match.nid
         tval.tagVal = match.title
@@ -153,7 +112,7 @@ class TypeaheadService
     sresult
   end
 
-  # Search maps for matching text
+  # Search maps for matching text and package up as a TagResult
   def search_maps(search_string, limit = 5)
     sresult = TagList.new
     unless search_string.nil? || search_string.blank?
@@ -170,7 +129,7 @@ class TypeaheadService
     sresult
   end
 
-  # Search tag values for matching text
+  # Search tag values for matching text and package up as a TagResult
   def search_tags(search_string, limit = 5)
     sresult = TagList.new
     unless search_string.nil? || search_string.blank?
@@ -187,10 +146,11 @@ class TypeaheadService
     sresult
   end
 
-  # Search question entries for matching text
+  # Search question entries for matching text and package up as a TagResult
   def search_questions(input, limit = 5)
     sresult = TagList.new
-    questions = self.questions(input, limit).each do |match|
+    questions = SrchScope.find_questions(input, limit, order = :default)
+    questions.each do |match|
       tval = TagResult.fromSearch(
         match.nid,
         match.title,
@@ -202,11 +162,12 @@ class TypeaheadService
     sresult
   end
 
-  # Search comments for matching text
+  # Search comments for matching text and package up as a TagResult
   def search_comments(search_string, limit = 5)
     sresult = TagList.new
     unless search_string.nil? || search_string.blank?
-      comments(search_string, limit).each do |match|
+      comments = SrchScope.find_comments(search_string, limit)
+      comments.each do |match|
         tval = TagResult.new
         tval.tagId = match.pid
         tval.tagVal = match.comment.truncate(20)
