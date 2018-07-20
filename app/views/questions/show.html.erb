@@ -4,8 +4,6 @@
 <script> var comments_length = <%= @node.comments.length %>; </script>
 <%= javascript_include_tag('question') %>
 
-<%= render :partial => "sidebar/question" %>
-
 <div class="col-md-9 note-show question-show">
 
    <% if @node.main_image %>
@@ -73,3 +71,5 @@
   <%= render :partial => "questions/answers" %>
 
 </div>
+
+<%= render :partial => "sidebar/question" %>
