@@ -54,17 +54,6 @@ module ApplicationHelper
     [emoji_names, emoji_image_map]
   end
 
-  def atwho_emojis
-    emoji_names = ["smile", "thumbsup", "tada", "confused", "thumbsdown", "heart"]
-    atwho_emojis = []
-    count = 0
-    emoji_names.each do |e|
-      val = "e"
-      atwho_emojis << { id: count, name: e }
-      count += 1
-    end
-  end
-
   def feature(title)
     features = Node.where(type: 'feature', title: title)
     if !features.empty?
