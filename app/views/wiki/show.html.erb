@@ -26,19 +26,11 @@
 <% end %>
 
 <% if @node.has_tag('sidebar:none') %>
-  <div class="col-md-2"></div>
-
   <div class="col-md-8">
-<% else %>  
-  <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
-    <%= render :partial => "sidebar/featured" %>
-  <% else %>
-    <%= render :partial => "sidebar/related" %>
-  <% end %>
-    
+<% else %>
   <div class="col-md-9">
 <% end %>
-    
+
   <%= render :partial => "wiki/header" %>
 
   <div class="tab-content">
@@ -97,6 +89,12 @@
   </div>
 
 </div>
+
+<% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
+  <%= render :partial => "sidebar/featured" %>
+<% else %>
+  <%= render :partial => "sidebar/related" %>
+<% end %>
 
 <script>
 (function(){
