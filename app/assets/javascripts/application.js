@@ -53,7 +53,6 @@
 //= require chart.js/dist/Chart.js
 //= require horsey/dist/horsey.min.js
 //= require header_footer.js
-//= require jquery.atwho
 //  require turbolinks // Temporarily removed while fixing
 //= require noty/lib/noty.js
 //= require noty_notification.js
