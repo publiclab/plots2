@@ -310,7 +310,7 @@ class UsersController < ApplicationController
   end
 
   def save_settings
-    user_settings = ['notify-comment-direct:false', 'notify-likes-direct:false']
+    user_settings = ['notify-comment-direct:false', 'notify-likes-direct:false', 'notify-comment-indirect:false']
 
     user_settings.each do |setting|
       if params[setting] && params[setting] == "on"
