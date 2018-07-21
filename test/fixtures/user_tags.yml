@@ -74,3 +74,8 @@ notify-likes-direct:
   id: 15
   uid: 10
   value: notify-likes-direct:false
+
+notify-comment-indirect:
+  id: 16
+  uid: 8
+  value: notify-comment-indirect:false

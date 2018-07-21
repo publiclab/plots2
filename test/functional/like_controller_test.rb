@@ -109,7 +109,7 @@ class LikeControllerTest < ActionController::TestCase
     assert_equal  likers_length + 1 , note.likers.count
   end
 
-  test 'create like without notifying author' do
+  test 'create like without notifying author if notify-likes-direct:false tag present' do
     UserSession.create(User.find(1))
     current_user = User.find 1
     note = nodes(:activity)
