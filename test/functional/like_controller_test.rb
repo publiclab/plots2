@@ -34,6 +34,7 @@ class LikeControllerTest < ActionController::TestCase
     assert_equal cached_likes + 1, note.cached_likes
     assert ActionMailer::Base.deliveries.size, 1
     assert ActionMailer::Base.deliveries.collect(&:to).include?([note.author.email])
+    assert ActionMailer::Base.deliveries.collect(&:subject).include?("[PublicLab] #{current_user.username} liked your " + (note.has_power_tag('question') ? 'question' : 'research note'))
   end
 
   test 'delete like' do
@@ -108,4 +109,21 @@ class LikeControllerTest < ActionController::TestCase
     assert_equal  likers_length + 1 , note.likers.count
   end
 
+  test 'create like without notifying author' do
+    UserSession.create(User.find(1))
+    current_user = User.find 1
+    note = nodes(:activity)
+    cached_likes = note.cached_likes
+
+    get :create, params: { id: note.id }
+    assert_response :success
+
+    note = Node.find note.id
+    assert_equal @response.body, '1'
+    assert_equal note.likers.length, note.cached_likes
+    assert_equal cached_likes + 1, note.cached_likes
+    assert ActionMailer::Base.deliveries.size, 0
+    assert_not ActionMailer::Base.deliveries.collect(&:to).include?([note.author.email])
+    assert_not ActionMailer::Base.deliveries.collect(&:subject).include?("[PublicLab] #{current_user.username} liked your " + (note.has_power_tag('question') ? 'question' : 'research note'))
+  end
 end
