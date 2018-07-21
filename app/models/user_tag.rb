@@ -27,7 +27,7 @@ class UserTag < ApplicationRecord
 
   def self.create_with_omniauth(auth, uid)
     create(value: "oauth:" + auth['provider'] + ":" + auth['uid'],
-          uid: uid)
+          uid: uid, data: auth.to_json)
   end
 
   def self.remove_if_exists(uid, value)
