@@ -25,12 +25,12 @@
         </td>
       </tr>
       <tr>
-        <td <% if n.main_image.present? %> colspan="2" <% end %> style="padding-bottom: 30px;">
+        <td <% unless n.main_image.present? %> colspan="2" <% end %> style="padding-bottom: 30px;">
           <p style="font-size: 1.1em;line-height: 1.5;text-align: justify;font-weight: 300;"><%= n.body.truncate(175) %><a href="https://publiclab.org<%= n.path %>" style="text-decoration: none;">  Read more</a></p>
         </td>
         <% if n.main_image.present? %>
           <td style="padding-bottom: 30px;">
-            <img src="https://publiclab.org/system/images/photos/000/022/879/original/geGuqxuCSrSFzCw7ZSHShQ.jpg" style="width: 90px;height: 90px;border-radius: 5px;margin-left: 14px;">
+            <img src="<%= node.main_image.path(:default) %>" style="width: 90px;height: 90px;border-radius: 5px;margin-left: 14px;">
           </td>
         <% end %>
       </tr>
