@@ -131,7 +131,6 @@ class SearchService
     sresult
   end
 
-  #####################################################################################
   # Search for more recently updated profiles for matching text
   def textSearch_recentProfiles(srchString)
     sresult = DocList.new
@@ -155,7 +154,6 @@ class SearchService
 
     sresult
   end
-  #####################################################################################
 
   # Search notes for matching strings
   def textSearch_notes(srchString)
@@ -280,7 +278,7 @@ class SearchService
       end
     end
     users = users.uniq
-    count = 0 # TODO: fazer de maneira mais bonita em Ruby
+    count = 0
     users.each do |user|
       next unless user.has_power_tag("lat") && user.has_power_tag("lon")
       blurred = false
