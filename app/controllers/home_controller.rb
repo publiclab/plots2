@@ -121,7 +121,7 @@ class HomeController < ApplicationController
       .where('node_revisions.status = 1')
       .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
       .limit(10)
-      .group(['node.title', 'node.nid'])
+      .group(['node.title', 'node.nid', 'node_revisions.vid']) # ONLY_FULL_GROUP_BY, issue #3120
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     revisions = revisions.to_a # ensure it can be serialized for caching
@@ -132,7 +132,7 @@ class HomeController < ApplicationController
       .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
       .where('node.status = ?', 1)
       .page(params[:page])
-      .group('title') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
+      .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     comments = comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     comments = comments.to_a # ensure it can be serialized for caching
@@ -140,7 +140,7 @@ class HomeController < ApplicationController
       .order('timestamp DESC')
       .where('timestamp - answers.created_at > ?', 86_400)
       .limit(20)
-      .group('answers.id')
+      .group(['answers.id', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
     answer_comments = answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     answer_comments = answer_comments.to_a # ensure it can be serialized for caching
     activity = (notes + wikis + comments + answer_comments).sort_by(&:created_at).reverse

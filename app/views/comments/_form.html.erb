@@ -35,10 +35,10 @@
             <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
             <a class="hidden-xs">choose one</a>
             <span class="visible-xs">
-              <i class="fa fa-upload"></i> 
+              <i class="fa fa-upload"></i>
               <a><%= t('comments._form.upload_image') %></a>
             </span>
-          </label> 
+          </label>
 
         </span>
       </p>
@@ -48,7 +48,6 @@
 
   <div class="well col-md-11" id="preview" style="background:white;display: none">
   </div>
-  <link href="/lib/horsey/dist/horsey.min.css" rel="stylesheet">
 
   <script>
     jQuery(document).ready(function() {
@@ -65,42 +64,70 @@
   </script>
 
   <%= javascript_include_tag "dragdrop" %>
+  <script src="/lib/emoji.js" type="text/javascript"></script>
   <script>
-    $('#comment-form').bind('ajax:beforeSend', function(event){      
+    $('#comment-form').bind('ajax:beforeSend', function(event){
       $("#text-input").prop('disabled',true)
-      $("#comment-form .btn-primary").button('loading',true);      
+      $("#comment-form .btn-primary").button('loading',true);
     });
-    <% emoji_names = emoji_names_list %>
-    <% emojis = emoji_names[:emojis] %>
-    <% image_map = emoji_names[:image_map] %>
-    var image_map = <%= raw image_map.to_json %>
-    horsey(document.querySelector('textarea#text-input'), {
-        suggestions: (<%= raw emojis.to_json %>),
-        anchor: ':',
-        render: function (li, suggestion) {
-            var image = image_map[suggestion.text];
-            li.innerHTML = "<b>"+image+"</b><span>"+suggestion.text+"</span>";
+
+    (function() {
+
+    var at_config = {
+      at: "@",
+      callbacks: {
+        remoteFilter: function(query, callback) {
+          $.getJSON("/api/srch/profiles?srchString=" + query, {}, function(data) {
+            if (data.hasOwnProperty('items') && data.items.length > 0) {
+              callback(data.items.map(function(i) { return i.docTitle }));
+            }
+           });
+          }
         },
-        limit: 6
-    });
+        limit: 20
+      },
+      hashtags_config = {
+        at: "#",
+        callbacks: {
+          remoteFilter: function(query, callback) {
+            if (query != ''){
+              $.post('/tag/suggested/' + query, {}, function(response) {
+                 callback(response.map(function(tagnames){ return tagnames }));
+               });
+              }
+            }
+          },
+        limit: 20
+      },
+      emojis_config = {
+        at: ':',
+        data: Object.keys(emoji).map(function(name){ return {'name': name, 'value': emoji[name]} }),
+        displayTpl: "<li>${value} ${name}</li>",
+        insertTpl: ":${name}:", 
+        limit: 100
+     }
+
+    $('textarea#text-input').atwho(at_config).atwho(hashtags_config).atwho(emojis_config);
 
     $('#comment-form').bind('ajax:success', function(e, data, status, xhr){
       $('#text-input').prop('disabled',false);
       $('#text-input').val('');
-      $('#comments-container').append(xhr.responseText);      
+      $('#comments-container').append(xhr.responseText);
       $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)+1;
-      $("#comment-form .btn-primary").button('reset');      
-      $('#preview').hide();      
-      $('#text-input').show();      
-      $('#preview-btn').button('toggle');      
-    })
+      $("#comment-form .btn-primary").button('reset');
+      $('#preview').hide();
+      $('#text-input').show();
+      $('#preview-btn').button('toggle');
+    });
 
-    $('#comment-form').bind('ajax:error', function(e,response){  
-      notyNotification('mint', 3000, 'success', 'topRight', 'Some error occured while adding comment'); 
+    $('#comment-form').bind('ajax:error', function(e,response){
+      notyNotification('mint', 3000, 'success', 'topRight', 'Some error occured while adding comment');
       $('#comment-form .control-group').addClass('has-error')
       $('#comment-form .control-group .help-block ').remove()
       $('#comment-form .control-group').append('<span class="help-block ">Error: there was a problem.</span>')
-    })
+    });
+
+    })();
 
     function insertTitleSuggestionTemplate() {
       var element = $('#text-input');
@@ -111,6 +138,7 @@
       var newText = currentText+template;
       element.val(newText);
     }
+
   </script>
 
   <div class="control-group">
@@ -127,10 +155,10 @@
       <a id="preview-btn" class="btn btn-default" onClick="$E.toggle_preview()"><%= t('comments._form.preview') %></a>
     <% end %>
 
-    <span style="color:#888;"> &nbsp; 
-      <br class="visible-xs" /><%= raw t('comments._form.logged_in', :username => current_user.username) %> | 
-      <a target="_blank" href="/wiki/authoring-help#Formatting"><%= t('comments._form.formatting') %></a> | 
-      <a onClick="$('#who-is-notified-form').toggle()"><%= t('comments._form.notifications') %></a> | 
+    <span style="color:#888;"> &nbsp;
+      <br class="visible-xs" /><%= raw t('comments._form.logged_in', :username => current_user.username) %> |
+      <a target="_blank" href="/wiki/authoring-help#Formatting"><%= t('comments._form.formatting') %></a> |
+      <a onClick="$('#who-is-notified-form').toggle()"><%= t('comments._form.notifications') %></a> |
       <a onClick = "insertTitleSuggestionTemplate()">Propose Title</a>
     </span>
   </div>
