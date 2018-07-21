@@ -7,16 +7,6 @@
   <%= stylesheet_link_tag "I18n" %>
 <% end %>
 
-<% if @node && @node.body %>
-  <p class="facebook-summary" style="display:none;">
-    <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>
-  </p>
-<% end %>
-<p class="facebook-summary" style="display:none;"><%= t('layout._header.summary') %></p>
-
-<!-- facebook needs this apparently -->
-<div id="fb-root"></div>
-
 <nav id="header" class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom:20px;">
 
   <div class="container">
@@ -132,6 +122,7 @@
               <% end %>
               <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
               <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li>
+              <li><a href="/settings" >Email Settings</a></li>
               <li class="divider"></li>
               <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
               <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
@@ -151,18 +142,25 @@
               <i class="fa fa-user fa fa-white"></i>
                <%= t('layout._header.login.login_title') %> <b class="caret"></b>
             </a>
-            <ul id="login-dropdown" class="dropdown-menu" style="width:240px;">
+            <ul id="login-dropdown" class="dropdown-menu" style="width:245px;">
               <li style="padding:6px;">
                 <%= form_for :user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
-
-                  <div class="form-group">
+                <div class="form-group">
+                 <% if Rails.env == "production" %>
+                   <label style="display: block; text-align: center;">Log In with</label>
+                    <div class="loginbutton" style="float:left">
+                       <%= render :partial => "layouts/social_icons" %>
+                    </div>
+                    <br style="clear:both;"/>
+                   <label style="display: block; text-align: center; margin-top:13px;">OR</label>
+                  <% end %>
+                 </div>  
+		<div class="form-group">
 
                     <label for="username"><%= t('layout._header.login.username') %></label>
                     <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username-login' } %>
 
-                  </div>
-
-                  <div class="form-group">
+                <div class="form-group">
 
                     <label for="password"><%= t('layout._header.login.password') %></label>
                     <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-login' } %>
@@ -183,12 +181,7 @@
                   </p>
 
                   <p><a href="/reset/"><%= t('layout._header.login.reset_password') %></a></p>
-                  <% if Rails.env == "production"%>
-                   <h5>Log In with</h5>
-                    <div class="loginbutton" >
-                       <a href="/auth/google_oauth2" id="connect-google"><span class="btn btn-default"><i class="fa fa-google" style="font-size:20px;color:red"></i></span></div></a>
-                    </div>
-                  <% end %>
+                   
                 <% end %>
               </li>
             </ul>

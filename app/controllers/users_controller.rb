@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :require_no_user, :only => [:new]
-  before_action :require_user, :only => [:edit, :update]
-  before_action :set_user, only: [:info, :followed, :following, :followers]
+  before_action :require_user, :only => %i(edit update save_settings)
+  before_action :set_user, only: %i(info followed following followers)
 
   def new
     @spamaway = Spamaway.new
@@ -20,6 +20,7 @@ class UsersController < ApplicationController
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
       else
+        WelcomeMailer.notify_newcomer(@user).deliver_now
         flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
@@ -40,7 +41,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def update                # login required, see before filter
+  def update
     @user = current_user
     @user.attributes = user_params
     @user.save({}) do |result|
@@ -50,8 +51,8 @@ class UsersController < ApplicationController
           session[:openid_return_to] = nil
           redirect_to return_to
         else
-          flash[:notice] = I18n.t('users_controller.successful_updated_profile')+"<a href='/dashboard'>"+I18n.t('users_controller.return_dashboard')+" &raquo;</a>"
-          return redirect_to "/profile/"+@user.username
+          flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/dashboard'>" + I18n.t('users_controller.return_dashboard') + " &raquo;</a>"
+          return redirect_to "/profile/" + @user.username
         end
       else
         render :template => 'users/edit'
@@ -66,11 +67,11 @@ class UsersController < ApplicationController
     else
       @user = current_user
     end
-    if current_user && current_user.uid == @user.uid #|| current_user.role == "admin"
+    if current_user && current_user.uid == @user.uid # || current_user.role == "admin"
       render :template => "users/edit"
     else
       flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
-      redirect_to "/profile/"+@user.name
+      redirect_to "/profile/" + @user.name
     end
   end
 
@@ -113,7 +114,7 @@ class UsersController < ApplicationController
                     .page(params[:page])
     end
 
-    @users = @users.where('rusers.status = 1') unless current_user && (current_user.can_moderate?)
+    @users = @users.where('rusers.status = 1') unless current_user&.can_moderate?
   end
 
   def profile
@@ -140,12 +141,12 @@ class UsersController < ApplicationController
       @questions = @user.user.questions
                              .order('node.nid DESC')
                              .paginate(:page => params[:page], :per_page => 24)
-      @likes = (@user.liked_notes.includes([:tag, :comments])+@user.liked_pages)
+      @likes = (@user.liked_notes.includes(%i(tag comments)) + @user.liked_pages)
                      .paginate(page: params[:page], per_page: 24)
       questions = Node.questions
                             .where(status: 1)
                             .order('node.nid DESC')
-      ans_ques = questions.select{|q| q.answers.collect(&:author).include?(@user)}
+      ans_ques = questions.select { |q| q.answers.collect(&:author).include?(@user) }
       @answered_questions = ans_ques.paginate(page: params[:page], per_page: 24)
       wikis = Revision.order("nid DESC")
                       .where('node.type' => 'page', 'node.status' => 1, uid: @user.uid)
@@ -153,7 +154,7 @@ class UsersController < ApplicationController
                       .limit(20)
       @wikis = wikis.collect(&:parent).uniq
 
-      @comment_count = Comment.where(status: 0, uid: @user.uid).count
+      @comment_count = Comment.where(status: 1, uid: @user.uid).count
 
       # User's social links
       @github = @profile_user.social_link("github")
@@ -171,7 +172,7 @@ class UsersController < ApplicationController
       end
 
       if @user.status == 0
-        if current_user && (current_user.can_moderate?)
+        if current_user&.can_moderate?
           flash.now[:error] = I18n.t('users_controller.user_has_been_banned')
         else
           flash[:error] = I18n.t('users_controller.user_has_been_banned')
@@ -185,9 +186,9 @@ class UsersController < ApplicationController
 
   def likes
     @user = DrupalUser.find_by(name: params[:id])
-    @title = "Liked by "+@user.name
+    @title = "Liked by " + @user.name
     @notes = @user.liked_notes
-                  .includes([:tag, :comments])
+                  .includes(%i(tag comments))
                   .paginate(page: params[:page], per_page: 24)
     @wikis = @user.liked_pages
     @tagnames = []
@@ -216,11 +217,11 @@ class UsersController < ApplicationController
   end
 
   def reset
-    if params[:key] && params[:key] != nil
+    if params[:key] && !params[:key].nil?
       @user = User.find_by(reset_key: params[:key])
       if @user
         if params[:user] && params[:user][:password]
-          if @user.username.downcase == params[:user][:username].downcase
+          if @user.username.casecmp(params[:user][:username].downcase).zero?
             @user.password = params[:user][:password]
             @user.password_confirmation = params[:user][:password]
             @user.reset_key = nil
@@ -231,7 +232,7 @@ class UsersController < ApplicationController
               flash[:error] = I18n.t('users_controller.password_reset_failed').html_safe
               redirect_to "/"
             end
-	  else
+          else
             flash[:error] = I18n.t('users_controller.password_change_failed')
           end
         else
@@ -258,7 +259,7 @@ class UsersController < ApplicationController
   def comments
     @comments = Comment.limit(20)
                              .order("timestamp DESC")
-                             .where(status: 0, uid: params[:id])
+                             .where(status: 1, uid: params[:id])
                              .paginate(page: params[:page])
     render partial: 'comments/comments'
   end
@@ -284,8 +285,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def info
-  end
+  def info; end
 
   # content this person follows
   def followed
@@ -309,18 +309,42 @@ class UsersController < ApplicationController
     redirect_to "/"
   end
 
+  def save_settings
+    user_settings = ['notify-comment-direct:false']
+
+    user_settings.each do |setting|
+      if params[setting] && params[setting] == "on"
+        UserTag.remove_if_exists(current_user.uid, setting)
+      else
+        UserTag.create_if_absent(current_user.uid, setting)
+      end
+    end
+
+    if params['digest:weekly'] == "on"
+      digest_val = 1
+    elsif params['digest:daily'] == "on"
+      digest_val = 0
+    else
+      digest_val = 2
+    end
+    # Digest settings handled separately
+    current_user.customize_digest(digest_val)
+
+    flash[:notice] = "Settings updated successfully!"
+    render js: "window.location.reload()"
+  end
+
   private
 
   def set_user
     @user = User.find_by(username: params[:id])
   end
-  private
+
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
   end
+
   def spamaway_params
     params.require(:spamaway).permit(:follow_instructions, :statement1, :statement2, :statement3, :statement4)
   end
 end
-
-

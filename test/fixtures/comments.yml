@@ -118,5 +118,5 @@ spam_comment:
   nid: 1
   status: 0
   comment: This thing is spam.
-  timestamp: <%= Time.now.to_i + 1 %>
+  timestamp: <%= Time.now.to_i + 14 %>
   thread: /01

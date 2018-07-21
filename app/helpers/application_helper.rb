@@ -12,19 +12,20 @@ module ApplicationHelper
     end
   end
 
-
   def emojify(content)
-    content.to_str.gsub(/:([\w+-]+):/) do |match|
-      if emoji = Emoji.find_by_alias($1)
-        if emoji.raw
-          emoji.raw
+    if content.present?
+      content.to_str.gsub(/:([\w+-]+):/) do |match|
+        if emoji = Emoji.find_by_alias(Regexp.last_match(1))
+          if emoji.raw
+            emoji.raw
+          else
+            %(<img class="emoji" alt="#{Regexp.last_match(1)}" src="#{image_path("emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
+          end
         else
-          %(<img class="emoji" alt="#$1" src="#{image_path("emoji/#{emoji.image_filename}")}" style="vertical-align:middle" width="20" height="20" />)
+          match
         end
-      else
-        match
       end
-    end if content.present?
+    end
   end
 
   def emoji_names_list
@@ -33,7 +34,7 @@ module ApplicationHelper
     Emoji.all.each do |e|
       next unless e.raw
       val = ":#{e.name}:"
-      emojis<<{ value: val, text: e.name }
+      emojis << { value: val, text: e.name }
       image_map[e.name] = e.raw
     end
     { emojis: emojis, image_map: image_map }
@@ -57,6 +58,15 @@ module ApplicationHelper
     features = Node.where(type: 'feature', title: title)
     if !features.empty?
       return features.last.body.to_s.html_safe
+    else
+      ''
+    end
+  end
+
+  def feature_node(title)
+    features = Node.where(type: 'feature', title: title)
+    if !features.empty?
+      return features.last
     else
       ''
     end
@@ -99,7 +109,7 @@ module ApplicationHelper
   # we should move this to the Comment model:
   # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)
-    comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do ||
+    comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do
       a = ActionController::Base.new
       is_creator = current_user.drupal_user == Node.find(comment.nid).author
       title = Regexp.last_match(1)

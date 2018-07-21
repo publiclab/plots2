@@ -13,10 +13,10 @@ module NodeShared
   def self.graph_grid(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[graph\:(\S+)\]/) do |_tagname|
       url = Regexp.last_match(2)
-      a = ActionController::Base.new()
+      a = ActionController::Base.new
       randomSeed = rand(1000).to_s
-      output = a.render_to_string(template: "grids/_graph", 
-                                  layout:   false, 
+      output = a.render_to_string(template: "grids/_graph",
+                                  layout:   false,
                                   locals:   {
                                     url: url,
                                     randomSeed: randomSeed,
@@ -48,13 +48,13 @@ module NodeShared
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
                   .where('term_data.name IN (?)', exclude)
-        nodes = nodes - exclude
+        nodes -= exclude
       end
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new()
-      output += a.render_to_string(template: "grids/_notes", 
-                                   layout:   false, 
+      a = ActionController::Base.new
+      output += a.render_to_string(template: "grids/_notes",
+                                   layout:   false,
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
@@ -85,13 +85,13 @@ module NodeShared
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
                   .where('term_data.name IN (?)', exclude)
-        nodes = nodes - exclude
+        nodes -= exclude
       end
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new()
-      output += a.render_to_string(template: "grids/_notes", 
-                                   layout:   false, 
+      a = ActionController::Base.new
+      output += a.render_to_string(template: "grids/_notes",
+                                   layout:   false,
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
@@ -118,13 +118,13 @@ module NodeShared
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
                   .where('term_data.name IN (?)', exclude)
-        nodes = nodes - exclude
+        nodes -= exclude
       end
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new()
-      output += a.render_to_string(template: "grids/_notes", 
-                                   layout:   false, 
+      a = ActionController::Base.new
+      output += a.render_to_string(template: "grids/_notes",
+                                   layout:   false,
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
@@ -151,14 +151,14 @@ module NodeShared
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
                   .where('term_data.name IN (?)', exclude)
-        nodes = nodes - exclude
+        nodes -= exclude
       end
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new()
-      output += a.render_to_string(template: "grids/_notes", 
-                                   layout:   false, 
+      a = ActionController::Base.new
+      output += a.render_to_string(template: "grids/_notes",
+                                   layout:   false,
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
@@ -170,19 +170,18 @@ module NodeShared
     end
   end
 
-  #Blank map loaded only , markers will be loaded using API call .
+  # Blank map loaded only , markers will be loaded using API call .
   def self.notes_map(body)
     body.gsub(/[^\>`](\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
-      a = ActionController::Base.new()
-      output = a.render_to_string(template: "map/_leaflet", 
-                                  layout:   false, 
+      a = ActionController::Base.new
+      output = a.render_to_string(template: "map/_leaflet",
+                                  layout:   false,
                                   locals:   {
                                     lat:   lat,
                                     lon:   lon
-                                  }
-               )
+                                  })
       output
     end
   end
@@ -199,42 +198,40 @@ module NodeShared
                                    .where(nid: nids)
                                    .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
                                    .collect(&:nid)
-      nids = nids || []
+      nids ||= []
       items = Node.includes(:tag)
                   .references(:node, :term_data)
                   .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
                   .limit(200)
                   .order('node.nid DESC')
-      a = ActionController::Base.new()
-      output = a.render_to_string(template: "map/_leaflet", 
-                                  layout:   false, 
+      a = ActionController::Base.new
+      output = a.render_to_string(template: "map/_leaflet",
+                                  layout:   false,
                                   locals:   {
                                     lat:   lat,
                                     lon:   lon,
                                     items: items
-                                  }
-               )
+                                  })
       output
     end
   end
 
- # in our interface, "users" are known as "people" because it's more human
+  # in our interface, "users" are known as "people" because it's more human
   def self.people_map(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
-      nids = nids || []
-      
-      a = ActionController::Base.new()
-      output = a.render_to_string(template: "map/_peopleLeaflet", 
-                                  layout:   false, 
+      nids ||= []
+
+      a = ActionController::Base.new
+      output = a.render_to_string(template: "map/_peopleLeaflet",
+                                  layout:   false,
                                   locals:   {
-                                    lat: lat ,
-                                    lon: lon , 
+                                    lat: lat,
+                                    lon: lon,
                                     people: true
-                                  }
-               )
+                                  })
       output
     end
   end
@@ -259,14 +256,14 @@ module NodeShared
                   .includes(:user_tags)
                   .references(:user_tags)
                   .where('user_tags.value IN (?)', exclude)
-        users = users - exclude
+        users -= exclude
       end
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new()
-      output += a.render_to_string(template: "grids/_people", 
-                                   layout:   false, 
+      a = ActionController::Base.new
+      output += a.render_to_string(template: "grids/_people",
+                                   layout:   false,
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
@@ -278,7 +275,7 @@ module NodeShared
     end
   end
 
- def self.wikis_grid(body, _page = 1)
+  def self.wikis_grid(body, _page = 1)
     body.gsub(/[^\>`](\<p\>)?\[wikis\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
@@ -298,14 +295,14 @@ module NodeShared
                   .includes(:revision, :tag)
                   .references(:node_revisions, :term_data)
                   .where('term_data.name IN (?)', exclude)
-        nodes = nodes - exclude
+        nodes -= exclude
       end
 
       output = ''
       output += '<p>' if Regexp.last_match(1) == '<p>'
-      a = ActionController::Base.new()
-      output += a.render_to_string(template: "grids/_wikis", 
-                                   layout:   false, 
+      a = ActionController::Base.new
+      output += a.render_to_string(template: "grids/_wikis",
+                                   layout:   false,
                                    locals:   {
                                      tagname: tagname,
                                      randomSeed: rand(1000).to_s,
@@ -315,6 +312,5 @@ module NodeShared
                                    })
       output
     end
-  end
-
+   end
 end

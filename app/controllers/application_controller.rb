@@ -34,8 +34,8 @@ class ApplicationController < ActionController::Base
       @notes = if params[:controller] == 'questions'
                  Node.questions
                    .joins(:revision)
-      else
-        Node.research_notes.joins(:revision).order('node.nid DESC').paginate(page: params[:page])
+               else
+                 Node.research_notes.joins(:revision).order('node.nid DESC').paginate(page: params[:page])
       end
 
       @notes = @notes.where('node.nid != (?)', @node.nid) if @node
@@ -162,17 +162,17 @@ class ApplicationController < ActionController::Base
     @node = if @comment.aid == 0
               # finding node for node comments
               @comment.node
-    else
-      # finding node for answer comments
-      @comment.answer.node
+            else
+              # finding node for answer comments
+              @comment.answer.node
     end
 
     @path = if params[:type] && params[:type] == 'question'
               # questions path
               @node.path(:question)
-    else
-      # notes path
-      @node.path
+            else
+              # notes path
+              @node.path
     end
   end
 
@@ -188,7 +188,6 @@ class ApplicationController < ActionController::Base
   end
 
   def signed_in?
-    !!current_user
+    !current_user.nil?
   end
-
 end

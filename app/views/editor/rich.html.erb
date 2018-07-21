@@ -22,29 +22,7 @@
   <div class="ple-header">
 
     <h1>Share</h1>
-
-    <!-- selector module -->
-    <div class="container ple-type">
-
-      <div class="col-md-5 col-md-push-4">
-        <div class="row">
-          <div class="col-xs-10">
-            <select class="form-control input-lg">
-              <option selected value="">a research note</option>
-              <option value="" <% if params[:tags] && params[:tags].include?('activity') %>selected='selected'<% end %>>a step-by-step activity</option>
-              <option value="" <% if params[:tags] && params[:tags].include?('question') %>selected='selected'<% end %>>a question or request</option>
-              <option value="">an event</option>
-            </select>
-          </div>
-          <div class="col-xs-2" style="padding-top:10px;text-align:left;">
-            <a rel="tooltip" data-placement="bottom" title="Learn more about different posting types." class="ple-help-light" style="font-size:18px;"><i class="fa fa-question-circle"></i></a>
-
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <!-- end selector module -->
+    <p><i>Or use the <a target="_blank" href="?<%= request.env['QUERY_STRING'] %>&legacy=true">legacy editor</a></i></p>
 
   </div>
 
@@ -189,8 +167,15 @@
     <span class="ple-help pull-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
-        <span id="text" style="display: none; color:red;">Others won't be able to see this until you're ready <a href="https://publiclab.org/wiki/draft-feature" targrt="_blank">Learn more</a>&nbsp; &nbsp;</span>
-          <span><input type="checkbox" id="myCheck" onclick="draftCheck()">Save as draft&nbsp; | &nbsp;</span>
+        <span id="text" style="display: none; color:red;">
+          Others won't see your post yet 
+          (<a href="https://publiclab.org/draft-feature" targrt="_blank">?</a>) &nbsp; &nbsp;</span>
+          <span class="checkbox">
+            <label>
+              <input type="checkbox" id="myCheck" onclick="draftCheck()" />
+              Save as draft
+            </label> | 
+          </span>
           <span class="ple-steps-left">2</span>
           <span class="hidden-xs"> steps left</span>
         </span>

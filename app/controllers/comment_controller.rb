@@ -16,7 +16,6 @@ class CommentController < ApplicationController
     @node = Node.find params[:id]
     @body = params[:body]
     @user = current_user
-
     begin
       @comment = create_comment(@node, @user, @body)
       respond_with do |format|
@@ -28,7 +27,7 @@ class CommentController < ApplicationController
             if request.xhr?
               render partial: 'notes/comment', locals: { comment: @comment }
             else
-              tagnames =  @node.tagnames.map do |tagname|
+              tagnames = @node.tagnames.map do |tagname|
                 "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
               end
               tagnames = tagnames.join(', ')
@@ -157,11 +156,11 @@ class CommentController < ApplicationController
        current_user.role == 'moderator'
 
       @answer = Answer.new(
-          nid: @comment.nid,
-          uid: @comment.uid,
-          content: @comment.comment,
-          created_at: @comment.created_at,
-          updated_at: @comment.created_at
+        nid: @comment.nid,
+        uid: @comment.uid,
+        content: @comment.comment,
+        created_at: @comment.created_at,
+        updated_at: @comment.created_at
       )
 
       if @answer.save && @comment.delete
@@ -193,10 +192,9 @@ class CommentController < ApplicationController
 
     @likes = comment.likes.group(:emoji_type).count
     respond_with do |format|
-      format.js {
-       render template: 'comment/like_comment'
-      }
+      format.js do
+        render template: 'comment/like_comment'
+      end
     end
   end
-
 end

@@ -6,8 +6,11 @@ class UserTag < ApplicationRecord
   validates_uniqueness_of :value, :scope => :uid
   before_save :preprocess
 
+  DIGEST_DAILY = 0
+  DIGEST_WEEKLY = 1
+
   def preprocess
-    self.value = self.value.downcase
+    self.value = value.downcase
   end
 
   def self.exists?(uid, value)
@@ -15,7 +18,7 @@ class UserTag < ApplicationRecord
   end
 
   def name
-    self.value
+    value
   end
 
   def self.find_with_omniauth(auth)
@@ -27,4 +30,15 @@ class UserTag < ApplicationRecord
           uid: uid)
   end
 
+  def self.remove_if_exists(uid, value)
+    if exists?(uid, value)
+      UserTag.where(uid: uid, value: value).destroy_all
+    end
+  end
+
+  def self.create_if_absent(uid, value)
+    unless exists?(uid, value)
+      UserTag.create(uid: uid, value: value)
+    end
+  end
 end

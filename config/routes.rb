@@ -211,6 +211,8 @@ Plots2::Application.routes.draw do
   get 'profile/:id/edit' => 'users#edit'
   get 'profile/:id/likes' => 'users#likes'
   get 'feed/:author' => 'users#rss'
+  get '/settings' => 'users#settings'
+  post '/save_settings' => 'users#save_settings'
 
   post 'profile/tags/create/:id' => 'user_tags#create'
   get 'profile/tags/create/:id' => 'user_tags#create'
@@ -241,6 +243,7 @@ Plots2::Application.routes.draw do
   post 'useremail' => 'admin#useremail'
   get 'spam' => 'admin#spam'
   get 'spam/revisions' => 'admin#spam_revisions'
+  get 'spam/comments' => 'admin#spam_comments'
   get 'spam/:type' => 'admin#spam'
   get 'spam/batch/:ids' => 'admin#batch'
   get 'admin/users' => 'admin#users'
@@ -259,7 +262,7 @@ Plots2::Application.routes.draw do
   get 'admin/moderate/:id' => 'admin#moderate'
   get 'admin/unmoderate/:id' => 'admin#unmoderate'
   get 'admin/publish_comment/:id' => 'admin#publish_comment'
-  post 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
+  get 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
 
   get 'post' => 'editor#post'
   post 'post' => 'editor#post'
@@ -287,6 +290,7 @@ Plots2::Application.routes.draw do
   post 'answers/create/:nid' => 'answers#create'
   get 'answers/create/:nid' => 'answers#create'
   get 'answers/update/:id' => 'answers#update'
+  post 'answers/update/:id' => 'answers#update'
   put 'answers/update/:id' => 'answers#update'
   get 'answers/delete/:id' => 'answers#delete'
   delete 'answers/delete/:id' => 'answers#delete'

@@ -1,5 +1,4 @@
 class Revision < ApplicationRecord
-
   self.table_name = 'node_revisions'
   self.primary_key = 'vid'
 
@@ -118,6 +117,8 @@ class Revision < ApplicationRecord
     body = render_body.gsub(/([\s|"|'|\[|\(])(\/\/)([\w]?\.?#{host})/, '\1https://\3')
     body = body.gsub("href='/", "href='https://#{host}/")
     body = body.gsub('href="/', 'href="https://' + host.to_s + '/')
+    body = body.gsub("src='/", "src='https://#{host}/")
+    body = body.gsub('src="/', 'src="https://' + host.to_s + '/')
     body
   end
 

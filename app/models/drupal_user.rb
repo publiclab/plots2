@@ -1,5 +1,4 @@
 class DrupalUser < ApplicationRecord
-
   ## User status can be:
   #  0: banned
   #  1: normal
@@ -16,7 +15,7 @@ class DrupalUser < ApplicationRecord
   has_many :comments, foreign_key: 'uid'
 
   def user
-    User.where(id: self.id).first
+    User.where(id: id).first
   end
 
   def bio
@@ -80,7 +79,7 @@ class DrupalUser < ApplicationRecord
   end
 
   def update_user_status(status)
-    u = self.user
+    u = user
     u.status = status
     u.save!
   end
@@ -90,12 +89,12 @@ class DrupalUser < ApplicationRecord
   end
 
   def new_author_contributor
-    @uid = self.uid
+    @uid = uid
     return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
   end
 
   def new_contributor
-    @uid = self.id
+    @uid = id
     return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
   end
 
@@ -161,15 +160,15 @@ class DrupalUser < ApplicationRecord
   end
 
   def user_tags
-    self.user.user_tags
+    user.user_tags
   end
 
   def tags(limit = 10)
-    self.user.tags(limit)
+    user.tags(limit)
   end
 
   def tagnames(limit = 20, defaults = true)
-    self.user.tagnames(limit, defaults)
+    user.tagnames(limit, defaults)
   end
 
   def tag_counts

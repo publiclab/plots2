@@ -60,5 +60,9 @@ class RoutesTest < ActionDispatch::IntegrationTest
     test "test get request for updating a comment" do
         assert_routing({ path: '/comment/update/:id', method: 'get' }, {controller: 'comment', action: 'update', id: ':id' })
     end
-
+    
+    test "test post request for updating an answer" do
+    	assert_routing({path: '/answers/update/1', method: 'post' }, {controller: 'answers', action: 'update', id: '1' })
+    end
+	
 end
