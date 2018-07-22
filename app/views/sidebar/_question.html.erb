@@ -27,5 +27,7 @@
     <%= render partial: 'sidebar/notes', locals: { notes: @notes, title: "Related Questions", node: @node } %>
 
   </div>
+
+  <%= render partial: 'tag/tagging', locals: { sidebar_tagging: true } %>
 </div>
 <%= javascript_include_tag 'sidebar' %>

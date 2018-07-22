@@ -1,3 +1,5 @@
+<%include_tagging = local_assigns.fetch :include_tagging, false #not all things using this sidebar uses tagging%>
+
 <div class="col-md-3">
 
   <% if params[:controller] != "home" && params[:action] != "home" %>
@@ -6,6 +8,10 @@
 
   <% cache('feature_sidebar-feature', skip_digest: true) do %>
     <%= feature('sidebar-feature') %>
+  <% end %>
+
+  <% if include_tagging %>
+    <%= render partial: 'tag/tagging', locals: { sidebar_tagging: true } %>
   <% end %>
 
 </div>

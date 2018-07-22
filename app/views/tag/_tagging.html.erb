@@ -1,13 +1,15 @@
+<%sidebar_tagging = local_assigns.fetch :sidebar_tagging, false #preserves user, map tagging orientation %>
+
 <% if @node %>
   <%= render partial: 'tag/replication' %>
 
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: true, label_name: 'label-default', tags: @node.node_tags } %>
-  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @node.node_tags } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: true, label_name: 'label-default', tags: @node.node_tags, sidebar_tagging: sidebar_tagging } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @node.node_tags, sidebar_tagging: sidebar_tagging } %>
   </span>
 <% else %>
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @user.user_tags } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @user.user_tags, sidebar_tagging: sidebar_tagging } %>
   </span>
 <% end %>
 
@@ -43,7 +45,7 @@ $(".label").on("click", function(e){
 <form id="tagform" class="form" data-remote="true" action="<%= url %>">
   <div class="control-group">
     <input name="remote" type="hidden" value="true" />
-    <div class="input-group col-md-6">
+    <div class="<%= sidebar_tagging ? 'input-group' : 'input-group col-md-6' =%>">
       <span class="input-group-addon"><i class="fa fa-tags"></i></span>
       <input autocomplete="off" class="tag-input form-control" name="name" type="text" placeholder="<%= t('tag._tagging.enter_tags') %>" data-provide="typeahead" />
       <div class="input-group-btn">

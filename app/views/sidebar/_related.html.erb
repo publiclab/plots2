@@ -1,3 +1,5 @@
+<%include_tagging = local_assigns.fetch :include_tagging, false #not all things using this sidebar uses tagging%>
+
 <div class="col-md-3 hidden-print">
 
   <a style="margin-top:-16px;margin-bottom:0;" class="btn btn-mini btn-block btn-link visible-xs visible-sm" href="javascript:void()" onClick="toggle_sidebar()"><i class="fa fa-chevron-down"></i></a>
@@ -102,7 +104,9 @@
 
   <% end %>
 
-  <hr style="margin-bottom:6px;" />
+  <% if include_tagging %>
+    <%= render partial: 'tag/tagging', locals: { sidebar_tagging: true } %>
+  <% end %>
 
   </div>
 </div>
