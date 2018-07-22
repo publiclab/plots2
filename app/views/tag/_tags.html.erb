@@ -1,6 +1,4 @@
-<%sidebar_tagging = local_assigns.fetch :sidebar_tagging, false #preserves user, map tagging orientation %>
-
-<ul class="<%= sidebar_tagging ? 'list-unstyled' : 'list-inline' =%>">
+<ul class= "list-inline">
   <% tags.each do |tag| %>
     <% if tag.class == NodeTag %>
 

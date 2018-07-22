@@ -1,15 +1,20 @@
 <%sidebar_tagging = local_assigns.fetch :sidebar_tagging, false #preserves user, map tagging orientation %>
 
+<% if sidebar_tagging %>
+  <h1>Tags</h1>
+  <em class="italics">Tags help organize our knowledge base. Click to find more on a topic.</em>
+<% end %>
+
 <% if @node %>
   <%= render partial: 'tag/replication' %>
 
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: true, label_name: 'label-default', tags: @node.node_tags, sidebar_tagging: sidebar_tagging } %>
-  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @node.node_tags, sidebar_tagging: sidebar_tagging } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: true, label_name: 'label-default', tags: @node.node_tags } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @node.node_tags } %>
   </span>
 <% else %>
   <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @user.user_tags, sidebar_tagging: sidebar_tagging } %>
+  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @user.user_tags } %>
   </span>
 <% end %>
 
