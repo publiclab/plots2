@@ -397,7 +397,10 @@ class User < ActiveRecord::Base
       newtag = 'digest:daily'
     elsif type == UserTag::DIGEST_WEEKLY
       newtag = 'digest:weekly'
+    elsif type == 2
+      UserTag.where('value LIKE (?)', 'digest%').destroy_all
     end
+
     unless newtag.blank?
       UserTag.where('value LIKE (?)', 'digest%').destroy_all
       UserTag.create(uid: id, value: newtag)

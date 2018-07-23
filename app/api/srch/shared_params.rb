@@ -14,5 +14,10 @@ module Srch
     params :additional do
       optional :tagName, type: String, documentation: { example: 'awesome' }
     end
+
+    params :commontypeahead do
+      requires :srchString, type: String, documentation: { example: 'Spec' }
+      optional :seq, type: Integer, documentation: { example: 995 }
+    end
   end
 end

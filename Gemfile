@@ -60,7 +60,7 @@ gem 'unicode-emoji'
 gem 'whenever', require: false
 gem 'will_paginate', '>= 3.0.6'
 gem 'will_paginate-bootstrap', '>= 1.0.1'
-
+gem 'jquery-atwho-rails'
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
 
@@ -99,11 +99,13 @@ group :test, :development do
   gem 'json_expressions'
   gem 'minitest-reporters', '~> 1.1.19'
   gem 'openssl', '~> 2.0.0.beta.1'
+  gem 'phantomjs'
   gem 'rails-perftest'
   gem 'rake',  '~> 12.3.1'
   gem 'rest-client'
   gem 'rspec'
   gem 'test-unit'
+  gem 'teaspoon-mocha'
   gem 'timecop'
 end
 

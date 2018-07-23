@@ -42,9 +42,12 @@
 	           <li><a href="/questions">Ask a question</a></li>
             <li><a href="/tags">Find a topic you care about</a></li>
             <li><a href="/requests">Respond to a request</a></li>
+            <li class="divider"></li>
             <li><a href="/dashboard">Browse recent research</a></li>
             <li><a href="/methods">Discover methods</a></li>
-	           <li><a href="/kits">Contribute a kit</a></li>
+	          <li><a href="/kits">Contribute a kit</a></li>
+	          <li><a href="/wiki/software-outreach">Software Projects</a></li>
+            <li class="divider"></li>
             <% if !current_user %>
               <li><a href="/signup">Create an account</a></li>
             <% end %>
@@ -122,6 +125,7 @@
               <% end %>
               <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
               <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li>
+              <li><a href="/settings" >Email Settings</a></li>
               <li class="divider"></li>
               <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
               <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>

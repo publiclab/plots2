@@ -903,7 +903,7 @@ class Node < ActiveRecord::Base
                                  nid: nid).first_or_create
       like.liking = true
       node = Node.find(nid)
-      if node.type == 'note'
+      if node.type == 'note' && !UserTag.exists?(node.uid, 'notify-likes-direct:false')
         SubscriptionMailer.notify_note_liked(node, like.user).deliver_now
       end
       count = 1

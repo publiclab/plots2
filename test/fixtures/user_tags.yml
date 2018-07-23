@@ -64,3 +64,18 @@ github2:
   id: 13
   uid: 2
   value: oauth:github:876543219
+
+notify-comment-direct:
+  id: 14
+  uid: 10
+  value: notify-comment-direct:false
+
+notify-likes-direct:
+  id: 15
+  uid: 10
+  value: notify-likes-direct:false
+
+notify-comment-indirect:
+  id: 16
+  uid: 8
+  value: notify-comment-indirect:false
