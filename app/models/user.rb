@@ -39,7 +39,6 @@ class User < ActiveRecord::Base
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
 
-  before_create :create_user
   before_save :set_token
   after_destroy :destroy_user
 
@@ -207,7 +206,7 @@ class User < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Node.select(:created)
-        .where( uid: user.uid,
+        .where(uid: user.uid,
                                        type: 'note',
                                        status: 1,
                                        created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
@@ -234,7 +233,7 @@ class User < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
-                            .where( uid: user.uid,
+                            .where(uid: user.uid,
                                     status: 1,
                                     timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
         .count
@@ -248,7 +247,7 @@ class User < ActiveRecord::Base
     note_count = 0
     (0..span).each do |day|
       days[day] = Node.select(:created)
-        .where( uid: user.uid,
+        .where(uid: user.uid,
                               type: 'note',
                               status: 1,
                               created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
@@ -266,7 +265,7 @@ class User < ActiveRecord::Base
     wiki_edit_count = 0
     (0..span).each do |day|
       days[day] = Revision.joins(:node)
-        .where( uid: user.uid,
+        .where(uid: user.uid,
                                   status: 1,
                                   timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .where('node.type != ?', 'note')
@@ -284,7 +283,7 @@ class User < ActiveRecord::Base
     comment_count = 0
     (0..span).each do |day|
       days[day] = Comment.select(:timestamp)
-        .where( uid: user.uid,
+        .where(uid: user.uid,
                                  status: 1,
                                  timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .count

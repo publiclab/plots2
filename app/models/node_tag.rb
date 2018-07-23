@@ -27,10 +27,6 @@ class NodeTag < ApplicationRecord
     user.new_contributor
   end
 
-  def user
-    User.find uid
-  end
-
   def name
     tag.name
   end

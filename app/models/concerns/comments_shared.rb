@@ -1,4 +1,4 @@
-User# Active Support concerns are a good way to use modules that can used across different models
+# Active Support concerns are a good way to use modules that can used across different models
 # Refer to this link: http://stackoverflow.com/questions/14541823/how-to-use-concerns-in-rails-4
 module CommentsShared
   extend ActiveSupport::Concern

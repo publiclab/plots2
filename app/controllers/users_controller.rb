@@ -203,7 +203,7 @@ class UsersController < ApplicationController
 
   def likes
     @user = User.find_by(name: params[:id])
-    @title = "Liked by "+@user.name
+    @title = "Liked by " + @user.name
     @notes = @user.liked_notes
                   .includes(%i(tag comments))
                   .paginate(page: params[:page], per_page: 24)
