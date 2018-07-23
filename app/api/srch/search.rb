@@ -34,6 +34,18 @@ module Srch
         Search.execute(:profiles, params)
       end
 
+      # Request URL should be /api/srch/recentprofiles?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      desc 'Perform a search of profiles', hidden: false,
+                                           is_array: false,
+                                           nickname: 'srchGetRecentProfiles'
+
+      params do
+        use :common
+      end
+      get :recentprofiles do
+        Search.execute(:recentprofiles, params)
+      end
+
       # Request URL should be /api/srch/notes?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of research notes', hidden: false,

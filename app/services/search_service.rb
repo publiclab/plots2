@@ -131,6 +131,30 @@ class SearchService
     sresult
   end
 
+  # Search for more recently updated profiles for matching text
+  def textSearch_recentProfiles(srchString)
+    sresult = DocList.new
+
+    nodes = Node.all.order("changed DESC").limit(100).distinct
+    users = []
+    nodes.each do |node|
+      next unless node.author.status != 0
+      if node.author.name.downcase.include? srchString.downcase
+        users << node.author.user
+      end
+    end
+
+    users = users.uniq
+
+    # User profiles
+    users.each do |match|
+      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
+      sresult.addDoc(doc)
+    end
+
+    sresult
+  end
+
   # Search notes for matching strings
   def textSearch_notes(srchString)
     sresult = DocList.new
@@ -242,7 +266,7 @@ class SearchService
   def recentPeople(srchString, tagName = nil)
     sresult = DocList.new
 
-    nodes = Node.all.order("changed DESC").limit(srchString).distinct
+    nodes = Node.all.order("changed DESC").limit(100).distinct
     users = []
     nodes.each do |node|
       if node.author.status != 0
@@ -254,6 +278,7 @@ class SearchService
       end
     end
     users = users.uniq
+    count = 0
     users.each do |user|
       next unless user.has_power_tag("lat") && user.has_power_tag("lon")
       blurred = false
@@ -262,6 +287,10 @@ class SearchService
       end
       doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
       sresult.addDoc(doc)
+      count += 1
+      if count == srchString.to_i
+        break
+      end
     end
 
     sresult
