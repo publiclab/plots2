@@ -59,36 +59,6 @@ class User < ActiveRecord::Base
     return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor
   end
 
-  def create_user
-    self.bio ||= ''
-    if user.nil?
-      	    user = User.new(name: username,
-                                    pass: rand(100_000_000_000_000_000_000),
-                                    mail: email,
-                                    mode: 0,
-                                    sort: 0,
-                                    threshold: 0,
-                                    theme: '',
-                                    signature: '',
-                                    signature_format: 0,
-                                    created: DateTime.now.to_i,
-                                    access: DateTime.now.to_i,
-                                    login: DateTime.now.to_i,
-                                    status: 1,
-                                    timezone: nil,
-                                    language: '',
-                                    picture: '',
-                                    init: '',
-                                    data: nil,
-                                    timezone_id: 0,
-                                    timezone_name: '')
-      user.save!
-      self.id = user.uid
-    else
-      self.id = User.find_by(name: username).uid
-    end
-  end
-
   def destroy_user
     user.destroy
   end
