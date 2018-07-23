@@ -1,4 +1,4 @@
-class DrupalContentFieldMapEditor < ActiveRecord::Base
+class DrupalContentFieldMapEditor < ApplicationRecord
   self.table_name = 'content_field_map_editor'
   self.primary_key = 'vid'
 

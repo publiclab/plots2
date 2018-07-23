@@ -8,12 +8,11 @@ end
 
 class User < ActiveRecord::Base
   self.table_name = 'rusers'
-  attr_accessible :username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status
   alias_attribute :name, :username
 
   acts_as_authentic do |c|
     c.openid_required_fields = %i(nickname email)
-    VALID_EMAIL_REGEX = /\A[-[:alnum:]+.]+@[[:alnum:]-.]+[.][[:alpha:]]+\z/
+    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
     c.validates_format_of_email_field_options = { with: VALID_EMAIL_REGEX }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
   end
@@ -33,6 +32,7 @@ class User < ActiveRecord::Base
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
+  has_many :likes
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
@@ -45,29 +45,34 @@ class User < ActiveRecord::Base
     User.where('MATCH(username, bio) AGAINST(?)', query)
   end
 
+  def new_contributor
+    @uid = id
+    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
+  end
+
   def create_drupal_user
     self.bio ||= ''
     if drupal_user.nil?
-      	    drupal_user = DrupalUser.new(name: username,
-                                    pass: rand(100_000_000_000_000_000_000),
-                                    mail: email,
-                                    mode: 0,
-                                    sort: 0,
-                                    threshold: 0,
-                                    theme: '',
-                                    signature: '',
-                                    signature_format: 0,
-                                    created: DateTime.now.to_i,
-                                    access: DateTime.now.to_i,
-                                    login: DateTime.now.to_i,
-                                    status: 1,
-                                    timezone: nil,
-                                    language: '',
-                                    picture: '',
-                                    init: '',
-                                    data: nil,
-                                    timezone_id: 0,
-                                    timezone_name: '')
+      drupal_user = DrupalUser.new(name: username,
+                              pass: rand(100_000_000_000_000_000_000),
+                              mail: email,
+                              mode: 0,
+                              sort: 0,
+                              threshold: 0,
+                              theme: '',
+                              signature: '',
+                              signature_format: 0,
+                              created: DateTime.now.to_i,
+                              access: DateTime.now.to_i,
+                              login: DateTime.now.to_i,
+                              status: 1,
+                              timezone: nil,
+                              language: '',
+                              picture: '',
+                              init: '',
+                              data: nil,
+                              timezone_id: 0,
+                              timezone_name: '')
       drupal_user.save!
       self.id = drupal_user.uid
     else
@@ -80,7 +85,7 @@ class User < ActiveRecord::Base
   end
 
   def set_token
-    self.token = SecureRandom.uuid if self.token.nil?
+    self.token = SecureRandom.uuid if token.nil?
   end
 
   # this is ridiculous. We need to store uid in this model.
@@ -90,11 +95,11 @@ class User < ActiveRecord::Base
   end
 
   def last
-    self.drupal_user.last
+    drupal_user.last
   end
 
   def node_count
-    self.drupal_user.node_count 
+    drupal_user.node_count
   end
 
   def notes
@@ -104,11 +109,11 @@ class User < ActiveRecord::Base
   end
 
   def coauthored_notes
-    coauthored_tag = "with:" + self.name.downcase
+    coauthored_tag = "with:" + name.downcase
     Node.where(status: 1, type: "note")
       .includes(:revision, :tag)
       .references(:term_data, :node_revisions)
-      .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s , coauthored_tag.to_s)
+      .where('term_data.name = ? OR term_data.parent = ?', coauthored_tag.to_s, coauthored_tag.to_s)
   end
 
   def generate_reset_key
@@ -117,7 +122,7 @@ class User < ActiveRecord::Base
     20.times do
       key += [*'a'..'z'].sample
     end
-    self.update_attribute(:reset_key, key)
+    update_attribute(:reset_key, key)
     key
   end
 
@@ -126,19 +131,19 @@ class User < ActiveRecord::Base
   end
 
   def title
-    self.username
+    username
   end
 
   def path
-    "/profile/#{self.username}"
+    "/profile/#{username}"
   end
 
   def lat
-    self.get_value_of_power_tag('lat')
+    get_value_of_power_tag('lat')
   end
 
   def lon
-    self.get_value_of_power_tag('lon')
+    get_value_of_power_tag('lon')
   end
 
   # we can revise/improve this for m2m later...
@@ -159,13 +164,17 @@ class User < ActiveRecord::Base
     admin? || moderator?
   end
 
+  def is_coauthor(node)
+    id == node.author.id || node.has_tag("with:#{username}")
+  end
+
   def tags(limit = 10)
     Tag.where('name in (?)', tagnames).limit(limit)
   end
 
   def tagnames(limit = 20, defaults = true)
     tagnames = []
-    Node.order('nid DESC').where(type: 'note', status: 1, uid: self.id).limit(limit).each do |node|
+    Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(limit).each do |node|
       tagnames += node.tags.collect(&:name)
     end
     tagnames += ['balloon-mapping', 'spectrometer', 'near-infrared-camera', 'thermal-photography', 'newsletter'] if tagnames.empty? && defaults
@@ -176,20 +185,20 @@ class User < ActiveRecord::Base
     user_tags.collect(&:value).include?(tagname)
   end
 
-   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
+  # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
-     tids = self.user_tags.where('value LIKE ?' , key + ':%').collect(&:id)
-     !tids.blank?
+    tids = user_tags.where('value LIKE ?', key + ':%').collect(&:id)
+    !tids.blank?
   end
 
   def get_value_of_power_tag(key)
-    tname = self.user_tags.where('value LIKE ?' , key + ':%')
+    tname = user_tags.where('value LIKE ?', key + ':%')
     tvalue = tname.first.name.partition(':').last
     tvalue
   end
 
   def get_last_value_of_power_tag(key)
-    tname = self.user_tags.where('value LIKE ?' , key + ':%')
+    tname = user_tags.where('value LIKE ?', key + ':%')
     tvalue = tname.last.name.partition(':').last
     tvalue
   end
@@ -216,7 +225,7 @@ class User < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Node.select(:created)
-        .where( uid: drupal_user.uid,
+        .where(uid: drupal_user.uid,
                                        type: 'note',
                                        status: 1,
                                        created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
@@ -226,27 +235,26 @@ class User < ActiveRecord::Base
   end
 
   def daily_note_tally(span = 365)
-      days = {}
-      (1..span).each do |day|
-          time = Time.now.utc.beginning_of_day.to_i
-          days[(time-day.days.to_i)] = Node.select(:created)
-                                           .where(uid: self.uid, 
-                                                  type: 'note',
-                                                  status: 1, 
-                                                  created: time - (day-1).days.to_i..time - (day - 2).days.to_i) 
-                                           .count
-      end
-      days
+    days = {}
+    (1..span).each do |day|
+      time = Time.now.utc.beginning_of_day.to_i
+      days[(time - day.days.to_i)] = Node.select(:created)
+        .where(uid: uid,
+                                              type: 'note',
+                                              status: 1,
+                                              created: time - (day - 1).days.to_i..time - (day - 2).days.to_i)
+        .count
+    end
+    days
   end
- 
 
   def weekly_comment_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
-        .where( uid: drupal_user.uid,
-                                          status: 1,
-                                          timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
+        .where(uid: drupal_user.uid,
+                                    status: 1,
+                                    timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
         .count
     end
     weeks
@@ -258,7 +266,7 @@ class User < ActiveRecord::Base
     note_count = 0
     (0..span).each do |day|
       days[day] = Node.select(:created)
-        .where( uid: drupal_user.uid,
+        .where(uid: drupal_user.uid,
                               type: 'note',
                               status: 1,
                               created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
@@ -276,7 +284,7 @@ class User < ActiveRecord::Base
     wiki_edit_count = 0
     (0..span).each do |day|
       days[day] = Revision.joins(:node)
-        .where( uid: drupal_user.uid,
+        .where(uid: drupal_user.uid,
                                   status: 1,
                                   timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .where('node.type != ?', 'note')
@@ -294,7 +302,7 @@ class User < ActiveRecord::Base
     comment_count = 0
     (0..span).each do |day|
       days[day] = Comment.select(:timestamp)
-        .where( uid: drupal_user.uid,
+        .where(uid: drupal_user.uid,
                                  status: 1,
                                  timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .count
@@ -345,7 +353,7 @@ class User < ActiveRecord::Base
       puts photo_path(:thumb)
       photo_path(:thumb)
     else
-      "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}"
+      "https://www.gravatar.com/avatar/#{OpenSSL::Digest::MD5.hexdigest(email)}"
     end
   end
 
@@ -357,15 +365,15 @@ class User < ActiveRecord::Base
     tagnames = TagSelection.where(following: true, user_id: uid)
     node_ids = []
     tagnames.each do |tagname|
-      node_ids = node_ids + NodeTag.where(tid: tagname.tid).collect(&:nid)
+      node_ids += NodeTag.where(tid: tagname.tid).collect(&:nid)
     end
 
     Node.where(nid: node_ids)
-        .includes(:revision, :tag)
-        .references(:node_revision)
-        .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
-        .order('node_revisions.timestamp DESC')
-        .uniq
+      .includes(:revision, :tag)
+      .references(:node_revision)
+      .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
+      .order('node_revisions.timestamp DESC')
+      .distinct
   end
 
   def social_link(site)
@@ -375,6 +383,28 @@ class User < ActiveRecord::Base
       return link
     end
     nil
+  end
+
+  def send_digest_email
+    top_picks = content_followed_in_period(Time.now - 1.week, Time.now)
+    if top_picks.count > 0
+      SubscriptionMailer.send_digest(id, top_picks).deliver_now
+    end
+  end
+
+  def customize_digest(type)
+    if type == UserTag::DIGEST_DAILY
+      newtag = 'digest:daily'
+    elsif type == UserTag::DIGEST_WEEKLY
+      newtag = 'digest:weekly'
+    elsif type == 2
+      UserTag.where('value LIKE (?)', 'digest%').destroy_all
+    end
+
+    unless newtag.blank?
+      UserTag.where('value LIKE (?)', 'digest%').destroy_all
+      UserTag.create(uid: id, value: newtag)
+    end
   end
 
   private
@@ -389,14 +419,29 @@ class User < ActiveRecord::Base
   end
 
   # all uses who've posted a node, comment, or answer in the given period
-  def self.contributor_count_for(start_time,end_time)
+  def self.contributor_count_for(start_time, end_time)
     notes = Node.where(type: 'note', status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
     answers = Answer.where(created_at: start_time..end_time).pluck(:uid)
     questions = Node.questions.where(status: 1, created: start_time.to_i..end_time.to_i).pluck(:uid)
     comments = Comment.where(timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
     revisions = Revision.where(status: 1, timestamp: start_time.to_i..end_time.to_i).pluck(:uid)
-    contributors = (notes+answers+questions+comments+revisions).compact.uniq.length
+    contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
     contributors
   end
 
+  def self.create_with_omniauth(auth)
+    # email prefix is part of email before @ with periods replaced with underscores
+    # generate a 2 digit alphanumeric number and append it at the end of email-prefix
+    charset = Array('A'..'Z') + Array('a'..'z') + Array(0..9)
+    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
+    email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
+    create! do |user|
+      s = SecureRandom.urlsafe_base64
+      user.username = email_prefix
+      user.email = auth["info"]["email"]
+      user.password = s
+      user.password_confirmation = s
+      user.save!
+    end
+  end
 end

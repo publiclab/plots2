@@ -2,7 +2,7 @@ class CommentController < ApplicationController
   include CommentHelper
 
   respond_to :html, :xml, :json
-  before_filter :require_user, only: %i(create update make_answer delete)
+  before_action :require_user, only: %i(create update make_answer delete)
 
   def index
     @comments = Comment.paginate(page: params[:page], per_page: 30)
@@ -16,7 +16,6 @@ class CommentController < ApplicationController
     @node = Node.find params[:id]
     @body = params[:body]
     @user = current_user
-
     begin
       @comment = create_comment(@node, @user, @body)
       respond_with do |format|
@@ -28,8 +27,8 @@ class CommentController < ApplicationController
             if request.xhr?
               render partial: 'notes/comment', locals: { comment: @comment }
             else
-            	tagnames =  @node.tagnames.map do |tagname|
-            		"<a href='/subscribe/tag/#{ tagname }'>#{ tagname }</a>"
+              tagnames = @node.tagnames.map do |tagname|
+                "<a href='/subscribe/tag/#{tagname}'>#{tagname}</a>"
               end
               tagnames = tagnames.join(', ')
               tagnames = " Click to subscribe to updates on these tags or topics: " + tagnames unless tagnames.empty?
@@ -41,7 +40,7 @@ class CommentController < ApplicationController
       end
     rescue CommentError
       flash[:error] = 'The comment could not be saved.'
-      render text: 'failure'
+      render plain: 'failure'
     end
   end
 
@@ -58,16 +57,16 @@ class CommentController < ApplicationController
         # used in here because the module was `include`d right at the beginning
         @comment = create_comment(@node, @user, @body)
         respond_to do |format|
-          format.all { render :nothing => true, :status => :created }
+          format.all { head :created }
         end
       rescue CommentError
         respond_to do |format|
-          format.all { render :nothing => true, :status => :bad_request }
+          format.all { head :bad_request }
         end
       end
     else
       respond_to do |format|
-        format.all { render :nothing => true, :status => :unauthorized }
+        format.all { head :unauthorized }
       end
     end
   end
@@ -88,7 +87,7 @@ class CommentController < ApplicationController
       end
     else
       flash[:error] = 'The comment could not be saved.'
-      render text: 'failure'
+      render plain: 'failure'
     end
   end
 
@@ -131,7 +130,7 @@ class CommentController < ApplicationController
           else
             format.html do
               if request.xhr?
-                render text: 'success'
+                render plain: 'success'
               else
                 flash[:notice] = 'Comment deleted.'
                 redirect_to '/' + @node.path
@@ -141,7 +140,7 @@ class CommentController < ApplicationController
         end
       else
         flash[:error] = 'The comment could not be deleted.'
-        render text: 'failure'
+        render plain: 'failure'
       end
     else
       prompt_login 'Only the comment or post author can delete this comment'
@@ -157,11 +156,11 @@ class CommentController < ApplicationController
        current_user.role == 'moderator'
 
       @answer = Answer.new(
-          nid: @comment.nid,
-          uid: @comment.uid,
-          content: @comment.comment,
-          created_at: @comment.created_at,
-          updated_at: @comment.created_at
+        nid: @comment.nid,
+        uid: @comment.uid,
+        content: @comment.comment,
+        created_at: @comment.created_at,
+        updated_at: @comment.created_at
       )
 
       if @answer.save && @comment.delete
@@ -171,11 +170,31 @@ class CommentController < ApplicationController
         end
       else
         flash[:error] = 'The comment could not be promoted to answer.'
-        render text: 'failure'
+        render plain: 'failure'
       end
     else
       prompt_login 'Only the comment author can promote this comment to answer'
     end
   end
 
+  def like_comment
+    @comment_id = params["comment_id"].to_i
+    @user_id = params["user_id"].to_i
+    @emoji_type = params["emoji_type"]
+    comment = Comment.where(cid: @comment_id).first
+    like = comment.likes.where(user_id: @user_id, emoji_type: @emoji_type)
+    @is_liked = like.count.positive?
+    if like.count.positive?
+      like.first.destroy
+    else
+      comment.likes.create(user_id: @user_id, emoji_type: @emoji_type)
+    end
+
+    @likes = comment.likes.group(:emoji_type).count
+    respond_with do |format|
+      format.js do
+        render template: 'comment/like_comment'
+      end
+    end
+  end
 end

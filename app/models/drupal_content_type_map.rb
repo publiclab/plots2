@@ -1,4 +1,4 @@
-class DrupalContentTypeMap < ActiveRecord::Base
+class DrupalContentTypeMap < ApplicationRecord
   self.table_name = 'content_type_map'
   self.primary_key = 'vid'
 
@@ -15,7 +15,7 @@ class DrupalContentTypeMap < ActiveRecord::Base
   before_save :truncate_fields
 
   def truncate_fields
-    self.field_publication_date_value = self.field_publication_date_value.slice(0, 19)
+    self.field_publication_date_value = field_publication_date_value.slice(0, 19)
   end
 
   def tms

@@ -9,6 +9,13 @@ class ImagesControllerTest < ActionController::TestCase
     activate_authlogic
   end
 
+  test "image shortlinks redirect properly" do
+    get :shortlink, params: { id: Image.last.id }
+    assert_redirected_to Image.last.path(:large)
+    get :shortlink, params: { id: Image.last.id, size: 'medium' }
+    assert_redirected_to Image.last.path(:medium)
+  end
+
   #  test "normal user should not delete image" do
   #    UserSession.new(drupal_users(:bob))
   #    post :delete, id: Image.last.id
@@ -25,4 +32,16 @@ class ImagesControllerTest < ActionController::TestCase
   ## also ensure any revisions/wiki pages/notes using this image have been re-assigned a most-recent, or no image
 
   #  end
+  test 'image creation success should render the details about the image in the form of json' do
+    user = UserSession.create(users(:jeff))
+    upload_photo = fixture_file_upload('rails.png', 'image/png')
+    post :create, 
+        params: { 
+            image: {
+                photo: upload_photo,
+                title: 'Rails image',
+            },
+        }    
+    assert_equal 'application/json', @response.content_type
+  end
 end

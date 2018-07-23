@@ -5,7 +5,7 @@ class StatsController < ApplicationController
       @tags[tag.tagname] = @tags[tag.tagname] || 0
       @tags[tag.tagname] += 1
     end
-    render text: @tags.inspect, status: 200
+    render plain: @tags.inspect, status: 200
   end
 
   def range
@@ -20,7 +20,7 @@ class StatsController < ApplicationController
     @people = User.where(created_at: @start..@end)
       .joins('INNER JOIN users ON users.uid = rusers.id')
       .where('users.status = 1')
-      .count                 
+      .count
     @answers = Answer.where(created_at: @start..@end)
       .count
     @comments = Comment.select(:timestamp)
@@ -28,14 +28,14 @@ class StatsController < ApplicationController
       .count
     @questions = Node.questions.where(status: 1, created: @start.to_i..@end.to_i)
       .count
-    @contributors = User.contributor_count_for(@start,@end)
+    @contributors = User.contributor_count_for(@start, @end)
   end
 
   def index
     @time = if params[:time]
               Time.parse(params[:time])
-    else
-      Time.now
+            else
+              Time.now
     end
 
     @weekly_notes = Node.select(%i(created type status))
@@ -69,7 +69,6 @@ class StatsController < ApplicationController
     @graph_notes = Node.contribution_graph_making('note', 52, @time).to_a.to_json
     @graph_wikis = Node.contribution_graph_making('page', 52, @time).to_a.to_json
     @graph_comments = Comment.contribution_graph_making(52, @time).to_a.to_json
-
 
     users = []
     nids = []

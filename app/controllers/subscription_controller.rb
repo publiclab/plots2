@@ -1,11 +1,10 @@
-# for now, adapting like_controller for just tag following. 
-# We can create switches for different kinds of likes. 
+# for now, adapting like_controller for just tag following.
+# We can create switches for different kinds of likes.
 # No route or view code as of yet.
 
 class SubscriptionController < ApplicationController
-
   respond_to :html, :xml, :json
-  before_filter :require_user, :only => [:create, :delete, :index, :digest]
+  before_action :require_user, :only => %i(create delete index digest)
 
   def index
     @title = "Subscriptions"
@@ -37,12 +36,13 @@ class SubscriptionController < ApplicationController
         tag = Tag.find_by(name: params[:name])
         if tag.nil?
           # if the tag doesn't exist, we should create it!
-          # this could fail validations; error out if so... 
-          tag = Tag.new({
+          # this could fail validations; error out if so...
+          tag = Tag.new(
             :vid => 3, # vocabulary id
             :name => params[:name],
             :description => "",
-            :weight => 0})
+            :weight => 0
+          )
           begin
             tag.save!
           rescue ActiveRecord::RecordInvalid
@@ -57,7 +57,7 @@ class SubscriptionController < ApplicationController
           flash[:error] = "You are already subscribed to '#{params[:name]}'"
           redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
         else
-          if set_following(true,params[:type],tag.tid)
+          if set_following(true, params[:type], tag.tid)
             respond_with do |format|
               format.html do
                 if request.xhr?
@@ -69,7 +69,7 @@ class SubscriptionController < ApplicationController
               end
             end
           else
-            flash[:error] = "Something went wrong!" # silly 
+            flash[:error] = "Something went wrong!" # silly
           end
         end
       else
@@ -77,8 +77,8 @@ class SubscriptionController < ApplicationController
 
       end
     else
-        flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
-        redirect_to "/tag/"+params[:name]
+      flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
+      redirect_to "/tag/" + params[:name]
     end
   end
 
@@ -92,7 +92,7 @@ class SubscriptionController < ApplicationController
       flash[:error] = "You are not subscribed to '#{params[:name]}'"
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
     else
-      if !set_following(false,params[:type],id) #should return false if result is that following == false
+      if !set_following(false, params[:type], id) # should return false if result is that following == false
         respond_with do |format|
           format.html do
             if request.xhr?
@@ -104,7 +104,7 @@ class SubscriptionController < ApplicationController
           end
         end
       else
-        flash[:error] = "Something went wrong!" # silly 
+        flash[:error] = "Something went wrong!" # silly
         redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
       end
     end
@@ -112,7 +112,7 @@ class SubscriptionController < ApplicationController
 
   def digest
     @wikis = current_user.content_followed_in_period(Time.now - 1.week, Time.now)
-             .paginate(page: params[:page], per_page: 100)
+      .paginate(page: params[:page], per_page: 100)
 
     @paginated = true
     render :template => "subscriptions/digest"
@@ -120,37 +120,36 @@ class SubscriptionController < ApplicationController
 
   private
 
-  def set_following(value,type,id)
+  def set_following(value, type, id)
     # add swtich statement for different types: tag, node, user
     if type == 'tag' && Tag.find_by(tid: id)
       # Create the entry if it isn't already created.
-      # assume tag, for now: 
+      # assume tag, for now:
       subscription = TagSelection.where(:user_id => current_user.uid,
                                         :tid => id).first_or_create
       subscription.following = value
- 
+
       # Check if the value changed.
       if subscription.following_changed?
-        #tag = Tag.find(id)
+        # tag = Tag.find(id)
         # we have to implement caching for tags if we want to adapt this code:
-        #if subscription.following
+        # if subscription.following
         #  node.cached_likes = node.cached_likes + 1
-        #else
+        # else
         #  node.cached_likes = node.cached_likes - 1
-        #end
-        
+        # end
+
         # Save the changes.
-        #ActiveRecord::Base.transaction do
+        # ActiveRecord::Base.transaction do
         #  tag.save!
-          subscription.save!
-        #end
+        subscription.save!
+        # end
       end
- 
-      return subscription.following
+
+      subscription.following
     else
       flash[:error] = "There was an error."
-      return false
+      false
     end
   end
-
 end

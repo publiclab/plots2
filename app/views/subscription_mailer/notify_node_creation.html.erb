@@ -1,5 +1,3 @@
-<p>Dear <%= @user.username %>,</p>
-
 <p>Public Lab contributor <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @node.author.name %>'><%= @node.author.name %></a> just <% if @node.has_power_tag('question') %>asked a question<% else %>posted a new research note<% end %> entitled '<b><%= @node.title %></b>':</p>
 
 <% if @node.has_power_tag('question') %>
@@ -10,17 +8,15 @@
 
 <hr /> 
 
-<% if @node.main_image %><a style="margin-bottom:10px;" href="<%= @node.path %>"><img src="<%= @node.main_image.path(:default) %>" /></a><% end %>
+<% if @node.main_image %><a style="margin-bottom:10px;" href="<%= ActionMailer::Base.default_url_options[:host] %><%= @node.path %>"><img src="<%= ActionMailer::Base.default_url_options[:host] %><%= @node.main_image.path(:default) %>" /></a><% end %>
 
-<%= raw auto_link(@node.latest.render_body_email(ActionMailer::Base.default_url_options[:host]), :sanitize => false) %>
+<%= raw auto_link(@node.latest.render_body_email(ActionMailer::Base.default_url_options[:host]), sanitize: false) %>
 
-<hr /> 
-
-<% if @user.role == "admin" || @user.role == "moderator" %>Does this look like spam? <a class="btn btn-sm" href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/spam/<%= @node.id %>">Spam</a><% end %>
+<hr />
 
 <div style="color:#aaa;">
 
-<p>You received this email because you are subscribed to the following tags: <%= @tags.to_a.collect(&:name).join(",") %>.</p>
+<p>You received this email because you are subscribed to some or all of the following tags: <%= @tags %>.</p>
 
 <p>To change your preferences, please visit https://<%= ActionMailer::Base.default_url_options[:host] %>/subscriptions.</p>
 

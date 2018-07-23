@@ -83,7 +83,7 @@ class HomeControllerTest < ActionController::TestCase
       old_controller = @controller
       @controller = SettingsController.new
 
-      get :change_locale, locale: lang.to_s
+      get :change_locale, params: { locale: lang.to_s }
 
       @controller = old_controller
 
@@ -100,13 +100,12 @@ class HomeControllerTest < ActionController::TestCase
       old_controller = @controller
       @controller = SettingsController.new
 
-      get :change_locale, locale: lang.to_s
+      get :change_locale, params: { locale: lang.to_s }
 
       @controller = old_controller
 
       get 'home'
       assert_template 'home/home'
-      assert_select 'h2', I18n.t('home.home.the_problem.title')
     end
   end
 end

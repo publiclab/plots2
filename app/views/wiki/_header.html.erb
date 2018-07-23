@@ -1,5 +1,5 @@
 <% if current_user && @node.tags.length == 0 %>
-  <div class="alert alert-warning"><%= raw t('wiki.show.page_has_no_tags') %></div>
+  <div class="alert alert-warning"><%= raw t('wiki.show.page_has_no_tags', url: 'javascript: $(".tag-input").focus();') %></div>
 <% end %>
 
 <% if @node.main_image && !@presentation %>
@@ -55,17 +55,26 @@
           <a href="/wiki/locked"><i class="fa fa-lock"></i></a>
         </li>
       <% else %>
-        <li>
-          <a rel="tooltip" title="Edit this wiki page." data-placement="top" href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>">
-            <i class="fa fa-pencil"></i>
-            <span class="hidden-xs hidden-sm hidden-md"></span>
-          </a>
-        </li>
-        <li class="<%= 'active' if params[:raw] == 'true' %>">
-          <a rel="tooltip" title="Try the beta inline Rich Wiki editor." data-placement="top" href="<%= @node.path %>?raw=true">
-            <i style="color:#0c8;" class="fa fa-pencil"></i>
-          </a>
-        </li>
+      <% if current_user && current_user.first_time_poster %>
+            <li>
+              <a rel="tooltip" title="Please post a question or other content before editing the wiki. Click to learn why." data-placement="top" href="https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters">
+                <i class="fa fa-lock"></i>
+                <span class="hidden-xs hidden-sm hidden-md"></span>
+              </a>
+            </li>
+        <% else %>
+            <li>
+              <a rel="tooltip" title="Edit this wiki page." data-placement="top" href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>">
+                <i class="fa fa-pencil"></i>
+                <span class="hidden-xs hidden-sm hidden-md"></span>
+              </a>
+            </li>
+            <li class="<%= 'active' if params[:raw] == 'true' %>">
+              <a rel="tooltip" title="Try the beta inline Rich Wiki editor." data-placement="top" href="<%= @node.path %>?raw=true">
+                <i style="color:#0c8;" class="fa fa-pencil"></i>
+              </a>
+            </li>
+        <% end %>
       <% end %>
 
       <% if current_user && current_user.role == "admin" %>
@@ -110,7 +119,7 @@
 <% end %>
 
 <% if @node.has_power_tag('parent') %>
-  <% parent = Node.find_by_path("wiki/" + @node.power_tag('parent')) %>
+  <% parent = Node.find_by(slug: @node.power_tag('parent')) %>
   <% if parent %>
   <div class="alert alert-success" style="border-color:#eee;background:#f8f8f8;color:#aaa;">&laquo; <%= raw t('wiki.show.back_to_wiki', :url1 => parent.path, :title => parent.latest.title) %></a></div>
   <% end %>

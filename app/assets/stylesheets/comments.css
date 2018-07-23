@@ -11,5 +11,15 @@
 }
 
 #question-comment-form {
-    width: 90%;
+    width: 100%;
+}
+
+.sey-item b {
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.sey-item span {
+  margin-bottom: 0;
+  margin-left: 4px;
 }

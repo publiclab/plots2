@@ -11,8 +11,8 @@ Rails.application.configure do
   config.eager_load = false
 
   # Configure static asset server for tests with Cache-Control for performance
-  config.serve_static_files = true
-  config.static_cache_control = "public, max-age=3600"
+  config.public_file_server.enabled = true
+  config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -30,8 +30,6 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :test
   config.action_mailer.raise_delivery_errors = false
 
-  # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :strict
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
@@ -41,5 +39,109 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {
     host: 'www.example.com'
   }
+
+  OmniAuth.config.test_mode = true
+  #OAuth hash for different providers for testing purpose
+  #Google Provider
+  OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+      'provider' => 'google_oauth2',
+      'uid' => '1357908642',
+      'info' => {
+        'name' => 'sidharth bansal',
+        'email' => 'bansal.sidharth309@gmail.com'
+      }
+    })
+
+  OmniAuth.config.mock_auth[:google_oauth2_2] = OmniAuth::AuthHash.new({
+       'provider' => 'google_oauth2',
+       'uid' => '1357908642',
+       'info' => {
+         'name' => 'jeff',
+         'email' => 'jeff@pxlshp.com'
+       }
+     })
+  #Github Provider
+  OmniAuth.config.mock_auth[:github1] = OmniAuth::AuthHash.new({
+      'provider' => 'github',
+      'uid' => '135790579602',
+      'info' => {
+        'name' => 'sidharth bansal',
+        'email' => 'bansal.sidharth309@gmail.com'
+      }
+    })
+
+  OmniAuth.config.mock_auth[:github2] = OmniAuth::AuthHash.new({
+      'provider' => 'github',
+      'uid' => '1357998009602',
+      'info' => {
+        'name' => 'jeffrey',
+        'email' => 'jeff@pxlshp.com'
+        }
+    })
+
+  OmniAuth.config.mock_auth[:github3] = OmniAuth::AuthHash.new({
+      'provider' => 'github',
+      'uid' => '135799239602',
+      'info' => {
+        'name' => 'emila buffet',
+        'email' => 'emila.buffet309@gmail.com'
+      }
+    })
+
+    #facebook Provider
+    OmniAuth.config.mock_auth[:facebook1] = OmniAuth::AuthHash.new({
+        'provider' => 'facebook',
+        'uid' => '1357905002',
+        'info' => {
+          'name' => 'sidharth bansal',
+          'email' => 'bansal.sidharth309@gmail.com'
+        }
+      })
+  
+    #Twitter Provider
+    OmniAuth.config.mock_auth[:twitter1] = OmniAuth::AuthHash.new({
+        'provider' => 'twitter',
+        'uid' => '135798079602',
+        'info' => {
+          'name' => 'sidharth bansal',
+          'email' => 'bansal.sidharth309@gmail.com'
+        }
+      })
+
+      OmniAuth.config.mock_auth[:facebook2] = OmniAuth::AuthHash.new({
+          'provider' => 'facebook',
+          'uid' => '1359988009602',
+          'info' => {
+            'name' => 'jeffrey',
+            'email' => 'jeff@pxlshp.com'
+            }
+        })
+
+      OmniAuth.config.mock_auth[:facebook3] = OmniAuth::AuthHash.new({
+          'provider' => 'facebook',
+          'uid' => '13579992302',
+          'info' => {
+            'name' => 'emila buffet',
+            'email' => 'emila.buffet309@gmail.com'
+          }
+      })
+
+    OmniAuth.config.mock_auth[:twitter2] = OmniAuth::AuthHash.new({
+        'provider' => 'twitter',
+        'uid' => '137898009602',
+        'info' => {
+          'name' => 'jeffrey',
+          'email' => 'jeff@pxlshp.com'
+          }
+      })
+
+    OmniAuth.config.mock_auth[:twitter3] = OmniAuth::AuthHash.new({
+        'provider' => 'twitter',
+        'uid' => '135689602',
+        'info' => {
+          'name' => 'emila buffet',
+          'email' => 'emila.buffet309@gmail.com'
+        }
+      })
 
 end

@@ -1,6 +1,6 @@
 require 'php_serialize'
 
-class DrupalContentFieldImageGallery < ActiveRecord::Base
+class DrupalContentFieldImageGallery < ApplicationRecord
   self.table_name = 'content_field_image_gallery'
   self.primary_keys = :vid, :nid
 
@@ -21,7 +21,7 @@ class DrupalContentFieldImageGallery < ActiveRecord::Base
 
   def description
     PHP.unserialize(field_image_gallery_data)['description']
-  rescue
+  rescue StandardError
     ''
   end
 end

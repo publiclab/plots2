@@ -1,4 +1,4 @@
-class RevisionFulltextIndex < ActiveRecord::Migration
+class RevisionFulltextIndex < ActiveRecord::Migration[5.1]
   def up
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       add_index :node_revisions, [:body, :title], type: :fulltext

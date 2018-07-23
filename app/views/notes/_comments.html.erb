@@ -1,11 +1,10 @@
 <div class="row">
-
   <div id="comments" class="col-md-10 comments">
 
-    <h3><span id="comment-count"><%= @node.comments.length %></span> <%= t('notes._comments.comments') %></h3>
+    <h3><span id="comment-count"><%= @node.comments.where(status: 1).length %></span> <%= t('notes._comments.comments') %></h3>
 
-    <div id="comments-container">
-      <% @node.comments.order('timestamp ASC').each do |comment| %>
+    <div style="margin-bottom: 50px;" id="comments-container">
+      <% @node.comments.where(status: 1).order('timestamp ASC').each do |comment| %>
         <% if comment.cid == @node.comments.first.cid %><a id="last" name="last"></a><% end %>
 
         <%= render :partial => "notes/comment", :locals => {:comment => comment} %>

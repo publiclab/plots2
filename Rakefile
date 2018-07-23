@@ -3,11 +3,11 @@
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
 require File.expand_path('../config/application', __FILE__)
+require 'rake/testtask'
 
 Plots2::Application.load_tasks
 
 Rake::Task['test:run'].clear
-Rake::Task['test:all'].clear
 
 namespace :test do
 
@@ -18,7 +18,7 @@ namespace :test do
     t.test_files = FileList['test/**/*_test.rb']
   end
 
-  desc "Run rails and jasmine tests"
+  desc "Run rails and teaspoon tests"
   task :all => :environment do
     require 'coveralls/rake/task'
     Coveralls::RakeTask.new
@@ -26,17 +26,8 @@ namespace :test do
       require 'ci/reporter/rake/test_unit'
       Rake::Task["ci:setup:testunit"].execute
     end
-    puts "Running Rails tests"
-    Rake::Task["test:run"].execute
-    puts "Running jasmine tests headlessly"
-    Rake::Task["spec:javascript"].execute
+    puts "Running teaspoon tests headlessly"
+    Rake::Task["teaspoon"].execute
     Rake::Task["coveralls:push"].execute
   end
-
-  desc "Run rails and jasmine tests"
-  task :javascript do
-    puts "Running jasmine tests headlessly"
-    Rake::Task["spec:javascript"].execute
-  end
-
 end

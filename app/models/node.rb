@@ -4,12 +4,12 @@ class UniqueUrlValidator < ActiveModel::Validator
       # record.errors[:base] << "You must provide a title."
       # otherwise the below title uniqueness check fails, as title presence validation doesn't run until after
     elsif record.type == 'page'
-      array = ['create', 'edit', 'update', 'delete', 'new']
-      array.each { |x|
+      array = %w(create edit update delete new)
+      array.each do |x|
         if record.title == x
           record.errors[:base] << "You may not use the title '" + x + "'"
         end
-      }
+      end
     else
       if !Node.where(path: record.generate_path).first.nil? && record.type == 'note'
         record.errors[:base] << 'You have already used this title.'
@@ -21,31 +21,35 @@ end
 class Node < ActiveRecord::Base
   include NodeShared # common methods for node-like models
 
-  attr_accessible :title, :uid, :status, :type, :vid, :cached_likes, :comment, :path, :slug, :views
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query, order = :default)
-    orderParam = {changed: :desc} if order == :default
-    orderParam = {cached_likes: :desc} if order == :likes
-    orderParam = {views: :desc} if order == :views
+  def self.search(query:, order: :default, limit:)
+    order_param = if order == :default
+                    { changed: :desc }
+                  elsif order == :likes
+                    { cached_likes: :desc }
+                  elsif order == :views
+                    { views: :desc }
+                  end
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
         nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
           .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
           .collect(&:nid)
-        self.where(nid: nids)
+        where(nid: nids, status: 1)
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
-        tnids = Tag.find_nodes_by_type(query, type = ['note', 'page']).collect(&:nid) # include results by tag
-        self.where(nid: nids + tnids)
-          .order(orderParam)
+        tnids = Tag.find_nodes_by_type(query, type = %w(note page)).collect(&:nid) # include results by tag
+        where(nid: nids + tnids, status: 1)
+          .order(order_param)
       end
     else
       nodes = Node.limit(limit)
-        .where('title LIKE ?', '%' + input + '%')
-        .order(orderParam)
+        .where('title LIKE ?', '%' + query + '%')
+        .where(status: 1)
+        .order(order_param)
     end
   end
 
@@ -53,22 +57,22 @@ class Node < ActiveRecord::Base
     updated_at.strftime('%B %Y')
   end
 
-  has_many :revision, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :revision, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   # wasn't working to tie it to .vid, manually defining below
   #  has_one :drupal_main_image, :foreign_key => 'vid', :dependent => :destroy
   #  has_many :drupal_content_field_image_gallery, :foreign_key => 'nid'
-  has_many :drupal_upload, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_upload, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :drupal_files, through: :drupal_upload
-  has_many :node_tag, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :node_tag, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :tag, through: :node_tag
   # these override the above... have to do it manually:
   # has_many :tag, :through => :drupal_node_tag
-  has_many :comments, foreign_key: 'nid' , dependent: :destroy # re-enable in Rails 5
-  has_many :drupal_content_type_map, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
-  has_many :drupal_content_field_mappers, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
-  has_many :drupal_content_field_map_editor, foreign_key: 'nid' #, dependent: :destroy # re-enable in Rails 5
+  has_many :comments, foreign_key: 'nid', dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_content_type_map, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_content_field_mappers, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
+  has_many :drupal_content_field_map_editor, foreign_key: 'nid' # , dependent: :destroy # re-enable in Rails 5
   has_many :images, foreign_key: :nid
-  has_many :node_selections, foreign_key: :nid
+  has_many :node_selections, foreign_key: :nid, dependent: :destroy
   has_many :answers, foreign_key: :nid, dependent: :destroy
 
   belongs_to :drupal_user, foreign_key: 'uid'
@@ -98,7 +102,7 @@ class Node < ActiveRecord::Base
 
   before_save :set_changed_and_created
   after_create :setup
-  before_validation :set_path, on: :create
+  before_validation :set_path_and_slug, on: :create
 
   # can switch to a "question-style" path if specified
   def path(type = :default)
@@ -127,8 +131,9 @@ class Node < ActiveRecord::Base
 
   private
 
-  def set_path
+  def set_path_and_slug
     self.path = generate_path if path.blank? && !title.blank?
+    self.slug = path.split('/').last unless path.blank?
   end
 
   def set_changed_and_created
@@ -148,7 +153,7 @@ class Node < ActiveRecord::Base
   def totalviews
     # this doesn't filter out duplicate ip addresses as the line below does:
     # self.views + self.legacy_views
-    self.impressionist_count(filter: :ip_address) + self.legacy_views
+    impressionist_count(filter: :ip_address) + legacy_views
   end
 
   def self.weekly_tallies(type = 'note', span = 52, time = Time.now)
@@ -166,30 +171,20 @@ class Node < ActiveRecord::Base
   def self.contribution_graph_making(type = 'note', span = 52, time = Time.now)
     weeks = {}
     week = span
-    count = 0;
+    count = 0
     while week >= 1
-       #initialising month variable with the month of the starting day
-       #of the week
-       month = (time - (week*7 - 1).days).strftime('%m')
-       #loop for finding the maximum occurence of a month name in that week
-       #For eg. If this week has 3 days falling in March and 4 days falling
-       #in April, then we would give this week name as April and vice-versa
-      for i in 1..7 do
-          currMonth = (time - (week*7 - i).days).strftime('%m')
-          if month != currMonth
-              if i <= 4
-                  month = currMonth
-              end
-          end
-      end
-      #Now fetching the weekly data of notes or wikis
+      # initialising month variable with the month of the starting day
+      # of the week
+      month = (time - (week * 7 - 1).days).strftime('%m')
+
+      # Now fetching the weekly data of notes or wikis
       month = month.to_i
-      currWeek = Node.select(:created)
+      current_week = Node.select(:created)
                      .where(type: type,
                             status: 1,
                             created: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
                       .count
-      weeks[count] = [month, currWeek]
+      weeks[count] = [month, current_week]
       count += 1
       week -= 1
     end
@@ -221,11 +216,11 @@ class Node < ActiveRecord::Base
   end
 
   def answered
-    self.answers&.length.positive?
+    answers&.length&.positive?
   end
 
   def has_accepted_answers
-    self.answers.where(accepted: true).count.positive?
+    answers.where(accepted: true).count.positive?
   end
 
   # users who like this node
@@ -466,7 +461,7 @@ class Node < ActiveRecord::Base
     Rails.cache.fetch('feed-' + id.to_s + '-' + (updated_at.to_i / 300).to_i.to_s) do
       RSS::Parser.parse(open('https://groups.google.com/group/' + power_tag('list') + '/feed/rss_v2_0_topics.xml').read, false).items
     end
-  rescue
+  rescue StandardError
     return []
   end
 
@@ -509,8 +504,8 @@ class Node < ActiveRecord::Base
   def edit_path
     path = if type == 'page' || type == 'tool' || type == 'place'
              '/wiki/edit/' + self.path.split('/').last
-    else
-      '/notes/edit/' + id.to_s
+           else
+             '/notes/edit/' + id.to_s
     end
     path
   end
@@ -569,8 +564,13 @@ class Node < ActiveRecord::Base
   def add_comment(params = {})
     thread = if !comments.empty? && !comments.last.nil?
                comments.last.next_thread
+             else
+               '01/'
+    end
+    if params[:comment_via].nil?
+      comment_via_status = 0
     else
-      '01/'
+      comment_via_status = params[:comment_via].to_i
     end
     c = Comment.new(pid: 0,
                     nid: nid,
@@ -581,7 +581,9 @@ class Node < ActiveRecord::Base
                     status: 1,
                     format: 1,
                     thread: thread,
-                    timestamp: DateTime.now.to_i)
+                    timestamp: DateTime.now.to_i,
+                    comment_via: comment_via_status,
+                    message_id: params[:message_id])
     c.save
     c
   end
@@ -623,7 +625,9 @@ class Node < ActiveRecord::Base
             img.save
           end
           node.save!
-          node.notify
+          if node.status != 3
+            node.notify
+          end
         else
           saved = false
           node.destroy
@@ -716,7 +720,7 @@ class Node < ActiveRecord::Base
           if tag.name.split(':')[0] == 'date'
             begin
               DateTime.strptime(tag.name.split(':')[1], '%m-%d-%Y').to_date.to_s(:long)
-            rescue
+            rescue StandardError
               return [false, tag.destroy]
             end
           end
@@ -727,9 +731,7 @@ class Node < ActiveRecord::Base
                                  nid: id)
           if node_tag.save
             saved = true
-            if status != 4
-              SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty?
-            end
+            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty? || status == 3 || status == 4
           else
             saved = false
             tag.destroy
@@ -775,10 +777,10 @@ class Node < ActiveRecord::Base
   # with node.questions
   def questions
     # override with a tag like `questions:h2s`
-    if self.has_power_tag('questions')
-      tagname = self.power_tag('questions')
+    if has_power_tag('questions')
+      tagname = power_tag('questions')
     else
-      tagname = self.slug_from_path
+      tagname = slug_from_path
     end
     Node.where(status: 1, type: 'note')
         .includes(:revision, :tag)
@@ -798,10 +800,10 @@ class Node < ActiveRecord::Base
   # with node.activities
   def activities
     # override with a tag like `activities:h2s`
-    if self.has_power_tag('activities')
-      tagname = self.power_tag('activities')
+    if has_power_tag('activities')
+      tagname = power_tag('activities')
     else
-      tagname = self.slug_from_path
+      tagname = slug_from_path
     end
     Node.activities(tagname)
   end
@@ -818,10 +820,10 @@ class Node < ActiveRecord::Base
   # with node.upgrades
   def upgrades
     # override with a tag like `upgrades:h2s`
-    if self.has_power_tag('upgrades')
+    if has_power_tag('upgrades')
       tagname = node.power_tag('upgrades')
     else
-      tagname = self.slug_from_path
+      tagname = slug_from_path
     end
     Node.upgrades(tagname)
   end
@@ -853,8 +855,14 @@ class Node < ActiveRecord::Base
       errors ? I18n.t('node.only_admins_can_lock') : false
     elsif tagname.split(':')[0] == 'redirect' && Node.where(slug: tagname.split(':')[1]).length <= 0
       errors ? I18n.t('node.page_does_not_exist') : false
-    elsif ["facebook", "github", "google", "twitter"].include? tagname.split(':')[0]
-      errors ? "Only Oauth can create such tags" : false
+    elsif  tagname.split(':')[1] == "facebook"
+      errors ? "This tag is used for associating a Facebook account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif  tagname.split(':')[1] == "github"
+      errors ? "This tag is used for associating a Github account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif  tagname.split(':')[1] ==  "google_oauth2"
+      errors ? "This tag is used for associating a Google account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
+    elsif  tagname.split(':')[1] == "twitter"
+      errors ? "This tag is used for associating a Twitter account. <a href='https://publiclab.org/wiki/oauth'>Click here to read more </a>" : false
     else
       true
     end
@@ -872,20 +880,20 @@ class Node < ActiveRecord::Base
   end
 
   def is_liked_by(user)
-     !NodeSelection.where(user_id: user.uid, nid: self.id , liking: true).empty?
+    !NodeSelection.where(user_id: user.uid, nid: id, liking: true).empty?
   end
 
   def toggle_like(user)
-    nodes = NodeSelection.where(nid: self.id , liking: true).count
+    nodes = NodeSelection.where(nid: id, liking: true).count
     if is_liked_by(user)
-      self.cached_likes = nodes-1
+      self.cached_likes = nodes - 1
     else
-      self.cached_likes = nodes+1
+      self.cached_likes = nodes + 1
     end
   end
 
-  def self.like(nid , user)
-     # scope like variable outside the transaction
+  def self.like(nid, user)
+    # scope like variable outside the transaction
     like = nil
     count = nil
 
@@ -904,10 +912,10 @@ class Node < ActiveRecord::Base
       node.save!
       like.save!
     end
-      count
+    count
   end
 
-  def self.unlike(nid , user)
+  def self.unlike(nid, user)
     like = nil
     count = nil
 
@@ -920,14 +928,19 @@ class Node < ActiveRecord::Base
       node.toggle_like(like.user)
       node.save!
       like.save!
-     end
-      count
+    end
+    count
   end
 
   # status = 3 for draft nodes,visible to author only
   def draft
-      self.status = 3
-      save
-      self
+    self.status = 3
+    save
+    self
+  end
+
+  def draft_url
+    @token = slug.split('token:').last
+    url = 'https://publiclab.org/notes/show/' + nid.to_s + '/' + @token.to_s
   end
 end

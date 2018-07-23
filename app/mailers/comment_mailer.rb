@@ -1,21 +1,21 @@
 class CommentMailer < ActionMailer::Base
   helper :application
   include ApplicationHelper
-  default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
+  default from: "notifications@#{ActionMailer::Base.default_url_options[:host]}"
 
   # CommentMailer.notify_of_comment(user,self).deliver_now
   def notify(user, comment)
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on '" + comment.parent.title + "'")
+    mail(to: user.email, subject: "New comment on #{comment.parent.title} (##{comment.parent.id}) ")
   end
 
   def notify_note_author(user, comment)
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on '" + comment.node.title + "'")
+    mail(to: user.email, subject: "New comment on #{comment.node.title} (##{comment.node.id}) ")
   end
 
   # user is awarder, not awardee
@@ -30,21 +30,21 @@ class CommentMailer < ActionMailer::Base
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: 'You were mentioned in a comment.')
+    mail(to: user.email, subject: "You were mentioned in a comment. (##{comment.node.id}) ")
   end
 
   def notify_tag_followers(comment, user)
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: 'A tag you follow was mentioned in a comment.')
+    mail(to: user.email, subject: "A tag you follow was mentioned in a comment. (##{comment.node.id}) ")
   end
 
   def notify_answer_author(user, comment)
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on your answer on '" + comment.parent.title + "'")
+    mail(to: user.email, subject: "New comment on your answer on #{comment.parent.title} (#a#{comment.parent.id}) ")
   end
 
   def notify_coauthor(user, note)

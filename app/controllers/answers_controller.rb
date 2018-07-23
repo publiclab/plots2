@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  before_filter :require_user
+  before_action :require_user
 
   def create
     @node = Node.find(params[:nid])
@@ -57,7 +57,7 @@ class AnswersController < ApplicationController
   def accept
     @answer = Answer.find(params[:id])
 
-    if (current_user.role == "admin" || current_user.role == "moderator" || current_user.uid == @answer.node.uid)
+    if current_user.role == "admin" || current_user.role == "moderator" || current_user.uid == @answer.node.uid
       respond_to do |format|
         if @answer.accepted
           @answer.accepted = false
@@ -72,7 +72,7 @@ class AnswersController < ApplicationController
         format.js
       end
     else
-      render text: "Answer couldn't be accepted"
+      render plain: "Answer couldn't be accepted"
     end
   end
 end

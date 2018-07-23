@@ -1,0 +1,36 @@
+<table class="table">
+  <tr>
+    <th>Node</th>
+    <th>Content</th>
+    <th>Author</th>
+    <th>Action</th>
+  </tr>
+
+  <% @comments.each do |comment| %>
+      <tr id="n<%= comment.id %>">
+        <td>
+          <% unless comment.node.nil? %>
+            <i class="fa fa-file"></i> <a href="<%= comment.node.path %>"><%= comment.node.title.truncate(40) %></a><br />
+            <span style="color:grey;"><%= time_ago_in_words(comment.timestamp.seconds.ago) %> ago</span>
+          <% end %>
+        </td>
+        <td style="width:200px;">
+          <%= comment.body.truncate(40) %>
+        </td>
+        <td style="width:200px;">
+          <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
+        </td>
+        <td><div class="btn-toolbar" style="margin:0;">
+          <div class="btn-group">
+            <a class="btn btn-default btn-lg <% if comment.status == 0 %>btn-success<% else %>disabled<% end %> publish" href="/admin/publish_comment/<%= comment.id %>"><i class="fa fa-ok-circle fa fa-white"></i> Publish</a>
+
+            <% if comment.author.status == 0 %>
+                <a class="btn btn-default btn-lg ban a<%= comment.author.id %>" href="/ban/<%= comment.author.id %>">Ban</a>
+            <% elsif comment.author.status == 1 %>
+                <a class="btn btn-default btn-lg unban a-unban<%= comment.author.id %>" href="/unban/<%= comment.author.id %>">Unban</a>
+            <% end %>
+          </div>
+        </div></td>
+      </tr>
+  <% end %>
+</table>

@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
   respond_to :html
-  before_filter :require_user, only: %i(create edit update delete rsvp)
+  before_action :require_user, only: %i(create edit update delete rsvp publish_draft)
 
   def index
     @title = I18n.t('notes_controller.research_notes')
@@ -17,13 +17,15 @@ class NotesController < ApplicationController
                          LEFT OUTER JOIN community_tags ON community_tags.nid = node.nid
                          LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid')
       .select('*, max(node_revisions.timestamp)')
-      .where(status: 1, type:%w(page place))
+      .where(status: 1, type: %w(page place))
       .includes(:revision, :tag)
       .references(:term_data)
       .where('term_data.name = ?', 'chapter')
       .group('node.nid')
-      .order('max(node_revisions.timestamp) DESC, node.nid')
+      .order(Arel.sql('max(node_revisions.timestamp) DESC, node.nid'))
       .paginate(page: params[:page], per_page: 24)
+
+    # Arel.sql is used to remove a Deprecation warning while updating to rails 5.2.
 
     render template: 'notes/tools_places'
   end
@@ -31,16 +33,16 @@ class NotesController < ApplicationController
   def shortlink
     @node = Node.find params[:id]
     if @node.has_power_tag('question')
-      redirect_to @node.path(:question)
+      redirect_to URI.parse(@node.path(:question)).path
     else
-      redirect_to @node.path
+      redirect_to URI.parse(@node.path).path
     end
   end
 
   # display a revision, raw
   def raw
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
-    render text: Node.find(params[:id]).latest.body
+    render plain: Node.find(params[:id]).latest.body
   end
 
   def show
@@ -51,11 +53,19 @@ class NotesController < ApplicationController
       @node = Node.find params[:id]
     end
 
-    if @node.status == 3 && (current_user.nil? || @node.author != current_user)
+    if @node.status == 3 && !params[:token].nil? && @node.slug.split('token:').last == params[:token]
+    else
+
+    if @node.status == 3 && current_user.nil?
+      flash[:warning] = "You need to login to view the page"
+      redirect_to '/login'
+      return
+    elsif @node.status == 3 && @node.author.user != current_user && !current_user.can_moderate? && !@node.has_tag("with:#{current_user.username}")
       flash[:notice] = "Only author can access the draft note"
       redirect_to '/'
       return
     end
+  end
 
     if @node.has_power_tag('question')
       redirect_to @node.path(:question)
@@ -64,7 +74,7 @@ class NotesController < ApplicationController
 
     if @node.has_power_tag('redirect')
       if current_user.nil? || !current_user.can_moderate?
-        redirect_to Node.find(@node.power_tag('redirect')).path
+        redirect_to URI.parse(Node.find(@node.power_tag('redirect')).path).path
         return
       elsif current_user.can_moderate?
         flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to #{Node.find(@node.power_tag('redirect')).title}.
@@ -88,7 +98,7 @@ class NotesController < ApplicationController
     params[:size] = params[:size] || :large
     node = Node.find(params[:id])
     if node.main_image
-      redirect_to node.main_image.path(params[:size])
+      redirect_to URI.parse(node.main_image.path(params[:size])).path
     else
       redirect_to 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
     end
@@ -101,16 +111,27 @@ class NotesController < ApplicationController
                                               body: params[:body],
                                               main_image: params[:main_image])
 
+      if params[:draft] == "true" && current_user.first_time_poster
+        flash[:notice] = "First-time users are not eligible to create a draft."
+        redirect_to '/'
+        return
+      elsif params[:draft] == "true"
+        @node.draft
+        @token = SecureRandom.urlsafe_base64(16, false)
+        @node.slug = @node.slug + " token:" + @token
+        @node.save!
+      end
+
       if saved
-        params[:tags]&.tr(' ', ',').split(',').each do |tagname|
-            @node.add_tag(tagname.strip, current_user)
+        params[:tags]&.tr(' ', ',')&.split(',')&.each do |tagname|
+          @node.add_tag(tagname.strip, current_user)
         end
         if params[:event] == 'on'
           @node.add_tag('event', current_user)
           @node.add_tag('event:rsvp', current_user)
           @node.add_tag('date:' + params[:date], current_user) if params[:date]
         end
-        if params[:draft] != true
+        if params[:draft] != "true"
           if current_user.first_time_poster
             flash[:first_time_post] = true
             if @node.has_power_tag('question')
@@ -126,7 +147,6 @@ class NotesController < ApplicationController
             end
           end
         else
-          @node.draft
           flash[:notice] = I18n.t('notes_controller.saved_as_draft').html_safe
         end
         # Notice: Temporary redirect.Remove this condition after questions show page is complete.
@@ -135,7 +155,7 @@ class NotesController < ApplicationController
           redirect_to @node.path(:question)
         else
           if request.xhr? # rich editor!
-            render text: @node.path
+            render plain: @node.path
           else
             redirect_to @node.path
           end
@@ -221,9 +241,9 @@ class NotesController < ApplicationController
         format = false
         format = :question if params[:redirect] && params[:redirect] == 'question'
         if request.xhr?
-          render text: @node.path(format) + '?_=' + Time.now.to_i.to_s
+          render plain: "#{@node.path(format)}?_=#{Time.now.to_i}"
         else
-          redirect_to @node.path(format) + '?_=' + Time.now.to_i.to_s
+          redirect_to URI.parse(@node.path(format)).path + '?_=' + Time.now.to_i.to_s
         end
       else
         flash[:error] = I18n.t('notes_controller.edit_not_saved')
@@ -243,21 +263,21 @@ class NotesController < ApplicationController
   def delete
     @node = Node.find(params[:id])
     if current_user && (current_user.uid == @node.uid || current_user.can_moderate?)
-      if @node.authors.uniq.length == 1 
+      if @node.authors.uniq.length == 1
         @node.destroy
         respond_with do |format|
           format.html do
             if request.xhr?
-              render text: I18n.t('notes_controller.content_deleted')
+              render plain: I18n.t('notes_controller.content_deleted')
             else
               flash[:notice] = I18n.t('notes_controller.content_deleted')
               redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
             end
           end
-      end
-    else
-      flash[:error] = I18n.t('notes_controller.more_than_one_contributor')
-      redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+        end
+      else
+        flash[:error] = I18n.t('notes_controller.more_than_one_contributor')
+        redirect_to '/dashboard' + '?_=' + Time.now.to_i.to_s
     end
     else
       prompt_login
@@ -361,7 +381,7 @@ class NotesController < ApplicationController
     @comment = @node.add_comment(subject: 'rsvp', uid: current_user.uid, body: 'I will be attending!')
     # make a tag
     @node.add_tag('rsvp:' + current_user.username, current_user)
-    redirect_to @node.path + '#comments'
+    redirect_to URI.parse(@node.path).path + '#comments'
   end
 
   # Updates title of a wiki page, takes id and title as query string params. maps to '/node/update/title'
@@ -369,9 +389,24 @@ class NotesController < ApplicationController
     node = Node.find params[:id].to_i
     unless current_user && current_user.drupal_user == node.author
       flash.keep[:error] = I18n.t('notes_controller.author_can_edit_note')
-      return redirect_to node.path + "#comments"
+      return redirect_to URI.parse(node.path).path + "#comments"
     end
     node.update(title: params[:title])
-    redirect_to node.path + "#comments"
+    redirect_to URI.parse(node.path).path + "#comments"
+  end
+
+  def publish_draft
+    @node = Node.find(params[:id])
+    if current_user && current_user.uid == @node.uid || current_user.can_moderate? || @node.has_tag("with:#{current_user.username}")
+      @node.path = @node.generate_path
+      @node.slug = @node.slug.split('token').first
+      @node.publish
+      SubscriptionMailer.notify_node_creation(@node).deliver_now
+      flash[:notice] = "Thanks for your contribution. Research note published! Now, it's visible publically."
+      redirect_to @node.path
+    else
+      flash[:warning] = "You are not author or moderator so you can't publish a draft!"
+      redirect_to '/'
+    end
   end
 end

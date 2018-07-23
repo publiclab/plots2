@@ -1,4 +1,4 @@
-class CreateLikeAndFollow < ActiveRecord::Migration
+class CreateLikeAndFollow < ActiveRecord::Migration[5.1]
   def up
     # dictionary of (user.id, tag.id) mapping to (following)
     # no need for wasteful primary key when the unique index recreates a

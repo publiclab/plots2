@@ -1,6 +1,4 @@
-class AnswerSelection < ActiveRecord::Base
-  attr_accessible :liking, :following, :user_id, :aid
-
+class AnswerSelection < ApplicationRecord
   belongs_to :answer, foreign_key: :aid, dependent: :destroy
   belongs_to :drupal_user, foreign_key: :user_id
 

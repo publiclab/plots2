@@ -74,3 +74,24 @@ legacy_user:
   status: 1
   mail: legacy@publiclab.org
   created: <%= Time.now.to_i %>
+
+gmail_test:
+  name: namangupta
+  mail: 01namangupta@gmail.com
+  uid: 12
+  status: 1
+  created: <%= Time.now.to_i %>
+
+naman18996:
+  name: naman18996
+  mail: naman18996@yahoo.com
+  uid: 13
+  status: 1
+  created: <%= Time.now.to_i %>
+
+jeffrey:
+  name: jeffrey
+  status: 1
+  mail: jeff@publiclab.org
+  uid: 14
+  created: <%= Time.now.to_i %>

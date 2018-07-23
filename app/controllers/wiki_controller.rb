@@ -1,7 +1,7 @@
 require 'rss'
 
 class WikiController < ApplicationController
-  before_filter :require_user, only: %i(new create edit update delete replace)
+  before_action :require_user, only: %i(new create edit update delete replace)
 
   def subdomain
     url = "//#{request.host}/wiki/"
@@ -21,8 +21,8 @@ class WikiController < ApplicationController
   def show
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
-    else
-      Node.find_wiki(params[:id])
+            else
+              Node.find_wiki(params[:id])
     end
 
     if @node&.has_power_tag('redirect') && Node.where(nid: @node.power_tag('redirect')).exists?
@@ -33,7 +33,7 @@ class WikiController < ApplicationController
         flash.now[:warning] = "Only moderators and admins see this page, as it is redirected to <a href='#{Node.find(@node.power_tag('redirect')).path}'>#{Node.find(@node.power_tag('redirect')).title}</a>.
         To remove the redirect, delete the tag beginning with 'redirect:'"
       end
-    
+
     elsif @node&.has_power_tag('redirect') && Node.where(slug: @node.power_tag('redirect')).exists?
       if current_user.nil? || !current_user.can_moderate?
         redirect_to Node.find_by(slug: @node.power_tag('redirect')).path
@@ -92,14 +92,14 @@ class WikiController < ApplicationController
   # display a revision, raw
   def raw
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
-    render text: Revision.find(params[:id]).body
+    render plain: Revision.find(params[:id]).body
   end
 
   def edit
     @node = if params[:lang]
               Node.find_wiki(params[:lang] + '/' + params[:id])
-    else
-      Node.find_wiki(params[:id])
+            else
+              Node.find_wiki(params[:id])
     end
 
     if @node.has_tag('locked') && !current_user.can_moderate?
@@ -118,6 +118,11 @@ class WikiController < ApplicationController
   end
 
   def new
+    if current_user &.first_time_poster
+      flash[:notice] = "Please post a question or other content before editing the wiki. Click <a href='https://publiclab.org/notes/tester/04-23-2016/new-moderation-system-for-first-time-posters'>here</a> to learn why."
+      redirect_to '/'
+      return
+    end
     @node = Node.new
     if params[:n] && !params[:body] # use another node body as a template
       node = Node.find(params[:n])
@@ -202,7 +207,7 @@ class WikiController < ApplicationController
               @node.main_image_id = img.id
               img.save
             end
-          rescue
+          rescue StandardError
           end
         end
         @node.save
@@ -218,7 +223,7 @@ class WikiController < ApplicationController
 
   def delete
     @node = Node.find(params[:id])
-    if current_user && current_user.admin?
+    if current_user&.admin?
       @node.destroy
       flash[:notice] = I18n.t('wiki_controller.wiki_page_deleted')
       redirect_to '/dashboard'
@@ -231,7 +236,7 @@ class WikiController < ApplicationController
   def revert
     revision = Revision.find params[:id]
     node = revision.parent
-    if current_user && current_user.can_moderate?
+    if current_user&.can_moderate?
       new_rev = revision.dup
       new_rev.timestamp = DateTime.now.to_i
       if new_rev.save!
@@ -266,9 +271,10 @@ class WikiController < ApplicationController
     @node = Node.find_wiki(params[:id])
     if @node
       @revisions = @node.revisions
-      @revisions = @revisions.where(status: 1) unless current_user && current_user.can_moderate?
+      @revisions = @revisions.where(status: 1).page(params[:page]).per_page(20) unless current_user&.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @node.title).html_safe
       @tags = @node.tags
+      @paginated = true unless current_user&.can_moderate?
     else
       flash[:error] = I18n.t('wiki_controller.invalid_wiki_page')
     end
@@ -285,7 +291,7 @@ class WikiController < ApplicationController
     if @revision.nil?
       flash[:error] = I18n.t('wiki_controller.revision_not_found')
       redirect_to action: 'revisions'
-    elsif @revision.status == 1 || current_user && current_user.can_moderate?
+    elsif @revision.status == 1 || current_user&.can_moderate?
       @title = I18n.t('wiki_controller.revisions_for', title: @revision.title).html_safe
       render template: 'wiki/show'
     else
@@ -298,7 +304,7 @@ class WikiController < ApplicationController
     @a = Revision.find_by(vid: params[:a])
     @b = Revision.find_by(vid: params[:b])
     if @a.body == @b.body
-      render text: I18n.t('wiki_controller.lead_image_or_title_change').html_safe
+      render plain: I18n.t('wiki_controller.lead_image_or_title_change').html_safe
     else
       render partial: 'wiki/diff'
     end
@@ -306,11 +312,19 @@ class WikiController < ApplicationController
 
   def index
     @title = I18n.t('wiki_controller.wiki')
+    sort_param = params[:sort]
+    order_string = 'node_revisions.timestamp DESC'
 
-    order_string = if params[:order] == 'alphabetic'
-                     'node_revisions.title ASC'
-    else
-       'node_revisions.timestamp DESC'
+    if sort_param == 'title'
+      order_string = 'node_revisions.title ASC'
+    elsif sort_param == 'last_edited'
+      order_string = 'node_revisions.timestamp DESC'
+    elsif sort_param == 'edits'
+      order_string = 'drupal_node_revisions_count DESC'
+    elsif sort_param == 'page_views'
+      order_string = 'views DESC'
+    elsif sort_param == 'likes'
+      order_string = 'cached_likes DESC'
     end
 
     @wikis = Node.includes(:revision)
@@ -364,7 +378,7 @@ class WikiController < ApplicationController
       # during round trip, strings are getting "\r\n" newlines converted to "\n",
       # so we're ensuring they remain "\r\n"; this may vary based on platform, unfortunately
       before = params[:before].gsub("\n", "\r\n")
-      after  = params[:after]#.gsub( "\n", "\r\n")
+      after  = params[:after] # .gsub( "\n", "\r\n")
       if output = @node.replace(before, after, current_user)
         flash[:notice] = 'New revision created with your additions.' unless request.xhr?
       else

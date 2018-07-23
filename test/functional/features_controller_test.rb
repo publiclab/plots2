@@ -63,8 +63,10 @@ class FeaturesControllerTest < ActionController::TestCase
 
     assert_difference 'Node.count', 0 do
       get :create,
+         params: {
           title: 'new-feature',
           body: "A new feature to <a href=''>display</a>"
+         }
     end
 
     assert_equal 'Only admins may edit features.', flash[:warning]
@@ -77,11 +79,12 @@ class FeaturesControllerTest < ActionController::TestCase
     #    assert_difference 'Node.where(type: "feature").count', 1 do
 
     get :create,
+        params: {
         title: 'new-feature',
         body: "A new feature to <a href=''>display</a>"
+        }
 
     #    end
-
     assert_equal 'Feature saved.', flash[:notice]
     assert_redirected_to '/features?_=' + Time.now.to_i.to_s
   end
@@ -91,13 +94,18 @@ class FeaturesControllerTest < ActionController::TestCase
 
     node = nodes(:feature)
     assert_difference 'Revision.count' do
-      get :update,
-          id: node.id,
-          body: "A new feature to <a href=''>display</a> with additions"
+      get :update, params: { id: node.id, body: "A new feature to <a href=''>display</a> with additions"}
     end
 
     assert_equal  "A new feature to <a href=''>display</a> with additions", Node.find(node.id).latest.body
     assert_equal  'Edits saved and cache cleared.', flash[:notice]
     assert_redirected_to '/features?_=' + Time.now.to_i.to_s
+  end
+
+  test 'should find the correct node in embed of feature' do
+    fixture_node = nodes(:blog)
+    get :embed, params: { id: fixture_node.title}
+    embed_node = assigns(:node)
+    assert_equal embed_node.nid, fixture_node.nid
   end
 end

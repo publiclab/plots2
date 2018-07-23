@@ -22,29 +22,7 @@
   <div class="ple-header">
 
     <h1>Share</h1>
-
-    <!-- selector module -->
-    <div class="container ple-type">
-
-      <div class="col-md-5 col-md-push-4">
-        <div class="row">
-          <div class="col-xs-10">
-            <select class="form-control input-lg">
-              <option selected value="">a research note</option>
-              <option value="" <% if params[:tags] && params[:tags].include?('activity') %>selected='selected'<% end %>>a step-by-step activity</option>
-              <option value="" <% if params[:tags] && params[:tags].include?('question') %>selected='selected'<% end %>>a question or request</option>
-              <option value="">an event</option>
-            </select>
-          </div>
-          <div class="col-xs-2" style="padding-top:10px;text-align:left;">
-            <a rel="tooltip" data-placement="bottom" title="Learn more about different posting types." class="ple-help-light" style="font-size:18px;"><i class="fa fa-question-circle"></i></a>
-
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <!-- end selector module -->
+    <p><i>Or use the <a target="_blank" href="?<%= request.env['QUERY_STRING'] %>&legacy=true">legacy editor</a></i></p>
 
   </div>
 
@@ -179,16 +157,29 @@
         <option selected value="">recent edits</option>
       </div>
       -->
-    </div>
+  </div>
 
     <button class="btn btn-lg btn-default btn-more">...</button>
 
     <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="hidden-xs"> so that others may use it.</span></span>
 
-    <button class="ple-publish btn btn-lg btn-primary pull-right disabled">Publish</button>
+    <button class="ple-publish btn btn-lg btn-primary pull-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
     <span class="ple-help pull-right">
-      <span class="ple-steps-left">2</span>
-      <span class="hidden-xs"> steps left</span>
+      <% if controller.action_name != "edit" && !current_user.first_time_poster %>
+        <span id="newOpts" style="display: inline-block;">
+        <span id="text" style="display: none; color:red;">
+          Others won't see your post yet 
+          (<a href="https://publiclab.org/draft-feature" targrt="_blank">?</a>) &nbsp; &nbsp;</span>
+          <span class="checkbox">
+            <label>
+              <input type="checkbox" id="myCheck" onclick="draftCheck()" />
+              Save as draft
+            </label> | 
+          </span>
+          <span class="ple-steps-left">2</span>
+          <span class="hidden-xs"> steps left</span>
+        </span>
+      <% end %>
     </span>
 
   </div>
@@ -203,21 +194,27 @@
   (function() {
 
     editor = new PL.Editor({
+
       data: {
         token: $('meta[name="csrf-token"]').attr('content')
       },
+
       textarea:    $('.ple-textarea')[0],
+
       <% if @main_image %>
         mainImageUrl:   '<%= @main_image %>',
       <% end %>
+
       <% if params[:action] == 'edit' %>
         destination: '/notes/update/<%= @node.id %>?rich=true',
       <% else %>
         destination: '/notes/create?rich=true',
       <% end %>
+
       <% if params[:redirect] == 'question' %>
         redirect: 'redirect',
       <% end %>
+
       <% if (@node && @node.errors.size > 0) && (@revision && @revision.errors.size > 0) %>
          errors: <%=raw (@node.errors.to_h.merge(@revision.errors.to_h)).to_json %>,
        <% elsif (@node && @node.errors.size > 0) %>
@@ -225,7 +222,9 @@
        <% elsif (@revision && @revision.errors.size > 0) %>
          errors: <%=raw (@revision.errors.to_h).to_json %>,
        <% end %>
+
       format:      'publiclab',
+
       publishCallback: function publishCallback(response) {
         // parse and display errors!
         if (typeof response === "string") {
@@ -240,16 +239,21 @@
           window.scroll(0, 0);
         }
       },
+
       mainImageModule: {
         uid: <%= current_user.id %><% if @node && @node.id %>,
 	nid: <%= @node.id %><% end %>,
         token: $('meta[name="csrf-token"]').attr('content')
       },
+
       richTextModule: {
         authorsAutocomplete: false,
         tagsAutocomplete: false,
-        formats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json', 'jpg', 'jpeg', 'png', 'gif']
+        formats: ['jpg', 'jpeg', 'png', 'gif'],
+        attachmentFormats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json']
+        //formats: ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'docx', 'bmp', 'obj', 'json', 'jpg', 'jpeg', 'png', 'gif']
       },
+
       titleModule: {
         suggestRelated: true,
         fetchRelated: function(show) {
@@ -280,6 +284,7 @@
           });
         }
       },
+
       tagsModule: {
         remote: {
           url: "/tag/suggested/test",
@@ -295,6 +300,22 @@
   $('.legacy-button').click(function onLegacyClick(event) {
       event.preventDefault();
       window.location = "/post?legacy=true&body=" + editor.richTextModule.value() + "&tags=" + editor.tagsModule.value() + "&title=" + editor.titleModule.value();
-    });
+  });
+
+  function draftCheck() {
+      var checkBox = document.getElementById("myCheck");
+      var text = document.getElementById("text");
+      var button = document.getElementsByClassName("ple-publish")[0];
+     if (checkBox.checked === true){
+          editor.data.draft = true;
+         text.style.display = "inline-block";
+         button.innerHTML = "Save";
+      } else {
+          editor.data.draft = false;
+          text.style.display = "none";
+         button.innerHTML = "Publish";
+      }
+      console.log("Draft:", editor.data.draft);
+  }
 
 </script>

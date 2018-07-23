@@ -5,7 +5,7 @@ class String
    end
 end
 
-class AddUserBioAndToken < ActiveRecord::Migration
+class AddUserBioAndToken < ActiveRecord::Migration[5.1]
 
   def up
     add_column :rusers, :bio, :text, limit: 2147483647

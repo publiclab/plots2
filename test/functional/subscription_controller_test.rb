@@ -8,7 +8,7 @@ class SubscriptionControllerTest < ActionController::TestCase
   
   test 'user should be able to subscribe to a tag' do
     UserSession.create(users(:bob))
-    get :add, type: 'tag', name: 'blog'
+    get :add, params: { type: 'tag', name: 'blog' }
 
     assert_response :redirect
     assert users(:bob).following(:blog)

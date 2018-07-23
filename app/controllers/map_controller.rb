@@ -8,7 +8,7 @@ class MapController < ApplicationController
     # I'm not sure if this is actually eager loading the tags...
     @maps = Node.joins(:tag)
       .where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%')
-      .uniq
+      .distinct
 
     # This is supposed to eager load the url_aliases, and seems to run, but doesn't actually eager load them...?
     # @maps = Node.select("node.*,url_alias.dst AS dst").joins(:tag).where('type = "map" AND status = 1 AND (term_data.name LIKE ? OR term_data.name LIKE ?)', 'lat:%', 'lon:%').joins("INNER JOIN url_alias ON url_alias.src = CONCAT('node/',node.nid)")
@@ -56,8 +56,8 @@ class MapController < ApplicationController
       @revision.title = params[:title]
       @revision.body = params[:body]
 
-      params[:tags]&.split(',').each do |tagname|
-          @node.add_tag(tagname, current_user)
+      params[:tags]&.split(',')&.each do |tagname|
+        @node.add_tag(tagname, current_user)
       end
 
       # save main image
@@ -131,8 +131,8 @@ class MapController < ApplicationController
                                               main_image: params[:main_image])
 
       if saved
-        params[:tags]&.split(',').each do |tagname|
-            @node.add_tag(tagname, current_user)
+        params[:tags]&.split(',')&.each do |tagname|
+          @node.add_tag(tagname, current_user)
         end
 
         # save main image

@@ -1,6 +1,4 @@
-class DrupalUser < ActiveRecord::Base
-  attr_accessible :title, :body, :name, :pass, :mail, :mode, :sort, :threshold, :theme, :signature, :signature_format, :created, :access, :login, :status, :timezone, :language, :picture, :init, :data, :timezone_id, :timezone_name
-
+class DrupalUser < ApplicationRecord
   ## User status can be:
   #  0: banned
   #  1: normal
@@ -17,7 +15,7 @@ class DrupalUser < ActiveRecord::Base
   has_many :comments, foreign_key: 'uid'
 
   def user
-    User.where(id: self.id).first
+    User.where(id: id).first
   end
 
   def bio
@@ -81,13 +79,23 @@ class DrupalUser < ActiveRecord::Base
   end
 
   def update_user_status(status)
-    u = self.user
+    u = user
     u.status = status
     u.save!
   end
 
   def first_time_poster
     user.first_time_poster
+  end
+
+  def new_author_contributor
+    @uid = uid
+    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
+  end
+
+  def new_contributor
+    @uid = id
+    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
   end
 
   def likes
@@ -152,15 +160,15 @@ class DrupalUser < ActiveRecord::Base
   end
 
   def user_tags
-    self.user.user_tags
+    user.user_tags
   end
 
   def tags(limit = 10)
-    self.user.tags(limit)
+    user.tags(limit)
   end
 
   def tagnames(limit = 20, defaults = true)
-    self.user.tagnames(limit, defaults)
+    user.tagnames(limit, defaults)
   end
 
   def tag_counts
@@ -178,7 +186,8 @@ class DrupalUser < ActiveRecord::Base
   end
 
   def migrate
-    u = User.new(username: name,
+    n = name.encode(Encoding.find('UTF-8'))
+    u = User.new(username: n,
                  id: uid,
                  email: mail,
                  openid_identifier: '//old.publiclab.org/user/' + uid.to_s + '/identity')

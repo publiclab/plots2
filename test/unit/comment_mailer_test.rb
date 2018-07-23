@@ -10,9 +10,9 @@ class CommentMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal "New comment on '" + comment.parent.title + "'", email.subject
+    assert_equal "New comment on #{comment.parent.title} (##{comment.parent.id}) ", email.subject
     assert email.body.include?("<p>https://#{request_host}#{comment.parent.path(:question)}#answer-#{comment.aid}-comment-#{comment.cid}</p>")
   end
 
@@ -25,9 +25,9 @@ class CommentMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal "New comment on '" + comment.parent.title + "'", email.subject
+    assert_equal "New comment on #{comment.parent.title} (##{comment.parent.id}) ", email.subject
     assert email.body.include?("Hi! There's been a comment to your question '<a href='https://#{request_host}#{comment.parent.path(:question)}'>#{comment.parent.title}</a>'")
   end
 
@@ -40,9 +40,9 @@ class CommentMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal 'You were mentioned in a comment.', email.subject
+    assert_equal "You were mentioned in a comment. (##{comment.parent.id}) ", email.subject
     assert email.body.include?("Hi! You were mentioned by #{comment.author.name} in a comment on the question <b>#{comment.parent.title}</b>")
   end
 
@@ -55,9 +55,9 @@ class CommentMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal 'A tag you follow was mentioned in a comment.', email.subject
+    assert_equal "A tag you follow was mentioned in a comment. (##{comment.parent.id}) ", email.subject
     assert email.body.include?("Hi! A tag you follow was mentioned by #{comment.author.name} in a comment on the question <b>#{comment.parent.title}</b>")
   end
 
@@ -70,9 +70,9 @@ class CommentMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
-    assert_equal "New comment on your answer on '" + comment.parent.title + "'", email.subject
+    assert_equal "New comment on your answer on #{comment.parent.title} (#a#{comment.parent.id}) ", email.subject
     assert email.body.include?("Hi! There's been a new comment to your answer on '<a href='https://#{request_host}#{comment.parent.path(:question)}#a#{comment.answer.id}'>#{comment.parent.title}</a>'")
   end
 
@@ -87,7 +87,7 @@ class CommentMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [note.author.email], email.to
     assert_equal "You were awarded a Barnstar!", email.subject
     assert email.body.include?("'<a href='https://#{request_host}/profile/#{user.name}'>#{user.name}</a>' has awarded you a '<a href='https://#{request_host}/wiki/barnstars'>Barnstar</a>' for your work in the research note '<a href='https://#{request_host}#{note.path}'>#{note.title}</a>'")
@@ -102,7 +102,7 @@ class CommentMailerTest < ActionMailer::TestCase
     assert !ActionMailer::Base.deliveries.empty?
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal ["do-not-reply@#{request_host}"], email.from
+    assert_equal ["notifications@#{request_host}"], email.from
     assert_equal [user.email], email.to
     assert_equal "You were added as a co-author!", email.subject
     assert email.body.include?("'<a href='https://#{request_host}/profile/#{note.author.name}'>#{note.author.name}</a>' has added you as a co-author of '<a href='https://#{request_host}#{note.path}'>#{note.title}</a>'")

@@ -142,7 +142,7 @@ hashtag_in_header:
   uid: 1
   title: grabs hashtags in headers
   body: |+
-    # Heading 1 is about #hashtags 
+    # Heading 1 is about #hashtags
     Here is the message
 
 subheader:
@@ -246,3 +246,34 @@ method:
   uid: 1
   title: "Method page"
   body: "[activities:spectrometer]"
+
+draft:
+  nid: 21
+  uid: 2
+  title: "Draft note"
+  body: This is draft note.
+
+checkbox_one:
+  nid: 1
+  uid: 1
+  title: Should render an unchecked checkbox
+  body: |+
+    # Heading 1
+    List of things
+    * [ ]
+
+checkbox_two:
+  nid: 1
+  uid: 1
+  title: Should render a checked checkbox
+  body: |+
+    # Heading 1
+    List of things
+    * [x] 
+
+email_body:
+  nid: 22
+  uid: 1
+  title: "welcome-email-body"
+  body: Welcome to Public Lab
+  timestamp: <%= (Time.now - 1.week).to_i %>

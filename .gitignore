@@ -10,7 +10,7 @@
 # Ignore all logfiles and tempfiles.
 log/*.log
 log/*
-tmp
+/tmp/*
 data
 *.swp
 .DS_Store
@@ -29,6 +29,8 @@ config/initializers/secret_token.rb
 public/system
 public/lib
 db/openid-store/
+www.example.com/
+dump.rdb
 db/schema.rb
 public/assets/application-*
 todo.txt
@@ -36,6 +38,7 @@ todo.txt
 *.pfx
 *.pem
 *.key
+!config/localhost.key
 passenger.*
 passenger-standalone.json.bkp
 public/pdf.js/
@@ -45,7 +48,9 @@ production.db
 test.db
 solr/*
 test/reports/
-
+!config/application.yml
 # Ignore NPM
 node_modules
 .byebug_history
+vendor/bundle
+spec/TEST-Teaspoon-Result.xml

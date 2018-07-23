@@ -1,6 +1,6 @@
 # Start with Spotifys style guide as a base then customize from there
 inherit_from:
-  - http://shopify.github.io/ruby-style-guide/rubocop.yml
+  - .rubocop_shopify_styleguide.yml
   - .rubocop_todo.yml
 
 # Apply rule to all cops
@@ -15,6 +15,7 @@ AllCops:
     - 'log/*'
     - 'db/**/*'
     - 'Gemfile'
+    - 'Rakefile'
     - 'config/**/*'
     - 'script/**/*'
     - 'lib/**/*'
@@ -23,7 +24,43 @@ AllCops:
     - 'Dangerfile'
   TargetRubyVersion: '2.4'
 
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/IfInsideElse:
+  Enabled: false
+
+Style/DateTime:
+  Enabled: false
+
+Style/CaseEquality:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Lint/ParenthesesAsGroupedExpression:
+  Enabled: false
+
+Lint/EndAlignment:
+  Enabled: false
+
+Lint/DefEndAlignment:
+  Enabled: false
+
+Lint/SafeNavigationChain:
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Metrics/ClassLength:
   Enabled: false
 
 Metrics/ParameterLists:
@@ -31,9 +68,3 @@ Metrics/ParameterLists:
 
 Metrics/ModuleLength:
   Max: 303
-
-Metrics/ClassLength:
-  Max: 660
-
-Style/RegexpLiteral:
-  Enabled: false

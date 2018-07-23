@@ -1,6 +1,7 @@
-<form id="c<%= comment.id %>edit" style="display:none;" class="well" <% if params[:controller] == 'questions' || params[:controller] == 'answers' %> action= "/answers/update/<%= comment.id %>" <% else %> action="/comment/update/<%= comment.id %>" <% end %>>
+<form method="post" id="c<%= comment.id %>edit" style="display:none;" class="well" <% if comment.is_a?Answer %> action= "/answers/update/<%= comment.id %>" <% else %> action="/comment/update/<%= comment.id %>" <% end %>>
 
   <h4 style="margin-top:0;"><%= title %></h4>
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
 
   <style>
     #imagebar {width:100%;}
@@ -11,7 +12,7 @@
   <% end %>
 
   <div id="c<%= comment.id%>div" class="form-group">
-    <textarea onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="<%= placeholder %>"><%= (params[:controller] == 'questions' || params[:controller] == 'answers')? comment.content : comment.comment %></textarea>
+    <textarea onFocus="editing=true" name="body" class="form-control" id="c<%= comment.id%>text" rows="6" cols="40" placeholder="<%= placeholder %>"><%= !(comment.is_a?Answer) ? comment.comment : comment.content %></textarea>
 
     <div id="imagebar">
       <div id="c<%= comment.id%>progress" style="display:none;" class="progress progress-striped active pull-right">
@@ -42,7 +43,6 @@
 
     </div>
   </div>
-
   <script type="application/javascript">
     jQuery(document).ready(function() {
       $E.initialize();
@@ -148,5 +148,3 @@
     <%= t('comments._edit.email_notifications') %>
   </p>
 </form>
-
-

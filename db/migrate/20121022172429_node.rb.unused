@@ -1,4 +1,4 @@
-class Node < ActiveRecord::Migration
+class Node < ActiveRecord::Migration[5.1]
   def up
     create_table :nodes do |t|
       t.string :title

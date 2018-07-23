@@ -1,6 +1,10 @@
+require 'sidekiq/web'
+
 Plots2::Application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount JasmineFixtureServer => '/spec/javascripts/fixtures' if defined?(Jasmine::Jquery::Rails::Engine)
+
+  mount Sidekiq::Web => '/sidekiq'
 
   # Manually written API functions
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
@@ -31,11 +35,12 @@ Plots2::Application.routes.draw do
   end
 
   get '/change_locale/:locale', to: 'settings#change_locale', as: :change_locale
-  get 'ioby' => "legacy#ioby"
+  get 'assets' => "admin#assets"
 
   get 'login' => "user_sessions#new",      :as => :login
   get 'logout' => "user_sessions#destroy", :as => :logout
   get 'logoutRemotely' => 'user_sessions#logout_remotely'
+  get 'users' => 'users#index'
   post 'register' => 'users#create'
   get 'reset' => 'users#reset'
   post 'reset' => 'users#reset'
@@ -55,6 +60,7 @@ Plots2::Application.routes.draw do
   #resources :users
 
   get 'openid' => 'openid#index'
+  post 'openid' => 'openid#index'
   # Try to get rails to accept params with periods in the keyname?
   # The following isn't right and it may be about param parsing rather than routing?
   # match 'openid' => 'openid#index', :constraints => { 'openid.mode' => /.*/ }
@@ -62,6 +68,7 @@ Plots2::Application.routes.draw do
 
   get 'openid/xrds' => 'openid#idp_xrds'
   get 'openid/decision' => 'openid#decision'
+  post 'openid/decision' => 'openid#decision'
   get 'openid/resume' => 'openid#resume'
   get 'openid/:username' => 'openid#user_page'
   get 'openid/:username/xrds' => 'openid#user_xrds'
@@ -94,13 +101,15 @@ Plots2::Application.routes.draw do
 
   # these need precedence for tag listings
   get 'feed/tag/:tagname' => 'tag#rss'
+  get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
+  get 'tag/:id/author/:author' => 'tag#show_for_author'
   get ':node_type/tag(/:id)(/:start)(/:end)' => 'tag#show'
   get 'feed/tag/:tagname/author/:authorname' => 'tag#rss_for_tagged_with_author'
   get 'wiki/raw/:id' => 'wiki#raw'
   get 'wiki/revisions/:id' => 'wiki#revisions'
   get 'wiki/revert/:id' => 'wiki#revert'
   get 'wiki/edit/:id' => 'wiki#edit'
-  put 'wiki/update/:id' => 'wiki#update'
+  post 'wiki/update/:id' => 'wiki#update'
   delete 'wiki/delete/:id' => 'wiki#delete'
 
   get 'wiki/revisions/:id/:vid' => 'wiki#revision'
@@ -110,10 +119,20 @@ Plots2::Application.routes.draw do
 
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
+  get 'i/:id' => 'images#shortlink'
+  get 'p/:id' => 'users#shortlink'
+  get 'notes' => 'notes#index'
   get 'notes/raw/:id' => 'notes#raw'
   get 'notes/popular' => 'notes#popular'
   get 'notes/liked' => 'notes#liked'
+  get 'notes/image/:id' => 'notes#image'
+  get 'notes/delete/:id' => 'notes#delete'
+  post 'notes/delete/:id' => 'notes#delete'
+  post 'notes/update/:id' => 'notes#update'
   post 'notes/create' => 'notes#create'
+  get 'notes/publish_draft/:id' => 'notes#publish_draft'
+  get 'notes/edit/:id' => 'notes#edit'
+  get 'notes/show/:id/:token' => 'notes#show'
 
   get 'places' => 'notes#places'
   get 'tools' => 'notes#tools'
@@ -161,7 +180,7 @@ Plots2::Application.routes.draw do
   get 'contributors' => 'tag#contributors_index'
   get 'tags' => 'tag#index'
   get 'tags/:search' => 'tag#index'
-  get 'tag/suggested/:id' => 'tag#suggested'
+  post 'tag/suggested/:id' => 'tag#suggested'
   get 'tag/author/:id.json' => 'tag#author'
   post 'tag/create/:nid' => 'tag#create'
   get 'tag/create/:nid' => 'tag#create'
@@ -172,11 +191,10 @@ Plots2::Application.routes.draw do
   put 'tag/remove_tag/:id' => 'tag#remove_tag'
   put 'tag/remove_all_tags' => 'tag#remove_all_tags'
   get 'tag/:id' => 'tag#show'
-  get 'tag/:id/author/:author' => 'tag#show_for_author'
-  get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
   get 'locations/form' => 'tag#location'
   get 'locations/modal' => 'tag#location_modal'
   get 'embed/grid/:tagname' => 'tag#gridsEmbed'
+  get 'features/embed/:id' => 'features#embed'
 
   get 'rsvp/:id' => 'notes#rsvp'
   get 'feed/liked' => 'notes#liked_rss'
@@ -193,10 +211,16 @@ Plots2::Application.routes.draw do
   get 'profile/:id/edit' => 'users#edit'
   get 'profile/:id/likes' => 'users#likes'
   get 'feed/:author' => 'users#rss'
+  get '/settings' => 'users#settings'
+  post '/save_settings' => 'users#save_settings'
 
   post 'profile/tags/create/:id' => 'user_tags#create'
   get 'profile/tags/create/:id' => 'user_tags#create'
   delete 'profile/tags/delete/:id' => 'user_tags#delete'
+  get 'user_tags' => 'user_tags#index'
+  get 'user_tags/:search' => 'user_tags#index'
+  get 'groups' => 'user_tags#index'
+  get 'groups/:search' => 'user_tags#index'
 
 
   get 'maps' => 'map#index'
@@ -208,6 +232,7 @@ Plots2::Application.routes.draw do
   delete 'map/delete/:id' => 'map#delete'
   get 'map/:name/:date' => 'map#show'
   get 'archive' => 'map#index'
+  get 'stats/range' => 'stats#range'
   get 'stats' => 'stats#index'
   get 'stats/range/:start/:end' => 'stats#range'
   get 'stats/subscriptions' => 'stats#subscriptions'
@@ -218,6 +243,7 @@ Plots2::Application.routes.draw do
   post 'useremail' => 'admin#useremail'
   get 'spam' => 'admin#spam'
   get 'spam/revisions' => 'admin#spam_revisions'
+  get 'spam/comments' => 'admin#spam_comments'
   get 'spam/:type' => 'admin#spam'
   get 'spam/batch/:ids' => 'admin#batch'
   get 'admin/users' => 'admin#users'
@@ -235,10 +261,14 @@ Plots2::Application.routes.draw do
   get 'admin/migrate/:id' => 'admin#migrate'
   get 'admin/moderate/:id' => 'admin#moderate'
   get 'admin/unmoderate/:id' => 'admin#unmoderate'
+  get 'admin/publish_comment/:id' => 'admin#publish_comment'
+  get 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
 
   get 'post' => 'editor#post'
+  post 'post' => 'editor#post'
   get 'legacy' => 'editor#legacy'
   get 'editor' => 'editor#editor'
+  get 'editor/rich/(:n)' => 'editor#rich'
   post 'images/create' => 'images#create'
   put 'note/add' => 'legacy#note_add'
   put 'page/add' => 'legacy#page_add'
@@ -255,10 +285,16 @@ Plots2::Application.routes.draw do
   get 'questions/unanswered(/:tagnames)' => 'questions#unanswered'
   get 'questions/liked(/:tagnames)' => 'questions#liked'
 
+  post 'users/test_digest_email' => 'users#test_digest_email'
+
   post 'answers/create/:nid' => 'answers#create'
   get 'answers/create/:nid' => 'answers#create'
+  get 'answers/update/:id' => 'answers#update'
+  post 'answers/update/:id' => 'answers#update'
   put 'answers/update/:id' => 'answers#update'
+  get 'answers/delete/:id' => 'answers#delete'
   delete 'answers/delete/:id' => 'answers#delete'
+  get 'answers/accept/:id' => 'answers#accept'
   put 'answers/accept/:id' => 'answers#accept'
 
   get 'answer_like/show/:id' => 'answer_like#show'
@@ -266,7 +302,14 @@ Plots2::Application.routes.draw do
 
 
   get 'comment/answer_create/:aid' => 'comment#answer_create'
+  get 'comment/delete/:id' => 'comment#delete'
+  get 'comment/update/:id' => 'comment#update'
+  post 'comment/update/:id' => 'comment#update'
+  get 'comment/make_answer/:id' => 'comment#make_answer'
   post 'comment/make_answer/:id' => 'comment#make_answer'
+  post '/comment/like' => 'comment#like_comment'
+  get '/comment/create/:id' => 'comment#create'
+  post 'comment/create/:id' => 'comment#create'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
@@ -314,7 +357,7 @@ Plots2::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   #handling omniauth callbacks
-  match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
+  match '/auth/:provider/callback', to: 'user_sessions#create', via: [:get, :post]
+  get 'auth/failure', to: redirect('/')
 
-  match ':controller(/:action(/:id))(.:format)', via: [:get, :post]
 end

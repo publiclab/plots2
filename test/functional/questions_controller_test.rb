@@ -14,17 +14,17 @@ class QuestionsControllerTest < ActionController::TestCase
 
   test 'should get show' do
     note = nodes(:question)
-    get :show,
-        author: note.author.name,
-        date: Time.at(note.created).strftime('%m-%d-%Y'),
-        id: note.title.parameterize
+    
+    get :show, params: { author: note.author.name, date: Time.at(note.created).strftime('%m-%d-%Y'), id: note.title.parameterize }
 
     assert_response :success
   end
 
   test 'show question by id' do
     note = nodes(:question)
-    get :show, id: note.id
+
+    get :show, params: { id: note.id }
+
     assert_response :success
   end
 
@@ -35,7 +35,7 @@ class QuestionsControllerTest < ActionController::TestCase
     comment.comment = 'Test **markdown** and http://links.com'
     comment.save!
 
-    get :show, id: node.id
+    get :show, params: { id: node.id }
 
     assert_select 'strong', 'markdown'
     assert_select 'a', 'http://links.com'
@@ -49,26 +49,24 @@ class QuestionsControllerTest < ActionController::TestCase
     comment.comment = 'Test **markdown2** and http://links2.com'
     comment.save!
 
-    get :show, id: node.id
+    get :show, params: { id: node.id }
 
     assert_select 'strong', 'markdown2'
     assert_select 'a', 'http://links2.com'
     assert_response :success
   end
 
-
   test 'should redirect notes other than question to note path' do
     note = nodes(:one)
-    get :show,
-        author: note.author.name,
-        date: Time.at(note.created).strftime('%m-%d-%Y'),
-        id: note.title.parameterize
+
+    get :show, params: { author: note.author.name, date: Time.at(note.created).strftime('%m-%d-%Y'), id: note.title.parameterize }
+
     assert_redirected_to note.path
   end
 
   test 'redirect question to short url' do
     note = nodes(:question)
-    get :shortlink, id: note.id
+    get :shortlink, params: { id: note.id }
     assert_redirected_to note.path(:question)
   end
 
@@ -85,11 +83,9 @@ class QuestionsControllerTest < ActionController::TestCase
   test 'should show accepted label for accepted answers' do
     note = nodes(:question)
     answer = answers(:two)
-    get :show,
-        author: note.author.name,
-        date: Time.at(note.created).strftime('%m-%d-%Y'),
-        id: note.title.parameterize
 
+    get :show, params: { author: note.author.name, date: Time.at(note.created).strftime('%m-%d-%Y'), id: note.title.parameterize }
+  
     assert_response :success
     assert_select '#answer-' + answer.id.to_s + '-accept', 1
   end
@@ -97,10 +93,8 @@ class QuestionsControllerTest < ActionController::TestCase
   test 'should not show answer accept button to users if not logged in' do
     note = nodes(:question)
     answer = answers(:one)
-    get :show,
-        author: note.author.name,
-        date: Time.at(note.created).strftime('%m-%d-%Y'),
-        id: note.title.parameterize
+
+    get :show, params: { author: note.author.name, date: Time.at(note.created).strftime('%m-%d-%Y'), id: note.title.parameterize  }
 
     assert_response :success
     assert_select '#answer-' + answer.id.to_s + '-accept', 0
@@ -110,11 +104,9 @@ class QuestionsControllerTest < ActionController::TestCase
     UserSession.create(users(:jeff))
     note = nodes(:question)
     answer = answers(:one)
-    get :show,
-        author: note.author.name,
-        date: Time.at(note.created).strftime('%m-%d-%Y'),
-        id: note.title.parameterize
 
+    get :show, params: { author: note.author.name, date: Time.at(note.created).strftime('%m-%d-%Y'), id: note.title.parameterize  }
+  
     assert_response :success
     assert_select '#answer-' + answer.id.to_s + '-accept', 1
   end
@@ -123,10 +115,8 @@ class QuestionsControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     note = nodes(:question)
     answer = answers(:one)
-    get :show,
-        author: note.author.name,
-        date: Time.at(note.created).strftime('%m-%d-%Y'),
-        id: note.title.parameterize
+
+    get :show, params: { author: note.author.name, date: Time.at(note.created).strftime('%m-%d-%Y'), id: note.title.parameterize }
 
     assert_response :success
     assert_select '#answer-' + answer.id.to_s + '-accept', 0
@@ -189,7 +179,6 @@ class QuestionsControllerTest < ActionController::TestCase
   end
 
   test 'should list only answered questions in answered' do
-    UserSession.create(users(:admin))
     get :answered
     questions = assigns(:questions)
     expected = [nodes(:question)]

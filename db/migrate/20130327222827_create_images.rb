@@ -1,4 +1,4 @@
-class CreateImages < ActiveRecord::Migration
+class CreateImages < ActiveRecord::Migration[5.1]
   def up
     unless table_exists? "images"
       create_table :images do |t|
