@@ -19,5 +19,5 @@ jQuery(document).ready(function($) {
   }
 
   postProcessContent();
-
+  addDeepLinks($('#content'));
 });
