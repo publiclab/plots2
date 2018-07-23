@@ -1,4 +1,4 @@
-class AddRevisionCountToDrupalNode < ActiveRecord::Migration
+class AddRevisionCountToDrupalNode < ActiveRecord::Migration[5.1]
   def up
     add_column :node, :drupal_node_revisions_count, :integer, default: 0
     Node.reset_column_information

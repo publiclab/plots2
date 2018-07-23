@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180614000000) do
+ActiveRecord::Schema.define(version: 2018_07_19_165651) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 20180614000000) do
     t.string   "likeable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "emoji_type"
   end
 
   create_table "node", primary_key: "nid", force: true do |t|
@@ -444,6 +445,7 @@ ActiveRecord::Schema.define(version: 20180614000000) do
     t.string  "timezone_name",    limit: 50,                                   default: "",  null: false
     t.decimal "lat",                                 precision: 20, scale: 10, default: 0.0
     t.decimal "lon",                                 precision: 20, scale: 10, default: 0.0
+    t.integer "password_checker",                                              default: 0
   end
 
   add_index "users", ["access"], name: "index_users_access", using: :btree

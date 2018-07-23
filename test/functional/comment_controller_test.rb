@@ -35,7 +35,7 @@ class CommentControllerTest < ActionController::TestCase
     end
     assert_response :success
     assert_not_nil :comment
-    assert_template partial: 'questions/_comment'
+    assert_template partial: 'notes/_comment'
   end
 
   test 'should create wiki comments' do
@@ -84,7 +84,7 @@ class CommentControllerTest < ActionController::TestCase
     end
     assert_response :success
     assert_not_nil :comment
-    assert_template partial: 'questions/_comment'
+    assert_template partial: 'notes/_comment'
   end
 
   test 'should show error if answer comment not saved' do
@@ -382,6 +382,17 @@ class CommentControllerTest < ActionController::TestCase
     post :like_comment, params: { comment_id: comment.id, user_id: 1 }, xhr: true
     updated_like_count = Like.where(likeable_id: comment.id, likeable_type: "Comment").count
     assert_equal updated_like_count, like_count-1
+  end
+
+  test 'should not send notification email to author if notify-comment-direct:false usertag is present' do
+    UserSession.create(users(:jeff))
+    post :create, params: {
+        id: nodes(:activity).nid,
+        body: 'A comment by Jeff on note of author test_user'
+    }, xhr: true
+
+    assert_not ActionMailer::Base.deliveries.collect(&:subject).include?("New comment on #{nodes(:activity).title} (##{nodes(:activity).nid}) ")
+    assert_not ActionMailer::Base.deliveries.collect(&:to).include?([users(:test_user).email])
   end
 
   private

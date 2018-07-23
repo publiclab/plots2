@@ -1,9 +1,5 @@
 require 'test_helper'
 
-# TODO:  Rework to get better inclusion of JsonExpressions pattern matching
-# TODO:  Add tests for negative matches--check echo of search parameters and null result
-# HACK:  Parameterize the 'get' URLs to make passing and changing test values easier
-
 class TypeaheadApiTest < ActiveSupport::TestCase
   include Rack::Test::Methods
 
@@ -11,128 +7,117 @@ class TypeaheadApiTest < ActiveSupport::TestCase
     Rails.application
   end
 
-  def setup
-    @stxt = 'lat'
-    @sprofile = 'adm'
-    @stags = 'everything'
-    @sseq = 7
-    @scom = 'comm'
-  end
-
   test 'typeahead all functionality' do
-    get '/api/typeahead/all?srchString=lat&seq=7'
+    get '/api/typeahead/all?srchString=Blog'
     assert last_response.ok?
 
     # Expected typeahead pattern
     pattern = {
-      # TODO:  Need more/better understanding and data for the test database
-      # return will be nil for now
-      # items: nil,
       srchParams: {
-        srchString: @stxt,
-        seq: @sseq
+        srchString: 'Blog',
+        seq: nil
       }.ignore_extra_keys!
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
-    assert matcher =~ JSON.parse(last_response.body)
+    json = JSON.parse(last_response.body)
+
+    assert matcher =~ json
   end
 
   test 'typeahead profile functionality' do
-    get '/api/typeahead/profiles?srchString=adm&seq=7'
+    get '/api/typeahead/profiles?srchString=Jeff'
     assert last_response.ok?
 
     # Expected profile response pattern
     pattern = {
-      # TODO:  Need more/better understanding and data for the test database
-      # return will be nil for now
-      # items: nil,
       srchParams: {
-        srchString: @sprofile,
-        seq: @sseq
+        srchString: 'Jeff',
+        seq: nil
       }.ignore_extra_keys!
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
-    assert matcher =~ JSON.parse(last_response.body)
+    json = JSON.parse(last_response.body)
+
+    assert matcher =~ json
   end
 
   test 'typeahead notes functionality' do
-    get '/api/typeahead/notes?srchString=lat&seq=7'
+    get '/api/typeahead/notes?srchString=Blog'
     assert last_response.ok?
 
     # Expected notes pattern
     pattern = {
-      # TODO:  Need more/better understanding and data for the test database
-      # return will be nil for now
-      # items: nil,
       srchParams: {
-        srchString: @stxt,
-        seq: @sseq
+        srchString: 'Blog',
+        seq: nil
       }.ignore_extra_keys!
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
-    assert matcher =~ JSON.parse(last_response.body)
+    json = JSON.parse(last_response.body)
+
+    assert matcher =~ json
   end
 
   test 'typeahead questions functionality' do
-    get '/api/typeahead/questions?srchString=lat&seq=7'
+    get '/api/typeahead/questions?srchString=Question'
     assert last_response.ok?
 
     # Expected question pattern
-    #  Returns null right now for test--need to set a better search sequence on demo seed data
     pattern = {
-      # TODO:  Need more/better understanding and data for the test database
-      # return will be nil for now
-      # items: nil,
       srchParams: {
-        srchString: @stxt,
-        seq: @sseq
-      }.ignore_extra_keys!
-    }.ignore_extra_keys!
+        srchString: 'Question',
+        seq: nil,
+       }.ignore_extra_keys!
+     }.ignore_extra_keys!
 
-    matcher = JsonExpressions::Matcher.new(pattern)
+     matcher = JsonExpressions::Matcher.new(pattern)
 
-    assert matcher =~ JSON.parse(last_response.body)
+     json = JSON.parse(last_response.body)
+
+     assert matcher =~ json
   end
 
   test 'typeahead tags functionality' do
-    get '/api/typeahead/tags?srchString=everything&seq=7'
+    get '/api/typeahead/tags?srchString=everything'
     assert last_response.ok?
 
     # Expected tag pattern
     pattern = {
-      # TODO:  Need more/better understanding and data for the test database
-      # return will be nil for now
-      # items: nil,
       srchParams: {
-        srchString: @stags,
-        seq: @sseq
+        srchString: 'everything',
+        seq: nil
       }.ignore_extra_keys!
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
-    assert matcher =~ JSON.parse(last_response.body)
+    json = JSON.parse(last_response.body)
+
+    assert matcher =~ json
   end
 
   test 'typeahead comments functionality' do
-    get '/api/typeahead/comments?srchString=comm&seq=7'
+    get '/api/typeahead/comments?srchString=comment'
     assert last_response.ok?
 
     # Expected comment pattern
     pattern = {
       srchParams: {
-        srchString: @scom,
-        seq: @sseq
+        srchString: 'comment',
+        seq: nil
       }.ignore_extra_keys!
-    }.ignore_extra_keys! 
+    }.ignore_extra_keys!
+
     matcher = JsonExpressions::Matcher.new(pattern)
 
-    assert matcher =~ JSON.parse(last_response.body)    
+    json = JSON.parse(last_response.body)
+
+    assert matcher =~ json
   end
 end

@@ -1,42 +1,41 @@
 class HomeController < ApplicationController
   before_action :require_user, only: %i(subscriptions nearby)
 
-  # caches_action :index, :cache_path => proc { |c|
-  #  node = Node.find :last #c.params[:id]
-  #  { :n => node.updated_at.to_i }
-  # end
-
-  # caches_action :index, :cache_path => { :last => Node.find(:last).updated_at.to_i }
-
   def home
     if current_user
       redirect_to '/dashboard'
     else
-      set_activity :cache
-      @comments = [] # inefficient, but quick way to remove comments from front page
+      blog
       @title = I18n.t('home_controller.science_community')
       render template: 'home/home'
     end
   end
 
-  # proxy to enable AJAX loading of RSS feeds, which requires same-origin
-  def fetch
-    if true # Rails.env.production?
-      if params[:url][0..24] == 'https://groups.google.com' || params[:url] == 'https://feeds.feedburner.com/rssmixer/ZvcX'
-        url = URI.parse(params[:url])
-        result = Net::HTTP.get_response(url)
-        send_data result.body, type: result.content_type, disposition: 'inline'
-      end
-    else
-      redirect_to params[:url]
-    end
-  end
-
   # route for seeing the front page even if you are logged in
   def front
-    set_activity :cache
+    blog
     @title = I18n.t('home_controller.environmental_investigation')
     render template: 'home/home'
+  end
+
+  # used in front and home methods only
+  def blog
+    @notes = Node.where(status: 1, type: 'note')
+      .includes(:revision, :tag)
+      .references(:term_data, :node_revisions)
+      .where('term_data.name = ?', 'blog')
+      .order('created DESC')
+      .paginate(page: params[:page], per_page: 8)
+  end
+
+  # Proxy to enable AJAX loading of RSS feeds, which requires same-origin.
+  # Security OK because it only works with google groups OR one specific feedburner.
+  def fetch
+    if params[:url][0..24] == 'https://groups.google.com' || params[:url] == 'https://feeds.feedburner.com/rssmixer/ZvcX'
+      url = URI.parse(params[:url])
+      result = Net::HTTP.get_response(url)
+      send_data result.body, type: result.content_type, disposition: 'inline'
+    end
   end
 
   def dashboard
@@ -70,6 +69,7 @@ class HomeController < ApplicationController
       @title = I18n.t('home_controller.community_research')
     end
   end
+
   # trashy... clean this up!
   # this will eventually be based on the profile_tags data where people can mark their location with "location:lat,lon"
   def nearby
@@ -121,7 +121,7 @@ class HomeController < ApplicationController
       .where('node_revisions.status = 1')
       .where('timestamp - node.created > ?', 300) # don't report edits within 5 mins of page creation
       .limit(10)
-      .group(['node.title', 'node.nid'])
+      .group(['node.title', 'node.nid', 'node_revisions.vid']) # ONLY_FULL_GROUP_BY, issue #3120
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     revisions = revisions.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     revisions = revisions.to_a # ensure it can be serialized for caching
@@ -132,7 +132,7 @@ class HomeController < ApplicationController
       .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
       .where('node.status = ?', 1)
       .page(params[:page])
-      .group('title') # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
+      .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     comments = comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     comments = comments.to_a # ensure it can be serialized for caching
@@ -140,7 +140,7 @@ class HomeController < ApplicationController
       .order('timestamp DESC')
       .where('timestamp - answers.created_at > ?', 86_400)
       .limit(20)
-      .group('answers.id')
+      .group(['answers.id', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
     answer_comments = answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     answer_comments = answer_comments.to_a # ensure it can be serialized for caching
     activity = (notes + wikis + comments + answer_comments).sort_by(&:created_at).reverse
@@ -159,6 +159,7 @@ class HomeController < ApplicationController
   def set_activity(source = :database)
     @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments =
       if source == :cache
+        # we no longer use activity feed on front page ('home'), so this cache may be unused
         Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
           activity
         end
@@ -166,5 +167,4 @@ class HomeController < ApplicationController
         activity
       end
   end
-
 end

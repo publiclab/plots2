@@ -1,5 +1,4 @@
 require 'test_helper'
-
 class CommentTest < ActiveSupport::TestCase
   test 'should save comment' do
     comment = Comment.new
@@ -211,4 +210,146 @@ class CommentTest < ActiveSupport::TestCase
 
     assert_equal [users(:spammer).uid, users(:jeff).uid, users(:bob).uid], comment.uids_to_notify
   end
+
+  test 'should return list of users who reacted on a comment' do
+    comment = comments(:first)
+    user = users(:bob)
+    like = Like.create(likeable_id: comment.id, user_id: user.id, likeable_type: "Comment", emoji_type: "Heart")
+    map = comment.user_reactions_map
+    assert_equal map["Heart"], "Bob reacted with heart emoji"
+    like = Like.create(likeable_id: comment.id, user_id: users(:jeff).id, likeable_type: "Comment", emoji_type: "Heart")
+    map = comment.user_reactions_map
+    assert_equal map["Heart"], "Bob and jeff reacted with heart emoji"
+  end
+
+
+  test 'should parse incoming mail from gmail service correctly and add comment' do
+    require 'mail'
+    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
+    node = Node.last
+    mail.subject = "Re: #{node.title} (##{node.nid})"
+    Comment.receive_mail(mail)
+    f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
+    comment = Comment.last
+    user_email = mail.from.first
+    assert_equal comment.comment, f.read
+    assert_equal comment.nid, node.id
+    assert_equal comment.message_id, mail.message_id
+    assert_equal comment.comment_via, 1
+    assert_equal User.find(comment.uid).email, user_email
+    f.close()
+  end
+
+  test 'should parse incoming mail from yahoo service correctly and add comment' do
+    require 'mail'
+    mail = Mail.read('test/fixtures/incoming_test_emails/yahoo/incoming_yahoo_email.eml')
+    node = Node.last
+    mail.subject = "Re: #{node.title} (##{node.nid})"
+    Comment.receive_mail(mail)
+    f = File.open('test/fixtures/incoming_test_emails/yahoo/final_parsed_comment.txt', 'r')
+    comment = Comment.last
+    user_email = mail.from.first
+    assert_equal comment.comment, f.read
+    assert_equal comment.nid, node.id
+    assert_equal comment.message_id, mail.message_id
+    assert_equal comment.comment_via, 1
+    assert_equal User.find(comment.uid).email, user_email
+    f.close()
+  end
+
+  test 'should parse incoming mail from gmail service correctly and add answer comment' do
+    require 'mail'
+    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
+    answer = Answer.last
+    mail.subject = "Re: (#a#{answer.id})"
+    Comment.receive_mail(mail)
+    f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
+    comment = Comment.last
+    user_email = mail.from.first
+    assert_equal comment.comment, f.read
+    assert_equal comment.aid, answer.id
+    assert_equal comment.message_id, mail.message_id
+    assert_equal comment.comment_via, 1
+    assert_equal User.find(comment.uid).email, user_email
+    f.close()
+  end
+
+  test 'should parse incoming mail from yahoo service correctly and add answer comment' do
+    require 'mail'
+    mail = Mail.read('test/fixtures/incoming_test_emails/yahoo/incoming_yahoo_email.eml')
+    # Mail contain ["01namangupta@gmail.com"] in from field.
+    answer = Answer.last
+    mail.subject = "Re: (#a#{answer.id})"
+    Comment.receive_mail(mail)
+    f = File.open('test/fixtures/incoming_test_emails/yahoo/final_parsed_comment.txt', 'r')
+    comment = Comment.last
+    user_email = mail.from.first
+    assert_equal comment.comment, f.read
+    assert_equal comment.aid, answer.id
+    assert_equal comment.message_id, mail.message_id
+    assert_equal comment.comment_via, 1
+    assert_equal User.find(comment.uid).email, user_email
+    f.close()
+  end
+
+  test 'should give the domain of gmail correctly' do
+    domain = Comment.get_domain("01namangupta@gmail.com")
+    assert_equal domain, "gmail"
+  end
+
+  test 'should give the domain of yahoo mail correctly' do
+    domain = Comment.get_domain("naman18996@yahoo.com")
+    assert_equal domain, "yahoo"
+  end
+
+  test 'should be true when there is trimmed content in comment' do
+    comment = Comment.new
+    f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
+    comment.comment = f.read
+    f.close()
+    comment.save
+    assert_equal true, comment.trimmed_content?
+  end
+
+  test 'should be false when there is no trimmed content in comment' do
+    comment = Comment.new
+    comment.comment = "This is a comment without trimmed content"
+    comment.save
+    assert_equal false, comment.trimmed_content?
+  end
+
+  test 'should parse incoming mail from other domain who use gmail service correctly and add answer comment' do
+    require 'mail'
+    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
+    answer = Answer.last
+    mail.subject = "Re: (#a#{answer.id})"
+    mail.from = ["jeff@publiclab.org"]
+    Comment.receive_mail(mail)
+    f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
+    comment = Comment.last
+    assert_equal comment.comment, f.read
+    assert_equal comment.aid, answer.id
+    assert_equal comment.message_id, mail.message_id
+    assert_equal comment.comment_via, 1
+    assert_equal User.find(comment.uid).email, "jeff@publiclab.org"
+    f.close()
+  end
+
+  test 'should parse incoming mail from other domain who use gmail service correctly and add comment' do
+    require 'mail'
+    mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
+    node = Node.last
+    mail.subject = "Re: #{node.title} (##{node.nid})"
+    mail.from = ["jeff@publiclab.org"]
+    Comment.receive_mail(mail)
+    f = File.open('test/fixtures/incoming_test_emails/gmail/final_parsed_comment.txt', 'r')
+    comment = Comment.last
+    assert_equal comment.comment, f.read
+    assert_equal comment.nid, node.id
+    assert_equal comment.message_id, mail.message_id
+    assert_equal comment.comment_via, 1
+    assert_equal User.find(comment.uid).email, "jeff@publiclab.org"
+    f.close()
+  end
+
 end

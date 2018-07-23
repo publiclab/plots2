@@ -1,4 +1,4 @@
-class AddProfileTags < ActiveRecord::Migration
+class AddProfileTags < ActiveRecord::Migration[5.1]
   def up
     unless table_exists? "tags"
       create_table :tags do |t|

@@ -1,11 +1,13 @@
 class Spamaway
-    include ActiveModel::Model
+  include ActiveModel::Model
 
   # This helper will generate pairs of human/robot statements and return
   # them alongside random strings.
   # There is no actual data in the database.
-  def self.columns() @columns ||= []; end
- 
+  def self.columns
+    @columns ||= []
+end
+
   def self.column(name, sql_type = nil, default = nil, null = true)
     columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
   end
@@ -17,7 +19,6 @@ class Spamaway
   column :statement4, :string
 
   attr_accessor :follow_instructions, :statement1, :statement2, :statement3, :statement4
-
 
   validate :clean_honeypot, :human_responses
 

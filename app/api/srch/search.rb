@@ -3,6 +3,10 @@ require 'grape-entity'
 
 module Srch
   class Search < Grape::API
+    # we are using a group of reusable parameters using a shared params helper
+    # see /app/api/srch/shared_params.rb
+    helpers SharedParams
+
     # Endpoint definitions
     resource :srch do
       # Request URL should be /api/srch/all?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
@@ -11,20 +15,10 @@ module Srch
                                                           is_array: false,
                                                           nickname: 'srchGetAll'
       params do
-        requires :srchString, type: String, documentation: { example: 'Spec' }
-        optional :seq, type: Integer, documentation: { example: 995 }
-        optional :showCount, type: Integer, documentation: { example: 3 }
-        optional :pageNum, type: Integer, documentation: { example: 0 }
+        use :common
       end
       get :all do
-        sresult = DocList.new
-        unless params[:srchString].nil? || params[:srchString] == 0
-          sservice = SearchService.new
-          sresult = sservice.textSearch_all(params[:srchString])
-        end
-        sparms = SearchRequest.fromRequest(params)
-        sresult.srchParams = sparms
-        sresult
+        Search.execute(:all, params)
       end
 
       # Request URL should be /api/srch/profiles?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
@@ -32,21 +26,12 @@ module Srch
       desc 'Perform a search of profiles', hidden: false,
                                            is_array: false,
                                            nickname: 'srchGetProfiles'
+
       params do
-        requires :srchString, type: String, documentation: { example: 'Spec' }
-        optional :seq, type: Integer, documentation: { example: 995 }
-        optional :showCount, type: Integer, documentation: { example: 3 }
-        optional :pageNum, type: Integer, documentation: { example: 0 }
+        use :common
       end
       get :profiles do
-        sresult = DocList.new
-        unless params[:srchString].nil? || params[:srchString] == 0
-          sservice = SearchService.new
-          sresult = sservice.textSearch_profiles(params[:srchString])
-        end
-        sparms = SearchRequest.fromRequest(params)
-        sresult.srchParams = sparms
-        sresult
+        Search.execute(:profiles, params)
       end
 
       # Request URL should be /api/srch/notes?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
@@ -54,21 +39,12 @@ module Srch
       desc 'Perform a search of research notes', hidden: false,
                                                  is_array: false,
                                                  nickname: 'srchGetNotes'
+
       params do
-        requires :srchString, type: String, documentation: { example: 'Spec' }
-        optional :seq, type: Integer, documentation: { example: 995 }
-        optional :showCount, type: Integer, documentation: { example: 3 }
-        optional :pageNum, type: Integer, documentation: { example: 0 }
+        use :common
       end
       get :notes do
-        sresult = DocList.new
-        unless params[:srchString].nil? || params[:srchString] == 0
-          sservice = SearchService.new
-          sresult = sservice.textSearch_notes(params[:srchString])
-        end
-        sparms = SearchRequest.fromRequest(params)
-        sresult.srchParams = sparms
-        sresult
+        Search.execute(:notes, params)
       end
 
       # Request URL should be /api/srch/questions?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
@@ -76,21 +52,12 @@ module Srch
       desc 'Perform a search of questions tables', hidden: false,
                                                    is_array: false,
                                                    nickname: 'srchGetQuestions'
+
       params do
-        requires :srchString, type: String, documentation: { example: 'Spec' }
-        optional :seq, type: Integer, documentation: { example: 995 }
-        optional :showCount, type: Integer, documentation: { example: 3 }
-        optional :pageNum, type: Integer, documentation: { example: 0 }
+        use :common
       end
       get :questions do
-        sresult = DocList.new
-        unless params[:srchString].nil? || params[:srchString] == 0
-          sservice = SearchService.new
-          sresult = sservice.textSearch_questions(params[:srchString])
-        end
-        sparms = SearchRequest.fromRequest(params)
-        sresult.srchParams = sparms
-        sresult
+        Search.execute(:questions, params)
       end
 
       # Request URL should be /api/srch/tags?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
@@ -98,71 +65,55 @@ module Srch
       desc 'Perform a search of documents associated with tags within the system', hidden: false,
                                                                                    is_array: false,
                                                                                    nickname: 'srchGetByTags'
+
       params do
-        requires :srchString, type: String, documentation: { example: 'Spec' }
-        optional :seq, type: Integer, documentation: { example: 995 }
-        optional :showCount, type: Integer, documentation: { example: 3 }
-        optional :pageNum, type: Integer, documentation: { example: 0 }
+        use :common
       end
       get :tags do
-        sresult = DocList.new
-        unless params[:srchString].nil? || params[:srchString] == 0
-          sservice = SearchService.new
-          sresult = sservice.textSearch_tags(params[:srchString])
-        end
-        sparms = SearchRequest.fromRequest(params)
-        sresult.srchParams = sparms
-        sresult
+        Search.execute(:tags, params)
       end
 
-      # Request URL should be /api/srch/locations?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/taglocations?srchString=QRY[&tagName=awesome&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Note: Query(QRY as above) must have latitude and longitude as srchString=lat,lon
-      desc 'Perform a search of documents having nearby latitude and longitude tag values',
-        hidden: false,
-        is_array: false,
-        nickname: 'srchGetLocations'
+      desc 'Perform a search of documents having nearby latitude and longitude tag values', hidden: false,
+                                                                                            is_array: false,
+                                                                                            nickname: 'srchGetLocations'
+
       params do
-        requires :srchString, type: String, documentation: { example: 'Spec' }
-        optional :seq, type: Integer, documentation: { example: 995 }
-        optional :showCount, type: Integer, documentation: { example: 3 }
-        optional :pageNum, type: Integer, documentation: { example: 0 }
+        use :common, :additional
       end
-      get :locations do
-        sresult = DocList.new
-        unless params[:srchString].nil? || params[:srchString] == 0 || !(params[:srchString].include? ",")
-          sservice = SearchService.new
-          sresult = sservice.nearbyNodes(params[:srchString])
-        end
-        sparms = SearchRequest.fromRequest(params)
-        sresult.srchParams = sparms
-        sresult
+      get :taglocations do
+        Search.execute(:taglocations, params)
       end
 
-      #API TO FETCH QRY RECENT CONTRIBUTORS
+      # API TO FETCH QRY RECENT CONTRIBUTORS
       # Request URL should be /api/srch/peoplelocations?srchString=QRY[&tagName=group:partsandcrafts&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
-      #QRY should be a number
-      desc 'Perform a search to show x Recent People',
-        hidden: false,
-        is_array: false,
-        nickname: 'srchGetPeople'
+      # QRY should be a number
+      desc 'Perform a search to show x Recent People',  hidden: false,
+                                                        is_array: false,
+                                                        nickname: 'srchGetPeople'
+
       params do
-        requires :srchString, type: String, documentation: { example: 'Spec' }
-        optional :tagName, type: String, documentation: { example: 'group:partsandcrafts' }
-        optional :seq, type: Integer, documentation: { example: 995 }
-        optional :showCount, type: Integer, documentation: { example: 3 }
-        optional :pageNum, type: Integer, documentation: { example: 0 }
+        use :common, :additional
       end
       get :peoplelocations do
-        sresult = DocList.new
-        unless params[:srchString].nil? || params[:srchString] == 0 
-          sservice = SearchService.new
-          sresult = sservice.recentPeople(params[:srchString], params[:tagName])
-        end
-        sparms = SearchRequest.fromRequest(params)
-        sresult.srchParams = sparms
-        sresult
+        Search.execute(:peoplelocations, params)
       end
-      # end endpoint definitions
+    end
+
+    def self.execute(endpoint, params)
+      sresult = DocList.new
+      search_query = params[:srchString]
+      tag_query = params[:tagName]
+      search_type = endpoint
+      search_criteria = SearchCriteria.new(search_query, tag_query)
+
+      if search_criteria.valid?
+        sresult = ExecuteSearch.new.by(search_type, search_criteria)
+      end
+      sparms = SearchRequest.fromRequest(params)
+      sresult.srchParams = sparms
+      sresult
     end
   end
 end

@@ -1,7 +1,6 @@
 require 'open-uri'
 
 class Image < ApplicationRecord
-
   # has_many :comments, :dependent => :destroy
   # has_many :likes, :dependent => :destroy
   # has_many :tags, :dependent => :destroy
@@ -47,7 +46,7 @@ class Image < ApplicationRecord
   end
 
   def shortlink
-    "/i/#{self.id}"
+    "/i/#{id}"
   end
 
   def filename
@@ -79,7 +78,7 @@ class Image < ApplicationRecord
       base_uri.path.split('/').last
     end
     io.original_filename.blank? ? nil : io
-  rescue # catch url errors with validations instead of exceptions (Errno:ENOENT, OpenURI:HTTPError, etc...)
+  rescue StandardError # catch url errors with validations instead of exceptions (Errno:ENOENT, OpenURI:HTTPError, etc...)
     puts 'had to be rescued'
   end
 end

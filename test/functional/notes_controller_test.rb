@@ -313,7 +313,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 15
+    assert_equal selector.size, 17
     assert_select "div p", 'Pending approval by community moderators. Please be patient!'
   end
 
@@ -342,7 +342,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 15
+    assert_equal selector.size, 17
     assert_select "p", "Moderate first-time post: \n              Approve\n              Spam"
   end
 
@@ -450,7 +450,7 @@ class NotesControllerTest < ActionController::TestCase
   test 'should display an icon for users with streak longer than 7 days' do
     node = nodes(:one)
     User.any_instance.stubs(:note_streak).returns([8, 10])
-    User.any_instance.stubs(:wiki_edit_streak).returns([9, 15])
+    User.any_instance.stubs(:wiki_edit_streak).returns([9, 17])
     User.any_instance.stubs(:comment_streak).returns([10, 30])
     get :show,
         params: {
@@ -459,7 +459,7 @@ class NotesControllerTest < ActionController::TestCase
         id: node.title.parameterize
         }
     selector = css_select '.fa-fire'
-    assert_equal selector.size, 4
+    assert_equal selector.size, 3
   end
 
   test 'should redirect to questions show page after creating a new question' do
@@ -552,6 +552,16 @@ class NotesControllerTest < ActionController::TestCase
     post :update, params: { id: note.nid, title: note.title, body: 'Spectrometer doubts', tags: 'question:spectrometer', redirect: 'question' }
 
     assert_redirected_to note.path(:question) + '?_=' + Time.now.to_i.to_s
+  end
+
+  
+  test 'should render a text/plain when the note is edited through xhr' do
+    user = UserSession.create(users(:jeff))
+    note = nodes(:one)
+    post :update, params: { id: note.nid, title: note.title, body: 'Canon A1200 IR Conversion is working' }, xhr: true
+    assert_equal I18n.t('notes_controller.edits_saved'), flash[:notice]
+    assert_equal "text/plain", @response.content_type
+    assert_equal "#{note.path(false).to_s}?_=#{Time.now.to_i}", @response.body
   end
 
   test 'should update a former note that has become a question by tagging' do
@@ -833,11 +843,13 @@ class NotesControllerTest < ActionController::TestCase
      title = 'My new post about balloon mapping'
 
      post :create,
+         params: {
           id: users(:bob).id,
           title: title,
           body: 'This is a fascinating post about a balloon mapping event.',
           tags: 'balloon-mapping,event',
           draft: "true"
+         }
 
      assert_redirected_to('/login')
    end
@@ -891,7 +903,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url}'>#{node.draft_url}</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to moderator in full view with notice' do
@@ -907,7 +919,7 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url}'>#{node.draft_url}</a>", flash[:warning]
    end
 
    test 'draft note (status=3) shown to co-author in full view with notice' do
@@ -923,6 +935,19 @@ class NotesControllerTest < ActionController::TestCase
         }
 
      assert_response :success
-     assert_equal "This is a Draft note. Kindly complete it and publish it using <a class='btn btn-success' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> button.", flash[:warning]
+     assert_equal "This is a draft note. Once you're ready, click <a class='btn btn-success btn-xs' href='/notes/publish_draft/#{node.id}'>Publish Draft</a> to make it public. You can share it with collaborators using this private link <a href='#{node.draft_url}'>#{node.draft_url}</a>", flash[:warning]
+   end
+
+   test 'draft note (status=3) shown to user with secret link' do
+     node = nodes(:draft)
+     assert_equal 3, node.status
+     @token = node.slug.split('token:').last
+
+     get :show,
+         params: {
+             id: node.nid,
+             token: @token
+         }
+     assert_response :success
    end
 end

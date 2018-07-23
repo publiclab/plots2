@@ -1,8 +1,7 @@
 class CommentMailer < ActionMailer::Base
   helper :application
-  require 'byebug'
   include ApplicationHelper
-  default from: "do-not-reply@#{ActionMailer::Base.default_url_options[:host]}"
+  default from: "notifications@#{ActionMailer::Base.default_url_options[:host]}"
 
   # CommentMailer.notify_of_comment(user,self).deliver_now
   def notify(user, comment)
@@ -45,7 +44,7 @@ class CommentMailer < ActionMailer::Base
     @user = user
     @comment = comment
     @footer = feature('email-footer')
-    mail(to: user.email, subject: "New comment on your answer on #{comment.parent.title} (##{comment.parent.id}) ")
+    mail(to: user.email, subject: "New comment on your answer on #{comment.parent.title} (#a#{comment.parent.id}) ")
   end
 
   def notify_coauthor(user, note)

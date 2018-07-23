@@ -4,121 +4,18 @@
 
 <div style="padding:30px 5%;">
 
-<h1 style="font-family:Junction Light;font-size:4em;margin-top:0;margin-bottom:20px;padding-top:0.3em;">
-
-  Public Lab
-
-  <small class="hidden-xs" style="letter-spacing:100%;line-height:0.7em;"><%= t('home.home.public_lab_community') %> <a href="/join"><%= t('home.home.join_now') %> &raquo;</a></small>
-  <small class="visible-xs" style="font-size:0.4em;letter-spacing:100%;line-height:1.3em;"><%= t('home.home.public_lab_community') %> <a href="/join"><%= t('home.home.join_now') %> &raquo;</a></small>
-
-</h1>
-
-<h3 style="text-align:center;color:#888;">
-  <a href="https://twitter.com/intent/follow?original_referer=http%3A%2F%2Fpubliclab.org%2Fhome&region=follow_link&screen_name=PublicLab&tw_p=followbutton&variant=2.0"><i style="text-decoration:none;" class="fa fa-twitter"></i></a>
-  &nbsp;
-  <a href="https://www.facebook.com/PublicLab"><i style="text-decoration:none;" class="fa fa-facebook"></i></a>
-  &nbsp;
-  <a href="https://instagram.com/publiclab"><i style="text-decoration:none;" class="fa fa-instagram"></i></a>
-</h3>
-
-<br />
-<hr />
-<br />
-
-<div class="row text-center">
-  <h1>Ask a question</h1>
-  <p>The easiest way to start with Public Lab community is to ask a question.<br />See questions and ask your own here:</p>
-  <a class="btn btn-primary btn-lg" href="/questions">Questions &raquo;</a>
-</div>
-
-<br />
-<br />
-
-<div class="row">
-
-  <% cache('feature_home-banners', skip_digest: true) do %>
-    <%= feature("home-banners") %>
-  <% end %>
-
-</div>
-
-<br />
-<br />
-
-<style>
-  h1, h2, h3, h4 {
-    font-family:Junction Light;
-  }
-  #bottom {
-    padding-bottom: 20px;
-  }
-  #bottom img {
-    width: 90%;
-    padding:5%;
-  }
-  #bottom h2 {
-    margin-bottom:14px;
-    padding:10px;
-  }
-  #bottom h4 {
-    color:#888;
-    font-size:1.6em;
-    line-height:1.2em;
-    padding:10px;
-  }
-  #bottom p {
-    padding:10px;
-  }
-  #activity-header {
-    display: none;
-  }
-  .activity-menu,
-  .activity-dropdown {
-    display: none;
-  }
-
-</style>
-
-<div id="bottom">
-
-  <div class="col-md-4">
-    <img class="img img-circle" src="//i.publiclab.org/system/images/photos/000/006/671/original/canoe.jpg"/>
-    <h2 class="the-problem"> <%= t('home.home.the_problem.title') %> </h2>
-    <h4><%= t('home.home.the_problem.lack_access') %> <a href="/tools"><%= t('home.home.the_problem.tools') %></a> <%= t('home.home.the_problem.need_participation') %></h4>
-    <p><a href="/blog" class="btn btn-primary btn-lg">Read blog stories &raquo;</a></p>
-  </div>
-
-  <div class="col-md-4">
-    <img class="img img-circle" src="https://publiclab.org/system/images/photos/000/021/901/original/regional-br.jpg"/>
-    <h2> <%= t('home.home.the_collaboration.title') %> </h2>
-    <h4><%= t('home.home.the_collaboration.open_network') %> <a href="/wiki/organizers"><%= t('home.home.the_collaboration.organizers') %></a>, <%= t('home.home.the_collaboration.create_low_cost_solutions') %> <a href="/wiki/initiatives"><%= t('home.home.the_collaboration.monitoring') %></a>.</h4>
-    <h4><%= t('home.home.the_collaboration.discover') %> <a href="/places"><%= t('home.home.the_collaboration.locally_important_matters') %></a> <%= t('home.home.the_collaboration.global_community') %></h4>
-    <p><a href="/questions" class="btn btn-primary btn-lg">Ask a question &raquo;</a></p>
-  </div>
-
-  <div class="col-md-4">
-    <img class="img img-circle" src="//i.publiclab.org/system/images/photos/000/006/673/large/LizBklnNRG.jpg"/>
-    <h2> <%= t('home.home.the_solution.title') %> </h2>
-    <h4><%= t('home.home.the_solution.join_us_today') %> <a href="/archive"><%= t('home.home.the_solution.growing_data') %></a> <%= t('home.home.the_solution.local_environments') %></h4>
-    <p><a href="/methods" class="btn btn-primary btn-lg">Browse methods &raquo;</a></p>
-  </div>
-
-  <br style="clear:both;" />
-
-</div>
-
-<hr style="clear:both;padding:20px;" />
-
-<h2><center>Recent community activity</center></h2>
-
-<p><center><a href="/research">See more &raquo;</a></center></p>
+<% cache('feature_home-intro', skip_digest: true) do %>
+  <%= feature("home-intro") %>
+<% end %>
 
 <div class="dashboard">
-  <% cache('home-activity', expires_in: 60.minutes, skip_digest: true) do %>
-    <%= render partial: "dashboard/activity", locals: { activity: @activity, notes: @notes } %>
+  <% cache('home-blog', expires_in: 60.minutes, skip_digest: true) do %>
+    <div class="tab-pane active" id="notes">
+      <% unless @notes.nil? || @notes.length == 0 %>
+        <%= render partial: "notes/notes" %>
+      <% end %>
+    </div>
   <% end %>
-  <%= stylesheet_link_tag "dashboard" %>
-  <%= javascript_include_tag "dashboard" %>
 </div>
 
 </div>
