@@ -109,14 +109,14 @@ class NotesController < ApplicationController
       saved, @node, @revision = Node.new_note(uid: current_user.uid,
                                               title: params[:title],
                                               body: params[:body],
-                                              main_image: params[:main_image])
+                                              main_image: params[:main_image],
+                                              draft: params[:draft])
 
       if params[:draft] == "true" && current_user.first_time_poster
         flash[:notice] = "First-time users are not eligible to create a draft."
         redirect_to '/'
         return
       elsif params[:draft] == "true"
-        @node.draft
         @token = SecureRandom.urlsafe_base64(16, false)
         @node.slug = @node.slug + " token:" + @token
         @node.save!
