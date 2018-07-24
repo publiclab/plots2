@@ -257,4 +257,57 @@ class UsersControllerTest < ActionController::TestCase
     post :test_digest_email
     assert_redirected_to '/'
   end
+
+  test 'Oauth tags are in form of oauth:provider for github' do
+    UserSession.create(users(:jeff))
+    user = users(:jeff)
+    auth = { "provider" => "github", "uid" => "123456789"}
+    uid = user.id
+    identity = UserTag.create_with_omniauth(auth, uid)
+    get :profile
+    assert_response :redirect
+    assert_redirected_to '/profile/jeff'
+    s = "span#tag_"+identity.id.to_s
+    assert_select s,'omniauth:github'
+  end
+
+  test 'Oauth tags are in form of oauth:provider for twitter' do
+    UserSession.create(users(:jeff))
+    user = users(:jeff)
+    auth = { "provider" => "twitter", "uid" => "123456789"}
+    uid = user.id
+    identity = UserTag.create_with_omniauth(auth, uid)
+    get :profile
+    assert_response :redirect
+    assert_redirected_to '/profile/jeff'
+    s = "span#tag_"+identity.id.to_s
+    assert_select s, 'oauth:twitter'
+  end
+
+  test 'Oauth tags are in form of oauth:provider for google' do
+    UserSession.create(users(:jeff))
+    user = users(:jeff)
+    auth = { "provider" => "google_oauth2", "uid" => "123456789"}
+    uid = user.id
+    identity = UserTag.create_with_omniauth(auth, uid)
+    get :profile
+    assert_response :redirect
+    assert_redirected_to '/profile/jeff'
+    s = "span#tag_"+identity.id.to_s
+    assert_select s, 'oauth:google_oauth2'
+  end
+
+  test 'Oauth tags are in form of oauth:provider for facebook' do
+    UserSession.create(users(:jeff))
+    user = users(:jeff)
+    auth = { "provider" => "facebook", "uid" => "123456789"}
+    uid = user.id
+    identity = UserTag.create_with_omniauth(auth, uid)
+    get :profile
+    assert_response :redirect
+    assert_redirected_to '/profile/jeff'
+    s = "div#tag_"+identity.id.to_s
+    assert_select s, 'oauth:facebook'
+  end
+
 end
