@@ -12,7 +12,7 @@ class ExecuteSearch
      when :all
        sresult = sservice.textSearch_all(search_criteria.query)
      when :profiles
-       sresult = sservice.textSearch_profiles(search_criteria.query)
+       sresult = sservice.textSearch_profiles(search_criteria.query, search_criteria.order)
      when :notes
        sresult = sservice.textSearch_notes(search_criteria.query)
      when :questions

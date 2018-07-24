@@ -44,15 +44,16 @@ class SearchService
   end
 
   # Search profiles for matching text and package up as a DocResult
-  def textSearch_profiles(srchString)
+  # If order == "recentdesc", search for more recently updated profiles for matching text
+  def textSearch_profiles(srchString, order = nil)
     sresult = DocList.new
 
-    users = SrchScope.find_users(srchString, limit = 10) # don't return hundreds!!
-    # User profiles
-    users.each do |match|
-      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
-      sresult.addDoc(doc)
-    end
+    sresult =
+      if order == "recentdesc"
+        recentProfiles(srchString)
+      else
+        defaultProfiles(srchString)
+      end
 
     sresult
   end
@@ -170,7 +171,7 @@ class SearchService
   def recentPeople(srchString, tagName = nil)
     sresult = DocList.new
 
-    nodes = Node.all.order("changed DESC").limit(srchString).distinct
+    nodes = Node.all.order("changed DESC").limit(100).distinct
     users = []
     nodes.each do |node|
       if node.author.status != 0
@@ -181,7 +182,10 @@ class SearchService
         end
       end
     end
+
     users = users.uniq
+    count = 0
+
     users.each do |user|
       next unless user.has_power_tag("lat") && user.has_power_tag("lon")
       blurred = false
@@ -189,6 +193,46 @@ class SearchService
         blurred = user.get_value_of_power_tag("location")
       end
       doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
+      sresult.addDoc(doc)
+      count += 1
+      if count == srchString.to_i
+        break
+      end
+    end
+
+    sresult
+  end
+
+  def recentProfiles(srchString)
+    sresult = DocList.new
+
+    nodes = Node.all.order("changed DESC").limit(100).distinct
+    users = []
+    nodes.each do |node|
+      next unless node.author.status != 0
+      if node.author.name.downcase.include? srchString.downcase
+        users << node.author.user
+      end
+    end
+
+    users = users.uniq
+
+    # User profiles
+    users.each do |match|
+      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
+      sresult.addDoc(doc)
+    end
+
+    sresult
+  end
+
+  def defaultProfiles(srchString)
+    sresult = DocList.new
+
+    users = SrchScope.find_users(srchString, limit = nil)
+    # User profiles
+    users.each do |match|
+      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
       sresult.addDoc(doc)
     end
 

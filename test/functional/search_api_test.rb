@@ -99,6 +99,30 @@ class SearchApiTest < ActiveSupport::TestCase
 
    end
 
+   test 'search recent profiles functionality' do
+     get '/api/srch/profiles?srchString=Jeff&order=recentdesc'
+     assert last_response.ok?
+
+     # Expected search pattern
+     pattern = {
+       srchParams: {
+         srchString: 'Jeff',
+         seq: nil,
+       }.ignore_extra_keys!
+     }.ignore_extra_keys!
+
+     matcher = JsonExpressions::Matcher.new(pattern)
+
+     json = JSON.parse(last_response.body)
+
+     assert_equal "/profile/jeff", json['items'][0]['docUrl']
+     assert_equal "jeff",          json['items'][0]['docTitle']
+     assert_equal "user",          json['items'][0]['docType']
+
+     assert matcher =~ json
+
+   end
+
   test 'search notes functionality' do
       get '/api/srch/notes?srchString=Blog'
       assert last_response.ok?

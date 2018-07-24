@@ -15,6 +15,10 @@ module Srch
       optional :tagName, type: String, documentation: { example: 'awesome' }
     end
 
+    params :sortorder do
+      optional :order, type: String, documentation: { example: 'recentdesc' }
+    end
+
     params :commontypeahead do
       requires :srchString, type: String, documentation: { example: 'Spec' }
       optional :seq, type: Integer, documentation: { example: 995 }

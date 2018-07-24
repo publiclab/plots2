@@ -28,7 +28,7 @@ module Srch
                                            nickname: 'srchGetProfiles'
 
       params do
-        use :common
+        use :common, :sortorder
       end
       get :profiles do
         Search.execute(:profiles, params)
@@ -105,8 +105,9 @@ module Srch
       sresult = DocList.new
       search_query = params[:srchString]
       tag_query = params[:tagName]
+      order_query = params[:order]
       search_type = endpoint
-      search_criteria = SearchCriteria.new(search_query, tag_query)
+      search_criteria = SearchCriteria.new(search_query, tag_query, order_query)
 
       if search_criteria.valid?
         sresult = ExecuteSearch.new.by(search_type, search_criteria)

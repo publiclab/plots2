@@ -1,9 +1,10 @@
 class SearchCriteria
-  attr_reader :query, :tag
+  attr_reader :query, :tag, :order
 
-  def initialize(query, tag = nil)
+  def initialize(query, tag = nil, order = nil)
     @query = query
     @tag = tag
+    @order = order
   end
 
   def valid?
