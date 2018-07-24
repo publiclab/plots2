@@ -457,7 +457,7 @@ class TagControllerTest < ActionController::TestCase
     assert_equal 'Blog post', notes.last.title
     assert_equal ['spectrometry'], notes.last.tags.collect(&:name)
     assert_not notes.last.has_tag_without_aliasing('spectrometer')
-    assert       notes.last.has_tag_without_aliasing('spectrometry')
+    assert notes.last.has_tag_without_aliasing('spectrometry')
   end
 
   test 'does not show things tagged with parent tag' do
@@ -580,11 +580,19 @@ class TagControllerTest < ActionController::TestCase
     assert_equal true, assigns(:nodes).empty?
   end
 
+  test "do not notify if tag created on unpublished node" do
+    node = nodes(:first_timer_note)
+    tagname = 'unpublished-note-tag'
+    assert_difference 'ActionMailer::Base.deliveries.size',0 do
+      node.add_tag(tagname, users(:newcomer))
+    end
+    assert_not ActionMailer::Base.deliveries.collect(&:subject).include?("#{node.title} (#{tagname})")
+  end
+  
   test 'should render a text/pain when a tag is deleted through post request xhr' do
     user = UserSession.create(users(:jeff))
     node_tag = node_tags(:awesome)
     post :delete, params: { nid: node_tag.nid, tid: node_tag.tid, uid: node_tag.uid}, xhr: true
     assert_equal "#{node_tag.tid}", @response.body
   end
-
 end
