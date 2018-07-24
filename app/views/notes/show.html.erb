@@ -108,9 +108,6 @@
 
     <%= render :partial => "home/social" %>
 
-    <hr />
-
-    <%= render :partial => "tag/tagging" %>
     <div>
       <%= render :partial => "notes/comments" %>
     </div>
@@ -118,4 +115,4 @@
 
 </div><!--/span-->
 
-<%= render :partial => "sidebar/related" %>
+<%= render :partial => "sidebar/related", :locals => {:include_tagging => true} %>
