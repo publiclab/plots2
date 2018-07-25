@@ -202,7 +202,7 @@ class SearchService
     nodes = Node.all.order("changed DESC").limit(100).distinct
     users = []
     nodes.each do |node|
-      next unless (node.author.status != 0) and (node.author.name.downcase.include? srchString.downcase)
+      next unless (node.author.status != 0) && (node.author.name.downcase.include? srchString.downcase)
       users << node.author.user
     end
 
@@ -219,8 +219,8 @@ class SearchService
       if node.author.status != 0
         if tagName.blank?
           users << node.author.user
-        else
-          users << node.author.user if node.author.user.has_tag(tagName)
+        elsif node.author.user.has_tag(tagName)
+          users << node.author.user
         end
       end
     end
