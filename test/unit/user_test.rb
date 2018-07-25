@@ -40,6 +40,10 @@ class UserTest < ActiveSupport::TestCase
       users = User.search('really interesting')
       assert_not_nil users
       assert users.length > 0
+      users = User.search_profiles('unmoderated')
+      assert_not_nil users
+      assert users.length > 0
+      # TODO: should add a test to confirm this is not searching bios
     end
   end
 
