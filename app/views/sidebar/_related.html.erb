@@ -43,7 +43,8 @@
   <% if @node && @node.has_power_tag('response') %>
     <%= render partial: 'sidebar/notes', locals: { notes: @node.responses, title: I18n.t('sidebar._related.responses_to_note'), node: @node } %>
   <% end %>
-
+<%
+=begin 
   <% if params[:action] != "contributors" %>
     <% if @notes && @notes.length > 0 %>
     <h4><%= t('sidebar._related.recent_topic_contributors') %></h4>
@@ -82,7 +83,11 @@
   <% if params[:controller] != "tag" && params[:controller] != "search" %>
     <%= render partial: 'sidebar/notes', locals: { notes: @notes, title: I18n.t('sidebar._related.related_research_notes'), node: @node } %>
   <% end %>
+  
+<% end %>
 
+<!--ibia-->
+=end %>
   <% if @maps && @maps.length > 0 && params[:controller] != "search" %>
 
     <br />
@@ -94,12 +99,12 @@
     <% end %>
 
     <br style="clear:both;" />
-
-
+<%
+=begin  
     <% if params[:controller] != "tag" && params[:controller] != "search" %>
       <%= render partial: 'sidebar/notes', locals: { notes: @maps, title: I18n.t('sidebar._related.related_maps'), node: @node } %>
     <% end %>
-
+=end %>
   <% end %>
 
   <hr style="margin-bottom:6px;" />

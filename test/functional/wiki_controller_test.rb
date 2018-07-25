@@ -432,11 +432,21 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should show the wiki post page if wiki page doesn't exist" do
-    UserSession.create(users(:jeff))
-    get :show, params: { id: 'A-new-wiki-page' }
-    assert_response :success
-    assert_template 'wiki/edit'
+  #test "should show the wiki post page if wiki page doesn't exist" do
+    #UserSession.create(users(:jeff))
+    #get :show, params: { id: 'A-new-wiki-page' }
+    #assert_response :success
+    #assert_template 'wiki/edit'
+  #end
+  test 'redirect normal user to tagged page' do
+    wiki = nodes(:wiki_page)
+    slug = wiki.path.gsub('/wiki/', '')
+    blog = nodes(:blog)
+    wiki.add_tag("redirect:#{blog.nid}", users(:bob))
+    assert_equal wiki.power_tag('redirect'), blog.nid.to_s
+
+    get :show, params: { id: slug }
+    assert_redirected_to blog.path
   end
 
   test 'replacing content in a node with replace action' do
