@@ -130,7 +130,7 @@ class ApplicationController < ActionController::Base
 
   def alert_and_redirect_moderated
     if @node.author.status == 0 && !(current_user && (current_user.role == 'admin' || current_user.role == 'moderator'))
-      flash.now[:error] = I18n.t('application_controller.author_has_been_banned')
+      flash[:error] = I18n.t('application_controller.author_has_been_banned')
       redirect_to '/'
     elsif @node.status == 4 && (current_user && (current_user.role == 'admin' || current_user.role == 'moderator'))
       flash.now[:warning] = "First-time poster <a href='/profile/#{@node.author.name}'>#{@node.author.name}</a> submitted this #{time_ago_in_words(@node.created_at)} ago and it has not yet been approved by a moderator. <a class='btn btn-default btn-sm' href='/moderate/publish/#{@node.id}'>Approve</a> <a class='btn btn-default btn-sm' href='/moderate/spam/#{@node.id}'>Spam</a>"
