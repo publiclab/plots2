@@ -44,7 +44,7 @@ class SearchService
   end
 
   # Search profiles for matching text and package up as a DocResult
-  # If order == "recentdesc", search for more recently updated profiles for matching text.
+  # If order == "recentdesc", search for more recently updated profiles for matching name.
   # Otherwise, show profiles without any ordering
   def textSearch_profiles(srchString, order = nil)
     sresult = DocList.new
