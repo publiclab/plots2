@@ -215,14 +215,10 @@ class SearchService
   def getRecentProfilesTag(tagName = nil)
     nodes = Node.all.order("changed DESC").limit(100).distinct
     users = []
+
     nodes.each do |node|
-      if node.author.status != 0
-        if tagName.blank?
-          users << node.author.user
-        elsif node.author.user.has_tag(tagName)
-          users << node.author.user
-        end
-      end
+      next unless node.author.status != 0 && ((tagName && node.author.user.has_tag(tagName)) || tagName.nil?)
+      users << node.author.user
     end
 
     users = users.uniq
