@@ -10,9 +10,9 @@ class ExecuteSearch
     sresult = DocList.new
     case type
      when :all
-       sresult = sservice.textSearch_all(search_criteria.query)
+       sresult = sservice.textSearch_all(search_criteria)
      when :profiles
-       sresult = sservice.textSearch_profiles(search_criteria.query, search_criteria.order)
+       sresult = sservice.textSearch_profiles(search_criteria)
      when :notes
        sresult = sservice.textSearch_notes(search_criteria.query)
      when :questions

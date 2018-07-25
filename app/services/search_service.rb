@@ -11,52 +11,61 @@ class SearchService
 
   # Run a search in any of the associated systems for references that contain the search string
   # and package up as a DocResult
-  def textSearch_all(srchString)
+  def textSearch_all(search_criteria)
     sresult = DocList.new
 
     # notes
-    noteList = textSearch_notes(srchString)
+    noteList = textSearch_notes(search_criteria.query)
     sresult.addAll(noteList.items)
 
     # Node search
     Node.limit(5)
       .order('nid DESC')
-      .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + srchString + '%')
+      .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + search_criteria.query + '%')
       .select('title,type,nid,path').each do |match|
       doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
       sresult.addDoc(doc)
     end
     # User profiles
-    userList = textSearch_profiles(srchString)
+    userList = textSearch_profiles(search_criteria)
     sresult.addAll(userList.items)
 
     # Tags
-    tagList = textSearch_tags(srchString)
+    tagList = textSearch_tags(search_criteria.query)
     sresult.addAll(tagList.items)
     # maps
-    mapList = textSearch_maps(srchString)
+    mapList = textSearch_maps(search_criteria.query)
     sresult.addAll(mapList.items)
     # questions
-    qList = textSearch_questions(srchString)
+    qList = textSearch_questions(search_criteria.query)
     sresult.addAll(qList.items)
 
     sresult
   end
 
-  # Search profiles for matching text and package up as a DocResult
-  # If order == "recentdesc", search for more recently updated profiles for matching name.
-  # Otherwise, show profiles without any ordering
-  def textSearch_profiles(srchString, order = nil)
-    sresult = DocList.new
+  # Search profiles for matching text with optional order_by=recent param and
+  # sorted direction DESC by default
+  # then the list is packaged up as a DocResult
 
-    users =
-      if order == "recentdesc"
-        getRecentProfiles(srchString)
+  # If no sort_by value present, then it returns a list of profiles ordered by id DESC
+  # a recent activity may be a node creation or a node revision
+  def textSearch_profiles(search_criteria)
+    user_scope = SrchScope.find_users(search_criteria.query, limit = nil)
+                          .reorder('')
+
+    user_scope =
+      if search_criteria.order_by == "recent"
+        user_scope.left_outer_joins(:revisions)
+                  .order("node_revisions.timestamp #{search_criteria.sort_direction}")
+                  .distinct # do we need unique/distinct on user id ?
+
       else
-        SrchScope.find_users(srchString, limit = nil)
+        user_scope.order(id: :desc) # order by what when order_by is not present? id? username?
       end
 
-    # User profiles
+    users = user_scope.limit(10) # verify limit?
+
+    sresult = DocList.new
     users.each do |match|
       doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
       sresult.addDoc(doc)
@@ -175,11 +184,21 @@ class SearchService
 
   # GET X number of latest people/contributors and package up as a DocResult
   # X = srchString
-  def recentPeople(srchString, tagName = nil)
+  def recentPeople(_srchString, tagName = nil)
     sresult = DocList.new
-    users = getRecentProfilesTag(tagName)
-    count = 0
 
+    nodes = Node.all.order("changed DESC").limit(100).distinct
+    users = []
+    nodes.each do |node|
+      if node.author.status != 0
+        if tagName.blank?
+          users << node.author.user
+        else
+          users << node.author.user if node.author.user.has_tag(tagName)
+        end
+      end
+    end
+    users = users.uniq
     users.each do |user|
       next unless user.has_power_tag("lat") && user.has_power_tag("lon")
       blurred = false
@@ -188,39 +207,8 @@ class SearchService
       end
       doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
       sresult.addDoc(doc)
-      count += 1
-      if count == srchString.to_i then break end
     end
 
     sresult
-  end
-
-  # Get users with matching name ordering by most recent activity
-  def getRecentProfiles(srchString)
-    sresult = DocList.new
-
-    nodes = Node.all.order("changed DESC").limit(100).distinct
-    users = []
-    nodes.each do |node|
-      next unless (node.author.status != 0) && (node.author.name.downcase.include? srchString.downcase)
-      users << node.author.user
-    end
-
-    users = users.uniq
-  end
-
-  # If a tagName is provided,
-  # method returns users with the specific tag ordering by most recent activity.
-  # Otherwise, it returns users with most recent activity.
-  def getRecentProfilesTag(tagName = nil)
-    nodes = Node.all.order("changed DESC").limit(100).distinct
-    users = []
-
-    nodes.each do |node|
-      next unless node.author.status != 0 && ((tagName && node.author.user.has_tag(tagName)) || tagName.nil?)
-      users << node.author.user
-    end
-
-    users = users.uniq
   end
 end

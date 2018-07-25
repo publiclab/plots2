@@ -15,8 +15,12 @@ module Srch
       optional :tagName, type: String, documentation: { example: 'awesome' }
     end
 
-    params :sortorder do
-      optional :order, type: String, documentation: { example: 'recentdesc' }
+    params :ordering do
+      optional :order_direction, type: String, documentation: { example: 'desc' }
+    end
+
+    params :sorting do
+      optional :sort_by, type: String, documentation: { example: 'recent' }
     end
 
     params :commontypeahead do

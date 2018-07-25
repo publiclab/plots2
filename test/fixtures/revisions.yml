@@ -269,7 +269,7 @@ checkbox_two:
   body: |+
     # Heading 1
     List of things
-    * [x] 
+    * [x]
 
 email_body:
   nid: 22
@@ -277,3 +277,24 @@ email_body:
   title: "welcome-email-body"
   body: Welcome to Public Lab
   timestamp: <%= (Time.now - 1.week).to_i %>
+
+post_test1:
+  nid: 23
+  uid: 15
+  title: Post test review 1
+  body: Post test review 1
+  timestamp: <%= DateTime.new(2018,8,1).to_i %>
+
+post_test2:
+  nid: 24
+  uid: 16
+  title: Post test review 2
+  body: Post test review 2
+  timestamp: <%= DateTime.new(2018,8,8).to_i %>
+
+post_test3:
+  nid: 25
+  uid: 17
+  title: Post test review 2
+  body: Post test review 2
+  timestamp: <%= DateTime.new(2018,8,15).to_i %>

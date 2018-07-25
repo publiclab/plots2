@@ -258,3 +258,39 @@ welcome_feature:
   status: 1
   type: "feature"
   cached_likes: 0
+
+post_test1:
+  nid: 23
+  uid: 15
+  title: "Post Test 1"
+  path: "/notes/user1/<%= DateTime.new(2018,8,1).strftime("%m-%d-%Y") %>/post-test1"
+  created: <%= DateTime.new(2018,8,1).to_i %>
+  changed: <%= DateTime.new(2018,8,1).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: user1-<%= DateTime.new(2018,8,1).strftime("%m-%d-%Y") %>-post-test1
+
+post_test2:
+  nid: 24
+  uid: 16
+  title: "Post Test 2"
+  path: "/notes/user2/<%= DateTime.new(2018,8,8).strftime("%m-%d-%Y") %>/post-test2"
+  created: <%= DateTime.new(2018,8,8).to_i %>
+  changed: <%= DateTime.new(2018,8,8).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: user2-<%= DateTime.new(2018,8,8).strftime("%m-%d-%Y") %>-post-test2
+
+post_test3:
+  nid: 25
+  uid: 17
+  title: "Post Test 3"
+  path: "/notes/user3/<%= DateTime.new(2018,8,15).strftime("%m-%d-%Y") %>/post-test3"
+  created: <%= DateTime.new(2018,8,15).to_i %>
+  changed: <%= DateTime.new(2018,8,15).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: user3-<%= DateTime.new(2018,8,15).strftime("%m-%d-%Y") %>-post-test3

@@ -3,12 +3,12 @@ class SrchScope
   def self.find_users(input, limit)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       User.search(input)
-          .order('id DESC')
-          .where(status: 1)
+          .order('id DESC') # do we need this line?
+          .where('rusers.status = ?', 1)
           .limit(limit)
     else
       User.order('id DESC')
-          .where('username LIKE ? AND status = 1', '%' + input + '%')
+          .where('username LIKE ? AND rusers.status = 1', '%' + input + '%')
           .limit(limit)
     end
   end
