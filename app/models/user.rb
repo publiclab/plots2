@@ -45,6 +45,10 @@ class User < ActiveRecord::Base
     User.where('MATCH(username, bio) AGAINST(?)', query)
   end
 
+  def self.search_usernames(query)
+    User.where('MATCH(username) AGAINST(?)', query)
+  end
+
   def new_contributor
     @uid = id
     return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
