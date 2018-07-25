@@ -2,7 +2,8 @@
 class SrchScope
   def self.find_users(input, limit)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      User.search(input)
+      User.select('id, status, username')
+          .search_usernames(input) # full-text mysql search
           .order('id DESC')
           .where(status: 1)
           .limit(limit)
