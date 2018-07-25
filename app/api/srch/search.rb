@@ -47,6 +47,19 @@ module Srch
         Search.execute(:notes, params)
       end
 
+      # Request URL should be /api/srch/author?srchString=QRY[&tagName=awesome&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Basic implementation from classic plots2 SearchController
+      desc 'Perform a search of author notes', hidden: false,
+                                                 is_array: false,
+                                                 nickname: 'srchGetAuthor'
+
+      params do
+        use :common, :additional
+      end
+      get :author do
+        Search.execute(:author, params)
+      end
+
       # Request URL should be /api/srch/questions?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of questions tables', hidden: false,

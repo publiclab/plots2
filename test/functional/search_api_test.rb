@@ -122,6 +122,55 @@ class SearchApiTest < ActiveSupport::TestCase
 
     end
 
+    test 'returns author published notes' do
+      get '/api/srch/author?srchString=jeff'
+      assert last_response.ok?
+
+      # Expected search pattern
+      pattern = {
+        srchParams: {
+          srchString: 'jeff',
+          seq: nil,
+        }.ignore_extra_keys!
+      }.ignore_extra_keys!
+
+      matcher = JsonExpressions::Matcher.new(pattern)
+
+      json = JSON.parse(last_response.body)
+
+      assert_equal 4,                 json['items'].length
+      assert_equal "note",            json['items'][0]['docType']
+      assert_equal "note",            json['items'][1]['docType']
+      assert_equal "note",            json['items'][2]['docType']
+      assert_equal "note",            json['items'][3]['docType']
+
+      assert matcher =~ json
+    end
+
+    test 'returns author published notes with a given tagName' do
+      get '/api/srch/author?srchString=jeff&tagName=spectrometer'
+      assert last_response.ok?
+
+      # Expected search pattern
+      pattern = {
+        srchParams: {
+          srchString: 'jeff',
+          seq: nil,
+        }.ignore_extra_keys!
+      }.ignore_extra_keys!
+
+      matcher = JsonExpressions::Matcher.new(pattern)
+
+      json = JSON.parse(last_response.body)
+
+      assert_equal 3,                 json['items'].length
+      assert_equal "note",            json['items'][0]['docType']
+      assert_equal "note",            json['items'][1]['docType']
+      assert_equal "note",            json['items'][2]['docType']
+
+      assert matcher =~ json
+    end
+
     test 'search questions functionality' do
        get '/api/srch/questions?srchString=Question'
        assert last_response.ok?
