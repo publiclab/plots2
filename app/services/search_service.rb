@@ -44,16 +44,23 @@ class SearchService
   end
 
   # Search profiles for matching text and package up as a DocResult
-  # If order == "recentdesc", search for more recently updated profiles for matching text
+  # If order == "recentdesc", search for more recently updated profiles for matching text.
+  # Otherwise, show profiles without any ordering
   def textSearch_profiles(srchString, order = nil)
     sresult = DocList.new
 
-    sresult =
+    users =
       if order == "recentdesc"
-        recentProfiles(srchString)
+        getRecentProfiles(srchString)
       else
-        defaultProfiles(srchString)
+        SrchScope.find_users(srchString, limit = nil)
       end
+
+    # User profiles
+    users.each do |match|
+      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
+      sresult.addDoc(doc)
+    end
 
     sresult
   end
@@ -170,7 +177,44 @@ class SearchService
   # X = srchString
   def recentPeople(srchString, tagName = nil)
     sresult = DocList.new
+    users = getRecentProfilesTag(tagName)
+    count = 0
 
+    users.each do |user|
+      next unless user.has_power_tag("lat") && user.has_power_tag("lon")
+      blurred = false
+      if user.has_power_tag("location")
+        blurred = user.get_value_of_power_tag("location")
+      end
+      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
+      sresult.addDoc(doc)
+      count += 1
+      if count == srchString.to_i then break end
+    end
+
+    sresult
+  end
+
+  # Get users with matching name ordering by most recent activity
+  def getRecentProfiles(srchString)
+    sresult = DocList.new
+
+    nodes = Node.all.order("changed DESC").limit(100).distinct
+    users = []
+    nodes.each do |node|
+      next unless node.author.status != 0
+      if node.author.name.downcase.include? srchString.downcase
+        users << node.author.user
+      end
+    end
+
+    users = users.uniq
+  end
+
+  # If a tagName is provided,
+  # method returns users with the specific tag ordering by most recent activity.
+  # Otherwise, it returns users with most recent activity.
+  def getRecentProfilesTag(tagName = nil)
     nodes = Node.all.order("changed DESC").limit(100).distinct
     users = []
     nodes.each do |node|
@@ -184,58 +228,5 @@ class SearchService
     end
 
     users = users.uniq
-    count = 0
-
-    users.each do |user|
-      next unless user.has_power_tag("lat") && user.has_power_tag("lon")
-      blurred = false
-      if user.has_power_tag("location")
-        blurred = user.get_value_of_power_tag("location")
-      end
-      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
-      sresult.addDoc(doc)
-      count += 1
-      if count == srchString.to_i
-        break
-      end
-    end
-
-    sresult
-  end
-
-  def recentProfiles(srchString)
-    sresult = DocList.new
-
-    nodes = Node.all.order("changed DESC").limit(100).distinct
-    users = []
-    nodes.each do |node|
-      next unless node.author.status != 0
-      if node.author.name.downcase.include? srchString.downcase
-        users << node.author.user
-      end
-    end
-
-    users = users.uniq
-
-    # User profiles
-    users.each do |match|
-      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
-      sresult.addDoc(doc)
-    end
-
-    sresult
-  end
-
-  def defaultProfiles(srchString)
-    sresult = DocList.new
-
-    users = SrchScope.find_users(srchString, limit = nil)
-    # User profiles
-    users.each do |match|
-      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
-      sresult.addDoc(doc)
-    end
-
-    sresult
   end
 end

@@ -21,7 +21,7 @@ module Srch
         Search.execute(:all, params)
       end
 
-      # Request URL should be /api/srch/profiles?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/profiles?srchString=QRY[&order=RECENTDESC&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of profiles', hidden: false,
                                            is_array: false,
