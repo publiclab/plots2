@@ -202,10 +202,8 @@ class SearchService
     nodes = Node.all.order("changed DESC").limit(100).distinct
     users = []
     nodes.each do |node|
-      next unless node.author.status != 0
-      if node.author.name.downcase.include? srchString.downcase
-        users << node.author.user
-      end
+      next unless (node.author.status != 0) and (node.author.name.downcase.include? srchString.downcase)
+      users << node.author.user
     end
 
     users = users.uniq
