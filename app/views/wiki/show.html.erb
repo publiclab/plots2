@@ -88,9 +88,9 @@
   <%= render :partial => "sidebar/none" %>
 <% else %>
   <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
-    <%= render :partial => "sidebar/featured", :locals => {:include_tagging => true} %>
+    <%= render :partial => "sidebar/featured" %>
   <% else %>
-    <%= render :partial => "sidebar/related", :locals => {:include_tagging => true} %>
+    <%= render :partial => "sidebar/related" %>
   <% end %>
 <% end %>
 
