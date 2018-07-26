@@ -212,10 +212,11 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'create a user with omniauth if email prefix does exist in db' do
-    auth = {"uid" => "98740858591", "info" => { "email" => "jeff@gmail.com"}}
+    auth = {"uid" => "98740858591", "info" => { "email" => "jeff@gmail.com"},"provider"=>"facebook"}
     jeffrey = User.create_with_omniauth(auth)
     assert_not_nil jeffrey
     assert_equal jeffrey.email, "jeff@gmail.com"
+    assert_equal jeffrey.password_checker, 1
     #as the username as "jeff" exists, hence username = "jeff" + 2 digit alphanumeric code will be created
     assert_not_equal jeffrey.username, "jeff"
   end
