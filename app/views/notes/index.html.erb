@@ -1,10 +1,3 @@
-<% if params[:controller] == "tag" || params[:controller] == "search" %>
-  <%= render :partial => "sidebar/related" %>
-<% elsif params[:action] == "author" || params[:action] == "author_topic" %>
-  <%= render :partial => "sidebar/author" %>
-<% else %>
-  <%= render :partial => "sidebar/user" %>
-<% end %>
 <div class="col-md-9">
   <% if params[:controller] == "search" %>
     <h3><%= raw t('notes.index.search_results_for', :params => params[:id]) %> <small>(<a href="/search/advanced/<%= params[:id] %>"><%= t('notes.index.advanced_search') %></a>)</h3>
@@ -44,3 +37,11 @@
   <hr />
   
 </div>
+
+<% if params[:controller] == "tag" || params[:controller] == "search" %>
+  <%= render :partial => "sidebar/related" %>
+<% elsif params[:action] == "author" || params[:action] == "author_topic" %>
+  <%= render :partial => "sidebar/author" %>
+<% else %>
+  <%= render :partial => "sidebar/user" %>
+<% end %>

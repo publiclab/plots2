@@ -26,6 +26,9 @@
 
   </div>
 
-  <%= render partial: 'tag/tagging', locals: { sidebar_tagging: true } %>
+  <div id=sidebar-tags>
+    <%= render partial: 'tag/tagging' %>
+  </div>
+  
 </div>
 <%= javascript_include_tag 'sidebar' %>
