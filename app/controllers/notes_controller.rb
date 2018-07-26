@@ -100,7 +100,7 @@ class NotesController < ApplicationController
     if node.main_image
       redirect_to URI.parse(node.main_image.path(params[:size])).path
     else
-      redirect_to 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+      redirect_to '/logo.png'
     end
   end
 
