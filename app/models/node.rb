@@ -193,7 +193,7 @@ class Node < ActiveRecord::Base
 
   def notify
     if status == 4
-      AdminMailer.notify_node_moderators(self)
+      AdminMailer.notify_node_moderators(self).deliver_now
     else
       SubscriptionMailer.notify_node_creation(self).deliver_now
     end
