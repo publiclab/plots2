@@ -152,7 +152,7 @@
 
   <h3 style="margin-top:0;"><%= @user.name %> <%= @user.new_contributor %>
     <small>
-      <%= @user.node_count %> <%= raw t('users.profile.notes_and_edits', :url1 => "/notes/author/"+@user.name) %>
+      <%= @user.note_count %><a href='/notes/author/'+@user.name> research notes</a> and <%= @user.revision_count %> wiki edits
       <% if current_user && current_user.role == "admin" %> | <%= @user.email %><% end %>
       <% if @user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.moderator') %><% end %>
       <% if @user.role == "admin" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.admin') %><% end %>

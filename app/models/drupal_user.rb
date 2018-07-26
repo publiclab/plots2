@@ -141,6 +141,10 @@ class DrupalUser < ApplicationRecord
     Node.where(status: 1, uid: uid, type: 'note').count
   end
 
+  def revision_count
+    Revision.where(uid: uid).count
+  end
+
   def node_count
     Node.where(status: 1, uid: uid).count + Revision.where(uid: uid).count
   end
