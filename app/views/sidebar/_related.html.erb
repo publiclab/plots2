@@ -1,5 +1,3 @@
-<%include_tagging = local_assigns.fetch :include_tagging, false #not all things using this sidebar uses tagging%>
-
 <div class="col-md-3 hidden-print">
 
   <a style="margin-top:-16px;margin-bottom:0;" class="btn btn-mini btn-block btn-link visible-xs visible-sm" href="javascript:void()" onClick="toggle_sidebar()"><i class="fa fa-chevron-down"></i></a>
@@ -46,45 +44,6 @@
     <%= render partial: 'sidebar/notes', locals: { notes: @node.responses, title: I18n.t('sidebar._related.responses_to_note'), node: @node } %>
   <% end %>
 
-  <% if params[:action] != "contributors" %>
-    <% if @notes && @notes.length > 0 %>
-    <h4><%= t('sidebar._related.recent_topic_contributors') %></h4>
-    <% @notes.collect(&:author).collect(&:name).uniq.each do |author| %>
-      <p>
-        <i class="fa fa-user"></i>
-        <a href="/profile/<%= author %>"><%= author %></a>
-      </p>
-    <% end %>
-
-    <% if params[:controller] == "tag" || (@node && @node.type == "page") %><a href="/contributors/<%= params[:id] %>"><i class="fa fa-list"></i> <%= t('sidebar._related.contributors_for_this_topic') %> &raquo;</a><% end %>
-    <% end %>
-
-    <% if @users && @users.length > 0 %>
-    <h4><%= t('sidebar._related.contributors') %></h4>
-      <% @users.each do |author| %>
-      <p>
-        <i class="fa fa-user"></i>
-        <a href="/profile/<%= author.name %>"><%= author.name %></a>
-      </p>
-      <% end %>
-      <p><a href="/contributors/<%= params[:id] %>"><i class="fa fa-list"></i> <%= t('sidebar._related.contributors_for_this_topic') %> &raquo;</a></p>
-    <% end %>
-  <% end %>
-
-
-  <% if (params[:controller] != "tag") && @node && !@node.has_tag('tabbed:wikis') %>
-    <% if params[:controller] == "notes" && params[:action] == "index" %>
-      <%= render partial: 'sidebar/wikis', locals: { wikis: @wikis, title: I18n.t('sidebar._related.recent_wiki_edits'), node: @node } %>
-    <% else %>
-      <%= render partial: 'sidebar/wikis', locals: { wikis: @wikis, title: I18n.t('sidebar._related.recent_wiki_pages'), node: @node } %>
-    <% end %>
-  <% end %>
-
-
-  <% if params[:controller] != "tag" && params[:controller] != "search" %>
-    <%= render partial: 'sidebar/notes', locals: { notes: @notes, title: I18n.t('sidebar._related.related_research_notes'), node: @node } %>
-  <% end %>
-
   <% if @maps && @maps.length > 0 && params[:controller] != "search" %>
 
     <br />
@@ -97,17 +56,15 @@
 
     <br style="clear:both;" />
 
-
-    <% if params[:controller] != "tag" && params[:controller] != "search" %>
-      <%= render partial: 'sidebar/notes', locals: { notes: @maps, title: I18n.t('sidebar._related.related_maps'), node: @node } %>
-    <% end %>
-
-  <% end %>
-
-  <% if include_tagging %>
-    <%= render partial: 'tag/tagging', locals: { sidebar_tagging: true } %>
   <% end %>
 
   </div>
+
+  <% if @node %>
+    <div id=sidebar-tags>
+      <%= render partial: 'tag/tagging' %>
+    </div>
+  <% end %>
+  
 </div>
 <%= javascript_include_tag 'sidebar' %>
