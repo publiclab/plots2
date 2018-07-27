@@ -54,9 +54,10 @@ class UserTagTest < ActiveSupport::TestCase
   test 'Create a usertag from twitter auth and also store hash function' do
     twitter_user_tag = user_tags(:twitter3)
     auth = twitter_user_tag.data
-    uid = auth["uid"]
+    uid = twitter_user_tag.uid
     identity1 = UserTag.create_with_omniauth(auth, uid)
-    assert_equal identity1.uid.to_s, auth["uid"]
+    assert_equal identity1.uid, twitter_user_tag.uid
+    assert_equal identity1.data["uid"], auth["uid"]
     assert_equal identity1.data["info"]["nickname"], "itsmenamangupta"
   end
 
