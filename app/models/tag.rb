@@ -303,14 +303,16 @@ class Tag < ApplicationRecord
 
   def self.related(tag_name)
     Rails.cache.fetch('related-tags/' + tag_name, expires_in: 1.weeks) do
-      nids = NodeTag.joins(:tag).where(Tag.table_name => {name: tag_name}).select(:nid)
+       nids = NodeTag.joins(:tag)
+                     .where(Tag.table_name => { name: tag_name })
+                     .select(:nid)
 
-      Tag.joins(:node_tag)
-         .where(NodeTag.table_name => {nid: nids})
+       Tag.joins(:node_tag)
+         .where(NodeTag.table_name => { nid: nids })
          .where.not(name: tag_name)
          .group(:tid)
          .order('COUNT(term_data.tid) DESC')
          .limit(5)
-     end
+    end
   end
 end
