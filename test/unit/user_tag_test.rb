@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'byebug'
 
 class UserTagTest < ActiveSupport::TestCase
   test 'should create UserTag' do
@@ -49,6 +50,15 @@ class UserTagTest < ActiveSupport::TestCase
     identity2 = UserTag.find_with_omniauth(auth)
     assert_not_nil identity1
     assert_equal(identity1, identity2)
+  end
+
+  test 'Create a usertag from twitter auth and also store hash function' do
+    twitter_user_tag = user_tags(:twitter3)
+    auth = twitter_user_tag.data
+    uid = auth["uid"]
+    identity1 = UserTag.create_with_omniauth(auth, uid)
+    assert_equal identity1.uid.to_s, auth["uid"]
+    assert_equal identity1.data["info"]["nickname"], "itsmenamangupta"
   end
 
   test 'Create a usertag from facebook auth' do
