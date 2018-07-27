@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'byebug'
 
 class UserTagTest < ActiveSupport::TestCase
   test 'should create UserTag' do
