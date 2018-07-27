@@ -142,6 +142,7 @@ class TagController < ApplicationController
     @tag = Tag.find_by(name: params[:id])
     @note_count = Tag.tagged_node_count(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
+    @related_tags = Tag.related(@tagnames[0])
 
     respond_with(nodes) do |format|
       format.html { render 'tag/show' }

@@ -1,0 +1,8 @@
+<h2>Related Tags</h2>
+<ul class= "list-inline">
+  <% tags.each do |tag| %>
+      <li><span id="tag_<%= tag.tid %>" class="label label-default">
+        <%= tag.name %>
+      </span></li>
+  <% end %>
+</ul>
