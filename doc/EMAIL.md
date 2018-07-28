@@ -20,11 +20,11 @@ For each setting, there is an associated tag with it. Below is the table showing
 We consider absence of tag as true and presence of tag as false for setting, so whenever a user turn-off a setting, corressponding user-tag is generated and turning setting on again will delete the tag.  
 So, while notifying a user UserTag is checked in different files and user is notified depending on the presence or absence of the tag.
 
-| Email Settings  | User Tag |
-| ------------- | ------------- |
-| Notification by email for comments on your posts  | notify-comment-direct:false |
-| Notification by email for likes on your posts  | notify-likes-direct:false |
-| Notification by email for comments on all posts you've commented on | notify-comment-indirect:false |
+| Email Settings | Default | User tag to override default (for turning OFF) | File where tag is used |
+| ------------- | ------------- | ----------- | ----------- |
+| Notification by email for comments on your posts | ON | notify-comment-direct:false | [app/models/comment.rb](https://github.com/publiclab/plots2/blob/master/app/models/comment.rb#L135) |
+| Notification by email for likes on your posts | ON |notify-likes-direct:false | [app/models/node.rb](https://github.com/publiclab/plots2/blob/master/app/models/node.rb#L906) |
+| Notification by email for comments on all posts you've commented on | ON | notify-comment-indirect:false | [app/models/concerns/comments_shared.rb](https://github.com/publiclab/plots2/blob/master/app/models/concerns/comments_shared.rb#L24) |
 
 
 ### Digest Settings
