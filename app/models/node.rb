@@ -193,7 +193,7 @@ class Node < ActiveRecord::Base
 
   def notify
     if status == 4
-      AdminMailer.notify_node_moderators(self)
+      AdminMailer.notify_node_moderators(self).deliver_now
     else
       SubscriptionMailer.notify_node_creation(self).deliver_now
     end
@@ -607,6 +607,8 @@ class Node < ActiveRecord::Base
                     comment: 2,
                     type:    'note')
     node.status = 4 if author.first_time_poster
+    node.draft if params[:draft] == "true"
+
     if node.valid? # is this not triggering title uniqueness validation?
       saved = true
       revision = false
@@ -731,7 +733,7 @@ class Node < ActiveRecord::Base
                                  nid: id)
           if node_tag.save
             saved = true
-            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty? || status == 3
+            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty? || status == 3 || status == 4
           else
             saved = false
             tag.destroy
@@ -903,7 +905,7 @@ class Node < ActiveRecord::Base
                                  nid: nid).first_or_create
       like.liking = true
       node = Node.find(nid)
-      if node.type == 'note'
+      if node.type == 'note' && !UserTag.exists?(node.uid, 'notify-likes-direct:false')
         SubscriptionMailer.notify_note_liked(node, like.user).deliver_now
       end
       count = 1

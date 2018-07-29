@@ -1,8 +1,8 @@
 (Moved from https://github.com/publiclab/plots2/wiki/Testing)
 
-Run all basic rails tests with `rake test`. This is **no longer required for submitting pull requests** (see [Pull Requests](#pull-requests), below), and to confirm you have a working local environment.
+Run all basic rails tests with `rails test -d`. This is **no longer required for submitting pull requests** (see [Pull Requests](#pull-requests), below), and to confirm you have a working local environment.
 
-`rake test:all` runs **all** tests. This includes Jasmine client-side tests and Solr-dependent tests -- not recommended for everybody!
+`rake test:all` runs Jasmine client-side tests and coverage reporting.
 
 ## Pull Requests
 
@@ -28,20 +28,19 @@ Client-side tests (for JavaScript functions) are run using [Jasmine](https://jas
 
 ****
 
-If you get stuck on testing at any point, you can _open a pull request with your changes_ -- please add the prefix `[testing]` to the title -- which will then be automatically tested by our TravisCI service -- which runs **all tests** with `rake test:all`. If your additions are pretty basic, and you write tests against them, this may be sufficient without actually running the whole environment yourself!
-
+If you get stuck on testing at any point, you can _open a pull request with your changes_ -- please add the prefix `[testing]` to the title -- which will then be automatically tested by our TravisCI service -- which runs **all tests**. If your additions are pretty basic, and you write tests against them, this may be sufficient without actually running the whole environment yourself! 
 
 ## Running just one type of test
 
 If you want to run just unit tests, to save time, you can run:
 
-`rake test:units`
+`rails test test/unit`
 
 Likewise, for functional or integration tests:
 
-`rake test:functionals`
+`rails test test/functional`
 
-`rake test:integration`
+`rails test test/integration`
 
 
 ## Running just one test
@@ -50,11 +49,11 @@ Likewise, for functional or integration tests:
 
 To run one test file:
 
-`ruby -I test test/unit/some_file.rb`
+`rails test test/unit/some_file.rb`
 
 And to run just a single test within a file:
 
-`ruby -I test test/functional/some_file.rb --name=name_of_test`
+`rails test test/functional/some_file.rb:[line number of the test]`
 
 ### Testing mails in development environment
 

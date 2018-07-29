@@ -3,89 +3,14 @@
 # Though similar in operation to the TypeaheadService, the implementation is separate, in that the goal of the response
 # is to provide _detailed_ results at a deep level.  In effect, TypeaheadService provides pointers to
 # better searches, while SearchService provides deep and detailed information.
-# TODO: Refactor TypeaheadService and SearchService so that common functions come from a higher level class?
-
+#
+# See SrchScope class for more details about the reusable scope
+# that Search and Typeahead services use
 class SearchService
   def initialize; end
 
-  def users(params)
-    @users ||= find_users(params)
-  end
-
-  def tags(params)
-    @tags ||= find_tags(params)
-  end
-
-  def nodes(params)
-    @nodes ||= find_nodes(params)
-  end
-
-  def notes(params)
-    @notes ||= find_notes(params)
-  end
-
-  def maps(params)
-    @maps ||= find_maps(params)
-  end
-
-  def comments
-    @comments ||= find_comments(params)
-  end
-
-  def find_users(input, limit = 10)
-    User.limit(limit)
-      .order('id DESC')
-      .where(status: 1)
-      .where('username LIKE ?', '%' + input + '%')
-  end
-
-  def find_tags(input, limit = 5)
-    Tag.includes(:node)
-      .references(:node)
-      .where('node.status = 1')
-      .limit(limit)
-      .where('name LIKE ?', '%' + input + '%')
-  end
-
-  def find_comments(input, limit = 5)
-    Comment.limit(limit)
-      .order('nid DESC')
-      .where('status = 1 AND comment LIKE ?', '%' + input + '%')
-  end
-
-  def find_nodes(input, limit = 5)
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      nids = Node.search(input)
-        .group(:nid)
-        .includes(:node)
-        .references(:node)
-        .limit(limit)
-        .where("node.type": %w(note page), "node.status": 1)
-        .order('node.changed DESC')
-        .collect(&:nid)
-      Node.find nids
-    else
-      Node.limit(limit)
-        .group(:nid)
-        .where(type: %w(note page), status: 1)
-        .order(changed: :desc)
-        .where('title LIKE ?', '%' + input + '%')
-    end
-  end
-
-  def find_notes(input, limit = 5)
-    Node.limit(limit)
-      .order('nid DESC')
-      .where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
-  end
-
-  def find_maps(input, limit = 5)
-    Node.limit(limit)
-      .order('nid DESC')
-      .where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
-  end
-
   # Run a search in any of the associated systems for references that contain the search string
+  # and package up as a DocResult
   def textSearch_all(srchString)
     sresult = DocList.new
 
@@ -118,12 +43,13 @@ class SearchService
     sresult
   end
 
-  # Search profiles for matching text
+  # Search profiles for matching text and package up as a DocResult
   def textSearch_profiles(srchString)
     sresult = DocList.new
 
+    users = SrchScope.find_users(srchString, limit = 10) # don't return hundreds!!
     # User profiles
-    users(srchString).each do |match|
+    users.each do |match|
       doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
       sresult.addDoc(doc)
     end
@@ -131,12 +57,12 @@ class SearchService
     sresult
   end
 
-  # Search notes for matching strings
+  # Search notes for matching strings and package up as a DocResult
   def textSearch_notes(srchString)
     sresult = DocList.new
 
-    # notes
-    find_notes(srchString, 25).each do |match|
+    notes = SrchScope.find_notes(srchString, 25)
+    notes.each do |match|
       doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
       sresult.addDoc(doc)
     end
@@ -144,12 +70,13 @@ class SearchService
     sresult
   end
 
-  # Search maps for matching text
+  # Search maps for matching text and package up as a DocResult
   def textSearch_maps(srchString)
     sresult = DocList.new
 
-    # maps
-    maps(srchString).select('title,type,nid,path').each do |match|
+    maps = SrchScope.find_maps(srchString, 5)
+
+    maps.select('title,type,nid,path').each do |match|
       doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
       sresult.addDoc(doc)
     end
@@ -157,7 +84,7 @@ class SearchService
     sresult
   end
 
-  # Search documents with matching tag values
+  # Search documents with matching tag values and package up as a DocResult
   # The search string that is passed in is split into tokens, and the tag names are compared and
   # chained to the notes that are tagged with those values
   def textSearch_tags(srchString)
@@ -178,7 +105,7 @@ class SearchService
     sresult
   end
 
-  # Search question entries for matching text
+  # Search question entries for matching text and package up as a DocResult
   def textSearch_questions(srchString)
     sresult = DocList.new
 
@@ -199,6 +126,7 @@ class SearchService
   end
 
   # Search nearby nodes with respect to given latitude, longitute and tags
+  # and package up as a DocResult
   def tagNearbyNodes(srchString, tagName)
     sresult = DocList.new
 
@@ -237,7 +165,7 @@ class SearchService
     sresult
   end
 
-  # GET X number of latest people/contributors
+  # GET X number of latest people/contributors and package up as a DocResult
   # X = srchString
   def recentPeople(srchString, tagName = nil)
     sresult = DocList.new
