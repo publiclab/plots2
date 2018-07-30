@@ -47,11 +47,11 @@
       maxBoundsViscosity: 0.75
     }).on('load', onMapLoad).setView([<%= lat %>,<%= lon %>], 2);
    map<%= unique_id %>.options.minZoom = 2 ;
-   // var searchLayer<%= unique_id %> = L.layerGroup().addTo(map<%= unique_id %>);
+   // var searchLayer<= unique_id > = L.layerGroup().addTo(map< = unique_id >);
    //  // add the search bar to the map
-   // var controlSearch<%= unique_id %> = new L.Control.Search({
+   // var controlSearch< = unique_id > = new L.Control.Search({
    //    position:'topright',    // where do you want the search bar?
-   //    layer: searchLayer<%= unique_id %>,  // name of the layer
+   //    layer: searchLayer< = unique_id >,  // name of the layer
    //    initial: false,
    //    minLength: 1,
    //    textErr: 'Person not found' , 
@@ -59,10 +59,10 @@
    //    marker: false,
    //    textPlaceholder: 'search people' // placeholder while nothing is searched
    //  });
-   // map<%= unique_id %>.addControl(controlSearch<%= unique_id %>);
+   // map< = unique_id >.addControl(controlSearch< = unique_id >);
     /*
-    controlSearch<%= unique_id %>.on('search:collapsed', function(e) {
-    map<%= unique_id %>.setView([<%= lat %>,<%= lon %>], 2);
+    controlSearch< = unique_id %>.on('search:collapsed', function(e) {
+    map< = unique_id %>.setView([< = lat >,< = lon >], 2);
     })
     */
    function onMapLoad(e){
