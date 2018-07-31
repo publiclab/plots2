@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_19_165651) do
+ActiveRecord::Schema.define(version: 2018_07_31_170712) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -355,6 +355,7 @@ ActiveRecord::Schema.define(version: 2018_07_19_165651) do
     t.text     "bio",                limit: 2147483647
     t.string   "token"
     t.integer  "status",                                default: 0
+    t.integer "password_checker", default: 0
   end
 
   add_index "rusers", ["created_at"], name: "index_rusers_created_at", using: :btree
@@ -445,7 +446,6 @@ ActiveRecord::Schema.define(version: 2018_07_19_165651) do
     t.string  "timezone_name",    limit: 50,                                   default: "",  null: false
     t.decimal "lat",                                 precision: 20, scale: 10, default: 0.0
     t.decimal "lon",                                 precision: 20, scale: 10, default: 0.0
-    t.integer "password_checker",                                              default: 0
   end
 
   add_index "users", ["access"], name: "index_users_access", using: :btree
