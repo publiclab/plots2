@@ -57,7 +57,11 @@ Answers are similar to Comments, but are used in Question-type Notes, and may ea
 
 ## Users
 
-Our primary user type is User, an Authlogic model. We also maintain a legacy `DrupalUsers` type, but are in the process of deprecating it. Users and `DrupalUsers` both have `uid` fields, which are synced one-to-one, and to fully deprecate `DrupalUsers` we must migrate these fields over to User.
+Our primary user type is User. We also maintain a legacy `DrupalUsers` type, but are in the process of deprecating it. Users and `DrupalUsers` both have `uid` fields, which are synced one-to-one, and to fully deprecate `DrupalUsers` we must migrate these fields over to User.
+
+Users can login via email using the [Authlogic gem (a simple ruby authentication
+solution)](https://github.com/binarylogic/authlogic). Also, recently we have added the option to login via Twitter, Github, Facebook and Google using the
+[Omniauth gem](https://github.com/publiclab/plots2/blob/master/doc/Omniauth.md).
 
 Users each have a profile at `/profile/username`, which displays content stored in an associated `DrupalProfileValue` with `fid = 7`.
 
