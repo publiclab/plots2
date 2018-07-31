@@ -26,7 +26,6 @@ install:
   - netstat -ltpn
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
-  - docker-compose exec web bower install --allow-root
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger danger-junit; fi'
 
 script:
