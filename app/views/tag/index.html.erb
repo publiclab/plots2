@@ -23,7 +23,7 @@
     <tr>
       <th><a href = "<%= tags_path %>?sort=name&order=<%= @order_type %>"><%= t('tag.index.tag') %></a> <i class="fa fa-arrows-v"></i></th>
       <th><a href = "<%= tags_path %>?sort=uses&order=<%= @order_type %>"><%= t('tag.index.number_of_uses') %></a> <i class="fa fa-arrows-v"></i></th>
-      <th><%= t('tag.index.number_of_subscriptions')%></th>
+      <th><a href = "<%= tags_path %>?sort=followers&order=<%= @order_type %>"><%= t('tag.index.number_of_subscriptions')%></a> <i class="fa fa-arrows-v"></i></th>
       <% if current_user %>
         <th><a href = "<%= tags_path %>?sort=subscribers"><%= t('tag.index.subscriptions') %></a> <i class="fa fa-sort" aria-hidden="true"></i></th>
       <% end %>
