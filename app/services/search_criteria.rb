@@ -1,19 +1,19 @@
 class SearchCriteria
-  attr_reader :query, :tag, :order_by
+  attr_reader :query, :tag, :sort_by
 
-  def initialize(query, tag: nil, order_by: nil, sort_direction: "DESC")
+  def initialize(query, tag: nil, sort_by: nil, order_direction: "DESC")
     @query = query
     @tag = tag
-    @order_by = order_by
-    @sort_direction = sort_direction
+    @sort_by = sort_by
+    @order_direction = order_direction
   end
 
   def valid?
     !query.nil? && query != 0
   end
 
-  def sort_direction
-    sanitize_direction(@sort_direction)
+  def order_direction
+    sanitize_direction(@order_direction)
   end
 
   private

@@ -54,9 +54,9 @@ class SearchService
                           .reorder('')
 
     user_scope =
-      if search_criteria.order_by == "recent"
-        user_scope.left_outer_joins(:revisions)
-                  .order("node_revisions.timestamp #{search_criteria.sort_direction}")
+      if search_criteria.sort_by == "recent"
+        user_scope.joins(:revisions)
+                  .order("node_revisions.timestamp #{search_criteria.order_direction}")
                   .distinct # do we need unique/distinct on user id ?
 
       else
