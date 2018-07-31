@@ -54,6 +54,7 @@ gem 'rubocop', '~> 0.52.1', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sidekiq'
+gem 'skylight' # performance tracking via skylight.io
 gem 'turbolinks', '~> 5'
 gem 'tzinfo-data', platforms: %i(mingw mswin x64_mingw jruby)
 gem 'unicode-emoji'
