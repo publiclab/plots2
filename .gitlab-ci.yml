@@ -2,8 +2,6 @@ variables:
   COMPOSE_FILE: ./containers/docker-compose-testing.yml
 
 before_script:
-  - apt-get install -y python3-pip
-  - pip3 install docker-compose
   - cp config/database.yml.example config/database.yml
   - cp db/schema.rb.example db/schema.rb
   - docker-compose build
@@ -15,7 +13,7 @@ before_script:
   - docker-compose exec web bower install --allow-root
 
 job:
-  image: ruby:2.4.1-stretch
+  image: docker/compose:1.22.0
   script:
     - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
     - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test -d"
