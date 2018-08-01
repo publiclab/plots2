@@ -16,6 +16,7 @@ before_script:
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger danger-junit; fi'
 
 job:
+  image: ruby:2.4.1-stretch
   script:
     - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
     - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test -d"
