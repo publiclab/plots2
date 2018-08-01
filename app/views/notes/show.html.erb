@@ -11,7 +11,7 @@
 
   <% if @node.main_image %>
     <a class="main-image" style="max-width:100%;width:800px;" href="<%= @node.main_image.path(:original) %>">
-      <img style="max-height:600px;" class="img-rounded hidden-xs hidden-sm" src="<%= @node.main_image.path(:large) %>" />
+      <img style="max-height:600px;max-width:100%;" class="img-rounded hidden-xs hidden-sm" src="<%= @node.main_image.path(:large) %>" />
       <img style="width:100%;" class="img-rounded visible-xs visible-sm" src="<%= @node.main_image.path(:large) %>" />
     </a>
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
@@ -108,9 +108,6 @@
 
     <%= render :partial => "home/social" %>
 
-    <hr />
-
-    <%= render :partial => "tag/tagging" %>
     <div>
       <%= render :partial => "notes/comments" %>
     </div>
@@ -118,4 +115,4 @@
 
 </div><!--/span-->
 
-<%= render :partial => "sidebar/related" %>
+<%= render partial: "sidebar/related" %>

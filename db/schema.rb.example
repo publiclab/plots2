@@ -421,6 +421,7 @@ ActiveRecord::Schema.define(version: 2018_08_01_144533) do
     t.string   "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "data"
   end
 
   create_table "users", primary_key: "uid", force: true do |t|

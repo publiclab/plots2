@@ -48,10 +48,6 @@
 
   <hr />
 
-  <%= render :partial => "tag/tagging" %>
-
-  <hr />
-
   <h3><span id="answer-0-comment-count"><%= @node.comments.length %></span> Comments</h3>
     <% @node.comments.order("timestamp ASC").each do |comment| %>
       <%= render :partial => "notes/comment", :locals => {:comment => comment} %>

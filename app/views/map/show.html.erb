@@ -4,7 +4,6 @@
 <% end %>
 
 <div class="row">
-  <%= render :partial => "sidebar/related" %>
 
 <div class="col-md-9">
 
@@ -75,8 +74,7 @@
   <%= render :partial => "home/social" %>
   <hr />
 
-  <%= render :partial => "tag/tagging" %>
-
   <%= render :partial => "notes/comments" %>
 
 </div><!--/span-->
+<%= render partial: "sidebar/related" %>

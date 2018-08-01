@@ -47,7 +47,7 @@ class SearchService
   def textSearch_profiles(srchString)
     sresult = DocList.new
 
-    users = SrchScope.find_users(srchString, limit = nil)
+    users = SrchScope.find_users(srchString, limit = 10) # don't return hundreds!!
     # User profiles
     users.each do |match|
       doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
