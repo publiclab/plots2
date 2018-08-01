@@ -315,6 +315,10 @@ class Node < ActiveRecord::Base
       drupal_main_image.drupal_file
     end
   end
+  
+  def scraped_image
+    latest.render_body.scan(/<img(.*?)\/>/).first.first
+  end
 
   # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_content_field_image_gallery
