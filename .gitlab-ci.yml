@@ -12,12 +12,12 @@ before_script:
   - apk add --no-cache py-pip
   - pip install docker-compose
   - docker-compose build
+  - docker-compose run web sleep 15
   - docker-compose up -d
-  - sleep 15
   - docker-compose logs
   - docker-compose run web bundle install
-  - docker-compose run web rake db:setup
-  - docker-compose run web rake db:migrate
+  - docker-compose exec rake db:setup
+  - docker-compose exec rake db:migrate
   - docker-compose run web bower install --allow-root
 
 services:
