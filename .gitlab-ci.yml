@@ -2,21 +2,18 @@ variables:
   COMPOSE_FILE: ./containers/docker-compose-testing.yml
 
 before_script:
-  - bundle install
   - cp config/database.yml.example config/database.yml
   - cp db/schema.rb.example db/schema.rb
   - docker-compose build
+  - docker-compose run web bundle install
   - docker-compose up -d
   - docker-compose exec web sleep 5
-  - docker-compose logs db
-  - netstat -ltpn
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
   - docker-compose exec web bower install --allow-root
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger danger-junit; fi'
 
 job:
-  image: ruby:2.4.1-stretch
+  image: docker/compose
   script:
     - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
     - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test -d"
