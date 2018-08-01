@@ -9,9 +9,8 @@ before_script:
   - apk add --no-cache py-pip
   - pip install docker-compose
   - docker-compose build
-  - docker-compose run web bundle install
   - docker-compose up -d
-  - docker-compose exec web sleep 5
+  - docker-compose run web bundle install
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
   - docker-compose exec web bower install --allow-root
