@@ -1,5 +1,5 @@
 env:
-  - COMPOSE_FILE=./containers/docker-compose-testing.yml
+  COMPOSE_FILE:./containers/docker-compose-testing.yml
 
 before_script:
   - bundle install
