@@ -10,6 +10,7 @@ before_script:
   - pip install docker-compose
   - docker-compose build
   - docker-compose up -d
+  - sleep 5
   - docker-compose run web bundle install
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
