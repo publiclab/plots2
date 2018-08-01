@@ -127,6 +127,7 @@ class Tag < ApplicationRecord
     end
     Node.where('nid IN (?)', nids)
         .order('nid DESC')
+        .where(status: 1)
         .limit(limit)
   end
 
