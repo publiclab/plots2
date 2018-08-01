@@ -13,6 +13,7 @@ before_script:
   - docker-compose build
   - docker-compose up -d
   - sleep 5
+  - docker-compose logs
   - docker-compose run web bundle install
   - docker-compose exec web rake db:setup
   - docker-compose exec web rake db:migrate
