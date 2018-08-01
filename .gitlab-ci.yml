@@ -4,6 +4,7 @@ variables:
   COMPOSE_FILE: ./containers/docker-compose-testing.yml
   CI: "TRUE"
   GENERATE_REPORT: "true"
+  RAILS_ENV: "test"
 
 before_script:
   - cp config/database.yml.example config/database.yml
