@@ -1,4 +1,4 @@
-env:
+variables:
   COMPOSE_FILE: ./containers/docker-compose-testing.yml
 
 before_script:
