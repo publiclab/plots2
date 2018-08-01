@@ -15,8 +15,8 @@ before_script:
   - docker-compose up -d
   - docker-compose run web sleep 15
   - docker-compose logs
-  - docker-compose exec rake db:setup
-  - docker-compose exec rake db:migrate
+  - docker-compose exec web rake db:setup
+  - docker-compose exec web rake db:migrate
   - docker-compose run web bower install --allow-root
 
 services:
