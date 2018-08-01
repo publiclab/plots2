@@ -19,7 +19,7 @@ before_script:
   - docker-compose run web bower install --allow-root
 
 services:
-  - gitlab/dind:dind
+  - gitlab/dind
 
 job:
   script:
