@@ -2,6 +2,8 @@ image: docker
 
 variables:
   COMPOSE_FILE: ./containers/docker-compose-testing.yml
+  CI: TRUE
+  GENERATE_REPORT: true
 
 before_script:
   - cp config/database.yml.example config/database.yml
@@ -12,8 +14,8 @@ before_script:
   - docker-compose up -d
   - sleep 5
   - docker-compose run web bundle install
-  - docker-compose exec web bash -c "rake db:setup"
-  - docker-compose exec web bash -c "rake db:migrate"
+  - docker-compose exec web rake db:setup
+  - docker-compose exec web rake db:migrate
   - docker-compose exec web bower install --allow-root
 
 services:
@@ -21,5 +23,5 @@ services:
 
 job:
   script:
-    - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
-    - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test -d"
+    - docker-compose exec web rake test:all
+    - docker-compose exec web rails test -d
