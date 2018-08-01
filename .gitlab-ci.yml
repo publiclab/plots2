@@ -1,4 +1,4 @@
-image: docker/docker
+image: docker
 
 variables:
   COMPOSE_FILE: ./containers/docker-compose-testing.yml
