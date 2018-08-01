@@ -1,12 +1,13 @@
+image: docker/docker
+
 variables:
   COMPOSE_FILE: ./containers/docker-compose-testing.yml
 
 before_script:
   - cp config/database.yml.example config/database.yml
   - cp db/schema.rb.example db/schema.rb
-  - apt-get update
-  - apt-get install -y python3-pip
-  - pip3 install docker-compose
+  - apk add --no-cache py-pip
+  - pip install docker-compose
   - docker-compose build
   - docker-compose run web bundle install
   - docker-compose up -d
@@ -14,6 +15,9 @@ before_script:
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
   - docker-compose exec web bower install --allow-root
+
+services:
+  - docker:dind
 
 job:
   script:
