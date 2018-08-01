@@ -2,8 +2,8 @@ image: docker
 
 variables:
   COMPOSE_FILE: ./containers/docker-compose-testing.yml
-  CI: TRUE
-  GENERATE_REPORT: true
+  CI: "TRUE"
+  GENERATE_REPORT: "true"
 
 before_script:
   - cp config/database.yml.example config/database.yml
