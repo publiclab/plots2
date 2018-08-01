@@ -315,7 +315,7 @@ class Node < ActiveRecord::Base
       drupal_main_image.drupal_file
     end
   end
-  
+
   def scraped_image
     latest.render_body.scan(/<img(.*?)\/>/).first.first
   end
