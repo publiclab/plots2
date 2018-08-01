@@ -14,6 +14,13 @@ Hi! There's been a response to a discussion you're involved in. Do NOT reply to 
 
 <hr />
 
+<p>Look like spam?
+  <% if @user.can_moderate? %>
+    Mark this as <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/admin/mark_comment_spam/<%= @comment.id %>">Spam</a>
+  <% else %>
+    <a href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= @comment.parent.path %>#c<%= @comment.cid %>+by+https://publiclab.org/profile/<% if @comment.author %><%= @comment.author.name %><% end %>+Thanks!" title="Flag as spam" class="btn btn-sm btn-default btn-flag-spam-<%= @comment.id %>" >Flag this</a> for moderators
+  <% end%>
+</p>
 <div style="color:#aaa;">
 
 <% if @comment.parent.has_power_tag('question') %>
