@@ -24,5 +24,5 @@ services:
 
 job:
   script:
-    - docker-compose exec web rake test:all
-    - docker-compose exec web rails test -d
+    - docker-compose exec -T web rake test:all
+    - docker-compose exec -T web rails test -d
