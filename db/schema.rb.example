@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_01_144533) do
+ActiveRecord::Schema.define(version: 2018_08_02_114514) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -277,7 +277,7 @@ ActiveRecord::Schema.define(version: 2018_08_01_144533) do
   create_table "node_selections", id: false, force: true do |t|
     t.integer "user_id"
     t.integer "nid"
-    t.boolean "following", default: false
+    t.boolean "following", default: true
     t.boolean "liking",    default: false
   end
 
