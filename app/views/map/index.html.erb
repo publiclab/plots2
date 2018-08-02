@@ -10,6 +10,22 @@
 <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
 
 <script>
+   L.Icon.DefaultIcon = L.Icon.extend({
+    options: {
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    }
+  });
+
+  L.icon.defaultIcon = function () {
+    return new L.Icon.DefaultIcon();
+  };
+
+
   var bounds = new L.LatLngBounds(new L.LatLng(84.67351257 , -172.96875) , new L.LatLng(-54.36775852 , 178.59375)) ;
   var map = L.map('map' , {
       maxBounds: bounds , 
@@ -18,11 +34,8 @@
   var baselayer = L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map) ; 
-
   map.options.minZoom = 1.5 ;
-
   var hash = new L.Hash(map);   
-
   <% @maps.each do |map| %>
     <% 
       lat = false
@@ -32,17 +45,15 @@
         lon = tag.name.split(':').last if tag.name[0..2] == 'lon'
       end
     %> 
-    L.marker([<%= lat %>, <%= lon %>]).addTo(map).bindPopup("<a href='<%= map.path %>'><%= map.title %></a>");
+     var default_Icon =new L.icon.defaultIcon() ;
+    L.marker([<%= lat %>, <%= lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='<%= map.path %>'><%= map.title %></a>");
   <% end %>
-
-
     var PurpleAirMarkerLayer = L.layerGroup.purpleAirMarkerLayer() ;
     var SkyTruth = L.layerGroup.skyTruthLayer() ;
     var Fractracker = L.layerGroup.fracTrackerLayer() ;
     var OdorReport = L.layerGroup.odorReportLayer() ;
     var MapKnitter = L.layerGroup.mapKnitterLayer() ;
     var ToxicRelease = L.layerGroup.toxicReleaseLayer() ;
-
     var OpenInfraMap_Power = L.tileLayer('https://tiles-{s}.openinframap.org/power/{z}/{x}/{y}.png',{
         maxZoom: 18,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
@@ -59,7 +70,6 @@
       maxZoom: 18,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
     });
-
     var Justicemap_income = L.tileLayer.provider('JusticeMap.income') ;
     var JusticeMap_americanIndian = L.tileLayer.provider('JusticeMap.americanIndian') ;
     var JusticeMap_asian = L.tileLayer.provider('JusticeMap.asian') ;
@@ -81,11 +91,9 @@
     var pressurecntr = L.OWM.pressureContour({});
     var temp = L.OWM.temperature({});
     var wind = L.OWM.wind({});
-
     var city = L.OWM.current({intervall: 15, minZoom: 3});
     var windrose = L.OWM.current({intervall: 15, minZoom: 3, markerFunction: myWindroseMarker, popup: false, clusterSize: 50,imageLoadingBgUrl: 'https://openweathermap.org/img/w0/iwind.png' });
     windrose.on('owmlayeradd', windroseAdded, windrose); 
-
     var baseMaps = {
       "Baselayer1": baselayer
     };
@@ -123,9 +131,7 @@
          "Cities (zoom in)": city  , 
          "windrose (zoom in)": windrose
     };
-    L.control.layers(baseMaps,overlayMaps).addTo(map);
-
-
+    L.control.layers(baseMaps,overlayMaps).addTo(map); 
 </script>
 
 <br style="clear:both;" />
