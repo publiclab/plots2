@@ -18,7 +18,7 @@ Per-model API endpoints are:
 * Notes: https://publiclab.org/api/srch/notes?srchString=foo
 * TagLocations: https://publiclab.org/api/srch/taglocations?srchString=lat,lon
 * PeopleLocations: https://publiclab.org/api/srch/peoplelocations?srchString=QRY
-
+* Author: https://publiclab.org/api/srch/author?srchString=QRY&tagName=optional
 ****
 
 ## Legacy API

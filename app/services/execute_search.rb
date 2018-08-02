@@ -17,6 +17,8 @@ class ExecuteSearch
        sresult = sservice.textSearch_notes(search_criteria.query)
      when :questions
        sresult = sservice.textSearch_questions(search_criteria.query)
+     when :author
+       sresult = sservice.textSearch_author(search_criteria.query, search_criteria.tag)
      when :tags
        sresult = sservice.textSearch_tags(search_criteria.query)
      when :peoplelocations

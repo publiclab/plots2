@@ -105,6 +105,22 @@ class SearchService
     sresult
   end
 
+  # Search author notes for matching string and tagName and package up as a DocResult
+  def textSearch_author(srchString, tag_name)
+    sresult = DocList.new
+
+    author = User.where('username LIKE ? AND rusers.status = 1', '%' + srchString + '%')
+
+    notes_by_author = SrchScope.find_author_notes(author, tag_name).limit(25).distinct
+
+    notes_by_author.each do |match|
+      doc = DocResult.fromSearch(match.nid, 'note', match.path(:match), match.title, 0, 0)
+      sresult.addDoc(doc)
+    end
+
+    sresult
+  end
+
   # Search question entries for matching text and package up as a DocResult
   def textSearch_questions(srchString)
     sresult = DocList.new
@@ -130,7 +146,7 @@ class SearchService
   def tagNearbyNodes(srchString, tagName)
     sresult = DocList.new
 
-    lat, lon =  srchString.split(',')
+    lat, lon = srchString.split(',')
 
     nodes_scope = NodeTag.joins(:tag)
       .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
