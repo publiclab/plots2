@@ -10,14 +10,12 @@ before_script:
   - cp config/database.yml.example config/database.yml
   - cp db/schema.rb.example db/schema.rb
   - docker-compose build
-  - docker-compose run web bundle install
-  - docker-compose down
   - docker-compose up -d
-  - docker-compose run web sleep 15
-  - docker-compose logs
+  - docker-compose exec -T web bundle install
   - docker-compose exec -T web rake db:setup
   - docker-compose exec -T web rake db:migrate
-  - docker-compose run web bower install --allow-root
+  - docker-compose exec -T web bower install --allow-root
+  - docker-compose logs
 
 services:
   - gitlab/dind
