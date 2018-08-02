@@ -79,6 +79,12 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should redirect root-level requests without a matching wiki page to /tag/____' do
+    get :root, params: { id: 'something' }
+    assert_response :redirect
+    assert_redirected_to '/tag/something'
+  end
+
   test 'post wiki no login' do
     UserSession.find.destroy
 
@@ -432,10 +438,11 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should redirect to tag page if wiki page doesn't exist" do
+  test "should show the wiki post page if wiki page doesn't exist" do
+    UserSession.create(users(:jeff))
     get :show, params: { id: 'A-new-wiki-page' }
-    assert_response :redirect
-    assert_redirected_to '/tag/A-new-wiki-page'
+    assert_response :success
+    assert_template 'wiki/edit'
   end
 
   test 'replacing content in a node with replace action' do
