@@ -1405,6 +1405,12 @@ jade@0.26.3:
     commander "0.6.1"
     mkdirp "0.3.0"
 
+jquery-confirm@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/jquery-confirm/-/jquery-confirm-3.3.2.tgz#c80a7a1517c738f5e5735993bb168e938d08f582"
+  dependencies:
+    jquery ">=1.6"
+
 jquery-file-upload@blueimp/jQuery-File-Upload#~8.1.0:
   version "8.1.0"
   resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/442027a0fe8d483687596ee72da83c58ce293f1b"
@@ -1845,6 +1851,10 @@ nopt@~2.2.0:
   resolved "https://registry.yarnpkg.com/nopt/-/nopt-2.2.1.tgz#2aa09b7d1768487b3b89a9c5aa52335bff0baea7"
   dependencies:
     abbrev "1"
+
+noty@^3.2.0-beta:
+  version "3.2.0-beta"
+  resolved "https://registry.yarnpkg.com/noty/-/noty-3.2.0-beta.tgz#cd1117277a1b83c9b08dfc78f968c6c5960d3cfa"
 
 "nwmatcher@>= 1.3.7 < 2.0.0":
   version "1.4.4"
