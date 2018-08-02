@@ -333,7 +333,7 @@ class Comment < ApplicationRecord
   end
 
   def self.receive_tweet
-    comments = Comment.where.not(since: nil)
+    comments = Comment.where.not(tweet_id: nil)
     if comments.any?
       receive_tweet_using_since comments
     else
@@ -344,17 +344,19 @@ class Comment < ApplicationRecord
   def self.receive_tweet_using_since comments
     comment = comments.last
     since_id = comment.tweet_id
-    tweets = Client.search("to:publiclab", since: since_id).collect do |tweet|
+    tweets = Client.search("to:PublicLab", since_id: since_id).collect do |tweet|
       tweet
     end
+    tweets = tweets.reverse
     check_and_add_tweets tweets
   end
 
 
   def self.receive_tweet_without_using_since
-    tweets = Client.search("to:publiclab").collect do |tweet|
+    tweets = Client.search("to:PublicLab").collect do |tweet|
       tweet
     end
+    tweets = tweets.reverse
     check_and_add_tweets tweets
   end
 
@@ -367,17 +369,17 @@ class Comment < ApplicationRecord
         urls =  URI.extract(parent_tweet_full_text)
         node = get_node_from_urls_present(urls)
         unless node.nil?
-          twitter_user_id = tweet.user
-          twitter_email = Client.user(twitter_user_id).email
-          users = User.where(email: twitter_email)
+          twitter_user_name = tweet.user.screen_name
+          tweet_email = find_email(twitter_user_name)
+          users = User.where(email: tweet_email)
           if users.any?
             user = users.first
             replied_tweet_text = tweet.text
             if tweet.truncated?
-              replied_tweet_text = Client.status(tweet.id, tweet_mode: "extended")
-              replied_tweet_full_text = replied_tweet_text.attrs[:text] || replied_tweet_text.attrs[:full_text]
+              replied_tweet = Client.status(tweet.id, tweet_mode: "extended")
+              replied_tweet_text = replied_tweet.attrs[:text] || replied_tweet.attrs[:full_text]
             end
-            comment = node.add_comment(uid: user.uid, body: replied_tweet_full_text, comment_via: 2, twitter_id: tweet.id)
+            comment = node.add_comment(uid: user.uid, body: replied_tweet_text, comment_via: 2, tweet_id: tweet.id)
             comment.notify user
           end
         end
@@ -387,18 +389,26 @@ class Comment < ApplicationRecord
 
   def self.get_node_from_urls_present(urls)
     urls.each do |url|
-      response = Net::HTTP.get_response(URI(url)) # Get redirected link from twitter link shortner
-      if response['location'].include? ("://publiclab.org/n/")
-        node_id = t['location'].split("/")[-1]
+      if url.include? ("://publiclab.org/n/")
+        node_id = url.split("/")[-1]
         if node_id != nil
           node = Node.where(nid: node_id.to_i)
           if node.any?
-            node.first
+            return node.first
           end
         end
       end
     end
     return nil
+  end
+
+  def self.find_email (twitter_user_name)
+    UserTag.all.each do |user_tag|
+      data = user_tag["data"]
+      if data["info"]["nickname"].to_s == twitter_user_name
+        return data["info"]["email"]
+      end
+    end
   end
 
 end
