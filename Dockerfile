@@ -34,14 +34,5 @@ RUN bundle install --jobs 4
 ADD . /app
 WORKDIR /app
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 RUN yarn --ignore-engines --ignore-scripts --modules-folder ./public/lib && yarn postinstall
 RUN passenger-config compile-nginx-engine --connect-timeout 60 --idle-timeout 60
-=======
-=======
-RUN yarn --ignore-engines --ignore-scripts --modules-folder public/lib && yarn postinstall
-
->>>>>>> Run forced installation of yarn
-RUN yarn --modules-folder public/lib
->>>>>>> Update Dockerfile
