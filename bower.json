@@ -3,7 +3,7 @@
   "version": "2.1",
   "dependencies": {
     "fontawesome": "~4.5.0",
-    "bootstrap": "~3.2.0",
+    "bootstrap": "~3.3.7",
     "bootstrap-typeahead": "bassjobsen/Bootstrap-3-Typeahead#~4.0.0",
     "bootstrap-datepicker": "~1.6.0",
     "bootstrap-tokenfield": "~0.12.0",
