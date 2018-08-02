@@ -85,3 +85,16 @@ OmniAuth.config.mock_auth[:provider] = OmniAuth::AuthHash.new({
 This is a way of storing the hash returned by the OAuth service.
 Tester can then use these values by
 ``request.env['omniauth.auth'] =  OmniAuth.config.mock_auth[:google_oauth2_2]``
+
+## Notifications
+
+Let us define the password_checker field for authentication system
+A user creates an account by the legacy authentication system 0
+Facebook 1
+Github 2
+Google 3
+Twitter 4
+
+Password is set up by the client is denoted by zero. Password not set up is denoted by non zero field.
+If a user who is not having password field set up tries to log in with password and username then they will be noticed with an error message to reset their password.
+Upon setting up password, password_checker field is set to zero. 

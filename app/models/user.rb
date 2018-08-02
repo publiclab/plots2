@@ -435,12 +435,14 @@ class User < ActiveRecord::Base
     charset = Array('A'..'Z') + Array('a'..'z') + Array(0..9)
     email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
     email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
+    hash = { "facebook" => 1, "github" => 2, "google_oauth2" => 3, "twitter" => 4 }
     create! do |user|
       s = SecureRandom.urlsafe_base64
       user.username = email_prefix
       user.email = auth["info"]["email"]
       user.password = s
       user.password_confirmation = s
+      user.password_checker = hash[auth["provider"]]
       user.save!
     end
   end
