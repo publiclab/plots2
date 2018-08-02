@@ -65,17 +65,17 @@ class SrchScope
       .where('term_data.name LIKE ?', 'question:%')
   end
 
-  def self.find_author_notes(author, tagName)
-    if tagName.present?
+  def self.find_author_notes(author, tag_name)
+    if tag_name.present?
       Node.joins(:node_tag)
           .joins(:tag)
           .where(type: 'note')
-          .where(uid: author.uid)
+          .where(uid: author)
           .where(status: 1)
-          .where('name LIKE ?', '%' + tagName + '%')
+          .where('name LIKE ?', '%' + tag_name + '%')
     else
       Node.order('changed DESC')
-          .where(type: 'note', status: 1, uid: author.uid)
+          .where(type: 'note', status: 1, uid: author)
     end
   end
 end

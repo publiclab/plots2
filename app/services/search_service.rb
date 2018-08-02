@@ -106,12 +106,12 @@ class SearchService
   end
 
   # Search author notes for matching string and tagName and package up as a DocResult
-  def textSearch_author(srchString, tagName)
+  def textSearch_author(srchString, tag_name)
     sresult = DocList.new
 
-    author = User.find_by(username: srchString)
+    author = User.where('username LIKE ? AND rusers.status = 1', '%' + srchString + '%')
 
-    notes_by_author = SrchScope.find_author_notes(author, tagName).limit(25).distinct
+    notes_by_author = SrchScope.find_author_notes(author, tag_name).limit(25).distinct
 
     notes_by_author.each do |match|
       doc = DocResult.fromSearch(match.nid, 'note', match.path(:match), match.title, 0, 0)
@@ -120,7 +120,6 @@ class SearchService
 
     sresult
   end
-
 
   # Search question entries for matching text and package up as a DocResult
   def textSearch_questions(srchString)

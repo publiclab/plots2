@@ -18,7 +18,7 @@ Per-model API endpoints are:
 * Notes: https://publiclab.org/api/srch/notes?srchString=foo
 * TagLocations: https://publiclab.org/api/srch/taglocations?srchString=lat,lon
 * PeopleLocations: https://publiclab.org/api/srch/peoplelocations?srchString=QRY
-
+* Author: https://publiclab.org/api/srch/author?srchString=QRY&tagName=optional
 ****
 
 ## Legacy API
@@ -47,7 +47,7 @@ API methods are found in the codebase in the following places:
 * https://github.com/publiclab/plots2/blob/master/app/api/srch/typeahead.rb
 * https://github.com/publiclab/plots2/blob/master/app/api/srch/search.rb
 
-We are beginning to consolidate API methods into the `/app/api/srch/` namespace, to reduce complexity in the non-API codebase and make the API more predictable and maintainable. 
+We are beginning to consolidate API methods into the `/app/api/srch/` namespace, to reduce complexity in the non-API codebase and make the API more predictable and maintainable.
 
 RSS feeds can be found in views, such as:
 
@@ -71,16 +71,16 @@ https://github.com/publiclab/plots2/blob/master/app/controllers/comment_controll
    **Required:**
 
    `id=[integer]`: This value specifies the node for which comment is to be created
-   
-   `format=[string]` : Specifies response format 
-   
+
+   `format=[string]` : Specifies response format
+
    `username=[string]`: This string specifies username of user tends to create comment by this API post request
- 
-   **Data Params:** 
-   
+
+   **Data Params:**
+
     `body=[string]` : This is the actual content of the comment.
- 
-   **Headers:** 
+
+   **Headers:**
 
    `TOKEN=[string]`: This string value specifies ``access_token`` of the user for authentication purpose.
 
