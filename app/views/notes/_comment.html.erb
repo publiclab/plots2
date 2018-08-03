@@ -33,7 +33,7 @@
         <% end %>
       -->
       <% end %>
-z
+
       <% if current_user && comment.uid == current_user.uid %>
         <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
           <i class="fa fa-pencil"></i>
