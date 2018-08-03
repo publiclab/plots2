@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
   after_destroy :destroy_drupal_user
 
   def self.search(query)
-    User.where('MATCH(username, bio) AGAINST(?)', query)
+    User.where('MATCH(username, bio) AGAINST (?)', query)
   end
 
   def new_contributor

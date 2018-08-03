@@ -287,14 +287,14 @@ post_test1:
 
 post_test2:
   nid: 24
-  uid: 16
+  uid: 17
   title: Post test review 2
   body: Post test review 2
   timestamp: <%= DateTime.new(2018,8,8).to_i %>
 
 post_test3:
   nid: 25
-  uid: 17
+  uid: 16
   title: Post test review 2
   body: Post test review 2
   timestamp: <%= DateTime.new(2018,8,15).to_i %>
