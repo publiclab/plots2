@@ -64,7 +64,8 @@
   </script>
 
   <%= javascript_include_tag "dragdrop" %>
-  <script src="/assets/emoji.js" type="text/javascript"></script>
+  <script src="/lib/emoji.js" type="text/javascript"></script>
+  <script src="/assets/atwho_autocomplete.js" type="text/javascript"></script>
   <script>
     $('#comment-form').bind('ajax:beforeSend', function(event){
       $("#text-input").prop('disabled',true)

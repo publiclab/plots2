@@ -48,6 +48,5 @@ Rails.application.config.assets.precompile += [
   'user_tags.css.scss',
   'wiki.css',
   'horsey.js',
-  'comment-autocomplete',
-  'emoji.js'
+  'atwho_autocomplete.js'
 ]
