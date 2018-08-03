@@ -1,0 +1,25 @@
+image: gitlab/dind
+
+variables:
+  COMPOSE_FILE: ./containers/docker-compose-testing.yml
+  CI: "TRUE"
+  GENERATE_REPORT: "true"
+  RAILS_ENV: "test"
+
+before_script:
+  - cp config/database.yml.example config/database.yml
+  - cp db/schema.rb.example db/schema.rb
+  - docker-compose build
+  - docker-compose up -d
+  - docker-compose exec -T web bundle install
+  - docker-compose exec -T web rake db:setup
+  - docker-compose exec -T web rake db:migrate
+  - docker-compose exec -T web bower install --allow-root
+
+services:
+  - gitlab/dind
+
+job:
+  script:
+    - docker-compose exec -T web rake test:all
+    - docker-compose exec -T web rails test -d
