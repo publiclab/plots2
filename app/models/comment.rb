@@ -341,7 +341,7 @@ class Comment < ApplicationRecord
     end
   end
 
-  def self.receive_tweet_using_since comments
+  def self.receive_tweet_using_since(comments)
     comment = comments.last
     since_id = comment.tweet_id
     tweets = Client.search("to:PublicLab", since_id: since_id).collect do |tweet|
@@ -351,7 +351,6 @@ class Comment < ApplicationRecord
     check_and_add_tweets tweets
   end
 
-
   def self.receive_tweet_without_using_since
     tweets = Client.search("to:PublicLab").collect do |tweet|
       tweet
@@ -360,13 +359,13 @@ class Comment < ApplicationRecord
     check_and_add_tweets tweets
   end
 
-  def self.check_and_add_tweets tweets
+  def self.check_and_add_tweets(tweets)
     tweets.each do |tweet|
       if tweet.reply?
         in_reply_to_tweet_id = tweet.in_reply_to_tweet_id
         parent_tweet = Client.status(in_reply_to_tweet_id, tweet_mode: "extended")
         parent_tweet_full_text = parent_tweet.attrs[:text] || parent_tweet.attrs[:full_text]
-        urls =  URI.extract(parent_tweet_full_text)
+        urls = URI.extract(parent_tweet_full_text)
         node = get_node_from_urls_present(urls)
         unless node.nil?
           twitter_user_name = tweet.user.screen_name
@@ -389,9 +388,9 @@ class Comment < ApplicationRecord
 
   def self.get_node_from_urls_present(urls)
     urls.each do |url|
-      if url.include? ("://publiclab.org/n/")
+      if url.include? "://publiclab.org/n/"
         node_id = url.split("/")[-1]
-        if node_id != nil
+        if !node_id.nil?
           node = Node.where(nid: node_id.to_i)
           if node.any?
             return node.first
@@ -402,7 +401,7 @@ class Comment < ApplicationRecord
     return nil
   end
 
-  def self.find_email (twitter_user_name)
+  def self.find_email(twitter_user_name)
     UserTag.all.each do |user_tag|
       data = user_tag["data"]
       if data["info"]["nickname"].to_s == twitter_user_name
@@ -410,5 +409,4 @@ class Comment < ApplicationRecord
       end
     end
   end
-
 end
