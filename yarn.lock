@@ -1199,6 +1199,10 @@ he@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/he/-/he-0.5.0.tgz#2c05ffaef90b68e860f3fd2b54ef580989277ee2"
 
+heatmap.js@*:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/heatmap.js/-/heatmap.js-2.0.5.tgz#466d3b86513f5d49112a49d25700ab2730149153"
+
 highlight-redux@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/highlight-redux/-/highlight-redux-1.0.1.tgz#4ef4ed634ec91a12447e224ab0b87125408e0beb"
@@ -1425,7 +1429,7 @@ jquery.ui.widget@>=1.9:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/jquery.ui.widget/-/jquery.ui.widget-1.10.3.tgz#2ceecfc64995412643eeb9508d2197ea93c02fb3"
 
-jquery@>=1.6, jquery@>=1.7, jquery@>=1.7.1, jquery@^3.2.1, jquery@~3:
+jquery@>=1.6, jquery@>=1.7, jquery@>=1.7.1, jquery@^3.2.1, jquery@^3.3.1, jquery@~3:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
@@ -1558,13 +1562,37 @@ leaflet-d3@Asymmetrik/leaflet-d3#^0.3.8:
   version "0.3.8"
   resolved "https://codeload.github.com/Asymmetrik/leaflet-d3/tar.gz/bf557a3403d7d2583bb21d91209e16239b5189b0"
 
+leaflet-environmental-layers@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-1.0.0.tgz#433abc666dcd870ed732a25d54e4dfffa7c71842"
+  dependencies:
+    jquery "^3.3.1"
+    leaflet "^1.3.1"
+    leaflet-heatmap "1.0.0"
+    leaflet-providers "^1.1.17"
+
+leaflet-hash@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/leaflet-hash/-/leaflet-hash-0.2.1.tgz#c36c718347c5243033b57cb4baea26119d82c701"
+
+leaflet-heatmap@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/leaflet-heatmap/-/leaflet-heatmap-1.0.0.tgz#83cc04249d39ed91526aeaa7d7669bdaa86d6b1f"
+  dependencies:
+    heatmap.js "*"
+    leaflet "*"
+
+leaflet-providers@^1.1.17:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/leaflet-providers/-/leaflet-providers-1.3.1.tgz#ce51ea62287eb9113418118e64a445720830eaf2"
+
+leaflet@*, leaflet@^1.0.3, leaflet@^1.3.1:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.3.tgz#5c8f2fd50e4a41ead93ab850dcd9e058811da9b9"
+
 leaflet@Leaflet/Leaflet#0.7.3:
   version "0.7.3"
   resolved "https://codeload.github.com/Leaflet/Leaflet/tar.gz/8a5fdfc6e3db2807b8f0dd617474e4ab2949142b"
-
-leaflet@^1.0.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.3.tgz#5c8f2fd50e4a41ead93ab850dcd9e058811da9b9"
 
 levn@~0.3.0:
   version "0.3.0"
