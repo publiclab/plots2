@@ -40,8 +40,6 @@ test-container:
 	docker-compose exec -T web rake db:setup
 	docker-compose exec -T web rake db:migrate
 	docker-compose exec -T web bower install --allow-root
-	docker-compose exec -T web ulimit -c unlimited
-	docker-compose exec -T web rake test:all
 	docker-compose exec -T web rake test:all
 	docker-compose exec -T web rails test -d
 	docker-compose down
