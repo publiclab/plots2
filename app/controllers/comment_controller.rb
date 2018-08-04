@@ -156,11 +156,7 @@ class CommentController < ApplicationController
        current_user.role == 'admin' ||
        current_user.role == 'moderator'
 
-      if @comment.nid == 0
-        node_id = @comment.answer.nid
-      else
-        node_id = @comment.nid
-      end
+      node_id = if @comment.nid.zero? then @comment.answer.nid else @comment.nid end
 
       @answer = Answer.new(
         nid: node_id,
