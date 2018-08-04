@@ -15,7 +15,6 @@ env:
 
 before_script:
   - bundle install
-  - yarn --ignore-engines --ignore-scripts --modules-folder ./public/lib && yarn postinstall
 
 before_install:
   - echo -e "repo_token:\n  $COVERALLS_REPO_TOKEN" >> ./.coveralls.yml
@@ -30,6 +29,7 @@ install:
   - netstat -ltpn
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
+  - docker-compose exec web yarn --ignore-engines --ignore-scripts --modules-folder ./public/lib && yarn postinstall
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger danger-junit; fi'
 
 script:

@@ -18,6 +18,7 @@ before_script:
   - docker-compose exec -T web rake db:setup
   - docker-compose exec -T web rake db:migrate
   - docker-compose exec -T web bower install --allow-root
+  - docker-compose exec -T web yarn --ignore-engines --ignore-scripts --modules-folder ./public/lib && yarn postinstall
 
 job:
   script:
