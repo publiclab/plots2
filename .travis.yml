@@ -13,6 +13,10 @@ services:
 env:
   - COMPOSE_FILE=./containers/docker-compose-testing.yml
 
+before_script:
+  - bundle install
+  - yarn --ignore-engines --ignore-scripts --modules-folder ./public/lib && yarn postinstall
+
 before_install:
   - echo -e "repo_token:\n  $COVERALLS_REPO_TOKEN" >> ./.coveralls.yml
 
