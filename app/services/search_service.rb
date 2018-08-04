@@ -51,13 +51,13 @@ class SearchService
   # a recent activity may be a node creation or a node revision
   def textSearch_profiles(search_criteria)
     user_scope = SrchScope.find_users(search_criteria.query, limit = 10)
-                          .reorder('')
 
     user_scope =
       if search_criteria.sort_by == "recent"
         user_scope.joins(:revisions)
                   .order("node_revisions.timestamp #{search_criteria.order_direction}")
                   .distinct
+
       else
         user_scope.order(id: :desc)
       end
