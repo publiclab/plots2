@@ -5,7 +5,9 @@ variables:
   CI: "TRUE"
   GENERATE_REPORT: "true"
   RAILS_ENV: "test"
-  DOCKER_HOST: "tcp://localhost:2375"
+
+services:
+  - docker:stable-dind
 
 before_script:
   - cp config/database.yml.example config/database.yml
