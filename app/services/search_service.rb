@@ -170,29 +170,25 @@ class SearchService
   def recentPeople(srchString, tagName = nil)
     sresult = DocList.new
 
-    user_scope = User.where('status <> 0')
-                          .reorder('')
+    user_scope = User.where('rusers.status <> 0')\
+                     .joins(:user_tags)\
+                     .where('value LIKE "lat:%"')\
+                     .joins(:revisions)\
+                     .order("node_revisions.timestamp DESC")
 
-    user_scope = user_scope.joins(:revisions)
-                           .order("node_revisions.timestamp DESC")
-                           .distinct
+    if tagName.present?
+      user_scope = User.joins(:user_tags)\
+                       .where('user_tags.value LIKE ?', tagName)\
+                       .where(id: user_scope.select("rusers.id"))
+    end
 
-    users = []
+    user_scope = user_scope.limit(srchString.to_i)
+
     user_scope.each do |user|
-      next unless user.has_power_tag("lat") && user.has_power_tag("lon")
+      blurred = user.has_power_tag("location") ? user.get_value_of_power_tag("location") : false
 
-      blurred = false
-      if user.has_power_tag("location")
-        blurred = user.get_value_of_power_tag("location")
-      end
-
-      if tagName.blank?
-        doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
-        sresult.addDoc(doc)
-      elsif !(tagName.blank?) && user.has_tag(tagName)
-          doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
-          sresult.addDoc(doc)
-      end
+      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
+      sresult.addDoc(doc)
     end
 
     sresult
