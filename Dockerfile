@@ -24,13 +24,14 @@ RUN npm install -g bower
 
 RUN echo "umask 0002" >> /etc/bash.bashrc
 
+RUN useradd -gecos "" plots
+USER plots
+
 # Install bundle of gems
 WORKDIR /tmp
-ADD Gemfile /tmp/Gemfile
-ADD Gemfile.lock /tmp/Gemfile.lock
+COPY Gemfile /tmp/Gemfile
+COPY Gemfile.lock /tmp/Gemfile.lock
 
-RUN useradd -ms /bin/bash plots
-USER plots
 RUN bundle install --jobs 4
 
 ADD . /app
