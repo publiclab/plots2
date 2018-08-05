@@ -1550,19 +1550,19 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
-leaflet-blurred-location@publiclab/leaflet-blurred-location#master:
-  version "1.2.0"
-  resolved "https://codeload.github.com/publiclab/leaflet-blurred-location/tar.gz/7902d186e5e0ff854a77c5dce5d1ee4813c8c496"
+leaflet-blurred-location@publiclab/leaflet-blurred-location#^1.1.14:
+  version "1.2.1"
+  resolved "https://codeload.github.com/publiclab/leaflet-blurred-location/tar.gz/59b9a0dc6778805dc7de801e93352b8691d569e1"
   dependencies:
     haversine-distance "^1.1.4"
     jquery "^3.2.1"
-    leaflet "^1.0.3"
+    leaflet "^1.3.3"
 
 leaflet-d3@Asymmetrik/leaflet-d3#^0.3.8:
   version "0.3.8"
   resolved "https://codeload.github.com/Asymmetrik/leaflet-d3/tar.gz/bf557a3403d7d2583bb21d91209e16239b5189b0"
 
-leaflet-environmental-layers@^1.0.0:
+leaflet-environmental-layers@^1.0.1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-1.0.0.tgz#433abc666dcd870ed732a25d54e4dfffa7c71842"
   dependencies:
@@ -1586,7 +1586,7 @@ leaflet-providers@^1.1.17:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/leaflet-providers/-/leaflet-providers-1.3.1.tgz#ce51ea62287eb9113418118e64a445720830eaf2"
 
-leaflet@*, leaflet@^1.0.3, leaflet@^1.3.1:
+leaflet@*, leaflet@^1.3.1, leaflet@^1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.3.tgz#5c8f2fd50e4a41ead93ab850dcd9e058811da9b9"
 
