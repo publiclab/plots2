@@ -186,6 +186,42 @@ module NodeShared
     end
   end
 
+  def self.notes_inline_grid(body)
+    body.gsub(/[^\>`](\<p\>)?\[notes\:grid\:(\S+)\]/) do |_tagname|
+      tagname = Regexp.last_match(2)
+      exclude = nil
+      if tagname.include?('!')
+        exclude = tagname.split('!') - [tagname.split('!').first]
+        tagname = tagname.split('!').first
+      end
+
+      nodes = Node.where(status: 1, type: 'note')
+                  .includes(:revision, :tag)
+                  .references(:term_data, :node_revisions)
+                  .where('term_data.name = ?', tagname)
+                  .order('node_revisions.timestamp DESC')
+
+      if exclude.present?
+        exclude = Node.where(status: 1, type: 'note')
+                      .includes(:revision, :tag)
+                      .references(:node_revisions, :term_data)
+                      .where('term_data.name IN (?)', exclude)
+        nodes -= exclude
+      end
+      output = ''
+      output += '<p>' if Regexp.last_match(1) == '<p>'
+      a = ActionController::Base.new
+      output += a.render_to_string(template: "notes/_note_thumbnails_grid",
+                                   layout:   false,
+                                   locals:   {
+                                       tagname: tagname,
+                                       nodes: nodes,
+                                       type: "notes"
+                                   })
+      output
+    end
+  end
+
   def self.notes_map_by_tag(body)
     body.gsub(/[^\>`](\<p\>)?\[map\:tag\:(\S+)\:(\S+)\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)

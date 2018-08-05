@@ -1,0 +1,10 @@
+<h2 style="margin-top: 60px;margin-bottom: 0;">Related Notes</h2>
+<hr style="margin-top:10px;">
+<div class="activity">
+  <div class="row" style="display: flex;flex-wrap: wrap;">
+    <% nodes.each do |node| %>
+      <%= render partial: 'dashboard/node_default', locals: {node: node, notes_thumbnails: true} %>
+    <% end %>
+  </div>
+  <br />
+</div>
