@@ -1562,7 +1562,7 @@ leaflet-d3@Asymmetrik/leaflet-d3#^0.3.8:
   version "0.3.8"
   resolved "https://codeload.github.com/Asymmetrik/leaflet-d3/tar.gz/bf557a3403d7d2583bb21d91209e16239b5189b0"
 
-leaflet-environmental-layers@^1.0.1:
+leaflet-environmental-layers@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-1.0.0.tgz#433abc666dcd870ed732a25d54e4dfffa7c71842"
   dependencies:

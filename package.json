@@ -44,7 +44,7 @@
     "leaflet": "Leaflet/Leaflet#0.7.3",
     "leaflet-blurred-location": "publiclab/leaflet-blurred-location#^1.1.14",
     "leaflet-d3": "Asymmetrik/leaflet-d3#^0.3.8",
-    "leaflet-environmental-layers": "^1.0.1",
+    "leaflet-environmental-layers": "1.0.0",
     "leaflet-hash": "^0.2.1",
     "marked": "chjj/marked#0.3.2",
     "megamark": "bevacqua/megamark#~3.3.0",
