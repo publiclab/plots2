@@ -156,8 +156,10 @@ class CommentController < ApplicationController
        current_user.role == 'admin' ||
        current_user.role == 'moderator'
 
+      node_id = @comment.nid.zero? ? @comment.answer.nid : @comment.nid
+
       @answer = Answer.new(
-        nid: @comment.nid,
+        nid: node_id,
         uid: @comment.uid,
         content: @comment.comment,
         created_at: @comment.created_at,
