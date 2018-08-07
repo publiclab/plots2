@@ -344,7 +344,7 @@ class Comment < ApplicationRecord
   def self.receive_tweet_using_since(comments)
     comment = comments.last
     since_id = comment.tweet_id
-    tweets = Client.search("to:PublicLab", since_id: since_id).collect do |tweet|
+    tweets = Client.search(ENV["TWEET_SEARCH"], since_id: since_id).collect do |tweet|
       tweet
     end
     tweets = tweets.reverse
@@ -352,7 +352,7 @@ class Comment < ApplicationRecord
   end
 
   def self.receive_tweet_without_using_since
-    tweets = Client.search("to:PublicLab").collect do |tweet|
+    tweets = Client.search(ENV["TWEET_SEARCH"]).collect do |tweet|
       tweet
     end
     tweets = tweets.reverse
@@ -388,7 +388,7 @@ class Comment < ApplicationRecord
 
   def self.get_node_from_urls_present(urls)
     urls.each do |url|
-      if url.include? "://publiclab.org/n/"
+      if url.include? ENV["WEBSITE_HOST_PATTERN"]
         node_id = url.split("/")[-1]
         if !node_id.nil?
           node = Node.where(nid: node_id.to_i)

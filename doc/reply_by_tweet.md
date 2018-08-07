@@ -1,8 +1,8 @@
-##Reply By Tweet
+## Reply By Tweet
 
 -  We are using [twitter gem](https://github.com/sferik/twitter "twitter gem") which implements twitter apis and gives functions to easily implement twitter apis.
 
-###Steps:
+### Steps:
 
 - Cron job for polling for getting new tweets to `publiclab` is defined in [config/schedule.rb](https://github.com/publiclab/plots2/blob/master/config/schedule.rb "config/schedule.rb") using whenever gem which will call `receive_tweet` function of [models/comment.rb](https://github.com/publiclab/plots2/blob/master/app/models/comment.rb "models/comment.rb") in the interval of one minute.
 
@@ -17,5 +17,8 @@
 - If that twitter username is present in the `user_tags` column  then add the tweet otherwise ignore the current tweet.
 
 - Same process is with when there are no comment present with tweet_id in the comment table where we search for all the replied tweets to the `publiclab`.
+
+- Set environment varible `TWEET_SEARCH` to `to:PublicLab` and `WEBSITE_HOST_PATTERN` to `://publiclab.org/n/`
+
 
 
