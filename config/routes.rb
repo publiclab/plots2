@@ -299,6 +299,7 @@ Plots2::Application.routes.draw do
 
   get 'answer_like/show/:id' => 'answer_like#show'
   get 'answer_like/likes/:aid' => 'answer_like#likes'
+  get 'questions/:username/:date/:topic/answer_like/likes/:aid' => 'answer_like#likes'
 
 
   get 'comment/answer_create/:aid' => 'comment#answer_create'
