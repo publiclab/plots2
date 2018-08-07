@@ -35,6 +35,23 @@
     });
   }
 
+
+  function PLmarker_default(){
+     L.Icon.PLmarker = L.Icon.extend({
+      options: {
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      }
+   });
+  
+    return new L.Icon.PLmarker();
+
+  }
+
   function onMapLoad(e){
 	// ADD MORE AJAX CALLS INSIDE THIS FUNCTION !
       $.getJSON(skynet_url , function(data){
@@ -45,8 +62,8 @@
           var title = data.feed[i].title ;
           var url = data.feed[i].link ;
           var skymarker ; 
-          if (!isNaN(parseInt(lat)) && !isNaN(parseInt(lng)) ){
-          skymarker = L.marker([parseInt(lat) , parseInt(lng)] , {icon: redDotIcon}).bindPopup(title + "<br><a>" + url +"</a>" + "<br><strong> lat: " + lat + "</strong><br><strong> lon: " + lng + "</strong>") ;
+          if (!isNaN((lat)) && !isNaN((lng)) ){
+          skymarker = L.marker([(lat) , (lng)] , {icon: redDotIcon}).bindPopup(title + "<br><a>" + url +"</a>" + "<br><strong> lat: " + lat + "</strong><br><strong> lon: " + lng + "</strong>") ;
           layerGroup.addLayer(skymarker);
           }
         }
