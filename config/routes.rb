@@ -165,6 +165,8 @@ Plots2::Application.routes.draw do
   get 'likes/node/:id/query' => 'like#liked?', :as => :is_liked
   get 'likes/node/:id/create' => 'like#create', :as => :add_like
   get 'likes/node/:id/delete' => 'like#delete',  :as => :drop_like
+  get 'follow/node/:id/create' => 'like#create_following'
+  get 'follow/node/:id/delete' => 'like#delete_following'
 
   #Search Pages
   get 'search/dynamic' => 'searches#dynamic'

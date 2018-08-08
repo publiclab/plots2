@@ -1,6 +1,6 @@
 class LikeController < ApplicationController
   respond_to :html, :xml, :json
-  before_action :require_user, only: %i(create delete)
+  before_action :require_user, only: %i(create delete create_following delete_following)
 
   # list all recent likes
   def index
@@ -33,5 +33,19 @@ class LikeController < ApplicationController
   # for the current user, remove the like from the given node
   def delete
     render json: Node.unlike(params[:id], current_user)
+  end
+
+  def create_following
+    node = Node.find(params[:id])
+    Node.follow(params[:id], current_user)
+    flash[:notice] = "You have enabled notifications from this thread again!"
+    redirect_to node.path
+  end
+
+  def delete_following
+    node = Node.find(params[:id])
+    Node.unfollow(params[:id], current_user)
+    flash[:notice] = "You have disabled notifications from this thread!"
+    redirect_to node.path
   end
 end

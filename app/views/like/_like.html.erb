@@ -71,9 +71,9 @@
 <% end %>
 
 <% if current_user && NodeSelection.is_following?(current_user.id, node.id) %>
-  <a class='btn btn-default btn-sm' href=''>Disable notifications</a>
+  <a class='btn btn-default btn-sm' href='/follow/node/<%= node.id %>/delete'>Disable notifications</a>
 <%elsif current_user && NodeSelection.is_following?(current_user.id, node.id) == false %>
-  <a class='btn btn-default btn-sm' href=''>Enable notifications</a>
+  <a class='btn btn-default btn-sm' href='/follow/node/<%= node.id %>/create'>Enable notifications</a>
 <% end %>
 
 <br />

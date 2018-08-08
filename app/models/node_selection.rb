@@ -9,11 +9,11 @@ class NodeSelection < ApplicationRecord
   end
 
   def self.is_following?(user_id, node_id)
-    selection = NodeSelection.where(user_id: user_id, nid: node_id)
+    selection = NodeSelection.where(user_id: user_id, nid: node_id).first
     if selection.nil?
       return true
     else
-      return selection
+      return selection.following
     end
   end
 end

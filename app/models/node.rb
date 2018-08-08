@@ -937,6 +937,29 @@ class Node < ActiveRecord::Base
     count
   end
 
+  def self.follow(nid, user)
+    follow = nil
+
+    ActiveRecord::Base.transaction do
+      # Create the entry if it isn't already created.
+      follow = NodeSelection.where(user_id: user.uid,
+                                 nid: nid).first_or_create
+      follow.following = true
+      follow.save!
+    end
+  end
+
+  def self.unfollow(nid, user)
+    follow = nil
+
+    ActiveRecord::Base.transaction do
+      follow = NodeSelection.where(user_id: user.uid,
+                                 nid: nid).first_or_create
+      follow.following = false
+      follow.save!
+    end
+  end
+
   # status = 3 for draft nodes,visible to author only
   def draft
     self.status = 3
