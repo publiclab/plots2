@@ -20,5 +20,7 @@
 
 - Set environment varible `TWEET_SEARCH` to `to:PublicLab` and `WEBSITE_HOST_PATTERN` to `://publiclab.org/n/`
 
+### Summery
 
+Once a minute, this system scans tweets "to:PublicLab" (or specified search, see below) for URLs matching our shortlink pattern, i.e. "https://publiclab.org/n/_____", where "_____" is a node nid. Each of the returned tweets is added as a comment to the node it responded to.
 
