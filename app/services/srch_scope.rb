@@ -1,8 +1,8 @@
 # This class provides common methods that Typehead and Search services use
 class SrchScope
-  def self.find_users(input, limit)
+  def self.find_users(query, limit)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      User.search(input)
+      User.search_by_username(query)
           .where('rusers.status = ?', 1)
           .limit(limit)
     else

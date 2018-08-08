@@ -27,7 +27,7 @@ class SearchService
       sresult.addDoc(doc)
     end
     # User profiles
-    userList = textSearch_profiles(search_criteria)
+    userList = profiles(search_criteria)
     sresult.addAll(userList.items)
 
     # Tags
@@ -49,7 +49,7 @@ class SearchService
 
   # If no sort_by value present, then it returns a list of profiles ordered by id DESC
   # a recent activity may be a node creation or a node revision
-  def textSearch_profiles(search_criteria)
+  def profiles(search_criteria)
     user_scope = SrchScope.find_users(search_criteria.query, limit = 10)
 
     user_scope =
