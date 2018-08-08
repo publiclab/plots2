@@ -23,14 +23,15 @@ RUN npm install -g bower
 
 RUN echo "umask 0002" >> /etc/bash.bashrc
 
-RUN adduser --disabled-password --gecos '' plots
-USER plots
-
 # Install bundle of gems
 WORKDIR /tmp
 COPY Gemfile /tmp/Gemfile
 COPY Gemfile.lock /tmp/Gemfile.lock
 RUN chmod a+w /tmp -R
+
+# Add unprivileged user
+RUN adduser --disabled-password --gecos '' plots
+USER plots
 
 RUN bundle install --jobs 4
 
