@@ -24,7 +24,7 @@ RUN npm install -g bower
 
 RUN echo "umask 0002" >> /etc/bash.bashrc
 
-RUN useradd --disabled-password --gecos '' plots
+RUN adduser --disabled-password --gecos '' plots
 USER plots
 
 # Install bundle of gems
