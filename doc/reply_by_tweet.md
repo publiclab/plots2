@@ -20,6 +20,13 @@
 
 - Set environment varible `TWEET_SEARCH` to `to:PublicLab` and `WEBSITE_HOST_PATTERN` to `://publiclab.org/n/`
 
+To use this feature we have to set some environment variables which includes Twitter Api keys and Searching Query:
+
+For getting Twitter Keys go to [Twitter app keys](https://apps.twitter.com/)
+Environment varible used for twitter keys are : `TWITTER_CONSUMER_KEY`, `TWITTER_CONSUMER_SECRET`, `TWITTER_ACCESS_TOKEN` and `TWITTER_ACCESS_TOKEN_SECRET`.
+
+Other Environment variable used are : `WEBSITE_HOST_PATTERN` which can be like `//publiclab.org/n/` and `TWEET_SEARCH` which is used to search for the twwets and can be like `to:publiclab`.
+
 ### Summery
 
 Once a minute, this system scans tweets "to:PublicLab" (or specified search, see below) for URLs matching our shortlink pattern, i.e. "https://publiclab.org/n/_____", where "_____" is a node nid. Each of the returned tweets is added as a comment to the node it responded to.
