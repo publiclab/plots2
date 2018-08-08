@@ -18,14 +18,10 @@
 
 - Same process is with when there are no comment present with tweet_id in the comment table where we search for all the replied tweets to the `publiclab`.
 
-- Set environment varible `TWEET_SEARCH` to `to:PublicLab` and `WEBSITE_HOST_PATTERN` to `://publiclab.org/n/`
-
-To use this feature we have to set some environment variables which includes Twitter Api keys and Searching Query:
-
-For getting Twitter Keys go to [Twitter app keys](https://apps.twitter.com/)
+To use this feature we have to set some environment variables which includes Twitter Api keys and Searching Query: For getting Twitter Keys go to [Twitter app keys](https://apps.twitter.com/)
 Environment varible used for twitter keys are : `TWITTER_CONSUMER_KEY`, `TWITTER_CONSUMER_SECRET`, `TWITTER_ACCESS_TOKEN` and `TWITTER_ACCESS_TOKEN_SECRET`.
 
-Other Environment variable used are : `WEBSITE_HOST_PATTERN` which can be like `//publiclab.org/n/` and `TWEET_SEARCH` which is used to search for the twwets and can be like `to:publiclab`.
+Other Environment variable used are : `WEBSITE_HOST_PATTERN` which can be like `//publiclab.org/n/` and `TWEET_SEARCH` which is used to search for the tweets and can be like `to:publiclab`.
 
 ### Summery
 
