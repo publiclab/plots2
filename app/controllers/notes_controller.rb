@@ -111,7 +111,7 @@ class NotesController < ApplicationController
                                               body: params[:body],
                                               main_image: params[:main_image],
                                               draft: params[:draft])
-
+      @node.notify_callout_users
       if params[:draft] == "true" && current_user.first_time_poster
         flash[:notice] = "First-time users are not eligible to create a draft."
         redirect_to '/'

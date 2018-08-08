@@ -948,4 +948,17 @@ class Node < ActiveRecord::Base
     @token = slug.split('token:').last
     url = 'https://publiclab.org/notes/show/' + nid.to_s + '/' + @token.to_s
   end
+
+  def notify_callout_users
+    # notify mentioned users
+    mentioned_users.each do |user|
+      NodeMailer.notify_callout(self, user).deliver_now if user.username != author.username
+    end
+  end
+
+  def mentioned_users
+    usernames = latest.body.scan(Callouts.const_get(:FINDER))
+    User.where(username: usernames.map { |m| m[1] }).distinct
+  end
+
 end

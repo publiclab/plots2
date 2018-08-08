@@ -110,7 +110,7 @@ class Comment < ApplicationRecord
   def notify_callout_users
     # notify mentioned users
     mentioned_users.each do |user|
-      CommentMailer.notify_callout(self, user).deliver_now if user.username != author.username
+      NodeMailer.notify_callout(self, user).deliver_now if user.username != author.username
     end
   end
 
