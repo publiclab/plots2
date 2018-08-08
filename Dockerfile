@@ -27,7 +27,8 @@ RUN echo "umask 0002" >> /etc/bash.bashrc
 WORKDIR /tmp
 COPY Gemfile /tmp/Gemfile
 COPY Gemfile.lock /tmp/Gemfile.lock
-RUN chmod a+w /tmp -R
+ADD . /app
+RUN chmod a+w /tmp /app/public -R
 
 # Add unprivileged user
 RUN adduser --disabled-password --gecos '' plots
@@ -35,7 +36,6 @@ USER plots
 
 RUN bundle install --jobs 4
 
-ADD . /app
 WORKDIR /app
 
 RUN bower install
