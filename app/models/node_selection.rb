@@ -7,4 +7,13 @@ class NodeSelection < ApplicationRecord
   def user
     User.find_by(username: DrupalUser.find_by(uid: user_id).name)
   end
+
+  def self.is_following?(user_id, node_id)
+    selection = NodeSelection.where(user_id: user_id, nid: node_id)
+    if selection.nil?
+      return true
+    else
+      return selection
+    end
+  end
 end
