@@ -20,7 +20,7 @@ class ExecuteSearch
      when :tags
        sresult = sservice.textSearch_tags(search_criteria.query)
      when :peoplelocations
-       sresult = sservice.recentPeople(search_criteria.query, search_criteria.tag)
+       sresult = sservice.people_locations(search_criteria.query, search_criteria.tag)
      when :taglocations
        if search_criteria.query.include? ","
          sresult = sservice.tagNearbyNodes(search_criteria.query, search_criteria.tag)

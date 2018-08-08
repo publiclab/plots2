@@ -4,7 +4,7 @@ class SearchHelperTest < ActionView::TestCase
 
 	test "search Recent People helper" do
 		sservice = SearchService.new
-		result = sservice.recentPeople(100)
+		result = sservice.people_locations(100)
 		assert_equal result.items.first.docType , "people_coordinates"
 		assert_equal result.items.first.docTitle , users(:bob).username
 		assert_equal result.items.first.docSummary , 0

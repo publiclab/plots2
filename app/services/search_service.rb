@@ -167,7 +167,7 @@ class SearchService
 
   # GET X number of latest people/contributors and package up as a DocResult
   # X = srchString
-  def recentPeople(srchString, tagName = nil)
+  def people_locations(srchString, tagName = nil)
     sresult = DocList.new
 
     user_scope = User.where('rusers.status <> 0')\
