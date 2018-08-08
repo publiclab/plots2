@@ -23,7 +23,7 @@ services:
     command: redis-server
   web:
     build: ..
-    user: ${USER}
+    user: ${UID}
     command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start -p 4000"
     environment:
       - RAILS_ENV=${RAILS_ENV}

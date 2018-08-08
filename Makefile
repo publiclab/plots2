@@ -1,3 +1,5 @@
+export UID
+
 build:
 	cp config/database.yml.example config/database.yml
 	cp db/schema.rb.example db/schema.rb
