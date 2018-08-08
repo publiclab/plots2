@@ -7,7 +7,6 @@ LABEL description="This image deploys Plots2."
 
 # Set correct environment variables.
 RUN mkdir -p /app
-ENV HOME /root
 ENV PHANTOMJS_VERSION 2.1.1
 
 #RUN echo \
@@ -31,6 +30,7 @@ USER plots
 WORKDIR /tmp
 COPY Gemfile /tmp/Gemfile
 COPY Gemfile.lock /tmp/Gemfile.lock
+RUN chmod a+w /tmp -R
 
 RUN bundle install --jobs 4
 
