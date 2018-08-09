@@ -29,7 +29,7 @@ COPY Gemfile /tmp/Gemfile
 COPY Gemfile.lock /tmp/Gemfile.lock
 ADD . /app
 RUN mkdir -p /app/public
-RUN chmod a+w /tmp /app/public /app/Gemfile.lock -R
+RUN chmod a+w /tmp /app/public /app/Gemfile.lock /app/log /app/spec -R
 
 # Add unprivileged user
 RUN adduser --disabled-password --gecos '' plots
