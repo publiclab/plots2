@@ -333,6 +333,7 @@ class Comment < ApplicationRecord
   end
 
   def self.receive_tweet
+    puts "i am here"
     comments = Comment.where.not(tweet_id: nil)
     if comments.any?
       receive_tweet_using_since comments
@@ -346,6 +347,9 @@ class Comment < ApplicationRecord
     since_id = comment.tweet_id
     tweets = Client.search(ENV["TWEET_SEARCH"], since_id: since_id).collect do |tweet|
       tweet
+    end
+    tweets.each do |tweet|
+      puts tweet.text
     end
     tweets = tweets.reverse
     check_and_add_tweets tweets
