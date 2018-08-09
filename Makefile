@@ -37,15 +37,8 @@ deploy-container:
 	docker-compose exec -T web service cron start
 
 test-container:
-	docker-compose up -d
-	docker-compose exec -u root -T web chmod a+w Gemfile.lock
-	docker-compose exec -T web bundle install
-	docker-compose exec -T web rake db:setup
-	docker-compose exec -T web rake db:migrate
-	docker-compose exec -T web bower install --allow-root
 	docker-compose exec -T web rake test:all
 	docker-compose exec -T web rails test -d
-	docker-compose down
 
 install-dev:
 	echo "Installing RubyGems"
