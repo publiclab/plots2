@@ -70,6 +70,8 @@ gem 'reverse_markdown'
 
 gem 'twitter'
 
+gem 'rake',  '~> 12.3.1'
+
 # run with `bundle install --without production` or `bundle install --without mysql` to exclude this
 group :mysql, :production do
   gem 'mysql2', '>= 0.4.4'
@@ -104,7 +106,6 @@ group :test, :development do
   gem 'openssl', '~> 2.0.0.beta.1'
   gem 'phantomjs'
   gem 'rails-perftest'
-  gem 'rake',  '~> 12.3.1'
   gem 'rest-client'
   gem 'rspec'
   gem 'test-unit'
