@@ -13,19 +13,19 @@ before_install:
   - echo -e "repo_token:\n  $COVERALLS_REPO_TOKEN" >> ./.coveralls.yml
 
 install:
+  - export UID
   - cp config/database.yml.example config/database.yml
   - cp db/schema.rb.example db/schema.rb
   - docker-compose build
   - docker-compose up -d
   - docker-compose exec web sleep 5
-  - docker-compose logs db
-  - netstat -ltpn
   - docker-compose exec web bash -c "rake db:setup"
   - docker-compose exec web bash -c "rake db:migrate"
   - docker-compose exec web bower install --allow-root
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then gem install danger danger-junit; fi'
 
 script:
+  - export UID
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rake test:all"
   - docker-compose exec web bash -c "CI=TRUE GENERATE_REPORT=true rails test -d"
   - echo -e '<?xml version="1.0" encoding="UTF-8"?>' > output.xml

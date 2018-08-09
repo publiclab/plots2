@@ -29,8 +29,8 @@ COPY Gemfile /tmp/Gemfile
 COPY Gemfile.lock /tmp/Gemfile.lock
 ADD . /app
 RUN mkdir -p /app/public /app/log
-RUN touch /app/passenger.4000.pid
-RUN chmod a+w /tmp /app/public /app/Gemfile.lock /app/passenger.4000.pid /app/log /app/spec -R
+RUN touch /app/passenger.4000.pid /app/passenger.4000.pid.lock
+RUN chmod a+w /tmp /app/public /app/Gemfile.lock /app/passenger.4000.pid /app/passenger.4000.pid.lock /app/log /app/spec -R
 
 # Add unprivileged user
 RUN adduser --disabled-password --gecos '' plots
