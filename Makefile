@@ -37,8 +37,8 @@ deploy-container:
 	docker-compose exec -T web service cron start
 
 test-container:
-	docker-compose exec -T web rake test:all
-	docker-compose exec -T web rails test -d
+	docker-compose run -T web rake test:all
+	docker-compose run -T web rails test -d
 
 install-dev:
 	echo "Installing RubyGems"
