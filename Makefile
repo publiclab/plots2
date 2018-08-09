@@ -22,8 +22,6 @@ redeploy-container:
 deploy-container:
 	docker-compose run web sleep 5
 	docker-compose run web rake db:migrate
-	docker-compose run web bower install --allow-root
-	docker-compose run web bower update --allow-root
 	docker-compose run web rake assets:precompile
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
