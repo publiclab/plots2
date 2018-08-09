@@ -20,11 +20,11 @@
 # Learn more: http://github.com/javan/whenever
 
 # Cron Job log file
-set :output, "#{Dir.pwd}/public/cron_log.log"
 
 set :bundle_command, 'bundle exec'
+job_type :runner,  "cd :path && :bundle_command rails runner -e :environment ':task' :output"
 
-env :PATH, ENV['PATH']
+set :output, "#{Dir.pwd}/public/cron_log.log"
 
 # To simply print date into the log file for checking if cron job is working properly
 every 1.minutes do
