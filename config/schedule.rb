@@ -22,6 +22,8 @@
 # Cron Job log file
 set :output, "#{Dir.pwd}/public/cron_log.log"
 
+set :bundle_command, 'bundle exec'
+
 # To simply print date into the log file for checking if cron job is working properly
 every 1.minutes do
 	puts Dir.pwd
