@@ -37,8 +37,8 @@ deploy-container:
 	docker-compose exec -T web service cron start
 
 test-container:
-	docker-compose run web sleep 5
 	docker-compose up -d
+	sleep 5
 	docker-compose exec -T web rake test:all
 	docker-compose exec -T web rails test -d
 	docker-compose down
