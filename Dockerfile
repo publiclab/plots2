@@ -28,7 +28,7 @@ WORKDIR /tmp
 COPY Gemfile /tmp/Gemfile
 COPY Gemfile.lock /tmp/Gemfile.lock
 ADD . /app
-RUN mkdir -p /app/public
+RUN mkdir -p /app/public /app/log
 RUN chmod a+w /tmp /app/public /app/Gemfile.lock /app/log /app/spec -R
 
 # Add unprivileged user
