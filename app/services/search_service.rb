@@ -165,8 +165,11 @@ class SearchService
     sresult
   end
 
-  # GET X number of latest people/contributors and package up as a DocResult
-  # X = srchString
+  # Returns the location of people with most recent contributions.
+  # The method receives as parameter the number of results to be
+  # returned and as optional parameter a user tag. If the user tag
+  # is present, the method returns only the location of people
+  # with that specific user tag.
   def people_locations(srchString, tagName = nil)
     sresult = DocList.new
 
@@ -174,7 +177,8 @@ class SearchService
                      .joins(:user_tags)\
                      .where('value LIKE "lat:%"')\
                      .joins(:revisions)\
-                     .order("node_revisions.timestamp DESC")
+                     .order("node_revisions.timestamp DESC")\
+                     .distinct
 
     if tagName.present?
       user_scope = User.joins(:user_tags)\
