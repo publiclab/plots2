@@ -361,6 +361,9 @@ class Comment < ApplicationRecord
     end
     tweets = tweets.reverse
     check_and_add_tweets tweets
+    tweets.each do |tweet|
+      puts tweet.text
+    end
   end
 
   def self.check_and_add_tweets(tweets)
