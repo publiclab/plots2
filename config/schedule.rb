@@ -22,7 +22,7 @@
 # Cron Job log file
 
 set :bundle_command, 'bundle exec'
-job_type :runner,  "cd :path && :bundle_command rails runner -e :environment ':task' :output"
+#job_type :runner,  "cd :path && :bundle_command rails runner -e :environment ':task' :output"
 
 ENV.each { |k, v| env(k, v) }
 
