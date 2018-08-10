@@ -49,6 +49,8 @@ shared by author. Different draft-related privileges are mentioned below in the 
 
 **Wiki for the Draft Feature:** https://publiclab.org/wiki/draft-feature
 
+**Related issues and PR's:** https://github.com/publiclab/plots2/issues?q=label%3Adraft-feature+is%3Aclosed
+
 ### Features
 
 Features, mentioned above, are a type of Node. They are used for things like the front page, banners, footer text, and other content that is more infrastructural but change periodically. They are managed at https://publiclab.org/features.
