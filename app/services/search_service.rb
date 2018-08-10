@@ -173,31 +173,7 @@ class SearchService
   def people_locations(srchString, tagName = nil)
     sresult = DocList.new
 
-    user_scope =
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-         User.select('rusers.*, node_revisions.timestamp')
-             .where('rusers.status <> 0')\
-             .joins(:user_tags)\
-             .where('value LIKE "lat:%"')\
-             .joins(:revisions)\
-             .order("node_revisions.timestamp DESC")\
-             .distinct
-      else
-        User.where('rusers.status <> 0')\
-            .joins(:user_tags)\
-            .where('value LIKE "lat:%"')\
-            .joins(:revisions)\
-            .order("node_revisions.timestamp DESC")\
-            .distinct
-      end
-
-    if tagName.present?
-      user_scope = User.joins(:user_tags)\
-                       .where('user_tags.value LIKE ?', tagName)\
-                       .where(id: user_scope.select("rusers.id"))
-    end
-
-    user_scope = user_scope.limit(srchString.to_i)
+    user_scope = SrchScope.find_locations(srchString, tagName)
 
     user_scope.each do |user|
       blurred = user.has_power_tag("location") ? user.get_value_of_power_tag("location") : false
