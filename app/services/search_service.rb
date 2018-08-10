@@ -173,12 +173,23 @@ class SearchService
   def people_locations(srchString, tagName = nil)
     sresult = DocList.new
 
-    user_scope = User.where('rusers.status <> 0')\
-                     .joins(:user_tags)\
-                     .where('value LIKE "lat:%"')\
-                     .joins(:revisions)\
-                     .order("node_revisions.timestamp DESC")\
-                     .distinct
+    user_scope =
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+         User.select('rusers.*, node_revisions.timestamp')
+             .where('rusers.status <> 0')\
+             .joins(:user_tags)\
+             .where('value LIKE "lat:%"')\
+             .joins(:revisions)\
+             .order("node_revisions.timestamp DESC")\
+             .distinct
+      else
+        User.where('rusers.status <> 0')\
+            .joins(:user_tags)\
+            .where('value LIKE "lat:%"')\
+            .joins(:revisions)\
+            .order("node_revisions.timestamp DESC")\
+            .distinct
+      end
 
     if tagName.present?
       user_scope = User.joins(:user_tags)\
