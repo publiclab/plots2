@@ -33,7 +33,7 @@ Node `status` -- a property of `Node`, can be:
 * 0: banned
 * 1: normal
 * 3: draft
-* 4: moderated
+* 4: moderated -- i.e. node created by a first-time poster, and has not yet been "approved"
 
 ### Drafts
 
@@ -47,6 +47,7 @@ shared by author. Different draft-related privileges are mentioned below in the 
 | Normal User | Yes | Yes, if author or co-author | Yes, if author or co-author |
 | Moderator and Admin | Yes | Yes | Yes | 
 
+**Wiki for the Draft Feature:** https://publiclab.org/wiki/draft-feature
 
 ### Features
 
