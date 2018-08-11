@@ -22,9 +22,5 @@ before_script:
 
 job:
   script:
-    - docker-compose exec -T web strace -o trace1.log rake test:all
-    - docker-compose exec -T web strace -o trace2.log rails test -d
-  artifacts:
-    paths:
-    - trace1.log
-    - trace2.log
+    - docker-compose exec -T web rake test:all
+    - docker-compose exec -T web rails test -d
