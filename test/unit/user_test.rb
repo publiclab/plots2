@@ -37,7 +37,7 @@ class UserTest < ActiveSupport::TestCase
   test 'user mysql native fulltext search' do
     assert User.count > 0
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      users = User.search_by_username('jeff')
+      users = User.search('jeff')
       assert_not_nil users
       assert users.length > 0
     end

@@ -42,8 +42,8 @@ class User < ActiveRecord::Base
   before_save :set_token
   after_destroy :destroy_drupal_user
 
-  def self.search_by_username(query)
-    User.where('MATCH(username) AGAINST((?) IN BOOLEAN MODE)', query + '*')
+  def self.search(query)
+    User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
   end
 
   def new_contributor

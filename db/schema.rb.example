@@ -336,7 +336,8 @@ ActiveRecord::Schema.define(version: 2018_08_04_215454) do
     t.string   "token"
     t.integer  "status",                                default: 0
     t.integer "password_checker", default: 0
-    t.index ["username"], name: "rusers_username_fulltext_idx", type: :fulltext
+    t.index ["username", "bio"], name: "index_rusers_on_username_and_bio", type: :fulltext if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+    t.index ["username"], name: "rusers_username_fulltext_idx", type: :fulltext if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
   end
 
   create_table "tag_selections", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
