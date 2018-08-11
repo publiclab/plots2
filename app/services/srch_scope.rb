@@ -66,23 +66,12 @@ class SrchScope
   end
 
   def self.find_locations(limit, user_tag = nil)
-    user_locations =
-      if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-        User.select('rusers.*,node_revisions.timestamp')
-            .where('rusers.status <> 0')\
-            .joins(:user_tags)\
-            .where('value LIKE "lat:%"')\
-            .joins(:revisions)\
-            .order("node_revisions.timestamp DESC")\
-            .distinct
-      else
-        User.where('rusers.status <> 0')\
-            .joins(:user_tags)\
-            .where('value LIKE "lat:%"')\
-            .joins(:revisions)\
-            .order("node_revisions.timestamp DESC")\
-            .distinct
-      end
+    user_locations = User.where('rusers.status <> 0')\
+                         .joins(:user_tags)\
+                         .where('value LIKE "lat:%"')\
+                         .joins(:revisions)\
+                         .order("node_revisions.timestamp DESC")\
+                         .distinct
     if user_tag.present?
       user_locations = User.joins(:user_tags)\
                        .where('user_tags.value LIKE ?', user_tag)\
