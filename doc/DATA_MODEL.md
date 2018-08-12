@@ -28,6 +28,29 @@ Nodes may also be redirects, though this use is legacy only. More documentation 
 
 Notes (type `note`) can also be a sub-type called Questions, if they have a tag starting with `question:` -- which gives them extra features such as the ability to have Answers (see below).
 
+Node `status` -- a property of `Node`, can be:
+
+* 0: banned
+* 1: normal
+* 3: draft
+* 4: moderated -- i.e. node created by a first-time poster, and has not yet been "approved"
+
+### Drafts
+
+Drafts are a type of Research notes. They can be used by users to save their research notes without publishing them publically. But, not all users are eligible to create draft.
+Only users who have successfully published their first-note would be shown option for creating draft. Draft would be visible to co-author and other users can access it using secret link
+shared by author. Different draft-related privileges are mentioned below in the table:
+
+| User Role | Draft Creation | Draft Editing | Draft Publishing |
+| ------------ |--------------------|-------------------|-----------------------|
+| New Contributor | No | Yes, if co-author made by normal user | Yes, if co-author |
+| Normal User | Yes | Yes, if author or co-author | Yes, if author or co-author |
+| Moderator and Admin | Yes | Yes | Yes | 
+
+**Wiki for the Draft Feature:** https://publiclab.org/wiki/draft-feature
+
+**Related issues and PR's:** https://github.com/publiclab/plots2/issues?q=label%3Adraft-feature+is%3Aclosed
+
 ### Features
 
 Features, mentioned above, are a type of Node. They are used for things like the front page, banners, footer text, and other content that is more infrastructural but change periodically. They are managed at https://publiclab.org/features.
