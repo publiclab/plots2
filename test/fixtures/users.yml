@@ -171,3 +171,42 @@ jeffrey:
   bio: 'Here is something really interesting about Jeff.'
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
+
+steff1:
+  username: steff1
+  status: 1
+  email: steff1@pxlshp.com
+  id: 15
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+steff2:
+  username: steff2
+  status: 1
+  email: steff2@pxlshp.com
+  id: 16
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+steff3:
+  username: steff3
+  status: 1
+  email: steff3@pxlshp.com
+  id: 17
+  password_salt: <%= salt = Authlogic::Random.hex_token %>
+  crypted_password: <%= Authlogic::CryptoProviders::Sha512.encrypt("secretive" + salt) %>
+  persistence_token: <%= Authlogic::Random.hex_token %>
+  last_request_at: <%= Time.now %>
+  bio: ''
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
