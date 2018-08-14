@@ -313,7 +313,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 17
+    assert_equal selector.size, 20
     assert_select "div p", 'Pending approval by community moderators. Please be patient!'
   end
 
@@ -342,7 +342,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 17
+    assert_equal selector.size, 20
     assert_select "p", "Moderate first-time post: \n              Approve\n              Spam"
   end
 
@@ -554,7 +554,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_redirected_to note.path(:question) + '?_=' + Time.now.to_i.to_s
   end
 
-  
+
   test 'should render a text/plain when the note is edited through xhr' do
     user = UserSession.create(users(:jeff))
     note = nodes(:one)
@@ -648,7 +648,7 @@ class NotesControllerTest < ActionController::TestCase
       old_controller = @controller
       @controller = SettingsController.new
 
-      get :change_locale, params: { locale: lang.to_s } 
+      get :change_locale, params: { locale: lang.to_s }
 
       @controller = old_controller
 
