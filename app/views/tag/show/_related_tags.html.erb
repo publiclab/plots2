@@ -1,0 +1,5 @@
+<% if @related_tags %>
+  <br/>
+  <%=  render :partial => "tag/related", :locals => {tags: @related_tags } %>
+  <br/>
+<% end %>
