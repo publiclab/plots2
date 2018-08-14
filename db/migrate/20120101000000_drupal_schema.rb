@@ -467,7 +467,7 @@ class DrupalSchema < ActiveRecord::Migration[5.1]
     unless index_exists? "url_alias", [:dst, :language, :pid], name: "dst_language_pid"
       add_index "url_alias", ["dst", "language", "pid"], :name => "dst_language_pid"
     end
-    
+
     unless index_exists? "url_alias", [:src, :language, :pid], name: "src_language_pid"
       add_index "url_alias", ["src", "language", "pid"], :name => "src_language_pid"
     end

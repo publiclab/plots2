@@ -1,6 +1,6 @@
-Rails.application.config.assets.precompile += [  
+Rails.application.config.assets.precompile += [
   'leaflet-blurred-location/dist/Leaflet.BlurredLocation.js',
-  
+
   'advanced_search.js',
   'application.js',
   'comment_expand.js',
@@ -30,7 +30,7 @@ Rails.application.config.assets.precompile += [
   'textbox_expand.js',
   'users.js',
   'wikis.js',
-  
+
   'blog.css',
   'comments.css',
   'dashboard.css',
@@ -48,6 +48,5 @@ Rails.application.config.assets.precompile += [
   'user_tags.css.scss',
   'wiki.css',
   'horsey.js',
-  'comment-autocomplete'
+  'atwho_autocomplete.js'
 ]
-

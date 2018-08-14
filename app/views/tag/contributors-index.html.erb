@@ -1,4 +1,3 @@
-<%= render :partial => "sidebar/featured" %>
 <div class="col-md-9">
   <% if !@tags.empty? %>
     <% @tags.each do |tag| %>
@@ -63,3 +62,5 @@
   <% end %>
 
 </div>
+
+<%= render partial: "sidebar/featured" %>

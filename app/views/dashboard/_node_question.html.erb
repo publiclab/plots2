@@ -1,7 +1,7 @@
 <div class="col-md-6 note-container-question">
   <div class="note note-pane note-question<% if node.status == 4 %> moderated<% end %>">
     
-    <div class="header-icon"><i class="fa fa-question-circle"></i></div>
+    <div class="header-icon"><i class="fa fa-question-circle"></i> <a href="/q/<%= node.id %>"><i class="fa fa-link"></i></a></div>
 
     <div style="overflow: hidden;">
 
@@ -16,9 +16,10 @@
       <% if node.answers.collect(&:accepted).include?(true) %>
         <p><span class="label accepted">Answered</span></p>
       <% end %>
- 
+      
       <a href="<%= node.path(:question) %>#post-answer" class="btn btn-default btn-xs pull-right respond answer"><%= t('dashboard._node_question.post_answer') %></a>
-  
+      <a href="/q/<%= node.id %>" class="btn btn-default btn-xs pull-right respond answer"><i class="fa fa-link"></i> #<%= node.id %></a>
+
       <p class="meta"><%= t('dashboard._node_question.question') %> <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 
     </div>

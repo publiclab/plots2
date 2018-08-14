@@ -27,7 +27,7 @@
       </div>
     </div>
     <div id="c<%= answer.id %>show" style="padding:0px 20px">
-      <p><%= raw insert_extras(answer.body_markdown) %></p>
+      <p><%= sanitize insert_extras(answer.body_markdown) %></p>
     </div>
     <% if current_user && params[:action]!="make_answer" %>
       <%=  render :partial => "comments/edit", :locals => { title: "Edit answer", comment: answer, placeholder: "Help users by posting an answer to this question" } %>

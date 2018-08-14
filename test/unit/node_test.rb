@@ -246,7 +246,9 @@ class NodeTest < ActiveSupport::TestCase
 
   test 'should find all research notes' do
     notes = Node.research_notes
-    expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog), nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade), nodes(:draft)]
+    expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog),
+                nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade),
+                nodes(:draft), nodes(:post_test1), nodes(:post_test2), nodes(:post_test3)]
     assert_equal expected, notes
   end
 

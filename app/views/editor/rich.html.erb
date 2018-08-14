@@ -168,13 +168,13 @@
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
         <span id="text" style="display: none; color:red;">
-          Others won't see your post yet 
+          Others won't see your post yet
           (<a href="https://publiclab.org/draft-feature" targrt="_blank">?</a>) &nbsp; &nbsp;</span>
           <span class="checkbox">
             <label>
               <input type="checkbox" id="myCheck" onclick="draftCheck()" />
               Save as draft
-            </label> | 
+            </label> |
           </span>
           <span class="ple-steps-left">2</span>
           <span class="hidden-xs"> steps left</span>
@@ -185,8 +185,6 @@
   </div>
 
 </div>
-
-
 <script>
 
   var editor;
@@ -294,7 +292,6 @@
         }
       }
     });
-
   })();
 
   $('.legacy-button').click(function onLegacyClick(event) {
@@ -317,5 +314,4 @@
       }
       console.log("Draft:", editor.data.draft);
   }
-
 </script>

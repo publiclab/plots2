@@ -84,6 +84,7 @@ class CommentController < ApplicationController
       @comment.answer_comment_notify(current_user)
       respond_to do |format|
         format.js { render template: 'comment/create' }
+        format.html { render template: 'comment/create.html' }
       end
     else
       flash[:error] = 'The comment could not be saved.'
@@ -155,8 +156,10 @@ class CommentController < ApplicationController
        current_user.role == 'admin' ||
        current_user.role == 'moderator'
 
+      node_id = @comment.nid.zero? ? @comment.answer.nid : @comment.nid
+
       @answer = Answer.new(
-        nid: @comment.nid,
+        nid: node_id,
         uid: @comment.uid,
         content: @comment.comment,
         created_at: @comment.created_at,

@@ -11,44 +11,60 @@ class SearchService
 
   # Run a search in any of the associated systems for references that contain the search string
   # and package up as a DocResult
-  def textSearch_all(srchString)
+  def textSearch_all(search_criteria)
     sresult = DocList.new
 
     # notes
-    noteList = textSearch_notes(srchString)
+    noteList = textSearch_notes(search_criteria.query)
     sresult.addAll(noteList.items)
 
     # Node search
     Node.limit(5)
       .order('nid DESC')
-      .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + srchString + '%')
+      .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + search_criteria.query + '%')
       .select('title,type,nid,path').each do |match|
       doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
       sresult.addDoc(doc)
     end
     # User profiles
-    userList = textSearch_profiles(srchString)
+    userList = profiles(search_criteria)
     sresult.addAll(userList.items)
 
     # Tags
-    tagList = textSearch_tags(srchString)
+    tagList = textSearch_tags(search_criteria.query)
     sresult.addAll(tagList.items)
     # maps
-    mapList = textSearch_maps(srchString)
+    mapList = textSearch_maps(search_criteria.query)
     sresult.addAll(mapList.items)
     # questions
-    qList = textSearch_questions(srchString)
+    qList = textSearch_questions(search_criteria.query)
     sresult.addAll(qList.items)
 
     sresult
   end
 
-  # Search profiles for matching text and package up as a DocResult
-  def textSearch_profiles(srchString)
-    sresult = DocList.new
+  # Search profiles for matching text with optional order_by=recent param and
+  # sorted direction DESC by default
+  # then the list is packaged up as a DocResult
 
-    users = SrchScope.find_users(srchString, limit = nil)
-    # User profiles
+  # If no sort_by value present, then it returns a list of profiles ordered by id DESC
+  # a recent activity may be a node creation or a node revision
+  def profiles(search_criteria)
+    user_scope = SrchScope.find_users(search_criteria.query, limit = 10)
+
+    user_scope =
+      if search_criteria.sort_by == "recent"
+        user_scope.joins(:revisions)
+                  .order("node_revisions.timestamp #{search_criteria.order_direction}")
+                  .distinct
+
+      else
+        user_scope.order(id: :desc)
+      end
+
+    users = user_scope.limit(10)
+
+    sresult = DocList.new
     users.each do |match|
       doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
       sresult.addDoc(doc)
@@ -167,10 +183,10 @@ class SearchService
 
   # GET X number of latest people/contributors and package up as a DocResult
   # X = srchString
-  def recentPeople(srchString, tagName = nil)
+  def recentPeople(_srchString, tagName = nil)
     sresult = DocList.new
 
-    nodes = Node.all.order("changed DESC").limit(srchString).distinct
+    nodes = Node.all.order("changed DESC").limit(100).distinct
     users = []
     nodes.each do |node|
       if node.author.status != 0

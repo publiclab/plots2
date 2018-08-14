@@ -193,7 +193,7 @@ class Node < ActiveRecord::Base
 
   def notify
     if status == 4
-      AdminMailer.notify_node_moderators(self)
+      AdminMailer.notify_node_moderators(self).deliver_now
     else
       SubscriptionMailer.notify_node_creation(self).deliver_now
     end
@@ -733,7 +733,10 @@ class Node < ActiveRecord::Base
                                  nid: id)
           if node_tag.save
             saved = true
-            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty? || status == 3 || status == 4
+            # send email notification if there are subscribers, status is OK, and less than 1 month old
+            unless tag.subscriptions.empty? || status == 3 || status == 4 || created < (DateTime.now - 1.month).to_i
+              SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now
+            end
           else
             saved = false
             tag.destroy

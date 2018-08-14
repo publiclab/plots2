@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :likes
+  has_many :revisions, through: :node
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
@@ -42,7 +43,7 @@ class User < ActiveRecord::Base
   after_destroy :destroy_drupal_user
 
   def self.search(query)
-    User.where('MATCH(username, bio) AGAINST(?)', query)
+    User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
   end
 
   def new_contributor
@@ -435,12 +436,14 @@ class User < ActiveRecord::Base
     charset = Array('A'..'Z') + Array('a'..'z') + Array(0..9)
     email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
     email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
+    hash = { "facebook" => 1, "github" => 2, "google_oauth2" => 3, "twitter" => 4 }
     create! do |user|
       s = SecureRandom.urlsafe_base64
       user.username = email_prefix
       user.email = auth["info"]["email"]
       user.password = s
       user.password_confirmation = s
+      user.password_checker = hash[auth["provider"]]
       user.save!
     end
   end

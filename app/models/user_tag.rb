@@ -1,6 +1,6 @@
 class UserTag < ApplicationRecord
+  serialize :data
   belongs_to :user, foreign_key: :uid
-
   validates :value, presence: :true
   validates :value, format: { with: /\A[\w\.:-]*\z/, message: 'can only include letters, numbers, and dashes' }
   validates_uniqueness_of :value, :scope => :uid
@@ -27,7 +27,7 @@ class UserTag < ApplicationRecord
 
   def self.create_with_omniauth(auth, uid)
     create(value: "oauth:" + auth['provider'] + ":" + auth['uid'],
-          uid: uid)
+          uid: uid, data: auth.to_hash)
   end
 
   def self.remove_if_exists(uid, value)
