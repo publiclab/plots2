@@ -69,7 +69,7 @@ class SrchScope
     user_locations = User.where('rusers.status <> 0')\
                          .joins(:user_tags)\
                          .where('value LIKE "lat:%"')\
-                         .joins(:revisions)\
+                         .includes(:revisions)\
                          .order("node_revisions.timestamp DESC")\
                          .distinct
     if user_tag.present?
