@@ -62,4 +62,22 @@ class SrchScope
       .joins(:tag)
       .where('term_data.name LIKE ?', 'question:%')
   end
+
+  def self.find_locations(limit, user_tag = nil)
+    user_locations = User.where('rusers.status <> 0')\
+                         .joins(:user_tags)\
+                         .where('value LIKE "lat:%"')\
+                         .includes(:revisions)\
+                         .order("node_revisions.timestamp DESC")\
+                         .distinct
+    if user_tag.present?
+      user_locations = User.joins(:user_tags)\
+                       .where('user_tags.value LIKE ?', user_tag)\
+                       .where(id: user_locations.select("rusers.id"))
+    end
+
+    user_locations = user_locations.limit(limit.to_i)
+
+    user_locations
+  end
 end

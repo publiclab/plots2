@@ -181,29 +181,18 @@ class SearchService
     sresult
   end
 
-  # GET X number of latest people/contributors and package up as a DocResult
-  # X = srchString
-  def recentPeople(_srchString, tagName = nil)
+  # Returns the location of people with most recent contributions.
+  # The method receives as parameter the number of results to be
+  # returned and as optional parameter a user tag. If the user tag
+  # is present, the method returns only the location of people
+  # with that specific user tag.
+  def people_locations(srchString, tagName = nil)
     sresult = DocList.new
 
-    nodes = Node.all.order("changed DESC").limit(100).distinct
-    users = []
-    nodes.each do |node|
-      if node.author.status != 0
-        if tagName.blank?
-          users << node.author.user
-        else
-          users << node.author.user if node.author.user.has_tag(tagName)
-        end
-      end
-    end
-    users = users.uniq
-    users.each do |user|
-      next unless user.has_power_tag("lat") && user.has_power_tag("lon")
-      blurred = false
-      if user.has_power_tag("location")
-        blurred = user.get_value_of_power_tag("location")
-      end
+    user_scope = SrchScope.find_locations(srchString, tagName)
+
+    user_scope.each do |user|
+      blurred = user.has_power_tag("location") ? user.get_value_of_power_tag("location") : false
       doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
       sresult.addDoc(doc)
     end
