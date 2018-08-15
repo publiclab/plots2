@@ -41,7 +41,7 @@ test-container:
 	docker-compose exec -T web rake db:migrate
 	docker-compose exec -T web bower install --allow-root
 	docker-compose exec -T web rake test:all
-	docker-compose exec -T web strace -s 128 -o trace.log rails test -d
+	docker-compose exec -T web strace -s 256 -o trace.log rails test -d
 	docker-compose down
 
 install-dev:
