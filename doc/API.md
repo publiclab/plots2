@@ -13,6 +13,17 @@ https://publiclab.org/api/swagger_doc.json
 Per-model API endpoints are:
 
 * Profiles: https://publiclab.org/api/srch/profiles?srchString=foo
+
+This also accepts the following additional parameters:
+
+- `sort_by`: if 'recent' is passed, it returns the profiles from users with the most recent activity, otherwise, the results are sorted by user id (desc);
+- `order_direction`: `ASC` or `DESC` (the latter is the default);
+- `field`: if 'username' is passed, it returns the profiles from users searched by username only, otherwise by username and bio for a broader search.
+
+Example of full URL with the optional params (using the order_by DESC default value):
+
+https://publiclab.org/api/srch/profiles?srchString=foo&sort_by=recent&field=username
+
 * Questions: https://publiclab.org/api/srch/questions?srchString=foo
 * Tags: https://publiclab.org/api/srch/tags?srchString=foo
 * Notes: https://publiclab.org/api/srch/notes?srchString=foo

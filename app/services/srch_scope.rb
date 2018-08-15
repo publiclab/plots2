@@ -11,6 +11,17 @@ class SrchScope
     end
   end
 
+  def self.find_by_username(query, limit)
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      User.search_by_username(query)
+          .where('rusers.status = ?', 1)
+          .limit(limit)
+    else
+      User.where('username LIKE ? AND rusers.status = 1', '%' + input + '%')
+          .limit(limit)
+    end
+  end
+
   def self.find_tags(input, limit)
     tags = Tag.includes(:node)
       .references(:node)

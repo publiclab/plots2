@@ -46,6 +46,10 @@ class User < ActiveRecord::Base
     User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
   end
 
+  def self.search_by_username(query)
+    User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+  end
+
   def new_contributor
     @uid = id
     return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1

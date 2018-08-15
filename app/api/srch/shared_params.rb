@@ -23,6 +23,10 @@ module Srch
       optional :sort_by, type: String, documentation: { example: 'recent' }
     end
 
+    params :field do
+      optional :field, type: String, documentation: { example: 'username' }
+    end
+
     params :commontypeahead do
       requires :srchString, type: String, documentation: { example: 'Spec' }
       optional :seq, type: Integer, documentation: { example: 995 }
