@@ -35,11 +35,9 @@ deploy-container:
 	docker-compose exec -T web service cron start
 
 test-container:
-	docker-compose up -d
-	docker-compose exec -T web bundle install
+	docker-compose up --force-recreate -d
 	docker-compose exec -T web rake db:setup
 	docker-compose exec -T web rake db:migrate
-	docker-compose exec -T web bower install --allow-root
 	docker-compose exec -T web rake test:all
 	docker-compose exec -T web strace -s 256 -o trace.log rails test -d
 	docker-compose down
