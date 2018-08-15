@@ -35,7 +35,8 @@ deploy-container:
 	docker-compose exec -T web service cron start
 
 test-container:
-	docker-compose up --force-recreate -d
+	docker-compose --build
+	docker-compose up -d
 	docker-compose exec -T web rake db:setup
 	docker-compose exec -T web rake db:migrate
 	docker-compose exec -T web rake test:all
