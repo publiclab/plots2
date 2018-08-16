@@ -6,7 +6,7 @@ class SrchScope
           .where('rusers.status = ?', 1)
           .limit(limit)
     else
-      User.where('username LIKE ? AND rusers.status = 1', '%' + input + '%')
+      User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
           .limit(limit)
     end
   end
@@ -17,7 +17,7 @@ class SrchScope
           .where('rusers.status = ?', 1)
           .limit(limit)
     else
-      User.where('username LIKE ? AND rusers.status = 1', '%' + input + '%')
+      User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
           .limit(limit)
     end
   end

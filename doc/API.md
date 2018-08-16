@@ -18,7 +18,7 @@ This also accepts the following additional parameters:
 
 - `sort_by`: if 'recent' is passed, it returns the profiles from users with the most recent activity, otherwise, the results are sorted by user id (desc);
 - `order_direction`: `ASC` or `DESC` (the latter is the default);
-- `field`: if 'username' is passed, it returns the profiles from users searched by username only, otherwise by username and bio for a broader search.
+- `field`: if 'username' is passed, it returns the profiles from users searched by username only. Otherwise it returns the profiles by username and bio for a broader search.
 
 Example of full URL with the optional params (using the order_by DESC default value):
 

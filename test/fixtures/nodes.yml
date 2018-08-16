@@ -294,3 +294,15 @@ post_test3:
   type: "note"
   cached_likes: 0
   slug: user3-<%= DateTime.new(2018,8,15).strftime("%m-%d-%Y") %>-post-test3
+
+post_test4:
+  nid: 26
+  uid: 18
+  title: "Post Test 4"
+  path: "/notes/user4/<%= DateTime.new(2018,8,20).strftime("%m-%d-%Y") %>/post-test4"
+  created: <%= DateTime.new(2018,8,20).to_i %>
+  changed: <%= DateTime.new(2018,8,20).to_i %>
+  status: 1
+  type: "note"
+  cached_likes: 0
+  slug: user3-<%= DateTime.new(2018,8,20).strftime("%m-%d-%Y") %>-post-test4

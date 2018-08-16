@@ -295,6 +295,13 @@ post_test2:
 post_test3:
   nid: 25
   uid: 16
-  title: Post test review 2
-  body: Post test review 2
+  title: Post test review 3
+  body: Post test review 3
   timestamp: <%= DateTime.new(2018,8,15).to_i %>
+
+post_test4:
+  nid: 26
+  uid: 18
+  title: Post test review 4
+  body: Post test review 4
+  timestamp: <%= DateTime.new(2018,8,20).to_i %>
