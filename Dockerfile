@@ -1,7 +1,7 @@
 # Dockerfile # Plots2
 # https://github.com/publiclab/plots2
 
-FROM ruby:2.4.1-stretch
+FROM ruby:2.4-stretch
 
 LABEL description="This image deploys Plots2."
 
