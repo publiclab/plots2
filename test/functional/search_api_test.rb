@@ -165,6 +165,8 @@ class SearchApiTest < ActiveSupport::TestCase
 
       matcher = JsonExpressions::Matcher.new(pattern)
 
+      json = JSON.parse(last_response.body)
+      
       assert_equal "/profile/data",   json['items'][0]['docUrl']
       assert_equal "/profile/steff3",   json['items'][1]['docUrl']
       assert_equal "/profile/steff2",   json['items'][2]['docUrl']
