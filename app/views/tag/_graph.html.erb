@@ -3,7 +3,7 @@
 <script src="https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 
 <script type="text/javascript">
-	var notes = <%= @tag.contribution_graph_making.to_a.sort.to_json %>
+	var notes = <%= tags.first.contribution_graph_making.to_a.sort.to_json %>
 	let months = ["J", "F", "M", "A", "M", "J", "J", "A","S", "O", "N", "D"];
 	let i;
 	let labels = new Array();
