@@ -64,6 +64,7 @@ gem 'will_paginate-bootstrap', '>= 1.0.1'
 gem 'jquery-atwho-rails'
 # To implement incoming mail processing microframework
 gem 'mailman', require: false
+gem 'dalli'
 
 # To convert html to markdown
 gem 'reverse_markdown'
