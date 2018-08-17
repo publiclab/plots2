@@ -103,13 +103,8 @@ module Srch
 
     def self.execute(endpoint, params)
       sresult = DocList.new
-      search_query = params[:srchString]
-      tag_query = params[:tagName]
-      order_query = params[:order_direction]
-      sort_query = params[:sort_by]
-      field_query = params[:field]
       search_type = endpoint
-      search_criteria = SearchCriteria.new(search_query, tag: tag_query, sort_by: sort_query, order_direction: order_query, field: field_query)
+      search_criteria = SearchCriteria.new(params)
 
       if search_criteria.valid?
         sresult = ExecuteSearch.new.by(search_type, search_criteria)

@@ -88,9 +88,8 @@ module Srch
 
     def self.execute(endpoint, params)
       sresult = TagList.new
-      search_query = params[:srchString]
       search_type = endpoint
-      search_criteria = SearchCriteria.new(search_query)
+      search_criteria = SearchCriteria.new(params)
 
       if search_criteria.valid?
         sresult = ExecuteTypeahead.new.by(search_type, search_criteria, TYPEAHEAD_LIMIT)
