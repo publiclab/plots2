@@ -52,12 +52,7 @@ class SearchService
   def profiles(search_criteria)
     limit = search_criteria.limit ? search_criteria.limit : 10
 
-    user_scope =
-      if search_criteria.field == "username"
-        SrchScope.find_by_username(search_criteria.query, limit)
-      else
-        SrchScope.find_users(search_criteria.query, limit)
-      end
+    user_scope = SrchScope.find_users(search_criteria.query, search_criteria.field, limit = 10)
 
     user_scope =
       if search_criteria.sort_by == "recent"
