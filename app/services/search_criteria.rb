@@ -1,5 +1,5 @@
 class SearchCriteria
-  attr_reader :query, :tag, :sort_by, :field
+  attr_reader :query, :tag, :sort_by, :field, :limit
 
   def initialize(params)
     @query = params[:srchString]
@@ -7,6 +7,7 @@ class SearchCriteria
     @sort_by = params[:sort_by]
     @order_direction = params[:order_direction]
     @field = params[:field]
+    @limit = params[:limit]
   end
 
   def valid?

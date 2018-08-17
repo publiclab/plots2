@@ -50,11 +50,13 @@ class SearchService
   # If no sort_by value present, then it returns a list of profiles ordered by id DESC
   # a recent activity may be a node creation or a node revision
   def profiles(search_criteria)
+    limit = search_criteria.limit ? search_criteria.limit : 10
+
     user_scope =
       if search_criteria.field == "username"
-        SrchScope.find_by_username(search_criteria.query, limit = 10)
+        SrchScope.find_by_username(search_criteria.query, limit)
       else
-        SrchScope.find_users(search_criteria.query, limit = 10)
+        SrchScope.find_users(search_criteria.query, limit)
       end
 
     user_scope =
@@ -62,12 +64,11 @@ class SearchService
         user_scope.joins(:revisions)
                   .order("node_revisions.timestamp #{search_criteria.order_direction}")
                   .distinct
-
       else
         user_scope.order(id: :desc)
       end
 
-    users = user_scope.limit(10)
+    users = user_scope.limit(limit)
 
     sresult = DocList.new
     users.each do |match|
