@@ -12,6 +12,16 @@ class SearchServiceTest < ActiveSupport::TestCase
     sresult
   end
 
+  def create_profiles_doc_list_location(list)
+    sresult = DocList.new
+    list.each do |user|
+      blurred = user.has_power_tag("location") ? user.get_value_of_power_tag("location") : false
+      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
+      sresult.addDoc(doc)
+    end
+    sresult
+  end
+
   test 'running profiles for specific username' do
     users = [users(:steff1)]
     sresult = create_profiles_doc_list(users)
@@ -55,6 +65,19 @@ class SearchServiceTest < ActiveSupport::TestCase
 
     assert_not_nil result
     assert_equal result.getDocs.size, 4
+
+    assert_equal result.getDocs.to_json, sresult.getDocs.to_json
+    assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
+  end
+
+  test 'running people locations' do
+    users = [users(:bob)]
+    sresult = create_profiles_doc_list_location(users)
+
+    result = SearchService.new.people_locations('10', limit = nil)
+
+    assert_not_nil result
+    assert_equal 1, result.items.length
 
     assert_equal result.getDocs.to_json, sresult.getDocs.to_json
     assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
