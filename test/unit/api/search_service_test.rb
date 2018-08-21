@@ -23,8 +23,6 @@ class SearchServiceTest < ActiveSupport::TestCase
   end
 
   test 'running profiles for specific username' do
-
-
     users = [users(:steff1)]
     sresult = create_profiles_doc_list(users)
 
