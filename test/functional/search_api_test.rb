@@ -75,9 +75,9 @@ class SearchApiTest < ActiveSupport::TestCase
 
      end
 
-   # returns users by id when order_by is not provided and sorted direction default DESC
-   test 'search profiles without order_by and default sort_direction' do
-     get '/api/srch/profiles?srchString=steff'
+   # search by username and returns users by id when order_by is not provided and sorted direction default DESC
+   test 'search profiles by username without order_by and default sort_direction' do
+     get '/api/srch/profiles?srchString=steff&field=username'
      assert last_response.ok?
 
      # Expected search pattern
@@ -100,9 +100,9 @@ class SearchApiTest < ActiveSupport::TestCase
 
    end
 
-   # returns users sorteded by recent activity and order direction default DESC
-   test 'search recent profiles with sort_by=recent present' do
-     get '/api/srch/profiles?srchString=steff&sort_by=recent'
+   # search by username and returns users sorteded by recent activity and order direction default DESC
+   test 'search recent profiles by username with sort_by=recent present' do
+     get '/api/srch/profiles?srchString=steff&field=username&sort_by=recent'
      assert last_response.ok?
 
      # Expected search pattern
@@ -124,9 +124,9 @@ class SearchApiTest < ActiveSupport::TestCase
      assert matcher =~ json
    end
 
-   # returns users ordered by recent activity and sorted by ASC direction
-   test 'search recent profiles with sort_by=recent present and order_direction ASC' do
-     get '/api/srch/profiles?srchString=steff&sort_by=recent&order_direction=ASC'
+   # search by username and returns users ordered by recent activity and sorted by ASC direction
+   test 'search recent profiles by username with sort_by=recent present and order_direction ASC' do
+     get '/api/srch/profiles?srchString=steff&field=username&sort_by=recent&order_direction=ASC'
      assert last_response.ok?
 
      # Expected search pattern
@@ -146,6 +146,59 @@ class SearchApiTest < ActiveSupport::TestCase
      assert_equal "/profile/steff2",     json['items'][2]['docUrl']
 
      assert matcher =~ json
+  end
+
+  # search by username and bio, returns users by id when order_by is not provided and sorted direction default DESC
+  test 'search profiles by username and bio without order_by and default sort_direction' do
+    get '/api/srch/profiles?srchString=steff'
+    assert last_response.ok?
+
+    # User.search() only works for mysql/mariadb
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      # Expected search pattern
+      pattern = {
+        srchParams: {
+          srchString: 'steff',
+          seq: nil,
+        }.ignore_extra_keys!
+      }.ignore_extra_keys!
+
+      matcher = JsonExpressions::Matcher.new(pattern)
+
+      json = JSON.parse(last_response.body)
+
+      assert_equal "/profile/data",     json['items'][0]['docUrl']
+      assert_equal "/profile/steff3",   json['items'][1]['docUrl']
+      assert_equal "/profile/steff2",   json['items'][2]['docUrl']
+      assert_equal "/profile/steff1",   json['items'][3]['docUrl']
+
+      assert matcher =~ json
+    end
+  end
+
+  # search by bio only
+  test 'search profiles by bio without order_by and default sort_direction' do
+    get '/api/srch/profiles?srchString=ruby'
+    assert last_response.ok?
+
+    # User.search() only works for mysql/mariadb
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      # Expected search pattern
+      pattern = {
+        srchParams: {
+          srchString: 'ruby',
+          seq: nil,
+        }.ignore_extra_keys!
+      }.ignore_extra_keys!
+
+      matcher = JsonExpressions::Matcher.new(pattern)
+
+      json = JSON.parse(last_response.body)
+
+      assert_equal "/profile/testuser",   json['items'][0]['docUrl']
+
+      assert matcher =~ json
+    end
   end
 
   test 'search notes functionality' do

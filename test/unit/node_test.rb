@@ -248,7 +248,8 @@ class NodeTest < ActiveSupport::TestCase
     notes = Node.research_notes
     expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog),
                 nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade),
-                nodes(:draft), nodes(:post_test1), nodes(:post_test2), nodes(:post_test3)]
+                nodes(:draft), nodes(:post_test1), nodes(:post_test2),
+                nodes(:post_test3), nodes(:post_test4)]
     assert_equal expected, notes
   end
 

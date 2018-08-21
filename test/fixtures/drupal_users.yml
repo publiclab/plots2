@@ -116,3 +116,10 @@ steff3:
   mail: steff3@pxlshp.com
   uid: 17
   created: <%= Time.now.to_i %>
+
+data:
+  name: data
+  status: 1
+  mail: data@pxlshp.com
+  uid: 18
+  created: <%= Time.now.to_i %>
