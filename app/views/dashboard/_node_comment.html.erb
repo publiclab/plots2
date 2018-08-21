@@ -4,6 +4,7 @@
     <div class="header-icon"><i class="fa fa-comment-o"></i> <a href="/n/<%= node.parent.id %>"><i class="fa fa-link"></i></a></div>
     <p class="meta">
       <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_author_contributor %>
+      <a href="/admin/mark_comment_spam/<%= @comment.id %>">Spam</a>
       <span><%= t('dashboard._node_comment.commented_on') %></span> <% unless node.aid == 0 %> an answer about<% end %> <% if node.parent.has_power_tag('question') %><a href="<%= node.parent.path(:question) %>"><% else %><a href="<%= node.parent.path %>"><% end %><%= node.parent.title %></a>
     </p>
 
