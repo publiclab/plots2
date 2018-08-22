@@ -1,16 +1,13 @@
 # This class provides common methods that Typehead and Search services use
 class SrchScope
-  def self.find_users(input, limit)
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      User.search(input)
-          .order('id DESC')
-          .where(status: 1)
-          .limit(limit)
-    else
-      User.order('id DESC')
-          .where('username LIKE ? AND status = 1', '%' + input + '%')
-          .limit(limit)
-    end
+  def self.find_users(query, type = nil, limit)
+    users =
+      if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+        type == "username" ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
+      else
+        User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
+      end
+    users = users.limit(limit)
   end
 
   def self.find_tags(input, limit)
@@ -63,5 +60,23 @@ class SrchScope
       .where('node.type': 'note')
       .joins(:tag)
       .where('term_data.name LIKE ?', 'question:%')
+  end
+
+  def self.find_locations(limit, user_tag = nil)
+    user_locations = User.where('rusers.status <> 0')\
+                         .joins(:user_tags)\
+                         .where('value LIKE "lat:%"')\
+                         .includes(:revisions)\
+                         .order("node_revisions.timestamp DESC")\
+                         .distinct
+    if user_tag.present?
+      user_locations = User.joins(:user_tags)\
+                       .where('user_tags.value LIKE ?', user_tag)\
+                       .where(id: user_locations.select("rusers.id"))
+    end
+
+    user_locations = user_locations.limit(limit.to_i)
+
+    user_locations
   end
 end

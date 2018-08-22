@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :likes
+  has_many :revisions, through: :node
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
@@ -42,7 +43,11 @@ class User < ActiveRecord::Base
   after_destroy :destroy_drupal_user
 
   def self.search(query)
-    User.where('MATCH(username, bio) AGAINST(?)', query)
+    User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+  end
+
+  def self.search_by_username(query)
+    User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
   end
 
   def new_contributor

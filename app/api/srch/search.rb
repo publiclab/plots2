@@ -21,14 +21,14 @@ module Srch
         Search.execute(:all, params)
       end
 
-      # Request URL should be /api/srch/profiles?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/profiles?srchString=QRY[&sort_by=recent&order_direction=desc&field=username&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of profiles', hidden: false,
                                            is_array: false,
                                            nickname: 'srchGetProfiles'
 
       params do
-        use :common
+        use :common, :sorting, :ordering, :field
       end
       get :profiles do
         Search.execute(:profiles, params)
@@ -103,14 +103,13 @@ module Srch
 
     def self.execute(endpoint, params)
       sresult = DocList.new
-      search_query = params[:srchString]
-      tag_query = params[:tagName]
       search_type = endpoint
-      search_criteria = SearchCriteria.new(search_query, tag_query)
+      search_criteria = SearchCriteria.new(params)
 
       if search_criteria.valid?
         sresult = ExecuteSearch.new.by(search_type, search_criteria)
       end
+
       sparms = SearchRequest.fromRequest(params)
       sresult.srchParams = sparms
       sresult
