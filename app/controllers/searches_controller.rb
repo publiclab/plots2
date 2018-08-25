@@ -14,7 +14,7 @@ class SearchesController < ApplicationController
     @title = 'Search'
     @tagnames = params[:id].split(',')
     @users = SrchScope.find_users(params[:id], limit = nil)
-    @nodes = TypeaheadService.new.nodes(params[:id], 100, params[:order].to_s.to_sym)
+    @nodes = SrchScope.find_nodes(params[:id], 100, params[:order].to_s.to_sym)
       .paginate(page: params[:page], per_page: 24)
   end
 end

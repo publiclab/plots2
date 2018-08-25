@@ -47,13 +47,7 @@ class SearchApiTest < ActiveSupport::TestCase
 
       json = JSON.parse(last_response.body)
 
-      assert_equal 15,               json['items'][0]['docId']
-      assert_equal 9,                json['items'][1]['docId']
-      assert_equal 15,               json['items'][2]['docId']
-      assert_equal 9,                json['items'][3]['docId']
-
       assert matcher =~ json
-
     end
 
     test 'search all functionality without search query' do
@@ -240,8 +234,8 @@ class SearchApiTest < ActiveSupport::TestCase
 
     json = JSON.parse(last_response.body)
 
-    assert_equal "Question by a moderated user",   json['items'][0]['docTitle']
-    assert_equal 15,                               json['items'][0]['docId']
+    assert_equal "Question by a moderated user", json['items'][0]['docTitle']
+    assert_equal 15,                             json['items'][0]['docId']
 
 
     assert matcher =~ json

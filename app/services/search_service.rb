@@ -1,11 +1,3 @@
-# The SearchService class is a utility class whose purpose is to provide detailed responses to queries within
-# different categories (record types, functionality, subsystems, etc).
-# Though similar in operation to the TypeaheadService, the implementation is separate, in that the goal of the response
-# is to provide _detailed_ results at a deep level.  In effect, TypeaheadService provides pointers to
-# better searches, while SearchService provides deep and detailed information.
-#
-# See SrchScope class for more details about the reusable scope
-# that Search and Typeahead services use
 class SearchService
   def initialize; end
 
@@ -91,7 +83,8 @@ class SearchService
   def textSearch_maps(srchString)
     sresult = DocList.new
 
-    maps = SrchScope.find_maps(srchString, 5)
+    maps = Node.where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + srchString + '%')
+               .limit(10)
 
     maps.select('title,type,nid,path').each do |match|
       doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
