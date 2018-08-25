@@ -82,25 +82,6 @@ class SearchServiceTest < ActiveSupport::TestCase
     assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
   end
 
-  test 'running profiles by username and bio' do
-    # User.search() only works for mysql/mariadb
-    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      users = [users(:data), users(:steff3), users(:steff2), users(:steff1)]
-      sresult = create_profiles_doc_list(users)
-
-      params = { srchString: 'steff' }
-      search_criteria = SearchCriteria.new(params)
-
-      result = SearchService.new.profiles(search_criteria)
-
-      assert_not_nil result
-      assert_equal result.getDocs.size, 4
-
-      assert_equal result.getDocs.to_json, sresult.getDocs.to_json
-      assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
-    end
-  end
-
   test 'running people locations' do
     users = [users(:bob)]
     sresult = create_people_location_doc_list(users)

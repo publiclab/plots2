@@ -9,7 +9,7 @@ class SearchApiFullTextTest < ActiveSupport::TestCase
   end
 
   def search_profiles_by_username_and_bio_without_order_by_and_default_sort_direction
-    skip "full text search only works on mysql/mariadb" if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+    skip "full text search only works on mysql/mariadb" if ActiveRecord::Base.connection.adapter_name == 'sqlite3'
 
     get '/api/srch/profiles?srchString=steff'
     assert last_response.ok?
@@ -35,7 +35,7 @@ class SearchApiFullTextTest < ActiveSupport::TestCase
   end
 
   def search_profiles_by_bio_without_order_by_and_default_sort_direction
-    skip "full text search only works on mysql/mariadb" if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+    skip "full text search only works on mysql/mariadb" if ActiveRecord::Base.connection.adapter_name == 'sqlite3'
     get '/api/srch/profiles?srchString=ruby'
     assert last_response.ok?
 
