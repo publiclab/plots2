@@ -22,9 +22,9 @@ before_script:
 job:
   script:
     - docker-compose exec -T web strace -s 512 -o log/trace1.log rake test:all
-    - bash -c "tail -n 3000 log/trace1.log > log/trace1.tail.log"
+    - tail -n 3000 log/trace1.log > log/trace1.tail.log
     - docker-compose exec -T web strace -s 512 -o log/trace2.log rails test -d
-    - bash -c "tail -n 3000 log/trace2.log > log/trace2.tail.log"
+    - tail -n 3000 log/trace2.log > log/trace2.tail.log
   artifacts:
     when: on_failure
     paths:
