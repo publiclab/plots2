@@ -9,7 +9,7 @@ module Srch
 
     # Endpoint definitions
     resource :srch do
-      # Request URL should be /api/srch/all?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/all?srchString=QRY
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of all available resources', hidden: false,
                                                           is_array: false,
@@ -21,7 +21,7 @@ module Srch
         Search.execute(:all, params)
       end
 
-      # Request URL should be /api/srch/profiles?srchString=QRY[&sort_by=recent&order_direction=desc&field=username&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/profiles?srchString=QRY[&sort_by=recent&order_direction=desc&field=username]
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of profiles', hidden: false,
                                            is_array: false,
@@ -34,7 +34,7 @@ module Srch
         Search.execute(:profiles, params)
       end
 
-      # Request URL should be /api/srch/notes?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/notes?srchString=QRY
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of research notes', hidden: false,
                                                  is_array: false,
@@ -47,7 +47,7 @@ module Srch
         Search.execute(:notes, params)
       end
 
-      # Request URL should be /api/srch/questions?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/questions?srchString=QRY
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of questions tables', hidden: false,
                                                    is_array: false,
@@ -60,7 +60,7 @@ module Srch
         Search.execute(:questions, params)
       end
 
-      # Request URL should be /api/srch/tags?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/tags?srchString=QRY
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of documents associated with tags within the system', hidden: false,
                                                                                    is_array: false,
@@ -73,7 +73,7 @@ module Srch
         Search.execute(:tags, params)
       end
 
-      # Request URL should be /api/srch/taglocations?srchString=QRY[&tagName=awesome&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/taglocations?srchString=QRY[&tagName=awesome]
       # Note: Query(QRY as above) must have latitude and longitude as srchString=lat,lon
       desc 'Perform a search of documents having nearby latitude and longitude tag values', hidden: false,
                                                                                             is_array: false,
@@ -87,7 +87,7 @@ module Srch
       end
 
       # API TO FETCH QRY RECENT CONTRIBUTORS
-      # Request URL should be /api/srch/peoplelocations?srchString=QRY[&tagName=group:partsandcrafts&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/peoplelocations?srchString=QRY[&tagName=group:partsandcrafts]
       # QRY should be a number
       desc 'Perform a search to show x Recent People',  hidden: false,
                                                         is_array: false,
