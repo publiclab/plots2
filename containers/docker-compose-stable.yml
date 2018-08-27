@@ -47,8 +47,6 @@ services:
     restart: on-failure:5
   redis:
     image: redis:latest
-    ports:
-      - '127.0.0.1:6379:6379'
     command: redis-server
   sidekiq:
     build: ..

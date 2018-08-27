@@ -6,9 +6,6 @@ services:
 env:
   - COMPOSE_FILE=./containers/docker-compose-testing.yml
 
-before_script:
-  - bundle install
-
 before_install:
   - echo -e "repo_token:\n  $COVERALLS_REPO_TOKEN" >> ./.coveralls.yml
 

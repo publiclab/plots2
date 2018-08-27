@@ -36,10 +36,8 @@ deploy-container:
 
 test-container:
 	docker-compose up -d
-	docker-compose exec -T web bundle install
 	docker-compose exec -T web rake db:setup
 	docker-compose exec -T web rake db:migrate
-	docker-compose exec -T web bower install --allow-root
 	docker-compose exec -T web rake test:all
 	docker-compose exec -T web rails test -d
 	docker-compose down
