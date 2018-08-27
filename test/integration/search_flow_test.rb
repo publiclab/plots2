@@ -9,6 +9,14 @@ class SearchFlowTest < ActionDispatch::IntegrationTest
     get '/search/map'
     assert_response :success
 
+    # Perform a GET search with a search term and sort order in query parameters
+    get '/search/map?order=natural'
+    assert_response :success
+    get '/search/map?order=likes'
+    assert_response :success
+    get '/search/map?order=views'
+    assert_response :success
+
     # Perform a URL GET search without a term
     get '/search'
     assert_response :success
