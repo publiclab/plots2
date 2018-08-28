@@ -53,9 +53,8 @@ To these last, you can do wildcard tag searches using the `*` character, like th
 
 ## API code
 
-API methods are found in the codebase in the following places:
+API methods are found in the codebase in the following place:
 
-* https://github.com/publiclab/plots2/blob/master/app/api/srch/typeahead.rb
 * https://github.com/publiclab/plots2/blob/master/app/api/srch/search.rb
 
 We are beginning to consolidate API methods into the `/app/api/srch/` namespace, to reduce complexity in the non-API codebase and make the API more predictable and maintainable.

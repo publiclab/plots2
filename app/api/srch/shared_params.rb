@@ -6,9 +6,6 @@ module Srch
 
     params :common do
       requires :srchString, type: String, documentation: { example: 'Spec' }
-      optional :seq, type: Integer, documentation: { example: 995 }
-      optional :showCount, type: Integer, documentation: { example: 3 }
-      optional :pageNum, type: Integer, documentation: { example: 0 }
     end
 
     params :additional do
@@ -26,11 +23,6 @@ module Srch
     params :field do
       optional :field, type: String, documentation: { example: 'username' }
       optional :limit, type: Integer, documentation: { example: 0 }
-    end
-
-    params :commontypeahead do
-      requires :srchString, type: String, documentation: { example: 'Spec' }
-      optional :seq, type: Integer, documentation: { example: 995 }
     end
   end
 end
