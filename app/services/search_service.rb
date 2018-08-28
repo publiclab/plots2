@@ -15,7 +15,7 @@ class SearchService
       .order('nid DESC')
       .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + search_criteria.query + '%')
       .select('title,type,nid,path').each do |match|
-      doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
+      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, '', 0)
       sresult.addDoc(doc)
     end
     # User profiles
@@ -59,7 +59,7 @@ class SearchService
 
     sresult = DocList.new
     users.each do |match|
-      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
+      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.username, '', 0)
       sresult.addDoc(doc)
     end
 
@@ -87,7 +87,7 @@ class SearchService
                .limit(10)
 
     maps.select('title,type,nid,path').each do |match|
-      doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
+      doc = DocResult.fromSearch(match.nid, 'map', match.path, match.title, '', 0)
       sresult.addDoc(doc)
     end
 
