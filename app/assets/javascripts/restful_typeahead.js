@@ -13,7 +13,7 @@ jQuery(document).ready(function() {
     minLength: 3,
     autoSelect: false,
     source: function (query, process) {
-      return $.getJSON('/api/search/all?srchString=' + query, function (data) {
+      return $.getJSON('/api/srch/all?srchString=' + query, function (data) {
         return process(data.items);
       },'json');
     },
