@@ -277,6 +277,7 @@ Plots2::Application.routes.draw do
 
   get 'questions/new' => 'questions#new'
   get 'questions' => 'questions#index'
+  get 'question' => 'questions#index'
   get 'questions/:author/:date/:id' => 'questions#show'
   get 'questions/show/:id' => 'questions#show'
   get 'q/:id' => 'questions#shortlink'
