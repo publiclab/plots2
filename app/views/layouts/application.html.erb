@@ -12,10 +12,6 @@
     <meta name="author" content="Public Lab contributors" />
     <link href="https://<%= request.host %>/feed.rss" rel="alternate" type="application/rss+xml" title="Public Lab research" />
 
-    <link rel="apple-touch-icon" href="/images/pl-255.png">
-    <link rel="apple-touch-icon-precomposed" href="/images/pl-255.png">
-    <link rel="apple-touch-icon-precomposed apple-touch-icon" href="/images/pl-255.png">
-    <link rel="shortcut icon" href="/images/pl-255.png" />
     <script type="text/javascript" async
       src="https://cdn.jsdelivr.net/npm/mathjax@2.7.3/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
@@ -62,8 +58,10 @@
       I18n.locale = "<%= I18n.locale %>";
       I18n.fallbacks = true;
     </script>
-
-    <%= render 'layouts/google_analytics' %>
+    
+    <% cache('feature_header', skip_digest: true) do %>
+      <%= feature("header") %>
+    <% end %>
 
     <%= yield(:head) %>
 
