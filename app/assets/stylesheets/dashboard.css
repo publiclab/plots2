@@ -375,8 +375,14 @@
   background: #f3ffc1;
 }
 
-span#searchSortingOptionsLinks {
+span#searchSortingOptionsLinks a {
   margin-left: 5px;
+  margin-right: 5px;
   font-size: small;
-  color: blue;
+}
+
+span#searchSortingOptionsLinks:not(a) {
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: small;
 }
