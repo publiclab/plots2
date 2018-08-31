@@ -54,6 +54,6 @@ install-dev:
 
 setup-complete:
 	echo "Installing Ruby"
-	rvm install ruby-2.1.2
+	rvm install ruby-2.4.4
 	echo "Installing Bundler"
 	gem install bundler
