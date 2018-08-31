@@ -2,14 +2,14 @@
 
   <h3>
     Search results for <i style="color:#aaa;"><%= params[:id] %> </i>
-    <span id="searchSortingOptionsLinks">
-      <%= link_to 'best match', controller: :searches, action: :results, id: params[:id], order: 'natural' %>
+    <span style="margin-left: 5px; margin-right: 5px; font-size: small;">
+      <%= link_to_unless_current 'best match', controller: :searches, action: :results, id: params[:id], order: 'natural' %>
       |
-      <%= link_to ' likes', controller: :searches, action: :results, id: params[:id], order: 'likes' %>
+      <%= link_to_unless_current ' likes', controller: :searches, action: :results, id: params[:id], order: 'likes' %>
       |
-      <%= link_to 'views', controller: :searches, action: :results, id: params[:id], order: 'views' %>
+      <%= link_to_unless_current 'views', controller: :searches, action: :results, id: params[:id], order: 'views' %>
       |
-      <%= link_to 'date created', controller: :searches, action: :results, id: params[:id] %>
+      <%= link_to_unless current_page?(controller: :searches, action: :results, check_parameters: true), 'date created', controller: :searches, action: :results, id: params[:id] %>
     </span>
   </h3>
 
