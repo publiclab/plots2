@@ -374,15 +374,3 @@
   color: #75754e;
   background: #f3ffc1;
 }
-
-span#searchSortingOptionsLinks a {
-  margin-left: 5px;
-  margin-right: 5px;
-  font-size: small;
-}
-
-span#searchSortingOptionsLinks:not(a) {
-  margin-left: 5px;
-  margin-right: 5px;
-  font-size: small;
-}
