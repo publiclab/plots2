@@ -24,7 +24,7 @@ class Node < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query:, order: :default, limit:)
+  def self.search(query:, order: :default, type: :natural, limit:)
     order_param = if order == :default
                     { changed: :desc }
                   elsif order == :likes
@@ -35,8 +35,12 @@ class Node < ActiveRecord::Base
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
-        nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
-          .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
+
+        mode = '" IN NATURAL LANGUAGE' if type == :natural
+        mode = '*" IN BOOLEAN' if type == :boolean
+
+        nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + mode + ' MODE) AS score')
+          .where('MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + mode + ' MODE)')
           .collect(&:nid)
         where(nid: nids, status: 1)
       else

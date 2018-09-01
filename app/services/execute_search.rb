@@ -25,6 +25,8 @@ class ExecuteSearch
        if search_criteria.query.include? ","
          sresult = sservice.tagNearbyNodes(search_criteria.query, search_criteria.tag)
        end
+     when :nodes
+       sresult = sservice.textSearch_nodes(search_criteria.query)
      else
        sresult = []
      end

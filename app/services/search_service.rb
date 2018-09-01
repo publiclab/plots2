@@ -70,7 +70,20 @@ class SearchService
   def textSearch_notes(srchString)
     sresult = DocList.new
 
-    notes = find_notes(srchString, 25)
+    nodes = find_notes(srchString, 25)
+    nodes.each do |match|
+      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
+      sresult.addDoc(doc)
+    end
+
+    sresult
+  end
+
+  # Testing fulltext
+  def textSearch_nodes(srchString)
+    sresult = DocList.new
+
+    notes = find_nodes(srchString, 25)
     notes.each do |match|
       doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
       sresult.addDoc(doc)
@@ -205,7 +218,7 @@ class SearchService
   end
 
   def find_nodes(input, _limit = 5, order = :default)
-    Node.search(query: input, order: order, limit: 5)
+    Node.search(query: input, order: :natural, type: :natural, limit: 5)
         .group(:nid)
         .where('node.status': 1)
         .distinct
