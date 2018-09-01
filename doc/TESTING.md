@@ -2,7 +2,7 @@
 
 Run all basic rails tests with `rails test -d`. This is **no longer required for submitting pull requests** (see [Pull Requests](#pull-requests), below), and to confirm you have a working local environment.
 
-`rake test:all` runs Jasmine client-side tests and coverage reporting.
+`rake test:all` runs teaspoon-mocha client-side tests and coverage reporting.
 
 ## Pull Requests
 
@@ -20,11 +20,10 @@ See [plots2 on CodeClimate](https://codeclimate.com/github/publiclab/plots2) for
 
 ## Client-side tests
 
-Client-side tests (for JavaScript functions) are run using [Jasmine](https://jasmine.github.io/) in [jasmine-rails](https://github.com/searls/jasmine-rails). You can run tests by navigating to `/specs/` in the browser. Headless, or command-line test running may be possible with:
+Client-side tests (for JavaScript functions) are run using [teaspoon-mocha](https://github.com/jejacks0n/teaspoon) tests. You can run tests by navigating to `/teaspoon/` in the browser. Headless, or command-line test running may be possible with:
 
-`RAILS_ENV=test bundle exec rake spec:javascript`
 
-...[if you have phantomjs installed](#phantomjs-for-javascript-tests) (see above).
+`rake teaspoon`
 
 ****
 
@@ -44,8 +43,6 @@ Likewise, for functional or integration tests:
 
 
 ## Running just one test
-
-[Stack Overflow cites](https://stackoverflow.com/questions/15416171/rails-performance-test-run-one-test):
 
 To run one test file:
 

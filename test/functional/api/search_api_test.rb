@@ -47,13 +47,7 @@ class SearchApiTest < ActiveSupport::TestCase
 
       json = JSON.parse(last_response.body)
 
-      assert_equal 15,               json['items'][0]['docId']
-      assert_equal 9,                json['items'][1]['docId']
-      assert_equal 15,               json['items'][2]['docId']
-      assert_equal 9,                json['items'][3]['docId']
-
       assert matcher =~ json
-
     end
 
     test 'search all functionality without search query' do
@@ -75,14 +69,15 @@ class SearchApiTest < ActiveSupport::TestCase
 
      end
 
-   test 'search profiles functionality' do
-     get '/api/srch/profiles?srchString=Jeff'
+   # search by username and returns users by id when order_by is not provided and sorted direction default DESC
+   test 'search profiles by username without order_by and default sort_direction' do
+     get '/api/srch/profiles?srchString=steff&field=username'
      assert last_response.ok?
 
      # Expected search pattern
      pattern = {
        srchParams: {
-         srchString: 'Jeff',
+         srchString: 'steff',
          seq: nil,
        }.ignore_extra_keys!
      }.ignore_extra_keys!
@@ -91,13 +86,61 @@ class SearchApiTest < ActiveSupport::TestCase
 
      json = JSON.parse(last_response.body)
 
-     assert_equal "/profile/jeff", json['items'][1]['docUrl']
-     assert_equal "jeff",          json['items'][1]['docTitle']
-     assert_equal "user",          json['items'][1]['docType']
+     assert_equal "/profile/steff3",   json['items'][0]['docUrl']
+     assert_equal "/profile/steff2",   json['items'][1]['docUrl']
+     assert_equal "/profile/steff1",   json['items'][2]['docUrl']
 
      assert matcher =~ json
 
    end
+
+   # search by username and returns users sorteded by recent activity and order direction default DESC
+   test 'search recent profiles by username with sort_by=recent present' do
+     get '/api/srch/profiles?srchString=steff&field=username&sort_by=recent'
+     assert last_response.ok?
+
+     # Expected search pattern
+     pattern = {
+       srchParams: {
+         srchString: 'steff',
+         seq: nil
+       }.ignore_extra_keys!
+     }.ignore_extra_keys!
+
+     matcher = JsonExpressions::Matcher.new(pattern)
+
+     json = JSON.parse(last_response.body)
+
+     assert_equal "steff2",     json['items'][0]['docTitle']
+     assert_equal "steff3",     json['items'][1]['docTitle']
+     assert_equal "steff1",     json['items'][2]['docTitle']
+
+     assert matcher =~ json
+   end
+
+   # search by username and returns users ordered by recent activity and sorted by ASC direction
+   test 'search recent profiles by username with sort_by=recent present and order_direction ASC' do
+     get '/api/srch/profiles?srchString=steff&field=username&sort_by=recent&order_direction=ASC'
+     assert last_response.ok?
+
+     # Expected search pattern
+     pattern = {
+       srchParams: {
+         srchString: 'steff',
+         seq: nil
+       }.ignore_extra_keys!
+     }.ignore_extra_keys!
+
+     matcher = JsonExpressions::Matcher.new(pattern)
+
+     json = JSON.parse(last_response.body)
+
+     assert_equal "/profile/steff1",     json['items'][0]['docUrl']
+     assert_equal "/profile/steff3",     json['items'][1]['docUrl']
+     assert_equal "/profile/steff2",     json['items'][2]['docUrl']
+
+     assert matcher =~ json
+  end
 
   test 'search notes functionality' do
       get '/api/srch/notes?srchString=Blog'
@@ -138,8 +181,8 @@ class SearchApiTest < ActiveSupport::TestCase
 
     json = JSON.parse(last_response.body)
 
-    assert_equal "Question by a moderated user",   json['items'][0]['docTitle']
-    assert_equal 15,                               json['items'][0]['docId']
+    assert_equal "Question by a moderated user", json['items'][0]['docTitle']
+    assert_equal 15,                             json['items'][0]['docId']
 
 
     assert matcher =~ json

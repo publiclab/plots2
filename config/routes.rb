@@ -277,6 +277,7 @@ Plots2::Application.routes.draw do
 
   get 'questions/new' => 'questions#new'
   get 'questions' => 'questions#index'
+  get 'question' => 'questions#index'
   get 'questions/:author/:date/:id' => 'questions#show'
   get 'questions/show/:id' => 'questions#show'
   get 'q/:id' => 'questions#shortlink'
@@ -299,6 +300,7 @@ Plots2::Application.routes.draw do
 
   get 'answer_like/show/:id' => 'answer_like#show'
   get 'answer_like/likes/:aid' => 'answer_like#likes'
+  get 'questions/:username/:date/:topic/answer_like/likes/:aid' => 'answer_like#likes'
 
 
   get 'comment/answer_create/:aid' => 'comment#answer_create'

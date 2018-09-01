@@ -127,10 +127,6 @@ class TagController < ApplicationController
     end
     nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
 
-    # breaks the parameter
-    # sets everything to an empty array
-    set_sidebar :tags, [params[:id]]
-
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
     @answered_questions = []

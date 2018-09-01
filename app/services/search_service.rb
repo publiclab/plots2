@@ -1,56 +1,65 @@
-# The SearchService class is a utility class whose purpose is to provide detailed responses to queries within
-# different categories (record types, functionality, subsystems, etc).
-# Though similar in operation to the TypeaheadService, the implementation is separate, in that the goal of the response
-# is to provide _detailed_ results at a deep level.  In effect, TypeaheadService provides pointers to
-# better searches, while SearchService provides deep and detailed information.
-#
-# See SrchScope class for more details about the reusable scope
-# that Search and Typeahead services use
 class SearchService
   def initialize; end
 
   # Run a search in any of the associated systems for references that contain the search string
   # and package up as a DocResult
-  def textSearch_all(srchString)
+  def textSearch_all(search_criteria)
     sresult = DocList.new
 
     # notes
-    noteList = textSearch_notes(srchString)
+    noteList = textSearch_notes(search_criteria.query)
     sresult.addAll(noteList.items)
 
     # Node search
     Node.limit(5)
       .order('nid DESC')
-      .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + srchString + '%')
+      .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + search_criteria.query + '%')
       .select('title,type,nid,path').each do |match|
-      doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
+      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, '', 0)
       sresult.addDoc(doc)
     end
     # User profiles
-    userList = textSearch_profiles(srchString)
+    userList = profiles(search_criteria)
     sresult.addAll(userList.items)
 
     # Tags
-    tagList = textSearch_tags(srchString)
+    tagList = textSearch_tags(search_criteria.query)
     sresult.addAll(tagList.items)
     # maps
-    mapList = textSearch_maps(srchString)
+    mapList = textSearch_maps(search_criteria.query)
     sresult.addAll(mapList.items)
     # questions
-    qList = textSearch_questions(srchString)
+    qList = textSearch_questions(search_criteria.query)
     sresult.addAll(qList.items)
 
     sresult
   end
 
-  # Search profiles for matching text and package up as a DocResult
-  def textSearch_profiles(srchString)
-    sresult = DocList.new
+  # Search profiles for matching text with optional order_by=recent param and
+  # sorted direction DESC by default
+  # then the list is packaged up as a DocResult
 
-    users = SrchScope.find_users(srchString, limit = 10) # don't return hundreds!!
-    # User profiles
+  # If no sort_by value present, then it returns a list of profiles ordered by id DESC
+  # a recent activity may be a node creation or a node revision
+  def profiles(search_criteria)
+    limit = search_criteria.limit ? search_criteria.limit : 10
+
+    user_scope = find_users(search_criteria.query, limit = 10, search_criteria.field)
+
+    user_scope =
+      if search_criteria.sort_by == "recent"
+        user_scope.joins(:revisions)
+                  .order("node_revisions.timestamp #{search_criteria.order_direction}")
+                  .distinct
+      else
+        user_scope.order(id: :desc)
+      end
+
+    users = user_scope.limit(limit)
+
+    sresult = DocList.new
     users.each do |match|
-      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
+      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.username, '', 0)
       sresult.addDoc(doc)
     end
 
@@ -61,7 +70,7 @@ class SearchService
   def textSearch_notes(srchString)
     sresult = DocList.new
 
-    notes = SrchScope.find_notes(srchString, 25)
+    notes = find_notes(srchString, 25)
     notes.each do |match|
       doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
       sresult.addDoc(doc)
@@ -74,10 +83,11 @@ class SearchService
   def textSearch_maps(srchString)
     sresult = DocList.new
 
-    maps = SrchScope.find_maps(srchString, 5)
+    maps = Node.where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + srchString + '%')
+               .limit(10)
 
     maps.select('title,type,nid,path').each do |match|
-      doc = DocResult.fromSearch(match.nid, match.icon, match.path, match.title, '', 0)
+      doc = DocResult.fromSearch(match.nid, 'map', match.path, match.title, '', 0)
       sresult.addDoc(doc)
     end
 
@@ -165,33 +175,64 @@ class SearchService
     sresult
   end
 
-  # GET X number of latest people/contributors and package up as a DocResult
-  # X = srchString
-  def recentPeople(srchString, tagName = nil)
+  # Returns the location of people with most recent contributions.
+  # The method receives as parameter the number of results to be
+  # returned and as optional parameter a user tag. If the user tag
+  # is present, the method returns only the location of people
+  # with that specific user tag.
+  def people_locations(srchString, tagName = nil)
     sresult = DocList.new
 
-    nodes = Node.all.order("changed DESC").limit(srchString).distinct
-    users = []
-    nodes.each do |node|
-      if node.author.status != 0
-        if tagName.blank?
-          users << node.author.user
-        else
-          users << node.author.user if node.author.user.has_tag(tagName)
-        end
-      end
-    end
-    users = users.uniq
-    users.each do |user|
-      next unless user.has_power_tag("lat") && user.has_power_tag("lon")
-      blurred = false
-      if user.has_power_tag("location")
-        blurred = user.get_value_of_power_tag("location")
-      end
+    user_scope = find_locations(srchString, tagName)
+
+    user_scope.each do |user|
+      blurred = user.has_power_tag("location") ? user.get_value_of_power_tag("location") : false
       doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
       sresult.addDoc(doc)
     end
 
     sresult
+  end
+
+  def find_users(query, limit, type = nil)
+    users =
+      if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+        type == "username" ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
+      else
+        User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
+      end
+    users = users.limit(limit)
+  end
+
+  def find_nodes(input, _limit = 5, order = :default)
+    Node.search(query: input, order: order, limit: 5)
+        .group(:nid)
+        .where('node.status': 1)
+        .distinct
+  end
+
+  def find_notes(input, limit)
+    Node.order('nid DESC')
+        .where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
+        .distinct
+        .limit(limit)
+  end
+
+  def find_locations(limit, user_tag = nil)
+    user_locations = User.where('rusers.status <> 0')\
+                         .joins(:user_tags)\
+                         .where('value LIKE "lat:%"')\
+                         .includes(:revisions)\
+                         .order("node_revisions.timestamp DESC")\
+                         .distinct
+    if user_tag.present?
+      user_locations = User.joins(:user_tags)\
+                       .where('user_tags.value LIKE ?', user_tag)\
+                       .where(id: user_locations.select("rusers.id"))
+    end
+
+    user_locations = user_locations.limit(limit.to_i)
+
+    user_locations
   end
 end

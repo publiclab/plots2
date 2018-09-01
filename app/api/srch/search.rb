@@ -9,7 +9,7 @@ module Srch
 
     # Endpoint definitions
     resource :srch do
-      # Request URL should be /api/srch/all?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/all?srchString=QRY
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of all available resources', hidden: false,
                                                           is_array: false,
@@ -21,20 +21,20 @@ module Srch
         Search.execute(:all, params)
       end
 
-      # Request URL should be /api/srch/profiles?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/profiles?srchString=QRY[&sort_by=recent&order_direction=desc&field=username]
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of profiles', hidden: false,
                                            is_array: false,
                                            nickname: 'srchGetProfiles'
 
       params do
-        use :common
+        use :common, :sorting, :ordering, :field
       end
       get :profiles do
         Search.execute(:profiles, params)
       end
 
-      # Request URL should be /api/srch/notes?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/notes?srchString=QRY
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of research notes', hidden: false,
                                                  is_array: false,
@@ -47,7 +47,7 @@ module Srch
         Search.execute(:notes, params)
       end
 
-      # Request URL should be /api/srch/questions?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/questions?srchString=QRY
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of questions tables', hidden: false,
                                                    is_array: false,
@@ -60,7 +60,7 @@ module Srch
         Search.execute(:questions, params)
       end
 
-      # Request URL should be /api/srch/tags?srchString=QRY[&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/tags?srchString=QRY
       # Basic implementation from classic plots2 SearchController
       desc 'Perform a search of documents associated with tags within the system', hidden: false,
                                                                                    is_array: false,
@@ -73,7 +73,7 @@ module Srch
         Search.execute(:tags, params)
       end
 
-      # Request URL should be /api/srch/taglocations?srchString=QRY[&tagName=awesome&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/taglocations?srchString=QRY[&tagName=awesome]
       # Note: Query(QRY as above) must have latitude and longitude as srchString=lat,lon
       desc 'Perform a search of documents having nearby latitude and longitude tag values', hidden: false,
                                                                                             is_array: false,
@@ -87,7 +87,7 @@ module Srch
       end
 
       # API TO FETCH QRY RECENT CONTRIBUTORS
-      # Request URL should be /api/srch/peoplelocations?srchString=QRY[&tagName=group:partsandcrafts&seq=KEYCOUNT&showCount=NUM_ROWS&pageNum=PAGE_NUM]
+      # Request URL should be /api/srch/peoplelocations?srchString=QRY[&tagName=group:partsandcrafts]
       # QRY should be a number
       desc 'Perform a search to show x Recent People',  hidden: false,
                                                         is_array: false,
@@ -103,14 +103,13 @@ module Srch
 
     def self.execute(endpoint, params)
       sresult = DocList.new
-      search_query = params[:srchString]
-      tag_query = params[:tagName]
       search_type = endpoint
-      search_criteria = SearchCriteria.new(search_query, tag_query)
+      search_criteria = SearchCriteria.new(params)
 
       if search_criteria.valid?
         sresult = ExecuteSearch.new.by(search_type, search_criteria)
       end
+
       sparms = SearchRequest.fromRequest(params)
       sresult.srchParams = sparms
       sresult
