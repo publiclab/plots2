@@ -101,18 +101,6 @@ module Srch
       end
     end
 
-    # Testing fulltext search
-    desc 'Perform a search of nodes', hidden: false,
-                                      is_array: false,
-                                      nickname: 'srchGetNodes'
-
-    params do
-      use :common
-    end
-    get :nodes do
-      Search.execute(:nodes, params)
-    end
-
     def self.execute(endpoint, params)
       sresult = DocList.new
       search_type = endpoint
