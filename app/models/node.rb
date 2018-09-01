@@ -36,8 +36,7 @@ class Node < ActiveRecord::Base
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
 
-        mode = '" IN NATURAL LANGUAGE' if type == :natural
-        mode = '*" IN BOOLEAN' if type == :boolean
+        mode = type == :boolean ? '*" IN BOOLEAN' : '" IN NATURAL LANGUAGE'
 
         nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + mode + ' MODE) AS score')
           .where('MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + mode + ' MODE)')
