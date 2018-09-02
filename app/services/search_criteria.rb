@@ -18,6 +18,10 @@ class SearchCriteria
     sanitize_direction(@order_direction)
   end
 
+  def add_sort_by(value)
+    @sort_by = value
+  end
+
   private
 
   def sanitize_direction(direction)

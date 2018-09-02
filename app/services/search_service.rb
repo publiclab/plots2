@@ -19,6 +19,7 @@ class SearchService
       sresult.addDoc(doc)
     end
     # User profiles
+    search_criteria.add_sort_by("recent")
     userList = profiles(search_criteria)
     sresult.addAll(userList.items)
 
