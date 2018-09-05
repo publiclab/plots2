@@ -32,3 +32,4 @@ ADD . /app
 WORKDIR /app
 
 RUN bower install --allow-root
+RUN passenger-config compile-nginx-engine --connect-timeout 60 --idle-timeout 60
