@@ -39,7 +39,7 @@ class Node < ActiveRecord::Base
         mode = type == :boolean ? '*" IN BOOLEAN' : '" IN NATURAL LANGUAGE'
 
         nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + mode + ' MODE) AS score')
-          .where('MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + mode + ' MODE)')
+          .where('MATCH(node_revisions.body, node_revisions.title) AGAINST("? MODE)', query.to_s + mode)
           .collect(&:nid)
         where(nid: nids, status: 1)
       else
