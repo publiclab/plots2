@@ -7,7 +7,7 @@ class SearchHelperTest < ActionView::TestCase
 		result = sservice.people_locations(100)
 		assert_equal result.items.first.docType , "people_coordinates"
 		assert_equal result.items.first.docTitle , users(:bob).username
-		assert_equal result.items.first.docSummary , 0
+		assert_equal result.items.first.category , 'COORDINATES'
 		assert_equal result.items.first.docScore , 0
 		assert_equal result.items.first.latitude , "41"
 		assert_equal result.items.first.longitude , "-90"
