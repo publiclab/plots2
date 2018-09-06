@@ -16,7 +16,7 @@ class SearchServiceTest < ActiveSupport::TestCase
     sresult = DocList.new
     list.each do |user|
       blurred = user.has_power_tag("location") ? user.get_value_of_power_tag("location") : false
-      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 'COORDINATES', 0, user.lat, user.lon, blurred)
+        doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 'PLACES', 0, user.lat, user.lon, blurred)
       sresult.addDoc(doc)
     end
     sresult

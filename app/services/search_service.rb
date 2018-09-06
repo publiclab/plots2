@@ -88,7 +88,7 @@ class SearchService
                .limit(10)
 
     maps.select('title,type,nid,path').each do |match|
-      doc = DocResult.fromSearch(match.nid, 'map', match.path, match.title, 'COORDINATES', 0)
+      doc = DocResult.fromSearch(match.nid, 'map', match.path, match.title, 'PLACES', 0)
       sresult.addDoc(doc)
     end
 
@@ -170,7 +170,7 @@ class SearchService
         end
       end
 
-      doc = DocResult.fromLocationSearch(match.nid, 'coordinates', match.path(:items), match.title, 'COORDINATES', match.answers.length.to_i, match.lat, match.lon, blurred)
+      doc = DocResult.fromLocationSearch(match.nid, 'coordinates', match.path(:items), match.title, 'PLACES', match.answers.length.to_i, match.lat, match.lon, blurred)
       sresult.addDoc(doc)
     end
     sresult
@@ -188,7 +188,7 @@ class SearchService
 
     user_scope.each do |user|
       blurred = user.has_power_tag("location") ? user.get_value_of_power_tag("location") : false
-      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 'COORDINATES', 0, user.lat, user.lon, blurred)
+      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 'PLACES', 0, user.lat, user.lon, blurred)
       sresult.addDoc(doc)
     end
 
