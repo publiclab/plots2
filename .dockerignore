@@ -1,6 +1,6 @@
-public/system/**
-publiclab.org/**
-log/**
+public/system
+publiclab.org
+log
 .git
 *.log
 tmp
