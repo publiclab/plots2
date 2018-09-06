@@ -37,15 +37,14 @@ class Node < ActiveRecord::Base
       if order == :natural
         if type == :boolean
           nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '*" IN BOOLEAN MODE) AS score')
-            .where('MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '*" IN BOOLEAN MODE)')
+            .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN BOOLEAN MODE)', query.to_s + "*")
             .collect(&:nid)
-          where(nid: nids, status: 1)
         else
           nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
-            .where('MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE)')
+            .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query.to_s)
             .collect(&:nid)
-          where(nid: nids, status: 1)          
         end
+        where(nid: nids, status: 1)
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
         tnids = Tag.find_nodes_by_type(query, type = %w(note page)).collect(&:nid) # include results by tag
