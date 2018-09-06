@@ -23,6 +23,7 @@ gem 'grape-swagger-entity', '= 0.1.5'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'http_accept_language'
+gem "i18n", "~> 1.0.1"
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'impressionist'
 gem 'jbuilder', '~> 2.5'
@@ -41,6 +42,7 @@ gem "php-serialize", :require => "php_serialize"
 gem 'progress_bar'
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
+gem "rack-test", "1.0.0"
 gem 'rails', '5.2.0'
 gem 'rails-controller-testing'
 gem 'rails-dom-testing'
