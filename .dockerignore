@@ -5,4 +5,3 @@ log/**
 *.log
 tmp
 .dockerignore
-Gemfile.lock
