@@ -1562,7 +1562,7 @@ leaflet-d3@Asymmetrik/leaflet-d3#^0.3.8:
   version "0.3.8"
   resolved "https://codeload.github.com/Asymmetrik/leaflet-d3/tar.gz/bf557a3403d7d2583bb21d91209e16239b5189b0"
 
-leaflet-environmental-layers@1.0.0:
+leaflet-environmental-layers@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/leaflet-environmental-layers/-/leaflet-environmental-layers-1.0.0.tgz#433abc666dcd870ed732a25d54e4dfffa7c71842"
   dependencies:
@@ -1571,7 +1571,7 @@ leaflet-environmental-layers@1.0.0:
     leaflet-heatmap "1.0.0"
     leaflet-providers "^1.1.17"
 
-leaflet-hash@^0.2.1:
+leaflet-hash@*:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/leaflet-hash/-/leaflet-hash-0.2.1.tgz#c36c718347c5243033b57cb4baea26119d82c701"
 
@@ -1814,13 +1814,13 @@ moment@~2.10.6:
   version "2.10.6"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.10.6.tgz#6cb21967c79cba7b0ca5e66644f173662b3efa77"
 
-moment@~2.11.2:
-  version "2.11.2"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.11.2.tgz#87968e5f95ac038c2e42ac959c75819cd3f52901"
-
 moment@~2.18.0:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
+
+moment@~2.19.3:
+  version "2.19.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.4.tgz#17e5e2c6ead8819c8ecfad83a0acccb312e94682"
 
 mout@~0.6.0:
   version "0.6.0"
@@ -1880,9 +1880,9 @@ nopt@~2.2.0:
   dependencies:
     abbrev "1"
 
-noty@^3.2.0-beta:
-  version "3.2.0-beta"
-  resolved "https://registry.yarnpkg.com/noty/-/noty-3.2.0-beta.tgz#cd1117277a1b83c9b08dfc78f968c6c5960d3cfa"
+noty@3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/noty/-/noty-3.1.4.tgz#f9eaac9df7883921b270ec6f2869e9aeedd8071b"
 
 "nwmatcher@>= 1.3.7 < 2.0.0":
   version "1.4.4"
@@ -2053,9 +2053,9 @@ psl@^1.1.24:
   version "1.1.28"
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.1.28.tgz#4fb6ceb08a1e2214d4fd4de0ca22dae13740bc7b"
 
-publiclab-editor@publiclab/PublicLab.Editor#~1.0.0:
-  version "1.0.2"
-  resolved "https://codeload.github.com/publiclab/PublicLab.Editor/tar.gz/1548d0d9fa6ddba9d0d21f05e8e865618463a3b7"
+publiclab-editor@publiclab/PublicLab.Editor#~1.3.0:
+  version "1.3.3"
+  resolved "https://codeload.github.com/publiclab/PublicLab.Editor/tar.gz/cb7c7e19611afe16cb1aed8ff45273bf098a6320"
   dependencies:
     backbone "~1.3.3"
     banksy "1.0.0"
@@ -2070,7 +2070,7 @@ publiclab-editor@publiclab/PublicLab.Editor#~1.0.0:
     horsey "4.2.2"
     jquery "~3"
     megamark "3.2.2"
-    moment "~2.11.2"
+    moment "~2.19.3"
     resig-class "~0.1.0"
     typeahead.js-browserify "~1.0.7"
     woofmark "git://github.com/jywarren/woofmark.git#xhrOptionsAltBureaucracy"
