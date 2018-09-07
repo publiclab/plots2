@@ -5,8 +5,6 @@
   <%= render partial: 'tag/show/tag_graph' %>
   <%= render partial: 'tag/show/contributors' %>
 
-  <h3>
-
   <% unless @tags.try(:first).try(:parent).nil? %>
     <small>parent: <%= @tags.first.parent %></small>
   <% end %>
