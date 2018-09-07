@@ -25,7 +25,7 @@ RUN wget https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSI
 RUN npm config set strict-ssl false
 RUN npm install -g yarn
 
-gem install bundler
+RUN gem install bundler
 
 # Install bundle of gems
 WORKDIR /tmp
