@@ -26,12 +26,13 @@ RUN npm config set strict-ssl false
 RUN npm install -g yarn
 
 RUN gem install bundler
+RUN rm -r /usr/local/bundle
 
 # Install bundle of gems
 WORKDIR /tmp
 ADD Gemfile /tmp/Gemfile
-RUN bundle install --jobs=4
 ADD Gemfile.lock /tmp/Gemfile.lock
+RUN bundle install --jobs=4
 
 ADD . /app
 WORKDIR /app
