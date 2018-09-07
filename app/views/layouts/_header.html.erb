@@ -18,11 +18,14 @@
     </div>
 
     <div class="collapse navbar-collapse" id="header-navbar-collapse">
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group" style="display:inline;">
-          <input style= "min-width: 320px;" tabindex="1" type="text" class="form-control search-query typeahead" qryType="all" placeholder="<%= t('layout._header.search') %>" required/>
+      <div class="navbar-form navbar-left">
+        <div class="input-group">
+          <input type="text" style= "min-width: 280px;" class="form-control search-query typeahead" role="search" qryType="all" placeholder="<%= t('layout._header.search') %>" required>
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+          </span>
         </div>
-      </form>
+      </div>
 
       <ul class="nav navbar-nav navbar-left">
         <li class="dropdown">
