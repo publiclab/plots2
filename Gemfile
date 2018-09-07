@@ -23,7 +23,6 @@ gem 'grape-swagger-entity', '= 0.1.5'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'http_accept_language'
-gem "i18n", "~> 1.0.1"
 gem "i18n-js", ">= 3.0.0.rc11"
 gem 'impressionist'
 gem 'jbuilder', '~> 2.5'
