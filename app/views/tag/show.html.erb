@@ -2,7 +2,11 @@
 
 <div class="col-md-12">
   <%= render partial: 'tag/show/header' %>
-  <%= render partial: 'tag/show/tag_graph' %>
+  
+  <% if @tags.first && params[:id][-1..-1] != "*" %>
+    <%= render :partial => "tag/graph", locals: { tags: @tags } %>
+  <% end %>
+  
   <%= render partial: 'tag/show/contributors' %>
 
   <% unless @tags.try(:first).try(:parent).nil? %>
@@ -13,8 +17,9 @@
   <%= render :partial => "tag/show/user_controls" %>
 
   <%= render partial: "tag/show/questions" %>
-  <%= render :partial => "tag/show/related_tags" %>
+  <%= render partial: "tag/show/related_tags" %>
   <%= render partial: 'tag/show/nav_tabs' %>
+  
   <br />
 
   <%= render partial: 'tag/show/tab_content' %>
@@ -25,4 +30,5 @@
     });
   </script>
 </div>
+
 <%= stylesheet_link_tag "dashboard" %>
