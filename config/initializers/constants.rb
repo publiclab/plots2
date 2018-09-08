@@ -1,5 +1,5 @@
 module Callouts
-  FINDER = /([^`\w]|^)\@([\w-]+)/
+  FINDER = /(?:\s|^)([^`\w]?)\@([\w-]+)/
   HASHTAG = /(\s)\#([:a-zA-Z0-9_-]+)/
   HASHTAGWITHOUTNUMBER = /(\s)\#([:0-9_-]*[a-zA-Z]+[:0-9_-]*)/
   PRETTYLINKMD = '\1[@\2](/profile/\2)'
