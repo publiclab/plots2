@@ -70,8 +70,8 @@ class SearchService
   def textSearch_notes(srchString)
     sresult = DocList.new
 
-    nodes = find_notes(srchString, 25)
-    nodes.each do |match|
+    notes = find_notes(srchString, 25)
+    notes.each do |match|
       doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
       sresult.addDoc(doc)
     end
