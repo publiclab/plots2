@@ -8,6 +8,12 @@ class ConstantsTest < ActiveSupport::TestCase
     assert_equal expect, string.gsub(Callouts.const_get(:FINDER), ' REPLACE').lstrip!
   end
 
+  test 'should not match within URL' do
+    string = 'https://medium.com/@350/from-the-bayou-to-the-bay-voices-from-the-gulf-f6707c7ecff3'
+    expect = 'https://medium.com/@350/from-the-bayou-to-the-bay-voices-from-the-gulf-f6707c7ecff3'
+    assert_equal expect, string.gsub(Callouts.const_get(:FINDER), ' REPLACE').lstrip!
+  end
+  
   test 'hashtag regex should not match initial hash' do
     string = '#tag'
     assert_no_match Callouts.const_get(:HASHTAG), string
