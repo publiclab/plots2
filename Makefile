@@ -6,7 +6,7 @@ build:
 
 redeploy-container:
 	docker-compose build --pull
-	docker-compose run --rm web rake db:migrate && rake assets:precompile && rake tmp:cache:clear
+	docker-compose run --rm web bash -c "rake db:migrate && rake assets:precompile && rake tmp:cache:clear"
 	docker-compose down --remove-orphans
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
@@ -18,7 +18,7 @@ redeploy-container:
 	docker-compose exec -T web service cron start
 
 deploy-container:
-	docker-compose run --rm web sleep 5 && rake db:migrate && rake assets:precompile
+	docker-compose run --rm web bash -c "sleep 5 && rake db:migrate && rake assets:precompile"
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
 	docker-compose exec -T web yarn --ignore-engines --ignore-scripts --modules-folder public/lib 
