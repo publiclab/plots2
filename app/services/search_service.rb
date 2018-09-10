@@ -205,8 +205,8 @@ class SearchService
     users = users.limit(limit)
   end
 
-  def find_nodes(input, _limit = 5, order = :default)
-    Node.search(query: input, order: order, limit: 5)
+  def find_nodes(input, limit = 5, order = :default, type = :natural)
+    Node.search(query: input, order: order, type: type, limit: limit)
         .group(:nid)
         .where('node.status': 1)
         .distinct
