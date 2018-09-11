@@ -9,7 +9,7 @@
 jQuery(document).ready(function() {
   var el = $('input.search-query.typeahead');
   var typeahead = el.typeahead({
-    items: 5,
+    items: 15,
     minLength: 3,
     showCategoryHeader: true,
     autoSelect: false,
