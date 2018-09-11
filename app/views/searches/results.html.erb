@@ -3,7 +3,9 @@
   <h3>
     Search results for <i style="color:#aaa;"><%= params[:id] %> </i>
     <span style="margin-left: 5px; margin-right: 5px; font-size: small;">
-      <%= link_to_unless_current 'best match', controller: :searches, action: :results, id: params[:id], order: 'natural' %>
+      <%= link_to_unless_current 'natural mode', controller: :searches, action: :results, id: params[:id], order: 'natural', type: 'natural' %>
+      |
+      <%= link_to_unless_current 'boolean mode', controller: :searches, action: :results, id: params[:id], order: 'natural', type: 'boolean' %>
       |
       <%= link_to_unless_current ' likes', controller: :searches, action: :results, id: params[:id], order: 'likes' %>
       |
@@ -24,7 +26,7 @@
     <%= render partial: "notes/notes", locals: { notes: @nodes } %>
 
   <% end %>
-  
+
 </div>
 
 <%= stylesheet_link_tag "dashboard" %>
