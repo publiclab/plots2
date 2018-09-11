@@ -6,7 +6,7 @@ class SearchServiceTest < ActiveSupport::TestCase
   def create_profiles_doc_list(list)
     sresult = DocList.new
     list.each do |match|
-      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
+      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, 'USERS', 0)
       sresult.addDoc(doc)
     end
     sresult
@@ -16,7 +16,7 @@ class SearchServiceTest < ActiveSupport::TestCase
     sresult = DocList.new
     list.each do |user|
       blurred = user.has_power_tag("location") ? user.get_value_of_power_tag("location") : false
-      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
+        doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 'PLACES', 0, user.lat, user.lon, blurred)
       sresult.addDoc(doc)
     end
     sresult
@@ -25,7 +25,7 @@ class SearchServiceTest < ActiveSupport::TestCase
   def create_notes_doc_list(notes)
     sresult = DocList.new
     notes.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
+      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'NOTES', 0)
       sresult.addDoc(doc)
     end
     sresult
@@ -34,7 +34,7 @@ class SearchServiceTest < ActiveSupport::TestCase
   def create_tags_doc_list(notes)
     sresult = DocList.new
     notes.each do |match|
-      tagdoc = DocResult.fromSearch(match.nid, 'tag', match.path, match.title, '', 0)
+      tagdoc = DocResult.fromSearch(match.nid, 'tag', match.path, match.title, 'TAGS', 0)
       sresult.addDoc(tagdoc)
     end
     sresult
@@ -43,7 +43,7 @@ class SearchServiceTest < ActiveSupport::TestCase
   def create_questions_doc_list(notes)
     sresult = DocList.new
     notes.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'question-circle', match.path(:question), match.title, 0, match.answers.length.to_i)
+      doc = DocResult.fromSearch(match.nid, 'question-circle', match.path(:question), match.title, 'QUESTIONS', match.answers.length.to_i)
       sresult.addDoc(doc)
     end
     sresult

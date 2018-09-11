@@ -15,7 +15,7 @@ class SearchService
       .order('nid DESC')
       .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + search_criteria.query + '%')
       .select('title,type,nid,path').each do |match|
-      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, '', 0)
+      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'NOTES', 0)
       sresult.addDoc(doc)
     end
     # User profiles
@@ -60,7 +60,7 @@ class SearchService
 
     sresult = DocList.new
     users.each do |match|
-      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.username, '', 0)
+      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.username, 'USERS', 0)
       sresult.addDoc(doc)
     end
 
@@ -73,7 +73,7 @@ class SearchService
 
     notes = find_notes(srchString, 25)
     notes.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
+      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'NOTES', 0)
       sresult.addDoc(doc)
     end
 
@@ -88,7 +88,7 @@ class SearchService
                .limit(10)
 
     maps.select('title,type,nid,path').each do |match|
-      doc = DocResult.fromSearch(match.nid, 'map', match.path, match.title, '', 0)
+      doc = DocResult.fromSearch(match.nid, 'map', match.path, match.title, 'PLACES', 0)
       sresult.addDoc(doc)
     end
 
@@ -109,7 +109,7 @@ class SearchService
       .where('node.status = 1')
       .select('DISTINCT node.nid,node.title,node.path')
     tlist.each do |match|
-      tagdoc = DocResult.fromSearch(match.nid, 'tag', match.path, match.title, '', 0)
+      tagdoc = DocResult.fromSearch(match.nid, 'tag', match.path, match.title, 'TAGS', 0)
       sresult.addDoc(tagdoc)
     end
 
@@ -129,7 +129,7 @@ class SearchService
       .order('node.nid DESC')
       .limit(25)
     questions.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'question-circle', match.path(:question), match.title, 0, match.answers.length.to_i)
+      doc = DocResult.fromSearch(match.nid, 'question-circle', match.path(:question), match.title, 'QUESTIONS', match.answers.length.to_i)
       sresult.addDoc(doc)
     end
 
@@ -170,7 +170,7 @@ class SearchService
         end
       end
 
-      doc = DocResult.fromLocationSearch(match.nid, 'coordinates', match.path(:items), match.title, 0, match.answers.length.to_i, match.lat, match.lon, blurred)
+      doc = DocResult.fromLocationSearch(match.nid, 'coordinates', match.path(:items), match.title, 'PLACES', match.answers.length.to_i, match.lat, match.lon, blurred)
       sresult.addDoc(doc)
     end
     sresult
@@ -188,7 +188,7 @@ class SearchService
 
     user_scope.each do |user|
       blurred = user.has_power_tag("location") ? user.get_value_of_power_tag("location") : false
-      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 0, 0, user.lat, user.lon, blurred)
+      doc = DocResult.fromLocationSearch(user.id, 'people_coordinates', user.path, user.username, 'PLACES', 0, user.lat, user.lon, blurred)
       sresult.addDoc(doc)
     end
 
