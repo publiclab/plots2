@@ -71,7 +71,7 @@ class SearchService
   def textSearch_notes(srchString)
     sresult = DocList.new
 
-    notes = find_notes(srchString, 25)
+    notes = find_notes(srchString, 10)
     notes.each do |match|
       doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'NOTES', 0)
       sresult.addDoc(doc)
@@ -108,6 +108,7 @@ class SearchService
       .joins(:node)
       .where('node.status = 1')
       .select('DISTINCT node.nid,node.title,node.path')
+      .limit(10)
     tlist.each do |match|
       tagdoc = DocResult.fromSearch(match.nid, 'tag', match.path, match.title, 'TAGS', 0)
       sresult.addDoc(tagdoc)
@@ -127,7 +128,7 @@ class SearchService
       .joins(:tag)
       .where('term_data.name LIKE ?', 'question:%')
       .order('node.nid DESC')
-      .limit(25)
+      .limit(10)
     questions.each do |match|
       doc = DocResult.fromSearch(match.nid, 'question-circle', match.path(:question), match.title, 'QUESTIONS', match.answers.length.to_i)
       sresult.addDoc(doc)
@@ -157,7 +158,7 @@ class SearchService
     items = Node.includes(:tag)
       .references(:node, :term_data)
       .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
-      .limit(200)
+      .limit(10)
       .order('node.nid DESC')
 
     items.each do |match|
@@ -184,7 +185,7 @@ class SearchService
   def people_locations(srchString, tagName = nil)
     sresult = DocList.new
 
-    user_scope = find_locations(srchString, tagName)
+    user_scope = find_locations(srchString, tagName).limit(10)
 
     user_scope.each do |user|
       blurred = user.has_power_tag("location") ? user.get_value_of_power_tag("location") : false
@@ -232,7 +233,7 @@ class SearchService
                        .where(id: user_locations.select("rusers.id"))
     end
 
-    user_locations = user_locations.limit(limit.to_i)
+    user_locations = user_locations.limit(limit)
 
     user_locations
   end
