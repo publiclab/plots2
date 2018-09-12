@@ -85,7 +85,7 @@ class SearchService
     nodes = find_nodes(srchString, 25)
     puts nodes.inspect
     nodes.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, '', 0)
+      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'NOTES', 0)
       sresult.addDoc(doc)
     end
 
