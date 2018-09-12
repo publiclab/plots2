@@ -11,13 +11,9 @@ class SearchService
     sresult.addAll(noteList.items)
 
     # Node search
-    Node.limit(5)
-      .order('nid DESC')
-      .where('(type = "page" OR type = "place" OR type = "tool") AND node.status = 1 AND title LIKE ?', '%' + search_criteria.query + '%')
-      .select('title,type,nid,path').each do |match|
-      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'NOTES', 0)
-      sresult.addDoc(doc)
-    end
+    nodeList = textSearch_nodes(search_criteria.query)
+    sresult.addAll(nodeList.items)
+
     # User profiles
     search_criteria.add_sort_by("recent")
     userList = profiles(search_criteria)
@@ -26,9 +22,11 @@ class SearchService
     # Tags
     tagList = textSearch_tags(search_criteria.query)
     sresult.addAll(tagList.items)
+
     # maps
     mapList = textSearch_maps(search_criteria.query)
     sresult.addAll(mapList.items)
+
     # questions
     qList = textSearch_questions(search_criteria.query)
     sresult.addAll(qList.items)
@@ -71,9 +69,23 @@ class SearchService
   def textSearch_notes(srchString)
     sresult = DocList.new
 
-    notes = find_notes(srchString, 10)
-    notes.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'NOTES', 0)
+    nodes = find_notes(srchString, 25)
+    nodes.each do |match|
+      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, match.body.split(/#+.+\n+/, 5)[1], 0)
+      sresult.addDoc(doc)
+    end
+
+    sresult
+  end
+
+  # Search nodes package up as a DocResult
+  def textSearch_nodes(srchString)
+    sresult = DocList.new
+
+    nodes = find_nodes(srchString, 25)
+    puts nodes.inspect
+    nodes.each do |match|
+      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, '', 0)
       sresult.addDoc(doc)
     end
 
@@ -206,18 +218,14 @@ class SearchService
     users = users.limit(limit)
   end
 
-  def find_nodes(input, limit = 5, order = :default, type = :natural)
+  def find_nodes(input, limit = 5, order = :natural, type = :boolean)
     Node.search(query: input, order: order, type: type, limit: limit)
-        .group(:nid)
-        .where('node.status': 1)
-        .distinct
+        .where("`node`.`type` = 'page' OR `node`.`type` = 'place' OR `node`.`type` = 'tool'")
   end
 
   def find_notes(input, limit)
-    Node.order('nid DESC')
-        .where('type = "note" AND node.status = 1 AND title LIKE ?', '%' + input + '%')
-        .distinct
-        .limit(limit)
+    Node.search(query: input, order: :natural, type: :boolean, limit: limit)
+        .where("`node`.`type` = 'note'")
   end
 
   def find_locations(limit, user_tag = nil)
