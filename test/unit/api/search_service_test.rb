@@ -128,7 +128,7 @@ class SearchServiceTest < ActiveSupport::TestCase
     result = SearchService.new.textSearch_questions('question')
 
     assert_not_nil result
-    assert_equal 2, result.items.length
+    assert_equal 3, result.items.length
 
     assert_equal result.getDocs.to_json, sresult.getDocs.to_json
     assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
