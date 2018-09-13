@@ -66,12 +66,10 @@ class SearchService
   end
 
   # Search notes for matching strings and package up as a DocResult
-  def textSearch_notes(srchString, limit = 25, order = :natural, type = :boolean)
+  def textSearch_notes(srchString, limit = 25)
     sresult = DocList.new
 
-    nodes = Node.search(query: srchString, order: order, type: type, limit: limit)
-                .where("`node`.`type` = 'note'")
-
+    nodes = find_notes(srchString, limit)
     nodes.each do |match|
       doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'NOTES', 0)
       sresult.addDoc(doc)
@@ -81,11 +79,10 @@ class SearchService
   end
 
   # Search nodes package up as a DocResult
-  def textSearch_nodes(srchString, limit = 25, order = :natural, type = :boolean)
+  def textSearch_nodes(srchString, limit = 25)
     sresult = DocList.new
 
-    nodes = Node.search(query: srchString, order: order, type: type, limit: limit)
-                .where("`node`.`type` = 'page' OR `node`.`type` = 'place' OR `node`.`type` = 'tool'")
+    nodes = find_nodes(srchString, limit)
 
     nodes.each do |match|
       doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'PAGES', 0)
@@ -96,11 +93,10 @@ class SearchService
   end
 
   # Search maps for matching text and package up as a DocResult
-  def textSearch_maps(srchString,limit = 25, order = :natural, type = :boolean)
+  def textSearch_maps(srchString, limit = 25)
     sresult = DocList.new
 
-    maps = Node.search(query: srchString, order: order, type: type, limit: limit)
-               .where("`node`.`type` = 'map'")
+    maps = find_maps(srchString, limit)
 
     maps.each do |match|
       doc = DocResult.fromSearch(match.nid, 'map', match.path, match.title, 'PLACES', 0)
@@ -133,14 +129,10 @@ class SearchService
   end
 
   # Search question entries for matching text and package up as a DocResult
-  def textSearch_questions(srchString, limit = 25, order = :natural, type = :boolean)
+  def textSearch_questions(srchString, limit = 25)
     sresult = DocList.new
 
-    questions = Node.search(query: srchString, order: order, type: type, limit: limit)
-                    .where("`node`.`type` = 'note'")
-                    .joins(:tag)
-                    .where('term_data.name LIKE ?', 'question:%')
-                    .distinct
+    questions = find_questions(srchString, limit)
 
     questions.each do |match|
       doc = DocResult.fromSearch(match.nid, 'question-circle', match.path(:question), match.title, 'QUESTIONS', match.answers.length.to_i)
@@ -217,6 +209,29 @@ class SearchService
         User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
       end
     users = users.limit(limit)
+  end
+
+  def find_nodes(input, limit = 25, order = :natural, type = :boolean)
+    Node.search(query: input, order: order, type: type, limit: limit)
+        .where("`node`.`type` = 'page' OR `node`.`type` = 'place' OR `node`.`type` = 'tool'")
+  end
+
+  def find_notes(input, limit = 25, order = :natural, type = :boolean)
+    Node.search(query: input, order: order, type: type, limit: limit)
+        .where("`node`.`type` = 'note'")
+  end
+
+  def find_maps(input, limit = 25, order = :natural, type = :boolean)
+    Node.search(query: input, order: order, type: type, limit: limit)
+        .where("`node`.`type` = 'map'")
+  end
+
+  def find_questions(input, limit = 25, order = :natural, type = :boolean)
+    Node.search(query: input, order: order, type: type, limit: limit)
+        .where("`node`.`type` = 'note'")
+        .joins(:tag)
+        .where('term_data.name LIKE ?', 'question:%')
+        .distinct
   end
 
   def find_locations(limit, user_tag = nil)

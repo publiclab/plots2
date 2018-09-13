@@ -40,12 +40,14 @@ class Node < ActiveRecord::Base
           nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
             .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
             .limit(limit)
+            .distinct
             .collect(&:nid)
         else
           query = connection.quote(query.to_s)
           nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
             .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
             .limit(limit)
+            .distinct
             .collect(&:nid)
         end
         where(nid: nids, status: 1)
@@ -55,6 +57,7 @@ class Node < ActiveRecord::Base
         where(nid: nids + tnids, status: 1)
           .order(order_param)
           .limit(limit)
+          .distinct
       end
     else
       nodes = Node.limit(limit)
