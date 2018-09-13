@@ -11,6 +11,7 @@ jQuery(document).ready(function() {
   var typeahead = el.typeahead({
     items: 15,
     minLength: 3,
+    showCategoryHeader: true,
     autoSelect: false,
     source: function (query, process) {
       return $.getJSON('/api/srch/all?srchString=' + query, function (data) {
@@ -18,7 +19,7 @@ jQuery(document).ready(function() {
       },'json');
     },
     highlighter: function (text, item) {
-      return '<i class="fa fa-' + item.docType + '"></i> ' + item.docTitle;
+      return item.docTitle;
     },
     matcher: function() {
       return true;

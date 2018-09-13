@@ -6,7 +6,7 @@ class SearchServiceFullTextSearchTest < ActiveSupport::TestCase
   def create_profiles_doc_list(list)
     sresult = DocList.new
     list.each do |match|
-      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, '', 0)
+      doc = DocResult.fromSearch(0, 'user', '/profile/' + match.name, match.name, 'USERS', 0)
       sresult.addDoc(doc)
     end
     sresult
