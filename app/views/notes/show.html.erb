@@ -15,10 +15,6 @@
       <img style="width:100%;" class="img-rounded visible-xs visible-sm" src="<%= @node.main_image.path(:large) %>" />
     </a>
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
-  <% else %>
-    <div id="content" class="pl-content note">
-      <p><img src="<%= @node.scraped_image %>" /></p>
-    </div>
   <% end %>
 
   <div style="margin-top:10px;" class="hidden-print">
