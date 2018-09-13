@@ -7,67 +7,7 @@ class SearchApiTest < ActiveSupport::TestCase
     Rails.application
   end
 
-  test 'search all functionality' do
-     get '/api/srch/all?srchString=Blog'
-     assert last_response.ok?
 
-     # Expected search pattern
-     pattern = {
-       srchParams: {
-         srchString: 'Blog',
-         seq: nil,
-       }.ignore_extra_keys!
-     }.ignore_extra_keys!
-
-     matcher = JsonExpressions::Matcher.new(pattern)
-
-     json = JSON.parse(last_response.body)
-
-     assert_equal nodes(:blog).path, json['items'][0]['docUrl']
-     assert_equal "Blog post",       json['items'][0]['docTitle']
-     assert_equal 13,                json['items'][0]['docId']
-
-     assert matcher =~ json
-
-   end
-
-   test 'search all functionality with multiple responses' do
-      get '/api/srch/all?srchString=question'
-      assert last_response.ok?
-
-      # Expected search pattern
-      pattern = {
-        srchParams: {
-          srchString: 'question',
-          seq: nil,
-        }.ignore_extra_keys!
-      }.ignore_extra_keys!
-
-      matcher = JsonExpressions::Matcher.new(pattern)
-
-      json = JSON.parse(last_response.body)
-
-      assert matcher =~ json
-    end
-
-    test 'search all functionality without search query' do
-       get '/api/srch/all?srchString'
-       assert last_response.ok?
-
-       # Expected search pattern
-       pattern = {
-         srchParams: {
-           srchString: nil,
-           seq: nil,
-         }.ignore_extra_keys!
-       }.ignore_extra_keys!
-
-       matcher = JsonExpressions::Matcher.new(pattern)
-
-       json = JSON.parse(last_response.body)
-       assert matcher =~ json
-
-     end
 
    # search by username and returns users by id when order_by is not provided and sorted direction default DESC
    test 'search profiles by username without order_by and default sort_direction' do
@@ -142,71 +82,23 @@ class SearchApiTest < ActiveSupport::TestCase
      assert matcher =~ json
   end
 
-  test 'search notes functionality' do
-      get '/api/srch/notes?srchString=Blog'
-      assert last_response.ok?
-      # Expected search pattern
-      pattern = {
-        srchParams: {
-          srchString: 'Blog',
-          seq: nil,
-        }.ignore_extra_keys!
-      }.ignore_extra_keys!
+  test 'search tags functionality' do
+    get '/api/srch/tags?srchString=Awesome'
+    assert last_response.ok?
 
-      matcher = JsonExpressions::Matcher.new(pattern)
-
-      json = JSON.parse(last_response.body)
-
-      assert_equal nodes(:blog).path, json['items'][0]['docUrl']
-      assert_equal "Blog post",       json['items'][0]['docTitle']
-      assert_equal 13,                json['items'][0]['docId']
-
-      assert matcher =~ json
-
-    end
-
-    test 'search questions functionality' do
-       get '/api/srch/questions?srchString=Question'
-       assert last_response.ok?
-
-       # Expected search pattern
-       pattern = {
-         srchParams: {
-           srchString: 'Question',
-           seq: nil,
+    # Expected search pattern
+    pattern = {
+      srchParams: {
+        srchString: 'Awesome',
+        seq: nil,
       }.ignore_extra_keys!
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
     json = JSON.parse(last_response.body)
-
-    assert_equal "How to use a Spectrometer", json['items'][0]['docTitle']
-    assert_equal 8,                             json['items'][0]['docId']
-
-
     assert matcher =~ json
-
   end
-
-  test 'search tags functionality' do
-     get '/api/srch/tags?srchString=Awesome'
-     assert last_response.ok?
-
-     # Expected search pattern
-     pattern = {
-       srchParams: {
-         srchString: 'Awesome',
-          seq: nil,
-       }.ignore_extra_keys!
-     }.ignore_extra_keys!
-
-     matcher = JsonExpressions::Matcher.new(pattern)
-
-     json = JSON.parse(last_response.body)
-     assert matcher =~ json
-
-    end
 
   test 'search Tag Nearby Nodes functionality' do
     get '/api/srch/taglocations?srchString=71.00,52.00&tagName=awesome'
@@ -277,5 +169,4 @@ class SearchApiTest < ActiveSupport::TestCase
     assert matcher =~ json
 
   end
-
 end

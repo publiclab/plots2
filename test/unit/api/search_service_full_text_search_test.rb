@@ -12,6 +12,24 @@ class SearchServiceFullTextSearchTest < ActiveSupport::TestCase
     sresult
   end
 
+  def create_notes_doc_list(notes)
+    sresult = DocList.new
+    notes.each do |match|
+      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'NOTES', 0)
+      sresult.addDoc(doc)
+    end
+    sresult
+  end
+
+  def create_questions_doc_list(notes)
+    sresult = DocList.new
+    notes.each do |match|
+      doc = DocResult.fromSearch(match.nid, 'question-circle', match.path(:question), match.title, 'QUESTIONS', match.answers.length.to_i)
+      sresult.addDoc(doc)
+    end
+    sresult
+  end
+
   def running_profiles_by_username_and_bio
     skip "full text search only works on mysql/mariadb" if ActiveRecord::Base.connection.adapter_name == 'sqlite3'
 
@@ -47,5 +65,31 @@ class SearchServiceFullTextSearchTest < ActiveSupport::TestCase
       assert_equal result.getDocs.to_json, sresult.getDocs.to_json
       assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
     end
+  end
+
+  test 'running search notes' do
+    notes = [nodes(:blog)]
+    sresult = create_notes_doc_list(notes)
+
+    result = SearchService.new.textSearch_notes('Blog')
+
+    assert_not_nil result
+    assert_equal 1, result.items.length
+
+    assert_equal result.getDocs.to_json, sresult.getDocs.to_json
+    assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
+  end
+
+  test 'running search questions' do
+    notes = [nodes(:question), nodes(:question2), nodes(:question3)]
+    sresult = create_questions_doc_list(notes)
+
+    result = SearchService.new.textSearch_questions('question')
+
+    assert_not_nil result
+    assert_equal 3, result.items.length
+
+    assert_equal result.getDocs.to_json, sresult.getDocs.to_json
+    assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
   end
 end
