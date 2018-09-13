@@ -15,9 +15,9 @@ class SearchService
     sresult.addAll(nodeList.items)
 
     # User profiles
-    search_criteria.add_sort_by("recent")
-    userList = profiles(search_criteria)
-    sresult.addAll(userList.items)
+    #search_criteria.add_sort_by("recent")
+    #userList = profiles(search_criteria)
+    #sresult.addAll(userList.items)
 
     # Tags
     tagList = textSearch_tags(search_criteria.query)
@@ -83,9 +83,9 @@ class SearchService
     sresult = DocList.new
 
     nodes = find_nodes(srchString, 25)
-    puts nodes.inspect
+
     nodes.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'NOTES', 0)
+      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'PAGES', 0)
       sresult.addDoc(doc)
     end
 
@@ -96,10 +96,9 @@ class SearchService
   def textSearch_maps(srchString)
     sresult = DocList.new
 
-    maps = Node.where('type = "map" AND node.status = 1 AND title LIKE ?', '%' + srchString + '%')
-               .limit(10)
+    maps = find_maps(srchString, 25)
 
-    maps.select('title,type,nid,path').each do |match|
+    maps.each do |match|
       doc = DocResult.fromSearch(match.nid, 'map', match.path, match.title, 'PLACES', 0)
       sresult.addDoc(doc)
     end
@@ -133,14 +132,8 @@ class SearchService
   def textSearch_questions(srchString)
     sresult = DocList.new
 
-    questions = Node.where(
-      'type = "note" AND node.status = 1 AND title LIKE ?',
-      '%' + srchString + '%'
-    )
-      .joins(:tag)
-      .where('term_data.name LIKE ?', 'question:%')
-      .order('node.nid DESC')
-      .limit(10)
+    questions = find_questions(srchString, 25)
+
     questions.each do |match|
       doc = DocResult.fromSearch(match.nid, 'question-circle', match.path(:question), match.title, 'QUESTIONS', match.answers.length.to_i)
       sresult.addDoc(doc)
@@ -226,6 +219,18 @@ class SearchService
   def find_notes(input, limit)
     Node.search(query: input, order: :natural, type: :boolean, limit: limit)
         .where("`node`.`type` = 'note'")
+  end
+
+  def find_maps(input, limit)
+    Node.search(query: input, order: :natural, type: :boolean, limit: limit)
+        .where("`node`.`type` = 'map'")
+  end
+
+  def find_questions(input, limit)
+    Node.search(query: input, order: :natural, type: :boolean, limit: limit)
+        .where("`node`.`type` = 'note'")
+        .joins(:tag)
+        .where('term_data.name LIKE ?', 'question:%')
   end
 
   def find_locations(limit, user_tag = nil)
