@@ -17,7 +17,7 @@
     <!--<div class="expand"><a onClick="$('.main-image').toggleClass('compressed');"><i class="fa fa-angle-down"></i></a></div>-->
   <% else %>
     <div id="content" class="pl-content note">
-      <p><img<%= render html: @node.scraped_image.html_safe %>/></p>
+      <p><img src="<%= @node.scraped_image %>" /></p>
     </div>
   <% end %>
 
