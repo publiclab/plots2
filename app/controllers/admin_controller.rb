@@ -356,15 +356,15 @@ class AdminController < ApplicationController
   def smtp_test
     require 'socket'
 
-    s = TCPSocket.new 'localhost', 25 # change 'localhost' to ENV['something']
+    s = TCPSocket.new ActionMailer::Base.smtp_settings[:address], ActionMailer::Base.smtp_settings[:port]
 
     while line = s.gets # Read lines from socket
       puts line
       if line.include? '220'
-        s.print "MAIL FROM: <icarito@publiclab.org>\n"
+        s.print "MAIL FROM: <example@publiclab.org>\n"
       end
       if line.include? '250 OK'
-        s.print "RCPT TO: <icarito@publiclab.org>\n"
+        s.print "RCPT TO: <example@publiclab.org>\n"
       end
       if line.include? '250 Accepted'
         puts 'PASS'
