@@ -352,4 +352,31 @@ class AdminController < ApplicationController
       redirect_to '/dashboard'
     end
   end
+
+  def smtp_test
+    require 'socket'
+
+    s = TCPSocket.new 'localhost', 25 # change 'localhost' to ENV['something']
+
+    while line = s.gets # Read lines from socket
+      puts line
+      if line.include? '220'
+        s.print "MAIL FROM: <icarito@publiclab.org>\n"
+      end
+      if line.include? '250 OK'
+        s.print "RCPT TO: <icarito@publiclab.org>\n"
+      end
+      if line.include? '250 Accepted'
+        puts 'PASS'
+        s.close_write
+      elsif line.include? '550'
+        puts 'FAIL'
+        s.close_write
+      end
+    end
+
+    s.close
+    render text: 'DONE'
+  end
+
 end
