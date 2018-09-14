@@ -24,7 +24,7 @@ class Node < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query:, order: :default, type: :natural, limit: "25")
+  def self.search(query:, order: :default, type: :natural, limit: 25)
     order_param = if order == :default
                     { changed: :desc }
                   elsif order == :likes
