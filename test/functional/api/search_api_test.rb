@@ -7,8 +7,6 @@ class SearchApiTest < ActiveSupport::TestCase
     Rails.application
   end
 
-
-
    # search by username and returns users by id when order_by is not provided and sorted direction default DESC
    test 'search profiles by username without order_by and default sort_direction' do
      get '/api/srch/profiles?srchString=steff&field=username'

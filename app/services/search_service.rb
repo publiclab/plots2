@@ -11,7 +11,7 @@ class SearchService
     sresult.addAll(noteList.items)
 
     # Node search
-    nodeList = textSearch_nodes(search_criteria.query)
+    nodeList = textSearch_pages(search_criteria.query)
     sresult.addAll(nodeList.items)
 
     # User profiles
@@ -79,10 +79,10 @@ class SearchService
   end
 
   # Search nodes package up as a DocResult
-  def textSearch_nodes(srchString, limit = 25)
+  def textSearch_pages(srchString, limit = 25)
     sresult = DocList.new
 
-    nodes = find_nodes(srchString, limit)
+    nodes = find_pages(srchString, limit)
 
     nodes.each do |match|
       doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'PAGES', 0)
@@ -211,14 +211,14 @@ class SearchService
     users = users.limit(limit)
   end
 
-  def find_nodes(input, limit = 25, order = :natural, type = :boolean)
-    Node.search(query: input, order: order, type: type, limit: limit)
-        .where("`node`.`type` = 'page' OR `node`.`type` = 'place' OR `node`.`type` = 'tool'")
-  end
-
   def find_notes(input, limit = 25, order = :natural, type = :boolean)
     Node.search(query: input, order: order, type: type, limit: limit)
         .where("`node`.`type` = 'note'")
+  end
+
+  def find_pages(input, limit = 25, order = :natural, type = :boolean)
+    Node.search(query: input, order: order, type: type, limit: limit)
+        .where("`node`.`type` = 'page' OR `node`.`type` = 'place' OR `node`.`type` = 'tool'")
   end
 
   def find_maps(input, limit = 25, order = :natural, type = :boolean)

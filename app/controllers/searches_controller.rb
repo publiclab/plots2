@@ -14,7 +14,7 @@ class SearchesController < ApplicationController
     @title = 'Search'
     @tagnames = params[:id].split(',')
     @users = SearchService.new.find_users(params[:id], limit = 10)
-    @nodes = SearchService.new.find_nodes(params[:id], 100, params[:order].to_s.to_sym, params[:type].to_s.to_sym)
+    @nodes = SearchService.new.find_pages(params[:id], 100, params[:order].to_s.to_sym, params[:type].to_s.to_sym)
       .paginate(page: params[:page], per_page: 24)
   end
 end
