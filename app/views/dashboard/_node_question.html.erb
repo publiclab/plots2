@@ -18,7 +18,6 @@
       <% end %>
       
       <a href="<%= node.path(:question) %>#post-answer" class="btn btn-default btn-xs pull-right respond answer"><%= t('dashboard._node_question.post_answer') %></a>
-      <a href="/q/<%= node.id %>" class="btn btn-default btn-xs pull-right respond answer"><i class="fa fa-link"></i> #<%= node.id %></a>
 
       <p class="meta"><%= t('dashboard._node_question.question') %> <%= render partial: "dashboard/node_meta", locals: { node: node } %></p>
 
