@@ -69,7 +69,7 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
 6. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 7. Run `rake db:setup` to set up the database
-8. Install static assets (like external javascript libraries, fonts) with `bower install`
+8. Install static assets (like external javascript libraries, fonts) with `yarn --ignore-engines --ignore-scripts --modules-folder ./public/lib`
 9. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 (for local SSL work, see [SSL](#ssl+in+development) below)
 10. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
