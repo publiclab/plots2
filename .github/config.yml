@@ -16,6 +16,8 @@ newPRWelcomeComment: >
 
 # Comment to be posted to on pull requests merged by a first time user
 firstPRMergeComment: >
-  Congrats on merging your first pull request! 🙌🎉⚡️
+  Congrats on merging your first pull request! 🙌🎉⚡️ Your code will likely be published to PublicLab.org in the next few days. In the meantime, can you tell us your Twitter handle so we can thank you properly?
+
+
 
 # It is recommend to include as many gifs and emojis as possible
