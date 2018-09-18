@@ -22,29 +22,11 @@ class SearchServiceTest < ActiveSupport::TestCase
     sresult
   end
 
-  def create_notes_doc_list(notes)
-    sresult = DocList.new
-    notes.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'file', match.path, match.title, 'NOTES', 0)
-      sresult.addDoc(doc)
-    end
-    sresult
-  end
-
   def create_tags_doc_list(notes)
     sresult = DocList.new
     notes.each do |match|
       tagdoc = DocResult.fromSearch(match.nid, 'tag', match.path, match.title, 'TAGS', 0)
       sresult.addDoc(tagdoc)
-    end
-    sresult
-  end
-
-  def create_questions_doc_list(notes)
-    sresult = DocList.new
-    notes.each do |match|
-      doc = DocResult.fromSearch(match.nid, 'question-circle', match.path(:question), match.title, 'QUESTIONS', match.answers.length.to_i)
-      sresult.addDoc(doc)
     end
     sresult
   end
@@ -95,37 +77,11 @@ class SearchServiceTest < ActiveSupport::TestCase
     assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
   end
 
-  test 'running search notes' do
-    notes = [nodes(:blog)]
-    sresult = create_notes_doc_list(notes)
-
-    result = SearchService.new.textSearch_notes('Blog')
-
-    assert_not_nil result
-    assert_equal 1, result.items.length
-
-    assert_equal result.getDocs.to_json, sresult.getDocs.to_json
-    assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
-  end
-
   test 'running search tags' do
     notes = [nodes(:one), nodes(:about)]
     sresult = create_tags_doc_list(notes)
 
     result = SearchService.new.textSearch_tags('awesome')
-
-    assert_not_nil result
-    assert_equal 2, result.items.length
-
-    assert_equal result.getDocs.to_json, sresult.getDocs.to_json
-    assert_equal result.getDocs.to_json.length, result.getDocs.uniq.to_json.length
-  end
-
-  test 'running search questions' do
-    notes = [nodes(:question3), nodes(:question2)]
-    sresult = create_questions_doc_list(notes)
-
-    result = SearchService.new.textSearch_questions('question')
 
     assert_not_nil result
     assert_equal 2, result.items.length
