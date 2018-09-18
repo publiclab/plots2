@@ -7,11 +7,11 @@ class SearchService
     sresult = DocList.new
 
     # notes
-    noteList = textSearch_notes(search_criteria.query)
+    noteList = textSearch_notes(search_criteria.query, search_criteria.limit)
     sresult.addAll(noteList.items)
 
     # Node search
-    nodeList = textSearch_pages(search_criteria.query)
+    nodeList = textSearch_pages(search_criteria.query, search_criteria.limit)
     sresult.addAll(nodeList.items)
 
     # User profiles
@@ -20,15 +20,15 @@ class SearchService
     sresult.addAll(userList.items)
 
     # Tags
-    tagList = textSearch_tags(search_criteria.query)
+    tagList = textSearch_tags(search_criteria.query, search_criteria.limit)
     sresult.addAll(tagList.items)
 
     # maps
-    mapList = textSearch_maps(search_criteria.query)
+    mapList = textSearch_maps(search_criteria.query, search_criteria.limit)
     sresult.addAll(mapList.items)
 
     # questions
-    qList = textSearch_questions(search_criteria.query)
+    qList = textSearch_questions(search_criteria.query, search_criteria.limit)
     sresult.addAll(qList.items)
 
     sresult
@@ -43,7 +43,7 @@ class SearchService
   def profiles(search_criteria)
     limit = search_criteria.limit ? search_criteria.limit : 10
 
-    user_scope = find_users(search_criteria.query, limit = 10, search_criteria.field)
+    user_scope = find_users(search_criteria.query, limit, search_criteria.field)
 
     user_scope =
       if search_criteria.sort_by == "recent"
@@ -109,7 +109,7 @@ class SearchService
   # Search documents with matching tag values and package up as a DocResult
   # The search string that is passed in is split into tokens, and the tag names are compared and
   # chained to the notes that are tagged with those values
-  def textSearch_tags(srchString)
+  def textSearch_tags(srchString, limit = 10)
     sresult = DocList.new
 
     # Tags
@@ -119,7 +119,7 @@ class SearchService
       .joins(:node)
       .where('node.status = 1')
       .select('DISTINCT node.nid,node.title,node.path')
-      .limit(10)
+      .limit(limit)
     tlist.each do |match|
       tagdoc = DocResult.fromSearch(match.nid, 'tag', match.path, match.title, 'TAGS', 0)
       sresult.addDoc(tagdoc)

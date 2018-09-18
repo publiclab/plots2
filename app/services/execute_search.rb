@@ -14,11 +14,11 @@ class ExecuteSearch
      when :profiles
        sresult = sservice.profiles(search_criteria)
      when :notes
-       sresult = sservice.textSearch_notes(search_criteria.query)
+       sresult = sservice.textSearch_notes(search_criteria.query, search_criteria.limit)
      when :questions
-       sresult = sservice.textSearch_questions(search_criteria.query)
+       sresult = sservice.textSearch_questions(search_criteria.query, search_criteria.limit)
      when :tags
-       sresult = sservice.textSearch_tags(search_criteria.query)
+       sresult = sservice.textSearch_tags(search_criteria.query, search_criteria.limit)
      when :peoplelocations
        sresult = sservice.people_locations(search_criteria.query, search_criteria.tag)
      when :taglocations

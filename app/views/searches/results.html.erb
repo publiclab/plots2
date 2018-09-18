@@ -11,7 +11,7 @@
       |
       <%= link_to_unless_current 'views', controller: :searches, action: :results, id: params[:id], order: 'views' %>
       |
-      <%= link_to_unless current_page?(controller: :searches, action: :results, check_parameters: true), 'date created', controller: :searches, action: :results, id: params[:id] %>
+      <%= link_to_unless current_page?(controller: :searches, action: :results, check_parameters: true), 'most recent', controller: :searches, action: :results, id: params[:id] %>
     </span>
   </h3>
 

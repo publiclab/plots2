@@ -7,7 +7,7 @@ class SearchCriteria
     @sort_by = params[:sort_by]
     @order_direction = params[:order_direction]
     @field = params[:field]
-    @limit = params[:limit]
+    @limit = params[:limit] || 25
   end
 
   def valid?
