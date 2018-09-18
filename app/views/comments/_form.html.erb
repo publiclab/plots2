@@ -12,8 +12,16 @@
   <% end %>
 
   <div class="form-group dropzone">
-    <textarea style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= params[:body] %></textarea>
 
+    <% 
+      body = params[:body]
+      # Look for comment templates
+      if params[:body].empty? && @node && @node.has_power_tag('comment-template')
+        body = Node.find(@node.power_tag('comment-template').to_i).body
+      end
+    %>
+    <textarea style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= body %></textarea>
+ 
     <div id="imagebar">
 
       <div id="create_progress" style="display:none;" class="progress progress-striped active pull-right">
