@@ -1,0 +1,24 @@
+<%= render :partial => "search/nav" , :locals => { :section => "search-tags" }%>
+
+<div class="container">
+  <% if @tags.present? %>
+    <div class="container">
+      <h2> Results for <%= params[:query] %></h2>
+      <hr>
+
+      <div class="row">
+        <% @tags.each do |tag| %>
+          <p><a href="/tags/<%= tag.title %>"><%= tag.title %></a></p>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <h4>
+      No results found for <%= params[:query] %> :-(
+      </br>
+      Try searching <a href="/search">for another topic</a> or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
+    </h4>
+  <% end %>
+</div>
+
+<%= will_paginate @tags, :renderer => BootstrapPagination::Rails unless @unpaginated %>

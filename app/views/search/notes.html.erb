@@ -1,0 +1,33 @@
+<%= render :partial => "search/nav", :locals => { :section => "search-notes" } %>
+
+<div class="container">
+  <% if @notes.present? %>
+    <h2> Results for <%= params[:query] %></h2>
+    <div class="list-group">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <%= link_to "Most liked", url_for(:order_by => :likes), :class => "list-group-item list-group-item-action"%>
+        </li>
+         <li class="nav-item">
+           <%= link_to "Most viewed", url_for(:order_by => :views), :class => "list-group-item list-group-item-action"%>
+         </li>
+         <li class="nav-item">
+           <%= link_to "Most recent", url_for(:order_by => :recent), :class => "list-group-item list-group-item-action"%>
+         </li>
+         <li class="nav-item">
+           <%= link_to "Boolean search", url_for(:order_by => :boolean), :class => "list-group-item list-group-item-action"%>
+         </li>
+      </ul>
+    </div>
+    <hr>
+    <%= render partial: "notes/notes", locals: { notes: @notes } %>
+  <% else %>
+    <h4>
+      No results found for <%= params[:query] %> :-(
+      </br>
+      Try searching <a href="/search">for another topic</a> or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
+    </h4>
+  <% end %>
+</div>
+
+<%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>

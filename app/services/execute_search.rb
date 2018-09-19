@@ -14,6 +14,8 @@ class ExecuteSearch
        return sservice.search_profiles(search_criteria)
      when :notes
        return sservice.search_notes(search_criteria.query, search_criteria.limit)
+     when :wikis
+       return sservice.search_wikis(search_criteria.query, search_criteria.limit)
      when :questions
        return sservice.search_questions(search_criteria.query, search_criteria.limit)
      when :tags

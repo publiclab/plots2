@@ -40,6 +40,15 @@ module Srch
             )
           end
 
+          results_list << results[:wikis].map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'WIKIS',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
+
           results_list << results[:tags].map do |model|
             DocResult.new(
               doc_id: model.nid,
@@ -118,6 +127,35 @@ module Srch
             DocResult.new(
               doc_id: model.nid,
               doc_type: 'NOTES',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
+
+          DocList.new(docs, search_request)
+        else
+          DocList.new('', search_request)
+        end
+      end
+
+      # Request URL should be /api/srch/wikis?srchString=QRY
+      # Basic implementation from classic plots2 SearchController
+      desc 'Perform a search of wikis pages',    hidden: false,
+                                                 is_array: false,
+                                                 nickname: 'srchGetWikis'
+
+      params do
+        use :common
+      end
+      get :wikis do
+        search_request = SearchRequest.fromRequest(params)
+        results = Search.execute(:wikis, params)
+
+        if results.present?
+          docs = results.map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'WIKIS',
               doc_url: model.path,
               doc_title: model.title
             )

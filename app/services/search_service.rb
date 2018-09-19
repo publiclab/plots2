@@ -5,7 +5,7 @@ class SearchService
   def search_all(search_criteria)
     notes = search_notes(search_criteria.query)
 
-    pages = search_pages(search_criteria.query, search_criteria.limit)
+    wikis = search_wikis(search_criteria.query, search_criteria.limit)
 
     search_criteria.sort_by = "recent"
     profiles = search_profiles(search_criteria)
@@ -17,6 +17,7 @@ class SearchService
     questions = search_questions(search_criteria.query, search_criteria.limit)
 
     all_results = { :notes => notes,
+                    :wikis => wikis,
                     :profiles => profiles,
                     :tags => tags,
                     :maps => maps,
@@ -49,7 +50,7 @@ class SearchService
         .where("`node`.`type` = 'note'")
   end
 
-  def search_pages(input, limit = 25, order = :natural, type = :boolean)
+  def search_wikis(input, limit = 25, order = :natural, type = :boolean)
     Node.search(query: input, order: order, type: type, limit: limit)
         .where("`node`.`type` = 'page' OR `node`.`type` = 'place' OR `node`.`type` = 'tool'")
   end

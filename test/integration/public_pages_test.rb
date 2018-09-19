@@ -69,13 +69,8 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'browse /search/*' do
-    get '/search/foo'
-    assert_response :success
-  end
-
-  test 'browse /search/dynamic' do
-    get '/search/dynamic'
+  test 'browse /search/notes/*' do
+    get '/search/notes/foo'
     assert_response :success
   end
 
