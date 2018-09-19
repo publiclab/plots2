@@ -18,28 +18,28 @@ $(function() {
       },'json');
     },
     highlighter: function (text, item) {
-      return item.docTitle;
+      return item.doc_title;
     },
     matcher: function() {
       return true;
     },
     displayText: function(item) {
-      return item.docTitle;
+      return item.doc_title;
     },
     updater: function(item) {
       if (item.hasOwnProperty('showAll') && item.showAll) {
         var query = this.value;
         window.location = window.location.origin + "/search/notes/" + query;
       }
-      else if (item.hasOwnProperty('docUrl') && item.docUrl) {
-        window.location = window.location.origin + item.docUrl;
+      else if (item.hasOwnProperty('doc_url') && item.doc_url) {
+        window.location = window.location.origin + item.doc_url;
       } else {
-        window.location = window.location.origin + '/tag/' + item.docTitle;
+        window.location = window.location.origin + '/tag/' + item.doc_title;
       }
-      item = item.docTitle;
+      item = item.doc_title;
       return item;
     },
-    addItem: { docTitle: 'View all',
+    addItem: { doc_title: 'View all',
                showAll: true
              }
   });

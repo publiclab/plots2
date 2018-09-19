@@ -7,16 +7,10 @@ class SearchControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "search notes at /search/notes/organizers" do
-    get :notes, params: { query: 'organizers' }
+  test "search notes at /search/notes/canon" do
+    get :notes, params: { query: 'Canon' }
     assert_response :success
-    assert_equal nodes(:organizers).id, assigns(:notes).first.id
-  end
-
-  test "search notes for no results at /search/notes/somethingthathasnoresults" do
-    get :notes, params: { query: 'somethingthathasnoresults' }
-    assert_response :success
-    assert_equal [], assigns(:notes)
+    assert_equal nodes(:one).id, assigns(:notes).first.id
   end
 
   test "search profiles page at /search/profiles/steff1" do
@@ -35,20 +29,15 @@ class SearchControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "search question at /search/questions/first_timer_question" do
-    get :questions, params: { query: 'first_timer_question' }
+  test "search question at /search/questions/question" do
+    get :questions, params: { query: 'question' }
     assert_response :success
-    assert_equal nodes(:first_timer_question).id, assigns(:questions).first.id
+    assert_equal nodes(:question).nid, assigns(:questions).first.nid
   end
 
   test "search places page at /search/places/map" do
     get :places, params: { query: 'map' }
     assert_response :success
-  end
-
-  test "search places at /search/places/map" do
-    get :places, params: { query: 'map' }
-    assert_equal nodes(:map).id, assigns(:nodes).first.id
   end
 
   test "search tags page at /search/tags/awesome" do
@@ -58,6 +47,7 @@ class SearchControllerTest < ActionController::TestCase
 
   test "search tags at /search/tags/awesome" do
     get :tags, params: { query: 'awesome' }
+    assert_response :success
     assert_equal node_tags(:awesome).nid, assigns(:tags).first.nid
   end
 end

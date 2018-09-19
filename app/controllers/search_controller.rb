@@ -8,10 +8,10 @@ class SearchController < ApplicationController
                               .paginate(page: params[:page], per_page: 24)
   end
 
-  # def wikis
-  #   @wikis = SearchService.new.search_wikis(params[:query], 15, params[:order_by].to_s.to_sym)
-  #                             .paginate(page: params[:page], per_page: 24)
-  # end
+  def wikis
+    @wikis = SearchService.new.search_wikis(params[:query], 15, params[:order_by].to_s.to_sym)
+                              .paginate(page: params[:page], per_page: 24)
+  end
 
   def profiles
     @profiles = ExecuteSearch.new.by(:profiles, @search_criteria).paginate(page: params[:page], per_page: 20)
