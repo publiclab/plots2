@@ -18,7 +18,59 @@ module Srch
         use :common
       end
       get :all do
-        Search.execute(:all, params)
+        search_request = SearchRequest.fromRequest(params)
+        results = Search.execute(:all, params)
+        results_list = []
+
+        if results.present?
+          results_list << results[:profiles].map do |model|
+            DocResult.new(
+              doc_type: 'USERS',
+              doc_url: '/profile/' + model.name,
+              doc_title: model.username
+            )
+          end
+
+          results_list << results[:notes].map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'NOTES',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
+
+          results_list << results[:tags].map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'TAGS',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
+
+          results_list << results[:maps].map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'PLACES',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
+
+          results_list << results[:questions].map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'QUESTIONS',
+              doc_url: model.path(:question),
+              doc_title: model.title,
+              score: model.answers.length
+            )
+          end
+          DocList.new(results_list.flatten, search_request)
+        else
+          DocList.new('', search_request)
+        end
       end
 
       # Request URL should be /api/srch/profiles?srchString=QRY[&sort_by=recent&order_direction=desc&field=username]
@@ -31,7 +83,21 @@ module Srch
         use :common, :sorting, :ordering, :field
       end
       get :profiles do
-        Search.execute(:profiles, params)
+        search_request = SearchRequest.fromRequest(params)
+        results = Search.execute(:profiles, params)
+
+        if results.present?
+          docs = results.map do |model|
+            DocResult.new(
+              doc_type: 'USERS',
+              doc_url: '/profile/' + model.name,
+              doc_title: model.username
+            )
+          end
+          DocList.new(docs, search_request)
+        else
+          DocList.new('', search_request)
+        end
       end
 
       # Request URL should be /api/srch/notes?srchString=QRY
@@ -44,7 +110,23 @@ module Srch
         use :common
       end
       get :notes do
-        Search.execute(:notes, params)
+        search_request = SearchRequest.fromRequest(params)
+        results = Search.execute(:notes, params)
+
+        if results.present?
+          docs = results.map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'NOTES',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
+
+          DocList.new(docs, search_request)
+        else
+          DocList.new('', search_request)
+        end
       end
 
       # Request URL should be /api/srch/questions?srchString=QRY
@@ -57,7 +139,24 @@ module Srch
         use :common
       end
       get :questions do
-        Search.execute(:questions, params)
+        search_request = SearchRequest.fromRequest(params)
+        results = Search.execute(:questions, params)
+
+        if results.present?
+          docs = results.map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'QUESTIONS',
+              doc_url: model.path(:question),
+              doc_title: model.title,
+              score: model.answers.length
+            )
+          end
+
+          DocList.new(docs, search_request)
+        else
+          DocList.new('', search_request)
+        end
       end
 
       # Request URL should be /api/srch/tags?srchString=QRY
@@ -70,7 +169,23 @@ module Srch
         use :common
       end
       get :tags do
-        Search.execute(:tags, params)
+        search_request = SearchRequest.fromRequest(params)
+        results = Search.execute(:tags, params)
+
+        if results.present?
+          docs = results.map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'TAGS',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
+
+          DocList.new(docs, search_request)
+        else
+          DocList.new('', search_request)
+        end
       end
 
       # Request URL should be /api/srch/taglocations?srchString=QRY[&tagName=awesome]
@@ -83,7 +198,26 @@ module Srch
         use :common, :additional
       end
       get :taglocations do
-        Search.execute(:taglocations, params)
+        search_request = SearchRequest.fromRequest(params)
+        results = Search.execute(:taglocations, params)
+
+        if results.present?
+          docs = results.map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'PLACES',
+              doc_url: model.path(:items),
+              doc_title: model.title,
+              score: model.answers.length,
+              latitude: model.lat,
+              longitude: model.lon,
+              blurred: model.blurred?
+            )
+          end
+          DocList.new(docs, search_request)
+        else
+          DocList.new('', search_request)
+        end
       end
 
       # API TO FETCH QRY RECENT CONTRIBUTORS
@@ -97,22 +231,67 @@ module Srch
         use :common, :additional
       end
       get :peoplelocations do
-        Search.execute(:peoplelocations, params)
+        search_request = SearchRequest.fromRequest(params)
+        results = Search.execute(:peoplelocations, params)
+
+        if results.present?
+          docs = results.map do |model|
+            DocResult.new(
+              doc_id: model.id,
+              doc_type: 'PLACES',
+              doc_url: model.path,
+              doc_title: model.username,
+              latitude: model.lat,
+              longitude: model.lon,
+              blurred: model.blurred?
+            )
+          end
+
+          DocList.new(docs, search_request)
+        else
+          DocList.new('', search_request)
+        end
+      end
+
+      # Request URL should be /api/srch/places?srchString=QRY
+      # Basic implementation from classic plots2 SearchController
+      desc 'Perform a search of places',           hidden: false,
+                                                   is_array: false,
+                                                   nickname: 'srchPlaces'
+
+      params do
+        use :common
+      end
+      get :places do
+        search_request = SearchRequest.fromRequest(params)
+        results = Search.execute(:places, params)
+
+        if results.present?
+          docs = results.map do |model|
+            DocResult.new(
+              doc_id: model.nid,
+              doc_type: 'PLACES',
+              doc_url: model.path,
+              doc_title: model.title
+            )
+          end
+
+          DocList.new(docs, search_request)
+        else
+          DocList.new('', search_request)
+        end
       end
     end
 
     def self.execute(endpoint, params)
-      sresult = DocList.new
       search_type = endpoint
-      search_criteria = SearchCriteria.new(params)
+      search_criteria = SearchCriteria.from_params(params)
 
       if search_criteria.valid?
-        sresult = ExecuteSearch.new.by(search_type, search_criteria)
+        ExecuteSearch.new.by(search_type, search_criteria)
+      else
+        []
       end
-
-      sparms = SearchRequest.fromRequest(params)
-      sresult.srchParams = sparms
-      sresult
     end
   end
 end

@@ -192,14 +192,17 @@ class User < ActiveRecord::Base
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
-    tids = user_tags.where('value LIKE ?', key + ':%').collect(&:id)
-    !tids.blank?
+    user_tags.where('value LIKE ?', key + ':%').exists?
   end
 
   def get_value_of_power_tag(key)
     tname = user_tags.where('value LIKE ?', key + ':%')
     tvalue = tname.first.name.partition(':').last
     tvalue
+  end
+
+  def blurred?
+    has_power_tag("location") && get_value_of_power_tag("location") == 'blurred'
   end
 
   def get_last_value_of_power_tag(key)
