@@ -13,7 +13,7 @@
 
   <div class="form-group dropzone">
     <% 
-      body = params[:body]
+      body = params[:body].nil?
       # Look for comment templates
       if params[:body].empty? && @node && @node.has_power_tag('comment-template')
         body = Node.find_by(slug: @node.power_tag('comment-template')).try(:body)
