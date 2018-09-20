@@ -6,16 +6,16 @@
     <div class="list-group">
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <%= link_to "Most liked", url_for(:order_by => :likes), :class => "list-group-item list-group-item-action"%>
+          <%= link_to "Most liked", url_for(:order => :likes), :class => "list-group-item list-group-item-action"%>
         </li>
          <li class="nav-item">
-           <%= link_to "Most viewed", url_for(:order_by => :views), :class => "list-group-item list-group-item-action"%>
+           <%= link_to "Most viewed", url_for(:order => :views), :class => "list-group-item list-group-item-action"%>
          </li>
          <li class="nav-item">
-           <%= link_to "Most recent", url_for(:order_by => :recent), :class => "list-group-item list-group-item-action"%>
+           <%= link_to "Most recent", url_for(:order => :default), :class => "list-group-item list-group-item-action"%>
          </li>
          <li class="nav-item">
-           <%= link_to "Boolean search", url_for(:order_by => :boolean), :class => "list-group-item list-group-item-action"%>
+           <%= link_to "Boolean search", url_for(:order => :natural, :type => :boolean), :class => "list-group-item list-group-item-action"%>
          </li>
       </ul>
     </div>
