@@ -8,7 +8,7 @@
 $(function() {
   var el = $('input.search-query.typeahead');
   var typeahead = el.typeahead({
-    items: 15,
+    items: 10,
     minLength: 3,
     showCategoryHeader: true,
     autoSelect: false,

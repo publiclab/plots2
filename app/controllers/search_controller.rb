@@ -4,12 +4,12 @@ class SearchController < ApplicationController
   def new; end
 
   def notes
-    @notes = SearchService.new.search_notes(params[:query], 15, params[:order].to_s.to_sym)
+    @notes = SearchService.new.search_notes(params[:query], 15, params[:order].to_s.to_sym, params[:type].to_s.to_sym)
                               .paginate(page: params[:page], per_page: 24)
   end
 
   def wikis
-    @wikis = SearchService.new.search_wikis(params[:query], 15, params[:order].to_s.to_sym)
+    @wikis = SearchService.new.search_wikis(params[:query], 15, params[:order].to_s.to_sym, params[:type].to_s.to_sym)
                               .paginate(page: params[:page], per_page: 24)
   end
 
