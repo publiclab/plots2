@@ -13,7 +13,7 @@ $(function() {
     showCategoryHeader: true,
     autoSelect: false,
     source: function (query, process) {
-      encoded_query = encodeURIComponent(query);
+      var encoded_query = encodeURIComponent(query);
       return $.getJSON('/api/srch/all?srchString=' + encoded_query, function (data) {
         return process(data.items);
       },'json');

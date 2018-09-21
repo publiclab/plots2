@@ -6,7 +6,7 @@ $(function() {
   //Set up the _header search form submission
   $('#searchform').submit(function(e){
     e.preventDefault();
-    var encoded_query = encodeURIComponent($('#inline_searchform_input').val());
+    var encoded_query = encodeURIComponent($('#searchform_input').val());
     window.location = "/search/" + encoded_query;
   });
 });
