@@ -75,3 +75,4 @@ services:
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     volumes:
       - ..:/app
+    restart: on-failure:5
