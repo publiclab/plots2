@@ -1,5 +1,5 @@
 class SearchController < ApplicationController
-  before_action :set_search_criteria
+  before_action :set_search_criteria, :except => %i(notes wikis)
 
   def new; end
 
@@ -37,6 +37,6 @@ class SearchController < ApplicationController
   end
 
   def search_params
-    params.require(:search).permit(:query, :order_by)
+    params.require(:search).permit(:query, :order)
   end
 end

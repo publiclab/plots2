@@ -3,7 +3,7 @@
 <div class="container">
   <% if @nodes.present? %>
     <div class="container">
-      <h2> Results for <%= params[:query] %></h2>
+      <h2> Results for <%= @search_criteria.query %></h2>
       <hr>
     </div>
     <%= render partial: 'map/maps', locals: { nodes: @nodes } %>

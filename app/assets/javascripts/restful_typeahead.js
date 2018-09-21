@@ -13,7 +13,8 @@ $(function() {
     showCategoryHeader: true,
     autoSelect: false,
     source: function (query, process) {
-      return $.getJSON('/api/srch/all?srchString=' + query, function (data) {
+      encoded_query = encodeURIComponent(query);
+      return $.getJSON('/api/srch/all?srchString=' + encoded_query, function (data) {
         return process(data.items);
       },'json');
     },
@@ -29,7 +30,7 @@ $(function() {
     updater: function(item) {
       if (item.hasOwnProperty('showAll') && item.showAll) {
         var query = this.value;
-        window.location = window.location.origin + "/search/notes/" + query;
+        window.location = window.location.origin + "/search/" + query;
       }
       else if (item.hasOwnProperty('doc_url') && item.doc_url) {
         window.location = window.location.origin + item.doc_url;

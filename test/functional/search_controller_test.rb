@@ -7,7 +7,7 @@ class SearchControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "search notes at /search/notes/canon" do
+  test "search notes at /search/canon" do
     get :notes, params: { query: 'Canon' }
     assert_response :success
     assert_equal nodes(:one).id, assigns(:notes).first.id

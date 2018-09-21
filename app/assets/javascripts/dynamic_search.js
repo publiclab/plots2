@@ -117,7 +117,7 @@
 			//Now walk through the array of tabs
 			for (var j=0;j<tabDataArray.length;j++) {
 				var currtype = tabDataArray[j].qryType;
-				var docarray = [];				
+				var docarray = [];
 				for (var k=0;k<doclist.items.length;k++) {
 					if (doclist.items[k].docType == currtype) docarray.push(doclist.items[k]);
 				}
@@ -152,7 +152,7 @@
 	var dtxt = "<div class='panel panel-default'>";
 	dtxt += "<div class='panel-heading'><span class='"+iconclass+"'></span>&nbsp;"+doclink+"</div>";
 	dtxt += "<div class='panel-body'>";
-	dtxt += (docitem.docSummary && docitem.docSummar != '' ? docitem.docSummary : 'No summary available'); 
+	dtxt += (docitem.docSummary && docitem.docSummar != '' ? docitem.docSummary : 'No summary available');
 	dtxt += "</div>";
 	dtxt += "</div>";
 	return dtxt;
@@ -167,5 +167,3 @@
 		$(tabDataArray[i].tabId).find('div.row.sresults-row').html('');
 	}
   }
-
-

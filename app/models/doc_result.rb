@@ -11,7 +11,7 @@ class DocResult
     @latitude = args[:latitude]
     @longitude = args[:longitude]
     @blurred = args[:blurred]
-    @category = args[:docType]
+    @category = args[:doc_type]
   end
 
   # This subclass is used to auto-generate the RESTful data structure.  It is generally not useful for internal Ruby usage
