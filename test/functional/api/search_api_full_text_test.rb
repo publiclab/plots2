@@ -25,9 +25,9 @@ class SearchApiFullTextTest < ActiveSupport::TestCase
     matcher = JsonExpressions::Matcher.new(pattern)
     json = JSON.parse(last_response.body)
 
-    assert_equal nodes(:blog).path, json['items'][0]['docUrl']
-    assert_equal "Blog post",       json['items'][0]['docTitle']
-    assert_equal 13,                json['items'][0]['docId']
+    assert_equal nodes(:blog).path, json['items'][0]['doc_url']
+    assert_equal "Blog post",       json['items'][0]['doc_title']
+    assert_equal 13,                json['items'][0]['doc_id']
 
     assert matcher =~ json
   end
@@ -90,10 +90,10 @@ class SearchApiFullTextTest < ActiveSupport::TestCase
 
     json = JSON.parse(last_response.body)
 
-    assert_equal "/profile/data",     json['items'][0]['docUrl']
-    assert_equal "/profile/steff3",   json['items'][1]['docUrl']
-    assert_equal "/profile/steff2",   json['items'][2]['docUrl']
-    assert_equal "/profile/steff1",   json['items'][3]['docUrl']
+    assert_equal "/profile/data",     json['items'][0]['doc_url']
+    assert_equal "/profile/steff3",   json['items'][1]['doc_url']
+    assert_equal "/profile/steff2",   json['items'][2]['doc_url']
+    assert_equal "/profile/steff1",   json['items'][3]['doc_url']
 
     assert matcher =~ json
   end
@@ -115,7 +115,7 @@ class SearchApiFullTextTest < ActiveSupport::TestCase
     matcher = JsonExpressions::Matcher.new(pattern)
     json = JSON.parse(last_response.body)
 
-    assert_equal "/profile/testuser",   json['items'][0]['docUrl']
+    assert_equal "/profile/testuser",   json['items'][0]['doc_url']
 
     assert matcher =~ json
   end
@@ -161,9 +161,9 @@ class SearchApiFullTextTest < ActiveSupport::TestCase
     matcher = JsonExpressions::Matcher.new(pattern)
     json = JSON.parse(last_response.body)
 
-    assert_equal nodes(:blog).path, json['items'][0]['docUrl']
-    assert_equal "Blog post",       json['items'][0]['docTitle']
-    assert_equal 13,                json['items'][0]['docId']
+    assert_equal nodes(:blog).path, json['items'][0]['doc_url']
+    assert_equal "Blog post",       json['items'][0]['doc_title']
+    assert_equal 13,                json['items'][0]['doc_id']
 
     assert matcher =~ json
   end

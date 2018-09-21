@@ -9,7 +9,6 @@ Plots2::Application.routes.draw do
   # Manually written API functions
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
 
-  get 'searches/test' => 'searches#test'
   post '/node/update/title' => 'notes#update_title'
 
   #Search RESTful endpoints
@@ -22,7 +21,6 @@ Plots2::Application.routes.draw do
   resources :user_sessions
   resources :images
   resources :features
-  resources :searches
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -166,12 +164,14 @@ Plots2::Application.routes.draw do
   get 'likes/node/:id/create' => 'like#create', :as => :add_like
   get 'likes/node/:id/delete' => 'like#delete',  :as => :drop_like
 
-  #Search Pages
-  get 'search/dynamic' => 'searches#dynamic'
-  get 'search/dynamic/:id' => 'searches#dynamic'
-  get 'search/:id' => 'searches#results'
-  get 'search' => 'searches#new'
-  post 'search' => 'searches#new'
+  get "search/wikis/:query",       :to => "search#wikis"
+  get "search/profiles/:query",    :to => "search#profiles"
+  get "search/questions/:query",   :to => "search#questions"
+  get "search/places/:query",      :to => "search#places"
+  get "search/tags/:query",        :to => "search#tags"
+  get "search/",                   :to => "search#new"
+  get "search/:query",             :to => "search#notes"
+
 
   get 'widget/:id' => 'tag#widget'
   get 'blog' => 'tag#blog', :id => "blog"
