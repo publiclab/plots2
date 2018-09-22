@@ -7,7 +7,7 @@
       <hr>
       <% @profiles.each do |profile| %>
         <div class="row">
-          <a href= <%= "/search/#{profile.username}" %> ><%= profile.username %></a>
+          <a href= <%= "/profile/#{profile.username}" %> ><%= profile.username %></a>
         </div>
       <% end %>
     </div>
