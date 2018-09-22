@@ -80,7 +80,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_not_nil User.find(user.id).reset_key
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal '[Public Lab] Reset your password', email.subject
+    assert_equal 'Reset your password', email.subject
     assert_equal [user.email], email.to
   end
 
