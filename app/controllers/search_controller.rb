@@ -14,6 +14,7 @@ class SearchController < ApplicationController
   end
 
   def profiles
+    @search_criteria.sort_by = "recent"
     @profiles = ExecuteSearch.new.by(:profiles, @search_criteria).paginate(page: params[:page], per_page: 20)
   end
 
