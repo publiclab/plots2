@@ -391,13 +391,24 @@ div.note.moderated h4 {
 }
 
 .back-to-top {
-
-  float: right;
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  -webkit-transition: all 0.3s linear;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  
 
 }
 
 .back-to-top i {
 
   font-size: 60px;
-
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
