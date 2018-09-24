@@ -135,7 +135,7 @@ To report security vulnerabilities or for questions about security, please conta
 Help improve Public Lab software!
 
 * Join the 'plots-dev@googlegroups.com' discussion list to get involved
-* Look for open issues at https://github.com/publiclab/plots2/issues
+* Look for open issues at https://github.com/publiclab/plots2/labels/help-wanted
 * We're specifically asking for help with issues labelled with [help-wanted](https://github.com/publiclab/plots2/labels/help-wanted) tag
 * Find lots of info on contributing at http://publiclab.org/wiki/developers
 * Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software
@@ -144,7 +144,6 @@ Help improve Public Lab software!
 
 ## First Time?
 
-New to open source/free software? Here is a selection of issues we've made **especially for first-timers**. We're here to help, so just ask if one looks interesting : https://publiclab.github.io/community-toolbox/#r=all
+New to open source/free software? Here is a selection of issues we've made **especially for first-timers**. We're here to help, so just ask if one looks interesting : https://code.publiclab.org
 
 
-We also have a slightly larger list of easy-ish but small and self-contained issues: https://github.com/publiclab/plots2/labels/help-wanted
