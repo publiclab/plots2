@@ -147,4 +147,3 @@ Help improve Public Lab software!
 New to open source/free software? Here is a selection of issues we've made **especially for first-timers**. We're here to help, so just ask if one looks interesting : https://code.publiclab.org
 
 
-We also have a slightly larger list of easy-ish but small and self-contained issues: https://github.com/publiclab/plots2/labels/help-wanted
