@@ -137,7 +137,11 @@ class WikiController < ApplicationController
       @tags << tag if tag
       @related += Tag.find_nodes_by_type(@tags.collect(&:name), 'page', 10)
     end
-    render template: 'wiki/edit'
+    if params[:rich]
+      render template: 'editor/wikiRich'
+    else
+      render template: 'wiki/edit'
+    end
   end
 
   def create

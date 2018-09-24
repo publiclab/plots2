@@ -13,6 +13,17 @@ https://publiclab.org/api/swagger_doc.json
 Per-model API endpoints are:
 
 * Profiles: https://publiclab.org/api/srch/profiles?srchString=foo
+
+This also accepts the following additional parameters:
+
+- `sort_by`: if 'recent' is passed, it returns the profiles from users with the most recent activity, otherwise, the results are sorted by user id (desc);
+- `order_direction`: `ASC` or `DESC` (the latter is the default);
+- `field`: if 'username' is passed, it returns the profiles from users searched by username only. Otherwise it returns the profiles by username and bio for a broader search.
+
+Example of full URL with the optional params (using the order_by DESC default value):
+
+https://publiclab.org/api/srch/profiles?srchString=foo&sort_by=recent&field=username
+
 * Questions: https://publiclab.org/api/srch/questions?srchString=foo
 * Tags: https://publiclab.org/api/srch/tags?srchString=foo
 * Notes: https://publiclab.org/api/srch/notes?srchString=foo
@@ -42,12 +53,11 @@ To these last, you can do wildcard tag searches using the `*` character, like th
 
 ## API code
 
-API methods are found in the codebase in the following places:
+API methods are found in the codebase in the following place:
 
-* https://github.com/publiclab/plots2/blob/master/app/api/srch/typeahead.rb
 * https://github.com/publiclab/plots2/blob/master/app/api/srch/search.rb
 
-We are beginning to consolidate API methods into the `/app/api/srch/` namespace, to reduce complexity in the non-API codebase and make the API more predictable and maintainable. 
+We are beginning to consolidate API methods into the `/app/api/srch/` namespace, to reduce complexity in the non-API codebase and make the API more predictable and maintainable.
 
 RSS feeds can be found in views, such as:
 
@@ -60,6 +70,8 @@ https://github.com/publiclab/plots2/blob/master/app/controllers/tag_controller.r
 ## Token based API for creating comment
 Allows a logged user or bot to post comments via API with a token.
 
+You can generate your token to use this feature accessing your Profile on https://publiclab.org/profile/your-username (just make sure you are logged in).
+
 API method is found in the codebase in the following place:
 
 https://github.com/publiclab/plots2/blob/master/app/controllers/comment_controller.rb#L48-L73
@@ -71,16 +83,16 @@ https://github.com/publiclab/plots2/blob/master/app/controllers/comment_controll
    **Required:**
 
    `id=[integer]`: This value specifies the node for which comment is to be created
-   
-   `format=[string]` : Specifies response format 
-   
+
+   `format=[string]` : Specifies response format
+
    `username=[string]`: This string specifies username of user tends to create comment by this API post request
- 
-   **Data Params:** 
-   
+
+   **Data Params:**
+
     `body=[string]` : This is the actual content of the comment.
- 
-   **Headers:** 
+
+   **Headers:**
 
    `TOKEN=[string]`: This string value specifies ``access_token`` of the user for authentication purpose.
 

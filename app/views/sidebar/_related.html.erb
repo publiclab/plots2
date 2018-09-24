@@ -48,10 +48,8 @@
 
     <br />
 
-    <% if @node && @maps && @node.lat %>
+    <% if @node && @node.lat && @node.lon %>
       <%= render_map(@node.lat, @node.lon) %>
-    <% elsif @maps && @maps.first %>
-      <%= render_map(@maps.first.lat, @maps.first.lon) %>
     <% end %>
 
     <br style="clear:both;" />

@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :likes
+  has_many :revisions, through: :node
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
@@ -42,7 +43,11 @@ class User < ActiveRecord::Base
   after_destroy :destroy_drupal_user
 
   def self.search(query)
-    User.where('MATCH(username, bio) AGAINST(?)', query)
+    User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
+  end
+
+  def self.search_by_username(query)
+    User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
   end
 
   def new_contributor
@@ -187,14 +192,17 @@ class User < ActiveRecord::Base
 
   # power tags have "key:value" format, and should be searched with a "key:*" wildcard
   def has_power_tag(key)
-    tids = user_tags.where('value LIKE ?', key + ':%').collect(&:id)
-    !tids.blank?
+    user_tags.where('value LIKE ?', key + ':%').exists?
   end
 
   def get_value_of_power_tag(key)
     tname = user_tags.where('value LIKE ?', key + ':%')
     tvalue = tname.first.name.partition(':').last
     tvalue
+  end
+
+  def blurred?
+    has_power_tag("location") && get_value_of_power_tag("location") == 'blurred'
   end
 
   def get_last_value_of_power_tag(key)
@@ -435,12 +443,14 @@ class User < ActiveRecord::Base
     charset = Array('A'..'Z') + Array('a'..'z') + Array(0..9)
     email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0]
     email_prefix = auth["info"]["email"].tr('.', '_').split('@')[0] + Array.new(2) { charset.sample }.join until User.where(username: email_prefix).empty?
+    hash = { "facebook" => 1, "github" => 2, "google_oauth2" => 3, "twitter" => 4 }
     create! do |user|
       s = SecureRandom.urlsafe_base64
       user.username = email_prefix
       user.email = auth["info"]["email"]
       user.password = s
       user.password_confirmation = s
+      user.password_checker = hash[auth["provider"]]
       user.save!
     end
   end
