@@ -6,6 +6,7 @@
 newIssueWelcomeComment: |
   Thanks for opening your first issue here! Please follow the issue template to help us help you 👍🎉😄
 If you have screenshots to share demonstrating the issue, that's really helpful! 📸
+
 # Configuration for new-pr-welcome - https://github.com/behaviorbot/new-pr-welcome
 
 # Comment to be posted to on PRs from first time contributors in your repository
@@ -20,7 +21,5 @@ firstPRMergeComment: |
  Congrats on merging your first pull request! 🙌🎉⚡️ 
  Your code will likely be published to PublicLab.org in the next few days. 
  In the meantime, can you tell us your Twitter handle so we can thank you properly?
-
-
 
 # It is recommend to include as many gifs and emojis as possible
