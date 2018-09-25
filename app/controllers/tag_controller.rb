@@ -305,7 +305,7 @@ class TagController < ApplicationController
           CommentMailer.notify_coauthor(user, node)
           node.add_comment(subject: 'co-author',
                            uid: current_user.uid,
-                           body: " @#{current_user.username} has marked #{tagname.split(':')[1]} as a co-author. ")
+                           body: " @#{current_user.username} has marked @#{tagname.split(':')[1]} as a co-author. ")
 
         end
 

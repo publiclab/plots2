@@ -353,7 +353,7 @@ class TagControllerTest < ActionController::TestCase
            nid: node.id
            }
 
-      assert_equal " [@#{node.author.name}](/profile/#{node.author.name}) has marked #{tagname.split(':')[1]} as a co-author. ", Comment.last.body
+      assert_equal " [@#{node.author.name}](/profile/#{node.author.name}) has marked [@#{tagname.split(':')[1]}](/profile/#{tagname.split(':')[1]}) as a co-author. ", Comment.last.body
     end
   end
 
