@@ -1,5 +1,5 @@
 class SearchCriteria
-  attr_reader :query, :tag, :field, :limit
+  attr_reader :query, :tag, :limit
   attr_accessor :sort_by, :field
 
   def initialize(args)
