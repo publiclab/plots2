@@ -122,7 +122,7 @@
 
     <% if contain_trimmed_body?(comment_body) %>
       <span style="background-color: #DCDCDC;  border-radius: 7px; cursor: pointer;" ><a class="email-toggle" data-toggle="collapse" data-target="#comment-<%= comment.cid %>-extra-content" style='text-decoration: none;'>&nbsp;&ensp;&#x2022&#x2022&#x2022&nbsp;&ensp;</a></span>
-      <div class="collapse" id="comment-<%= comment.cid %>-extra-content" ><%= raw trimmed_body(comment_body) %></div>
+      <div class="collapse" id="comment-<%= comment.cid %>-extra-content" ><div class="blockquotestyle"><%= raw trimmed_body(comment_body) %></div></div>
     <% end %>
 
     <% if comment.body.include?('?') %>
