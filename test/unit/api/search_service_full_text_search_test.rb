@@ -8,8 +8,8 @@ class SearchServiceFullTextSearchTest < ActiveSupport::TestCase
 
     users = [users(:data), users(:steff3), users(:steff2), users(:steff1)]
 
-    params = { srchString: 'steff' }
-    search_criteria = SearchCriteria.from_params(params)
+    params = { query: 'steff' }
+    search_criteria = SearchCriteria.new(params)
 
     result = SearchService.new.search_profiles(search_criteria)
 

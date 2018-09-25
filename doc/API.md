@@ -9,11 +9,11 @@ on the [web interface](https://publiclab.org/api/docs) and on the [json guide](h
 
 To add any additional parameter, you can add the `&` symbol followed by the field to the URL:
 
-`https://publiclab.org/api/srch/profiles?srchString=bob&limit=10`
+`https://publiclab.org/api/srch/profiles?query=bob&limit=10`
 
-where `limit` is an optional parameter.
+where `limit` is an optional parameter
 
-All the endpoints have the optional parameter `limit` where you can specify the number of results for your search. Below you have a description of the available endpoints.
+* Profiles: https://publiclab.org/api/srch/profiles?query=foo
 
 ### All (profiles, notes, tags, maps, etc.)
 

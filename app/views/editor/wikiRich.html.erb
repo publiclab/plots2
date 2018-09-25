@@ -213,7 +213,7 @@
       titleModule: {
         suggestRelated: true,
         fetchRelated: function(show) {
-          $.getJSON("/api/srch/notes?srchString=" + editor.titleModule.value(), function(response) {
+          $.getJSON("/api/srch/notes?query=" + editor.titleModule.value(), function(response) {
             /* API provides:
             {"items":[{
               "docId":14022,
