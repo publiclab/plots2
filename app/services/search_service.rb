@@ -8,6 +8,7 @@ class SearchService
     wikis = search_wikis(search_criteria.query, search_criteria.limit)
 
     search_criteria.sort_by = "recent"
+    search_criteria.field = "username"
     profiles = search_profiles(search_criteria)
 
     tags = search_tags(search_criteria.query, search_criteria.limit)
