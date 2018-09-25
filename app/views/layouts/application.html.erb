@@ -94,6 +94,6 @@
 
     <%= render :partial => "layouts/footer" %>
 
-    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=<%= ENV['GMAPS_API_KEY'] %>"></script>
   </body>
 </html>

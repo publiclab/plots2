@@ -147,13 +147,13 @@ GEM
       railties (>= 3.1)
     grease (0.3.1)
     hashie (3.5.7)
-    highline (1.7.10)
-    hoe (3.17.0)
+    highline (2.0.0)
+    hoe (3.17.1)
       rake (>= 0.8, < 13.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     http_accept_language (2.1.1)
-    i18n (1.0.1)
+    i18n (1.1.0)
       concurrent-ruby (~> 1.0)
     i18n-js (3.0.11)
       i18n (>= 0.6.6, < 2)
@@ -206,7 +206,7 @@ GEM
       listen (>= 0.4.1)
       mail (>= 2.0.3)
       maildir (>= 0.5.0)
-    marcel (0.3.2)
+    marcel (0.3.3)
       mimemagic (~> 0.3.2)
     metaclass (0.0.4)
     method_source (0.9.0)
@@ -277,15 +277,15 @@ GEM
     parallel (1.12.1)
     parser (2.5.1.2)
       ast (~> 2.4.0)
-    passenger (5.3.4)
+    passenger (5.3.5)
       rack
       rake (>= 0.8.1)
     phantomjs (2.1.1.0)
     php-serialize (1.2.0)
     power_assert (1.1.3)
     powerpack (0.1.2)
-    progress_bar (1.2.0)
-      highline (~> 1.6)
+    progress_bar (1.3.0)
+      highline (>= 1.6, < 3)
       options (~> 2.3.0)
     public_suffix (3.0.3)
     rack (2.0.5)
@@ -295,7 +295,7 @@ GEM
     rack-openid (1.4.2)
       rack (>= 1.1.0)
       ruby-openid (>= 2.1.8)
-    rack-protection (2.0.3)
+    rack-protection (2.0.4)
       rack
     rack-test (1.0.0)
       rack (>= 1.0, < 3)
@@ -381,7 +381,7 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4)
-    sass (3.5.7)
+    sass (3.6.0)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -394,7 +394,7 @@ GEM
       tilt (>= 1.1, < 3)
     scrypt (3.0.5)
       ffi-compiler (>= 1.0, < 2.0)
-    sidekiq (5.2.1)
+    sidekiq (5.2.2)
       connection_pool (~> 2.2, >= 2.2.2)
       rack-protection (>= 1.5.0)
       redis (>= 3.3.5, < 5)
@@ -436,7 +436,7 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    uglifier (4.1.18)
+    uglifier (4.1.19)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
@@ -488,7 +488,6 @@ DEPENDENCIES
   grape-swagger-rails
   grape-swagger-ui
   http_accept_language
-  i18n (~> 1.0.1)
   i18n-js (>= 3.0.0.rc11)
   impressionist
   jasmine-jquery-rails
@@ -556,7 +555,7 @@ DEPENDENCIES
   will_paginate-bootstrap (>= 1.0.1)
 
 RUBY VERSION
-   ruby 2.4.4p296
+   ruby 2.5.0p0
 
 BUNDLED WITH
-   1.16.2
+   1.16.3
