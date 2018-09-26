@@ -72,12 +72,12 @@ already using it.
 ## How to run plots2 with MySQL on development and test environments
 
 In development and test environments, the project uses SQLite3, but in production
-it uses [MySQL](https://github.com/publiclab/plots2/blob/master/containers/docker-compose-production.yml).
+it uses [MySQL (or mariadb)](https://github.com/publiclab/plots2/blob/master/containers/docker-compose-production.yml).
 
 If you need to test something that SQLite3 doesn't support, like a full-text
 search, for example, you need to add more steps to your configuration:
 
-1 - Install MySQL on your machine
+1 - Install MySQL or mariadb on your machine
 
 2 - Update your `mysql` group on Gemfile to:
 
