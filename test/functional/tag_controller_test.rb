@@ -34,6 +34,19 @@ class TagControllerTest < ActionController::TestCase
     assert_equal [['myfourthtag', Tag.find_by_name('myfourthtag').tid], ['myfifthtag', Tag.find_by_name('myfifthtag').tid]], JSON.parse(response.body)['saved']
   end
 
+  test 'check extra tag page' do
+    UserSession.create(users(:bob))
+
+    get :show,
+        params: { 
+          node_type: 'contributors',
+          id: 'blog'
+        }
+
+    assert_template :show
+    assert_response :success
+  end
+
   test 'validate unused tag' do
     UserSession.create(users(:bob))
 

@@ -132,6 +132,7 @@ class TagController < ApplicationController
     @answered_questions = []
     @questions&.each { |question| @answered_questions << question if question.answers.any?(&:accepted) }
     @wikis = nodes if @node_type == 'wiki'
+    @wikis ||= []
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
     # the following could be refactored into a Tag.contributor_count method:
@@ -197,10 +198,6 @@ class TagController < ApplicationController
     nodes = Tag.tagged_nodes_by_author(@tagname, @user)
       .where(status: 1, type: node_type)
       .paginate(page: params[:page], per_page: 24)
-
-    # breaks the parameter
-    # sets everything to an empty array
-    set_sidebar :tags, [params[:id]]
 
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
