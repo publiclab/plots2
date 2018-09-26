@@ -199,6 +199,8 @@ class TagController < ApplicationController
       .where(status: 1, type: node_type)
       .paginate(page: params[:page], per_page: 24)
 
+    @notes ||= []
+
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
     ans_ques = Answer.where(uid: @user.id, accepted: true).includes(:node).map(&:node)
