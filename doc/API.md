@@ -11,29 +11,29 @@ To add any additional parameter, you can add the `&` symbol followed by the fiel
 
 `https://publiclab.org/api/srch/profiles?query=bob&limit=10`
 
-where `limit` is an optional parameter
+where `limit` is an optional parameter.
 
-* Profiles: https://publiclab.org/api/srch/profiles?query=foo
+All the endpoints have the optional parameter `limit` (10 by default) where you can specify the number of results for your search. Below you have a description of the available endpoints.
 
 ### All (profiles, notes, tags, maps, etc.)
 
-* **URL**:  `https://publiclab.org/api/srch/all?srchString=bob`
+* **URL**:  `https://publiclab.org/api/srch/all?query=bob`
 
 * **URL Params** :
 
   **Required:**
 
-  `srchString=[string]`: search for notes, profiles, tags, questions and maps that match the query.
+  `query=[string]`: search for notes, profiles, tags, questions and maps that match the query.
 
 ### Profiles:
 
-* **URL**:  `https://publiclab.org/api/srch/profiles?srchString=bob`
+* **URL**:  `https://publiclab.org/api/srch/profiles?query=bob`
 
 * **URL Params** :
 
   **Required:**
 
-  `srchString=[string]`: search the profiles (users) that have the query on their `username` and `bio` profile info.
+  `query=[string]`: search the profiles (users) that have the query on their `username` and `bio` profile info.
 
   **Optional:**
 
@@ -47,65 +47,65 @@ where `limit` is an optional parameter
 
 ### Notes
 
-* **URL**:  `https://publiclab.org/api/srch/notes?srchString=wind`
+* **URL**:  `https://publiclab.org/api/srch/notes?query=wind`
 * **URL Params** :
 
  **Required:**
 
- `srchString=[string]`: search for notes that have the passed string on their content.
+ `query=[string]`: search for notes that have the passed string on their content.
 
 ### Wikis
 
- * **URL**:  `https://publiclab.org/api/srch/wikis?srchString=balloon`
+ * **URL**:  `https://publiclab.org/api/srch/wikis?query=balloon`
  * **URL Params** :
 
   **Required:**
 
-  `srchString=[string]`: search for wikis that have the passed string on their content.
+  `query=[string]`: search for wikis that have the passed string on their content.
 
 ### Questions
 
-* **URL**:  `https://publiclab.org/api/srch/questions?srchString=arduino`
+* **URL**:  `https://publiclab.org/api/srch/questions?query=arduino`
 * **URL Params** :
 
   **Required:**
 
-  `srchString=[string]`: search for notes that have the `question:srchString` on their tags list.
+  `query=[string]`: search for notes that have the `question:query` on their tags list.
 
 ### Tags
 
-* **URL**:  `https://publiclab.org/api/srch/tags?srchString=wind`
+* **URL**:  `https://publiclab.org/api/srch/tags?query=wind`
 * **URL Params** :
 
   **Required:**
 
-  `srchString=[string]`: search the notes that have the query on their tags list.
+  `query=[string]`: search the notes that have the query on their tags list.
 
 ### TagLocations:
 
-* **URL**:  `https://publiclab.org/api/srch/taglocations?srchString=18,-66`
+* **URL**:  `https://publiclab.org/api/srch/taglocations?query=18,-66`
 * **URL Params** :
 
   **Required:**
 
-  `srchString=[coordinates]`: search notes from users located near the query separated by `,`.
+  `query=[coordinates]`: search notes from users located near the query separated by `,`.
 
   **Optional:**
 
-  `tagName=[string]`: the search can be refined by passing a tag field.
+  `tag=[string]`: the search can be refined by passing a tag field.
 
 ### PeopleLocations
 
-* **URL**:  `https://publiclab.org/api/srch/peoplelocations?srchString=10`
+* **URL**:  `https://publiclab.org/api/srch/peoplelocations?query=10`
 * **URL Params** :
 
   **Required:**
 
-  `srchString=[integer]`: search the the users with most recent activity that have coordinates(lat and lon values) on their user tags.
+  `query=[integer]`: search the the users with most recent activity that have coordinates(lat and lon values) on their user tags.
 
   **Optional:**
 
-  `tagName=[string]`: the search can be refined by passing a tag field.
+  `tag=[string]`: the search can be refined by passing a tag field.
 
 ## API code
 
@@ -120,6 +120,8 @@ We also have 3 services that aim to maintain the code more easier to change/main
 * [SearchCriteria](https://github.com/publiclab/plots2/blob/master/app/services/search_criteria.rb): responsible to validate the params.
 
 * [SearchService](https://github.com/publiclab/plots2/blob/master/app/services/search_service.rb): responsible to perform the endpoints queries.
+
+We also have a [Planning Issue](https://github.com/publiclab/plots2/issues/3520) if you want to contribute to the API.
 
 ## Token based API for creating comment
 
