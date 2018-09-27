@@ -113,7 +113,7 @@ a .fa-white,
   }
 }
 
-@media (max-width: 990px) {
+@media (max-width: 1200px) {
     .navbar-header {
         float: none;
     }
