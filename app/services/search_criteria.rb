@@ -11,17 +11,6 @@ class SearchCriteria
     @limit = args[:limit] || 10
   end
 
-  def self.from_params(params)
-    args = {
-      query: params[:srchString],
-      tag: params[:tagName],
-      sort_by: params[:sort_by],
-      field: params[:field],
-      limit: params[:limit]
-    }
-    new(args)
-  end
-
   def valid?
     !query.nil? && query != 0
   end

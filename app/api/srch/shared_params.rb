@@ -5,12 +5,12 @@ module Srch
     extend Grape::API::Helpers
 
     params :common do
-      requires :srchString, type: String, documentation: { example: 'Spec' }
-      optional :limit, type: Integer, documentation: { example: 0 }
+      requires :query, type: String, documentation: { example: 'Spec' }
+      optional :limit, type: Integer, documentation: { example: 10 }
     end
 
     params :additional do
-      optional :tagName, type: String, documentation: { example: 'awesome' }
+      optional :tag, type: String, documentation: { example: 'awesome' }
     end
 
     params :ordering do

@@ -4,7 +4,7 @@
     at: "@",
     callbacks: {
       remoteFilter: function(query, callback) {
-        $.getJSON("/api/srch/profiles?srchString=" + query + "&sort_by=recent&field=username", {}, function(data) {
+        $.getJSON("/api/srch/profiles?query=" + query + "&sort_by=recent&field=username", {}, function(data) {
           if (data.hasOwnProperty('items') && data.items.length > 0) {
             callback(data.items.map(function(i) { return i.docTitle }));
           }

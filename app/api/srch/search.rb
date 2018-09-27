@@ -8,12 +8,12 @@ module Srch
     helpers SharedParams
 
     # Endpoint definitions
+    # Basic implementation from classic plots2 SearchController
     resource :srch do
-      # Request URL should be /api/srch/all?srchString=QRY
-      # Basic implementation from classic plots2 SearchController
+      # Request URL should be /api/srch/all?query=QRY
       desc 'Perform a search of all available resources', hidden: false,
                                                           is_array: false,
-                                                          nickname: 'srchGetAll'
+                                                          nickname: 'search_all'
       params do
         use :common
       end
@@ -82,11 +82,10 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/profiles?srchString=QRY[&sort_by=recent&order_direction=desc&field=username]
-      # Basic implementation from classic plots2 SearchController
+      # Request URL should be /api/srch/profiles?query=QRY[&sort_by=recent&order_direction=desc&field=username]
       desc 'Perform a search of profiles', hidden: false,
                                            is_array: false,
-                                           nickname: 'srchGetProfiles'
+                                           nickname: 'search_profiles'
 
       params do
         use :common, :sorting, :ordering, :field
@@ -109,11 +108,10 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/notes?srchString=QRY
-      # Basic implementation from classic plots2 SearchController
+      # Request URL should be /api/srch/notes?query=QRY
       desc 'Perform a search of research notes', hidden: false,
                                                  is_array: false,
-                                                 nickname: 'srchGetNotes'
+                                                 nickname: 'search_notes'
 
       params do
         use :common
@@ -138,11 +136,10 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/wikis?srchString=QRY
-      # Basic implementation from classic plots2 SearchController
+      # Request URL should be /api/srch/wikis?query=QRY
       desc 'Perform a search of wikis pages',    hidden: false,
                                                  is_array: false,
-                                                 nickname: 'srchGetWikis'
+                                                 nickname: 'search_wikis'
 
       params do
         use :common
@@ -167,11 +164,10 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/questions?srchString=QRY
-      # Basic implementation from classic plots2 SearchController
+      # Request URL should be /api/srch/questions?query=QRY
       desc 'Perform a search of questions tables', hidden: false,
                                                    is_array: false,
-                                                   nickname: 'srchGetQuestions'
+                                                   nickname: 'search_questions'
 
       params do
         use :common
@@ -197,11 +193,10 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/tags?srchString=QRY
-      # Basic implementation from classic plots2 SearchController
+      # Request URL should be /api/srch/tags?query=QRY
       desc 'Perform a search of documents associated with tags within the system', hidden: false,
                                                                                    is_array: false,
-                                                                                   nickname: 'srchGetByTags'
+                                                                                   nickname: 'search_tags'
 
       params do
         use :common
@@ -226,11 +221,11 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/taglocations?srchString=QRY[&tagName=awesome]
-      # Note: Query(QRY as above) must have latitude and longitude as srchString=lat,lon
+      # Request URL should be /api/srch/taglocations?query=QRY[&tag=awesome]
+      # Note: Query(QRY as above) must have latitude and longitude as query=lat,lon
       desc 'Perform a search of documents having nearby latitude and longitude tag values', hidden: false,
                                                                                             is_array: false,
-                                                                                            nickname: 'srchGetLocations'
+                                                                                            nickname: 'search_tag_locations'
 
       params do
         use :common, :additional
@@ -259,11 +254,11 @@ module Srch
       end
 
       # API TO FETCH QRY RECENT CONTRIBUTORS
-      # Request URL should be /api/srch/peoplelocations?srchString=QRY[&tagName=group:partsandcrafts]
+      # Request URL should be /api/srch/peoplelocations?query=QRY[&tag=group:partsandcrafts]
       # QRY should be a number
       desc 'Perform a search to show x Recent People',  hidden: false,
                                                         is_array: false,
-                                                        nickname: 'srchGetPeople'
+                                                        nickname: 'search_people_locations'
 
       params do
         use :common, :additional
@@ -291,11 +286,10 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/places?srchString=QRY
-      # Basic implementation from classic plots2 SearchController
+      # Request URL should be /api/srch/places?query=QRY
       desc 'Perform a search of places',           hidden: false,
                                                    is_array: false,
-                                                   nickname: 'srchPlaces'
+                                                   nickname: 'search_places'
 
       params do
         use :common
@@ -323,7 +317,7 @@ module Srch
 
     def self.execute(endpoint, params)
       search_type = endpoint
-      search_criteria = SearchCriteria.from_params(params)
+      search_criteria = SearchCriteria.new(params)
 
       if search_criteria.valid?
         ExecuteSearch.new.by(search_type, search_criteria)

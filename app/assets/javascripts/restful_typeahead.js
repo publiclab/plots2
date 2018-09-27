@@ -14,7 +14,7 @@ $(function() {
     autoSelect: false,
     source: function (query, process) {
       var encoded_query = encodeURIComponent(query);
-      return $.getJSON('/api/srch/all?srchString=' + encoded_query, function (data) {
+      return $.getJSON('/api/srch/all?query=' + encoded_query, function (data) {
         return process(data.items);
       },'json');
     },

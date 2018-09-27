@@ -5,8 +5,8 @@ class SearchServiceTest < ActiveSupport::TestCase
   test 'running profiles for specific username' do
     users = [users(:steff1)]
 
-    params = { srchString: 'steff1' }
-    search_criteria = SearchCriteria.from_params(params)
+    params = { query: 'steff1' }
+    search_criteria = SearchCriteria.new(params)
 
     result = SearchService.new.search_profiles(search_criteria)
 
@@ -17,8 +17,8 @@ class SearchServiceTest < ActiveSupport::TestCase
   test 'running profiles by username' do
     users = [users(:steff3), users(:steff2), users(:steff1)]
 
-    params = { srchString: 'steff', field: 'username' }
-    search_criteria = SearchCriteria.from_params(params)
+    params = { query: 'steff', field: 'username' }
+    search_criteria = SearchCriteria.new(params)
 
     result = SearchService.new.search_profiles(search_criteria)
 
@@ -34,8 +34,8 @@ class SearchServiceTest < ActiveSupport::TestCase
   end
 
   test 'running search notes' do
-    params = { srchString: 'Blog' }
-    search_criteria = SearchCriteria.from_params(params)
+    params = {query: 'Blog' }
+    search_criteria = SearchCriteria.new(params)
 
     result = SearchService.new.search_notes(search_criteria.query)
 

@@ -44,11 +44,11 @@
         <br />
         <div>
           <input class="form-control input-lg" type="text" placeholder="What's your question? Be specific." value="<%= if @node then @node.title else params[:title] end %>" />
-        </div>    
+        </div>
 
-      </div>    
+      </div>
 
-    </div>    
+    </div>
     <!-- end title module -->
 
     <!-- body module -->
@@ -108,7 +108,7 @@
       </div>
 
     </div>
-      
+
   </div>
 </div>
 
@@ -164,8 +164,8 @@
       titleModule: {
         suggestRelated: true,
         fetchRelated: function(show) {
-          $.getJSON("/api/srch/notes?srchString=" + editor.titleModule.value(), function(response) {
-            /* API provides: 
+          $.getJSON("/api/srch/notes?query=" + editor.titleModule.value(), function(response) {
+            /* API provides:
             {"items":[{
               "docId":14022,
               "docType":"file",

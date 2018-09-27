@@ -26,7 +26,6 @@ class SearchService
 
   # Search profiles for matching text with optional order_by=recent param and
   # sorted direction DESC by default
-  # then the list is packaged up as a DocResult
 
   # If no sort_by value present, then it returns a list of profiles ordered by id DESC
   # a recent activity may be a node creation or a node revision
@@ -63,8 +62,8 @@ class SearchService
 
   # The search string that is passed in is split into tokens, and the tag names are compared and
   # chained to the notes that are tagged with those values
-  def search_tags(srchString, limit = 10)
-    sterms = srchString.split(' ')
+  def search_tags(query, limit = 10)
+    sterms = query.split(' ')
     tlist = Tag.where(name: sterms)
       .joins(:node_tag)
       .joins(:node)
@@ -73,7 +72,7 @@ class SearchService
       .limit(limit)
   end
 
-  # Search question entries for matching text and package up as a DocResult
+  # Search question entries for matching text
   def search_questions(input, limit = 25, order = :natural, type = :boolean)
     Node.search(query: input, order: order, type: type, limit: limit)
         .where("`node`.`type` = 'note'")
@@ -84,17 +83,17 @@ class SearchService
 
   # Search nearby nodes with respect to given latitude, longitute and tags
   # and package up as a DocResult
-  def tagNearbyNodes(srchString, tagName, limit = 10)
-    raise("Must separate coordinates with ,") unless srchString.include? ","
+  def tagNearbyNodes(query, tag, limit = 10)
+    raise("Must separate coordinates with ,") unless query.include? ","
 
-    lat, lon =  srchString.split(',')
+    lat, lon =  query.split(',')
 
     nodes_scope = NodeTag.joins(:tag)
       .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
 
-    if tagName.present?
+    if tag.present?
       nodes_scope = NodeTag.joins(:tag)
-                           .where('name LIKE ?', tagName)
+                           .where('name LIKE ?', tag)
                            .where(nid: nodes_scope.select(:nid))
     end
 
@@ -119,7 +118,7 @@ class SearchService
   # returned and as optional parameter a user tag. If the user tag
   # is present, the method returns only the location of people
   # with that specific user tag.
-  def people_locations(srchString, user_tag = nil)
+  def people_locations(query, user_tag = nil)
     user_locations = User.where('rusers.status <> 0')\
                          .joins(:user_tags)\
                          .where('value LIKE "lat:%"')\
@@ -132,7 +131,7 @@ class SearchService
                        .where(id: user_locations.select("rusers.id"))
     end
 
-    user_locations.limit(srchString)
+    user_locations.limit(query)
   end
 
   def find_users(query, limit, type = nil)
