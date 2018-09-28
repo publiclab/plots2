@@ -34,11 +34,11 @@ class TagControllerTest < ActionController::TestCase
     assert_equal [['myfourthtag', Tag.find_by_name('myfourthtag').tid], ['myfifthtag', Tag.find_by_name('myfifthtag').tid]], JSON.parse(response.body)['saved']
   end
 
-  test 'check extra tag page' do
+  test 'check tag show page' do
     UserSession.create(users(:bob))
 
     get :show,
-        params: { 
+        params: {
           node_type: 'contributors',
           id: 'blog'
         }
@@ -50,9 +50,10 @@ class TagControllerTest < ActionController::TestCase
   test 'validate unused tag' do
     UserSession.create(users(:bob))
 
-    get :contributors,
-        params: { 
-        id: 'question:*'
+    get :show,
+        params: {
+          node_type: 'contributors',
+          id: 'question:*'
         }
 
     assert_template :contributors
@@ -328,7 +329,11 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'tag contributors' do
-    get :contributors, params: { id: Tag.last.name }
+    get :show,
+        params: { 
+          node_type: 'contributors',
+          id: Tag.last.name
+        }
 
     assert :success
     assert_not_nil :notes
