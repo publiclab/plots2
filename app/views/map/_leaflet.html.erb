@@ -37,11 +37,11 @@
       $.getJSON("/api/srch/locations?query="+s , function(data){
         if (!!data.items){
           for (i = 0; i < data.items.length ; i++) {
-	        var url = data.items[i].docUrl ;
-	        var title = data.items[i].docTitle ;
-                var default_url = PLmarker_default() ;
-    	        L.marker([data.items[i].latitude , data.items[i].longitude] , {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" +  url + ">" + title + "</a>") ;
-	    }
+            var url = data.items[i].doc_url ;
+            var title = data.items[i].doc_title ;
+            var default_url = PLmarker_default() ;
+            L.marker([data.items[i].latitude , data.items[i].longitude] , {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" +  url + ">" + title + "</a>") ;
+	        }
        }
      });
     }

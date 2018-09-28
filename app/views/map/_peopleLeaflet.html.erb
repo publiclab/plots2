@@ -57,10 +57,10 @@
      	var layerGroup = L.layerGroup() ;
        if (!!data.items){
          for (i = 0; i < data.items.length ; i++) {
-	 	       var default_markers = PLmarker_default() ;
-	 	       var url = data.items[i].docUrl ;
-	 	       var title = data.items[i].docTitle ;
-	   	     var m = L.marker([data.items[i].latitude , data.items[i].longitude], {title: title , icon: default_markers}).addTo(map<%= unique_id %>).bindPopup("<a href=" +  url + ">" + title + "</a>") ;
+           var default_markers = PLmarker_default() ;
+           var url = data.items[i].doc_url ;
+           var title = data.items[i].doc_title ;
+           var m = L.marker([data.items[i].latitude , data.items[i].longitude], {title: title , icon: default_markers}).addTo(map<%= unique_id %>).bindPopup("<a href=" +  url + ">" + title + "</a>") ;
    	 	      // searchLayer<%= unique_id %>.addLayer(m) ;
 	        }
         }
