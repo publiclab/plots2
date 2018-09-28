@@ -137,8 +137,8 @@ class SearchApiFullTextTest < ActiveSupport::TestCase
     matcher = JsonExpressions::Matcher.new(pattern)
     json = JSON.parse(last_response.body)
 
-    assert_equal "How to use a Spectrometer", json['items'][0]['docTitle']
-    assert_equal 8,                             json['items'][0]['docId']
+    assert_equal "How to use a Spectrometer",   json['items'][0]['doc_title']
+    assert_equal 8,                             json['items'][0]['doc_id']
 
     assert matcher =~ json
 
