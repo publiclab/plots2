@@ -1,6 +1,11 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  dashboard:
+    _activity:
+      share_work: "Share your work"
+  application_controller:
+    author_has_been_banned: "The author of that note has been banned."
   language: English
   date:
     abbr_day_names:
