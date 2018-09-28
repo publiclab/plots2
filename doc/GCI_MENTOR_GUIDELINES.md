@@ -2,7 +2,7 @@
 
 To be a GCI mentor at Public labs, there are some prerequisites that we expect you to follow before we can invite you to be a mentor :
 
-1. Solve a [first-timers issue](https://code.publiclab.org/). Provide the link to the first timer issue's pull request (PR) once it's merged.
+1. Solve a [fto issue](https://code.publiclab.org/). Provide the link to the first timer issue's pull request (PR) once it's merged.
 
 2. Solve a [help-wanted issue](https://github.com/publiclab/plots2/labels/help-wanted). Help wanted issues are issues which are not labelled as `gci-candidate` neither as `fto-candidate` nor as `first-timer-only`. Provide link to such issues' merged PR.
 
@@ -32,10 +32,13 @@ lines like
 
 * When creating an issue for GCI, you need to list the potential solutions too.
 
+* You can open issues in any repository belonging to Public Lab whether it is on Ruby on Rails, Javascript, or any other tech stack including [plots2](https://github.com/publiclab/plots2),[image-sequencer](https://github.com/publiclab/image-sequencer), [leaflet](https://github.com/publiclab?utf8=%E2%9C%93&q=leaflet&type=&language=), [plotsbot](https://github.com/publiclab/plotsbot).
+
 * A GCI issue needs to be put in the [staging list](https://github.com/publiclab/plots2/issues/3276) as well.
 
 * You also need to mention the category of the issue(Code, Design, Documentation/training, Quality Assurance, Outreach) and tell the instance count, i.e., how many people can take that issue in the issue description.
 
 * For GCI issue you need to create the same task on the GCI dashboard as well.
 
-* You need to use extra-friendly tone at Public Lab even if people are not able to commit to send a PR on time.
+* You need to use extra-friendly tone at Public Lab with people.
+
