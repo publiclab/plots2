@@ -4,6 +4,8 @@
 
 
 
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,7 +21,7 @@
 
 
   <link crossorigin="anonymous" media="all" integrity="sha512-mjQPRAh2Y9A0sPdZzipNfPO7PT4g06mk0uZs15DbL/vsNCRGx1uRzWVzls9MJCoy2yRNjaMmEVFKJDpCui00mA==" rel="stylesheet" href="https://assets-cdn.github.com/assets/frameworks-df973073d880f28fbbae0263fb1ef62b.css" />
-  <link crossorigin="anonymous" media="all" integrity="sha512-pL8rFufy0wKsP6bGmBrKSDU1OzH1/daDq/mII42aJUoOy74HZJOkR1iLPLQ4xcN/9ZOojXk8iDVwn4oOqQdPOw==" rel="stylesheet" href="https://assets-cdn.github.com/assets/github-d7b6d7503c9433c6665e23a38783f079.css" />
+  <link crossorigin="anonymous" media="all" integrity="sha512-uTw2EuWpUwAcnEun3FDrF0hdxaanMkaAbYDTab9IbhcY2p5JiNBHGXSVt5vXPUvFfsS+j0FC1mjVxea/aZ2klQ==" rel="stylesheet" href="https://assets-cdn.github.com/assets/github-a65c3bf123248e10ec8b0ffb9a533961.css" />
   
   
   
@@ -37,10 +39,10 @@
     <meta property="og:image" content="https://avatars0.githubusercontent.com/u/4621650?s=400&amp;v=4" /><meta property="og:site_name" content="GitHub" /><meta property="og:type" content="object" /><meta property="og:title" content="publiclab/plots2" /><meta property="og:url" content="https://github.com/publiclab/plots2" /><meta property="og:description" content="a collaborative knowledge-exchange platform in Rails; we welcome first-time contributors! :balloon: - publiclab/plots2" />
 
   <link rel="assets" href="https://assets-cdn.github.com/">
-  <link rel="web-socket" href="wss://live.github.com/_sockets/VjI6MzE3NTA1NTc1OmNhZjY0Yjc3YmNmNDM4ZTVkZjIxNDNiMWYyYWVjODU4MmQyMDU1MWZjNWZlMGY1YmZmOTFjMDg2ZGJhMjhiYTg=--ec17a09c0b425b33f45ca21f7ed2d71f91eee7fd">
+  <link rel="web-socket" href="wss://live.github.com/_sockets/VjI6MzE3NTA1NTc1OmJlYzAwYWIzYWIxNmIxNTkzNjE4N2MwMjM0MGQyM2YzNmY0ZTBmNDIwNGI0NDE2NDVmNzhiNzJmNDM5YWU1ZTQ=--dd20865be0a014224b9bbd7e17cde50a0e499229">
   <meta name="pjax-timeout" content="1000">
   <link rel="sudo-modal" href="/sessions/sudo_modal">
-  <meta name="request-id" content="33C2:4FF3:6F0D37:C662F4:5BACE382" data-pjax-transient>
+  <meta name="request-id" content="38C0:468F:A5B3C4:12BC962:5BAD7563" data-pjax-transient>
 
 
   
@@ -51,7 +53,7 @@
     <meta name="google-site-verification" content="ZzhVyEFwb7w3e0-uOTltm8Jsck2F5StVihD0exw2fsA">
     <meta name="google-site-verification" content="GXs5KoUUkNCoaAZn7wPN-t01Pywp9M3sEjnt_3_ZWPc">
 
-  <meta name="octolytics-host" content="collector.githubapp.com" /><meta name="octolytics-app-id" content="github" /><meta name="octolytics-event-url" content="https://collector.githubapp.com/github-external/browser_event" /><meta name="octolytics-dimension-request_id" content="33C2:4FF3:6F0D37:C662F4:5BACE382" /><meta name="octolytics-dimension-region_edge" content="iad" /><meta name="octolytics-dimension-region_render" content="iad" /><meta name="octolytics-actor-id" content="32520970" /><meta name="octolytics-actor-login" content="msarit" /><meta name="octolytics-actor-hash" content="29ce2aed08394b2f45037ad7b292e17fb1b8e6f4ef37361ee663140c8397a6b9" />
+  <meta name="octolytics-host" content="collector.githubapp.com" /><meta name="octolytics-app-id" content="github" /><meta name="octolytics-event-url" content="https://collector.githubapp.com/github-external/browser_event" /><meta name="octolytics-dimension-request_id" content="38C0:468F:A5B3C4:12BC962:5BAD7563" /><meta name="octolytics-dimension-region_edge" content="iad" /><meta name="octolytics-dimension-region_render" content="iad" /><meta name="octolytics-actor-id" content="32520970" /><meta name="octolytics-actor-login" content="msarit" /><meta name="octolytics-actor-hash" content="29ce2aed08394b2f45037ad7b292e17fb1b8e6f4ef37361ee663140c8397a6b9" />
 <meta name="analytics-location" content="/&lt;user-name&gt;/&lt;repo-name&gt;/blob/show" data-pjax-transient="true" />
 
 
@@ -70,13 +72,13 @@
     <meta name="user-login" content="msarit">
 
       <meta name="expected-hostname" content="github.com">
-    <meta name="js-proxy-site-detection-payload" content="MzMxMmRjNTA1MzI4MjA0YWQ5NDY4NDFiNGNkZjFkMzQzODc1ZGYzYWU2NzM5MjkwNjM3OWQxNjE0OGYwZDNiNXx7InJlbW90ZV9hZGRyZXNzIjoiNjUuMjQ2LjcyLjg1IiwicmVxdWVzdF9pZCI6IjMzQzI6NEZGMzo2RjBEMzc6QzY2MkY0OjVCQUNFMzgyIiwidGltZXN0YW1wIjoxNTM4MDU3MDkxLCJob3N0IjoiZ2l0aHViLmNvbSJ9">
+    <meta name="js-proxy-site-detection-payload" content="YjJlNDE4MmQ0ZDg3MmM2NTI2MDgyN2YzNmNhMDg3MjRmYTYyNGVjZTE3ODQ1YWU4ZjYxMWU0MzBjODM1ZDhlZXx7InJlbW90ZV9hZGRyZXNzIjoiNjUuMjQ2LjcyLjY3IiwicmVxdWVzdF9pZCI6IjM4QzA6NDY4RjpBNUIzQzQ6MTJCQzk2Mjo1QkFENzU2MyIsInRpbWVzdGFtcCI6MTUzODA5NDQzNiwiaG9zdCI6ImdpdGh1Yi5jb20ifQ==">
 
     <meta name="enabled-features" content="DASHBOARD_V2_LAYOUT,DASHBOARD_V2_LAYOUT_OPT_IN,EXPLORE_DISCOVER_REPOSITORIES,UNIVERSE_BANNER,MARKETPLACE_PLAN_RESTRICTION_EDITOR,MARKETPLACE_RETARGETING,QUOTE_MARKDOWN,COLLAPSE_REPEATED_COMMENTS">
 
   <meta name="html-safe-nonce" content="d158873e264859231aef71b525a85a5d86389ce2">
 
-  <meta http-equiv="x-pjax-version" content="cbe9d130a190eaf075b51a237a94a9cd">
+  <meta http-equiv="x-pjax-version" content="ab8ba179035cee00d503d541a04936b6">
   
 
       <link href="https://github.com/publiclab/plots2/commits/master.atom" rel="alternate" title="Recent Commits to plots2:master" type="application/atom+xml">
@@ -155,7 +157,7 @@
           autocapitalize="off"
           aria-autocomplete="list"
           aria-controls="jump-to-results"
-          data-jump-to-suggestions-path="/_graphql/GetSuggestedNavigationDestinations#csrf-token=7boX+lZprOPBgcb0aVSC4ohDYGyHoQ2Sh9ht456Jt+83koWyUJQA92h1QiRLeQ2o6gcauTf2I02aKSef5BpuNQ=="
+          data-jump-to-suggestions-path="/_graphql/GetSuggestedNavigationDestinations#csrf-token=Yt9gq3XVj2P3LbBN21Kv3MjsZOmmQ8NcEvmAhgtT/pi49/Ljcygjd17ZNJ35fyCWqqgePBYU7YMPCMr6ccAnQg=="
           spellcheck="false"
           autocomplete="off"
           >
@@ -238,8 +240,8 @@
   <li class="dropdown">
     <span class="d-inline-block  px-2">
       
-    <a aria-label="You have unread notifications" class="notification-indicator tooltipped tooltipped-s  js-socket-channel js-notification-indicator" data-hotkey="g n" data-ga-click="Header, go to notifications, icon:unread" data-channel="notification-changed:32520970" href="/notifications">
-        <span class="mail-status unread"></span>
+    <a aria-label="You have no unread notifications" class="notification-indicator tooltipped tooltipped-s  js-socket-channel js-notification-indicator" data-hotkey="g n" data-ga-click="Header, go to notifications, icon:read" data-channel="notification-changed:32520970" href="/notifications">
+        <span class="mail-status "></span>
         <svg class="octicon octicon-bell" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M13.99 11.991v1H0v-1l.73-.58c.769-.769.809-2.547 1.189-4.416.77-3.767 4.077-4.996 4.077-4.996 0-.55.45-1 .999-1 .55 0 1 .45 1 1 0 0 3.387 1.229 4.156 4.996.38 1.879.42 3.657 1.19 4.417l.659.58h-.01zM6.995 15.99c1.11 0 1.999-.89 1.999-1.999H4.996c0 1.11.89 1.999 1.999 1.999z"/></svg>
 </a>
     </span>
@@ -305,7 +307,7 @@
           <li><a role="menuitem" class="dropdown-item" href="https://help.github.com" data-ga-click="Header, go to help, text:help">Help</a></li>
           <li><a role="menuitem" class="dropdown-item" href="/settings/profile" data-ga-click="Header, go to settings, icon:settings">Settings</a></li>
           <li>
-            <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="logout-form" action="/logout" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="ee4ynF4BQoGE7Y6RpnE0N/fMz/GfRpSCHI6NST8MAKAZe/DWhboH+TQQtMY3pIJnB8LkDr62NW4l79cTAsr7Yw==" />
+            <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="logout-form" action="/logout" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="iwZMhpX/EAm8xFpwYHH1fAuPzMJFF7MgJdV+0ABll7brk47MTkRVcQw5YCfxpEMs+4HnPWTnEswctCSKPaNsdQ==" />
               <button type="submit" class="dropdown-item dropdown-signout" data-ga-click="Header, sign out, icon:logout" role="menuitem">
                 Sign out
               </button>
@@ -318,7 +320,7 @@
 
 
 
-        <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="sr-only right-0" action="/logout" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="TlTEyx9jE0y2KAfBt3PYQ/gCB6FeO19eq/FeiMBJ6YAuwQaBxNhWNAbVPZYmpm4TCAwsXn/L/rKSkATS/Y8SQw==" />
+        <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="sr-only right-0" action="/logout" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="BhKnHGFkOKR+BX/8ccUJXsJ+hdw/fBTO3fJy8fCyIV1mh2VWut993M74RavgEL8OMnCuIx6MtSLkkyirzXTang==" />
           <button type="submit" class="dropdown-item dropdown-signout" data-ga-click="Header, sign out, icon:logout">
             Sign out
           </button>
@@ -359,7 +361,7 @@
 
       <ul class="pagehead-actions">
   <li>
-        <!-- '"` --><!-- </textarea></xmp> --></option></form><form data-remote="true" class="js-social-form js-social-container" action="/notifications/subscribe" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="WZUQTpfy80S4SYZNtS/t0S1KGu0jBh2RuU7uKPDMxjo90OExWEYEJANTHmSAf9FlG8JHQe558rbU72yfHxQSNg==" />      <input type="hidden" name="repository_id" id="repository_id" value="10504669" class="form-control" />
+        <!-- '"` --><!-- </textarea></xmp> --></option></form><form data-remote="true" class="js-social-form js-social-container" action="/notifications/subscribe" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="C5+fTnhr2MQfCj03IGx+w3xDI5OMkpI5f/Pb5D0HMJZv2m4xt98vpKQQpR4VPEJ3Sst+P0HtfR4SUllT0t/kmg==" />      <input type="hidden" name="repository_id" id="repository_id" value="10504669" class="form-control" />
 
       <details class="details-reset details-overlay select-menu float-left">
         <summary class="btn btn-sm btn-with-count select-menu-button" data-ga-click="Repository, click Watch settings, action:blob#show">
@@ -422,7 +424,7 @@
   <li>
     
   <div class="js-toggler-container js-social-container starring-container on">
-    <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="starred js-social-form" action="/publiclab/plots2/unstar" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="7XPmBUl7csvu8Afi9TmBEvGHGxX2YThgrt3oxBY2YoNgz7VREZMxSzC91EdqH5i4y/85tKKjlQ32xaXV3RIZNQ==" />
+    <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="starred js-social-form" action="/publiclab/plots2/unstar" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="mxNzYu378zz7H/Yo5c7ojLm3RK5ynvYr/Nh1yxDW6tkWryA2tROwvCVSJY166PEmg89mDyZcW0akwDja2/KRbw==" />
       <input type="hidden" name="context" value="repository"></input>
       <button
         type="submit"
@@ -433,11 +435,11 @@
         Unstar
       </button>
         <a class="social-count js-social-count" href="/publiclab/plots2/stargazers"
-           aria-label="279 users starred this repository">
-          279
+           aria-label="280 users starred this repository">
+          280
         </a>
 </form>
-    <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="unstarred js-social-form" action="/publiclab/plots2/star" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="LOLu88Ma+Skzm3a4/zc+EnjEhXyRceDUHI1txUOt3Ghcf/6ortcseJz2wlF+q/unfkabDGIngTfBQsYmqHGIkg==" />
+    <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="unstarred js-social-form" action="/publiclab/plots2/star" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="Hcs5bK7poANmS1RAaVHuHWu7G2XY4hU5Qi+KEqo/iPttVik3wyR1Uskm4KnozSuobTkFFSu0dNqf4CHxQePcAQ==" />
       <input type="hidden" name="context" value="repository"></input>
       <button
         type="submit"
@@ -448,8 +450,8 @@
         Star
       </button>
         <a class="social-count js-social-count" href="/publiclab/plots2/stargazers"
-           aria-label="279 users starred this repository">
-          279
+           aria-label="280 users starred this repository">
+          280
         </a>
 </form>  </div>
 
@@ -481,8 +483,8 @@
           </details>
 
     <a href="/publiclab/plots2/network/members" class="social-count"
-       aria-label="403 users forked this repository">
-      403
+       aria-label="404 users forked this repository">
+      404
     </a>
   </li>
 </ul>
@@ -514,7 +516,7 @@
       <a itemprop="url" data-hotkey="g i" class="js-selected-navigation-item reponav-item" data-selected-links="repo_issues repo_labels repo_milestones /publiclab/plots2/issues" href="/publiclab/plots2/issues">
         <svg class="octicon octicon-issue-opened" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"/></svg>
         <span itemprop="name">Issues</span>
-        <span class="Counter">384</span>
+        <span class="Counter">387</span>
         <meta itemprop="position" content="2">
 </a>    </span>
 
@@ -522,7 +524,7 @@
     <a data-hotkey="g p" itemprop="url" class="js-selected-navigation-item reponav-item" data-selected-links="repo_pulls checks /publiclab/plots2/pulls" href="/publiclab/plots2/pulls">
       <svg class="octicon octicon-git-pull-request" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 11.28V5c-.03-.78-.34-1.47-.94-2.06C9.46 2.35 8.78 2.03 8 2H7V0L4 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 10 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zM4 3c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v6.56A1.993 1.993 0 0 0 2 15a1.993 1.993 0 0 0 1-3.72V4.72c.59-.34 1-.98 1-1.72zm-.8 10c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"/></svg>
       <span itemprop="name">Pull requests</span>
-      <span class="Counter">44</span>
+      <span class="Counter">45</span>
       <meta itemprop="position" content="3">
 </a>  </span>
 
@@ -551,7 +553,7 @@
   <div class="repository-content ">
 
     
-  <a class="d-none js-permalink-shortcut" data-hotkey="y" href="/publiclab/plots2/blob/35449fd5da4975aa235a49beae9f7b248d674c8c/yarn.lock">Permalink</a>
+  <a class="d-none js-permalink-shortcut" data-hotkey="y" href="/publiclab/plots2/blob/542716dce68deffb61aab2a3bd4083efba3e8a33/yarn.lock">Permalink</a>
 
   <!-- blob contrib key: blob_contributors:v21:66f0cd0a4fd575c679990011091c8736 -->
 
@@ -4220,13 +4222,13 @@
             <svg class="octicon octicon-device-desktop" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M15 2H1c-.55 0-1 .45-1 1v9c0 .55.45 1 1 1h5.34c-.25.61-.86 1.39-2.34 2h8c-1.48-.61-2.09-1.39-2.34-2H15c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm0 9H1V3h14v8z"/></svg>
         </a>
 
-          <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="inline-form js-update-url-with-hash" action="/publiclab/plots2/edit/master/yarn.lock" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="hcfh9FxHdoQAmZ87a1SiUL03lIqyEr5iMWZRQPbwRCMefvvhu+ZIe9FTHa2CJZPL4dn/zORpISaSvz1wOyjHEA==" />
+          <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="inline-form js-update-url-with-hash" action="/publiclab/plots2/edit/master/yarn.lock" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="XCKyCPuwMk8IU5+jh4ASBZ6n8aqY3l6lMBjRL/zU7vXHm6gdHBEMsNmZHTVu8SOewkma7M6lweGTwb0fMQxtxg==" />
             <button class="btn-octicon tooltipped tooltipped-nw" type="submit"
               aria-label="Edit the file in your fork of this project" data-hotkey="e" data-disable-with>
               <svg class="octicon octicon-pencil" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M0 12v3h3l8-8-3-3-8 8zm3 2H1v-2h1v1h1v1zm10.3-9.3L12 6 9 3l1.3-1.3a.996.996 0 0 1 1.41 0l1.59 1.59c.39.39.39 1.02 0 1.41z"/></svg>
             </button>
 </form>
-        <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="inline-form" action="/publiclab/plots2/delete/master/yarn.lock" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="BaKB/T2xMAm2pOKOwE9xU1/X8RfAeH5q6hdzQfUUPdzXhXmt5PxehKcHkAaL9J8UX8oa2TpMBAppSo/ixW8ayQ==" />
+        <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="inline-form" action="/publiclab/plots2/delete/master/yarn.lock" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="21jpcUSKjHYkWnKK8DDvLdwLz1/6s5VVmxh5PKG3pcQJfxEhncfi+zX5AAK7iwFq3BYkkQCH7zUYRYWfkcyC0Q==" />
           <button class="btn-octicon btn-octicon-danger tooltipped tooltipped-nw" type="submit"
             aria-label="Delete the file in your fork of this project" data-disable-with>
             <svg class="octicon octicon-trashcan" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 2H9c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1H2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1v9c0 .55.45 1 1 1h7c.55 0 1-.45 1-1V5c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 12H3V5h1v8h1V5h1v8h1V5h1v8h1V5h1v9zm1-10H2V3h9v1z"/></svg>
@@ -15773,7 +15775,7 @@
       <ul class="BlobToolbar-dropdown dropdown-menu dropdown-menu-se mt-2">
         <li><clipboard-copy role="menuitem" class="dropdown-item" id="js-copy-lines" style="cursor:pointer;" data-original-text="Copy lines">Copy lines</clipboard-copy></li>
         <li><clipboard-copy role="menuitem" class="dropdown-item" id="js-copy-permalink" style="cursor:pointer;" data-original-text="Copy link">Copy link</clipboard-copy></li>
-        <li><a class="dropdown-item js-update-url-with-hash" id="js-view-git-blame" role="menuitem" href="/publiclab/plots2/blame/35449fd5da4975aa235a49beae9f7b248d674c8c/yarn.lock">View git blame</a></li>
+        <li><a class="dropdown-item js-update-url-with-hash" id="js-view-git-blame" role="menuitem" href="/publiclab/plots2/blame/542716dce68deffb61aab2a3bd4083efba3e8a33/yarn.lock">View git blame</a></li>
           <li><a class="dropdown-item" id="js-new-issue" role="menuitem" href="/publiclab/plots2/issues/new">Open new issue</a></li>
       </ul>
     </details-menu>
@@ -15806,7 +15808,7 @@
 <div class="footer container-lg px-3" role="contentinfo">
   <div class="position-relative d-flex flex-justify-between pt-6 pb-2 mt-6 f6 text-gray border-top border-gray-light ">
     <ul class="list-style-none d-flex flex-wrap ">
-      <li class="mr-3">&copy; 2018 <span title="0.28349s from unicorn-6f7db69dd9-h65qn">GitHub</span>, Inc.</li>
+      <li class="mr-3">&copy; 2018 <span title="0.30684s from unicorn-5dd7bcbff7-q7pxq">GitHub</span>, Inc.</li>
         <li class="mr-3"><a data-ga-click="Footer, go to terms, text:terms" href="https://github.com/site/terms">Terms</a></li>
         <li class="mr-3"><a data-ga-click="Footer, go to privacy, text:privacy" href="https://github.com/site/privacy">Privacy</a></li>
         <li class="mr-3"><a href="https://help.github.com/articles/github-security/" data-ga-click="Footer, go to security, text:security">Security</a></li>
@@ -15846,7 +15848,7 @@
     
     <script crossorigin="anonymous" integrity="sha512-j7P2Pw3104HznNqyNm7WuCF8Lstcf/sPX5meP6e5RFF177kmi6SAbkZ52A3ttKj0cRHLRrUbk7C1w1xtwh52zA==" type="application/javascript" src="https://assets-cdn.github.com/assets/frameworks-c163002918ede72971a36e0025f67a4a.js"></script>
     
-    <script crossorigin="anonymous" async="async" integrity="sha512-7k40iaLRlOCjvlJvNu5pTzMtYG4xCuy4lZcMbjkoKrLYKvyNSG1tfCPupwlJP8lZJn6sVdb67wwW79gypXfdlw==" type="application/javascript" src="https://assets-cdn.github.com/assets/github-0545f38d79a28ad665cd5fe102ce1289.js"></script>
+    <script crossorigin="anonymous" async="async" integrity="sha512-IobDS4EnhyfbhQaVVgCRyqjlhcsqgX5lJBPOi1E5Dki3uNHhziFT1nqh9A6I2LK4pNhOLyV8Mx2jmNA5UrguAw==" type="application/javascript" src="https://assets-cdn.github.com/assets/github-dd9d9c5f946abf18856bc17a119336ba.js"></script>
     
     
     
