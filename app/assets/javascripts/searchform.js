@@ -10,3 +10,11 @@ $(function() {
     window.location = "/search/" + encoded_query;
   });
 });
+
+$(function () {
+  $('body').on('keydown', '#searchform_input', function (e) {
+    if (e.which === 32 && this.value === '') {
+      return false;
+    }
+  });
+});
