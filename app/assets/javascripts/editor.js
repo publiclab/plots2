@@ -115,6 +115,6 @@ $E = {
     if ($E.previewed) $('#'+id)[0].textContent = "Hide Preview"
     else $('#'+id)[0].textContent = "Preview"
     $('#dropzone').toggle()
-    $E.preview.toggle();
+    $E.preview.toggle()
   }
 }
