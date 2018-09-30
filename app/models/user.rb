@@ -343,6 +343,10 @@ class User < ActiveRecord::Base
   def first_time_poster
     notes.where(status: 1).count == 0
   end
+  
+  def first_time_commenter
+    comments.where(status: 1).count == 0
+  end
 
   def follow(other_user)
     active_relationships.create(followed_id: other_user.id)
