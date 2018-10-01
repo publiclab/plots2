@@ -1,4 +1,6 @@
 require 'test_helper'
+include ActionView::Helpers::ApplicationHelper
+
 class CommentTest < ActiveSupport::TestCase
   test 'should save comment' do
     comment = Comment.new
@@ -353,7 +355,6 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   test 'sanitizing comment body for XSS' do
-    include ActionView::Helpers::ApplicationHelper
     comment = Comment.new
     comment.comment = "<img src=x onerror=prompt(133)>" # inserting executable javascript into a comment
     assert comment.save
