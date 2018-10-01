@@ -352,4 +352,18 @@ class CommentTest < ActiveSupport::TestCase
     f.close()
   end
 
+  test 'sanitizing comment body for XSS' do
+    include ActionView::Helpers::ApplicationHelper
+    comment = Comment.new
+    comment.comment = "<img src=x onerror=prompt(133)>" # inserting executable javascript into a comment
+    assert comment.save
+    # TODO: this section matches https://github.com/publiclab/plots2/blob/6595ef39f25ca4f2d377cacfd92e86a7460214d6/app/helpers/application_helper.rb#L100-L107
+    # which should be moved into comment.rb
+    output = raw RDiscount.new(
+      title_suggestion(comment),
+      :autolink
+    ).to_html
+    assert_equal [], output.scan('onerror=prompt')
+  end
+
 end
