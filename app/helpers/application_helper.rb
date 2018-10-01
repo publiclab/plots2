@@ -98,15 +98,6 @@ module ApplicationHelper
   end
 
   # we should move this to the Comment model:
-  # returns the comment body which is to be shown in the comments section
-  def render_comment_body(comment)
-    raw RDiscount.new(
-      title_suggestion(comment),
-      :autolink
-    ).to_html
-  end
-
-  # we should move this to the Comment model:
   # replaces inline title suggestion(e.g: {New Title}) with the required link to change the title
   def title_suggestion(comment)
     comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do

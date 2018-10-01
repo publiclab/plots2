@@ -331,4 +331,12 @@ class Comment < ApplicationRecord
   def trimmed_content?
     comment.include?(COMMENT_FILTER)
   end
+
+
+  def render_body
+    raw RDiscount.new(
+      title_suggestion(self),
+      :autolink
+    ).to_html
+  end
 end

@@ -117,7 +117,7 @@
   
   <div style="border: 1px solid #e7e7e7;padding: 18px;" id="c<%= comment.cid %>show">
 
-    <% comment_body = render_comment_body(comment) %>
+    <% comment_body = comment.render_body %>
     <p id="comment-body-<%= comment.cid %>"><%= raw filtered_comment_body(comment_body) %></p>
 
     <% if contain_trimmed_body?(comment_body) %>
