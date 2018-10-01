@@ -332,7 +332,6 @@ class Comment < ApplicationRecord
     comment.include?(COMMENT_FILTER)
   end
 
-
   def render_body
     raw RDiscount.new(
       title_suggestion(self),
