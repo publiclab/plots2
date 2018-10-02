@@ -56,7 +56,8 @@ class PublicPagesTest < ActionDispatch::IntegrationTest
   test 'browse /wiki/foo' do
     node = nodes(:about)
     get node.path
-    assert_response :success
+    assert_response :redirect
+    assert_redirected_to '/wiki/new'
   end
 
   test 'browse root-level (/about) wiki page' do
