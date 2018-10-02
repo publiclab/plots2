@@ -19,7 +19,7 @@ class SubscriptionMailer < ActionMailer::Base
   def notify_note_liked(node, user)
     subject = "[PublicLab] #{user.username} liked your " +
               (node.has_power_tag('question') ? 'question' : 'research note') +
-              "(##{node.id})"
+              " (##{node.id})"
     @user = user
     @node = node
     @footer = feature('email-footer')
