@@ -279,13 +279,13 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
   end
 
-  test 'should redirect to /wiki/___ for requests that ask for /____' do
+  test 'should redirect to /tag/___ for requests that ask for /____' do
     UserSession.find.destroy
     UserSession.create(users(:admin))
 
     get :root, params: { id: 'madeup' }
 
-    assert_redirected_to '/wiki/madeup'
+    assert_redirected_to '/tag/madeup'
     UserSession.find.destroy
   end
 
