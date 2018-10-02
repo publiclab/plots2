@@ -438,13 +438,6 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should show the wiki post page if wiki page doesn't exist" do
-    UserSession.create(users(:jeff))
-    get :show, params: { id: 'A-new-wiki-page' }
-    assert_response :success
-    assert_template 'wiki/edit'
-  end
-
   test 'replacing content in a node with replace action' do
     UserSession.create(users(:jeff))
     node = nodes(:about)
