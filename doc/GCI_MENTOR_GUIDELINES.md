@@ -4,7 +4,7 @@ To be a GCI mentor at Public labs, there are some prerequisites that we expect y
 
 1. Solve a [fto issue](https://code.publiclab.org/). Provide the link to the first timer issue's pull request (PR) once it's merged.
 
-2. Solve a [help-wanted issue](https://github.com/publiclab/plots2/labels/help-wanted). Help wanted issues are issues which are not labelled as `gci-candidate` neither as `fto-candidate` nor as `first-timer-only`. Provide link to such issues' merged PR.
+2. Solve a [help-wanted issue](https://github.com/publiclab/plots2/labels/help-wanted). Help wanted issues are issues which are not labelled as `gci-candidate` neither as `fto` nor as `first-timer-only`. Provide link to such issues' merged PR.
 
 **(Make sure you claim the issue first by commenting on issue you are planning to solve). This is very important.**
 
@@ -28,6 +28,8 @@ To be a GCI mentor at Public labs, there are some prerequisites that we expect y
 * If you are creating a `gci-candidate issue` format it properly with
 lines like
 
+* To be a mentor you don't necessarily need to know how to code -- we need mentors who know Public Lab's community and practices well, and who can encourage students to speak up when they get stuck, and to ask the community for input and testing of their work.
+
 **We are preparing to participate in Google Code-in, and have reserved this issue for participants in GCI - but we'd love to have your help with another one! Please check out [https://code.publiclab.org](https://code.publiclab.org) to see more.**
 
 * When creating an issue for GCI, you need to list the potential solutions too.
@@ -36,9 +38,21 @@ lines like
 
 * A GCI issue needs to be put in the [staging list](https://github.com/publiclab/plots2/issues/3276) as well.
 
-* You also need to mention the category of the issue(Code, Design, Documentation/training, Quality Assurance, Outreach) and tell the instance count, i.e., how many people can take that issue in the issue description.
+* You also need to mention the category of the issue from these recurring tasks: Code, Design, Documentation/training, Quality Assurance, Outreach and add the instance count, i.e., how many people can take that issue in the issue description(https://github.com/publiclab/plots2/wiki/Google-Code-In-Tasks).
+
+* Labels which we can use at publiclab after creating issues are bug, design, enhancement, refactorization, documentation, help-wanted, and support.
 
 * For GCI issue you need to create the same task on the GCI dashboard as well.
 
 * You need to use extra-friendly tone at Public Lab with people.
+
+**PR Review Guidelines:**
+
+1. PR should use 'Fixes #issue_no" in PR body.
+
+2. Code should be modular.
+
+3. Tests must be written if needed. All tests must pass before approval.
+
+4. Suggest code changes if any. Else approve the PR by commentting in the PR.
 
