@@ -253,7 +253,7 @@ class WikiController < ApplicationController
   # wiki pages which have a root URL, like /about
   # also just redirect anything else matching /____ to /wiki/____
   def root
-    @node = Node.find_by(path: params[:id])
+    @node = Node.find_by(path: "/" + params[:id])
     return if check_and_redirect_node(@node)
     if @node
       @revision = @node.latest
