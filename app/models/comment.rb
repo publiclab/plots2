@@ -333,7 +333,7 @@ class Comment < ApplicationRecord
   end
 
   def render_body
-    raw RDiscount.new(
+    RDiscount.new(
       title_suggestion(self),
       :autolink
     ).to_html
