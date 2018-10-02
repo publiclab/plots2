@@ -101,16 +101,20 @@ $E = {
     'question': "## What I want to do or know\n\n## Background story"
   },
   previewing: false,
+  previewed: false,
   generate_preview: function(id,text) {
     $('#'+id)[0].innerHTML = marked(text)
   },
-  toggle_preview: function() {
+  toggle_preview: function(id) {
     $E.preview[0].innerHTML = marked($E.textarea.val());
     $('.preview-btn').button('toggle');
     $E.previewing = !$E.previewing
     if ($E.previewing) $('.preview-btn').button('previewing');
     else $('.preview-btn').button('reset');
+    $E.previewed = !$E.previewed
+    if ($E.previewed) $('#'+id)[0].textContent = "Hide Preview"
+    else $('#'+id)[0].textContent = "Preview"
     $('#dropzone').toggle()
-    $E.preview.toggle();
+    $E.preview.toggle()
   }
 }

@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.4.1'
+ruby '2.4.4'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -41,6 +41,7 @@ gem "php-serialize", :require => "php_serialize"
 gem 'progress_bar'
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
+gem "rack-test", "1.0.0"
 gem 'rails', '5.2.0'
 gem 'rails-controller-testing'
 gem 'rails-dom-testing'

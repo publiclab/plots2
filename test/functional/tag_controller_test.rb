@@ -34,6 +34,19 @@ class TagControllerTest < ActionController::TestCase
     assert_equal [['myfourthtag', Tag.find_by_name('myfourthtag').tid], ['myfifthtag', Tag.find_by_name('myfifthtag').tid]], JSON.parse(response.body)['saved']
   end
 
+  test 'check extra tag page' do
+    UserSession.create(users(:bob))
+
+    get :show,
+        params: { 
+          node_type: 'contributors',
+          id: 'blog'
+        }
+
+    assert_template :show
+    assert_response :success
+  end
+
   test 'validate unused tag' do
     UserSession.create(users(:bob))
 
@@ -353,7 +366,7 @@ class TagControllerTest < ActionController::TestCase
            nid: node.id
            }
 
-      assert_equal " [@#{node.author.name}](/profile/#{node.author.name}) has marked #{tagname.split(':')[1]} as a co-author. ", Comment.last.body
+      assert_equal " [@#{node.author.name}](/profile/#{node.author.name}) has marked [@#{tagname.split(':')[1]}](/profile/#{tagname.split(':')[1]}) as a co-author. ", Comment.last.body
     end
   end
 

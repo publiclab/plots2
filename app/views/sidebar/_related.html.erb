@@ -43,20 +43,11 @@
   <% if @node && @node.has_power_tag('response') %>
     <%= render partial: 'sidebar/notes', locals: { notes: @node.responses, title: I18n.t('sidebar._related.responses_to_note'), node: @node } %>
   <% end %>
-
-  <% if @maps && @maps.length > 0 && params[:controller] != "search" %>
-
-    <br />
-
-    <% if @node && @maps && @node.lat %>
-      <%= render_map(@node.lat, @node.lon) %>
-    <% elsif @maps && @maps.first %>
-      <%= render_map(@maps.first.lat, @maps.first.lon) %>
-    <% end %>
-
-    <br style="clear:both;" />
-
+  <% if @node && !@node.has_power_tag('place') && @node.lat && @node.lon %>
+    <%= render_map(@node.lat, @node.lon) %>
   <% end %>
+    
+  <br style="clear:both;" />
 
   </div>
 
@@ -64,6 +55,12 @@
     <div id=sidebar-tags>
       <%= render partial: 'tag/tagging' %>
     </div>
+  <% end %>
+
+  <% unless current_user %>
+    <% cache('related_sidebar-welcome', skip_digest: true) do %>
+      <%= feature('sidebar-welcome') %>
+    <% end %>
   <% end %>
   
 </div>
