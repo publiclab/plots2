@@ -34,7 +34,7 @@
       var lat = <%= lat %> ;
       var lon = <%= lon %> ;
       var s = lat+","+lon ;
-      $.getJSON("/api/srch/locations?query="+s , function(data){
+      $.getJSON("/api/srch/taglocations?query="+s , function(data){
         if (!!data.items){
           for (i = 0; i < data.items.length ; i++) {
             var url = data.items[i].doc_url ;
