@@ -335,6 +335,15 @@ class UsersController < ApplicationController
     render js: "window.location.reload()"
   end
 
+  def shortlink
+    set_user
+    if @user
+      redirect_to @user.path
+    else
+      raise ActiveRecord::RecordNotFound.new(message: "Couldn't find user with username #{params[:id]}")
+    end
+  end
+
   private
 
   def set_user
