@@ -336,7 +336,7 @@ class UsersController < ApplicationController
   end
 
   def shortlink
-    set_user
+    @user = User.find_by_username(params[:username])
     if @user
       redirect_to @user.path
     else
