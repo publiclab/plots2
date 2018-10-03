@@ -4,6 +4,7 @@
 
   <h3 style="margin-top:0;"><%= @user.name %> <%= @user.new_contributor %>
     <small>
+      <a href="/p/<%= @user.username %>"><i class="fa fa-link"></i></a> 
       <%= @user.note_count %><a href='/notes/author/<%= @user.name %>'> research notes</a> and <%= @user.revision_count %> wiki edits
       <% if current_user && current_user.role == "admin" %> | <%= @user.email %><% end %>
       <% if @user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.moderator') %><% end %>

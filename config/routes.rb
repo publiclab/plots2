@@ -118,7 +118,7 @@ Plots2::Application.routes.draw do
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
   get 'i/:id' => 'images#shortlink'
-  get 'p/:id' => 'users#shortlink'
+  get 'p/:username' => 'users#shortlink'
   get 'notes' => 'notes#index'
   get 'notes/raw/:id' => 'notes#raw'
   get 'notes/popular' => 'notes#popular'
