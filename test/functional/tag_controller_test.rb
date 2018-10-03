@@ -56,7 +56,6 @@ class TagControllerTest < ActionController::TestCase
           id: 'question:*'
         }
 
-    assert_template :contributors
     assert_select 'p', text: "No contributors for that tag; try searching for 'question:*':"
   end
 
