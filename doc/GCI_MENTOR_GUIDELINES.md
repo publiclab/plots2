@@ -13,6 +13,8 @@ To be a GCI mentor at Public labs, there are some prerequisites that we expect y
 4. Once done with all these, fill [this](https://docs.google.com/forms/d/e/1FAIpQLScSBS-ddZN2H-lviUJbKlbV2VwP21fdIutXOCBzigRhmXJybw/viewform?usp=sf_link) form.
 <hr>
 
+* To be a mentor you don't necessarily need to know how to code -- we need mentors who know Public Lab's community and practices well, and who can encourage students to speak up when they get stuck, and to ask the community for input and testing of their work.
+
 * It's important to understand that people need to do only a single `first-timer-only` issue.
 
 * A first-timers-issue is meant to welcome people to open-source and should be easy enough to understand to make them feel comfortable. Use the [extra-friendly template](https://publiclab.org/n/13667) when creating `first-timer` issues.
@@ -20,6 +22,8 @@ To be a GCI mentor at Public labs, there are some prerequisites that we expect y
 * Once done with that, they need to move on to `help-wanted` issues. **As a mentor, you need to assist them in these areas.**
 
 * A `help-wanted` issue is a bit more hard to tackle and people can move onto this once they find themselves comfortable by solving one `first-timer` issue. 
+
+* As a mentor you need to report bugs, suggest changes, create ``help wanted`` and ``first timer issues``, add bugs/suggestions to https://github.com/publiclab/plots2/issues/3276, and review ``help-wanted issues`` also.
 
 * As a mentor, you also need to guide students to create good `first-timer` issues and help them in reviewing PRs.
 
@@ -36,9 +40,37 @@ lines like
 
 * A GCI issue needs to be put in the [staging list](https://github.com/publiclab/plots2/issues/3276) as well.
 
-* You also need to mention the category of the issue(Code, Design, Documentation/training, Quality Assurance, Outreach) and tell the instance count, i.e., how many people can take that issue in the issue description.
+* You also need to mention the category of the issue from these recurring tasks: Code, Design, Documentation/training, Quality Assurance, Outreach and add the instance count, i.e., how many people can take that issue in the issue description(https://github.com/publiclab/plots2/wiki/Google-Code-In-Tasks).
+
+* Labels which we can use at publiclab after creating issues are bug, design, enhancement, refactorization, documentation, help-wanted, and support.
 
 * For GCI issue you need to create the same task on the GCI dashboard as well.
 
 * You need to use extra-friendly tone at Public Lab with people.
+<hr>
 
+**PR Review Guidelines:**
+
+1. Issue should be claimed before opening the pull request.
+
+2. PR should use 'Fixes #issue_no" in PR body.
+
+3. PR should have description in title.
+
+4. Code should be modular.
+
+5. Add screenshots if applicable.
+
+6. Tests must be written if needed. All tests must pass before approval.
+
+7. Suggest code changes if any. Else approve the PR by commentting in the PR.
+
+8. PR is (ideally) less than 50 lines of code & generally tries to implement only a single feature or fix.
+
+9. PR doesn't affect highly sensitive areas of the site such as header or top of dashboard or signup form without input from @publiclab/community-reps
+
+10. Check Gemfile.lock, yarn.lock, and other unrelated files are not included
+
+11. Double check if it contains any feature that will be difficult to roll back(Possibly ask for review from other reviewers as well).
+
+12. Label as review-me if review required from another reviewer.
