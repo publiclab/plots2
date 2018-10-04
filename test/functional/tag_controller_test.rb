@@ -56,7 +56,7 @@ class TagControllerTest < ActionController::TestCase
           id: 'question:*'
         }
 
-    assert_select 'h3', text: 'Contributors for <i style="color:#aaa;">question:*</i>'
+    assert_select 'h3', text: 'Contributors for question:*'
   end
 
   test "won't add invalid tags" do
