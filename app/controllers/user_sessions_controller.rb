@@ -50,7 +50,7 @@ class UserSessionsController < ApplicationController
             @user = user
             # send key to user email
             PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
-            redirect_to root_url, notice: "You have successfully signed in. Please change your password via a link sent to you via a mail"
+            redirect_to root_url, notice: "You have successfully signed in. Please change your password via a link sent to you via e-mail"
           else # email exists so link the identity with existing user and log in the user
             user = User.where(email: auth["info"]["email"])
             # If no identity was found, create a brand new one here
