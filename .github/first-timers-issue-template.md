@@ -1,3 +1,8 @@
+**We are preparing to participate in Google Code-in, and have reserved this issue for participants in GCI - but we'd love to have your help with another one! Please check out https://code.publiclab.org to see more.**
+
+Instance count 1
+Field: Training
+
 Hi, this is a [first-timers-only issue](https://publiclab.github.io/community-toolbox/#r=all). This means we've worked to make it more legible to folks who either **haven't contributed to our codebase before, or even folks who haven't contributed to open source before**. 
 
 If that's you, we're interested in helping you take the first step and can answer questions and help you out as you do. Note that we're especially interested in contributions from people from groups underrepresented in free and open source software!
@@ -10,20 +15,14 @@ If you have contributed before, **consider leaving this one for someone new**, a
 
 Nothing. This issue is meant to welcome you to Open Source :) We are happy to walk you through the process.
 
-### 📋 Step by Step
+### Problem
+
+
+### 📋Solution
 
 - [ ] 🙋 **Claim this issue**: Comment below. If someone else has claimed it, ask if they've opened a pull request already and if they're stuck -- maybe you can help them solve a problem or move it along!
 
-- [ ] 📝 **Update** the file [$FILENAME]($BRANCH_URL) in the `$REPO` repository (press the little pen Icon) and edit the line as shown below. 
-
-[See this page](https://publiclab.github.io/community-toolbox/#r=all) for some help in taking your first steps!
-
-Below is a "diff" showing in red (and a `-`) which lines to remove, and in green (and a `+`) which lines to add:
-
-```diff
-$DIFF
-```
-
+- [ ] 📝 **Update**
 
 - [ ] 💾 **Commit** your changes
 
