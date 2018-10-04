@@ -1,7 +1,22 @@
 <div id="social">
   <% if Rails.env == "production" %>
-  <div class="fb-like" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false" style="vertical-align: middle; bottom: 6px;margin-right:10px" ></div>
-  <a style="width: 60px;height: 20px;bottom: 7px;" href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
-  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  <div class="fb-share-button" data-href="https://publiclab.org<%= path %>" data-layout="button_count" style="vertical-align: middle; bottom: 6px;margin-right:10px">Fb Share</div>
+  <a class="twitter-share-button" href="https://twitter.com/share" style="width: 60px;height: 20px;bottom: 7px;">Tweet</a>
+  <script>
+    !function(d,s,id){
+        var js,fjs=d.getElementsByTagName(s)[0];
+      if(d.getElementById(id)) return;
+      js=d.createElement(s); js.id=id;
+      js.src="//platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js,fjs);
+    }(document,"script","twitter-wjs");
+    !function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk');
+  </script>
   <% end %>
 </div>

@@ -44,7 +44,7 @@
 
   <hr />
 
-  <%= render :partial => "home/social" %>
+  <%= render :partial => "home/social" , :locals => {:path => @node.path(:question)}%>
 
   <hr />
 
