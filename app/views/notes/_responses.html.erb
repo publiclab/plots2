@@ -10,7 +10,7 @@
         tags = response_type + ':' @node.id
         tags += ',hidden:response' if response_type == 'response'
         tags += ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0
-        tags += '&n=17223' + if response_type == 'photo'
+        tags += '&n=17223' if response_type == 'photo'
       %>
       <a class='btn btn-primary btn-lg' href="/post?tags=<%= tags %>">
         <%= t('notes._responses.post_' + response_type) %>
