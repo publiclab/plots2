@@ -58,7 +58,7 @@
       <input id="taginput" type="hidden" name="tags" value="<%= params[:tags] %>" />
 
       <div class="form-group">
-        <input tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:id] %><% end %>">
+        <input tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:title] %><% end %>">
       </div>
 
       <script>
@@ -70,7 +70,7 @@
         })()
       </script>
 
-      <%= render :partial => 'editor/editor' %>
+      <%= render partial: 'editor/editor' %>
 
       <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= t('wiki.edit.publish') %></a>
       <a tabindex="6" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
