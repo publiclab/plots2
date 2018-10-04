@@ -5,7 +5,7 @@
 # Comment to be posted to on first time issues
 newIssueWelcomeComment: |
   Thanks for opening your first issue here! Please follow the issue template to help us help you 👍🎉😄
-  If you have screenshots to share demonstrating the issue, that's really helpful! 📸
+  If you have screenshots to share demonstrating the issue, that's really helpful! 📸 You can [make a gif](https://www.cockos.com/licecap/) too!
 
 # Configuration for new-pr-welcome - https://github.com/behaviorbot/new-pr-welcome
 
