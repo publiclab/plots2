@@ -234,7 +234,7 @@ GEM
     netrc (0.11.0)
     nifty-generators (0.4.6)
     nio4r (2.3.1)
-    nokogiri (1.8.4)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     nokogumbo (1.5.0)
       nokogiri
@@ -488,7 +488,6 @@ DEPENDENCIES
   grape-swagger-rails
   grape-swagger-ui
   http_accept_language
-  i18n (~> 1.0.1)
   i18n-js (>= 3.0.0.rc11)
   impressionist
   jasmine-jquery-rails
