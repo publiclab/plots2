@@ -77,7 +77,7 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 
 ## SSL in Development
 We at public labs use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
-1. Use 'passenger start --ssl --ssl-certificate config/localhost.crt --ssl-certificate-key config/localhost.key --ssl-port 3001'.
+1. Use `passenger start --ssl --ssl-certificate config/localhost.crt --ssl-certificate-key config/localhost.key --ssl-port 3001`.
 2. Open up https://localhost:3001.
 3. Add security exceptions from the advance settings of the browser.
 You can also use http (unsecure connection) on the port number 3000 by going to 'http://localhost:3000'. We use port number 3001 for 'https' and port number 3000 for 'http' connection.
