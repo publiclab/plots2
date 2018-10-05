@@ -22,6 +22,13 @@ class CommentTest < ActiveSupport::TestCase
     assert !comment.save, 'Saved the comment without body text'
   end
 
+  test 'should scrape bad content from comment display' do
+    comment = Comment.new(nid: nodes(:one).nid,
+                          uid: users(:bob).id)
+    comment.comment = "Let’s see how this works with images or an embedded video.\n\n&nbsp;\n\n![](cid:image001.jpg@01D45C10.01D90920)\n\n&nbsp;\n\n\\<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/Kt\\_MSMpxy7Y\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen\\>\\</iframe\\>\n\n&nbsp;\n\nIs \\ ***markdown** \\* parsed?\n\n&nbsp;\n\n1. 1. Number 1\n\n2. 4. Number 4\n\n3. 3. Number 3\n\n&nbsp;"
+    assert_equal "", comment.comment
+  end
+
   test 'should scan callouts out of body' do
     comment = Comment.new(nid: nodes(:one).nid,
                           uid: users(:bob).id)
