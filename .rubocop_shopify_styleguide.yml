@@ -970,8 +970,7 @@ Lint/PercentSymbolArray:
   Enabled: true
 
 Lint/RandOne:
-  Description: Checks for `rand(1)` calls. Such calls always return `0` and most
-    likely a mistake.
+  Description: Checks for `rand(1)` calls.  Such calls always return `0` and most likely a mistake.rand() function is used in C to              generate random numbers .
 
 Lint/RequireParentheses:
   Enabled: true
