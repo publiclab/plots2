@@ -118,6 +118,7 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal selector.size, 0
   end
 
+
   test 'confirm user reset key visible to admins on profile' do
     activate_authlogic
     UserSession.create(users(:admin))
@@ -256,5 +257,19 @@ class UsersControllerTest < ActionController::TestCase
     UserSession.create(user)
     post :test_digest_email
     assert_redirected_to '/'
+  end
+
+  test '/p/:username (shortlink) redirects to /profile/:id' do
+    user = users(:bob)
+    username = user.username
+    get :shortlink, params: { username: user.username }
+    assert_redirected_to "/profile/#{username}"
+  end
+
+  test 'invalid username raises proper error' do
+    invalid_username = ''
+    assert_raises(ActiveRecord::RecordNotFound) do
+      get :shortlink, params: { username: invalid_username }
+    end
   end
 end

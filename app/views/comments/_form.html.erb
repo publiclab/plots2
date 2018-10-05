@@ -116,7 +116,7 @@
       </a>
       <a class="btn btn-default" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()"><%= t('comments._form.cancel') %></a>
     <% else %>
-      <a id="preview-btn" class="btn btn-default" onClick="$E.toggle_preview()"><%= t('comments._form.preview') %></a>
+      <a id="preview-btn" class="btn btn-default" onClick="$E.toggle_preview(this.id)"><%= t('comments._form.preview') %></a>
     <% end %>
 
     <span style="color:#888;"> &nbsp;
