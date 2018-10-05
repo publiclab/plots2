@@ -113,7 +113,7 @@ a .fa-white,
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 768px) {
     .navbar-header {
         float: none;
     }
@@ -147,6 +147,9 @@ a .fa-white,
     }
     .collapse.in{
         display:block !important;
+    }
+    #md-ham {
+        display: none;
     }
 }
 
