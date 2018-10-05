@@ -76,7 +76,7 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 11. Run `rails test -d` to confirm that your install is working properly.
 
 ## SSL in Development
-We at public labs use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
+We at public labs use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. Here's a few ways to enable SSL. The first is new in Visual Studio 2010 SP1 and will allow you to use SSL on local host over ports 44300 and higher. By creating a local root CA file that gets installed in your system, it makes all certificates issued by mkcert trusted. After downloading the latest release from GitHub, you can simply “install” it by running mkcert -install. Once that is done, you can create your first, trusted (by your own system) certificate. You can run the https connection on the localhost by following following steps:
 1. Use 'passenger start --ssl --ssl-certificate config/localhost.crt --ssl-certificate-key config/localhost.key --ssl-port 3001'.
 2. Open up https://localhost:3001.
 3. Add security exceptions from the advance settings of the browser.
