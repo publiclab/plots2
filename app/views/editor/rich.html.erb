@@ -16,6 +16,7 @@
 <link href="/lib/publiclab-editor/dist/PublicLab.Editor.css" rel="stylesheet">
 
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
+<script>$(document).ready(function (){$('[data-toggle="popover"]').popover({content:"<b>Don't lose your work !</b><br> Save a draft ... only in your computer's browser",html:true})})</script>
 
 <div class="pl-editor">
 
@@ -162,8 +163,8 @@
     <button class="btn btn-lg btn-default btn-more">...</button>
 
     <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a><span class="hidden-xs"> so that others may use it.</span></span>
-
-    <button class="ple-publish btn btn-lg btn-primary pull-right disabled"><% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
+    
+    <button class="ple-publish btn btn-default btn-lg btn-primary pull-right disabled" data-toggle="popover" data-placement="top"> <% if controller.action_name == "edit" && @node.status == 3 %>Save<% else %>Publish<% end %></button>
     <span class="ple-help pull-right">
       <% if controller.action_name != "edit" && !current_user.first_time_poster %>
         <span id="newOpts" style="display: inline-block;">
@@ -225,6 +226,7 @@
 
       publishCallback: function publishCallback(response) {
         // parse and display errors!
+         
         if (typeof response === "string") {
           if (response.substr(1, 8) == "!DOCTYPE") $('.ple-errors').html('<div class="alert alert-danger">There was an error posting. Please contact web@publiclab.org for assistance - and note that your draft is saved under the "..." menu at the lower left.</div>');
           else window.location = response;
@@ -240,7 +242,7 @@
 
       mainImageModule: {
         uid: <%= current_user.id %><% if @node && @node.id %>,
-	nid: <%= @node.id %><% end %>,
+  nid: <%= @node.id %><% end %>,
         token: $('meta[name="csrf-token"]').attr('content')
       },
 
