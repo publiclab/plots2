@@ -46,12 +46,19 @@
   <% if @node && !@node.has_power_tag('place') && @node.lat && @node.lon %>
     <%= render_map(@node.lat, @node.lon) %>
   <% end %>
-    
+
   <br style="clear:both;" />
 
   </div>
 
   <% if @node %>
+    <% subpage_count = Tag.find_pages("parent:#{@node.slug}", 100).count %>
+    <% if subpage_count > 0 %>
+      <a href="/wiki/tag/parent:<%= @node.slug %>">
+        <%= subpage_count %> sub-pages
+      </a>
+    <% end %>
+
     <div id=sidebar-tags>
       <%= render partial: 'tag/tagging' %>
     </div>
@@ -62,6 +69,6 @@
       <%= feature('sidebar-welcome') %>
     <% end %>
   <% end %>
-  
+
 </div>
 <%= javascript_include_tag 'sidebar' %>
