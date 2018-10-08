@@ -143,25 +143,27 @@
     <% end %>
 
     <div class="form-group form-inline" style="clear:both;padding-top:10px;">
-
       <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
 
         <!-- button for creating new users -->
         <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
         <a class="btn btn-lg btn-default" href="/login"><%= t('users._form.log_in') %></a>
 
-      <% elsif params[:controller] == "users" && params[:action] == "edit" %>
+      <% elsif params[:controller] == "users" && params[:action] == "edit"  %>
 
         <!-- button for saving edits for existing users -->
         <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.save') %></button>
+      <% elsif params[:controller] == "users" && params[:action] == "update"  %>
+
+        <!-- button for going back if edits are not correct for existing users -->
+        <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.back') %></button>
 
       <% end %>
-
+        
       <script>
         (function() {
           $('.btn-save').click(function onClick(e) {
-            $(this).addClass("disabled") // disable the button after it is clicked
-                   .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
+            $(this).html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
           })
         })();
       </script>

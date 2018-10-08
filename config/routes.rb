@@ -213,7 +213,7 @@ Plots2::Application.routes.draw do
   get 'feed/:author' => 'users#rss'
   get '/settings' => 'users#settings'
   post '/save_settings' => 'users#save_settings'
-
+  patch 'users' => 'users#edit'
   post 'profile/tags/create/:id' => 'user_tags#create'
   get 'profile/tags/create/:id' => 'user_tags#create'
   delete 'profile/tags/delete/:id' => 'user_tags#delete'
