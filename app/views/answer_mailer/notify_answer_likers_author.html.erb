@@ -1,4 +1,4 @@
-Hi! There's been a new answer posted for the question '<a href='https://<%= ActionMailer::Base.default_url_options[:host] %><%= @answer.node.path(:question) %>'><%= @answer.node.title %></a>' that you <% if @answer.node.liked_by(@user.uid) %>liked<% else %>also answered<% end %>. Do NOT reply to this email; click this link to see the answer:
+Hi! There's been a new answer posted for the question '<a href='https://<%= ActionMailer::Base.default_url_options[:host] %><%= @answer.node.path(:question) %>'><%= @answer.node.title %></a>' that you <% if @answer.node.liked_by(@user.uid) %>liked<% else %>also answered<% end %>. You can reply to this email or visit this link:
 
 <p>https://<%= ActionMailer::Base.default_url_options[:host] %><%= @answer.node.path(:question) %>#a<%= @answer.id %></p>
 
