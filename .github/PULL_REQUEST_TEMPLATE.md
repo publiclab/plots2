@@ -11,8 +11,6 @@ Make sure these boxes are checked before your pull request (PR) is ready to be r
 
 If tests do fail, click on the red `X` to learn why by reading the logs.
 
-Please be sure you've reviewed our contribution guidelines at https://publiclab.org/contributing-to-public-lab-software
-
-We have a loose schedule of reviewing and pulling in changes every Tuesday and Friday, and publishing changes on Fridays. 
+Please be sure you've reviewed our contribution guidelines at https://publiclab.org/contributing-to-public-lab-software 
 
 Thanks!
