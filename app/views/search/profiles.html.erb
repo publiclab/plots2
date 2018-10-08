@@ -4,7 +4,9 @@
   <% if @profiles.present? %>
     <div class="container">
       <h2> Results for <%= @search_criteria.query %></h2>
+      <p> <strong> Searched users' profiles by username and bio </strong></p>
       <hr>
+      <h5> Usernames </h5>
       <% @profiles.each do |profile| %>
         <div class="row">
           <a href= <%= "/profile/#{profile.username}" %> ><%= profile.username %></a>
@@ -14,6 +16,7 @@
   <% else %>
     <h4>
       No results found for <%= params[:query] %> :-(
+      <p> Searched profiles by username and bio</p>
       </br>
       Try searching <a href="/search">for another topic</a> or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
     </h4>
