@@ -488,7 +488,6 @@ DEPENDENCIES
   grape-swagger-rails
   grape-swagger-ui
   http_accept_language
-  i18n (~> 1.0.1)
   i18n-js (>= 3.0.0.rc11)
   impressionist
   jasmine-jquery-rails
@@ -559,4 +558,4 @@ RUBY VERSION
    ruby 2.4.4p296
 
 BUNDLED WITH
-   1.16.2
+   1.16.5
