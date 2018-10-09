@@ -79,6 +79,7 @@
       $("#text-input").prop('disabled',true)
       $("#comment-form .btn-primary").button('loading',true);
     });
+    
     $('#comment-form').bind('ajax:success', function(e, data, status, xhr){
       $('#text-input').prop('disabled',false);
       $('#text-input').val('');
