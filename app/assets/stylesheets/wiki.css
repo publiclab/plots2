@@ -68,3 +68,9 @@ a.navbar-offset {
     top: -100px;
     visibility: hidden;
 }
+@media (max-width: 768px) {
+  .btn.btn-primary {
+    margin-top:10px;
+  }
+}
+
