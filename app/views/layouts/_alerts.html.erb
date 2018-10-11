@@ -28,3 +28,6 @@
 <% cache('feature_sitewide-alert', skip_digest: true) do %>
   <%= feature('sitewide-alert') %>
 <% end %>
+<script>
+  setTimeout("$('.alert-success').fadeOut('slow')", 7000)
+</script>
