@@ -1,4 +1,9 @@
-
+@media (max-width:269px) {
+  .btn.btn-sm.btn-default
+  {
+    margin-top:10px;
+  }
+}
 
 .dashboard .header h1 {
   font-size: 3em;
