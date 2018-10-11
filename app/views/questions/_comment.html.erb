@@ -38,21 +38,22 @@
     </div>
 
   </div>
-  <div class="inline pull-xs-right" style="vertical-align: top">
-	<a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-default btn-flag-spam-<%= comment.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= comment.parent.path %>#c<%= comment.cid %>+by+https://publiclab.org/profile/<%= comment.author.username %>+Thanks!">
-		<i class="fa fa-flag"></i>
-	</a>
+  <div class="inline pull-xs-right" style="vertical-align: top;">
 	<p><% if answer_id == 0 && current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid)%>
-    <a class="btn btn-default btn-sm" id="answer-<%= answer_id %>-comment-<%= comment.id %>-reorder-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in promoting others' comments; this cannot be undone.<% end %>" rel="tooltip" title="<%= t('questions._comment.promotion') %>" data-placement="left" href="/comment/make_answer/<%= comment.id %>"><i class="fa fa-plus"></i></a>
+      <a class="btn btn-default btn-sm" id="answer-<%= answer_id %>-comment-<%= comment.id %>-reorder-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in promoting others' comments; this cannot be undone.<% end %>" rel="tooltip" title="<%= t('questions._comment.promotion') %>" data-placement="left" href="/comment/make_answer/<%= comment.id %>"><i class="fa fa-plus"></i></a>
     <% end %>
     <% if comment.comment_via == 1 %>
       <a href="#" onclick="return false;" class="btn btn-default btn-sm"><i class="fa fa-envelope"></i></a>
     <% end %>
     <% if current_user && current_user.uid == comment.uid %>
-    <a class="btn btn-default btn-sm" onClick="$('#answer-<%= answer_id %>-comment-<%= comment.id %> .content').toggle();$('#answer-<%= answer_id %>-comment-<%= comment.id %> .content-form').toggle();" ><i class="fa fa-pencil"></i></a>
+      <a class="btn btn-default btn-sm" onClick="$('#answer-<%= answer_id %>-comment-<%= comment.id %> .content').toggle();$('#answer-<%= answer_id %>-comment-<%= comment.id %> .content-form').toggle();" ><i class="fa fa-pencil"></i></a>
     <% end %>
     <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid || node.uid == current_user.uid) %>
-    <a class="btn btn-default btn-sm" id="answer-<%= answer_id %>-comment-<%= comment.id %>-delete-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in deleting/moderating others' comments; this cannot be undone.<% end %>" href="/comment/delete/<%= comment.id %>?type=question"><i class='icon fa fa-trash'></i></a>
-    <% end %></p>
+      <a class="btn btn-default btn-sm" id="answer-<%= answer_id %>-comment-<%= comment.id %>-delete-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in deleting/moderating others' comments; this cannot be undone.<% end %>" href="/comment/delete/<%= comment.id %>?type=question"><i class='icon fa fa-trash'></i></a>
+    <% end %>
+    <% if !current_user || (current_user && current_user.id != comment.author.id) && (current_user.role != "admin" && current_user.role != "moderator") %>
+      <a title="Flag as spam" class="btn btn-default btn-sm" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= comment.parent.path %>#c<%= comment.cid %>+by+https://publiclab.org/profile/<%= comment.author.username %>+Thanks!"><i class="fa fa-flag"></i></a>
+    <% end %>
+  </p>
   </div>
 </div>
