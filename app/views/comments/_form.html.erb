@@ -76,11 +76,18 @@
   <script>
 
   (function() {
+    
+    $('#text-input').bind('keypress',function(e){
+      if (e.ctrlKey && e.keyCode == 10) {
+        $("#comment-form .btn-primary").click();
+      }
+    })
+  
     $('#comment-form').bind('ajax:beforeSend', function(event){
       $("#text-input").prop('disabled',true)
       $("#comment-form .btn-primary").button('loading',true);
     });
-
+    
     $('#comment-form').bind('ajax:success', function(e, data, status, xhr){
       $('#text-input').prop('disabled',false);
       $('#text-input').val('');
