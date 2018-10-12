@@ -48,7 +48,7 @@ class MapController < ApplicationController
   end
 
   def update
-    @node = Node.find_by(id: params[:id])
+    @node = Node.find(params[:id])
     if current_user.uid == @node.uid || current_user.role == 'admin'
 
       @node.title = params[:title]
