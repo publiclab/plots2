@@ -12,8 +12,15 @@
   <% end %>
 
   <div class="form-group dropzone">
-    <textarea style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= params[:body] %></textarea>
 
+    <% 
+      body = params[:body]
+      # Look for comment templates
+      if params[:body].nil? && @node && @node.has_power_tag('comment-template')
+        body = Node.find_by(slug: @node.power_tag('comment-template')).try(:body)
+      end
+    %>
+    <textarea style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><%= body %></textarea>
     <div id="imagebar">
 
       <div id="create_progress" style="display:none;" class="progress progress-striped active pull-right">
@@ -69,11 +76,18 @@
   <script>
 
   (function() {
+    
+    $('#text-input').bind('keypress',function(e){
+      if (e.ctrlKey && e.keyCode == 10) {
+        $("#comment-form .btn-primary").click();
+      }
+    })
+  
     $('#comment-form').bind('ajax:beforeSend', function(event){
       $("#text-input").prop('disabled',true)
       $("#comment-form .btn-primary").button('loading',true);
     });
-
+    
     $('#comment-form').bind('ajax:success', function(e, data, status, xhr){
       $('#text-input').prop('disabled',false);
       $('#text-input').val('');
@@ -116,7 +130,7 @@
       </a>
       <a class="btn btn-default" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()"><%= t('comments._form.cancel') %></a>
     <% else %>
-      <a id="preview-btn" class="btn btn-default" onClick="$E.toggle_preview()"><%= t('comments._form.preview') %></a>
+      <a id="preview-btn" class="btn btn-default" onClick="$E.toggle_preview(this.id)"><%= t('comments._form.preview') %></a>
     <% end %>
 
     <span style="color:#888;"> &nbsp;

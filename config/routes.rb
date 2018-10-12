@@ -9,7 +9,6 @@ Plots2::Application.routes.draw do
   # Manually written API functions
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
 
-  get 'searches/test' => 'searches#test'
   post '/node/update/title' => 'notes#update_title'
 
   #Search RESTful endpoints
@@ -22,7 +21,6 @@ Plots2::Application.routes.draw do
   resources :user_sessions
   resources :images
   resources :features
-  resources :searches
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -104,6 +102,8 @@ Plots2::Application.routes.draw do
   get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
   get 'tag/:id/author/:author' => 'tag#show_for_author'
   get ':node_type/tag(/:id)(/:start)(/:end)' => 'tag#show'
+  get 'contributors/:id(/:start)(/:end)' => 'tag#show', node_type: 'contributors'
+  get 'contributors' => 'tag#contributors_index'
   get 'feed/tag/:tagname/author/:authorname' => 'tag#rss_for_tagged_with_author'
   get 'wiki/raw/:id' => 'wiki#raw'
   get 'wiki/revisions/:id' => 'wiki#revisions'
@@ -120,7 +120,7 @@ Plots2::Application.routes.draw do
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
   get 'i/:id' => 'images#shortlink'
-  get 'p/:id' => 'users#shortlink'
+  get 'p/:username' => 'users#shortlink'
   get 'notes' => 'notes#index'
   get 'notes/raw/:id' => 'notes#raw'
   get 'notes/popular' => 'notes#popular'
@@ -166,18 +166,18 @@ Plots2::Application.routes.draw do
   get 'likes/node/:id/create' => 'like#create', :as => :add_like
   get 'likes/node/:id/delete' => 'like#delete',  :as => :drop_like
 
-  #Search Pages
-  get 'search/dynamic' => 'searches#dynamic'
-  get 'search/dynamic/:id' => 'searches#dynamic'
-  get 'search/:id' => 'searches#results'
-  get 'search' => 'searches#new'
-  post 'search' => 'searches#new'
+  get "search/wikis/:query",       :to => "search#wikis"
+  get "search/profiles/:query",    :to => "search#profiles"
+  get "search/questions/:query",   :to => "search#questions"
+  get "search/places/:query",      :to => "search#places"
+  get "search/tags/:query",        :to => "search#tags"
+  get "search/",                   :to => "search#new"
+  get "search/:query",             :to => "search#notes"
+
 
   get 'widget/:id' => 'tag#widget'
   get 'blog' => 'tag#blog', :id => "blog"
   get 'blog/:id' => 'tag#blog'
-  get 'contributors/:id' => 'tag#contributors'
-  get 'contributors' => 'tag#contributors_index'
   get 'tags' => 'tag#index'
   get 'tags/:search' => 'tag#index'
   post 'tag/suggested/:id' => 'tag#suggested'

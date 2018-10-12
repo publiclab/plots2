@@ -41,6 +41,7 @@ gem "php-serialize", :require => "php_serialize"
 gem 'progress_bar'
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
+gem "rack-test", "1.0.0"
 gem 'rails', '5.2.0'
 gem 'rails-controller-testing'
 gem 'rails-dom-testing'

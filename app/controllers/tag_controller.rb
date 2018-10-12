@@ -132,6 +132,7 @@ class TagController < ApplicationController
     @answered_questions = []
     @questions&.each { |question| @answered_questions << question if question.answers.any?(&:accepted) }
     @wikis = nodes if @node_type == 'wiki'
+    @wikis ||= []
     @nodes = nodes if @node_type == 'maps'
     @title = params[:id]
     # the following could be refactored into a Tag.contributor_count method:
@@ -198,9 +199,7 @@ class TagController < ApplicationController
       .where(status: 1, type: node_type)
       .paginate(page: params[:page], per_page: 24)
 
-    # breaks the parameter
-    # sets everything to an empty array
-    set_sidebar :tags, [params[:id]]
+    @notes ||= []
 
     @notes = nodes.where('node.nid NOT IN (?)', qids) if @node_type == 'note'
     @questions = nodes.where('node.nid IN (?)', qids) if @node_type == 'questions'
@@ -305,7 +304,7 @@ class TagController < ApplicationController
           CommentMailer.notify_coauthor(user, node)
           node.add_comment(subject: 'co-author',
                            uid: current_user.uid,
-                           body: " @#{current_user.username} has marked #{tagname.split(':')[1]} as a co-author. ")
+                           body: " @#{current_user.username} has marked @#{tagname.split(':')[1]} as a co-author. ")
 
         end
 

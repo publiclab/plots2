@@ -58,3 +58,4 @@
 //= require noty_notification.js
 //= require jquery-confirm/js/jquery-confirm.js
 //= require jquery.atwho
+//= require flash_messages.js

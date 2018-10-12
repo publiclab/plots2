@@ -10,7 +10,7 @@ PublicLab.org
 
 The content management system for the Public Lab research community, the plots2 web application is a combination of a group research blog of what we call "research notes" and a wiki. Read more about [the data model here](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md).
 
-It features a Bootstrap-based UI and a variety of community and attribution features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but not entirely replaced the legacy Drupal data model and database design.
+It features a variety of features that help the Public Lab community collaborate on environmental technology design and documentation, as well as community organizing. Originally a Drupal site, it was rewritten in 2012 in Ruby on Rails and has since extended but not entirely replaced the legacy Drupal data model and database design. We ❤️ Open Source and actively participates in various OSS programs such as Google Summer of Code(GSoC), Rails Girls Summer of Code (RGSoC), Outreachy and [Google Code-In (GCI)](https://github.com/publiclab/plots2/wiki/Google-Code-In-Tasks). Check out details [here](https://publiclab.org/wiki/gsoc).
 
 Some key features include:
 
@@ -23,13 +23,25 @@ Some key features include:
 * a user dashboard [presenting recent activity](https://publiclab.org/dashboard)
 * a privacy-sensitive, Leaflet-based [location tagging system](https://github.com/publiclab/leaflet-blurred-location/) and [community map](http://publiclab.org/people)
 
+## What makes this project different
+
+The people who create our platform often make very different design and technology decisions from other projects, and this stems from our deep belief that, to see change in the world, we must build and maintain systems that **reflect our values and principles.**
+
+From design to system architecture to basic vocabulary and communication patterns, our systems have grown organically since 2010 to support a powerful, diverse, and cooperative network of people capable of taking on environmental problems that affect communities around the world. The platform we have built together speaks to this shared history in many ways, big and small. It reflects input from people facing serious health issues and on-the-ground organizers, policy specialists and hardware hackers, educators and civil servants.
+
+This broad community, and the Public Lab team’s role in facilitating a space where they can discuss, break down, construct, prototype, and critique real-world projects together, have shaped a platform that incorporates familiar pieces, but ultimately looks and feels quite different from anywhere else on the internet. It continues to grow and be refined, but it also reflects a commitment to listening to one another, to mutual respect and support, to an awareness of the barriers and challenges presented by gaps in expertise and knowledge, and a sensitivity to the inequalities and power imbalances perpetuated by many mainstream modes of knowledge production and technological and scientific development.
+
+Our mutual aims of democratizing inexpensive and accessible do-it-yourself techniques and creating a collaborative network of practitioners who actively reimagine the human relationship with the environment is supported and facilitated by a system which questions and even challenges how collaborative work can happen.
+
+****
+
 ![Diagram](https://publiclab.org/system/images/photos/000/021/061/original/diagram.png)
 
 _(Above: draft of our [Data model](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md))_
 
 ## Contributing
 
-We welcome contributions, and are especially interested in welcoming [first time contributors](#first-time). Read more about [how to contribute](#developers) below! We especially welcome contributions from people from groups under-represented in free and open source software!
+We welcome contributions, and are especially interested in welcoming [first time contributors](#first-time). Read more about [how to contribute](#developers) below! We especially welcome contributions from people belonging to groups under-represented in free and open source software!
 
 ### Code of Conduct
 
@@ -57,7 +69,7 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 5. Make a copy of `db/schema.rb.example` and place it at `db/schema.rb`.
 6. Make a copy of `config/database.yml.sqlite.example` and place it at `config/database.yml`
 7. Run `rake db:setup` to set up the database
-8. Install static assets (like external javascript libraries, fonts) with `bower install`
+8. Install static assets (like external javascript libraries, fonts) with `yarn --ignore-engines --ignore-scripts --modules-folder ./public/lib`
 9. By default, start rails with `passenger start` from the Rails root and open http://localhost:3000 in a web browser.
 (for local SSL work, see [SSL](#ssl+in+development) below)
 10. Wheeeee! You're up and running! Log in with test usernames "user", "moderator", or "admin", and password "password".
@@ -65,7 +77,7 @@ Please read and abide by our [Code of Conduct](https://publiclab.org/conduct); o
 
 ## SSL in Development
 We at public labs use [openssl](https://github.com/ruby/openssl) gem to provide SSL for the secure connection in the development mode. You can run the https connection on the localhost by following following steps:
-1. Use 'passenger start --ssl --ssl-certificate config/localhost.crt --ssl-certificate-key config/localhost.key --ssl-port 3001'.
+1. Use `passenger start --ssl --ssl-certificate config/localhost.crt --ssl-certificate-key config/localhost.key --ssl-port 3001`.
 2. Open up https://localhost:3001.
 3. Add security exceptions from the advance settings of the browser.
 You can also use http (unsecure connection) on the port number 3000 by going to 'http://localhost:3000'. We use port number 3001 for 'https' and port number 3000 for 'http' connection.
@@ -85,7 +97,7 @@ Secure connection is needed for OAuth authentication etc.
 
 ### Bundle exec
 
-For some, it will be necessary to prepend your gem-related commands with `bundle exec`, for example, `bundle exec passenger start`; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler. `bundle exec rake db: setup`, `bundle exec rake db: seed` are other examples of where this might be necessary.
+For some, it will be necessary to prepend your gem-related commands with `bundle exec`, for example, `bundle exec passenger start`; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler. `bundle exec rake db:setup`, `bundle exec rake db:seed` are other examples of where this might be necessary.
 
 ***
 
@@ -123,7 +135,7 @@ To report security vulnerabilities or for questions about security, please conta
 Help improve Public Lab software!
 
 * Join the 'plots-dev@googlegroups.com' discussion list to get involved
-* Look for open issues at https://github.com/publiclab/plots2/issues
+* Look for open issues at https://github.com/publiclab/plots2/labels/help-wanted
 * We're specifically asking for help with issues labelled with [help-wanted](https://github.com/publiclab/plots2/labels/help-wanted) tag
 * Find lots of info on contributing at http://publiclab.org/wiki/developers
 * Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software
@@ -132,7 +144,4 @@ Help improve Public Lab software!
 
 ## First Time?
 
-New to open source/free software? Here is a selection of issues we've made **especially for first-timers**. We're here to help, so just ask if one looks interesting : https://publiclab.github.io/community-toolbox/#r=all
-
-
-We also have a slightly larger list of easy-ish but small and self-contained issues: https://github.com/publiclab/plots2/labels/help-wanted
+New to open source/free software? Here is a selection of issues we've made **especially for first-timers**. We're here to help, so just ask if one looks interesting : https://code.publiclab.org

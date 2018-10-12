@@ -89,7 +89,7 @@ class AdminControllerTest < ActionController::TestCase
 
 	#Testing whether email has been sent or not
  	email = ActionMailer::Base.deliveries.last
- 	assert_equal '[Public Lab] Reset your password', email.subject
+ 	assert_equal 'Reset your password', email.subject
  	assert_equal [user.email], email.to
 
     assert_equal "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with.", flash[:notice] 
