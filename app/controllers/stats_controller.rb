@@ -81,5 +81,7 @@ class StatsController < ApplicationController
 
     @all_notes = nids.uniq.length
     @all_contributors = users.uniq.length
+    # TODO Caching
+    @all_time_contributors = User.count_all_time_contributor
   end
 end
