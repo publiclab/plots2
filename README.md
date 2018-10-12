@@ -97,7 +97,7 @@ Secure connection is needed for OAuth authentication etc.
 
 ### Bundle exec
 
-For some, it will be necessary to prepend your gem-related commands with `bundle exec`, for example, `bundle exec passenger start`; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler. `bundle exec rake db: setup`, `bundle exec rake db: seed` are other examples of where this might be necessary.
+For some, it will be necessary to prepend your gem-related commands with `bundle exec`, for example, `bundle exec passenger start`; adding `bundle exec` ensures you're using the version of passenger you just installed with Bundler. `bundle exec rake db:setup`, `bundle exec rake db:seed` are other examples of where this might be necessary.
 
 ***
 
