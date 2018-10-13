@@ -20,6 +20,7 @@
         <% if current_user && answer.uid == current_user.uid %>
         <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= answer.id %>edit').toggle();$('#c<%= answer.id %>show').toggle();setInit(<%= answer.id %>);"><i class="fa fa-pencil"></i></a>
         <% end %>
+        
 
         <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || answer.uid == current_user.uid || answer.node.uid == current_user.uid) %>
           <a data-remote="true" data-confirm="Are you sure? <% if current_user && answer.uid != current_user.uid %>Please exercise caution in deleting/moderating others' answer; this cannot be undone.<% end %>" href="/answers/delete/<%= answer.id %>" class="btn btn-default btn-sm" id="a<%= answer.id %>delete-btn" data-method="delete"><i class='icon fa fa-trash'></i></a>
@@ -60,6 +61,7 @@
       <a href="#a<%= answer.id %>" class="btn btn-default btn-sm "><i class="fa fa-link-alt"></i></a> &nbsp;
       <a id="answer-<%= answer.id %>-comment-button"  style="color: #006dcc;"><span id="answer-<%= answer.id %>-comment-count"><%= answer.comments.length %></span> Comments <i class="fa fa-caret-down"></i></a>
     </div>
+    <a href="#a<%= answer.id %>" class="btn btn-default btn-sm "><i class="fa fa-share-alt"></i></a> &nbsp;
 
     <div id="answer-<%= answer.id %>-comment" style="margin: 10px; padding:10px;">
       <% answer.comments.each do |comment| %>
