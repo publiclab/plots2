@@ -5,15 +5,14 @@
   line-height:1.3em;
 }
 
-.blog h2, .blog h1 {
+.blog h1 {
   text-align:center;
   padding:10px 40px;
 }
 
-/* this may not be doing anything: */
 @media (max-width:400px) {
-  .blog h2, .blog h1 {
-    padding:10px 10px;
+  .blog h1 {
+    padding:10px;
   }
 }
 

@@ -4,16 +4,18 @@
 
 # Comment to be posted to on first time issues
 newIssueWelcomeComment: |
-  Thanks for opening your first issue here! Please follow the issue template to help us help you 👍🎉😄
-  If you have screenshots to share demonstrating the issue, that's really helpful! 📸 You can [make a gif](https://www.cockos.com/licecap/) too!
-
+  Thanks for opening your first issue! This space is [protected by our Code of Conduct](https://publiclab.org/conduct) - and we're here to help.
+  Please follow the issue template to help us help you 👍🎉😄
+  If you have screenshots [or a gif](https://publiclab.org/gifs/) to share demonstrating the issue, that's really helpful! 📸
+  
 # Configuration for new-pr-welcome - https://github.com/behaviorbot/new-pr-welcome
 
 # Comment to be posted to on PRs from first time contributors in your repository
 newPRWelcomeComment: |
- Thanks for opening this pull request! `Dangerbot` will test out your code and reply in a bit with some pointers and requests.
- There may be some errors, **but don't worry!** We're here to help! 👍🎉😄
-
+ Thanks for opening this pull request!  This space is [protected by our Code of Conduct](https://publiclab.org/conduct) - and we're here to help.
+ `Dangerbot` will test out your code and reply in a bit with some pointers and requests.
+ There may be some errors, **but don't worry!** We'll work through them with you! 👍🎉😄
+ 
 # Configuration for first-pr-merge - https://github.com/behaviorbot/first-pr-merge
 
 # Comment to be posted to on pull requests merged by a first time user
