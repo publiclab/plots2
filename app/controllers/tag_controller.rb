@@ -85,6 +85,9 @@ class TagController < ApplicationController
     @node_type = params[:node_type] || default_type
     @start = Time.parse(params[:start]) if params[:start]
     @end = Time.parse(params[:end]) if params[:end]
+    order_by = 'node_revisions.timestamp DESC'
+    order_by = 'node.views DESC' if params[:order] == 'views'
+    order_by = 'node.cached_likes DESC' if params[:order] == 'likes'
 
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
@@ -99,7 +102,7 @@ class TagController < ApplicationController
         .references(:term_data, :node_revisions)
         .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
         .paginate(page: params[:page], per_page: 24)
-        .order('node_revisions.timestamp DESC')
+        .order(order_by)
     else
       @tags = Tag.where(name: params[:id])
 
@@ -115,7 +118,7 @@ class TagController < ApplicationController
           .references(:term_data, :node_revisions)
           .where('term_data.name = ? OR term_data.name = ? OR term_data.parent = ?', params[:id], other_tag, params[:id])
           .paginate(page: params[:page], per_page: 24)
-          .order('node_revisions.timestamp DESC')
+          .order(order_by)
       else
         nodes = Node.where(status: 1, type: node_type)
           .includes(:revision, :tag)
