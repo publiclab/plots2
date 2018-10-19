@@ -33,8 +33,6 @@ This broad community, and the Public Lab team’s role in facilitating a space w
 
 Our mutual aims of democratizing inexpensive and accessible do-it-yourself techniques and creating a collaborative network of practitioners who actively reimagine the human relationship with the environment is supported and facilitated by a system which questions and even challenges how collaborative work can happen.
 
-****
-
 ![Diagram](https://publiclab.org/system/images/photos/000/021/061/original/diagram.png)
 
 _(Above: draft of our [Data model](https://github.com/publiclab/plots2/blob/master/doc/DATA_MODEL.md))_
