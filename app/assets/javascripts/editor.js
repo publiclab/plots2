@@ -94,7 +94,7 @@ $E = {
     else $E.textarea.val($E.templates[template])
   },
   templates: {
-    'blog': "## The beginning\n\n## What we did\n\n## Why it matters\n\n## How can you help", 
+    'blog': "## The beginning\n\n## What we did\n\n## Why it matters\n\n## How can you help",
     'default': "## What I want to do\n\n## My attempt and results\n\n## Questions and next steps\n\n## Why I'm interested",
     'support': "## Details about the problem\n\n## A photo or screenshot of the setup",
     'event': "## Event details\n\nWhen, where, what\n\n## Background\n\nWho, why",
@@ -105,16 +105,15 @@ $E = {
   generate_preview: function(id,text) {
     $('#'+id)[0].innerHTML = marked(text)
   },
-  toggle_preview: function(id) {
+  toggle_preview: function() {
     $E.preview[0].innerHTML = marked($E.textarea.val());
     $('.preview-btn').button('toggle');
     $E.previewing = !$E.previewing
+    $E.preview.toggle()
+    // if-else statement toggles button content using preview-btn class and
+    // data-previewing-text attribute content
     if ($E.previewing) $('.preview-btn').button('previewing');
     else $('.preview-btn').button('reset');
-    $E.previewed = !$E.previewed
-    if ($E.previewed) $('#'+id)[0].textContent = "Hide Preview"
-    else $('#'+id)[0].textContent = "Preview"
     $('#dropzone').toggle()
-    $E.preview.toggle()
   }
 }
