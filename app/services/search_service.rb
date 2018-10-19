@@ -133,7 +133,16 @@ class SearchService
     ids = user_locations.collect(&:id).uniq || []
 
     items = User.where('rusers.status <> 0').joins(:user_tags)
-                .where('rusers.id IN (?) AND value LIKE ?', ids, 'lon:' + lon[0..lon.length - 2] + '%').limit(limit)
+                .where('rusers.id IN (?) AND value LIKE ?', ids, 'lon:' + lon[0..lon.length - 2] + '%')
+    
+    # selects the items whose node_tags don't have the location:blurred tag
+    items.select do |item|
+      item.user_tags.none? do |user_tag|
+        user_tag.name == "location:blurred"
+      end
+    end
+      
+    items = items.limit(limit)
   end
 
   # Returns the location of people with most recent contributions.
