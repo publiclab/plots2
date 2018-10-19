@@ -18,7 +18,7 @@ class ImagesController < ApplicationController
     elsif params[:data]
       @image = Image.new(uid: current_user.uid,
                          photo: params[:data],
-                         image_file_name: 'dataurl')
+                         photo_file_name: 'dataurl')
       @image.save!
     else
       @image = Image.new(uid: current_user.uid,
