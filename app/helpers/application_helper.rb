@@ -14,7 +14,7 @@ module ApplicationHelper
 
   def emojify(content)
     if content.present?
-      content.to_str.gsub(/:([\w+-]+):/) do |match|
+      content.to_str.gsub(/:([\w+-]+):(?![^\[]*\])/) do |match|
         if emoji = Emoji.find_by_alias(Regexp.last_match(1))
           if emoji.raw
             emoji.raw

@@ -21,6 +21,8 @@ class NodeTest < ActiveSupport::TestCase
     revision = node.latest
     revision.body = ':cat:'
     assert_equal "<p>🐱</p>\n", revision.render_body
+    revision.body = '[notes:question:balloon-mapping]'
+    assert_nil revision.render_body.match('❓')
   end
 
   test 'node mysql native fulltext search' do
