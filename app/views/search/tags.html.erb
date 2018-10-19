@@ -8,7 +8,7 @@
 
       <div class="row">
         <% @tags.each do |tag| %>
-          <p><a href=<%= "/tag/#{tag.title}" %>><%= tag.title %></a></p>
+          <p><a href=<%= "#{tag.path}" %>><%= tag.title %></a></p>
         <% end %>
       </div>
     </div>
