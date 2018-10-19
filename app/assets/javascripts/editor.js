@@ -114,6 +114,5 @@ $E = {
     // data-previewing-text attribute content
     if ($E.previewing) $('.preview-btn').button('previewing');
     else $('.preview-btn').button('reset');
-    $('#dropzone').toggle()
   }
 }
