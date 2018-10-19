@@ -54,7 +54,7 @@ Or, write them in config/application.yml file
 ## How to set up OAuth?
 
 Add the app_id and app_secret in the Jenkins and containers/docker*.yml files in the production.
-They are accessed by ENV["OAUTH_GITHUB_APP_KEY"], ENV["OAUTH_GITHUB_APP_SECRET"] etc inside the (config/initializers/omniauth.rb)[https://github.com/publiclab/plots2/blob/master/config/initializers/omniauth.rb]
+They are accessed by ENV["OAUTH_GITHUB_APP_KEY"], ENV["OAUTH_GITHUB_APP_SECRET"] etc inside the [config/initializers/omniauth.rb](https://github.com/publiclab/plots2/blob/master/config/initializers/omniauth.rb)
 
 ## Variables used
 
