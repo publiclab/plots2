@@ -4,6 +4,7 @@
   <% if @tags.present? %>
     <div class="container">
       <h2> Results for <%= @search_criteria.query %></h2>
+      <p> <strong> Searched notes that contain the tag</strong></p>
       <hr>
 
       <div class="row">
@@ -15,6 +16,7 @@
   <% else %>
     <h4>
       No results found for <%= params[:query] %> :-(
+      <p> Searched notes that contain the tag</p>
       </br>
       Try searching <a href="/search">for another topic</a> or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
     </h4>
