@@ -40,7 +40,10 @@ class CommentController < ApplicationController
       end
     rescue CommentError
       flash[:error] = 'The comment could not be saved.'
-      render plain: 'failure'
+      render(
+        html: "<script>alert('Faliure! The comment could not be saved.')</script>".html_safe,
+        layout: 'application'
+      )
     end
   end
 
@@ -88,7 +91,10 @@ class CommentController < ApplicationController
       end
     else
       flash[:error] = 'The comment could not be saved.'
-      render plain: 'failure'
+      render(
+        html: "<script>alert('Faliure! The comment could not be saved.')</script>".html_safe,
+        layout: 'application'
+      )
     end
   end
 
@@ -141,7 +147,10 @@ class CommentController < ApplicationController
         end
       else
         flash[:error] = 'The comment could not be deleted.'
-        render plain: 'failure'
+        render(
+          html: "<script>alert('Faliure! The comment could not be saved.')</script>".html_safe,
+          layout: 'application'
+        )
       end
     else
       prompt_login 'Only the comment or post author can delete this comment'
@@ -173,7 +182,10 @@ class CommentController < ApplicationController
         end
       else
         flash[:error] = 'The comment could not be promoted to answer.'
-        render plain: 'failure'
+        render(
+          html: "<script>alert('Faliure! The comment could not be saved.')</script>".html_safe,
+          layout: 'application'
+        )
       end
     else
       prompt_login 'Only the comment author can promote this comment to answer'
