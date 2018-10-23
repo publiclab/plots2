@@ -612,4 +612,21 @@ class TagControllerTest < ActionController::TestCase
     post :delete, params: { nid: node_tag.nid, tid: node_tag.tid, uid: node_tag.uid}, xhr: true
     assert_equal "#{node_tag.tid}", @response.body
   end
+  
+  test 'add_parent method adds a tag parent'
+    post :add_parent, params: { id: Tag.last.id, parent: Tag.first.name }
+    assert_response :success
+    assert_equal Tag.first.name, Tag.last.parent
+    # flash[:notice] = "Tag parent added."
+    # flash[:error] = "There was an error adding a tag parent."
+    # redirect_to '/tag/' + @tag.name + '?_=' + Time.now.to_i.to_s
+  end
+
+  test 'add_parent method works with non-existent parent'
+    post :add_parent, params: { id: Tag.last.id, parent: Tag.first.name }
+    assert_response :success
+    assert_equal Tag.first.name, Tag.last.parent
+    get :index
+    assert_response :success
+  end
 end
