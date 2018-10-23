@@ -181,7 +181,7 @@ Plots2::Application.routes.draw do
   get 'tags' => 'tag#index'
   get 'tags/:search' => 'tag#index'
   post 'tag/suggested/:id' => 'tag#suggested'
-  post 'tag/parent' => 'tag#add_parent'
+  get 'tag/parent' => 'tag#add_parent'
   get 'tag/author/:id.json' => 'tag#author'
   post 'tag/create/:nid' => 'tag#create'
   get 'tag/create/:nid' => 'tag#create'
