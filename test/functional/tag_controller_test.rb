@@ -614,7 +614,8 @@ class TagControllerTest < ActionController::TestCase
   end
   
   test 'add_parent method adds a tag parent'
-    post :add_parent, params: { id: Tag.last.id, parent: Tag.first.name }
+    user = UserSession.create(users(:admin))
+    get :add_parent, params: { id: Tag.last.id, parent: Tag.first.name }
     assert_response :success
     assert_equal Tag.first.name, Tag.last.parent
     # flash[:notice] = "Tag parent added."
@@ -623,7 +624,8 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'add_parent method works with non-existent parent'
-    post :add_parent, params: { id: Tag.last.id, parent: Tag.first.name }
+    user = UserSession.create(users(:admin))
+    get :add_parent, params: { id: Tag.last.id, parent: Tag.first.name }
     assert_response :success
     assert_equal Tag.first.name, Tag.last.parent
     get :index
