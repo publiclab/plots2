@@ -445,14 +445,18 @@ class TagController < ApplicationController
   end
 
   def add_parent
-    @tag = Tag.find_by(name: params[:id])
-    @tag.parent = params[:parent]
-    if @tag.save
-      flash[:notice] = "Tag parent added."
+    if current_user.role == 'admin'
+      @tag = Tag.find_by(name: params[:id])
+      @tag.parent = params[:parent]
+      if @tag.save
+        flash[:notice] = "Tag parent added."
+      else
+        flash[:error] = "There was an error adding a tag parent."
+      end
+      redirect_to '/tag/' + @tag.name + '?_=' + Time.now.to_i.to_s
     else
-      flash[:error] = "There was an error adding a tag parent."
+      flash[:error] = "Only admins may add tag parents."
     end
-    redirect_to '/tag/' + @tag.name + '?_=' + Time.now.to_i.to_s
   end
 
   def location
