@@ -1,6 +1,6 @@
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
-  before_action :require_user, only: %i(create delete)
+  before_action :require_user, only: %i(create delete add_parent)
 
   def index
     if params[:sort]
@@ -442,6 +442,17 @@ class TagController < ApplicationController
       @tagdata[:notes] = Node.where("nid IN (?) AND type = 'note'", nct.collect(&:nid)).count
     end
     render template: 'tag/contributors-index'
+  end
+
+  def add_parent
+    @tag = Tag.find_by(name: params[:id])
+    @tag.parent = params[:parent]
+    if @tag.save
+      flash[:notice] = "Tag parent added."
+    else
+      flash[:error] = "There was an error adding a tag parent."
+    end
+    redirect_to '/tag/' + @tag.name + '?_=' + Time.now.to_i.to_s
   end
 
   def location
