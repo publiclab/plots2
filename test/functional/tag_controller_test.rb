@@ -613,7 +613,7 @@ class TagControllerTest < ActionController::TestCase
     assert_equal "#{node_tag.tid}", @response.body
   end
   
-  test 'add_parent method adds a tag parent'
+  test 'add_parent method adds a tag parent' do
     user = UserSession.create(users(:admin))
     get :add_parent, params: { id: Tag.last.id, parent: Tag.first.name }
     assert_response :success
@@ -623,7 +623,7 @@ class TagControllerTest < ActionController::TestCase
     # redirect_to '/tag/' + @tag.name + '?_=' + Time.now.to_i.to_s
   end
 
-  test 'add_parent method works with non-existent parent'
+  test 'add_parent method works with non-existent parent' do
     user = UserSession.create(users(:admin))
     get :add_parent, params: { id: Tag.last.id, parent: Tag.first.name }
     assert_response :success
