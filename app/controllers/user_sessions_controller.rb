@@ -33,12 +33,20 @@ class UserSessionsController < ApplicationController
           redirect_to root_url, notice: "Already linked to another account!"
         end
       else # not signed in
+        session[:return_to] = params[:return_to] # ensure we preserve return_to even when passing through OAuth provider
         if @identity&.user.present?
           # The identity we found had a user associated with it so let's
           # just log them in here
           @user = @identity.user
           @user_session = UserSession.create(@identity.user)
-          redirect_to root_url, notice: "Signed in!"
+          if session[:return_to]
+            return_to = session[:return_to]
+            session[:return_to] = nil
+            flash[:notice] = "Signed in!"
+            redirect_to return_to
+          else
+            redirect_to root_url, notice: "Signed in!"
+          end
         else # identity does not exist so we need to either create a user with identity OR link identity to existing user
           if User.where(email: auth["info"]["email"]).empty?
             # Create a new user as email provided is not present in PL database
@@ -50,7 +58,14 @@ class UserSessionsController < ApplicationController
             @user = user
             # send key to user email
             PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
-            redirect_to root_url, notice: "You have successfully signed in. Please change your password via a link sent to you via e-mail"
+            if session[:return_to]
+              return_to = session[:return_to]
+              session[:return_to] = nil
+              flash[:notice] = "You have successfully signed in. Please change your password via a link sent to you via e-mail"
+              redirect_to return_to
+            else
+              redirect_to root_url, notice: "You have successfully signed in. Please change your password via a link sent to you via e-mail"
+            end
           else # email exists so link the identity with existing user and log in the user
             user = User.where(email: auth["info"]["email"])
             # If no identity was found, create a brand new one here
@@ -61,7 +76,14 @@ class UserSessionsController < ApplicationController
             @user = user
             # log in them
             @user_session = UserSession.create(@identity.user)
-            redirect_to root_url, notice: "Successfully linked to your account!"
+            if session[:return_to]
+              return_to = session[:return_to]
+              session[:return_to] = nil
+              flash[:notice] = "Successfully linked to your account!"
+              redirect_to return_to
+            else
+              redirect_to root_url, notice: "Successfully linked to your account!"
+            end
           end
         end
       end
