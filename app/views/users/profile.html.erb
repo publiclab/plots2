@@ -16,14 +16,58 @@
   <p><small><%= raw auto_link(RDiscount.new(@profile_user.bio || '').to_html, :sanitize => false) %></small></p>
 
   <hr />
-  <div class="row" id="highlight" style=" text-align: center;">
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @user.id).length %> questions asked </a><br><br> <%= Answer.where(uid: @profile_user.id).count %> answers posted</h3>
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a><br><br> <a href = "/tag/replication:*/author/<%= params[:id] %>"><%= @count_activities_attempted %> activities attempted</a></h3>
-    <% if !@map_lat.nil? && !@map_lon.nil? %>
-      <%= render :partial => "map/userLeaflet" , locals: {haslocation: true} %>
-    <% elsif !current_user.nil? && current_user.id == @user.id %>
-      <%= render :partial => "map/userLeaflet" , locals: {haslocation: false} %>
-    <% end %>
+  <div class="row" id="highlight">  
+    <div class="card border-dark col-md-4 col-sm-4 col-xs-12">
+      <a style="text-align:center;" href = "/tag/question:*/author/<%= params[:id] %>">
+        <img class="card-img-top hidden-xs" src="/assets/questions_asked.jpg" alt="Image" width="100%">
+        <div class="card-body">
+          <h4 class="card-title"> Questions asked <span class="badge" style="vertical-align: middle;"><%= Node.questions.where(status: 1, uid: @user.id).length %></span></h4>
+        </div>
+      </a>
+    </div>
+    <div class="card border-dark col-md-4 col-sm-4 col-xs-12">
+      <a style="text-align:center;" href = "/tag/activity:*/author/<%= params[:id] %>">
+        <img class="card-img-top hidden-xs" src="/assets/activities_posted.jpg" alt="Image" width="100%">
+        <div class="card-body">
+          <h4 class="card-title"> Activities posted <span class="badge" style="vertical-align: middle;"><%= @count_activities_posted %></span></h4>
+        </div>
+      </a>
+    </div>
+    <div class="card border-dark col-md-4 col-sm-4 col-xs-12">
+      <a style="text-align:center;" href = "/people/<%= params[:id] %>/following">
+        <img class="card-img-top hidden-xs" src="/assets/following.jpg" alt="Image" width="100%">
+        <div class="card-body">
+          <h4 class="card-title"> Following <span class="badge" style="vertical-align: middle;"><%= @profile_user.following_users.count %></span></h4>
+        </div>
+      </a>
+    </div>
+  </div>
+  <br>
+  <div class="row" id="highlight">  
+    <div class="card border-dark col-md-4 col-sm-4 col-xs-12">
+      <a style="text-align:center;" href = "#">
+        <img class="card-img-top hidden-xs" src="/assets/answers_posted.jpg" alt="Image" width="100%">
+        <div class="card-body">
+          <h4 class="card-title"> Answers posted <span class="badge" style="vertical-align: middle;"><%= Answer.where(uid: @profile_user.id).count %></span></h4>
+        </div>
+      </a>
+    </div>
+    <div class="card border-dark col-md-4 col-sm-4 col-xs-12">
+      <a style="text-align:center;" href = "/tag/replication:*/author/<%= params[:id] %>">
+        <img class="card-img-top hidden-xs" src="/assets/activities_attempted.jpg" alt="Image" width="100%">
+        <div class="card-body">
+          <h4 class="card-title"> Activities attempted <span class="badge" style="vertical-align: middle;"><%= @count_activities_attempted %></span></h4>
+        </div>
+      </a>
+    </div>
+    <div class="card border-dark col-md-4 col-sm-4 col-xs-12">
+      <a style="text-align:center;" href = "/people/<%= params[:id] %>/followers">
+        <img class="card-img-top hidden-xs" src="/assets/followers.jpg" alt="Image" width="100%">
+        <div class="card-body">
+          <h4 class="card-title"> Followers <span class="badge" style="vertical-align: middle;"><%= @profile_user.followers.count %></span></h4>
+        </div>
+      </a>
+    </div>
   </div>
   <hr />
 
@@ -200,6 +244,14 @@
     <a href="/admin/force/reset/<%= @profile_user.id %>" class="btn btn-default btn-block">Reset User Password</a>
   <% end %>
 
+  <hr />
+  <div class="row" style="text-align: center;">
+    <% if !@map_lat.nil? && !@map_lon.nil? %>
+      <%= render :partial => "map/userLeaflet" , locals: {haslocation: true} %>
+    <% elsif !current_user.nil? && current_user.id == @user.id %>
+      <%= render :partial => "map/userLeaflet" , locals: {haslocation: false} %>
+    <% end %>
+  </div>
   <hr />
 
   <p>
