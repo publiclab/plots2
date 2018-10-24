@@ -182,12 +182,7 @@ class CommentController < ApplicationController
         end
       else
         flash[:error] = 'The comment could not be promoted to answer.'
-        render(
-          html: "<script>
-                  alert('Faliure! The comment could not be saved.')
-                 </script>".html_safe,
-          layout: 'application'
-        )
+        render plain: 'failure'
       end
     else
       prompt_login 'Only the comment author can promote this comment to answer'
