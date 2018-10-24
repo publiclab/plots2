@@ -183,7 +183,9 @@ class CommentController < ApplicationController
       else
         flash[:error] = 'The comment could not be promoted to answer.'
         render(
-          html: "<script>alert('Faliure! The comment could not be saved.')</script>".html_safe,
+          html: "<script>
+                  alert('Faliure! The comment could not be saved.')
+                 </script>".html_safe,
           layout: 'application'
         )
       end
