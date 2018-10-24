@@ -446,7 +446,7 @@ class TagController < ApplicationController
 
   def add_parent
     if current_user.role == 'admin'
-      @tag = Tag.find_by(name: params[:id])
+      @tag = Tag.find_by(name: params[:name])
       @tag.update_attribute(parent: params[:parent])
       if @tag.save
         flash[:notice] = "Tag parent added."
