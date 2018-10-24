@@ -40,10 +40,7 @@ class CommentController < ApplicationController
       end
     rescue CommentError
       flash[:error] = 'The comment could not be saved.'
-      render(
-        html: "<script>alert('Faliure! The comment could not be saved.')</script>".html_safe,
-        layout: 'application'
-      )
+      render plain: 'failure'
     end
   end
 
@@ -91,10 +88,7 @@ class CommentController < ApplicationController
       end
     else
       flash[:error] = 'The comment could not be saved.'
-      render(
-        html: "<script>alert('Faliure! The comment could not be saved.')</script>".html_safe,
-        layout: 'application'
-      )
+      render plain: 'failure'
     end
   end
 
@@ -147,10 +141,7 @@ class CommentController < ApplicationController
         end
       else
         flash[:error] = 'The comment could not be deleted.'
-        render(
-          html: "<script>alert('Faliure! The comment could not be saved.')</script>".html_safe,
-          layout: 'application'
-        )
+        render plain: 'failure'
       end
     else
       prompt_login 'Only the comment or post author can delete this comment'
