@@ -94,6 +94,19 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
   `tag=[string]`: the search can be refined by passing a tag field.
 
+### NearbyPeople:
+
+* **URL**:  `https://publiclab.org/api/srch/nearbyPeople?query=18,-66`
+* **URL Params** :
+
+  **Required:**
+
+  `query=[coordinates]`: search users located near the query separated by `,`.
+
+  **Optional:**
+
+  `tag=[string]`: the search can be refined by passing a tag field.
+
 ### PeopleLocations
 
 * **URL**:  `https://publiclab.org/api/srch/peoplelocations?query=10`
