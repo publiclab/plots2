@@ -9,7 +9,6 @@ en:
     editing: "Editing '%{title}'"
     page_does_not_exist_create: "This page does not exist yet, but you can create it now:"
     wiki_page_created: "Wiki page created."
-    you_have_been_banned: "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
     edit_could_not_be_saved: "Your edit could not be saved."
     edits_saved: "Edits saved."
     wiki_page_deleted: "Wiki page deleted."
