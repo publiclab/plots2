@@ -1,6 +1,8 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  wiki_controller:
+    you_have_been_banned: "You have been banned. Please contact <a href='mailto:web@publiclab.org'>web@publiclab.org</a> if you believe this is in error."
   dashboard:
     _activity:
       share_work: "Share your work"
