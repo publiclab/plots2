@@ -296,7 +296,7 @@
       
     $('#link_social_media').click(function(){
         sign = document.getElementById('social-name').value;
-        $.post('/profile/tags/create/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {
+        $.post('/profile/tags/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {
             window.location='/profile/<%=@user.name %> ';
         });
     });
