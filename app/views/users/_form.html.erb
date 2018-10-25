@@ -21,7 +21,7 @@
       <div class="form-group">
 
         <label for="username"><%= t('users._form.username') %></label>
-        <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username' } %>
+        <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username', required: 'required' } %>
 
       </div>
 
@@ -42,7 +42,7 @@
   
 
       <label for="email"><%= t('users._form.email') %></label>
-      <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
+      <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email', required: 'required' } %>
 
     </div>
 
@@ -56,7 +56,8 @@
       <%= f.password_field :password, { placeholder: I18n.t('users._form.password'),
                                         tabindex: 4,
                                         class: 'form-control',
-                                        id: 'password' }
+                                        id: 'password',
+                                        required: 'required'  }
       %>
     </div>
 
@@ -65,7 +66,8 @@
       <%= f.password_field :password_confirmation, { placeholder: I18n.t('users._form.confirm_password'),
                                                      tabindex: 5,
                                                      class: 'form-control',
-                                                     id: 'password-confirmation' }
+                                                     id: 'password-confirmation', 
+                                                     required: 'required' }
       %>
     </div>
 
