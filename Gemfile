@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.4.4'
+ruby '2.5.1'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -76,7 +76,7 @@ group :mysql, :production do
 end
 
 group :sqlite, :development do
-  gem 'sqlite3'
+  gem 'sqlite3', ' ~>1.3.13'
 end
 
 gem 'coffee-rails', '~> 4.2.2'
