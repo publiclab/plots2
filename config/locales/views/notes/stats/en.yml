@@ -24,7 +24,7 @@ en:
         and <a href='%{url2}'>%{wiki_count} wiki edits</a> posted in the past month.
       people_joined_past_month: "<b>%{people_count} people</b> joined in the past month."
       research_notes_posted_by_contributors: "%{note_count} research notes have been posted by %{contributors_count} contributors since %{time} ago"
-      total_contributors: "%{all_contributors_count} Total Contributors"
+      total_contributors: "%{all_contributors_count} Total Contributors (Tallied weekly)"
       notes_per_week_past_year: "%{note_count} notes per week over the past year."
       note_posting_52_weeks: "Note posting for the past 52 weeks:"
       wiki_pages_posted: "%{count} wiki pages have been posted, total"
