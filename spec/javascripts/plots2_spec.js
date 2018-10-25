@@ -38,7 +38,7 @@ describe("Plots2", function() {
 	});
 
     $(document).ready(function(){
-        $("#like-button-1").on('click', clicknotliked);
+        $("#like-button-1").on('click', toggleLike);
     });
 
     $("#like-button-1").click();
@@ -80,7 +80,7 @@ describe("Plots2", function() {
 	});
 
     $(document).ready(function(){
-        $("#like-button-1").on('click', clickliked);
+        $("#like-button-1").on('click', toggleLike);
     });
 
     $("#like-button-1").trigger('click');

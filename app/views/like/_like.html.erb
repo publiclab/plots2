@@ -96,7 +96,8 @@
       });
 
       <% if current_user %>
-        $('#like-button-<%= node.id %>').on('click',<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>)
+        setLikeState(<%= node.liked_by(current_user.uid) =%>);
+        $('#like-button-<%= node.id %>').on('click', toggleLike);
       <% end %>
     });
     $('body').on('click', function (e) { // If there's a click event in the body
