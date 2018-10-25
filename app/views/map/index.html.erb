@@ -35,7 +35,8 @@
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map) ; 
   map.options.minZoom = 1.5 ;
- // var hash = new L.Hash(map);   
+  var hash = new L.Hash(map);
+
   <% @maps.each do |map| %>
     <% 
       lat = false
@@ -48,6 +49,7 @@
      var default_Icon =new L.icon.defaultIcon() ;
     L.marker([<%= lat %>, <%= lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='<%= map.path %>'><%= map.title %></a>");
   <% end %>
+
     var PurpleAirMarkerLayer = L.layerGroup.purpleAirMarkerLayer() ;
     var SkyTruth = L.layerGroup.skyTruthLayer() ;
     var Fractracker = L.layerGroup.fracTrackerLayer() ;

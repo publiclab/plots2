@@ -113,6 +113,38 @@ class SearchService
     end
   end
 
+  # Search nearby people with respect to given latitude, longitute and tags
+  # and package up as a DocResult
+  def tagNearbyPeople(query, tag, limit = 10)
+    raise("Must separate coordinates with ,") unless query.include? ","
+
+    lat, lon =  query.split(',')
+
+    user_locations = User.where('rusers.status <> 0')\
+                         .joins(:user_tags)\
+                         .where('value LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')\
+                         .distinct
+    if tag.present?
+      user_locations = User.joins(:user_tags)\
+                       .where('user_tags.value LIKE ?', tag)\
+                       .where(id: user_locations.select("rusers.id"))
+    end
+
+    ids = user_locations.collect(&:id).uniq || []
+
+    items = User.where('rusers.status <> 0').joins(:user_tags)
+                .where('rusers.id IN (?) AND value LIKE ?', ids, 'lon:' + lon[0..lon.length - 2] + '%')
+    
+    # selects the items whose node_tags don't have the location:blurred tag
+    items.select do |item|
+      item.user_tags.none? do |user_tag|
+        user_tag.name == "location:blurred"
+      end
+    end
+      
+    items = items.limit(limit)
+  end
+
   # Returns the location of people with most recent contributions.
   # The method receives as parameter the number of results to be
   # returned and as optional parameter a user tag. If the user tag
