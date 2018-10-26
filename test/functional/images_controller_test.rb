@@ -49,6 +49,6 @@ class ImagesControllerTest < ActionController::TestCase
         params: {
           data: data
         }
-    assert "dataurl.jpeg", Images.last.filename
+    assert "dataurl.jpeg", Image.last.filename
   end
 end
