@@ -88,7 +88,7 @@ gem 'uglifier', '>= 1.0.3'
 group :development do
   gem 'byebug', platform: :mri
   gem "letter_opener"
-  gem 'listen', '~> 3.0.5'
+  gem 'listen', '~> 3.1.5'
   gem "nifty-generators"
   gem 'web-console', '>= 3.3.0'
 end
