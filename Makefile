@@ -10,7 +10,7 @@ redeploy-container:
 	docker-compose down --remove-orphans
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
-	docker-compose exec -T web yarn --ignore-engines --ignore-scripts --modules-folder public/lib 
+	docker-compose exec -T web yarn install
 	docker-compose exec -T web bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T sidekiq bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
@@ -21,7 +21,7 @@ deploy-container:
 	docker-compose run --rm web bash -c "sleep 5 && rake db:migrate && rake assets:precompile"
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
-	docker-compose exec -T web yarn --ignore-engines --ignore-scripts --modules-folder public/lib 
+	docker-compose exec -T web yarn install
 	docker-compose exec -T web bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
 	docker-compose exec -T sidekiq bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
@@ -32,7 +32,7 @@ test-container:
 	docker-compose up -d
 	docker-compose exec -T web rake db:setup
 	docker-compose exec -T web rake db:migrate
-	docker-compose exec -T web yarn --ignore-engines --ignore-scripts --modules-folder public/lib 
+	docker-compose exec -T web yarn install
 	docker-compose exec -T web rake test:all
 	docker-compose exec -T web rails test -d
 	docker-compose down
@@ -41,7 +41,7 @@ install-dev:
 	echo "Installing RubyGems"
 	bundle install --without production mysql
 	echo "Installing yarn Packages"
-	yarn --ignore-engines --ignore-scripts --modules-folder public/lib 
+	yarn install
 	echo "Copying example configuartions"
 	cp db/schema.rb.example db/schema.rb
 	cp config/database.yml.sqlite.example config/database.yml
