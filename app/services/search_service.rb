@@ -136,8 +136,6 @@ class SearchService
                 .where('rusers.id IN (?) AND value LIKE ?', ids, 'lon:' + lon[0..lon.length - 2] + '%')
                 .order(created_at: :desc)
                 .limit(limit)
-
-
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
       item.user_tags.none? do |user_tag|
