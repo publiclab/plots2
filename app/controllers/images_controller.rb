@@ -16,9 +16,10 @@ class ImagesController < ApplicationController
                          uid: current_user.uid)
       flash[:error] = 'The image could not be saved.' unless @image.save!
     elsif params[:data]
+      filetype = params[:data].split(';').first.split('/').last
       @image = Image.new(uid: current_user.uid,
                          photo: params[:data],
-                         photo_file_name: 'dataurl')
+                         photo_file_name: 'dataurl.' + filetype)
       @image.save!
     else
       @image = Image.new(uid: current_user.uid,
