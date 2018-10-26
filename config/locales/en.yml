@@ -1,11 +1,21 @@
-# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting
 en:
   dashboard:
-    _activity:
+   _activity:
       share_work: "Share your work"
-  application_controller:
-    author_has_been_banned: "The author of that note has been banned."
+      activity: "Activity"
+      all_updates: "All updates"
+      dropdown:
+        all: "All"
+        research_notes: "Research notes"
+        questions: "Questions"
+        events: "Events"
+        comments: "Comments"
+        wiki: "Wiki"
+      from_other: "from other"
+      community_scientists: "community scientists"
+      past_week: "in the past week"
+      your_work: "Your work"
   language: English
   date:
     abbr_day_names:
