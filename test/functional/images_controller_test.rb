@@ -35,13 +35,23 @@ class ImagesControllerTest < ActionController::TestCase
   test 'image creation success should render the details about the image in the form of json' do
     user = UserSession.create(users(:jeff))
     upload_photo = fixture_file_upload('rails.png', 'image/png')
-    post :create, 
-        params: { 
+    post :create,
+        params: {
             image: {
                 photo: upload_photo,
                 title: 'Rails image',
             },
-        }    
+        }
     assert_equal 'application/json', @response.content_type
+  end
+  
+  test 'creation via daturl' do
+    user = UserSession.create(users(:jeff))
+    data = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAQABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAABgj/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABykX//Z"
+    post :create,
+        params: {
+          data: data
+        }
+    assert "dataurl.jpeg", Images.last.filename
   end
 end
