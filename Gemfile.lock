@@ -121,7 +121,7 @@ GEM
     geokit-rails (2.3.1)
       geokit (~> 1.5)
       rails (>= 3.0)
-    georuby (2.0.0)
+    georuby (2.5.2)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     grape (1.1.0)
@@ -482,7 +482,7 @@ DEPENDENCIES
   gemoji
   geocoder
   geokit-rails
-  georuby (= 2.0)
+  georuby (= 2.5.2)
   grape
   grape-entity
   grape-swagger (~> 0.28.0)
