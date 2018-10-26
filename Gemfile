@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'activerecord-session_store'
-gem "authlogic", "4.1.1"
+gem "authlogic", "4.4.2"
 gem 'authlogic-oid'
 gem "composite_primary_keys"
 gem 'figaro'
@@ -35,7 +35,7 @@ gem 'omniauth-facebook', '~> 4.0'
 gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
-gem "paperclip", "~> 5.2.0"
+gem "paperclip", "~> 6.1.0"
 gem 'passenger'
 gem "php-serialize", :require => "php_serialize"
 gem 'progress_bar'
