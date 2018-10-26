@@ -1,9 +1,6 @@
 require 'test_helper'
 
 class ImagesControllerTest < ActionController::TestCase
-  # def create
-  # def new
-  # def update
 
   def setup
     activate_authlogic
