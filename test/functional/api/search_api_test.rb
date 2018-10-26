@@ -119,6 +119,27 @@ class SearchApiTest < ActiveSupport::TestCase
 
   end
 
+  test 'search Tag Nearby People functionality' do
+    get '/api/srch/nearbyPeople?query=71.00,52.00&tag=awesome'
+    assert last_response.ok?
+
+    # Expected search pattern
+    pattern = {
+        srchParams: {
+            query: '71.00,52.00',
+            tag: 'awesome',
+            seq: nil,
+        }.ignore_extra_keys!
+    }.ignore_extra_keys!
+
+    matcher = JsonExpressions::Matcher.new(pattern)
+
+    json = JSON.parse(last_response.body)
+
+    assert matcher =~ json
+
+  end
+
   test 'search Recent People functionality' do
     get '/api/srch/peoplelocations?query=100'
     assert last_response.ok?
