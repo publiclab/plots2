@@ -132,10 +132,10 @@ class SearchService
 
     ids = user_locations.collect(&:id).uniq || []
 
-    items = User.where('rusers.status <> 0').joins(:user_tags)\
-                .where('rusers.id IN (?) AND value LIKE ?', ids, 'lon:' + lon[0..lon.length - 2] + '%')\
-                .limit(limit)\
+    items = User.where('rusers.status <> 0').joins(:user_tags)
+                .where('rusers.id IN (?) AND value LIKE ?', ids, 'lon:' + lon[0..lon.length - 2] + '%')
                 .order(created_at: :desc)
+                .limit(limit)
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
