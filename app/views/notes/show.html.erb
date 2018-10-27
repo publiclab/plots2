@@ -37,6 +37,15 @@
       <span class="hidden-xs hidden-sm">
         <%= @node.created_at.to_s(:long) %>
       </span>
+      <a class="hidden-md hidden-lg hidden-xl collapse-btn" data-toggle="collapse" href="#collapse-info" role="button" aria-expanded="false" aria-controls="collapse-info" id="collapse-button">...</a>
+      <span class="collapse collapse-info" id="collapse-info">
+        | <%= number_with_delimiter(@node.totalviews) %> <%= t('notes.show.views') %>
+        <% if @node.comments %>
+          | <i class="fa fa-comment"></i>
+          <a href="#comments"> <%= @node.comments.length %> <%= t('notes.show.comments') %> </a>
+        <% end %>
+          | <a href="/n/<%= @node.id %>"><i class="fa fa-link"></i></a> <span class="hidden-xs hidden-sm hidden-md"><a href="/n/<%= @node.id %>">#<%= @node.id %></a></span>
+      </span>
       <span class="hidden-xs hidden-sm hidden-print">
         | <%= number_with_delimiter(@node.totalviews) %> <%= t('notes.show.views') %>
         <% if @node.comments %>
@@ -116,3 +125,26 @@
 </div><!--/span-->
 
 <%= render partial: "sidebar/related" %>
+
+<style>
+  .collapse.in {
+      display: unset;
+  }
+  @media (min-width: 1000px){
+    .collapse-info {
+        display: none !important;
+    }
+  }
+  .collapse-btn{
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    background-color: rgba(27, 31, 35, 0.14);
+    border-radius: 3px;
+  }
+</style>
+<script>
+  $("#collapse-button").click(function(){
+      $(this).remove();
+  });
+</script>
