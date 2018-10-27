@@ -19,6 +19,8 @@
   <p>
     <%= raw t('notes.stats.try_time_back', :url1 => "?time="+(@time-1.year).to_formatted_s(:long),
     :url2 => "?time="+(@time-1.month).to_formatted_s(:long), :url3 => "?time="+(@time-1.week).to_formatted_s(:long)) %>
+  </p>
+  <p>
     <%= raw t('notes.states.try_time_forward', :url1 => "?time="+(@time+1.year).to_formatted_s(:long), 
     :url2 => "?time="+(@time+1.month).to_formatted_s(:long), :url3 => "?time="+(@time+1.week).to_formatted_s(:long)) %>
   </p>
