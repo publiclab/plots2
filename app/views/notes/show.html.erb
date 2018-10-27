@@ -37,7 +37,7 @@
       <span class="hidden-xs hidden-sm">
         <%= @node.created_at.to_s(:long) %>
       </span>
-      <a class="hidden-md hidden-lg hidden-xl" data-toggle="collapse" href="#collapse-info" role="button" aria-expanded="false" aria-controls="collapse-info" id="collapse-button">...</a>
+      <a class="hidden-md hidden-lg hidden-xl collapse-btn" data-toggle="collapse" href="#collapse-info" role="button" aria-expanded="false" aria-controls="collapse-info" id="collapse-button">...</a>
       <span class="collapse collapse-info" id="collapse-info">
         | <%= number_with_delimiter(@node.totalviews) %> <%= t('notes.show.views') %>
         <% if @node.comments %>
@@ -134,6 +134,13 @@
     .collapse-info {
         display: none !important;
     }
+  }
+  .collapse-btn{
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    background-color: rgba(27, 31, 35, 0.14);
+    border-radius: 3px;
   }
 </style>
 <script>
