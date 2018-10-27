@@ -36,7 +36,7 @@ function clickliked() {
     changelikecount(parseInt(response), node_id);
     $('#like-button-' + node_id).on('click', clicknotliked);
     $('#like-button-' + node_id).off('click', clickliked);
-
+    
   });
 
 }
@@ -52,7 +52,10 @@ function clicknotliked() {
     changelikecount(parseInt(response), node_id);
     $('#like-button-' + node_id).on('click', clickliked);
     $('#like-button-' + node_id).off('click', clicknotliked);
-
+    if(parseInt(response) == 1){
+      username = document.getElementById('current-username').textContent;
+      document.getElementById('liked-this').innerHTML = '<i class="fa fa-star-o"></i><a href="/profile/'+username+'/">'+username+'</a>';
+    }
   });
 
 }
