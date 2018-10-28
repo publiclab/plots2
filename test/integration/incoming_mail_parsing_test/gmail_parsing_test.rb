@@ -1,5 +1,5 @@
 require 'test_helper'
-class MailParseTest < ActionDispatch::IntegrationTest
+class GmailParsingTest < ActionDispatch::IntegrationTest
   test 'should parse incoming mail from gmail service correctly and add answer comment' do
     require 'mail'
     mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
