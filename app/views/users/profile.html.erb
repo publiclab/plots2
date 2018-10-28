@@ -17,8 +17,9 @@
 
   <hr />
   <div class="row" id="highlight" style=" text-align: center;">
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @user.id).length %> questions asked </a><br><br> <%= Answer.where(uid: @profile_user.id).count %> answers posted</h3>
-    <h3 class="col-md-4 col-xs-12 col-sm-4"><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a><br><br> <a href = "/tag/replication:*/author/<%= params[:id] %>"><%= @count_activities_attempted %> activities attempted</a></h3>
+    <h3 class="col-md-2 col-xs-12 col-sm-2"><a href = "/tag/question:*/author/<%= params[:id] %>"><%= Node.questions.where(status: 1, uid: @user.id).length %> questions asked </a><br><br> <%= Answer.where(uid: @profile_user.id).count %> answers posted</h3>
+    <h3 class="col-md-2 col-xs-12 col-sm-2"><a href = "/tag/activity:*/author/<%= params[:id] %>"><%= @count_activities_posted %> activities posted </a><br><br> <a href = "/tag/replication:*/author/<%= params[:id] %>"><%= @count_activities_attempted %> activities attempted</a></h3>
+    <h3 class="col-md-2 col-xs-12 col-sm-2">href = "/people/<%= params[:id] %>/following"><%= @profile_user.following_users.count %> following</a><br><br> <a href = "/people/<%= params[:id] %>/followers"><%= @profile_user.followers.count %> followers</a></h3>
     <% if !@map_lat.nil? && !@map_lon.nil? %>
       <%= render :partial => "map/userLeaflet" , locals: {haslocation: true} %>
     <% elsif !current_user.nil? && current_user.id == @user.id %>
