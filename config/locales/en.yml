@@ -1,7 +1,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting
 en:
   dashboard:
-   _activity:
+    _activity:
       share_work: "Share your work"
       activity: "Activity"
       all_updates: "All updates"
