@@ -1,10 +1,10 @@
 <div class="container">
   <% @users.each do |user| %>
     <div class="col-md-3">
-      <div style="text-align:center;">
+      <a href="/profile/<%= user.username %>">
         <img class="img-circle" id="profile-photo" style="width:50%;margin-bottom:20px;" src="<%= user.profile_image %>">
         <h3><%= user.username %></h3>
-      </div>
+      </a>
     </div>
   <% end %>
 </div>
