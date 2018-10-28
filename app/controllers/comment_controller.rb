@@ -40,7 +40,10 @@ class CommentController < ApplicationController
       end
     rescue CommentError
       flash[:error] = 'The comment could not be saved.'
-      render plain: 'failure'
+      render(
+        html: "<script>alert('Faliure! The comment could not be saved.')</script>".html_safe,
+        layout: 'application'
+        )
     end
   end
 
