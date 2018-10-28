@@ -58,6 +58,14 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert html.scan('<td class="title">').length > 1
   end
 
+  test 'that NodeShared works if code starts at the beginning of the line' do
+    before = "[wikis:foo]"
+    html = NodeShared.wikis_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid wikis-grid wikis-grid-foo wikis-grid-foo-').length
+    assert_equal 1, html.scan('<table').length
+  end
+
   test 'that NodeShared does not replace characters before codes like [wikis:foo]' do
     before = "Here is a code a[wikis:foo]"
     html = NodeShared.wikis_grid(before)
