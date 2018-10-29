@@ -257,6 +257,16 @@ class CommentTest < ActiveSupport::TestCase
     f.close()
   end
 
+  test 'should parse text containing "On ____ <email@email.com> wrote:" from comments on display' do
+    node = Node.last
+    mail.subject = "Re: #{node.title} (##{node.nid})"
+    comment = Comment.new({
+      body: "Thank you! On Tuesday, 3 July 2018, 11:20:57 PM IST, Rails Projects <railsprojects2018@gmail.com> wrote:  Here you go."
+    })
+    assert_equal "Thank you! ", comment.scrub_quoted_text
+    assert_equal "Thank you! ", comment.render_body
+  end
+
   test 'should parse incoming mail from gmail service correctly and add answer comment' do
     require 'mail'
     mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
