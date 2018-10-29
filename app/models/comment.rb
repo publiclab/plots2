@@ -288,6 +288,19 @@ class Comment < ApplicationRecord
     end
   end
 
+  def parse_quoted_text
+    match = self.body.match(/(.+)(On .+<.+@.+> wrote:)(.+)/m)
+    return {
+      body: match[0], # the new message text
+      boundary: match[1], # quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
+      quote: match[2] # quoted text from prior email chain
+    }
+  end
+
+  def scrub_quoted_text
+    return parse_quoted_text['body']
+  end
+
   def self.gmail_quote_present?(mail_doc)
     mail_doc.css(".gmail_quote").any?
   end
