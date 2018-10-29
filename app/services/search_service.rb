@@ -115,7 +115,7 @@ class SearchService
 
   # Search nearby people with respect to given latitude, longitute and tags
   # and package up as a DocResult
-  def tagNearbyPeople(query, tag, limit = 10)
+  def tagNearbyPeople(query, tag, sort_by, limit = 10)
     raise("Must separate coordinates with ,") unless query.include? ","
 
     lat, lon =  query.split(',')
@@ -134,14 +134,24 @@ class SearchService
 
     items = User.where('rusers.status <> 0').joins(:user_tags)
                 .where('rusers.id IN (?) AND value LIKE ?', ids, 'lon:' + lon[0..lon.length - 2] + '%')
-                .order(created_at: :desc)
-                .limit(limit)
+
+    items =
+      if sort_by == "recent"
+        items.joins(:revisions)
+          .where("node_revisions.status = 1")
+          .order("node_revisions.timestamp DESC")
+          .distinct
+      else
+        items.order(id: :desc)
+      end
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
       item.user_tags.none? do |user_tag|
         user_tag.name == "location:blurred"
       end
     end
+
+    items = items.limit(limit)
   end
 
   # Returns the location of people with most recent contributions.
