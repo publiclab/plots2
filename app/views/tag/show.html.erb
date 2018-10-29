@@ -13,7 +13,11 @@
     <small>parent: <%= @tags.first.parent %></small>
   <% end %>
 
-  <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
+  <div class="btn-group visible-desktop" style="float:right;" id="note-format">
+   <a class="btn btn-default btn-sm" href="?start=<%= (@start || Time.now - 1.month).to_formatted_s(:long) %>&end=<%= (@end || Time.now).to_formatted_s(:long) %>">month</a>
+   <a class="btn btn-default btn-sm" href="?start=<%= (@start || Time.now - 1.year).to_formatted_s(:long) %>&end=<%= (@end || Time.now).to_formatted_s(:long) %>">year</a>
+  </div>
+  
   <%= render :partial => "tag/show/user_controls" %>
 
   <% if current_user && current_user.role == 'admin' %>
