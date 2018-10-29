@@ -354,12 +354,12 @@ class Comment < ApplicationRecord
       title_suggestion(self),
       :autolink
     ).to_html
+    # if it has quoted email text that wasn't caught by the yahoo and gmail filters,
+    # manually insert the comment filter delimeter:
+    parsed = parse_quoted_text
+    if !trimmed_content? && parsed != false
+      body = parsed[:body] + COMMENT_FILTER + parsed[:boundary] + parsed[:quote]
+    end
+    body
   end
-  # if it has quoted email text that wasn't caught by the yahoo and gmail filters,
-  # manually insert the comment filter delimeter:
-  parsed = parse_quoted_text
-  if !trimmed_content? && parsed != false
-    body = parsed[:body] + COMMENT_FILTER + parsed[:boundary] + parsed[:quote]
-  end
-  body
 end
