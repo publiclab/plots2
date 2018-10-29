@@ -346,7 +346,7 @@ class Comment < ApplicationRecord
   end
 
   def scrub_quoted_text
-    parse_quoted_text['body']
+    parse_quoted_text[:body]
   end
 
   def render_body
