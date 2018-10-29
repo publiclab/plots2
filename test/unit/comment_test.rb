@@ -259,9 +259,8 @@ class CommentTest < ActiveSupport::TestCase
 
   test 'should parse text containing "On ____ <email@email.com> wrote:" from comments on display' do
     node = Node.last
-    mail.subject = "Re: #{node.title} (##{node.nid})"
     comment = Comment.new({
-      body: "Thank you! On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:  Here you go."
+      comment: "Thank you! On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:  Here you go."
     })
     parsed = comment.parse_quoted_text
     assert_equal "Thank you! ", parsed['body']
