@@ -263,9 +263,9 @@ class CommentTest < ActiveSupport::TestCase
       comment: "Thank you! On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:  Here you go."
     })
     parsed = comment.parse_quoted_text
-    assert_equal "Thank you! ", parsed['body']
-    assert_equal "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:", parsed['boundary']
-    assert_equal "Here you go.", parsed['quote']
+    assert_equal "Thank you! ", parsed[:body]
+    assert_equal "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:", parsed[:boundary]
+    assert_equal "Here you go.", parsed[:quote]
     assert_equal "Thank you! ", comment.scrub_quoted_text
     assert_equal "Thank you! ", comment.render_body
   end
