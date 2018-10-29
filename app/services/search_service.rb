@@ -122,8 +122,8 @@ class SearchService
 
     user_locations = User.where('rusers.status <> 0')\
                          .joins(:user_tags)\
-                         .where('value LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')\
-                         .distinct
+                         .where('value LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%').distinct
+
     if tag.present?
       user_locations = User.joins(:user_tags)\
                        .where('user_tags.value LIKE ?', tag)\
@@ -137,12 +137,10 @@ class SearchService
 
     items =
       if sort_by == "recent"
-        items.joins(:revisions)
-          .where("node_revisions.status = 1")
-          .order("node_revisions.timestamp DESC")
-          .distinct
+        items.joins(:revisions).where("node_revisions.status = 1")
+          .order("node_revisions.timestamp DESC").distinct.limit(limit)
       else
-        items.order(id: :desc)
+        items.order(id: :desc).limit(limit)
       end
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
@@ -150,8 +148,6 @@ class SearchService
         user_tag.name == "location:blurred"
       end
     end
-
-    items = items.limit(limit)
   end
 
   # Returns the location of people with most recent contributions.
