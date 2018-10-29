@@ -124,7 +124,7 @@
               <a class="hidden-sm" href="#" class="dropdown-toggle" data-toggle="dropdown">
                  <%= t('layout._header.login.login_title') %>
               </a>
-              <ul id="login-dropdown" class="dropdown-menu" style="width:245px;">
+              <ul id="login-dropdown" class="dropdown-menu" style="width:245px; color: white;">
                 <li style="padding:6px;">
                   <%= form_for :user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
                   <div class="form-group">
