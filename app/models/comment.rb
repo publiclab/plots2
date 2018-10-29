@@ -338,9 +338,9 @@ class Comment < ApplicationRecord
       false
     else
       {
-        body: match[0], # the new message text
-        boundary: match[1], # quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
-        quote: match[2] # quoted text from prior email chain
+        body: match[1], # the new message text
+        boundary: match[2], # quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
+        quote: match[3] # quoted text from prior email chain
       }
     end
   end
