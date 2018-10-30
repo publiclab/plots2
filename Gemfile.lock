@@ -296,7 +296,7 @@ GEM
       ruby-openid (>= 2.1.8)
     rack-protection (2.0.4)
       rack
-    rack-test (1.0.0)
+    rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.0)
       actioncable (= 5.2.0)
@@ -520,7 +520,7 @@ DEPENDENCIES
   progress_bar
   rack-cors
   rack-openid
-  rack-test (= 1.0.0)
+  rack-test (= 1.1.0)
   rails (= 5.2.0)
   rails-controller-testing
   rails-dom-testing
