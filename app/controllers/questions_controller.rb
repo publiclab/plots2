@@ -32,7 +32,7 @@ class QuestionsController < ApplicationController
     # use another node body as a template
     if params[:n] && !params[:body] && Node.exists?(params[:n])
       node = Node.find(params[:n])
-      params[:body] = node.body if node
+      params[:body] = node.body
     end
     if current_user.nil?
       redirect_to new_user_session_path(return_to: request.path)
