@@ -30,8 +30,9 @@ class QuestionsController < ApplicationController
   # a form for new questions, at /questions/new
   def new
     # use another node body as a template
-    if params[:n] && !params[:body] && Node.exists?(params[:n])
-      node = Node.find(params[:n])
+    node_id = params[:n].to_i
+    if node_id && !params[:body] && Node.exists?(node_id)
+      node = Node.find(node_id)
       params[:body] = node.body
     end
     if current_user.nil?
