@@ -29,7 +29,8 @@ class QuestionsController < ApplicationController
 
   # a form for new questions, at /questions/new
   def new
-    if params[:n] && !params[:body] # use another node body as a template
+    # use another node body as a template
+    if params[:n] && !params[:body] && Node.exists?(params[:n])
       node = Node.find(params[:n])
       params[:body] = node.body if node
     end
