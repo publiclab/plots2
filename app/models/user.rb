@@ -51,8 +51,9 @@ class User < ActiveRecord::Base
   end
 
   def self.search_natural(query)
-    User.select("*, MATCH(username) AGAINST('#{query}' IN NATURAL LANGUAGE MODE) AS score")
-        .where("MATCH(username) AGAINST('#{query}' IN NATURAL LANGUAGE MODE)")
+    query = connection.quote(query.to_s)
+    User.select("*, MATCH(username) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
+        .where("MATCH(username) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
   end
 
   def new_contributor
