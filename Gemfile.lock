@@ -55,7 +55,7 @@ GEM
       io-like (~> 0.3.0)
     arel (9.0.0)
     ast (2.4.0)
-    authlogic (4.1.1)
+    authlogic (4.4.2)
       activerecord (>= 4.2, < 5.3)
       activesupport (>= 4.2, < 5.3)
       request_store (~> 1.0)
@@ -82,8 +82,6 @@ GEM
       ci_reporter (~> 2.0)
       test-unit (>= 2.5.5, < 4.0)
     climate_control (0.2.0)
-    cocaine (0.5.8)
-      climate_control (>= 0.0.3, < 1.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     coffee-rails (4.2.2)
@@ -143,10 +141,10 @@ GEM
     grape-entity (0.7.1)
       activesupport (>= 4.0)
       multi_json (>= 1.3.2)
-    grape-swagger (0.28.0)
+    grape-swagger (0.31.1)
       grape (>= 0.16.2)
-    grape-swagger-entity (0.1.5)
-      grape-entity
+    grape-swagger-entity (0.2.5)
+      grape-entity (>= 0.5.0)
       grape-swagger (>= 0.20.4)
     grape-swagger-rails (0.3.0)
       railties (>= 3.2.12)
@@ -154,13 +152,13 @@ GEM
       railties (>= 3.1)
     grease (0.3.1)
     hashie (3.5.7)
-    highline (1.7.10)
+    highline (2.0.0)
     hoe (3.17.0)
       rake (>= 0.8, < 13.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     http_accept_language (2.1.1)
-    i18n (1.0.1)
+    i18n (1.1.1)
       concurrent-ruby (~> 1.0)
     i18n-js (3.0.11)
       i18n (>= 0.6.6, < 2)
@@ -192,10 +190,11 @@ GEM
     letter_opener (1.6.0)
       launchy (~> 2.2)
     libv8 (3.16.14.19)
-    listen (3.0.8)
+    listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    loofah (2.2.2)
+      ruby_dep (~> 1.2)
+    loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -218,7 +217,7 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
-    minitest-reporters (1.1.19)
+    minitest-reporters (1.3.5)
       ansi
       builder
       minitest (>= 5.0)
@@ -228,7 +227,7 @@ GEM
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
-    mustermann (1.0.2)
+    mustermann (1.0.3)
     mustermann-grape (1.0.0)
       mustermann (~> 1.0.0)
     mysql2 (0.5.2)
@@ -237,8 +236,8 @@ GEM
     nio4r (2.3.1)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
-    nokogumbo (1.5.0)
-      nokogiri
+    nokogumbo (2.0.0)
+      nokogiri (~> 1.8, >= 1.8.4)
     oauth (0.5.4)
     oauth2 (1.4.0)
       faraday (>= 0.8, < 0.13)
@@ -267,25 +266,25 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
-    openssl (2.0.8)
+    openssl (2.1.2)
     options (2.3.2)
-    paperclip (5.2.1)
+    paperclip (6.1.0)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
-      cocaine (~> 0.5.5)
       mime-types
       mimemagic (~> 0.3.0)
+      terrapin (~> 0.6.0)
     parallel (1.12.1)
     parser (2.5.1.2)
       ast (~> 2.4.0)
-    passenger (5.3.4)
+    passenger (5.3.5)
       rack
       rake (>= 0.8.1)
     php-serialize (1.2.0)
     power_assert (1.1.3)
     powerpack (0.1.2)
-    progress_bar (1.2.0)
-      highline (~> 1.6)
+    progress_bar (1.3.0)
+      highline (>= 1.6, < 3)
       options (~> 2.3.0)
     public_suffix (3.0.3)
     rack (2.0.5)
@@ -295,9 +294,9 @@ GEM
     rack-openid (1.4.2)
       rack (>= 1.1.0)
       ruby-openid (>= 2.1.8)
-    rack-protection (2.0.3)
+    rack-protection (2.0.4)
       rack
-    rack-test (1.0.0)
+    rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.0)
       actioncable (= 5.2.0)
@@ -321,7 +320,7 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
-    rails-i18n (5.1.1)
+    rails-i18n (5.1.2)
       i18n (>= 0.7, < 2)
       railties (>= 5.0, < 6)
     rails-perftest (0.0.7)
@@ -377,11 +376,11 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-openid (2.7.0)
     ruby-progressbar (1.10.0)
-    rubyzip (1.2.2)
-    sanitize (4.6.6)
+    ruby_dep (1.5.0)
+    sanitize (5.0.0)
       crass (~> 1.0.2)
-      nokogiri (>= 1.4.4)
-      nokogumbo (~> 1.4)
+      nokogiri (>= 1.8.0)
+      nokogumbo (~> 2.0)
     sass (3.5.7)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -393,12 +392,12 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    scrypt (3.0.5)
+    scrypt (3.0.6)
       ffi-compiler (>= 1.0, < 2.0)
     selenium-webdriver (3.14.1)
       childprocess (~> 0.5)
       rubyzip (~> 1.2, >= 1.2.2)
-    sidekiq (5.2.1)
+    sidekiq (5.2.2)
       connection_pool (~> 2.2, >= 2.2.2)
       rack-protection (>= 1.5.0)
       redis (>= 3.3.5, < 5)
@@ -407,9 +406,9 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
-    skylight (3.0.0)
-      skylight-core (= 3.0.0)
-    skylight-core (3.0.0)
+    skylight (3.1.1)
+      skylight-core (= 3.1.1)
+    skylight-core (3.1.1)
       activesupport (>= 4.2.0)
     sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
@@ -425,6 +424,8 @@ GEM
       teaspoon (>= 1.0.0)
     term-ansicolor (1.6.0)
       tins (~> 1.0)
+    terrapin (0.6.0)
+      climate_control (>= 0.0.3, < 1.0)
     test-unit (3.2.8)
       power_assert
     therubyracer (0.12.3)
@@ -440,7 +441,7 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    uglifier (4.1.18)
+    uglifier (4.1.19)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
@@ -471,7 +472,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-session_store
-  authlogic (= 4.1.1)
+  authlogic (= 4.4.2)
   authlogic-oid
   byebug
   chromedriver-helper
@@ -488,8 +489,8 @@ DEPENDENCIES
   georuby (= 2.0)
   grape
   grape-entity
-  grape-swagger (~> 0.28.0)
-  grape-swagger-entity (= 0.1.5)
+  grape-swagger (~> 0.31.1)
+  grape-swagger-entity (= 0.2.5)
   grape-swagger-rails
   grape-swagger-ui
   http_accept_language
@@ -501,11 +502,11 @@ DEPENDENCIES
   json_expressions
   less-rails (~> 3.0)
   letter_opener
-  listen (~> 3.0.5)
+  listen (~> 3.1.5)
   mailman
-  minitest-reporters (~> 1.1.19)
+  minitest-reporters (~> 1.3.5)
   mocha (~> 1.1)
-  mustermann (= 1.0.2)
+  mustermann (= 1.0.3)
   mysql2 (>= 0.4.4)
   nifty-generators
   omniauth (~> 1.3, >= 1.3.1)
@@ -513,18 +514,18 @@ DEPENDENCIES
   omniauth-github (~> 1.1, >= 1.1.2)
   omniauth-google-oauth2
   omniauth-twitter
-  openssl (~> 2.0.0.beta.1)
-  paperclip (~> 5.2.0)
+  openssl (~> 2.1.2)
+  paperclip (~> 6.1.0)
   passenger
   php-serialize
   progress_bar
   rack-cors
   rack-openid
-  rack-test (= 1.0.0)
+  rack-test (= 1.1.0)
   rails (= 5.2.0)
   rails-controller-testing
   rails-dom-testing
-  rails-i18n (~> 5.1.1)
+  rails-i18n (~> 5.1.2)
   rails-perftest
   rails_autolink
   rake (~> 12.3.1)

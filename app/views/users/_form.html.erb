@@ -23,6 +23,7 @@
         <label for="username"><%= t('users._form.username') %></label>
         <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username' } %>
 
+        <input type="hidden" name="id" value="<%= @user.username %>" />
       </div>
 
     <% end %>

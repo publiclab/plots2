@@ -45,6 +45,8 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
   `field=[string]`: Accepts the value `username` for searching profiles only by
    the field `username`.
 
+   `tag=[string]`: The search can be refined by passing a tag field.
+
 ### Notes
 
 * **URL**:  `https://publiclab.org/api/srch/notes?query=wind`
@@ -89,6 +91,19 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
   **Required:**
 
   `query=[coordinates]`: search notes from users located near the query separated by `,`.
+
+  **Optional:**
+
+  `tag=[string]`: the search can be refined by passing a tag field.
+
+### NearbyPeople:
+
+* **URL**:  `https://publiclab.org/api/srch/nearbyPeople?query=18,-66`
+* **URL Params** :
+
+  **Required:**
+
+  `query=[coordinates]`: search users located near the query separated by `,`.
 
   **Optional:**
 

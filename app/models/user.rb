@@ -454,4 +454,13 @@ class User < ActiveRecord::Base
       user.save!
     end
   end
+  
+  def self.count_all_time_contributor
+    notes = Node.where(type: 'note', status: 1).pluck(:uid)
+    answers = Answer.pluck(:uid)
+    questions = Node.questions.where(status: 1).pluck(:uid)
+    comments = Comment.pluck(:uid)
+    revisions = Revision.where(status: 1).pluck(:uid)
+    contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+  end
 end

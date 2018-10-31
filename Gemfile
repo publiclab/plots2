@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'activerecord-session_store'
-gem "authlogic", "4.1.1"
+gem "authlogic", "4.4.2"
 gem 'authlogic-oid'
 gem "composite_primary_keys"
 gem 'figaro'
@@ -18,8 +18,8 @@ gem 'geokit-rails'
 gem 'georuby', '2.0'
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', '~> 0.28.0'
-gem 'grape-swagger-entity', '= 0.1.5'
+gem 'grape-swagger', '~> 0.31.1'
+gem 'grape-swagger-entity', '0.2.5'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'http_accept_language'
@@ -29,23 +29,23 @@ gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 gem 'less-rails', '~> 3.0'
 gem 'mocha', '~> 1.1'
-gem 'mustermann' , '1.0.2'
+gem 'mustermann' , '1.0.3'
 gem 'omniauth', '~> 1.3', '>= 1.3.1'
 gem 'omniauth-facebook', '~> 4.0'
 gem 'omniauth-github', '~> 1.1', '>= 1.1.2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
-gem "paperclip", "~> 5.2.0"
+gem "paperclip", "~> 6.1.0"
 gem 'passenger'
 gem "php-serialize", :require => "php_serialize"
 gem 'progress_bar'
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
-gem "rack-test", "1.0.0"
+gem "rack-test", "1.1.0"
 gem 'rails', '5.2.0'
 gem 'rails-controller-testing'
 gem 'rails-dom-testing'
-gem 'rails-i18n', '~> 5.1.1'
+gem 'rails-i18n', '~> 5.1.2'
 gem 'rails_autolink'
 gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
@@ -88,7 +88,7 @@ gem 'uglifier', '>= 1.0.3'
 group :development do
   gem 'byebug', platform: :mri
   gem "letter_opener"
-  gem 'listen', '~> 3.0.5'
+  gem 'listen', '~> 3.1.5'
   gem "nifty-generators"
   gem 'web-console', '>= 3.3.0'
 end
@@ -97,10 +97,10 @@ group :test, :development do
   gem 'ci_reporter_test_unit'
   gem 'coveralls', require: false
   gem 'json_expressions'
-  gem 'minitest-reporters', '~> 1.1.19'
-  gem 'openssl', '~> 2.0.0.beta.1'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
+  gem 'minitest-reporters', '~> 1.3.5'
+  gem 'openssl', '~> 2.1.2'
   gem 'rails-perftest'
   gem 'rake',  '~> 12.3.1'
   gem 'rest-client'

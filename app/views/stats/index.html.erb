@@ -43,6 +43,8 @@
 
   <h4><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
   :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></h4>
+  <h4><%= raw t('notes.stats.total_contributors', :all_contributors_count => @all_time_contributors) %></h4>
+  
   <p><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></p>
   
   <p><i><%= t('notes.stats.note_posting_52_weeks') %></i></p>
