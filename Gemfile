@@ -96,8 +96,6 @@ end
 group :test, :development do
   gem 'ci_reporter_test_unit'
   gem 'coveralls', require: false
-  gem 'jasmine-jquery-rails'
-  gem 'jasmine-rails'
   gem 'json_expressions'
   gem 'minitest-reporters', '~> 1.1.19'
   gem 'openssl', '~> 2.0.0.beta.1'

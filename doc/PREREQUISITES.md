@@ -50,10 +50,8 @@ Once NPM is installed, you should be able to run:
 
 **WARNING:** Please refrain from using `sudo npm` as it's not only a bad practice, but may also put your security at a risk. For more on this, read https://pawelgrzybek.com/fix-priviliges-and-never-again-use-sudo-with-npm/
 
-### phantomjs for javascript tests (optional)
+### javascript tests (optional)
 
-We are using `jasmine-rails` gem for the optional javascript tests (run with `rake spec:javascript`) which require `phantomjs` for headless testing (i.e. on the commandline, not with a browser). Generally the **phantomjs gem** gets installed along with the `jasmine-rails` gem. If the package installation for the gem fails you can use [this script](https://github.com/codeship/scripts/blob/master/packages/phantomjs.sh) to install it.
+We are using `teaspoon` with `mocha` js test framework for the optional javascript tests (run with `teaspoon`).
 
-But some architectures (Linux!) aren't supported by the phantomjs gem. For those you have to run phantomjs via a native binary, you can find the installation instructions in its official [build documentation](http://phantomjs.org/build.html). For Ubuntu/debian based system you can follow [these instructions](https://gist.github.com/julionc/7476620) or use the script mentioned there. On successful installation you can see the version number of phantomjs with the `phantomjs -v` command. For the binary to work properly with `jasmine-rails` change the line 52 on _spec/javascripts/support/jasmine.yml_ to `use_phantom_gem: false`.
-
-Please report any error regarding phantomjs installation in the github issue tracker. We will try to help you out as soon as we can!
+Please report any error regarding testing framework in the github issue tracker. We will try to help you out as soon as we can!
