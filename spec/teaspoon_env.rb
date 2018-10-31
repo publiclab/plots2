@@ -98,7 +98,7 @@ Teaspoon.configure do |config|
   # Selenium Webdriver: https://github.com/modeset/teaspoon/wiki/Using-Selenium-WebDriver
   # BrowserStack Webdriver: https://github.com/modeset/teaspoon/wiki/Using-BrowserStack-WebDriver
   # Capybara Webkit: https://github.com/modeset/teaspoon/wiki/Using-Capybara-Webkit
-  # config.driver = :phantomjs
+  config.driver = :selenium
 
   # Specify additional options for the driver.
   #
@@ -106,7 +106,31 @@ Teaspoon.configure do |config|
   # Selenium Webdriver: https://github.com/modeset/teaspoon/wiki/Using-Selenium-WebDriver
   # BrowserStack Webdriver: https://github.com/modeset/teaspoon/wiki/Using-BrowserStack-WebDriver
   # Capybara Webkit: https://github.com/modeset/teaspoon/wiki/Using-Capybara-Webkit
-  # config.driver_options = nil
+
+
+  # Teaspoon doesn't allow you to pass client driver options to the Selenium WebDriver. This monkey patch
+  # is a temporary fix until this PR is merged: https://github.com/jejacks0n/teaspoon/pull/519.
+  require 'teaspoon/driver/selenium'
+  Teaspoon::Driver::Selenium.class_eval do
+    def run_specs(runner, url)
+      driver = ::Selenium::WebDriver.for(driver_options[:client_driver], @options.except(:client_driver) || {})
+      driver.navigate.to(url)
+        ::Selenium::WebDriver::Wait.new(driver_options).until do
+        done = driver.execute_script("return window.Teaspoon && window.Teaspoon.finished")
+        driver.execute_script("return window.Teaspoon && window.Teaspoon.getMessages() || []").each do |line|
+          runner.process("#{line}\n")
+        end
+        done
+      end
+    ensure
+      driver.quit if driver
+    end
+  end
+
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: { args: %w(headless disable-gpu window-size=1920,1440) }
+  )
+  config.driver_options = { client_driver: :chrome, desired_capabilities: capabilities }
 
   # Specify the timeout for the driver. Specs are expected to complete within this time frame or the run will be
   # considered a failure. This is to avoid issues that can arise where tests stall.
