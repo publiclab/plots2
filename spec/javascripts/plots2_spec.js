@@ -1,5 +1,4 @@
 //= require comment_expand
-//= require like
 var editor;
 
 describe("Plots2", function() {
