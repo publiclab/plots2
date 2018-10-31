@@ -2,90 +2,58 @@
 var editor;
 
 describe("Plots2", function() {
-
-  beforeEach(function() {
-
-    fixture.preload('index.html', 'unlike.html', 'comment_expand.html');
-
-  });
-
   it("sends a like request when like button is clicked", function() {
-
-    fixture.load('index.html');
-
+    fixture.load('like.html');
     ajaxStub = sinon.stub($, 'ajax', function(object) {
+      if (object.url == '/likes/node/1/create') response = '1';
+      else response = 'none';
 
-		if   (object.url == '/likes/node/1/create') response = '4';
-		else response = 'none';
-
-		// check this if you have trouble faking a server response:
-		if (response == '4'){
-            console.log('Faked response to:', object.url);
-		}
-		else console.log('Failed to fake response to:', object.url);
-
-		var d = $.Deferred();
-        if(response == '4'){
+      var d = $.Deferred();
+      if (response == '1'){
 		    d.resolve(response);
-        }
-        else{
+      } else {
 		    d.reject(response);
-        }
-
-        return d.promise();
-
-	});
-
-    $(document).ready(function(){
-        $("#like-button-1").on('click', toggleLike);
+      }
+      return d.promise();
     });
 
-    $("#like-button-1").click();
-    // should trigger the following and our ajaxSpy should return a fake response of "4":
-    /*var response;
-    jQuery.getJSON("/likes/node/1/create").done(function(data){
-        response = data;
-    });*/
+    // Initially it's not liked
+    setLikeState(false);
+    $("#like-button-1").on('click', toggleLike);
 
-    // then triggering like.js code
-
-    expect($('#like-count-1').html()).to.eql('4'); // passing
-    expect($('#like-star-1')[0].className).to.eql('fa fa-star');
-    ajaxStub.restore();
+    $(document).ready(function(){
+      $("#like-button-1").click();
+      expect($('#like-count-1').html()).to.eql('1');
+      expect($('#like-star-1')[0].className).to.eql('fa fa-star');
+      ajaxStub.restore();
+    });
   });
-
 
   it("unlikes a request if already liked", function() {
-
     fixture.load('unlike.html');
-
     ajaxStub = sinon.stub($, 'ajax', function(object) {
+      if (object.url == '/likes/node/1/delete') response = '-1';
+      else response = 'none';
 
-		if   (object.url == '/likes/node/1/delete') response = '-1';
-		else response = 'none';
-
-		// check this if you have trouble faking a server response:
-
-		var d = $.Deferred();
-        if(response == '-1'){
-		    d.resolve(response);
+      var d = $.Deferred();
+        if (response == '-1'){
+          d.resolve(response);
+        } else {
+          d.reject(response);
         }
-        else{
-		    d.reject(response);
-        }
-
         return d.promise();
-
-	});
-
-    $(document).ready(function(){
-        $("#like-button-1").on('click', toggleLike);
     });
 
-    $("#like-button-1").trigger('click');
-    expect($('#like-count-1').html()).to.eql('0');
-    expect($('#like-star-1')[0].className).to.eql('fa fa-star-o');
-    ajaxStub.restore();
+    // Initially it's liked
+    setLikeState(true);
+    $("#like-button-1").on('click', toggleLike);
+
+    $(document).ready(function(){
+      $("#like-button-1").trigger('click');
+      expect($('#like-count-1').html()).to.eql('0');
+      expect($('#like-star-1')[0].className).to.eql('fa fa-star-o');
+      ajaxStub.restore();
+    });
   });
 
   it("shows expand comment button with remaining comment count", function(){
@@ -101,5 +69,4 @@ describe("Plots2", function() {
   it("loads up i18n-js library properly", function() {
     expect(I18n.t('js.dashboard.selected_updates')).to.eql('Selected updates')
   });
-
 });
