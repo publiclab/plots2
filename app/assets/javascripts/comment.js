@@ -1,6 +1,6 @@
 (function() {
   $('#text-input').bind('keypress',function(e){
-    if (e.ctrlKey && e.keyCode == 10) {
+    if (e.ctrlKey && e.keyCode ==== 10) {
     $("#comment-form .btn-primary").click();
     }
   })
@@ -14,7 +14,7 @@
     $('#text-input').prop('disabled',false);
     $('#text-input').val('');
     $('#comments-container').append(xhr.responseText);
-    $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML)+1;
+    $('#comment-count')[0].innerHTML = parseInt($('#comment-count')[0].innerHTML, 10)+1;
     $("#comment-form .btn-primary").button('reset');
     $('#preview').hide();
     $('#text-input').show();
@@ -27,13 +27,13 @@
     $('#comment-form .control-group .help-block ').remove()
     $('#comment-form .control-group').append('<span class="help-block ">Error: there was a problem.</span>')
   });
-})();
+}());
 
 function insertTitleSuggestionTemplate() {
   var element = $('#text-input');
   var currentText = $('#text-input').val().trim();
   var template = "\n[propose:title]Propose your title here[/propose]";
-  if(currentText.length == 0)
+  if(currentText.length === 0)
   template = "[propose:title]Propose your title here[/propose]";
   var newText = currentText+template;
   element.val(newText);
