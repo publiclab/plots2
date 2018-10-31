@@ -1,6 +1,6 @@
 (function() {
   $('#text-input').bind('keypress',function(e){
-    if (e.ctrlKey && e.keyCode ==== 10) {
+    if (e.ctrlKey && e.keyCode === 10) {
     $("#comment-form .btn-primary").click();
     }
   })
