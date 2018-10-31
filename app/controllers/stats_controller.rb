@@ -32,7 +32,7 @@ class StatsController < ApplicationController
   end
 
   def index
-    @title = 'Stats'
+    @title = 'stats'
     @time = if params[:time]
               Time.parse(params[:time])
             else
