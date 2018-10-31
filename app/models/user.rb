@@ -50,6 +50,11 @@ class User < ActiveRecord::Base
     User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
   end
 
+  def self.search_natural(query)
+    User.select("*, MATCH(username) AGAINST('#{query}' IN NATURAL LANGUAGE MODE) AS score")
+        .where("MATCH(username) AGAINST('#{query}' IN NATURAL LANGUAGE MODE)")
+  end
+
   def new_contributor
     @uid = id
     return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
@@ -454,7 +459,7 @@ class User < ActiveRecord::Base
       user.save!
     end
   end
-  
+
   def self.count_all_time_contributor
     notes = Node.where(type: 'note', status: 1).pluck(:uid)
     answers = Answer.pluck(:uid)

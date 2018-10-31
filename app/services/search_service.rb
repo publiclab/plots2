@@ -30,17 +30,21 @@ class SearchService
   # If no sort_by value present, then it returns a list of profiles ordered by id DESC
   # a recent activity may be a node creation or a node revision
   def search_profiles(search_criteria)
-    user_scope = find_users(search_criteria.query, search_criteria.limit, search_criteria.field, search_criteria.tag)
+    if search_criteria.sort_by == "natural" && ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      user_scope = User.search_natural(search_criteria.query).where('rusers.status = ?', 1)
+    else
+      user_scope = find_users(search_criteria.query, search_criteria.limit, search_criteria.field, search_criteria.tag)
 
-    user_scope =
-      if search_criteria.sort_by == "recent"
-        user_scope.joins(:revisions)
-        .where("node_revisions.status = 1")
-        .order("node_revisions.timestamp #{search_criteria.order_direction}")
-        .distinct
-      else
-        user_scope.order(id: :desc)
-      end
+      user_scope =
+        if search_criteria.sort_by == "recent"
+          user_scope.joins(:revisions)
+          .where("node_revisions.status = 1")
+          .order("node_revisions.timestamp #{search_criteria.order_direction}")
+          .distinct
+        else
+          user_scope.order(id: :desc)
+        end
+    end
 
     users = user_scope.limit(search_criteria.limit)
   end
