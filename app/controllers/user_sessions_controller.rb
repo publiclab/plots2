@@ -8,14 +8,14 @@ class UserSessionsController < ApplicationController
     auth = request.env['omniauth.auth']
     if auth
       # User successfully completed oauth signin on third-party
-      handle_social_login_flow()
+      handle_social_login_flow(auth)
     else
       # User clicked on login button on site
       handle_site_login_flow()
     end
   end
 
-  def handle_social_login_flow
+  def handle_social_login_flow(auth)
     return_to = request.env['omniauth.origin'] || root_url
     if signed_in?
       # Find an identity here
