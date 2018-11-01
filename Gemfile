@@ -27,7 +27,7 @@ gem "i18n-js", ">= 3.0.0.rc11"
 gem 'impressionist'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
-gem 'less-rails', '~> 3.0'
+gem 'less-rails', '~> 4.0'
 gem 'mocha', '~> 1.1'
 gem 'mustermann' , '1.0.3'
 gem 'omniauth', '~> 1.3', '>= 1.3.1'
