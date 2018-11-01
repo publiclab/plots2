@@ -11,7 +11,7 @@ class UserSessionsController < ApplicationController
       handle_social_login_flow(auth)
     else
       # User clicked on login button on site
-      handle_site_login_flow()
+      handle_site_login_flow
     end
   end
 
@@ -109,7 +109,7 @@ class UserSessionsController < ApplicationController
       return
     end
 
-    if @user&.drupal_user&.status == 0
+    if @user&.drupal_user&.status.zero?
       flash[:error] = I18n.t('user_sessions_controller.user_has_been_banned', username: @user.username).html_safe
       redirect_to '/'
       return
