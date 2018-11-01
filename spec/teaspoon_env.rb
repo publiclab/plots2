@@ -110,6 +110,7 @@ Teaspoon.configure do |config|
 
   # Teaspoon doesn't allow you to pass client driver options to the Selenium WebDriver. This monkey patch
   # is a temporary fix until this PR is merged: https://github.com/jejacks0n/teaspoon/pull/519.
+
   require 'teaspoon/driver/selenium'
   Teaspoon::Driver::Selenium.class_eval do
     def run_specs(runner, url)
@@ -128,7 +129,7 @@ Teaspoon.configure do |config|
   end
 
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: { args: %w(headless disable-gpu window-size=1920,1440) }
+    chromeOptions: { args: %w(headless disable-gpu window-size=1920,1440 no-sandbox) }
   )
   config.driver_options = { client_driver: :chrome, desired_capabilities: capabilities }
 
