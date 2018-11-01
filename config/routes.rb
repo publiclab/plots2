@@ -362,5 +362,4 @@ Plots2::Application.routes.draw do
   #handling omniauth callbacks
   match '/auth/:provider/callback', to: 'user_sessions#create', via: [:get, :post]
   get 'auth/failure', to: redirect('/')
-
 end
