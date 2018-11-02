@@ -143,7 +143,6 @@ GEM
       railties (>= 3.2.12)
     grape-swagger-ui (2.2.8)
       railties (>= 3.1)
-    grease (0.3.1)
     hashie (3.5.7)
     highline (2.0.0)
     hoe (3.17.0)
@@ -180,12 +179,10 @@ GEM
       addressable (~> 2.3)
     less (2.6.0)
       commonjs (~> 0.2.7)
-    less-rails (3.0.0)
-      actionpack (>= 4.0)
-      grease
+    less-rails (4.0.0)
+      actionpack (>= 4)
       less (~> 2.6.0)
-      sprockets (> 2, < 4)
-      tilt
+      sprockets (>= 2)
     letter_opener (1.6.0)
       launchy (~> 2.2)
     libv8 (3.16.14.19)
@@ -498,7 +495,7 @@ DEPENDENCIES
   jquery-atwho-rails
   jquery-rails
   json_expressions
-  less-rails (~> 3.0)
+  less-rails (~> 4.0)
   letter_opener
   listen (~> 3.1.5)
   mailman
