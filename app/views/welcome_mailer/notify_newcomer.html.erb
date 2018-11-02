@@ -19,6 +19,9 @@
     Looking forward to hearing from you soon,
 
     The Public Lab Community
+
+    Thanks for registering with public labs. To confirm your email click the URL below.
+    <%= confirm_email_user_url(@user.confirm_token)%>
 <% end %>
 
 <%= @footer %>

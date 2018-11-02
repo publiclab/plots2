@@ -345,6 +345,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def confirm_email
+    user = User.find_by_confirm_token(params[:id])
+    if user
+      user.email_activate
+      flash[:success] = "Welcome! Your email has been confirmed"
+      redirect_to signin_url
+    else
+      flash[:error] = "Sorry the link is expired or the user no longer exists"
+      redirect_to root_url
+    end
+  end
+
   private
 
   def set_user

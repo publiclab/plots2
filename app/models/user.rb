@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
 
   before_create :create_drupal_user
+  before_create :confirmation_token
   before_save :set_token
   after_destroy :destroy_drupal_user
 
@@ -416,6 +417,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def email_activate
+    self.email_confirmed = true
+    self.confirm_token = nil
+    save!(:validate => false)
+  end
+
   private
 
   def map_openid_registration(registration)
@@ -463,5 +470,11 @@ class User < ActiveRecord::Base
     comments = Comment.pluck(:uid)
     revisions = Revision.where(status: 1).pluck(:uid)
     contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
+  end
+
+  def confirmation_token
+    if self.confirm_token.blank?
+      self.confirm_token = SecureRandom.urlsafe_base64.to_s
+    end
   end
 end

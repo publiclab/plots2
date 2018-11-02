@@ -21,7 +21,11 @@ Plots2::Application.routes.draw do
   resources :user_sessions
   resources :images
   resources :features
-
+  resources :users do
+    member do
+      get :confirm_email
+    end
+  end
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
