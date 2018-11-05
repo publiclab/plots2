@@ -967,4 +967,39 @@ class NotesControllerTest < ActionController::TestCase
      assert_equal I18n.t('notes_controller.saved_as_draft'), flash[:notice]
      assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
    end
+
+  test 'render propose title template when author is logged in' do
+    comment = comments(:first)
+    comment.comment = '[propose:title]New Title[/propose]'
+    comment.save!
+
+    get :show,
+        params: {
+        author: comment.parent.author.name,
+        date: Time.at(comment.parent.created).strftime('%m-%d-%Y'),
+        id: comment.parent.title.parameterize
+        }
+
+    assert_response :success
+    assert_select '.suggested-title .message', 'Bob is suggesting an alternative title, "New Title"'
+    assert_select '.suggested-title .accept', 'To accept this as a new title to your post, click here.'
+  end
+
+  test 'render propose title template when author is not logged in' do
+    comment = comments(:second)
+    comment.comment = '[propose:title]New Title[/propose]'
+    comment.save!
+
+    get :show,
+        params: {
+        author: comment.parent.author.name,
+        date: Time.at(comment.parent.created).strftime('%m-%d-%Y'),
+        id: comment.parent.title.parameterize
+        }
+
+    assert_response :success
+    assert_select '.suggested-title .message', 'Bob is suggesting an alternative title, "New Title"'
+    assert_select '.suggested-title .accept', false
+  end
+
 end

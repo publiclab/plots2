@@ -1,6 +1,8 @@
-<div class="alert alert-warning">
-	<a href="/profile/<%= user %>"><%= user %></a> is suggesting an alternative title, "<%= title %>".
-	<% if is_creator %> 
-	To accept this as a new title to your post, <a href="/node/update/title?id=<%= nid %>&title=<%= title %>" data-method='post'>click here</a>
-	<% end %> 
+<div class="alert alert-warning suggested-title">
+  <span class="message">
+    <a href="/profile/<%= user %>"><%= user %></a> is suggesting an alternative title, "<%= title %>".
+  </span>
+  <% if is_creator %> 
+    <span class="accept">>To accept this as a new title to your post, <a href="/node/update/title?id=<%= nid %>&title=<%= title %>" data-method='post'>click here</a>.</span>
+  <% end %> 
 </div>
