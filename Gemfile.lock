@@ -87,7 +87,7 @@ GEM
     commonjs (0.2.7)
     composite_primary_keys (11.0.3)
       activerecord (~> 5.2.0)
-    concurrent-ruby (1.0.5)
+    concurrent-ruby (1.1.1)
     connection_pool (2.2.2)
     coveralls (0.8.22)
       json (>= 1.8, < 3)
@@ -164,7 +164,7 @@ GEM
       phantomjs (>= 1.9)
       railties (>= 3.2.0)
       sprockets-rails
-    jbuilder (2.7.0)
+    jbuilder (2.8.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
     jquery-atwho-rails (1.5.4)
@@ -491,7 +491,7 @@ DEPENDENCIES
   impressionist
   jasmine-jquery-rails
   jasmine-rails
-  jbuilder (~> 2.5)
+  jbuilder (~> 2.8)
   jquery-atwho-rails
   jquery-rails
   json_expressions
