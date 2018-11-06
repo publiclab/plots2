@@ -19,12 +19,14 @@ class NodeTag < ApplicationRecord
     user
   end
 
-  def new_author_contributor
-    user.new_contributor
-  end
+
 
   def user
     DrupalUser.find_by(uid: uid).try(:user)
+  end
+  
+  def new_author_contributor
+    user.new_contributor
   end
 
   def drupal_user
