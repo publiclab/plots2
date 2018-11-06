@@ -89,13 +89,11 @@ class DrupalUser < ApplicationRecord
   end
 
   def new_author_contributor
-    @uid = uid
-    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if Node.where(:uid => @uid).length === 1
+    user.new_contributor
   end
 
   def new_contributor
-    @uid = id
-    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if Node.where(:uid => @uid).length === 1
+    user.new_contributor
   end
 
   def likes
