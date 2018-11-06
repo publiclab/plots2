@@ -7,8 +7,8 @@ rvm use 2.4.4
 gem install rails -v 5.2.0
 sudo apt-get update
 sudo apt-get -y install imagemagick ruby-rmagick
-npm install -g bower
-bower install
+npm install -g yarn
+yarn install && yarn postinstall
 gem install bundler
 bundle install --without production mysql
 cp db/schema.rb.example db/schema.rb
