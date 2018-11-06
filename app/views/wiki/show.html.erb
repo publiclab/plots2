@@ -10,6 +10,17 @@
 <script src="/lib/publiclab-editor/dist/PublicLab.Editor.js"></script>
 <% end %>
 
+<% if @node.has_tag('sidebar:none') %>
+  <%= render :partial => "sidebar/none" %>
+<% else %>
+  <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
+    <%= render :partial => "sidebar/featured" %>
+  <% else %>
+    <%= render :partial => "sidebar/related" %>
+  <% end %>
+<% end %>
+
+
 <% @presentation = @node.has_tag('style:presentation') %>
 <% if @presentation && @node.main_image%>
   <div id="main-image-presentation" style="margin-bottom:8px;">
@@ -79,16 +90,6 @@
   </div>
 
 </div>
-
-<% if @node.has_tag('sidebar:none') %>
-  <%= render :partial => "sidebar/none" %>
-<% else %>
-  <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
-    <%= render :partial => "sidebar/featured" %>
-  <% else %>
-    <%= render :partial => "sidebar/related" %>
-  <% end %>
-<% end %>
 
 <script>
 (function(){
