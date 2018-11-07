@@ -14,6 +14,7 @@
   <% end %>
 
   <%= render :partial => "notes/format_toggle" if @node_type == "note" %>
+  
   <%= render :partial => "tag/show/user_controls" %>
 
   <% if current_user && current_user.role == 'admin' %>
