@@ -220,4 +220,14 @@ class UserTest < ActiveSupport::TestCase
     #as the username as "jeff" exists, hence username = "jeff" + 2 digit alphanumeric code will be created
     assert_not_equal jeffrey.username, "jeff"
   end
+
+  test 'generate token and validate token for user email verification' do
+    all_users = User.where("id<?",3)
+    for i in all_users
+      user_obj = i
+      generated_token = user_obj.generate_token
+      assert_equal user_obj.validate_token(generated_token), true
+    end
+  end
+
 end
