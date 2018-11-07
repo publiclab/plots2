@@ -7,6 +7,7 @@ class UniqueUsernameValidator < ActiveModel::Validator
 end
 
 class User < ActiveRecord::Base
+  include Utils
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
@@ -413,6 +414,22 @@ class User < ActiveRecord::Base
     unless newtag.blank?
       UserTag.where('value LIKE (?)', 'digest%').destroy_all
       UserTag.create(uid: id, value: newtag)
+    end
+  end
+
+  def generate_token
+    user_id_and_time = [self.id,Time.now]
+    encrypt(user_id_and_time)
+  end
+
+  def validate_token(token)
+    decrypted_data = decrypt(token)
+    if self.id!=decrypted_data[0]
+      return false
+    elsif (Time.now - decrypted_data[1])/1.hour>24.0
+      return false
+    else
+      return true
     end
   end
 
