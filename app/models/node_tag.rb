@@ -14,13 +14,13 @@ class NodeTag < ApplicationRecord
     tag.count += 1
     tag.save
   end
-
-  def author
-    user
-  end
   
   def user
     DrupalUser.find_by(uid: uid).try(:user)
+  end
+
+  def author
+    user
   end
   
   def new_author_contributor
