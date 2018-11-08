@@ -96,6 +96,10 @@ class DrupalUser < ApplicationRecord
     user.new_contributor
   end
 
+  def new_contributor
+    @uid = id
+  end
+
   def likes
     NodeSelection.where(user_id: uid, liking: true)
   end

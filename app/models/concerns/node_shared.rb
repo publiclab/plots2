@@ -11,7 +11,7 @@ module NodeShared
 
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.graph_grid(body, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[graph\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[graph\:(\S+)\]/) do |_tagname|
       url = Regexp.last_match(2)
       a = ActionController::Base.new
       randomSeed = rand(1000).to_s
@@ -29,7 +29,7 @@ module NodeShared
 
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.notes_grid(body, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[notes\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
       if tagname.include?('!')
@@ -68,7 +68,7 @@ module NodeShared
 
   # rubular regex: http://rubular.com/r/hBEThNL4qd
   def self.questions_grid(body, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[questions\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
       if tagname.include?('!')
@@ -104,7 +104,7 @@ module NodeShared
   end
 
   def self.activities_grid(body)
-    body.gsub(/[^\>`](\<p\>)?\[activities\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[activities\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
       if tagname.include?('!')
@@ -137,7 +137,7 @@ module NodeShared
   end
 
   def self.upgrades_grid(body)
-    body.gsub(/[^\>`](\<p\>)?\[upgrades\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[upgrades\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
       if tagname.include?('!')
@@ -172,7 +172,7 @@ module NodeShared
 
   # Blank map loaded only , markers will be loaded using API call .
   def self.notes_map(body)
-    body.gsub(/[^\>`](\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[map\:content\:(\S+)\:(\S+)\]/) do |_tagname|
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
       a = ActionController::Base.new
@@ -187,7 +187,7 @@ module NodeShared
   end
 
   def self.notes_map_by_tag(body)
-    body.gsub(/[^\>`](\<p\>)?\[map\:tag\:(\S+)\:(\S+)\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[map\:tag\:(\S+)\:(\S+)\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       lat = Regexp.last_match(3)
       lon = Regexp.last_match(4)
@@ -218,7 +218,7 @@ module NodeShared
 
   # in our interface, "users" are known as "people" because it's more human
   def self.people_map(body, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[map\:people\:(\S+)\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       lat = Regexp.last_match(2)
       lon = Regexp.last_match(3)
@@ -238,7 +238,7 @@ module NodeShared
 
   # in our interface, "users" are known as "people" because it's more human
   def self.people_grid(body, current_user = nil, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[people\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[people\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
       if tagname.include?('!')
@@ -276,7 +276,7 @@ module NodeShared
   end
 
   def self.wikis_grid(body, _page = 1)
-    body.gsub(/[^\>`](\<p\>)?\[wikis\:(\S+)\]/) do |_tagname|
+    body.gsub(/(?<![\>`])(\<p\>)?\[wikis\:(\S+)\]/) do |_tagname|
       tagname = Regexp.last_match(2)
       exclude = nil
       if tagname.include?('!')

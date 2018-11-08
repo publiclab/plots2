@@ -18,9 +18,7 @@ class NodeTag < ApplicationRecord
   def author
     user
   end
-
-
-
+  
   def user
     DrupalUser.find_by(uid: uid).try(:user)
   end

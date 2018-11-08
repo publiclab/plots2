@@ -332,10 +332,34 @@ class Comment < ApplicationRecord
     comment.include?(COMMENT_FILTER)
   end
 
+  def parse_quoted_text
+    match = body.match(/(.+)(On .+<.+@.+> wrote:)(.+)/m)
+    if match.nil?
+      false
+    else
+      {
+        body: match[1], # the new message text
+        boundary: match[2], # quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
+        quote: match[3] # quoted text from prior email chain
+      }
+    end
+  end
+
+  def scrub_quoted_text
+    parse_quoted_text[:body]
+  end
+
   def render_body
-    RDiscount.new(
+    body = RDiscount.new(
       title_suggestion(self),
       :autolink
     ).to_html
+    # if it has quoted email text that wasn't caught by the yahoo and gmail filters,
+    # manually insert the comment filter delimeter:
+    parsed = parse_quoted_text
+    if !trimmed_content? && parsed != false
+      body = parsed[:body] + COMMENT_FILTER + parsed[:boundary] + parsed[:quote]
+    end
+    body
   end
 end
