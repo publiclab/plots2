@@ -14,7 +14,7 @@ class NodeTag < ApplicationRecord
     tag.count += 1
     tag.save
   end
-  
+
   def user
     DrupalUser.find_by(uid: uid).try(:user)
   end
@@ -22,7 +22,7 @@ class NodeTag < ApplicationRecord
   def author
     user
   end
-  
+
   def new_author_contributor
     user.new_contributor
   end
