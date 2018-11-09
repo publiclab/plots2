@@ -1,5 +1,7 @@
 /* Like button functionality of nodes */
-
+function getnode(node){
+  return node.attr('node-id'); // get current node
+}
 // functionalize appearance changes
 function changelikecount(value, node_id) {
 
@@ -27,7 +29,7 @@ function showliked(node_id) {
 // support AJAX button clicking
 function clickliked() {
 
-  var node_id = $(this).attr('node-id');
+  var node_id = getnode($(this));
   // toggle liked to not liked.
   $.getJSON("/likes/node/" + node_id + "/delete")
    .done(function(response) {
@@ -43,7 +45,7 @@ function clickliked() {
 
 function clicknotliked() {
 
-  var node_id = $(this).attr('node-id');
+  var node_id = getnode($(this));
   // toggle not liked to liked.
   $.getJSON("/likes/node/" + node_id + "/create")
    .done(function(response) {
