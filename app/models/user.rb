@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
 
   def new_contributor
     @uid = id
-    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
+    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1 and Node.where(:uid => @uid).first.created_at > Date.today-1.month
   end
 
   def create_drupal_user
