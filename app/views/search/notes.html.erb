@@ -4,21 +4,59 @@
   <% if @notes.present? %>
     <h2> Results for <%= params[:query] %></h2>
     <div class="list-group">
+      $(document).on("click", 'ul li', function(){
+    $('ul li').removeClass('active');
+    $(this).addClass('active');
+});
+a {
+    color:#000;
+    text-decoration:none;
+}
+a:hover {
+    text-decoration:underline;
+}
+a:visited {
+    color:#000;
+}
+.nav {
+    padding:10px;
+    border:solid 1px #c0c0c0;
+    border-radius:5px;
+    float:left;
+}
+.nav li {
+    list-style-type:none;
+    float:left;
+    margin:0 10px;
+}
+.nav li a {
+    text-align:center;
+    width:55px;
+    float:left;
+}
+.nav li.active {
+    background-color:blue;
+}
+.nav li.active a {
+    color:#fff;
+    font-weight:bold;
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <%= link_to "Most liked", url_for(:order => :likes), :class => "list-group-item list-group-item-action"%>
+          <a><%= link_to "Most liked", url_for(:order => :likes), :class => "list-group-item list-group-item-action"%></a>
         </li>
-         <li class="nav-item">
-           <%= link_to "Most viewed", url_for(:order => :views), :class => "list-group-item list-group-item-action"%>
+         <a><li class="nav-item">
+           <%= link_to "Most viewed", url_for(:order => :views), :class => "list-group-item list-group-item-action"%></a>
          </li>
-         <li class="nav-item">
-           <%= link_to "Most recent", url_for(:order => :default), :class => "list-group-item list-group-item-action"%>
+         <a><li class="nav-item">
+           <%= link_to "Most recent", url_for(:order => :default), :class => "list-group-item list-group-item-action"%></a>
          </li>
-         <li class="nav-item">
-           <%= link_to "Boolean search", url_for(:order => :natural, :type => :boolean), :class => "list-group-item list-group-item-action"%>
+         <a><li class="nav-item">
+           <%= link_to "Boolean search", url_for(:order => :natural, :type => :boolean), :class => "list-group-item list-group-item-action"%></a>
          </li>
-         <li class="nav-item">
-           <%= link_to "Natural search", url_for(:order => :natural, :type => :natural), :class => "list-group-item list-group-item-action"%>
+         <a><li class="nav-item">
+           <%= link_to "Natural search", url_for(:order => :natural, :type => :natural), :class => "list-group-item list-group-item-action"%></a>
          </li>
       </ul>
     </div>
