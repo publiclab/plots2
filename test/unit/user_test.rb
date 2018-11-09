@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
+  include Utils
   test 'user creation' do
     user = User.new(username: 'chris',
                     password: 'godzillas',
@@ -227,18 +228,20 @@ class UserTest < ActiveSupport::TestCase
     generated_token = all_users[0].generate_token
     assert_equal all_users[0].validate_token(generated_token), true
 
-    #Checking that a user should not be able to verify his email using someone elses token
+    # Checking that a user should not be able to verify his email using someone elses token
     if all_users.length>1
      assert_not_equal all_users[1].validate_token(generated_token), true
     end
 
     generated_token = generated_token[2,generated_token.length]
     begin 
-      assert_not_equal all_users[0].validate_token(generated_token), false
+      assert_not_equal all_users[0].validate_token(generated_token), true
     rescue => error
       puts error.message
       puts "Invalid Token"
     end
+    #Test to make sure that a token that is generated nore that 24hrs ago does not validate the user.
+    assert_not_equal all_users[0].validate_token(encrypt([all_users[0].id, Time.now - (24*60*60+1)])), true
   end
 
 end
