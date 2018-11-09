@@ -418,15 +418,15 @@ class User < ActiveRecord::Base
   end
 
   def generate_token
-    user_id_and_time = [id, Time.now]
+    user_id_and_time = { :id => id, :timestamp => Time.now }
     encrypt(user_id_and_time)
   end
 
   def validate_token(token)
     decrypted_data = decrypt(token)
-    if id != decrypted_data[0]
+    if id != decrypted_data[:id]
       return false
-    elsif (Time.now - decrypted_data[1]) / 1.hour > 24.0
+    elsif (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
       return false
     else
       return true
