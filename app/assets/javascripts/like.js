@@ -60,6 +60,8 @@ function clicknotliked() {
 function insertusername(response){
   if(parseInt(response) === 1){
       username = document.getElementById('current-username').textContent;
-      document.getElementById('liked-this').innerHTML = '<i class="fa fa-star-o"></i><a href="/profile/'+username+'/">'+username+'</a>';
+      html = $("li#users").attr("data-content");
+      html = html.replace("<div id='liked-this'></div>", "<div id='liked-this'><i class='fa fa-star-o'></i><a href='/profile/"+username+"/'>"+username+"</a></div>");
+      $("li#users").attr("data-content", html);
     }
 }
