@@ -18,6 +18,7 @@ class UserSessionsController < ApplicationController
   def handle_social_login_flow(auth)
     # Find an identity here
     @identity = UserTag.find_with_omniauth(auth)
+    return_to = request.env['omniauth.origin'] || root_url
 
     if signed_in?
       if @identity.nil?
@@ -27,19 +28,19 @@ class UserSessionsController < ApplicationController
         # associate the identity
         @identity.user = current_user
         @identity.save
-        redirect_to root_url, notice: "Successfully linked to your account!"
+        redirect_to return_to, notice: "Successfully linked to your account!"
       elsif @identity.user == current_user
         # User is signed in so they are trying to link an identity with their
         # account. But we found the identity and the user associated with it
         # is the current user. So the identity is already associated with
         # this user. So let's display an error message.
-        redirect_to root_url, notice: "Already linked to your account!"
+        redirect_to return_to, notice: "Already linked to your account!"
       else
         # User is signed in so they are trying to link an identity with their
         # account. But we found the identity and a different user associated with it
         # ,which is not the current user. So the identity is already associated with
         # that user. So let's display an error message.
-        redirect_to root_url, notice: "Already linked to another account!"
+        redirect_to return_to, notice: "Already linked to another account!"
       end
     else # not signed in
       if @identity&.user.present?
@@ -47,7 +48,7 @@ class UserSessionsController < ApplicationController
         # just log them in here
         @user = @identity.user
         @user_session = UserSession.create(@identity.user)
-        redirect_to root_url, notice: "Signed in!"
+        redirect_to return_to, notice: "Signed in!"
       else # identity does not exist so we need to either create a user with identity OR link identity to existing user
         if User.where(email: auth["info"]["email"]).empty?
           # Create a new user as email provided is not present in PL database
@@ -59,7 +60,7 @@ class UserSessionsController < ApplicationController
           @user = user
           # send key to user email
           PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
-          redirect_to root_url, notice: "You have successfully signed in. Please change your password via a link sent to you via e-mail"
+          redirect_to return_to, notice: "You have successfully signed in. Please change your password via a link sent to you via e-mail"
         else # email exists so link the identity with existing user and log in the user
           user = User.where(email: auth["info"]["email"])
           # If no identity was found, create a brand new one here
@@ -70,7 +71,7 @@ class UserSessionsController < ApplicationController
           @user = user
           # log in them
           @user_session = UserSession.create(@identity.user)
-          redirect_to root_url, notice: "Successfully linked to your account!"
+          redirect_to return_to, notice: "Successfully linked to your account!"
         end
       end
     end
