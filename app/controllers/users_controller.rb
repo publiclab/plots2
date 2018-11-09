@@ -349,11 +349,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.validate_token(params[:token])
       puts "Email successfully validated"
-      redirect_to "/login"
     else
       puts "Email validation failed"
-      redirect_to "/login"
     end
+    redirect_to "/login"
   end
 
   private
