@@ -345,6 +345,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def verify_email
+    @user = User.find(params[:id])
+    if @user.validate_token(params[:token])
+      puts "Email successfully validated"
+      redirect_to "/login"
+    else
+      puts "Email validation failed"
+      redirect_to "/login"
+    end
+  end
+
   private
 
   def set_user

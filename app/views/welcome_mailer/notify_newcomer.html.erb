@@ -19,6 +19,9 @@
     Looking forward to hearing from you soon,
 
     The Public Lab Community
+
+    You need to verify your email to confirm your registration. Please click the link below to confirm your email. Note that this link is valid for only 24 hours after its generation. Thank you. 
+    <%="localhost:3000/#{@user.id}/verify/#{@user.generate_token}" %>
 <% end %>
 
 <%= @footer %>
