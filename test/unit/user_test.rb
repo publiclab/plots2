@@ -222,11 +222,22 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'generate token and validate token for user email verification' do
-    all_users = User.where("id<?",3)
-    for i in all_users
-      user_obj = i
-      generated_token = user_obj.generate_token
-      assert_equal user_obj.validate_token(generated_token), true
+    all_users = User.where("id<?", 3)
+    #Checking if a correct user could verify his email with the token generated for him
+    generated_token = all_users[0].generate_token
+    assert_equal all_users[0].validate_token(generated_token), true
+
+    #Checking that a user should not be able to verify his email using someone elses token
+    if all_users.length>1
+     assert_not_equal all_users[1].validate_token(generated_token), true
+    end
+
+    generated_token = generated_token[2,generated_token.length]
+    begin 
+      assert_not_equal all_users[0].validate_token(generated_token), false
+    rescue => error
+      puts error.message
+      puts "Invalid Token"
     end
   end
 
