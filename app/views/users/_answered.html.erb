@@ -1,7 +1,7 @@
 <div id="answered-question">
   <div class="row">
   <% @answered_questions.each_with_index do |question,i| %>
-    <% answers = if @user then question.answers.where(uid: @user.uid) else  question.answers end %>
+    <% answers = if @user then question&.answers.where(uid: @user.uid) else  question.answers end %>
     <div class="col-md-4" style="margin-top:30px;">
       <div class="note note-pane note-answer">
         <div class="header-icon"><i class="fa fa-question-circle"></i></div>
