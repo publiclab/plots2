@@ -33,7 +33,7 @@
               <a href="/profile/<%= coauthor.username %>">
                 <%= coauthor.username%></a> <%= coauthor.new_contributor %>
               <%= ',' if i < @node.coauthors.length-1 %><% end %><% end %>
-              <% if current_user && current_user.id == @node.uid %><a onClick="promptTag('with:')" href="#"><i class="fa fa-pencil"></i></a><% end %> |
+              <% if current_user && current_user.id == @node.uid %><a onClick="promptTag('with:')" href="#"><i style="color:#aaa;" class="fa fa-pencil"></i></a><% end %> |
 
       <span class="hidden-xs hidden-sm">
         <%= @node.created_at.to_s(:long) %>
