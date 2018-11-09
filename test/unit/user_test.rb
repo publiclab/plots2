@@ -222,26 +222,32 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal jeffrey.username, "jeff"
   end
 
-  test 'generate token and validate token for user email verification' do
+  test 'generate token and validate token correctness test' do
+    user_obj = User.first
+    generated_token = user_obj.generate_token
+    assert_equal user_obj.validate_token(generated_token), true
+  end
+
+  test 'do not verify users email if the token is not generated for him' do
     all_users = User.where("id<?", 3)
-    #Checking if a correct user could verify his email with the token generated for him
     generated_token = all_users[0].generate_token
-    assert_equal all_users[0].validate_token(generated_token), true
-
-    # Checking that a user should not be able to verify his email using someone elses token
-    if all_users.length>1
-     assert_not_equal all_users[1].validate_token(generated_token), true
+    if all_users.length > 1
+      assert_not_equal all_users[1].validate_token(generated_token), true
     end
+  end
 
+  test 'raise exception upon invalid token' do
+    user_obj = User.first
+    generated_token = user_obj.generate_token
     generated_token = generated_token[2,generated_token.length]
-    begin 
-      assert_not_equal all_users[0].validate_token(generated_token), true
-    rescue => error
-      puts error.message
-      puts "Invalid Token"
+    assert_raise do
+      user_obj.validate_token(generated_token)
     end
-    #Test to make sure that a token that is generated nore that 24hrs ago does not validate the user.
-    assert_not_equal all_users[0].validate_token(encrypt([all_users[0].id, Time.now - (24*60*60+1)])), true
+  end
+
+  test 'do not validate email if token has expired' do
+    user_obj = User.first
+    assert_not_equal user_obj.validate_token(encrypt({:id => user_obj.id, :timestamp => Time.now - (24*60*60+1)})), true
   end
 
 end
