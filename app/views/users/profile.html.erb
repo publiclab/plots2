@@ -4,7 +4,7 @@
 
   <h3 style="margin-top:0;"><%= @user.name %> <%= @user.new_contributor %>
     <small>
-      <a href="/p/<%= @user.username %>"><i class="fa fa-link"></i></a> 
+      <a href="/p/<%= @user.username %>"><i class="fa fa-link"></i></a>
       <%= @user.note_count %><a href='/notes/author/<%= @user.name %>'> research notes</a> and <%= @user.revision_count %> wiki edits
       <% if current_user && current_user.role == "admin" %> | <%= @user.email %><% end %>
       <% if @user.role == "moderator" %> | <i class="fa fa-certificate"></i> <%= t('users.profile.moderator') %><% end %>
@@ -13,7 +13,7 @@
     </small>
   </h3>
 
-  <p><small><%= raw auto_link(RDiscount.new(@profile_user.bio || '').to_html, :sanitize => false) %></small></p>
+  <p><small><%= raw auto_link(Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@profile_user.bio || ''), :sanitize => false) %></small></p>
 
   <hr />
   <div class="row" id="highlight" style=" text-align: center;">
@@ -290,7 +290,7 @@
     $('#btn-token').click(function() {
         alert("Your access token is: <%= @user.user.token %>");
     });
-      
+
     $('#link_social_media').click(function(){
         sign = document.getElementById('social-name').value;
         $.post('/profile/tags/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {

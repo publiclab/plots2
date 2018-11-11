@@ -70,7 +70,7 @@ class Comment < ApplicationRecord
   end
 
   def body_markdown
-    RDiscount.new(body, :autolink).to_html
+    Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true).render(body)
   end
 
   def icon
@@ -350,10 +350,7 @@ class Comment < ApplicationRecord
   end
 
   def render_body
-    body = RDiscount.new(
-      title_suggestion(self),
-      :autolink
-    ).to_html
+    body = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true).render(title_suggestion(self))
     # if it has quoted email text that wasn't caught by the yahoo and gmail filters,
     # manually insert the comment filter delimeter:
     parsed = parse_quoted_text

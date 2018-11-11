@@ -13,9 +13,9 @@ You can reply to this email or visit this link:
 
 <p><b><a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @comment.author.name %>"><%= @comment.author.name %></a> wrote:</b></p>
 
-<hr /> 
+<hr />
 
-<p><%= raw auto_link(RDiscount.new(@comment.body_email(ActionMailer::Base.default_url_options[:host])).to_html) %></p>
+<p><%= raw auto_link(Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@comment.body_email(ActionMailer::Base.default_url_options[:host]))) %></p>
 
 <hr />
 

@@ -339,6 +339,7 @@ GEM
     rdiscount (2.2.0.1)
     recaptcha (4.13.0)
       json
+    redcarpet (3.4.0)
     redis (4.0.3)
     ref (2.0.0)
     request_store (1.4.1)
@@ -530,6 +531,7 @@ DEPENDENCIES
   rb-readline
   rdiscount (~> 2.2, >= 2.2.0.1)
   recaptcha
+  redcarpet (~> 3.4)
   responders (~> 2.0)
   rest-client
   reverse_markdown
@@ -559,4 +561,4 @@ RUBY VERSION
    ruby 2.4.4p296
 
 BUNDLED WITH
-   1.16.2
+   1.16.6

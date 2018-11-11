@@ -4,9 +4,9 @@ Hi! There's been a new answer posted for the question '<a href='https://<%= Acti
 
 <p><b>Here is the answer that <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @answer.author.name %>"><%= @answer.author.name %></a> wrote:</b></p>
 
-<hr /> 
+<hr />
 
-<p><%= raw auto_link(RDiscount.new(@answer.body_email(ActionMailer::Base.default_url_options[:host])).to_html) %></p>
+<p><%= raw auto_link(Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@answer.body_email(ActionMailer::Base.default_url_options[:host]))) %></p>
 
 <hr />
 

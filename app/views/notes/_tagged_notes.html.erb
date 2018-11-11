@@ -11,12 +11,12 @@
         | <%= number_with_delimiter(node.totalviews) %> <%= t('notes._tagged_notes.views') %>
         | <i style="color:#888;" class="fa fa-star-o"></i> <%= node.likes %>
       </small></p>
-      <p class="hidden-lg"><%= raw strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150) %></p>
-      <p class="visible-lg"><small><%= raw (strip_tags(sanitize(RDiscount.new(node.body).to_html)).truncate(150)) %></small></p>
+      <p class="hidden-lg"><%= raw strip_tags(sanitize(Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(node.body))).truncate(150) %></p>
+      <p class="visible-lg"><small><%= raw (strip_tags(sanitize(Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(node.body))).truncate(150)) %></small></p>
       <p><a href="<%= node.path %>"><%= t('notes._tagged_notes.read_more') %> &raquo;</a></p>
       <p>
         <% node.tags[0..3].each do |tag| %>
-          <a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a> 
+          <a class="label label-primary" href="/tag/<%= tag.name %>"><%= tag.name %></a>
         <% end %>
       </p>
       <% if params[:mod] %>

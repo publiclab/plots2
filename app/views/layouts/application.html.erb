@@ -5,7 +5,7 @@
     <title>&#127880; Public Lab<%= ": "+(@title || params[:action].capitalize) %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <% if @node && @node.body %>
-      <meta name="description" content="<%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>" />
+      <meta name="description" content="<%= raw strip_tags(sanitize(Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@node.body))).truncate(100) %>" />
     <% else %>
       <meta name="description" content="Public Lab is an open community which collaboratively develops accessible, open source, Do-It-Yourself technologies for investigating local environmental health and justice issues." />
     <% end %>
@@ -36,14 +36,14 @@
       <meta property="og:title" content="<%= @title %>" />
       <meta property="og:site_name" content="Public Lab" />
       <meta property="og:url" content="<%= request.host %>/n/<%= @node.id %>" />
-      <meta property="og:description" content="<%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>" />
+      <meta property="og:description" content="<%= raw strip_tags(sanitize(Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@node.body))).truncate(100) %>" />
       <meta property="og:type" content="article" />
       <meta property="fb:app_id" content="644692375883090" />
       <% if @node.main_image %>
         <meta property="og:image" content="<%= @node.main_image.path(:default) %>" />
       <% end %>
       <p class="facebook-summary" style="display:none;">
-        <%= raw strip_tags(sanitize(RDiscount.new(@node.body).to_html)).truncate(100) %>
+        <%= raw strip_tags(sanitize(Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@node.body))).truncate(100) %>
       </p>
     <% end %>
     <p class="facebook-summary" style="display:none;"><%= t('layout._header.summary') %></p>
@@ -58,7 +58,7 @@
       I18n.locale = "<%= I18n.locale %>";
       I18n.fallbacks = true;
     </script>
-    
+
     <% cache('feature_header', skip_digest: true) do %>
       <%= feature("header") %>
     <% end %>

@@ -8,9 +8,9 @@ Hi! There's been a response to a discussion you're involved in. You can reply to
 
 <p><b><a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @comment.author.name %>"><%= @comment.author.name %></a> wrote:</b></p>
 
-<hr /> 
+<hr />
 
-<p><%= raw auto_link(RDiscount.new(@comment.body_email(ActionMailer::Base.default_url_options[:host])).to_html) %></p>
+<p><%= raw auto_link(Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@comment.body_email(ActionMailer::Base.default_url_options[:host]))) %></p>
 
 <hr />
 
@@ -25,7 +25,7 @@ Hi! There's been a response to a discussion you're involved in. You can reply to
 
 <% if @comment.parent.has_power_tag('question') %>
 <p>Reply at: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.parent.path(:question) %>#answer-<%= @comment.aid %>-comment</p>
-<% else %> 
+<% else %>
 <p>Reply at: https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.node.path %>#comments</p>
 <% end %>
 

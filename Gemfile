@@ -114,3 +114,5 @@ end
 group :production do
   gem "scrypt", "~> 3"
 end
+
+gem "redcarpet", "~> 3.4"

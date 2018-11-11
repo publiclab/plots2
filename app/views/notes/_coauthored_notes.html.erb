@@ -44,7 +44,7 @@
                 <a <% if @widget %>target="_blank"<% end %> href="<%= node.path %>#Upgrade+grid"><i class="fa fa-level-up" style="color:#db3a1e;"></i> <%= Node.upgrades(node.power_tag('upgrades')).count %> upgrades</a>
               </small></p>
             <% else %>
-              <p><%= raw strip_tags(sanitize(RDiscount.new(node.body_preview).to_html)) if node.body %></p>
+              <p><%= raw strip_tags(sanitize(Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(node.body_preview))) if node.body %></p>
             <% end %>
             <p>
               <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>

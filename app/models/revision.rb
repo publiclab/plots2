@@ -91,8 +91,7 @@ class Revision < ApplicationRecord
   # filtered version of node content
   def render_body
     body = self.body || ''
-    body = RDiscount.new(body)
-    body = body.to_html
+    body = Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(body)
     body = body.gsub(Callouts.const_get(:FINDER), Callouts.const_get(:PRETTYLINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAGNUMBER), Callouts.const_get(:NODELINKHTML))
     body = body.gsub(Callouts.const_get(:HASHTAG), Callouts.const_get(:HASHLINKHTML))

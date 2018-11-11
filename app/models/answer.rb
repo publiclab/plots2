@@ -15,7 +15,7 @@ class Answer < ApplicationRecord
   end
 
   def body_markdown
-    RDiscount.new(body, :autolink).to_html
+    Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true).render(body)
   end
 
   # users who like this answer

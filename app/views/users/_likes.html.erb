@@ -43,7 +43,7 @@
                 <a <% if @widget %>target="_blank"<% end %> href="<%= like.path %>#Questions"><i class="fa fa-question-circle" style="color:#db3a1e;"></i> <%= like.questions.count %> questions</a>
               </small></p>
             <% else %>
-              <p><%= raw strip_tags(sanitize(RDiscount.new(like.body_preview).to_html)) if like.body %></p>
+              <p><%= raw strip_tags(sanitize(Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(like.body_preview))) if like.body %></p>
             <% end %>
             <p>
               <% if logged_in_as(['admin','moderator']) %><a class="btn btn-default" href="/moderate/spam/<%= like.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>

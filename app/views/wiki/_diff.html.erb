@@ -1,7 +1,7 @@
 <div class="diff-container diff-container-<%= @a.vid %>-<%= @b.vid %>">
   <span class="diff diff-<%= @a.vid %>-<%= @b.vid %>"></span>
-  <div class="diff-hidden diff-a" style="display:none;"><%= raw RDiscount.new(@a.body).to_html %></div>
-  <div class="diff-hidden diff-b" style="display:none;"><%= raw RDiscount.new(@b.body).to_html %></div>
+  <div class="diff-hidden diff-a" style="display:none;"><%= raw Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@a.body) %></div>
+  <div class="diff-hidden diff-b" style="display:none;"><%= raw Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@b.body) %></div>
   <script>
     (function() {
 
@@ -19,7 +19,7 @@
 
           // add eventually, for red/green color issues:
           // <i class='fa fa-minus-circle'></i>
-          // <i class='fa fa-plus-circle'></i> 
+          // <i class='fa fa-plus-circle'></i>
 
           line += obj.value + "</div>";
           output += line;
