@@ -161,8 +161,18 @@
       <script>
         (function() {
           $('.btn-save').click(function onClick(e) {
+          	var input1 = document.getElementById("username").value.length;
+          	var input2 = document.getElementById("email").value.length;
+          	var input3 = document.getElementById("password").value.length;
+          	var input4 = document.getElementById("password-confirmation").value.length;
+          	var input5 = document.getElementById("user_bio").value.length;
+          	if(input1 && input2 && input3 && input4 && input5) {
             $(this).addClass("disabled") // disable the button after it is clicked
                    .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
+               }
+               else {
+alert("Field Required");
+               }
           })
         })();
       </script>
