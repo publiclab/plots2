@@ -422,14 +422,17 @@ class User < ActiveRecord::Base
     encrypt(user_id_and_time)
   end
 
-  def validate_token(token)
-    decrypted_data = decrypt(token)
-    if id != decrypted_data[:id]
-      return false
-    elsif (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
-      return false
+  def self.validate_token(token)
+    begin
+      decrypted_data = decrypt(token)      
+    rescue Exception => e
+      puts e.message
+      return 0
+    end
+    if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
+      return decrypted_data[:id]
     else
-      return true
+      return 0
     end
   end
 
