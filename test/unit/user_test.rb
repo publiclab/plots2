@@ -225,7 +225,7 @@ class UserTest < ActiveSupport::TestCase
   test 'generate token and validate token correctness test' do
     user_obj = User.first
     generated_token = user_obj.generate_token
-    assert_not_equal User.validate_token(generated_token), 0
+    assert_equal User.validate_token(generated_token), user_obj.id
   end
 
   test 'do not verify users email if the token is not generated for him' do
