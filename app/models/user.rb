@@ -199,7 +199,7 @@ class User < ActiveRecord::Base
 
   def get_value_of_power_tag(key)
     tname = user_tags.where('value LIKE ?', key + ':%')
-    tvalue = tname.first.name.partition(':').last
+    tvalue = tname.first.name.partition(':').last if tname.present?
     tvalue
   end
 
