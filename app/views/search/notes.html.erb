@@ -4,10 +4,12 @@
   <% if @notes.present? %>
     <h2> Results for <%= params[:query] %></h2>
     <div class="list-group">
-      $(document).on("click", 'ul li', function(){
+    <script>  $(document).on("click", 'ul li', function(){
     $('ul li').removeClass('active');
     $(this).addClass('active');
 });
+      </script>
+<style>
 a {
     color:#000;
     text-decoration:none;
@@ -41,6 +43,7 @@ a:visited {
     color:#fff;
     font-weight:bold;
 }
+      </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
       <ul class="nav nav-pills">
         <li class="nav-item">
