@@ -243,7 +243,8 @@ module Srch
               doc_title: model.title,
               score: model.answers.length,
               latitude: model.lat,
-              longitude: model.lon
+              longitude: model.lon,
+              blurred: model.blurred?
             )
           end
           DocList.new(docs, search_request)
