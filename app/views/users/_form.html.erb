@@ -1,5 +1,4 @@
 <%= form_for @user, :url => {:controller => 'users', :action => @action}, :html => {:class => "row"} do |f| %>
-
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
   <div class="col-lg-8 col-md-10 col-sm-10">
@@ -148,7 +147,7 @@
       <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
 
         <!-- button for creating new users -->
-        <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
+        <button onclick="checkInputs()" class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
         <a class="btn btn-lg btn-default" href="/login"><%= t('users._form.log_in') %></a>
 
       <% elsif params[:controller] == "users" && params[:action] == "edit" %>
@@ -157,24 +156,60 @@
         <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.save') %></button>
 
       <% end %>
-
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script type="text/javascript" src="js/noty/packaged/jquery.noty.packaged.min.js"></script>
       <script>
         (function() {
           $('.btn-save').click(function onClick(e) {
-          	var input1 = document.getElementById("username").value.length;
-          	var input2 = document.getElementById("email").value.length;
-          	var input3 = document.getElementById("password").value.length;
-          	var input4 = document.getElementById("password-confirmation").value.length;
-          	var input5 = document.getElementById("user_bio").value.length;
-          	if(input1 && input2 && input3 && input4 && input5) {
-            $(this).addClass("disabled") // disable the button after it is clicked
-                   .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
-               }
-               else {
-alert("Field Required");
-               }
+            
           })
         })();
+        /*
+       
+
+        */
+        function checkInputs() {
+          var input1 = document.getElementById("username").value;
+            var input2 = document.getElementById("email").value;
+            var input3 = document.getElementById("password").value;
+            var input4 = document.getElementById("password-confirmation").value;
+            var inputs = [input1, input2, input3, input4];
+            var fields = ["Username", "Email", "Password", "Password-confirmation"];
+            var inputsLength = inputs.length;
+            var emptyFields = [];
+            var i;
+            var errors=0;
+            /*
+space
+                */
+for(i=0;i<inputsLength;i++) {
+  if(inputs[i]==="") {
+  errors++;
+   emptyFields.push(fields[i]);
+  }
+  else {
+   // otherwise, no errors
+  }
+}
+//Now, we have detected all the empty fields and kept them in an array named emptyFields
+if(errors > 0) {
+    new Noty({
+                  type:'error',
+    text: "Please fill In: " + emptyFields,
+    animation: {
+        open: 'animated bounceInRight', // Animate.css class names
+        close: 'animated bounceOutRight',
+        timeout: 500 // Animate.css class names
+    }
+}).show();
+}
+else {
+   $(this).addClass("disabled") // disable the button after it is clicked
+                   .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
+  console.log("Success ! No errors found...")
+  alert("no errors found");
+}
+        }
       </script>
 
     </div>
@@ -186,3 +221,6 @@ alert("Field Required");
   </div>
 
 <% end %>
+<style>
+
+</style>
