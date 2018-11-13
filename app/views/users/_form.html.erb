@@ -168,44 +168,50 @@
        
 
         */
-        function checkInputs() {
-          var input1 = document.getElementById("username").value;
-            var input2 = document.getElementById("email").value;
-            var input3 = document.getElementById("password").value;
-            var input4 = document.getElementById("password-confirmation").value;
-            var inputs = [input1, input2, input3, input4];
-            var fields = ["Username", "Email", "Password", "Password-confirmation"];
-            var inputsLength = inputs.length;
-            var emptyFields = [];
-            var i;
-            var errors=0;
-            /*
-space
-                */
+function checkInputs() {
+  //Getting all inputs stored in a variable
+var input1 = document.getElementById("username").value;
+var input2 = document.getElementById("email").value;
+var input3 = document.getElementById("password").value;
+var input4 = document.getElementById("password-confirmation").value;
+  //Array for all inputs
+var inputs = [input1, input2, input3, input4];
+  //Array for name of all inputs
+var fields = ["Username", "Email", "Password", "Password-confirmation"];
+  //Getting length of the array
+var inputsLength = inputs.length;
+  //Using this array to store all fields left empty by the user
+var emptyFields = [];
+  //for loop
+var i;
+  //counting err
+var errors=0;
+  //Loop to check empty inputs and fill in their names in the array of emptyFields[]
 for(i=0;i<inputsLength;i++) {
-  if(inputs[i]==="") {
-  errors++;
-   emptyFields.push(fields[i]);
-  }
+    if(inputs[i]==="") {
+      errors++;
+      emptyFields.push(fields[i]);
+    }
 }
 //Now, we have detected all the empty fields and kept them in an array named emptyFields
 if(errors > 0) {
     new Noty({
-                  type:'error',
+    type:'error',
     text: "Please fill In: " + emptyFields,
     animation: {
-        open: 'animated bounceInRight', // Animate.css class names
-        close: 'animated bounceOutRight',
-        timeout: 500 // Animate.css class names
+    open: 'animated bounceInRight', // Animate.css class names
+    close: 'animated bounceOutRight',
+    timeout: 500 // Animate.css class names
     }
-}).show();
+    }).show();
 }
 else {
-   $(this).addClass("disabled") // disable the button after it is clicked
-                   .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
-  console.log("Success ! No errors found...")
-  alert("no errors found");
+    $(this).addClass("disabled") // disable the button after it is clicked
+    .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
+    console.log("Success ! No errors found...")
+    alert("no errors found");
 }
+//closing function checkInputs();
         }
       </script>
 
