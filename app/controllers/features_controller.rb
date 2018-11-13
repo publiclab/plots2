@@ -2,6 +2,7 @@ class FeaturesController < ApplicationController
   before_action :require_user, except: [:embed]
 
   def index
+    @title = "Features"
     @features = Node.where(type: 'feature')
       .paginate(page: params[:page])
   end

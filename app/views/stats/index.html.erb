@@ -17,10 +17,13 @@
 
   <p><%= raw t('notes.stats.looking_back', :time => @time.to_formatted_s(:long)) %></p>
   <p>
-    <%= raw t('notes.stats.try_time_further_back', :url1 => "?time="+(@time-1.year).to_formatted_s(:long), 
+    <%= raw t('notes.stats.try_time_further_back', :url1 => "?time="+(@time-1.year).to_formatted_s(:long),
     :url2 => "?time="+(@time-1.month).to_formatted_s(:long), :url3 => "?time="+(@time-1.week).to_formatted_s(:long)) %>
   </p>
-
+  <p>
+    <%= raw t('notes.stats.try_time_further_forward', :url1 => "?time="+(@time+1.year).to_formatted_s(:long),
+    :url2 => "?time="+(@time+1.month).to_formatted_s(:long), :url3 => "?time="+(@time+1.week).to_formatted_s(:long)) %>
+  </p>
   <hr />
 
   <h4>
@@ -44,9 +47,9 @@
   <h4><%= raw t('notes.stats.research_notes_posted_by_contributors', :note_count => @all_notes, :contributors_count => @all_contributors,
   :time => time_ago_in_words(Node.find_by(type: 'note', status: 1).created_at)) %></h4>
   <h4><%= raw t('notes.stats.total_contributors', :all_contributors_count => @all_time_contributors) %></h4>
-  
+
   <p><%= raw t('notes.stats.notes_per_week_past_year', :note_count => @notes_per_week_past_year.round(2)) %></p>
-  
+
   <p><i><%= t('notes.stats.note_posting_52_weeks') %></i></p>
 
   <div id="notes" style="border:1px solid #E5E5E5"></div>
@@ -82,7 +85,7 @@
     divisions[2] = <%= @graph_comments %>
 
     let months = ["J", "F", "M", "A", "M", "J", "J", "A","S", "O", "N", "D"];
-    
+
     let parents = new Array();
     parents[0] = "#notes";
     parents[1] = "#wikis";
@@ -123,10 +126,10 @@
         count++;
     }
     let title = new Array();
-    title[0] = "notes"; 
-    title[1] = "wikis"; 
+    title[0] = "notes";
+    title[1] = "wikis";
     title[2] = "comments";
-    
+
     let values = new Array();
     for(i = 0; i < 3; i++){
         let j = 0;
@@ -135,33 +138,33 @@
             values[i][j] = divisions[i][j][1][1];
         }
     }
-	
+
     let datasets = new Array();
     for(i = 0; i < 3; i++){
         datasets[i] = new Array();
-        obj = new Object(); 
+        obj = new Object();
         obj.title = title[i];
         obj.values = new Array();
         obj.values = values[i];
         datasets[i][0] = new Object();
         datasets[i][0] = obj;
     }
-    
+
     let data = new Array();
     for(i = 0; i < 3; i++){
         data[i] = new Object();
         data[i].labels = labels;
         data[i].datasets = datasets[i];
     }
-	
+
     for(i = 0; i < 3; i++){
         let lineGraph = new Chart({
-            parent: parents[i], 
-            type: "bar", 
+            parent: parents[i],
+            type: "bar",
             show_dots: 0,
             heatline: 1,
             height: 115,
-            region_fill: 0, 
+            region_fill: 0,
             data: data[i],
             x_axis_mode: "tick",
             y_axis_mode: "span",

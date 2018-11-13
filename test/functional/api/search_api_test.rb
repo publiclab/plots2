@@ -98,15 +98,14 @@ class SearchApiTest < ActiveSupport::TestCase
     assert matcher =~ json
   end
 
-  test 'search Tag Nearby Nodes functionality' do
-    get '/api/srch/taglocations?query=71.00,52.00&tag=awesome'
+  test 'search Tag Nearby Nodes functionality with a valid query' do
+    get '/api/srch/taglocations?query=71.00,52.00'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
             query: '71.00,52.00',
-            tag: 'awesome',
             seq: nil,
         }.ignore_extra_keys!
     }.ignore_extra_keys!
@@ -115,8 +114,8 @@ class SearchApiTest < ActiveSupport::TestCase
 
     json = JSON.parse(last_response.body)
 
-    assert matcher =~ json
-
+    assert matcher    =~ json
+    assert_equal 13,  json['items'][0]['doc_id']
   end
 
   test 'search Recent People functionality' do

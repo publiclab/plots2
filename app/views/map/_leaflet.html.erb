@@ -31,8 +31,8 @@
     // var hash = new L.Hash(map< unique_id > );
 
     function onMapLoad(e){
-      var lat = <%= lat %> ;
-      var lon = <%= lon %> ;
+      var lat = <%= '%.2f' % lat %> ; // ensure format 0.00 (two decimal places)
+      var lon = <%= '%.2f' % lon %> ;
       var s = lat+","+lon ;
       $.getJSON("/api/srch/taglocations?query="+s , function(data){
         if (!!data.items){

@@ -90,7 +90,7 @@
         <li class="dropdown">
           <% unless params[:action] == "register" || params[:action] == "signup" %>
             <% if current_user %>
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white">
                 Profile
               </a>
               <ul class="dropdown-menu">
@@ -102,7 +102,7 @@
                     <% end %>
                   </h5>
                 </div>
-              
+
                 <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
                 <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li>
                 <li><a href="/settings" >Email Settings</a></li>
@@ -121,48 +121,9 @@
                 <li><a href="/logoutRemotely">Logout from all devices</a></li>
               </ul>
             <% else %>
-              <a class="hidden-sm" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                 <%= t('layout._header.login.login_title') %>
+              <a href="/login?return_to=<%= params[:return_to] || request.path %>">
+                <%= t('layout._header.login.login_title') %>
               </a>
-              <ul id="login-dropdown" class="dropdown-menu" style="width:245px;">
-                <li style="padding:6px;">
-                  <%= form_for :user_session, :as => :user_session, :url => { :controller => "user_sessions", :action => "create" }, :html => {:class => "form"} do |f| %>
-                  <div class="form-group">
-                     <% if Rails.env == "production" %>
-                       <label style="display: block; text-align: center;">Log In with</label>
-                        <div class="loginbutton" style="float:left">
-                           <%= render :partial => "layouts/social_icons" %>
-                        </div>
-                        <br style="clear:both;"/>
-                       <label style="display: block; text-align: center; margin-top:13px;">OR</label>
-                     <% end %>
-                  </div>
-                  <form>
-    		            <div class="form-group">
-                      <label for="username"><%= t('layout._header.login.username') %></label>
-                      <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username-login' } %>
-                     </div>
-                    <div class="form-group">
-                      <label for="password"><%= t('layout._header.login.password') %></label>
-                      <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-login' } %>
-                    </div>
-                    <input type="hidden" name="return_to" value="<%= params[:return_to] || request.path %>" />
-                    <div class="form-check float-right">
-                      <label>
-                        <%= f.check_box :remember_me %> <%= t('layout._header.login.remember_me') %>
-                      </label>
-                    </div>
-                    <div class="form-group">
-                      <button class="btn btn-primary" type="submit" tabindex="3"><%= t('layout._header.login.login_title') %></button>
-                      <button class="btn btn-default" href="/signup" tabindex="4"><%= t('layout._header.login.sign_up') %></button>
-                    </div>
-                    <div>
-                      <a href="/reset/"><%= t('layout._header.login.reset_password') %></a>
-                    </div>
-                  </form>
-                  <% end %>
-                </li>
-              </ul>
             <% end %>
           <% end %>
         </li>
