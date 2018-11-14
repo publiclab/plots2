@@ -7,6 +7,7 @@ class UniqueUsernameValidator < ActiveModel::Validator
 end
 
 class User < ActiveRecord::Base
+  extend Utils
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
@@ -418,12 +419,12 @@ class User < ActiveRecord::Base
 
   def generate_token
     user_id_and_time = { :id => id, :timestamp => Time.now }
-    Utils.encrypt(user_id_and_time)
+    User.encrypt(user_id_and_time)
   end
 
   def self.validate_token(token)
     begin
-      decrypted_data = Utils.decrypt(token)      
+      decrypted_data = User.decrypt(token)      
     rescue StandardError => e
       puts e.message
       return 0

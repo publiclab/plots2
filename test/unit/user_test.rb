@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  include Utils
   test 'user creation' do
     user = User.new(username: 'chris',
                     password: 'godzillas',
@@ -244,7 +243,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'do not validate email if token has expired' do
-    assert_equal User.validate_token(Utils.encrypt({:id => 1, :timestamp => Time.now - (24*60*60+1)})), 0
+    assert_equal User.validate_token(User.encrypt({:id => 1, :timestamp => Time.now - (24*60*60+1)})), 0
   end
 
 end
