@@ -1,6 +1,8 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  node:
+    only_author_use_powertag: "Error: only the author may use that powertag."
   dashboard:
     _activity:
       share_work: "Share your work"
@@ -103,3 +105,41 @@ en:
       month: Month
       second: Seconds
       year: Year
+  notes:
+    stats:
+      about_this_page: |
+        <h4>About this page</h4>
+
+        <p>Public Lab is built on the contributions of community members, and this website represents our collective open source work.</p>
+      contributors_statistics: "Contributor statistics"
+      looking_back: "Looking back from <i>%{time}</i>."
+      try_time_further_back: |
+        Try
+        <a href='%{url1}'>one year</a>,
+        <a href='%{url2}'>one month</a>, or
+        <a href='%{url3}'>one week</a>
+        further back.
+      try_time_further_forward: |
+        Or try
+        <a href='%{url1}'>one year</a>,
+        <a href='%{url2}'>one month</a>, or
+        <a href='%{url3}'>one week</a>
+        further forward.
+      notes_and_wiki_edits_past_week: |
+        <a href='%{url1}'>%{note_count} notes</a>
+        and <a href='%{url2}'>%{wiki_count} wiki edits</a> posted in the past week.
+      people_joined_past_week: "<b>%{people_count} people</b> joined in the past week."
+      notes_and_wiki_edits_past_month: |
+        <a href='%{url1}'>%{note_count} notes</a>
+        and <a href='%{url2}'>%{wiki_count} wiki edits</a> posted in the past month.
+      people_joined_past_month: "<b>%{people_count} people</b> joined in the past month."
+      research_notes_posted_by_contributors: "%{note_count} research notes have been posted by %{contributors_count} contributors since %{time} ago"
+      total_contributors: "%{all_contributors_count} Total Contributors (Tallied weekly)"
+      notes_per_week_past_year: "%{note_count} notes per week over the past year."
+      note_posting_52_weeks: "Note posting for the past 52 weeks:"
+      wiki_pages_posted: "%{count} wiki pages have been posted, total"
+      wiki_page_posting_52_weeks: "Wiki page posting for the past 52 weeks:"
+      comments_posted: "%{count} comments have been posted, total"
+      comments_posted_52_weeks: "Comments posted for the past 52 weeks:"
+      wiki_page_edits: "%{count} wiki page edits have been made, total"
+      edits_per_week: "%{count} edits per week over the past year."

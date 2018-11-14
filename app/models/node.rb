@@ -534,6 +534,10 @@ class Node < ActiveRecord::Base
     drupal_content_type_map.last
   end
 
+  def blurred?
+    has_power_tag('location') && power_tag('location') == "blurred"
+  end
+
   def lat
     if has_power_tag('lat')
       power_tag('lat').to_f

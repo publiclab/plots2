@@ -82,11 +82,13 @@ class SearchService
   end
 
   # Search nearby nodes with respect to given latitude, longitute and tags
-  # and package up as a DocResult
   def tagNearbyNodes(query, tag, limit = 10)
     raise("Must separate coordinates with ,") unless query.include? ","
 
     lat, lon =  query.split(',')
+
+    raise("Must have at least one digit after .") unless lat.include? "."
+    raise("Must have at least one digit after .") unless lon.include? "."
 
     nodes_scope = NodeTag.joins(:tag)
       .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
@@ -102,8 +104,8 @@ class SearchService
     items = Node.includes(:tag)
       .references(:node, :term_data)
       .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
-      .limit(limit)
       .order('node.nid DESC')
+      .limit(limit)
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
@@ -162,7 +164,6 @@ class SearchService
                        .where('user_tags.value LIKE ?', user_tag)\
                        .where(id: user_locations.select("rusers.id"))
     end
-
     user_locations.limit(query)
   end
 

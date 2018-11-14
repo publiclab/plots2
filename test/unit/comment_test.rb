@@ -257,6 +257,18 @@ class CommentTest < ActiveSupport::TestCase
     f.close()
   end
 
+  test 'should parse text containing "On ____ <email@email.com> wrote:" from comments on display' do
+    node = Node.last
+    comment = Comment.new({
+      comment: "Thank you! On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:  Here you go."
+    })
+    parsed = comment.parse_quoted_text
+    assert_equal "Thank you! ", parsed[:body]
+    assert_equal "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:", parsed[:boundary]
+    assert_equal "  Here you go.", parsed[:quote]
+    assert_equal "Thank you! ", comment.scrub_quoted_text
+    assert_equal "Thank you! <!-- @@$$%% Trimmed Content @@$$%% -->On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:  Here you go.", comment.render_body
+  end
 
   test 'should parse incoming mail from yahoo service correctly and add answer comment' do
     require 'mail'
