@@ -357,6 +357,7 @@ ActiveRecord::Schema.define(version: 2018_09_21_210045) do
     t.string   "token"
     t.integer  "status",                                default: 0
     t.integer "password_checker", default: 0
+    t.boolean "is_verified", default: false
   end
 
   add_index "rusers", ["created_at"], name: "index_rusers_created_at", using: :btree
