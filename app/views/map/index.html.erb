@@ -8,7 +8,14 @@
 </div>
 
 <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
-
+<p><i><small>
+  <% if !@map_lat.nil? && !@map_lon.nil? %>
+    Current view based on your shared location. Click <a href='/profile'>here</a> to adjust.
+  <% else %>
+    Share your own location on <a href='/profile'>your profile</a>.
+    Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a>
+  <% end %>
+</small></i></p>
 <script>
    L.Icon.DefaultIcon = L.Icon.extend({
     options: {
