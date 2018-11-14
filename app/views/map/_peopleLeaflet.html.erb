@@ -19,12 +19,16 @@
 <div onmouseover="document.body.style.overflow='hidden';"  onmouseout="document.body.style.overflow='auto';">
    <div class="leaflet-map" id="map<%= unique_id %>"></div>
  </div>
-	<% if defined? people %>
-		<p><i><small>
-			Share your own location on <a href='/profile'>your profile</a>.
-			Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a>
-		</small></i></p>
-	<% end %>
+<% if defined? people %>
+  <p><i><small>
+      <% if !@map_lat.nil? && !@map_lon.nil? %>
+        Current view based on your shared location. Click <a href='/profile'>here</a> to adjust.
+      <% else %>
+	  Share your own location on <a href='/profile'>your profile</a>.
+	  Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a>
+      <% end %>
+  </small></i></p>
+<% end %>
 
   <script>
 
