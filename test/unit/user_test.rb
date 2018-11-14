@@ -244,7 +244,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'do not validate email if token has expired' do
-    assert_equal User.validate_token(encrypt({:id => user_obj.id, :timestamp => Time.now - (24*60*60+1)})), 0
+    assert_equal User.validate_token(Utils.encrypt({:id => 1, :timestamp => Time.now - (24*60*60+1)})), 0
   end
 
 end
