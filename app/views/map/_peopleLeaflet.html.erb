@@ -34,24 +34,7 @@
       maxBoundsViscosity: 0.75
     }).on('load', onMapLoad).setView([<%= lat %>,<%= lon %>], 2);
    map<%= unique_id %>.options.minZoom = 2 ;
-   // var searchLayer<= unique_id > = L.layerGroup().addTo(map< = unique_id >);
-   //  // add the search bar to the map
-   // var controlSearch< = unique_id > = new L.Control.Search({
-   //    position:'topright',    // where do you want the search bar?
-   //    layer: searchLayer< = unique_id >,  // name of the layer
-   //    initial: false,
-   //    minLength: 1,
-   //    textErr: 'Person not found' ,
-   //    zoom: 7,        // set zoom to found location when searched
-   //    marker: false,
-   //    textPlaceholder: 'search people' // placeholder while nothing is searched
-   //  });
-   // map< = unique_id >.addControl(controlSearch< = unique_id >);
-    /*
-    controlSearch< = unique_id %>.on('search:collapsed', function(e) {
-    map< = unique_id %>.setView([< = lat >,< = lon >], 2);
-    })
-    */
+   
    function onMapLoad(e){
      $.getJSON("/api/srch/peoplelocations?query=100&tag=<%= @tagname_param %>" , function(data){
      	var layerGroup = L.layerGroup() ;
@@ -61,18 +44,19 @@
            var url = data.items[i].doc_url ;
            var title = data.items[i].doc_title ;
            var m = L.marker([data.items[i].latitude , data.items[i].longitude], {title: title , icon: default_markers}).addTo(map<%= unique_id %>).bindPopup("<a href=" +  url + ">" + title + "</a>") ;
-   	 	      // searchLayer<%= unique_id %>.addLayer(m) ;
 	        }
         }
      });
     }
 
-    var map_lat = <%= lat %> ;
-    var map_lon = <%= lon %> ;
+   <% if !@map_lat.nil? && !@map_lon.nil? %>
+      var map_lat = <%= @map_lat %> ;
+      var map_lon = <%= @map_lon %> ;
+      var user_latlng = L.latLng(map_lat, map_lon) ;
+      map<%= unique_id %>.setView(user_latlng , 3) ;
+   <% end %>
 
-//    setupFullScreen(map< = unique_id >  , map_lat , map_lon) ;
+//  setupFullScreen(map< = unique_id >  , map_lat , map_lon) ;
     setupLEL(map<%= unique_id %> ) ;
-
-
 
   </script>
