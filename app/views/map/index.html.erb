@@ -50,6 +50,13 @@
     L.marker([<%= lat %>, <%= lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='<%= map.path %>'><%= map.title %></a>");
   <% end %>
 
+   <% if !@map_lat.nil? && !@map_lon.nil? %>
+      var map_lat = <%= @map_lat %> ;
+      var map_lon = <%= @map_lon %> ;
+      var user_latlng = L.latLng(map_lat, map_lon) ;
+      map.setView(user_latlng , 3) ;
+   <% end %>
+
     var PurpleAirMarkerLayer = L.layerGroup.purpleAirMarkerLayer() ;
     var SkyTruth = L.layerGroup.skyTruthLayer() ;
     var Fractracker = L.layerGroup.fracTrackerLayer() ;
