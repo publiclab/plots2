@@ -4,41 +4,6 @@
   <% if @notes.present? %>
     <h2> Results for <%= params[:query] %></h2>
     <div class="list-group">
-    <style>
-a {
-    color:#000;
-    text-decoration:none;
-}
-a:hover {
-    text-decoration:underline;
-}
-a:visited {
-    color:#000;
-}
-.nav {
-    padding:10px;
-    border:solid 1px #c0c0c0;
-    border-radius:5px;
-    float:left;
-}
-.nav li {
-    list-style-type:none;
-    float:left;
-    margin:0 10px;
-}
-.nav li a {
-    text-align:center;
-    width:55px;
-    float:left;
-}
-.nav li.active {
-    background-color:blue;
-}
-.nav li.active a {
-    color:#fff;
-    font-weight:bold;
-}
-      </style>
       <ul class="nav nav-pills">
         <li class="nav-item">
           <%= link_to "Most liked", url_for(:order => :likes), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :likes ? "active" : ""}"%>
