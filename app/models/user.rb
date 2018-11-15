@@ -53,8 +53,7 @@ class User < ActiveRecord::Base
 
   def new_contributor
     @uid = id
-    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if Node.where(:uid => @uid).length === 1
-   
+    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if Node.where(:uid => @uid).length === 1 && Node.where(:uid => @uid).first.created_at > Date.today - 1.month
   end
 
   def create_drupal_user
