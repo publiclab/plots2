@@ -1,10 +1,10 @@
-<div class="row">
+  <table class="table table-responsive">
     <% nodes.each_with_index do |node, index| %>
 
         <% if index % 3 == 0  %>
-          <div class="row">
+            <tr> 
           <% end %>
-          <div class="col-lg-3 text-center">
+          <td>
             <a class="img" href="<%= node.path %>">
               <% if node.main_image %>
                 <img style="width:100%;" alt="image" class="img-fluid" src="<%= node.main_image.path(:default)  %>">
@@ -24,10 +24,18 @@
             | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
           </small></p>
 
-          </div>
+          </td>
           <% if index % 3 == 2  %>
-            </div>
+            </tr>
           <%end %>
 
       <% end %>
-</div>
+</table>
+
+<style>
+.table thead tr th, .table tbody tr td {
+    border: none;
+}
+
+
+</style>
