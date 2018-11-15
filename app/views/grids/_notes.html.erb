@@ -75,14 +75,19 @@
 <script>
 (function(){
   $(".<%= className %>-<%= randomSeed %> .show-all a").click(function(event) {
-    $(".<%= className %>-<%= randomSeed %> tr.extra").toggleClass("hide");
-    if($(".<%= className %>-<%= randomSeed %> tr.extra")[0].classList.contains("hide"))
-        var hiding = true;
-
+    var cName = ".<%= className %>-<%= randomSeed %>";
+    var sName = cName + " tr.extra";
+    
+    $(sName).toggleClass("hide");
+    if($(sName)[0].classList.contains("hide"))
+        var hiding = true;    
+    var myElement = event.target;    
+    if(event.target.classList.contains("caret")) 
+        myElement = event.target.parentElement;
     if(!hiding) 
-        event.target.innerHTML = 'Show <%= nodes.length - 10 %> less <b class="caret" style = "transform: rotate(180deg);"></b>';
+        myElement.innerHTML = 'Show <%= nodes.length - 10 %> less <b class="caret" style = "transform: rotate(180deg);"></b>';
     else
-        event.target.innerHTML = 'Show <%= nodes.length - 10 %> more <b class="caret"></b>' ;
+        myElement.innerHTML = 'Show <%= nodes.length - 10 %> more <b class="caret"></b>' ;
 
   });
   $(".grid-embed-<%= randomSeed %>").click(function() {
