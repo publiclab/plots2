@@ -425,7 +425,7 @@ class User < ActiveRecord::Base
   def self.validate_token(token)
     begin
       decrypted_data = User.decrypt(token)      
-    rescue StandardError => e
+    rescue ActiveSupport::MessageVerifier::InvalidSignature => e
       puts e.message
       return 0
     end
