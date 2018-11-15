@@ -1,4 +1,4 @@
-<% cache('feature_anniversary-banner', skip_digest: true) do %>
+    <% cache('feature_anniversary-banner', skip_digest: true) do %>
   <%= feature('anniversary-banner') %>
 <% end %>
 
@@ -7,15 +7,14 @@
   <%= stylesheet_link_tag "I18n" %>
 <% end %>
 
-<nav id="header" class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
+<nav id="header" class="navbar navbar-expand-sm navbar-inverse bg-inverse">
     <!-- ||| menu, displayed for mobile: -->
-    <div class="navbar-header">
-      <a class="navbar-brand" id="brand" href="<%= root_path %>">Public Lab</a>
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse">
-        <span class="fa fa-white fa-bars"></span>
-      </button>
-    </div>
+  <a class="navbar-brand" id="brand" href="<%= root_path %>">Public Lab</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar-collapse">
+    <span class="fa fa-white fa-bars"></span>
+  </button>
+
+  <!--
 
     <div class="collapse navbar-collapse" id="header-navbar-collapse">
       <form class="navbar-form navbar-left" id="searchform" autocomplete="off">
@@ -118,13 +117,13 @@
                 <li><a href="/subscriptions/digest">Your Digest</a></li>
                 <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
                 <li class="divider"></li>
-        	      <% if current_user.role == 'admin' %>
+                  <% if current_user.role == 'admin' %>
                   <li><a href="/useremail">Email search</a></li>
                   <li><a href="/wiki/locked">Locked pages</a></li>
                   <li><a href="/spam">Spam moderation</a></li>
                   <li><a href="/people">Contributors</a></li>
-        	        <li class="divider"></li>
-        	      <% end %>
+                    <li class="divider"></li>
+                  <% end %>
                 <li><%= link_to t('layout._header.logout'), logout_path %></li>
                 <li><a href="/logoutRemotely">Logout from all devices</a></li>
               </ul>
@@ -144,7 +143,7 @@
                 <li class="hidden-lg hidden-md">
                   <a href="/donate"><%= t('layout._header.donate') %></a>
                 </li>
-                <!--- These menu items will only appear in the "More" dropdown menu. --->
+                 These menu items will only appear in the "More" dropdown menu. 
                 <% if current_user %>
                   <li class="hidden-lg">
                     <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
@@ -158,7 +157,7 @@
         </li>
       </ul>
     </div>
-  </div>
+    -->
 </nav>
 
 <div class="body-container container">
