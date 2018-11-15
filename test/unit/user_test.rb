@@ -250,4 +250,9 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal user_obj.validate_token(encrypt({:id => user_obj.id, :timestamp => Time.now - (24*60*60+1)})), true
   end
 
+  test 'check default value of is_verified remains false' do
+    user_new_obj = User.new
+    assert_equal user_new_obj.is_verified, false
+  end
+
 end
