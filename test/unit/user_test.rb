@@ -255,4 +255,12 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user_new_obj.is_verified, false
   end
 
+  test 'make sure that values in that column gets updated' do
+    user_obj = User.first
+    user_obj.update_column(:is_verified,true)
+    assert_equal user_obj.is_verified, true
+    user_obj.update_column(:is_verified,false)
+    assert_equal user_obj.is_verified, false
+  end
+
 end
