@@ -86,6 +86,7 @@
       <% if Rails.env == "production" && !params[:spamaway] %>
 
         <%= recaptcha_tags %>
+        <p>If you cannot use the ReCaptcha to verify you are not a bot, <a href="/signup?spamaway=true">use this alternative verification</a>.</p>
 
       <% else %>
 
