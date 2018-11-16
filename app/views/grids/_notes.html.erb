@@ -55,7 +55,7 @@
 <% end %>
 <% if nodes.count > 10 %>
     <tfoot>
-      <th class="show-all" id="notes-table-footer"><a>Show <%= nodes.length - 10 %> more <b class="caret"></b></a></th>
+      <th class="show-all" id="notes-table-footer" style="min-width: 110px;"><a style="cursor: pointer;">Show more <b class="caret"></b></a></th>
       <th></th>
       <th></th>
       <th></th>
@@ -85,9 +85,9 @@
     if(event.target.classList.contains("caret")) 
         myElement = event.target.parentElement;
     if(!hiding) 
-        myElement.innerHTML = 'Show <%= nodes.length - 10 %> less <b class="caret" style = "transform: rotate(180deg);"></b>';
+        myElement.innerHTML = 'Show less <b class="caret" style = "transform: rotate(180deg);"></b>';
     else
-        myElement.innerHTML = 'Show <%= nodes.length - 10 %> more <b class="caret"></b>' ;
+        myElement.innerHTML = 'Show more <b class="caret"></b>' ;
 
   });
   $(".grid-embed-<%= randomSeed %>").click(function() {
