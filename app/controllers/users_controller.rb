@@ -20,7 +20,11 @@ class UsersController < ApplicationController
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
       else
-        WelcomeMailer.notify_newcomer(@user).deliver_now
+        begin
+          WelcomeMailer.notify_newcomer(@user).deliver_now
+        rescue
+          flash[:warning] = "We tried and failed to send you a welcome email, but your account was created anyhow. Sorry!"
+        end
         flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
