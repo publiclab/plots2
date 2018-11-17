@@ -1,3 +1,4 @@
+//=require typeahead.js/dist/typeahead.jquery.js
 jQuery(document).ready(function() {
 
   $('.datepicker').datepicker()
