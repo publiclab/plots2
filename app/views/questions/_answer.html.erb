@@ -22,10 +22,38 @@
         <% end %>
 
         <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || answer.uid == current_user.uid || answer.node.uid == current_user.uid) %>
-          <a data-remote="true" data-confirm="Are you sure? <% if current_user && answer.uid != current_user.uid %>Please exercise caution in deleting/moderating others' answer; this cannot be undone.<% end %>" href="/answers/delete/<%= answer.id %>" class="btn btn-default btn-sm" id="a<%= answer.id %>delete-btn" data-method="delete"><i class='icon fa fa-trash'></i></a>
+          <a class="btn btn-default btn-sm" id="a<%= answer.id %>delete-btn"><i class='icon fa fa-trash'></i></a>
         <% end %>
       </div>
     </div>
+    <script>
+      $("#a<%= answer.id %>delete-btn").click(function () {
+      $.confirm({
+        title: 'Confirm!',
+        theme: 'Supervan',
+        content: 'Are you sure?',
+        buttons: {
+          confirm: function () {
+            $.ajax({
+              url : "/answer/delete/<%= answer.id %>",
+              type: 'GET',
+              success: function(response){
+                notyNotification('sunset', 3000, 'error', 'topRight', 'Answer deleted');
+                $("#a<%= answer.id %>").remove()
+                $('#answer-count')[0].innerHTML = parseInt($('#answer-count')[0].innerHTML)-1;
+              }
+            });
+          },
+          cancel: function () {
+              notyNotification('sunset', 3000, 'info', 'topRight', 'Answer deletion cancelled!');
+          },
+        }
+      });  
+    });
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
     <div id="c<%= answer.id %>show" style="padding:0px 20px">
       <p><%= raw insert_extras(answer.body_markdown) %></p>
     </div>
