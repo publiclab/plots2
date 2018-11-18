@@ -1,7 +1,7 @@
 <h4>View questions by topic</h4>
 <form id="tagform" class="form-horizontal" method="GET" action="/questions/tag/">
   <div class="input-group">
-    <input tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="type your topic" data-provide="typeahead" class="form-control" />
+    <input type="search" tabindex="1" autocomplete="off" id="taginput" name="id" type="text" placeholder="type your topic" data-provide="typeahead" class="form-control" required/>
     <span class="input-group-btn" >
       <button type="submit" rel="tooltip" title="View questions with the entered title" class="btn btn-primary">Search</button>
     </span>
@@ -32,4 +32,3 @@
 
     });
   </script>
-
