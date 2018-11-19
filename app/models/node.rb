@@ -32,7 +32,7 @@ class Node < ActiveRecord::Base
                   elsif order == :views
                     { views: :desc }
                   end
-  query = connection.quote(query.to_s)
+          query = connection.quote(query.to_s)
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
         if type == :boolean
