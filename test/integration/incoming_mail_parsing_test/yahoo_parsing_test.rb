@@ -17,3 +17,4 @@ test 'should parse incoming mail from yahoo service correctly and add comment' d
     assert_equal User.find(comment.uid).email, "jeff@publiclab.org"
     f.close()
   end
+end
