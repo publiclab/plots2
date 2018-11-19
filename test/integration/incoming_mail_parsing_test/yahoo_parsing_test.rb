@@ -1,5 +1,5 @@
 require 'test_helper'
-class incoming_mail_parsing_test < ActionDispatch::IntegrationTest
+class yahoo_quoted < ActionDispatch::IntegrationTest
 test 'should parse incoming mail from yahoo service correctly and add comment' do
     require 'mail'
     mail = Mail.read('test/fixtures/incoming_test_emails/yahoo/incoming_yahoo_email.eml')
