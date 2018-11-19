@@ -32,15 +32,16 @@ class Node < ActiveRecord::Base
                   elsif order == :views
                     { views: :desc }
                   end
-  query = connection.quote(query.to_s)
+  
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      if order == :natural
-        if type == :boolean
-          nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
-            .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
-            .limit(limit)
-            .distinct
-            .collect(&:nid)
+      query = connection.quote(query.to_s)
+        if order == :natural
+          if type == :boolean
+            nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
+              .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
+              .limit(limit)
+              .distinct
+              .collect(&:nid)
         else
           query = connection.quote(query.to_s)
           nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
