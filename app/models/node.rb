@@ -34,22 +34,23 @@ class Node < ActiveRecord::Base
                   end
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      if order == :natural
-        if type == :boolean
-          nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
-            .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
-            .limit(limit)
-            .distinct
-            .collect(&:nid)
+      query = connection.quote(query.to_s)
+        if order == :natural
+          if type == :boolean
+            nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
+              .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
+              .limit(limit)
+              .distinct
+              .collect(&:nid)
+          else
+            nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
+              .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
+              .limit(limit)
+              .distinct
+              .collect(&:nid)
+            end
+          where(nid: nids, status: 1)
         else
-          nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
-            .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
-            .limit(limit)
-            .distinct
-            .collect(&:nid)
-        end
-        where(nid: nids, status: 1)
-      else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
         tnids = Tag.find_nodes_by_type(query, type = %w(note page)).collect(&:nid) # include results by tag
         where(nid: nids + tnids, status: 1)
