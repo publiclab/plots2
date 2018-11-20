@@ -18,3 +18,4 @@ class YahooParsingTest < ActionDispatch::IntegrationTest
     assert_equal User.find(comment.uid).email, user_email
     f.close()
   end
+end
