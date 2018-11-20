@@ -36,7 +36,8 @@ class Node < ActiveRecord::Base
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
         if type == :boolean
-          query = connection.quote(query.to_s + "*")
+          #Query is done as a boolean full-text search. More info here: https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
+          query = connection.quote(query.to_s)
           nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
             .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
             .limit(limit)
