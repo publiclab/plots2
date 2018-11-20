@@ -1,3 +1,4 @@
+@@ +1,6 +1,6 @@
 require 'test_helper'
 class YahooParsingTest < ActionDispatch::IntegrationTest
 test 'should parse incoming mail from yahoo service correctly and add comment' do
