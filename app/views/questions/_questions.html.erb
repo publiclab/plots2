@@ -1,6 +1,7 @@
+<% questions = questions || @questions # accept local if present, default to instance %>
 <div id="notes">
 	<div class="row">
-	<% @questions.each_with_index do |node,i| %>
+	<% questions.each_with_index do |node,i| %>
 		<div class="<% if @widget %>col-xs-4 col-sm-4 <% end %>col-md-4 note note-container-question" style="margin-top:20px;">
       <div class="note-pane note-question<% if node.status == 4 %> moderated<% end %>">
 
@@ -36,4 +37,4 @@
   <% end %>
   </div>
 </div>
-<div class="text-center"><%= will_paginate @questions, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>
+<div class="text-center"><%= will_paginate questions, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>
