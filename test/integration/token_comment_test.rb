@@ -32,5 +32,4 @@ class TokenCommentTest < ActionDispatch::IntegrationTest
     assert_equal User.find(comment.uid).email, "jeff@publiclab.org"
     f.close()
   end
-  
 end
