@@ -33,14 +33,13 @@
             <input id="c<%= comment.id%>input" type="file" name="image[photo]" style="display:none;" />
             <a class="hidden-xs"><%= t('comments._edit.choose_one') %></a>
             <span class="visible-xs">
-              <i class="fa fa-upload"></i> 
+              <i class="fa fa-upload"></i>
               <a><%= t('comments._edit.upload_image') %></a>
             </span>
-          </label> 
+          </label>
 
         </span>
       </p>
-
     </div>
   </div>
   <script type="application/javascript">
@@ -127,9 +126,12 @@
 
   <div class="control-group">
     <button type="submit" class="btn btn-primary"><%= t('comments._edit.publish') %></button>
-      <a class="btn btn-default preview-btn" onClick="$('#c<%= comment.id %>preview').toggle();
+      <a class="btn btn-default preview-btn"  data-previewing-text="Hide Preview"
+          onClick="$('#c<%= comment.id %>preview').toggle();
           $('#c<%= comment.id %>text').toggle();
-          $('#c<%= comment.id %>edit .preview-btn').button('toggle');
+          $('#c<%= comment.id %>text').next('#imagebar').toggle();
+          this.previewing = !this.previewing;
+          $('#c<%= comment.id %>edit .preview-btn').button(this.previewing ? 'previewing' : 'reset');
           $E.generate_preview('c<%= comment.id %>preview',$('#c<%= comment.id %>text').val())">
         Preview
       </a>
@@ -137,9 +139,9 @@
         Cancel
       </a>
 
-    <span style="color:#888;"> &nbsp; 
+    <span style="color:#888;"> &nbsp;
       <br class="visible-xs" /><%= raw t('comments._edit.logged_in', :username => current_user.username) %> |
-      <a target="_blank" href="/wiki/authoring-help#Formatting"><%= t('comments._edit.formatting') %></a> | 
+      <a target="_blank" href="/wiki/authoring-help#Formatting"><%= t('comments._edit.formatting') %></a> |
       <a onClick="$('#who-is-notified').toggle()"><%= t('comments._edit.notifications') %></a>
     </span>
   </div>
