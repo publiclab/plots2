@@ -30,7 +30,7 @@
       <ul class="nav navbar-nav navbar-left">
         <li class="dropdown"><i class="fas fa-caret-down"></i>
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Get Involved
+            Get Involved <i class="fas fa-sort-down"></i>
           </a>
           <ul class="dropdown-menu">
             <li><a href="/events">Attend an event</a></li>
@@ -51,7 +51,7 @@
 
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <%= t('layout._header.about.about_title') %>
+            <%= t('layout._header.about.about_title') %><i class="fas fa-sort-down"></i>
           </a>
           <ul class="dropdown-menu">
             <li><a href="/wiki/stories"><%= t('layout._header.about.stories') %></a></li>
@@ -91,7 +91,7 @@
           <% unless params[:action] == "register" || params[:action] == "signup" %>
             <% if current_user %>
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white">
-                Profile
+                Profile <i class="fas fa-sort-down"></i>
               </a>
               <ul class="dropdown-menu">
                 <div class="dropdown-header">
