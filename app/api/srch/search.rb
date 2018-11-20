@@ -253,13 +253,13 @@ module Srch
         end
       end
 
-      # Request URL should be /api/srch/nearbyPeople?query=QRY[&tag=awesome]
+      # Request URL should be /api/srch/nearbyPeople?query=QRY[&tag=awesome&sort_by=recent]
       # Note: Query(QRY as above) must have latitude and longitude as query=lat,lon
       desc 'Perform a search to show people nearby a given location',  hidden: false,
                                                                        is_array: false,
                                                                        nickname: 'search_nearby_people'
       params do
-        use :common, :additional
+        use :common, :sorting, :additional
       end
       get :nearbyPeople do
         search_request = SearchRequest.fromRequest(params)
