@@ -288,7 +288,36 @@
 
 <script type = "text/javascript">
     $('#btn-token').click(function() {
-        alert("Your access token is: <%= @user.user.token %>");
+        var message = "Your access token is: <%= @user.user.token %>";
+        console.log(message);
+
+        var mask = document.createElement('div');
+        mask.className = 'mask';
+        mask.id = 'token-mask';
+        mask.innerHTML = '\
+          <div class="modal-dialog" id="token-popup">\
+            <div class="modal-content">\
+              <div class="modal-header">\
+                <button type="button" class="close token-popup-close-btn">&times;</button>\
+                <h4 class="modal-title">Access Token</h4>\
+              </div>\
+              <div class="modal-body">\
+                <p class="token"></p>\
+              </div>\
+              <div class="modal-footer">\
+                <button type="button" class="btn btn-default token-popup-close-btn">Close</button>\
+              </div>\
+            </div>\
+          </div>\
+        ';
+
+        $('body').append(mask).hide().fadeIn(200, function(){
+          $('.token').html(message);
+          $('#token-popup .token-popup-close-btn').on('click', function(e){
+            console.log('close', e);
+          })
+        });
+        $('#token-popup .modal-content').hide().slideDown(300);
     });
       
     $('#link_social_media').click(function(){
@@ -337,6 +366,17 @@
   i:hover{
     transition-duration: .2s;
     transform: scale(1.2);
+  }
+
+  .mask{
+    z-index: 10000;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
   }
 </style>
 
