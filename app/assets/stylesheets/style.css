@@ -193,7 +193,7 @@ body { padding-top: 70px; }
   #header .brand-compact { display:none; }
 }
 
-.navbar-inverse .navbar-nav > li > a {
+.navbar-nav > li > a {
   color: #aaa;
 }
 
