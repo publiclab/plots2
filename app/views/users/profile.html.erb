@@ -326,7 +326,8 @@
       temp.val($('#token-popup .token').text()).select();
       document.execCommand("copy");
       temp.remove();
-      $('#token-popup #copy-btn').attr('disabled', 'true');
+
+      $('#token-popup #copy-btn').text('Copied').attr('disabled', 'true');
     };
     
     function closePopup(){
