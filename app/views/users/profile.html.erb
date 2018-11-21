@@ -287,38 +287,45 @@
 <script src = "https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 
 <script type = "text/javascript">
-    $('#btn-token').click(function() {
-        var message = "Your access token is: <%= @user.user.token %>";
-        console.log(message);
+    $('#btn-token').on('click', function() {
+      var message = "Your access token is: <%= @user.user.token %>";
 
-        var mask = document.createElement('div');
-        mask.className = 'mask';
-        mask.id = 'token-mask';
-        mask.innerHTML = '\
-          <div class="modal-dialog" id="token-popup">\
-            <div class="modal-content">\
-              <div class="modal-header">\
-                <button type="button" class="close token-popup-close-btn">&times;</button>\
-                <h4 class="modal-title">Access Token</h4>\
-              </div>\
-              <div class="modal-body">\
-                <p class="token"></p>\
-              </div>\
-              <div class="modal-footer">\
-                <button type="button" class="btn btn-default token-popup-close-btn">Close</button>\
-              </div>\
+      var mask = document.createElement('div');
+      mask.className = 'mask';
+      mask.id = 'token-mask';
+      mask.innerHTML = '\
+        <div class="modal-dialog" id="token-popup">\
+          <div class="modal-content">\
+            <div class="modal-header">\
+              <button type="button" class="close token-popup-close-btn">&times;</button>\
+              <h4 class="modal-title">Access Token</h4>\
+            </div>\
+            <div class="modal-body">\
+              <p class="token"></p>\
+            </div>\
+            <div class="modal-footer">\
+              <button type="button" class="btn btn-default token-popup-close-btn">Close</button>\
             </div>\
           </div>\
-        ';
+        </div>\
+      ';
 
-        $('body').append(mask).hide().fadeIn(200, function(){
-          $('.token').html(message);
-          $('#token-popup .token-popup-close-btn').on('click', function(e){
-            console.log('close', e);
-          })
-        });
-        $('#token-popup .modal-content').hide().slideDown(300);
+      $('body').append(mask);
+      $('#token-mask').fadeIn(200, function() {
+        $('#token-popup .token').html(message, function(){console.log('messgae')});
+        $('#token-popup .modal-content').css({display: 'block', opacity: '0'}).animate({marginTop: '30px', opacity: '1'}, 300);
+        $('#token-popup .token-popup-close-btn').on('click', closePopup);
+      });
     });
+    
+    function closePopup(){
+      $('#token-popup .modal-content').animate({marginTop: '0', opacity: '0'}, 300, function() {
+        $(this).remove();
+        $('#token-mask').fadeOut(200, function(){
+          $(this).remove();
+        });
+      });
+    }
       
     $('#link_social_media').click(function(){
         sign = document.getElementById('social-name').value;
@@ -369,6 +376,7 @@
   }
 
   .mask{
+    display: none;
     z-index: 10000;
     position: absolute;
     height: 100%;
@@ -377,6 +385,14 @@
     right: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .modal-content{
+    display: none;
+  }
+
+  .modal-dialog{
+    margin-top: 0;
   }
 </style>
 
