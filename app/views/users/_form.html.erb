@@ -90,9 +90,88 @@
         <%= recaptcha_tags %>
         <p>If you cannot use the ReCaptcha to verify you are not a bot, <a href="/signup?spamaway=true">use this alternative verification</a>.</p>
 
+        <script>
+          var publicSpamCompleted = false;
+          function recaptchaSuccess() {
+            publicSpamCompleted = true;
+            console.log("Test: ReCaptcha submitted successfully");
+            publicSpamCompletedChange();
+          }
+          function recaptchaExpired() {
+            publicSpamCompleted = false;
+            console.log("Test: ReCaptcha expired.")
+          }
+          $(document).ready(function() {
+            $('.g-recaptcha').attr({'data-callback': 'recaptchaSuccess', 'data-expired-callback': 'recaptchaExpire'});
+          });
+          
+          function publicSpamCompletedChange() {
+            if (!publicSpamCompleted) {
+              $('.g-recaptcha').find('iframe').css('border', '1px red solid');
+            }
+            else {
+              $('.g-recaptcha').find('iframe').css('border', '');
+            }
+          }
+          
+          function publicSpamScroll() {
+            offset = $('.g-recaptcha').offset();
+            $('html, body').animate({
+              scrollTop: offset.top - $(window).height() / 2
+            });
+          }
+        </script>
       <% else %>
 
         <%= render partial: 'spamaway', locals: { spamaway: @spamaway } %>
+        
+        <script>
+          var publicSpamCompleted = false;
+          var publicHasSubmitted = false;
+          (function() {
+
+            var btnClicked = new Array(4).fill(false);
+            var btnArray = $('.spamaway .btn-group-justified');
+            $('.spamaway').on('click', '.btn-group-justified', function(e) {
+              var i = btnArray.index($(this));
+              if(!btnClicked[i]) {
+                btnClicked[i] = true;
+                console.log(btnClicked);
+                publicSpamCompleted = btnClicked.every(function(clicked) {return clicked == true});
+                console.log(publicSpamCompleted);
+              }
+              if(publicHasSubmitted) {
+                publicSpamCompletedChange();
+              }
+            });
+            
+            function publicSpamReset() {
+              $('.spamaway button').each( function() {
+                $(this).find('input').prop('checked', false);
+              });
+            }
+            
+            $(document).ready(function() {
+              publicSpamReset();
+            });
+          })();
+          
+          function publicSpamCompletedChange() {
+              if(!publicSpamCompleted) {
+                $('.spamaway').css({'border': '1px solid red', 'padding': '1px', 'borderRadius': '5px'});
+              }
+              else {
+                $('.spamaway').css({'border': '', 'padding': '', 'borderRadius': ''});
+              }
+          }
+          
+          function publicSpamScroll() {
+            offset = $('.spamaway').offset();
+            $('html, body').animate({
+              scrollTop: offset.top - $(window).height() / 2
+            });
+          }
+        </script>
 
       <% end %>
 
@@ -124,24 +203,38 @@
       <script>
         (function() {
           $('.btn-save').click(function onClick(e) {
-            var validated = true; 
-            $('.form-control').trigger('keyup'); //Prevents bypassing check when all fields have no been touched
+            publicHasSubmitted = true;
+            var validated = true;
+            var hasScrolled = false; 
+            $('.form-control').trigger('keyup'); //Prevents bypassing check when all fields have not been touched
             $('.validate').each(function() {  
               if($(this).html() != '' && !this.classList.contains('chk')) { //Check that all messages are clear
                 e.preventDefault();
                 validated = false;
+                hasScrolled = true;
                 var offset = $(this).offset();
                 $('html, body').animate({
                   scrollTop: offset.top - $(window).height() / 2
-                });
+                }, 500);
+                $(this).parent().find('input').focus();
                 return false;
               } 
+              
+              
             });
-            if(validated) {
-            $(this).addClass("disabled") // disable the button after it is clicked
-                   .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
+            
+            if (!publicSpamCompleted) {
+              e.preventDefault();
+              publicSpamCompletedChange();
+              if(!hasScrolled) {
+                publicSpamScroll();
+              }
             }
-          })
+            else {
+              $(this).addClass("disabled") // disable the button after it is clicked
+                     .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
+            }
+          });
         })();
 
         (function() {
