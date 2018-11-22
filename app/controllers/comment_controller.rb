@@ -83,8 +83,8 @@ class CommentController < ApplicationController
     if @comment.save
       @comment.answer_comment_notify(current_user)
       respond_to do |format|
-        format.js { render template: 'comment/create' }
-        format.html { render template: 'comment/create.html' }
+        format.js { render template: 'comments/create' }
+        format.html { render template: 'comments/create.html' }
       end
     else
       flash[:error] = 'The comment could not be saved.'
@@ -169,7 +169,7 @@ class CommentController < ApplicationController
       if @answer.save && @comment.delete
         @answer_id = @comment.aid
         respond_with do |format|
-          format.js { render template: 'comment/make_answer' }
+          format.js { render template: 'comments/make_answer' }
         end
       else
         flash[:error] = 'The comment could not be promoted to answer.'
@@ -196,7 +196,7 @@ class CommentController < ApplicationController
     @likes = comment.likes.group(:emoji_type).count
     respond_with do |format|
       format.js do
-        render template: 'comment/like_comment'
+        render template: 'comments/like_comment'
       end
     end
   end
