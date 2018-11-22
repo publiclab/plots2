@@ -271,6 +271,7 @@ class Tag < ApplicationRecord
        .where('node.status = ?', 1)
        .where('node.created > ?', start_date.to_i)
        .where('node.created <= ?', end_date.to_i)
+       .distinct
        .group([:name, 'node.nid', 'term_data.tid', 'community_tags.nid', 'community_tags.uid', 'community_tags.date']) # ONLY_FULL_GROUP_BY, issue #3120
        .order('count DESC')
        .limit(limit)
