@@ -30,7 +30,8 @@ Rails.application.config.assets.precompile += [
   'textbox_expand.js',
   'users.js',
   'wikis.js',
-
+  'signin_verification.js',
+  
   'blog.css',
   'comments.css',
   'dashboard.css',
