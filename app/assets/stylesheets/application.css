@@ -29,4 +29,5 @@
  *= require noty/lib/noty.css
  *= require jquery-confirm/css/jquery-confirm.css
  *= require jquery.atwho
+ *= require app/assets/stylesheets/loading_page.css
 */
