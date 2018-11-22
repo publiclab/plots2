@@ -15,7 +15,7 @@
 #loader-wrapper .loader-section.section-right {
     right: 0;
 }
-#loader {
+#loader .loader {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -70,7 +70,7 @@ spin {
     visibility: hidden;
 }
 
-@.loaded #loader {
+.loaded #loader {
     opacity: 0;
     -webkit-transition: all 0.3s ease-out; 
             transition: all 0.3s ease-out;
