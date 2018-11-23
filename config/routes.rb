@@ -314,6 +314,8 @@ Plots2::Application.routes.draw do
   post '/comment/like' => 'comment#like_comment'
   get '/comment/create/:id' => 'comment#create'
   post 'comment/create/:id' => 'comment#create'
+
+  get '/comment/create.js' => '/comments/create.js'
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
