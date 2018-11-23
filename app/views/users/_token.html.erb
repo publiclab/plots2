@@ -28,6 +28,7 @@
       $('#token-popup .token').text(token);
       $('#token-popup .modal-content').css({display: 'block'}).animate({marginTop: '30px', opacity: '1'}, 300);
       $('#token-popup #close-btn').on('click', closePopup);
+      $('#token-mask').on('click', closePopup);
       $('#token-popup #copy-btn').on('click', copyToken);
     });
   });
@@ -42,7 +43,12 @@
     $('#token-popup #copy-btn').text('Copied').attr('disabled', 'true');
   };
 
-  function closePopup(){
+  function closePopup(e){
+    var tokenPopup = document.querySelector('#token-popup .modal-content');
+    if (tokenPopup === e.target || tokenPopup.contains(e.target) && e.target.id !== 'close-btn'){
+      return;
+    };
+
     $('#token-popup .modal-content').animate({marginTop: '0', opacity: '0'}, 300, function(){
       $(this).remove();
       $('#token-mask').fadeOut(200, function(){
