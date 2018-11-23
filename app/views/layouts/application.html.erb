@@ -89,6 +89,9 @@
 </div>
 
 <div id="content">
+
+<div id="loader"></div>
+
 <script>
 var myVar;
 
@@ -101,6 +104,7 @@ function showPage() {
 }
 </script>
 
+<body onload="myFunction()" style="margin:0;">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
@@ -112,7 +116,8 @@ $(document).ready(function() {
  
 });
 </script>
-<body onload="myFunction()" style="margin:0;">
+
+<body>
 <div class="loaded"></div>
     <%= render :partial => 'layouts/header' %>
 
