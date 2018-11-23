@@ -27,7 +27,6 @@
     $('#token-mask').fadeIn(200, function(){
       $('#token-popup .token').text(token);
       $('#token-popup .modal-content').css({display: 'block'}).animate({marginTop: '30px', opacity: '1'}, 300);
-      $('#token-popup #close-btn').on('click', closePopup);
       $('#token-mask').on('click', closePopup);
       $('#token-popup #copy-btn').on('click', copyToken);
     });
