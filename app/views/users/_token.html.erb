@@ -1,6 +1,6 @@
 <script type="text/javascript">
   $('#btn-token').on('click',function() {
-    var token = "<%= @user.user.token %>";
+    var token = '<%= @user.user.token %>';
 
     var mask = document.createElement('div');
     mask.className = 'mask';
@@ -26,17 +26,17 @@
     $('body').append(mask);
     $('#token-mask').fadeIn(200, function(){
       $('#token-popup .token').text(token);
-      $('#token-popup .modal-content').css({display: 'block'}).animate({marginTop: '30px', opacity: '1'}, 300);
+      $('#token-popup .modal-content').animate({marginTop: '30px', opacity: '1'}, 300);
       $('#token-mask').on('click', closePopup);
       $('#token-popup #copy-btn').on('click', copyToken);
     });
   });
 
   function copyToken(){
-    var temp = $("<input>");
+    var temp = $('<input>');
     $("body").append(temp);
     temp.val($('#token-popup .token').text()).select();
-    document.execCommand("copy");
+    document.execCommand('copy');
     temp.remove();
 
     $('#token-popup #copy-btn').text('Copied').attr('disabled', 'true');
@@ -61,12 +61,10 @@
   .mask{
     display: none;
     z-index: 10000;
-    position: absolute;
+    position: fixed;
     height: 100%;
     width: 100%;
     top: 0;
-    right: 0;
-    left: 0;
     background-color: rgba(0, 0, 0, 0.7);
   }
 
@@ -75,7 +73,6 @@
   }
   
   .modal-content{
-    display: none;
     opacity: 0;
   }
 
