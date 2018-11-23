@@ -14,7 +14,7 @@
 #loader-wrapper .loader-section.section-right {
     right: 0;
 }
-#loader {
+#loader .loader {
   position: absolute;
   left: 50%;
   top: 50%;
