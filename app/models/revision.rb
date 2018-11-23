@@ -9,8 +9,7 @@ class Revision < ApplicationRecord
 
   validates :title,
     presence: :true,
-    length: { minimum: 2 },
-    format: { with: /[A-Z][\w\-_]*/i, message: 'can only include letters, numbers, and dashes' }
+    length: { minimum: 2 }
   validates :body, presence: :true
   validates :uid, presence: :true
   validates :nid, presence: :true
