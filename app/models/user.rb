@@ -7,7 +7,7 @@ class UniqueUsernameValidator < ActiveModel::Validator
 end
 
 class User < ActiveRecord::Base
-  include Utils
+  extend Utils
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
@@ -344,6 +344,10 @@ class User < ActiveRecord::Base
   def first_time_poster
     notes.where(status: 1).count == 0
   end
+  
+  def first_time_commenter
+    Comment.where(status: 1).count == 0
+  end
 
   def follow(other_user)
     active_relationships.create(followed_id: other_user.id)
@@ -418,17 +422,20 @@ class User < ActiveRecord::Base
 
   def generate_token
     user_id_and_time = { :id => id, :timestamp => Time.now }
-    encrypt(user_id_and_time)
+    User.encrypt(user_id_and_time)
   end
 
-  def validate_token(token)
-    decrypted_data = decrypt(token)
-    if id != decrypted_data[:id]
-      return false
-    elsif (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
-      return false
+  def self.validate_token(token)
+    begin
+      decrypted_data = User.decrypt(token)      
+    rescue ActiveSupport::MessageVerifier::InvalidSignature => e
+      puts e.message
+      return 0
+    end
+    if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
+      return 0
     else
-      return true
+      return decrypted_data[:id]   
     end
   end
 

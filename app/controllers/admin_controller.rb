@@ -352,4 +352,31 @@ class AdminController < ApplicationController
       redirect_to '/dashboard'
     end
   end
+
+  def smtp_test
+    require 'socket'
+
+    s = TCPSocket.new ActionMailer::Base.smtp_settings[:address], ActionMailer::Base.smtp_settings[:port]
+
+    while line = s.gets # Read lines from socket
+      puts line
+      if line.include? '220'
+        s.print "MAIL FROM: <example@publiclab.org>\n"
+      end
+      if line.include? '250 OK'
+        s.print "RCPT TO: <example@publiclab.org>\n"
+      end
+      if line.include? '250 Accepted'
+        puts 'PASS'
+        s.close_write
+      elsif line.include? '550'
+        puts 'FAIL'
+        s.close_write
+      end
+    end
+
+    s.close
+    render text: 'DONE'
+  end
+
 end
