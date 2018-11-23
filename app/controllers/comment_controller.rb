@@ -21,7 +21,7 @@ class CommentController < ApplicationController
       respond_with do |format|
         if params[:type] && params[:type] == 'question'
           @answer_id = 0
-          format.js
+          format.js { render 'comments/create.js.erb' }
         else
           format.html do
             if request.xhr?
@@ -127,7 +127,7 @@ class CommentController < ApplicationController
         respond_with do |format|
           if params[:type] && params[:type] == 'question'
             @answer_id = @comment.aid
-            format.js
+            format.js { render 'comments/delete.js.erb' }
           else
             format.html do
               if request.xhr?
