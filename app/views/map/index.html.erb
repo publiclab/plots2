@@ -8,7 +8,14 @@
 </div>
 
 <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
-
+<p><i><small>
+  <% if !@map_lat.nil? && !@map_lon.nil? %>
+    Current view based on your shared location. Click <a href='/profile'>here</a> to adjust.
+  <% else %>
+    Share your own location on <a href='/profile'>your profile</a>.
+    Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a>
+  <% end %>
+</small></i></p>
 <script>
    L.Icon.DefaultIcon = L.Icon.extend({
     options: {
@@ -49,6 +56,13 @@
      var default_Icon =new L.icon.defaultIcon() ;
     L.marker([<%= lat %>, <%= lon %>] , {icon: default_Icon}).addTo(map).bindPopup("<a href='<%= map.path %>'><%= map.title %></a>");
   <% end %>
+
+   <% if !@map_lat.nil? && !@map_lon.nil? %>
+      var map_lat = <%= @map_lat %> ;
+      var map_lon = <%= @map_lon %> ;
+      var user_latlng = L.latLng(map_lat, map_lon) ;
+      map.setView(user_latlng , 3) ;
+   <% end %>
 
     var PurpleAirMarkerLayer = L.layerGroup.purpleAirMarkerLayer() ;
     var SkyTruth = L.layerGroup.skyTruthLayer() ;

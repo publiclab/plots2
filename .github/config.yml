@@ -22,8 +22,8 @@ newPRWelcomeComment: |
 # Comment to be posted to on pull requests merged by a first time user
 firstPRMergeComment: |
  Congrats on merging your first pull request! 🙌🎉⚡️
- Your code will likely be published to PublicLab.org in the next few days.
+ Your code will likely be published to PublicLab.org in the next few days, but first it will be published to https://stable.publiclab.org/ (it will take some minutes for this to load, and until then you may see an error). Please test out your work on this testing server and report back with a comment that all has gone well!
  Now that you've completed this, you can help someone else take their first step!
- See: [Public Lab's coding community!](https://code.publiclab.org)
++ See: [Public Lab's code welcome page](https://code.publiclab.org) to take the next step!
 
 # It is recommend to include as many gifs and emojis as possible

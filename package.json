@@ -47,6 +47,7 @@
     "leaflet-d3": "Asymmetrik/leaflet-d3#^0.3.8",
     "leaflet-environmental-layers": "^1.0.1",
     "leaflet-hash": "*",
+    "leaflet-spin": "1.1.0",
     "marked": "chjj/marked#0.3.2",
     "megamark": "bevacqua/megamark#~3.3.0",
     "moment": "~> 2.19.3",
