@@ -18,6 +18,12 @@ class SearchControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "search profiles page at /search/profiles/steff?tag=awesome" do
+    get :profiles, params: { query: 'awesome', field: 'tag' }
+    assert_response :success
+    assert_equal users(:steff3).id, assigns(:profiles).first.id
+  end
+
   test "search profiles at /search/profiles/steff1" do
     get :profiles, params: { query: 'steff1' }
     assert_response :success
