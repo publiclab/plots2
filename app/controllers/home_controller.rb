@@ -165,7 +165,7 @@ class HomeController < ApplicationController
       types = params[:types].split(',')
     else
       types = %w(all note question event comment wiki)
-    end 
+    end
     types.each do |type|
       if type == 'note'
         activity += notes
