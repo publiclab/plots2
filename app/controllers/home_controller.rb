@@ -94,21 +94,38 @@ class HomeController < ApplicationController
       .where(type: 'note', status: 1)
       .where('term_data.name = (?)', 'hidden:response')
       .collect(&:nid)
-    notes = Node.where(type: 'note')
+
+    basenotes = Node.where(type: 'note')
       .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
       .order('nid DESC')
-      .page(params[:page])
-    notes = notes.where('nid != (?)', blog.nid) if blog
+    basenotes = basenotes.where('nid != (?)', blog.nid) if blog
+    notes = basenotes
+
+    questions = basenotes.where(uid: '3')
+
+    events = Tag.find_nodes_by_type('event', 'note', 999999999999999)
+      .where('node.nid NOT IN (?)', hidden_nids + [0])
 
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
       notes = notes.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
+      events = events.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
+      questions = questions.where('(node.status = 1 OR node.status = 4 OR node.status = 3)')
     elsif current_user
       coauthor_nids = Node.joins(:node_tag).joins('LEFT OUTER JOIN term_data ON term_data.tid = community_tags.tid').select('node.*, term_data.*, community_tags.*').where(type: 'note', status: 3).where('term_data.name = (?)', "with:#{current_user.username}").collect(&:nid)
       notes = notes.where('(node.nid IN (?) OR node.status = 1 OR ((node.status = 3 OR node.status = 4) AND node.uid = ?))', coauthor_nids, current_user.uid)
+      events = events.where('(node.nid IN (?) OR node.status = 1 OR ((node.status = 3 OR node.status = 4) AND node.uid = ?))', coauthor_nids, current_user.uid)
+      questions = questions.where('(node.nid IN (?) OR node.status = 1 OR ((node.status = 3 OR node.status = 4) AND node.uid = ?))', coauthor_nids, current_user.uid)
+
     else
       notes = notes.where('node.status = 1')
+      events = events.where('node.status = 1')
+      questions = questions.where('node.status = 1')
     end
-    notes = notes.to_a # ensure it can be serialized for caching
+
+    notes = notes.to_a
+    events = events.to_a
+    questions = questions.to_a # ensure it can be serialized for caching
+    notes = notes - events - questions
 
     # include revisions, then mix with new pages:
     wikis = Node.where(type: 'page', status: 1)
@@ -143,21 +160,46 @@ class HomeController < ApplicationController
       .group(['answers.id', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
     answer_comments = answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     answer_comments = answer_comments.to_a # ensure it can be serialized for caching
-    activity = (notes + wikis + comments + answer_comments).sort_by(&:created_at).reverse
+
+    activity = []
+
+    if params[:types]
+      types = params[:types].split(',')
+    else
+      types = ['all', 'note', 'question', 'event', 'comment', 'wiki']
+    end
+      
+    types.each do |type|
+      if type == 'note'
+        activity = activity + notes
+      elsif type == 'question'
+        activity = activity + questions
+      elsif type == 'event'
+        activity = activity + events
+      elsif type == 'comment'
+        activity = activity + comments + answer_comments
+      elsif type == 'wiki'
+        activity = activity + wikis
+      end
+    end
+
+      
+    if types.length > 0
+      activity = activity.sort_by(&:created_at).reverse.paginate(:page => params[:page], :per_page => 37)
+    end
+    
+
     response = [
       activity,
       blog,
-      notes,
       wikis,
       revisions,
-      comments,
-      answer_comments
     ]
     response
   end
 
   def set_activity(source = :database)
-    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments =
+    @activity, @blog, @wikis, @revisions, =
       if source == :cache
         # we no longer use activity feed on front page ('home'), so this cache may be unused
         Rails.cache.fetch("front-activity", expires_in: 30.minutes) do

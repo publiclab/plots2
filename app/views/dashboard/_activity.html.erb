@@ -15,16 +15,16 @@
 
     <ul class="dropdown-menu">
 
-      <li><a href="#"><label><input data-type="all"      class="node-type-all"      type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.all') %>           </label></a></li>
+      <li class="filter-checkbox"><a href="#"><label><input data-type="all"     class="node-type node-type-all"     type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.all') %></label></a></li>
 
       <li class="divider"></li>
 
-      <li><a href="#"><label><input data-type="note"     class="node-type node-type-note"     type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.research_notes') %></label></a></li>
-      <li><a href="#"><label><input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.question') %>     </label></a></li>
-      <li><a href="#"><label><input data-type="event"    class="node-type node-type-event"    type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.events') %>        </label></a></li>
-      <li><a href="#"><label><input data-type="comment"  class="node-type node-type-comment"  type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.comments') %>      </label></a></li>
+      <li class="filter-checkbox"><a href="#"><label><input data-type="note"     class="node-type node-type-note"     type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.research_notes') %></label></a></li>
+      <li class="filter-checkbox"><a href="#"><label><input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.question') %>     </label></a></li>
+      <li class="filter-checkbox"><a href="#"><label><input data-type="event"    class="node-type node-type-event"    type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.events') %>        </label></a></li>
+      <li class="filter-checkbox"><a href="#"><label><input data-type="comment"  class="node-type node-type-comment"  type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.comments') %>      </label></a></li>
 
-      <li class="visible-sm visible-xs">
+      <li class="filter-checkbox visible-sm visible-xs">
           <a href="#"><label><input data-type="wiki"     class="node-type node-type-wiki"     type="checkbox" checked="checked" /> <%= t('dashboard._activity.dropdown.wiki') %>          </label></a>
       </li>
 
@@ -58,9 +58,7 @@
     <% end %>
 </span>
 </div>
-
 <div class="activity">
-
   <div class="row">
     <% activity.each_with_index do |node, i| %>
       <% if node.is_a?(Revision) || node.type == 'page' %>
@@ -80,7 +78,7 @@
   <br />
 
   <div class="text-center">
-    <%= will_paginate notes, :renderer => BootstrapPagination::Rails if notes %>
+    <%= will_paginate activity, :renderer => BootstrapPagination::Rails if activity.length > 0 %>
   </div>
 
 </div>

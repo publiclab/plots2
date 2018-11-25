@@ -97,7 +97,7 @@ class I18nTest < ActionDispatch::IntegrationTest
           }
         }
       follow_redirect!
-      get '/dashboard'
+      get '/dashboard?types=comment'
       assert_select 'span', I18n.t('dashboard._node_comment.commented_on')
     end
   end

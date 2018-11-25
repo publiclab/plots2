@@ -4,7 +4,7 @@ en:
   dashboard:
     _activity:
       activity: "Activity"
-      all_updates: "Alle updates"
+      all_updates: "All updates"
       dropdown:
         all: "All"
         research_notes: "Research notes"

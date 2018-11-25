@@ -1,14 +1,18 @@
+/* eslint-disable complexity */
+/* eslint-disable wrap-iife */
 
 
 (function() {
 
   var types = {
+    'all':      true,
     'note':     true, 
     'question': true, 
     'event':    true, 
-    'comment':  true, 
-    'wiki':     true
+    'comment':  true
   };
+
+  
 
   var viewport = function() {
     var e = window, a = 'inner';
@@ -19,96 +23,23 @@
     return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
   }
 
-  var setTypeVisibility = function(type, checked) {
-
-    if (type == "all") {
-
-      Object.keys(types).forEach(function(type, i) {
-
-        $('.node-type').prop('checked', checked);
-        setTypeVisibility(type, checked);
-
-      });
-
-    } else {
-
-
-      // record status
-      types[type] = (checked == true);
-
-
-      // record status in browser localStorage
-      if (localStorage) {
- 
-        localStorage.setItem('pl-dash-' + type, checked);
-        // match displayed state to localStorage saved state:
-        $('.node-type-' + type).prop('checked', checked);
- 
-      }
-
-
-      // if all checked?
-      var checked_array = $(".node-type").map(function(i, el) { return $(el).prop('checked'); });
-
-      // if contains some falses:
-      if (checked_array.toArray().indexOf(false) != -1) {
-
-        // if also contains some trues:
-        if (checked_array.toArray().indexOf(true) != -1) {
-
-          $('.node-type-all').prop('indeterminate', true);
-
-        } else {
-
-          $('.node-type-all').prop('checked', false);
-          $('.node-type-all').prop('indeterminate', false);
-
-        }
-
-      } else {
-
-        $('.node-type-all').prop('indeterminate', false);
-        $('.node-type-all').prop('checked', true);
-
-      }
-
-
-      // actually hide/show
-      if (checked && !(type == 'wiki' && viewport().width > 992)) {
- 
-        $('.note-container-' + type).show();
- 
-      } else {
- 
-        $('.note-container-' + type).hide();
- 
-      }
-
-
-      // use CSS clear:left to tidy columns 
-      $('.activity .col-md-6').css('clear', 'none');
-      $('.activity .col-md-6:visible:even').css('clear', 'left');
-
-
-      // change dropdown title 
-      if ($('.activity-dropdown input.node-type:checked').length < $('.activity-dropdown input.node-type').length) {
- 
-        $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.selected_updates'));
- 
-      } else if ($('.activity-dropdown input.node-type:checked').length == 0) {
-
-        $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.none'));
-
-      } else {
- 
-        $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.all_updates'));
- 
-      }
- 
-    }
-
+  if(!viewport().width > 992) {
+    types.wiki = true;
   }
 
+  var setTypeVisibility = function(type, checked) {    
+    var filterTypes = [];
+    for(var i = 0; i < type.length; i++) {
+        if(checked[i]) filterTypes.push(type[i]);
+    }
+    var baseurl = window.location.href;
+    url = new URL(baseurl);
+
+    if(filterTypes.length > 0 || (baseurl.indexOf('types=') > -1)) {
+      url.searchParams.set("types", filterTypes);
+      window.location.href = url;
+    }
+  }
 
   // load any settings from browser storage
   var getLocalStorageActivity = function() {  
@@ -118,10 +49,9 @@
       Object.keys(types).forEach(function(key, i) {
  
         var type = types[key];
-        if (localStorage.getItem('pl-dash-' + key) == null) localStorage.setItem('pl-dash-' + key, true);
-        types[key] = localStorage.getItem('pl-dash-' + key) == "true",
-        setTypeVisibility(key, types[key]);
- 
+        if (localStorage.getItem('pl-dash-' + key) === null) localStorage.setItem('pl-dash-' + key, true);
+        types[key] = localStorage.getItem('pl-dash-' + key) === "true"
+        $('.activity-dropdown li.filter-checkbox').find('[data-type='+ key +']').prop('checked', types[key]); 
       });
  
     }
@@ -144,13 +74,89 @@
 
   });
 
-  $('.activity-dropdown li').click(function(e) {
+  $('.activity-dropdown a').click(function(e) {
+    e.preventDefault();
+    // use CSS clear:left to tidy columns 
+    $('.activity .col-md-6').css('clear', 'none');
+    $('.activity .col-md-6:visible:even').css('clear', 'left');
 
-    e.stopPropagation();
+    // change dropdown title 
+    if ($('.activity-dropdown input.node-type:checked').length < $('.activity-dropdown input.node-type').length) {
+ 
+      $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.selected_updates'));
+ 
+    } else if ($('.activity-dropdown input.node-type:checked').length === 0) {
 
-    setTypeVisibility($(this).find('input').attr('data-type'), $(this).find('input').prop('checked'));
+      $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.none'));
 
+    } else {
+ 
+      $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.all_updates'));
+ 
+    }
   });
+
+  
+
+  function updateFilters() {
+    var types = [];
+    var checked = [];
+    $('.activity-dropdown li.filter-checkbox').each(function () {
+
+      var type = $(this).find('input').attr('data-type');
+      var ischecked = $(this).find('input').prop('checked');
+      if(!ischecked && types[0] === 'all') {
+        checked[0] = false;
+      }
+   
+      
+      if(type !== 'wiki') {
+        types.push(type);
+        checked.push(ischecked);
+      }
+      else if(!(viewport().width > 992)) {
+        types.push(type);
+        checked.push(ischecked);
+      }
+    });
+
+    types.forEach(function(element, index) {
+      var type = element;
+      var ischecked = checked[index];
+      if(index === 0 && checked.slice(1, checked.length).every(x => x)) {
+        ischecked = true;
+        checked[index] = true;
+      }
+      if (localStorage) {
+        localStorage.setItem('pl-dash-' + type, ischecked);
+        $('.node-type-' + type).prop('checked', ischecked);
+      }
+    });
+    updateDropdownTitle();
+    setTypeVisibility(types, checked);
+  }
+
+  $('.activity-dropdown li').click(function(e) {
+    e.stopPropagation();
+    if($(this).find('input').attr('data-type') === 'all') {
+      var all = this
+      $('.activity-dropdown li.filter-checkbox').each(function () {
+        $(this).find('input').prop('checked', $(all).find('input').prop('checked'));
+      });
+    }
+    updateFilters();
+    
+  });
+
+  function updateDropdownTitle() {
+    if ($('.activity-dropdown input.node-type:checked').length < $('.activity-dropdown input.node-type').length) {
+      $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.selected_updates'));
+    } else if ($('.activity-dropdown input.node-type:checked').length === 0) {
+      $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.none'));
+    } else {
+      $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.all_updates'));
+    }
+  }
 
 
   $('.note-wiki, .wikis .wiki').each(function(wiki) {
@@ -230,7 +236,7 @@
       feed: 'https://publiclab.org/rssproxy/plots-dev/',
       //feed: '/home/fetch?url=https://groups.google.com/forum/feed/plots-dev/topics/rss.xml?num=15',
       url:   '/lists#publiclaboratory'
-    },
+    }
   };
 
   var show_list = function (list) {
@@ -265,7 +271,7 @@
         metaEl.find('.date').append(pubDate);
 
         if (author) metaEl.find('.date').append(' by <i>' + author + '</i>');
-        if (list != 'combined') metaEl.find('.date').append(' on <a href="' + lists[list].url + '">' + list + '</a>');
+        if (list !== 'combined') metaEl.find('.date').append(' on <a href="' + lists[list].url + '">' + list + '</a>');
 
       });
 
@@ -293,5 +299,17 @@
     window.location = '/search/' + $('.search-form-wiki input').val();
 
   })
+
+  $(function () {
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var params = url.searchParams.get("types");
+    updateDropdownTitle();
+    
+    if(params !== null) {
+      params = params.split(",");
+    }
+
+  });
 
 })();
