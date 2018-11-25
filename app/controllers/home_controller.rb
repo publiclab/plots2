@@ -103,7 +103,7 @@ class HomeController < ApplicationController
 
     questions = basenotes.where(uid: '3')
 
-    events = Tag.find_nodes_by_type('event', 'note', 999999999999999)
+    events = Tag.find_nodes_by_type('event', 'note', 999_999_999_999_999)
       .where('node.nid NOT IN (?)', hidden_nids + [0])
 
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
@@ -166,34 +166,32 @@ class HomeController < ApplicationController
     if params[:types]
       types = params[:types].split(',')
     else
-      types = ['all', 'note', 'question', 'event', 'comment', 'wiki']
+      types = %w[all note question event comment wiki]
     end
       
     types.each do |type|
       if type == 'note'
-        activity = activity + notes
+        activity += notes
       elsif type == 'question'
-        activity = activity + questions
+        activity += questions
       elsif type == 'event'
-        activity = activity + events
+        activity += events
       elsif type == 'comment'
-        activity = activity + comments + answer_comments
+        activity += comments + answer_comments
       elsif type == 'wiki'
-        activity = activity + wikis
+        activity += wikis
       end
     end
 
-      
-    if types.length > 0
+    if types.length.positive?
       activity = activity.sort_by(&:created_at).reverse.paginate(:page => params[:page], :per_page => 37)
     end
-    
 
     response = [
       activity,
       blog,
       wikis,
-      revisions,
+      revisions
     ]
     response
   end

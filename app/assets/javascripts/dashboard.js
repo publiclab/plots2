@@ -41,7 +41,6 @@
     }
   }
 
-  // load any settings from browser storage
   var getLocalStorageActivity = function() {  
 
     if (localStorage) {
@@ -80,20 +79,7 @@
     $('.activity .col-md-6').css('clear', 'none');
     $('.activity .col-md-6:visible:even').css('clear', 'left');
 
-    // change dropdown title 
-    if ($('.activity-dropdown input.node-type:checked').length < $('.activity-dropdown input.node-type').length) {
- 
-      $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.selected_updates'));
- 
-    } else if ($('.activity-dropdown input.node-type:checked').length === 0) {
-
-      $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.none'));
-
-    } else {
- 
-      $('.activity-dropdown .dropdown-toggle .node-type-filter').html(I18n.t('js.dashboard.all_updates'));
- 
-    }
+    updateDropdownTitle();
   });
 
   
@@ -102,14 +88,11 @@
     var types = [];
     var checked = [];
     $('.activity-dropdown li.filter-checkbox').each(function () {
-
       var type = $(this).find('input').attr('data-type');
       var ischecked = $(this).find('input').prop('checked');
       if(!ischecked && types[0] === 'all') {
         checked[0] = false;
       }
-   
-      
       if(type !== 'wiki') {
         types.push(type);
         checked.push(ischecked);
@@ -120,6 +103,14 @@
       }
     });
 
+    var valuesAfterAdditionToStorage = addCheckboxValuesToLocalStorage(types, checked);
+    types = valuesAfterAdditionToStorage.types;
+    values = valuesAfterAdditionToStorage.values;
+    updateDropdownTitle();
+    setTypeVisibility(types, checked);
+  }
+
+  function addCheckboxValuesToLocalStorage(types, checked) {
     types.forEach(function(element, index) {
       var type = element;
       var ischecked = checked[index];
@@ -132,8 +123,10 @@
         $('.node-type-' + type).prop('checked', ischecked);
       }
     });
-    updateDropdownTitle();
-    setTypeVisibility(types, checked);
+
+    return {
+      types, checked
+    }
   }
 
   $('.activity-dropdown li').click(function(e) {
