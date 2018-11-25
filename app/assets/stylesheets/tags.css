@@ -1,14 +1,14 @@
-.popover{
-  /* z-index: 1; */
+.popover {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
 }
+
 .popover-title {
-    color: #333;
-    font-size: 14px;
-    text-align: center;
-    font-weight: bold;
+  color: #333;
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
 }
 
 .sec-3 {
