@@ -160,15 +160,12 @@ class HomeController < ApplicationController
       .group(['answers.id', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
     answer_comments = answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     answer_comments = answer_comments.to_a # ensure it can be serialized for caching
-
     activity = []
-
     if params[:types]
       types = params[:types].split(',')
     else
-      types = %w[all note question event comment wiki]
-    end
-      
+      types = %w(all note question event comment wiki)
+    end 
     types.each do |type|
       if type == 'note'
         activity += notes
@@ -182,11 +179,9 @@ class HomeController < ApplicationController
         activity += wikis
       end
     end
-
     if types.length.positive?
       activity = activity.sort_by(&:created_at).reverse.paginate(:page => params[:page], :per_page => 37)
     end
-
     response = [
       activity,
       blog,
