@@ -4,7 +4,7 @@
   <% if @notes.present? %>
     <h2> Results for <%= params[:query] %></h2>
     <div class="list-group">
- 
+
       <ul class="nav nav-pills">
         <li class="nav-item">
           <%= link_to "Most liked", url_for(:order => :likes), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :likes ? "active" : ""}"%>
@@ -32,6 +32,7 @@
       Try searching <a href="/search">for another topic</a> or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
     </h4>
   <% end %>
+  <a href="https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html">Info about boolean-searches</a>
 </div>
 
 <%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
