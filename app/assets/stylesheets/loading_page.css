@@ -14,7 +14,7 @@
 #loader-wrapper .loader-section.section-right {
     right: 0;
 }
-#loader .loader {
+#loader {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -30,17 +30,17 @@
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
-h1 {
-  color: #EEEEEE;
-}
--webkit-keyframes spin {
+
+@-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
 }
-spin {
+
+@keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
 #content {
     margin: 0 auto;
     padding-bottom: 50px;
