@@ -73,16 +73,18 @@
 
   });
 
+  $('.activity-dropdown input').click(function(e) {
+    $(this).prop('checked', !($(this).prop('checked')));
+  });
+
   $('.activity-dropdown a').click(function(e) {
     e.preventDefault();
     // use CSS clear:left to tidy columns 
     $('.activity .col-md-6').css('clear', 'none');
     $('.activity .col-md-6:visible:even').css('clear', 'left');
-
+    $(this).find('input').prop('checked', !($(this).find('input').prop('checked')));
     updateDropdownTitle();
   });
-
-  
 
   function updateFilters() {
     var types = [];
@@ -129,17 +131,20 @@
     }
   }
 
-  $('.activity-dropdown li').click(function(e) {
+  $('.activity-dropdown .filter-checkbox').click(function(e) {
     e.stopPropagation();
-    if($(this).find('input').attr('data-type') === 'all') {
+    changeChecked(this);
+  });
+
+  function changeChecked(element) {
+    if($(element).find('input').attr('data-type') === 'all') {
       var all = this
       $('.activity-dropdown li.filter-checkbox').each(function () {
         $(this).find('input').prop('checked', $(all).find('input').prop('checked'));
       });
     }
     updateFilters();
-    
-  });
+  }
 
   function updateDropdownTitle() {
     if ($('.activity-dropdown input.node-type:checked').length < $('.activity-dropdown input.node-type').length) {
@@ -302,7 +307,12 @@
     if(params !== null) {
       params = params.split(",");
     }
-
+    else if(localStorage) {
+      getLocalStorageActivity();
+      if(Object.values(types).includes(false)) {
+        updateFilters();
+      }
+    }
   });
 
 })();
