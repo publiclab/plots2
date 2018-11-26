@@ -142,7 +142,7 @@ function promptTag(val) {
 
     case "comment-template:":
       var input = prompt("Add a template for the comment field to guide responses; enter the name (i.e. 'survey-template' for /wiki/survey-template) of a wiki page to use as the template:", "wiki-template-name");
-      (input !== null) addTag(val + input);
+      if (input !== null) addTag(val + input);
       break;
 
     default:

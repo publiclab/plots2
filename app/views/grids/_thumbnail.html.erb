@@ -1,0 +1,41 @@
+  <table class="table table-responsive">
+    <% nodes.each_with_index do |node, index| %>
+
+        <% if index % 3 == 0  %>
+            <tr> 
+          <% end %>
+          <td>
+            <a class="img" href="<%= node.path %>">
+              <% if node.main_image %>
+                <img style="width:100%;" alt="image" class="img-fluid" src="<%= node.main_image.path(:default)  %>">
+              <% end %>
+            </a>
+            <h3 style="padding: 0px; margin: 10px;"><a href="<%=node.path%>" style="padding-top: 0px"><%=node.title%></a></h3>
+            <p class="meta"><small>
+              <% if node.type == 'note' %>
+                by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_author_contributor %>
+              <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %>
+              | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
+            <% else %>
+              <%= t('notes._notes.last_edit_by') %> <a href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a>
+              <%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
+            <% end %>
+            | <i class="fa fa-eye"></i> <%= number_with_delimiter(node.totalviews) %> <span class="hidden-xs hidden-sm"><%= t('notes._notes.views') %></span>
+            | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
+          </small></p>
+
+          </td>
+          <% if index % 3 == 2  %>
+            </tr>
+          <%end %>
+
+      <% end %>
+</table>
+
+<style>
+.table thead tr th, .table tbody tr td {
+    border: none;
+}
+
+
+</style>
