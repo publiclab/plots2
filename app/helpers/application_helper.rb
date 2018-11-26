@@ -80,6 +80,7 @@ module ApplicationHelper
 
   def insert_extras(body)
     body = NodeShared.nodes_grid(body)
+    body = NodeShared.notes_thumbnail_grid(body)
     body = NodeShared.notes_grid(body)
     body = NodeShared.questions_grid(body)
     body = NodeShared.activities_grid(body)

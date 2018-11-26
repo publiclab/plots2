@@ -85,12 +85,14 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
 
 ### TagLocations:
 
-* **URL**:  `https://publiclab.org/api/srch/taglocations?query=18,-66`
+* **URL**:  `https://publiclab.org/api/srch/taglocations?query=18.00,-66.00`
 * **URL Params** :
 
   **Required:**
 
-  `query=[coordinates]`: search notes from users located near the query separated by `,`.
+  `query=[coordinates]`: search notes from users located near the query separated by `,`
+  and with at least one digit after the '.'. Taking a lat value as example, `lat:18.0`
+  or `lat:18.00` are valid but `lat:18` is not.
 
   **Optional:**
 
