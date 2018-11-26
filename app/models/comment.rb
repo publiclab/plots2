@@ -230,6 +230,8 @@ class Comment < ApplicationRecord
                   gmail_parsed_mail mail_doc
                 elsif domain == "yahoo"
                   yahoo_parsed_mail mail_doc
+		elsif domain == "outlook"
+		  outlook_parsed_mail mail_doc
                 elsif gmail_quote_present?(mail_doc)
                   gmail_parsed_mail mail_doc
                 else
@@ -267,6 +269,8 @@ class Comment < ApplicationRecord
                   gmail_parsed_mail mail_doc
                 elsif domain == "yahoo"
                   yahoo_parsed_mail mail_doc
+		elsif domain == "outlook"
+		  outlook_parsed_mail mail_doc
                 elsif gmail_quote_present?(mail_doc)
                   gmail_parsed_mail mail_doc
                 else
@@ -316,6 +320,22 @@ class Comment < ApplicationRecord
     if mail_doc.css(".gmail_quote").any?
       extra_content = mail_doc.css(".gmail_quote")[0]
       mail_doc.css(".gmail_quote")[0].remove
+      comment_content = mail_doc
+    else
+      comment_content = mail_doc
+      extra_content = nil
+    end
+
+    {
+      "comment_content" => comment_content,
+      "extra_content" => extra_content
+    }
+  end
+
+  def self.outlook_parsed_mail(mail_doc)
+    if mail_doc.css(".outlook_quote").any?
+      extra_content = mail_doc.css(".outlook_quote")[0]
+      mail_doc.css(".outlook_quote")[0].remove
       comment_content = mail_doc
     else
       comment_content = mail_doc
