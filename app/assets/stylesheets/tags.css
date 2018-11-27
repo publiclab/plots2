@@ -1,9 +1,3 @@
-.popover {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
-
 .popover-title {
   color: #333;
   font-size: 14px;
