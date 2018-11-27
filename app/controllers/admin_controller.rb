@@ -367,16 +367,16 @@ class AdminController < ApplicationController
         s.print "RCPT TO: <example@publiclab.org>\n"
       end
       if line.include? '250 Accepted'
-        puts 'PASS'
+        render :text => "Email gateway OK"
         s.close_write
       elsif line.include? '550'
-        puts 'FAIL'
+        render :text => "Email gateway NOT OK"
+        render :status => 500
         s.close_write
       end
     end
 
     s.close
-    render text: 'DONE'
   end
 
 end
