@@ -1,9 +1,9 @@
   <div class="image-container row">
     <% nodes.each_with_index do |node, index| %>
         <% if index > 8 %>
-          <div class="hidden note-image col-md-4">
+          <div class="hidden note-image col-lg-4 col-md-6 col-sm-6 col-xs-12 text-center">
         <% else %>
-          <div class="note-image col-md-4">
+          <div class="note-image col-lg-4 col-md-5 col-sm-6 col-xs-12 text-center">
         <% end %>
           <a class="img" href="<%= node.path %>">
             <% if node.main_image %>
@@ -27,18 +27,18 @@
     <% end %>
   </div>
   <div class="row">
-    <a id="show-all" class="col-md-2 col-md-offset-5 show-all">See more</a>
+    <a id="show-all" class="col-md-2 col-md-offset-5 show-all">Show more</a>
   </div>
 <script>
     $('#show-all').on('click', function(){
       if ($('.hidden').length > 0) {
         $('.hidden').addClass('show');
         $('.show').removeClass('hidden');
-        $('#show-all').html('See less');
+        $('#show-all').html('Show less');
       } else {
         $('.show').addClass('hidden');
         $('.show').removeClass('show');
-        $('#show-all').html('See more');
+        $('#show-all').html('Show more');
       }
     });
 </script>
@@ -50,7 +50,7 @@
     display: none;
   }
   .show {
-    display: block;
+    display: inline-block;
   }
   .show-all {
     color: black;

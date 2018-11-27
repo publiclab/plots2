@@ -378,10 +378,13 @@ div.note .meta {
   height: auto;
   overflow: hidden;
 }
+.note-image img {
+  width: 100%;
+}
 
 .grid-image {
   width: auto;
-  height: 150px;
+  height: 160px;
 }
 
 #notes .note h3 a {
@@ -435,6 +438,11 @@ div.note.moderated h4 {
 @media (max-width:768px) {
   table {
     font-size: 90%;
+  }
+
+  .grid-image {
+    width: auto;
+    height: 200px;
   }
 }
 
