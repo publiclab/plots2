@@ -9,7 +9,7 @@ end
 gem 'activerecord-session_store'
 gem "authlogic", "4.4.2"
 gem 'authlogic-oid'
-gem "composite_primary_keys", "11.0.4"
+gem "composite_primary_keys"
 gem 'figaro'
 gem 'friendly_id'
 gem 'gemoji'
@@ -42,7 +42,7 @@ gem 'progress_bar'
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
 gem "rack-test", "1.1.0"
-gem 'rails', '5.2.1'
+gem 'rails', '5.2.1.1'
 gem 'rails-controller-testing'
 gem 'rails-dom-testing'
 gem 'rails-i18n', '~> 5.1.2'
