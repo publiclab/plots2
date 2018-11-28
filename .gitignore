@@ -54,3 +54,5 @@ node_modules
 .byebug_history
 vendor/bundle
 spec/TEST-Teaspoon-Result.xml
+yarn.lock
+yarn-error.log
