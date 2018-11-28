@@ -1,4 +1,3 @@
-/* eslint-disable wrap-iife */
 (function() {
 
   // Initializing filter types default values
