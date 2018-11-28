@@ -1,5 +1,7 @@
+/* eslint-disable wrap-iife */
 (function() {
 
+  // Initializing filter types default values
   var types = {
     'all':      true,
     'note':     true, 
@@ -7,8 +9,6 @@
     'event':    true, 
     'comment':  true
   };
-
-  
 
   var viewport = function() {
     var e = window, a = 'inner';
@@ -19,24 +19,29 @@
     return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
   }
 
+  // Adding a wiki type if on mobile
   if(!viewport().width > 992) {
     types.wiki = true;
   }
 
+  // Adding current filters to the url and reloading
   var setTypeVisibility = function(type, checked) {    
     var filterTypes = [];
     for(var i = 0; i < type.length; i++) {
+        // Pushing only checked filters to the array
         if(checked[i]) filterTypes.push(type[i]);
     }
     var baseurl = window.location.href;
     url = new URL(baseurl);
 
     if(filterTypes.length > 0 || (baseurl.indexOf('types=') > -1)) {
+      // Appending filters array to the url and reloading
       url.searchParams.set("types", filterTypes);
       window.location.href = url;
     }
   }
 
+  // Loading last selected filter values from local storage
   var getLocalStorageActivity = function() {  
 
     if (localStorage) {
@@ -44,6 +49,7 @@
       Object.keys(types).forEach(function(key, i) {
  
         var type = types[key];
+        // Setting the checkbox value to the one specified in the local storage
         if (localStorage.getItem('pl-dash-' + key) === null) localStorage.setItem('pl-dash-' + key, true);
         types[key] = localStorage.getItem('pl-dash-' + key) === "true"
         $('.activity-dropdown li.filter-checkbox').find('[data-type='+ key +']').prop('checked', types[key]); 
@@ -55,13 +61,10 @@
 
   getLocalStorageActivity();
 
-
   // allow native stylesheets to determine visibility on 
   $(window).on('resize', function() {
-
     $('.activity .col-md-6').css('display', '');
     getLocalStorageActivity();
-
   });
 
 
@@ -70,6 +73,7 @@
   });
 
   $('.activity-dropdown input').click(function(e) {
+    // Making the click on the filter actually change the checkbox value
     $(this).prop('checked', !($(this).prop('checked')));
   });
 
@@ -82,15 +86,21 @@
     updateDropdownTitle();
   });
 
+  // Function parsing the filters data to the array, saving it to the local storage and passing it to the setTypeVisibility()
   function updateFilters() {
     var types = [];
     var checked = [];
     $('.activity-dropdown li.filter-checkbox').each(function () {
+      // Adding values to an array
       var type = $(this).find('input').attr('data-type');
       var ischecked = $(this).find('input').prop('checked');
+
+      // Is the All checkbox selected
       if(!ischecked && types[0] === 'all') {
         checked[0] = false;
       }
+
+      // Adding also the Wiki filter if on small screen
       if(type !== 'wiki') {
         types.push(type);
         checked.push(ischecked);
@@ -101,6 +111,7 @@
       }
     });
 
+    // Adding values to the local storage
     var valuesAfterAdditionToStorage = addCheckboxValuesToLocalStorage(types, checked);
     types = valuesAfterAdditionToStorage.types;
     values = valuesAfterAdditionToStorage.values;
@@ -112,11 +123,14 @@
     types.forEach(function(element, index) {
       var type = element;
       var ischecked = checked[index];
+
+      // This if checks if the current checked type is an All type
       if(index === 0 && checked.slice(1, checked.length).every(x => x)) {
         ischecked = true;
         checked[index] = true;
       }
       if (localStorage) {
+        // Actually writing the value to the local storage
         localStorage.setItem('pl-dash-' + type, ischecked);
         $('.node-type-' + type).prop('checked', ischecked);
       }
@@ -133,8 +147,8 @@
   });
 
   function changeChecked(element) {
+    // If the clicked element is all, also change values of the other elements
     if($(element).find('input').attr('data-type') === 'all') {
-    
       $('.activity-dropdown li.filter-checkbox').each(function () {
         $(this).find('input').prop('checked', $(element).find('input').prop('checked'));
       });
@@ -294,12 +308,15 @@
 
   })
 
+  // On page load
   $(function () {
+    // Get the url and the current types from it
     var url_string = window.location.href;
     var url = new URL(url_string);
     var params = url.searchParams.get("types");
     updateDropdownTitle();
     
+    // Reload the page, if the local storage values differ from current
     if(params !== null) {
       params = params.split(",");
     }
