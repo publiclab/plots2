@@ -1,7 +1,3 @@
-/* eslint-disable complexity */
-/* eslint-disable wrap-iife */
-
-
 (function() {
 
   var types = {
@@ -138,9 +134,9 @@
 
   function changeChecked(element) {
     if($(element).find('input').attr('data-type') === 'all') {
-      var all = this
+    
       $('.activity-dropdown li.filter-checkbox').each(function () {
-        $(this).find('input').prop('checked', $(all).find('input').prop('checked'));
+        $(this).find('input').prop('checked', $(element).find('input').prop('checked'));
       });
     }
     updateFilters();
