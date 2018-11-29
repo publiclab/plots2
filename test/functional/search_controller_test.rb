@@ -7,7 +7,7 @@ class SearchControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "search notes at /search/canon" do
+  test "search notes at /search/notes/canon" do
     get :notes, params: { query: 'Canon' }
     assert_response :success
     assert_equal nodes(:one).id, assigns(:notes).first.id
@@ -49,5 +49,11 @@ class SearchControllerTest < ActionController::TestCase
     get :tags, params: { query: 'awesome' }
     assert_response :success
     assert_equal node_tags(:awesome).nid, assigns(:tags).first.nid
+  end
+
+  test "all_content at /search/page" do
+    get :all_content, params: { query: 'page' }
+    assert_response :success
+    assert assigns(:nodes).values.flatten.collect(&:type).uniq.length > 1
   end
 end
