@@ -8,7 +8,6 @@ class DrupalUser < ApplicationRecord
   self.primary_key = 'uid'
 
   has_many :node, foreign_key: 'uid'
-  has_many :drupal_profile_values, foreign_key: 'uid'
   has_many :node_selections, foreign_key: :user_id
   has_many :answers, foreign_key: :uid
   has_many :answer_selections, foreign_key: :user_id
@@ -127,10 +126,6 @@ class DrupalUser < ApplicationRecord
       .where(uid: uid)
       .order('changed DESC')
       .first
-  end
-
-  def profile_values
-    drupal_profile_values
   end
 
   def notes
