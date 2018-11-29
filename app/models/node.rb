@@ -319,7 +319,7 @@ class Node < ActiveRecord::Base
   # scan for first image in the body and use this instead
   # (in future, maybe just do this for all images?)
   def scraped_image
-    latest.render_body.scan(/<img(.*?)\/>/).first
+    latest.render_body.scan(/<img(.*?)\/>/)&.first if latest
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
