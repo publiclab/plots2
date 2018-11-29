@@ -1,5 +1,8 @@
   <div class="image-container row">
     <% nodes.each_with_index do |node, index| %>
+        <% if index % 3 == 0 && index > 0 %>
+          <div class="clearfix visible-lg"></div>
+        <% end %>
         <% if index > 8 %>
           <div class="hidden note-image col-lg-4 col-md-6 col-sm-6 col-xs-12 text-center">
         <% else %>
@@ -26,9 +29,11 @@
         </div>
     <% end %>
   </div>
-  <div class="row">
-    <a id="show-all" class="col-md-2 col-md-offset-5 show-all">Show more</a>
-  </div>
+  <% if nodes.count > 8 %>
+    <div class="row">
+      <a id="show-all" class="col-md-2 col-md-offset-5 show-all">Show more</a>
+    </div>
+  <% end %>
 <script>
     $('#show-all').on('click', function(){
       if ($('.hidden').length > 0) {
