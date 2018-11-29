@@ -330,6 +330,12 @@ class Node < ActiveRecord::Base
     end
   end
 
+  # scan for first image in the body and use this instead
+  # (in future, maybe just do this for all images?)
+  def scraped_image
+    latest.render_body.scan(/<img(.*?)\/>/)&.first if latest
+  end
+
   # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_content_field_image_gallery
     DrupalContentFieldImageGallery.where(nid: nid)
