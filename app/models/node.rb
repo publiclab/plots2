@@ -333,8 +333,8 @@ class Node < ActiveRecord::Base
   # scan for first image in the body and use this instead
   # (in future, maybe just do this for all images?)
   def scraped_image
-    match = latest&.render_body.scan(/<img(.*?)\/>/)&.first&.first
-    match&.split('src="').last&.split('"')&.first
+    match = latest&.render_body&.scan(/<img(.*?)\/>/)&.first&.first
+    match&.split('src="')&.last&.split('"')&.first
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
