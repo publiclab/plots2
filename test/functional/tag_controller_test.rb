@@ -174,7 +174,6 @@ class TagControllerTest < ActionController::TestCase
   test 'show page for non-existent tag' do
     get :show, params: { id: 'nonexistent' }
     assert :success
-    assert_select '#wiki-content', 1
   end
 
   test 'tag show range' do
