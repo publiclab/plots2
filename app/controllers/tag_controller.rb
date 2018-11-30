@@ -471,9 +471,9 @@ class TagController < ApplicationController
   end
 
   def gridsEmbed
-    if ['nodes', 'wikis', 'activities', 'questions', 'upgrades', 'notes'].include?(params[:tagname].split(':').first)
-      params[:t] == params[:tagname]
-      params[:tagname] == ""
+    if %w[nodes wikis activities questions upgrades notes].include?(params[:tagname].split(':').first)
+      params[:t] = params[:tagname]
+      params[:tagname] = ""
     end
     render layout: false
   end
