@@ -4,21 +4,22 @@
   <% if @notes.present? %>
     <h2> Results for <%= params[:query] %></h2>
     <div class="list-group">
+
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <%= link_to "Most liked", url_for(:order => :likes), :class => "list-group-item list-group-item-action"%>
+          <%= link_to "Most liked", url_for(:order => :likes), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :likes ? "active" : ""}"%>
         </li>
          <li class="nav-item">
-           <%= link_to "Most viewed", url_for(:order => :views), :class => "list-group-item list-group-item-action"%>
+           <%= link_to "Most viewed", url_for(:order => :views), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :views ? "active" : ""}"%>
          </li>
          <li class="nav-item">
-           <%= link_to "Most recent", url_for(:order => :default), :class => "list-group-item list-group-item-action"%>
+           <%= link_to "Most recent", url_for(:order => :default), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :default ? "active" : ""}"%>
          </li>
          <li class="nav-item">
-           <%= link_to "Boolean search", url_for(:order => :natural, :type => :boolean), :class => "list-group-item list-group-item-action"%>
+           <%= link_to "Boolean search", url_for(:order => :natural, :type => :boolean), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :natural && params[:type].to_s.to_sym == :boolean ? "active" : ""}"%>
          </li>
          <li class="nav-item">
-           <%= link_to "Natural search", url_for(:order => :natural, :type => :natural), :class => "list-group-item list-group-item-action"%>
+           <%= link_to "Natural search", url_for(:order => :natural, :type => :natural), :class => "list-group-item list-group-item-action #{params[:order].to_s.to_sym == :natural && params[:type].to_s.to_sym == :natural ? "active" : ""}"%>
          </li>
       </ul>
     </div>
@@ -31,6 +32,7 @@
       Try searching <a href="/search">for another topic</a> or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
     </h4>
   <% end %>
+  <a href="https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html">Info about boolean-searches</a>
 </div>
 
 <%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>

@@ -172,3 +172,6 @@ Help improve Public Lab software!
 ## First Time?
 
 New to open source/free software? Here is a selection of issues we've made **especially for first-timers**. We're here to help, so just ask if one looks interesting : https://code.publiclab.org
+
+## Let the code be with you. :heart:
+### Happy opensourcing. :smile:

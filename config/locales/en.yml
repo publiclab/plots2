@@ -1,6 +1,8 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  node:
+    only_author_use_powertag: "Error: only the author may use that powertag."
   dashboard:
     _activity:
       share_work: "Share your work"

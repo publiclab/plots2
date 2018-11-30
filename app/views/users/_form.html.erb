@@ -1,3 +1,4 @@
+<div style="padding:10px;">
 <%= form_for @user, :url => {:controller => 'users', :action => @action}, :html => {:class => "row"} do |f| %>
 
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
@@ -86,50 +87,11 @@
       <% if Rails.env == "production" && !params[:spamaway] %>
 
         <%= recaptcha_tags %>
+        <p>If you cannot use the ReCaptcha to verify you are not a bot, <a href="/signup?spamaway=true">use this alternative verification</a>.</p>
 
       <% else %>
 
-        <%= fields_for @spamaway do |spam| %>
-
-          <div class="form-group spamaway">
-
-            <label for="spamaway_follow_instructions">
-              <%= t('users._form.are_you_human') %>
-            </label>
-            <p>
-              <%= t('users._form.spam_filtering') %>
-            </p>
-
-            <% vars = [:statement1, :statement2, :statement3, :statement4] %>
-            <% turingtest = Spamaway.get_pairs vars.length %>
-            <% turingtest.each_index do |i| %>
-
-                <div class="btn-group btn-group-justified" role="group">
-                  <% [0,1].each_with_index do |s, j| %><% statement = turingtest[i][s] %>
-                    <div class="btn-group" role="group">
-                      <button type="button" class="col-xs-5 btn btn-default" style="text-align:left;<% if i.odd? %> background:#eef;<% end %>" id="spamaway-<%= i.to_s + j.to_s %>">
-                        <%= spam.radio_button vars[i], statement %> <%= statement %>
-                      </button>
-                    </div>
-                  <% end %>
-                </div>
-                <br />
-
-            <% end %>
-
-          </div>
-
-          <div class="form-group">
-
-            <%= spam.text_area :follow_instructions, { class: "form-control col-md-6",
-                                                     rows: 8,
-                                                     tabindex: 7,
-                                                     placeholder: I18n.t('users._form.dont_write_here') }
-            %>
-
-          </div>
-
-        <% end %>
+        <%= render partial: 'spamaway', locals: { spamaway: @spamaway } %>
 
       <% end %>
 
@@ -176,3 +138,4 @@
   </div>
 
 <% end %>
+</div>

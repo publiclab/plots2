@@ -18,8 +18,8 @@ gem 'geokit-rails'
 gem 'georuby', '2.0'
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', '~> 0.31.1'
-gem 'grape-swagger-entity', '0.3.0'
+gem 'grape-swagger', '~> 0.32.0'
+gem 'grape-swagger-entity', '0.3.1'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
 gem 'http_accept_language'
@@ -42,7 +42,7 @@ gem 'progress_bar'
 gem 'rack-cors', :require => 'rack/cors'
 gem "rack-openid"
 gem "rack-test", "1.1.0"
-gem 'rails', '5.2.0'
+gem 'rails', '5.2.1.1'
 gem 'rails-controller-testing'
 gem 'rails-dom-testing'
 gem 'rails-i18n', '~> 5.1.2'
@@ -51,7 +51,7 @@ gem 'rb-readline'
 gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
 gem "recaptcha", require: "recaptcha/rails"
 gem 'responders', '~> 2.0'
-gem 'rubocop', '~> 0.52.1', require: false
+gem 'rubocop', '~> 0.60.0', require: false
 gem "ruby-openid", :require => "openid"
 gem 'sanitize'
 gem 'sidekiq'

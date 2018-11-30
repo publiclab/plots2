@@ -35,15 +35,15 @@ class Node < ActiveRecord::Base
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
+        query = connection.quote(query.to_s)
         if type == :boolean
-          query = connection.quote(query.to_s + "*")
+          # Query is done as a boolean full-text search. More info here: https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
           nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
             .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
             .limit(limit)
             .distinct
             .collect(&:nid)
         else
-          query = connection.quote(query.to_s)
           nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
             .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
             .limit(limit)
@@ -330,6 +330,12 @@ class Node < ActiveRecord::Base
     end
   end
 
+  # scan for first image in the body and use this instead
+  # (in future, maybe just do this for all images?)
+  def scraped_image
+    latest.render_body.scan(/<img(.*?)\/>/)&.first if latest
+  end
+
   # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_content_field_image_gallery
     DrupalContentFieldImageGallery.where(nid: nid)
@@ -532,6 +538,10 @@ class Node < ActiveRecord::Base
     # This fires off a query that orders by vid DESC
     # and is quicker than doing .order(vid: :DESC) for some reason.
     drupal_content_type_map.last
+  end
+
+  def blurred?
+    has_power_tag('location') && power_tag('location') == "blurred"
   end
 
   def lat

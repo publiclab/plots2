@@ -170,6 +170,11 @@ class TagControllerTest < ActionController::TestCase
     # assert_equal assigns['tags'].length, 1
     assert_select '#wiki-content', 1
   end
+  
+  test 'show page for non-existent tag' do
+    get :show, params: { id: 'nonexistent' }
+    assert :success
+  end
 
   test 'tag show range' do
     get :show, params: { id: tags(:spectrometer).name,

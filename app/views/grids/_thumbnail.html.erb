@@ -1,0 +1,64 @@
+  <div class="image-container row">
+    <% nodes.each_with_index do |node, index| %>
+        <% if index % 3 == 0 && index > 0 %>
+          <div class="clearfix visible-lg"></div>
+        <% end %>
+        <% if index > 8 %>
+          <div class="hidden note-image col-lg-4 col-md-6 col-sm-6 col-xs-12 text-center">
+        <% else %>
+          <div class="note-image col-lg-4 col-md-5 col-sm-6 col-xs-12 text-center">
+        <% end %>
+          <a class="img" href="<%= node.path %>">
+            <% if node.main_image %>
+              <img alt="image" class="img-fluid grid-image" src="<%= node.main_image.path(:default) %>">
+            <% end %>
+          </a>
+          <h4 style="padding: 0px; margin: 10px;"><a href="<%=node.path%>" style="padding-top: 0px"><%=node.title%></a></h4>
+          <p class="meta"><small>
+            <% if node.type == 'note' %>
+              by <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a> <%= node.author.new_author_contributor %>
+            <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %>
+            | <a href="<%= node.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= node.comment_count %></a>
+            <% else %>
+              <%= t('notes._notes.last_edit_by') %> <a href="/profile/<%= node.latest.author.name %>"><%= node.latest.author.name %></a>
+              <%= distance_of_time_in_words(Time.at(node.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
+            <% end %>
+            | <i class="fa fa-eye"></i> <%= number_with_delimiter(node.totalviews) %> <span class="hidden-xs hidden-sm"><%= t('notes._notes.views') %></span>
+            | <i style="<% if node.likes > 0 %>color:#db4;<% else %>color:#888;<% end %>" class="fa fa-star-o"></i> <%= node.likes %>
+          </small></p>
+        </div>
+    <% end %>
+  </div>
+  <% if nodes.count > 8 %>
+    <div class="row">
+      <a id="show-all" class="col-md-2 col-md-offset-5 show-all">Show more</a>
+    </div>
+  <% end %>
+<script>
+    $('#show-all').on('click', function(){
+      if ($('.hidden').length > 0) {
+        $('.hidden').addClass('show');
+        $('.show').removeClass('hidden');
+        $('#show-all').html('Show less');
+      } else {
+        $('.show').addClass('hidden');
+        $('.show').removeClass('show');
+        $('#show-all').html('Show more');
+      }
+    });
+</script>
+<style>
+  .table thead tr th, .table tbody tr td {
+      border: none;
+  }
+  .hidden {
+    display: none;
+  }
+  .show {
+    display: inline-block;
+  }
+  .show-all {
+    color: black;
+    text-decoration: underline;
+  }
+</style>
