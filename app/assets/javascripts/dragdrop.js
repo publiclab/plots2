@@ -51,7 +51,7 @@ jQuery(document).ready(function() {
         $('#create_progress').hide()
         $('#create_uploading').hide()
         $('#create_prompt').show()
-        var extension = data.result['filename'].split('.')[-1]
+        var extension = data.result['filename'].split('.')[data.result['filename'].split('.').length - 1]
         var file_url = data.result.url.split('?')[0]
 
         var file_type
