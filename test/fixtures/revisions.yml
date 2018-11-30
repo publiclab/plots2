@@ -308,7 +308,7 @@ post_test4:
 
 scraped_image:
   nid: 27
-  uid: 18
+  uid: 1
   title: Post test review 4
   body: "Lots of text and then an image: ![image preview](/url/to/image.png)"
   timestamp: <%= DateTime.new(2018,8,20).to_i %>
