@@ -526,7 +526,7 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'shows embeddable grid of tagged content with powertag' do
-    get :gridsEmbed, params: { tagname: 'nodes:purpleair' }
+    get :gridsEmbed, params: { tagname: 'nodes:awesome' }
 
     assert_response :success
     assert_select 'table' # ensure a table is shown
