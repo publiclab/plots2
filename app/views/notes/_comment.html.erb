@@ -126,8 +126,8 @@
     <% end %>
 
     <% if comment.body.include?('?') %>
-    <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
-    </p>
+      <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
+      </p>
     <% end %>
     <% breakoutQuestions = Tag.find_nodes_by_type("from:#{comment.cid}") %>
     <% if breakoutQuestions %>
