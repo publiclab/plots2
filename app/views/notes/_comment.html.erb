@@ -83,12 +83,14 @@
   </div>
 
   <script>
+
     $("#c<%= comment.cid %>delete-btn").click(function () {
       $.confirm({
         title: 'Confirm!',
         theme: 'Supervan',
         content: 'Are you sure?',
         buttons: {
+
           confirm: function () {
             $.ajax({
               url : "/comment/delete/<%= comment.cid %>",
@@ -100,12 +102,14 @@
               }
             });
           },
+
           cancel: function () {
               notyNotification('sunset', 3000, 'info', 'topRight', 'Comment deletion cancelled!');
           },
         }
       });  
     });
+
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })
@@ -114,7 +118,7 @@
   <div style="border: 1px solid #e7e7e7;padding: 18px;" id="c<%= comment.cid %>show">
 
     <% comment_body = comment.render_body %>
-    <p id="comment-body-<%= comment.cid %>"><%= raw insert_extras(filtered_comment_body(comment_body)) %></p>
+    <p id="comment-body-<%= comment.cid %>"><%= raw filtered_comment_body(comment_body) %></p>
 
     <% if contain_trimmed_body?(comment_body) %>
       <span style="background-color: #DCDCDC;  border-radius: 7px; cursor: pointer;" ><a class="email-toggle" data-toggle="collapse" data-target="#comment-<%= comment.cid %>-extra-content" style='text-decoration: none;'>&nbsp;&ensp;&#x2022&#x2022&#x2022&nbsp;&ensp;</a></span>
@@ -122,12 +126,8 @@
     <% end %>
 
     <% if comment.body.include?('?') %>
-      <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>&tags=from:<%= comment.cid %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
-      </p>
-    <% end %>
-    <% breakoutQuestions = Tag.find_nodes_by_type("from:#{comment.cid}") %>
-    <% if breakoutQuestions %>
-      See <a href="/questions/tag/from:<%= comment.cid %>"><%= breakoutQuestions.length %> questions</a> broken out from this comment.
+    <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>&tags=from:<%= comment.cid %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
+    </p>
     <% end %>
     <% breakoutQuestions = Tag.find_nodes_by_type("from:#{comment.cid}") %>
     <% if breakoutQuestions %>
@@ -168,15 +168,19 @@
     justify-content: space-around;
     padding: 6px;
   }
+
   #emoji-dropdown .dropdown-menu {
     min-width: 196px;
   }
+
   .grow {
     transition: all .1s ease-in-out;
   }
+
   .grow:hover {
     transform: scale(1.2);
   }
+
   .grow:active {
     transform: scale(1);
   }
