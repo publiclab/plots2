@@ -530,6 +530,14 @@ class TagControllerTest < ActionController::TestCase
     assert_select 'table' # ensure a table is shown
   end
 
+  test 'shows embeddable grid of tagged content with powertag' do
+    get :gridsEmbed, params: { tagname: 'nodes:awesome' }
+
+    assert_response :success
+    assert_select 'table' # ensure a table is shown
+    assert_equal 3, css_select('tr').length # ensure it has 3 rows
+  end
+
   test 'rss with tagname and authorname' do
     get :rss_for_tagged_with_author, params: { tagname: 'test*', authorname: 'jeff', format: 'rss' }
     assert :success
