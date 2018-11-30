@@ -60,7 +60,7 @@ class NotesController < ApplicationController
       flash[:warning] = "You need to login to view the page"
       redirect_to '/login'
       return
-    elsif @node.status == 3 && @node.author.user != current_user && !current_user.can_moderate? && !@node.has_tag("with:#{current_user.username}")
+    elsif @node.status == 3 && @node.author != current_user && !current_user.can_moderate? && !@node.has_tag("with:#{current_user.username}")
       flash[:notice] = "Only author can access the draft note"
       redirect_to '/'
       return
@@ -105,7 +105,7 @@ class NotesController < ApplicationController
   end
 
   def create
-    if current_user.user.status == 1
+    if current_user.status == 1
       saved, @node, @revision = Node.new_note(uid: current_user.uid,
                                               title: params[:title],
                                               body: params[:body],
@@ -388,7 +388,7 @@ class NotesController < ApplicationController
   # Updates title of a wiki page, takes id and title as query string params. maps to '/node/update/title'
   def update_title
     node = Node.find params[:id].to_i
-    unless current_user && current_user.user == node.author
+    unless current_user && current_user == node.author
       flash.keep[:error] = I18n.t('notes_controller.author_can_edit_note')
       return redirect_to URI.parse(node.path).path + "#comments"
     end

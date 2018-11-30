@@ -63,7 +63,7 @@ class AdminMailerTest < ActionMailer::TestCase
     # test the last one
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
-    assert_equal [node.author.mail], email.to
+    assert_equal [node.author.email], email.to
     assert_equal '[Public Lab] Your post was approved!', email.subject
     assert email.body.include?("Hi! Your post was approved by <a href='https://#{request_host}/profile/#{moderator.username}'>#{moderator.username}</a> (a <a href='https://#{request_host}/wiki/moderation'>community moderator</a>) and is now visible in the <a href='https://#{request_host}/dashboard'>Public Lab research feed</a>. Thanks for contributing to open research!")
   end
@@ -83,7 +83,7 @@ class AdminMailerTest < ActionMailer::TestCase
     # test the last one
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
-    assert_equal [comment.author.mail], email.to
+    assert_equal [comment.author.email], email.to
     assert_equal '[Public Lab] Your comment was approved!', email.subject
     assert email.body.include?("Hi! Your comment was approved by <a href='https://#{request_host}/profile/#{moderator.username}'>#{moderator.username}</a> (a <a href='https://#{request_host}/wiki/moderation'>community moderator</a>) and is now visible in the <a href='https://#{request_host}/dashboard'>Public Lab research feed</a>. Thanks for contributing to open research!")
   end

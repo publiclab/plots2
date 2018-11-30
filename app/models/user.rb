@@ -28,13 +28,18 @@ class User < ActiveRecord::Base
   # has_one :users, :conditions => proc { ["users.name =  ?", self.username] }
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
+  has_many :node_selections, foreign_key: :user_id
+  has_many :revision, foreign_key: 'uid'
   has_many :user_tags, foreign_key: 'uid', dependent: :destroy
   has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
   has_many :following_users, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :likes
+  has_many :answers, foreign_key: :uid
+  has_many :answer_selections, foreign_key: :user_id
   has_many :revisions, through: :node
+  has_many :comments, foreign_key: :uid
 
   validates_with UniqueUsernameValidator, on: :create
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
@@ -66,18 +71,8 @@ class User < ActiveRecord::Base
     self.token = SecureRandom.uuid if token.nil?
   end
 
-  # this is ridiculous. We need to store uid in this model.
-  # ...migration is in progress. start getting rid of these calls...
-  def user
-    User.find_by(name: username)
-  end
-
-  def last
-    user.last
-  end
-
-  def node_count
-    user.node_count
+  def nodes
+    node
   end
 
   def notes
@@ -105,7 +100,7 @@ class User < ActiveRecord::Base
   end
 
   def uid
-    user.uid
+    id
   end
 
   def title
@@ -206,10 +201,10 @@ class User < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Node.select(:created)
-        .where(uid: user.uid,
-                                       type: 'note',
-                                       status: 1,
-                                       created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
+        .where(uid: uid,
+               type: 'note',
+               status: 1,
+               created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
         .count
     end
     weeks
@@ -221,9 +216,9 @@ class User < ActiveRecord::Base
       time = Time.now.utc.beginning_of_day.to_i
       days[(time - day.days.to_i)] = Node.select(:created)
         .where(uid: uid,
-                                              type: 'note',
-                                              status: 1,
-                                              created: time - (day - 1).days.to_i..time - (day - 2).days.to_i)
+               type: 'note',
+               status: 1,
+               created: time - (day - 1).days.to_i..time - (day - 2).days.to_i)
         .count
     end
     days
@@ -233,9 +228,9 @@ class User < ActiveRecord::Base
     weeks = {}
     (0..span).each do |week|
       weeks[span - week] = Comment.select(:timestamp)
-                            .where(uid: user.uid,
-                                    status: 1,
-                                    timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
+        .where(uid: uid,
+               status: 1,
+               timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
         .count
     end
     weeks
@@ -247,10 +242,10 @@ class User < ActiveRecord::Base
     note_count = 0
     (0..span).each do |day|
       days[day] = Node.select(:created)
-        .where(uid: user.uid,
-                              type: 'note',
-                              status: 1,
-                              created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
+        .where(uid: id,
+               type: 'note',
+               status: 1,
+               created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .count
       break if days[day] == 0
       streak += 1
@@ -265,9 +260,9 @@ class User < ActiveRecord::Base
     wiki_edit_count = 0
     (0..span).each do |day|
       days[day] = Revision.joins(:node)
-        .where(uid: user.uid,
-                                  status: 1,
-                                  timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
+        .where(uid: uid,
+               status: 1,
+               timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .where('node.type != ?', 'note')
         .count
       break if days[day] == 0
@@ -283,9 +278,9 @@ class User < ActiveRecord::Base
     comment_count = 0
     (0..span).each do |day|
       days[day] = Comment.select(:timestamp)
-        .where(uid: user.uid,
-                                 status: 1,
-                                 timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
+        .where(uid: uid,
+          status: 1,
+          timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .count
       break if days[day] == 0
       streak += 1
@@ -370,6 +365,61 @@ class User < ActiveRecord::Base
     nil
   end
 
+  def moderate
+    self.status = 5
+    self.save({})
+    # user is logged out next time they access current_user in a controller; see application controller
+    self
+  end
+
+  def unmoderate
+    self.status = 1
+    self.save({})
+    self
+  end
+
+  def ban
+    decrease_likes_banned
+    self.status = 0
+    self.save({})
+    # user is logged out next time they access current_user in a controller; see application controller
+    self
+  end
+
+  def unban
+    increase_likes_unbanned
+    self.status = 1
+    self.save({})
+    self
+  end
+
+  def banned?
+    status.zero?
+  end
+
+  def note_count
+    Node.where(status: 1, uid: uid, type: 'note').count
+  end
+
+  def node_count
+    Node.where(status: 1, uid: uid).count + Revision.where(uid: uid).count
+  end
+
+  def liked_notes
+    Node.includes(:node_selections)
+      .references(:node_selections)
+      .where("type = 'note' AND node_selections.liking = ? AND node_selections.user_id = ? AND node.status = 1", true, id)
+      .order('node_selections.nid DESC')
+  end
+
+  def liked_pages
+    nids = NodeSelection.where(user_id: uid, liking: true)
+      .collect(&:nid)
+    Node.where(nid: nids)
+      .where(type: 'page')
+      .order('nid DESC')
+  end
+
   def send_digest_email
     top_picks = content_followed_in_period(Time.now - 1.week, Time.now)
     if top_picks.count > 0
@@ -392,6 +442,20 @@ class User < ActiveRecord::Base
     end
   end
 
+  def tag_counts
+    tags = {}
+    Node.order('nid DESC').where(type: 'note', status: 1, uid: id).limit(20).each do |node|
+      node.tags.each do |tag|
+        if tags[tag.name]
+          tags[tag.name] += 1
+        else
+          tags[tag.name] = 1
+        end
+      end
+    end
+    tags
+  end
+
   def generate_token
     user_id_and_time = { :id => id, :timestamp => Time.now }
     User.encrypt(user_id_and_time)
@@ -412,6 +476,20 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def decrease_likes_banned
+    node_selections.each do |selection|
+      selection.node.cached_likes = selection.node.cached_likes - 1
+      selection.node.save!
+    end
+  end
+
+  def increase_likes_unbanned
+    node_selections.each do |selection|
+      selection.node.cached_likes = selection.node.cached_likes + 1
+      selection.node.save!
+    end
+  end
 
   def map_openid_registration(registration)
     self.email = registration['email'] if email.blank?

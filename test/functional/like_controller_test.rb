@@ -73,8 +73,8 @@ class LikeControllerTest < ActionController::TestCase
     note = Node.find note.id
     cached_likes =  note.cached_likes
 
-    drupal_current_user = User.find 2 
-    drupal_current_user.ban    #banned user
+    current_user = User.find 2 
+    current_user.ban    #banned user
 
     note = Node.find note.id
     assert_equal note.likers.length, note.cached_likes
@@ -90,8 +90,8 @@ class LikeControllerTest < ActionController::TestCase
 
     note = Node.find note.id
 
-    drupal_current_user = DrupalUser.find 2
-    drupal_current_user.moderate    #moderated user
+    current_user = User.find 2
+    current_user.moderate    #moderated user
 
     note = Node.find note.id
     assert_equal note.likers.count, note.cached_likes - 1

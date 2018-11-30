@@ -6,8 +6,8 @@
 
     <div class="navbar-text pull-left">
       <% if comment.author %>
-        <% if comment.author.user && comment.author.user.photo_file_name %>
-          <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= comment.author.user.photo_path(:thumb) %>" />
+        <% if comment.author && comment.author.photo_file_name %>
+          <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= comment.author.photo_path(:thumb) %>" />
         <% else %>
           <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="img-circle"></div>
         <% end %>
@@ -15,8 +15,8 @@
       <% end %>
       <span class="hidden-xs"><%= t('notes._comment.commented') %></span>
       <a style="color:#aaa;" href="#c<%= comment.cid %>"><%= distance_of_time_in_words(comment.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a>
-      <% if comment.author && comment.author.user %>
-        <% streak = comment.author.user.streak %>
+      <% if comment.author %>
+        <% streak = comment.author.streak %>
         <% if streak[0] > 7 %>
           <a href="/wiki/streaks"><i class="fa fa-fire" style="padding-left:4px; font-size:16px; color:#f63;" data-toggle="tooltip" data-placement="top" title="<%= raw t('notes._comment.streak_title', :author => comment.author.name, :streak_notes => streak[1][0], :streak_wiki => streak[1][1], :streak_comments => streak[1][2], :streak_days => streak[0]) %>"></i></a>
         <% end %>
@@ -24,11 +24,11 @@
     </div>
 
     <div class="navbar-text navbar-right pull-right" style="padding-right:10px;">
-      <% if comment.author && comment.author.user && comment.author.user.role %>
+      <% if comment.author && comment.author && comment.author.role %>
       <!-- Role icon for admins & moderators
-        <% if comment.author.user.role == 'admin' %>
+        <% if comment.author.role == 'admin' %>
           <a href="/users/role/admin"><i class="fa fa-cog" style="font-size:20px; margin-top:8px;" data-toggle="tooltip" data-placement="top" title="Admin"></i></a>
-        <% elsif comment.author && comment.author.user.role == 'moderator' %>
+        <% elsif comment.author && comment.author.role == 'moderator' %>
           <a href="/wiki/moderators"><i class="fa fa-star" style="font-size:20px; margin-top:8px;" data-toggle="tooltip" data-placement="top" title="Moderator"></i></a>
         <% end %>
       -->
@@ -86,7 +86,6 @@
             <% end %>
           </ul>
       <% end %>
-     </div>
     </div>
 
   </div>
@@ -124,8 +123,16 @@
     })
   </script>
 
-  <div id="c<%= comment.cid %>show">
-    <p class="comment-body" id="comment-body-<%= comment.cid %>"><%= raw render_comment_body(comment) %></p>
+  <div style="border: 1px solid #e7e7e7;padding: 18px;" id="c<%= comment.cid %>show">
+
+    <% comment_body = comment.render_body %>
+    <p class="comment-body" id="comment-body-<%= comment.cid %>"><%= raw insert_extras(filtered_comment_body(comment_body)) %></p>
+
+    <% if contain_trimmed_body?(comment_body) %>
+      <span style="background-color: #DCDCDC;  border-radius: 7px; cursor: pointer;" ><a class="email-toggle" data-toggle="collapse" data-target="#comment-<%= comment.cid %>-extra-content" style='text-decoration: none;'>&nbsp;&ensp;&#x2022&#x2022&#x2022&nbsp;&ensp;</a></span>
+      <div class="collapse" id="comment-<%= comment.cid %>-extra-content" ><div class="blockquotestyle"><%= raw trimmed_body(comment_body) %></div></div>
+    <% end %>
+
     <% if comment.body.include?('?') %>
       <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
       </p>

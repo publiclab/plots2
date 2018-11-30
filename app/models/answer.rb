@@ -22,9 +22,9 @@ class Answer < ApplicationRecord
   def likers
     answer_selections
       .joins(:user)
-      .references(:users)
+      .references(:rusers)
       .where(liking: true)
-      .where('users.status = ?', 1)
+      .where('rusers.status': 1)
       .collect(&:user)
   end
 
@@ -36,9 +36,9 @@ class Answer < ApplicationRecord
     users_with_everything_tag = Tag.followers('everything')
     uids = (node.answers.collect(&:uid) + node.likers.collect(&:uid) + users_with_everything_tag.collect(&:uid)).uniq
     # notify other answer authors and users who liked the question
-    User.where('uid IN (?)', uids).each do |user|
+    User.where(id: uids).each do |user|
       if (user.uid != current_user.uid) && (user.uid != node.author.uid)
-        AnswerMailer.notify_answer_likers_author(user.user, self).deliver_now
+        AnswerMailer.notify_answer_likers_author(user, self).deliver_now
       end
     end
   end

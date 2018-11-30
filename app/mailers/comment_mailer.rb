@@ -20,7 +20,7 @@ class CommentMailer < ActionMailer::Base
 
   # user is awarder, not awardee
   def notify_barnstar(user, note)
-    @giver = user.user
+    @giver = user
     @note = note
     @footer = feature('email-footer')
     mail(to: note.author.email, subject: 'You were awarded a Barnstar!')

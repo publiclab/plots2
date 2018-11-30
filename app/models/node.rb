@@ -132,7 +132,7 @@ class Node < ActiveRecord::Base
   # or, we should refactor to us node.created instead of Time.now
   def generate_path
     if type == 'note'
-      username = User.find_by(uid: uid).name
+      username = User.find_by(id: uid).name
       "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{title.parameterize}"
     elsif type == 'page'
       '/wiki/' + title.parameterize
@@ -241,9 +241,9 @@ class Node < ActiveRecord::Base
   def likers
     node_selections
       .joins(:user)
-      .references(:users)
+      .references(:rusers)
       .where(liking: true)
-      .where('users.status = ?', 1)
+      .where('rusers.status': 1)
       .collect(&:user)
   end
 
@@ -259,18 +259,8 @@ class Node < ActiveRecord::Base
       .order(timestamp: :desc)
   end
 
-  def revision_count
-    revision
-      .count
-  end
-
-  def comment_count
-    comments
-      .count
-  end
-
   def author
-    User.find_by(uid: uid)
+    User.find(uid)
   end
 
   def coauthors
@@ -723,7 +713,7 @@ class Node < ActiveRecord::Base
   end
 
   def add_barnstar(tagname, giver)
-    add_tag(tagname, giver.user)
+    add_tag(tagname, giver)
     CommentMailer.notify_barnstar(giver, self).deliver_now
   end
 

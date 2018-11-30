@@ -154,9 +154,9 @@ class UsersController < ApplicationController
         @coauthored = @profile_user.coauthored_notes
                                    .paginate(page: params[:page], per_page: 24)
                                    .order('node_revisions.timestamp DESC')
-        @questions = @user.user.questions
-                               .order('node.nid DESC')
-                               .paginate(:page => params[:page], :per_page => 24)
+        @questions = @user.questions
+                          .order('node.nid DESC')
+                          .paginate(:page => params[:page], :per_page => 24)
         @likes = (@user.liked_notes.includes(%i(tag comments)) + @user.liked_pages)
                        .paginate(page: params[:page], per_page: 24)
         questions = Node.questions

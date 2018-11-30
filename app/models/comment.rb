@@ -134,9 +134,9 @@ class Comment < ApplicationRecord
   end
 
   def notify_users(uids, current_user)
-    User.where('uid IN (?)', uids).each do |user|
+    User.where('id IN (?)', uids).each do |user|
       if user.uid != current_user.uid
-        CommentMailer.notify(user.user, self).deliver_now
+        CommentMailer.notify(user, self).deliver_now
       end
     end
   end

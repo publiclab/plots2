@@ -24,7 +24,6 @@ class ActiveSupport::TestCase
   #   model_class: 'User'
   set_fixture_class users: User
   set_fixture_class node_tags: NodeTag
-  set_fixture_class drupal_users: User
   set_fixture_class node_revisions: Revision
   set_fixture_class drupal_content_type_map: DrupalContentTypeMap
 

@@ -104,7 +104,7 @@ module ApplicationHelper
   def title_suggestion(comment)
     comment.body.gsub(/\[propose:title\](.*?)\[\/propose\]/) do
       a = ActionController::Base.new
-      is_creator = current_user.user == Node.find(comment.nid).author
+      is_creator = current_user == Node.find(comment.nid).author
       title = Regexp.last_match(1)
       output = a.render_to_string(template: "notes/_title_suggestion",
                                   layout:   false,

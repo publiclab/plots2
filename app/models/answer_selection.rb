@@ -3,7 +3,7 @@ class AnswerSelection < ApplicationRecord
   belongs_to :user, foreign_key: :user_id
 
   def user
-    User.find_by(username: User.find_by(uid: user_id).name)
+    User.find_by(username: User.find(user_id).name)
   end
 
   def self.set_likes(uid, aid, value)

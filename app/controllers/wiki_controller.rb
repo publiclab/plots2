@@ -149,7 +149,7 @@ class WikiController < ApplicationController
   end
 
   def create
-    if current_user.user.status == 1
+    if current_user.status == 1
       # we no longer allow custom urls, just titles which are parameterized automatically into urls
       # slug = params[:title].parameterize
       # slug = params[:id].parameterize if params[:id] != "" && !params[:id].nil?

@@ -141,8 +141,8 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should list notes and questions in user profile' do
-    user = drupal_users(:jeff)
-    get :profile, params: { id: user.name }
+    user = users(:jeff)
+    get :profile, params: { id: user.username }
     assert_not_nil assigns(:notes)
     assert_not_nil assigns(:questions)
     assert_not_nil assigns(:answered_questions)
@@ -153,17 +153,11 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should get comments' do
-    user = drupal_users(:jeff)
+    user = users(:jeff)
     get :comments, params: { id: user.id }
     assert_response :success
     assert_not_nil assigns(:comments)
     assert_template partial: 'comments/_comments'
-  end
-
-  # this isn't testing anything?
-  test 'profiles for legacy users' do
-    user = drupal_users(:legacy_user)
-    assert_response :success
   end
 
   test 'creating new account' do
@@ -208,7 +202,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should redirect edit when not logged in' do
-    user = drupal_users(:bob)
+    user = users(:bob)
     get :edit, params: { id: user.name }
     assert_not flash.empty?
     assert_redirected_to '/login'
@@ -224,7 +218,7 @@ class UsersControllerTest < ActionController::TestCase
   test 'should redirect edit when logged in as another user' do
     user = users(:bob)
     UserSession.create(user)
-    new_user = drupal_users(:newcomer).user
+    new_user = users(:newcomer)
     get :edit, params: { id: new_user.name }
     assert_not flash.empty?
     assert_redirected_to '/profile/' + new_user.name
@@ -240,7 +234,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'rss feed when username is valid' do
-    user = drupal_users(:jeff)
+    user = users(:jeff)
     get :rss, params: { author: user.name, format: 'rss' }
     assert_response :success
     assert_equal 'application/xml', @response.content_type

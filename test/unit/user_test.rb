@@ -5,13 +5,13 @@ class UserTest < ActiveSupport::TestCase
     user = User.new(username: 'chris',
                     password: 'godzillas',
                     password_confirmation: 'godzillas',
+                    bio: 'my name is chris.',
                     email: 'test@publiclab.org')
 
     assert user.save({})
 
     assert user.first_time_poster
     assert_not_nil user.id
-    assert_not_nil user.user
     assert_not_nil user.uid
     assert_not_nil user.email
     assert_not_nil user.bio
@@ -22,16 +22,16 @@ class UserTest < ActiveSupport::TestCase
 
   test 'basic user attributes' do
     user = users(:jeff)
-    assert_equal user.notes, user.user.notes
+    assert_equal user.notes, user.notes
     assert_not_nil user.tags
-    assert_not_nil user.user.tags
-    assert_equal user.tags, user.user.tags
+    assert_not_nil user.tags
+    assert_equal user.tags, user.tags
     assert_not_nil user.user_tags
-    assert_not_nil user.user.user_tags
-    assert_equal user.user_tags, user.user.user_tags
+    assert_not_nil user.user_tags
+    assert_equal user.user_tags, user.user_tags
     assert_not_nil user.tagnames
-    assert_not_nil user.user.tagnames
-    assert_equal user.tagnames, user.user.tagnames
+    assert_not_nil user.tagnames
+    assert_equal user.tagnames, user.tagnames
   end
 
   test 'user mysql native fulltext search' do
@@ -146,29 +146,29 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 1, user.errors[:email].count
   end
 
-  test 'user status changes when drupal user is banned or unbanned' do
+  test 'user status changes when banned or unbanned' do
     user = users(:bob)
-    assert_equal 1, user.user.status
+    assert_equal 1, user.status
     user.ban
-    assert_equal 0, user.user.status
+    assert_equal 0, user.status
     user.unban
-    assert_equal 1, user.user.status
+    assert_equal 1, user.status
   end
 
-  test 'user status changes when drupal user is moderated or unmoderated' do
+  test 'user status changes when user is moderated or unmoderated' do
     user = users(:bob)
-    assert_equal 1, user.user.status
+    assert_equal 1, user.status
     user.moderate
-    assert_equal 5, user.user.status
+    assert_equal 5, user.status
     user.unmoderate
-    assert_equal 1, user.user.status
+    assert_equal 1, user.status
   end
 
   test 'daily_note_tally returns the correct type of array' do
-      user = users(:bob)
-      daily = user.daily_note_tally()
-      assert_not_empty daily
-      assert_equal daily.count, 365
+    user = users(:bob)
+    daily = user.daily_note_tally()
+    assert_not_empty daily
+    assert_equal daily.count, 365
   end
 
   test 'user roles' do
