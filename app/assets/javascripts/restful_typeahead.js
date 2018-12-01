@@ -7,7 +7,7 @@
 
 $(function() {
   $('input.search-query.typeahead').each(function(i, el){
-    var typeahead = el.typeahead({
+    var typeahead = $(el).typeahead({
       items: 10,
       minLength: 3,
       showCategoryHeader: true,
