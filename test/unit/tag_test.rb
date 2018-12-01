@@ -28,7 +28,9 @@ class TagTest < ActiveSupport::TestCase
                                                tid: tags(:awesome).tid,
                                                nid: nodes(:one).nid)
     assert node_tag.save!
-    assert_nil node_tag.author
+    assert_raises(ActiveRecord::RecordNotFound) do
+      node_tag.author
+    end
   end
 
   test 'tag weekly tallies' do
