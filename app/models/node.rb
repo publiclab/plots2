@@ -35,15 +35,15 @@ class Node < ActiveRecord::Base
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
+        query = connection.quote(query.to_s)
         if type == :boolean
-          query = connection.quote(query.to_s + "*")
+          # Query is done as a boolean full-text search. More info here: https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
           nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
             .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
             .limit(limit)
             .distinct
             .collect(&:nid)
         else
-          query = connection.quote(query.to_s)
           nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
             .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
             .limit(limit)
@@ -328,6 +328,13 @@ class Node < ActiveRecord::Base
     elsif drupal_main_image && node_type != :rails
       drupal_main_image.drupal_file
     end
+  end
+
+  # scan for first image in the body and use this instead
+  # (in future, maybe just do this for all images?)
+  def scraped_image
+    match = latest&.render_body&.scan(/<img(.*?)\/>/)&.first&.first
+    match&.split('src="')&.last&.split('"')&.first
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations

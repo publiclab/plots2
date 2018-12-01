@@ -362,12 +362,29 @@ div.note .meta {
   color:#888;
 }
 
+.image-container {
+  height:auto;
+  overflow:auto;
+}
+
 #notes .note a.img {
-  max-height: 200px;
   height:160px;
-  display: block;
+  display: inline-block;
   overflow: hidden;
   margin-bottom: 10px;
+}
+
+.note-image {
+  height: auto;
+  overflow: hidden;
+}
+.note-image img {
+  width: 100%;
+}
+
+.grid-image {
+  width: auto;
+  height: 160px;
 }
 
 #notes .note h3 a {
@@ -421,6 +438,11 @@ div.note.moderated h4 {
 @media (max-width:768px) {
   table {
     font-size: 90%;
+  }
+
+  .grid-image {
+    width: auto;
+    height: 200px;
   }
 }
 

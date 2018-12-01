@@ -229,7 +229,7 @@ class CommentControllerTest < ActionController::TestCase
           }, xhr: true
     end
     assert_response :success
-    assert_template 'comment/delete'
+    assert_template 'comments/delete.js.erb'
   end
 
   test 'should send mail to tag followers in the comment' do

@@ -30,7 +30,7 @@ class SearchServiceTest < ActiveSupport::TestCase
     result = SearchService.new.people_locations('10', limit = nil)
 
     assert_not_nil result
-    assert_equal result.size, 1
+    assert_equal result.size, 3
   end
 
   test 'running search notes' do

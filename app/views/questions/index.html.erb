@@ -21,15 +21,18 @@
   <div class="row">
     <div class="col-md-6">
       <h4>Ask a question here</h4>
+      <% if !current_user %>
+        <p>To ask a question, please <a href="/login?return_to=/questions">log in</a> or <a href="/signup?return_to=/questions">sign up</a> first.</p>
+      <% end %>
       <form id="questions_searchform" class="form-horizontal" role="search" autocomplete="off" action="/post">
         <div class="input-group">
-          <input tabindex="1" id="questions_searchform_input" type="text" name="title" class="form-control search-query typeahead" qryType="questions" placeholder="type your question">
+          <input tabindex="1" id="questions_searchform_input" type="text" name="title" class="<%= "disabled " if !current_user %>form-control search-query typeahead" qryType="questions" placeholder="type your question">
           <input type="hidden" name="tags" value="question:general">
           <input type="hidden" name="template" value="question">
           <input type="hidden" name="redirect" value="question">
           <span class="input-group-btn">
-            <button type="submit" rel="tooltip" title="Ask a question with the entered title" class="btn btn-primary">Continue</button>
-          </span>
+            <button type="submit" rel="tooltip" title="Ask a question with the entered title" class="<%= "disabled " if !current_user %>btn btn-primary">Continue</button>
+            </span>
         </div>
       </form>
     </div>
