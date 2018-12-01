@@ -1,0 +1,29 @@
+<div id="notes">
+    <div class="row" id="notes_container">
+        <% @activity.each_with_index do |node, i| %>
+            <% if node.is_a?(Revision) || node.type == 'page' %>
+            <%= render partial: "dashboard/node_wiki",     locals: { node: node, index: i } %>
+            <% elsif node.is_a?(Comment) %>
+            <%= render partial: "dashboard/node_comment",  locals: { node: node, index: i } %>
+            <% elsif node.has_power_tag('question') %>
+            <%= render partial: "dashboard/node_question", locals: { node: node, index: i } %>
+            <% elsif node.has_tag('event') %>
+            <%= render partial: "dashboard/node_event",    locals: { node: node, index: i } %>
+            <% else %>
+            <%= render partial: "dashboard/node_default",  locals: { node: node, index: i } %>
+            <% end %>
+        <% end %>
+    </div>
+    <% if @activity.length == 0 %>
+        <div id="broaden_message">
+            <a href="#" id="broaden">There is nothing to show. Try broadening your filters to see more</a>
+        </div>
+    <% else %>
+        <br />
+    <% end %>
+
+    <div class="text-center">
+        <%= will_paginate @activity, :renderer => BootstrapPagination::Rails if @activity %>
+    </div>
+
+</div>

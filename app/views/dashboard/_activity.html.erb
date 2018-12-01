@@ -59,28 +59,7 @@
 </span>
 </div>
 <div class="activity">
-  <div class="row">
-    <% activity.each_with_index do |node, i| %>
-      <% if node.is_a?(Revision) || node.type == 'page' %>
-        <%= render partial: "dashboard/node_wiki",     locals: { node: node, index: i } %>
-      <% elsif node.is_a?(Comment) %>
-        <%= render partial: "dashboard/node_comment",  locals: { node: node, index: i } %>
-      <% elsif node.has_power_tag('question') %>
-        <%= render partial: "dashboard/node_question", locals: { node: node, index: i } %>
-      <% elsif node.has_tag('event') %>
-        <%= render partial: "dashboard/node_event",    locals: { node: node, index: i } %>
-      <% else %>
-        <%= render partial: "dashboard/node_default",  locals: { node: node, index: i } %>
-      <% end %>
-    <% end %>
-  </div>
-
-  <br />
-
-  <div class="text-center">
-    <%= will_paginate activity, :renderer => BootstrapPagination::Rails if activity.length > 0 %>
-  </div>
-
+  <%= render 'dashboard/notes' %>
 </div>
 
 <br />

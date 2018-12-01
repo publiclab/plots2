@@ -9,6 +9,7 @@
     'comment':  true
   };
 
+
   var viewport = function() {
     var e = window, a = 'inner';
     if (!('innerWidth' in window )) {
@@ -23,6 +24,18 @@
     types.wiki = true;
   }
 
+  $("#notes").click(function(e) {
+    if(!$.trim($(this).find("#notes_container").html()).length) {
+      e.preventDefault();
+      $(".activity-dropdown li.filter-checkbox").each(function() {
+        
+        if($(this).find("input").attr("data-type") === "all") {
+          $(this).find("input").click();
+        }
+      });
+    }
+  });
+
   // Adding current filters to the url and reloading
   var setTypeVisibility = function(type, checked) {    
     var filterTypes = [];
@@ -33,11 +46,15 @@
     var baseurl = window.location.href;
     url = new URL(baseurl);
 
-    if(filterTypes.length > 0 || (baseurl.indexOf('types=') > -1)) {
+    //if(filterTypes.length > 0 || (baseurl.indexOf('types=') > -1)) {
       // Appending filters array to the url and reloading
+      if(filterTypes.length === 0) {
+        filterTypes.push("none");
+      }
+      currentFilterTypes = filterTypes;
       url.searchParams.set("types", filterTypes);
-      window.location.href = url;
-    }
+      $.getScript(url.href);
+    //}
   }
 
   // Loading last selected filter values from local storage
@@ -314,7 +331,7 @@
     var url = new URL(url_string);
     var params = url.searchParams.get("types");
     updateDropdownTitle();
-    
+    updateFilters();
     // Reload the page, if the local storage values differ from current
     if(params !== null) {
       params = params.split(",");
@@ -322,7 +339,7 @@
     else if(localStorage) {
       getLocalStorageActivity();
       if(Object.values(types).includes(false)) {
-        updateFilters();
+        //updateFilters();
       }
     }
   });
