@@ -99,12 +99,12 @@ class HomeController < ApplicationController
       .where('node.nid NOT IN (?)', hidden_nids + [0]) # in case hidden_nids is empty
       .order('nid DESC')
     basenotes = basenotes.where('nid != (?)', blog.nid) if blog
-    notes = basenotes
+    notes = basenotes.limit(37)
 
-    questions = Tag.find_nodes_by_type('question:question', 'note', 999_999_999_999_999)
+    questions = Tag.find_nodes_by_type('question:question', 'note', 37)
       .where('node.nid NOT IN (?)', hidden_nids + [0])
 
-    events = Tag.find_nodes_by_type('event', 'note', 999_999_999_999_999)
+    events = Tag.find_nodes_by_type('event', 'note', 37)
       .where('node.nid NOT IN (?)', hidden_nids + [0])
 
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
@@ -151,6 +151,7 @@ class HomeController < ApplicationController
       .where('node.status = ?', 1)
       .page(params[:page])
       .group(['title', 'comments.cid']) # ONLY_FULL_GROUP_BY, issue #3120
+      .limit(37) 
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     comments = comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     comments = comments.to_a # ensure it can be serialized for caching
