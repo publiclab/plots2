@@ -85,8 +85,6 @@ class HomeController < ApplicationController
 
   private
 
-  
-
   def activity
     blog = Tag.find_nodes_by_type('blog', 'note', 1).first
     # remove "classroom" postings; also switch to an EXCEPT operator in sql, see https://github.com/publiclab/plots2/issues/375
@@ -191,7 +189,6 @@ class HomeController < ApplicationController
       revisions
     ]
     response
-    
   end
 
   def set_activity(source = :database)
