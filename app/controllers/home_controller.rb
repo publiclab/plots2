@@ -101,7 +101,8 @@ class HomeController < ApplicationController
     basenotes = basenotes.where('nid != (?)', blog.nid) if blog
     notes = basenotes
 
-    questions = basenotes.where(uid: '3')
+    questions = Tag.find_nodes_by_type('question:question', 'note', 999_999_999_999_999)
+      .where('node.nid NOT IN (?)', hidden_nids + [0])
 
     events = Tag.find_nodes_by_type('event', 'note', 999_999_999_999_999)
       .where('node.nid NOT IN (?)', hidden_nids + [0])
@@ -180,7 +181,7 @@ class HomeController < ApplicationController
       end
     end
     if types.length.positive?
-      activity = activity.sort_by(&:created_at).reverse.paginate(:page => params[:page], :per_page => 8)
+      activity = activity.sort_by(&:created_at).reverse.paginate(:page => params[:page], :per_page => 37)
     end
     response = [
       activity,
