@@ -116,7 +116,7 @@ class AdminMailerTest < ActionMailer::TestCase
     email = ActionMailer::Base.deliveries.last
     assert_not_nil email.to
     assert_not_nil email.bcc
-    assert_equal ["moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+    assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
     assert_equal moderators.collect(&:email), ActionMailer::Base.deliveries.last.bcc
     # title same as initial for email client threading
     assert_equal '[New Public Lab comment needs moderation]', email.subject
