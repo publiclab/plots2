@@ -305,3 +305,10 @@ post_test4:
   title: Post test review 4
   body: Post test review 4
   timestamp: <%= DateTime.new(2018,8,20).to_i %>
+
+scraped_image:
+  nid: 27
+  uid: 2
+  title: Post test review 4
+  body: "Lots of text and then an image: ![image preview](/url/to/image.png)"
+  timestamp: <%= DateTime.new(2018,8,20).to_i %>
