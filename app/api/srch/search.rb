@@ -170,7 +170,7 @@ module Srch
                                                    nickname: 'search_questions'
 
       params do
-        use :common
+        use :common, :sorting, :ordering
       end
       get :questions do
         search_request = SearchRequest.fromRequest(params)
