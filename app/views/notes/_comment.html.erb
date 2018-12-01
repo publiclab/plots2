@@ -130,7 +130,7 @@
       </p>
     <% end %>
     <% breakoutQuestions = Tag.find_nodes_by_type("from:#{comment.cid}") %>
-    <% if breakoutQuestions %>
+    <% if breakoutQuestions&.length > 0 %>
       See <a href="/questions/tag/from:<%= comment.cid %>"><%= breakoutQuestions.length %> questions</a> broken out from this comment.
     <% end %>
     <% if comment.parent.has_power_tag('activity') && current_user && current_user.id == comment.uid %>
