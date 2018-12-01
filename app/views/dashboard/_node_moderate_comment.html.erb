@@ -1,0 +1,26 @@
+<div class="col-md-6 note-container-comment">
+  <div class="note note-pane note-comment <% if node.status == 4 %> moderated <% end %> ">
+
+    <div class="header-icon"><i class="fa fa-comment-o"></i> <a href="/n/<%= node.parent.id %>"><i class="fa fa-link"></i></a></div>
+    <p class="meta">
+      <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_author_contributor %>
+      <span><%= t('dashboard._node_comment.commented_on') %></span> <% unless node.aid == 0 %> an answer about<% end %> <% if node.parent.has_power_tag('question') %><a href="<%= node.parent.path(:question) %>"><% else %><a href="<%= node.parent.path %>"><% end %><%= node.parent.title %></a>
+    </p>
+
+    <p class="body"><%= raw strip_tags(node.body_markdown).truncate(100) %></p>
+
+    <p class="meta">
+      <% if node.status == 4 %>
+  <p class="alert alert-warning moderated">
+    <% if logged_in_as(['admin','moderator']) %>
+      <%= t('dashboard._node_moderate.first_time_post') %> <br class="hidden-xs hidden-sm"/>
+      <a class="btn btn-default btn-xs" href="/moderate/publish/<%= node.id %>"><%= t('dashboard._node_moderate.approve') %></a>
+      <a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><%= t('dashboard._node_moderate.spam') %></a>
+    <% else %>
+      <%= raw t('dashboard._node_moderate.pending_approval', :url => '/comment/moderation') %>
+    <% end %>
+  </p>
+<% end %>
+
+  </div>
+</div>
