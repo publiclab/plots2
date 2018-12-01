@@ -6,6 +6,8 @@
 
         <% if node.main_image %>
           <a class="img" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+        <% elsif node.scraped_image %>
+          <a class="img" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
         <% end %>
 
         <% if node.status == 4 %>
