@@ -281,16 +281,13 @@
     <% end %>
   </div>
 
-
 </div>
+
+<%= render partial: 'users/token' %>
 
 <script src = "https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 
 <script type = "text/javascript">
-    $('#btn-token').click(function() {
-        alert("Your access token is: <%= @user.user.token %>");
-    });
-      
     $('#link_social_media').click(function(){
         sign = document.getElementById('social-name').value;
         $.post('/profile/tags/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {
