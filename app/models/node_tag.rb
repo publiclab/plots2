@@ -16,7 +16,7 @@ class NodeTag < ApplicationRecord
   end
 
   def user
-    User.find_by(uid: uid)
+    User.find(uid)
   end
 
   def author
