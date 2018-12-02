@@ -19,6 +19,7 @@ class UserSessionsController < ApplicationController
     # Find an identity here
     @identity = UserTag.find_with_omniauth(auth)
     return_to = request.env['omniauth.origin'] || root_url
+    return_to += '?_=' + Time.now.to_i.to_s
 
     if signed_in?
       if @identity.nil?

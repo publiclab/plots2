@@ -143,6 +143,7 @@ class AdminController < ApplicationController
         @comment.spam
         user = @comment.author
         user.ban
+        AdminMailer.notify_moderators_of_comment_spam(@comment, current_user).deliver_now
         flash[:notice] = "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>."
       else
         flash[:notice] = "Comment already marked as spam."
@@ -367,16 +368,16 @@ class AdminController < ApplicationController
         s.print "RCPT TO: <example@publiclab.org>\n"
       end
       if line.include? '250 Accepted'
-        puts 'PASS'
+        render :text => "Email gateway OK"
         s.close_write
       elsif line.include? '550'
-        puts 'FAIL'
+        render :text => "Email gateway NOT OK"
+        render :status => 500
         s.close_write
       end
     end
 
     s.close
-    render text: 'DONE'
   end
 
 end

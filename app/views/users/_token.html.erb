@@ -1,0 +1,82 @@
+<script type="text/javascript">
+  $('#btn-token').on('click',function() {
+    var token = '<%= @user.user.token %>';
+
+    var mask = document.createElement('div');
+    mask.className = 'mask';
+    mask.id = 'token-mask';
+
+    mask.innerHTML = '\
+      <div class="modal-dialog" id="token-popup">\
+        <div class="modal-content">\
+          <div class="modal-header">\
+            <button type="button" class="close" id="close-btn">&times;</button>\
+            <h4 class="modal-title">Access Token</h4>\
+          </div>\
+          <div class="modal-body">\
+            <p><span class="token form-control text-center"></span></p>\
+          </div>\
+          <div class="modal-footer">\
+            <button type="button" class="btn btn-default" id="copy-btn">Copy</button>\
+          </div>\
+        </div>\
+      </div>\
+    ';
+
+    $('body').append(mask);
+    $('#token-mask').fadeIn(200, function(){
+      $('#token-popup .token').text(token);
+      $('#token-popup .modal-content').animate({marginTop: '30px', opacity: '1'}, 300);
+      $('#token-mask').on('click', closePopup);
+      $('#token-popup #copy-btn').on('click', copyToken);
+    });
+  });
+
+  function copyToken(){
+    var temp = $('<input>');
+    $("body").append(temp);
+    temp.val($('#token-popup .token').text()).select();
+    document.execCommand('copy');
+    temp.remove();
+
+    $('#token-popup #copy-btn').text('Copied').attr('disabled', 'true');
+  };
+
+  function closePopup(e){
+    var tokenPopup = document.querySelector('#token-popup .modal-content');
+    if (tokenPopup === e.target || tokenPopup.contains(e.target) && e.target.id !== 'close-btn'){
+      return;
+    };
+
+    $('#token-popup .modal-content').animate({marginTop: '0', opacity: '0'}, 300, function(){
+      $(this).remove();
+      $('#token-mask').fadeOut(200, function(){
+        $(this).remove();
+      });
+    });
+  };
+</script>
+
+<style type="text/css">
+  .mask{
+    display: none;
+    z-index: 10000;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .modal-dialog{
+    margin-top: 0;
+  }
+  
+  .modal-content{
+    opacity: 0;
+  }
+
+  .token{
+    font-weight: bold;
+  }
+</style>

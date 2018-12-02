@@ -7,12 +7,6 @@ en:
       view: "View"
       edit: "Edit"
       revisions: "Revisions"
-      table_content: |
-        <th>#</th>
-        <th>User</th>
-        <th>Created</th>
-        <th>Action</th>
-        <th>Raw</th>
       moderated: "MODERATED"
       current: "CURRENT"
       revert: "Revert"
