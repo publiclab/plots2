@@ -1,6 +1,16 @@
 require 'test_helper'
 
 class NodeSharedTest < ActiveSupport::TestCase
+  test 'that NodeShared can be used to convert short codes like [nodes:foo] into tables which list nodes and wikis(pages)' do
+    before = "Here are some nodes in a table: \n\n[nodes:test] \n\nThis is how you make it work:\n\n`[nodes:tagname]`\n\n `[nodes:tagname]`\n\nMake sense?"
+    html = NodeShared.nodes_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid nodes-grid nodes-grid-test nodes-grid-test-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 5, html.scan('nodes-grid-test').length
+    assert html.scan('<td class="author">').length > 1
+  end
+
   test 'that NodeShared can be used to convert short codes like [notes:foo] into tables which list notes' do
     before = "Here are some notes in a table: \n\n[notes:test] \n\nThis is how you make it work:\n\n`[notes:tagname]`\n\n `[notes:tagname]`\n\nMake sense?"
     html = NodeShared.notes_grid(before)

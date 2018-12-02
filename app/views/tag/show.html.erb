@@ -24,7 +24,7 @@
       <p><b>Tag parenting</b></p>
       <form class="form well" action="/tag/parent" method="get">
         <input type="text" placeholder="parent" name="parent" />
-        <input type="hidden" placeholder="parent" name="name" value="<%= @tags.first.name %>" />
+        <input type="hidden" placeholder="parent" name="name" value="<%= @tags&.first&.name %>" />
         <input class="btn btn-default btn-lg" type="submit" value="Submit" />
       </form>
     </div>

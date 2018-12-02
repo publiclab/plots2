@@ -172,7 +172,8 @@ Plots2::Application.routes.draw do
   get "search/places/:query",      :to => "search#places"
   get "search/tags/:query",        :to => "search#tags"
   get "search/",                   :to => "search#new"
-  get "search/:query",             :to => "search#notes"
+  get "search/notes/:query",       :to => "search#notes"
+  get "search/:query",             :to => "search#all_content"
 
 
   get 'widget/:id' => 'tag#widget'
@@ -314,6 +315,7 @@ Plots2::Application.routes.draw do
   post '/comment/like' => 'comment#like_comment'
   get '/comment/create/:id' => 'comment#create'
   post 'comment/create/:id' => 'comment#create'
+
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 

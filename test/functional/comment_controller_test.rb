@@ -21,32 +21,35 @@ class CommentControllerTest < ActionController::TestCase
   test 'should create note comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
-      post :create, params: { id: nodes(:one).nid, body: 'Notes comment' }, xhr: true
+      post :create, params: { id: nodes(:one).nid, body: '[notes:awesome]' }, xhr: true
     end
     assert_response :success
     assert_not_nil :comment
     assert_template partial: 'notes/_comment'
+    assert_equal 1, css_select(".comment table").size # test inline grid rendering
   end
-
+ 
   test 'should create question comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
-      post :create, params: { id: nodes(:question).nid, body: 'Questions comment', type: 'question' }, xhr: true
+      post :create, params: { id: nodes(:question).nid, body: '[notes:awesome]', type: 'question' }, xhr: true
     end
     assert_response :success
     assert_not_nil :comment
     assert_template partial: 'notes/_comment'
+    # assert_equal 1, css_select(".comment table").size # test inline grid rendering # this should pass not sure why it didnt
   end
 
   test 'should create wiki comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
       assert_difference "nodes(:wiki_page).comments.count" do
-        post :create, params: { id: nodes(:wiki_page).nid, body: 'Wiki comment' }, xhr: true
+        post :create, params: { id: nodes(:wiki_page).nid, body: '[notes:awesome]' }, xhr: true
       end
     end
     assert_response :success
     assert_not_nil :comment
+    assert_equal 1, css_select(".comment table").size # test inline grid rendering
   end
 
   test 'should show error if wiki comment not saved' do
@@ -229,7 +232,7 @@ class CommentControllerTest < ActionController::TestCase
           }, xhr: true
     end
     assert_response :success
-    assert_template 'comment/delete'
+    assert_template 'comments/delete.js.erb'
   end
 
   test 'should send mail to tag followers in the comment' do

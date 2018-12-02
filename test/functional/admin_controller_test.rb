@@ -92,7 +92,7 @@ class AdminControllerTest < ActionController::TestCase
  	assert_equal 'Reset your password', email.subject
  	assert_equal [user.email], email.to
 
-    assert_equal "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with.", flash[:notice] 
+    assert_equal "#{user.name} should receive an email with instructions on how to reset their password. If they do not, please double check that they are using the email they registered with.", flash[:notice]
     assert_redirected_to '/profile/' + user.name
   end
 
@@ -421,10 +421,22 @@ class AdminControllerTest < ActionController::TestCase
     post :mark_comment_spam, params: { id: comment.id }
 
     comment = assigns(:comment)
+    user = users(:moderator)
+
+    email = AdminMailer.notify_moderators_of_comment_spam(comment, user)
+    assert_emails 1 do
+        email.deliver_now
+    end
     assert_equal 0, comment.status
-    
+
     assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+
+    email = ActionMailer::Base.deliveries.last
+    assert_not_nil email.to
+    assert_not_nil email.bcc
+    assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+    assert_equal '[New Public Lab comment needs moderation]', email.subject
   end
 
   test 'should mark comment as spam if admin' do
@@ -434,16 +446,28 @@ class AdminControllerTest < ActionController::TestCase
     post :mark_comment_spam, params: { id: comment.id }
 
     comment = assigns(:comment)
+    user = users(:moderator)
+
+    email = AdminMailer.notify_moderators_of_comment_spam(comment, user)
+    assert_emails 1 do
+        email.deliver_now
+    end
     assert_equal 0, comment.status
 
     assert_equal "Comment has been marked as spam and comment author has been banned. You can undo this on the <a href='/spam/comments'>spam moderation page</a>.", flash[:notice]
     assert_redirected_to '/dashboard' + '?_=' + Time.now.to_i.to_s
+
+    email = ActionMailer::Base.deliveries.last
+    assert_not_nil email.to
+    assert_not_nil email.bcc
+    assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+    assert_equal '[New Public Lab comment needs moderation]', email.subject
   end
 
   test 'should not mark comment as spam if no user' do
     comment = comments(:first)
 
-    post :mark_comment_spam, params: { id: comment.id } 
+    post :mark_comment_spam, params: { id: comment.id }
 
     assert_redirected_to '/login'
   end
@@ -452,7 +476,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     comment = comments(:first)
 
-    post :mark_comment_spam, params: { id: comment.id } 
+    post :mark_comment_spam, params: { id: comment.id }
 
     comment = assigns(:comment)
     assert_equal 1, comment.status
@@ -510,7 +534,7 @@ class AdminControllerTest < ActionController::TestCase
     comment = comments(:spam_comment)
     node = comment.node
 
-    post :publish_comment, params: { id: comment.id } 
+    post :publish_comment, params: { id: comment.id }
 
     assert_equal 0, comment.status
     assert_equal "Only moderators can publish comments.", flash[:error]
