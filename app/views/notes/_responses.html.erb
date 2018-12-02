@@ -27,6 +27,10 @@
       <% end %>
     </p>
  
+    <div class='activity-comment' id='i-did-this' style='display: none'>
+      <%= render :partial => "comments/form", :locals => { title: 'Add feedback, suggestions, or photos
+      ', body: 'I did this!', comment: false, placeholder: '' } %>
+    </div>
     <hr />
  
     <h3><%= t("notes._responses.#{response_type}s") %> (<%= @responses.length %>)</h3>
