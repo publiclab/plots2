@@ -315,29 +315,42 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
+blueimp-canvas-to-blob@3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.5.0.tgz#5679ac32f6a2835821f0c3ad661719ff85a9236b"
+  integrity sha1-VnmsMvaig1gh8MOtZhcZ/4WpI2s=
+
 blueimp-canvas-to-blob@>=2.0.5:
   version "3.14.0"
   resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.14.0.tgz#ea075ffbfb1436607b0c75e951fb1ceb3ca0288e"
   integrity sha512-i6I2CiX1VR8YwUNYBo+dM8tg89ns4TTHxSpWjaDeHKcYS3yFalpLCwDaY21/EsJMufLy2tnG4j0JN5L8OVNkKQ==
 
-blueimp-file-upload@blueimp/jQuery-File-Upload#~8.1.0, jquery-file-upload@blueimp/jQuery-File-Upload#~8.1.0:
-  version "8.1.0"
-  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/442027a0fe8d483687596ee72da83c58ce293f1b"
-  dependencies:
-    blueimp-canvas-to-blob ">=2.0.5"
-    blueimp-load-image ">=1.5.0"
-    blueimp-tmpl ">=2.1.0"
-    jquery ">=1.6"
-    jquery.ui.widget ">=1.9"
+blueimp-file-upload@blueimp/jQuery-File-Upload#^9.22.1:
+  version "9.28.0"
+  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/ee54fc3f57418edc6c86532cfe124a9e2c70deed"
+  optionalDependencies:
+    blueimp-canvas-to-blob "3.5.0"
+    blueimp-load-image "2.12.2"
+    blueimp-tmpl "3.6.0"
 
 "blueimp-file-upload@git://github.com/blueimp/jQuery-File-Upload.git#c72c93c3c005bbd0c849c2e35d01daaf7d23ee51":
   version "9.12.3"
   resolved "git://github.com/blueimp/jQuery-File-Upload.git#c72c93c3c005bbd0c849c2e35d01daaf7d23ee51"
 
+blueimp-load-image@2.12.2:
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-2.12.2.tgz#6a17598aab858d4fbf01543e0631141b51057c87"
+  integrity sha1-ahdZiquFjU+/AVQ+BjEUG1EFfIc=
+
 blueimp-load-image@>=1.5.0:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-2.20.1.tgz#8cf677f3cd0368548bf0108997ba09ea2e331c1b"
   integrity sha512-GacvACFcxv5MV+m24ylTte2ycWMeSZqdmChAM5kSBCJOyFSY8jkQgBpGM3Mn+l1p/seGtrnRss+8QL2k+FXO4A==
+
+blueimp-tmpl@3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/blueimp-tmpl/-/blueimp-tmpl-3.6.0.tgz#a4910975d042e2bc03ba77f0e62d04f1548a524c"
+  integrity sha1-pJEJddBC4rwDunfw5i0E8VSKUkw=
 
 blueimp-tmpl@>=2.1.0:
   version "3.11.0"
@@ -362,16 +375,9 @@ bootstrap-3-typeahead@bassjobsen/Bootstrap-3-Typeahead#~4.0.0, bootstrap-typeahe
   version "4.0.2"
   resolved "https://codeload.github.com/bassjobsen/Bootstrap-3-Typeahead/tar.gz/7b59699d14865a3b7355c0e05f7a9cdc75f7e8e4"
 
-bootstrap-datepicker@eternicode/bootstrap-datepicker#~1.6.0:
+bootstrap-datepicker@eternicode/bootstrap-datepicker#~1.6.0, bootstrap-datepicker@~1.6.0:
   version "1.6.4"
   resolved "https://codeload.github.com/eternicode/bootstrap-datepicker/tar.gz/42940960ffaf6c727c9f2d64a6175be87516986e"
-  dependencies:
-    jquery ">=1.7.1"
-
-bootstrap-datepicker@~1.6.0:
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/bootstrap-datepicker/-/bootstrap-datepicker-1.6.4.tgz#889ebeced8eaa2ff15ec1f273e4b07531cc43da0"
-  integrity sha1-iJ6+ztjqov8V7B8nPksHUxzEPaA=
   dependencies:
     jquery ">=1.7.1"
 
@@ -388,14 +394,9 @@ bootstrap-tokenfield@~0.12.0:
   dependencies:
     jquery "^2.1.0"
 
-bootstrap@twbs/bootstrap#~3.2.0:
+bootstrap@twbs/bootstrap#~3.2.0, bootstrap@~3.2.0:
   version "3.2.0"
   resolved "https://codeload.github.com/twbs/bootstrap/tar.gz/c068162161154a4b85110ea1e7dd3d7897ce2b72"
-
-bootstrap@~3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.2.0.tgz#a0726e7c12e79f4a2a504f8d1ee9f2850a83f637"
-  integrity sha1-oHJufBLnn0oqUE+NHunyhQqD9jc=
 
 bower-config@~0.4.3:
   version "0.4.5"
@@ -1376,14 +1377,9 @@ flot@flot/flot#~0.7:
   version "0.0.0"
   resolved "https://codeload.github.com/flot/flot/tar.gz/3c1e90bed924d20417f77b7731f779a3e229bf61"
 
-font-awesome@FortAwesome/Font-Awesome#~4.5.0, fontawesome@FortAwesome/Font-Awesome#~4.5.0:
+font-awesome@FortAwesome/Font-Awesome#~4.5.0, font-awesome@~4.5.0, fontawesome@FortAwesome/Font-Awesome#~4.5.0:
   version "4.5.0"
   resolved "https://codeload.github.com/FortAwesome/Font-Awesome/tar.gz/fddd2c240452e6c8990c4ef75e0265b455aa7968"
-
-font-awesome@~4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.5.0.tgz#1e9d7ccf7d63bdbe57000e18d5188cb2557e70f8"
-  integrity sha1-Hp18z31jvb5XAA4Y1RiMslV+cPg=
 
 for-each@^0.3.2:
   version "0.3.3"
@@ -2146,6 +2142,16 @@ jquery-confirm@^3.3.2:
   integrity sha1-yAp6FRfHOPXlc1mTuxaOk40I9YI=
   dependencies:
     jquery ">=1.6"
+
+jquery-file-upload@blueimp/jQuery-File-Upload#~8.1.0:
+  version "8.1.0"
+  resolved "https://codeload.github.com/blueimp/jQuery-File-Upload/tar.gz/442027a0fe8d483687596ee72da83c58ce293f1b"
+  dependencies:
+    blueimp-canvas-to-blob ">=2.0.5"
+    blueimp-load-image ">=1.5.0"
+    blueimp-tmpl ">=2.1.0"
+    jquery ">=1.6"
+    jquery.ui.widget ">=1.9"
 
 jquery.ui.widget@>=1.9:
   version "1.10.3"
