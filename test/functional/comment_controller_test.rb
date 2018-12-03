@@ -235,6 +235,16 @@ class CommentControllerTest < ActionController::TestCase
     assert_template 'comments/delete.js.erb'
   end
 
+  test 'should create a comment with status 4 if user has never created nothing before' do
+    user = users(:user_first_time_poster)
+    UserSession.create(user)
+
+    post :create, params: { id: nodes(:one).nid, body: 'example' }, xhr: true
+
+    assert_equal 19, Comment.last.author.id
+    assert_equal 4, Comment.last.status
+  end
+
   test 'should send mail to moderator if comment has status 4' do
     UserSession.create(users(:moderator))
     post :create, params: { id: nodes(:one).nid, body: 'example', status: 4 }, xhr: true
