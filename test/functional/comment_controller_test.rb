@@ -241,8 +241,9 @@ class CommentControllerTest < ActionController::TestCase
 
     post :create, params: { id: nodes(:one).nid, body: 'example' }, xhr: true
 
-    assert_equal 19, Comment.last.author.id
-    assert_equal 4, Comment.last.status
+    comment = Comment.last
+    assert_equal user.id, comment.author.id
+    assert_equal 4, comment.status
   end
 
   test 'should send mail to moderator if comment has status 4' do
