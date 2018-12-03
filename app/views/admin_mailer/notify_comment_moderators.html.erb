@@ -10,9 +10,9 @@
   </p>
 
   <p>
-    <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/publish/<%= @comment.id %>">Approve</a>
+    <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/admin/publish_comment/<%= @comment.id %>">Approve</a>
     or
-    <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/spam/<%= @comment.id %>">Spam</a>
+    <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/admin/spam_comments/<%= @comment.id %>">Spam</a>
   </p>
 
   <hr />
@@ -41,11 +41,6 @@
       </tr>
     </tbody>
   </table>
-
-  <hr />
-
-  <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/publish/<%= @comment.id %>">Approve</a> or <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/moderate/spam/<%= @comment.id %>">Spam</a>
-
 </div>
 
 <div style="color:#aaa;">

@@ -603,7 +603,7 @@ class Node < ActiveRecord::Base
                     subject: '',
                     hostname: '',
                     comment: params[:body],
-                    status: 1,
+                    status: params[:status],
                     format: 1,
                     thread: thread,
                     timestamp: DateTime.now.to_i,

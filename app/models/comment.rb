@@ -132,7 +132,7 @@ class Comment < ApplicationRecord
   # email all users in this thread
   # plus all who've starred it
   def notify(current_user)
-    if current_user.first_time_commenter&.first_time_poster
+    if status == 4
       AdminMailer.notify_comment_moderators(self).deliver_now
     else
       if parent.uid != current_user.uid && !UserTag.exists?(parent.uid, 'notify-comment-direct:false')
