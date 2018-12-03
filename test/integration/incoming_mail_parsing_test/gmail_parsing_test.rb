@@ -2,6 +2,7 @@ require 'test_helper'
 class GmailParsingTest < ActionDispatch::IntegrationTest
   test 'should parse incoming mail from gmail service correctly and add answer comment' do
     require 'mail'
+    require 'nokogiri'
     mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml')
     answer = Answer.last
     mail.subject = "Re: (#a#{answer.id})"
