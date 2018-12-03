@@ -28,7 +28,7 @@ class CommentControllerTest < ActionController::TestCase
     assert_template partial: 'notes/_comment'
     assert_equal 1, css_select(".comment table").size # test inline grid rendering
   end
- 
+
   test 'should create question comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
@@ -235,6 +235,12 @@ class CommentControllerTest < ActionController::TestCase
     assert_template 'comments/delete.js.erb'
   end
 
+  test 'should send mail to moderator if comment has status 4' do
+    UserSession.create(users(:moderator))
+    post :create, params: { id: nodes(:one).nid, body: 'example', status: 4 }, xhr: true
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:moderator).email])
+  end
+
   test 'should send mail to tag followers in the comment' do
     UserSession.create(users(:jeff))
     post :create, params: { id: nodes(:question).nid, body: 'Question #awesome', type: 'question' }, xhr: true
@@ -300,7 +306,7 @@ class CommentControllerTest < ActionController::TestCase
     comment = comments(:first)
     assert_no_difference 'Comment.count' do
       post :make_answer,
-          params: { 
+          params: {
            id: comment.id
           }
     end
