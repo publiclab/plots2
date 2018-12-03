@@ -19,7 +19,7 @@ class CommentTest < ActiveSupport::TestCase
   test 'should have gmail quote' do
     mail = Mail.read('test/fixtures/incoming_test_emails/gmail/incoming_gmail_email.eml') 
     mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content 
-    gmail_quote = Comment.gmail_quote_present?(".gmail_quote")
+    gmail_quote = Comment.gmail_quote_present?(mail_doc)
     assert_equal gmail_quote, true
   end
   test 'should not save comment without body' do
