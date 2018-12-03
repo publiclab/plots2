@@ -44,7 +44,7 @@ class AdminMailer < ActionMailer::Base
   # Should: prompt moderators to reach out if it's not spam, but a guidelines violation
   # def notify_author_of_spam(node)
   # end
-  
+
   def notify_moderators_of_comment_spam(comment, moderator)
     subject = '[New Public Lab comment needs moderation]'
     @author = comment.author

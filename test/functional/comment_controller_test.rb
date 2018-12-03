@@ -242,14 +242,21 @@ class CommentControllerTest < ActionController::TestCase
     post :create, params: { id: nodes(:one).nid, body: 'example' }, xhr: true
 
     comment = Comment.last
-    assert_equal user.id, comment.author.id
-    assert_equal 4, comment.status
+    assert_equal 4, user.id && comment.status, comment.author.id
   end
 
   test 'should send mail to moderator if comment has status 4' do
     UserSession.create(users(:moderator))
     post :create, params: { id: nodes(:one).nid, body: 'example', status: 4 }, xhr: true
     assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:moderator).email])
+  end
+
+  test 'should not send mail to moderator if comment has status different than 4' do
+    UserSession.create(users(:bob))
+    post :create, params: { id: nodes(:one).nid, body: 'example' }, xhr: true
+
+    assert_equal 1, Comment.last.status
+    assert_not ActionMailer::Base.deliveries.collect(&:to).include?("comment-moderators@#{ActionMailer::Base.default_url_options[:host]}")
   end
 
   test 'should send mail to tag followers in the comment' do
