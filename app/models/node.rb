@@ -597,13 +597,18 @@ class Node < ActiveRecord::Base
     else
       comment_via_status = params[:comment_via].to_i
     end
+    user = User.find(params[:uid])
+    status = 1
+    if user.first_time_poster && user.first_time_commenter
+      status = 4
+    end
     c = Comment.new(pid: 0,
                     nid: nid,
                     uid: params[:uid],
                     subject: '',
                     hostname: '',
                     comment: params[:body],
-                    status: params[:status],
+                    status: status,
                     format: 1,
                     thread: thread,
                     timestamp: DateTime.now.to_i,
