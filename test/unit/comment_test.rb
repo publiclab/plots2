@@ -17,7 +17,7 @@ class CommentTest < ActiveSupport::TestCase
     end
   end
   test 'should have gmail quote' do
-    assert comments.itself.gmail_quote_present? false, 'no gmail quote'
+    assert comments.gmail_quote_present?(mail_doc) false, 'no gmail quote'
   end
   test 'should not save comment without body' do
     comment = Comment.new
