@@ -9,3 +9,9 @@ two:
   photo_file_name: "filename-2.jpg"
   photo_content_type: "image/jpeg"
   photo_file_size: "140616"
+
+three:
+  nid: 3
+  photo_file_name: "图片17.jpg"
+  photo_content_type: "image/jpeg"
+  photo_file_size: "140616"
