@@ -25,8 +25,8 @@ class SearchRequest
     isValid = true
     isValid &&= !query.blank?
     isValid &&= query.length >= MIN_QUERY_LENGTH
-    if !isValid
-      isValid = !(nwlat.nil?) && !(nwlng.nil?) && !(selat.nil?) && !(selng.nil?)
+    unless isValid
+      isValid = !nwlat.nil? && !nwlng.nil? && !selat.nil? && !selng.nil?
     end
     isValid
   end

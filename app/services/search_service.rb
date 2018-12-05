@@ -83,35 +83,27 @@ class SearchService
 
   # Search nearby nodes with respect to given latitude, longitute and tags
   def tagNearbyNodes(coordinates, tag, limit = 10)
-    raise("Must contain all four coordinates") unless !(coordinates["nwlat"].nil?)
-    raise("Must contain all four coordinates") unless !(coordinates["nwlng"].nil?)
-    raise("Must contain all four coordinates") unless !(coordinates["selat"].nil?)
-    raise("Must contain all four coordinates") unless !(coordinates["selng"].nil?)
+    raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
+    raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
+    raise("Must contain all four coordinates") if coordinates["selat"].nil?
+    raise("Must contain all four coordinates") ifcoordinates["selng"].nil?
 
     raise("Must be a float") unless coordinates["nwlat"].is_a? Float
     raise("Must be a float") unless coordinates["nwlng"].is_a? Float
     raise("Must be a float") unless coordinates["selat"].is_a? Float
     raise("Must be a float") unless coordinates["selng"].is_a? Float
 
-    nodes_scope = NodeTag.joins(:tag)
-      .where('name LIKE ?', 'lat%')
-      .where('CAST(REPLACE(name, "lat:", "") AS float) BETWEEN '+ coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
+    nodes_scope = NodeTag.joins(:tag).where('name LIKE ?', 'lat%').where('CAST(REPLACE(name, "lat:", "") AS float) BETWEEN ' + coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
 
     if tag.present?
-      nodes_scope = NodeTag.joins(:tag)
-                           .where('name LIKE ?', tag)
-                           .where(nid: nodes_scope.select(:nid))
+      nodes_scope = NodeTag.joins(:tag).where('name LIKE ?', tag).where(nid: nodes_scope.select(:nid))
     end
 
     nids = nodes_scope.collect(&:nid).uniq || []
 
-    items = Node.includes(:tag)
-      .references(:node, :term_data)
-      .where('node.nid IN (?)', nids)
-      .where('term_data.name LIKE ?', 'lon%')
-      .where('CAST(REPLACE(term_data.name, "lon:", "") AS float) BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
-      .order('node.nid DESC')
-      .limit(limit)
+    items = Node.includes(:tag).references(:node, :term_data).where('node.nid IN (?)', nids)
+      .where('term_data.name LIKE ?', 'lon%').where('CAST(REPLACE(term_data.name, "lon:", "") AS float) BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
+      .order('node.nid DESC').limit(limit)
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
