@@ -99,21 +99,25 @@ class SearchApiTest < ActiveSupport::TestCase
   end
 
   test 'search Tag Nearby Nodes functionality with a valid query' do
-    get '/api/srch/taglocations?query=71.00,52.00'
+    get '/api/srch/taglocations?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '71.00,52.00',
+            nwlat: 200.0,
+            nwlng: 0.0,
+            selat: 0.0,
+            selng: 200.0,
             seq: nil,
+            tag: nil,
+            query: nil
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
     json = JSON.parse(last_response.body)
-
     assert matcher    =~ json
     assert_equal 13,  json['items'][0]['doc_id']
   end

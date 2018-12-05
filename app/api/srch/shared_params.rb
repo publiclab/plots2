@@ -9,6 +9,13 @@ module Srch
       optional :limit, type: Integer, documentation: { example: 10 }
     end
 
+    params :geographical do
+      requires :nwlat, type: Float, documentation: { example: 10.2 }
+      requires :selat, type: Float, documentation: { example: 10.2 }
+      requires :nwlng, type: Float, documentation: { example: 10.2 }
+      requires :selng, type: Float, documentation: { example: 10.2 }
+    end
+
     params :additional do
       optional :tag, type: String, documentation: { example: 'awesome' }
     end

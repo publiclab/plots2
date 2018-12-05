@@ -82,16 +82,20 @@ class SearchService
   end
 
   # Search nearby nodes with respect to given latitude, longitute and tags
-  def tagNearbyNodes(query, tag, limit = 10)
-    raise("Must separate coordinates with ,") unless query.include? ","
+  def tagNearbyNodes(coordinates, tag, limit = 10)
+    raise("Must contain all four coordinates") unless !(coordinates["nwlat"].nil?)
+    raise("Must contain all four coordinates") unless !(coordinates["nwlng"].nil?)
+    raise("Must contain all four coordinates") unless !(coordinates["selat"].nil?)
+    raise("Must contain all four coordinates") unless !(coordinates["selng"].nil?)
 
-    lat, lon =  query.split(',')
-
-    raise("Must have at least one digit after .") unless lat.include? "."
-    raise("Must have at least one digit after .") unless lon.include? "."
+    raise("Must be a float") unless coordinates["nwlat"].is_a? Float
+    raise("Must be a float") unless coordinates["nwlng"].is_a? Float
+    raise("Must be a float") unless coordinates["selat"].is_a? Float
+    raise("Must be a float") unless coordinates["selng"].is_a? Float
 
     nodes_scope = NodeTag.joins(:tag)
-      .where('name LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
+      .where('name LIKE ?', 'lat%')
+      .where('CAST(REPLACE(name, "lat:", "") AS float) BETWEEN '+ coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
 
     if tag.present?
       nodes_scope = NodeTag.joins(:tag)
@@ -103,7 +107,9 @@ class SearchService
 
     items = Node.includes(:tag)
       .references(:node, :term_data)
-      .where('node.nid IN (?) AND term_data.name LIKE ?', nids, 'lon:' + lon[0..lon.length - 2] + '%')
+      .where('node.nid IN (?)', nids)
+      .where('term_data.name LIKE ?', 'lon%')
+      .where('CAST(REPLACE(term_data.name, "lon:", "") AS float) BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
       .order('node.nid DESC')
       .limit(limit)
 
