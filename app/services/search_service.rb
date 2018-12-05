@@ -86,7 +86,7 @@ class SearchService
     raise("Must contain all four coordinates") if coordinates["nwlat"].nil?
     raise("Must contain all four coordinates") if coordinates["nwlng"].nil?
     raise("Must contain all four coordinates") if coordinates["selat"].nil?
-    raise("Must contain all four coordinates") ifcoordinates["selng"].nil?
+    raise("Must contain all four coordinates") if coordinates["selng"].nil?
 
     raise("Must be a float") unless coordinates["nwlat"].is_a? Float
     raise("Must be a float") unless coordinates["nwlng"].is_a? Float
