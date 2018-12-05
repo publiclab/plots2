@@ -47,47 +47,7 @@
             <li><a href="/wiki/software-outreach">Software Projects</a></li>
           </ul>
         </li>
-
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            <%= t('layout._header.about.about_title') %> <i class="fa fa-white fa-caret-down"></i>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="/wiki/stories"><%= t('layout._header.about.stories') %></a></li>
-            <li><a href="/blog"><%= t('layout._header.about.blog') %></a></li>
-            <li><a href="/about"><%= t('layout._header.about.about_public_lab') %></a></li>
-            <li class="divider"></li>
-            <li><a href="/wiki/plots-staff"><%= t('layout._header.about.team') %></a></li>
-            <li><a href="/wiki/organizers"><%= t('layout._header.about.organizers') %></a></li>
-            <li><a href="/wiki/board"><%= t('layout._header.about.board') %></a></li>
-            <li><a href="/wiki/how-we-are-funded"><%= t('layout._header.about.fund') %></a></li>
-            <li class="divider"></li>
-            <li><a href="/media"><%= t('layout._header.about.press_and_media') %></a></li>
-            <li><a href="/wiki/contact"><%= t('layout._header.about.contact') %></a></li>
-          </ul>
-        </li>
-
-        <li class="hidden-sm">
-          <a target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
-        </li>
-        <li class="hidden-sm">
-          <a href="/donate"><%= t('layout._header.donate') %></a>
-        </li>
-      </ul>
-
-      <ul class="nav navbar-nav navbar-right">
-        <% if current_user %>
-          <li class="hidden-sm hidden-md">
-            <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</i></a>
-          </li>
-        <% else %>
-        <li class="hidden-sm hidden-md">
-          <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
-        </li>
-        <% end %>
-
 <%= render :partial =>"layouts/login" %>
-
       </ul>
     </div>
   </div>
