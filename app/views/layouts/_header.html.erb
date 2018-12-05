@@ -87,73 +87,7 @@
         <% end %>
 
 <%= render :partial =>"layouts/login" %>
-=======
-        <li class="dropdown">
-          <% unless params[:action] == "register" || params[:action] == "signup" %>
-            <% if current_user %>
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                Profile  <i class="fa fa-white fa-caret-down"></i>
-              </a>
-              <ul class="dropdown-menu">
-                <div class="dropdown-header">
-                  <h5>
-                    <%= current_user.username %>
-                    <% if current_user.role === 'moderator' || current_user.role === 'admin'%>
-                       - logged as <%= current_user.role %>
-                    <% end %>
-                  </h5>
-                </div>
 
-                <li><a href="/profile/<%= current_user.username %>"><%= t('layout._header.profile') %></a></li>
-                <li><a href="/profile/edit"><%= t('layout._header.edit_profile') %></a></li>
-                <li><a href="/settings" >Email Settings</a></li>
-                <li class="divider"></li>
-                <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
-                <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
-                <li class="divider"></li>
-        	      <% if current_user.role == 'admin' %>
-                  <li><a href="/useremail">Email search</a></li>
-                  <li><a href="/wiki/locked">Locked pages</a></li>
-                  <li><a href="/spam">Spam moderation</a></li>
-                  <li><a href="/people">Contributors</a></li>
-        	        <li class="divider"></li>
-        	      <% end %>
-                <li><%= link_to t('layout._header.logout'), logout_path %></li>
-                <li><a href="/logoutRemotely">Logout from all devices</a></li>
-              </ul>
-            <% else %>
-              <a href="/login?return_to=<%= params[:return_to] || request.path %>">
-                <%= t('layout._header.login.login_title') %>
-              </a>
-            <% end %>
-          <% end %>
-        </li>
-        <li id="md-ham" class="hidden-lg dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-white fa-bars"></a>
-            <ul class="dropdown-menu">
-                <li class="hidden-lg hidden-md">
-                  <a href="//store.publiclab.org"><%= t('layout._header.store') %></a>
-                </li>
-                <li class="hidden-lg hidden-md">
-                  <a href="/donate"><%= t('layout._header.donate') %></a>
-                </li>
-                <!--- These menu items will only appear in the "More" dropdown menu. --->
-                <% if current_user %>
-                  <li class="hidden-lg">
-                    <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</i></a>
-                  </li>
-                <% else %>
-                <li class="hidden-lg">
-                  <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
-                </li>
-                <li class="hidden-lg hidden-md">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                     <%= t('layout._header.login.login_title') %>
-                  </a>
-                </li>
-                <% end %>
-            </ul>
-        </li>
       </ul>
     </div>
   </div>
