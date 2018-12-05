@@ -2,6 +2,9 @@ sudo: required
 
 services:
   - docker
+
+git:
+    depth: false
   
 env:
   - COMPOSE_FILE=./containers/docker-compose-testing.yml

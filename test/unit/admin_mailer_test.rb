@@ -97,4 +97,30 @@ class AdminMailerTest < ActionMailer::TestCase
     time_ago = time_ago_in_words(node.created_at)
     assert email.body.include?("Post was marked as spam by <a href='https://#{request_host}/profile/#{moderator.username}'>#{moderator.username}</a> after entering moderation queue #{time_ago} ago.")
   end
+
+  test 'notify_moderators_of_comment_spam' do
+    comment = comments(:first)
+    moderator = users(:moderator) #who marked the comment as spam
+    moderators = User.where(role: %w[moderator admin])
+    assert !moderators.empty?
+
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      # send the email to moderators
+      AdminMailer.notify_moderators_of_comment_spam(comment, moderator).deliver_now
+    end
+
+    # test that it got queued
+    assert !ActionMailer::Base.deliveries.empty?
+
+    # test the last one
+    email = ActionMailer::Base.deliveries.last
+    assert_not_nil email.to
+    assert_not_nil email.bcc
+    assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+    assert_equal moderators.collect(&:email), ActionMailer::Base.deliveries.last.bcc
+    # title same as initial for email client threading
+    assert_equal '[New Public Lab comment needs moderation]', email.subject
+    time_ago = time_ago_in_words(comment.created_at)
+    assert email.body.include?("Comment was marked as spam by <a href='https://#{request_host}/profile/#{moderator.username}'>#{moderator.username}</a> after entering moderation queue #{time_ago} ago.")
+  end
 end
