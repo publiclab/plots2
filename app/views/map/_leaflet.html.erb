@@ -7,7 +7,8 @@
 <%= javascript_include_tag('https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js') %>
 <%= stylesheet_link_tag "https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css" %>
 
-
+<%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
+<%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
   <% unique_id = rand(100) %>
   <style>
   #map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
@@ -31,8 +32,8 @@
     // var hash = new L.Hash(map< unique_id > );
 
     function onMapLoad(e){
-      var lat = <%= lat %> ;
-      var lon = <%= lon %> ;
+      var lat = <%= '%.2f' % lat %> ; // ensure format 0.00 (two decimal places)
+      var lon = <%= '%.2f' % lon %> ;
       var s = lat+","+lon ;
       $.getJSON("/api/srch/taglocations?query="+s , function(data){
         if (!!data.items){

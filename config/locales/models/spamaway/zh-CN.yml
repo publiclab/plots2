@@ -1,0 +1,21 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+zh-cn:
+  spamaway:
+    human:
+      statement1: '🐑'
+      statement2: '🐹'
+      statement3: '🐼'
+      statement4: '🐔'
+      statement5: '🐧'
+      statement6: '🦊'
+    robot:
+      statement1: '⏰'
+      statement2: '📠'
+      statement3: '🖨'
+      statement4: '📻'
+      statement5: '💾'
+      statement6: '📺'
+    errors:
+      please_read_instructions: "Please read the instructions in the last box carefully."
+      not_a_real_person: "-- It doesn't seem like you are a real person! If you disagree or are having trouble, please see https://publiclab.org/wiki/registration-test."

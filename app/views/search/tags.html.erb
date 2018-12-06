@@ -4,21 +4,23 @@
   <% if @tags.present? %>
     <div class="container">
       <h2> Results for <%= @search_criteria.query %></h2>
+      <p> <strong> Searched notes that contain the tag</strong></p>
       <hr>
 
       <div class="row">
         <% @tags.each do |tag| %>
-          <p><a href=<%= "/tag/#{tag.title}" %>><%= tag.title %></a></p>
+          <p><a href=<%= "#{tag.path}" %>><%= tag.title %></a></p>
         <% end %>
       </div>
     </div>
   <% else %>
     <h4>
       No results found for <%= params[:query] %> :-(
+      <p> Searched notes that contain the tag</p>
       </br>
       Try searching <a href="/search">for another topic</a> or looking for our items tagged with <a href="/tag/<%= params[:query] %>"><%= params[:query] %></a>
     </h4>
   <% end %>
 </div>
-
-<%= will_paginate @tags, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+<div class="text-center">
+  <%= will_paginate @tags, :renderer => BootstrapPagination::Rails unless @unpaginated %></div>

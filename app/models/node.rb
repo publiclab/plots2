@@ -35,15 +35,15 @@ class Node < ActiveRecord::Base
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
+        query = connection.quote(query.to_s)
         if type == :boolean
-          query = connection.quote(query.to_s + "*")
+          # Query is done as a boolean full-text search. More info here: https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
           nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
             .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
             .limit(limit)
             .distinct
             .collect(&:nid)
         else
-          query = connection.quote(query.to_s)
           nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
             .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
             .limit(limit)
@@ -330,6 +330,13 @@ class Node < ActiveRecord::Base
     end
   end
 
+  # scan for first image in the body and use this instead
+  # (in future, maybe just do this for all images?)
+  def scraped_image
+    match = latest&.render_body&.scan(/<img(.*?)\/>/)&.first&.first
+    match&.split('src="')&.last&.split('"')&.first
+  end
+
   # was unable to set up this relationship properly with ActiveRecord associations
   def drupal_content_field_image_gallery
     DrupalContentFieldImageGallery.where(nid: nid)
@@ -534,6 +541,10 @@ class Node < ActiveRecord::Base
     drupal_content_type_map.last
   end
 
+  def blurred?
+    has_power_tag('location') && power_tag('location') == "blurred"
+  end
+
   def lat
     if has_power_tag('lat')
       power_tag('lat').to_f
@@ -576,23 +587,17 @@ class Node < ActiveRecord::Base
   # Automated constructors for associated models
 
   def add_comment(params = {})
-    thread = if !comments.empty? && !comments.last.nil?
-               comments.last.next_thread
-             else
-               '01/'
-    end
-    if params[:comment_via].nil?
-      comment_via_status = 0
-    else
-      comment_via_status = params[:comment_via].to_i
-    end
+    thread = !comments.empty? && !comments.last.nil? ? comments.last.next_thread : '01/'
+    comment_via_status = params[:comment_via].nil? ? 0 : params[:comment_via].to_i
+    user = User.find(params[:uid])
+    status = user.first_time_poster && user.first_time_commenter ? 4 : 1
     c = Comment.new(pid: 0,
                     nid: nid,
                     uid: params[:uid],
                     subject: '',
                     hostname: '',
                     comment: params[:body],
-                    status: 1,
+                    status: status,
                     format: 1,
                     thread: thread,
                     timestamp: DateTime.now.to_i,

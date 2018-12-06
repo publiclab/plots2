@@ -74,7 +74,9 @@
         <hr />
       <% end %>
 
-    <%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+    <div class="text-center">
+        <%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+    </div>
 
   <% end %>
 

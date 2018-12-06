@@ -16,6 +16,19 @@ class AdminMailer < ActionMailer::Base
     )
   end
 
+  def notify_comment_moderators(comment)
+    subject = '[New Public Lab poster needs moderation]'
+    @comment = comment
+    @user = comment.author.user
+    @footer = feature('email-footer')
+    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    mail(
+      to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
+      bcc: moderators,
+      subject: subject
+    )
+  end
+
   def notify_author_of_approval(node, moderator)
     subject = '[Public Lab] Your post was approved!'
     @author = node.author
@@ -31,6 +44,20 @@ class AdminMailer < ActionMailer::Base
   # Should: prompt moderators to reach out if it's not spam, but a guidelines violation
   # def notify_author_of_spam(node)
   # end
+
+  def notify_moderators_of_comment_spam(comment, moderator)
+    subject = '[New Public Lab comment needs moderation]'
+    @author = comment.author
+    @moderator = moderator
+    @comment = comment
+    @footer = feature('email-footer')
+    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    mail(
+      to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
+      bcc: moderators,
+      subject: subject
+    )
+  end
 
   def notify_moderators_of_approval(node, moderator)
     subject = '[New Public Lab poster needs moderation] ' + node.title

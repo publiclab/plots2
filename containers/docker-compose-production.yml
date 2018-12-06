@@ -19,7 +19,7 @@ services:
     ports:
       - "127.0.0.1:4001:4001"
     build: ..
-    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start --max-request-queue-size 200 --max-pool-size 8 --min-instances 8 -p 4001"
+    command: /bin/bash -c "sleep 5 && /usr/local/bundle/bin/passenger start --max-request-queue-size 200 --max-pool-size 7 --min-instances 7 -p 4001"
     environment:
       - RAILS_ENV=${RAILS_ENV}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
@@ -75,4 +75,4 @@ services:
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     volumes:
       - ..:/app
-    restart: on-failure:5
+    restart: always

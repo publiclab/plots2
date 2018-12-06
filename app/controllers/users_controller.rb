@@ -20,7 +20,11 @@ class UsersController < ApplicationController
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
         redirect_to "/profile/edit"
       else
-        WelcomeMailer.notify_newcomer(@user).deliver_now
+        begin
+          WelcomeMailer.notify_newcomer(@user).deliver_now
+        rescue
+          flash[:warning] = "We tried and failed to send you a welcome email, but your account was created anyhow. Sorry!"
+        end
         flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
@@ -43,6 +47,7 @@ class UsersController < ApplicationController
 
   def update
     @user = current_user
+    @user = User.find_by(username: params[:id]) if params[:id] && current_user && current_user.role == "admin"
     @user.attributes = user_params
     @user.save({}) do |result|
       if result
@@ -67,7 +72,7 @@ class UsersController < ApplicationController
     else
       @user = current_user
     end
-    if current_user && current_user.uid == @user.uid # || current_user.role == "admin"
+    if current_user && current_user.uid == @user.uid || current_user.role == "admin"
       render :template => "users/edit"
     else
       flash[:error] = I18n.t('users_controller.only_user_edit_profile', :user => @user.name).html_safe
@@ -93,6 +98,12 @@ class UsersController < ApplicationController
       order_string = 'created DESC'
     end
 
+    @map_lat = nil
+    @map_lon = nil
+    if current_user && current_user.has_power_tag("lat") && current_user.has_power_tag("lon")
+      @map_lat = current_user.get_value_of_power_tag("lat").to_f
+      @map_lon = current_user.get_value_of_power_tag("lon").to_f
+    end
     # allow admins to view recent users
     if params[:id]
       @users = User.order(order_string)

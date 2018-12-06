@@ -7,6 +7,7 @@ class UniqueUsernameValidator < ActiveModel::Validator
 end
 
 class User < ActiveRecord::Base
+  extend Utils
   self.table_name = 'rusers'
   alias_attribute :name, :username
 
@@ -50,9 +51,12 @@ class User < ActiveRecord::Base
     User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
   end
 
+  def is_new_contributor
+    Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > Date.today - 1.month
+  end
+
   def new_contributor
-    @uid = id
-    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
+    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor
   end
 
   def create_drupal_user
@@ -197,7 +201,7 @@ class User < ActiveRecord::Base
 
   def get_value_of_power_tag(key)
     tname = user_tags.where('value LIKE ?', key + ':%')
-    tvalue = tname.first.name.partition(':').last
+    tvalue = tname.first.name.partition(':').last if tname.present?
     tvalue
   end
 
@@ -343,6 +347,10 @@ class User < ActiveRecord::Base
   def first_time_poster
     notes.where(status: 1).count == 0
   end
+  
+  def first_time_commenter
+    Comment.where(status: 1, uid: uid).count == 0
+  end
 
   def follow(other_user)
     active_relationships.create(followed_id: other_user.id)
@@ -415,6 +423,25 @@ class User < ActiveRecord::Base
     end
   end
 
+  def generate_token
+    user_id_and_time = { :id => id, :timestamp => Time.now }
+    User.encrypt(user_id_and_time)
+  end
+
+  def self.validate_token(token)
+    begin
+      decrypted_data = User.decrypt(token)      
+    rescue ActiveSupport::MessageVerifier::InvalidSignature => e
+      puts e.message
+      return 0
+    end
+    if (Time.now - decrypted_data[:timestamp]) / 1.hour > 24.0
+      return 0
+    else
+      return decrypted_data[:id]   
+    end
+  end
+
   private
 
   def map_openid_registration(registration)
@@ -453,5 +480,14 @@ class User < ActiveRecord::Base
       user.password_checker = hash[auth["provider"]]
       user.save!
     end
+  end
+  
+  def self.count_all_time_contributor
+    notes = Node.where(type: 'note', status: 1).pluck(:uid)
+    answers = Answer.pluck(:uid)
+    questions = Node.questions.where(status: 1).pluck(:uid)
+    comments = Comment.pluck(:uid)
+    revisions = Revision.where(status: 1).pluck(:uid)
+    contributors = (notes + answers + questions + comments + revisions).compact.uniq.length
   end
 end

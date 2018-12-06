@@ -1,6 +1,6 @@
 class TagController < ApplicationController
   respond_to :html, :xml, :json, :ics
-  before_action :require_user, only: %i(create delete)
+  before_action :require_user, only: %i(create delete add_parent)
 
   def index
     if params[:sort]
@@ -73,7 +73,7 @@ class TagController < ApplicationController
   def show
     # try for a matching /wiki/_TAGNAME_ or /_TAGNAME_
     @wiki = Node.where(path: "/wiki/#{params[:id]}").try(:first) || Node.where(path: "/#{params[:id]}").try(:first)
-    @wiki = Node.find(@wiki.power_tag('redirect')) if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
+    @wiki = Node.where(slug: @wiki.power_tag('redirect'))&.first if @wiki&.has_power_tag('redirect') # use a redirected wiki page if it exists
 
     default_type = if params[:id].match?('question:')
                      'questions'
@@ -85,6 +85,9 @@ class TagController < ApplicationController
     @node_type = params[:node_type] || default_type
     @start = Time.parse(params[:start]) if params[:start]
     @end = Time.parse(params[:end]) if params[:end]
+    order_by = 'node_revisions.timestamp DESC'
+    order_by = 'node.views DESC' if params[:order] == 'views'
+    order_by = 'node.cached_likes DESC' if params[:order] == 'likes'
 
     node_type = 'note' if @node_type == 'questions' || @node_type == 'note'
     node_type = 'page' if @node_type == 'wiki'
@@ -99,7 +102,7 @@ class TagController < ApplicationController
         .references(:term_data, :node_revisions)
         .where('term_data.name LIKE (?) OR term_data.parent LIKE (?)', params[:id][0..-2] + '%', params[:id][0..-2] + '%')
         .paginate(page: params[:page], per_page: 24)
-        .order('node_revisions.timestamp DESC')
+        .order(order_by)
     else
       @tags = Tag.where(name: params[:id])
 
@@ -115,14 +118,14 @@ class TagController < ApplicationController
           .references(:term_data, :node_revisions)
           .where('term_data.name = ? OR term_data.name = ? OR term_data.parent = ?', params[:id], other_tag, params[:id])
           .paginate(page: params[:page], per_page: 24)
-          .order('node_revisions.timestamp DESC')
+          .order(order_by)
       else
         nodes = Node.where(status: 1, type: node_type)
           .includes(:revision, :tag)
           .references(:term_data, :node_revisions)
           .where('term_data.name = ? OR term_data.parent = ?', params[:id], params[:id])
           .paginate(page: params[:page], per_page: 24)
-          .order('node_revisions.timestamp DESC')
+          .order(order_by)
       end
     end
     nodes = nodes.where(created: @start.to_i..@end.to_i) if @start && @end
@@ -444,6 +447,21 @@ class TagController < ApplicationController
     render template: 'tag/contributors-index'
   end
 
+  def add_parent
+    if current_user.role == 'admin'
+      @tag = Tag.find_by(name: params[:name])
+      @tag.update_attribute('parent', params[:parent])
+      if @tag.save
+        flash[:notice] = "Tag parent added."
+      else
+        flash[:error] = "There was an error adding a tag parent."
+      end
+      redirect_to '/tag/' + @tag.name + '?_=' + Time.now.to_i.to_s
+    else
+      flash[:error] = "Only admins may add tag parents."
+    end
+  end
+
   def location
     render template: 'locations/_form'
   end
@@ -453,6 +471,10 @@ class TagController < ApplicationController
   end
 
   def gridsEmbed
+    if %w[nodes wikis activities questions upgrades notes].include?(params[:tagname].split(':').first)
+      params[:t] = params[:tagname]
+      params[:tagname] = ""
+    end
     render layout: false
   end
 

@@ -32,6 +32,7 @@ class StatsController < ApplicationController
   end
 
   def index
+    @title = 'Stats'
     @time = if params[:time]
               Time.parse(params[:time])
             else
@@ -81,5 +82,8 @@ class StatsController < ApplicationController
 
     @all_notes = nids.uniq.length
     @all_contributors = users.uniq.length
+    Rails.cache.fetch("total-contributors-all-time", expires_in: 1.weeks) do
+      @all_time_contributors = User.count_all_time_contributor
+    end
   end
 end

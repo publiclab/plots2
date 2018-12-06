@@ -7,6 +7,8 @@
 <%= javascript_include_tag('https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js') %>
 <%= stylesheet_link_tag "https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css" %>
 
+<%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
+<%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
   <% unique_id = rand(100) %>
   <style>
   	#map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
@@ -19,12 +21,16 @@
 <div onmouseover="document.body.style.overflow='hidden';"  onmouseout="document.body.style.overflow='auto';">
    <div class="leaflet-map" id="map<%= unique_id %>"></div>
  </div>
-	<% if defined? people %>
-		<p><i><small>
-			Share your own location on <a href='/profile'>your profile</a>.
-			Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a>
-		</small></i></p>
-	<% end %>
+<% if defined? people %>
+  <p><i><small>
+      <% if !@map_lat.nil? && !@map_lon.nil? %>
+        Current view based on your shared location. Click <a href='/profile'>here</a> to adjust.
+      <% else %>
+	  Share your own location on <a href='/profile'>your profile</a>.
+	  Learn about <a href='https://publiclab.org/wiki/location-privacy'>privacy</a>
+      <% end %>
+  </small></i></p>
+<% end %>
 
   <script>
 
@@ -34,24 +40,7 @@
       maxBoundsViscosity: 0.75
     }).on('load', onMapLoad).setView([<%= lat %>,<%= lon %>], 2);
    map<%= unique_id %>.options.minZoom = 2 ;
-   // var searchLayer<= unique_id > = L.layerGroup().addTo(map< = unique_id >);
-   //  // add the search bar to the map
-   // var controlSearch< = unique_id > = new L.Control.Search({
-   //    position:'topright',    // where do you want the search bar?
-   //    layer: searchLayer< = unique_id >,  // name of the layer
-   //    initial: false,
-   //    minLength: 1,
-   //    textErr: 'Person not found' ,
-   //    zoom: 7,        // set zoom to found location when searched
-   //    marker: false,
-   //    textPlaceholder: 'search people' // placeholder while nothing is searched
-   //  });
-   // map< = unique_id >.addControl(controlSearch< = unique_id >);
-    /*
-    controlSearch< = unique_id %>.on('search:collapsed', function(e) {
-    map< = unique_id %>.setView([< = lat >,< = lon >], 2);
-    })
-    */
+   
    function onMapLoad(e){
      $.getJSON("/api/srch/peoplelocations?query=100&tag=<%= @tagname_param %>" , function(data){
      	var layerGroup = L.layerGroup() ;
@@ -61,18 +50,19 @@
            var url = data.items[i].doc_url ;
            var title = data.items[i].doc_title ;
            var m = L.marker([data.items[i].latitude , data.items[i].longitude], {title: title , icon: default_markers}).addTo(map<%= unique_id %>).bindPopup("<a href=" +  url + ">" + title + "</a>") ;
-   	 	      // searchLayer<%= unique_id %>.addLayer(m) ;
 	        }
         }
      });
     }
 
-    var map_lat = <%= lat %> ;
-    var map_lon = <%= lon %> ;
+   <% if !@map_lat.nil? && !@map_lon.nil? %>
+      var map_lat = <%= @map_lat %> ;
+      var map_lon = <%= @map_lon %> ;
+      var user_latlng = L.latLng(map_lat, map_lon) ;
+      map<%= unique_id %>.setView(user_latlng , 3) ;
+   <% end %>
 
-//    setupFullScreen(map< = unique_id >  , map_lat , map_lon) ;
+//  setupFullScreen(map< = unique_id >  , map_lat , map_lon) ;
     setupLEL(map<%= unique_id %> ) ;
-
-
 
   </script>

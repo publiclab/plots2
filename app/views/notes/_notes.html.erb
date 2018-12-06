@@ -6,6 +6,8 @@
 
         <% if node.main_image %>
           <a class="img" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+        <% elsif node.scraped_image %>
+          <a class="img" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
         <% end %>
 
         <% if node.status == 4 %>
@@ -54,12 +56,24 @@
           <% end %>
           <hr style="display:none;" class="bottom" />
         </div>
+	      
+	      
+	      
+	      
+	
 
       </div>
+	    <style>
+		    .content {
+    width: 100px;
+    margin-left: auto;
+    margin-bottom: 0;
+    margin-bottom: 30%;
+	    </style>
+		 
       <% unless @widget %><hr class="visible-xs visible-sm" /><% end %>
     <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
     </div>
-    <% unless @widget %><hr class="visible-xs visible-sm grid" /><% end %>
     <div class="row">
     <% end %>
     <% end %>

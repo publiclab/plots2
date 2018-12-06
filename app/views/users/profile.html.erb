@@ -214,7 +214,24 @@
   <% end %>
 
   <% if @profile_user && current_user && @profile_user == current_user %>
-    <button id="link_social_media" class="btn btn-default btn-block">Link Social media</button>
+    <button data-toggle="modal" data-target="#socialModal" class="btn btn-default btn-block">Link Social media</button>
+    <div class="modal fade" id="socialModal" tabindex="-1" role="dialog" aria-labelledby="socialModal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="socialModal">Link Social media</h5>
+          </div>
+          <div class="modal-body">
+            <label for="social-name">Enter Your Social Media User name like twitter:publiclab or instagram:publiclab</label>
+          <input type="text" class="form-control" id="social-name" placeholder="instagram:publiclab">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="link_social_media" type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
   <% end %>
 
   <% if @profile_user && current_user && @profile_user == current_user %>
@@ -264,18 +281,15 @@
     <% end %>
   </div>
 
-
 </div>
+
+<%= render partial: 'users/token' %>
 
 <script src = "https://cdn.jsdelivr.net/npm/frappe-charts@0.0.8/dist/frappe-charts.min.iife.js"></script>
 
 <script type = "text/javascript">
-    $('#btn-token').click(function() {
-        alert("Your access token is: <%= @user.user.token %>");
-    });
-
     $('#link_social_media').click(function(){
-        var sign = prompt("Enter Your Social Media User name like twitter:publiclab or instagram:publiclab");
+        sign = document.getElementById('social-name').value;
         $.post('/profile/tags/create/<%=@user.uid %> ',{"name": sign,"id":<%=@user.uid %>}, function(data) {
             window.location='/profile/<%=@user.name %> ';
         });

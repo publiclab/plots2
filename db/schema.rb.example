@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_21_210045) do
+ActiveRecord::Schema.define(version: 2018_11_29_100000) do
 
   create_table "answer_selections", force: true do |t|
     t.integer "user_id"
@@ -284,33 +284,6 @@ ActiveRecord::Schema.define(version: 2018_09_21_210045) do
 
   add_index "node_selections", ["user_id", "nid"], name: "index_node_selections_on_user_id_and_nid", unique: true, using: :btree
 
-  create_table "profile_fields", primary_key: "fid", force: true do |t|
-    t.string  "title"
-    t.string  "name",         limit: 128, default: "", null: false
-    t.text    "explanation"
-    t.string  "category"
-    t.string  "page"
-    t.string  "type",         limit: 128
-    t.integer "weight",       limit: 1,   default: 0,  null: false
-    t.integer "required",     limit: 1,   default: 0,  null: false
-    t.integer "register",     limit: 1,   default: 0,  null: false
-    t.integer "visibility",   limit: 1,   default: 0,  null: false
-    t.integer "autocomplete", limit: 1,   default: 0,  null: false
-    t.text    "options"
-  end
-
-  add_index "profile_fields", ["category"], name: "index_profile_fields_category", using: :btree
-  add_index "profile_fields", ["name"], name: "index_profile_fields_name", using: :btree
-
-  create_table "profile_values", id: false, force: true do |t|
-    t.integer "fid",   default: 0, null: false
-    t.integer "uid",   default: 0, null: false
-    t.text    "value"
-  end
-
-  add_index "profile_values", ["fid"], name: "index_profile_values_fid", using: :btree
-  add_index "profile_values", ["uid"], name: "index_profile_values_on_uid", using: :btree
-
   create_table "relationships", force: true do |t|
     t.integer  "follower_id"
     t.integer  "followed_id"
@@ -357,6 +330,7 @@ ActiveRecord::Schema.define(version: 2018_09_21_210045) do
     t.string   "token"
     t.integer  "status",                                default: 0
     t.integer "password_checker", default: 0
+    t.boolean "is_verified", default: false
   end
 
   add_index "rusers", ["created_at"], name: "index_rusers_created_at", using: :btree

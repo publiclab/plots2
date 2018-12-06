@@ -29,7 +29,7 @@
 <% end %>
 <% nodes.each_with_index do |node, index| %>
   <% if index > 9 %>
-    <tr class="hide">
+    <tr class="hide extra">
   <% else %>
     <tr>
   <% end %>
@@ -53,9 +53,9 @@
     <% end %>
   </tr>
 <% end %>
-<% if nodes.count > 9 %>
+<% if nodes.count > 10 %>
     <tfoot>
-      <th class="show-all"><a>Show <%= nodes.length - 10 %> more <b class="caret"></b></a></th>
+      <th class="show-all" id="notes-table-footer" style="min-width: 110px;"><a style="cursor: pointer;">Show more <b class="caret"></b></a></th>
       <th></th>
       <th></th>
       <th></th>
@@ -74,13 +74,26 @@
 
 <script>
 (function(){
-  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function() {
-    $(".<%= className %>-<%= randomSeed %> tr.hide").toggleClass("hide");
+  $(".<%= className %>-<%= randomSeed %> .show-all a").click(function(event) {
+    var cName = ".<%= className %>-<%= randomSeed %>";
+    var sName = cName + " tr.extra";
+    
+    $(sName).toggleClass("hide");
+    if($(sName)[0].classList.contains("hide"))
+        var hiding = true;    
+    var myElement = event.target;    
+    if(event.target.classList.contains("caret")) 
+        myElement = event.target.parentElement;
+    if(!hiding) 
+        myElement.innerHTML = 'Show less <b class="caret" style = "transform: rotate(180deg);"></b>';
+    else
+        myElement.innerHTML = 'Show more <b class="caret"></b>' ;
+
   });
   $(".grid-embed-<%= randomSeed %>").click(function() {
     prompt('Use this HTML code to embed this table on another site.', '<iframe style="border:none;" width="100%" height="900px" src="//publiclab.org/embed/grid/<% if type != "notes" %><%= type.gsub('questions', 'question').gsub('activities', 'activity') %>:<% end %><%= tagname %>"></iframe>')
   });
-  setupGridSorters(".<%= className %>-<%= randomSeed %>");
+  //setupGridSorters(".<%= className %>-<%= randomSeed %>"); Should order the items by time. Commented out because it reorders the items each time show more/less is clicked
 })()
 </script>
 <style>

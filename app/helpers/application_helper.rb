@@ -14,7 +14,7 @@ module ApplicationHelper
 
   def emojify(content)
     if content.present?
-      content.to_str.gsub(/:([\w+-]+):/) do |match|
+      content.to_str.gsub(/:([\w+-]+):(?![^\[]*\])/) do |match|
         if emoji = Emoji.find_by_alias(Regexp.last_match(1))
           if emoji.raw
             emoji.raw
@@ -79,6 +79,8 @@ module ApplicationHelper
   end
 
   def insert_extras(body)
+    body = NodeShared.nodes_grid(body)
+    body = NodeShared.notes_thumbnail_grid(body)
     body = NodeShared.notes_grid(body)
     body = NodeShared.questions_grid(body)
     body = NodeShared.activities_grid(body)
