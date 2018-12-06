@@ -67,6 +67,16 @@
                                                        id: 'password-confirmation' }
         %>
       </div>
+      <script>
+        $(document).ready(function(){
+          $("#toggle").hide();
+        });
+        
+        $("#toggle-btn").click(function(){
+          $(this).hide();
+          $("#toggle").show();
+        });
+      </script>
     
     </div>
 
