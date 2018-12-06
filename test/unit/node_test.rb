@@ -58,6 +58,16 @@ class NodeTest < ActiveSupport::TestCase
       assert_equal nodes.length, Tag.find_nodes_by_type('awesome', ['note', 'page']).length
     end
   end
+  
+  test 'node mysql native fulltext search returning tag-based matches' do
+    assert Node.count > 0
+    if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      nodes = Node.search(query: 'awesome',query: 'cool', limit: 1000)
+      assert_not_nil nodes
+      assert nodes.length > 0
+      assert_equal nodes.length, Tag.find_nodes_by_type('awesome','cool', ['note', 'page']).length
+    end
+  end
 
   test 'create a node' do
     # in testing, uid and id should be matched, although this is not yet true in production db
