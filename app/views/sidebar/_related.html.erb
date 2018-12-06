@@ -45,6 +45,8 @@
   <% end %>
   <% if @node && !@node.has_power_tag('place') && @node.lat && @node.lon %>
     <%= render_map(@node.lat, @node.lon) %>
+  <% elsif @node&.has_power_tag('place') && !@node.lat && !@node.lon %>
+    <button id="add_location" type="button" name="button">Add location</button>
   <% end %>
 
   <br style="clear:both;" />
@@ -73,6 +75,11 @@
       <%= feature('sidebar-welcome') %>
     <% end %>
   <% end %>
-
 </div>
 <%= javascript_include_tag 'sidebar' %>
+
+<script type="text/javascript">
+  $('#add_location').on('click', function() {
+    $('.blurred-location-input').click();
+  })
+</script>
