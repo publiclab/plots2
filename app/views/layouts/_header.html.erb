@@ -119,8 +119,8 @@
                 <li><%= link_to t('layout._header.logout'), logout_path %></li>
                 <li><a href="/logoutRemotely">Logout from all devices</a></li>
               </ul>
-            <% else %>
-              <a href="/login?return_to=<%= params[:return_to] || request.path %>">
+            <% else %> <!-- Login button -->
+              <a data-toggle="modal" data-target="#loginModal">
                 <%= t('layout._header.login.login_title') %>
               </a>
             <% end %>
@@ -174,4 +174,29 @@
       });
   </script>
   <%= render :partial => "layouts/alerts" %>
+</div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <%= render :partial => "user_sessions/new" %>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function(){
+        $("#toggle").hide();
+      });
+      
+      $("#toggle-btn").click(function(){
+        $(this).hide();
+        $("#toggle").show();
+      });
+    </script>
+  </div>
 </div>
