@@ -12,10 +12,13 @@
     <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
       <%= render :partial => "layouts/social_icons" %>
     </div>
-    
-    <br style="clear:both;"/>
-    
-    <div id="toggle">
+
+   <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
+    <h3> OR</h3>
+
+   </div>
+   <br style="clear:both;"/>
+
       
       <div class="form-group">
 
@@ -32,6 +35,7 @@
        <% if params[:controller] == "users" && params[:action] == "edit" %>
       <div class='col-lg-8 col-md-10 col-sm-10' style="display:flex; justify-content: flex-start; padding: 0;">
         <label> Link your Public Lab account to providers </label>
+
       </div>
       <div class='col-lg-8 col-md-10 col-sm-10' style="display:flex; justify-content: flex-start; padding: 0; margin-bottom: 10px;">
         <%= render :partial => "layouts/social_icons" %>
@@ -67,16 +71,7 @@
                                                        id: 'password-confirmation' }
         %>
       </div>
-      <script>
-        $(document).ready(function(){
-          $("#toggle").hide();
-        });
-        
-        $("#toggle-btn").click(function(){
-          $(this).hide();
-          $("#toggle").show();
-        });
-      </script>
+
     
     </div>
 
@@ -152,4 +147,5 @@
     <%= render :partial => 'users/photo' %>
   </div>
   <% end %>
+
 </div>
