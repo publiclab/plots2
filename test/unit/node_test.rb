@@ -59,7 +59,7 @@ class NodeTest < ActiveSupport::TestCase
     end
   end
   
-  test 'node mysql native fulltext search returning tag-based matches' do
+  test 'node mysql native fulltext search returning two tag-based matches' do
     assert Node.count > 0
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       nodes = Node.search(query: 'awesome',query: 'cool', limit: 1000)
