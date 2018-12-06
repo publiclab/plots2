@@ -43,6 +43,9 @@ class User < ActiveRecord::Base
 
   before_save :set_token
 
+  scope :weekly, -> { where("created_at > ?", Time.now - 7.days) }
+  scope :monthly, -> { where("created_at > ?", Time.now - 1.months) }
+
   def self.search(query)
     User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
   end
