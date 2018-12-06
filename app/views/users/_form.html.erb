@@ -12,14 +12,11 @@
     <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
       <%= render :partial => "layouts/social_icons" %>
     </div>
+    
+    <br style="clear:both;"/>
+    
+    <div id="toggle">
 
-   <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
-    <h3> OR</h3>
-
-   </div>
-   <br style="clear:both;"/>
-
-      
       <div class="form-group">
 
         <label for="username"><%= t('users._form.username') %></label>
@@ -140,12 +137,7 @@
     <%= render :partial => 'users/photo' %>
   </div>
 
-
   </div>
 
-  <div class="col-md-2">
-    <%= render :partial => 'users/photo' %>
-  </div>
   <% end %>
-
 </div>
