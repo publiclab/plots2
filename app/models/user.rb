@@ -346,7 +346,7 @@ class User < ActiveRecord::Base
   end
   
   def first_time_commenter
-    Comment.where(status: 1).count == 0
+    Comment.where(status: 1, uid: uid).count == 0
   end
 
   def follow(other_user)
