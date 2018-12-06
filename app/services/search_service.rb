@@ -179,7 +179,6 @@ class SearchService
         User.where('rusers.status = 1')
             .joins(:user_tags)\
             .where('user_tags.value LIKE ?', '%' + query + '%')\
-            #.where(id: users.select("rusers.id"))
       else if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
         type == "username" ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
       else
