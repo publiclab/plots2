@@ -32,7 +32,7 @@
         <%= render :partial => "comments/form", :locals => { title: 'Add feedback, suggestions, or photos
           ', body: 'I did this!', comment: false, placeholder: '' } %>
       <% else %>
-        <p>u bad cust</p>
+        <%= render :partial => "user_sessions/new" %>
       <% end %>
     </div>
     <hr />
