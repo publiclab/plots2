@@ -6,14 +6,14 @@
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
   <br style="clear:both;"/>
   
-  <div class='col-lg-10 col-md-10 col-sm-10' style="display:flex; justify-content: center;">
+  <div class='col-lg-11 col-md-11 col-sm-11' style="display:flex; justify-content: center;">
       <%= render :partial => "layouts/social_icons" %>
   </div>
   <br />
 
   <br style="clear:both;"/>
 
-  <div id="toggle" class='col-lg-10 col-md-10 col-sm-10'>
+  <div id="toggle" class='col-lg-11 col-md-11 col-sm-11'>
     <div class="form-group">
       <label for="username"><%= t('user_sessions.new.username') %></label>
       <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username-signup' } %>
@@ -39,15 +39,4 @@
     <p style="color: #888;"><%= raw t('user_sessions.new.reset_by_clicking_here', :url1 => "/reset/") %></p>
   </div>
   <% end %>
-  <script>
-    $(document).ready(function(){
-      $("#toggle").hide();
-    });
-    
-    $("#toggle-btn").click(function(){
-      $(this).hide();
-      $("#or").hide();
-      $("#toggle").show();
-    });
-  </script>
 </div>
