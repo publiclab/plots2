@@ -34,6 +34,9 @@
       <a id="show-all" class="col-md-2 col-md-offset-5 show-all">Show more</a>
     </div>
   <% end %>
+
+<% render :partial =>"grids/activity_template" %>
+
 <script>
     $('#show-all').on('click', function(){
       if ($('.thumbnail-grid .hidden').length > 0) {
