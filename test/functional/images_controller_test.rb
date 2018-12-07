@@ -44,7 +44,7 @@ class ImagesControllerTest < ActionController::TestCase
 
   test 'image creation with unicode filename' do
     user = UserSession.create(users(:jeff))
-    upload_photo = fixture_file_upload('图片17.jpg', 'image/jpeg')
+    upload_photo = fixture_file_upload('图片1.png', 'image/png')
     post :create,
         params: {
             image: {
