@@ -55,6 +55,21 @@ class ImagesControllerTest < ActionController::TestCase
     assert_equal 'application/json', @response.content_type
   end
 
+  test 'image creation with unicode filename with JSON format and XHR post' do
+    user = UserSession.create(users(:jeff))
+    upload_photo = fixture_file_upload('图片1.png', 'image/png')
+    post :create,
+        params: {
+            image: {
+                photo: upload_photo,
+                title: '图片17',
+            },
+            format: 'json' # not sure this is needed?
+        }, 
+        xhr: true
+    assert_equal 'application/json', @response.content_type
+  end
+
   test 'creation via daturl' do
     user = UserSession.create(users(:jeff))
     data = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAQABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAABgj/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABykX//Z"
