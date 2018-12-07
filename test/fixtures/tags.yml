@@ -5,7 +5,7 @@ test:
 awesome:
   tid: 2
   name: awesome
-
+  
 spam:
   tid: 3
   name: spam
@@ -79,3 +79,7 @@ co-author:
 unpublished-note-tag:
   tid: 20
   name: unpublished-note-tag
+  
+ awesome_cool:
+  tid: 21
+  name: awesome-cool
