@@ -127,6 +127,7 @@ class Tag < ApplicationRecord
     end
     Node.where('nid IN (?)', nids)
         .order('nid DESC')
+        .where(status: 1)
         .limit(limit)
   end
 
@@ -270,6 +271,7 @@ class Tag < ApplicationRecord
        .where('node.status = ?', 1)
        .where('node.created > ?', start_date.to_i)
        .where('node.created <= ?', end_date.to_i)
+       .distinct
        .group([:name, 'node.nid', 'term_data.tid', 'community_tags.nid', 'community_tags.uid', 'community_tags.date']) # ONLY_FULL_GROUP_BY, issue #3120
        .order('count DESC')
        .limit(limit)
@@ -299,5 +301,20 @@ class Tag < ApplicationRecord
         .references(:term_data, :node_revisions)
         .where('term_data.name = ?', tag_name)
         .count
+  end
+
+  def self.related(tag_name)
+    Rails.cache.fetch('related-tags/' + tag_name, expires_in: 1.weeks) do
+      nids = NodeTag.joins(:tag)
+                     .where(Tag.table_name => { name: tag_name })
+                     .select(:nid)
+
+      Tag.joins(:node_tag)
+         .where(NodeTag.table_name => { nid: nids })
+         .where.not(name: tag_name)
+         .group(:tid)
+         .order('COUNT(term_data.tid) DESC')
+         .limit(5)
+    end
   end
 end

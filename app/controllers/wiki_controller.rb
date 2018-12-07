@@ -141,7 +141,11 @@ class WikiController < ApplicationController
       @tags << tag if tag
       @related += Tag.find_nodes_by_type(@tags.collect(&:name), 'page', 10)
     end
-    render template: 'wiki/edit'
+    if params[:rich]
+      render template: 'editor/wikiRich'
+    else
+      render template: 'wiki/edit'
+    end
   end
 
   def create
@@ -253,7 +257,7 @@ class WikiController < ApplicationController
   # wiki pages which have a root URL, like /about
   # also just redirect anything else matching /____ to /wiki/____
   def root
-    @node = Node.find_by_path(params[:id])
+    @node = Node.find_by(path: "/" + params[:id])
     return if check_and_redirect_node(@node)
     if @node
       @revision = @node.latest
@@ -261,9 +265,10 @@ class WikiController < ApplicationController
       @tags = @node.tags
       @tagnames = @tags.collect(&:name)
       render template: 'wiki/show'
+    elsif !Node.find_by(slug: params[:id]).nil?
+      redirect_to URI.parse('/wiki/' + params[:id]).path
     else
-      # redirects any uncaught requests to example.com/______ to /wiki/____
-      redirect_to '/wiki/' + params[:id]
+      redirect_to URI.parse('/tag/' + params[:id]).path
     end
   end
 

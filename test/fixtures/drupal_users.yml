@@ -95,3 +95,38 @@ jeffrey:
   mail: jeff@publiclab.org
   uid: 14
   created: <%= Time.now.to_i %>
+
+steff1:
+  name: steff1
+  status: 1
+  mail: steff1@pxlshp.com
+  uid: 15
+  created: <%= Time.now.to_i %>
+
+steff2:
+  name: steff2
+  status: 1
+  mail: steff2@pxlshp.com
+  uid: 16
+  created: <%= Time.now.to_i %>
+
+steff3:
+  name: steff3
+  status: 1
+  mail: steff3@pxlshp.com
+  uid: 17
+  created: <%= Time.now.to_i %>
+
+data:
+  name: data
+  status: 1
+  mail: data@pxlshp.com
+  uid: 18
+  created: <%= Time.now.to_i %>
+
+user_first_time_poster:
+  name: user_first_time_poster
+  status: 1
+  mail: user_first_time_poster@pxlshp.com
+  uid: 19
+  created: <%= Time.now.to_i %>

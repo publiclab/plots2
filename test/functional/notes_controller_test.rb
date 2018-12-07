@@ -191,7 +191,7 @@ class NotesControllerTest < ActionController::TestCase
     get :image, params: { id: node.id }
 
     assert_response :redirect
-    assert_redirected_to 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+    assert_redirected_to '/logo.png'
   end
 
   test 'should get tools' do
@@ -313,7 +313,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 17
+    assert_equal selector.size, 22
     assert_select "div p", 'Pending approval by community moderators. Please be patient!'
   end
 
@@ -342,7 +342,7 @@ class NotesControllerTest < ActionController::TestCase
 
     assert_response :success
     selector = css_select 'div.note'
-    assert_equal selector.size, 17
+    assert_equal selector.size, 22
     assert_select "p", "Moderate first-time post: \n              Approve\n              Spam"
   end
 
@@ -554,7 +554,7 @@ class NotesControllerTest < ActionController::TestCase
     assert_redirected_to note.path(:question) + '?_=' + Time.now.to_i.to_s
   end
 
-  
+
   test 'should render a text/plain when the note is edited through xhr' do
     user = UserSession.create(users(:jeff))
     note = nodes(:one)
@@ -648,7 +648,7 @@ class NotesControllerTest < ActionController::TestCase
       old_controller = @controller
       @controller = SettingsController.new
 
-      get :change_locale, params: { locale: lang.to_s } 
+      get :change_locale, params: { locale: lang.to_s }
 
       @controller = old_controller
 
@@ -867,8 +867,6 @@ class NotesControllerTest < ActionController::TestCase
             draft: "true"
            }
 
-     email = ActionMailer::Base.deliveries.last
-     assert_equal '[PublicLab] ' + title + " (##{Node.last.id}) ", email.subject
      assert_equal 3, Node.last.status
      assert_equal I18n.t('notes_controller.saved_as_draft'), flash[:notice]
      assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
@@ -949,5 +947,24 @@ class NotesControllerTest < ActionController::TestCase
              token: @token
          }
      assert_response :success
+   end
+
+   test 'no notification email if user posts draft' do
+     UserSession.create(users(:jeff))
+     title = 'My new post about balloon mapping'
+     assert !users(:jeff).first_time_poster
+
+     assert_difference 'ActionMailer::Base.deliveries.size', 0 do
+     post :create,
+          params: {
+              title: title,
+              body:  'This is a fascinating post about a balloon mapping event.',
+              tags:  'balloon-mapping,event',
+              draft: "true"
+          }
+      end
+     assert_equal 3, Node.last.status
+     assert_equal I18n.t('notes_controller.saved_as_draft'), flash[:notice]
+     assert_redirected_to '/notes/' + users(:jeff).username + '/' + Time.now.strftime('%m-%d-%Y') + '/' + title.parameterize
    end
 end

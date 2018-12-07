@@ -1,7 +1,7 @@
 <div class="col-md-6 note-container-event">
   <div class="note note-pane note-event<% if node.status == 4 %> moderated<% end %>">
 
-    <div class="header-icon"><i class="fa fa-calendar"></i></div>
+    <div class="header-icon"><i class="fa fa-calendar"></i> <a href="/n/<%= node.id %>"><i class="fa fa-link"></i></a></div>
 
     <div style="overflow: hidden;">
       
@@ -9,6 +9,8 @@
      
       <% if node.main_image %>
         <a class="img" href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
+      <% elsif node.scraped_image %>
+        <a class="img" href="<%= node.path %>"><img src="<%= node.scraped_image %>" style="width:100%;" /></a>
       <% end %>
      
       <h4><a href="<%= node.path %>"><%= node.title %></a></h4>

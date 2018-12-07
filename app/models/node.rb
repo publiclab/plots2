@@ -24,7 +24,7 @@ class Node < ActiveRecord::Base
   self.table_name = 'node'
   self.primary_key = 'nid'
 
-  def self.search(query:, order: :default, limit:)
+  def self.search(query:, order: :default, type: :natural, limit: 25)
     order_param = if order == :default
                     { changed: :desc }
                   elsif order == :likes
@@ -35,15 +35,29 @@ class Node < ActiveRecord::Base
 
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
       if order == :natural
-        nids = Revision.select('node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST("' + query.to_s + '" IN NATURAL LANGUAGE MODE) AS score')
-          .where('MATCH(node_revisions.body, node_revisions.title) AGAINST(? IN NATURAL LANGUAGE MODE)', query)
-          .collect(&:nid)
+        query = connection.quote(query.to_s)
+        if type == :boolean
+          # Query is done as a boolean full-text search. More info here: https://dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
+          nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE) AS score")
+            .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN BOOLEAN MODE)")
+            .limit(limit)
+            .distinct
+            .collect(&:nid)
+        else
+          nids = Revision.select("node_revisions.nid, node_revisions.body, node_revisions.title, MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE) AS score")
+            .where("MATCH(node_revisions.body, node_revisions.title) AGAINST(#{query} IN NATURAL LANGUAGE MODE)")
+            .limit(limit)
+            .distinct
+            .collect(&:nid)
+        end
         where(nid: nids, status: 1)
       else
         nids = Revision.where('MATCH(node_revisions.body, node_revisions.title) AGAINST(?)', query).collect(&:nid)
         tnids = Tag.find_nodes_by_type(query, type = %w(note page)).collect(&:nid) # include results by tag
         where(nid: nids + tnids, status: 1)
           .order(order_param)
+          .limit(limit)
+          .distinct
       end
     else
       nodes = Node.limit(limit)
@@ -193,7 +207,7 @@ class Node < ActiveRecord::Base
 
   def notify
     if status == 4
-      AdminMailer.notify_node_moderators(self)
+      AdminMailer.notify_node_moderators(self).deliver_now
     else
       SubscriptionMailer.notify_node_creation(self).deliver_now
     end
@@ -314,6 +328,13 @@ class Node < ActiveRecord::Base
     elsif drupal_main_image && node_type != :rails
       drupal_main_image.drupal_file
     end
+  end
+
+  # scan for first image in the body and use this instead
+  # (in future, maybe just do this for all images?)
+  def scraped_image
+    match = latest&.render_body&.scan(/<img(.*?)\/>/)&.first&.first
+    match&.split('src="')&.last&.split('"')&.first
   end
 
   # was unable to set up this relationship properly with ActiveRecord associations
@@ -520,6 +541,10 @@ class Node < ActiveRecord::Base
     drupal_content_type_map.last
   end
 
+  def blurred?
+    has_power_tag('location') && power_tag('location') == "blurred"
+  end
+
   def lat
     if has_power_tag('lat')
       power_tag('lat').to_f
@@ -562,23 +587,17 @@ class Node < ActiveRecord::Base
   # Automated constructors for associated models
 
   def add_comment(params = {})
-    thread = if !comments.empty? && !comments.last.nil?
-               comments.last.next_thread
-             else
-               '01/'
-    end
-    if params[:comment_via].nil?
-      comment_via_status = 0
-    else
-      comment_via_status = params[:comment_via].to_i
-    end
+    thread = !comments.empty? && !comments.last.nil? ? comments.last.next_thread : '01/'
+    comment_via_status = params[:comment_via].nil? ? 0 : params[:comment_via].to_i
+    user = User.find(params[:uid])
+    status = user.first_time_poster && user.first_time_commenter ? 4 : 1
     c = Comment.new(pid: 0,
                     nid: nid,
                     uid: params[:uid],
                     subject: '',
                     hostname: '',
                     comment: params[:body],
-                    status: 1,
+                    status: status,
                     format: 1,
                     thread: thread,
                     timestamp: DateTime.now.to_i,
@@ -607,6 +626,8 @@ class Node < ActiveRecord::Base
                     comment: 2,
                     type:    'note')
     node.status = 4 if author.first_time_poster
+    node.draft if params[:draft] == "true"
+
     if node.valid? # is this not triggering title uniqueness validation?
       saved = true
       revision = false
@@ -731,7 +752,10 @@ class Node < ActiveRecord::Base
                                  nid: id)
           if node_tag.save
             saved = true
-            SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now unless tag.subscriptions.empty? || status == 3
+            # send email notification if there are subscribers, status is OK, and less than 1 month old
+            unless tag.subscriptions.empty? || status == 3 || status == 4 || created < (DateTime.now - 1.month).to_i
+              SubscriptionMailer.notify_tag_added(self, tag, user).deliver_now
+            end
           else
             saved = false
             tag.destroy
@@ -903,7 +927,7 @@ class Node < ActiveRecord::Base
                                  nid: nid).first_or_create
       like.liking = true
       node = Node.find(nid)
-      if node.type == 'note'
+      if node.type == 'note' && !UserTag.exists?(node.uid, 'notify-likes-direct:false')
         SubscriptionMailer.notify_note_liked(node, like.user).deliver_now
       end
       count = 1

@@ -1,10 +1,3 @@
-<% if params[:controller] == "tag" || params[:controller] == "search" %>
-  <%= render :partial => "sidebar/related" %>
-<% elsif params[:action] == "author" || params[:action] == "author_topic" %>
-  <%= render :partial => "sidebar/author" %>
-<% else %>
-  <%= render :partial => "sidebar/user" %>
-<% end %>
 <div class="col-md-9">
   <% if params[:controller] == "search" %>
     <h3><%= raw t('notes.index.search_results_for', :params => params[:id]) %> <small>(<a href="/search/advanced/<%= params[:id] %>"><%= t('notes.index.advanced_search') %></a>)</h3>
@@ -18,7 +11,7 @@
   <% elsif params[:action] == "author_topic" %>
     <h3><%= raw t('notes.index.research_on', :tags => @tagnames.join(', '), :url1 => "/people/"+@user.name, :user_name => @user.name) %> <br /><small><%= raw t('notes.index.research_notes_and_wiki_edits_with_time', :count => @user.node_count, :time => time_ago_in_words(@user.created_at)) %></small></h3>
   <% elsif params[:action] == "author" %>
-    <h3><%= raw t('notes.index.research_by', :url1 => "/people/"+@user.name, :user_name => @user.name) %> <small><%= raw t('notes.index.research_notes_and_wiki_edits', :count => @user.node_count) %> <% if @user.notes.length > 0 %><%= raw t('notes.index.starting_time', :time => time_ago_in_words(@user.created_at)) %><% end %></small></h3>
+    <h3><%= raw t('notes.index.research_by', :url1 => "/people/"+@user.name, :user_name => @user.name) %> <small><%= raw t('notes.index.research_notes_and_wiki_edits', :count1 => @user.note_count, :count2 => @user.revision_count) %> <% if @user.notes.length > 0 %><%= raw t('notes.index.starting_time', :time => time_ago_in_words(@user.created_at)) %><% end %></small></h3>
   <% else %>
     <h2><%= raw t('notes.index.research_notes_ideas_and_documentation') %></h2>
   <% end %>
@@ -44,3 +37,11 @@
   <hr />
   
 </div>
+
+<% if params[:controller] == "tag" || params[:controller] == "search" %>
+  <%= render :partial => "sidebar/related" %>
+<% elsif params[:action] == "author" || params[:action] == "author_topic" %>
+  <%= render :partial => "sidebar/author" %>
+<% else %>
+  <%= render :partial => "sidebar/user" %>
+<% end %>

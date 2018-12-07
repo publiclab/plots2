@@ -1,0 +1,20 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+zh-cn:
+  users:
+    _form:
+      username: "Username"
+      email: "Email"
+      create_password: "Create a password"
+      change_password: "Change your password"
+      password: "password"
+      confirmation: "Confirmation"
+      confirm_password: "Retype your password to confirm"
+      bio: "Bio"
+      add_bio: "Add a short bio to appear on your profile page"
+      are_you_human: "Are you human?"
+      spam_filtering: "抱歉：垃圾邮件过滤！ 请选择下面的动物，以表明你是一个真实的人。🦁"
+      dont_write_here: "如果你是一个真人，不要在这里写任何东西。"
+      sign_up: "Sign up"
+      log_in: "Log in"
+      save: "Save"

@@ -37,7 +37,7 @@ class UserTest < ActiveSupport::TestCase
   test 'user mysql native fulltext search' do
     assert User.count > 0
     if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
-      users = User.search('really interesting')
+      users = User.search('jeff')
       assert_not_nil users
       assert users.length > 0
     end
@@ -212,11 +212,51 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'create a user with omniauth if email prefix does exist in db' do
-    auth = {"uid" => "98740858591", "info" => { "email" => "jeff@gmail.com"}}
+    auth = {"uid" => "98740858591", "info" => { "email" => "jeff@gmail.com"},"provider"=>"facebook"}
     jeffrey = User.create_with_omniauth(auth)
     assert_not_nil jeffrey
     assert_equal jeffrey.email, "jeff@gmail.com"
+    assert_equal jeffrey.password_checker, 1
     #as the username as "jeff" exists, hence username = "jeff" + 2 digit alphanumeric code will be created
     assert_not_equal jeffrey.username, "jeff"
   end
+
+  test 'generate token and validate token correctness test' do
+    user_obj = User.first
+    generated_token = user_obj.generate_token
+    assert_equal User.validate_token(generated_token), user_obj.id
+  end
+
+  test 'do not verify users email if the token is not generated for him' do
+    all_users = User.where("id<?", 3)
+    generated_token = all_users[0].generate_token
+    if all_users.length > 1
+      assert_not_equal User.validate_token(generated_token), all_users[1].id
+    end
+  end
+
+  test 'raise exception upon invalid token' do
+    user_obj = User.first
+    generated_token = user_obj.generate_token
+    generated_token = generated_token[2,generated_token.length]
+    assert_equal User.validate_token(generated_token), 0
+  end
+
+  test 'do not validate email if token has expired' do
+    assert_equal User.validate_token(User.encrypt({:id => 1, :timestamp => Time.now - (24*60*60+1)})), 0
+  end
+
+  test 'check default value of is_verified remains false' do
+    user_new_obj = User.new
+    assert_equal user_new_obj.is_verified, false
+  end
+
+  test 'make sure that values in that column gets updated' do
+    user_obj = User.first
+    user_obj.update_column(:is_verified,true)
+    assert_equal user_obj.is_verified, true
+    user_obj.update_column(:is_verified,false)
+    assert_equal user_obj.is_verified, false
+  end
+
 end

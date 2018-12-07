@@ -1,6 +1,16 @@
 require 'test_helper'
 
 class NodeSharedTest < ActiveSupport::TestCase
+  test 'that NodeShared can be used to convert short codes like [nodes:foo] into tables which list nodes and wikis(pages)' do
+    before = "Here are some nodes in a table: \n\n[nodes:test] \n\nThis is how you make it work:\n\n`[nodes:tagname]`\n\n `[nodes:tagname]`\n\nMake sense?"
+    html = NodeShared.nodes_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid nodes-grid nodes-grid-test nodes-grid-test-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 5, html.scan('nodes-grid-test').length
+    assert html.scan('<td class="author">').length > 1
+  end
+
   test 'that NodeShared can be used to convert short codes like [notes:foo] into tables which list notes' do
     before = "Here are some notes in a table: \n\n[notes:test] \n\nThis is how you make it work:\n\n`[notes:tagname]`\n\n `[notes:tagname]`\n\nMake sense?"
     html = NodeShared.notes_grid(before)
@@ -56,6 +66,23 @@ class NodeSharedTest < ActiveSupport::TestCase
     assert_equal 1, html.scan('<table').length
     assert_equal 5, html.scan('upgrades-grid-latest').length
     assert html.scan('<td class="title">').length > 1
+  end
+
+  test 'that NodeShared works if code starts at the beginning of the line' do
+    before = "[wikis:foo]"
+    html = NodeShared.wikis_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid wikis-grid wikis-grid-foo wikis-grid-foo-').length
+    assert_equal 1, html.scan('<table').length
+  end
+
+  test 'that NodeShared does not replace characters before codes like [wikis:foo]' do
+    before = "Here is a code a[wikis:foo]"
+    html = NodeShared.wikis_grid(before)
+    assert html
+    assert_equal 1, html.scan('<table class="table inline-grid wikis-grid wikis-grid-foo wikis-grid-foo-').length
+    assert_equal 1, html.scan('<table').length
+    assert_equal 1, html.scan('Here is a code a').length
   end
 
   test 'that NodeShared does not convert short codes like [notes:foo] into tables which list notes, when inside `` marks' do

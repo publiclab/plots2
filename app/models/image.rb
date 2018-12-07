@@ -1,9 +1,6 @@
 require 'open-uri'
 
 class Image < ApplicationRecord
-  # has_many :comments, :dependent => :destroy
-  # has_many :likes, :dependent => :destroy
-  # has_many :tags, :dependent => :destroy
   belongs_to :user, foreign_key: :uid
   belongs_to :node, foreign_key: :nid
 

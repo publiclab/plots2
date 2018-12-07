@@ -67,3 +67,8 @@ selection_ten:
   user_id: 2
   tid: 1
   following: false
+
+selection_eleven:
+  user_id: 10
+  tid: 20
+  following: true

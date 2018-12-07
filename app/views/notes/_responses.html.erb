@@ -1,12 +1,24 @@
-<% ['response', 'build', 'replication'].each do |response_type| %>
+<% ['response', 'build', 'replication', 'photo'].each do |response_type| %>
 
   <% if @node.has_tag("seeks:#{response_type}s") || (response_type == "replication" && @node.has_power_tag("activity")) || (response_type == "build" && @node.has_power_tag("upgrade")) %>
 
     <% @responses = Tag.find_nodes_by_type("#{response_type}:#{@node.id}", "note", 200) %>
     <% @unpaginated = true %>
  
-    <p id="<%= response_type %>s"><a class='btn btn-primary btn-lg' href="/post?tags=<%= response_type %>:<%= @node.id %><% if response_type == 'response' %>,hidden:response<% end %><%= ',' + (@tagnames.uniq.delete_if{|x| x.match(":") }).join(',') if @tagnames && @tagnames.length > 0 %>"><%= t('notes._responses.post_' + response_type) %></a> Help out by offering feedback!
-	<% if @node.power_tag('activity') %>
+    <p id="<%= response_type %>s">
+      <%
+        tags = "#{response_type}:#{@node.id}"
+        tags += ',hidden:response' if response_type == 'response'
+        tags += ",#{(@tagnames.uniq.delete_if{|x| x.match(":") }).join(',')}" if @tagnames && @tagnames.length > 0
+        tags += '&n=17223' if response_type == 'photo'
+      %>
+      <a class='btn btn-primary btn-lg' href="/post?tags=<%= tags %>">
+        <%= t('notes._responses.post_' + response_type) %>
+      </a>
+
+      Help out by offering feedback!
+
+      <% if @node.power_tag('activity') %>
         <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first %>
           <% if Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.length > 0 %>
             <a id="other-activities" href="<%= Tag.where(name: 'activities:' + @node.power_tag('activity')).first.nodes.first.path %>">Browse other activities for "<%= @node.power_tag('activity') %>"</a>
@@ -15,12 +27,22 @@
       <% end %>
     </p>
  
+    <div class='activity-comment' id='i-did-this' style='display: none'>
+      <% if current_user %>
+        <%= render :partial => "comments/form", :locals => { title: 'Add feedback, suggestions, or photos
+          ', body: 'I did this!', comment: false, placeholder: '' } %>
+      <% else %>
+        <p><%= raw t('notes._comments.must_be_logged_in', :url1 => new_user_session_path( return_to: request.path )) %></p>
+      <% end %>
+    </div>
     <hr />
  
     <h3><%= t("notes._responses.#{response_type}s") %> (<%= @responses.length %>)</h3>
 
     <% if response_type == 'response' %> 
-      <%= render :partial => "notes/notes", locals: { notes: @responses } %>
+      <%= render partial: "notes/notes", locals: { notes: @responses } %>
+    <% elsif response_type == 'photo' %>
+      <%= render partial: "notes/notes", locals: { notes: @responses, response_type: :photo } %>
     <% else %>
       <% if @node.response_count(response_type) > 0 %>
         <%= raw insert_extras(" [notes:#{response_type}:#{@node.id}]") %>

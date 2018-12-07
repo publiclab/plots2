@@ -15,17 +15,16 @@ class NodeTag < ApplicationRecord
     tag.save
   end
 
+  def user
+    User.find(uid)
+  end
+
   def author
     user
   end
 
   def new_author_contributor
-    @uid = uid
-    return "<span class = 'label label-success'><i>New Contributor</i></span>".html_safe if Node.where(:uid => @uid).length === 1
-  end
-
-  def user
-    DrupalUser.find_by(uid: uid).try(:user)
+    user.new_contributor
   end
 
   def drupal_user

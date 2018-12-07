@@ -39,7 +39,7 @@
   <% if @notes.nil? || @notes.length == 0 %>
     <p><%= raw t('tag.blog.no_results', :search => params[:id]) %>:</p>
 
-    <%= render template: "searches/new" %>
+    <%= render template: "search/new" %>
 
   <% else %>
 
@@ -74,7 +74,9 @@
         <hr />
       <% end %>
 
-    <%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+    <div class="text-center">
+        <%= will_paginate @notes, :renderer => BootstrapPagination::Rails unless @unpaginated %>
+    </div>
 
   <% end %>
 

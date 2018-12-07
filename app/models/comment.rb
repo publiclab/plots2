@@ -132,18 +132,22 @@ class Comment < ApplicationRecord
   # email all users in this thread
   # plus all who've starred it
   def notify(current_user)
-    if parent.uid != current_user.uid && !UserTag.exists?(parent.uid, 'notify-comment-direct:false')
-      CommentMailer.notify_note_author(parent.author, self).deliver_now
+    if status == 4
+      AdminMailer.notify_comment_moderators(self).deliver_now
+    else
+      if parent.uid != current_user.uid && !UserTag.exists?(parent.uid, 'notify-comment-direct:false')
+        CommentMailer.notify_note_author(parent.author, self).deliver_now
+      end
+
+      notify_callout_users
+
+      # notify other commenters, revisers, and likers, but not those already @called out
+      already = mentioned_users.collect(&:uid) + [parent.uid]
+      uids = uids_to_notify - already
+
+      notify_users(uids, current_user)
+      notify_tag_followers(already + uids)
     end
-
-    notify_callout_users
-
-    # notify other commenters, revisers, and likers, but not those already @called out
-    already = mentioned_users.collect(&:uid) + [parent.uid]
-    uids = uids_to_notify - already
-
-    notify_users(uids, current_user)
-    notify_tag_followers(already + uids)
   end
 
   def answer_comment_notify(current_user)
@@ -330,5 +334,36 @@ class Comment < ApplicationRecord
 
   def trimmed_content?
     comment.include?(COMMENT_FILTER)
+  end
+
+  def parse_quoted_text
+    match = body.match(/(.+)(On .+<.+@.+> wrote:)(.+)/m)
+    if match.nil?
+      false
+    else
+      {
+        body: match[1], # the new message text
+        boundary: match[2], # quote delimeter, i.e. "On Tuesday, 3 July 2018, 11:20:57 PM IST, RP <rp@email.com> wrote:"
+        quote: match[3] # quoted text from prior email chain
+      }
+    end
+  end
+
+  def scrub_quoted_text
+    parse_quoted_text[:body]
+  end
+
+  def render_body
+    body = RDiscount.new(
+      title_suggestion(self),
+      :autolink
+    ).to_html
+    # if it has quoted email text that wasn't caught by the yahoo and gmail filters,
+    # manually insert the comment filter delimeter:
+    parsed = parse_quoted_text
+    if !trimmed_content? && parsed != false
+      body = parsed[:body] + COMMENT_FILTER + parsed[:boundary] + parsed[:quote]
+    end
+    body
   end
 end

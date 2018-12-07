@@ -42,7 +42,7 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.create(users(:test_user))
 
     get :new,
-        params: { 
+        params: {
         tags: 'one,two',
         n: nodes(:blog).id
         }
@@ -77,6 +77,12 @@ class WikiControllerTest < ActionController::TestCase
     get :root, params: { id: 'about' }
 
     assert_response :success
+  end
+
+  test 'should redirect root-level requests without a matching wiki page to /tag/____' do
+    get :root, params: { id: 'something' }
+    assert_response :redirect
+    assert_redirected_to '/tag/something'
   end
 
   test 'post wiki no login' do
@@ -147,7 +153,7 @@ class WikiControllerTest < ActionController::TestCase
     # then try editing it
     assert_difference 'Revision.count', 0 do
       post :edit,
-           params: { 
+           params: {
            id: 'organizers'
            }
     end
@@ -160,7 +166,7 @@ class WikiControllerTest < ActionController::TestCase
     # then try editing it
     assert_difference 'Revision.count', 0 do
       post :update,
-           params: { 
+           params: {
            id: nodes(:organizers).id
            }
     end
@@ -273,13 +279,13 @@ class WikiControllerTest < ActionController::TestCase
     UserSession.find.destroy
   end
 
-  test 'should redirect to /wiki/___ for requests that ask for /____' do
+  test 'should redirect to /tag/___ for requests that ask for /____' do
     UserSession.find.destroy
     UserSession.create(users(:admin))
 
     get :root, params: { id: 'madeup' }
 
-    assert_redirected_to '/wiki/madeup'
+    assert_redirected_to '/tag/madeup'
     UserSession.find.destroy
   end
 
@@ -432,13 +438,6 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should show the wiki post page if wiki page doesn't exist" do
-    UserSession.create(users(:jeff))
-    get :show, params: { id: 'A-new-wiki-page' }
-    assert_response :success
-    assert_template 'wiki/edit'
-  end
-
   test 'replacing content in a node with replace action' do
     UserSession.create(users(:jeff))
     node = nodes(:about)
@@ -578,12 +577,13 @@ class WikiControllerTest < ActionController::TestCase
   test "Invalid date tags aren't added" do
     @user = UserSession.create(users(:jeff))
     @node = nodes(:wiki_page)
+    slug = @node.path.gsub('/wiki/', '')
     @node.add_tag('date:bad', @user)
 
     assert_equal false, @node.has_power_tag('date')
     # assert_equal "anything goes", DateTime.strptime(@node.power_tag('date'),'%m- %d-%Y').to_date.to_s(:long)
 
-    get :show, params: { id: @node.slug }
+    get :show, params: { id: slug }
     assert_response :success
   end
 
@@ -594,7 +594,7 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'div#comments h3', /Comments/
   end
-  
+
   test 'redirect path by page name' do
     wiki = nodes(:wiki_page)
     slug = wiki.path.gsub('/wiki/', '')

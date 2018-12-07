@@ -19,7 +19,10 @@ module CommentsShared
   end
 
   def parent_commenter_uids
-    parent.comments.collect(&:uid)
+    commenter_ids = parent.comments.collect(&:uid).uniq
+    commenter_ids.each do |commenter|
+      commenter_ids.delete(commenter) if UserTag.exists?(commenter, 'notify-comment-indirect:false')
+    end
   end
 
   def parent_liker_uids

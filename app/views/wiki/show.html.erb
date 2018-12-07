@@ -21,15 +21,7 @@
 
 <div class="row">
 
-<% if !@node.has_tag('locked') && @node.latest.created_at < Time.now - 6.months %>
-  <div class="alert alert-info" role="alert">This wiki page hasn't been edited for a while. If you see anything that needs updating, please help out!</div>
-<% end %>
-
-<% if @node.has_tag('sidebar:none') %>
-  <div class="col-md-8">
-<% else %>
-  <div class="col-md-9">
-<% end %>
+<div class="col-md-9">
 
   <%= render :partial => "wiki/header" %>
 
@@ -83,14 +75,14 @@
   <hr />
 
   <div class="hidden-print">
-    <%= render :partial => "tag/tagging" %>
-    <hr />
     <%= render :partial => "home/social" %>
   </div>
 
 </div>
 
-<% unless @node.has_tag('sidebar:none') %>
+<% if @node.has_tag('sidebar:none') %>
+  <%= render :partial => "sidebar/none" %>
+<% else %>
   <% if (@wikis.nil? && @notes.nil?) || @node.has_tag('sidebar:featured') %>
     <%= render :partial => "sidebar/featured" %>
   <% else %>

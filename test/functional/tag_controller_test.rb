@@ -34,16 +34,29 @@ class TagControllerTest < ActionController::TestCase
     assert_equal [['myfourthtag', Tag.find_by_name('myfourthtag').tid], ['myfifthtag', Tag.find_by_name('myfifthtag').tid]], JSON.parse(response.body)['saved']
   end
 
+  test 'check tag show page' do
+    UserSession.create(users(:bob))
+
+    get :show,
+        params: {
+          node_type: 'contributors',
+          id: 'blog'
+        }
+
+    assert_template :show
+    assert_response :success
+  end
+
   test 'validate unused tag' do
     UserSession.create(users(:bob))
 
-    get :contributors,
-        params: { 
-        id: 'question:*'
+    get :show,
+        params: {
+          node_type: 'contributors',
+          id: 'question:*'
         }
 
-    assert_template :contributors
-    assert_select 'p', text: "No contributors for that tag; try searching for 'question:*':"
+    assert_select 'h3', text: 'Contributors for question:*'
   end
 
   test "won't add invalid tags" do
@@ -156,6 +169,11 @@ class TagControllerTest < ActionController::TestCase
 
     # assert_equal assigns['tags'].length, 1
     assert_select '#wiki-content', 1
+  end
+  
+  test 'show page for non-existent tag' do
+    get :show, params: { id: 'nonexistent' }
+    assert :success
   end
 
   test 'tag show range' do
@@ -315,7 +333,11 @@ class TagControllerTest < ActionController::TestCase
   end
 
   test 'tag contributors' do
-    get :contributors, params: { id: Tag.last.name }
+    get :show,
+        params: { 
+          node_type: 'contributors',
+          id: Tag.last.name
+        }
 
     assert :success
     assert_not_nil :notes
@@ -353,7 +375,7 @@ class TagControllerTest < ActionController::TestCase
            nid: node.id
            }
 
-      assert_equal " [@#{node.author.name}](/profile/#{node.author.name}) has marked #{tagname.split(':')[1]} as a co-author. ", Comment.last.body
+      assert_equal " [@#{node.author.name}](/profile/#{node.author.name}) has marked [@#{tagname.split(':')[1]}](/profile/#{tagname.split(':')[1]}) as a co-author. ", Comment.last.body
     end
   end
 
@@ -457,7 +479,7 @@ class TagControllerTest < ActionController::TestCase
     assert_equal 'Blog post', notes.last.title
     assert_equal ['spectrometry'], notes.last.tags.collect(&:name)
     assert_not notes.last.has_tag_without_aliasing('spectrometer')
-    assert       notes.last.has_tag_without_aliasing('spectrometry')
+    assert notes.last.has_tag_without_aliasing('spectrometry')
   end
 
   test 'does not show things tagged with parent tag' do
@@ -506,6 +528,14 @@ class TagControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select 'table' # ensure a table is shown
+  end
+
+  test 'shows embeddable grid of tagged content with powertag' do
+    get :gridsEmbed, params: { tagname: 'nodes:awesome' }
+
+    assert_response :success
+    assert_select 'table' # ensure a table is shown
+    assert_equal 3, css_select('tr').length # ensure it has 3 rows
   end
 
   test 'rss with tagname and authorname' do
@@ -580,11 +610,38 @@ class TagControllerTest < ActionController::TestCase
     assert_equal true, assigns(:nodes).empty?
   end
 
+  test "do not notify if tag created on unpublished node" do
+    node = nodes(:first_timer_note)
+    tagname = 'unpublished-note-tag'
+    assert_difference 'ActionMailer::Base.deliveries.size',0 do
+      node.add_tag(tagname, users(:newcomer))
+    end
+    assert_not ActionMailer::Base.deliveries.collect(&:subject).include?("#{node.title} (#{tagname})")
+  end
+  
   test 'should render a text/pain when a tag is deleted through post request xhr' do
     user = UserSession.create(users(:jeff))
     node_tag = node_tags(:awesome)
     post :delete, params: { nid: node_tag.nid, tid: node_tag.tid, uid: node_tag.uid}, xhr: true
     assert_equal "#{node_tag.tid}", @response.body
   end
+  
+  test 'add_parent method adds a tag parent' do
+    user = UserSession.create(users(:admin))
+    get :add_parent, params: { name: Tag.last.name, parent: Tag.first.name }
+    assert_response :redirect
+    assert_equal Tag.first.name, Tag.last.parent
+    # flash[:notice] = "Tag parent added."
+    # flash[:error] = "There was an error adding a tag parent."
+    # redirect_to '/tag/' + @tag.name + '?_=' + Time.now.to_i.to_s
+  end
 
+  test 'add_parent method works with non-existent parent' do
+    user = UserSession.create(users(:admin))
+    get :add_parent, params: { name: Tag.last.name, parent: Tag.first.name }
+    assert_response :redirect
+    assert_equal Tag.first.name, Tag.last.parent
+    get :index
+    assert_response :success
+  end
 end

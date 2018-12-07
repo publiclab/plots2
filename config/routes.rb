@@ -9,7 +9,6 @@ Plots2::Application.routes.draw do
   # Manually written API functions
   post 'comment/create/token/:id.:format', to: 'comment#create_by_token'
 
-  get 'searches/test' => 'searches#test'
   post '/node/update/title' => 'notes#update_title'
 
   #Search RESTful endpoints
@@ -22,7 +21,6 @@ Plots2::Application.routes.draw do
   resources :user_sessions
   resources :images
   resources :features
-  resources :searches
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -104,6 +102,8 @@ Plots2::Application.routes.draw do
   get ':node_type/tag/:id/author/:author' => 'tag#show_for_author'
   get 'tag/:id/author/:author' => 'tag#show_for_author'
   get ':node_type/tag(/:id)(/:start)(/:end)' => 'tag#show'
+  get 'contributors/:id(/:start)(/:end)' => 'tag#show', node_type: 'contributors'
+  get 'contributors' => 'tag#contributors_index'
   get 'feed/tag/:tagname/author/:authorname' => 'tag#rss_for_tagged_with_author'
   get 'wiki/raw/:id' => 'wiki#raw'
   get 'wiki/revisions/:id' => 'wiki#revisions'
@@ -120,7 +120,7 @@ Plots2::Application.routes.draw do
   get 'place/:id/feed' => 'place#feed'
   get 'n/:id' => 'notes#shortlink'
   get 'i/:id' => 'images#shortlink'
-  get 'p/:id' => 'users#shortlink'
+  get 'p/:username' => 'users#shortlink'
   get 'notes' => 'notes#index'
   get 'notes/raw/:id' => 'notes#raw'
   get 'notes/popular' => 'notes#popular'
@@ -166,21 +166,23 @@ Plots2::Application.routes.draw do
   get 'likes/node/:id/create' => 'like#create', :as => :add_like
   get 'likes/node/:id/delete' => 'like#delete',  :as => :drop_like
 
-  #Search Pages
-  get 'search/dynamic' => 'searches#dynamic'
-  get 'search/dynamic/:id' => 'searches#dynamic'
-  get 'search/:id' => 'searches#results'
-  get 'search' => 'searches#new'
-  post 'search' => 'searches#new'
+  get "search/wikis/:query",       :to => "search#wikis"
+  get "search/profiles/:query",    :to => "search#profiles"
+  get "search/questions/:query",   :to => "search#questions"
+  get "search/places/:query",      :to => "search#places"
+  get "search/tags/:query",        :to => "search#tags"
+  get "search/",                   :to => "search#new"
+  get "search/notes/:query",       :to => "search#notes"
+  get "search/:query",             :to => "search#all_content"
+
 
   get 'widget/:id' => 'tag#widget'
   get 'blog' => 'tag#blog', :id => "blog"
   get 'blog/:id' => 'tag#blog'
-  get 'contributors/:id' => 'tag#contributors'
-  get 'contributors' => 'tag#contributors_index'
   get 'tags' => 'tag#index'
   get 'tags/:search' => 'tag#index'
   post 'tag/suggested/:id' => 'tag#suggested'
+  get 'tag/parent' => 'tag#add_parent'
   get 'tag/author/:id.json' => 'tag#author'
   post 'tag/create/:nid' => 'tag#create'
   get 'tag/create/:nid' => 'tag#create'
@@ -263,6 +265,7 @@ Plots2::Application.routes.draw do
   get 'admin/unmoderate/:id' => 'admin#unmoderate'
   get 'admin/publish_comment/:id' => 'admin#publish_comment'
   get 'admin/mark_comment_spam/:id' => 'admin#mark_comment_spam'
+  get 'smtp_test' => 'admin#smtp_test'
 
   get 'post' => 'editor#post'
   post 'post' => 'editor#post'
@@ -277,6 +280,7 @@ Plots2::Application.routes.draw do
 
   get 'questions/new' => 'questions#new'
   get 'questions' => 'questions#index'
+  get 'question' => 'questions#index'
   get 'questions/:author/:date/:id' => 'questions#show'
   get 'questions/show/:id' => 'questions#show'
   get 'q/:id' => 'questions#shortlink'
@@ -299,6 +303,7 @@ Plots2::Application.routes.draw do
 
   get 'answer_like/show/:id' => 'answer_like#show'
   get 'answer_like/likes/:aid' => 'answer_like#likes'
+  get 'questions/:username/:date/:topic/answer_like/likes/:aid' => 'answer_like#likes'
 
 
   get 'comment/answer_create/:aid' => 'comment#answer_create'
@@ -310,6 +315,7 @@ Plots2::Application.routes.draw do
   post '/comment/like' => 'comment#like_comment'
   get '/comment/create/:id' => 'comment#create'
   post 'comment/create/:id' => 'comment#create'
+
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
