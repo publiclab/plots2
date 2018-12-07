@@ -67,6 +67,13 @@ class NodeTest < ActiveSupport::TestCase
     assert node.save
   end
 
+  test 'create node with emojis' do
+    node = Node.new(uid: users(:bob).id,
+                    type: 'note',
+                    title: 'Title with Emojis 😎😎😎'
+    assert node.save
+  end
+
   test 'create a feature' do
     node = Node.new(uid: users(:admin).id,
                     type: 'feature',
@@ -106,6 +113,17 @@ class NodeTest < ActiveSupport::TestCase
     saved, node, revision = Node.new_note(uid: drupal_users(:jeff).uid,
                                           title: 'Title',
                                           body: 'New note body')
+    assert saved
+    assert_equal 1, node.status
+    assert_equal 1, revision.status
+    assert_not_nil node.latest
+    assert_equal 'note', node.type
+  end
+
+  test 'create node revision with emojis' do
+    saved, node, revision = Node.new_note(uid: drupal_users(:jeff).uid,
+                                          title: 'Title',
+                                          body: 'Body with Emojis 😎😎😎')
     assert saved
     assert_equal 1, node.status
     assert_equal 1, revision.status
