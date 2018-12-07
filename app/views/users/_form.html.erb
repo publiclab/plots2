@@ -44,8 +44,7 @@
       <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
 
       </div>
-      
-      <div id="toggle">
+  
   
       <div class="form-group">
         <% if @user.crypted_password.nil? %>
@@ -68,7 +67,6 @@
                                                        id: 'password-confirmation' }
         %>
       </div>
-      
       <script>
         $(document).ready(function(){
           $("#toggle").hide();
@@ -76,12 +74,10 @@
         
         $("#toggle-btn").click(function(){
           $(this).hide();
-          $("#or").hide();
           $("#toggle").show();
         });
       </script>
-
-    </div>
+    
     </div>
 
     <div class="form-group">

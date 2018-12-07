@@ -82,7 +82,7 @@
           </li>
         <% else %>
         <li class="hidden-sm hidden-md"> <!-- signup -->
-          <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" data-toggle="modal" data-target="#signupModal"><%= t('layout._header.join') %></a>
+          <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" href="/signup"><%= t('layout._header.join') %></a>
         </li>
         <% end %>
 
@@ -197,32 +197,9 @@
         $(this).hide();
         $("#toggle").show();
       });
-    </script>
-  </div>
-</div>
-
-<!-- Signup Modal -->
-<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <div class="clearfix">
-          <%= render :partial => "users/new" %>
-        </div>
-      </div>
-    </div>
-
-    <script>
-      $(document).ready(function(){
+      $(".close").click(function(){
         $("#toggle").hide();
-      });
-      
-      $("#toggle-btn").click(function(){
-        $(this).hide();
-        $("#toggle").show();
+        $("#toggle-btn").show();
       });
     </script>
   </div>
