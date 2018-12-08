@@ -1,6 +1,5 @@
 <div style="padding:10px;">
-<%= form_for @user, :url => {:controller => 'users', :action => @action}, :html => {:class => "row"} do |f| %>
-
+ <%= form_for :user, :as => :user, :url => :users, :html => {:class => "form col-md-6 offset-3"} do |f| %>
   <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
   <div class="col-lg-8 col-md-10 col-sm-10">
@@ -46,7 +45,7 @@
   
   
       <div class="form-group">
-        <% if @user.crypted_password.nil? %>
+        <% if :user.crypted_password.nil? %>
           <label for="password"><%= t('users._form.create_password') %></label>
         <% else %>
           <label for="password"><%= t('users._form.change_password') %></label>
