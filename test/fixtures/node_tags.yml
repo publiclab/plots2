@@ -11,7 +11,7 @@ awesome:
   date: <%= DateTime.now.to_i %>
 
  cool:
-  tid: 2
+  tid: 21
   uid: 2
   nid: 1
   date: <%= DateTime.now.to_i %>
