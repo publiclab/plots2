@@ -44,6 +44,7 @@
 
     <div class="row">
       <div class="form-group col-sm-6">
+
         <% if @user.crypted_password.nil? %>
           <label for="password"><%= t('users._form.create_password') %></label>
         <% else %>
