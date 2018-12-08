@@ -120,6 +120,7 @@
                 <li><a href="/logoutRemotely">Logout from all devices</a></li>
               </ul>
             <% else %> <!-- Login button -->
+            return_to=<%= params[:return_to] || request.path %>
               <a data-toggle="modal" data-target="#loginModal">
                 <%= t('layout._header.login.login_title') %>
               </a>
