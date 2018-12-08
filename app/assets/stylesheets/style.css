@@ -368,7 +368,7 @@ div.note .meta {
 }
 
 #notes .note a.img {
-  height:160px;
+  height: auto;
   display: inline-block;
   overflow: hidden;
   margin-bottom: 10px;
@@ -379,7 +379,7 @@ div.note .meta {
   overflow: hidden;
 }
 .note-image img {
-  width: 100%;
+  width: auto;
 }
 
 .grid-image {
