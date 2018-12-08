@@ -16,6 +16,7 @@ class SearchController < ApplicationController
   def profiles
     @search_criteria.sort_by = "recent"
     @profiles = ExecuteSearch.new.by(:profiles, @search_criteria).paginate(page: params[:page], per_page: 20)
+    @tag_profiles = SearchService.new.find_users(params[:query], 15, 'tag').paginate(page: params[:page], per_page: 20)
   end
 
   def questions
