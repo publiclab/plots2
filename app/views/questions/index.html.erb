@@ -1,5 +1,24 @@
 <div class="col-md-12">
 
+    <div class ="row">
+        <div class="col-md-6 offset-md-2" >
+            <% if params[:period] == "Week" %>
+                <h4><b> <%= @week_asked %> Questions asked and <%= @week_answered %> questions answered in the past <%= params[:period] %></b></h4>
+            <% elsif params[:period] == "Month"%>
+                <h4><b> <%= @month_asked %> Questions asked and <%= @month_answered %> questions answered in the past <%= params[:period] %></b></h4>
+            <% elsif params[:period]== "Year" %>
+                <h4><b> <%= @year_asked %> Questions asked and <%= @year_answered %> questions answered in the past  <%= params[:period] %></b></h4>
+            <% else %>
+                <h4><b> <%= @asked %> Questions asked and <%= @answered %> questions answered </b></h4>
+            <% end %>
+        </div>
+        <div class="col-md-4">
+            <%= form_tag request.url, :method => 'get'  do %>
+                <%= select_tag :period,   options_for_select(["Week", "Month", "Year"]), value: params[:period], selected: params[:period], onchange: "this.form.submit();", include_blank: "All"%>
+            <% end %>
+        </div>
+    </div>
+
   <% if params[:action] == 'answered' %>
   <h2>Recently Answered <small class="hidden-sm">Recently answered questions</small></h2>
   <% elsif params[:action] == 'popular' %>
@@ -14,7 +33,7 @@
       <%= feature('questions-header') %>
     <% end %>
   </div>
-  <% end %>                                   
+  <% end %>
 
   <hr />
 

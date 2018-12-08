@@ -19,12 +19,23 @@ class QuestionsController < ApplicationController
   public
 
   def index
+    params[:period]
+    @asked = Node.questions.to_a.size
+    @answered = Answer.all.map(&:node).uniq.size
     @title = 'Questions and Answers'
+
     set_sidebar
     @questions = Node.questions
       .where(status: 1)
       .order('node.nid DESC')
       .paginate(page: params[:page], per_page: 24)
+    @week_asked = Node.questions.where('created >= ?', 1.week.ago.to_i).to_a.size
+    @month_asked = Node.questions.where('created >= ?', 1.month.ago.to_i).to_a.size
+    @year_asked = Node.questions.where('created >= ?', 1.year.ago.to_i).to_a.size
+    @week_answered = Answer.where("created_at >= ?", 1.week.ago).map(&:node).uniq.size
+    @month_answered = Answer.where("created_at >= ?", 1.month.ago).map(&:node).uniq.size
+    @year_answered = Answer.where("created_at >= ?", 1.year.ago).map(&:node).uniq.size
+    @period = [@week_asked, @month_asked, @year_asked]
   end
 
   # a form for new questions, at /questions/new
