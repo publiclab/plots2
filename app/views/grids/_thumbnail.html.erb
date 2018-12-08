@@ -35,7 +35,7 @@
     </div>
   <% end %>
 
-<% render :partial =>"grids/activity_template" %>
+<% render :partial =>"grids/activity_template", locals: { randomSeed: randomSeed, type: type, tagname: tagname } %>
 
 <script>
     $('#show-all').on('click', function(){
