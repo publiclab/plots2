@@ -26,6 +26,28 @@ class AdminMailerTest < ActionMailer::TestCase
     assert email.body.include?(node.latest.render_body_email(request_host))
   end
 
+  test 'notify_comment_moderators' do
+    comment = comments(:first)
+    moderators = User.where(role: %w[moderator admin])
+    assert !moderators.empty?
+
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      AdminMailer.notify_comment_moderators(comment).deliver_now
+    end
+
+    # # test that it got queued
+    assert !ActionMailer::Base.deliveries.empty?
+    email = ActionMailer::Base.deliveries.last
+
+    assert_not_nil email.to
+    assert_not_nil email.bcc
+    assert_equal ["comment-moderators@#{request_host}"], ActionMailer::Base.deliveries.last.to
+    assert_equal moderators.collect(&:email), ActionMailer::Base.deliveries.last.bcc
+    assert_equal '[New Public Lab poster needs moderation]', email.subject
+    assert email.body.include?("First-time poster <a href='https://#{request_host}/profile/#{comment.author.name}'>#{comment.author.name}</a>
+    has submitted their first research comment!")
+  end
+
   test 'notify_author_of_approval' do
     node = nodes(:one)
     moderator = users(:moderator)

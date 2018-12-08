@@ -30,7 +30,7 @@ class SearchService
   # If no sort_by value present, then it returns a list of profiles ordered by id DESC
   # a recent activity may be a node creation or a node revision
   def search_profiles(search_criteria)
-    user_scope = find_users(search_criteria.query, search_criteria.limit, search_criteria.field, search_criteria.tag)
+    user_scope = find_users(search_criteria.query, search_criteria.limit, search_criteria.field)
 
     user_scope =
       if search_criteria.sort_by == "recent"
@@ -173,18 +173,17 @@ class SearchService
     user_locations.limit(query)
   end
 
-  def find_users(query, limit, type = nil, user_tag = nil)
+  def find_users(query, limit, type = nil)
     users =
-      if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
+      if type == "tag"
+        User.where('rusers.status = 1')
+            .joins(:user_tags)\
+            .where('user_tags.value LIKE ?', '%' + query + '%')\
+      else if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
         type == "username" ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
       else
         User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
       end
-
-    if user_tag.present?
-      users = User.joins(:user_tags)\
-                           .where('user_tags.value LIKE ?', user_tag)\
-                           .where(id: users.select("rusers.id"))
     end
 
     users = users.limit(limit)

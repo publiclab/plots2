@@ -15,6 +15,7 @@ Some of the most used labels are:-
 * ` design ` - This says that the issue requires more design work and discussion (i.e. mockups and sketches).
 * ` outreach ` - The outreach issues involve community involvement and helping people who're stuck somewhere.
 * Some issues have been labeled with ` fto-candidate ` , ` gci-candidate ` and ` rgsoc ` which mean that these issues have been reserved for students who're participating in these events.
+* `brainstorm` - Issues which need discussion and requirements needs to be elicitated
 
 ## Pull request labels
 For faster review and adoption, we add labels to pull requests too.

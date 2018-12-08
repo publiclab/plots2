@@ -123,3 +123,10 @@ data:
   mail: data@pxlshp.com
   uid: 18
   created: <%= Time.now.to_i %>
+
+user_first_time_poster:
+  name: user_first_time_poster
+  status: 1
+  mail: user_first_time_poster@pxlshp.com
+  uid: 19
+  created: <%= Time.now.to_i %>
