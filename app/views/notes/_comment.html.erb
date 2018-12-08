@@ -33,7 +33,7 @@
         <% end %>
       -->
       <% end %>
-
+     <div class="btn-group comment" style="padding-right:10px;">
       <% if current_user && comment.uid == current_user.uid %>
         <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
           <i class="fa fa-pencil"></i>
@@ -78,6 +78,7 @@
             <% end %>
           </ul>
       <% end %>
+     </div>
     </div>
 
   </div>
@@ -118,7 +119,7 @@
   <div style="border: 1px solid #e7e7e7;padding: 18px;" id="c<%= comment.cid %>show">
 
     <% comment_body = comment.render_body %>
-    <p id="comment-body-<%= comment.cid %>"><%= raw insert_extras(filtered_comment_body(comment_body)) %></p>
+    <p class="comment-body" id="comment-body-<%= comment.cid %>"><%= raw insert_extras(filtered_comment_body(comment_body)) %></p>
 
     <% if contain_trimmed_body?(comment_body) %>
       <span style="background-color: #DCDCDC;  border-radius: 7px; cursor: pointer;" ><a class="email-toggle" data-toggle="collapse" data-target="#comment-<%= comment.cid %>-extra-content" style='text-decoration: none;'>&nbsp;&ensp;&#x2022&#x2022&#x2022&nbsp;&ensp;</a></span>
@@ -126,8 +127,12 @@
     <% end %>
 
     <% if comment.body.include?('?') %>
-      <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>&tags=from:<%= comment.cid %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
+      <p class="alert alert-info">Is this a question? <a href="/questions/new?title=<%= comment.body %>">Click here</a> to post it to the <a href="/questions">Questions page</a>.
       </p>
+    <% end %>
+    <% breakoutQuestions = Tag.find_nodes_by_type("from:#{comment.cid}") %>
+    <% if breakoutQuestions&.length > 0 %>
+      See <a href="/questions/tag/from:<%= comment.cid %>"><%= breakoutQuestions.length %> questions</a> broken out from this comment.
     <% end %>
     <% if comment.parent.has_power_tag('activity') && current_user && current_user.id == comment.uid %>
       <div class="alert alert-info">Have you attempted or completed this activity? Consider <a href="/post?n=15798&tags=replication:<%= comment.nid %>,<%= comment.parent.tagnames.join(',') %>">sharing how it went</a> to help refine and improve it.</div>
