@@ -384,7 +384,10 @@ div.note .meta {
 
 .grid-image {
   width: auto;
-  height: 160px;
+  height: auto;
+  display: block; 
+  overflow: hidden;
+  margin-bottom: 10px;
 }
 
 #notes .note h3 a {
@@ -441,8 +444,11 @@ div.note.moderated h4 {
   }
 
   .grid-image {
-    width: auto;
-    height: 200px;
+  width: auto;
+  height: auto;
+  display: block; 
+  overflow: hidden;
+  margin-bottom: 10px;
   }
 }
 
