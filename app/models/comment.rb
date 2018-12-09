@@ -336,17 +336,16 @@ class Comment < ApplicationRecord
     }
   end
 
-  def self.outlook_parsed_mail(mail_doc) 
+  def self.outlook_parsed_mail(mail_doc)
     separator = mail_doc.inner_html.match(/(.+)(<div id="appendonsend"><\/div>)(.+)/m)
-    
-    if(separator.nil?) 
+    if separator.nil? 
       comment_content = mail_doc
       extra_content = nil
     else
-      bodyMessage = separator[1].match(/(.+)(<body dir="ltr">)(.+)/m)
-      comment_content = Nokogiri::HTML(bodyMessage[3])
-      trimmedMessage = separator[3].match(/(.+)(<\/body>)(.+)/m)
-      extra_content = Nokogiri::HTML(trimmedMessage[1]);
+      body_message = separator[1].match(/(.+)(<body dir="ltr">)(.+)/m)
+      comment_content = Nokogiri::HTML(body_message[3])
+      trimmed_message = separator[3].match(/(.+)(<\/body>)(.+)/m)
+      extra_content = Nokogiri::HTML(trimmed_message[1])
     end
     
     {
