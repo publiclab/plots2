@@ -1,0 +1,97 @@
+<div style="padding:10px;">
+ <%= form_for :user, :as => :user, :url => register_url + "?return_to=" + request.fullpath, :html => {:class => "row"} do |f| %> 
+ <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+
+  <div class="col-sm-12">
+      <div class='col-sm-12' style="display:flex; justify-content: center;">
+        <h3> Sign up with </h3>
+      </div>
+
+      <div class='col-sm-12' style="display:flex; justify-content: center;">
+        <%= render :partial => "layouts/social_icons" %>
+      </div>
+
+      <br style="clear:both;"/>
+
+
+    <div class="row">
+
+      <div class="form-group col-sm-6">
+        <label for="username"><%= t('user_sessions.new.username') %></label>
+        <%= f.text_field :username, { tabindex: 1, class: 'form-control', id: 'username-signup' } %>
+      </div>
+
+      <div class="form-group col-sm-6">
+        <label for="email"><%= t('users._form.email') %></label>
+        <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <label for="password"><%= t('users._form.create_password') %></label>
+        <%= f.password_field :password, { placeholder: I18n.t('users._form.password'),
+                                          tabindex: 4,
+                                          class: 'form-control',
+                                          id: 'password' }
+        %>
+      </div>
+
+      <div class="form-group col-sm-6">
+        <label for="password_confirmation"><%= t('users._form.confirmation') %></label>
+        <%= f.password_field :password_confirmation, { placeholder: I18n.t('users._form.confirm_password'),
+                                                       tabindex: 5,
+                                                       class: 'form-control',
+                                                       id: 'password-confirmation' }
+        %>
+      </div>
+
+    </div>
+
+    <div class="form-group">
+      <label for="user_bio"><%= t('users._form.bio') %></label>
+      <%= f.text_area :bio, { placeholder: I18n.t('users._form.add_bio'),
+                                          rows: 8,
+                                          class: 'form-control',
+                                          tabindex: 6 }
+      %>
+    </div>
+
+      <% if Rails.env == "production" && !params[:spamaway] %>
+        <%= recaptcha_tags %>
+        <p>If you cannot use the ReCaptcha to verify you are not a bot, <a href="/signup?spamaway=true">use this alternative verification</a>.</p>
+      <% else %>
+        <%= render partial: 'users/spamaway', locals: { spamaway: @spamaway } %>
+      <% end %>
+
+      <script>
+        (function() {
+          $('.spamaway button').click(function(e) {
+            $(this).find('input').prop('checked', true);
+          })
+        })();
+      </script>
+
+
+
+    <div class="form-group form-inline" style="clear:both;padding-top:10px;">
+        <!-- button for creating new users -->
+        <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
+        <a class="btn btn-lg btn-default" href="/login"><%= t('users._form.log_in') %></a>
+
+      <script>
+        (function() {
+          $('.btn-save').click(function onClick(e) {
+            $(this).addClass("disabled") // disable the button after it is clicked
+                   .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
+          })
+        })();
+      </script>
+    </div>
+
+  </div>
+
+</div>
+
+<% end %>
