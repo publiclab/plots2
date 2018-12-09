@@ -23,8 +23,10 @@ class UserSessionsController < ApplicationController
 
     hash_params = ""
 
-    unless params[:hash_params].nil? && params[:hash_params].length > 0
-      hash_params += "#" + params[:hash_params]
+    unless params[:hash_params].nil? 
+      if params[:hash_params].length > 0
+        hash_params += "#" + params[:hash_params]
+      end
     end
 
     if signed_in?
@@ -120,8 +122,10 @@ class UserSessionsController < ApplicationController
             if result
               hash_params = ""
 
-              unless params[:hash_params].nil? && params[:hash_params].length > 0
-                hash_params += "#" + params[:hash_params]
+              unless params[:hash_params].nil? 
+                if params[:hash_params].length > 0
+                  hash_params += "#" + params[:hash_params]
+                end
               end
 
               # replace this with temporarily saving pwd in session,
