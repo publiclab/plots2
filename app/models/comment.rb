@@ -337,27 +337,17 @@ class Comment < ApplicationRecord
   def self.outlook_parsed_mail(mail_doc) 
     mail_doc_test = mail_doc.css("div[style]")
     
-    Mailman.logger.debug "---------------- USING MATCH -------------"
     separator = mail_doc.inner_html.match(/(.+)(<div id="appendonsend"><\/div>)(.+)/m)
     if(separator.nil?) 
       comment_content = mail_doc
       extra_content = nil
     else
-      Mailman.logger.debug separator[1]
-      Mailman.logger.debug separator[2]
-      Mailman.logger.debug separator[3]
   
       bodyMessage = separator[1].match(/(.+)(<body dir="ltr">)(.+)/m)
-      Mailman.logger.debug "---------------- body message ----------------"
-      Mailman.logger.debug bodyMessage[3]
-  
       comment_content = Nokogiri::HTML(bodyMessage[3])
-  
       trimmedMessage = separator[3].match(/(.+)(<\/body>)(.+)/m)
-      Mailman.logger.debug "---------------- trimmed message ----------------"
-      Mailman.logger.debug trimmedMessage[1]
-  
       extra_content = Nokogiri::HTML(trimmedMessage[1]);
+      
     end
     {
       "comment_content" => comment_content,
