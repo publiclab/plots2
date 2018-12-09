@@ -234,6 +234,8 @@ class Comment < ApplicationRecord
                   gmail_parsed_mail mail_doc
                 elsif domain == "yahoo"
                   yahoo_parsed_mail mail_doc
+                elsif domain == "outlook"
+                  outlook_parsed_mail mail_doc
                 elsif gmail_quote_present?(mail_doc)
                   gmail_parsed_mail mail_doc
                 else
@@ -335,20 +337,18 @@ class Comment < ApplicationRecord
   end
 
   def self.outlook_parsed_mail(mail_doc) 
-    mail_doc_test = mail_doc.css("div[style]")
-    
     separator = mail_doc.inner_html.match(/(.+)(<div id="appendonsend"><\/div>)(.+)/m)
+    
     if(separator.nil?) 
       comment_content = mail_doc
       extra_content = nil
     else
-  
       bodyMessage = separator[1].match(/(.+)(<body dir="ltr">)(.+)/m)
       comment_content = Nokogiri::HTML(bodyMessage[3])
       trimmedMessage = separator[3].match(/(.+)(<\/body>)(.+)/m)
       extra_content = Nokogiri::HTML(trimmedMessage[1]);
-      
     end
+    
     {
       "comment_content" => comment_content,
       "extra_content" => extra_content
