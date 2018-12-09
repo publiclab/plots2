@@ -19,6 +19,9 @@ Learn more about contributing to Public Lab code projects on these pages:
 
 * https://publiclab.org/developers
 * https://publiclab.org/contributing-to-public-lab-software
+* https://publiclab.org/soc
+* https://publiclab.org/wiki/developers
+* https://publiclab.org/wiki/gsoc-ideas
 
 ## Bug reports & troubleshooting
 
