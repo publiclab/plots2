@@ -121,7 +121,11 @@
                 <li><a href="/logoutRemotely">Logout from all devices</a></li>
               </ul>
             <% else %> <!-- Login button -->
+<<<<<<< HEAD
               <a data-toggle="modal" data-target="#loginModal" data-mode="login">
+=======
+              <a data-toggle="modal" data-target="#userModal" data-mode="login">
+>>>>>>> merged two modals into one
                 <%= t('layout._header.login.login_title') %>
               </a>
             <% end %>
@@ -178,7 +182,11 @@
 </div>
 
 <!-- Login/Signup Modal -->
+<<<<<<< HEAD
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
+=======
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
+>>>>>>> merged two modals into one
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
@@ -202,7 +210,11 @@
 
 <!-- Modal jquery -->
 <script>
+<<<<<<< HEAD
   $('#loginModal').on('show.bs.modal', function (event) {
+=======
+  $('#userModal').on('show.bs.modal', function (event) {
+>>>>>>> merged two modals into one
     var button = $(event.relatedTarget); // Button that triggered the modal
     var mode = button.data('mode'); // Extract info from data-* attributes
     var modal = $(this);
@@ -223,6 +235,7 @@
     } else if (mode =="login"){
       showLogin();
     }
+<<<<<<< HEAD
     
     $("#toLogin").click(function(){
       var user = $("#signupContainer").find("#username-signup").val();
@@ -243,6 +256,9 @@
     
   });
   
+=======
+  });
+>>>>>>> merged two modals into one
 </script>
 
 
