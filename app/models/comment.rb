@@ -228,8 +228,14 @@ class Comment < ApplicationRecord
   def self.add_answer_comment(mail, answer_id, user)
     answer = Answer.where(id: answer_id).first
     if answer
+      #puts "---------------------- NEW MESSAGE ----------------------"
       mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
+      #puts "#{mail_doc}"
+      #puts "-------- DOMAIN ---------"
+
       domain = get_domain mail.from.first
+      #puts "#{domain}"
+      Mailman.logger.debug "#{domain}"
       content = if domain == "gmail"
                   gmail_parsed_mail mail_doc
                 elsif domain == "yahoo"
@@ -266,13 +272,21 @@ class Comment < ApplicationRecord
     node = Node.where(nid: node_id).first
     if node
       mail_doc = Nokogiri::HTML(mail.html_part.body.decoded) # To parse the mail to extract comment content and reply content
+      #puts "---------------------- NEW MESSAGE HTML----------------------"
+      #puts "#{mail_doc}"
+      #Mailman.logger.debug "#{mail_doc}"
+      #puts "-------- DOMAIN ---------"
       domain = get_domain mail.from.first
+      puts "#{domain}"
+      #Mailman.logger.debug "#{domain}"
       content = if domain == "gmail"
                   gmail_parsed_mail mail_doc
                 elsif domain == "yahoo"
                   yahoo_parsed_mail mail_doc
                 elsif gmail_quote_present?(mail_doc)
                   gmail_parsed_mail mail_doc
+                elsif domain == "outlook"
+                  outlook_parsed_mail mail_doc
                 else
                   {
                     "comment_content" => mail_doc,
@@ -332,6 +346,33 @@ class Comment < ApplicationRecord
     }
   end
 
+  def self.outlook_parsed_mail(mail_doc) 
+    mail_doc_test = mail_doc.css("div[style]")
+    Mailman.logger.debug "--------------- TEST STUFF -----------------"
+    #Mailman.logger.debug "#{mail_doc_test}"
+
+    Mailman.logger.debug "---------------- USING MATCH -------------"
+    separator = mail_doc.inner_html.match(/(.+)(<div id="appendonsend"><\/div>)(.+)/m)
+    Mailman.logger.debug separator[1]
+    Mailman.logger.debug separator[2]
+    Mailman.logger.debug separator[3]
+    
+    iMessage = separator[1].match(/(.+)(<body dir="ltr">)(.+)/m)
+    Mailman.logger.debug "---------------- iMESSAGE ----------------"
+    Mailman.logger.debug iMessage[3]
+    
+    comment_content = Nokogiri::HTML(iMessage[3])
+    
+    trimm = separator[3].match(/(.+)(<\/body>)(.+)/m)
+    Mailman.logger.debug "---------------- trimm ----------------"
+    Mailman.logger.debug trimm[1]
+    
+    extra_content = Nokogiri::HTML(trimm[1]);
+    {
+      "comment_content" => comment_content,
+      "extra_content" => extra_content
+    }
+  end
   def trimmed_content?
     comment.include?(COMMENT_FILTER)
   end
