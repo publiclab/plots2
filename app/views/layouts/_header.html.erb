@@ -77,11 +77,15 @@
       <ul class="nav navbar-nav navbar-right">
         <% if current_user %>
           <li class="hidden-sm hidden-md">
+<<<<<<< HEAD
             <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard <i class="fa fa-white fa-home" aria-hidden="true"></i></a>
+=======
+             <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</i></a> 
+>>>>>>> applying sidarth's changes
           </li>
         <% else %>
         <li class="hidden-sm hidden-md"> <!-- signup -->
-          <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" data-toggle="modal" data-target="#signupModal"><%= t('layout._header.join') %></a>
+           <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" data-toggle="modal" data-target="#signupModal"><%= t('layout._header.join') %></a> 
         </li>
         <% end %>
 
@@ -89,7 +93,7 @@
           <% unless params[:action] == "register" || params[:action] == "signup" %>
             <% if current_user %>
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                Profile  <i class="fa fa-white fa-user" aria-hidden="true" ></i>
+                 Profile  <i class="fa fa-white fa-caret-down"></i> 
               </a>
               <ul class="dropdown-menu">
                 <div class="dropdown-header">
@@ -199,7 +203,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <div class="clearfix">
-          <%= render :partial => "users/form" %>
+           <%= render :partial => "users/form2" %> 
         </div>
         
       </div>
