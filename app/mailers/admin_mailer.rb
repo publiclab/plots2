@@ -38,6 +38,15 @@ class AdminMailer < ActionMailer::Base
     mail(to: @author.mail, subject: subject)
   end
 
+  def notify_author_of_comment_approval(comment, moderator)
+    subject = '[Public Lab] Your comment was approved!'
+    @author_mail = comment.author.mail
+    @moderator = moderator
+    @comment = comment
+    @footer = feature('email-footer')
+    mail(to: @author_mail, subject: subject)
+  end
+
   # Will this further bait spammers? If we don't,
   # will non-spammers whose posts were moderated get confused?
   # Should: show explanation/appeal process to authors who visit again
