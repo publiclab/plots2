@@ -15,7 +15,9 @@
     <% if current_user %>
       <%= render :partial => "comments/form", :locals => { title: I18n.t('notes._comments.post_comment'), comment: false, placeholder: I18n.t('notes._comments.post_placeholder') } %>
     <% else %>
-    <p><%= raw t('notes._comments.must_be_logged_in', :url1 => new_user_session_path( return_to: request.path )) %></p>
+    <p><a data-toggle="modal" data-target="#loginModal">
+                <%= t('layout._header.login.login_title') %> </a> to comment.
+            </p>
     <% end %>
 
   </div>
