@@ -34,6 +34,10 @@ class AdminControllerTest < ActionController::TestCase
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
+  test 'should make current_user the current user' do
+    UserSession.create(users(:jeff))
+  end
+
   test 'admin should promote user role to moderator' do
     UserSession.create(users(:jeff))
     user = users(:bob)
