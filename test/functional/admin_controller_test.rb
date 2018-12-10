@@ -539,12 +539,13 @@ class AdminControllerTest < ActionController::TestCase
   end
 
   test 'should send email if comment has status 4' do
-    UserSession.create(users(:moderator))
+    user = users(:moderator)
+    UserSession.create(user)
     comment = comments(:comment_status_4)
     node = comment.node
     post :publish_comment, params: { id: comment.id }
     comment = assigns(:comment)
-	  
+
     assert_emails 1 do
         AdminMailer.notify_moderators_of_comment_approval(comment, user).deliver_now
     end
