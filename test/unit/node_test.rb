@@ -70,7 +70,7 @@ class NodeTest < ActiveSupport::TestCase
   test 'create node with emojis' do
     node = Node.new(uid: users(:bob).id,
                     type: 'note',
-                    title: 'Title with Emojis 😎😎😎'
+                    title: 'Title with Emojis 😎😎😎')
     assert node.save
   end
 
