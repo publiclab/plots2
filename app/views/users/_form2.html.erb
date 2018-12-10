@@ -78,7 +78,10 @@
     <div class="form-group form-inline" style="clear:both;padding-top:10px;">
         <!-- button for creating new users -->
         <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
-        <a class="btn btn-lg btn-default" href="/login"><%= t('users._form.log_in') %></a>
+        <a class="btn btn-lg btn-default" id="toLogin">
+        <!-- <a class="btn btn-lg btn-default" id="toLogin" href="/login"> -->
+          <%= t('users._form.log_in') %>
+        </a>
 
       <script>
         (function() {
