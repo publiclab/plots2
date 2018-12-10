@@ -81,7 +81,7 @@
           </li>
         <% else %>
         <li class="hidden-sm hidden-md"> <!-- signup -->
-          <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" data-toggle="modal" data-target="#userModal" data-mode="signup">
+          <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" data-toggle="modal" data-target="#loginModal" data-mode="signup">
             <%= t('layout._header.join') %>
           </a> 
         </li>
@@ -121,7 +121,7 @@
                 <li><a href="/logoutRemotely">Logout from all devices</a></li>
               </ul>
             <% else %> <!-- Login button -->
-              <a data-toggle="modal" data-target="#userModal" data-mode="login">
+              <a data-toggle="modal" data-target="#loginModal" data-mode="login">
                 <%= t('layout._header.login.login_title') %>
               </a>
             <% end %>
@@ -178,7 +178,7 @@
 </div>
 
 <!-- Login/Signup Modal -->
-<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
@@ -202,7 +202,7 @@
 
 <!-- Modal jquery -->
 <script>
-  $('#userModal').on('show.bs.modal', function (event) {
+  $('#loginModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget); // Button that triggered the modal
     var mode = button.data('mode'); // Extract info from data-* attributes
     var modal = $(this);
