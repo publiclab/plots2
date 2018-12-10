@@ -20,7 +20,7 @@
     <%= render :partial => "notes/format_toggle" %>
     <% if params[:action] == "liked" %><a style="margin-right:4px;" class="pull-right btn btn-default btn-sm" href="/feed/liked.rss"><i class="fa fa-rss"></i></a><% end %>
 
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" id="tab-bar">
         <li<% if params[:action] == "recent" %> class="active"<% end %>><a href="/notes/recent"><%= t('notes.index.recent') %></a></li>
         <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/notes/popular/"><i class="fa fa-bolt"></i><span class="hidden-sm"> <%= t('notes.index.popular') %></span></a></li>
         <li<% if params[:action] == "liked" %> class="active"<% end %>><a href="/notes/liked/"><i class="fa fa-star-o"></i><span class="hidden-sm"> <%= t('notes.index.liked') %></span></a></li>
@@ -45,3 +45,29 @@
 <% else %>
   <%= render :partial => "sidebar/user" %>
 <% end %>
+
+<script>
+/*
+$(document).ready(function() {
+  var alterClass = function() {
+    var ww = document.body.clientWidth;
+    var tabs = $('#tab-bar')
+    if (ww < 400) {
+      tabs.removeClass('nav');
+      tabs.removeClass('nav-tabs');
+      tabs.addClass('dropdown-menu');
+      tabs.find("li").addClass("dropdown-item");
+    } else if (ww >= 401) {
+      tabs.removeClass('dropdown-menu');
+      tabs.addClass('nav');
+      tabs.addClass('nav-tabs');
+      tabs.find("li").removeClass("dropdown-item");
+    };
+  };
+  $(window).resize(function(){
+    alterClass();
+  });
+  //Fire it when the page first loads:
+  alterClass();
+});*/
+</script>
