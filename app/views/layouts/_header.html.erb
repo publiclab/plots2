@@ -121,11 +121,7 @@
                 <li><a href="/logoutRemotely">Logout from all devices</a></li>
               </ul>
             <% else %> <!-- Login button -->
-<<<<<<< HEAD
               <a data-toggle="modal" data-target="#loginModal" data-mode="login">
-=======
-              <a data-toggle="modal" data-target="#userModal" data-mode="login">
->>>>>>> merged two modals into one
                 <%= t('layout._header.login.login_title') %>
               </a>
             <% end %>
@@ -236,10 +232,18 @@
       showLogin();
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> input values are transferred over between modals
     
     $("#toLogin").click(function(){
       var user = $("#signupContainer").find("#username-signup").val();
       var pass = $("#signupContainer").find("#password").val();
+<<<<<<< HEAD
+=======
+      console.log(user);
+      console.log(pass);
+>>>>>>> input values are transferred over between modals
       showLogin();
       $("#loginContainer").find("#username-signup").val(user);
       $("#loginContainer").find("#password-signup").val(pass);
@@ -248,17 +252,27 @@
     $("#toSignup").click(function(){
       var user = $("#loginContainer").find("#username-signup").val();
       var pass = $("#loginContainer").find("#password-signup").val();
+<<<<<<< HEAD
+=======
+      console.log(user);
+      console.log(pass);
+>>>>>>> input values are transferred over between modals
       showSignup()
       $("#signupContainer").find("#username-signup:visible").val(user);
       $("#signupContainer").find("#password").val(pass);
       ;
     });
     
+<<<<<<< HEAD
   });
   
 =======
   });
 >>>>>>> merged two modals into one
+=======
+  });
+  
+>>>>>>> input values are transferred over between modals
 </script>
 
 
