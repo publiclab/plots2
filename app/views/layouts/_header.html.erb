@@ -178,11 +178,7 @@
 </div>
 
 <!-- Login/Signup Modal -->
-<<<<<<< HEAD
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
-=======
-<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
->>>>>>> merged two modals into one
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
@@ -206,11 +202,7 @@
 
 <!-- Modal jquery -->
 <script>
-<<<<<<< HEAD
   $('#loginModal').on('show.bs.modal', function (event) {
-=======
-  $('#userModal').on('show.bs.modal', function (event) {
->>>>>>> merged two modals into one
     var button = $(event.relatedTarget); // Button that triggered the modal
     var mode = button.data('mode'); // Extract info from data-* attributes
     var modal = $(this);
@@ -231,19 +223,10 @@
     } else if (mode =="login"){
       showLogin();
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> input values are transferred over between modals
-    
+
     $("#toLogin").click(function(){
       var user = $("#signupContainer").find("#username-signup").val();
       var pass = $("#signupContainer").find("#password").val();
-<<<<<<< HEAD
-=======
-      console.log(user);
-      console.log(pass);
->>>>>>> input values are transferred over between modals
       showLogin();
       $("#loginContainer").find("#username-signup").val(user);
       $("#loginContainer").find("#password-signup").val(pass);
@@ -252,27 +235,13 @@
     $("#toSignup").click(function(){
       var user = $("#loginContainer").find("#username-signup").val();
       var pass = $("#loginContainer").find("#password-signup").val();
-<<<<<<< HEAD
-=======
-      console.log(user);
-      console.log(pass);
->>>>>>> input values are transferred over between modals
       showSignup()
       $("#signupContainer").find("#username-signup:visible").val(user);
       $("#signupContainer").find("#password").val(pass);
       ;
     });
-    
-<<<<<<< HEAD
   });
   
-=======
-  });
->>>>>>> merged two modals into one
-=======
-  });
-  
->>>>>>> input values are transferred over between modals
 </script>
 
 
