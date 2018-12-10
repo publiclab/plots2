@@ -31,7 +31,7 @@
           <input type="hidden" name="template" value="question">
           <input type="hidden" name="redirect" value="question">
           <span class="input-group-btn">
-            <button type="submit" rel="tooltip" title="Ask a question with the entered title" class="<%= "disabled " if !current_user %>btn btn-primary">Continue</button>
+            <button id="question_search" type="submit" rel="tooltip" title="Ask a question with the entered title" class="btn btn-primary">Continue</button>
             </span>
         </div>
       </form>
@@ -60,5 +60,15 @@
   <%= render :partial => "questions/questions" %>
 
 </div>
-
+<% if !current_user %>
+<script>
+  $('#question_search').on('click', function(e) {
+      e.preventDefault();
+      $('#loginModal').modal();
+      var postQuery = '/post?tags=question:general&template=question&title=' + encodeURI($('#questions_searchform_input').val()) + '&redirect=question';
+      //console.log(postQuery);
+      $.getJSON(postQuery);
+  });
+</script>
+<% end %>
 <%= stylesheet_link_tag "dashboard" %>
