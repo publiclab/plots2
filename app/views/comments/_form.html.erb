@@ -1,4 +1,4 @@
-<div style="background-color:#DCDCDC;border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;">
+<div style="background-color:#DCDCDC;border: 1px solid #bbb;border-radius: 15;border-bottom: 0;padding: 10px;">
 <form class="comment-form" id="comment-form" data-remote="true" class="well" <% if !local_assigns[:is_answer].blank? %> action= "/answers/create/<%= @node.nid %>" <% elsif !local_assigns[:aid].blank? %> action= "/comment/answer_create/<%= aid %>" <% else %> action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% end %> <% if local_assigns[:aid].blank? %>method="post"<% end %>>
 
   <h4 style="margin-top:0;"><%= title %><% if current_user && current_user.id == @node.uid %> <small><a target="_blank" href="https://publiclab.org/comment-templates">Add a response template</a></small><% end %></h4>
