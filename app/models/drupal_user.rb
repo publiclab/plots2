@@ -73,6 +73,10 @@ class DrupalUser < ApplicationRecord
     self
   end
 
+  def banned?
+    self.status == 0
+  end
+
   def email
     mail
   end
