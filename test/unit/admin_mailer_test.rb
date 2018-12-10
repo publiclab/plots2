@@ -68,6 +68,26 @@ class AdminMailerTest < ActionMailer::TestCase
     assert email.body.include?("Hi! Your post was approved by <a href='https://#{request_host}/profile/#{moderator.username}'>#{moderator.username}</a> (a <a href='https://#{request_host}/wiki/moderation'>community moderator</a>) and is now visible in the <a href='https://#{request_host}/dashboard'>Public Lab research feed</a>. Thanks for contributing to open research!")
   end
 
+  test 'notify_author_of_comment_approval' do
+    comment = comments(:first)
+    moderator = users(:moderator)
+
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      # send the email
+      AdminMailer.notify_author_of_comment_approval(comment, moderator).deliver_now
+    end
+
+    # test that it got queued
+    assert !ActionMailer::Base.deliveries.empty?
+
+    # test the last one
+    email = ActionMailer::Base.deliveries.last
+    assert_not_nil email.to
+    assert_equal [comment.author.mail], email.to
+    assert_equal '[Public Lab] Your comment was approved!', email.subject
+    assert email.body.include?("Hi! Your comment was approved by <a href='https://#{request_host}/profile/#{moderator.username}'>#{moderator.username}</a> (a <a href='https://#{request_host}/wiki/moderation'>community moderator</a>) and is now visible in the <a href='https://#{request_host}/dashboard'>Public Lab research feed</a>. Thanks for contributing to open research!")
+  end
+
   test 'notify_moderators_of_approval' do
     node = nodes(:one)
     moderator = users(:moderator) # who actually approved the post
