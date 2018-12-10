@@ -62,7 +62,7 @@
                 <span class="hidden-xs hidden-sm hidden-md"></span>
               </a>
             </li>
-        <% else %>
+        <% elsif current_user %>
             <li>
               <a rel="tooltip" title="Edit this wiki page." data-placement="top" href="<%= @node.edit_path %>?t=<%= Time.now.to_i %>">
                 <i class="fa fa-pencil"></i>
@@ -71,6 +71,18 @@
             </li>
             <li class="<%= 'active' if params[:raw] == 'true' %>">
               <a rel="tooltip" title="Try the beta inline Rich Wiki editor." data-placement="top" href="<%= @node.path %>?raw=true">
+                <i style="color:#0c8;" class="fa fa-pencil"></i>
+              </a>
+            </li>
+        <% else %>
+           <li>
+              <a rel="tooltip" title="Edit this wiki page." data-placement="top" data-toggle="modal" data-target="#loginModal">
+                <i class="fa fa-pencil"></i>
+                <span class="hidden-xs hidden-sm hidden-md"></span>
+              </a>
+            </li>
+            <li class="<%= 'active' if params[:raw] == 'true' %>">
+              <a rel="tooltip" title="Try the beta inline Rich Wiki editor." data-placement="top" data-toggle="modal" data-target="#loginModal">
                 <i style="color:#0c8;" class="fa fa-pencil"></i>
               </a>
             </li>
