@@ -68,6 +68,7 @@ class TagController < ApplicationController
       ids = followed + not_followed
       @tags = Tag.where(tid: ids).sort_by { |p| ids.index(p.tid) }.paginate(page: params[:page], per_page: 24)
     end
+    @tags.where('term_data.name NOT LIKE (?)', '%:%') if params[:type] == 'basic'
   end
 
   def show
