@@ -538,7 +538,7 @@ class AdminControllerTest < ActionController::TestCase
     assert_redirected_to node.path
   end
 
-  test 'should send email if comment has status 4' do
+  test 'should send email to moderators when a comment is approved' do
     user = users(:moderator)
     UserSession.create(user)
     comment = comments(:comment_status_4)
