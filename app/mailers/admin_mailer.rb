@@ -83,7 +83,7 @@ class AdminMailer < ActionMailer::Base
   end
 
   def notify_moderators_of_comment_approval(comment, moderator)
-    subject = '[New Public Lab commenter needs moderation]' 
+    subject = '[New Public Lab commenter needs moderation]'
     @author = comment.author
     @moderator = moderator
     @comment = comment
