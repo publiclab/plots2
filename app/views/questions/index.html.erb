@@ -66,7 +66,7 @@
       e.preventDefault();
       $('#loginModal').modal();
       var postQuery = '/post?tags=question:general&template=question&title=' + encodeURI($('#questions_searchform_input').val()) + '&redirect=question';
-      console.log(postQuery);
+      //console.log(postQuery);
       $.getJSON(postQuery);
   });
 </script>
