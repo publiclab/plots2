@@ -538,6 +538,21 @@ class AdminControllerTest < ActionController::TestCase
     assert_redirected_to node.path
   end
 
+  test 'should send email if comment has status 4' do
+    UserSession.create(users(:moderator))
+    comment = comments(:comment_status_4)
+    node = comment.node
+    post :publish_comment, params: { id: comment.id }
+    comment = assigns(:comment)
+    assert_equal 4, comment.status
+
+    assert_emails 1 do
+        AdminMailer.notify_moderators_of_comment_approval(comment, user).deliver_now
+    end
+    assert_equal 1, comment.status
+    assert_redirected_to node.path
+  end
+
   test 'should login if want to publish comment from spam' do
     comment = comments(:spam_comment)
 

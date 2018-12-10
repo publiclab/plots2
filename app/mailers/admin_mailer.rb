@@ -82,6 +82,20 @@ class AdminMailer < ActionMailer::Base
     )
   end
 
+  def notify_moderators_of_comment_approval(comment, moderator)
+    subject = '[New Public Lab commenter needs moderation]' 
+    @author = comment.author
+    @moderator = moderator
+    @comment = comment
+    @footer = feature('email-footer')
+    moderators = User.where(role: %w(moderator admin)).collect(&:email)
+    mail(
+      to: "comment-moderators@#{ActionMailer::Base.default_url_options[:host]}",
+      bcc: moderators,
+      subject: subject
+    )
+  end
+
   def notify_moderators_of_spam(node, moderator)
     subject = '[New Public Lab poster needs moderation] ' + node.title
     @author = node.author
