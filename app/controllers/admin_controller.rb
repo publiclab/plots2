@@ -160,8 +160,16 @@ class AdminController < ApplicationController
       if @comment.status == 1
         flash[:notice] = 'Comment already published.'
       else
+        first_timer_comment = (@comment.status == 4)
         @comment.publish
-        flash[:notice] = 'Comment published.'
+        if @comment.author.banned?
+          @comment.author.unban
+        end
+        if first_timer_comment
+          AdminMailer.notify_author_of_comment_approval(@comment, current_user).deliver_now
+        else
+          flash[:notice] = 'Comment published.'
+        end
       end
       @node = @comment.node
       redirect_to @node.path
