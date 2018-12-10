@@ -18,7 +18,7 @@
   <% end %>
     <td class="username"><a href="/profile/<%= user.username %>"><%= user.username %></a> <%=user.new_contributor %></td>
   </tr>
-  <% if index == 9 %>
+  <% if index == 10 %>
     <tr class="show-all">
       <td><a>Show <%= users.length - 10 %> more <b class="caret"></b></a></td>
       <td></td>
@@ -32,7 +32,7 @@
   <p><a class="btn btn-primary" href="/profile/tags/create/<%= current_user.id %>?name=<%= tagname %>">Join this group</a></p>
 <% else %>
   <p><a class="btn btn-primary disabled" href="">Join this group</a></p>
-  <p><a data-toggle="modal" data-target="#loginModal"> Login/Sign up </a> to join. </p>
+  <p><a data-toggle="modal" data-target="#loginModal">Login/Sign Up to join!</a></p>
 <% end %>
 <script>
 (function(){
