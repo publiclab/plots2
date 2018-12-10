@@ -227,8 +227,6 @@
     $("#toLogin").click(function(){
       var user = $("#signupContainer").find("#username-signup").val();
       var pass = $("#signupContainer").find("#password").val();
-      console.log(user);
-      console.log(pass);
       showLogin();
       $("#loginContainer").find("#username-signup").val(user);
       $("#loginContainer").find("#password-signup").val(pass);
@@ -237,8 +235,6 @@
     $("#toSignup").click(function(){
       var user = $("#loginContainer").find("#username-signup").val();
       var pass = $("#loginContainer").find("#password-signup").val();
-      console.log(user);
-      console.log(pass);
       showSignup()
       $("#signupContainer").find("#username-signup:visible").val(user);
       $("#signupContainer").find("#password").val(pass);
