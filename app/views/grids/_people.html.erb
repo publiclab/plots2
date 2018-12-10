@@ -32,7 +32,7 @@
   <p><a class="btn btn-primary" href="/profile/tags/create/<%= current_user.id %>?name=<%= tagname %>">Join this group</a></p>
 <% else %>
   <p><a class="btn btn-primary disabled" href="">Join this group</a></p>
-  <p><a href="/login">Login/Sign Up to join!</a></p>
+  <p><a data-toggle="modal" data-target="#loginModal"> Login/Sign up </a> to join. </p>
 <% end %>
 <script>
 (function(){
