@@ -6,6 +6,7 @@
       <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_author_contributor %>
       <span><%= t('dashboard._node_comment.commented_on') %></span> <% unless node.aid == 0 %> an answer about<% end %> <% if node.parent.has_power_tag('question') %><a href="<%= node.parent.path(:question) %>"><% else %><a href="<%= node.parent.path %>"><% end %><%= node.parent.title %></a>
     </p>
+    <%= render partial: 'dashboard/comment_moderate', locals: { comment: node } %>
 
     <p class="body"><%= raw strip_tags(node.body_markdown).truncate(100) %></p>
 
