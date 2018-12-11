@@ -51,8 +51,8 @@
   <small><a href="/tags" style="color: #888;">Trending topics:</a></small>
   <span style="font-size: 18px;">
    <% cache('trending-tags', expires_in: 24.hours, skip_digest: true) do %>
-      <% Tag.trending.each do |i| %>
-        <span class="label label-primary"><a href="/tag/<%= i.name %>"><%= i.name %></a></span>
+      <% Tag.trending.each do |tag_name| %>
+        <span class="label label-primary"><a href="/tag/<%= tag_name %>"><%= tag_name %></a></span>
       <% end %>
     <% end %>
 </span>
