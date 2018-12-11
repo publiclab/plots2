@@ -88,6 +88,22 @@
   });
   //setupGridSorters(".<%= className %>-<%= randomSeed %>"); Should order the items by time. Commented out because it reorders the items each time show more/less is clicked
 })()
+
+function gridLinkModal(selector, href) {
+  var current_user = $('ul.nav.navbar-nav.navbar-right').children('li:nth-of-type(2)').text().trim() !== "Login"
+  if(!current_user) {
+    
+    var anchor = $(selector).find('a[href="' + href + '"]');
+    anchor.attr({
+      'href': '',
+      'data-toggle': 'modal',
+      'data-target': '#loginModal'
+    });
+    anchor.on('click', function() {
+      $.getJSON(href);
+    });
+  }
+}
 </script>
 <style>
   a.grid-embed {
