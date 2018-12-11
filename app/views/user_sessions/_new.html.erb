@@ -38,4 +38,15 @@
     <p style="color: #888;"><%= raw t('user_sessions.new.reset_by_clicking_here', :url1 => "/reset/") %></p>
   </div>
   <% end %>
+  <% if !current_user %>
+    <script>
+      $(document).ready(function() {
+        $('a.requireLogin').on('click', function(e) {
+          e.preventDefault();
+          $('#loginModal').modal();
+          $.getJSON($(this).attr('href'));
+        });
+      });
+    </script>
+  <% end %>
 </div>
