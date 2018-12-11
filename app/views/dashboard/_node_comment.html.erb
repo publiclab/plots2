@@ -1,24 +1,25 @@
 <div class="col-md-6 note-container-comment">
   <div class="note note-pane note-comment" data-index="<%= index %>">
 
-    <div class="header-icon"><i class="fa fa-comment-o"></i> <a href="/n/<%= node.parent.id %>"><i class="fa fa-link"></i></a></div>
+    <div class="header-icon">
+     <% if node.aid == 0 %>
+      <a href="<% if node.parent.has_power_tag('question') %><%= node.parent.path(:question) %>#anwer-0-comment<% else %><%= node.parent.path %>#comments<% end %>"> <i class="fa fa-comment-o"> <%= node.parent.comments.count %> </i> </a>
+      <% else %>
+      <a href="<%= node.parent.path(:question) %>#answer-<%= node.answer.id %>-comment"> <i class="fa fa-comment-o"> 
+      <% end %> 
+      </a>
+      <a href="/n/<%= node.parent.id %>"><i class="fa fa-link"></i></a>
+    </div>
+    
     <p class="meta">
       <a href="/profile/<%= node.author.name %>"><%= node.author.name %></a>  <%= node.author.new_author_contributor %>
       <span><%= t('dashboard._node_comment.commented_on') %></span> <% unless node.aid == 0 %> an answer about<% end %> <% if node.parent.has_power_tag('question') %><a href="<%= node.parent.path(:question) %>"><% else %><a href="<%= node.parent.path %>"><% end %><%= node.parent.title %></a>
+      <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
     </p>
     <%= render partial: 'dashboard/comment_moderate', locals: { comment: node } %>
 
-    <p class="body"><%= raw strip_tags(node.body_markdown).truncate(100) %></p>
-
-    <p class="meta">
-      <% if node.aid == 0 %>
-      <a href="<% if node.parent.has_power_tag('question') %><%= node.parent.path(:question) %>#anwer-0-comment<% else %><%= node.parent.path %>#comments<% end %>" class="btn btn-default pull-right btn-xs"><%= node.parent.comments.count %>
-      <% else %>
-      <a href="<%= node.parent.path(:question) %>#answer-<%= node.answer.id %>-comment" class="btn btn-default pull-right btn-xs"><%= node.answer.comments.count %>
-      <% end %>
-      <%= t('dashboard._node_comment.comments') %> &raquo;</a>
-      <a href="/n/<%= node.parent.id %>" class="btn btn-default pull-right btn-xs"><i class="fa fa-link"></i></a>
-      <%= distance_of_time_in_words(node.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
+    <p class="body"><%= raw strip_tags(node.body_markdown).truncate(100) %>
+      
     </p>
 
   </div>
