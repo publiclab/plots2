@@ -121,7 +121,11 @@
                 <li><a href="/logoutRemotely">Logout from all devices</a></li>
               </ul>
             <% else %> <!-- Login button -->
+<<<<<<< HEAD
               <a class="loginToggle">
+=======
+              <a data-toggle="modal" data-target="#loginModal" data-mode="login">
+>>>>>>> eb08fb7fced4fa73a6d27874950ce39dbcf7a177
                 <%= t('layout._header.login.login_title') %>
               </a>
             <% end %>
@@ -202,12 +206,18 @@
 
 <!-- Modal jquery -->
 <script>
+<<<<<<< HEAD
   var mode ="";
   function setMode(modalMode){
     mode = modalMode;
     console.log(mode);
   }
   $('#loginModal').on('show.bs.modal', function (event) {
+=======
+  $('#loginModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var mode = button.data('mode'); // Extract info from data-* attributes
+>>>>>>> eb08fb7fced4fa73a6d27874950ce39dbcf7a177
     var modal = $(this);
     
     function showSignup(){
