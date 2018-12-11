@@ -190,16 +190,6 @@ class I18nTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should choose i18n for user/_form + user/new' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-      get '/signup'
-      assert_select 'label', I18n.t('users._form.username')
-      assert_select 'h2', I18n.t('users.new.sign_up')
-    end
-  end
-
   test 'should choose i18n for user/_photo + user/edit' do
     available_testing_locales.each do |lang|
       get '/home'
