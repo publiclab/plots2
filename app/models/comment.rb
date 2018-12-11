@@ -240,15 +240,15 @@ class Comment < ApplicationRecord
                   gmail_parsed_mail mail_doc
                 else
                   {
-                    "comment_content" => mail_doc,
-                    "extra_content" => nil
+                    comment_content: mail_doc,
+                    extra_content: nil
                   }
                 end
-      if content["extra_content"].nil?
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+      if content[:extra_content].nil?
+        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
       else
-        extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+        extra_content_markdown = ReverseMarkdown.convert content[:extra_content]
+        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
         comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
       end
       message_id = mail.message_id
@@ -279,15 +279,15 @@ class Comment < ApplicationRecord
                   gmail_parsed_mail mail_doc
                 else
                   {
-                    "comment_content" => mail_doc,
-                    "extra_content" => nil
+                    comment_content: mail_doc,
+                    extra_content: nil
                   }
                 end
-      if content["extra_content"].nil?
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+      if content[:extra_content].nil?
+        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
       else
-        extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+        extra_content_markdown = ReverseMarkdown.convert content[:extra_content]
+        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
         comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
       end
       message_id = mail.message_id
@@ -315,8 +315,8 @@ class Comment < ApplicationRecord
     end
 
     {
-      "comment_content" => comment_content,
-      "extra_content" => extra_content
+      comment_content: comment_content,
+      extra_content: extra_content
     }
   end
 
@@ -331,8 +331,8 @@ class Comment < ApplicationRecord
     end
 
     {
-      "comment_content" => comment_content,
-      "extra_content" => extra_content
+      comment_content: comment_content,
+      extra_content: extra_content
     }
   end
 
@@ -349,8 +349,8 @@ class Comment < ApplicationRecord
     end
 
     {
-      "comment_content" => comment_content,
-      "extra_content" => extra_content
+      comment_content:  comment_content,
+      extra_content: extra_content
     }
   end
 
