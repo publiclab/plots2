@@ -139,7 +139,7 @@ class AdminController < ApplicationController
   def mark_comment_spam
     @comment = Comment.find params[:id]
     if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
-      if @comment.status == 1
+      if @comment.status == 1 || @comment.status == 4
         @comment.spam
         user = @comment.author
         user.ban
