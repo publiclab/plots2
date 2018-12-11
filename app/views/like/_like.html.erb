@@ -16,10 +16,10 @@
 
   <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
     <% if !current_user %>
-      <%= link_to  new_user_session_path( return_to: request.path ) do %>
+      <a id="open-login-like" data-hashparams="like" data-toggle="modal" data-target="#loginModal">
         <span id="like-star-<%= node.id %>" class="fa fa-star"></span>
         <span id="like-count-<%= node.id %>"><%= node.likers.length %></span>
-      <% end %>
+      </a>
     <% else %>
       <span id="like-star-<%= node.id %>" class="fa fa-star<% if !node.liked_by(current_user.uid) %>-o<% end %>"></span>
       <span id="like-count-<%= node.id %>"><%= node.likers.length %> </span>
@@ -95,9 +95,17 @@
         cache: false
       });
 
+      $("#open-login-like").click(function() {
+        $("input[name='hash_params']").val($(this).attr("data-hashparams"));
+      });
+
       <% if current_user %>
         $('#like-button-<%= node.id %>').on('click',<% if node.liked_by(current_user.uid) %>clickliked<% else %>clicknotliked<% end %>)
-      <% end %>
+      
+        if(window.location.href.includes("#like")) {
+          $('#like-button-<%= node.id %>').click();
+        }
+        <% end %>
     });
     $('body').on('click', function (e) { // If there's a click event in the body
       $('[rel=popover]').each(function () { // For each popover
