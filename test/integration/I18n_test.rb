@@ -10,7 +10,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       # get '/change_locale/' + lang.to_s
       # follow_redirect!
       # assert_select 'p[class=facebook-summary]', I18n.t('layout._header.summary')
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -42,7 +42,7 @@ class I18nTest < ActionDispatch::IntegrationTest
   test 'should choose i18n for subscriptions' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -58,7 +58,7 @@ class I18nTest < ActionDispatch::IntegrationTest
   test 'should choose i18n for dashboard/_activity' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -73,7 +73,7 @@ class I18nTest < ActionDispatch::IntegrationTest
   test 'should choose i18n for dashboard/_header' do
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -89,7 +89,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -106,7 +106,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -130,7 +130,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -153,7 +153,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -177,7 +177,7 @@ class I18nTest < ActionDispatch::IntegrationTest
     available_testing_locales.each do |lang|
       get '/change_locale/' + lang.to_s
       follow_redirect!
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -190,23 +190,13 @@ class I18nTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should choose i18n for user/_form + user/new' do
-    available_testing_locales.each do |lang|
-      get '/change_locale/' + lang.to_s
-      follow_redirect!
-      get '/signup'
-      assert_select 'label', I18n.t('users._form.username')
-      assert_select 'h2', I18n.t('users.new.sign_up')
-    end
-  end
-
   test 'should choose i18n for user/_photo + user/edit' do
     available_testing_locales.each do |lang|
       get '/home'
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -226,7 +216,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -267,7 +257,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -286,7 +276,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -317,7 +307,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -337,7 +327,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -376,7 +366,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -406,7 +396,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
          params: {
           user_session: {
             username: users(:jeff).username,
@@ -485,7 +475,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
@@ -524,7 +514,7 @@ class I18nTest < ActionDispatch::IntegrationTest
       get '/change_locale/' + lang.to_s
       follow_redirect!
 
-      post '/user_sessions', 
+      post '/user_sessions',
         params: {
           user_session: {
             username: users(:jeff).username,
