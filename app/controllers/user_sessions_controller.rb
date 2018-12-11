@@ -21,6 +21,12 @@ class UserSessionsController < ApplicationController
     return_to = request.env['omniauth.origin'] || root_url
     return_to += '?_=' + Time.now.to_i.to_s
 
+    hash_params = ""
+
+    unless params[:hash_params].to_s.empty?
+      hash_params = URI.parse("#" + params[:hash_params]).to_s
+    end
+
     if signed_in?
       if @identity.nil?
         # If no identity was found, create a brand new one here
@@ -29,19 +35,19 @@ class UserSessionsController < ApplicationController
         # associate the identity
         @identity.user = current_user
         @identity.save
-        redirect_to return_to, notice: "Successfully linked to your account!"
+        redirect_to return_to + hash_params, notice: "Successfully linked to your account!"
       elsif @identity.user == current_user
         # User is signed in so they are trying to link an identity with their
         # account. But we found the identity and the user associated with it
         # is the current user. So the identity is already associated with
         # this user. So let's display an error message.
-        redirect_to return_to, notice: "Already linked to your account!"
+        redirect_to return_to + hash_params, notice: "Already linked to your account!"
       else
         # User is signed in so they are trying to link an identity with their
         # account. But we found the identity and a different user associated with it
         # ,which is not the current user. So the identity is already associated with
         # that user. So let's display an error message.
-        redirect_to return_to, notice: "Already linked to another account!"
+        redirect_to return_to + hash_params, notice: "Already linked to another account!"
       end
     else # not signed in
       if @identity&.user.present?
@@ -49,7 +55,7 @@ class UserSessionsController < ApplicationController
         # just log them in here
         @user = @identity.user
         @user_session = UserSession.create(@identity.user)
-        redirect_to return_to, notice: "Signed in!"
+        redirect_to return_to + hash_params, notice: "Signed in!"
       else # identity does not exist so we need to either create a user with identity OR link identity to existing user
         if User.where(email: auth["info"]["email"]).empty?
           # Create a new user as email provided is not present in PL database
@@ -61,7 +67,7 @@ class UserSessionsController < ApplicationController
           @user = user
           # send key to user email
           PasswordResetMailer.reset_notify(user, key).deliver_now unless user.nil? # respond the same to both successes and failures; security
-          redirect_to return_to, notice: "You have successfully signed in. Please change your password via a link sent to you via e-mail"
+          redirect_to return_to + hash_params, notice: "You have successfully signed in. Please change your password via a link sent to you via e-mail"
         else # email exists so link the identity with existing user and log in the user
           user = User.where(email: auth["info"]["email"])
           # If no identity was found, create a brand new one here
@@ -72,7 +78,7 @@ class UserSessionsController < ApplicationController
           @user = user
           # log in them
           @user_session = UserSession.create(@identity.user)
-          redirect_to return_to, notice: "Successfully linked to your account!"
+          redirect_to return_to + hash_params, notice: "Successfully linked to your account!"
         end
       end
     end
@@ -112,6 +118,12 @@ class UserSessionsController < ApplicationController
                                           remember_me: params[:user_session][:remember_me])
           saved = @user_session.save do |result|
             if result
+              hash_params = ""
+
+              unless params[:hash_params].to_s.empty?
+                hash_params = URI.parse("#" + params[:hash_params]).to_s
+              end
+
               # replace this with temporarily saving pwd in session,
               # and automatically saving it in the user record after login is completed
               if current_user.crypted_password.nil? # the user has not created a pwd in the new site
@@ -122,13 +134,13 @@ class UserSessionsController < ApplicationController
                 if session[:openid_return_to] # for openid login, redirects back to openid auth process
                   return_to = session[:openid_return_to]
                   session[:openid_return_to] = nil
-                  redirect_to return_to
+                  redirect_to return_to + hash_params
                 elsif session[:return_to]
                   return_to = session[:return_to]
                   session[:return_to] = nil
-                  redirect_to return_to
+                  redirect_to return_to + hash_params
                 elsif params[:return_to]
-                  redirect_to params[:return_to]
+                  redirect_to params[:return_to] + hash_params
                 else
                   redirect_to '/dashboard'
                 end
