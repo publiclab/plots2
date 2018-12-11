@@ -94,7 +94,13 @@
     </div>
 
   </div>
-
+  <% end %>
+  
+  <script>
+    $("a.signupToggle").click(function(){
+      setMode("signup");
+      $('#loginModal').modal();
+    })
+  </script>
 </div>
 
-<% end %>

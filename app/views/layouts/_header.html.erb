@@ -80,8 +80,8 @@
             <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard <i class="fa fa-white fa-home" aria-hidden="true"></i></a>
           </li>
         <% else %>
-        <li class="hidden-sm hidden-md"> <!-- signup -->
-          <a rel="tooltip" title="<%= t('layout._header.become_part_community') %>" data-toggle="modal" data-target="#loginModal" data-mode="signup">
+        <li class="hidden-sm hidden-md"> <!-- signup button -->
+          <a rel="tooltip" class="signupToggle" title="<%= t('layout._header.become_part_community') %>">
             <%= t('layout._header.join') %>
           </a> 
         </li>
@@ -121,7 +121,7 @@
                 <li><a href="/logoutRemotely">Logout from all devices</a></li>
               </ul>
             <% else %> <!-- Login button -->
-              <a data-toggle="modal" data-target="#loginModal" data-mode="login">
+              <a class="loginToggle">
                 <%= t('layout._header.login.login_title') %>
               </a>
             <% end %>
@@ -202,9 +202,12 @@
 
 <!-- Modal jquery -->
 <script>
+  var mode ="";
+  function setMode(modalMode){
+    mode = modalMode;
+    console.log(mode);
+  }
   $('#loginModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget); // Button that triggered the modal
-    var mode = button.data('mode'); // Extract info from data-* attributes
     var modal = $(this);
     
     function showSignup(){
