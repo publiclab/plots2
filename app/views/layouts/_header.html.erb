@@ -205,8 +205,8 @@
   var mode ="";
   function setMode(modalMode){
     mode = modalMode;
-    console.log(mode);
   }
+
   $('#loginModal').on('show.bs.modal', function (event) {
     var modal = $(this);
     
@@ -226,7 +226,7 @@
     } else if (mode =="login"){
       showLogin();
     }
-
+    
     $("#toLogin").click(function(){
       var user = $("#signupContainer").find("#username-signup").val();
       var pass = $("#signupContainer").find("#password").val();
