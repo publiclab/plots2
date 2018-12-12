@@ -167,6 +167,7 @@ class AdminController < ApplicationController
         end
         if first_timer_comment
           AdminMailer.notify_author_of_comment_approval(@comment, current_user).deliver_now
+          AdminMailer.notify_moderators_of_comment_approval(@comment, current_user).deliver_now
         else
           flash[:notice] = 'Comment published.'
         end
