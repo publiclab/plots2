@@ -103,7 +103,7 @@ group :test, :development do
   gem 'openssl', '~> 2.1.2'
   gem 'phantomjs'
   gem 'rails-perftest'
-  gem 'rake',  '~> 12.3.1'
+  gem 'rake',  '~> 12.3.2'
   gem 'rest-client'
   gem 'rspec'
   gem 'test-unit'
