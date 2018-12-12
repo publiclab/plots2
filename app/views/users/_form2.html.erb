@@ -97,9 +97,9 @@
   <% end %>
   
   <script>
-    $("a.signupToggle").click(function(){
-      setMode("signup");
-      $('#loginModal').modal();
+    $("a.signupToggle").click(function(){ //When a button that toggles the signup is clicked
+      setMode("signup"); //Sets the mode of the modal to signup so it only shows the signup partial
+      $('#loginModal').modal(); //Toggles the modal
     })
   </script>
 </div>
