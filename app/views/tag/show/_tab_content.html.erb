@@ -47,7 +47,7 @@
   <% if @node_type == "maps" %>
     <div class="tab-pane active" id="wikis">
      <% if @maps.nil? %>
-        <p><strong>Sorry, no map tagged with this tag is available. You can view other maps <a href="/maps">here</a>.</strong></p>
+        <p><strong>Sorry, no map is tagged with `<%= params[:id] %>` tag. You can view other maps <a href="/maps">here</a>.</strong></p>
       <% else %>
         <%= render :partial => "map/maps" %>
       <% end %>
