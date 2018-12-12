@@ -265,6 +265,7 @@ class Tag < ApplicationRecord
     tag_followers.reject { |user| following_given_tags.include? user }
   end
 
+  # https://github.com/publiclab/plots2/pull/4266
   def self.trending(limit = 5, start_date = DateTime.now - 1.month, end_date = DateTime.now)
     Tag.select([:name])
        .joins(:node_tag, :node)
