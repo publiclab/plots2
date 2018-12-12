@@ -366,7 +366,9 @@ div.note .meta {
   height:auto;
   overflow:auto;
 }
-
+/*start of img aspect css that will affect the 
+thumbnails which appears on the user's profile 
+under their notes*/
 #notes .note a.img {
   height: auto;
   display: inline-block;
@@ -389,6 +391,7 @@ div.note .meta {
   overflow: hidden;
   margin-bottom: 10px;
 }
+/*end of img aspect css*/
 
 #notes .note h3 a {
   color: #444;
