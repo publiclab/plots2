@@ -82,4 +82,45 @@
 
 <%= render :partial => "loading_page" %>
 
+<script>
+var myVar;
+ function myFunction() {
+    myVar = setTimeout(showPage, 3000);
+}
+ function showPage() {
+  document.getElementById("Loader").style.display = "none";
+}
+</script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+
+    setTimeout(function(){
+	$('body').addClass('loaded');
+	$('hi').css('color','#FFFFFF');
+    }, 3000);
+
+});
+</script>
+  <body onload="myFunction()" style="margin:0;">
+ <div class="loader-section section-left"></div>
+   <div class="loader-section section-right"></div>
+</div>
+  <div id="content">
+  <div id="loader"></div>
+
+<div class="loaded"></div>
+    <%= render :partial => 'layouts/header' %>
+
+    <div class="container">
+      <div class="row">
+
+        <%= yield %>
+
+      </div><!--/row-->
+    </div><!--/container-->
+
+    <%= render :partial => "layouts/footer" %>
+
+  </body>
 </html>
