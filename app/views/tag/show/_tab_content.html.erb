@@ -46,7 +46,11 @@
 
   <% if @node_type == "maps" %>
     <div class="tab-pane active" id="wikis">
-      <%= render :partial => "map/maps" %>
+     <% if @maps.nil? %>
+        <p><strong>Sorry, no maps tagged with these tags are available. You can view other maps <a href="/maps">here</a>.</strong></p>
+      <% else %>
+        <%= render :partial => "map/maps" %>
+      <% end %>
     </div>
   <% end %>
 
