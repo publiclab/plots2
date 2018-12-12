@@ -83,7 +83,7 @@
         <li class="hidden-sm hidden-md"> <!-- signup button -->
           <a rel="tooltip" class="signupToggle" title="<%= t('layout._header.become_part_community') %>">
             <%= t('layout._header.join') %>
-          </a> 
+          </a>
         </li>
         <% end %>
 
@@ -91,7 +91,7 @@
           <% unless params[:action] == "register" || params[:action] == "signup" %>
             <% if current_user %>
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                 Profile  <i class="fa fa-white fa-caret-down"></i> 
+                 Profile  <i class="fa fa-white fa-user" aria-hidden="true" ></i>
               </a>
               <ul class="dropdown-menu">
                 <div class="dropdown-header">
@@ -185,7 +185,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        
+
         <div class="clearfix">
           <div id="signupContainer">
             <%= render :partial => "users/form2" %>
@@ -209,7 +209,7 @@
 
   $('#loginModal').on('show.bs.modal', function (event) {
     var modal = $(this);
-    
+
     function showSignup(){
       modal.find(".modal-dialog").addClass("modal-lg");
       modal.find('#signupContainer').show();
@@ -220,13 +220,13 @@
       modal.find('#loginContainer').show();
       modal.find('#signupContainer').hide();
     }
-    
+
     if(mode == "signup"){
       showSignup();
     } else if (mode =="login"){
       showLogin();
     }
-    
+
     $("#toLogin").click(function(){
       var user = $("#signupContainer").find("#username-signup").val();
       var pass = $("#signupContainer").find("#password").val();
@@ -234,7 +234,7 @@
       $("#loginContainer").find("#username-signup").val(user);
       $("#loginContainer").find("#password-signup").val(pass);
     });
-    
+
     $("#toSignup").click(function(){
       var user = $("#loginContainer").find("#username-signup").val();
       var pass = $("#loginContainer").find("#password-signup").val();
@@ -244,7 +244,7 @@
       ;
     });
   });
-  
+
 </script>
 
 
@@ -253,7 +253,7 @@
     text-align: center;
     padding: 0!important;
   }
-  
+
   .modal:before {
     content: '';
     display: inline-block;
@@ -261,7 +261,7 @@
     vertical-align: middle;
     margin-right: -4px;
   }
-  
+
   .modal-dialog {
     display: inline-block;
     text-align: left;
