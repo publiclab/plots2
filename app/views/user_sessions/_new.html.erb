@@ -41,10 +41,15 @@
   <% if !current_user %>
     <script>
       $(document).ready(function() {
-        $('a.requireLogin').on('click', function(e) {
-          e.preventDefault();
-          $('#loginModal').modal();
-          $.getJSON($(this).attr('href'));
+        $('a.requireLogin').on('click', function(e) { //For every link that should require login
+          e.preventDefault(); //Prevent automatically redirecting to the link specified by href
+          $('#loginModal').modal(); //Open the login modal to allow user to login
+          $.getJSON($(this).attr('href')); 
+          /*send a request for the site the href specified, 
+           Because login modal uses request.fullpath as part of its 
+           redirect parameters, we can send a request to the link
+           we want to redirect to so this variable gets updated to 
+           that link. Now when the user logs in, it should go to that link.*/
         });
       });
     </script>
