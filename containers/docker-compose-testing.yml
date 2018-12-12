@@ -1,7 +1,7 @@
 version: "2"
 services:
   db:
-    image: mariadb:5.7
+    image: mysql:5.7
     network_mode: "service:web"
     environment:
       - MYSQL_DATABASE=plots
