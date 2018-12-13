@@ -233,12 +233,17 @@
       </div>
     </div>
   <% end %>
- <%if !Rails.env.production?%>
-  <% if @profile_user && current_user && @profile_user == current_user %>
-    <%= form_tag "/users/test_digest_email", method: :post do %>
-      <%= submit_tag "Test Digest Email" %>
+
+  <%if !Rails.env.production?%>
+
+    <% if @profile_user && current_user && @profile_user == current_user %>
+
+      <%= form_tag "/users/test_digest_email", method: :post do %>
+        <%= submit_tag "Test Digest Email" %>
+      <% end %>
+
     <% end %>
-  <% end %>
+
   <% end %>
 
   <hr />
