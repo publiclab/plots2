@@ -5,13 +5,17 @@ module QuestionsHelper
     return if period.nil?
 
     if period == 'All'
-      @asked = Node.questions.to_a.size
-      @answered = Answer.all.map(&:node).uniq.size
-      "#{@asked} questions asked and #{@answered} questions answered"
+      Rails.cache.fetch("all_stats", expires_in: 1.days) do
+        @asked = Node.questions.to_a.size
+        @answered = Answer.all.map(&:node).uniq.size
+        "#{@asked} questions asked and #{@answered} questions answered"
+      end
     else
-      @asked = Node.questions.where('created >= ?', 1.send(period.downcase).ago.to_i).to_a.size
-      @answered = Answer.where("created_at >= ?", 1.send(period.downcase).ago).map(&:node).uniq.size
-      "#{@asked} questions asked and #{@answered} questions answered in the past #{period}"
+      Rails.cache.fetch("#{period}_stats", expires_in: 1.days) do
+        @asked = Node.questions.where('created >= ?', 1.send(period.downcase).ago.to_i).to_a.size
+        @answered = Answer.where("created_at >= ?", 1.send(period.downcase).ago).map(&:node).uniq.size
+        "#{@asked} questions asked and #{@answered} questions answered in the past #{period}"
+      end
     end
   end
 
