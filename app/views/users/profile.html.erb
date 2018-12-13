@@ -233,7 +233,7 @@
       </div>
     </div>
   <% end %>
-  <% if !Rails.env.production?%>
+  <% if current_user.can_moderate? || current_user.role == "admin"%>
 
     <% if @profile_user && current_user && @profile_user == current_user %>
 
