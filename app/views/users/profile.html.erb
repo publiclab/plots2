@@ -233,7 +233,7 @@
       </div>
     </div>
   <% end %>
-  <% if Rails.env.production?%>
+  <% if !Rails.env.production?%>
 
     <% if @profile_user && current_user && @profile_user == current_user %>
 
