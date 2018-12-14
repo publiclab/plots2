@@ -18,4 +18,13 @@ class TagSelection < ApplicationRecord
   def tagname
     tag.name
   end
+
+  #Given a tagList unsubscribe to the tags which are present in tagList
+  # and are subscribed till yet
+  # method for unchecked radio buttons
+  def subscribe_multiple_tags(tag_list, user_id)
+      #Step 1 : Fetch subscribed tags from tag_list
+      tag_list = tag_selection.where(following)
+      #Step 2 : Unubscribe to all the tags in the tag_list
+  end
 end

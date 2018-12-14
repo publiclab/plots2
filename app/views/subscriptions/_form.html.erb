@@ -1,0 +1,9 @@
+<div class="field">
+  <%= f.label "Subscribe to popular tags related to this post" %><br />
+  <%= f.collection_check_boxes :tids, Tag.all, :id, :name do |b| %>
+    <div class="collection-check-box">
+      <%= b.check_box %>
+      <%= b.label %>
+    </div>
+  <% end %>
+</div>
