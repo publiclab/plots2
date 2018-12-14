@@ -235,7 +235,7 @@
   <% end %>
   
 
-    <% if @profile_user && current_user.can_moderate? && @profile_user == current_user %>
+    <% if @profile_user && current_user && current_user.can_moderate? && @profile_user == current_user %>
 
       <%= form_tag "/users/test_digest_email", method: :post do %>
         <%= submit_tag "Test Digest Email", class: "btn btn-primary" %>
