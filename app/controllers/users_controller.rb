@@ -317,7 +317,7 @@ class UsersController < ApplicationController
   end
 
   def test_digest_email
-    DigestMailJob.perform_async
+    DigestMailJob.perform_async(0)
     redirect_to "/"
   end
 
