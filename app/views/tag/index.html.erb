@@ -51,8 +51,9 @@
       </tr>
     <% end %>
   </table>
-  <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %>
 
   <hr />
 
 </div>
+
+<div class="text-center"> <%= will_paginate @tags, :renderer => BootstrapPagination::Rails if @paginated %></div>
