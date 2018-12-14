@@ -202,6 +202,10 @@ class UserTest < ActiveSupport::TestCase
     assert_not user.save({})
   end
 
+  test 'send_digest_email' do
+    assert users(:bob).send_digest_email
+  end
+
   test 'create a user with omniauth if email prefix does not exist in db' do
     auth = {"uid" => "98746858591", "info" => { "email" => "bansal.sidharth2990@gmail.com"}}
     sidharth = User.create_with_omniauth(auth)
