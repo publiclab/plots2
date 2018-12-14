@@ -20,7 +20,7 @@
   "dependencies": {
     "blob.js": "^1.0.1",
     "blueimp-file-upload": "blueimp/jQuery-File-Upload#^9.22.1",
-    "bootstrap": "^3.2.0",
+    "bootstrap": "4.1.0",
     "bootstrap-3-typeahead": "^4.0.0",
     "bootstrap-datepicker": "^1.6.0",
     "bootstrap-tokenfield": "^0.12.0",
