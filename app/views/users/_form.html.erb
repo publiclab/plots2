@@ -2,7 +2,7 @@
 <%= form_for @user, :url => {:controller => 'users', :action => 'new'}, :html => {:class => "row"} do |f| %>
 <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
-  <div class="col-sm-12">
+  <div class="col-sm-10">
     <% if params[:controller] == "users" && @action == "create" %>
       <div class='col-sm-12' style="display:flex; justify-content: center;">
         <h3> Sign up with </h3>
@@ -120,11 +120,11 @@
         })();
       </script>
     </div>
-    
-    <div class="col-md-2">
-        <%= render :partial => 'users/photo' %>
-    </div>
 
+  </div>
+  
+  <div class="col-md-2">
+    <%= render :partial => 'users/photo' %>
   </div>
   
 </div>
