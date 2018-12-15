@@ -317,5 +317,4 @@ class Tag < ApplicationRecord
          .limit(5)
     end
   end
-
 end
