@@ -20,7 +20,7 @@
       
       <div class="form-group col-sm-6">
         <label for="username"><%= t('users._form.username') %></label>
-        <%= f.text_field :username, { tabindex: 1, placeholder: "John Doe", class: 'form-control', id: 'username' } %>
+        <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username' } %>
         <input type="hidden" name="id" value="<%= @user.username %>" />
       </div>
     
