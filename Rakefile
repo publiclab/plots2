@@ -11,8 +11,6 @@ Rake::Task['test:run'].clear
 
 namespace :test do
 
-  # run normal rails tests but not solr tests
-  #Rake::TestTask.new(:_run) do |t|
   Rake::TestTask.new(:run) do |t|
     t.libs << "test"
     t.test_files = FileList['test/**/*_test.rb']
@@ -28,6 +26,7 @@ namespace :test do
     end
     puts "Running teaspoon tests headlessly"
     Rake::Task["teaspoon"].execute
+    Rake::Task['test:run'].execute
     Rake::Task["coveralls:push"].execute
   end
 end
