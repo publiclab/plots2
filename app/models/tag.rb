@@ -318,12 +318,4 @@ class Tag < ApplicationRecord
     end
   end
 
-  #Given a tagList subscribe to the tags which are present in tagList
-  # and are not subscribed till yet
-  # method for checked radio buttons
-  def subscribe_multiple_tags(tag_list, user_id)
-    #Step 1 : Fetch unsubscribed tags from tag_list
-    #Step 2 : Subscribe to all the tags in the tag_list
-  end
-
 end
