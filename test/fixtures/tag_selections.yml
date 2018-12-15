@@ -72,13 +72,3 @@ selection_eleven:
   user_id: 10
   tid: 20
   following: true
-
-spectacular_one:
-  user_id: 1
-  tid: 14
-  following: false
-
-spectacular_two:
-  user_id: 1
-  tid: 12
-  following: false
