@@ -55,25 +55,15 @@
   </div>
 
   Subscribe to popular topics:
-
-  <tbody>
-   <% @node.tags.each do |item|%>
-   <tr>
-      <th><%= item.name %></th>
-   </tr>
+ <% if params[:controller] == "notes" %>
+   <%= form_for Comment.new do |f| %>
+     <% tag_list = @node.tags %>
+     <% tag_list.each do |t| %>
+       <%= check_box_tag 'choice[tid][]', t.name %>
+       <%= t.name %>
+     <% end %>
    <% end %>
-</tbody>
- <% if params[:controller] == "comments" %>
-<%= form_for @node.tags do |f| %>
-  <% days = ['Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'] %>
-  <% days.each do |day| %>
-    <% f.check_box :days, { multiple: true }, day, false %>
-  <% end %>
-  <% label day %>
-  <%= f.submit %>
-  kjads
-<% end %>
-<% end %>
+ <% end %>
   <div class="well col-md-11" id="preview" style="background: white; display: none;">
   </div>
   <script>
