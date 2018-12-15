@@ -82,8 +82,6 @@ module Plots2
 
     ActiveRecord::SessionStore::Session.table_name = 'rsessions'
 
-    config.middleware.use OpenIdAuthentication
-
     config.after_initialize do
       OpenID::Util.logger = Rails.logger
       ActionController::Base.send :include, OpenIdAuthentication
