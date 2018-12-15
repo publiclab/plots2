@@ -162,12 +162,14 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.find
     @user_session.destroy
     flash[:notice] = I18n.t('user_sessions_controller.logged_out')
-    redirect_to '/' + '?_=' + Time.now.to_i.to_s
+    current_uri = URI(request.referer).path
+    redirect_to current_uri + '?_=' + Time.now.to_i.to_s
   end
 
   def logout_remotely
     current_user.reset_persistence_token!
     flash[:notice] = I18n.t('user_sessions_controller.logged_out')
-    redirect_to '/' + '?_=' + Time.now.to_i.to_s
+    current_uri = URI(request.referer).path
+    redirect_to current_uri + '?_=' + Time.now.to_i.to_s
   end
 end
