@@ -19,12 +19,18 @@ class TagSelection < ApplicationRecord
     tag.name
   end
 
-  #Given a tagList unsubscribe to the tags which are present in tagList
-  # and are subscribed till yet
-  # method for unchecked radio buttons
-  def subscribe_multiple_tags(tag_list, user_id)
-      #Step 1 : Fetch subscribed tags from tag_list
-      tag_list = tag_selection.where(following)
-      #Step 2 : Unubscribe to all the tags in the tag_list
+  #Given a tagList subscribe to the tags which are checked in tagList
+  # and unsubscribe to tags unchecked in the tag_list
+  def subscribe_multiple_tags(node, user, tag_list)
+      for node.tags do |t|
+        value = tag_list[t.tid]
+        subscription = TagSelection.where(:user_id => user.uid,
+                                          :tid => t.tid).first_or_create
+        subscription.following = value
+        if subscription.following_changed?
+          subscription.save!
+        end
+      end
   end
+
 end
