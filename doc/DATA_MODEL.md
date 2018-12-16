@@ -77,8 +77,9 @@ Node `status` -- a property of `comments`, can be:
 * 0: banned
 * 1: normal
 * 3: draft
+* 4: moderated -- i.e. node created by a first-time poster, and has not yet been "approved"
 
-The status for Node is now the same for comment in our Code base except for status = 4
+The status for Node is now the same for comment in our Code base except for status = 5
 
 ### Answers
 
