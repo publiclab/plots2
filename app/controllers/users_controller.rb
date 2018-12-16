@@ -4,7 +4,6 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i(info followed following followers)
 
   def new
-    @spamaway = Spamaway.new
     @user = User.new
     @action = "create" # sets the form url
   end
