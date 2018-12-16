@@ -234,9 +234,10 @@
     </div>
   <% end %>
 
-  <% if @profile_user && current_user && @profile_user == current_user %>
+  <% if @profile_user && current_user && current_user.can_moderate? && @profile_user == current_user %>
+    <br />
     <%= form_tag "/users/test_digest_email", method: :post do %>
-      <%= submit_tag "Test Digest Email" %>
+      <%= submit_tag "Test Digest Email", class: "btn btn-info", style: "width: 100%;" %>
     <% end %>
   <% end %>
 
