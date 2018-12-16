@@ -16,6 +16,19 @@
 
     <% end %>
 
+    <% if params[:controller] == "users" && params[:action] == "edit" %>
+      <div class='col-sm-12' style="display:flex; justify-content: center;">
+        <h3> Link your Public Lab account to providers </h3>
+      </div>
+
+      <div class='col-sm-12' style="display:flex; justify-content: center;">
+        <%= render :partial => "layouts/social_icons" %>
+      </div>
+
+      <br style="clear:both;"/>
+
+    <% end %>
+
     <div class="row">
 
       <div class="form-group col-sm-6">
@@ -25,14 +38,6 @@
       </div>
 
       <div class="form-group col-sm-6">
-          <% if params[:controller] == "users" && params[:action] == "edit" %>
-            <div class='col-lg-8 col-md-10 col-sm-10' style="display:flex; justify-content: flex-start; padding: 0;">
-              <label> Link your Public Lab account to providers </label>
-            </div>
-            <div class='col-lg-8 col-md-10 col-sm-10' style="display:flex; justify-content: flex-start; padding: 0; margin-bottom: 10px;">
-              <%= render :partial => "layouts/social_icons" %>
-            </div>
-          <% end %>
 
         <label for="email"><%= t('users._form.email') %></label>
         <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
