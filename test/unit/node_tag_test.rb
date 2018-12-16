@@ -182,4 +182,21 @@ class NodeTagTest < ActiveSupport::TestCase
     assert_not nodes(:blog).can_tag(tagname, user)
     assert_equal I18n.t('node.page_does_not_exist'), nodes(:blog).can_tag(tagname, user, true)
   end
+
+  test 'subscribe to the tags' do
+    user = users(:bob)
+    node = nodes(:one)
+    # present in the db tag_list = { {1 => true}, {2 => true}, {14 => false}, {12 => false} }
+    # supplied with the radio buttons
+    tag_list = { {1 => true}, {2 => false}, {14 => true}, {12 => false}}
+    TagSelection.subscribe_multiple_tags(node, user, tag_list)
+    selection1 = tag_selections(:selection_one)
+    awesome = tag_selections(:awesome)
+    spectacular1 = tag_selections(:spectacular_one)
+    spectacular2 = tag_selections(:spectacular_two)
+    assert_equal selection.following, true
+    assert_equal awesome.following, false
+    assert_equal spectacular1.following, true
+    assert_equal spectacular2.following, false
+  end
 end
