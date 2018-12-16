@@ -62,7 +62,7 @@
         <%= recaptcha_tags %>
         <p>If you cannot use the ReCaptcha to verify you are not a bot, <a href="/signup?spamaway=true">use this alternative verification</a>.</p>
       <% else %>
-        <%= render partial: 'users/spamaway', locals: { spamaway: Spamaway.new } %>
+        <%= render partial: 'users/spamaway' %>
       <% end %>
 
       <script>
