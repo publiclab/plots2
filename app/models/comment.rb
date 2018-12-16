@@ -234,19 +234,21 @@ class Comment < ApplicationRecord
                   gmail_parsed_mail mail_doc
                 elsif domain == "yahoo"
                   yahoo_parsed_mail mail_doc
+                elsif domain == "outlook"
+                  outlook_parsed_mail mail_doc
                 elsif gmail_quote_present?(mail_doc)
                   gmail_parsed_mail mail_doc
                 else
                   {
-                    "comment_content" => mail_doc,
-                    "extra_content" => nil
+                    comment_content: mail_doc,
+                    extra_content: nil
                   }
                 end
-      if content["extra_content"].nil?
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+      if content[:extra_content].nil?
+        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
       else
-        extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+        extra_content_markdown = ReverseMarkdown.convert content[:extra_content]
+        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
         comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
       end
       message_id = mail.message_id
@@ -271,19 +273,21 @@ class Comment < ApplicationRecord
                   gmail_parsed_mail mail_doc
                 elsif domain == "yahoo"
                   yahoo_parsed_mail mail_doc
+                elsif domain == "outlook"
+                  outlook_parsed_mail mail_doc
                 elsif gmail_quote_present?(mail_doc)
                   gmail_parsed_mail mail_doc
                 else
                   {
-                    "comment_content" => mail_doc,
-                    "extra_content" => nil
+                    comment_content: mail_doc,
+                    extra_content: nil
                   }
                 end
-      if content["extra_content"].nil?
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+      if content[:extra_content].nil?
+        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
       else
-        extra_content_markdown = ReverseMarkdown.convert content["extra_content"]
-        comment_content_markdown = ReverseMarkdown.convert content["comment_content"]
+        extra_content_markdown = ReverseMarkdown.convert content[:extra_content]
+        comment_content_markdown = ReverseMarkdown.convert content[:comment_content]
         comment_content_markdown = comment_content_markdown + COMMENT_FILTER + extra_content_markdown
       end
       message_id = mail.message_id
@@ -311,8 +315,8 @@ class Comment < ApplicationRecord
     end
 
     {
-      "comment_content" => comment_content,
-      "extra_content" => extra_content
+      comment_content: comment_content,
+      extra_content: extra_content
     }
   end
 
@@ -327,8 +331,26 @@ class Comment < ApplicationRecord
     end
 
     {
-      "comment_content" => comment_content,
-      "extra_content" => extra_content
+      comment_content: comment_content,
+      extra_content: extra_content
+    }
+  end
+
+  def self.outlook_parsed_mail(mail_doc)
+    separator = mail_doc.inner_html.match(/(.+)(<div id="appendonsend"><\/div>)(.+)/m)
+    if separator.nil?
+      comment_content = mail_doc
+      extra_content = nil
+    else
+      body_message = separator[1].match(/(.+)(<body dir="ltr">)(.+)/m)
+      comment_content = Nokogiri::HTML(body_message[3])
+      trimmed_message = separator[3].match(/(.+)(<\/body>)(.+)/m)
+      extra_content = Nokogiri::HTML(trimmed_message[1])
+    end
+
+    {
+      comment_content:  comment_content,
+      extra_content: extra_content
     }
   end
 

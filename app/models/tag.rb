@@ -265,14 +265,14 @@ class Tag < ApplicationRecord
     tag_followers.reject { |user| following_given_tags.include? user }
   end
 
+  # https://github.com/publiclab/plots2/pull/4266
   def self.trending(limit = 5, start_date = DateTime.now - 1.month, end_date = DateTime.now)
-    Tag.joins(:node_tag, :node)
-       .select('node.nid, node.created, node.status, term_data.*, community_tags.*')
+    Tag.select([:name])
+       .joins(:node_tag, :node)
        .where('node.status = ?', 1)
        .where('node.created > ?', start_date.to_i)
        .where('node.created <= ?', end_date.to_i)
        .distinct
-       .group([:name, 'node.nid', 'term_data.tid', 'community_tags.nid', 'community_tags.uid', 'community_tags.date']) # ONLY_FULL_GROUP_BY, issue #3120
        .order('count DESC')
        .limit(limit)
   end

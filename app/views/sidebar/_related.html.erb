@@ -45,6 +45,12 @@
   <% end %>
   <% if @node && !@node.has_power_tag('place') && @node.lat && @node.lon %>
     <%= render_map(@node.lat, @node.lon) %>
+  <% elsif @node&.has_power_tag('place') && !@node.lat && !@node.lon %>
+    <div id="map_template" style="position: relative; display: inline-block;">
+      <img src="https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/0/0/0.png" style="height:69px; width: 263px; position: relative; margin-right: -10px;">
+      <button class="btn btn-default btn-lg" id="add_location" style="position: absolute; position: absolute;top: 19% ; left: 24% ;" type="button" name="button"><strong>Add location</strong></button>
+    </div>
+    <center><span>Learn about location <a href="https://publiclab.org/location-privacy">privacy</a></span></center>
   <% end %>
 
   <br style="clear:both;" />
@@ -73,6 +79,11 @@
       <%= feature('sidebar-welcome') %>
     <% end %>
   <% end %>
-
 </div>
 <%= javascript_include_tag 'sidebar' %>
+
+<script type="text/javascript">
+  $('#add_location').on('click', function() {
+    $('.blurred-location-input').click();
+  })
+</script>
