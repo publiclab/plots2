@@ -24,51 +24,51 @@
         </div>
       </form>
 
-      <ul class="nav navbar-nav navbar-left">
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
             Get Involved
           </a>
-          <ul class="dropdown-menu">
-            <li><a href="/events">Attend an event</a></li>
-            <li><a href="/chat">Chat online</a></li>
-            <li><a href="/questions">Ask a question</a></li>
-            <li><a href="/tags">Find a topic you care about</a></li>
-            <li><a href="/post" class="requireLogin">Post your work</a></li>
-            <li><a href="/newsletter">Subscribe to the newsletter</a></li>
-            <li><a href="/requests">Respond to a request</a></li>
-            <li class="divider"></li>
-            <li><a href="/dashboard">Browse recent research</a></li>
-            <li><a href="/methods">Discover methods</a></li>
-            <li><a href="/kits">Contribute a kit</a></li>
-            <li><a href="/wiki/software-outreach">Software Projects</a></li>
-          </ul>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/events">Attend an event</a>
+            <a class="dropdown-item" href="/chat">Chat online</a>
+            <a class="dropdown-item" href="/questions">Ask a question</a>
+            <a class="dropdown-item" href="/tags">Find a topic you care about</a>
+            <a class="dropdown-item requireLogin" href="/post">Post your work</a>
+            <a class="dropdown-item" href="/newsletter">Subscribe to the newsletter</a>
+            <a class="dropdown-item" href="/requests">Respond to a request</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/dashboard">Browse recent research</a>
+            <a class="dropdown-item" href="/methods">Discover methods</a>
+            <a class="dropdown-item" href="/kits">Contribute a kit</a>
+            <a class="dropdown-item" href="/wiki/software-outreach">Software Projects</a>
+          </div>
         </li>
 
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
             <%= t('layout._header.about.about_title') %>
           </a>
-          <ul class="dropdown-menu">
-            <li><a href="/wiki/stories"><%= t('layout._header.about.stories') %></a></li>
-            <li><a href="/blog"><%= t('layout._header.about.blog') %></a></li>
-            <li><a href="/about"><%= t('layout._header.about.about_public_lab') %></a></li>
-            <li class="divider"></li>
-            <li><a href="/wiki/plots-staff"><%= t('layout._header.about.team') %></a></li>
-            <li><a href="/wiki/organizers"><%= t('layout._header.about.organizers') %></a></li>
-            <li><a href="/wiki/board"><%= t('layout._header.about.board') %></a></li>
-            <li><a href="/wiki/how-we-are-funded"><%= t('layout._header.about.fund') %></a></li>
-            <li class="divider"></li>
-            <li><a href="/media"><%= t('layout._header.about.press_and_media') %></a></li>
-            <li><a href="/wiki/contact"><%= t('layout._header.about.contact') %></a></li>
-          </ul>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/wiki/stories"><%= t('layout._header.about.stories') %></a>
+            <a class="dropdown-item" href="/blog"><%= t('layout._header.about.blog') %></a>
+            <a class="dropdown-item" href="/about"><%= t('layout._header.about.about_public_lab') %></a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/wiki/plots-staff"><%= t('layout._header.about.team') %></a>
+            <a class="dropdown-item" href="/wiki/organizers"><%= t('layout._header.about.organizers') %></a>
+            <a class="dropdown-item" href="/wiki/board"><%= t('layout._header.about.board') %></a>
+            <a class="dropdown-item" href="/wiki/how-we-are-funded"><%= t('layout._header.about.fund') %></a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/media"><%= t('layout._header.about.press_and_media') %></a>
+            <a class="dropdown-item" href="/wiki/contact"><%= t('layout._header.about.contact') %></a>
+          </div>
         </li>
 
-        <li class="hidden-sm">
-          <a target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
+        <li class="nav-item hidden-sm">
+          <a class="nav-link" target="_blank" href="//store.publiclab.org"><%= t('layout._header.store') %></a>
         </li>
-        <li class="hidden-sm">
-          <a href="/donate"><%= t('layout._header.donate') %></a>
+        <li class="nav-item hidden-sm">
+          <a class="nav-link" href="/donate"><%= t('layout._header.donate') %></a>
         </li>
       </ul>
 
@@ -141,7 +141,7 @@
                 <li class="hidden-lg hidden-md">
                   <a href="/donate"><%= t('layout._header.donate') %></a>
                 </li>
-                 These menu items will only appear in the "More" dropdown menu. 
+                <!--These menu items will only appear in the "More" dropdown menu. -->
                 <% if current_user %>
                   <li class="hidden-lg">
                     <a rel="tooltip" title="<%= t('layout._header.your_dashboard') %>" data-placement="bottom" href="/dashboard">Dashboard</a>
