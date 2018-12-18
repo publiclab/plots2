@@ -72,7 +72,7 @@ They are typically cached for quick loading, and can be inserted anywhere in the
 
 Comments belong to Notes via `nid`, and each have an author via `uid`; primary key `cid`. Maps also have comments via `nid`, and Answers may also have comments, via `aid`.
 
-Node `status` -- a property of `comments`, can be:
+Comment `status` -- a property of `comments`, can be:
 
 * 0: banned
 * 1: normal
