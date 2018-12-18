@@ -33,7 +33,7 @@ class AdminControllerTest < ActionController::TestCase
     assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now an admin.", flash[:notice]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
-	
+
   test 'admin should promote user role to moderator' do
     UserSession.create(users(:jeff))
     user = users(:bob)
