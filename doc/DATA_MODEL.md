@@ -76,7 +76,6 @@ Comment `status` -- a property of `comments`, can be:
 
 * 0: banned
 * 1: normal
-* 3: draft
 * 4: moderated -- i.e. comment created by a first-time poster, and has not yet been "approved"
 
 ### Answers
