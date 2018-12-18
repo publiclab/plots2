@@ -113,7 +113,6 @@ class NodeSharedTest < ActiveSupport::TestCase
     html = NodeShared.notes_map_by_tag(before)
     assert_equal 1, html.scan('<div class="leaflet-map"').length
     # assert_equal 1, html.scan('L.marker').length
-    assert_equal 1, html.scan('<img class="leaflet-marker-icon').length
   end
 
   test 'that NodeShared can be used to convert short codes like [map:people:___:___] into maps which display peoples locations' do
