@@ -45,9 +45,9 @@
       <div class="btn-group">
         <a class="btn btn-sm" href="/feed/tag/<%= tag.name %>.rss"><i class="fa fa-rss"></i> RSS</a>
         <% if current_user.following(tag.name) %>
-          <a rel="tooltip" title="<%= t('tag.contributors-index.unfollow') %>" class="btn btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-eye"></i> <%= t('tag.contributors-index.following') %> <b><%= tag.name %></b></a>
+          <a rel="tooltip" title="<%= t('tag.contributors-index.unfollow') %>" class="btn btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.contributors-index.following') %> <b><%= tag.name %></b></a>
         <% else %>
-          <a class="btn btn-sm" href="/subscribe/tag/<%= tag.name %>"><i class="fa fa-eye"></i> <%= t('tag.contributors-index.follow') %> <b><%= tag.name %></b></a>
+          <a class="btn btn-sm" href="/subscribe/tag/<%= tag.name %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.contributors-index.follow') %> <b><%= tag.name %></b></a>
         <% end %>
       </div>
       <!-- AJAXify -->
