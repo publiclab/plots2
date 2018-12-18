@@ -4,14 +4,10 @@
 <h2> Results for <%= @search_criteria.query %> </h2>
 
 <div class="row" %>
-<div class="col-md-5" >
+<div class="col-md-7" >
     <h4> <strong> Searched users' profiles by username and bio </strong></h4>
-    <hr>
+    <br>
     <% if @profiles.present? %>
-        <div class="container">
-            <h2> Results for <%= @search_criteria.query %></h2>
-            <p> <strong> Searched users' profiles by username and bio </strong></p>
-            <hr>
             <table class="table">
                 <tr>
                     <th class="visible-sm visible-xs"></th>
@@ -38,7 +34,6 @@
                     </tr>
                 <% end %>
             </table>
-        </div>
     <% else %>
         <h4>
             No results found :-(
@@ -46,7 +41,7 @@
         </h4>
     <% end %>
 </div>
-<div class="col-md-6 offset-md-2" >
+<div class="col-md-4 col-md-offset-1" >
     <h4> <strong> Searched users' profiles by usertag </strong> </h4>
     <hr>
     <% if @tag_profiles.present?%>
