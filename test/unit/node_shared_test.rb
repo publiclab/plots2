@@ -112,7 +112,8 @@ class NodeSharedTest < ActiveSupport::TestCase
     before = "Here are some notes in a map: \n\n[map:tag:blog:71.00:52.00] \n\nThis is how you make it work:\n\n`[map:tag:blog:71.00:52.00]`\n\n `[map:tag:blog:71.00:52.00]`\n\nMake sense?"
     html = NodeShared.notes_map_by_tag(before)
     assert_equal 1, html.scan('<div class="leaflet-map"').length
-    assert_equal 1, html.scan('L.marker').length
+    # assert_equal 1, html.scan('L.marker').length
+    assert_equal 1, html.scan('<img class="leaflet-marker-icon').length
   end
 
   test 'that NodeShared can be used to convert short codes like [map:people:___:___] into maps which display peoples locations' do
