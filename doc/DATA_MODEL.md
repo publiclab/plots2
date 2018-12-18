@@ -79,8 +79,6 @@ Comment `status` -- a property of `comments`, can be:
 * 3: draft
 * 4: moderated -- i.e. comment created by a first-time poster, and has not yet been "approved"
 
-The status for Node is now the same for comment in our Code base except for status = 5
-
 ### Answers
 
 Answers are similar to Comments, but are used in Question-type Notes, and may each have Comments of their own. Primary key `aid`.
