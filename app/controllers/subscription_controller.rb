@@ -119,48 +119,63 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
+    if !params[:name]
+      flash[:notice] = "Please enter tags for subscription in the url."
+      redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+    end
     tag_list = params[:type].split(',')
     for t in tag_list
-      if current_user
-        # assume tag, for now
-        if params[:type] == "tag"
-          tag = Tag.find_by(name: t)
-          if tag.nil?
-            # if the tag doesn't exist, we should create it!
-            # this could fail validations; error out if so...
-            tag = Tag.new(
-              :vid => 3, # vocabulary id
-              :name => params[:name],
-              :description => "",
-              :weight => 0
-            )
-            begin
-              tag.save!
-            rescue ActiveRecord::RecordInvalid
-              flash[:error] = tag.errors.full_messages
-              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-              return false
+      #tag should be non empty
+      if !t.nil?
+        #should be logged in to subscribe
+        if current_user
+          # assume tag, for now
+          if params[:type] == "tag"
+            tag = Tag.find_by(name: t)
+            if tag.nil?
+              # if the tag doesn't exist, we should create it!
+              # this could fail validations; error out if so...
+              tag = Tag.new(
+                :vid => 3, # vocabulary id
+                :name => params[:name],
+                :description => "",
+                :weight => 0
+              )
+              begin
+                tag.save!
+              rescue ActiveRecord::RecordInvalid
+                flash[:error] = tag.errors.full_messages
+                redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+                return false
+              end
             end
-          end
-
-          # test for uniqueness, handle it as a validation error if you like
-          if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
-            #do nothing
-          else
-            if set_following(true, params[:type], tag.tid)
+            # test for uniqueness
+            if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
               #do nothing
-              #Successfully we have added subscription
             else
-              flash[:error] = "Something went wrong!" # silly
+              #Successfully we have added subscription
+              set_following(true, params[:type], tag.tid)
             end
+          else
+            # user or node subscription
+
           end
         else
-          # user or node subscription
-
+          flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
+          redirect_to "subscribe/multiple_tag/" + params[:type] + params[:names]
         end
-      else
-        flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
-        redirect_to "subscribe/multiple_tag/" + params[:type] + params[:names]
+      end
+    end
+    if current_user
+      respond_with do |format|
+        format.html do
+          if request.xhr?
+            render :json => true
+          else
+            flash[:notice] = "You are now following '#{params[:names]}'."
+            redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+          end
+        end
       end
     end
   end
