@@ -37,13 +37,7 @@
             <li><a href="/chat">Chat online</a></li>
             <li><a href="/questions">Ask a question</a></li>
             <li><a href="/tags">Find a topic you care about</a></li>
-            <li id="post-your-work"><a href="/post">Post your work</a></li>
-            <script>
-              $(document).ready(function() {      
-                var href = '/post';
-                gridLinkModal('#post-your-work',href);
-              });
-            </script>
+            <li><a href="/post" class="requireLogin">Post your work</a></li>
             <li><a href="/requests">Respond to a request</a></li>
             <li class="divider"></li>
             <li><a href="/dashboard">Browse recent research</a></li>
@@ -274,21 +268,3 @@
     vertical-align: middle;
   }
 </style>
-
-<script>
-  function gridLinkModal(selector, href) {
-    var current_user = $('ul.nav.navbar-nav.navbar-right').children('li:nth-of-type(2)').text().trim() !== "Login"
-    if(!current_user) {
-      
-      var anchor = $(selector).find('a[href="' + href + '"]');
-      anchor.attr({
-        'href': '',
-        'data-toggle': 'modal',
-        'data-target': '#loginModal'
-      });
-      anchor.on('click', function() {
-        $.getJSON(href);
-      });
-    }
-  }
-</script>
