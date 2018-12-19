@@ -87,6 +87,7 @@ Plots2::Application.routes.draw do
   get 'subscriptions' => 'subscription#index'
   get 'subscriptions/digest' => 'subscription#digest'
   get 'subscribe/multiple_tag/:type/:names' => 'subscription#multiple_add'
+  put 'subscribe/multiple_tag/:type/:names' => 'subscription#multiple_add'
 
   get 'wiki/stale' => 'wiki#stale'
   get 'wiki/new' => 'wiki#new'
