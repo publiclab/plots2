@@ -124,13 +124,13 @@ class SubscriptionController < ApplicationController
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
     end
     tag_list = params[:type].split(',')
-    #should be logged in to subscribe
+    # should be logged in to subscribe
     if current_user
       # assume tag, for now
       if params[:type] == "tag"
         for t in tag_list
           tag = Tag.find_by(name: t)
-          #t should be not nil consider params[:names] = balloon,,mapping,,kites,oil
+          # t should be not nil consider params[:names] = balloon,,mapping,,kites,oil
           if !t.nil? && tag.nil?
             # if the tag doesn't exist, we should create it!
             # this could fail validations; error out if so...
@@ -149,8 +149,8 @@ class SubscriptionController < ApplicationController
             end
           end
           # test for uniqueness
-          if !TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
-            #Successfully we have added subscription
+          unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
+            # Successfully we have added subscription
             set_following(true, params[:type], tag.tid)
           end
         end
@@ -172,6 +172,7 @@ class SubscriptionController < ApplicationController
       redirect_to "subscribe/multiple_tag/" + params[:type] + params[:names]
     end
   end
+
   private
 
   def set_following(value, type, id)
