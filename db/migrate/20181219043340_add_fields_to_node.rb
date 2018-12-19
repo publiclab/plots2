@@ -1,7 +1,7 @@
 class AddFieldsToNode < ActiveRecord::Migration[5.2]
   def up
-    add_column :node, :latitude, :float, :precision => 30
-    add_column :node, :longitude, :float, :precision => 30
+    add_column :node, :latitude, :decimal, :precision => 20, :scale => 17
+    add_column :node, :longitude, :decimal, :precision => 20, :scale => 17
     add_column :node, :precision, :integer
 
     sql = "SELECT `node`.`nid`,`term_data`.`name` FROM `node` LEFT OUTER JOIN `community_tags` ON `community_tags`.`nid` = `node`.`nid` LEFT OUTER JOIN `term_data` ON `term_data`.`tid` = `community_tags`.`tid` WHERE (term_data.name LIKE 'lat:%' or term_data.name LIKE 'lon:%')"
