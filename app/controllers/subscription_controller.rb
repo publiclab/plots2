@@ -123,7 +123,7 @@ class SubscriptionController < ApplicationController
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
     end
-    tag_list = params[:type].split(',')
+    tag_list = params[:names].split(',')
     # should be logged in to subscribe
     if current_user
       # assume tag, for now
@@ -136,7 +136,7 @@ class SubscriptionController < ApplicationController
             # this could fail validations; error out if so...
             tag = Tag.new(
               :vid => 3, # vocabulary id
-              :name => params[:name],
+              :name => t,
               :description => "",
               :weight => 0
             )
