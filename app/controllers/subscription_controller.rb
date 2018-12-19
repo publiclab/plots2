@@ -119,7 +119,7 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
-    if !params[:names]
+    unless params[:names]
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
     end
@@ -128,7 +128,7 @@ class SubscriptionController < ApplicationController
     if current_user
       # assume tag, for now
       if params[:type] == "tag"
-        for t in tag_list
+        tag_list.each do |t|
           tag = Tag.find_by(name: t)
           # t should be not nil consider params[:names] = balloon,,mapping,,kites,oil
           if !t.nil? && tag.nil?
