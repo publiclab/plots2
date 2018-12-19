@@ -130,7 +130,7 @@ class SubscriptionController < ApplicationController
       if params[:type] == "tag"
         for t in tag_list
           tag = Tag.find_by(name: t)
-          if tag.nil?
+          if !t.nil? && tag.nil?
             # if the tag doesn't exist, we should create it!
             # this could fail validations; error out if so...
             tag = Tag.new(
@@ -148,34 +148,28 @@ class SubscriptionController < ApplicationController
             end
           end
           # test for uniqueness
-          if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
-            #do nothing
-          else
+          if !TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
             #Successfully we have added subscription
             set_following(true, params[:type], tag.tid)
           end
-        else
-            # user or node subscription
-
+        end
+        respond_with do |format|
+          format.html do
+            if request.xhr?
+              render :json => true
+            else
+              flash[:notice] = "You are now following '#{params[:names]}'."
+              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+            end
           end
+        end
       else
-          flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
-          redirect_to "subscribe/multiple_tag/" + params[:type] + params[:names]
-        end
-    end
-  if current_user
-      respond_with do |format|
-        format.html do
-          if request.xhr?
-            render :json => true
-          else
-            flash[:notice] = "You are now following '#{params[:names]}'."
-            redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-          end
-        end
+            # user or node subscription
       end
+    else
+      flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
+      redirect_to "subscribe/multiple_tag/" + params[:type] + params[:names]
     end
-  end
   end
   private
 
