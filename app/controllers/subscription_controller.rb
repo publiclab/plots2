@@ -119,54 +119,51 @@ class SubscriptionController < ApplicationController
   end
 
   def multiple_add
-    if !params[:name]
+    if !params[:names]
       flash[:notice] = "Please enter tags for subscription in the url."
       redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
     end
     tag_list = params[:type].split(',')
-    for t in tag_list
-      #tag should be non empty
-      if !t.nil?
-        #should be logged in to subscribe
-        if current_user
-          # assume tag, for now
-          if params[:type] == "tag"
-            tag = Tag.find_by(name: t)
-            if tag.nil?
-              # if the tag doesn't exist, we should create it!
-              # this could fail validations; error out if so...
-              tag = Tag.new(
-                :vid => 3, # vocabulary id
-                :name => params[:name],
-                :description => "",
-                :weight => 0
-              )
-              begin
-                tag.save!
-              rescue ActiveRecord::RecordInvalid
-                flash[:error] = tag.errors.full_messages
-                redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-                return false
-              end
+    #should be logged in to subscribe
+    if current_user
+      # assume tag, for now
+      if params[:type] == "tag"
+        for t in tag_list
+          tag = Tag.find_by(name: t)
+          if tag.nil?
+            # if the tag doesn't exist, we should create it!
+            # this could fail validations; error out if so...
+            tag = Tag.new(
+              :vid => 3, # vocabulary id
+              :name => params[:name],
+              :description => "",
+              :weight => 0
+            )
+            begin
+              tag.save!
+            rescue ActiveRecord::RecordInvalid
+              flash[:error] = tag.errors.full_messages
+              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+              return false
             end
-            # test for uniqueness
-            if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
-              #do nothing
-            else
-              #Successfully we have added subscription
-              set_following(true, params[:type], tag.tid)
-            end
+          end
+          # test for uniqueness
+          if TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
+            #do nothing
           else
+            #Successfully we have added subscription
+            set_following(true, params[:type], tag.tid)
+          end
+        else
             # user or node subscription
 
           end
-        else
+      else
           flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
           redirect_to "subscribe/multiple_tag/" + params[:type] + params[:names]
         end
-      end
     end
-    if current_user
+  if current_user
       respond_with do |format|
         format.html do
           if request.xhr?
@@ -179,7 +176,7 @@ class SubscriptionController < ApplicationController
       end
     end
   end
-
+  end
   private
 
   def set_following(value, type, id)
