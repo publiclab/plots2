@@ -93,7 +93,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_profile_user
-    return @current_user && @profile_user == @current_user
+    @current_user && @profile_user == @current_user
   end
 
   def require_user
