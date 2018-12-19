@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  before_action :quiz_stats, only: %i(index answered popular liked unanswered)
+
   private
 
   def filter_questions_by_tag(questions, tagnames)
@@ -16,10 +18,13 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def quiz_stats
+    @stats = helpers.questions_stats(params[:period])
+  end
+
   public
 
   def index
-    @stats = helpers.filtering(params[:period])
     @title = 'Questions and Answers'
     set_sidebar
     @questions = Node.questions
