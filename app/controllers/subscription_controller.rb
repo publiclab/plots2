@@ -130,6 +130,7 @@ class SubscriptionController < ApplicationController
       if params[:type] == "tag"
         for t in tag_list
           tag = Tag.find_by(name: t)
+          #t should be not nil consider params[:names] = balloon,,mapping,,kites,oil
           if !t.nil? && tag.nil?
             # if the tag doesn't exist, we should create it!
             # this could fail validations; error out if so...
@@ -164,7 +165,7 @@ class SubscriptionController < ApplicationController
           end
         end
       else
-            # user or node subscription
+        # user or node subscription
       end
     else
       flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
