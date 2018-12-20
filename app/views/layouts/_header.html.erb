@@ -20,7 +20,7 @@
     <div class="collapse navbar-collapse" id="header-navbar-collapse">
       <form class="navbar-form navbar-left" id="searchform" autocomplete="off">
         <div class="input-group">
-          <input type="text" id="searchform_input" style="min-width: 220px;" minlength="3" class="form-control search-query typeahead" role="search" qryType="all" placeholder="<%= t('layout._header.search') %>"  value="<%= params[:query] %>" required>
+          <input type="text" id="searchform_input" style="min-width: 220px;" minlength="3" oninput="moreChar(this)" class="form-control search-query typeahead" role="search" qryType="all" placeholder="<%= t('layout._header.search') %>"  value="<%= params[:query] %>" required>
           <span class="input-group-btn">
             <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
           </span>
