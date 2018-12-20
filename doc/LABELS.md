@@ -17,6 +17,7 @@ Some of the most used labels are:-
 * ` more-detail-please ` tells the issue lacks proper description and perhaps needs code links or the location of the problem.
 * Labels like ` HTML ` , ` CSS ` , ` Ruby ` and ` JavaScript ` tell the **programming language** of the issue.
 * ` design ` - This says that the issue requires more design work and discussion (i.e. mockups and sketches).
+* ` documentation ` - This tells that a certain feature lacks proper documentation or needs more documents.
 * ` testing ` - These issues are usually for adding `unit tests`, `integration tests` or any other tests for a particular feature/program.
 * ` outreach ` - The outreach issues involve community involvement and helping people who're stuck somewhere.
 * Some issues have been labeled with ` summer-of-code ` , ` outreachy ` , ` gci-candidate ` and ` rgsoc ` which mean that these issues have been reserved for students who're participating in these events.
