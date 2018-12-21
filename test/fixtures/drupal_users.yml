@@ -130,3 +130,10 @@ user_first_time_poster:
   mail: user_first_time_poster@pxlshp.com
   uid: 19
   created: <%= Time.now.to_i %>
+
+outlook_test:
+  name: kluo
+  status: 1
+  mail: pl.usertest@outlook.com
+  uid: 20
+  created: <%= Time.now.to_i %>
