@@ -1,0 +1,31 @@
+<onload="myFunction()" style="margin:0;">
+<div id="loader-wrapper">
+    <div id="loader"></div>
+
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+
+</div>
+ <div id="content">
+ <div id="loader"></div>
+ <div class="loaded"></div>
+   <%= render :partial => 'layouts/header' %>
+<script>
+var myVar;
+ function myFunction() {
+    myVar = setTimeout(showPage, 3000);
+}
+ function showPage() {
+  document.getElementById("loader").style.display = "none";
+}
+</script>
+<script>
+$(document).ready(function() {
+ 
+    setTimeout(function(){
+        $('body').addClass('loaded');
+        $('h1').css('color','#FFFFFF');
+    }, 3000);
+ 
+});
+</script>
