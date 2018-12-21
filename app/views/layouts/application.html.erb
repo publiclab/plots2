@@ -78,41 +78,9 @@
   <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
   <script src="https://cdn.jsdelivr.net/npm/leaflet-search@2.4.0/dist/leaflet-search.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/leaflet-search@2.4.0/dist/leaflet-search.min.css">
-<link rel="stylesheet" type="text/css" href="app/assets/stylesheets/application.css">
   </head>
 
-<div id="loader-wrapper">
-   <div id="loader".</div>
-
-   <div class="loader-section section-left"></div>
-   <div class="loader-section section-right"></div>
-</div>
-  <div id="content">
-  <div id="loader"></div>
-
-<script>
-var myVar;
- function myFunction() {
-    myVar = setTimeout(showPage, 3000);
-}
- function showPage() {
-  document.getElementById("Loader").style.display = "none";
-}
-</script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script>
-$(document).ready(function() {
-
-    setTimeout(function(){
-	$('body').addClass('loaded');
-	$('hi').css('color','#FFFFFF');
-    }, 3000);
-
-});
-</script>
-  <body onload="myFunction()" style="margin:0;"
-<div class="loaded"></div>
-    <%= render :partial => 'layouts/header' %>
+<%= render :partial => "loading_page" %>
 
     <div class="container">
       <div class="row">
@@ -125,4 +93,6 @@ $(document).ready(function() {
     <%= render :partial => "layouts/footer" %>
 
   </body>
+=======
+>>>>>>> Loading page
 </html>
