@@ -209,7 +209,7 @@
     <% end %>
   </p>
 
-  <% if @profile_user && current_user && @profile_user == current_user %>
+  <% if current_profile_user %>
     <button id="btn-token" class="btn btn-default btn-block">My Access Token</button>
   <% end %>
 
