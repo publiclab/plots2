@@ -9,9 +9,9 @@ class ApplicationController < ActionController::Base
 
   private
   
-   def current_profile_user
+  def current_profile_user
     return @current_user && @profile_user == @current_user
-  end
+    end
 
   # eventually videos could be a power tag
   def set_sidebar(type = :generic, data = :all, args = {})
