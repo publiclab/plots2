@@ -1,20 +1,52 @@
 <h1>Tags</h1>
 <em class="italics"><a href="/tags">Tags</a> organize our knowledge base. Click to learn more or subscribe to a topic.</em>
 
+<div style="background: #f2f2f2; padding-left: 10px;border-radius: 10px; margin-top: 10px">
+  <div style="padding-top: 10px; padding-right: 10px">
+    <% parent ||= nil %>
 
-<% if @node %>
-  <%= render partial: 'tag/replication' %>
+    <% if current_user && (parent != :profile || (current_user.id == @user.id || current_user.role == "admin")) %>
+    <% url = url || "/tag/create/" + @node.id.to_s %>
 
-  <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: true, label_name: 'label-default', tags: @node.node_tags } %>
-  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @node.node_tags } %>
-  </span>
-<% else %>
-  <span id="tags">
-  <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @user.user_tags } %>
-  </span>
-<% end %>
-
+    <form id="tagform" class="form" data-remote="true" action="<%= url %>">
+      <div class="control-group">
+        <input name="remote" type="hidden" value="true" />
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-tags"></i></span>
+          <input autocomplete="off" class="tag-input form-control" name="name" type="text" placeholder="<%= t('tag._tagging.enter_tags') %>" data-provide="typeahead" />
+          <div class="input-group-btn">
+            <a class="btn btn-default blurred-location-input" rel="tooltip" title="Link with a location">
+              <i class="fa fa-map-marker"></i>
+            </a>
+            <%= render partial: 'tag/advanced_tagging' %>
+          </div>
+        </div>
+        <script>
+          jQuery(document).ready(function() {
+            <% if @node %>
+              // node tags:
+              initTagForm("/tag/delete/<%= @node.id %>", '#tagform');
+            <% else %>
+              // user tags:
+              initTagForm("/profile/tags/delete/<%= @user.id %>", '#tagform');
+            <% end %>
+          });
+        </script>
+      </div>
+    </form>
+    <% end %>
+    <%= render partial: 'tag/location' %>
+  </div>
+  <% if @node %>
+    <%= render partial: 'tag/replication' %>
+    <%= render partial: 'tag/tags', locals: { power_tag: true, label_name: 'label-default', tags: @node.node_tags } %>
+    <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @node.node_tags } %>
+    <a href="/subscribe/multiple/tag/:names/" class="btn btn-primary btn-sm active" role="button" aria-pressed="true" style="margin-bottom: 10px">Subscribe >></a>
+  <% else %>
+    <%= render partial: 'tag/tags', locals: { power_tag: false, label_name: 'label-primary', tags: @user.user_tags } %>
+    <a href="/subscribe/multiple/tag/:names/" class="btn btn-primary btn-sm active" role="button" aria-pressed="true" style="margin-bottom: 10px">Subscribe >></a>
+  <% end %>
+</div>
 <script>
 $(function () {
   $('#tags [data-toggle="tooltip"]').tooltip()
@@ -38,38 +70,3 @@ $(".label").on("click", function(e){
     }
   });
 </script>
-
-<% parent ||= nil %>
-
-<% if current_user && (parent != :profile || (current_user.id == @user.id || current_user.role == "admin")) %>
-<% url = url || "/tag/create/" + @node.id.to_s %>
-
-<form id="tagform" class="form" data-remote="true" action="<%= url %>">
-  <div class="control-group">
-    <input name="remote" type="hidden" value="true" />
-    <div class="input-group">
-      <span class="input-group-addon"><i class="fa fa-tags"></i></span>
-      <input autocomplete="off" class="tag-input form-control" name="name" type="text" placeholder="<%= t('tag._tagging.enter_tags') %>" data-provide="typeahead" />
-      <div class="input-group-btn">
-        <a class="btn btn-default blurred-location-input" rel="tooltip" title="Link with a location">
-          <i class="fa fa-map-marker"></i>
-        </a>
-        <%= render partial: 'tag/advanced_tagging' %>
-      </div>
-    </div>
-    <script>
-      jQuery(document).ready(function() {
-        <% if @node %>
-          // node tags:
-          initTagForm("/tag/delete/<%= @node.id %>", '#tagform');
-        <% else %>
-          // user tags:
-          initTagForm("/profile/tags/delete/<%= @user.id %>", '#tagform');
-        <% end %>
-      });
-    </script>
-  </div>
-</form>
-<% end %>
-
-<%= render partial: 'tag/location' %>

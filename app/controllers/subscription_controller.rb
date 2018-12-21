@@ -118,6 +118,63 @@ class SubscriptionController < ApplicationController
     render :template => "subscriptions/digest"
   end
 
+  def multiple_add
+    unless params[:names]
+      flash[:notice] = "Please enter tags for subscription in the url."
+      redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+    end
+    tag_list = params[:names].split(',')
+    # should be logged in to subscribe
+    if current_user
+      # assume tag, for now
+      if params[:type] == "tag"
+        tag_list.each do |t|
+          if t.length.positive?
+            tag = Tag.find_by(name: t)
+            # t should be not nil consider params[:names] = balloon,,mapping,,kites,oil
+            if tag.nil?
+              # if the tag doesn't exist, we should create it!
+              # this could fail validations; error out if so...
+              tag = Tag.new(
+                :vid => 3, # vocabulary id
+                :name => t,
+                :description => "",
+                :weight => 0
+              )
+              begin
+                tag.save!
+              rescue ActiveRecord::RecordInvalid
+                flash[:error] = tag.errors.full_messages
+                redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+                return false
+              end
+            end
+            # test for uniqueness
+            unless TagSelection.where(following: true, user_id: current_user.uid, tid: tag.tid).length.positive?
+              # Successfully we have added subscription
+              set_following(true, params[:type], tag.tid)
+            end
+          end
+        end
+        respond_with do |format|
+          format.html do
+            if request.xhr?
+              render :json => true
+            else
+              flash[:notice] = "You are now following '#{params[:names]}'."
+              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+            end
+          end
+        end
+      else
+        # user or node subscription
+      end
+    else
+      flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
+      redirect_to "subscribe/multiple/" + params[:type] + params[:names]
+    end
+  end
+  
   private
 
   def set_following(value, type, id)
