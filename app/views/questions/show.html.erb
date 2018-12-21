@@ -59,7 +59,7 @@
             <%= render :partial => "comments/form", :locals => { title: "Post Comment", comment: false, placeholder: "Help the author refine their post, or point them at other helpful information on the site. Mention users by @username to notify them of this thread by email", type: "question" } %>
         </div>
       <% else %>
-        <p><%= link_to "Log in", new_user_session_path( return_to: request.path )%> to comment</p>
+        <p><a data-toggle="modal" data-target="#loginModal">Log in</a> to comment</p> 
       <% end %>
       </div>
   </div>

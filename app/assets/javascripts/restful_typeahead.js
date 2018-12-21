@@ -10,6 +10,7 @@ $(function() {
     var typeahead = $(el).typeahead({
       items: 10,
       minLength: 3,
+      delay: 350,
       showCategoryHeader: true,
       autoSelect: false,
       source: function (query, process) {

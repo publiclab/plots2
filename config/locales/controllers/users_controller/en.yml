@@ -11,6 +11,7 @@ en:
     user_has_been_banned: "That user has been banned."
     user_has_been_moderated: "That user has been placed <a href='/wiki/moderation'>in moderation</a>."
     no_user_found: "No user by that name found"
+    no_user_found_name: "User '%{username}' not found"
     password_change_success: "Your password was successfully changed."
     password_reset_failed: "Password reset failed. Please <a href='/wiki/issues'>contact the web team</a> if you are having trouble."
     password_change_failed: "Password change failed; key does not correspond to username."
