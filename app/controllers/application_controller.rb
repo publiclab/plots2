@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   before_action :set_locale
 
   private
-  
   def current_profile_user
     return @current_user && @profile_user == @current_user
     end
