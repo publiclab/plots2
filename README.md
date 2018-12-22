@@ -160,7 +160,7 @@ To report security vulnerabilities or for questions about security, please conta
 
 Help improve Public Lab software!
 
-* Join the 'plots-dev@googlegroups.com' discussion list to get involved
+* Join the plots-dev@googlegroups.com discussion list to get involved
 * Look for open issues at https://github.com/publiclab/plots2/labels/help-wanted
 * We're specifically asking for help with issues labelled with [help-wanted](https://github.com/publiclab/plots2/labels/help-wanted) tag
 * Find lots of info on contributing at http://publiclab.org/wiki/developers
