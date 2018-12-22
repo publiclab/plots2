@@ -25,6 +25,9 @@ It was originally created by Caroline Hadilaksono: http://www.hadilaksono.com
 
 }
 
+body{
+    padding-top: 70px;
+}
 
 h1,h2,h3 {
   font-family:"Junction Light", lucida grande,lucida sans console,sans-serif;
