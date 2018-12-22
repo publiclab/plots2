@@ -1,5 +1,5 @@
 <div style="padding:10px;">
-<%= form_for @user, :url => {:controller => 'users', :action => 'new'}, :html => {:class => "row"} do |f| %>
+<%= form_for @user, :url => {:controller => 'users', :action => 'profile'}, :html => {:class => "row"}, method: :get do |f| %>
 <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
   <div class="col-sm-10">
