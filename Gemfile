@@ -109,6 +109,7 @@ group :test, :development do
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'
+  gem 'pry-rails'
 end
 
 group :production do
