@@ -167,6 +167,7 @@ Help improve Public Lab software!
 * Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software
 * Some devs hang out in http://publiclab.org/chat (irc webchat)
 * Join our gitter chat at https://gitter.im/publiclab/publiclab
+* Try out some supportive tasks https://github.com/publiclab/plots2/wiki/Supportive-Tasks
 
 ## First Time?
 
