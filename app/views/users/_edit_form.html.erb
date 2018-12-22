@@ -1,8 +1,10 @@
 <div style="padding:10px;">
 <%= form_for @user, :url => {:controller => 'users', :action => 'update'}, :html => {:class => "row"} do |f| %>
-<% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
-
   <div class="col-sm-10">
+    <% if f.error_messages != "" %>
+      <div class="alert alert-danger"><%= f.error_messages %></div>
+    <% end %>
+
     <% if params[:controller] == "users" && @action == "create" %>
       <div class='col-sm-12' style="display:flex; justify-content: center;">
         <h3> Sign up with </h3>
@@ -109,7 +111,7 @@
         <!-- button for creating new users -->
         <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
         <a class="btn btn-lg btn-default" href="/login"><%= t('users._form.log_in') %></a>
-      <% elsif params[:controller] == "users" && params[:action] == "edit" %>
+      <% elsif params[:controller] == "users" && (params[:action] == "edit" || params[:action] == "update") %>
         <!-- button for saving edits for existing users -->
         <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.save') %></button>
       <% end %>
