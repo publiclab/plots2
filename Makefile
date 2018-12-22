@@ -11,9 +11,10 @@ redeploy-container:
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
 	docker-compose exec -T web yarn install
-	docker-compose exec -T web bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
-	docker-compose exec -T mailman bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
-	docker-compose exec -T sidekiq bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
+	HOST_IP=`docker-compose exec -T web bash -c "/sbin/ip route|awk '/default/ { print $3 }'"`
+	docker-compose exec -T web bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
+	docker-compose exec -T mailman bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
+	docker-compose exec -T sidekiq bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
 	docker-compose exec -T web bundle exec whenever --update-crontab
 	docker-compose exec -T web service cron start
 
@@ -22,9 +23,10 @@ deploy-container:
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
 	docker-compose exec -T web yarn install
-	docker-compose exec -T web bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
-	docker-compose exec -T mailman bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
-	docker-compose exec -T sidekiq bash -c "echo 172.19.0.1 smtp >> /etc/hosts"
+	HOST_IP=`docker-compose exec -T web bash -c "/sbin/ip route|awk '/default/ { print $3 }'"`
+	docker-compose exec -T web bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
+	docker-compose exec -T mailman bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
+	docker-compose exec -T sidekiq bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
 	docker-compose exec -T web bundle exec whenever --update-crontab
 	docker-compose exec -T web service cron start
 
