@@ -11,7 +11,7 @@ redeploy-container:
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
 	docker-compose exec -T web yarn install
-	HOST_IP := $(shell docker-compose exec -T web /sbin/ip route|awk '/default/ { print $3 }')
+	$(eval HOST_IP := $(shell docker-compose exec -T web /sbin/ip route|awk '/default/ { print $3 }'))
 	docker-compose exec -T web bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
 	docker-compose exec -T sidekiq bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
@@ -23,7 +23,7 @@ deploy-container:
 	rm -f ./tmp/pids/server.pid
 	docker-compose up -d
 	docker-compose exec -T web yarn install
-	HOST_IP := $(shell docker-compose exec -T web /sbin/ip route|awk '/default/ { print $3 }')
+	$(eval HOST_IP := $(shell docker-compose exec -T web /sbin/ip route|awk '/default/ { print $3 }'))
 	docker-compose exec -T web bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
 	docker-compose exec -T sidekiq bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
