@@ -17,7 +17,7 @@
       <label for="username"><%= t('user_sessions.new.username') %></label>
       <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-signup' } %>
       <label for="password"><%= t('user_sessions.new.password') %></label>
-      <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-signup' } %>
+      <%= f.password_field :password, { tabindex: 2, placeholder: "Password", class: 'form-control', id: 'password-signup' } %>
     </div>
 
     <input type="hidden" name="return_to" value="<%= params[:return_to] %>" />
