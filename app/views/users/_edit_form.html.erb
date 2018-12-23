@@ -66,14 +66,9 @@
     </div>
 
     <div class="form-group form-inline" style="clear:both;padding-top:10px;">
-      <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
-        <!-- button for creating new users -->
-        <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
-        <a class="btn btn-lg btn-default" href="/login"><%= t('users._form.log_in') %></a>
-      <% elsif params[:controller] == "users" && (params[:action] == "edit" || params[:action] == "update") %>
+
         <!-- button for saving edits for existing users -->
         <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.save') %></button>
-      <% end %>
 
       <script>
         (function() {
