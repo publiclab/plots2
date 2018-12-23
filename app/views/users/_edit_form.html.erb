@@ -5,31 +5,15 @@
       <div class="alert alert-danger"><%= f.error_messages %></div>
     <% end %>
 
-    <% if params[:controller] == "users" && @action == "create" %>
-      <div class='col-sm-12' style="display:flex; justify-content: center;">
-        <h3> Sign up with </h3>
-      </div>
+    <div class='col-sm-12' style="display:flex; justify-content: center;">
+      <h3> Link your Public Lab account to providers </h3>
+    </div>
 
-      <div class='col-sm-12' style="display:flex; justify-content: center;">
-        <%= render :partial => "layouts/social_icons" %>
-      </div>
+    <div class='col-sm-12' style="display:flex; justify-content: center;">
+      <%= render :partial => "layouts/social_icons" %>
+    </div>
 
-      <br style="clear:both;"/>
-
-    <% end %>
-
-    <% if params[:controller] == "users" && params[:action] == "edit" %>
-      <div class='col-sm-12' style="display:flex; justify-content: center;">
-        <h3> Link your Public Lab account to providers </h3>
-      </div>
-
-      <div class='col-sm-12' style="display:flex; justify-content: center;">
-        <%= render :partial => "layouts/social_icons" %>
-      </div>
-
-      <br style="clear:both;"/>
-
-    <% end %>
+    <br style="clear:both;"/>
 
     <div class="row">
 
@@ -80,31 +64,6 @@
                                           tabindex: 6 }
       %>
     </div>
-
-
-
-    <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
-
-      <% if Rails.env == "production" && !params[:spamaway] %>
-
-        <%= recaptcha_tags %>
-        <p>If you cannot use the ReCaptcha to verify you are not a bot, <a href="/signup?spamaway=true">use this alternative verification</a>.</p>
-
-      <% else %>
-
-        <%= render partial: 'spamaway' %>
-
-      <% end %>
-
-      <script>
-        (function() {
-          $('.spamaway button').click(function(e) {
-            $(this).find('input').prop('checked', true);
-          })
-        })();
-      </script>
-
-    <% end %>
 
     <div class="form-group form-inline" style="clear:both;padding-top:10px;">
       <% if params[:controller] == "users" && (params[:action] == "new" || params[:action] == "create") %>
