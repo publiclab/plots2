@@ -93,17 +93,25 @@ class SearchService
     raise("Must be a float") unless coordinates["selat"].is_a? Float
     raise("Must be a float") unless coordinates["selng"].is_a? Float
 
-    nodes_scope = NodeTag.joins(:tag).where('name LIKE ?', 'lat%').where('REPLACE(name, "lat:", "") BETWEEN ' + coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
+    nodes_scope = NodeTag.joins(:tag)
+      .where('name LIKE ?', 'lat%')
+      .where('REPLACE(name, "lat:", "") BETWEEN ' + coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
 
     if tag.present?
-      nodes_scope = NodeTag.joins(:tag).where('name LIKE ?', tag).where(nid: nodes_scope.select(:nid))
+      nodes_scope = NodeTag.joins(:tag)
+        .where('name LIKE ?', tag)
+        .where(nid: nodes_scope.select(:nid))
     end
 
     nids = nodes_scope.collect(&:nid).uniq || []
 
-    items = Node.includes(:tag).references(:node, :term_data).where('node.nid IN (?)', nids)
-      .where('term_data.name LIKE ?', 'lon%').where('REPLACE(term_data.name, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
-      .order('node.nid DESC').limit(limit)
+    items = Node.includes(:tag)
+      .references(:node, :term_data)
+      .where('node.nid IN (?)', nids)
+      .where('term_data.name LIKE ?', 'lon%')
+      .where('REPLACE(term_data.name, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
+      .order('node.nid DESC')
+      .limit(limit)
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
@@ -120,20 +128,22 @@ class SearchService
 
     lat, lon =  query.split(',')
 
-    user_locations = User.where('rusers.status <> 0')\
-                         .joins(:user_tags)\
-                         .where('value LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%').distinct
+    user_locations = User.where('rusers.status <> 0')
+                         .joins(:user_tags)
+                         .where('value LIKE ?', 'lat:' + lat[0..lat.length - 2] + '%')
+                         .distinct
 
     if tag.present?
-      user_locations = User.joins(:user_tags)\
-                       .where('user_tags.value LIKE ?', tag)\
-                       .where(id: user_locations.select("rusers.id"))
+      user_locations = User.joins(:user_tags)
+                           .where('user_tags.value LIKE ?', tag)
+                           .where(id: user_locations.select("rusers.id"))
     end
 
     ids = user_locations.collect(&:id).uniq || []
 
-    items = User.where('rusers.status <> 0').joins(:user_tags)
-                .where('rusers.id IN (?) AND value LIKE ?', ids, 'lon:' + lon[0..lon.length - 2] + '%')
+    items = User.where('rusers.status <> 0')
+      .joins(:user_tags)
+      .where('rusers.id IN (?) AND value LIKE ?', ids, 'lon:' + lon[0..lon.length - 2] + '%')
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
@@ -145,9 +155,11 @@ class SearchService
     # sort users by their recent activities if the sort_by==recent
     items = if sort_by == "recent"
               items.joins(:revisions).where("node_revisions.status = 1")\
-               .order("node_revisions.timestamp DESC").distinct
+                   .order("node_revisions.timestamp DESC")
+                   .distinct
             else
-              items.order(id: :desc).limit(limit)
+              items.order(id: :desc)
+                   .limit(limit)
             end
   end
 
@@ -157,16 +169,16 @@ class SearchService
   # is present, the method returns only the location of people
   # with that specific user tag.
   def people_locations(query, user_tag = nil)
-    user_locations = User.where('rusers.status <> 0')\
-                         .joins(:user_tags)\
-                         .where('value LIKE "lat:%"')\
-                         .includes(:revisions)\
-                         .order("node_revisions.timestamp DESC")\
+    user_locations = User.where('rusers.status <> 0')
+                         .joins(:user_tags)
+                         .where('value LIKE "lat:%"')
+                         .includes(:revisions)
+                         .order("node_revisions.timestamp DESC")
                          .distinct
     if user_tag.present?
-      user_locations = User.joins(:user_tags)\
-                       .where('user_tags.value LIKE ?', user_tag)\
-                       .where(id: user_locations.select("rusers.id"))
+      user_locations = User.joins(:user_tags)
+                           .where('user_tags.value LIKE ?', user_tag)
+                           .where(id: user_locations.select("rusers.id"))
     end
     user_locations.limit(query)
   end
@@ -180,9 +192,9 @@ class SearchService
       end
 
     if user_tag.present?
-      users = User.joins(:user_tags)\
-                           .where('user_tags.value LIKE ?', user_tag)\
-                           .where(id: users.select("rusers.id"))
+      users = User.joins(:user_tags)
+                  .where('user_tags.value LIKE ?', user_tag)
+                  .where(id: users.select("rusers.id"))
     end
 
     users = users.limit(limit)
