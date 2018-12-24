@@ -18,7 +18,7 @@ gem 'geokit-rails'
 gem 'georuby', '2.0'
 gem 'grape'
 gem 'grape-entity'
-gem 'grape-swagger', '~> 0.32.0'
+gem 'grape-swagger', '~> 0.32.1'
 gem 'grape-swagger-entity', '0.3.1'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-ui'
@@ -103,12 +103,13 @@ group :test, :development do
   gem 'openssl', '~> 2.1.2'
   gem 'phantomjs'
   gem 'rails-perftest'
-  gem 'rake',  '~> 12.3.1'
+  gem 'rake',  '~> 12.3.2'
   gem 'rest-client'
   gem 'rspec'
   gem 'test-unit'
   gem 'teaspoon-mocha'
   gem 'timecop'
+  gem 'pry-rails'
 end
 
 group :production do
