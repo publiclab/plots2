@@ -29,21 +29,41 @@
 
     // setupFullScreen(map<= unique_id >  , map_lat , map_lon) ;
     setupLEL(map<%= unique_id %> ) ;
-    // var hash = new L.Hash(map< unique_id > );
 
     function onMapLoad(e){
-      var lat = <%= '%.2f' % lat %> ; // ensure format 0.00 (two decimal places)
-      var lon = <%= '%.2f' % lon %> ;
+      var lat = <%= '%.2f' % lat.to_f %> ; // ensure format 0.00 (two decimal places)
+      var lon = <%= '%.2f' % lon.to_f %> ;
       var s = lat+","+lon ;
-      $.getJSON("/api/srch/taglocations?query="+s , function(data){
-        if (!!data.items){
-          for (i = 0; i < data.items.length ; i++) {
-            var url = data.items[i].doc_url ;
-            var title = data.items[i].doc_title ;
-            var default_url = PLmarker_default() ;
-            L.marker([data.items[i].latitude , data.items[i].longitude] , {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" +  url + ">" + title + "</a>") ;
-	        }
-       }
-     });
+      var map_tagname ;
+
+        <% if (defined? tagname != nil and tagname.nil? == false) %>
+          map_tagname = "<%= tagname %>" ;
+        <% end %>
+
+      if(map_tagname == null) {
+          $.getJSON("/api/srch/taglocations?query=" + s, function (data) {
+              if (!!data.items) {
+                  for (i = 0; i < data.items.length; i++) {
+                      var url = data.items[i].doc_url;
+                      var title = data.items[i].doc_title;
+                      var default_url = PLmarker_default();
+                      L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>");
+                  }
+              }
+          });
+      }
+      else{
+          $.getJSON("/api/srch/taglocations?query=" + s + "&tag=" + map_tagname, function (data) {
+              if (!!data.items) {
+                  for (i = 0; i < data.items.length; i++) {
+                      var url = data.items[i].doc_url;
+                      var title = data.items[i].doc_title;
+                      var default_url = PLmarker_default();
+                      L.marker([data.items[i].latitude, data.items[i].longitude], {icon: default_url}).addTo(map<%= unique_id %>).bindPopup("<a href=" + url + ">" + title + "</a>");
+                  }
+              }
+          });
+      }
+
     }
   </script>
