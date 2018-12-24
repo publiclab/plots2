@@ -170,7 +170,7 @@ class SubscriptionController < ApplicationController
         # user or node subscription
       end
     else
-      flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
+      flash[:warning] = "You must be logged in to subscribe for email updates."
       redirect_to "/login"
     end
   end
