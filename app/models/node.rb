@@ -750,6 +750,19 @@ class Node < ActiveRecord::Base
                                  uid: user.uid,
                                  date: DateTime.now.to_i,
                                  nid: id)
+
+          # Adding lat/lon values into node table
+          if tag.valid?
+            if tag.name.split(':')[0] == 'lat'
+              tagvalue = tag.name.split(':')[1]
+              self.update_attribute(:latitude, tagvalue)
+              self.update_attribute(:precision, decimals(tagvalue).to_s)
+            elsif tag.name.split(':')[0] == 'lon'
+              tagvalue = tag.name.split(':')[1]
+              self.update_attribute(:longitude, tagvalue)
+            end
+          end
+
           if node_tag.save
             saved = true
             # send email notification if there are subscribers, status is OK, and less than 1 month old
@@ -763,6 +776,14 @@ class Node < ActiveRecord::Base
         end
       end
       return [saved, tag]
+    end
+  end
+
+  def decimals(n)
+    if not n.to_s.include? '.'
+      return 0
+    else
+      return n.to_s.split('.').last.size
     end
   end
 
