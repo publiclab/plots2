@@ -29,9 +29,11 @@ class SubscriptionControllerTest < ActionController::TestCase
 
   test 'should subscribe to multiple tags' do
     UserSession.create(users(:bob))
-    get :multiple_add, params: { type: 'tag', names: 'blog,kites,,balloon' }
+    assert users(:bob).following(:awesome)
+    get :multiple_add, params: { type: 'tag', names: 'blog,kites,,balloon,awesome' }
     assert_response :redirect
     assert users(:bob).following(:blog)
+    assert users(:bob).following(:awesome)
     assert users(:bob).following(:kites)
     assert users(:bob).following(:balloon)
   end
