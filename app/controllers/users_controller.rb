@@ -45,14 +45,10 @@ class UsersController < ApplicationController
   end
 
   def update
-    @password_verification = params.require(:user).permit(:current_password)
-    @password_val = @password_verification["current_password"]
-    @ui_check = params.require(:user).permit(:ui_update)
-    @ui_val = @ui_check["ui_update"]
-    
+    @password_verification = user_verification_params
     @user = current_user
     @user = User.find_by(username: params[:id]) if params[:id] && current_user && current_user.role == "admin"
-    if @user.valid_password?(@password_val) || @ui_val != "0"
+    if @user.valid_password?(user_verification_params["current_password"]) || user_verification_params["ui_update"] != "0"
       # correct password
       @user.attributes = user_params
       @user.save({}) do |result|
@@ -380,6 +376,10 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :openid_identifier, :key, :photo, :photo_file_name, :bio, :status)
   end
+
+  def user_verification_params
+    params.require(:user).permit(:ui_update, :current_password)
+  end  
 
   def spamaway_params
     params.require(:spamaway).permit(:follow_instructions, :statement1, :statement2, :statement3, :statement4)
