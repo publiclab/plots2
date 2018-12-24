@@ -203,9 +203,9 @@
   <hr />
 
   <p>
-    <a class="btn btn-default btn-sm btn-block" href="/feed/<%= @user.name %>.rss"><i class="fa fa-rss" style="color:orange;"></i> <%= t('users.profile.rss_feed_for') %> <%= @user.name %></a>
+    <a class="btn btn-default btn-block" href="/feed/<%= @user.name %>.rss"><i class="fa fa-rss" style="color:orange;"></i> <%= t('users.profile.rss_feed_for') %> <%= @user.name %></a> 
     <% if current_user && current_user.uid == @user.uid %>
-      <a href="/profile/<%= @user.name %>/edit" class="btn btn-default btn-sm btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_profile') %></a>
+      <a href="/profile/<%= @user.name %>/edit" class="btn btn-default btn-block"><i class="fa fa-pencil"></i> <%= t('users.profile.edit_profile') %></a> 
     <% end %>
   </p>
 
@@ -234,9 +234,10 @@
     </div>
   <% end %>
 
-  <% if @profile_user && current_user && @profile_user == current_user %>
+  <% if @profile_user && current_user && current_user.can_moderate? && @profile_user == current_user %>
+    <br />
     <%= form_tag "/users/test_digest_email", method: :post do %>
-      <%= submit_tag "Test Digest Email" %>
+      <%= submit_tag "Test Digest Email", class: "btn btn-info", style: "width: 100%;" %>
     <% end %>
   <% end %>
 

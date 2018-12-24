@@ -2,8 +2,11 @@
 
 en:
   dashboard:
-    _node_moderate:
-      first_time_post: "Moderate first-time post:"
+    moderate:
       approve: "Approve"
       spam: "Spam"
       pending_approval: "Pending approval by <a href='%{url}'>community moderators</a>. Please be patient!"
+    _node_moderate:
+      first_time_post: "Moderate first-time post:"
+    _comment_moderate:
+        first_time_post: "Moderate first-time comment:"
