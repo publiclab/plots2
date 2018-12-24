@@ -1,6 +1,6 @@
 <% if !current_user %>
-         <a data-toggle="modal" data-target="#loginModal"><div><%= hidden_field_tag :followed_id, @profile_user.id %></div>
-                <%= f.submit "Follow", class: "btn btn-primary" %></a>
+         <a data-toggle="modal" data-target="#loginModal"><div><%= hidden_field_tag :followed_id, @profile_user.id %></div></a>
+                <%= f.submit "Follow", class: "btn btn-primary" %>
 <% end %>
 <% else %>
         <%= form_for(current_user.active_relationships.build) do |f| %>
