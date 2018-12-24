@@ -379,7 +379,7 @@ class UsersController < ApplicationController
 
   def user_verification_params
     params.require(:user).permit(:ui_update, :current_password)
-  end  
+  end
 
   def spamaway_params
     params.require(:spamaway).permit(:follow_instructions, :statement1, :statement2, :statement3, :statement4)
