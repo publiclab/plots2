@@ -1,0 +1,9 @@
+Hi! <a href='https://<%= ActionMailer::Base.default_url_options[:host] %>/profile/<%= @followed_user.username %>'><%= @followed_user.username %></a> started following you!
+
+<div style="color:#aaa;">
+
+  <p>Report abuse to: moderators@<%= ActionMailer::Base.default_url_options[:host] %></p>
+
+  <%= @footer %>
+  
+</div>

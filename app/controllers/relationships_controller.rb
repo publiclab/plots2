@@ -5,6 +5,7 @@ class RelationshipsController < ApplicationController
     user = User.find(params[:followed_id])
     current_user.follow(user)
     flash[:notice] = "You are now following #{user.username} ."
+    user.following_notification(current_user)
     redirect_to URI.parse("/profile/#{user.username}").path
   end
 
