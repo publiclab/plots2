@@ -45,22 +45,30 @@ class UsersController < ApplicationController
   end
 
   def update
+    @password_verification = params.require(:user).permit(:current_password)
     @user = current_user
     @user = User.find_by(username: params[:id]) if params[:id] && current_user && current_user.role == "admin"
-    @user.attributes = user_params
-    @user.save({}) do |result|
-      if result
-        if session[:openid_return_to] # for openid login, redirects back to openid auth process
-          return_to = session[:openid_return_to]
-          session[:openid_return_to] = nil
-          redirect_to return_to
+    if @user.valid_password?(@password_verification["current_password"])
+      # correct password
+      @user.attributes = user_params
+      @user.save({}) do |result|
+        if result
+          if session[:openid_return_to] # for openid login, redirects back to openid auth process
+            return_to = session[:openid_return_to]
+            session[:openid_return_to] = nil
+            redirect_to return_to
+          else
+            flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/dashboard'>" + I18n.t('users_controller.return_dashboard') + " &raquo;</a>"
+            return redirect_to "/profile/" + @user.username + "/edit"
+          end
         else
-          flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/dashboard'>" + I18n.t('users_controller.return_dashboard') + " &raquo;</a>"
-          return redirect_to "/profile/" + @user.username + "/edit"
+          render :template => 'users/edit'
         end
-      else
-        render :template => 'users/edit'
       end
+    else
+      # incorrect password
+      flash[:error] = "Current Password entered is not correct!"
+      return redirect_to "/profile/" + @user.username + "/edit"
     end
   end
 

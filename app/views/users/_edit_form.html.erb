@@ -32,6 +32,7 @@
     </div>
 
     <div class="row">
+
       <div class="form-group col-sm-6">
         <% if @user.crypted_password.nil? %>
           <label for="password"><%= t('users._form.create_password') %></label>
@@ -62,6 +63,15 @@
                                           rows: 8,
                                           class: 'form-control',
                                           tabindex: 6 }
+      %>
+    </div>
+
+    <div class="form-group">
+      <label for="current_password"><%= t('users._form.current_password') %></label>
+      <%= f.password_field :current_password, { placeholder: "Type your current password for verification",
+                                                     tabindex: 7,
+                                                     class: 'form-control',
+                                                     id: 'current-password' }
       %>
     </div>
 
