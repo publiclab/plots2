@@ -1,4 +1,4 @@
-HOST_IP := $(shell /sbin/ifconfig docker0 | awk '/inet / { print $$2 }')
+HOST_IP := $(shell /sbin/ip route|awk '/docker0/ { print $$9 }')
 
 build:
 	cp config/database.yml.example config/database.yml
