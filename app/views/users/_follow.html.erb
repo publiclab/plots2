@@ -1,5 +1,5 @@
-<% if current_user=nill %>
-        <a href="/login" class="alert-link"><div><%= hidden_field_tag :followed_id, @profile_user.id %></div>
+<% if !current_user %>
+         <a data-toggle="modal" data-target="#loginModal"><div><%= hidden_field_tag :followed_id, @profile_user.id %></div>
                 <%= f.submit "Follow", class: "btn btn-primary" %></a>
 <% end %>
 <% else %>
