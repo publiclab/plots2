@@ -1,3 +1,5 @@
+HOST_IP := $(shell /sbin/ifconfig docker0 | awk '/inet / { print $$2 }')
+
 build:
 	cp config/database.yml.example config/database.yml
 	cp db/schema.rb.example db/schema.rb
@@ -13,7 +15,6 @@ redeploy-container:
 	docker-compose exec -T web yarn install
 	docker-compose exec -T web bundle exec whenever --update-crontab
 	docker-compose exec -T web service cron start
-	$(eval HOST_IP := $(shell docker-compose exec -T web /sbin/ip route|awk '/default/ { print $$3 }'))
 	docker-compose exec -T web bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
 	docker-compose exec -T sidekiq bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
@@ -25,7 +26,6 @@ deploy-container:
 	docker-compose exec -T web yarn install
 	docker-compose exec -T web bundle exec whenever --update-crontab
 	docker-compose exec -T web service cron start
-	$(eval HOST_IP := $(shell docker-compose exec -T web /sbin/ip route|awk '/default/ { print $$3 }'))
 	docker-compose exec -T web bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
 	docker-compose exec -T mailman bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
 	docker-compose exec -T sidekiq bash -c "echo $(HOST_IP) smtp >> /etc/hosts"
