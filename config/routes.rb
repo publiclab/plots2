@@ -80,14 +80,15 @@ Plots2::Application.routes.draw do
 
   get 'following/:type/:name' => 'subscription#following'
   delete 'unsubscribe/:type/:name' => 'subscription#delete'
+  get 'subscribe/multiple/:type' => 'subscription#multiple_add'
+  put 'subscribe/multiple/:type' => 'subscription#multiple_add'
   put 'subscribe/:type' => 'subscription#add'
   get 'subscribe/:type' => 'subscription#add'
   put 'subscribe/:type/:name' => 'subscription#add'
   get 'subscribe/:type/:name' => 'subscription#add'
   get 'subscriptions' => 'subscription#index'
   get 'subscriptions/digest' => 'subscription#digest'
-  get 'subscribe/multiple/:type/:names' => 'subscription#multiple_add'
-  put 'subscribe/multiple/:type/:names' => 'subscription#multiple_add'
+
 
   get 'wiki/stale' => 'wiki#stale'
   get 'wiki/new' => 'wiki#new'

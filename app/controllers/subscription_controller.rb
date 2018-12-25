@@ -118,12 +118,9 @@ class SubscriptionController < ApplicationController
     render :template => "subscriptions/digest"
   end
 
-  def multiple_add
-    unless params[:names]
-      flash[:notice] = "Please enter tags for subscription in the url."
-      redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-    end
-    tag_list = params[:names].split(',')
+def multiple_add
+    namess = JSON.parse(params[:names])
+    tag_list = namess
     # should be logged in to subscribe
     if current_user
       # assume tag, for now
@@ -145,7 +142,7 @@ class SubscriptionController < ApplicationController
                 tag.save!
               rescue ActiveRecord::RecordInvalid
                 flash[:error] = tag.errors.full_messages
-                redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
+                render js: "window.location = '/subscriptions?_=#{Time.now.to_i.to_s}'"
                 return false
               end
             end
@@ -158,19 +155,19 @@ class SubscriptionController < ApplicationController
         end
         respond_with do |format|
           format.html do
-            if request.xhr?
-              render :json => true
-            else
-              flash[:notice] = "You are now following '#{params[:names]}'."
-              redirect_to "/subscriptions" + "?_=" + Time.now.to_i.to_s
-            end
+              if params[:names] == '[]'
+                flash[:notice] = "Please enter tags for subscription in the url."
+              else
+                flash[:notice] = "You are now following '#{params[:names]}'."
+              end
+              render js: "window.location = '/subscriptions?_=#{Time.now.to_i.to_s}'"
           end
         end
       else
         # user or node subscription
       end
     else
-      flash[:warning] = "You must be logged in to subscribe for email updates."
+      flash[:warning] = "You must be logged in to subscribe for email updates"
       redirect_to "/login"
     end
   end
