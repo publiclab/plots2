@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   private
 
   def current_profile_user
-    return @current_user && @profile_user == @current_user
     end
 
   # eventually videos could be a power tag
