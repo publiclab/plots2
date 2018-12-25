@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   private
 
   def current_profile_user
-    end
 
   # eventually videos could be a power tag
   def set_sidebar(type = :generic, data = :all, args = {})
