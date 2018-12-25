@@ -19,9 +19,9 @@ $(function () {
   });
 });
 
-function moreChar(textbox) {
+function checkInputLength(textbox) {
   var x = textbox.value;
-  if(x.length<=2 && x.length>0){
+  if(x.length <= 2 && x.length > 0){
      textbox.setCustomValidity('Please keep typing to refine your search')
   }
   else{
