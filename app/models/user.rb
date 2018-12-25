@@ -443,7 +443,7 @@ class User < ActiveRecord::Base
   end
 
   def following_notification(user_who_started_following)
-    RelationshipMailer.notify_the_user_who_is_followed(self,user_who_started_following).deliver_now
+    RelationshipMailer.notify_the_user_who_is_followed(self, user_who_started_following).deliver_now
   end
 
   private
