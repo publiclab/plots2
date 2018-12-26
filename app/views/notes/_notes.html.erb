@@ -2,7 +2,7 @@
 <div id="notes">
     <div class="row">
     <% notes.each_with_index do |node,i| %>
-      <div class="<% if @widget %>col-xs-3 col-sm-3 <% end %><%= node.tagnames_as_classes %> col-md-3 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>" style="overflow:hidden; text-align:center">
+      <div class="<% if @widget %>col-3 col-sm-3 <% end %><%= node.tagnames_as_classes %> col-md-6 clearfix node note node-nid-<%= node.id %> note-nid-<%= node.id %><% if node.status == 4 %> moderated<% end %>" style="overflow:hidden; text-align:center">
 
         <% if node.main_image %>
           <a class="img" <% if @widget %>target="_blank"<% end %> href="<%= node.path %>"><img src="<%= node.main_image.path(:default) %>" style="width:100%;" /></a>
@@ -14,8 +14,8 @@
           <p class="alert alert-warning moderated">
             <% if logged_in_as(['admin','moderator']) %>
               <%= t('notes._notes.moderate_first_time_post') %> <br class="hidden-xs hidden-sm"/>
-              <a class="btn btn-default btn-xs" href="/moderate/publish/<%= node.id %>"><%= t('notes._notes.approve') %></a>
-              <a class="btn btn-default btn-xs" href="/moderate/spam/<%= node.id %>"><%= t('notes._notes.spam') %></a>
+              <a class="btn btn-outline-secondary btn-sm" href="/moderate/publish/<%= node.id %>"><%= t('notes._notes.approve') %></a>
+              <a class="btn btn-outline-secondary btn-sm" href="/moderate/spam/<%= node.id %>"><%= t('notes._notes.spam') %></a>
             <% else %>
               <%= raw t('notes._notes.pending_approval', :url1 => '/wiki/moderation') %>
             <% end %>
@@ -47,12 +47,12 @@
               </small></p>
             <% end %>
         <p style="display:inline; margin: auto">
-              <% if logged_in_as(['admin','moderator']) %><a style="width: 40%" class="btn btn-default" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
-              <a style="width: 50%" class="btn btn-default" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a>
+              <% if logged_in_as(['admin','moderator']) %><a style="width: 40%" class="btn btn-outline-secondary" href="/moderate/spam/<%= node.id %>"><i class="fa fa-ban"></i> <%= t('notes._notes.spam') %></a><% end %>
+              <a style="width: 50%" class="btn btn-outline-secondary" href="<%= node.path %>"><%= t('notes._notes.read_more') %></a>
         </p>
           <% end %>
           <% if params[:mod] %>
-            <a class="btn btn-default" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._notes.spam') %></a>
+            <a class="btn btn-outline-secondary" href="#"><i class="fa fa-ban-circle"></i> <%= t('notes._notes.spam') %></a>
           <% end %>
           <hr style="display:none;" class="bottom" />
         </div>
@@ -64,7 +64,7 @@
 		    }
 	    </style>
 		 
-      <% unless @widget %><hr class="visible-xs visible-sm" /><% end %>
+      <% unless @widget %><hr class="d-sm-block d-md-none" /><% end %>
     <% if ((i+1)/4.0).to_i == ((i+1)/4.0) %>
     </div>
     <div class="row">

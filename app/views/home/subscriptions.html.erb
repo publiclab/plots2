@@ -6,9 +6,9 @@
 
   <p>
     <% if current_user.following("everything") %>
-      <a rel="tooltip" title="<%=raw translation('home.subscriptions.click_unfollow') %>" class="btn btn-default active" href="/unsubscribe/tag/everything" data-method="delete"><i class="fa fa-user-plus" aria-hidden="true"></i> <%=raw translation('home.subscriptions.following') %> <b><%=raw translation('home.subscriptions.research_notes') %></b></a>
+      <a rel="tooltip" title="<%=raw translation('home.subscriptions.click_unfollow') %>" class="btn btn-outline-secondary active" href="/unsubscribe/tag/everything" data-method="delete"><i class="fa fa-user-plus" aria-hidden="true"></i> <%=raw translation('home.subscriptions.following') %> <b><%=raw translation('home.subscriptions.research_notes') %></b></a>
     <% else %>
-      <a href="/subscribe/tag/everything" class="btn btn-default"><i class="fa fa-tag"></i> <%=raw translation('home.subscriptions.subscribe_to') %> <b><%=raw translation('home.subscriptions.all') %></b> <%=raw translation('home.subscriptions.notes') %></a>
+      <a href="/subscribe/tag/everything" class="btn btn-outline-secondary"><i class="fa fa-tag"></i> <%=raw translation('home.subscriptions.subscribe_to') %> <b><%=raw translation('home.subscriptions.all') %></b> <%=raw translation('home.subscriptions.notes') %></a>
     <% end %>
   </p>
   <p>
@@ -17,7 +17,7 @@
 
   <hr />
 
-  <a href="/settings" class="btn btn-default" style="margin-bottom: 10px;"><i class="fa fa-envelope"></i> Email Settings </a>
+  <a href="/settings" class="btn btn-outline-secondary" style="margin-bottom: 10px;"><i class="fa fa-envelope"></i> Email Settings </a>
 
   <p style="font-style: italic;"> Control which emails you want to receive. </p>
 
