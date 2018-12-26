@@ -30,7 +30,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:jeff))
     user = users(:bob)
     get :promote_admin, params: { id: user.id }
-    assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now an admin.", flash[:notice]
+    assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now an admin user.", flash[:notice]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
@@ -38,7 +38,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:jeff))
     user = users(:bob)
     get :promote_moderator, params: { id: user.id }
-    assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now a moderator.", flash[:notice]
+    assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now an moderator user.", flash[:notice]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
@@ -46,7 +46,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:moderator))
     user = users(:jeff)
     get :promote_moderator, params: { id: user.id }
-    assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now a moderator.", flash[:notice]
+    assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now an moderator user.", flash[:notice]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
@@ -54,7 +54,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     user = users(:jeff)
     get :promote_moderator, params: { id: user.id }
-    assert_equal 'Only moderators can promote other users.', flash[:error]
+    assert_equal 'Only admins can promote other users to admins and basic.', flash[:error]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
@@ -62,7 +62,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     user = users(:moderator)
     get :promote_admin, params: { id: user.id }
-    assert_equal 'Only admins can promote other users to admins.', flash[:error]
+    assert_equal 'Only admins can promote other users to admins and basic.', flash[:error]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
@@ -70,7 +70,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:admin))
     user = users(:moderator)
     get :demote_basic, params: { id: user.id }
-    assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is no longer a moderator.", flash[:notice]
+    assert_equal "User '<a href='/profile/#{user.username}'>#{user.username}</a>' is now an basic user.", flash[:notice]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 
@@ -78,7 +78,7 @@ class AdminControllerTest < ActionController::TestCase
     UserSession.create(users(:bob))
     user = users(:moderator)
     get :demote_basic, params: { id: user.id }
-    assert_equal 'Only admins and moderators can demote other users.', flash[:error]
+    assert_equal 'Only admins can promote other users to admins and basic.', flash[:error]
     assert_redirected_to '/profile/' + user.username + '?_=' + Time.now.to_i.to_s
   end
 

@@ -137,7 +137,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     assert_response :redirect
     follow_redirect!
-    assert_equal flash[:error], 'Only moderators can moderate other users.'
+    assert_equal flash[:error], 'Only moderators can moderate or unmoderate other users.'
     assert_equal u.drupal_user.status, 1
 
     u.drupal_user.moderate
@@ -146,7 +146,7 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
 
     assert_response :redirect
     follow_redirect!
-    assert_equal flash[:error], 'Only moderators can unmoderate other users.'
+    assert_equal flash[:error], 'Only moderators can moderate or unmoderate other users.'
     assert_equal u.drupal_user.status, 5
   end
 
@@ -154,8 +154,8 @@ class ModerateAndBanTest < ActionDispatch::IntegrationTest
     u = users(:unmoderated_user)
     u.drupal_user.moderate
 
-    post '/user_sessions', 
-     params: { 
+    post '/user_sessions',
+     params: {
       user_session: {
       username: u.username,
       password: 'secretive'

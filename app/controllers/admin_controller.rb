@@ -343,7 +343,7 @@ class AdminController < ApplicationController
         @user.save({})
         flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is now an #{new_role} user."
       else
-        flash[:error] = 'Only admins can promote other users to admins.'
+        flash[:error] = 'Only admins can promote other users to admins and basic.'
       end
     end
     redirect_to '/profile/' + @user.username + '?_=' + Time.now.to_i.to_s
