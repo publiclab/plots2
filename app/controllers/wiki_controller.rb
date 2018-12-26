@@ -412,19 +412,6 @@ class WikiController < ApplicationController
     # deprecating the following in favor of javascript implementation in /app/assets/javascripts/methods.js
     if params[:topic]
       nids = @nodes.collect(&:nid) || []
-      @notes = Node.where(status: 1, type: ['page'])
-        .where('node.nid IN (?)', nids)
-        .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',
-          '%' + params[:topic] + '%',
-          '%' + params[:topic] + '%',
-          '%' + params[:topic] + '%',
-          params[:topic])
-        .includes(:revision, :tag)
-        .references(:node_revision, :term_data)
-        .order('node_revisions.timestamp DESC')
-    end
-    if params[:topic]
-      nids = @nodes.collect(&:nid) || []
       @nodes = Node.where(status: 1, type: ['page'])
         .where('node.nid IN (?)', nids)
         .where('(type = "note" OR type = "page" OR type = "map") AND node.status = 1 AND (node.title LIKE ? OR node_revisions.title LIKE ? OR node_revisions.body LIKE ? OR term_data.name = ?)',

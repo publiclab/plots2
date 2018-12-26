@@ -21,7 +21,7 @@ class AdminController < ApplicationController
   def promote_moderator
     @user = User.find params[:id]
     unless @user.nil?
-      if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+      if moderator_or_admin_user
         @user.role = 'moderator'
         @user.save({})
         flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is now a moderator."
@@ -35,7 +35,7 @@ class AdminController < ApplicationController
   def demote_basic
     @user = User.find params[:id]
     unless @user.nil?
-      if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+      if moderator_or_admin_user
         @user.role = 'basic'
         @user.save({})
         flash[:notice] = "User '<a href='/profile/" + @user.username + "'>" + @user.username + "</a>' is no longer a moderator."
@@ -61,7 +61,7 @@ class AdminController < ApplicationController
   end
 
   def useremail
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       if params[:address]
         # address was submitted. find the username(s) and return.
         @address = params[:address]
@@ -75,7 +75,7 @@ class AdminController < ApplicationController
   end
 
   def spam
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       @nodes = Node.paginate(page: params[:page])
                    .order('nid DESC')
       @nodes = if params[:type] == 'wiki'
@@ -90,7 +90,7 @@ class AdminController < ApplicationController
   end
 
   def spam_revisions
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       @revisions = Revision.paginate(page: params[:page])
                            .order('timestamp DESC')
                            .where(status: 0)
@@ -115,7 +115,7 @@ class AdminController < ApplicationController
 
   def mark_spam
     @node = Node.find params[:id]
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       if @node.status == 1 || @node.status == 4
         @node.spam
         @node.author.ban
@@ -138,7 +138,7 @@ class AdminController < ApplicationController
 
   def mark_comment_spam
     @comment = Comment.find params[:id]
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       if @comment.status == 1 || @comment.status == 4
         @comment.spam
         user = @comment.author
@@ -155,7 +155,7 @@ class AdminController < ApplicationController
   end
 
   def publish_comment
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       @comment = Comment.find params[:id]
       if @comment.status == 1
         flash[:notice] = 'Comment already published.'
@@ -181,7 +181,7 @@ class AdminController < ApplicationController
   end
 
   def publish
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       @node = Node.find params[:id]
       if @node.status == 1
         flash[:notice] = 'Item already published.'
@@ -223,7 +223,7 @@ class AdminController < ApplicationController
       return
     end
 
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       if @revision.status == 1
         @revision.spam
         @revision.author.ban
@@ -244,7 +244,7 @@ class AdminController < ApplicationController
   end
 
   def publish_revision
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       @revision = Revision.find params[:vid]
       @revision.publish
       @revision.author.unban
@@ -262,7 +262,7 @@ class AdminController < ApplicationController
 
   def moderate
     user = DrupalUser.find params[:id]
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       user.moderate
       flash[:notice] = 'The user has been moderated.'
     else
@@ -273,7 +273,7 @@ class AdminController < ApplicationController
 
   def unmoderate
     user = DrupalUser.find params[:id]
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       user.unmoderate
       flash[:notice] = 'The user has been unmoderated.'
     else
@@ -284,7 +284,7 @@ class AdminController < ApplicationController
 
   def ban
     user = DrupalUser.find params[:id]
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       user.ban
       flash[:notice] = 'The user has been banned.'
     else
@@ -295,7 +295,7 @@ class AdminController < ApplicationController
 
   def unban
     user = DrupalUser.find params[:id]
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       user.unban
       flash[:notice] = 'The user has been unbanned.'
     else
@@ -305,7 +305,7 @@ class AdminController < ApplicationController
   end
 
   def users
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       @users = DrupalUser.order('uid DESC').limit(200)
     else
       flash[:error] = 'Only moderators can moderate other users.'
@@ -314,7 +314,7 @@ class AdminController < ApplicationController
   end
 
   def batch
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       nodes = 0
       users = []
       params[:ids].split(',').uniq.each do |nid|
@@ -352,7 +352,7 @@ class AdminController < ApplicationController
   end
 
   def queue
-    if current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+    if moderator_or_admin_user
       @notes = Node.where(status: 4)
                    .paginate(page: params[:page])
       flash[:warning] = "These are notes requiring moderation. <a href='/wiki/moderation'>Community moderators</a> may approve or reject them."
@@ -389,4 +389,7 @@ class AdminController < ApplicationController
     s.close
   end
 
+  def moderator_or_admin_user
+    current_user && (current_user.role == 'moderator' || current_user.role == 'admin')
+  end
 end

@@ -151,22 +151,7 @@ class TagController < ApplicationController
     @note_count = Tag.tagged_node_count(params[:id]) || 0
     @users = Tag.contributors(@tagnames[0])
     @related_tags = Tag.related(@tagnames[0])
-
-    respond_with(nodes) do |format|
-      format.html { render 'tag/show' }
-      format.xml  { render xml: nodes }
-      format.json do
-        json = []
-        nodes.each do |node|
-          json << node.as_json(except: %i(path tags))
-          json.last['path'] = 'https://' + request.host.to_s + node.path
-          json.last['preview'] = node.body_preview(500)
-          json.last['image'] = node.main_image.path(:large) if node.main_image
-          json.last['tags'] = Node.find(node.id).tags.collect(&:name) if node.tags
-        end
-        render json: json
-      end
-    end
+    respond_with_nodes(nodes)
   end
 
   def show_for_author
@@ -218,22 +203,7 @@ class TagController < ApplicationController
       .references(:term_data)
       .where('term_data.name = ?', params[:id])
     @length = Tag.contributor_count(params[:id]) || 0
-    respond_with(nodes) do |format|
-      format.html { render 'tag/show' }
-      format.xml  { render xml: nodes }
-      format.json do
-        json = []
-        nodes.each do |node|
-          json << node.as_json(except: %i(path tags))
-          json.last['path'] = 'https://' + request.host
-            .to_s + node.path
-          json.last['preview'] = node.body_preview(500)
-          json.last['image'] = node.main_image.path(:large) if node.main_image
-          json.last['tags'] = Node.find(node.id).tags.collect(&:name) if node.tags
-        end
-        render json: json
-      end
-    end
+    respond_with_nodes(nodes)
   end
 
   def widget
@@ -485,6 +455,24 @@ class TagController < ApplicationController
       params[:order] == "asc" ? "count ASC" : "count DESC"
     else
       params[:order] == "asc" ? "name ASC" : "name DESC"
+    end
+  end
+
+  def respond_with_nodes(nodes)
+    respond_with(nodes) do |format|
+      format.html { render 'tag/show' }
+      format.xml  { render xml: nodes }
+      format.json do
+        json = []
+        nodes.each do |node|
+          json << node.as_json(except: %i(path tags))
+          json.last['path'] = 'https://' + request.host.to_s + node.path
+          json.last['preview'] = node.body_preview(500)
+          json.last['image'] = node.main_image.path(:large) if node.main_image
+          json.last['tags'] = Node.find(node.id).tags.collect(&:name) if node.tags
+        end
+        render json: json
+      end
     end
   end
 end
