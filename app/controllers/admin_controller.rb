@@ -253,25 +253,11 @@ class AdminController < ApplicationController
   end
 
   def ban
-    user = DrupalUser.find params[:id]
-    if moderator_or_admin_user
-      user.ban
-      flash[:notice] = 'The user has been banned.'
-    else
-      flash[:error] = 'Only moderators can ban other users.'
-    end
-    redirect_to '/profile/' + user.name + '?_=' + Time.now.to_i.to_s
+    toggle_ban(true, 'banned')
   end
 
   def unban
-    user = DrupalUser.find params[:id]
-    if moderator_or_admin_user
-      user.unban
-      flash[:notice] = 'The user has been unbanned.'
-    else
-      flash[:error] = 'Only moderators can unban other users.'
-    end
-    redirect_to '/profile/' + user.name + '?_=' + Time.now.to_i.to_s
+    toggle_ban(false, 'unbanned')
   end
 
   def users
@@ -375,5 +361,16 @@ class AdminController < ApplicationController
       end
     end
     redirect_to '/profile/' + @user.username + '?_=' + Time.now.to_i.to_s
+  end
+
+  def toggle_ban(ban, action)
+    user = DrupalUser.find params[:id]
+    if moderator_or_admin_user
+      ban ? user.ban : user.unban
+      flash[:notice] = "The user has been #{action}."
+    else
+      flash[:error] = 'Only moderators can unban and ban other users.'
+    end
+    redirect_to '/profile/' + user.name + '?_=' + Time.now.to_i.to_s
   end
 end
