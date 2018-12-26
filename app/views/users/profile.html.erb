@@ -155,9 +155,11 @@
       <hr />
       <div id="follow_form" class="col-md-offset-4">
         <% if current_user.following?(@profile_user) %>
-          <%= render 'unfollow' %>
+          <!--UnFollow button-->
+          <button id="profile-unfollow-button">Unfollow</button>
         <% else %>
-          <%= render 'follow' %>
+          <!--Follow button-->
+          <button id="profile-follow-button" data-url= <%="/follow/#{@profile_user.id}"%> data-method="post" data-remote="true" >Follow</button>
         <% end %>
       </div>
       <br />
