@@ -1,7 +1,7 @@
 <h3 id="activity-header"><i><%= t('dashboard._activity.activity') %></i></h3>
 
 <div class="activity-menu">
-  <a id="refreshA" href="/dashboard" class="btn btn-sm btn-default pull-right" type="button">
+  <a id="refreshA" href="/dashboard" class="btn btn-sm btn-outline-secondary float-right" type="button">
     <i class="fa fa-refresh"></i>
   </a>
 </div>
@@ -10,7 +10,7 @@
   <div class="btn-group">
 
     <button 
-      class="btn btn-default btn-sm dropdown-toggle" 
+      class="btn btn-outline-secondary btn-sm dropdown-toggle" 
       type="button" 
       data-toggle="dropdown" 
       aria-haspopup="true" 
@@ -20,61 +20,58 @@
       <span class="caret"></span>
     </button>
 
-    <ul class="dropdown-menu">
-      <li class="form-check"><a href="#">
+    <div class="dropdown-menu">
+      <a class="form-check dropdown-item" href="#">
         <label class="form-check-label">
           <input data-type="all" class="node-type-all" type="checkbox" checked="checked" /> 
           <%= t('dashboard._activity.dropdown.all') %>
-        </label></a>
-      </li>
+        </label>
+      </a>
 
-      <li class="divider"></li>
+      <div class="dropdown-divider"></div>
 
-      <li class="form-check"><a href="#">
+      <a class="form-check dropdown-item" href="#">
         <label class="form-check-label">
           <input data-type="note" class="node-type node-type-note" type="checkbox" checked="checked" /> 
           <%= t('dashboard._activity.dropdown.research_notes') %>
-        </label></a>
-      </li>
-      <li class="form-check"><a href="#">
+        </label>
+      </a>
+      <a class="form-check dropdown-item" href="#">
         <label class="form-check-label">
           <input data-type="question" class="node-type node-type-question" type="checkbox" checked="checked" /> 
           <%= t('dashboard._activity.dropdown.question') %>
-        </label></a>
-      </li>
-      <li class="form-check"><a href="#">
+        </label>
+      </a>
+      <a class="form-check dropdown-item" href="#">
         <label class="form-check-label">
           <input data-type="event" class="node-type node-type-event" type="checkbox" checked="checked" /> 
           <%= t('dashboard._activity.dropdown.events') %>
-        </label></a>
-      </li>
-      <li class="form-check"><a href="#">
+        </label>
+      </a>
+      <a class="form-check dropdown-item" href="#">
         <label class="form-check-label">
           <input data-type="comment" class="node-type node-type-comment" type="checkbox" checked="checked" /> 
           <%= t('dashboard._activity.dropdown.comments') %>
-        </label></a>
-      </li>
+        </label>
+      </a>
 
-      <li class="visible-sm visible-xs"><a href="#">
+      <a class="d-lg-none dropdown-item" href="#">
         <label>
           <input data-type="wiki" class="node-type node-type-wiki" type="checkbox" checked="checked" /> 
           <%= t('dashboard._activity.dropdown.wiki') %>
-        </label></a>
-      </li>
-
+        </label>
+      </a>
       <!--
       <li class="divider"></li>
       <li class="dropdown-header">Sort by</li>
       <li><a href="#"><a href="#">Post date</a></li>
       <li><a href="#"><a href="#">Recent activity</a></li>
       -->
-
-    </ul>
-
+    </div>
   </div> &nbsp;
-  <span class="hidden-xs"><%= t('dashboard._activity.from_other') %> <a href=""><%= t('dashboard._activity.community_scientists') %></a></span> <%= t('dashboard._activity.past_week') %>
+  <span class="d-none d-md-inline"><%= t('dashboard._activity.from_other') %> <a href=""><%= t('dashboard._activity.community_scientists') %></a></span> <%= t('dashboard._activity.past_week') %>
   <% if current_user %>
-    <span class="hidden-xs">| <a href="/profile/<%= current_user.username %>"><%= t('dashboard._activity.your_work') %></a></span>
+    <span class="d-none">| <a href="/profile/<%= current_user.username %>"><%= t('dashboard._activity.your_work') %></a></span>
   <% end %>
   <!-- (2 responses) -->
 </div>
@@ -87,7 +84,7 @@
   <span class="topics-span">
    <% cache('trending-tags', expires_in: 24.hours, skip_digest: true) do %>
       <% Tag.trending.each do |i| %>
-        <span class="label label-primary"><a href="/tag/<%= i.name %>"><%= i.name %></a></span>
+          <a href="/tag/<%= i.name %>" class="badge badge-primary"><%= i.name %></a>
       <% end %>
     <% end %>
   </span>
