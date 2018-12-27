@@ -3,9 +3,16 @@ class RelationshipsController < ApplicationController
 
   def create
     user = User.find(params[:followed_id])
-    current_user.follow(user)
-    flash[:notice] = "You are now following #{user.username} ."
-    redirect_to URI.parse("/profile/#{user.username}").path
+    payload = {}
+    status = 500
+    if current_user.following?(@profile_user)
+      payload[:message] = "You already follow this user"
+    else
+      current_user.follow(user)
+      payload[:message] = "You started following #{user.username}"
+      status = 200
+    end
+    render :json => payload, :status => status
   end
 
   def destroy
