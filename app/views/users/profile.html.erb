@@ -1,5 +1,5 @@
 <div class="col-md-9">
-
+  <div class="alert alert-success" id="follow-result-success">You started following <%=@profile_user.username%></div>
   <div id = "note-graph" style = "overflow: auto; text-align:center; border: 1px solid #E5E5E5; margin-bottom: 10px;"></div>
 
   <h3 style="margin-top:0;"><%= @user.name %> <%= @user.new_contributor %>
@@ -155,11 +155,10 @@
       <hr />
       <div id="follow_form" class="col-md-offset-4">
         <% if current_user.following?(@profile_user) %>
-          <!--UnFollow button-->
-          <button id="profile-unfollow-button">Unfollow</button>
+          <%=render 'unfollow' %>
         <% else %>
           <!--Follow button-->
-          <button id="profile-follow-button" data-url= <%="/follow/#{@profile_user.id}"%> data-method="post" data-remote="true" >Follow</button>
+          <button id="profile-follow-button" class="btn btn-primary" >Follow</button>
         <% end %>
       </div>
       <br />
@@ -320,6 +319,23 @@
         profile.fetch_maps();
 
     })();
+
+    $('#profile-follow-button').click(function(){
+        $('#profile-follow-button').prop('disabled', true);
+        $.ajax({
+            type: 'POST',
+            url: '<%="../follow/#{@profile_user.id}" %>', 
+            async: false,
+            success: function(result, status, error)
+            {
+              $('#follow-result-success').show().delay(5000).fadeOut();
+            },
+            error: function(xhr, status, error)
+            {
+              alert("Error");
+            }
+          });
+    });
 </script>
 
 <style type="text/css">
@@ -337,6 +353,14 @@
   i:hover{
     transition-duration: .2s;
     transform: scale(1.2);
+  }
+  #follow-result-success{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: none;
+    opacity: 100;
   }
 </style>
 
