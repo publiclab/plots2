@@ -77,7 +77,7 @@ class SubscriptionController < ApplicationController
 
       end
     else
-      flash[:warning] = "You must be logged in to subscribe for email updates; please <a href='javascript:void()' onClick='login()'>log in</a> or <a href='/signup'>create an account</a>."
+      flash[:warning] = "You must be logged in to subscribe for email updates; please <a class='requireLogin'>log in</a> or <a href='/signup'>create an account</a>."
       redirect_to "/tag/" + params[:name]
     end
   end
