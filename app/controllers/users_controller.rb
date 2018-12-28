@@ -27,7 +27,22 @@ class UsersController < ApplicationController
         flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
-        redirect_to "/dashboard"
+        # On signup page the return_to parameters get "nested". The regex extracts the second one.
+        # Occurs when the link becomes /register?return_to=/register?return_to=/questions/admin/12-28-2018/abc?_=
+        # Then the return_to parameter becomes /register?return_to=/questions/admin/12-28-2018/test?_=
+        match = params[:return_to].match(/return_to=(.+)/m)
+        # If there are no return_to parameters, then go to dashboard.
+        if params[:return_to].nil?
+            redirect_to "/dashboard"
+        # If there was no nested return_to, then we just follow the first one.
+        # This works when the modal is used and succeeds on first login.
+        elsif match.nil?
+            redirect_to params[:return_to]
+        # If there is a nested return_to, follow that one.
+        else
+            redirect_to match[1]
+        end
+        #klogger.debug("#{params[:return_to][:return_to]}")
       end
     else
       # pipe all spamaway errors into the user error display
