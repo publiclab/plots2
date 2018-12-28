@@ -18,8 +18,8 @@
       <form class="form-inline" id="searchform" autocomplete="off">
         <div class="input-group">
           <input type="text" id="searchform_input" style="min-width: 220px;" class="form-control search-query typeahead" role="search" qryType="content" placeholder="<%= t('layout._header.search') %>"  value="<%= params[:query] %>" required>
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
           </div>
         </div>
       </form>

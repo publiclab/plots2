@@ -1,20 +1,20 @@
 <p class="meta"><%= raw t('dashboard._wiki.shared_knowledge_base', :url => '/wiki') %><!-- | <a href="">Your pages</a>--></p>
 
 <div class="meta row">
-  <div class="col-lg-8 col-md-7 col-sm-7 col-xs-7">
+  <div class="col-lg-8 col-md-7 col-sm-7 col-7">
     <div class="input-group">
-      <form class="search-form-wiki" role="search" autocomplete="off">
-        <input type="text" class="search-wiki form-control input-sm" id="sidebar-searchform-input" style="width:70%;" placeholder="<%= t('dashboard._wiki.search') %>" required>
-        <span class="input-group-btn">
-          <button class="btn btn-sm btn-default" type="submit"><i class="fa fa-search"></i></button>
-        </span>
+      <form class="search-form-wiki form-inline" role="search" autocomplete="off">
+        <input type="text" class="search-wiki form-control form-control-sm" id="sidebar-searchform-input" style="width:70%;" placeholder="<%= t('dashboard._wiki.search') %>" required>
+        <div class="input-group-append">
+          <button class="btn btn-sm btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+        </div>
       </form>
 
     </div>
   </div>
 
-  <div class="col-lg-4 col-md-5 col-sm-5 col-xs-5">
-    <a href="/wiki/new" class="btn btn-sm btn-default btn-block" type="button"><i class="fa fa-plus-circle"></i> <%= t('dashboard._wiki.new_page') %></a>
+  <div class="col-lg-4 col-md-5 col-sm-5 col-5">
+    <a href="/wiki/new" class="btn btn-sm btn-outline-secondary btn-block" type="button"><i class="fa fa-plus-circle"></i> <%= t('dashboard._wiki.new_page') %></a>
   </div>
 
 </div>
