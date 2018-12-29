@@ -43,8 +43,9 @@
         $(document).ready(function() { 
           $('a.requireLogin').click(function(e) { //For every link that should require login
             e.preventDefault(); //Prevent automatically redirecting to the link specified by href
-            setMode("login"); //Sets the mode of the modal to login, to show only the login partial
-            $('#loginModal').modal();//Open the login modal to allow user to login
+            var mode = $(this).data('mode') || 'login';
+            setMode(mode); //Sets the mode of the modal to login if data-mode not specified
+            $('#loginModal').modal('show');//Open the login modal to allow user to login
             $.getJSON($(this).attr('href'));
              /*send a request for the site the href specified, 
              Because login modal uses request.fullpath as part of its 
