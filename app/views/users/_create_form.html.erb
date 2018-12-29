@@ -19,11 +19,13 @@
       <div class="form-group col-sm-6">
         <label for="username"><%= t('user_sessions.new.username') %></label>
         <%= f.text_field :username, { tabindex: 1, placeholder: "Username", class: 'form-control', id: 'username-signup' } %>
+      <div class='validate' id='username-valid' style='color: red; padding-top:5px' ></div>
       </div>
 
       <div class="form-group col-sm-6">
         <label for="email"><%= t('users._form.email') %></label>
         <%= f.text_field :email, { tabindex: 3, placeholder: "you@email.com", class: 'form-control', id: 'email' } %>
+        <div class='validate' id='email-valid' style='color: red; padding-top: 5px'></div>
       </div>
 
     </div>
@@ -36,17 +38,19 @@
                                           class: 'form-control',
                                           id: 'password' }
         %>
+        <div class='validate' id='password-valid' style='color: red; padding-top: 5px'></div>
       </div>
-
+      
       <div class="form-group col-sm-6">
         <label for="password_confirmation"><%= t('users._form.confirmation') %></label>
         <%= f.password_field :password_confirmation, { placeholder: I18n.t('users._form.confirm_password'),
                                                        tabindex: 5,
                                                        class: 'form-control',
+                                                       disabled: "disabled",
                                                        id: 'password-confirmation' }
         %>
+        <div class='validate' id='#password-match' style='padding-top: 5px'></div>
       </div>
-
     </div>
 
     <div class="form-group">
@@ -83,14 +87,6 @@
           <%= t('users._form.log_in') %>
         </a>
 
-      <script>
-        (function() {
-          $('.btn-save').click(function onClick(e) {
-            $(this).addClass("disabled") // disable the button after it is clicked
-                   .html("<i class='fa fa-spinner fa-spin'></i>"); // make a spinner that spins when clicked
-          })
-        })();
-      </script>
     </div>
 
   </div>
@@ -102,5 +98,6 @@
       $('#loginModal').modal(); //Toggles the modal
     })
   </script>
+  <%= javascript_include_tag 'signin_verification' %>
 </div>
 

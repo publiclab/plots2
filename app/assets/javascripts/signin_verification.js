@@ -112,11 +112,11 @@ if (publicUsingSpamaway) {
   //Validity checks for username, password, email
   var passwordValid;
   //Check validity of username
-  $('#username').on('keyup', function() {
+  $('#username-signup').on('keyup', function() {
     //Username Requirements:
     //At least 3 characters
     //Only numbers, letters, spaces, and .-_@+
-    var username = $('#username').val();
+    var username = $('#username-signup').val();
     $('#username-valid').html('');
     var tooShort = (username.length < 3);
     var usernameRegex = /^[a-zA-Z0-9-+@_.\s]+$/
@@ -125,9 +125,9 @@ if (publicUsingSpamaway) {
     if (tooShort || invalidChars) {
       if (tooShort) $('#username-valid').append('Username is too short (minimum is 3 characters).<br>');
       if (invalidChars) $('#username-valid').append('Username should use only letters, numbers, spaces, and .-_@+ please.');
-      $('#username').css('borderColor', 'red');
+      $('#username-signup').css('borderColor', 'red');
     } else {
-      $('#username').css('borderColor', '');
+      $('#username-signup').css('borderColor', '');
     }
   });
 
