@@ -53,6 +53,7 @@ Plots2::Application.routes.draw do
   get 'signup' => 'users#new'
   get 'home' => 'home#front'
   post 'follow/:followed_id' => 'relationships#create'
+  delete 'unfollow/:id' => 'relationships#destroy'
   resources :relationships, only: [:create, :destroy]
 
   get '/wiki/:id/comments', to: 'wiki#comments'

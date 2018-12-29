@@ -1,6 +1,10 @@
 <div class="col-md-9">
-  <div class="alert alert-success" id="follow-result-success">You started following <%=@profile_user.username%></div>
+  <div class="alert alert-success" id="follow-result-success" style="display: none;">You started following <%=@profile_user.username%></div>
+  <div class="alert alert-success" id="unfollow-result-success" style="display: none;">You unfollowed <%=@profile_user.username%></div>
+  <div class="alert alert-danger" id="follow-result-fail" style="display: none;">Error in following</div>
+  <div class="alert alert-danger" id="unfollow-result-fail" style="display: none;">Error in Unfollow</div>
   <div id = "note-graph" style = "overflow: auto; text-align:center; border: 1px solid #E5E5E5; margin-bottom: 10px;"></div>
+
 
   <h3 style="margin-top:0;"><%= @user.name %> <%= @user.new_contributor %>
     <small>
@@ -155,10 +159,9 @@
       <hr />
       <div id="follow_form" class="col-md-offset-4">
         <% if current_user.following?(@profile_user) %>
-          <%=render 'unfollow' %>
+          <button id="profile-unfollow-button" class="btn btn-secondary" onclick="unfollow_btn_clicked()">Unfollow</button>
         <% else %>
-          <!--Follow button-->
-          <button id="profile-follow-button" class="btn btn-primary" >Follow</button>
+          <button id="profile-follow-button" class="btn btn-primary" onclick="follow_btn_clicked()">Follow</button>
         <% end %>
       </div>
       <br />
@@ -320,8 +323,8 @@
 
     })();
 
-    $('#profile-follow-button').click(function(){
-        $('#profile-follow-button').prop('disabled', true);
+    function follow_btn_clicked() {
+  $('#profile-follow-button').prop('disabled', true);
         $.ajax({
             type: 'POST',
             url: '<%="../follow/#{@profile_user.id}" %>', 
@@ -329,13 +332,33 @@
             success: function(result, status, error)
             {
               $('#follow-result-success').show().delay(5000).fadeOut();
+              $('#follow_form').html('<button id="profile-unfollow-button" class="btn btn-secondary" onclick="unfollow_btn_clicked()" >Unfollow</button>');
             },
             error: function(xhr, status, error)
             {
-              alert("Error");
+              $('#follow-result-fail').show().delay(5000).fadeOut();
             }
           });
-    });
+}
+
+function unfollow_btn_clicked() {
+  $('#profile-unfollow-button').prop('disabled', true);
+    $.ajax({
+        type: 'DELETE',
+        url: '<%="../unfollow/#{@profile_user.id}"%>',
+        async: false,
+        success: function(result, status, error)
+        {
+          $('#unfollow-result-success').show().delay(5000).fadeOut();
+          $('#follow_form').html('<button id="profile-follow-button" class="btn btn-primary" onclick="follow_btn_clicked()" >Follow</button>');
+        },
+        error: function(xhr, status, error)
+        {
+          $('#unfollow-result-fail').show().delay(5000).fadeOut();
+        }
+      });
+}
+
 </script>
 
 <style type="text/css">
@@ -354,13 +377,10 @@
     transition-duration: .2s;
     transform: scale(1.2);
   }
-  #follow-result-success{
-    position: absolute;
+  #follow-result-success, #follow-result-fail, #unfollow-result-success, #unfollow-result-fail{
     top: 0;
     left: 0;
     right: 0;
-    display: none;
-    opacity: 100;
   }
 </style>
 
