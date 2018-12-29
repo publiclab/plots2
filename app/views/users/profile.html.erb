@@ -331,12 +331,12 @@
             async: false,
             success: function(result, status, error)
             {
-              $('#follow-result-success').show().delay(5000).fadeOut();
+              $('#follow-result-success').show().delay(2000).fadeOut();
               $('#follow_form').html('<button id="profile-unfollow-button" class="btn btn-secondary" onclick="unfollow_btn_clicked()" >Unfollow</button>');
             },
             error: function(xhr, status, error)
             {
-              $('#follow-result-fail').show().delay(5000).fadeOut();
+              $('#follow-result-fail').show().delay(2000).fadeOut();
             }
           });
 }
@@ -349,12 +349,12 @@ function unfollow_btn_clicked() {
         async: false,
         success: function(result, status, error)
         {
-          $('#unfollow-result-success').show().delay(5000).fadeOut();
+          $('#unfollow-result-success').show().delay(2000).fadeOut();
           $('#follow_form').html('<button id="profile-follow-button" class="btn btn-primary" onclick="follow_btn_clicked()" >Follow</button>');
         },
         error: function(xhr, status, error)
         {
-          $('#unfollow-result-fail').show().delay(5000).fadeOut();
+          $('#unfollow-result-fail').show().delay(2000).fadeOut();
         }
       });
 }
