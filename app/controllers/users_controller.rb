@@ -4,6 +4,8 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i(info followed following followers)
 
   def new
+    klogger2 = Logger.new("log/kevin2.log")
+    klogger2.debug("Params: #{params}")
     @user = User.new
     @action = "create" # sets the form url
   end
@@ -14,6 +16,7 @@ class UsersController < ApplicationController
     using_recaptcha = !params[:spamaway] && Rails.env == "production"
     recaptcha = verify_recaptcha(model: @user) if using_recaptcha
     @spamaway = Spamaway.new(spamaway_params) unless using_recaptcha
+    klogger = Logger.new("log/kevin.log")
     if ((@spamaway&.valid?) || recaptcha) && @user.save({})
       if current_user.crypted_password.nil? # the user has not created a pwd in the new site
         flash[:warning] = I18n.t('users_controller.account_migrated_create_new_password')
@@ -24,27 +27,18 @@ class UsersController < ApplicationController
         rescue
           flash[:warning] = "We tried and failed to send you a welcome email, but your account was created anyhow. Sorry!"
         end
-        flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
+        flash[:notice] = I18n.t('users_controller.registration_successful')
+        flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', :url1 => params[:return_to].to_s) if params[:return_to]
+        flash[:notice] = flash[:notice].html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
-        # On signup page the return_to parameters get "nested". The regex extracts the second one.
-        # Occurs when the link becomes /register?return_to=/register?return_to=/questions/admin/12-28-2018/abc?_=
-        # Then the return_to parameter becomes /register?return_to=/questions/admin/12-28-2018/test?_=
-        match = params[:return_to].match(/return_to=(.+)/m)
-        # If there are no return_to parameters, then go to dashboard.
-        if params[:return_to].nil?
-            redirect_to "/dashboard"
-        # If there was no nested return_to, then we just follow the first one.
-        # This works when the modal is used and succeeds on first login.
-        elsif match.nil?
-            redirect_to params[:return_to]
-        # If there is a nested return_to, follow that one.
-        else
-            redirect_to match[1]
-        end
-        #klogger.debug("#{params[:return_to][:return_to]}")
+        klogger.debug("Params: #{params}")
+        klogger.debug("Return to: #{params[:return_to]}")
+        redirect_to "/dashboard"
+        klogger.debug("I redirected ")
       end
     else
+      klogger.debug("User Failed")
       # pipe all spamaway errors into the user error display
       if @spamaway
         @spamaway.errors.full_messages.each do |message|

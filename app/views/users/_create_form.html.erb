@@ -1,5 +1,9 @@
 <div style="padding:10px;">
- <%= form_for :user, :as => :user, :url => "/register?return_to=" + request.fullpath, :html => {:class => "row"} do |f| %>
+  <p><%= "Params: " + params.to_s %></p>
+  <p><%= params[:return_to].to_s %></p>
+  <p><%= params[:redirect_link].to_s %></p>
+ <%= params[:redirect_link] = true if params[:redirect_link].nil? %>
+ <%= form_for :user, :as => :user, :url => params[:redirect_link] ? ("/register?redirect_link=true&return_to=" if params[:return_to].nil?).to_s + request.fullpath : "/register", :html => {:class => "row"} do |f| %>
  <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
   <div class="col-sm-12">
