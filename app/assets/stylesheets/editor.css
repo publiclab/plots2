@@ -23,6 +23,10 @@
   border-radius:         8px;
 }
 
+.side-dropzone {
+    margin-bottom:500px;
+}
+
 .side-dropzone.hover, .profile-dropzone.hover {
   background:#ddd;
   color:#bbb;
@@ -38,15 +42,19 @@
 }
 
 @media (max-width: 480px) {
-  .side-dropzone, .profile-dropzone { padding:0; }
+  .side-dropzone, .profile-dropzone { padding:0; margin-bottom:10px;}
   .side-dropzone p, .profile-dropzone p { padding:15px; }
 }
 
 @media (max-width: 768px) {
-  .side-dropzone, .profile-dropzone { padding:0; }
+  .side-dropzone, .profile-dropzone { padding:0; margin-bottom:10px;}
   .side-dropzone p, .profile-dropzone p {
     padding:20px 20px 30px;
   }
+}
+
+@media (max-width: 992px) {
+    .side-dropzone, .profile-dropzone { margin-bottom: 10px;}
 }
 
 @media (max-width: 480px) {
