@@ -132,9 +132,9 @@ a .fa-white,
         top: 0;
         border-width: 0 0 1px;
     }
-    .navbar-collapse.collapse {
+    /*.navbar-collapse.collapse {
         display: none!important;
-    }
+    }*/
     .navbar-nav {
         float: none!important;
         margin-top: 7.5px;
