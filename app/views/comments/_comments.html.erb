@@ -2,8 +2,6 @@
 <table class="table">
     <tr>
       <th class="visible-sm visible-xs"></th>
-
-      <th><%= t('users.list.username') %></th>
       <th><%= t('users.list.comment') %></th>
       <th><%= t('users.list.last_activity') %></th>
 
@@ -16,15 +14,6 @@
 
   <% @comments.each do |comment| %>
    <tr id="c<% comment.cid %>">
-      <td>
-      <i class="fa fa-comment-alt"></i> 
-      <% if comment.author # some legacy comments have no author %>
-        <img class="img-circle" id="profile-photo" style="width:40px;margin-right:8px;border: 1px solid lightgrey;" 
-        style="<% unless comment.author.user.photo_file_name %>display:none;<% end %>
-        " src="<% if comment.author.user.photo %><%= comment.author.user.photo_path(:thumb) %><% end %>" />
-        <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a> 
-      <% end %>
-      </td>
       <td>
       <span style="color:#aaa;"><%= t('home._comments.commented') %> 
         <% if comment.parent %>
