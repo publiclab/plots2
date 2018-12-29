@@ -1,5 +1,5 @@
 <div style="padding:10px;">
- <%= form_for :user, :as => :user, :url => "/register?return_to=" + request.fullpath, :html => {:class => "row"} do |f| %>
+ <%= form_for :user, :as => :user, :url => ("/register?return_to=" if params[:return_to].nil?).to_s + request.fullpath, :html => {:class => "row"} do |f| %>
  <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
   <div class="col-sm-12">
