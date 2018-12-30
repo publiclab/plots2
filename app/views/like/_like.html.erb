@@ -12,7 +12,7 @@
     </a>
 
     <li class="btn btn-default btn-sm" data-html="true" rel="popover" data-content="<%= "No tags" if tagnames.nil? || tagnames.length == 0 %><% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-default btn-mini'><%= tagname %></a></p><% end %><% end %><hr /><a class='btn btn-sm'><i class='fa fa-user'></i> <%= node.author.name %></a>" title="Follow by tag or author" data-placement="left">
-    <i class="fa fa-eye"></i></li>
+    <i class="fa fa-user-plus"></i></li>
 
   <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
     <% if !current_user %>
