@@ -91,6 +91,7 @@ group :development do
   gem 'listen', '~> 3.1.5'
   gem "nifty-generators"
   gem 'web-console', '>= 3.3.0'
+  gem 'bullet', '~> 5.7', '>= 5.7.5'
 end
 
 group :test, :development do
