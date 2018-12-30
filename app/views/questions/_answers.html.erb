@@ -10,7 +10,7 @@
     <% if current_user %>
       <%= render :partial => "comments/form", :locals => { title: "Post an answer", comment: false, placeholder: "Help users by posting an answer to this question", is_answer: true } %>
     <% else %>
-    <p><a data-toggle="modal" data-target="#loginModal" onclick="setMode('signup')">Sign up</a> or <a data-toggle="modal" data-target="#loginModal"> <%= t('layout._header.login.login_title') %> </a> to post an answer to this question.</p>
+    <p><a class="requireLogin" data-mode="signup">Sign up</a> or <a data-toggle="modal" data-target="#loginModal"> <%= t('layout._header.login.login_title') %> </a> to post an answer to this question.</p>
     <% end %> 
     </div>
   </div>
