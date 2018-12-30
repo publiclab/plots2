@@ -42,9 +42,9 @@
         <% if current_user %>
           <td>
              <% if current_user.following(tag.name) %>
-                <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-eye"></i> <%= t('tag.show.following') %></a>
+                <a rel="tooltip" title="<%= t('tag.show.unfollow') %>" class="btn btn-default btn-sm active" href="/unsubscribe/tag/<%= tag.name %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.following') %></a>
                 <% else %>
-                <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= tag.name %>"><i class="fa fa-eye"></i> <%= t('tag.show.follow') %></a>
+                <a class="btn btn-default btn-sm" href="/subscribe/tag/<%= tag.name %>"><i class="fa fa-user-plus" aria-hidden="true"></i> <%= t('tag.show.follow') %></a>
                 <% end %>
           </td>
         <% end %>

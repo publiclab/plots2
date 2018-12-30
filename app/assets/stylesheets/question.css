@@ -24,6 +24,10 @@
   background: #ccc;
 }
 
+.dropdown-menu>li>a { 
+  overflow: hidden !important; text-overflow: ellipsis;
+}
+
 #questions_searchform .dropdown-menu {
   width: 95%;
 }
