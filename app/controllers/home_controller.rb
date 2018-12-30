@@ -150,7 +150,6 @@ class HomeController < ApplicationController
     answer_comments = answer_comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     answer_comments = answer_comments.to_a # ensure it can be serialized for caching
     activity = (notes + wikis + comments + answer_comments).sort_by(&:created_at).reverse
-    
     response = [
       activity,
       blog,
