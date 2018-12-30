@@ -69,7 +69,7 @@ class UsersController < ApplicationController
       end
     else
       # incorrect password
-      flash[:error] = "Current Password entered is incorrect!"
+      flash[:error] = "Current Password is incorrect!"
       return redirect_to "/profile/" + @user.username + "/edit"
     end
   end
