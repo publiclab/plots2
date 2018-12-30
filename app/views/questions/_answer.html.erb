@@ -136,7 +136,7 @@
             type: 'GET',
             success: function(response){
               notyNotification('sunset', 3000, 'error', 'topRight', 'Answer deleted');
-              $("#a<%= answer.id %>delete-btn").remove()
+              $("#a<%= answer.id %>").remove()
             }
           });
         },
