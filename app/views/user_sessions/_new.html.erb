@@ -46,7 +46,14 @@
             var mode = $(this).data('mode') || 'login';
             setMode(mode); //Sets the mode of the modal to login if data-mode not specified
             $('#loginModal').modal('show');//Open the login modal to allow user to login
-            $.getJSON($(this).attr('href'));
+            var return_to = $(this).attr('href') || "<%= request.fullpath %>";
+            console.log(return_to);
+            $.post({
+              url: "/set_session_return_to?return_to=" + return_to,
+              success: function(data) {
+                console.log("Finished!!" + data);
+              }
+            });
              /*send a request for the site the href specified, 
              Because login modal uses request.fullpath as part of its 
              redirect parameters, we can send a request to the link

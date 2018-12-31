@@ -38,6 +38,7 @@ Plots2::Application.routes.draw do
   get 'login' => "user_sessions#new",      :as => :login
   get 'logout' => "user_sessions#destroy", :as => :logout
   get 'logoutRemotely' => 'user_sessions#logout_remotely'
+  post 'set_session_return_to' => "user_sessions#set_session_return_to"
   get 'users' => 'users#index'
   post 'register' => 'users#create'
   get 'reset' => 'users#reset'
