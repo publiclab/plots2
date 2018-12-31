@@ -47,18 +47,14 @@
             setMode(mode); //Sets the mode of the modal to login if data-mode not specified
             $('#loginModal').modal('show');//Open the login modal to allow user to login
             var return_to = $(this).attr('href') || "<%= request.fullpath %>";
-            console.log(return_to);
             $.post({
               url: "/set_session_return_to?return_to=" + return_to,
               success: function(data) {
-                console.log("Finished!!" + data);
               }
             });
-             /*send a request for the site the href specified, 
-             Because login modal uses request.fullpath as part of its 
-             redirect parameters, we can send a request to the link
-             we want to redirect to so this variable gets updated to 
-             that link. Now when the user logs in, it should go to that link.*/
+             /* Users controller uses session[:return_to] to determine redirects. This takes precedence
+                over params[:return_to]. The post request sets the session[:return_to]. For now it does nothing
+                in the users controller (for signup) */
           });
         });
       </script>

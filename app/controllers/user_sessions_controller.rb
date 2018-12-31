@@ -184,7 +184,7 @@ class UserSessionsController < ApplicationController
     prev_uri = URI(request.referer || "").path
     redirect_to prev_uri + '?_=' + Time.now.to_i.to_s
   end
-  
+
   def set_session_return_to
     session[:return_to] = params[:return_to]
   end
