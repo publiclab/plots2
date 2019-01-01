@@ -47,7 +47,7 @@
             setMode(mode); //Sets the mode of the modal to login if data-mode not specified
             $('#loginModal').modal('show');//Open the login modal to allow user to login
             var return_to = $(this).attr('href') || "<%= request.fullpath %>";
-            $.post({
+            $.get({
               url: "/set_session_return_to?return_to=" + return_to,
               success: function(data) {
               }
