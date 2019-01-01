@@ -1,4 +1,4 @@
-<div class="col-sm-3">
+<div class="col-md-3">
   <%= javascript_include_tag "dragdrop" %>
   <% if @related && @related.length > 0 %>
     <h3><%= t('wiki.edit.did_you_mean') %>:</h3>
@@ -13,17 +13,17 @@
 
   <%= raw t('wiki.edit.whats_a_wiki_page') %>
   <hr />
-  <div class="sidebar-nav hidden-sm">
-    <ul class="nav nav-list">
-      <li class="nav-header"><%= t('wiki.edit.more') %></li>
+  <div class="navbar d-md-none d-lg-block">
+    <ul class="navbar-nav">
+      <li class="nav-item navbar-brand"><%= t('wiki.edit.more') %></li>
       <% if @node.path %><li><a href="/wiki/revisions/<%= @node.slug_from_path %>"><%= t('wiki.edit.revisions_for_this_page') %></a></li><% end %>
-      <li><a href="/wiki/posting-research"><%= t('wiki.edit.about_posting_research') %></a></li>
-      <li><a href="/wiki/authoring-help#Advanced+formatting"><%= t('wiki.edit.advanced_formatting') %></a></li>
+      <li class="nav-item"><a href="/wiki/posting-research"><%= t('wiki.edit.about_posting_research') %></a></li>
+      <li class="nav-item"><a href="/wiki/authoring-help#Advanced+formatting"><%= t('wiki.edit.advanced_formatting') %></a></li>
     </ul>
   </div>
 </div>
 
-<div class="col-sm-9">
+<div class="col-md-9">
 
   <%
     if @node && @node.persisted?
@@ -37,25 +37,24 @@
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
   <% end %>
 
-  <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well wiki-form"} do |f| %>
+  <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well wiki-form row"} do |f| %>
 
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
     <%= render :partial => "editor/main_image" %>
 
-    <div class="col-md-9 col-md-pull-3">
+    <div class="col-lg-9 order-lg-1">
 
       <% if @node && @node.latest && @node.latest.title %>
         <h3><%= t('wiki.edit.editing_page') %>: <i><%= @node.latest.title %></i></h3>
       <% else %>
         <h3><%= t('wiki.edit.create_page') %>: <i><%=h params[:id] %></i></h3>
       <% end %>
+      <input class="form-control" id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
+      <input class="form-control" id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
+      <input class="form-control" id="images_input" type="hidden" name="images" value="" />
 
-      <input id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
-      <input id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
-      <input id="images_input" type="hidden" name="images" value="" />
-
-      <input id="taginput" type="hidden" name="tags" value="<%= params[:tags] %>" />
+      <input class="form-control" id="taginput" type="hidden" name="tags" value="<%= params[:tags] %>" />
 
       <div class="form-group">
         <input tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:title] %><% end %>">
@@ -73,14 +72,14 @@
       <%= render partial: 'editor/editor' %>
 
       <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= t('wiki.edit.publish') %></a>
-      <a tabindex="6" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-default btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
-      <a class="btn btn-default btn-lg" href="/wiki/<%= params["id"] %>">Cancel</a>
+      <a tabindex="6" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
+      <a class="btn btn-outline-secondary btn-lg" href="/wiki/<%= params["id"] %>">Cancel</a>
 
     </div>
 
-    <div style="clear:both;">
+    <div>
       <br />
-      <p class="col-md-12"><%= raw t('wiki.edit.agree_to_open_source_work', :url1 => "/licenses") %></p>
+      <p><%= raw t('wiki.edit.agree_to_open_source_work', :url1 => "/licenses") %></p>
       <% if @node && @node.latest %><p style="padding:10px 0 0 0;"><i><%= raw t('wiki.edit.last_edited_by', :time => time_ago_in_words(@node.latest.created_at), :url1 => "/profile/"+@node.latest.author.name, :author => @node.latest.author.name) %></i></p><% end %>
       <br />
     </div>

@@ -23,10 +23,6 @@
   border-radius:         8px;
 }
 
-.side-dropzone {
-    margin-bottom:500px;
-}
-
 .side-dropzone.hover, .profile-dropzone.hover {
   background:#ddd;
   color:#bbb;
