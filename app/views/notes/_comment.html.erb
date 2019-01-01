@@ -1,26 +1,26 @@
 <div id="c<%= comment.cid %>" class="comment" style="margin-top: 20px;padding-bottom: 9px; word-wrap: break-word">
 
-  <div style="margin-bottom: 0;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;" class="navbar navbar-default">
+  <div style="margin-bottom: 0;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;" class="navbar navbar-light bg-light">
     <% if comment.status == 4 %>
       <p class="alert alert-warning moderated">
         <% if logged_in_as(['admin','moderator']) %>
           <%= t('dashboard._comment_moderate.first_time_post') %>
-          <a class="btn btn-default btn-xs" href="/admin/publish_comment/<%= comment.id %>"><%= t('dashboard.moderate.approve') %></a>
-          <a class="btn btn-default btn-xs" href="/admin/mark_comment_spam/<%= comment.id %>"><%= t('dashboard.moderate.spam') %></a>
+          <a class="btn btn-outline-secondary btn-sm" href="/admin/publish_comment/<%= comment.id %>"><%= t('dashboard.moderate.approve') %></a>
+          <a class="btn btn-outline-sedondary btn-sm" href="/admin/mark_comment_spam/<%= comment.id %>"><%= t('dashboard.moderate.spam') %></a>
         <% else %>
           <%= raw t('dashboard.moderate.pending_approval', :url => '/wiki/moderation') %>
         <% end %>
       </p>
     <% end %>
 
-    <div class="navbar-text pull-left visible-xs">&nbsp;&nbsp;</div>
+    <div class="navbar-text float-left d-md-none">&nbsp;&nbsp;</div>
 
-    <div class="navbar-text pull-left">
+    <div class="navbar-text float-left">
       <% if comment.author %>
         <% if comment.author && comment.author.photo_file_name %>
-          <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= comment.author.photo_path(:thumb) %>" />
+          <img style="width:32px;margin-right:6px;" class="rounded-circle" src="<%= comment.author.photo_path(:thumb) %>" />
         <% else %>
-          <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="img-circle"></div>
+          <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="rounded-circle"></div>
         <% end %>
         <% if comment.author.name != "" %>
           <a href="/profile/<%= comment.author.name %>"><%= comment.author.name %></a>
@@ -28,7 +28,7 @@
           <%= comment.name %>
         <% end %>
       <% end %>
-      <span class="hidden-xs"><%= t('notes._comment.commented') %></span>
+      <span class="d-none d-md-inline"><%= t('notes._comment.commented') %></span>
       <a style="color:#aaa;" href="#c<%= comment.cid %>"><%= distance_of_time_in_words(comment.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></a>
       <% if comment.author %>
         <% streak = comment.author.streak %>
@@ -38,7 +38,7 @@
       <% end %>
     </div>
 
-    <div class="navbar-text navbar-right pull-right" style="padding-right:10px;margin-right: 0;">
+    <div class="navbar-text float-right" style="padding-right:10px;margin-right: 0;">
       <% if comment.author && comment.author && comment.author.role %>
       <!-- Role icon for admins & moderators
         <% if comment.author.role == 'admin' %>
@@ -50,7 +50,7 @@
       <% end %>
 
       <% if current_user && comment.uid == current_user.uid %>
-        <a class="btn btn-default btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
+        <a class="btn btn-outline-secondary btn-sm" href="javascript:void(0)" onClick="$('#c<%= comment.cid %>edit').toggle();$('#c<%= comment.cid %>show').toggle();setInit(<%= comment.cid %>);">
           <i class="fa fa-pencil"></i>
         </a>
       <% end %>
@@ -58,39 +58,39 @@
         <a href="#" onclick="return false;" class="btn btn-default btn-sm"><i class="fa fa-envelope"></i></a>
       <% end %>
       <% if params[:controller] == "questions" && current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid) %>
-        <a class="btn btn-default btn-sm" id="comment-<%= comment.id %>-reorder-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in promoting others' comments; this cannot be undone.<% end %>" rel="tooltip" title="<%= t('questions._comment.promotion') %>" data-placement="left" href="/comment/make_answer/<%= comment.id %>"><i class="fa fa-plus"></i></a>
+        <a class="btn btn-outline-secondary btn-sm" id="comment-<%= comment.id %>-reorder-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in promoting others' comments; this cannot be undone.<% end %>" rel="tooltip" title="<%= t('questions._comment.promotion') %>" data-placement="left" href="/comment/make_answer/<%= comment.id %>"><i class="fa fa-plus"></i></a>
       <% end %>
       <% if current_user &. can_moderate? %>
-        <a rel="tooltip" title="Mark as spam" class="btn btn-sm btn-default btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
+        <a rel="tooltip" title="Mark as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" data-confirm="Are you sure? The user will no longer be able to log in or publish, and their content will be hidden except comments." href="/admin/mark_comment_spam/<%= comment.id %>">
           <i class="fa fa-ban"></i>
         </a>
       <% else %>
-        <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-default btn-flag-spam-<%= comment.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= comment.parent.path %>#c<%= comment.cid %>+by+https://publiclab.org/profile/<% if comment.author %><%= comment.author.name %><% end %>+Thanks!">
+        <a rel="tooltip" title="Flag as spam" class="btn btn-sm btn-outline-secondary btn-flag-spam-<%= comment.id %>" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+comment+that+looks+like+spam+or+needs+to+be+moderated:+https://publiclab.org/<%= comment.parent.path %>#c<%= comment.cid %>+by+https://publiclab.org/profile/<% if comment.author %><%= comment.author.name %><% end %>+Thanks!">
           <i class="fa fa-flag"></i>
         </a>
       <% end %>
       <% if current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid || comment.parent.uid == current_user.uid) %>
-        <a rel="tooltip" title="Delete comment" class="btn btn-default btn-sm" id="c<%= comment.cid %>delete-btn">
+        <a rel="tooltip" title="Delete comment" class="btn btn-outline-secondary btn-sm" id="c<%= comment.cid %>delete-btn">
           <i class='icon fa fa-trash'></i>
         </a>
       <% end %>
       <% if current_user %>
-          <button style="background: white;border: 1px solid #ccc;padding: 4px 6px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class='icon fa fa-smile-o'></i>
-            <sup style="font-size: 12px;">+</sup>
-          </button>
-          <ul id="emoji-dropdown" style="background: #f8f8f8" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <% emoji_names, emoji_image_map = emoji_info %>
-            <% emoji_names.each do |e| %>
-              <li class="grow">
+          <div class="dropdown">
+              <button style="border: 1px solid;padding: 4px 6px;" class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class='icon fa fa-smile-o'></i>
+                <sup style="font-size: 12px;">+</sup>
+              </button>
+              <div id="emoji-dropdown" style="background: #f8f8f8" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <% emoji_names, emoji_image_map = emoji_info %>
+                <% emoji_names.each do |e| %>
                 <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
                 <% str = "/comment/like?comment_id=#{comment.cid}&user_id=#{current_user.uid}&emoji_type=#{capitalized_emoji_name}" %>
                 <%= link_to str, data: { method: "post", remote: true }, style: "padding: 0;" do %>
                   <img class="emoji" height="20" width="20" src="<%= emoji_image_map[e] %>">
                 <% end %>
-              </li>
-            <% end %>
-          </ul>
+                <% end %>
+              </div>
+            </div>
       <% end %>
     </div>
 
@@ -173,7 +173,7 @@
 
   </div>
   <% str = "#{comment.id}-like-emojis" %>
-  <div id="<%= str %>" class="navbar-text navbar-right pull-right" style="margin: 0;width: 100%;display: flex;border: 1px solid #e7e7e7;border-top: 0;">
+  <div id="<%= str %>" class="navbar-text float-right" style="margin: 0;width: 100%;display: flex;border: 1px solid #e7e7e7;border-top: 0;">
     <% emoji_names, emoji_image_map = emoji_info %>
     <% emoji_like_map = comment.emoji_likes %>
     <% user_reactions_map = comment.user_reactions_map %>
@@ -181,7 +181,7 @@
       <% capitalized_emoji_name = e.split("-").map(&:capitalize).join %>
       <% str = "#{comment.id}-emoji-button-#{e}" %>
       <% display = (emoji_like_map.has_key? capitalized_emoji_name) ? "display: flex;" : "display: none;" %>
-      <button id="<%= str %>" style="border: 0;background: #f1f8ff;border-radius: 0;border-right: 1px solid #e7e7e7;<%= display %>" type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="<%= user_reactions_map[capitalized_emoji_name] %>">
+      <button id="<%= str %>" style="border: 0;background: #f1f8ff;border-radius: 0;border-right: 1px solid #e7e7e7;<%= display %>" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="<%= user_reactions_map[capitalized_emoji_name] %>">
         <img height="20" width="20" src="<%= emoji_image_map[e] %>">
         <div style="margin-left: 6px;font-size: 14px;"><%= emoji_like_map[capitalized_emoji_name] %></div>
       </button>
