@@ -24,7 +24,9 @@ class UsersController < ApplicationController
         rescue
           flash[:warning] = "We tried and failed to send you a welcome email, but your account was created anyhow. Sorry!"
         end
-        flash[:notice] = I18n.t('users_controller.registration_successful').html_safe
+        flash[:notice] = I18n.t('users_controller.registration_successful')
+        flash[:notice] += " " + I18n.t('users_controller.continue_where_you_left_off', :url1 => params[:return_to].to_s) if params[:return_to] && params[:return_to] != "/signup"
+        flash[:notice] = flash[:notice].html_safe
         flash[:warning] = I18n.t('users_controller.spectralworkbench_or_mapknitter', :url1 => "'#{session[:openid_return_to]}'").html_safe if session[:openid_return_to]
         session[:openid_return_to] = nil
         redirect_to "/dashboard"
@@ -56,7 +58,7 @@ class UsersController < ApplicationController
           redirect_to return_to
         else
           flash[:notice] = I18n.t('users_controller.successful_updated_profile') + "<a href='/dashboard'>" + I18n.t('users_controller.return_dashboard') + " &raquo;</a>"
-          return redirect_to "/profile/" + @user.username
+          return redirect_to "/profile/" + @user.username + "/edit"
         end
       else
         render :template => 'users/edit'

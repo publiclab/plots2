@@ -1,9 +1,10 @@
 PublicLab.org
 ======
 
+[![Code of Conduct](https://img.shields.io/badge/code-of%20conduct-green.svg)](https://publiclab.org/conduct)
 [![Build Status](https://travis-ci.org/publiclab/plots2.svg)](https://travis-ci.org/publiclab/plots2)
 [![first-timers-only-friendly](http://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)](https://publiclab.github.io/community-toolbox/)
-[![Join the chat at https://gitter.im/publiclab/publiclab](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/publiclab/publiclab)
+[![Join the chat at https://publiclab.org/chat](https://img.shields.io/badge/chat-in%20different%20ways-blue.svg)](https://publiclab.org/chat)
 [![Code Climate](https://codeclimate.com/github/publiclab/plots2/badges/gpa.svg)](https://codeclimate.com/github/publiclab/plots2)
 [![Coverage Status](https://coveralls.io/repos/github/publiclab/plots2/badge.svg?branch=HEAD)](https://coveralls.io/github/publiclab/plots2?branch=HEAD)
 [![View performance data on Skylight](https://badges.skylight.io/typical/GZDPChmcfm1Q.svg)](https://oss.skylight.io/app/applications/GZDPChmcfm1Q)
@@ -160,13 +161,14 @@ To report security vulnerabilities or for questions about security, please conta
 
 Help improve Public Lab software!
 
-* Join the 'plots-dev@googlegroups.com' discussion list to get involved
+* Join the plots-dev@googlegroups.com discussion list to get involved
 * Look for open issues at https://github.com/publiclab/plots2/labels/help-wanted
 * We're specifically asking for help with issues labelled with [help-wanted](https://github.com/publiclab/plots2/labels/help-wanted) tag
 * Find lots of info on contributing at http://publiclab.org/wiki/developers
 * Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software
 * Some devs hang out in http://publiclab.org/chat (irc webchat)
 * Join our gitter chat at https://gitter.im/publiclab/publiclab
+* Try out some supportive tasks https://github.com/publiclab/plots2/wiki/Supportive-Tasks
 
 ## First Time?
 

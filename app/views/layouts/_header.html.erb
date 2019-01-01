@@ -108,6 +108,7 @@
                 <li><a href="/settings" >Email Settings</a></li>
                 <li class="divider"></li>
                 <li><a href="/subscriptions"><%= t('layout._header.subscriptions') %></a></li>
+                <li><a href="/subscriptions/digest">Your Digest</a></li>
                 <li><a href="/profile/<%= current_user.username %>/likes"><%= t('layout._header.notes_liked') %></a></li>
                 <li class="divider"></li>
         	      <% if current_user.role == 'admin' %>
@@ -188,7 +189,7 @@
 
         <div class="clearfix"> <!-- clearfix class allows the modal to expand to fit the content of this div -->
           <div id="signupContainer"> <!-- signup partial -->
-            <%= render :partial => "users/form2" %>
+            <%= render :partial => "users/create_form" %>
           </div>
           <div id="loginContainer"> <!-- login partial -->
             <%= render :partial => "user_sessions/new" %>
