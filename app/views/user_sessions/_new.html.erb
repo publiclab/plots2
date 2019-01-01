@@ -50,6 +50,7 @@
             $.get({
               url: "/set_session_return_to?return_to=" + return_to,
               success: function(data) {
+                /* we can do something here; maybe execute hash params? */
               }
             });
              /* Users controller uses session[:return_to] to determine redirects. This takes precedence
