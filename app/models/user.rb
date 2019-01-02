@@ -386,6 +386,7 @@ class User < ActiveRecord::Base
     Node.where(nid: node_ids)
       .includes(:revision, :tag)
       .references(:node_revision)
+      .where('node.status = 1')
       .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
       .order('node_revisions.timestamp DESC')
       .distinct
