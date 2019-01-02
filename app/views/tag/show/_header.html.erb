@@ -29,5 +29,5 @@
   <p>Wildcard tag searches use the * asterisk in their URLs</p>
 <% else %>
   <p>This topic has no lead wiki page.</p>
-  <p><a class="btn btn-primary" href="/wiki/new?title=<%= params[:id] %>"><span class="fa fa-plus fa-white"></span> Add one now</a></p>
+  <p><a class="btn btn-primary requireLogin" href="/wiki/new?title=<%= params[:id] %>"><span class="fa fa-plus fa-white"></span> Add one now</a></p>
 <% end %>
