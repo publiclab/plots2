@@ -165,5 +165,48 @@
          "Cities (zoom in)": city  , 
          "windrose (zoom in)": windrose
     };
+    
+     if(sethash == 1) {
+        var allMapLayers = {
+            "BL1": baselayer,
+
+            "Wisconsin_NM": Wisconsin_NM,
+            "FT_mobile": FracTracker_mobile,
+            "Purple": PurpleAirMarkerLayer,
+            "STruth": SkyTruth,
+            "FracTL": Fractracker,
+            "ToxicR": ToxicRelease,
+            "OdorR": OdorReport,
+            "MapK": MapKnitter,
+            "OIMPower": OpenInfraMap_Power,
+            "OIMapTelecom": OpenInfraMap_Telecom,
+            "OIMPetroleum": OpenInfraMap_Petroleum,
+            "OIMWater": OpenInfraMap_Water,
+            "JMincome": Justicemap_income,
+            "JMamericanIndian": JusticeMap_americanIndian,
+            "JMasian": JusticeMap_asian,
+            "JMblack": JusticeMap_black,
+            "JMmulti": JusticeMap_multi,
+            "JMhispanic": JusticeMap_hispanic,
+            "JMnonWhite": JusticeMap_nonWhite,
+            "JMwhite": JusticeMap_white,
+            "JMplurality": JusticeMap_plurality,
+            "Clouds": clouds,
+            "cloudsclassic": cloudscls,
+            "precipitation": precipitation,
+            "precipitation": precipitationcls,
+            "rain": rain,
+            "rain": raincls,
+            "snow": snow,
+            "pressure": pressure,
+            "pressurecontour": pressurecntr,
+            "temp": temp,
+            "wind": wind,
+            "Cities": city,
+            "windrose": windrose
+        };
+
+        var hash = new L.Hash(map, allMapLayers);	   
+     }   
     L.control.layers(baseMaps,overlayMaps).addTo(map);
    }
