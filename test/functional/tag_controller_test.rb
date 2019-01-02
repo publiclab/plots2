@@ -170,6 +170,11 @@ class TagControllerTest < ActionController::TestCase
     # assert_equal assigns['tags'].length, 1
     assert_select '#wiki-content', 1
   end
+  
+  test 'show page for non-existent tag' do
+    get :show, params: { id: 'nonexistent' }
+    assert :success
+  end
 
   test 'tag show range' do
     get :show, params: { id: tags(:spectrometer).name,
@@ -523,6 +528,14 @@ class TagControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select 'table' # ensure a table is shown
+  end
+
+  test 'shows embeddable grid of tagged content with powertag' do
+    get :gridsEmbed, params: { tagname: 'nodes:awesome' }
+
+    assert_response :success
+    assert_select 'table' # ensure a table is shown
+    assert_equal 3, css_select('tr').length # ensure it has 3 rows
   end
 
   test 'rss with tagname and authorname' do

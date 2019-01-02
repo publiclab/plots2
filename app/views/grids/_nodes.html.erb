@@ -1,10 +1,12 @@
 <table class="table inline-grid <%= type %>-grid <%= className %> <%= className %>-<%= randomSeed %>">
+  <tr>
     <th><a data-type="title">Title</a></th>
     <th><a data-type="author">Author</a></th>
     <th><a data-type="updated">Created | Updated</a></th>
     <th><a data-type="likes">Likes</a></th>
     <th><a data-type="views">Views</a></th>
     <th><a data-type="type">Type</th>
+  </tr>
   <% nodes.each do |node| %>
     <tr>
       <td style="width:40%"><a href="<%= node.path %>"><%= node.latest.title %></a></td>

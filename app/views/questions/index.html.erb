@@ -1,4 +1,17 @@
 <div class="col-md-12">
+    <div class ="row">
+        <div class="col-md-6" >
+            <% if @stats.blank? %>
+                <h4><i> Select a range to view questions statistics within that period</i></h4>
+        <% end %>
+            <h4><b> <%= @stats if params[:period].present?  %></b></h4>
+        </div>
+        <div class="col-md-4">
+            <%= form_tag request.url, :method => 'get'  do %>
+                <%= select_tag :period, options_for_select(options),onchange: "this.form.submit();", include_blank: "Filter stats by week, month and year", class: "form-control"%>
+            <% end %>
+        </div>
+    </div>
 
   <% if params[:action] == 'answered' %>
   <h2>Recently Answered <small class="hidden-sm">Recently answered questions</small></h2>
@@ -14,22 +27,24 @@
       <%= feature('questions-header') %>
     <% end %>
   </div>
-  <% end %>                                   
+  <% end %>
 
   <hr />
 
   <div class="row">
     <div class="col-md-6">
       <h4>Ask a question here</h4>
-      <p>To ask a question, please <a href="/login?return_to=/questions">log in</a> or <a href="/signup?return_to=/questions">sign up</a> first.</p>
+      <% if !current_user %>
+        <p>To ask a question, please <a href="/login?return_to=/questions">log in</a> or <a href="/signup?return_to=/questions">sign up</a> first.</p>
+      <% end %>
       <form id="questions_searchform" class="form-horizontal" role="search" autocomplete="off" action="/post">
         <div class="input-group">
-          <input tabindex="1" id="questions_searchform_input" type="text" name="title" class="<%= "disabled " if current_user %>form-control search-query typeahead" qryType="questions" placeholder="type your question">
+          <input tabindex="1" id="questions_searchform_input" type="text" name="title" class="<%= "disabled " if !current_user %>form-control search-query typeahead" qryType="questions" placeholder="type your question">
           <input type="hidden" name="tags" value="question:general">
           <input type="hidden" name="template" value="question">
           <input type="hidden" name="redirect" value="question">
           <span class="input-group-btn">
-            <button type="submit" rel="tooltip" title="Ask a question with the entered title" class="<%= "disabled " if current_user %>btn btn-primary">Continue</button>
+            <button id="question_search" type="submit" rel="tooltip" title="Ask a question with the entered title" class="btn btn-primary">Continue</button>
             </span>
         </div>
       </form>
@@ -46,17 +61,45 @@
   <%= render :partial => "notes/format_toggle" %>
 
   <ul class="nav nav-tabs">
-    <li<% if params[:action] == "index" %> class="active"<% end %>><a href="/questions/"><i class="fa fa-refresh"></i><span class="hidden-sm"> Recently Asked</span></a></li>
-    <li<% if params[:action] == "answered" %> class="active"<% end %>><a href="/questions/answered/"><i class="fa fa-check"></i><span class="hidden-sm"> Recently Answered</span></a></li>
-    <li<% if params[:action] == "popular" %> class="active"<% end %>><a href="/questions/popular/"><i class="fa fa-bolt"></i><span class="hidden-sm"> Popular</span></a></li>
-    <li<% if params[:action] == "unanswered" %> class="active"<% end %>><a href="/questions/unanswered/"><i class="fa fa-question-circle"></i><span class="hidden-sm"> Unanswered</span></a></li>
+    <li<% if params[:action] == "index" %> class="active"<% end %>>
+      <a href="/questions/">
+        <i class="fa fa-refresh"></i> <span class="hidden-sm hidden-xs"> Recently Asked</span>
+      </a>
+    </li>
+    <li<% if params[:action] == "answered" %> class="active"<% end %>>
+      <a href="/questions/answered/">
+        <i class="fa fa-check"></i> <span class="hidden-sm hidden-xs"> Recently Answered</span>
+      </a>
+    </li>
+    <li<% if params[:action] == "popular" %> class="active"<% end %>>
+      <a href="/questions/popular/">
+        <i class="fa fa-bolt"></i> <span class="hidden-sm hidden-xs"> Popular</span>
+      </a>
+    </li>
+    <li<% if params[:action] == "unanswered" %> class="active"<% end %>>
+      <a href="/questions/unanswered/">
+        <i class="fa fa-question-circle"></i> <span class="hidden-sm hidden-xs"> Unanswered</span>
+      </a>
+    </li>
     <li<% if params[:action] == "liked" %> class="active"<% end %>>
-      <a href="/questions/liked/"><i class="fa fa-star-o"></i><span class="hidden-sm"> Liked</span></a>
+      <a href="/questions/liked/">
+        <i class="fa fa-star-o"></i> <span class="hidden-sm hidden-xs"> Liked</span>
+      </a>
     </li>
   </ul>
 
   <%= render :partial => "questions/questions" %>
 
 </div>
-
+<% if !current_user %>
+<script>
+  $('#question_search').on('click', function(e) {
+      e.preventDefault();
+      $('#loginModal').modal();
+      var postQuery = '/post?tags=question:general&template=question&title=' + encodeURI($('#questions_searchform_input').val()) + '&redirect=question';
+      //console.log(postQuery);
+      $.getJSON(postQuery);
+  });
+</script>
+<% end %>
 <%= stylesheet_link_tag "dashboard" %>

@@ -1,5 +1,8 @@
-  <div class="image-container row">
+  <div class="thumbnail-grid image-container row">
     <% nodes.each_with_index do |node, index| %>
+        <% if index % 3 == 0 && index > 0 %>
+          <div class="clearfix visible-lg"></div>
+        <% end %>
         <% if index > 8 %>
           <div class="hidden note-image col-lg-4 col-md-6 col-sm-6 col-xs-12 text-center">
         <% else %>
@@ -26,30 +29,29 @@
         </div>
     <% end %>
   </div>
-  <div class="row">
-    <a id="show-all" class="col-md-2 col-md-offset-5 show-all">Show more</a>
-  </div>
+  <% if nodes.count > 8 %>
+    <div class="row">
+      <a id="show-all" class="col-md-2 col-md-offset-5 show-all">Show more</a>
+    </div>
+  <% end %>
 <script>
     $('#show-all').on('click', function(){
-      if ($('.hidden').length > 0) {
-        $('.hidden').addClass('show');
-        $('.show').removeClass('hidden');
+      if ($('.thumbnail-grid .hidden').length > 0) {
+        $('.thumbnail-grid .hidden').addClass('show');
+        $('.thumbnail-grid .show').removeClass('hidden');
         $('#show-all').html('Show less');
       } else {
-        $('.show').addClass('hidden');
-        $('.show').removeClass('show');
+        $('.thumbnail-grid .show').addClass('hidden');
+        $('.thumbnail-grid .show').removeClass('show');
         $('#show-all').html('Show more');
       }
     });
 </script>
 <style>
-  .table thead tr th, .table tbody tr td {
-      border: none;
-  }
-  .hidden {
+  .thumbnail-grid .hidden {
     display: none;
   }
-  .show {
+  .thumbnail-grid .show {
     display: inline-block;
   }
   .show-all {

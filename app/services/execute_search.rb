@@ -17,7 +17,7 @@ class ExecuteSearch
      when :wikis
        sservice.search_wikis(search_criteria.query, search_criteria.limit)
      when :questions
-       sservice.search_questions(search_criteria.query, search_criteria.limit)
+       sservice.search_questions(search_criteria.query, search_criteria.limit, search_criteria.sort_by)
      when :tags
        sservice.search_tags(search_criteria.query, search_criteria.limit)
      when :peoplelocations

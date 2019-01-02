@@ -3,8 +3,9 @@
 <div class="col-md-12">
   <%= render partial: 'tag/show/header' %>
   
+  
   <% if @tags.first && params[:id][-1..-1] != "*" %>
-    <%= render :partial => "tag/graph", locals: { tags: @tags } %>
+    <%= render partial: "tag/graph", locals: { tags: @tags } %>
   <% end %>
   
   <%= render partial: 'tag/show/contributors' %>
@@ -24,7 +25,7 @@
       <p><b>Tag parenting</b></p>
       <form class="form well" action="/tag/parent" method="get">
         <input type="text" placeholder="parent" name="parent" />
-        <input type="hidden" placeholder="parent" name="name" value="<%= @tags.first.name %>" />
+        <input type="hidden" placeholder="parent" name="name" value="<%= @tags&.first&.name %>" />
         <input class="btn btn-default btn-lg" type="submit" value="Submit" />
       </form>
     </div>
@@ -34,7 +35,10 @@
   <%= render partial: "tag/show/related_tags" %>
   <%= render partial: 'tag/show/nav_tabs' %>
   
-  <br />
+  <p style="padding-top:8px;">
+  <a class="btn btn-sm btn-default" href="?order=views"><i class="fa fa-eye"></i> by views</a>
+  <a class="btn btn-sm btn-default" href="?order=likes"><i class="fa fa-star"></i> by likes</a>
+  </p><br />
 
   <%= render partial: 'tag/show/tab_content' %>
 

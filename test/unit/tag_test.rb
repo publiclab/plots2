@@ -28,7 +28,9 @@ class TagTest < ActiveSupport::TestCase
                                                tid: tags(:awesome).tid,
                                                nid: nodes(:one).nid)
     assert node_tag.save!
-    assert_nil node_tag.author
+    assert_raises(ActiveRecord::RecordNotFound) do
+      node_tag.author
+    end
   end
 
   test 'tag weekly tallies' do
@@ -149,13 +151,13 @@ class TagTest < ActiveSupport::TestCase
   test 'contributors with specific tag name' do
     tag = tags(:test)
     contributors = Tag.contributors(tag.name)
-    assert_equal [1,2,5,6],contributors.pluck(:id)
+    assert_equal [1,2,5,6,19],contributors.pluck(:id)
   end
 
   test 'contributor_count with specific tag name' do
     tag = tags(:test)
     contributor_count = Tag.contributor_count(tag.name)
-    assert_equal 4,contributor_count
+    assert_equal 5,contributor_count
   end
 
 end

@@ -5,8 +5,11 @@ class CommentController < ApplicationController
   before_action :require_user, only: %i(create update make_answer delete)
 
   def index
+    status = 1 # status of comments to display
+    status = 0 if current_user && (current_user.role == 'admin' || current_user.role == 'moderator')
     @comments = Comment.paginate(page: params[:page], per_page: 30)
       .order('timestamp DESC')
+      .where(status: status)
     render template: 'comments/index'
   end
 

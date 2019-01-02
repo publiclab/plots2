@@ -1,9 +1,10 @@
-.popover{
-	z-index: 1;
-}
 .popover-title {
-    color: #333;
-    font-size: 14px;
-    text-align: center;
-    font-weight: bold;
+  color: #333;
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.popover-content {
+  padding: 9px 14px;
 }

@@ -251,7 +251,7 @@ class NodeTest < ActiveSupport::TestCase
     expected = [nodes(:one), nodes(:spam), nodes(:first_timer_note), nodes(:blog),
                 nodes(:moderated_user_note), nodes(:activity), nodes(:upgrade),
                 nodes(:draft), nodes(:post_test1), nodes(:post_test2),
-                nodes(:post_test3), nodes(:post_test4)]
+                nodes(:post_test3), nodes(:post_test4), nodes(:scraped_image)]
     assert_equal expected, notes
   end
 
@@ -397,5 +397,10 @@ class NodeTest < ActiveSupport::TestCase
     node_selection = node_selections(:unbanned_spammer_like)
     node.destroy
     assert_equal node.node_selections.count, 0
+  end
+
+  test 'should show scraped image' do
+    node = nodes(:scraped_image)
+    assert_equal '/url/to/image.png', node.scraped_image
   end
 end

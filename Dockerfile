@@ -36,5 +36,5 @@ RUN bundle install --jobs=4
 ADD . /app
 WORKDIR /app
 
-RUN yarn install && yarn postinstall
+RUN yarn install && yarn postinstall && yarn upgrade
 RUN passenger-config compile-nginx-engine --connect-timeout 60 --idle-timeout 60

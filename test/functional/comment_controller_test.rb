@@ -21,32 +21,35 @@ class CommentControllerTest < ActionController::TestCase
   test 'should create note comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
-      post :create, params: { id: nodes(:one).nid, body: 'Notes comment' }, xhr: true
+      post :create, params: { id: nodes(:one).nid, body: '[notes:awesome]' }, xhr: true
     end
     assert_response :success
     assert_not_nil :comment
     assert_template partial: 'notes/_comment'
+    assert_equal 1, css_select(".comment table").size # test inline grid rendering
   end
 
   test 'should create question comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
-      post :create, params: { id: nodes(:question).nid, body: 'Questions comment', type: 'question' }, xhr: true
+      post :create, params: { id: nodes(:question).nid, body: '[notes:awesome]', type: 'question' }, xhr: true
     end
     assert_response :success
     assert_not_nil :comment
     assert_template partial: 'notes/_comment'
+    # assert_equal 1, css_select(".comment table").size # test inline grid rendering # this should pass not sure why it didnt
   end
 
   test 'should create wiki comments' do
     UserSession.create(users(:bob))
     assert_difference 'Comment.count' do
       assert_difference "nodes(:wiki_page).comments.count" do
-        post :create, params: { id: nodes(:wiki_page).nid, body: 'Wiki comment' }, xhr: true
+        post :create, params: { id: nodes(:wiki_page).nid, body: '[notes:awesome]' }, xhr: true
       end
     end
     assert_response :success
     assert_not_nil :comment
+    assert_equal 1, css_select(".comment table").size # test inline grid rendering
   end
 
   test 'should show error if wiki comment not saved' do
@@ -232,6 +235,30 @@ class CommentControllerTest < ActionController::TestCase
     assert_template 'comments/delete.js.erb'
   end
 
+  test 'should create a comment with status 4 if user has never created nothing before' do
+    user = users(:user_first_time_poster)
+    UserSession.create(user)
+
+    post :create, params: { id: nodes(:one).nid, body: 'example' }, xhr: true
+
+    comment = Comment.last
+    assert_equal 4, user.id && comment.status, comment.author.id
+  end
+
+  test 'should send mail to moderator if comment has status 4' do
+    UserSession.create(users(:moderator))
+    post :create, params: { id: nodes(:one).nid, body: 'example', status: 4 }, xhr: true
+    assert ActionMailer::Base.deliveries.collect(&:to).include?([users(:moderator).email])
+  end
+
+  test 'should not send mail to moderator if comment has status different than 4' do
+    UserSession.create(users(:bob))
+    post :create, params: { id: nodes(:one).nid, body: 'example' }, xhr: true
+
+    assert_equal 1, Comment.last.status
+    assert_not ActionMailer::Base.deliveries.collect(&:to).include?("comment-moderators@#{ActionMailer::Base.default_url_options[:host]}")
+  end
+
   test 'should send mail to tag followers in the comment' do
     UserSession.create(users(:jeff))
     post :create, params: { id: nodes(:question).nid, body: 'Question #awesome', type: 'question' }, xhr: true
@@ -297,7 +324,7 @@ class CommentControllerTest < ActionController::TestCase
     comment = comments(:first)
     assert_no_difference 'Comment.count' do
       post :make_answer,
-          params: { 
+          params: {
            id: comment.id
           }
     end

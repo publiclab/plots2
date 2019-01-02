@@ -8,7 +8,6 @@ class DrupalUser < ApplicationRecord
   self.primary_key = 'uid'
 
   has_many :node, foreign_key: 'uid'
-  has_many :drupal_profile_values, foreign_key: 'uid'
   has_many :node_selections, foreign_key: :user_id
   has_many :answers, foreign_key: :uid
   has_many :answer_selections, foreign_key: :user_id
@@ -74,6 +73,10 @@ class DrupalUser < ApplicationRecord
     self
   end
 
+  def banned?
+    status.zero?
+  end
+
   def email
     mail
   end
@@ -89,13 +92,11 @@ class DrupalUser < ApplicationRecord
   end
 
   def new_author_contributor
-    @uid = uid
-    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if Node.where(:uid => @uid).length === 1 && Node.where(:uid => @uid).first.created_at > Date.today - 1.month
+    user.new_contributor
   end
 
   def new_contributor
-    @uid = id
-    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if Node.where(:uid => @uid).length === 1 && Node.where(:uid => @uid).first.created_at > Date.today - 1.month
+    user.new_contributor
   end
 
   def likes
@@ -127,10 +128,6 @@ class DrupalUser < ApplicationRecord
       .where(uid: uid)
       .order('changed DESC')
       .first
-  end
-
-  def profile_values
-    drupal_profile_values
   end
 
   def notes

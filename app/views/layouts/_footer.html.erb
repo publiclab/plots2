@@ -3,4 +3,7 @@
     <%= feature('footer-notice') %>
   <% end %>
   <!-- Rails version <%= Rails.version %> and locale <%= I18n.locale %> -->
+  <% if Rails.env != "production" %>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyAOLUQngEmJv0_zcG1xkGq-CXIPpLQY8iQ"></script>
+  <% end %>
 </footer>
