@@ -88,7 +88,7 @@ module Srch
                                            nickname: 'search_profiles'
 
       params do
-        use :common, :sorting, :ordering, :field, :additional
+        use :common, :sorting, :ordering, :field
       end
       get :profiles do
         search_request = SearchRequest.fromRequest(params)

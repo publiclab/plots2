@@ -9,7 +9,7 @@ awesome:
   uid: 2
   nid: 1
   date: <%= DateTime.now.to_i %>
-
+  
 awesome2:
   tid: 2
   uid: 2

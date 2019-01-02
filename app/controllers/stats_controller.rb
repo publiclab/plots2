@@ -9,8 +9,14 @@ class StatsController < ApplicationController
   end
 
   def range
-    @start = params[:start] ? Time.parse(params[:start]) : Time.now - 1.month
-    @end = params[:end] ? Time.parse(params[:end]) : Time.now
+    if params[:options].present?
+      @start = Time.now - convert(params[:options])
+      params[:start] = @start
+      params[:end] = Time.now
+    end
+    @start = params[:start] ? Time.parse(params[:start].to_s) : Time.now - 1.month
+    @end = params[:end] ? Time.parse(params[:end].to_s) : Time.now
+
     @notes = Node.select(%i(created type status))
       .where(type: 'note', status: 1, created: @start.to_i..@end.to_i)
       .count(:all)
@@ -85,5 +91,11 @@ class StatsController < ApplicationController
     Rails.cache.fetch("total-contributors-all-time", expires_in: 1.weeks) do
       @all_time_contributors = User.count_all_time_contributor
     end
+  end
+
+  private
+
+  def convert(option)
+    1.send(option.downcase)
   end
 end

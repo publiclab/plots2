@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   layout 'application'
 
-  helper_method :current_user_session, :current_user, :prompt_login, :sidebar
+  helper_method :current_user_session, :current_user, :current_profile_user, :prompt_login, :sidebar
 
   before_action :set_locale
 
@@ -90,6 +90,10 @@ class ApplicationController < ActionController::Base
       @current_user = nil
     end
     @current_user
+  end
+
+  def current_profile_user
+    @current_user && @profile_user == @current_user
   end
 
   def require_user

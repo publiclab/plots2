@@ -72,6 +72,12 @@ They are typically cached for quick loading, and can be inserted anywhere in the
 
 Comments belong to Notes via `nid`, and each have an author via `uid`; primary key `cid`. Maps also have comments via `nid`, and Answers may also have comments, via `aid`.
 
+Comment `status` -- a property of `comments`, can be:
+
+* 0: banned
+* 1: normal
+* 4: moderated -- i.e. comment created by a first-time poster, and has not yet been "approved"
+
 ### Answers
 
 Answers are similar to Comments, but are used in Question-type Notes, and may each have Comments of their own. Primary key `aid`.

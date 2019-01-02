@@ -86,6 +86,13 @@ comment_status_1:
   comment: Some comment
   timestamp: <%= Time.now.to_i + 100000 %>
 
+comment_status_4:
+  uid: 19
+  nid: 8
+  status: 4
+  comment: First comment!
+  timestamp: <%= Time.now.to_i + 100000 %>
+
 question_one:
   uid: 2
   nid: 8

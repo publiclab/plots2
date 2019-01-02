@@ -587,23 +587,17 @@ class Node < ActiveRecord::Base
   # Automated constructors for associated models
 
   def add_comment(params = {})
-    thread = if !comments.empty? && !comments.last.nil?
-               comments.last.next_thread
-             else
-               '01/'
-    end
-    if params[:comment_via].nil?
-      comment_via_status = 0
-    else
-      comment_via_status = params[:comment_via].to_i
-    end
+    thread = !comments.empty? && !comments.last.nil? ? comments.last.next_thread : '01/'
+    comment_via_status = params[:comment_via].nil? ? 0 : params[:comment_via].to_i
+    user = User.find(params[:uid])
+    status = user.first_time_poster && user.first_time_commenter ? 4 : 1
     c = Comment.new(pid: 0,
                     nid: nid,
                     uid: params[:uid],
                     subject: '',
                     hostname: '',
                     comment: params[:body],
-                    status: 1,
+                    status: status,
                     format: 1,
                     thread: thread,
                     timestamp: DateTime.now.to_i,

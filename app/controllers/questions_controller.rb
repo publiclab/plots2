@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  before_action :quiz_stats, only: %i(index answered popular liked unanswered)
+
   private
 
   def filter_questions_by_tag(questions, tagnames)
@@ -14,6 +16,10 @@ class QuestionsController < ApplicationController
     else
       questions
     end
+  end
+
+  def quiz_stats
+    @stats = helpers.questions_stats(params[:period])
   end
 
   public

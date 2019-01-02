@@ -12,7 +12,6 @@ class User < ActiveRecord::Base
   alias_attribute :name, :username
 
   acts_as_authentic do |c|
-    c.openid_required_fields = %i(nickname email)
     VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
     c.validates_format_of_email_field_options = { with: VALID_EMAIL_REGEX }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
@@ -51,9 +50,12 @@ class User < ActiveRecord::Base
     User.where('MATCH(username) AGAINST(? IN BOOLEAN MODE)', query + '*')
   end
 
+  def is_new_contributor
+    Node.where(uid: id).length === 1 && Node.where(uid: id).first.created_at > Date.today - 1.month
+  end
+
   def new_contributor
-    @uid = id
-    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if Node.where(:uid => @uid).length === 1 && Node.where(:uid => @uid).first.created_at > Date.today - 1.month
+    return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor
   end
 
   def create_drupal_user
@@ -346,7 +348,7 @@ class User < ActiveRecord::Base
   end
   
   def first_time_commenter
-    Comment.where(status: 1).count == 0
+    Comment.where(status: 1, uid: uid).count == 0
   end
 
   def follow(other_user)

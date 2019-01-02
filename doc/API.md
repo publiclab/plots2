@@ -43,9 +43,7 @@ All the endpoints have the optional parameter `limit` (10 by default) where you 
   `order_direction=[string]`: It accepts `ASC` or `DESC` (the latter is the default).
 
   `field=[string]`: Accepts the value `username` for searching profiles only by
-   the field `username`.
-
-   `tag=[string]`: The search can be refined by passing a tag field.
+   the field `username`. And accepts the value `tag` for searching profiles by tag.
 
 ### Notes
 
