@@ -371,7 +371,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    rubocop (0.61.1)
+    rubocop (0.62.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.5, != 2.5.1.1)
@@ -448,7 +448,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
-    unicode-display_width (1.4.0)
+    unicode-display_width (1.4.1)
     unicode-emoji (1.1.0)
     virtus (1.0.5)
       axiom-types (~> 0.1)
@@ -541,7 +541,7 @@ DEPENDENCIES
   rest-client
   reverse_markdown
   rspec
-  rubocop (~> 0.61.1)
+  rubocop (~> 0.62.0)
   ruby-openid
   sanitize
   sass-rails (~> 5.0, >= 5.0.7)
