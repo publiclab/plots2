@@ -65,8 +65,7 @@ class SearchService
   def search_tags(query, limit = 10)
     sterms = query.split(' ')
     tlist = Tag.where(name: sterms)
-      .joins(:node_tag)
-      .joins(:node)
+      .joins(:node_tag, :node)
       .where('node.status = 1')
       .select('DISTINCT node.nid,node.title,node.path')
       .limit(limit)
@@ -187,8 +186,8 @@ class SearchService
     users =
       if type == "tag"
         User.where('rusers.status = 1')
-            .joins(:user_tags)\
-            .where('user_tags.value LIKE ?', '%' + query + '%')\
+            .joins(:user_tags)
+            .where('user_tags.value LIKE ?', '%' + query + '%')
       else if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
         type == "username" ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
       else
