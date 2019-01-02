@@ -101,6 +101,42 @@
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
     });
 
+       var Wisconsin_NM  = L.esri.featureLayer({
+           url: 'https://services.arcgis.com/jDGuO8tYggdCCnUJ/arcgis/rest/services/Nonmetallic_and_Potential_frac_sand_mine_proposals_in_West_Central_Wisconsin/FeatureServer/0/',
+           simplifyFactor: 1
+       }) ;
+
+       Wisconsin_NM.bindPopup(function (layer) {
+           return L.Util.template('<p><strong>Id : </strong>{FID}<br><strong>PLACENAME : </strong>{PLACENAME}<br><strong>STATE : </strong>{STATE}<br><strong>Lat :</strong> {LATITUDE} <br> <strong>Lon : </strong>{LONGITUDE} <br> <strong>Owner :</strong> {OWNERNME1} <br> <strong>POSTAL ADRESS :</strong> {PSTLADRESS} <br><strong> Assessed Acres :</strong> {ASSDACRES} <br> <strong>County Name :</strong> {CONAME} <br> </p>', layer.feature.properties);
+       });
+
+       Wisconsin_NM.on('loading', function(e){
+           map.spin(true) ;
+       });
+       Wisconsin_NM.on('load', function(e){
+           map.spin(false) ;
+       });
+       Wisconsin_NM.on('add', function(e){
+           map.setView([43.9929 , -90.3883], 12);
+       });
+
+       var FracTracker_mobile  = L.esri.featureLayer({
+           url: 'https://services.arcgis.com/jDGuO8tYggdCCnUJ/arcgis/rest/services/FracTrackerMobileAppNPCAMesaVerdeNationalPark_051416/FeatureServer/0/',
+           simplifyFactor: 1
+       }) ;
+
+       FracTracker_mobile.bindPopup(function (layer) {
+           return L.Util.template('<p><strong>Id : </strong>{OBJECTID}<br><strong>FT_MV_ID : </strong>{FT_MV_ID}<br><strong>Long : </strong>{Long}<br><strong>Lat :</strong> {Lat} <br> <strong>Caption : </strong>{caption} <br> <strong>issue :</strong> {issue} <br> <strong>facility :</strong> {facility} <br><strong> Location :</strong> {location} <br> <strong>URL :</strong> <a href={URL2}>{URL2}</a> <br> <img src={URL2} height="280" width="290"></p>', layer.feature.properties);
+       });
+
+       FracTracker_mobile.on('loading', function(e){
+           map.spin(true) ;
+       });
+
+       FracTracker_mobile.on('load', function(e){
+           map.spin(false) ;
+       });
+
     var Justicemap_income = L.tileLayer.provider('JusticeMap.income') ;
     var JusticeMap_americanIndian = L.tileLayer.provider('JusticeMap.americanIndian') ;
     var JusticeMap_asian = L.tileLayer.provider('JusticeMap.asian') ;
@@ -132,6 +168,8 @@
     };
     var overlayMaps = {
      // "PurpleAirLayer-HeatMap": PurpleLayer ,
+        "Wisconsin Non-Metal" : Wisconsin_NM ,
+        "FracTracker_mobile" : FracTracker_mobile ,
       "PurpleAirLayer-Markers": PurpleAirMarkerLayer ,
       "SkyTruth": SkyTruth , 
       "Fractracker" : Fractracker ,
