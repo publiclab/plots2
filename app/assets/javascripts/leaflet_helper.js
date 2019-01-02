@@ -71,7 +71,7 @@
      });
    }
 
-   function setupLEL(map){ 
+   function setupLEL(map , sethash){ 
 
     var baselayer = L.tileLayer('https://a.tiles.mapbox.com/v3/jywarren.map-lmrwb2em/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
