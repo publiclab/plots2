@@ -62,7 +62,7 @@ h4,h5,h6, h1 small, h3 small {
 .pl-content p img,
 #comments p img,
 #answer-0-comment p img,
-.pl-content p iframe {
+.pl-content p {
   max-width: 100%;
   border: none;
 }
@@ -99,12 +99,26 @@ a .fa-white,
   display:none;
 }
 
+#pl_pad {
+    width:300%;
+}
+
+@media (max-width:992px) {
+    #pl_pad {
+        width:250%;
+    }
+}
+
 @media (max-width:400px) {
   .hidden-tiny {
     display:none;
   }
   .visible-tiny {
     display:inline;
+  }
+
+  #pl_pad {
+      width: 75%;
   }
 }
 
@@ -115,6 +129,7 @@ a .fa-white,
   .visible-tiny {
     display:none;
   }
+
 }
 
 @media (max-width: 768px) {
@@ -152,6 +167,9 @@ a .fa-white,
     #md-ham {
         display: none;
     }
+    #pl_pad {
+        width:150%;
+    }
 }
 
 
@@ -185,6 +203,9 @@ a .fa-white,
 @media (max-width: 340px) {
   #brand { display:none; }
   #header .brand-compact { display:inline; }
+  #pl_pad {
+      width: 75%;
+  }
 }
 
 @media (min-width: 340px) {
