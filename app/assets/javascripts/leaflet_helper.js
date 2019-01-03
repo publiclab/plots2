@@ -166,7 +166,7 @@
          "windrose (zoom in)": windrose
     };
     
-    if(sethash == 1) {
+    if(sethash === 1) {
       var allMapLayers = {
         "BL1": baselayer,
 
@@ -194,9 +194,9 @@
         "Clouds": clouds,
         "cloudsclassic": cloudscls,
         "precipitation": precipitation,
-        "precipitation": precipitationcls,
+        "precipcls": precipitationcls,
         "rain": rain,
-        "rain": raincls,
+        "raincls": raincls,
         "snow": snow,
         "pressure": pressure,
         "pressurecontour": pressurecntr,
