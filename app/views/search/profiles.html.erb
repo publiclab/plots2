@@ -28,7 +28,7 @@
                             </div>
                             <a style="margin-left: 12px;" href="/profile/<%= profile.username %>"><%= profile.username %></a>
                         </td>
-                        <td style="padding-top:16px;"><%= time_ago_in_words(Time.at(profile.last['changed'])) if profile.last %></td>
+                        <td style="padding-top:16px;"><%= time_ago_in_words(Time.at(profile.updated_at)) if profile %></td>
                         <td style="padding-top:16px;"><%= profile.node_count %> <%= t('profile.list.notes_and_edits') %></td>
                         <td style="padding-top:16px;"><%= distance_of_time_in_words(profile.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %></td>
                     </tr>
