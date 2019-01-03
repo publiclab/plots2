@@ -79,7 +79,7 @@ class HomeController < ApplicationController
       maxlat = current_user.lat + dist
       minlon = current_user.lon - dist
       maxlon = current_user.lon + dist
-      @users = DrupalUser.where('lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?', minlat, maxlat, minlon, maxlon)
+      @users = User.where('lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?', minlat, maxlat, minlon, maxlon)
     end
   end
 
@@ -127,7 +127,9 @@ class HomeController < ApplicationController
     revisions = revisions.to_a # ensure it can be serialized for caching
     wikis += revisions
     wikis = wikis.sort_by(&:created_at).reverse
-    comments = Comment.where(status: 1).or(Comment.where(status: 4)).joins(:node, :drupal_user)
+    comments = Comment.where(status: 1)
+      .or(Comment.where(status: 4))
+      .joins(:node, :user)
       .order('timestamp DESC')
       .where('timestamp - node.created > ?', 86_400) # don't report edits within 1 day of page creation
       .where('node.status = ?', 1)
@@ -136,7 +138,7 @@ class HomeController < ApplicationController
     # group by day: http://stackoverflow.com/questions/5970938/group-by-day-from-timestamp
     comments = comments.group('DATE(FROM_UNIXTIME(timestamp))') if Rails.env == 'production'
     comments = comments.to_a # ensure it can be serialized for caching
-    answer_comments = Comment.joins(:answer, :drupal_user)
+    answer_comments = Comment.joins(:answer, :user)
       .order('timestamp DESC')
       .where('timestamp - answers.created_at > ?', 86_400)
       .limit(20)

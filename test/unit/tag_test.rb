@@ -14,7 +14,7 @@ class TagTest < ActiveSupport::TestCase
   test 'tag followers' do
     followers = Tag.followers(node_tags(:awesome).name)
     assert !followers.empty?
-    assert followers.include?(tag_selections(:awesome).user.user)
+    assert followers.include?(tag_selections(:awesome).user)
   end
 
   test 'tag subscribers' do
