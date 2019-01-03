@@ -22,7 +22,7 @@
   <div class="form-group">
 
     <label for="password"><%= t('user_sessions.new.password') %></label>
-    <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-signup' } %>
+    <%= f.password_field :password, { tabindex: 2, class: 'form-control', id: 'password-signup', onpaste: 'return false;' } %>
 
   </div>
 

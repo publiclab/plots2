@@ -12,7 +12,6 @@ class User < ActiveRecord::Base
   alias_attribute :name, :username
 
   acts_as_authentic do |c|
-    c.openid_required_fields = %i(nickname email)
     VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
     c.validates_format_of_email_field_options = { with: VALID_EMAIL_REGEX }
     c.crypto_provider = Authlogic::CryptoProviders::Sha512
@@ -387,6 +386,7 @@ class User < ActiveRecord::Base
     Node.where(nid: node_ids)
       .includes(:revision, :tag)
       .references(:node_revision)
+      .where('node.status = 1')
       .where("(created >= #{start_time.to_i} AND created <= #{end_time.to_i}) OR (timestamp >= #{start_time.to_i}  AND timestamp <= #{end_time.to_i})")
       .order('node_revisions.timestamp DESC')
       .distinct

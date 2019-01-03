@@ -3,7 +3,7 @@ class SearchRequest
   # Minimum query length, or we return an empty result
   MIN_QUERY_LENGTH = 3
 
-  attr_accessor :query, :seq, :tag
+  attr_accessor :query, :seq, :tag, :nwlat, :nwlng, :selat, :selng
 
   def initialize; end
 
@@ -12,6 +12,10 @@ class SearchRequest
     obj.query = rparams[:query]
     obj.seq = rparams[:seq]
     obj.tag = rparams[:tag]
+    obj.nwlat = rparams[:nwlat]
+    obj.nwlng = rparams[:nwlng]
+    obj.selat = rparams[:selat]
+    obj.selng = rparams[:selng]
     obj
   end
 
@@ -21,6 +25,9 @@ class SearchRequest
     isValid = true
     isValid &&= !query.blank?
     isValid &&= query.length >= MIN_QUERY_LENGTH
+    unless isValid
+      isValid ||= !nwlat.nil? && !nwlng.nil? && !selat.nil? && !selng.nil?
+    end
     isValid
   end
 
@@ -30,5 +37,9 @@ class SearchRequest
     expose :query, documentation: { type: 'String', desc: 'Search Query text.' }
     expose :seq, documentation: { type: 'Integer', desc: 'Sequence value passed from client through to the SearchResult. For client sequencing usage' }
     expose :tag, documentation: { type: 'String', desc: 'Refine search by specified tag.' }
+    expose :nwlat, documentation: { type: 'Float', desc: 'Geograpical northwest latitude coordinate' }
+    expose :nwlng, documentation: { type: 'Float', desc: 'Geograpical northwest longitude coordinate' }
+    expose :selat, documentation: { type: 'Float', desc: 'Geograpical southeast latitude coordinate' }
+    expose :selng, documentation: { type: 'Float', desc: 'Geograpical southeast longitude coordinate' }
   end
 end

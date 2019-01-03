@@ -91,12 +91,12 @@ class UserTest < ActiveSupport::TestCase
 
   test 'returns nodes created in given period of time' do
     bob = users(:bob)
-    node_count = 6
-    nodes_fix = [1,2,8,9,10,15]
+    node_count = 5
+    nodes_fix = [1,2,8,9,15]
     count_return = bob.content_followed_in_period(2.hours.ago,Time.now).count
     nodes_time = bob.content_followed_in_period(2.hours.ago,Time.now).pluck(:nid)
     assert_equal node_count, count_return
-    assert_equal nodes_fix,nodes_time.sort
+    assert_equal nodes_fix, nodes_time.sort
   end
 
   test 'returns value of power tag' do
