@@ -182,22 +182,17 @@ class SearchService
     user_locations.limit(query)
   end
 
-  def find_users(query, limit, type = nil)
+ def find_users(query, limit, type = nil)
     users =
       if type == "tag"
         User.where('rusers.status = 1')
-            .joins(:user_tags)
-            .where('user_tags.value LIKE ?', '%' + query + '%')
+            .joins(:user_tags)\
+            .where('user_tags.value LIKE ?', '%' + query + '%')\
       else if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
         type == "username" ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
       else
         User.where('username LIKE ? AND rusers.status = 1', '%' + query + '%')
       end
-
-    if user_tag.present?
-      users = User.joins(:user_tags)
-                  .where('user_tags.value LIKE ?', user_tag)
-                  .where(id: users.select("rusers.id"))
     end
 
     users = users.limit(limit)
