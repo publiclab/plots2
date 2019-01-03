@@ -755,11 +755,11 @@ class Node < ActiveRecord::Base
           if tag.valid?
             if tag.name.split(':')[0] == 'lat'
               tagvalue = tag.name.split(':')[1]
-              self.update_attribute(:latitude, tagvalue)
-              self.update_attribute(:precision, decimals(tagvalue).to_s)
+              update_attribute(:latitude, tagvalue)
+              update_attribute(:precision, decimals(tagvalue).to_s)
             elsif tag.name.split(':')[0] == 'lon'
               tagvalue = tag.name.split(':')[1]
-              self.update_attribute(:longitude, tagvalue)
+              update_attribute(:longitude, tagvalue)
             end
           end
 
@@ -780,10 +780,10 @@ class Node < ActiveRecord::Base
   end
 
   def decimals(n)
-    if not n.to_s.include? '.'
-      return 0
+    if !n.to_s.include? '.'
+      0
     else
-      return n.to_s.split('.').last.size
+      n.to_s.split('.').last.size
     end
   end
 
