@@ -9,14 +9,21 @@
     https://<%= ActionMailer::Base.default_url_options[:host] %><%= @comment.node.path %>
   </p>
 
-  <p>
-    <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/admin/publish_comment/<%= @comment.id %>">Approve</a>
+    <p> <b> Comment: </b> </p>
+      <div style = "padding:2vw; background-color:rgb(217, 217, 217); border-radius:5px;">
+        <%= @comment.comment %>
+      </div>
+            
+  <p style="text-align:center; padding: 5px;">
+    <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/admin/publish_comment/<%= @comment.id %>"
+      style = "background-color: #64ff00; padding: 8px; border-radius: 3px;text-decoration: none; color:#000; margin-right:3px;">Approve</a>
     or
-    <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/admin/spam_comments/<%= @comment.id %>">Spam</a>
+    <a href="https://<%= ActionMailer::Base.default_url_options[:host] %>/admin/spam_comments/<%= @comment.id %>"
+      style = "background-color: #ff5208; padding: 8px; border-radius: 3px;text-decoration: none; color:#FFF; margin-left:3px;">Spam</a>
   </p>
 
   <hr />
-
+  
   <p>It has the following tags: </p>
   <ul>
     <% @comment.tags.each do |tag| %>
