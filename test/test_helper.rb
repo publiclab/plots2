@@ -22,6 +22,7 @@ class ActiveSupport::TestCase
   # https://github.com/rails/rails/commit/2acec4657752d441ab87b9f5862d7918843d6409#diff-1ed2907b3b8f148c2533558a77673ffaR3
   # _fixture:
   #   model_class: 'DrupalUser'
+  include MiniTestWithBullet
   set_fixture_class users: User
   set_fixture_class node_tags: NodeTag
   set_fixture_class drupal_users: DrupalUser
