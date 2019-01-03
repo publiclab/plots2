@@ -1,12 +1,12 @@
-<div class="col-md-5">
+<div class="col-lg-5">
   <% if !@node.nil? %>
     
     <h3 id="wiki-title" style="margin-top:0;"><%= raw t('wiki.revisions.revisions_for', :wiki => @node.title) %></h3>
 
     <ul class="nav nav-tabs">
-      <li><a href="/wiki/<%= @node.slug_from_path %>"><%= t('wiki.revisions.view') %></a></li>
-      <li><a href="/wiki/edit/<%= @node.slug_from_path %>"><%= t('wiki.revisions.edit') %></a></li>
-      <li class="active"><a href="/wiki/revisions/<%= @node.slug_from_path %>">Revisions (<%= @node.revisions.length %>)</a></li>
+      <li class="nav-item"><a class="nav-link" href="/wiki/<%= @node.slug_from_path %>"><%= t('wiki.revisions.view') %></a></li>
+      <li class="nav-item"><a class="nav-link" href="/wiki/edit/<%= @node.slug_from_path %>"><%= t('wiki.revisions.edit') %></a></li>
+      <li class="nav-item"><a class="nav-link active" href="/wiki/revisions/<%= @node.slug_from_path %>">Revisions (<%= @node.revisions.length %>)</a></li>
       <!--<li class="pull-right"><%= render :partial => "home/social" %></li>-->
     </ul>
 
@@ -19,8 +19,8 @@
 
         <td><b>
           <a href="javascript:void(0)" onClick="goto(<%= @node.revisions.length-1-index %>,<%= @node.revisions.length-2-index %>)"><%= @node.revisions.length-1-index %></a>
-          <% if revision.status == 0 %><span class="label label-danger"><%= t('wiki.revisions.moderated') %></span><% end %>
-          <% if revision.vid == @node.latest.vid %><span class="label label-success"><%= t('wiki.revisions.current') %></span><% end %>
+          <% if revision.status == 0 %><span class="badge badge-danger"><%= t('wiki.revisions.moderated') %></span><% end %>
+          <% if revision.vid == @node.latest.vid %><span class="badge badge-success"><%= t('wiki.revisions.current') %></span><% end %>
         </b></td>
 
         <% if revision.author %><td><a href="/profile/<%= revision.author.name %>"><%= revision.author.name %></a></td><% end %>
@@ -31,16 +31,16 @@
 	  | <%= distance_of_time_in_words(revision.created_at, Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>
           <div style="display:none;" id="body_<%= @node.revisions.length-1-index %>"><%= raw RDiscount.new(revision.body).to_html %></div>
         </td>
-        <td><small><a class="btn btn-xs btn-default" href="/wiki/revert/<%= revision.vid %>" data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class="fa fa-arrow-reload"></i> <%= t('wiki.revisions.revert') %></a></small></td>
+        <td><small><a class="btn btn-sm btn-outline-secondary" href="/wiki/revert/<%= revision.vid %>" data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class="fa fa-arrow-reload"></i> <%= t('wiki.revisions.revert') %></a></small></td>
         <% if current_user && (current_user.role == "moderator" || current_user.role == "admin") %>
           <% if revision.status == 1 %>
-            <td><small><a class='btn btn-xs btn-default' href='/moderate/revision/spam/<%= revision.vid %>' data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class='fa fa-ban'></i></a></small></td>
+            <td><small><a class='btn btn-sm btn-outline-secondary' href='/moderate/revision/spam/<%= revision.vid %>' data-confirm="<%= t('wiki.revisions.are_you_sure') %>"><i class='fa fa-ban'></i></a></small></td>
           <% elsif revision.status == 0 %>
-            <td><small><a class='btn btn-xs btn-default' href='/moderate/revision/publish/<%= revision.vid %>'><i class='fa fa-plus-circle'></i> <%= t('wiki.revisions.republish') %></a></small></td>
+            <td><small><a class='btn btn-sm btn-outline-secondary' href='/moderate/revision/publish/<%= revision.vid %>'><i class='fa fa-plus-circle'></i> <%= t('wiki.revisions.republish') %></a></small></td>
           <% end %>
         <% end %>
 
-        <td><small><a class="btn btn-xs btn-default" href="/wiki/raw/<%= revision.vid %>"><i class="fa fa-code"></i></a></small></td>
+        <td><small><a class="btn btn-sm btn-outline-secondary" href="/wiki/raw/<%= revision.vid %>"><i class="fa fa-code"></i></a></small></td>
 
       </tr>
     <% end %>
@@ -49,13 +49,16 @@
    <hr />
    <%= will_paginate @revisions, :renderer => BootstrapPagination::Rails if @paginated %>
 </div>
-  <div class="col-md-7">
-    <div class="btn-group pull-right">
+  <div class="col-lg-7">
+    <div class="btn-group float-right">
       <a class="btn btn-link" href="javascript:void(0)" onClick="prev()">&laquo;</a>
       <a class="btn btn-link" href="javascript:void(0)" onClick="next()">&raquo;</a>
     </div>
     <h3 style="margin-top:0;"><%= raw t('wiki.revisions.comparing_revision', :revision_1 => @node.revisions.length-1, :revision_2 => @node.revisions.length-2) %></h3>
-    <div class="well" id="diff"></div>
+    <div class="card bg-light">
+        <div class="card-body" id="diff">
+        </div>
+    </div>
 
     <style>
       del { background:#faa; }
