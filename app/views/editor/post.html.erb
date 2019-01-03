@@ -65,59 +65,62 @@
   <%= form_for :node, :as => :drupal_node, :url => url do |f| %>
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
   <% end %>
+  <div class="card bg-light">
+    <div class="card-body">
+      <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well legacy-form row"} do |f| %>
 
-  <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well legacy-form row"} do |f| %>
+        <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
 
-    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages :header_message => "Your note couldn't be saved." %></div><% end %>
+        <%= render :partial => "editor/main_image" %>
 
-    <%= render :partial => "editor/main_image" %>
+        <div class="col-lg-9 order-lg-1">
 
-    <div class="col-lg-9 order-lg-1">
+          <% if params[:template] == "question" %>
+            <h3>Ask a question of the community</h3>
+          <% else %>
+            <h3>Share your work</h3>
+          <% end %>
 
-      <% if params[:template] == "question" %>
-        <h3>Ask a question of the community</h3>
-      <% else %>
-        <h3>Share your work</h3>
-      <% end %>
+          <div class="form-group">
+            <input id="title" tabindex="1" name="title" class="form-control" placeholder="<% if params[:template] == "question" %>Ask a question as specifically as possible<% else %>Title your post descriptively<% end %>" value="<%= if @node then @node.title else params[:title] end %>"/>
+          </div>
 
-      <div class="form-group">
-        <input id="title" tabindex="1" name="title" class="form-control" placeholder="<% if params[:template] == "question" %>Ask a question as specifically as possible<% else %>Title your post descriptively<% end %>" value="<%= if @node then @node.title else params[:title] end %>"/>
-      </div>
+          <input class="form-control" id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
+          <input class="form-control" id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
+          <input class="form-control" id="node_images" type="hidden" name="node_images" value="" />
 
-      <input class="form-control" id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
-      <input class="form-control" id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
-      <input class="form-control" id="node_images" type="hidden" name="node_images" value="" />
+          <%= render :partial => 'editor/editor' %>
 
-      <%= render :partial => 'editor/editor' %>
+          <div class="input-group tags-input">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-tags"></i></span>
+            </div>
+            <input autocomplete="off" class="form-control" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.power_tag('question')) || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %><%= ','+@node.power_tag('question') if @node && @node.power_tag('question') != '' %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
+          </div>
 
-      <div class="input-group tags-input">
-        <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-tags"></i></span>
+          <input name="remote" type="hidden" value="true"/>
+
+          <p class="d-none alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
+          <br />
+
+          <% if current_user.first_time_poster %>
+            <p class="moderation-notice">Hi! Just letting you know ahead of time that everyone's first posts to this website are <a href='/wiki/moderation'>moderated</a> due to issues we've had with spam. Thanks for your patience!</p>
+          <% end %>
+
+          <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
+          <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
+
+          <%= render partial: 'editor/event' %>
+
         </div>
-        <input autocomplete="off" class="form-control" id="taginput" tabindex="3" name="tags" type="text" <% if params[:tags] || (@node && @node.power_tag('question')) || (@node && @node.tagnames) %>value="<%= params[:tags] || @node.tagnames.join(',') %><%= ','+@node.power_tag('question') if @node && @node.power_tag('question') != '' %>"<% else %>placeholder="balloon-mapping,gulf-coast"<% end %> data-provide="typeahead" />
-      </div>
 
-      <input name="remote" type="hidden" value="true"/>
+        <div class="order-lg-3">
+          <br />
+          <p class="col-lg-12">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
+          <br />
+        </div>
 
-      <p class="d-none alert alert-warning">Consider adding a lead image to illustrate your post! (see above right)</p>
-      <br />
-
-      <% if current_user.first_time_poster %>
-        <p class="moderation-notice">Hi! Just letting you know ahead of time that everyone's first posts to this website are <a href='/wiki/moderation'>moderated</a> due to issues we've had with spam. Thanks for your patience!</p>
       <% end %>
-
-      <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg">Publish</a>
-      <a tabindex="6" data-previewing-text="Previewing (click to edit)" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()">Preview</a>
-
-      <%= render partial: 'editor/event' %>
-
     </div>
-
-    <div style="clear:both;">
-      <br />
-      <p class="col-lg-12">By publishing, you agree to <a target="_blank" href="/licenses">open source your work</a> so that others may use it.</p>
-      <br />
-    </div>
-
-  <% end %>
+  </div>
 </div>

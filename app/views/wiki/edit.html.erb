@@ -36,66 +36,69 @@
   <%= form_for :node, :as => :node, :url => url do |f| %>
     <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
   <% end %>
+  <div class="card bg-light">
+    <div class="card-body">
+      <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well wiki-form row"} do |f| %>
 
-  <%= form_for :revision, :as => :revision, :url => url, :html => {:class => "form well wiki-form row"} do |f| %>
+        <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
 
-    <% if f.error_messages != "" %><div class="alert alert-danger"><%= f.error_messages %></div><% end %>
+        <%= render :partial => "editor/main_image" %>
 
-    <%= render :partial => "editor/main_image" %>
+        <div class="col-lg-9 order-lg-1">
 
-    <div class="col-lg-9 order-lg-1">
+          <% if @node && @node.latest && @node.latest.title %>
+            <h3><%= t('wiki.edit.editing_page') %>: <i><%= @node.latest.title %></i></h3>
+          <% else %>
+            <h3><%= t('wiki.edit.create_page') %>: <i><%=h params[:id] %></i></h3>
+          <% end %>
+          <input class="form-control" id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
+          <input class="form-control" id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
+          <input class="form-control" id="images_input" type="hidden" name="images" value="" />
 
-      <% if @node && @node.latest && @node.latest.title %>
-        <h3><%= t('wiki.edit.editing_page') %>: <i><%= @node.latest.title %></i></h3>
-      <% else %>
-        <h3><%= t('wiki.edit.create_page') %>: <i><%=h params[:id] %></i></h3>
+          <input class="form-control" id="taginput" type="hidden" name="tags" value="<%= params[:tags] %>" />
+
+          <div class="form-group">
+            <input tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:title] %><% end %>">
+          </div>
+
+          <script>
+            (function(){
+              $D = {
+                uid: <%= current_user.uid %>,
+                type: 'wiki'
+              }
+            })()
+          </script>
+
+          <%= render partial: 'editor/editor' %>
+
+          <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= t('wiki.edit.publish') %></a>
+          <a tabindex="6" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
+          <a class="btn btn-outline-secondary btn-lg" href="/wiki/<%= params["id"] %>">Cancel</a>
+
+        </div>
+
+        <div class="order-lg-3">
+          <br />
+          <p><%= raw t('wiki.edit.agree_to_open_source_work', :url1 => "/licenses") %></p>
+          <% if @node && @node.latest %><p style="padding:10px 0 0 0;"><i><%= raw t('wiki.edit.last_edited_by', :time => time_ago_in_words(@node.latest.created_at), :url1 => "/profile/"+@node.latest.author.name, :author => @node.latest.author.name) %></i></p><% end %>
+          <br />
+        </div>
+
+        <script>
+          (function(){
+            publish = function(e) {
+              $('form.wiki-form').submit()
+            }
+            publishOnEnter = function(e) {
+              if (e && e.keyCode == 13) $('form.wiki-form').submit()
+            }
+            $(".publish").bind("click", publish)
+            $(".publish").bind("keypress", publishOnEnter)
+          })()
+        </script>
+
       <% end %>
-      <input class="form-control" id="has_main_image" type="hidden" name="has_main_image" value="<% if @node && @node.main_image %>true<% end %>" />
-      <input class="form-control" id="main_image" type="hidden" name="main_image" value="<% if @node && @node.main_image(:rails) %><%= @node.main_image(:rails).id %><% else %><%= params[:main_image] %><% end %>" />
-      <input class="form-control" id="images_input" type="hidden" name="images" value="" />
-
-      <input class="form-control" id="taginput" type="hidden" name="tags" value="<%= params[:tags] %>" />
-
-      <div class="form-group">
-        <input tabindex="1" name="title" type="text" class="form-control" id="title" value="<% if @node && @node.latest %><%= @node.latest.title %><% else %><%= params[:title] %><% end %>">
-      </div>
-
-      <script>
-        (function(){
-          $D = {
-            uid: <%= current_user.uid %>,
-            type: 'wiki'
-          }
-        })()
-      </script>
-
-      <%= render partial: 'editor/editor' %>
-
-      <a id="publish" tabindex="5" class="publish btn btn-primary btn-lg"><%= t('wiki.edit.publish') %></a>
-      <a tabindex="6" data-previewing-text="<%= t('wiki.edit.previewing_text') %>" class="btn btn-outline-secondary btn-lg preview-btn" onClick="$E.toggle_preview()"><%= t('wiki.edit.preview') %></a>
-      <a class="btn btn-outline-secondary btn-lg" href="/wiki/<%= params["id"] %>">Cancel</a>
-
     </div>
-
-    <div>
-      <br />
-      <p><%= raw t('wiki.edit.agree_to_open_source_work', :url1 => "/licenses") %></p>
-      <% if @node && @node.latest %><p style="padding:10px 0 0 0;"><i><%= raw t('wiki.edit.last_edited_by', :time => time_ago_in_words(@node.latest.created_at), :url1 => "/profile/"+@node.latest.author.name, :author => @node.latest.author.name) %></i></p><% end %>
-      <br />
-    </div>
-
-    <script>
-      (function(){
-        publish = function(e) {
-          $('form.wiki-form').submit()
-        }
-        publishOnEnter = function(e) {
-          if (e && e.keyCode == 13) $('form.wiki-form').submit()
-        }
-        $(".publish").bind("click", publish)
-        $(".publish").bind("keypress", publishOnEnter)
-      })()
-    </script>
-
-  <% end %>
+  </div>
 </div>
