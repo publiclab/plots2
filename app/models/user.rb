@@ -1,6 +1,6 @@
 class UniqueUsernameValidator < ActiveModel::Validator
   def validate(record)
-    if User.find_by(name: record.username) && record.openid_identifier.nil?
+    if User.find_by(username: record.username) && record.openid_identifier.nil?
       record.errors[:base] << 'That username is already taken. If this is your username, you can simply log in to this site.'
     end
   end
@@ -24,8 +24,6 @@ class User < ActiveRecord::Base
   do_not_validate_attachment_file_type :photo_file_name
   # validates_attachment_content_type :photo_file_name, :content_type => %w(image/jpeg image/jpg image/png)
 
-  # this doesn't work... we should have a uid field on User
-  # has_one :users, :conditions => proc { ["users.name =  ?", self.username] }
   has_many :images, foreign_key: :uid
   has_many :node, foreign_key: 'uid'
   has_many :node_selections, foreign_key: :user_id
@@ -45,7 +43,6 @@ class User < ActiveRecord::Base
   validates_format_of :username, with: /\A[A-Za-z\d_\-]+\z/
 
   before_save :set_token
-  after_destroy :destroy_user
 
   def self.search(query)
     User.where('MATCH(bio, username) AGAINST(? IN BOOLEAN MODE)', query + '*')
@@ -61,10 +58,6 @@ class User < ActiveRecord::Base
 
   def new_contributor
     return "<a href='/tag/first-time-poster' class='label label-success'><i>new contributor</i></a>".html_safe if is_new_contributor
-  end
-
-  def destroy_user
-    user.destroy
   end
 
   def set_token
