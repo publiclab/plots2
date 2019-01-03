@@ -28,16 +28,6 @@ class HomeController < ApplicationController
       .paginate(page: params[:page], per_page: 8)
   end
 
-  # Proxy to enable AJAX loading of RSS feeds, which requires same-origin.
-  # Security OK because it only works with google groups OR one specific feedburner.
-  def fetch
-    if params[:url][0..24] == 'https://groups.google.com' || params[:url] == 'https://feeds.feedburner.com/rssmixer/ZvcX'
-      url = URI.parse(params[:url])
-      result = Net::HTTP.get_response(url)
-      send_data result.body, type: result.content_type, disposition: 'inline'
-    end
-  end
-
   def dashboard
     if current_user
       @note_count = Node.select(%i(created type status))
@@ -47,7 +37,7 @@ class HomeController < ApplicationController
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
         .count
       @user_note_count = Node.where(type: 'note', status: 1, uid: current_user.uid).count
-      set_activity
+      @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
       render template: 'dashboard/dashboard'
     else
       redirect_to '/research'
@@ -64,22 +54,9 @@ class HomeController < ApplicationController
       @wiki_count = Revision.select(:timestamp)
         .where(timestamp: Time.now.to_i - 1.weeks.to_i..Time.now.to_i)
         .count
-      set_activity
+      @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments = activity
       render template: 'dashboard/dashboard'
       @title = I18n.t('home_controller.community_research')
-    end
-  end
-
-  # trashy... clean this up!
-  # this will eventually be based on the profile_tags data where people can mark their location with "location:lat,lon"
-  def nearby
-    if current_user.lat
-      dist = 1.5
-      minlat = current_user.lat - dist
-      maxlat = current_user.lat + dist
-      minlon = current_user.lon - dist
-      maxlon = current_user.lon + dist
-      @users = DrupalUser.where('lat != 0.0 AND lon != 0.0 AND lat > ? AND lat < ? AND lon > ? AND lon < ?', minlat, maxlat, minlon, maxlon)
     end
   end
 
@@ -156,15 +133,4 @@ class HomeController < ApplicationController
     response
   end
 
-  def set_activity(source = :database)
-    @activity, @blog, @notes, @wikis, @revisions, @comments, @answer_comments =
-      if source == :cache
-        # we no longer use activity feed on front page ('home'), so this cache may be unused
-        Rails.cache.fetch("front-activity", expires_in: 30.minutes) do
-          activity
-        end
-      else
-        activity
-      end
-  end
 end
