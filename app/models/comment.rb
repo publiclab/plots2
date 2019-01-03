@@ -3,7 +3,7 @@ class Comment < ApplicationRecord
 
   belongs_to :node, foreign_key: 'nid', touch: true, counter_cache: true
   # dependent: :destroy, counter_cache: true
-  belongs_to :drupal_user, foreign_key: 'uid'
+  belongs_to :user, foreign_key: 'uid'
   belongs_to :answer, foreign_key: 'aid'
   has_many :likes, :as => :likeable
 
@@ -41,13 +41,25 @@ class Comment < ApplicationRecord
       # initialising month variable with the month of the starting day
       # of the week
       month = (time - (week * 7 - 1).days).strftime('%m')
-
+      # loop for finding the maximum occurence of a month name in that week
+      # For eg. If this week has 3 days falling in March and 4 days falling
+      # in April, then we would give this week name as April and vice-versa
+      [0, 1, 2, 3, 4, 5, 6].each do |i|
+        curr_month = (time - (week * 7 - i).days).strftime('%m')
+        if month == 0
+          month = curr_month
+        elsif month != curr_month
+          if i <= 4
+            month = curr_month
+          end
+        end
+      end
       month = month.to_i
       # Now fetching comments per week
-      current_week = Comment.select(:timestamp)
-        .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
-        .count
-      weeks[count] = [month, current_week]
+      curr_week = Comment.select(:timestamp)
+                      .where(timestamp: time.to_i - week.weeks.to_i..time.to_i - (week - 1).weeks.to_i)
+                      .count
+      weeks[count] = [month, curr_week]
       count += 1
       week -= 1
     end
@@ -122,9 +134,9 @@ class Comment < ApplicationRecord
   end
 
   def notify_users(uids, current_user)
-    DrupalUser.where('uid IN (?)', uids).each do |user|
+    User.where('id IN (?)', uids).each do |user|
       if user.uid != current_user.uid
-        CommentMailer.notify(user.user, self).deliver_now
+        CommentMailer.notify(user, self).deliver_now
       end
     end
   end

@@ -89,7 +89,7 @@ class Node < ActiveRecord::Base
   has_many :node_selections, foreign_key: :nid, dependent: :destroy
   has_many :answers, foreign_key: :nid, dependent: :destroy
 
-  belongs_to :drupal_user, foreign_key: 'uid'
+  belongs_to :user, foreign_key: 'uid'
 
   validates :title, presence: :true
   validates_with UniqueUrlValidator, on: :create
@@ -132,7 +132,7 @@ class Node < ActiveRecord::Base
   # or, we should refactor to us node.created instead of Time.now
   def generate_path
     if type == 'note'
-      username = DrupalUser.find_by(uid: uid).name
+      username = User.find_by(id: uid).name
       "/notes/#{username}/#{Time.now.strftime('%m-%d-%Y')}/#{title.parameterize}"
     elsif type == 'page'
       '/wiki/' + title.parameterize
@@ -240,10 +240,10 @@ class Node < ActiveRecord::Base
   # users who like this node
   def likers
     node_selections
-      .joins(:drupal_user)
-      .references(:users)
+      .joins(:user)
+      .references(:rusers)
       .where(liking: true)
-      .where('users.status = ?', 1)
+      .where('rusers.status': 1)
       .collect(&:user)
   end
 
@@ -259,18 +259,8 @@ class Node < ActiveRecord::Base
       .order(timestamp: :desc)
   end
 
-  def revision_count
-    revision
-      .count
-  end
-
-  def comment_count
-    comments
-      .count
-  end
-
   def author
-    DrupalUser.find_by(uid: uid)
+    User.find(uid)
   end
 
   def coauthors
@@ -620,7 +610,7 @@ class Node < ActiveRecord::Base
   # researching simultaneous creation of associated records
   def self.new_note(params)
     saved = false
-    author = DrupalUser.find(params[:uid])
+    author = User.find(params[:uid])
     node = Node.new(uid:     author.uid,
                     title:   params[:title],
                     comment: 2,
@@ -723,7 +713,7 @@ class Node < ActiveRecord::Base
   end
 
   def add_barnstar(tagname, giver)
-    add_tag(tagname, giver.drupal_user)
+    add_tag(tagname, giver)
     CommentMailer.notify_barnstar(giver, self).deliver_now
   end
 
