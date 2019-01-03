@@ -9,8 +9,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def current_profile_user
-
   # eventually videos could be a power tag
   def set_sidebar(type = :generic, data = :all, args = {})
     args[:note_count] ||= 8
