@@ -203,9 +203,6 @@
 
   <% if @user && current_user && @user == current_user %>
     <button id="btn-token" class="btn btn-default btn-block">My Access Token</button>
-  <% end %>
-
-  <% if current_profile_user %>
     <button data-toggle="modal" data-target="#socialModal" class="btn btn-default btn-block">Link Social media</button>
     <div class="modal fade" id="socialModal" tabindex="-1" role="dialog" aria-labelledby="socialModal" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -224,13 +221,14 @@
         </div>
       </div>
     </div>
-  <% end %>
 
-  <% if current_profile_user && current_user.can_moderate? %>
-    <br />
-    <%= form_tag "/users/test_digest_email", method: :post do %>
-      <%= submit_tag "Test Digest Email", class: "btn btn-info", style: "width: 100%;" %>
+    <% if current_user.can_moderate? %>
+      <br />
+      <%= form_tag "/users/test_digest_email", method: :post do %>
+        <%= submit_tag "Test Digest Email", class: "btn btn-info", style: "width: 100%;" %>
+      <% end %>
     <% end %>
+
   <% end %>
 
   <hr />
