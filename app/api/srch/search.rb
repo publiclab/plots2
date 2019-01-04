@@ -228,7 +228,7 @@ module Srch
                                                                                             nickname: 'search_tag_locations'
 
       params do
-        use :common, :additional
+        use :geographical
       end
       get :taglocations do
         search_request = SearchRequest.fromRequest(params)

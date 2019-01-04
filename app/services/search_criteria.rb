@@ -1,9 +1,10 @@
 class SearchCriteria
-  attr_reader :query, :tag, :field, :limit
+  attr_reader :query, :coordinates, :tag, :field, :limit
   attr_accessor :sort_by
 
   def initialize(args)
     @query = args[:query]
+    @coordinates = { "nwlat" => args[:nwlat], "selat" => args[:selat], "nwlng" => args[:nwlng], "selng" => args[:selng] }
     @tag = args[:tag]
     @sort_by = args[:sort_by]
     @order_direction = args[:order_direction]
@@ -12,7 +13,7 @@ class SearchCriteria
   end
 
   def valid?
-    !query.nil? && query != 0
+    (!query.nil? && query != 0) || !coordinates.nil?
   end
 
   def order_direction

@@ -290,7 +290,7 @@ class NotesControllerTest < ActionController::TestCase
 
   test 'first-timer moderated note (status=4) shown to author in full view with notice' do
     node = nodes(:first_timer_note)
-    UserSession.create(node.author.user)
+    UserSession.create(node.author)
     assert_equal 4, node.status
 
     get :show,
@@ -306,7 +306,7 @@ class NotesControllerTest < ActionController::TestCase
 
   test 'first-timer moderated note (status=4) shown to author in list view with notice' do
     node = nodes(:first_timer_note)
-    UserSession.create(node.author.user)
+    UserSession.create(node.author)
     assert_equal 4, node.status
 
     get :index
@@ -890,7 +890,7 @@ class NotesControllerTest < ActionController::TestCase
 
    test 'draft note (status=3) shown to author in full view with notice' do
      node = nodes(:draft)
-     UserSession.create(node.author.user)
+     UserSession.create(node.author)
      assert_equal 3, node.status
 
      get :show,

@@ -82,13 +82,8 @@ module Plots2
 
     ActiveRecord::SessionStore::Session.table_name = 'rsessions'
 
-    require Rails.root + 'lib/open_id_authentication/open_id_authentication.rb'
-
-    config.middleware.use OpenIdAuthentication
-
     config.after_initialize do
       OpenID::Util.logger = Rails.logger
-      ActionController::Base.send :include, OpenIdAuthentication
     end
 
     config.autoload_paths += %W(

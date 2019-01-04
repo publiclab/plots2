@@ -7,7 +7,7 @@
 <title>class UserSessionsController - Rails Application Documentation</title>
 
 <script type="text/javascript">
-  var rdoc_rel_prefix = "./";
+var rdoc_rel_prefix = './';
 </script>
 
 <script src="./js/jquery.js"></script>
@@ -50,34 +50,34 @@
 
   </div>
 
-  
+
 
   <div id="class-metadata">
-    
+
     <div id="parent-class-section" class="nav-section">
   <h3>Parent</h3>
 
-  
+
   <p class="link"><a href="ApplicationController.html">ApplicationController</a>
-  
+
 </div>
 
-    
-    
+
+
     <!-- Method Quickref -->
 <div id="method-list-section" class="nav-section">
   <h3>Methods</h3>
 
   <ul class="link-list" role="directory">
-    
+
     <li ><a href="#method-i-create">#create</a>
-    
+
     <li ><a href="#method-i-destroy">#destroy</a>
-    
+
     <li ><a href="#method-i-logout_remotely">#logout_remotely</a>
-    
+
     <li ><a href="#method-i-new">#new</a>
-    
+
   </ul>
 </div>
 
@@ -90,46 +90,46 @@
   </h1>
 
   <section class="description">
-    
+
   </section>
 
-  
-  
-  
+
+
+
   <section id="5Buntitled-5D" class="documentation-section">
-    
 
-    
 
-    
 
-    
 
-    
+
+
+
+
+
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Public Instance Methods</h3>
        </header>
 
-    
+
       <div id="method-i-create" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">create</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="create-source">
             <pre><span class="ruby-comment"># File app/controllers/user_sessions_controller.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
@@ -143,7 +143,7 @@
     <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_session</span>][<span class="ruby-value">:username</span>] = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">username</span>
   <span class="ruby-keyword">end</span>
 
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_session</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_session</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-comment"># an existing native user</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_session</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@user</span>
       <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">crypted_password</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-comment"># the user has not created a pwd in the new site</span>
@@ -181,7 +181,7 @@
         <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">else</span> <span class="ruby-comment"># not a native user</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-constant">DrupalUser</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">username</span>).<span class="ruby-identifier">nil?</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">username</span>).<span class="ruby-identifier">nil?</span>
         <span class="ruby-comment"># this is a user from the old site who hasn&#39;t registered on the new site</span>
         <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">controller</span><span class="ruby-operator">:</span> <span class="ruby-value">:users</span>, <span class="ruby-identifier">action</span><span class="ruby-operator">:</span> <span class="ruby-value">:create</span>, <span class="ruby-identifier">user</span><span class="ruby-operator">:</span> { <span class="ruby-identifier">openid_identifier</span><span class="ruby-operator">:</span> <span class="ruby-identifier">username</span> }
       <span class="ruby-keyword">else</span> <span class="ruby-comment"># totally new user!</span>
@@ -189,7 +189,7 @@
         <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/signup&#39;</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_session</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">drupal_user</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">5</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_session</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">5</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-identifier">flash</span>[<span class="ruby-value">:error</span>] = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;user_sessions_controller.user_has_been_moderated&#39;</span>, <span class="ruby-identifier">username</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">username</span>).<span class="ruby-identifier">html_safe</span>
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/&#39;</span>
   <span class="ruby-keyword">else</span>
@@ -198,33 +198,33 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-destroy" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">destroy</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="destroy-source">
             <pre><span class="ruby-comment"># File app/controllers/user_sessions_controller.rb, line 72</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
@@ -234,33 +234,33 @@
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-logout_remotely" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">logout_remotely</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="logout_remotely-source">
             <pre><span class="ruby-comment"># File app/controllers/user_sessions_controller.rb, line 79</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">logout_remotely</span>
@@ -269,50 +269,50 @@
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-string">&#39;/&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?_=&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-new" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">new</span><span
             class="method-args">()</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="new-source">
             <pre><span class="ruby-comment"># File app/controllers/user_sessions_controller.rb, line 2</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@title</span> = <span class="ruby-constant">I18n</span>.<span class="ruby-identifier">t</span>(<span class="ruby-string">&#39;user_sessions_controller.log_in&#39;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
     </section>
-  
+
   </section>
 </main>
 
@@ -322,4 +322,3 @@
   <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
-
