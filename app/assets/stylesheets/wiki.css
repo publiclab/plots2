@@ -69,3 +69,7 @@ a.navbar-offset {
     visibility: hidden;
 }
 
+@media (max-width: 768px) {
+  .add {
+    margin-top:10px;
+  }
