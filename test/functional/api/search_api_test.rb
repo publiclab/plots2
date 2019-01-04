@@ -123,14 +123,16 @@ class SearchApiTest < ActiveSupport::TestCase
   end
 
   test 'search Tag Nearby People functionality' do
-    get '/api/srch/nearbyPeople?query=31.00,40.00'
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '31.00,40.00',
-            seq: nil
+            nwlat: 31.0,
+            nwlng: 0.0,
+            selat: 0.0,
+            selng: 40.0
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 
@@ -145,14 +147,16 @@ class SearchApiTest < ActiveSupport::TestCase
   end
 
   test 'search Tag Nearby People functionality wth sort_by=recent' do
-    get '/api/srch/nearbyPeople?query=31.00,40.00&sort_by=recent'
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0&sort_by=recent'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '31.00,40.00',
-            seq: nil
+          nwlat: 31.0,
+          nwlng: 0.0,
+          selat: 0.0,
+          selng: 40.0,
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 
@@ -163,19 +167,24 @@ class SearchApiTest < ActiveSupport::TestCase
     assert_equal "/profile/steff2",     json['items'][0]['doc_url']
     assert_equal "/profile/steff3",     json['items'][1]['doc_url']
 
+    puts matcher.inspect
+    puts json.inspect
+
     assert matcher =~ json
   end
 
   test 'search Tag Nearby People functionality with tag=awesome' do
-    get '/api/srch/nearbyPeople?query=31.00,40.00&tag=awesome'
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0&tag=awesome'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '31.00,40.00',
-            tag: 'awesome',
-            seq: nil
+          nwlat: 31.0,
+          nwlng: 0.0,
+          selat: 0.0,
+          selng: 40.0,
+          tag: 'awesome'
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 
