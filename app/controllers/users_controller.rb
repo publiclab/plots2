@@ -333,7 +333,11 @@ class UsersController < ApplicationController
   end
 
   def save_settings
-    user_settings = ['notify-comment-direct:false', 'notify-likes-direct:false', 'notify-comment-indirect:false']
+    user_settings = [
+      'notify-comment-direct:false',
+      'notify-likes-direct:false',
+      'notify-comment-indirect:false'
+    ]
 
     user_settings.each do |setting|
       if params[setting] && params[setting] == "on"
@@ -343,15 +347,17 @@ class UsersController < ApplicationController
       end
     end
 
-    if params['digest:weekly'] == "on"
-      digest_val = 1
-    elsif params['digest:daily'] == "on"
-      digest_val = 0
-    else
-      digest_val = 2
+    digest_settings = [
+      'digest:weekly',
+      'digest:daily'
+    ]
+    user_settings.each do |setting|
+      if params[setting] == "on"
+        UserTag.remove_if_exists(current_user.uid, setting)
+      else
+        UserTag.create_if_absent(current_user.uid, setting)
+      end
     end
-    # Digest settings handled separately
-    current_user.customize_digest(digest_val)
 
     flash[:notice] = "Settings updated successfully!"
     render js: "window.location.reload()"

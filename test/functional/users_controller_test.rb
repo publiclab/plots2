@@ -266,4 +266,20 @@ class UsersControllerTest < ActionController::TestCase
       get :shortlink, params: { username: invalid_username }
     end
   end
+
+  test 'changing user settings' do
+    UserSession.create(users(:bob))
+    post :create, params: {
+      "notify-comment-direct:false": "on",
+      "notify-likes-direct:false": "on",
+      "notify-comment-indirect:false": "on",
+      "digest:weekly": "on"
+    }
+    assert_response :success
+    assert_not_nil UserTag.where(uid: users(:bob).id, value: 'digest:weekly').last
+    assert_not_nil UserTag.where(uid: users(:bob).id, value: "notify-comment-direct:false").last
+    assert_not_nil UserTag.where(uid: users(:bob).id, value: "notify-likes-direct:false").last
+    assert_not_nil UserTag.where(uid: users(:bob).id, value: "notify-comment-indirect:false").last
+    assert_equal [], UserTag.where(uid: users(:bob).id, value: 'digest:digest')
+  end
 end
