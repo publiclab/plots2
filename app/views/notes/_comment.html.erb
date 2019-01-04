@@ -55,7 +55,7 @@
         </a>
       <% end %>
       <% if comment.comment_via == 1 %>
-        <a href="#" onclick="return false;" class="btn btn-default btn-sm"><i class="fa fa-envelope"></i></a>
+        <a href="#" onclick="return false;" class="btn btn-outline-secondary btn-sm"><i class="fa fa-envelope"></i></a>
       <% end %>
       <% if params[:controller] == "questions" && current_user && (current_user.role == "admin" || current_user.role == "moderator" || comment.uid == current_user.uid) %>
         <a class="btn btn-outline-secondary btn-sm" id="comment-<%= comment.id %>-reorder-btn" data-remote="true" data-confirm="Are you sure? <% if current_user && comment.uid != current_user.uid %>Please exercise caution in promoting others' comments; this cannot be undone.<% end %>" rel="tooltip" title="<%= t('questions._comment.promotion') %>" data-placement="left" href="/comment/make_answer/<%= comment.id %>"><i class="fa fa-plus"></i></a>
@@ -90,8 +90,8 @@
                 <% end %>
                 <% end %>
               </div>
-            </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
 
   </div>

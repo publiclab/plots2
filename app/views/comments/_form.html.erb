@@ -1,115 +1,162 @@
 <div class="comment-form-wrapper" style="background-color:#f8f8f8; border: 1px solid #e7e7e7;padding: 18px;">
-<form class="comment-form" id="comment-form" data-remote="true" class="well" <% if !local_assigns[:is_answer].blank? %> action= "/answers/create/<%= @node.nid %>" <% elsif !local_assigns[:aid].blank? %> action= "/comment/answer_create/<%= aid %>" <% else %> action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% end %> <% if local_assigns[:aid].blank? %>method="post"<% end %>>
+<div class="card bg-light">
+  <form class="comment-form" id="comment-form" data-remote="true" class="card-body" <% if !local_assigns[:is_answer].blank? %> action= "/answers/create/<%= @node.nid %>" <% elsif !local_assigns[:aid].blank? %> action= "/comment/answer_create/<%= aid %>" <% else %> action="/comment/create/<%= @node.nid %><%= "?type=question" if local_assigns[:type]=="question" %>" <% end %> <% if local_assigns[:aid].blank? %>method="post"<% end %>>
 
-  <h4 style="margin-top:0;"><%= title %><% if current_user && current_user.id == @node.uid %> <small><a target="_blank" href="https://publiclab.org/comment-templates">Add a response template</a></small><% end %></h4>
+    <h4 style="margin-top:0;"><%= title %><% if current_user && current_user.id == @node.uid %> <small><a target="_blank" href="https://publiclab.org/comment-templates">Add a response template</a></small><% end %></h4>
 
-  <style>
-    #imagebar {
-      width:100%;
-    }
-  </style>
+    <style>
+      #imagebar {
+        width:100%;
+      }
+    </style>
 
-  <% if params[:controller] == 'questions' %>
-    <%= render :partial => "editor/toolbar" %>
-  <% end %>
-
-  <% if local_assigns[:reply_to].present? %>
-    <%= hidden_field_tag :reply_to, local_assigns[:reply_to] %>
-  <% end %>
-
-  <div class="form-group dropzone">
-
-    <%
-      body = body || params[:body]
-      # Look for comment templates
-      if params[:body].nil? && @node && @node.has_power_tag('comment-template')
-        body = Node.find_by(slug: @node.power_tag('comment-template')).try(:body)
-      end
-    %>
-    <textarea style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><% if local_assigns[:is_new_answer].blank? %> <%= body %><% end %></textarea>
-    <div id="imagebar">
-
-      <div id="create_progress" style="display:none;" class="progress progress-striped active pull-right">
-        <div id="create_progress-bar" class="progress-bar" style="width: 0%;"></div>
-      </div>
-
-      <p>
-        <span id="create_uploading" class="uploading" style="display:none;">
-          <%= t('comments._form.uploading') %>
-        </span>
-        <span id="create_prompt" class="prompt">
-
-          <span style="padding-right:4px;float:left;" class="hidden-xs">
-            <%= raw t('comments._form.drag_and_drop') %>
-          </span>
-
-          <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
-          <label id="input_label" class="" for="fileinput">
-            <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
-            <a onClick="handleClick()" class="hidden-xs">choose one</a>
-            <span class="visible-xs">
-              <i class="fa fa-upload"></i>
-              <a><%= t('comments._form.upload_image') %></a>
-            </span>
-          </label>
-
-        </span>
-      </p>
-
-    </div>
-  </div>
-
-  <div class="well col-md-11" id="preview" style="background: white; display: none;">
-  </div>
-  <script>
-    jQuery(document).ready(function() {
-      $E.initialize();
-    });
-
-    $D = {
-      uid: <%= current_user.uid if current_user %>,
-      type: 'comment'
-    }
-      $('#input_label').click(function(e){
-        $E.initialize({});
-    });
-
-    function handleClick() {
-        $D.selected = $(event.target.closest('div.comment-form-wrapper'));
-        $E.refresh();
-    }
-  </script>
-
-  <%= javascript_include_tag "dragdrop" %>
-  <script src="/emoji.js" type="text/javascript"></script>
-  <script src="/assets/atwho_autocomplete.js" type="text/javascript"></script>
-  <%= javascript_include_tag "comment.js" %>
-
-  <div class="control-group">
-    <button type="submit" class="btn btn-primary"><%= t('comments._form.publish') %></button>
-    <% if local_assigns[:comment] %>
-      <a class="btn btn-default preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();
-          $('#c<%= comment.cid %>text-input').toggle();
-          $('#c<%= comment.cid %>edit .preview-btn').button('toggle');
-          $E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">
-        <%= t('comments._form.preview') %>
-      </a>
-      <a class="btn btn-default" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()"><%= t('comments._form.cancel') %></a>
-    <% else %>
-      <a class="btn btn-default preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= t('comments._form.preview') %></a>
+    <% if params[:controller] == 'questions' %>
+      <%= render :partial => "editor/toolbar" %>
     <% end %>
 
-    <span style="color:#888;"> &nbsp;
-      <br class="visible-xs" /><%= raw t('comments._form.logged_in', :username => current_user.username) %> |
-      <a target="_blank" href="/wiki/authoring-help#Formatting"><%= t('comments._form.formatting') %></a> |
-      <a onClick="$('#who-is-notified-form').toggle()"><%= t('comments._form.notifications') %></a> |
-      <a onClick = "insertTitleSuggestionTemplate()">Propose Title</a>
-    </span>
-  </div>
+    <% if local_assigns[:reply_to].present? %>
+      <%= hidden_field_tag :reply_to, local_assigns[:reply_to] %>
+    <% end %>
 
-  <p id="who-is-notified-form" style="display:none;color:#888;">
-    <%= t('comments._form.email_notifications') %>
-  </p>
+    <div class="form-group dropzone">
 
-</form>
+      <%
+        body = body || params[:body]
+        # Look for comment templates
+        if params[:body].nil? && @node && @node.has_power_tag('comment-template')
+          body = Node.find_by(slug: @node.power_tag('comment-template')).try(:body)
+        end
+      %>
+      <textarea style="border: 1px solid #bbb;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-bottom: 0;padding: 10px;" onFocus="editing=true" name="body" class="form-control" id="text-input" rows="6" cols="40" placeholder="<%= placeholder %>"><% if local_assigns[:is_new_answer].blank? %> <%= body %><% end %></textarea>
+      <div id="imagebar">
+
+        <div id="create_progress" style="display:none;" class="progress float-right">
+          <div id="create_progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;"></div>
+        </div>
+
+        <p>
+          <span id="create_uploading" class="uploading" style="display:none;">
+            <%= t('comments._form.uploading') %>
+          </span>
+          <span id="create_prompt" class="prompt">
+
+            <span style="padding-right:4px;float:left;" class="d-none d-md-inline">
+              <%= raw t('comments._form.drag_and_drop') %>
+            </span>
+
+            <!-- http://stackoverflow.com/questions/11235206/twitter-bootstrap-form-file-element-upload-button -->
+            <label id="input_label" class="" for="fileinput">
+              <input id="fileinput" type="file" name="image[photo]" style="display:none;" />
+              <a onClick="handleClick()" class="d-none d-md-inline">choose one</a>
+              <span class="d-md-none">
+                <i class="fa fa-upload"></i>
+                <a><%= t('comments._form.upload_image') %></a>
+              </span>
+            </p>
+
+          </div>
+        </div>
+
+        <div class="card bg-light">
+          <div class="card-body col-lg-11" id="preview" style="background: white; display: none;">
+          </div>
+        </div>
+        <script>
+          jQuery(document).ready(function() {
+            $E.initialize();
+          });
+          $D = {
+            uid: <%= current_user.uid if current_user %>,
+            type: 'comment'
+          }
+            $('#input_label').click(function(e){
+              $E.initialize({});
+          });
+        </script>
+
+        <%= javascript_include_tag "dragdrop" %>
+        <script src="/emoji.js" type="text/javascript"></script>
+        <script src="/assets/atwho_autocomplete.js" type="text/javascript"></script>
+        <%= javascript_include_tag "comment.js" %>
+
+        <div class="control-group">
+          <button type="submit" class="btn btn-primary"><%= t('comments._form.publish') %></button>
+          <% if local_assigns[:comment] %>
+            <a class="btn btn-outline-secondary preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();
+                $('#c<%= comment.cid %>text-input').toggle();
+                $('#c<%= comment.cid %>edit .preview-btn').button('toggle');
+                $E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">
+              <%= t('comments._form.preview') %>
+            </a>
+            <a class="btn btn-outline-secondary" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()"><%= t('comments._form.cancel') %></a>
+          <% else %>
+            <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="$E.toggle_preview('post_comment')"><%= t('comments._form.preview') %></a>
+          <% end %>
+
+          <span style="color:#888;"> &nbsp;
+            <br class="d-md-none" /><%= raw t('comments._form.logged_in', :username => current_user.username) %> |
+            <a target="_blank" href="/wiki/authoring-help#Formatting"><%= t('comments._form.formatting') %></a> |
+            <a onClick="$('#who-is-notified-form').toggle()"><%= t('comments._form.notifications') %></a> |
+            <a onClick = "insertTitleSuggestionTemplate()">Propose Title</a>
+          </span>
+        </div>
+
+        <p id="who-is-notified-form" style="display:none;color:#888;">
+          <%= t('comments._form.email_notifications') %>
+        </p>
+
+      </form>
+    </div>
+    <script>
+      jQuery(document).ready(function() {
+        $E.initialize();
+      });
+
+      $D = {
+        uid: <%= current_user.uid if current_user %>,
+        type: 'comment'
+      }
+        $('#input_label').click(function(e){
+          $E.initialize({});
+      });
+
+      function handleClick() {
+          $D.selected = $(event.target.closest('div.comment-form-wrapper'));
+          $E.refresh();
+      }
+    </script>
+
+    <%= javascript_include_tag "dragdrop" %>
+    <script src="/emoji.js" type="text/javascript"></script>
+    <script src="/assets/atwho_autocomplete.js" type="text/javascript"></script>
+    <%= javascript_include_tag "comment.js" %>
+
+    <div class="control-group">
+      <button type="submit" class="btn btn-primary"><%= t('comments._form.publish') %></button>
+      <% if local_assigns[:comment] %>
+        <a class="btn btn-outline-secondary preview-btn" onClick="$('#c<%= comment.cid %>preview').toggle();
+            $('#c<%= comment.cid %>text-input').toggle();
+            $('#c<%= comment.cid %>edit .preview-btn').button('toggle');
+            $E.generate_preview('c<%= comment.cid %>preview',$('#c<%= comment.cid %>text-input').val())">
+          <%= t('comments._form.preview') %>
+        </a>
+        <a class="btn btn-outline-secondary" onClick="$('#c<%= comment.cid %>show').toggle();$('#c<%= comment.cid %>edit').toggle()"><%= t('comments._form.cancel') %></a>
+      <% else %>
+        <a class="btn btn-outline-secondary preview-btn>" id="post_comment" data-previewing-text="Hide Preview" onClick="handleClick();$E.toggle_preview()"><%= t('comments._form.preview') %></a>
+      <% end %>
+
+      <span style="color:#888;"> &nbsp;
+        <br class="d-md-none" /><%= raw t('comments._form.logged_in', :username => current_user.username) %> |
+        <a target="_blank" href="/wiki/authoring-help#Formatting"><%= t('comments._form.formatting') %></a> |
+        <a onClick="$('#who-is-notified-form').toggle()"><%= t('comments._form.notifications') %></a> |
+        <a onClick = "insertTitleSuggestionTemplate()">Propose Title</a>
+      </span>
+    </div>
+
+    <p id="who-is-notified-form" style="display:none;color:#888;">
+      <%= t('comments._form.email_notifications') %>
+    </p>
+
+  </form>
+</div>
 </div>
