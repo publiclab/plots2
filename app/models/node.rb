@@ -731,6 +731,7 @@ class Node < ActiveRecord::Base
     tagname = tagname.downcase
     unless has_tag_without_aliasing(tagname)
       saved = false
+      table_updated = false
       tag = Tag.find_by(name: tagname) || Tag.new(vid:         3, # vocabulary id; 1
                                                   name:        tagname,
                                                   description: '',
@@ -755,11 +756,10 @@ class Node < ActiveRecord::Base
           if tag.valid?
             if tag.name.split(':')[0] == 'lat'
               tagvalue = tag.name.split(':')[1]
-              update_attribute(:latitude, tagvalue)
-              update_attribute(:precision, decimals(tagvalue).to_s)
+              table_updated =  update_attributes(:latitude => tagvalue,:precision => decimals(tagvalue).to_s)
             elsif tag.name.split(':')[0] == 'lon'
               tagvalue = tag.name.split(':')[1]
-              update_attribute(:longitude, tagvalue)
+              table_updated = update_attributes(:longitude => tagvalue)
             end
           end
 
@@ -775,7 +775,7 @@ class Node < ActiveRecord::Base
           end
         end
       end
-      return [saved, tag]
+      return [saved, tag, table_updated]
     end
   end
 
