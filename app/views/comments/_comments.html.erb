@@ -14,7 +14,7 @@
 
   <% @comments.each do |comment| %>
    <tr id="c<% comment.cid %>">
-      <td>
+     <td>
       <span style="color:#aaa;"><%= t('home._comments.commented') %> 
         <% if comment.parent %>
           on <a href="<%= comment.parent.path %>"><%= comment.parent.title %></a>

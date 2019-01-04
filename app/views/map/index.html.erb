@@ -1,10 +1,4 @@
-<%= stylesheet_link_tag "/lib/leaflet/dist/leaflet.css" %>
-<%= stylesheet_link_tag "/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.css" %>
-<%= javascript_include_tag('/lib/leaflet-environmental-layers/dist/LeafletEnvironmentalLayers.js') %>
-<%= javascript_include_tag('/lib/leaflet-environmental-layers/dist/windRoseLayer.js') %>
-<%= javascript_include_tag('/lib/leaflet-hash/leaflet-hash.js') %>
-<%= javascript_include_tag('/lib/leaflet-spin/example/spin/dist/spin.min.js') %>
-<%= javascript_include_tag('/lib/leaflet-spin/example/leaflet.spin.min.js') %>
+<%= render :partial => "map/mapDependencies" %>
 
 <div style="width:100%;margin-left:0;height:300px;" id="map"></div>
 <p><i><small>

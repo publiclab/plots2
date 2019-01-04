@@ -5,13 +5,13 @@ class UserTest < ActiveSupport::TestCase
     user = User.new(username: 'chris',
                     password: 'godzillas',
                     password_confirmation: 'godzillas',
+                    bio: 'my name is chris.',
                     email: 'test@publiclab.org')
 
     assert user.save({})
 
     assert user.first_time_poster
     assert_not_nil user.id
-    assert_not_nil user.drupal_user
     assert_not_nil user.uid
     assert_not_nil user.email
     assert_not_nil user.bio
@@ -22,16 +22,16 @@ class UserTest < ActiveSupport::TestCase
 
   test 'basic user attributes' do
     user = users(:jeff)
-    assert_equal user.notes, user.drupal_user.notes
+    assert_equal user.notes, user.notes
     assert_not_nil user.tags
-    assert_not_nil user.drupal_user.tags
-    assert_equal user.tags, user.drupal_user.tags
+    assert_not_nil user.tags
+    assert_equal user.tags, user.tags
     assert_not_nil user.user_tags
-    assert_not_nil user.drupal_user.user_tags
-    assert_equal user.user_tags, user.drupal_user.user_tags
+    assert_not_nil user.user_tags
+    assert_equal user.user_tags, user.user_tags
     assert_not_nil user.tagnames
-    assert_not_nil user.drupal_user.tagnames
-    assert_equal user.tagnames, user.drupal_user.tagnames
+    assert_not_nil user.tagnames
+    assert_equal user.tagnames, user.tagnames
   end
 
   test 'user mysql native fulltext search' do
@@ -49,12 +49,12 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user.notes and first time user' do
-    assert        !drupal_users(:jeff).notes.empty?
-    assert        !drupal_users(:jeff).first_time_poster
-    assert_not  !drupal_users(:bob).notes.empty?
-    assert        drupal_users(:bob).first_time_poster
-    assert_not  !drupal_users(:lurker).notes.empty?
-    assert        drupal_users(:lurker).first_time_poster
+    assert        !users(:jeff).notes.empty?
+    assert        !users(:jeff).first_time_poster
+    assert_not  !users(:bob).notes.empty?
+    assert        users(:bob).first_time_poster
+    assert_not  !users(:lurker).notes.empty?
+    assert        users(:lurker).first_time_poster
   end
 
   test 'user reset key' do
@@ -91,12 +91,12 @@ class UserTest < ActiveSupport::TestCase
 
   test 'returns nodes created in given period of time' do
     bob = users(:bob)
-    node_count = 6
-    nodes_fix = [1,2,8,9,10,15]
+    node_count = 5
+    nodes_fix = [1,2,8,9,15]
     count_return = bob.content_followed_in_period(2.hours.ago,Time.now).count
     nodes_time = bob.content_followed_in_period(2.hours.ago,Time.now).pluck(:nid)
     assert_equal node_count, count_return
-    assert_equal nodes_fix,nodes_time.sort
+    assert_equal nodes_fix, nodes_time.sort
   end
 
   test 'returns value of power tag' do
@@ -146,29 +146,29 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 1, user.errors[:email].count
   end
 
-  test 'user status changes when drupal user is banned or unbanned' do
-    drupal_user = drupal_users(:bob)
-    assert_equal 1, drupal_user.user.status
-    drupal_user.ban
-    assert_equal 0, drupal_user.user.status
-    drupal_user.unban
-    assert_equal 1, drupal_user.user.status
+  test 'user status changes when banned or unbanned' do
+    user = users(:bob)
+    assert_equal 1, user.status
+    user.ban
+    assert_equal 0, user.status
+    user.unban
+    assert_equal 1, user.status
   end
 
-  test 'user status changes when drupal user is moderated or unmoderated' do
-    drupal_user = drupal_users(:bob)
-    assert_equal 1, drupal_user.user.status
-    drupal_user.moderate
-    assert_equal 5, drupal_user.user.status
-    drupal_user.unmoderate
-    assert_equal 1, drupal_user.user.status
+  test 'user status changes when user is moderated or unmoderated' do
+    user = users(:bob)
+    assert_equal 1, user.status
+    user.moderate
+    assert_equal 5, user.status
+    user.unmoderate
+    assert_equal 1, user.status
   end
 
   test 'daily_note_tally returns the correct type of array' do
-      user = users(:bob)
-      daily = user.daily_note_tally()
-      assert_not_empty daily
-      assert_equal daily.count, 365
+    user = users(:bob)
+    daily = user.daily_note_tally()
+    assert_not_empty daily
+    assert_equal daily.count, 365
   end
 
   test 'user roles' do
