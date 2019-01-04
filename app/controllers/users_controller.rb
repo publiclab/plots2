@@ -50,7 +50,7 @@ class UsersController < ApplicationController
     @password_verification = user_verification_params
     @user = current_user
     @user = User.find_by(username: params[:id]) if params[:id] && current_user && current_user.role == "admin"
-    if @user.valid_password?(user_verification_params["current_password"]) || user_verification_params["ui_update"] != "0"
+    if @user.valid_password?(user_verification_params["current_password"]) || user_verification_params["ui_update"] == "false"
       # correct password
       @user.attributes = user_params
       @user.save({}) do |result|

@@ -1,6 +1,6 @@
 <div style="padding:10px;">
 <%= form_for @user, :url => {:controller => 'users', :action => 'update'}, :html => {:class => "row"} do |f| %>
-  <%= hidden_field_tag "user[ui_update]", "0" %>
+  <%= hidden_field_tag "user[ui_update]", "true" %>
   <div class="col-sm-10">
     <% if f.error_messages != "" %>
       <div class="alert alert-danger"><%= f.error_messages %></div>
