@@ -1,28 +1,40 @@
 module Statistics
   extend ActiveSupport::Concern
 
+  def weekly_note_tally(span = 52)
+    weeks = {}
+    (0..span).each do |week|
+      weeks[span - week] = Node.select(:created)
+        .where(uid: uid,
+               type: 'note',
+               status: 1,
+               created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
+        .count
+    end
+    weeks
+  end
+
   def daily_note_tally(span = 365)
     days = {}
     (1..span).each do |day|
       time = Time.now.utc.beginning_of_day.to_i
       days[(time - day.days.to_i)] = Node.select(:created)
         .where(uid: uid,
-      type: 'note',
-      status: 1,
-      created: time - (day - 1).days.to_i..time - (day - 2).days.to_i)
+               type: 'note',
+               status: 1,
+               created: time - (day - 1).days.to_i..time - (day - 2).days.to_i)
         .count
     end
     days
   end
 
-  def weekly_note_tally(span = 52)
+  def weekly_comment_tally(span = 52)
     weeks = {}
     (0..span).each do |week|
-      weeks[span - week] = Node.select(:created)
-        .where(uid: drupal_user.uid,
-      type: 'note',
-      status: 1,
-      created: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
+      weeks[span - week] = Comment.select(:timestamp)
+        .where(uid: uid,
+               status: 1,
+               timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
         .count
     end
     weeks
@@ -34,12 +46,12 @@ module Statistics
     note_count = 0
     (0..span).each do |day|
       days[day] = Node.select(:created)
-        .where(uid: drupal_user.uid,
-      type: 'note',
-      status: 1,
-      created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
+        .where(uid: id,
+               type: 'note',
+               status: 1,
+               created: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .count
-      break if (days[day]).zero?
+      break if days[day] == 0
       streak += 1
       note_count += days[day]
     end
@@ -52,28 +64,16 @@ module Statistics
     wiki_edit_count = 0
     (0..span).each do |day|
       days[day] = Revision.joins(:node)
-        .where(uid: drupal_user.uid,
-      status: 1,
-      timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
+        .where(uid: uid,
+               status: 1,
+               timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .where('node.type != ?', 'note')
         .count
-      break if (days[day]).zero?
+      break if days[day] == 0
       streak += 1
       wiki_edit_count += days[day]
     end
     [streak, wiki_edit_count]
-  end
-
-  def weekly_comment_tally(span = 52)
-    weeks = {}
-    (0..span).each do |week|
-      weeks[span - week] = Comment.select(:timestamp)
-        .where(uid: drupal_user.uid,
-      status: 1,
-      timestamp: Time.now.to_i - week.weeks.to_i..Time.now.to_i - (week - 1).weeks.to_i)
-        .count
-    end
-    weeks
   end
 
   def comment_streak(span = 365)
@@ -82,11 +82,11 @@ module Statistics
     comment_count = 0
     (0..span).each do |day|
       days[day] = Comment.select(:timestamp)
-        .where(uid: drupal_user.uid,
-      status: 1,
-      timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
+        .where(uid: uid,
+          status: 1,
+          timestamp: Time.now.midnight.to_i - day.days.to_i..Time.now.midnight.to_i - (day - 1).days.to_i)
         .count
-      break if (days[day]).zero?
+      break if days[day] == 0
       streak += 1
       comment_count += days[day]
     end
