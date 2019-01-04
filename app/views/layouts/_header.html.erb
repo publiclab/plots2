@@ -81,7 +81,7 @@
           </li>
         <% else %>
         <li class="hidden-sm hidden-md"> <!-- signup button -->
-          <a rel="tooltip" class="signupToggle" title="<%= t('layout._header.become_part_community') %>">
+          <a rel="tooltip" class="signupToggle" title="<%= t('layout._header.become_part_community') %>" href="#">
             <%= t('layout._header.join') %>
           </a>
         </li>
@@ -122,7 +122,7 @@
                 <li><a href="/logoutRemotely">Logout from all devices</a></li>
               </ul>
             <% else %> <!-- Login button -->
-              <a class="loginToggle">
+              <a class="loginToggle" href="#" >
                 <%= t('layout._header.login.login_title') %>
               </a>
             <% end %>
