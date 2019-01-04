@@ -25,8 +25,8 @@
     </a>
   </div>
   <div class="inline">
-  <% if @node.author.user && @node.author.user.photo_file_name %>
-    <img class="img-circle" src="<%= @node.author.user.photo_path(:thumb) %>" />
+  <% if @node.author && @node.author.photo_file_name %>
+    <img class="img-circle" src="<%= @node.author.photo_path(:thumb) %>" />
    <% else %>
     <div class="img-circle"></div>
   <% end %>

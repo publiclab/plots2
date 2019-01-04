@@ -31,10 +31,11 @@
     <div class="row">
       <div class="form-group col-sm-6">
         <label for="password"><%= t('users._form.create_password') %></label>
-        <%= f.password_field :password, { placeholder: I18n.t('users._form.password'),
+        <%= f.password_field :password, { placeholder: 'Enter your new password',
                                           tabindex: 4,
                                           class: 'form-control',
-                                          id: 'password' }
+                                          id: 'password',
+                                          onpaste: 'return false;' }
         %>
       </div>
 
@@ -43,7 +44,8 @@
         <%= f.password_field :password_confirmation, { placeholder: I18n.t('users._form.confirm_password'),
                                                        tabindex: 5,
                                                        class: 'form-control',
-                                                       id: 'password-confirmation' }
+                                                       id: 'password-confirmation',
+                                                       onpaste: 'return false;' }
         %>
       </div>
 
@@ -73,7 +75,9 @@
         })();
       </script>
 
-
+    <% cache('feature_signup-notice-modal', skip_digest: true) do %>
+      <%= feature('signup-notice-modal') %>
+    <% end %>
 
     <div class="form-group form-inline" style="clear:both;padding-top:10px;">
         <!-- button for creating new users -->

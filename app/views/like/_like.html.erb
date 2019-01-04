@@ -21,6 +21,7 @@
       <i class="fa fa-eye"></i>
                 </li>
        <% end %>
+  <li rel="tooltip" title="Follow" class="btn btn-default btn-sm" data-html="true" rel="popover" data-content="<%= "No tags" if tagnames.nil? || tagnames.length == 0 %><% if tagnames %><% tagnames.each do |tagname| %><p style='margin-bottom:3px;'><a href='/subscribe/tag/<%= tagname %>' class='btn btn-default btn-mini'><%= tagname %></a></p><% end %><% end %><hr /><i class='fa fa-user'></i><% if current_user && !current_user.following?(node.author) %>&nbsp;<a class='btn btn-sm' href='/relationships?followed_id=<%= node.author.id %>' data-method='post' > <%= node.author.name %></a><% else %><%= node.author.name %><% end %>" title="Follow by tag or author" data-placement="left">
       <i class="fa fa-user-plus" aria-hidden="true"></i> 
   <li rel="tooltip" title="Helpful? Like it and get updates!" class="btn btn-default btn-sm btn-like" node-id="<%= node.id %>" id="like-button-<%= node.id %>">
     <% if !current_user %>
