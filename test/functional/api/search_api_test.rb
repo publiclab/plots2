@@ -167,9 +167,6 @@ class SearchApiTest < ActiveSupport::TestCase
     assert_equal "/profile/steff2",     json['items'][0]['doc_url']
     assert_equal "/profile/steff3",     json['items'][1]['doc_url']
 
-    puts matcher.inspect
-    puts json.inspect
-
     assert matcher =~ json
   end
 
