@@ -6,7 +6,7 @@ class AdminMailer < ActionMailer::Base
   def notify_node_moderators(node)
     subject = '[New Public Lab poster needs moderation] ' + node.title
     @node = node
-    @user = node.author.user
+    @user = node.author
     @footer = feature('email-footer')
     moderators = User.where(role: %w(moderator admin)).collect(&:email)
     mail(
@@ -19,7 +19,7 @@ class AdminMailer < ActionMailer::Base
   def notify_comment_moderators(comment)
     subject = '[New Public Lab poster needs moderation]'
     @comment = comment
-    @user = comment.author.user
+    @user = comment.author
     @footer = feature('email-footer')
     moderators = User.where(role: %w(moderator admin)).collect(&:email)
     mail(
@@ -35,12 +35,12 @@ class AdminMailer < ActionMailer::Base
     @moderator = moderator
     @node = node
     @footer = feature('email-footer')
-    mail(to: @author.mail, subject: subject)
+    mail(to: @author.email, subject: subject)
   end
 
   def notify_author_of_comment_approval(comment, moderator)
     subject = '[Public Lab] Your comment was approved!'
-    @author_mail = comment.author.mail
+    @author_mail = comment.author.email
     @moderator = moderator
     @comment = comment
     @footer = feature('email-footer')

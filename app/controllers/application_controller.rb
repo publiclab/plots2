@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   layout 'application'
 
-  helper_method :current_user_session, :current_user, :current_profile_user, :prompt_login, :sidebar
+  helper_method :current_user_session, :current_user, :prompt_login, :sidebar
 
   before_action :set_locale
 
@@ -74,13 +74,13 @@ class ApplicationController < ActionController::Base
       @current_user = current_user_session&.record
     end
     # if banned or moderated:
-    if @current_user.try(:drupal_user).try(:status) == 0
+    if @current_user.try(:status) == 0
       # Same effect as if the user clicked logout:
       current_user_session.destroy
       # Ensures no code will use old @current_user info. Treat the user
       # as anonymous (until the login process sets @current_user again):
       @current_user = nil
-    elsif @current_user.try(:drupal_user).try(:status) == 5
+    elsif @current_user.try(:status) == 5
       # Tell the user they are banned. Fails b/c redirect to require below.
       flash[:warning] = "The user '#{@current_user.username}' has been placed in moderation; please see <a href='https://#{request.host}/wiki/moderators'>our moderation policy</a> and contact <a href='mailto:moderators@#{request.host}'>moderators@#{request.host}</a> if you believe this is in error."
       # Same effect as if the user clicked logout:
@@ -90,10 +90,6 @@ class ApplicationController < ActionController::Base
       @current_user = nil
     end
     @current_user
-  end
-
-  def current_profile_user
-    @current_user && @profile_user == @current_user
   end
 
   def require_user

@@ -3,7 +3,7 @@ class Revision < ApplicationRecord
   self.primary_key = 'vid'
 
   belongs_to :node, foreign_key: 'nid', counter_cache: :drupal_node_revisions_count
-  has_one :drupal_users, foreign_key: 'uid'
+  has_one :user, foreign_key: 'uid'
   has_many :node_tag, foreign_key: 'nid'
   has_many :tag, through: :node_tag
 
@@ -65,7 +65,7 @@ class Revision < ApplicationRecord
   end
 
   def author
-    DrupalUser.find_by(uid: uid)
+    User.find(uid)
   end
 
   def parent

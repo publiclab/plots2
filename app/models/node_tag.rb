@@ -3,7 +3,7 @@ class NodeTag < ApplicationRecord
   self.primary_keys = :tid, :nid
   belongs_to :node, foreign_key: 'nid'
   belongs_to :tag, foreign_key: 'tid'
-  belongs_to :drupal_users, foreign_key: 'uid'
+  belongs_to :users, foreign_key: 'uid'
   accepts_nested_attributes_for :tag
 
   after_create :increment_count
@@ -25,10 +25,6 @@ class NodeTag < ApplicationRecord
 
   def new_author_contributor
     user.new_contributor
-  end
-
-  def drupal_user
-    DrupalUser.find uid
   end
 
   def name
