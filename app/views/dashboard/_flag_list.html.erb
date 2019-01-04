@@ -2,7 +2,7 @@
 	<% if logged_in_as(['admin','moderator']) %>
 		<div class="pop-content">
 		  <ul class="flag-buttons">
-		    <li> <a class="btn btn-primary ap" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+Canon+A1200+IR+conversion+at+PLOTS+Barnraising+at+LUMCON+https://publiclab.org/n/1+by+https://publiclab.org/profile/jeff+Thanks!" role="button"> <i class="fa fa-flag"></i> Flag post to moderators</a> </li>
+		    <li> <a class="btn btn-primary ap" href="mailto:moderators@publiclab.org?subject=Reporting+spam+on+Public+Lab&body=Hi,+I+found+this+item+that+looks+like+spam+or+needs+to+be+moderated:+<%= node.title.gsub(/ /,'+') %>+https://publiclab.org/n/<%= node.id %>+by+https://publiclab.org/profile/<%= node.author.username %>+Thanks!" role="button"> <i class="fa fa-flag"></i> Flag post to moderators</a> </li>
 		    <li> <a class="btn btn-primary ap" href="/moderate/spam/<%= node.id %>" role="button"> <i class="fa fa-ban"></i> Spam Post </a> </li>
 		  </ul> 
 		</div>
