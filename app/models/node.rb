@@ -756,7 +756,7 @@ class Node < ActiveRecord::Base
           if tag.valid?
             if tag.name.split(':')[0] == 'lat'
               tagvalue = tag.name.split(':')[1]
-              table_updated =  update_attributes(:latitude => tagvalue,:precision => decimals(tagvalue).to_s)
+              table_updated = update_attributes(:latitude => tagvalue, :precision => decimals(tagvalue).to_s)
             elsif tag.name.split(':')[0] == 'lon'
               tagvalue = tag.name.split(':')[1]
               table_updated = update_attributes(:longitude => tagvalue)
