@@ -153,7 +153,6 @@ class SearchService
       .where('user_tags.value LIKE ?', 'lon%')
       .where('REPLACE(user_tags.value, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
 
-
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
       item.user_tags.none? do |user_tag|
