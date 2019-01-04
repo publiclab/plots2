@@ -721,6 +721,7 @@ class Node < ActiveRecord::Base
     tagname = tagname.downcase
     unless has_tag_without_aliasing(tagname)
       saved = false
+      table_updated = false
       tag = Tag.find_by(name: tagname) || Tag.new(vid:         3, # vocabulary id; 1
                                                   name:        tagname,
                                                   description: '',
@@ -740,6 +741,18 @@ class Node < ActiveRecord::Base
                                  uid: user.uid,
                                  date: DateTime.now.to_i,
                                  nid: id)
+
+          # Adding lat/lon values into node table
+          if tag.valid?
+            if tag.name.split(':')[0] == 'lat'
+              tagvalue = tag.name.split(':')[1]
+              table_updated = update_attributes(:latitude => tagvalue, :precision => decimals(tagvalue).to_s)
+            elsif tag.name.split(':')[0] == 'lon'
+              tagvalue = tag.name.split(':')[1]
+              table_updated = update_attributes(:longitude => tagvalue)
+            end
+          end
+
           if node_tag.save
             saved = true
             # send email notification if there are subscribers, status is OK, and less than 1 month old
@@ -752,7 +765,15 @@ class Node < ActiveRecord::Base
           end
         end
       end
-      return [saved, tag]
+      return [saved, tag, table_updated]
+    end
+  end
+
+  def decimals(n)
+    if !n.to_s.include? '.'
+      0
+    else
+      n.to_s.split('.').last.size
     end
   end
 
