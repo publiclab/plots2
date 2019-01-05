@@ -70,7 +70,7 @@ a.navbar-offset {
 }
 
 @media (max-width: 768px) {
-  .add {
+  .add-subscriptions {
     margin-top:10px;
   }
 }
