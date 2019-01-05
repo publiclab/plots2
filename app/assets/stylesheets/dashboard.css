@@ -5,7 +5,7 @@
   margin-bottom: 0;
 }
 
-@media (max-width: 2000px) {
+@media (max-width: 1200px) {
     .navbar-header {
         float: none;
     }
