@@ -15,11 +15,6 @@
   <% @comments.each do |comment| %>
    <tr id="c<% comment.cid %>">
      <td>
-      <span style="color:#aaa;"><%= t('home._comments.commented') %> 
-        <% if comment.parent %>
-          on <a href="<%= comment.parent.path %>"><%= comment.parent.title %></a>
-        <% end %>:
-      </span>
       "<%= raw strip_tags(sanitize(RDiscount.new(comment.comment).to_html)).truncate(150) %>" | 
       <% if comment.parent %>
         <a href="<%= comment.parent.path %>#c<%= comment.cid %>"><%= t('home._comments.read_more') %> &raquo;</a>
