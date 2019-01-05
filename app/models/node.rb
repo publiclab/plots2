@@ -95,9 +95,9 @@ class Node < ActiveRecord::Base
   validates_with UniqueUrlValidator, on: :create
 
   scope :published, -> { where(status: 1) }
-  scope :weekly, -> { published.where("created > ?", (Time.now - 7.days).to_i) }
-  scope :monthly, -> { published.where("created > ?", (Time.now - 1.months).to_i) }
-  scope :yearly, -> { published.where("created > ?", (Time.now - 1.years).to_i) }
+  scope :past_week, -> { published.where("created > ?", (Time.now - 7.days).to_i) }
+  scope :past_month, -> { published.where("created > ?", (Time.now - 1.months).to_i) }
+  scope :past_year, -> { published.where("created > ?", (Time.now - 1.years).to_i) }
 
   # making drupal and rails database conventions play nice;
   # 'changed' is a reserved word in rails

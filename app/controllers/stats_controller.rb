@@ -41,15 +41,15 @@ class StatsController < ApplicationController
               Time.now
             end
 
-    @weekly_notes = Node.weekly.select(:type).where(type: 'note').count(:all)
-    @weekly_wikis = Revision.weekly.count
-    @weekly_members = User.weekly.where(status: 1).count
-    @monthly_notes = Node.monthly.select(:type).where(type: 'note').count(:all)
-    @monthly_wikis = Revision.monthly.count
-    @monthly_members = User.monthly.where(status: 1).count
+    @weekly_notes = Node.past_week.select(:type).where(type: 'note').count(:all)
+    @weekly_wikis = Revision.past_week.count
+    @weekly_members = User.past_week.where(status: 1).count
+    @monthly_notes = Node.past_month.select(:type).where(type: 'note').count(:all)
+    @monthly_wikis = Revision.past_month.count
+    @monthly_members = User.past_month.where(status: 1).count
 
-    @notes_per_week_past_year = Node.yearly.select(:type).where(type: 'note').count(:all) / 52.0
-    @edits_per_week_past_year = Revision.yearly.count / 52.0
+    @notes_per_week_past_year = Node.past_year.select(:type).where(type: 'note').count(:all) / 52.0
+    @edits_per_week_past_year = Revision.past_year.count / 52.0
 
     @graph_notes = Node.contribution_graph_making('note', 52, @time).to_a.to_json
     @graph_wikis = Node.contribution_graph_making('page', 52, @time).to_a.to_json
