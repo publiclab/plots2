@@ -18,12 +18,12 @@
 
 <div class="dashboard container">
 
-  <%= render partial: "dashboard/header" %>
-
   <div class="row">
 
     <div class="col-md-8">
  
+     <%= render partial: "dashboard/header" %>
+
       <div class="dashboard-blog">
  
         <% if @blog %> 
@@ -52,7 +52,7 @@
 
       <%= feature('dashboard-feature') %>
 
-      <%= render partial: "dashboard/sidebar" %>
+      <%= render partial: "sidebar/dashboard" %>
 
     </div>
 

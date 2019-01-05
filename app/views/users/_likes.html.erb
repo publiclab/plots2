@@ -25,7 +25,7 @@
           <% if like.type == 'note' %>
             by <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= like.author.name %>"><%= like.author.name %></a>
 	    <%= distance_of_time_in_words(like.created_at, Time.current, { include_seconds: false, scope:'datetime.time_ago_in_words' }) %>
-            | <a <% if @widget %>target="_blank"<% end %> href="<%= like.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= like.comment_count %></a>
+            | <a <% if @widget %>target="_blank"<% end %> href="<%= like.path %>#comments"><i style="color:#888;" class="fa fa-comment-o"></i> <%= like.comments.count %></a>
           <% else %>
             <%= t('notes._notes.last_edit_by') %> <a <% if @widget %>target="_blank"<% end %> href="/profile/<%= like.latest.author.name %>"><%= like.latest.author.name %></a>
 	    <%= distance_of_time_in_words(Time.at(like.latest.timestamp), Time.current, { include_seconds: false, scope: 'datetime.time_ago_in_words' }) %>

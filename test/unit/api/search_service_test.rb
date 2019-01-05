@@ -61,26 +61,21 @@ class SearchServiceTest < ActiveSupport::TestCase
 
   test 'running search taglocations with a wrong param format raises an exception' do
     exception = assert_raises(Exception) { SearchService.new.tagNearbyNodes('30:40', nil) }
-    assert_equal( "Must separate coordinates with ,", exception.message )
+    assert_equal( "Must contain all four coordinates", exception.message )
   end
 
   test 'running search taglocations with invalid params' do
-    exception_1 = assert_raises(Exception) { SearchService.new.tagNearbyNodes('43,71', nil) }
-    exception_2 = assert_raises(Exception) { SearchService.new.tagNearbyNodes('4,7', nil) }
+    exception_1 = assert_raises(Exception) { SearchService.new.tagNearbyNodes({ "nwlat" =>'43', "nwlng" =>'43', "selat" =>'43', "selng" =>'43' }, nil) }
 
-    assert_equal( "Must have at least one digit after .", exception_1.message )
-    assert_equal( "Must have at least one digit after .", exception_2.message )
+    assert_equal( "Must be a float", exception_1.message )
   end
 
   test 'running search taglocations with valid params' do
-    result_1 = SearchService.new.tagNearbyNodes('71.00,52.00', nil)
-    result_2 = SearchService.new.tagNearbyNodes('71.0,52.0', nil)
+    result_1 = SearchService.new.tagNearbyNodes({ "nwlat" => 80.0, "nwlng" => 50.0, "selat" => 70.0, "selng" =>60.0 }, nil)
 
     assert_not_nil result_1
-    assert_not_nil result_2
 
-    assert_equal result_1.size, 1
-    assert_equal result_2.size, 1
+    assert_equal result_1.length, 1
   end
 
   test 'running profiles by usertags' do

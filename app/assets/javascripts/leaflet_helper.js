@@ -101,6 +101,9 @@
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://www.openinframap.org/about.html">About OpenInfraMap</a>'
     });
 
+    var Wisconsin_NM = wisconsinLayer(map) ;
+    var FracTracker_mobile = fracTrackerMobileLayer(map) ;
+
     var Justicemap_income = L.tileLayer.provider('JusticeMap.income') ;
     var JusticeMap_americanIndian = L.tileLayer.provider('JusticeMap.americanIndian') ;
     var JusticeMap_asian = L.tileLayer.provider('JusticeMap.asian') ;
@@ -132,6 +135,8 @@
     };
     var overlayMaps = {
      // "PurpleAirLayer-HeatMap": PurpleLayer ,
+        "Wisconsin Non-Metal" : Wisconsin_NM ,
+        "FracTracker_mobile" : FracTracker_mobile ,
       "PurpleAirLayer-Markers": PurpleAirMarkerLayer ,
       "SkyTruth": SkyTruth , 
       "Fractracker" : Fractracker ,

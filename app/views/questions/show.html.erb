@@ -20,13 +20,13 @@
   <div class="alert alert-warning">
     <a href="/profile/<%= @node.author.name %>"> <%= @node.author.name %> </a>
     is asking a question about <b><%= pt %></b>:
-    <a class="btn btn-default" target="_blank" href="/subscribe/tag/question:<%= pt %>">
+    <a class="btn btn-default requireLogin" target="_blank" href="/subscribe/tag/question:<%= pt %>">
       Subscribe to answer questions on this topic
     </a>
   </div>
   <div class="inline">
-  <% if @node.author.user && @node.author.user.photo_file_name %>
-    <img class="img-circle" src="<%= @node.author.user.photo_path(:thumb) %>" />
+  <% if @node.author && @node.author.photo_file_name %>
+    <img class="img-circle" src="<%= @node.author.photo_path(:thumb) %>" />
    <% else %>
     <div class="img-circle"></div>
   <% end %>

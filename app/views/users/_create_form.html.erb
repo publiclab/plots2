@@ -75,13 +75,14 @@
         })();
       </script>
 
-
+    <% cache('feature_signup-notice-modal', skip_digest: true) do %>
+      <%= feature('signup-notice-modal') %>
+    <% end %>
 
     <div class="form-group form-inline" style="clear:both;padding-top:10px;">
         <!-- button for creating new users -->
         <button class="btn btn-lg btn-primary btn-save" type="submit" tabindex="7"><%= t('users._form.sign_up') %></button>
-        <a class="btn btn-lg btn-default" id="toLogin">
-        <!-- <a class="btn btn-lg btn-default" id="toLogin" href="/login"> -->
+        <a class="btn btn-lg btn-default" id="toLogin" href="/login">
           <%= t('users._form.log_in') %>
         </a>
 
