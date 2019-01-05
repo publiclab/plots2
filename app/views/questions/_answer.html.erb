@@ -3,8 +3,8 @@
     <div class="navbar navbar-default">
       <div class="navbar-text pull-left">
       <% if answer.author %>
-        <% if answer.author.user && answer.author.user.photo_file_name %>
-        <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= answer.author.user.photo_path(:thumb) %>" />
+        <% if answer.author && answer.author.photo_file_name %>
+        <img style="width:32px;margin-right:6px;" class="img-circle" src="<%= answer.author.photo_path(:thumb) %>" />
         <% else %>
         <div style="vertical-align:middle;display:inline-block;height:32px;width:32px;margin-right:6px;background:#ccc;" class="img-circle"></div>
         <% end %>

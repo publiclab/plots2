@@ -67,7 +67,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     node = nodes(:one)
     node_tags = node.tags
     new_tag = tags(:spam)
-    user = drupal_users(:spammer)
+    user = users(:spammer)
     users_not_following_tags = new_tag.followers_who_dont_follow_tags(node_tags)
     users_to_email = users_not_following_tags.reject { |u| u.uid == user.uid }
     u_e = Tag.followers('everything')
