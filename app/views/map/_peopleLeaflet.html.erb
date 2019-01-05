@@ -1,4 +1,5 @@
 <%= render :partial => "map/mapDependencies" %>
+
   <% unique_id = rand(100) %>
   <style>
   	#map<%= unique_id %> { width:100%; height:300px; margin: 0; position: relative;}
@@ -53,6 +54,6 @@
    <% end %>
 
 //  setupFullScreen(map< = unique_id >  , map_lat , map_lon) ;
-    setupLEL(map<%= unique_id %> ) ;
+    setupLEL(map<%= unique_id %> , 1) ;
 
   </script>
