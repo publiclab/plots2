@@ -490,13 +490,13 @@ class TagController < ApplicationController
 
   def sort_according_to_followers(raw_tags)
     tags_with_their_followers = []
-    for i in raw_tags
+    raw_tags.each do |i|
       tags_with_their_followers << { "number_of_followers" => Tag.follower_count(i.name), "tags" => i }
     end
-    tags_with_their_followers.sort_by!{ |key| key["number_of_followers"] }
+    tags_with_their_followers.sort_by! { |key| key["number_of_followers"] }
     if params[:order] != "asc"
       tags_with_their_followers.reverse!
     end
-    tags = tags_with_their_followers.map{ |x| x["tags"] }
+    tags = tags_with_their_followers.map { |x| x["tags"] }
   end
 end
