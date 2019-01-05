@@ -133,25 +133,48 @@ class SearchService
     raise("Must be a float") unless coordinates["selat"].is_a? Float
     raise("Must be a float") unless coordinates["selng"].is_a? Float
 
-    user_locations = User.where('rusers.status <> 0')
-                         .joins(:user_tags)
-                         .where('value LIKE ?', 'lat%')
-                         .where('REPLACE(value, "lat:", "") BETWEEN ' + coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
-                         .distinct
+    # user_locations = User.where('rusers.status <> 0')
+    #                      .joins(:user_tags)
+    #                      .where('value LIKE ?', 'lat%')
+    #                      .where('REPLACE(value, "lat:", "") BETWEEN ' + coordinates["selat"].to_s + ' AND ' + coordinates["nwlat"].to_s)
+    #                      .distinct
+    #
+
+
+
+
+
+
+
+    ids = []
+    u = User.where('rusers.status <> 0').joins(:user_tags).where('value LIKE ?', 'lat%')
 
     if tag.present?
-      user_locations = User.joins(:user_tags)
-                           .where('user_tags.value LIKE ?', tag)
-                           .where(id: user_locations.select("rusers.id"))
+      u = u.where('user_tags.value LIKE ?', tag)
     end
 
-    ids = user_locations.collect(&:id).uniq || []
 
-    items = User.where('rusers.status <> 0')
-      .joins(:user_tags)
-      .where('rusers.id IN (?)', ids)
-      .where('user_tags.value LIKE ?', 'lon%')
-      .where('REPLACE(user_tags.value, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
+    u.each {|x| x.user_tags.each {|y| if( y.name.include? 'lat:' and (y.name[4..-1].to_f >= coordinates["selat"].to_f && y.name[4..-1].to_f <= coordinates["nwlat"].to_f))
+                                        ids << x.id
+                                      end
+    }}
+
+
+   # ids = user_locations.collect(&:id).uniq || []
+
+    # items = User.where('rusers.status <> 0')
+    #   .joins(:user_tags)
+    #   .where('rusers.id IN (?)', ids)
+    #   .where('user_tags.value LIKE ?', 'lon%')
+    #   .where('REPLACE(user_tags.value, "lon:", "") BETWEEN ' + coordinates["nwlng"].to_s + ' AND ' + coordinates["selng"].to_s)
+
+    items = []
+    v = User.where('rusers.status <> 0').joins(:user_tags).where('rusers.id IN (?)', ids).where('user_tags.value LIKE ?', 'lon%')
+
+    v.each {|x| x.user_tags.each {|y| if( y.name.include? 'lon:' and (y.name[4..-1].to_f >= coordinates["nwlng"].to_f && y.name[4..-1].to_f <= coordinates["selng"].to_f))
+                                        items << x
+                                      end
+    }}
 
     # selects the items whose node_tags don't have the location:blurred tag
     items.select do |item|
@@ -161,14 +184,14 @@ class SearchService
     end
 
     # sort users by their recent activities if the sort_by==recent
-    items = if sort_by == "recent"
-              items.joins(:revisions).where("node_revisions.status = 1")\
-                   .order("node_revisions.timestamp DESC")
-                   .distinct
-            else
-              items.order(id: :desc)
-                   .limit(limit)
-            end
+    # items = if sort_by == "recent"
+    #           items.joins(:revisions).where("node_revisions.status = 1")
+    #                .order("node_revisions.timestamp DESC")
+    #                .distinct
+    #         else
+    #           items.order(id: :desc)
+    #                .limit(limit)
+    #         end
   end
 
   # Returns the location of people with most recent contributions.
