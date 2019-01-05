@@ -239,7 +239,7 @@ class AdminControllerTest < ActionController::TestCase
     # test the author notification
     email = ActionMailer::Base.deliveries.first
     assert_equal '[Public Lab] Your post was approved!', email.subject
-    assert_equal [node.author.mail], email.to
+    assert_equal [node.author.email], email.to
 
     # test the moderator notification
     email = ActionMailer::Base.deliveries[1]

@@ -1,6 +1,6 @@
 <script type="text/javascript">
   $('#btn-token').on('click',function() {
-    var token = '<%= @user.user.token %>';
+    var token = '<%= @user.token %>';
 
     var mask = document.createElement('div');
     mask.className = 'mask';
@@ -75,8 +75,5 @@
   .token{
     font-weight: bold;
   }
-  #token-popup{
-    top: 30%;
-    left: 30%;
-  }
 </style>
+

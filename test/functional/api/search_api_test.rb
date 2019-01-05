@@ -99,34 +99,40 @@ class SearchApiTest < ActiveSupport::TestCase
   end
 
   test 'search Tag Nearby Nodes functionality with a valid query' do
-    get '/api/srch/taglocations?query=71.00,52.00'
+    get '/api/srch/taglocations?nwlat=200.0&selat=0.0&nwlng=0.0&selng=200.0'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '71.00,52.00',
+            nwlat: 200.0,
+            nwlng: 0.0,
+            selat: 0.0,
+            selng: 200.0,
             seq: nil,
+            tag: nil,
+            query: nil
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 
     matcher = JsonExpressions::Matcher.new(pattern)
 
     json = JSON.parse(last_response.body)
-
     assert matcher    =~ json
     assert_equal 13,  json['items'][0]['doc_id']
   end
 
   test 'search Tag Nearby People functionality' do
-    get '/api/srch/nearbyPeople?query=31.00,40.00'
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '31.00,40.00',
-            seq: nil
+            nwlat: 31.0,
+            nwlng: 0.0,
+            selat: 0.0,
+            selng: 40.0
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 
@@ -141,14 +147,16 @@ class SearchApiTest < ActiveSupport::TestCase
   end
 
   test 'search Tag Nearby People functionality wth sort_by=recent' do
-    get '/api/srch/nearbyPeople?query=31.00,40.00&sort_by=recent'
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0&sort_by=recent'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '31.00,40.00',
-            seq: nil
+          nwlat: 31.0,
+          nwlng: 0.0,
+          selat: 0.0,
+          selng: 40.0,
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 
@@ -163,15 +171,17 @@ class SearchApiTest < ActiveSupport::TestCase
   end
 
   test 'search Tag Nearby People functionality with tag=awesome' do
-    get '/api/srch/nearbyPeople?query=31.00,40.00&tag=awesome'
+    get '/api/srch/nearbyPeople?nwlat=31.0&selat=0.0&nwlng=0.0&selng=40.0&tag=awesome'
     assert last_response.ok?
 
     # Expected search pattern
     pattern = {
         srchParams: {
-            query: '31.00,40.00',
-            tag: 'awesome',
-            seq: nil
+          nwlat: 31.0,
+          nwlng: 0.0,
+          selat: 0.0,
+          selng: 40.0,
+          tag: 'awesome'
         }.ignore_extra_keys!
     }.ignore_extra_keys!
 

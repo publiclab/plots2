@@ -228,7 +228,7 @@ module Srch
                                                                                             nickname: 'search_tag_locations'
 
       params do
-        use :common, :additional
+        use :geographical, :additional
       end
       get :taglocations do
         search_request = SearchRequest.fromRequest(params)
@@ -259,7 +259,7 @@ module Srch
                                                                        is_array: false,
                                                                        nickname: 'search_nearby_people'
       params do
-        use :common, :sorting, :additional
+        use :geographical, :sorting, :additional
       end
       get :nearbyPeople do
         search_request = SearchRequest.fromRequest(params)

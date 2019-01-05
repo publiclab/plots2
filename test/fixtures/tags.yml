@@ -79,3 +79,11 @@ co-author:
 unpublished-note-tag:
   tid: 20
   name: unpublished-note-tag
+
+kites:
+  tid: 21
+  name: kites
+
+balloon:
+  tid: 22
+  name: balloon

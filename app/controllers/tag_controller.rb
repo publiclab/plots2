@@ -256,7 +256,7 @@ class TagController < ApplicationController
   end
 
   def author
-    render json: DrupalUser.find_by(name: params[:id]).tag_counts
+    render json: User.find_by(name: params[:id]).tag_counts
   end
 
   def barnstar
@@ -272,7 +272,7 @@ class TagController < ApplicationController
       barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
       node.add_comment(subject: 'barnstar',
                        uid: current_user.uid,
-                       body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_user.name} for their awesome contribution!")
+                       body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.user.name} for their awesome contribution!")
     end
     redirect_to node.path + '?_=' + Time.now.to_i.to_s
   end
@@ -300,7 +300,7 @@ class TagController < ApplicationController
           barnstar_info_link = '<a href="//' + request.host.to_s + '/wiki/barnstars">barnstar</a>'
           node.add_comment(subject: 'barnstar',
                            uid: current_user.uid,
-                           body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.drupal_user.name} for their awesome contribution!")
+                           body: "@#{current_user.username} awards a #{barnstar_info_link} to #{node.user.name} for their awesome contribution!")
 
         elsif tagname.split(':')[0] == "with"
           user = User.find_by_username_case_insensitive(tagname.split(':')[1])
