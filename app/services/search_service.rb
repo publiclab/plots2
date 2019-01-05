@@ -162,7 +162,7 @@ class SearchService
 
     # sort users by their recent activities if the sort_by==recent
     items = if sort_by == "recent"
-              items.joins(:revisions).where("node_revisions.status = 1")\
+              items.joins(:revisions).where("node_revisions.status = 1")
                    .order("node_revisions.timestamp DESC")
                    .distinct
             else
@@ -195,8 +195,8 @@ class SearchService
     users =
       if type == "tag"
         User.where('rusers.status = 1')
-            .joins(:user_tags)\
-            .where('user_tags.value LIKE ?', '%' + query + '%')\
+            .joins(:user_tags)
+            .where('user_tags.value LIKE ?', '%' + query + '%')
       else if ActiveRecord::Base.connection.adapter_name == 'Mysql2'
         type == "username" ? User.search_by_username(query).where('rusers.status = ?', 1) : User.search(query).where('rusers.status = ?', 1)
       else
