@@ -778,12 +778,11 @@ class Node < ActiveRecord::Base
   end
 
   def delete_coord(tagname)
-    if (tagname.split(':')[0] == "lat")
+    if tagname.split(':')[0] == "lat"
       table_updated = update_attributes(:latitude => nil, :precision => nil)
     else
       table_updated = update_attributes(:longitude => nil)
     end
-    return table_updated
   end
 
   def mentioned_users
