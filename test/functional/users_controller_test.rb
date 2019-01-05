@@ -269,7 +269,7 @@ class UsersControllerTest < ActionController::TestCase
 
   test 'changing user settings' do
     UserSession.create(users(:bob))
-    post :create, params: {
+    post :save_settings, params: {
       "notify-comment-direct:false": "on",
       "notify-likes-direct:false": "on",
       "notify-comment-indirect:false": "on",
