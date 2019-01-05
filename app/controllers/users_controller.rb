@@ -351,7 +351,7 @@ class UsersController < ApplicationController
       'digest:weekly',
       'digest:daily'
     ]
-    user_settings.each do |setting|
+    digest_settings.each do |setting|
       if params[setting] == "on"
         UserTag.create_if_absent(current_user.uid, setting)
       else
