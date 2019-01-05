@@ -353,9 +353,9 @@ class UsersController < ApplicationController
     ]
     user_settings.each do |setting|
       if params[setting] == "on"
-        UserTag.remove_if_exists(current_user.uid, setting)
-      else
         UserTag.create_if_absent(current_user.uid, setting)
+      else
+        UserTag.remove_if_exists(current_user.uid, setting)
       end
     end
 
