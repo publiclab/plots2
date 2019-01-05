@@ -33,6 +33,10 @@
 
    var markers_hash = new Map() ;
 
+   window.setTimeout(function(){
+       map<%= unique_id %>.setZoom(2) ;
+   }, 3500);
+
    map<%= unique_id %>.on('zoomend' , function () {
        var NWlat = map<%= unique_id %>.getBounds().getNorthWest().lat ;
        var NWlng = map<%= unique_id %>.getBounds().getNorthWest().lng ;
